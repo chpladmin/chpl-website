@@ -3,11 +3,36 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Hello World</title>
+<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="js/angular.min.js"></script>
 </head>
 <body>
 	<h1>Hello World</h1>
 	<p>
 		Hi!
 	</p>
+	
+	
+	<script type="text/javascript">
+	$(document).ready(function(){
+	 $("#msgid").html("This is Hello World by JQuery");
+	});
+	 
+	</script>
+	 
+	This is Hello World by HTML
+	 
+	<div id="msgid">
+	</div>
+	
+	<div id="angular" ng-app>
+	Write some text in textbox:
+	<input type="text" ng-model="sometext">
+ 
+	<h1>Hello {{ sometext }}</h1>
+	
+	</div>
+	
+	
 </body>
 </html>
