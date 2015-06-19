@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -22,81 +22,14 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
   </head>
-  <body ng-app="app" ng-controller="Main as main">
-    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-header-collapse" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Certified Health IT Product List</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-header-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Overview</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Product Listing</a></li>
-            <li><a href="#">API</a></li>
-            <li class="dropdown" ng-hide="main.isAuthed()">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Log In <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li>
-                  <form class="navbar-form" role="Log In Form">
-                    <input type="text" ng-model="main.username" placeholder="username">
-                    <input type="password" ng-model="main.password" placeholder="password">
-                    <button class="btn btn-default" ng-click="main.login()">Log In</button>
-                    <button class="btn btn-default" ng-click="main.register()">Register</button>
-                  </form>
-                </li>
-              </ul>
-            </li>
-            <li data-ng-show="main.isAuthed()"><a ng-click="main.logout()">Log Out</a></li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
+  <body>
+    <div ng-include="'app/layout/topNav.html'"></div>
 
     <div class="container">
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-          <h1>What is the Certified Health IT Product List (CHPL)?</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <div ng-view></div>
+    </div>
 
-          <div ng-show="main.isAuthed()">Welcome {{ main.getUsername() }}</div>
-          <br /><br />
-          <button class="btn btn-default" ng-click="main.getQuote()" ng-show="main.isAuthed()">Get Quote</button>
-          <br /><br />
-          <p class="lead">{{main.message}}</p>
-
-        </div>
-      </div>
-    </div><!-- /.container -->
-
-    <footer>
-      <nav class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-footer-collapse" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-            </button>
-            <p class="navbar-text">Office of the National Coordinator for Health Information Technology</p>
-          </div>
-          <div class="collapse navbar-collapse" id="bs-footer-collapse">
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">Home</a></li>
-              <li><a href="#">ONC Certification Website</a></li>
-              <li><a href="#">Lists of Certification Criteria &amp; Clinical Quality Measures</a></li>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Contact Us</a></li>
-            </ul>
-          </div><!-- /.navbar-collapse -->
-        </div><!-- /.container -->
-      </nav>
-    </footer>
+    <div ng-include="'app/layout/bottomNav.html'"></div>
 
     <!-- Beginning of bottom JS files -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -106,7 +39,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.7.1/loading-bar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.5/ngStorage.min.js"></script>
-    <script src="scripts/app.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/Expense/expense.js"></script>
+    <script src="app/Expense/expenseItem.js"></script>
+    <script src="app/Expense/expensesController.js"></script>
+    <script src="app/expensesDataService.js"></script>
     <!-- End of bottom JS files -->
   </body>
 </html>
