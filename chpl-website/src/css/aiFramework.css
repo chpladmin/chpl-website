@@ -1,0 +1,327 @@
+ai-dashboard {
+    margin: 0;
+    width: 100%;
+}
+
+.gridster .gridster-item {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    background: white;
+    overflow: hidden;
+}
+
+.ai-widget-header {
+    position: relative;
+    color: white;
+    background-color: #444;
+    font-size: 18px;
+    border: 1px solid black;
+    min-height: 30px;
+    padding: 4px 8px 2px;
+}
+
+.ai-widget-header-buttons {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ai-widget-header-buttons .btn {
+    margin: 3px 4px 4px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.ai-dashboard-header {
+    font-size: 20px;
+    border-bottom: 1px solid #444;
+    color: white;
+    background-color: #777;
+    margin: -20px -20px 20px;
+    min-height: 50px;
+    padding: 8px 8px 8px 20px;
+}
+
+.ai-dashboard-controls {
+    float: right;
+}
+
+.ai-widget-menu-area {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    font-size: 22px;
+}
+
+.ai-widget-menu-area .dropdown-menu {
+    left: -20px;
+    padding-left: 15px;
+}
+
+.ai-widget-menu-area a {
+    color: white;
+}
+
+.ai-widget-menu-area i {
+    cursor: pointer;
+}
+
+.dropdown-backdrop {
+    position: static;
+}
+
+.ai-title-bar {
+    background-color: white;
+    padding: 0 20px;
+    border-bottom: 2px solid black;
+}
+
+.ai-logo-area {
+/*    text-align: center;*/
+}
+
+.ai-title-area {
+    display: inline-block;
+}
+
+.ai-icon {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 8px;
+    vertical-align: top;
+    border: 1px solid #999;
+}
+
+.ai-logo-title {
+    color: #111;
+    margin-top: 6px;
+    font-size: 22px;
+}
+
+.ai-logo-subtitle {
+    font-size: 13px;
+    margin-top: -13px;
+}
+
+@media screen and (max-width: 430px) {
+    .ai-icon {
+        display: none;
+    }
+
+    .ai-logo-title {
+        font-size: 18px;
+    }
+}
+
+.ai-right-side-controls {
+    line-height: 60px;
+}
+
+.ai-right-side-controls > div {
+    text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+    .ai-right-side-controls > div {
+        text-align: right;
+    }
+    .ai-logo-area {
+        text-align: left;
+    }
+}
+
+.ai-collapsed-menu {
+    display: inline-block;
+    height: 100%;
+}
+
+.ai-nav-button {
+    height: 40px;
+    width: 60px;
+    margin-top: 10px;
+    border: 1px solid #888;
+    padding: 0;
+    font-size: 26px;
+    color: #777;
+}
+
+.ai-view {
+    margin-left: 200px;
+    padding: 20px;
+    background-color: #ccc;
+    min-height: 100vh;
+    overflow: auto;
+}
+
+.ai-view-full-width {
+    margin-left: 0;
+}
+
+.ai-user-profile {
+    background-color: #333;
+    color: white;
+    width: 200px;
+    min-height: 120px;
+    padding-top: 10px;
+}
+
+.ai-user-profile > div {
+    display: inline-block;
+    padding-top: 10px;
+    margin-left: 5px;
+}
+
+.ai-user-profile > div > p {
+    margin-bottom: 2px;
+}
+
+.ai-user-profile > div > button {
+    margin-top: 8px;
+}
+
+.ai-user-profile img {
+    float: left;
+    margin: 12px;
+    width: 80px;
+    height: 80px;
+}
+
+.ai-user-profile-small {
+    color: #333;
+    padding-top: 4px;
+}
+
+.ai-user-profile-small > span {
+    font-size: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.ai-user-profile-small img {
+    width: 40px;
+    height: 40px;
+}
+
+.ai-menu-area {
+    position: relative;
+    background-color: #333;
+    color: #ccc;
+    padding-left: 0;
+}
+
+.ai-menu-area-vertical {
+    float: left;
+    width: 200px;
+    min-height: 100vh;
+    padding-top: 30px;
+}
+
+.ai-menu-area-horizontal {
+    width: 100%;
+    height: 40px;
+}
+
+.ai-menu-area ul {
+    padding: 0;
+}
+
+.ai-menu-area .btn:hover {
+    color: #ccc;
+}
+
+.ai-menu {
+    list-style-type: none;
+    vertical-align: top;
+}
+
+.ai-menu ul {
+    display: inline;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.ai-menu li {
+    line-height: 3em;
+    cursor: pointer;
+}
+
+.ai-menu li div {
+    display: inline-block;
+    width: 90%;
+    padding-left: 16px;
+}
+
+.ai-selectable-item:hover {
+    background-color: #555;
+}
+
+.ai-menu-icon {
+    margin-right: 10px;
+}
+
+.ai-menu-active-indicator {
+    float: right;
+    color: #ddd;
+    margin-right: 0;
+    margin-top: 8px;
+}
+
+.ai-noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.ai-group-indicator-right {
+    float: right;
+    color: #ddd;
+    margin-right: 2px;
+    margin-top: 15px;
+}
+
+.ai-subitem-section {
+    padding-left: 16px;
+}
+
+.ai-menu-layout-button {
+    margin: 12px;
+    padding: 2px 8px;
+    color: #bbb;
+    background-color: #333;
+    border: 1px solid #999;
+}
+
+.ai-layout-button-horizontal {
+    position: absolute;
+    top: -6px;
+    right: 10px;
+}
+
+.ai-item-horizontal {
+    display: inline-block;
+    width: 165px !important;
+    margin-left: 20px;
+    margin-top: 5px;
+    line-height: 1.5em !important;
+}
+
+.ai-popup-menu {
+    position: absolute;
+    z-index: 1000;
+    background-color: #333;
+    width: 200px;
+    padding-left: 0;
+}
+
+.ai-fade-in-animation {
+    -moz-transition: linear all 0.5s;
+    -o-transition: linear all 0.5s;
+    -webkit-transition: linear all 0.5s;
+    transition: linear all 0.5s;
+}
+
+.ai-fade-in-animation.ng-hide {
+    opacity: 0;
+}
