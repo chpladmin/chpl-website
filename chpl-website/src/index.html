@@ -8,14 +8,9 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
     <link href="css/angular-gridster.min.css" rel="stylesheet" />
-    <link href="app/app.css" rel="stylesheet" />
     <link href="css/aiFramework.css" rel="stylesheet" />
 
     <!-- widget css -->
-<!--    <link href="app/widgets/aaTemperature/aaTemperature.css" rel="stylesheet" />
-    <link href="app/widgets/aaInventory/aaInventory.css" rel="stylesheet" />
-    <link href="app/widgets/aaEmployee/aaEmployee.css" rel="stylesheet" />
--->
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/angular.min.js"></script>
     <script src="scripts/angular-animate.min.js"></script>
@@ -26,35 +21,23 @@
     <script src="scripts/ngStorage.min.js"></script>
     <script src="scripts/aiFramework.js"></script>
 
-    <script src="app/appModule.js"></script>
+    <script src="app/app.js"></script>
     <script src="app/appConfig.js"></script>
-    <script src="app/appController.js"></script>
+<!--    <script src="app/appController.js"></script>
     <script src="app/appRouteConfig.js"></script>
     <script src="app/services/dataService.js"></script>
-<!--
-    <script src="app/directives/aaLocationsDirective.js"></script>
-    <script src="app/directives/aaGuidesDirective.js"></script>
-    <script src="app/directives/aaDashboardDirective.js"></script>
--->
-      <!-- widget js -->
-<!--    <script src="app/widgets/aaTemperature/aaTemperatureDirective.js"></script>
-    <script src="app/widgets/aaInventory/aaInventoryDirective.js"></script>
-    <script src="app/widgets/aaEmployee/aaEmployeeDirective.js"></script>
-    <script src="app/dialogs/aaSelectLocationController.js"></script>
-    <script src="app/dialogs/aaSelectEmployeeController.js"></script>-->
+    -->
 </head>
 
-  <body class="container-fluid" ng-controller="appController">
+  <body class="container-fluid">
 
-    <ai-framework title="Adventures" subtitle="Administration" icon-file="images/gravatar.png">
+    <ai-framework title="Open Data CHPL" subtitle="Certified Health Product Listing" icon-file="images/gravatar.png">
       <ai-menu>
-        <ai-menu-item label="Dashboard" icon="fa-dashboard" route="dashboard"></ai-menu-item>
-        <ai-menu-item label="Locations" icon="fa-location-arrow" route="locations"></ai-menu-item>
-        <ai-menu-item label="Guides" icon="fa-user" route="guides"></ai-menu-item>
-        <ai-menu-group label="Equipment" icon="fa-gears">
-          <ai-menu-item label="Rafts" icon="fa-unlink" route="rafts"></ai-menu-item>
-          <ai-menu-item label="Paddles" icon="fa-magic" route="paddles"></ai-menu-item>
-          <ai-menu-item label="Life Vests" icon="fa-life-ring" route="vests"></ai-menu-item>
+        <ai-menu-item label="Home" icon="fa-dashboard" route="home"></ai-menu-item>
+        <ai-menu-item label="API" icon="fa-location-arrow" route="api"></ai-menu-item>
+        <ai-menu-group label="Admin" icon="fa-gears">
+          <ai-menu-item label="Log In" icon="fa-unlink" route="rafts"></ai-menu-item>
+          <ai-menu-item label="Log Out" icon="fa-magic" route="paddles"></ai-menu-item>
         </ai-menu-group>
       </ai-menu>
     </ai-framework>
