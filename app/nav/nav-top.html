@@ -13,10 +13,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="odc-navbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#/view1">View 1</a></li>
-        <li><a href="#/view2">View 2</a></li>
+        <li ng-class="{'active': nav.isActive('/view1') }"><a href="#/view1">View 1</a></li>
+        <li ng-class="{'active': nav.isActive('/view2') }"><a href="#/view2">View 2</a></li>
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Log in <span class="caret"></span></a>
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ nav.getUsername() }} <span class="fa fa-caret-down"></span></a>
           <ul class="dropdown-menu">
             <li>
               <form class="navbar-form" role="log in">

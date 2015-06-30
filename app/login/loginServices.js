@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    angular.module('loginServices', ['ngStorage'])
+    angular.module('app.loginServices')
         .service('userService', function ($http, API, authService) {
             var self = this;
 
@@ -23,7 +23,7 @@
                 });
             }
         })
-        .service('authService', function ($window, $log, $localStorage) {
+        .service('authService', function ($window, $localStorage) {
             var self = this;
 
             self.parseJwt = function (token) {
@@ -46,6 +46,15 @@
                     return Math.round(new Date().getTime() / 1000) <= params.exp;
                 } else {
                     return false;
+                }
+            }
+
+            self.getUsername = function () {
+                if (self.isAuthed()) {
+                    var token = self.getToken();
+                    return self.parseJwt(token).username;
+                } else {
+                    return 'User';
                 }
             }
 
