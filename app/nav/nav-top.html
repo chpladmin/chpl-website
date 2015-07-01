@@ -1,0 +1,43 @@
+<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" ng-controller="navigationController as nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#odc-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">OpenDataCHPL</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="odc-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-class="{'active': nav.isActive('/view1') }"><a href="#/view1">View 1</a></li>
+        <li ng-class="{'active': nav.isActive('/view2') }"><a href="#/view2">View 2</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ nav.getUsername() }} <span class="fa fa-caret-down"></span></a>
+          <ul class="dropdown-menu">
+            <li>
+              <form class="navbar-form" role="log in">
+                <div class="form-group" ng-hide="nav.isAuthed()">
+                  <label for="username">User Name</label>
+                  <input type="text" class="form-control" id="username" ng-model="nav.username" placeholder="username" />
+                </div>
+                <div class="form-group" ng-hide="nav.isAuthed()">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" ng-model="nav.password" placeholder="password" />
+                </div>
+                <button class="btn btn-default" ng-click="nav.register()" ng-hide="nav.isAuthed()">Register</button>
+                <button class="btn btn-default" ng-click="nav.login()" ng-hide="nav.isAuthed()">Log In</button>
+                <button class="btn btn-default" ng-click="nav.logout()" ng-show="nav.isAuthed()">Log Out</button>
+                <button class="btn btn-default" ng-click="nav.getQuote()" ng-show="nav.isAuthed()">Get Quote</button>
+              </form>
+              <p class="navbar-text">{{ nav.message }}</p>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
