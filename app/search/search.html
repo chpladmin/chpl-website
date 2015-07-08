@@ -1,18 +1,53 @@
-<div class="col-md-12">
-  <h1>Welcome to the CHPL</h1>
-  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
-  <form class="form-horizontal" role="search">
-    <div class="form-group form-group-lg">
-      <label for="searchField" class="col-sm-2 control-label">Search</label>
-      <div class="col-sm-8">
-        <div class="input-group">
-          <div class="input-group-addon"><i class="fa fa-search"></i></div>
-          <input type="text" class="form-control" id="searchField" placeholder="Search" />
+<div ng-controller="SearchController">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Welcome to the CHPL</h1>
+      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+      <form class="form-horizontal" role="search">
+        <div class="form-group form-group-lg">
+          <label for="searchField" class="col-sm-2 control-label">Search</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" id="searchField" placeholder="Search" />
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <button type="button" class="btn btn-default btn-lg" ng-click="search()">Search</button>
+          </div>
         </div>
-      </div>
-      <div class="col-sm-2">
-        <button type="submit" class="btn btn-default btn-lg" ng-click="search.search()">Search</button>
-      </div>
+      </form>
     </div>
-  </form>
-</div>
+  </div> <!-- search field row -->
+  <div class="row" ng-show="hasResults()">
+    <div class="col-md-12">
+      <table st-table="displayedResults" st-safe-src="searchResults" class="table table-striped table-condensed st-table">
+        <thead>
+          <tr>
+            <th st-sort="firstName" st-skip-natural="true">first name</th>
+		    <th st-sort="lastName" st-skip-natural="true">last name</th>
+            <th st-sort="birthDate" st-skip-natural="true" st-sort-default="true">birth date</th>
+		    <th st-sort="balance" st-skip-natural="true">balance</th>
+		    <th st-sort="email" st-skip-natural="true">email</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat="row in displayedResults">
+		    <td>{{ row.firstName }}</td>
+		    <td>{{ row.lastName }}</td>
+		    <td>{{ row.birthDate | date }}</td>
+		    <td>{{ row.balance | currency }}</td>
+		    <td>{{ row.email | lowercase }}</td>
+	      </tr>
+	    </tbody>
+        <tfoot>
+		  <tr>
+			<td colspan="5" class="text-center">
+			  <div st-pagination st-items-by-page="10" st-displayed-pages="10"></div>
+			</td>
+		  </tr>
+		</tfoot>
+      </table>
+    </div>
+  </div>
+</div> <!-- end controller -->

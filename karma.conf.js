@@ -9,9 +9,11 @@ module.exports = function(config){
             'app/bower_components/angular-mocks/angular-mocks.js',
             'app/bower_components/ngstorage/ngStorage.js',
             'app/bower_components/jquery/dist/jquery.min.js',
+            'app/bower_components/angular-smart-table/dist/smart-table.min.js',
             'app/app.js',
             'app/**/*Module.js',
             'app/components/**/*.js',
+            'app/search/**/*.js',
             'app/view*/**/*.js',
             'app/login/**/*.js',
             'app/nav/**/*.js'
