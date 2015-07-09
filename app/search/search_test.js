@@ -1,4 +1,4 @@
-(function () {
+;(function () {
     'use strict';
 
     describe('[app.search module]', function () {
@@ -11,7 +11,7 @@
         }));
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                console.log("\n Debug: " + $log.debug.logs.join("\n Debug: "))
+                console.log("\n Debug: " + $log.debug.logs.join("\n Debug: "));
             }
         });
 

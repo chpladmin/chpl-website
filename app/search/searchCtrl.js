@@ -17,5 +17,12 @@
                 return $scope.searchResults.length != 0;
             };
             $scope.hasResults = self.hasResults;
+
+            $scope.sorts = {
+                certs: function (value) {
+                    var counts = value.certs.split(' ');
+                    return (parseInt(counts[0]) + parseInt(counts[3]));
+                }
+            };
         }]);
 })();
