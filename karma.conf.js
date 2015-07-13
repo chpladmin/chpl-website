@@ -6,6 +6,12 @@ module.exports = function(config){
         files : [
             'app/bower_components/angular/angular.js',
             'app/bower_components/angular-route/angular-route.js',
+            'app/bower_components/angular-animate/angular-animate.min.js',
+            'app/bower_components/ngstorage/ngStorage.min.js',
+            'app/bower_components/jquery/dist/jquery.min.js',
+            'app/bower_components/bootstrap/dist/js/bootstrap.min.js',
+            'app/bower_components/angular-smart-table/dist/smart-table.min.js',
+            'app/bower_components/angular-loading-bar/build/loading-bar.min.js',
             'app/bower_components/angular-mocks/angular-mocks.js',
             'app/bower_components/ngstorage/ngStorage.js',
             'app/bower_components/jquery/dist/jquery.min.js',

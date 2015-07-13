@@ -6,10 +6,18 @@
   "license": "tbd",
   "private": true,
   "dependencies": {
-    "angular": "~1.4.0",
-    "angular-route": "~1.4.0",
+    "angular": "~1.4.2",
+    "angular-route": "~1.4.2",
     "angular-loader": "~1.4.0",
-    "angular-mocks": "~1.4.0",
-    "html5-boilerplate": "~5.2.0"
+    "angular-mocks": "~1.4.2",
+    "html5-boilerplate": "~5.2.0",
+    "angular-animate": "~1.4.2",
+    "angular-loading-bar": "~0.8.0",
+    "angular-smart-table": "~2.1.0",
+    "ngstorage": "~0.3.7",
+    "fontawesome": "~4.3.0"
+  },
+  "resolutions": {
+    "angular": "~1.4.2"
   }
 }
