@@ -8,7 +8,6 @@
                 .when('', {redirectTo: '/'})
                 .otherwise({redirectTo: '/search'});
         }])
-
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {
                 return function (exception, cause) {

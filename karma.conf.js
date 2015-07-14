@@ -17,6 +17,7 @@ module.exports = function(config){
             'app/bower_components/jquery/dist/jquery.min.js',
             'app/bower_components/angular-smart-table/dist/smart-table.min.js',
             'app/app.js',
+            'app/appDev.js',
             'app/**/*Module.js',
             'app/components/**/*.js',
             'app/search/**/*.js',
