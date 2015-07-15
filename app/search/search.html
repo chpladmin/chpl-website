@@ -1,8 +1,12 @@
 <div ng-controller="SearchController">
-  <div class="row">
+  <div class="row" ng-hide="hasResults()">
     <div class="col-md-12">
       <h1>Welcome to the CHPL</h1>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
       <form class="form-horizontal" role="search">
         <div class="form-group form-group-lg">
           <label for="searchField" class="col-sm-2 control-label">Search</label>
@@ -13,7 +17,9 @@
             </div>
           </div>
           <div class="col-sm-2">
-            <button type="button" class="btn btn-default btn-lg" ng-click="search()">Search</button>
+            <button type="button" class="btn btn-default btn-lg" ng-click="search(searchTerm)">Search</button>
+            <br /><a href="#/advanced-search">Advanced search</a>
+            <span ng-show="hasResults()"><br /><a href="" ng-click="clear()">Clear results</a></span>
           </div>
         </div>
       </form>
@@ -21,26 +27,29 @@
   </div> <!-- search field row -->
   <div class="row" ng-show="hasResults()">
     <div class="col-md-12">
+      <h2>Results</h2>
       <table st-table="displayedResults" st-safe-src="searchResults" class="table table-striped st-table">
         <thead>
           <tr>
-            <th st-sort="vendor" st-skip-natural="true">Vendor</th>
-		    <th st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
-            <th st-sort="version" st-skip-natural="true">Version</th>
-		    <th st-sort="sorts.certs" st-skip-natural="true">Certs & CQMs</th>
-            <th st-sort="certDate" st-skip-natural="true">Certification Date</th>
+            <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
+		    <th class="search-header" st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
+            <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
+		    <th class="search-header" st-sort="sorts.certs" st-skip-natural="true">Certs & CQMs</th>
+            <th class="search-header" st-sort="certDate" st-skip-natural="true">Certification Date</th>
+            <th><a href="" ng-click="compare()">Compare</a></th>
 	      </tr>
 	    </thead>
 	    <tbody>
-	      <tr ng-repeat-start="row in displayedResults" ng-click="showDetails = !showDetails">
-		    <td>{{ row.vendor }}</td>
-		    <td>{{ row.product }}</td>
-		    <td>{{ row.version }}</td>
-		    <td>{{ row.certs }}</td>
-		    <td>{{ row.certDate | date }}</td>
+	      <tr ng-repeat-start="row in displayedResults">
+		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor }}</td>
+		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product }}</td>
+		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.version }}</td>
+		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certs }}</td>
+		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certDate | date }}</td>
+            <td align="center"><input type="checkbox" id="{{ row.id }}" /></td>
 	      </tr>
           <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
-            <td colspan="5">{{ row.details }}</td>
+            <td colspan="6">{{ row.details }}</td>
           </tr>
         </tbody>
         <tfoot>
@@ -72,6 +81,32 @@
         </tfoot>
       </table>
     </div>
-  </div>
+  </div> <!-- end of search results -->
+
+  <div ng-hide="hasResults()">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Other Agencies</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <img src="" width="100px" height="100px" alt="Other agency 1" />
+        <a href="#">Other agency 1</a>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <img src="" width="100px" height="100px" alt="Other agency 2" />
+        <a href="#">Other agency 2</a>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <img src="" width="100px" height="100px" alt="Other agency 3" />
+        <a href="#">Other agency 3</a>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <img src="" width="100px" height="100px" alt="Other agency 4" />
+        <a href="#">Other agency 4</a>
+      </div>
+    </div>
+  </div> <!-- end of other agencies -->
 
 </div> <!-- end controller -->

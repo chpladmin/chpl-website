@@ -1,0 +1,31 @@
+.st-table th {
+    width: 16%;
+}
+
+.st-table th:last-child {
+    text-align: center;
+}
+
+.st-sort-ascent:after {
+    content: "\f0d8";
+    font-family: FontAwesome;
+    padding: 0 3px;
+}
+
+.st-sort-descent:after {
+    content: "\f0d7";
+    font-family: FontAwesome;
+    padding: 0 3px;
+}
+
+ul.pagination li {
+    cursor: pointer;
+}
+
+.search-header {
+    cursor: pointer;
+}
+
+.productHeader {
+    cursor: pointer;
+}

@@ -15,6 +15,11 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="odc-navbar">
         <ul class="nav navbar-nav navbar-right">
+          <li ng-class="{'active': nav.isActive('/search') }"><a href="#/search">Home</a></li>
+          <li ng-class="{'active': nav.isActive('/overview') }"><a href="#/overview">Overview</a></li>
+          <li ng-class="{'active': nav.isActive('/contact') }"><a href="#/contact">Contact</a></li>
+          <li ng-class="{'active': nav.isActive('/listing') }"><a href="#/listing">Product Listing</a></li>
+          <li ng-class="{'active': nav.isActive('/api') }"><a href="#/api">API</a></li>
           <li ng-class="{'active': nav.isActive('/view1') }"><a href="#/view1">View 1</a></li>
           <li ng-class="{'active': nav.isActive('/view2') }"><a href="#/view2">View 2</a></li>
           <li ng-show="nav.isAuthed()"><a href="" ng-click="nav.getQuote()">Get Quote</a></li>
