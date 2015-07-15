@@ -1,9 +1,10 @@
 .st-table th {
-    width: 16%;
+    width: 20%;
 }
 
 .st-table th:last-child {
     text-align: center;
+    width: auto;
 }
 
 .st-sort-ascent:after {
@@ -28,4 +29,9 @@ ul.pagination li {
 
 .productHeader {
     cursor: pointer;
+}
+
+.productDetails td:last-child {
+    vertical-align: middle;
+    text-align: center;
 }

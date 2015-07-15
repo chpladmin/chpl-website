@@ -35,28 +35,31 @@
 
             it('should have a method to search', function () {
                 var controller = createController();
-                expect(angular.isFunction(controller.search)).toBe(true);
+                expect(controller.search).toBeDefined();
             });
 
             it('should know if it has results', function () {
                 var controller = createController();
                 expect(controller.hasResults).toBeDefined;
             });
+
+            it('should have a method to open product details', function () {
+                var controller = createController();
+                expect(controller.details).toBeDefined();
+            });
         });
 
         describe('[search services]', function () {
-            var searchService, $httpBackend, $q, $rootScope;
+            var searchService, $httpBackend;
 
-            beforeEach(inject(function (_searchService_, _$httpBackend_, _$q_, _$rootScope_) {
+            beforeEach(inject(function (_searchService_, _$httpBackend_) {
                 searchService = _searchService_;
                 $httpBackend = _$httpBackend_;
-                $q = _$q_;
-                $rootScope = _$rootScope_;
 
                 $httpBackend.whenGET('http://ainq.com/search?q=all').respond([1, 2, 3]);
             }));
 
-            afterEach(function() {
+            afterEach(function () {
                 $httpBackend.verifyNoOutstandingExpectation();
                 $httpBackend.verifyNoOutstandingRequest();
             });
@@ -67,7 +70,7 @@
                 $httpBackend.flush();
             });
 
-            it('should resolve with [something]', function () {
+            it('should resolve with expected values', function () {
                 searchService.search('all').then(function(response) {
                     expect(response).toEqual([1, 2, 3]);
                 });

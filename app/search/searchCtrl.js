@@ -9,6 +9,7 @@
             $scope.filteredResults = [];
 
             self.search = function (query) {
+                $log.info('Searching for: ' + query);
                 searchService.search(query)
                     .then(function (data) {
                         $scope.searchResults = data;
@@ -37,5 +38,10 @@
                 $scope.displayedResults = [];
             };
             $scope.clear = self.clear;
+
+            self.details = function(id) {
+                $log.info('Getting details for ID: ' + id);
+            };
+            $scope.details = self.details;
         }]);
 })();

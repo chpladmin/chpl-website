@@ -45,7 +45,8 @@
                 product: fakeWord() + " " + fakeWord() + "-" + fakeWord(),
                 version: fakeChunk() + "." + fakeChunk(),
                 certs: fakeCerts(),
-                certDate: fakeDate()
+                certDate: fakeDate(),
+                id: i
             });
         };
         return ret;
@@ -80,7 +81,7 @@
                             _arguments = arguments;
                         setTimeout(function() {
                             callback.apply(_this, _arguments);
-                        }, 700);
+                        }, 100); // delay for .1s
                     };
                     return $delegate.call(this, method, url, data, interceptor, headers);
                 };
