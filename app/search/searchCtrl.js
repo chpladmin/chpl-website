@@ -6,20 +6,22 @@
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
-            this.filteredResults = [];
+            $scope.filteredResults = [];
 
-            self.search = function () {
-                $scope.searchResults = searchService.search();
-                this.filteredResults = $filter('filter')($scope.searchResults, $scope.searchTerm);
-                $scope.displayedResults = [].concat(this.filteredResults);
-                $log.info($scope.searchResults.length);
-                $log.info(this.filteredResults.length);
-                $log.info($scope.displayedResults.length);
+            self.search = function (query) {
+                searchService.search(query)
+                    .then(function (data) {
+                        $scope.searchResults = data;
+                        $scope.filteredResults = $filter('filter')($scope.searchResults, $scope.searchTerm);
+                        $scope.displayedResults = [].concat($scope.filteredResults);
+                    }, function (error) {
+                        $log.error(error);
+                    });
             };
             $scope.search = self.search;
 
             self.hasResults = function () {
-                return $scope.searchResults.length != 0;
+                return $scope.searchResults.length > 0;
             };
             $scope.hasResults = self.hasResults;
 
@@ -29,5 +31,11 @@
                     return (parseInt(counts[0]) + parseInt(counts[3]));
                 }
             };
+
+            self.clear = function () {
+                $scope.searchResults = [];
+                $scope.displayedResults = [];
+            };
+            $scope.clear = self.clear;
         }]);
 })();

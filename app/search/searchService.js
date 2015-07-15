@@ -56,11 +56,20 @@
      *******************************************************/
 
     angular.module('app.search')
-        .service('searchService', function () {
+        .service('searchService', function ($http, $q, searchAPI) {
             var self = this;
 
-            self.search = function () {
-                return makeFakes(Math.floor(Math.random() * max_ishResults + 5));
+            self.search = function (query) {
+                return $http.get(searchAPI + '/search?q=' + query)
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (reponse) {
+                        return $q.reject(response.data);
+                    });
             };
         });
 })();

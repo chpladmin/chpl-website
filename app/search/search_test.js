@@ -40,28 +40,40 @@
 
             it('should know if it has results', function () {
                 var controller = createController();
-                expect(angular.isFunction(controller.hasResults)).toBe(true);
-                expect(controller.hasResults()).toBe(false);
-                controller.search();
-                expect(controller.hasResults()).toBe(true);
+                expect(controller.hasResults).toBeDefined;
             });
         });
 
         describe('[search services]', function () {
-            var searchService;
+            var searchService, $httpBackend, $q, $rootScope;
 
-            beforeEach(inject(function (_searchService_) {
+            beforeEach(inject(function (_searchService_, _$httpBackend_, _$q_, _$rootScope_) {
                 searchService = _searchService_;
+                $httpBackend = _$httpBackend_;
+                $q = _$q_;
+                $rootScope = _$rootScope_;
+
+                $httpBackend.whenGET('http://ainq.com/search?q=all').respond([1, 2, 3]);
             }));
 
-            it('should return results when searched', function () {
-                /*
-                searchService.search().then(function(results) {
-                    expect(results.size()).toBeGreaterThan(1);
-                });
-                */
-                expect(searchService.search().length).toBeGreaterThan(1);
+            afterEach(function() {
+                $httpBackend.verifyNoOutstandingExpectation();
+                $httpBackend.verifyNoOutstandingRequest();
             });
+
+            it('should return a promise', function () {
+                $httpBackend.expectGET('http://ainq.com/search?q=all');
+                expect(searchService.search('all').then).toBeDefined();
+                $httpBackend.flush();
+            });
+
+            it('should resolve with [something]', function () {
+                searchService.search('all').then(function(response) {
+                    expect(response).toEqual([1, 2, 3]);
+                });
+                $httpBackend.flush();
+            });
+
         });
     });
 })();

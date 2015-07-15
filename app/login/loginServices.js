@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.loginServices')
-        .service('userService', function ($http, API, authService) {
+        .service('userService', function ($http, API) {
             var self = this;
 
             self.getQuote = function () {
