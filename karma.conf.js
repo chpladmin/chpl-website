@@ -20,10 +20,11 @@ module.exports = function(config){
             'app/appDev.js',
             'app/**/*Module.js',
             'app/components/**/*.js',
-            'app/search/**/*.js',
-            'app/view*/**/*.js',
             'app/login/**/*.js',
-            'app/nav/**/*.js'
+            'app/nav/**/*.js',
+            'app/product/**/*.js',
+            'app/search/**/*.js',
+            'app/view*/**/*.js'
         ],
 
         autoWatch : true,

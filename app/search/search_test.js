@@ -42,11 +42,6 @@
                 var controller = createController();
                 expect(controller.hasResults).toBeDefined;
             });
-
-            it('should have a method to open product details', function () {
-                var controller = createController();
-                expect(controller.details).toBeDefined();
-            });
         });
 
         describe('[search services]', function () {

@@ -50,7 +50,7 @@
 	      </tr>
           <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
             <td colspan="5">{{ row.details }}</td>
-            <td><a href="" ng-click="details(row.id)">details</a></td>
+            <td><a href="#/product/{{ row.id }}">details</a></td>
           </tr>
         </tbody>
         <tfoot>

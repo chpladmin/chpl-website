@@ -15,7 +15,8 @@
     "angular-loading-bar": "~0.8.0",
     "angular-smart-table": "~2.1.0",
     "ngstorage": "~0.3.7",
-    "fontawesome": "~4.3.0"
+    "fontawesome": "~4.3.0",
+    "angular-bootstrap": "~0.13.0"
   },
   "resolutions": {
     "angular": "~1.4.2"

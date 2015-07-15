@@ -6,15 +6,13 @@
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
-            $scope.filteredResults = [];
 
             self.search = function (query) {
                 $log.info('Searching for: ' + query);
                 searchService.search(query)
                     .then(function (data) {
                         $scope.searchResults = data;
-                        $scope.filteredResults = $filter('filter')($scope.searchResults, $scope.searchTerm);
-                        $scope.displayedResults = [].concat($scope.filteredResults);
+                        $scope.displayedResults = [].concat($scope.searchResults);
                     }, function (error) {
                         $log.error(error);
                     });
@@ -38,10 +36,5 @@
                 $scope.displayedResults = [];
             };
             $scope.clear = self.clear;
-
-            self.details = function(id) {
-                $log.info('Getting details for ID: ' + id);
-            };
-            $scope.details = self.details;
         }]);
 })();

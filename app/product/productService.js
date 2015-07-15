@@ -1,8 +1,8 @@
 ;(function () {
     'use strict';
 
-    angular.module('app.search')
-        .service('searchService', function ($http, $q, searchAPI) {
+    angular.module('app.product')
+        .service('productService', function ($http, $q, searchAPI) {
             var self = this;
 
             self.search = function (query) {
