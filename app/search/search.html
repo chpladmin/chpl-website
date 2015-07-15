@@ -1,0 +1,77 @@
+<div ng-controller="SearchController">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Welcome to the CHPL</h1>
+      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+      <form class="form-horizontal" role="search">
+        <div class="form-group form-group-lg">
+          <label for="searchField" class="col-sm-2 control-label">Search</label>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="searchTerm" />
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <button type="button" class="btn btn-default btn-lg" ng-click="search()">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div> <!-- search field row -->
+  <div class="row" ng-show="hasResults()">
+    <div class="col-md-12">
+      <table st-table="displayedResults" st-safe-src="searchResults" class="table table-striped st-table">
+        <thead>
+          <tr>
+            <th st-sort="vendor" st-skip-natural="true">Vendor</th>
+		    <th st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
+            <th st-sort="version" st-skip-natural="true">Version</th>
+		    <th st-sort="sorts.certs" st-skip-natural="true">Certs & CQMs</th>
+            <th st-sort="certDate" st-skip-natural="true">Certification Date</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	      <tr ng-repeat-start="row in displayedResults" ng-click="showDetails = !showDetails">
+		    <td>{{ row.vendor }}</td>
+		    <td>{{ row.product }}</td>
+		    <td>{{ row.version }}</td>
+		    <td>{{ row.certs }}</td>
+		    <td>{{ row.certDate | date }}</td>
+	      </tr>
+          <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
+            <td colspan="5">{{ row.details }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="2">
+              <label for="global-search">Narrow down results</label>
+              <input id="global-search" st-search placeholder="global filter" class="input-sm form-control" type="search" />
+            </th>
+            <th colspan="3">
+              <label for="search-search">Search field?</label>
+              <input id="search-search" st-search="{{ searchTerm }}" placeholder="global filter" class="input-sm form-control" type="search" />
+            </th>
+          </tr>
+          <tr>
+            <th>
+              <label for="vendor-search">Filter on Vendor</label>
+              <input id="vendor-search" st-search="vendor" placeholder="filter on vendor" class="input-sm form-control" type="search" />
+            </th>
+            <th>
+              <label for="product-search">Filter on Product</label>
+              <input id="product-search" st-search="product" placeholder="filter on product" class="input-sm form-control" type="search" />
+            </th>
+          </tr>
+          <tr>
+	        <td colspan="5" class="text-center">
+	          <div st-pagination st-items-by-page="10" st-displayed-pages="10"></div>
+	        </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+</div> <!-- end controller -->

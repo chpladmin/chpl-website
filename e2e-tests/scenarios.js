@@ -6,7 +6,7 @@ describe('[chpl-website]', function() {
 
     it('should automatically redirect to /view1 when location hash/fragment is empty', function() {
         browser.get('index.html');
-        expect(browser.getLocationAbsUrl()).toMatch("/view1");
+        expect(browser.getLocationAbsUrl()).toMatch("/search");
     });
 
     describe('view1', function() {
@@ -47,6 +47,17 @@ describe('[chpl-website]', function() {
         it('should have multiple paragraphs', function () {
             expect(element.all(by.css('[ng-view] p')).count())
                 .toBeGreaterThan(2);
+        });
+    });
+
+    describe('[search view]', function () {
+        beforeEach(function () {
+            browser.get('index.html#/search');
+        });
+
+        it('should render search page when user navigates to /search', function () {
+            expect(element.all(by.css('[ng-view] h1')).first().getText())
+                .toMatch('Welcome to the CHPL');
         });
     });
 });

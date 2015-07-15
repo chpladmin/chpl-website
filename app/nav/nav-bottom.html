@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-bottom" ng-controller="navigationController as nav">
+<nav class="navbar navbar-default navbar-fixed-bottom" ng-controller="NavigationController as nav">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#odc-navbar-bottom" aria-expanded="false">
@@ -7,13 +7,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Certified Health Product List</a>
+      <a class="navbar-brand" href="#/search">Certified Health Product List</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="odc-navbar-bottom">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#/home">Home</a></li>
+        <li ng-class="{'active': nav.isActive('/search') }"><a href="#/search">Home</a></li>
         <li><a href="#">ONC Certification Website</a></li>
         <li><a href="#">Lists of Certification Criteria &amp; Clinical Quality Measures</a></li>
         <li ng-class="{'active': nav.isActive('/privacy') }"><a href="#/privacy">Privacy Policy</a></li>
