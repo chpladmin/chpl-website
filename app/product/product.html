@@ -1,4 +1,73 @@
-<div ng-controller="ProductController as product">
-  <h1>Product details</h1>
-  <p>Product id: {{ product.productId }}</p>
+<div ng-controller="ProductController as vm">
+  <div class="row product-productHeader">
+    <div class="col-sm-8">
+      <h1>{{ vm.product.product }}</h1>
+      <p>Version: {{ vm.product.version }}</p>
+    </div>
+    <div class="col-sm-4 text-right">
+      <a href="#/search"><i class="fa fa-arrow-left fa-2x"></i> Return to search results</a><br />
+      <p>Certification Date: {{ vm.product.certDate | date }}</p>
+    </div>
+  </div>
+  <div class="product-productSummary panel">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-4">
+          <h3>Vendor</h3>
+          <p>{{ vm.product.vendor }}</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Versions</h3>
+          <p>{{ vm.product.version }}</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Certification Edition</h3>
+          <p>{{ vm.product.edition }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <h3>Certifying Body</h3>
+          <p>{{ vm.product.certBody }}</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Classification</h3>
+          <p>{{ vm.product.classification }}</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Practice Type</h3>
+          <p>{{ vm.product.practiceType }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-10">
+      <h3>Required Software</h3>
+      <p>{{ vm.product.additionalSoftware }}</p>
+    </div>
+    <div class="col-sm-2 text-right">
+      <p>CHPL Product Number: {{ vm.product.chplNum }}</p>
+    </div>
+  </div>
+  <div class="product-productAccordion">
+    <div class="row">
+      <div class="col-sm-12">
+        <p class="text-right">
+          <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts" /><label for="viewAllCerts">See all Certifications</label>
+        </p>
+        <accordion close-others="true">
+          <accordion-group heading="{{ cert.title }} ({{ cert.numActive }} met)" ng-repeat="cert in vm.product.certs">
+              <div ng-show="vm.viewAllCerts || n.isActive" class="col-sm-4" ng-repeat="n in cert.certs">
+                <p><i class="fa fa-lg" ng-class="{'fa-check-square-o': n.isActive && !n.hasVersion, 'fa-square-o': !n.isActive && !n.hasVersion}"></i><b>{{ n.version }}</b> {{ n.title }}</p>
+              </div>
+          </accordion-group>
+          <accordion-group heading="ATL Test Report">
+            <h3>The test lives here</h3>
+            <p>Pellentesque dapibus suscipit ligula.  Donec posuere augue in quam.  Etiam vel tortor sodales tellus ultricies commodo.  Suspendisse potenti.  Aenean in sem ac leo mollis blandit.  Donec neque quam, dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.  Etiam laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.  Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.  Vestibulum convallis, lorem a tempus semper, dui dui euismod elit, vitae placerat urna tortor vitae lacus.  Nullam libero mauris, consequat quis, varius et, dictum id, arcu.  Mauris mollis tincidunt felis.  Aliquam feugiat tellus ut neque.  Nulla facilisis, risus a rhoncus fermentum, tellus tellus lacinia purus, et dictum nunc justo sit amet elit.</p>
+          </accordion-group>
+        </accordion>
+      </div>
+    </div>
+  </div>
 </div>
