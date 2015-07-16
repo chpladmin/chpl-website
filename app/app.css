@@ -9,6 +9,8 @@ header {
     transition: all 0.4s ease;
 }
 
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
 /*
 header.sticky {
   font-size: 24px;

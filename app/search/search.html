@@ -9,8 +9,10 @@
     <div class="col-xs-12">
       <form class="form-horizontal" role="search">
         <div class="form-group form-group-lg">
-          <label for="searchField" class="col-sm-2 control-label">Search</label>
-          <div class="col-sm-8">
+          <div class="col-sm-1">
+            <label for="searchField" class="control-label">Search</label>
+          </div>
+          <div class="col-sm-9">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-search"></i></div>
               <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="searchTerm" />
@@ -44,13 +46,33 @@
 		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor }}</td>
 		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product }}</td>
 		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.version }}</td>
-		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certs }}</td>
+		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.numCerts }} Certifications / {{ row.numCQMs }} CQMs</td>
 		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certDate | date }}</td>
             <td align="center"><input type="checkbox" id="{{ row.id }}" /></td>
 	      </tr>
           <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
-            <td colspan="5">{{ row.details }}</td>
-            <td><a href="#/product/{{ row.id }}">details</a></td>
+            <td colspan="6">
+              <table class="table" width="100%">
+                <thead>
+                  <tr>
+                    <th>Practice Type</th>
+                    <th>Classification</th>
+                    <th>Certifying Body</th>
+                    <th>Certification Edition</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ row.practiceType }}</td>
+                    <td>{{ row.classification }}</td>
+                    <td>{{ row.certBody }}</td>
+                    <td>{{ row.edition }}</td>
+                    <td><a href="#/product/{{ row.id }}">details</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
           </tr>
         </tbody>
         <tfoot>

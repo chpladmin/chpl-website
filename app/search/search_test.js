@@ -43,35 +43,5 @@
                 expect(controller.hasResults).toBeDefined;
             });
         });
-
-        describe('[search services]', function () {
-            var searchService, $httpBackend;
-
-            beforeEach(inject(function (_searchService_, _$httpBackend_) {
-                searchService = _searchService_;
-                $httpBackend = _$httpBackend_;
-
-                $httpBackend.whenGET('http://ainq.com/search?q=all').respond([1, 2, 3]);
-            }));
-
-            afterEach(function () {
-                $httpBackend.verifyNoOutstandingExpectation();
-                $httpBackend.verifyNoOutstandingRequest();
-            });
-
-            it('should return a promise', function () {
-                $httpBackend.expectGET('http://ainq.com/search?q=all');
-                expect(searchService.search('all').then).toBeDefined();
-                $httpBackend.flush();
-            });
-
-            it('should resolve with expected values', function () {
-                searchService.search('all').then(function(response) {
-                    expect(response).toEqual([1, 2, 3]);
-                });
-                $httpBackend.flush();
-            });
-
-        });
     });
 })();
