@@ -2,10 +2,14 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$log', '$location', 'commonService', function ($scope, $log, $location, commonService) {
+        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $log, $location, $localStorage, commonService) {
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
+            if ($localStorage.searchResults) {
+                $scope.searchResults = $localStorage.searchResults;
+                $scope.displayedResults = [].concat($scope.searchResults);
+            }
 
             self.compareIds = Object.create(null);
 
@@ -26,6 +30,7 @@
                 $log.info('Searching for: ' + query);
                 commonService.search(query)
                     .then(function (data) {
+                        $localStorage.searchResults = data;
                         $scope.searchResults = data;
                         $scope.displayedResults = [].concat($scope.searchResults);
                     }, function (error) {
@@ -46,6 +51,7 @@
             };
 
             self.clear = function () {
+                delete $localStorage.searchResults;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
                 $scope.searchTerm = '';
