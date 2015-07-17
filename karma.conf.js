@@ -22,6 +22,7 @@ module.exports = function(config){
             'app/**/*Module.js',
             'app/components/**/*.js',
             'app/common/**/*.js',
+            'app/compare/**/*.js',
             'app/login/**/*.js',
             'app/nav/**/*.js',
             'app/product/**/*.js',

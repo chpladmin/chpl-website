@@ -1,0 +1,81 @@
+<div ng-controller="CompareController as vm">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Compare products</h1>
+      <table class="table striped compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th ng-repeat="product in vm.products">{{ product.product }}<br />{{ product.vendor }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="compare-rowLead">Version</td>
+            <td class="compare-element" ng-repeat="product in vm.products">{{ product.version }}</td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">Certification Edition</td>
+            <td class="compare-element" ng-repeat="product in vm.products">{{ product.edition }}</td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">Classification</td>
+            <td class="compare-element" ng-repeat="product in vm.products">{{ product.classification }}</td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">Practice Type</td>
+            <td class="compare-element" ng-repeat="product in vm.products">{{ product.practiceType }}</td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">Certifying Body</td>
+            <td class="compare-element" ng-repeat="product in vm.products">{{ product.certBody }}</td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">Certification Date</td>
+            <td class="compare-element" ng-repeat="product in vm.products">{{ product.certDate | date }}</td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">CHPL Product Number</td>
+            <td class="compare-element" ng-repeat="product in vm.products">{{ product.chplNum }}</td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">2011 Certification Criteria</td>
+            <td class="compare-element" ng-repeat="product in vm.products"><a href="" ng-click="vm.toggle('2011CC')">{{ product.certs[0].numActive }}</a></td>
+          </tr>
+          <tr ng-repeat="cert in vm.products[0].certs[0].certs track by $index" ng-show="vm.isShowing('2011CC')">
+            <td class="compare-rowCert">{{ cert.title }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products"><i class="fa fa-lg" ng-class="{'fa-check-square-o': product.certs[0].certs[$parent.$index].isActive, 'fa-square-o': !product.certs[0].certs[$parent.$index].isActive}"></i></td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">2011 Clinical Quality Measures</td>
+            <td class="compare-element" ng-repeat="product in vm.products"><a href="" ng-click="vm.toggle('2011CQM')">{{ product.certs[1].numActive }}</a></td>
+          </tr>
+          <tr ng-repeat="cert in vm.products[0].certs[1].certs track by $index" ng-show="vm.isShowing('2011CQM')">
+            <td class="compare-rowCert">{{ cert.title }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products"><i class="fa fa-lg" ng-class="{'fa-check-square-o': product.certs[1].certs[$parent.$index].isActive, 'fa-square-o': !product.certs[1].certs[$parent.$index].isActive}"></i></td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">2014 Certification Criteria</td>
+            <td class="compare-element" ng-repeat="product in vm.products"><a href="" ng-click="vm.toggle('2014CC')">{{ product.certs[2].numActive }}</a></td>
+          </tr>
+          <tr ng-repeat="cert in vm.products[0].certs[2].certs track by $index" ng-show="vm.isShowing('2014CC')">
+            <td class="compare-rowCert">{{ cert.title }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products"><i class="fa fa-lg" ng-class="{'fa-check-square-o': product.certs[2].certs[$parent.$index].isActive, 'fa-square-o': !product.certs[2].certs[$parent.$index].isActive}"></i></td>
+          </tr>
+          <tr>
+            <td class="compare-rowLead">2014 Clinical Quality Measures</td>
+            <td class="compare-element" ng-repeat="product in vm.products"><a href="" ng-click="vm.toggle('2014CQM')">{{ product.certs[3].numActive }}</a></td>
+          </tr>
+          <tr ng-repeat="cert in vm.products[0].certs[3].certs track by $index" ng-show="vm.isShowing('2014CQM')">
+            <td class="compare-rowCert">{{ cert.title }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products"><i class="fa fa-lg" ng-class="{'fa-square-o': !product.certs[3].certs[$parent.$index].isActive}"></i><b>{{ product.certs[3].certs[$parent.$index].version }}</b></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td class="compare-element" ng-repeat="product in vm.products"><a href="#/product/{{ product.id }}">details</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

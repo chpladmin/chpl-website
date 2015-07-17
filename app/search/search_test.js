@@ -42,6 +42,15 @@
                 var controller = createController();
                 expect(controller.hasResults).toBeDefined;
             });
+
+            it('should know which elements are selected for comparison', function () {
+                var controller = createController();
+                expect(controller.getCompareIds).toBeDefined();
+                controller.toggleCompareId('an id');
+                expect('an id' in controller.getCompareIds()).toBeTruthy();
+                controller.toggleCompareId('an id');
+                expect('an id' in controller.getCompareIds()).toBeFalsy();
+            });
         });
     });
 })();

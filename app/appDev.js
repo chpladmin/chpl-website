@@ -112,6 +112,7 @@
         .run(function ($httpBackend) {
             $httpBackend.whenGET(/^nav\/.*/).passThrough();
             $httpBackend.whenGET(/^search\/.*/).passThrough();
+            $httpBackend.whenGET(/^compare\/.*/).passThrough();
             $httpBackend.whenGET(/^product\/.*/).passThrough();
             $httpBackend.whenGET(/herokuapp/).passThrough(); // for JWT quote mocking
             $httpBackend.whenPOST(/herokuapp/).passThrough();

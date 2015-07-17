@@ -5,7 +5,7 @@
         .controller('ProductController', ['$scope', '$log', '$routeParams', 'commonService', function($scope, $log, $routeParams, commonService) {
             var self = this;
             self.productId = $routeParams.id;
-            commonService.getProduct(this.productId)
+            commonService.getProduct(self.productId)
                 .then(function (data) {
                     self.product = data;
                 }, function (error) {
