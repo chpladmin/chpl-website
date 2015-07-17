@@ -48,7 +48,11 @@
 		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.version }}</td>
 		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.numCerts }} Certifications / {{ row.numCQMs }} CQMs</td>
 		    <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certDate | date }}</td>
-            <td align="center"><input type="checkbox" ng-click="toggleCompareId(row.id)" ng-model="compareBoxes[row.id]"/></td>
+            <td align="center">
+              <input type="checkbox" ng-click="toggleCompareId(row.id)" ng-model="compareBoxes[row.id]" id="compareBoxes{{ row.id }}"/>
+              <label class="sr-only" for="compareBoxes{{ row.id }}">Select to compare</label>
+              <span class="sr-only"><a href="" ng-click="showDetails = !showDetails">Show Details</a></span>
+            </td>
 	      </tr>
           <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
             <td colspan="6">
