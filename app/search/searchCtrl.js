@@ -6,10 +6,22 @@
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
+            $scope.isSimpleSearch = true;
             if ($localStorage.searchResults) {
                 $scope.searchResults = $localStorage.searchResults;
                 $scope.displayedResults = [].concat($scope.searchResults);
             }
+
+            commonService.getCerts()
+                .then(function (certs) { $scope.certs = certs; });
+            commonService.getCQMs()
+                .then(function (cqms) { $scope.cqms = cqms; });
+            commonService.getEditions()
+                .then(function (editions) { $scope.editions = editions; });
+            commonService.getClassifications()
+                .then(function (classifications) { $scope.classifications = classifications; });
+            commonService.getPractices()
+                .then(function (practices) { $scope.practices = practices; });
 
             self.compareIds = Object.create(null);
 
@@ -26,7 +38,21 @@
             };
             $scope.toggleCompareId = self.toggleCompareId;
 
-            self.search = function (query) {
+            self.search = function () {
+                var query;
+                if ($scope.isSimpleSearch) {
+                    query = $scope.searchTerm;
+                } else {
+                    query = 'vendor=' + $scope.vendorTerm
+                        + '&product=' + $scope.productTerm
+                        + '&version=' + $scope.versionTerm
+                        + '&cert=' + $scope.certTerm
+                        + '&cqm=' + $scope.cqmTerm
+                        + '&edition=' + $scope.editionTerm
+                        + '&classification=' + $scope.classificationTerm
+                        + '&practice=' + $scope.practiceTerm;
+                }
+
                 $log.info('Searching for: ' + query);
                 commonService.search(query)
                     .then(function (data) {
@@ -54,7 +80,15 @@
                 delete $localStorage.searchResults;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
-                $scope.searchTerm = '';
+                $scope.searchTerm = null;
+                $scope.vendorTerm = null;
+                $scope.productTerm = null;
+                $scope.versionTerm = null;
+                $scope.certTerm = null;
+                $scope.cqmTerm = null;
+                $scope.editionTerm = null;
+                $scope.classificationTerm = null;
+                $scope.practiceTerm = null;
                 self.compareIds = Object.create(null);
             };
             $scope.clear = self.clear;

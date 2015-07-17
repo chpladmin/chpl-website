@@ -51,5 +51,70 @@
                         return $q.reject(response.data);
                     });
             };
+
+            self.getCerts = function () {
+                return $http.get(searchAPI + '/list_certs')
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
+            self.getCQMs = function () {
+                return $http.get(searchAPI + '/list_cqms')
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
+            self.getEditions = function () {
+                return $http.get(searchAPI + '/list_editions')
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
+            self.getClassifications = function () {
+                return $http.get(searchAPI + '/list_classifications')
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
+            self.getPractices = function () {
+                return $http.get(searchAPI + '/list_practices')
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
         });
 })();

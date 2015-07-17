@@ -116,6 +116,26 @@
         return allProducts[Math.floor(Math.random() * allProducts.length)];
     }
 
+    var allCerts = [];
+    function listCerts() {
+        for (var i = 0; i < 100; i++) {
+            allCerts.push({
+                title: '170.123.123.' + Math.floor(Math.random() * 100 + 100) + " " + fakeWord()
+            });
+        }
+        return allCerts;
+    }
+
+    var allCQMs = [];
+    function listCQMs() {
+        for (var i = 0; i < 100; i++) {
+            allCQMs.push({
+                title: 'CQM' + Math.floor(Math.random() * 1000 + 1000) + " " + fakeWord(),
+            });
+        }
+        return allCQMs;
+    }
+
     /*
      * End of dummy data section
      *******************************************************/
@@ -131,6 +151,11 @@
             $httpBackend.whenGET(/^view.\/.*/).passThrough(); // old view1/2 pages
             $httpBackend.whenGET(/ainq.com\/search/).respond(200, makeFakes(totalResults)); // fake search results
             $httpBackend.whenGET(/ainq.com\/get_product/).respond(200, makeProduct()); // fake product
+            $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs
+            $httpBackend.whenGET(/ainq.com\/list_cqms/).respond(200, listCQMs()); // fake all certs
+            $httpBackend.whenGET(/ainq.com\/list_editions/).respond(200, [{value: 2011}, {value: 2014}]); // fake all certs
+            $httpBackend.whenGET(/ainq.com\/list_classifications/).respond(200, [{value: 'Complete EHR'}, {value: 'Modular EHR'}]); // fake all certs
+            $httpBackend.whenGET(/ainq.com\/list_practices/).respond(200, [{value: 'Inpatient'}, {value: 'Ambulatory'}]); // fake all certs
         })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {
