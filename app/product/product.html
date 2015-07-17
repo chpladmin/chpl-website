@@ -1,12 +1,28 @@
 <div ng-controller="ProductController as vm">
+  <script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+      <h4 class="modal-title">Last Modification Summary</h4>
+    </div>
+    <div class="modal-body">
+      <ul>
+        <li ng-repeat="item in modalVm.items | orderBy: 'date': true">
+          Actor: {{ item.actor }}, did: {{ item.action }}, on {{ item.date | date }}
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" ng-click="modalVm.ok()">OK</button>
+    </div>
+  </script>
   <div class="row product-productHeader">
     <div class="col-sm-8">
       <h1>{{ vm.product.product }}</h1>
       <p>Version: {{ vm.product.version }}</p>
     </div>
     <div class="col-sm-4 text-right">
-      <a href="#/search"><i class="fa fa-arrow-left fa-2x"></i> Return to search results</a><br />
+      <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
       <p>Certification Date: {{ vm.product.certDate | date }}</p>
+      <p><a href="" ng-click="vm.openLastModifiedDate('lg')">Last modified Date: {{ vm.product.lastModifiedDate | date }}</a></p>
     </div>
   </div>
   <div class="product-productSummary panel">

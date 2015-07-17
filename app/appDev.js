@@ -23,8 +23,8 @@
         return chunks[Math.floor(Math.random() * chunks.length)];
     }
 
-    function fakeSentence() {
-        var wordCount = Math.floor(Math.random() * 30 + 30);
+    function fakeSentence(maxWords) {
+        var wordCount = Math.floor(Math.random() * (maxWords / 2) + (maxWords / 2));
         var ret = "";
         for (var i = 0; i < wordCount; i++) {
             ret += fakeWord() + " ";
@@ -34,8 +34,18 @@
     }
 
     function makeFakes(many) {
+        var fakeModifiedItems;
         var fakeCerts;
         for (var cp_id = 0; cp_id < many; cp_id++) {
+            fakeModifiedItems = [];
+            for (var i = 0; i < 4; i++) {
+                fakeModifiedItems.push({
+                    actor: fakeWord() + ' ' + fakeWord(),
+                    action: fakeSentence(12),
+                    date: fakeDate()
+                });
+            };
+
             fakeCerts = [];
             fakeCerts.push(
                 {title: '2011 Certifications', certs: []},
@@ -83,12 +93,14 @@
             }
 
             allProducts.push({
-                additionalSoftware: fakeSentence(),
+                additionalSoftware: fakeSentence(60),
                 vendor: fakeWord() + " " + fakeWord(),
                 product: fakeWord() + " " + fakeWord() + "-" + fakeWord(),
                 version: fakeChunk() + "." + fakeChunk(),
                 edition: [2011, 2014][Math.floor(Math.random() * 2)],
                 certDate: fakeDate(),
+                lastModifiedDate: fakeDate(),
+                lastModifiedItems: fakeModifiedItems,
                 classification: ['Complete EHR', 'Modular EHR'][Math.floor(Math.random() * 2)],
                 practiceType: ['Ambulatory', 'Inpatient'][Math.floor(Math.random() * 2)],
                 certBody: fakeWord() + " " + fakeWord(),
