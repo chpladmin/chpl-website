@@ -30,6 +30,16 @@ module.exports = function(config){
             'app/view*/**/*.js'
         ],
 
+        preprocessors: {
+            'app/common/**/*.js': ['coverage'],
+            'app/compare/**/*.js': ['coverage'],
+            'app/login/**/*.js': ['coverage'],
+            'app/nav/**/*.js': ['coverage'],
+            'app/product/**/*.js': ['coverage'],
+            'app/search/**/*.js': ['coverage'],
+            'app/app.js': ['coverage']
+        },
+
         autoWatch : true,
 
         frameworks: ['jasmine'],
@@ -41,12 +51,20 @@ module.exports = function(config){
             'karma-firefox-launcher',
             'karma-jasmine',
             'karma-junit-reporter',
-            'karma-phantomjs-launcher'
+            'karma-phantomjs-launcher',
+            'karma-coverage'
         ],
 
         singleRun: true,
 
-        reporters : ['dots', 'junit'],
+        reporters : ['dots', 'junit','progress', 'coverage'],
+
+        coverageReporter: {
+            type: 'lcovonly',
+            dir: 'coverage/',
+            subdir: '.',
+            file: 'coverage.lcov'
+        },
 
         junitReporter : {
             outputDir: 'test_reports',
