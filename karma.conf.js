@@ -44,6 +44,10 @@ module.exports = function(config){
             'karma-phantomjs-launcher'
         ],
 
+        singleRun: true,
+
+        reporters : ['dots', 'junit'],
+
         junitReporter : {
             outputFile: 'test_out/unit.xml',
             suite: 'unit'
