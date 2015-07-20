@@ -17,7 +17,8 @@
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-search"></i></div>
               <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="searchTerm"
-                     typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource | filter:{value:$viewValue} | limitTo:16" />
+                     typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource | filter:{value:$viewValue} | limitTo:16"
+                     typeahead-input-formatter="$model.value" />
             </div>
           </div>
           <div class="col-sm-2">

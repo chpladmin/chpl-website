@@ -26,6 +26,19 @@
                 return data;
             };
 
+            self.simpleApiCall = function (endpoint) {
+                return $http.get(searchAPI + endpoint)
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
             self.search = function (query) {
                 return $http.get(searchAPI + '/search?q=' + query)
                     .then(function (response) {
@@ -53,94 +66,31 @@
             };
 
             self.getCerts = function () {
-                return $http.get(searchAPI + '/list_certs')
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+                return self.simpleApiCall('/list_certs');
             };
 
             self.getCQMs = function () {
-                return $http.get(searchAPI + '/list_cqms')
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+                return self.simpleApiCall('/list_cqms');
             };
 
             self.getEditions = function () {
-                return $http.get(searchAPI + '/list_editions')
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+                return self.simpleApiCall('/list_editions');
             };
 
             self.getClassifications = function () {
-                return $http.get(searchAPI + '/list_classifications')
-                    .then(function(response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+                return self.simpleApiCall('/list_classifications');
             };
 
             self.getPractices = function () {
-                return $http.get(searchAPI + '/list_practices')
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+                return self.simpleApiCall('/list_practices');
             };
 
             self.getVendors = function () {
-                return $http.get(searchAPI + '/list_vendors')
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+                return self.simpleApiCall('/list_vendors');
             };
 
             self.getProducts = function () {
-                return $http.get(searchAPI + '/list_products')
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+                return self.simpleApiCall('/list_products');
             };
         });
 })();

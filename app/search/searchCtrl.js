@@ -61,7 +61,11 @@
             self.search = function () {
                 var query;
                 if ($scope.isSimpleSearch) {
-                    query = $scope.searchTerm;
+                    if (typeof $scope.searchTerm === 'object') {
+                        query = $scope.searchTerm.value;
+                    } else {
+                        query = $scope.searchTerm;
+                    }
                 } else {
                     query = 'vendor=' + $scope.vendorTerm
                         + '&product=' + $scope.productTerm

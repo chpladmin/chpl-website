@@ -1,5 +1,7 @@
 # chpl-website
 
+[![Code Climate](https://codeclimate.com/github/andlar/chpl-website/badges/gpa.svg)](https://codeclimate.com/github/andlar/chpl-website)
+
 The web UI for chpl
 
 ## Prerequisites
