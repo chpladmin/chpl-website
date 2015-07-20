@@ -28,7 +28,7 @@
 
             self.search = function (query) {
                 return $http.get(searchAPI + '/search?q=' + query)
-                    .then(function(response) {
+                    .then(function (response) {
                         if (typeof response.data === 'object') {
                             return self.extractInfo(response.data);
                         } else {
@@ -41,7 +41,7 @@
 
             self.getProduct = function (productId) {
                 return $http.get(searchAPI + '/get_product?id=' + productId)
-                    .then(function(response) {
+                    .then(function (response) {
                         if (typeof response.data === 'object') {
                             return self.extractInfo([response.data])[0];
                         } else {
@@ -54,7 +54,7 @@
 
             self.getCerts = function () {
                 return $http.get(searchAPI + '/list_certs')
-                    .then(function(response) {
+                    .then(function (response) {
                         if (typeof response.data === 'object') {
                             return response.data;
                         } else {
@@ -67,7 +67,7 @@
 
             self.getCQMs = function () {
                 return $http.get(searchAPI + '/list_cqms')
-                    .then(function(response) {
+                    .then(function (response) {
                         if (typeof response.data === 'object') {
                             return response.data;
                         } else {
@@ -80,7 +80,7 @@
 
             self.getEditions = function () {
                 return $http.get(searchAPI + '/list_editions')
-                    .then(function(response) {
+                    .then(function (response) {
                         if (typeof response.data === 'object') {
                             return response.data;
                         } else {
@@ -106,7 +106,33 @@
 
             self.getPractices = function () {
                 return $http.get(searchAPI + '/list_practices')
-                    .then(function(response) {
+                    .then(function (response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
+            self.getVendors = function () {
+                return $http.get(searchAPI + '/list_vendors')
+                    .then(function (response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
+            self.getProducts = function () {
+                return $http.get(searchAPI + '/list_products')
+                    .then(function (response) {
                         if (typeof response.data === 'object') {
                             return response.data;
                         } else {

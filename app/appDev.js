@@ -9,6 +9,9 @@
     var words = ['Aliquam', 'Erat', 'Volutpat', 'Nunc', 'Eleifend', 'Leo', 'Vitae', 'Magna', 'In', 'Id', 'Erat', 'Non', 'Orci', 'Commodo', 'Lobortis', 'Proin', 'Neque', 'Massa', 'Cursus', 'Ut', 'Gravida', 'Ut', 'Lobortis', 'Eget', 'Lacus', 'Sed', 'Diam', 'Praesent', 'Fermentum', 'Tempor', 'Tellus', 'Nullam', 'Tempus', 'Mauris', 'Ac', 'Felis', 'Vel', 'Velit', 'Tristique', 'Imperdiet', 'Donec', 'At', 'Pede', 'Etiam', 'Vel', 'Neque', 'Nec', 'Dui', 'Dignissim', 'Bibendum', 'Vivamus', 'Id', 'Enim', 'Phasellus', 'Neque', 'Orci', 'Porta', 'A', 'Aliquet', 'Quis', 'Semper', 'A', 'Massa', 'Phasellus', 'Purus', 'Pellentesque', 'Tristique', 'Imperdiet', 'Tortor', 'Nam', 'Euismod', 'Tellus', 'Id', 'Erat', 'Lorem', 'Ipsum', 'Dolor', 'Sit', 'Amet', 'Consectetuer', 'Adipiscing', 'Elit', 'Donec', 'Hendrerit', 'Tempor', 'Tellus', 'Donec', 'Pretium', 'Posuere', 'Tellus', 'Proin', 'Quam', 'Nisl', 'Tincidunt', 'Et', 'Mattis', 'Eget', 'Convallis', 'Nec', 'Purus', 'Sociis', 'Natoque', 'Penatibus', 'Et', 'Magnis', 'Dis', 'Parturient', 'Montes', 'Nascetur', 'Ridiculus', 'Mus', 'Nulla', 'Posuere', 'Donec', 'Vitae', 'Dolor', 'Nullam', 'Tristique', 'Diam', 'Non', 'Turpis', 'Cras', 'Placerat', 'Accumsan', 'Nulla', 'Nullam', 'Rutrum', 'Nam', 'Vestibulum', 'Accumsan', 'Nisl'];
     var months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     var days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
+    var vendorList = Object.create(null);
+    var productList = Object.create(null);
+
 
     function fakeDate() {
         return Math.floor(Math.random() * 120 + 1900) + "-" + months[Math.floor(Math.random() * months.length)] + "-" + days[Math.floor(Math.random() * days.length)];
@@ -92,10 +95,15 @@
                 });
             }
 
+            var vendor = fakeWord() + " " + fakeWord();
+            var product = fakeWord() + " " + fakeWord() + "-" + fakeWord();
+            vendorList[vendor] = true;
+            productList[product] = true;
+
             allProducts.push({
                 additionalSoftware: fakeSentence(60),
-                vendor: fakeWord() + " " + fakeWord(),
-                product: fakeWord() + " " + fakeWord() + "-" + fakeWord(),
+                vendor: vendor,
+                product: product,
                 version: fakeChunk() + "." + fakeChunk(),
                 edition: [2011, 2014][Math.floor(Math.random() * 2)],
                 certDate: fakeDate(),
@@ -109,6 +117,9 @@
                 id: cp_id
             });
         };
+    }
+
+    function getAllProducts() {
         return allProducts;
     }
 
@@ -136,6 +147,25 @@
         return allCQMs;
     }
 
+    function listVendors() {
+        var ret = [];
+        for (var vendor in vendorList) {
+            ret.push({type: 'vendor',
+                      value: vendor});
+        }
+        return ret;
+    }
+
+    function listProducts() {
+        var ret = [];
+        for (var product in productList) {
+            ret.push({type: 'product',
+                      value: product});
+        }
+        return ret;
+    }
+
+    makeFakes(totalResults);
     /*
      * End of dummy data section
      *******************************************************/
@@ -149,13 +179,15 @@
             $httpBackend.whenGET(/herokuapp/).passThrough(); // for JWT quote mocking
             $httpBackend.whenPOST(/herokuapp/).passThrough();
             $httpBackend.whenGET(/^view.\/.*/).passThrough(); // old view1/2 pages
-            $httpBackend.whenGET(/ainq.com\/search/).respond(200, makeFakes(totalResults)); // fake search results
+            $httpBackend.whenGET(/ainq.com\/search/).respond(200, getAllProducts()); // fake search results
             $httpBackend.whenGET(/ainq.com\/get_product/).respond(200, makeProduct()); // fake product
             $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_cqms/).respond(200, listCQMs()); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_editions/).respond(200, [{value: 2011}, {value: 2014}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_classifications/).respond(200, [{value: 'Complete EHR'}, {value: 'Modular EHR'}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_practices/).respond(200, [{value: 'Inpatient'}, {value: 'Ambulatory'}]); // fake all certs
+            $httpBackend.whenGET(/ainq.com\/list_products/).respond(200, listProducts()); // list all products
+            $httpBackend.whenGET(/ainq.com\/list_vendors/).respond(200, listVendors()); // list all vendors
         })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {

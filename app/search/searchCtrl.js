@@ -6,11 +6,31 @@
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
+            $scope.lookaheadSource = [];
             $scope.isSimpleSearch = true;
             if ($localStorage.searchResults) {
                 $scope.searchResults = $localStorage.searchResults;
                 $scope.displayedResults = [].concat($scope.searchResults);
             }
+
+            self.setupLookahead = function () {
+                if ($localStorage.lookaheadResults && $localStorage.lookaheadResults.length > 0) {
+                    $log.info('Restoring lookahead from localstorage');
+                    $scope.lookaheadResults = $localStorage.lookaheadResults;
+                } else {
+                    commonService.getVendors()
+                        .then(function (vendors) {
+                            $scope.lookaheadSource = $scope.lookaheadSource.concat(vendors);
+                            $localStorage.lookaheadSource = $scope.lookaheadSource;
+                        });
+                    commonService.getProducts()
+                        .then(function (products) {
+                            $scope.lookaheadSource = $scope.lookaheadSource.concat(products);
+                            $localStorage.lookaheadSource = $scope.lookaheadSource;
+                        });
+                }
+            };
+            self.setupLookahead();
 
             commonService.getCerts()
                 .then(function (certs) { $scope.certs = certs; });
@@ -56,7 +76,7 @@
                 $log.info('Searching for: ' + query);
                 commonService.search(query)
                     .then(function (data) {
-                        $localStorage.searchResults = data;
+                        //$localStorage.searchResults = data;
                         $scope.searchResults = data;
                         $scope.displayedResults = [].concat($scope.searchResults);
                     }, function (error) {
@@ -65,10 +85,9 @@
             };
             $scope.search = self.search;
 
-            self.hasResults = function () {
+            $scope.hasResults = function () {
                 return $scope.searchResults.length > 0;
             };
-            $scope.hasResults = self.hasResults;
 
             $scope.sorts = {
                 certs: function (value) {
@@ -76,7 +95,7 @@
                 }
             };
 
-            self.clear = function () {
+            $scope.clear = function () {
                 delete $localStorage.searchResults;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
@@ -91,9 +110,8 @@
                 $scope.practiceTerm = null;
                 self.compareIds = Object.create(null);
             };
-            $scope.clear = self.clear;
 
-            self.compare = function () {
+            $scope.compare = function () {
                 var comparePath = '/compare/';
                 for (var property in self.compareIds) {
                     comparePath += property + "&";
@@ -103,6 +121,5 @@
                     $location.path(comparePath);
                 }
             };
-            $scope.compare = self.compare;
         }]);
 })();
