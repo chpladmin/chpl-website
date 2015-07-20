@@ -49,8 +49,7 @@ module.exports = function(config){
         reporters : ['dots', 'junit'],
 
         junitReporter : {
-            outputDir: '',
-            outputFile: 'test_report.xml',
+            outputDir: 'test_reports',
             suite: 'unit'
         }
 
