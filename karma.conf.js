@@ -31,12 +31,12 @@ module.exports = function(config){
         ],
 
         preprocessors: {
-            'app/common/**/*.js': ['coverage'],
-            'app/compare/**/*.js': ['coverage'],
-            'app/login/**/*.js': ['coverage'],
-            'app/nav/**/*.js': ['coverage'],
-            'app/product/**/*.js': ['coverage'],
-            'app/search/**/*.js': ['coverage'],
+            'app/common/**/!(*test).js': ['coverage'],
+            'app/compare/**/!(*test).js': ['coverage'],
+            'app/login/**/!(*test).js': ['coverage'],
+            'app/nav/**/!(*test).js': ['coverage'],
+            'app/product/**/!(*test).js': ['coverage'],
+            'app/search/**/!(*test).js': ['coverage'],
             'app/app.js': ['coverage']
         },
 
@@ -55,12 +55,10 @@ module.exports = function(config){
             'karma-coverage'
         ],
 
-        singleRun: true,
-
-        reporters : ['dots', 'junit','progress', 'coverage'],
+        reporters : ['dots', 'junit', 'progress', 'coverage'],
 
         coverageReporter: {
-            type: 'lcovonly',
+            type: 'lcov',
             dir: 'coverage/',
             subdir: '.',
             file: 'coverage.lcov'
