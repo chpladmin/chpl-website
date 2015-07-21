@@ -36,19 +36,31 @@
         return ret;
     }
 
-    function makeFakes(many) {
-        var fakeModifiedItems;
-        var fakeCerts;
-        for (var cp_id = 0; cp_id < many; cp_id++) {
-            fakeModifiedItems = [];
-            for (var i = 0; i < 4; i++) {
-                fakeModifiedItems.push({
-                    actor: fakeWord() + ' ' + fakeWord(),
-                    action: fakeSentence(12),
-                    date: fakeDate()
-                });
-            };
+    function fakeModifiedItems() {
+        var ret = [];
+        for (var i = 0; i < 4; i++) {
+            ret.push({
+                actor: fakeWord() + ' ' + fakeWord(),
+                action: fakeSentence(12),
+                date: fakeDate()
+            });
+        };
+        return ret;
+    }
 
+    function fakeCert(prefix, hasVersion) {
+        var ret = {
+            title: prefix + Math.floor(Math.random() * 100 + 100) + " " + fakeWord(),
+            hasVersion: hasVersion,
+            isActive: [true,false][Math.floor(Math.random() * 2)]
+        };
+        return ret;
+    }
+
+    function makeFakes(many) {
+        var fakeCerts;
+        var i;
+        for (var cp_id = 0; cp_id < many; cp_id++) {
             fakeCerts = [];
             fakeCerts.push(
                 {title: '2011 Certifications', certs: []},
@@ -58,34 +70,22 @@
 
             var maxCount;
             maxCount = Math.floor(Math.random() * 80);
-            for (var i = 0; i < maxCount; i++) {
-                fakeCerts[0].certs.push({
-                    title: '130.123.123.' + Math.floor(Math.random() * 100 + 100) + " " + fakeWord(),
-                    hasVersion: false,
-                    isActive: [true,false][Math.floor(Math.random() * 2)]
-                });
+            for (i = 0; i < maxCount; i++) {
+                fakeCerts[0].certs.push(fakeCert('130.123.123.',false));
             }
+
             maxCount = Math.floor(Math.random() * 90);
-            for (var i = 0; i < maxCount; i++) {
-
-                fakeCerts[1].certs.push({
-                    title: '170.123.123.' + Math.floor(Math.random() * 100 + 100) + " " + fakeWord(),
-                    hasVersion: false,
-                    isActive: [true,false][Math.floor(Math.random() * 2)]
-                });
+            for (i = 0; i < maxCount; i++) {
+                fakeCerts[1].certs.push(fakeCert('170.123.123.',false));
             }
+
             maxCount = Math.floor(Math.random() * 80);
-            for (var i = 0; i < maxCount; i++) {
-
-                fakeCerts[2].certs.push({
-                    title: 'NQF' + Math.floor(Math.random() * 100 + 100) + " " + fakeWord(),
-                    hasVersion: false,
-                    isActive: [true,false][Math.floor(Math.random() * 2)]
-                });
+            for (i = 0; i < maxCount; i++) {
+                fakeCerts[2].certs.push(fakeCert('NQF',false));
             }
-            maxCount = Math.floor(Math.random() * 45);
-            for (var i = 0; i < maxCount; i++) {
 
+            maxCount = Math.floor(Math.random() * 45);
+            for (i = 0; i < maxCount; i++) {
                 var certActive = [true,false][Math.floor(Math.random() * 2)];
                 fakeCerts[3].certs.push({
                     title: 'CQM' + Math.floor(Math.random() * 1000 + 1000) + " " + fakeWord(),
@@ -108,7 +108,7 @@
                 edition: [2011, 2014][Math.floor(Math.random() * 2)],
                 certDate: fakeDate(),
                 lastModifiedDate: fakeDate(),
-                lastModifiedItems: fakeModifiedItems,
+                lastModifiedItems: fakeModifiedItems(),
                 classification: ['Complete EHR', 'Modular EHR'][Math.floor(Math.random() * 2)],
                 practiceType: ['Ambulatory', 'Inpatient'][Math.floor(Math.random() * 2)],
                 certBody: fakeWord() + " " + fakeWord(),

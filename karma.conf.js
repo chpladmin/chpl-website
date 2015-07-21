@@ -47,15 +47,16 @@ module.exports = function(config){
         browsers : ['PhantomJS'],
 
         plugins : [
+            'karma-jasmine',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-jasmine',
-            'karma-junit-reporter',
             'karma-phantomjs-launcher',
+            'karma-junit-reporter',
+            'karma-growl-reporter',
             'karma-coverage'
         ],
 
-        reporters : ['dots', 'junit', 'progress', 'coverage'],
+        reporters : ['dots', 'junit', 'progress', 'coverage', 'growl'],
 
         coverageReporter: {
             type: 'lcov',

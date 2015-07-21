@@ -8,15 +8,15 @@
             self.products = [];
             if (compareString && compareString.length > 0) {
                 self.compareIds = compareString.split('&');
+
+                var errFun = function (error) { $log.error(error); };
                 for (var i = 0; i < self.compareIds.length; i++) {
                     commonService.getProduct(self.compareIds[i])
                         .then(function (data) {
                             self.products.push(data);
-                        }, function (error) {
-                            $log.error(error);
-                        });
+                        }, errFun (error));
                 }
-            }
+            };
 
             self.toggle = function (elem) {
                 if (self.openCert === elem) {
@@ -28,6 +28,6 @@
 
             self.isShowing = function (elem) {
                 return self.openCert === elem;
-            }
+            };
         }]);
 })();

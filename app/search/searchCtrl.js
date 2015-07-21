@@ -67,14 +67,14 @@
                         query = $scope.searchTerm;
                     }
                 } else {
-                    query = 'vendor=' + $scope.vendorTerm
-                        + '&product=' + $scope.productTerm
-                        + '&version=' + $scope.versionTerm
-                        + '&cert=' + $scope.certTerm
-                        + '&cqm=' + $scope.cqmTerm
-                        + '&edition=' + $scope.editionTerm
-                        + '&classification=' + $scope.classificationTerm
-                        + '&practice=' + $scope.practiceTerm;
+                    query = 'vendor=' + $scope.vendorTerm +
+                        '&product=' + $scope.productTerm +
+                        '&version=' + $scope.versionTerm +
+                        '&cert=' + $scope.certTerm +
+                        '&cqm=' + $scope.cqmTerm +
+                        '&edition=' + $scope.editionTerm +
+                        '&classification=' + $scope.classificationTerm +
+                        '&practice=' + $scope.practiceTerm;
                 }
 
                 $log.info('Searching for: ' + query);

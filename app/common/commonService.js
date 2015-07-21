@@ -10,9 +10,9 @@
                 var numCQMs;
 
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].certs != null) {
+                    if (data[i].certs !== null && typeof(data[i].certs) !== 'undefined') {
                         for (var j = 0; j < 4; j++) {
-                            numCerts = 0
+                            numCerts = 0;
                             for (var k = 0; k < data[i].certs[j].certs.length; k++) {
                                 numCerts += data[i].certs[j].certs[k].isActive ? 1 : 0;
                             }
