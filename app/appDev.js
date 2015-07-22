@@ -44,7 +44,7 @@
                 action: fakeSentence(12),
                 date: fakeDate()
             });
-        };
+        }
         return ret;
     }
 
@@ -116,7 +116,7 @@
                 chplNum: 'CHP-' + Math.floor(Math.random() * 10000 + 10000),
                 id: cp_id
             });
-        };
+        }
     }
 
     function getAllProducts() {

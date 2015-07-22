@@ -20,14 +20,12 @@ module.exports = function(config){
             'app/app.js',
             'app/appDev.js',
             'app/**/*Module.js',
-            'app/components/**/*.js',
             'app/common/**/*.js',
             'app/compare/**/*.js',
             'app/login/**/*.js',
             'app/nav/**/*.js',
             'app/product/**/*.js',
-            'app/search/**/*.js',
-            'app/view*/**/*.js'
+            'app/search/**/*.js'
         ],
 
         preprocessors: {
@@ -69,6 +67,5 @@ module.exports = function(config){
             outputDir: 'test_reports',
             suite: 'unit'
         }
-
     });
 };
