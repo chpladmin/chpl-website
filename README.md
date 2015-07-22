@@ -29,7 +29,7 @@ npm install
 npm start
 ```
 
-The website is running at: [http://localhost:8000/app/index.html](http://localhost:8000/app/index.html)
+The website is running at: [http://localhost:8000/app/](http://localhost:8000/app/)
 
 ## Testing
 

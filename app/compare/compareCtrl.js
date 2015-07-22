@@ -9,21 +9,17 @@
             if (compareString && compareString.length > 0) {
                 self.compareIds = compareString.split('&');
 
-                var errFun = function (error) { $log.error(error); };
+                var successResult = function (data) { self.products.push(data); };
+                var failResult = function (error) { $log.error(error); };
+
                 for (var i = 0; i < self.compareIds.length; i++) {
                     commonService.getProduct(self.compareIds[i])
-                        .then(function (data) {
-                            self.products.push(data);
-                        }, errFun (error));
+                        .then(successResult, failResult);
                 }
             };
 
             self.toggle = function (elem) {
-                if (self.openCert === elem) {
-                    self.openCert = '';
-                } else {
-                    self.openCert = elem;
-                }
+                self.openCert = self.openCert === elem ? '' : elem;
             };
 
             self.isShowing = function (elem) {
