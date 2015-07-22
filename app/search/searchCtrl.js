@@ -42,6 +42,8 @@
                 .then(function (classifications) { $scope.classifications = classifications; });
             commonService.getPractices()
                 .then(function (practices) { $scope.practices = practices; });
+            commonService.getCertBodies()
+                .then(function (bodies) { $scope.certBodies = bodies; });
 
             self.compareIds = Object.create(null);
 

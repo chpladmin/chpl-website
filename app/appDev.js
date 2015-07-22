@@ -11,7 +11,7 @@
     var days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
     var vendorList = Object.create(null);
     var productList = Object.create(null);
-
+    var certBodies = ['InfoGard', 'CCHIT', 'Drummond Group Inc.', 'SLI Global', 'Surescripts LLC', 'ICSA Labs'];
 
     function fakeDate() {
         return Math.floor(Math.random() * 120 + 1900) + "-" + months[Math.floor(Math.random() * months.length)] + "-" + days[Math.floor(Math.random() * days.length)];
@@ -111,7 +111,7 @@
                 lastModifiedItems: fakeModifiedItems(),
                 classification: ['Complete EHR', 'Modular EHR'][Math.floor(Math.random() * 2)],
                 practiceType: ['Ambulatory', 'Inpatient'][Math.floor(Math.random() * 2)],
-                certBody: fakeWord() + " " + fakeWord(),
+                certBody: certBodies[Math.floor(Math.random() * certBodies.length)],
                 certs: fakeCerts,
                 chplNum: 'CHP-' + Math.floor(Math.random() * 10000 + 10000),
                 id: cp_id
@@ -165,6 +165,14 @@
         return ret;
     }
 
+    function listCertBodies() {
+        var ret = [];
+        for (var i = 0; i < certBodies.length; i++) {
+            ret.push({value: certBodies[i]});
+        }
+        return ret;
+    }
+
     makeFakes(totalResults);
     /*
      * End of dummy data section
@@ -188,6 +196,7 @@
             $httpBackend.whenGET(/ainq.com\/list_practices/).respond(200, [{value: 'Inpatient'}, {value: 'Ambulatory'}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_products/).respond(200, listProducts()); // list all products
             $httpBackend.whenGET(/ainq.com\/list_vendors/).respond(200, listVendors()); // list all vendors
+            $httpBackend.whenGET(/ainq.com\/list_certBodies/).respond(200, listCertBodies()); // list cerification bodies
         })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {

@@ -92,5 +92,9 @@
             self.getProducts = function () {
                 return self.simpleApiCall('/list_products');
             };
+
+            self.getCertBodies = function () {
+                return self.simpleApiCall('/list_certBodies');
+            };
         });
 })();
