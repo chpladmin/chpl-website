@@ -156,6 +156,19 @@
           <option value="">None</option>
           <option ng-repeat="body in certBodies" value="{{ body.value }}">{{ body.value }}</option>
         </select>
+
+        <ai-cert-filter>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Filter on Certifications and CQMs
+            </div>
+            <div class="panel-body">
+              <div ng-repeat="category in certsNcqms">{{ category.title }}<br />
+                <span ng-repeat="cert in category.certs"><a href="" ng-click="toggleCertFilter(category.title, cert.title); certsChanged();">{{ cert.title }}</a></span><br />
+              </div>
+            </div>
+          </div>
+        </ai-cert-filter>
       </div>
       <div ng-class="visibleFilter ? 'col-md-8' : 'col-md-12'">
         <span class="search-activate-filter" ng-click="visibleFilter = !visibleFilter"><i class="fa fa-2x fa-angle-double-right" ng-class="{ 'fa-flip-horizontal' : visibleFilter }"></i>

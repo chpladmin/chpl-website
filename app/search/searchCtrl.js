@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $log, $location, $localStorage, commonService) {
+        .controller('SearchController', ['$scope', '$rootScope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $rootScope, $log, $location, $localStorage, commonService) {
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
@@ -32,26 +32,44 @@
             };
             self.setupLookahead();
 
-            commonService.getCerts()
-                .then(function (certs) { $scope.certs = certs; });
-            commonService.getCQMs()
-                .then(function (cqms) { $scope.cqms = cqms; });
-            commonService.getEditions()
-                .then(function (editions) { $scope.editions = editions; });
-            commonService.getClassifications()
-                .then(function (classifications) { $scope.classifications = classifications; });
-            commonService.getPractices()
-                .then(function (practices) { $scope.practices = practices; });
-            commonService.getCertBodies()
-                .then(function (bodies) { $scope.certBodies = bodies; });
+            self.setupFilters = function () {
+                commonService.getCerts()
+                    .then(function (certs) { $scope.certs = certs; });
+                commonService.getCQMs()
+                    .then(function (cqms) { $scope.cqms = cqms; });
+                commonService.getEditions()
+                    .then(function (editions) { $scope.editions = editions; });
+                commonService.getClassifications()
+                    .then(function (classifications) { $scope.classifications = classifications; });
+                commonService.getPractices()
+                    .then(function (practices) { $scope.practices = practices; });
+                commonService.getCertBodies()
+                    .then(function (bodies) { $scope.certBodies = bodies; });
+                commonService.getCertsNCQMs()
+                    .then(function (certsNcqms) { $scope.certsNcqms = certsNcqms; });
+            };
+            self.setupFilters();
+
+            self.certFilters = Object.create(null);
+            $rootScope.certFilters = self.certFilters;
+
+            self.toggleCertFilter = function (category, title) {
+                var key = category + ":" + title;
+                if (key in self.certFilters) {
+                    delete self.certFilters[key];
+                } else {
+                    self.certFilters[key] = true;
+                }
+                $log.info(self.certFilters);
+            };
+            $scope.toggleCertFilter = self.toggleCertFilter;
 
             self.compareIds = Object.create(null);
-
             self.getCompareIds = function() {
                 return self.compareIds;
             };
 
-            self.toggleCompareId = function(anId) {
+            self.toggleCompareId = function (anId) {
                 if (anId in self.compareIds) {
                     delete self.compareIds[anId];
                 } else {

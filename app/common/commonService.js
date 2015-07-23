@@ -96,5 +96,9 @@
             self.getCertBodies = function () {
                 return self.simpleApiCall('/list_certBodies');
             };
+
+            self.getCertsNCQMs = function () {
+                return self.simpleApiCall('/list_filterCerts');
+            };
         });
 })();

@@ -173,6 +173,15 @@
         return ret;
     }
 
+    function listFilterCerts() {
+        var ret = [{
+            title: 'cat 1', certs: [{title: 'title 1'}]
+        },{
+            title: 'cat 2', certs: [{title: 'title 2'}]
+        }];
+        return ret;
+    }
+
     makeFakes(totalResults);
     /*
      * End of dummy data section
@@ -197,6 +206,7 @@
             $httpBackend.whenGET(/ainq.com\/list_products/).respond(200, listProducts()); // list all products
             $httpBackend.whenGET(/ainq.com\/list_vendors/).respond(200, listVendors()); // list all vendors
             $httpBackend.whenGET(/ainq.com\/list_certBodies/).respond(200, listCertBodies()); // list cerification bodies
+            $httpBackend.whenGET(/ainq.com\/list_filterCerts/).respond(200, listFilterCerts()); // list cerification bodies
         })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {
