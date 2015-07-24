@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    describe('[app module]', function () {
+    describe('app', function () {
 
         beforeEach(module('app'));
 

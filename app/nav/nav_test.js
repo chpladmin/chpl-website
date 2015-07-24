@@ -1,11 +1,11 @@
 ;(function () {
     'use strict';
 
-    describe('[app.nav module]', function () {
+    describe('app.nav', function () {
 
         beforeEach(module('app.nav'));
 
-        describe('[nav controller]', function () {
+        describe('app.nav.controller', function () {
             var scope, $location, createController;
 
             beforeEach(inject(function ($rootScope, $controller, _$location_) {

@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    describe('[app.search module] [search controller]', function () {
+    describe('app.search.controller', function () {
 
         var commonService, scope, ctrl, $log, $location;
 
@@ -165,7 +165,16 @@
             scope.searchTerm = { value: 'object value' };
             scope.isSimpleSearch = true;
 
-            scope.search()
+            scope.search();
+            scope.$digest();
+
+            expect(scope.hasResults()).toBe(true);
+        });
+
+        it('should perform an advanced search', function () {
+            scope.isSimpleSearch = false;
+
+            scope.search();
             scope.$digest();
 
             expect(scope.hasResults()).toBe(true);
@@ -192,6 +201,27 @@
 
             scope.compare();
             expect($location.path).not.toHaveBeenCalled();
+        });
+
+        it('should return a number to help with sorting of certs and CQMs', function () {
+            var value = { numCerts: 4, numCQMs: 4 };
+            expect(scope.sorts.certs(value)).toBe(8);
+        });
+
+        it('should have a way to clear search terms and results', function () {
+            scope.clear();
+            expect(scope.searchResults).toEqual([]);
+            expect(scope.displayedResults).toEqual([]);
+            expect(scope.searchTerm).toEqual(null);
+            expect(scope.vendorTerm).toEqual(null);
+            expect(scope.productTerm).toEqual(null);
+            expect(scope.versionTerm).toEqual(null);
+            expect(scope.certTerm).toEqual(null);
+            expect(scope.cqmTerm).toEqual(null);
+            expect(scope.editionTerm).toEqual(null);
+            expect(scope.classificationTerm).toEqual(null);
+            expect(scope.practiceTerm).toEqual(null);
+            expect(ctrl.compareIds).toEqual(Object.create(null));
         });
     });
 })();

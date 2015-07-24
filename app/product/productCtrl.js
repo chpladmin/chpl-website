@@ -4,6 +4,7 @@
     angular.module('app.product')
         .controller('ProductController', ['$scope', '$log', '$routeParams', '$modal', 'commonService', function($scope, $log, $routeParams, $modal, commonService) {
             var self = this;
+            self.modalInstance;
             self.productId = $routeParams.id;
             commonService.getProduct(self.productId)
                 .then(function (data) {
@@ -13,7 +14,7 @@
                 });
 
             self.openLastModifiedDate = function (size) {
-                var modalInstance = $modal.open({
+                self.modalInstance = $modal.open({
                     templateUrl: 'myModalContent.html',
                     controller: 'ModalInstanceController',
                     controllerAs: 'modalVm',

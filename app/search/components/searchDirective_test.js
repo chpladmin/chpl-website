@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    describe('[app.search module] [cert directive]', function () {
+    describe('app.search.cert.directive', function () {
 
         var $compile;
         var $scope;

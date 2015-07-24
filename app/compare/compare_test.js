@@ -1,37 +1,73 @@
 ;(function () {
     'use strict';
 
-    describe('[app.compare module]', function () {
+    describe('app.compare.compare', function () {
 
-        beforeEach(module('app.compare'));
+        var commonService, scope, ctrl, $log;
 
-        var $log;
-        beforeEach(inject(function (_$log_) {
+        beforeEach(function () {
+            var mockCommonService = {};
+            module('app.compare', function($provide) {
+                $provide.value('commonService', mockCommonService);
+            });
+
+            inject(function($q) {
+                mockCommonService.products = [
+                    { vendor: 'Vendor', product: 'Product' }
+                ];
+
+                mockCommonService.getProduct = function (pid) {
+                    var defer = $q.defer();
+                    defer.resolve(this.products[0]);
+                    return defer.promise;
+                };
+            });
+        });
+
+        beforeEach(inject(function (_$log_, $rootScope, $controller, _commonService_) {
             $log = _$log_;
+            scope = $rootScope.$new();
+            commonService = _commonService_;
+            ctrl = $controller('CompareController', {
+                $scope: scope,
+                $routeParams: {compareIds: '123&234'},
+                commonService: commonService
+            });
+            scope.$digest();
         }));
+
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                console.log("\n Debug: " + $log.debug.logs.join("\n Debug: "));
+                console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
             }
         });
 
-        describe('[compare controller]', function () {
-            var scope, createController;
+        it('should exist', function () {
+            expect(ctrl).toBeDefined();
+        });
 
-            beforeEach(inject(function ($rootScope, $controller) {
-                scope = $rootScope.$new();
+        it('should know if an element is open, and toggle open status', function () {
+            var element = 'element';
+            expect(ctrl.isShowing(element)).toBe(false);
 
-                createController = function () {
-                    return $controller('CompareController', {
-                        '$scope': scope
-                    });
-                };
-            }));
+            ctrl.toggle('element');
+            expect(ctrl.isShowing(element)).toBe(true);
 
-            it('should exist', function () {
-                var compareCtrl = createController();
-                expect(compareCtrl).toBeDefined();
-            });
+            ctrl.toggle('element');
+            expect(ctrl.isShowing(element)).toBe(false);
+        });
+
+        it('should not allow more than one element to be open at once', function () {
+            var ele1 = 'element1';
+            var ele2 = 'element2';
+
+            ctrl.toggle(ele1);
+            expect(ctrl.isShowing(ele1)).toBe(true);
+            expect(ctrl.isShowing(ele2)).toBe(false);
+        });
+
+        it('should track products to compare', function () {
+            expect(ctrl.products.length).toBe(2);
         });
     });
 })();

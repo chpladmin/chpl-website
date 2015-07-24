@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    describe('[app.search module] [search filter]', function () {
+    describe('app.search.search.filter', function () {
 
         var $filter;
         var $rootScope;
