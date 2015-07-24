@@ -138,10 +138,10 @@
             $scope.compare = function () {
                 var comparePath = '/compare/';
                 for (var property in self.compareIds) {
-                    comparePath += property + "&";
+                    comparePath += property + '&';
                 }
                 comparePath = comparePath.substring(0, comparePath.length - 1);
-                if (comparePath != '/compare') {
+                if (comparePath.indexOf('&') > 0) {
                     $location.path(comparePath);
                 }
             };

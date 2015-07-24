@@ -18,6 +18,7 @@ module.exports = function(config){
             'app/bower_components/angular-smart-table/dist/smart-table.min.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'app/app.js',
+            'app/app_test.js',
             'app/appDev.js',
             'app/**/*Module.js',
             'app/common/**/*.js',
