@@ -39,3 +39,7 @@ ul.pagination li {
     vertical-align: middle;
     text-align: right;
 }
+
+.filter-category {
+    cursor: pointer;
+}

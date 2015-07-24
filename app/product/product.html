@@ -79,9 +79,9 @@
           <accordion-group heading="{{ cert.title }} ({{ cert.numActive }} met)" ng-repeat="cert in vm.product.certs" aria-expanded="false">
               <div ng-show="vm.viewAllCerts || n.isActive" class="col-sm-4" ng-repeat="n in cert.certs">
                 <p>
-                  <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.isActive && !n.hasVersion, 'fa-square-o': !n.isActive && !n.hasVersion}"></i>
+                  <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.isActive && !n.hasVersion, 'fa-square-o': !n.isActive}"></i>
                   <span class="sr-only">{{ n.isActive ? 'meets' : 'does not meet'}}</span>
-                  <b>{{ n.version }}</b> {{ n.title }}
+                  <b>{{ n.version }}</b> {{ n.number }}: {{ n.title }}
                 </p>
               </div>
           </accordion-group>

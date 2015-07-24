@@ -75,7 +75,7 @@
           </div>
           <div class="col-sm-3">
             <select id="certField" ng-model="certTerm" multiple class="input-sm form-control">
-              <option ng-repeat="cert in certs" value="{{ cert }}">{{ cert.title }}</option>
+              <option ng-repeat="cert in certs" value="{{ cert }}">{{ cert.number + ': ' + cert.title }}</option>
             </select>
           </div>
           <div class="col-sm-1">
@@ -83,7 +83,7 @@
           </div>
           <div class="col-sm-3">
             <select id="cqmField" ng-model="cqmTerm" multiple class="input-sm form-control">
-              <option ng-repeat="cqm in cqms" value="{{ cqm }}">{{ cqm.title }}</option>
+              <option ng-repeat="cqm in cqms" value="{{ cqm }}">{{ cqm.number + ': ' + cqm.title }}</option>
             </select>
           </div>
         </div> <!-- second row of advanced -->
@@ -159,12 +159,18 @@
 
         <ai-cert-filter>
           <div class="panel panel-default">
-            <div class="panel-heading">
-              Filter on Certifications and CQMs
-            </div>
             <div class="panel-body">
-              <div ng-repeat="category in certsNcqms">{{ category.title }}<br />
-                <span ng-repeat="cert in category.certs"><a href="" ng-click="toggleCertFilter(category.title, cert.title); certsChanged();">{{ cert.title }}</a></span><br />
+              <div ng-repeat="category in certsNcqms">
+                <label class="filter-category" ng-click="showCategory = !showCategory">
+                  <i class="fa fa-chevron-right" ng-class="{'fa-rotate-90' : showCategory}"></i>
+                  {{ category.title }}
+                </label>
+                <br />
+                <span ng-class="{'hidden' : !showCategory}" ng-repeat="cert in category.certs">
+                  <input type="checkbox" ng-model="certFilter[cert.number]" ng-change="toggleCertFilter(category.title, cert.title); certsChanged()" id="certFilter{{ cert.number }}" />
+                  <label for="certFilter{{ cert.number }}">{{ cert.number + ": " + cert.title }}</label>
+                  <br />
+                </span>
               </div>
             </div>
           </div>
@@ -226,7 +232,7 @@
           <tfoot>
             <tr>
 	          <td colspan="5" class="text-center">
-	            <div st-pagination st-items-by-page="10" st-displayed-pages="10"></div>
+	            <div st-pagination st-items-by-page="20" st-displayed-pages="10"></div>
 	          </td>
             </tr>
           </tfoot>
