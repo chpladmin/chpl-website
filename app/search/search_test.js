@@ -143,11 +143,11 @@
         it('should toggle cert filters on and off', function () {
             var result = Object.create(null);
             expect(scope.certFilters).toEqual(result);
-            scope.toggleCertFilter('category', 'title');
-            result['category:title'] = true;
+            scope.toggleCertFilter('category', 'title', 'number');
+            result['category:title'] = 'number';
             expect(scope.certFilters).toEqual(result);
             delete result['category:title'];
-            scope.toggleCertFilter('category', 'title');
+            scope.toggleCertFilter('category', 'title', 'number');
             expect(scope.certFilters).toEqual(result);
         });
 
@@ -212,16 +212,28 @@
             scope.clear();
             expect(scope.searchResults).toEqual([]);
             expect(scope.displayedResults).toEqual([]);
-            expect(scope.searchTerm).toEqual(null);
-            expect(scope.vendorTerm).toEqual(null);
-            expect(scope.productTerm).toEqual(null);
-            expect(scope.versionTerm).toEqual(null);
-            expect(scope.certTerm).toEqual(null);
-            expect(scope.cqmTerm).toEqual(null);
-            expect(scope.editionTerm).toEqual(null);
-            expect(scope.classificationTerm).toEqual(null);
-            expect(scope.practiceTerm).toEqual(null);
+            expect(scope.searchTerm).toEqual('');
+            expect(scope.vendorTerm).toEqual('');
+            expect(scope.productTerm).toEqual('');
+            expect(scope.versionTerm).toEqual('');
+            expect(scope.certTerm).toEqual('');
+            expect(scope.cqmTerm).toEqual('');
+            expect(scope.editionTerm).toEqual('');
+            expect(scope.classificationTerm).toEqual('');
+            expect(scope.practiceTerm).toEqual('');
             expect(ctrl.compareIds).toEqual(Object.create(null));
+        });
+
+        it('should have a way to clear filters', function () {
+            scope.clearFilter();
+
+            expect(scope.filterGroup.vendor).toEqual('');
+            expect(scope.filterGroup.product).toEqual('');
+            expect(scope.filterGroup.edition).toEqual('');
+            expect(scope.filterGroup.classification).toEqual('');
+            expect(scope.filterGroup.practiceType).toEqual('');
+            expect(scope.filterGroup.certBody).toEqual('');
+
         });
     });
 })();

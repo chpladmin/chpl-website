@@ -43,3 +43,7 @@ ul.pagination li {
 .filter-category {
     cursor: pointer;
 }
+
+.pointer {
+    cursor: pointer;
+}

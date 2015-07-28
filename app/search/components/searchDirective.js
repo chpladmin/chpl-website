@@ -15,5 +15,17 @@
                     }
                 }
             };
+        })
+        .directive('aiResetFilter', function () {
+            return {
+                restrict: 'A',
+                require: '^stTable',
+                link: function (scope, element, attr, ctrl) {
+                    element.on('click', function (event) {
+                        ctrl.tableState().search = {};
+                        ctrl.search('','');
+                    })
+                }
+            };
         });
 })();

@@ -8,6 +8,7 @@
             $scope.displayedResults = [];
             $scope.lookaheadSource = [];
             $scope.isSimpleSearch = true;
+            $scope.filterGroup = {};
             if ($localStorage.searchResults) {
                 $scope.searchResults = $localStorage.searchResults;
                 $scope.displayedResults = [].concat($scope.searchResults);
@@ -53,12 +54,12 @@
             self.certFilters = Object.create(null);
             $rootScope.certFilters = self.certFilters;
 
-            self.toggleCertFilter = function (category, title) {
+            self.toggleCertFilter = function (category, title, number) {
                 var key = category + ":" + title;
                 if (key in self.certFilters) {
                     delete self.certFilters[key];
                 } else {
-                    self.certFilters[key] = true;
+                    self.certFilters[key] = number;
                 }
                 $log.info(self.certFilters);
             };
@@ -123,16 +124,35 @@
                 delete $localStorage.searchResults;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
-                $scope.searchTerm = null;
-                $scope.vendorTerm = null;
-                $scope.productTerm = null;
-                $scope.versionTerm = null;
-                $scope.certTerm = null;
-                $scope.cqmTerm = null;
-                $scope.editionTerm = null;
-                $scope.classificationTerm = null;
-                $scope.practiceTerm = null;
+                $scope.searchTerm = '';
+                $scope.vendorTerm = '';
+                $scope.productTerm = '';
+                $scope.versionTerm = '';
+                $scope.certTerm = '';
+                $scope.cqmTerm = '';
+                $scope.editionTerm = '';
+                $scope.classificationTerm = '';
+                $scope.practiceTerm = '';
                 self.compareIds = Object.create(null);
+
+//                angular.element.find('#resetLink').click();
+            };
+
+            $scope.clearFilter = function () {
+                $scope.filterGroup.vendor = '';
+                $scope.filterGroup.product = '';
+                $scope.filterGroup.edition = '';
+                $scope.filterGroup.classification = '';
+                $scope.filterGroup.practiceType = '';
+                $scope.filterGroup.certBody = '';
+
+                $log.info($scope.certFilter);
+                $log.info(self.certFilters);
+                for (var elem in self.certFilters) {
+//                    $log.info(elem);
+//                    $scope.certFilter[self.certFilters[elem]].click();
+//                    delete self.certFilters[elem];
+                }
             };
 
             $scope.compare = function () {

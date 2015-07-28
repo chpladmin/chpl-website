@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="col-sm-2">
-            <button type="button" class="btn btn-default btn-lg form-control" ng-click="search()">Search</button>
+            <button id="searchButton" type="button" class="btn btn-default btn-lg form-control" ng-click="search()">Search</button>
             <br /><a href="" ng-click="isSimpleSearch = !isSimpleSearch">Advanced search</a>
             <span ng-show="hasResults()"><br /><a href="" ng-click="clear()">Clear results</a></span>
           </div>
@@ -119,7 +119,7 @@
     </div>
   </div> <!-- advanced search row -->
 
-  <div ng-show="hasResults()">
+  <div id="resultsSection" ng-show="hasResults()">
     <div class="row">
       <div class="col-md-12">
         <h2>Results</h2>
@@ -128,31 +128,32 @@
     <div class="row" st-table="displayedResults" st-safe-src="searchResults" st-set-filter="tableFilter">
       <div ng-show="visibleFilter" class="col-md-4">
         <h3>Filter</h3>
+        <a id="resetLink" href="" ng-click="clearFilter()" class="pull-right" ai-reset-filter>Clear Filter</a>
         <label for="vendor-search">Filter on Vendor</label>
-        <input id="vendor-search" st-search="vendor" placeholder="filter on vendor" class="input-sm form-control" type="search" />
+        <input id="vendor-search" st-search="vendor" placeholder="filter on vendor" class="input-sm form-control" type="search" ng-model="filterGroup.vendor"/>
         <label for="product-search">Filter on Product</label>
-        <input id="product-search" st-search="product" placeholder="filter on product" class="input-sm form-control" type="search" />
+        <input id="product-search" st-search="product" placeholder="filter on product" class="input-sm form-control" type="search" ng-model="filterGroup.product"/>
 
         <label for="edition-search">Filter on Edition</label>
-        <select id="edition-search" st-search="edition" class="input-sm form-control">
+        <select id="edition-search" st-search="edition" class="input-sm form-control" ng-model="filterGroup.edition">
           <option value="">None</option>
           <option ng-repeat="edition in editions" value="{{ edition.value }}">{{ edition.value }}</option>
         </select>
 
         <label for="classification-searcn">Filter on Classification</label>
-        <select id="classification-search" st-search="classification" class="input-sm form-control">
+        <select id="classification-search" st-search="classification" class="input-sm form-control" ng-model="filterGroup.classification">
           <option value="">None</option>
           <option ng-repeat="classification in classifications" value="{{ classification.value }}">{{ classification.value }}</option>
         </select>
 
         <label for="practiceType-search">Filter on Practice Type</label>
-        <select id="practiceType-search" st-search="practiceType" class="input-sm form-control">
+        <select id="practiceType-search" st-search="practiceType" class="input-sm form-control" ng-model="filterGroup.practiceType">
           <option value="">None</option>
           <option ng-repeat="practice in practices" value="{{ practice.value }}">{{ practice.value }}</option>
         </select>
 
         <label for="certBody-search">Filter on Certification Body</label>
-        <select id="certBody-search" st-search="certBody" class="input-sm form-control">
+        <select id="certBody-search" st-search="certBody" class="input-sm form-control" ng-model="filterGroup.certBody">
           <option value="">None</option>
           <option ng-repeat="body in certBodies" value="{{ body.value }}">{{ body.value }}</option>
         </select>
@@ -167,7 +168,7 @@
                 </label>
                 <br />
                 <span ng-class="{'hidden' : !showCategory}" ng-repeat="cert in category.certs">
-                  <input type="checkbox" ng-model="certFilter[cert.number]" ng-change="toggleCertFilter(category.title, cert.title); certsChanged()" id="certFilter{{ cert.number }}" />
+                  <input type="checkbox" ng-model="certFilter[cert.number]" ng-change="toggleCertFilter(category.title, cert.title, cert.number); certsChanged()" id="certFilter{{ cert.number }}" />
                   <label for="certFilter{{ cert.number }}">{{ cert.number + ": " + cert.title }}</label>
                   <br />
                 </span>
