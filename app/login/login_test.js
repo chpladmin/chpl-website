@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    describe('[app.loginServices module]', function () {
+    describe('app.loginServices', function () {
 
         beforeEach(module('app.loginServices'));
 
@@ -15,7 +15,7 @@
             }
         });
 
-        describe('[auth services]', function () {
+        describe('app.loginServices.authservices', function () {
             var authService;
             var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWQiOjIsImV4cCI6MTQzNjUyODYwNiwiaWF0IjoxNDM2NDQyMjA2fQ.Fo482cebe7EfuTtGHjvgsMByC0l-V8ZULMlCNVoxWmI';
 
@@ -34,15 +34,6 @@
             it('should save a JWT Token', function () {
                 authService.saveToken(token);
                 expect(authService.getToken()).toBe(token);
-            });
-
-            // test results are dependent on token time in token; need to figure out how to remove that dependency
-            xit('should know if someone is authenticated', function () {
-                expect(authService.isAuthed()).toBe(false);
-                authService.saveToken(token);
-                expect(authService.isAuthed()).toBe(true);
-                authService.logout();
-                expect(authService.isAuthed()).toBe(false);
             });
         });
     });

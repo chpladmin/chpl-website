@@ -15,8 +15,11 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="odc-navbar">
         <ul class="nav navbar-nav navbar-right">
-          <li ng-class="{'active': nav.isActive('/view1') }"><a href="#/view1">View 1</a></li>
-          <li ng-class="{'active': nav.isActive('/view2') }"><a href="#/view2">View 2</a></li>
+          <li ng-class="{'active': nav.isActive('/search') }"><a href="#/search">Home</a></li>
+          <li ng-class="{'active': nav.isActive('/overview') }"><a href="#/overview">Overview</a></li>
+          <li ng-class="{'active': nav.isActive('/contact') }"><a href="#/contact">Contact</a></li>
+          <li ng-class="{'active': nav.isActive('/listing') }"><a href="#/listing">Product Listing</a></li>
+          <li ng-class="{'active': nav.isActive('/api') }"><a href="#/api">API</a></li>
           <li ng-show="nav.isAuthed()"><a href="" ng-click="nav.getQuote()">Get Quote</a></li>
 
           <li class="dropdown">
@@ -32,9 +35,9 @@
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" ng-model="nav.password" placeholder="password" />
                   </div>
-                  <button class="btn btn-default" ng-click="nav.register()" ng-hide="nav.isAuthed()">Register</button>
-                  <button class="btn btn-default" ng-click="nav.login()" ng-hide="nav.isAuthed()">Log In</button>
-                  <button class="btn btn-default" ng-click="nav.logout()" ng-show="nav.isAuthed()">Log Out</button>
+                  <button class="btn btn-default btn-block" ng-click="nav.register()" ng-hide="nav.isAuthed()">Register</button>
+                  <button class="btn btn-default btn-block" ng-click="nav.login()" ng-hide="nav.isAuthed()">Log In</button>
+                  <button class="btn btn-default btn-block" ng-click="nav.logout()" ng-show="nav.isAuthed()">Log Out</button>
                 </form>
               </li>
             </ul>

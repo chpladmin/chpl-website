@@ -1,5 +1,9 @@
 # chpl-website
 
+[![Build Status](http://54.213.57.151:9090/job/andlar_chpl-website/badge/icon)](http://54.213.57.151:9090/job/andlar_chpl-website)
+[![Test Coverage](https://codeclimate.com/github/andlar/chpl-website/badges/coverage.svg)](https://codeclimate.com/github/andlar/chpl-website/coverage)
+[![Code Climate](https://codeclimate.com/github/andlar/chpl-website/badges/gpa.svg)](https://codeclimate.com/github/andlar/chpl-website)
+
 The web UI for chpl
 
 ## Prerequisites
@@ -25,7 +29,7 @@ npm install
 npm start
 ```
 
-The website is running at: [http://localhost:8000/app/index.html](http://localhost:8000/app/index.html)
+The website is running at: [http://localhost:8000/app/](http://localhost:8000/app/)
 
 ## Testing
 

@@ -1,27 +1,15 @@
 /* app css stylesheet */
 
 body {
-    margin-top: 50px;
-    margin-bottom: 50px;
-}
-
-.st-table th {
-    width: 20%;
-}
-
-.st-sort-ascent:after {
-    content: "\f0d8";
-    font-family: FontAwesome;
-}
-
-.st-sort-descent:after {
-    content: "\f0d7";
-    font-family: FontAwesome;
+    margin-top: 60px;
+    margin-bottom: 85px;
 }
 
 header {
     transition: all 0.4s ease;
 }
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 /*
 header.sticky {

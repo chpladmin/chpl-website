@@ -1,11 +1,32 @@
 ;(function () {
     'use strict';
 
-    describe('[app.nav module]', function () {
+    describe('app.nav', function () {
 
-        beforeEach(module('app.nav'));
+        var httpProvider, authInterceptor;
+        var token = 'sample';
 
-        describe('[nav controller]', function () {
+        beforeEach(function() {
+            module('app.nav', function ($httpProvider) {
+                httpProvider = $httpProvider
+            });
+
+            inject(function (_authInterceptor_) {
+                authInterceptor = _authInterceptor_;
+            });
+        });
+
+        describe('app.nav.authInterceptor', function () {
+            it('should have a definied authInterceptor', function () {
+                expect(authInterceptor).toBeDefined();
+            });
+
+            it('should have the interceptor as an interceptor', function () {
+                expect(httpProvider.interceptors).toContain('authInterceptor');
+            });
+        });
+
+        describe('app.nav.controller', function () {
             var scope, $location, createController;
 
             beforeEach(inject(function ($rootScope, $controller, _$location_) {

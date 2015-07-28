@@ -1,77 +1,271 @@
 <div ng-controller="SearchController">
-  <div class="row">
+  <div class="row" ng-hide="hasResults()">
     <div class="col-md-12">
       <h1>Welcome to the CHPL</h1>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+    </div>
+  </div> <!-- search introduction 'header' -->
+
+  <div class="row" ng-show="isSimpleSearch">
+    <div class="col-xs-12">
       <form class="form-horizontal" role="search">
         <div class="form-group form-group-lg">
-          <label for="searchField" class="col-sm-2 control-label">Search</label>
-          <div class="col-sm-8">
+          <div class="col-sm-1">
+            <label for="searchField" class="control-label">Search</label>
+          </div>
+          <div class="col-sm-9">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-search"></i></div>
-              <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="searchTerm" />
+              <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="searchTerm"
+                     typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource | filter:{value:$viewValue} | limitTo:16"
+                     typeahead-input-formatter="$model.value" />
             </div>
           </div>
           <div class="col-sm-2">
-            <button type="button" class="btn btn-default btn-lg" ng-click="search()">Search</button>
+            <button id="searchButton" type="button" class="btn btn-default btn-lg form-control" ng-click="search()">Search</button>
+            <br /><a href="" ng-click="isSimpleSearch = !isSimpleSearch">Advanced search</a>
+            <span ng-show="hasResults()"><br /><a href="" ng-click="clear()">Clear results</a></span>
           </div>
         </div>
       </form>
     </div>
-  </div> <!-- search field row -->
-  <div class="row" ng-show="hasResults()">
-    <div class="col-md-12">
-      <table st-table="displayedResults" st-safe-src="searchResults" class="table table-striped st-table">
-        <thead>
-          <tr>
-            <th st-sort="vendor" st-skip-natural="true">Vendor</th>
-		    <th st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
-            <th st-sort="version" st-skip-natural="true">Version</th>
-		    <th st-sort="sorts.certs" st-skip-natural="true">Certs & CQMs</th>
-            <th st-sort="certDate" st-skip-natural="true">Certification Date</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	      <tr ng-repeat-start="row in displayedResults" ng-click="showDetails = !showDetails">
-		    <td>{{ row.vendor }}</td>
-		    <td>{{ row.product }}</td>
-		    <td>{{ row.version }}</td>
-		    <td>{{ row.certs }}</td>
-		    <td>{{ row.certDate | date }}</td>
-	      </tr>
-          <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
-            <td colspan="5">{{ row.details }}</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th colspan="2">
-              <label for="global-search">Narrow down results</label>
-              <input id="global-search" st-search placeholder="global filter" class="input-sm form-control" type="search" />
-            </th>
-            <th colspan="3">
-              <label for="search-search">Search field?</label>
-              <input id="search-search" st-search="{{ searchTerm }}" placeholder="global filter" class="input-sm form-control" type="search" />
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <label for="vendor-search">Filter on Vendor</label>
-              <input id="vendor-search" st-search="vendor" placeholder="filter on vendor" class="input-sm form-control" type="search" />
-            </th>
-            <th>
-              <label for="product-search">Filter on Product</label>
-              <input id="product-search" st-search="product" placeholder="filter on product" class="input-sm form-control" type="search" />
-            </th>
-          </tr>
-          <tr>
-	        <td colspan="5" class="text-center">
-	          <div st-pagination st-items-by-page="10" st-displayed-pages="10"></div>
-	        </td>
-          </tr>
-        </tfoot>
-      </table>
+  </div> <!-- simple search row -->
+
+  <div class="row" ng-show="!isSimpleSearch">
+    <div class="col-xs-12">
+      <form class="form-horizontal" role="search">
+        <div class="form-group form-group-sm">
+          <div class="col-sm-1">
+            <label for="vendorField" class="control-label">Vendor</label>
+          </div>
+          <div class="col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" id="vendorField" placeholder="Vendor" ng-model="vendorTerm" />
+            </div>
+          </div>
+          <div class="col-sm-1">
+            <label for="productField" class="control-label">Product</label>
+          </div>
+          <div class="col-sm-4">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" id="productField" placeholder="Product" ng-model="productTerm" />
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <button type="button" class="btn btn-default form-control" ng-click="search()">Search</button>
+            <br /><a href="" ng-click="isSimpleSearch = !isSimpleSearch">Simple search</a>
+            <span ng-show="hasResults()"><br /><a href="" ng-click="clear()">Clear results</a></span>
+          </div>
+        </div> <!-- first row of advanced search -->
+
+        <div class="form-group form-group-sm">
+          <div class="col-sm-1">
+            <label for="versionField" class="control-label">Version</label>
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-search"></i></div>
+              <input type="text" class="form-control" id="versionField" placeholder="Version" ng-model="versionTerm" />
+            </div>
+          </div>
+          <div class="col-sm-1">
+            <label for="certField" class="control-label">Certification Criteria</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="certField" ng-model="certTerm" multiple class="input-sm form-control">
+              <option ng-repeat="cert in certs" value="{{ cert }}">{{ cert.number + ': ' + cert.title }}</option>
+            </select>
+          </div>
+          <div class="col-sm-1">
+            <label for="cqmField" class="control-label">Clinical Quality Measurements</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="cqmField" ng-model="cqmTerm" multiple class="input-sm form-control">
+              <option ng-repeat="cqm in cqms" value="{{ cqm }}">{{ cqm.number + ': ' + cqm.title }}</option>
+            </select>
+          </div>
+        </div> <!-- second row of advanced -->
+
+        <div class="form-group form-group-sm">
+          <div class="col-sm-1">
+            <label for="editionField" class="control-label">Certification Edition</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="editionField" ng-model="editionTerm" multiple class="input-sm form-control">
+              <option ng-repeat="edition in editions" value="{{ edition }}">{{ edition.value }}</option>
+            </select>
+          </div>
+          <div class="col-sm-1">
+            <label for="classificationField" class="control-label">Product Classification</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="classificationField" ng-model="classificationTerm" multiple class="input-sm form-control">
+              <option ng-repeat="classification in classifications" value="{{ classification }}">{{ classification.value }}</option>
+            </select>
+          </div>
+          <div class="col-sm-1">
+            <label for="practiceField" class="control-label">Practice Type</label>
+          </div>
+          <div class="col-sm-3">
+            <select id="practiceField" ng-model="practiceTerm" multiple class="input-sm form-control">
+              <option ng-repeat="practice in practices" value="{{ practice }}">{{ practice.value }}</option>
+            </select>
+          </div>
+        </div> <!-- third row of advanced search -->
+
+      </form>
     </div>
-  </div>
+  </div> <!-- advanced search row -->
+
+  <div id="resultsSection" ng-show="hasResults()">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Results</h2>
+      </div>
+    </div>
+    <div class="row" st-table="displayedResults" st-safe-src="searchResults" st-set-filter="tableFilter">
+      <div ng-show="visibleFilter" class="col-md-4">
+        <h3>Filter</h3>
+        <a id="resetLink" href="" ng-click="clearFilter()" class="pull-right" ai-reset-filter>Clear Filter</a>
+        <label for="vendor-search">Filter on Vendor</label>
+        <input id="vendor-search" st-search="vendor" placeholder="filter on vendor" class="input-sm form-control" type="search" ng-model="filterGroup.vendor"/>
+        <label for="product-search">Filter on Product</label>
+        <input id="product-search" st-search="product" placeholder="filter on product" class="input-sm form-control" type="search" ng-model="filterGroup.product"/>
+
+        <label for="edition-search">Filter on Edition</label>
+        <select id="edition-search" st-search="edition" class="input-sm form-control" ng-model="filterGroup.edition">
+          <option value="">None</option>
+          <option ng-repeat="edition in editions" value="{{ edition.value }}">{{ edition.value }}</option>
+        </select>
+
+        <label for="classification-searcn">Filter on Classification</label>
+        <select id="classification-search" st-search="classification" class="input-sm form-control" ng-model="filterGroup.classification">
+          <option value="">None</option>
+          <option ng-repeat="classification in classifications" value="{{ classification.value }}">{{ classification.value }}</option>
+        </select>
+
+        <label for="practiceType-search">Filter on Practice Type</label>
+        <select id="practiceType-search" st-search="practiceType" class="input-sm form-control" ng-model="filterGroup.practiceType">
+          <option value="">None</option>
+          <option ng-repeat="practice in practices" value="{{ practice.value }}">{{ practice.value }}</option>
+        </select>
+
+        <label for="certBody-search">Filter on Certification Body</label>
+        <select id="certBody-search" st-search="certBody" class="input-sm form-control" ng-model="filterGroup.certBody">
+          <option value="">None</option>
+          <option ng-repeat="body in certBodies" value="{{ body.value }}">{{ body.value }}</option>
+        </select>
+
+        <ai-cert-filter>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div ng-repeat="category in certsNcqms">
+                <label class="filter-category" ng-click="showCategory = !showCategory">
+                  <i class="fa fa-chevron-right" ng-class="{'fa-rotate-90' : showCategory}"></i>
+                  {{ category.title }}
+                </label>
+                <br />
+                <span ng-class="{'hidden' : !showCategory}" ng-repeat="cert in category.certs">
+                  <input type="checkbox" ng-model="certFilter[cert.number]" ng-change="toggleCertFilter(category.title, cert.title, cert.number); certsChanged()" id="certFilter{{ cert.number }}" />
+                  <label for="certFilter{{ cert.number }}">{{ cert.number + ": " + cert.title }}</label>
+                  <br />
+                </span>
+              </div>
+            </div>
+          </div>
+        </ai-cert-filter>
+      </div>
+      <div ng-class="visibleFilter ? 'col-md-8' : 'col-md-12'">
+        <span class="search-activate-filter" ng-click="visibleFilter = !visibleFilter"><i class="fa fa-2x fa-angle-double-right" ng-class="{ 'fa-flip-horizontal' : visibleFilter }"></i>
+          {{ visibleFilter ? 'Hide' : 'Show'}}  Filter
+        </span>
+        <table class="table table-striped st-table">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
+		      <th class="search-header" st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
+              <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
+		      <th class="search-header" st-sort="sorts.certs" st-skip-natural="true">Certs & CQMs</th>
+              <th class="search-header" st-sort="certDate" st-skip-natural="true">Certification Date</th>
+              <th><a href="" ng-click="compare()">Compare</a></th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        <tr ng-repeat-start="row in displayedResults">
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor }}</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product }}</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.version }}</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.numCerts }} Certifications / {{ row.numCQMs }} CQMs</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certDate | date }}</td>
+              <td align="center">
+                <input type="checkbox" ng-click="toggleCompareId(row.id)" ng-model="compareBoxes[row.id]" id="compareBoxes{{ row.id }}"/>
+                <label class="sr-only" for="compareBoxes{{ row.id }}">Select to compare</label>
+                <span class="sr-only"><a href="" ng-click="showDetails = !showDetails">Show Details</a></span>
+              </td>
+	        </tr>
+            <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
+              <td colspan="6">
+                <table class="table" width="100%">
+                  <thead>
+                    <tr>
+                      <th>Practice Type</th>
+                      <th>Classification</th>
+                      <th>Certifying Body</th>
+                      <th>Certification Edition</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ row.practiceType }}</td>
+                      <td>{{ row.classification }}</td>
+                      <td>{{ row.certBody }}</td>
+                      <td>{{ row.edition }}</td>
+                      <td><a href="#/product/{{ row.id }}">details</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+	          <td colspan="5" class="text-center">
+	            <div st-pagination st-items-by-page="20" st-displayed-pages="10"></div>
+	          </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div> <!-- end of search results -->
+
+  <div ng-hide="hasResults()">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Other Agencies</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-sm-6">
+        <img src="" width="100px" height="100px" alt="Other agency 1" />
+        <a href="#">Other agency 1</a>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <img src="" width="100px" height="100px" alt="Other agency 2" />
+        <a href="#">Other agency 2</a>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <img src="" width="100px" height="100px" alt="Other agency 3" />
+        <a href="#">Other agency 3</a>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <img src="" width="100px" height="100px" alt="Other agency 4" />
+        <a href="#">Other agency 4</a>
+      </div>
+    </div>
+  </div> <!-- end of other agencies -->
 
 </div> <!-- end controller -->

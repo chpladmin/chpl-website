@@ -16,15 +16,28 @@ module.exports = function(config){
             'app/bower_components/ngstorage/ngStorage.js',
             'app/bower_components/jquery/dist/jquery.min.js',
             'app/bower_components/angular-smart-table/dist/smart-table.min.js',
+            'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'app/app.js',
+            'app/app_test.js',
             'app/appDev.js',
             'app/**/*Module.js',
-            'app/components/**/*.js',
-            'app/search/**/*.js',
-            'app/view*/**/*.js',
+            'app/common/**/*.js',
+            'app/compare/**/*.js',
             'app/login/**/*.js',
-            'app/nav/**/*.js'
+            'app/nav/**/*.js',
+            'app/product/**/*.js',
+            'app/search/**/*.js'
         ],
+
+        preprocessors: {
+            'app/common/**/!(*test).js': ['coverage'],
+            'app/compare/**/!(*test).js': ['coverage'],
+            'app/login/**/!(*test).js': ['coverage'],
+            'app/nav/**/!(*test).js': ['coverage'],
+            'app/product/**/!(*test).js': ['coverage'],
+            'app/search/**/!(*test).js': ['coverage'],
+            'app/app.js': ['coverage']
+        },
 
         autoWatch : true,
 
@@ -33,17 +46,27 @@ module.exports = function(config){
         browsers : ['PhantomJS'],
 
         plugins : [
+            'karma-jasmine',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-jasmine',
+            'karma-phantomjs-launcher',
             'karma-junit-reporter',
-            'karma-phantomjs-launcher'
+            'karma-growl-reporter',
+            'karma-coverage'
         ],
 
+        reporters : ['dots', 'junit', 'progress', 'coverage', 'growl'],
+
+        coverageReporter: {
+            type: 'lcov',
+            dir: 'coverage/',
+            subdir: '.',
+            file: 'coverage.lcov'
+        },
+
         junitReporter : {
-            outputFile: 'test_out/unit.xml',
+            outputDir: 'test_reports',
             suite: 'unit'
         }
-
     });
 };

@@ -1,24 +1,26 @@
-<nav class="navbar navbar-default navbar-fixed-bottom" ng-controller="NavigationController as nav">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#odc-navbar-bottom" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#/search">Certified Health Product List</a>
-    </div>
+<footer>
+  <nav class="navbar navbar-default navbar-fixed-bottom" ng-controller="NavigationController as nav">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#odc-navbar-bottom" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="odc-navbar-bottom">
-      <ul class="nav navbar-nav navbar-right">
-        <li ng-class="{'active': nav.isActive('/search') }"><a href="#/search">Home</a></li>
-        <li><a href="#">ONC Certification Website</a></li>
-        <li><a href="#">Lists of Certification Criteria &amp; Clinical Quality Measures</a></li>
-        <li ng-class="{'active': nav.isActive('/privacy') }"><a href="#/privacy">Privacy Policy</a></li>
-        <li><a href="#/contact">Contact</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="odc-navbar-bottom">
+        <ul class="nav navbar-nav">
+          <li ng-class="{'active': nav.isActive('/search') }"><a href="#/search">Home</a></li>
+          <li><a href="#">ONC Certification Website</a></li>
+          <li><a href="#">Lists of Certification Criteria &amp; Clinical Quality Measures</a></li>
+          <li ng-class="{'active': nav.isActive('/privacy') }"><a href="#/privacy">Privacy Policy</a></li>
+          <li ng-class="{'active': nav.isActive('/contact') }"><a href="#/contact">Contact</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+      <p class="nav-text">Office of the National Coordinator for Health Information Technology
+    </div><!-- /.container-fluid -->
+  </nav>
+</footer>

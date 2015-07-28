@@ -1,0 +1,49 @@
+.st-table th {
+    width: 20%;
+}
+
+.st-table th:last-child {
+    text-align: center;
+    width: auto;
+}
+
+.st-sort-ascent:after {
+    content: "\f0d8";
+    font-family: FontAwesome;
+    padding: 0 3px;
+}
+
+.st-sort-descent:after {
+    content: "\f0d7";
+    font-family: FontAwesome;
+    padding: 0 3px;
+}
+
+ul.pagination li {
+    cursor: pointer;
+}
+
+.search-header {
+    cursor: pointer;
+}
+
+.productHeader {
+    cursor: pointer;
+}
+
+.search-activate-filter {
+    cursor: pointer;
+}
+
+.productDetails td:last-child table td:last-child{
+    vertical-align: middle;
+    text-align: right;
+}
+
+.filter-category {
+    cursor: pointer;
+}
+
+.pointer {
+    cursor: pointer;
+}
