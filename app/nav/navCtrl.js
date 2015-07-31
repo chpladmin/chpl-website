@@ -13,11 +13,13 @@
                 if (res.status === 200) {
                     var token = res.data.token ? res.data : null;
                     if (token) {
-                        $log.info('JWT:', token);
+                        self.message = '';
+                        $location.path('/admin');
+                    } else {
+                        self.message = 'Invalid username or password';
                     }
-                    self.message = 'Log in successful';
                 } else {
-                    self.message = 'Invalid username/password';
+                    self.message = 'Invalid username or password';
                 }
             }
 

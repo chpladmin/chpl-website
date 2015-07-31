@@ -25,6 +25,7 @@ module.exports = function(config){
             'app/compare/**/*.js',
             'app/login/**/*.js',
             'app/nav/**/*.js',
+            'app/admin/**/*.js',
             'app/product/**/*.js',
             'app/search/**/*.js'
         ],
@@ -34,6 +35,7 @@ module.exports = function(config){
             'app/compare/**/!(*test).js': ['coverage'],
             'app/login/**/!(*test).js': ['coverage'],
             'app/nav/**/!(*test).js': ['coverage'],
+            'app/admin/**/!(*test).js': ['coverage'],
             'app/product/**/!(*test).js': ['coverage'],
             'app/search/**/!(*test).js': ['coverage'],
             'app/app.js': ['coverage']

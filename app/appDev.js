@@ -173,6 +173,7 @@
     angular.module('appDev', ['app', 'ngMockE2E'])
         .run(function ($httpBackend) {
             $httpBackend.whenGET(/^nav\/.*/).passThrough();
+            $httpBackend.whenGET(/^admin\/.*/).passThrough();
             $httpBackend.whenGET(/^search\/.*/).passThrough();
             $httpBackend.whenGET(/^compare\/.*/).passThrough();
             $httpBackend.whenGET(/^product\/.*/).passThrough();
@@ -198,7 +199,7 @@
                 };
             }])
         })
-        .config(function($provide) {
+/*        .config(function($provide) { // fake a delay
             $provide.decorator('$httpBackend', function($delegate) {
                 var proxy = function(method, url, data, callback, headers) {
                     var interceptor = function() {
@@ -216,4 +217,4 @@
                 return proxy;
             });
         });
-})();
+*/})();
