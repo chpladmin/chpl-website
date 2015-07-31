@@ -13,7 +13,7 @@
                 return $http({
                     method: 'POST',
                     url: API + '/auth/authenticate',
-                    transformResponse: undefined,
+//                    transformResponse: undefined,
                     data: {
                         userName: username,
                         password: password
@@ -53,6 +53,7 @@
                     var identity = self.parseJwt(token).Identity;
                     return identity[2] + " " + identity[3];
                 } else {
+                    self.logout();
                     return 'Anonymous User';
                 }
             }
