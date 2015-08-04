@@ -63,8 +63,36 @@
                 expect(ctrl.login).toBeDefined();
             });
 
-            it('should have populated user data at load time', function () {
-                expect(ctrl.users.length).toBeGreaterThan(0);
+            describe('User Management', function () {
+                it('should have populated user data at load time', function () {
+                    expect(ctrl.users.length).toBeGreaterThan(0);
+                });
+
+                it('should have a function to create a new user', function () {
+                    expect(ctrl.createUser).toBeDefined();
+                });
+
+                it('should have a function to modify an existing user', function () {
+                    expect(ctrl.modifyUser).toBeDefined();
+                });
+
+                it('should have a function to delete an existing user', function () {
+                    expect(ctrl.deleteUser).toBeDefined();
+                });
+
+                it('should have a function to undo user changes', function () {
+                    expect(ctrl.cancelUser).toBeDefined();
+                });
+            });
+
+            describe('ACB Management', function () {
+                it('should (not) have ACB information at load time', function () {
+                    expect(ctrl.acbs.length).toBeGreaterThan(0);
+                });
+
+                it('should have a function to create a new ACB', function () {
+                    expect(ctrl.createACB).toBeDefined();
+                });
             });
         });
     });

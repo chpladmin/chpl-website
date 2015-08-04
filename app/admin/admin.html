@@ -28,6 +28,19 @@
         <h2>Welcome {{ vm.getUsername() }}</h2>
       </div>
     </div>
-    <ai-user-management></ai-user-management>
+    <tabset>
+      <tab heading="User Management">
+        <ai-user-management users="vm.users"
+                            create-user="vm.createUser"
+                            modify-user="vm.modifyUser"
+                            delete-user="vm.deleteUser"
+                            cancel-user="vm.cancelUser">
+        </ai-user-management>
+      </tab>
+      <tab heading="ACB Management" active="true">
+        <ai-acb-management acbs="vm.acbs"
+                           create-acb="vm.createACB">
+        </ai-acb-management>
+      </tab>
   </section> <!-- end authenticated user section -->
 </div> <!-- end controller -->

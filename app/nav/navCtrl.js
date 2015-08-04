@@ -36,11 +36,6 @@
                     .then(handleLogin, handleLogin)
             }
 
-            self.getUsers = function () {
-                userService.getUsers ()
-                    .then(handleRequest, handleRequest)
-            }
-
             self.logout = function () {
                 authService.logout && authService.logout()
             }
