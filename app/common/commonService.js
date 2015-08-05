@@ -100,5 +100,21 @@
             self.getCertsNCQMs = function () {
                 return self.simpleApiCall('/list_filterCerts');
             };
+
+            self.getCertifiedProductActivity = function () {
+                return self.simpleApiCall('/list_certifiedProductActivity');
+            };
+
+            self.getVendorActivity = function () {
+                return self.simpleApiCall('/list_vendorActivity');
+            };
+
+            self.getProductActivity = function () {
+                return self.simpleApiCall('/list_productActivity');
+            };
+
+            self.getAcbActivity = function () {
+                return self.simpleApiCall('/list_acbActivity');
+            };
         });
 })();

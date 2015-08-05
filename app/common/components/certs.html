@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-sm-12">
+    <p class="text-right">
+      <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts" /><label for="viewAllCerts">See all Certifications</label>
+    </p>
+    <accordion close-others="true">
+      <accordion-group heading="{{ cert.title }} ({{ cert.numActive }} met)" ng-repeat="cert in vm.certs" aria-expanded="false">
+        <div ng-show="vm.viewAllCerts || n.isActive" class="col-sm-4" ng-repeat="n in cert.certs">
+          <p>
+            <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.isActive && !n.hasVersion, 'fa-square-o': !n.isActive}"></i>
+            <span class="sr-only">{{ n.isActive ? 'meets' : 'does not meet'}}</span>
+            <b>{{ n.version }}</b> {{ n.number }}: {{ n.title }}
+          </p>
+        </div>
+      </accordion-group>
+      <accordion-group heading="ATL Test Report" aria-expanded="false">
+        <h3>The test lives here</h3>
+        <p>Pellentesque dapibus suscipit ligula.  Donec posuere augue in quam.  Etiam vel tortor sodales tellus ultricies commodo.  Suspendisse potenti.  Aenean in sem ac leo mollis blandit.  Donec neque quam, dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.  Etiam laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.  Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.  Vestibulum convallis, lorem a tempus semper, dui dui euismod elit, vitae placerat urna tortor vitae lacus.  Nullam libero mauris, consequat quis, varius et, dictum id, arcu.  Mauris mollis tincidunt felis.  Aliquam feugiat tellus ut neque.  Nulla facilisis, risus a rhoncus fermentum, tellus tellus lacinia purus, et dictum nunc justo sit amet elit.</p>
+      </accordion-group>
+    </accordion>
+  </div>
+</div>
