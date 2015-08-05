@@ -9,6 +9,7 @@
           <th>Last Name</th>
           <th>Email</th>
           <th>Phone Number</th>
+          <th>User&nbsp;Status</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -35,10 +36,14 @@
             <input ng-if="isModifying" type="text" ng-model="user.phoneNumber" class="form-control"/>
           </td>
           <td>
+            <span>Locked: <input type="checkbox" ng-model="user.accountLocked" ng-disabled="!isModifying" /></span><br />
+            <span>Enabled: <input type="checkbox" ng-model="user.accountEnabled" ng-disabled="!isModifying" /></span>
+          </td>
+          <td>
             <button class="btn btn-default btn-block" ng-show="!isModifying" ng-click="isModifying = !isModifying">Modify</button>
+            <button class="btn btn-default btn-block" ng-show="!isModifying" ng-click="deleteUser(user)">Delete</button>
             <button class="btn btn-default btn-block" ng-show="isModifying" ng-click="cancelUser(user); isModifying = !isModifying">Cancel</button>
             <button class="btn btn-default btn-block" ng-show="isModifying" ng-click="modifyUser(user); isModifying = !isModifying">Save</button>
-            <button class="btn btn-default btn-block" ng-show="!isModifying" ng-click="deleteUser(user)">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -64,8 +69,8 @@
             <label for="admin.new.phone" class="control-label sr-only">New Phone</label>
             <input type="text" id="admin.new.phone" ng-model="newUser.phoneNumber" class="form-control" />
           </td>
-          <td>
-            <button class="btn btn-default" ng-click="createUser(newUser)">Create new user</button>
+          <td colspan="2">
+            <button class="btn btn-default btn-block" ng-click="createUser(newUser)">Create new user</button>
           </td>
         </tr>
       </tfoot>

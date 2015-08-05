@@ -1,0 +1,98 @@
+<section>
+  <div class="row">
+    <div class="col-md-3 col-sm-6">
+      <h3>Vendor</h3>
+      <div ng-if="vm.activeVendor === ''">
+        <label for="vendorSelect" class="control-label">Select a vendor</label>
+        <select ng-model="vm.vendorSelect" multiple id="vendorSelect" class="input-sm form-control" size="12">
+          <option ng-repeat="vendor in vm.vendors | orderBy: 'value'" value="{{ vendor.value }}">{{ vendor.value }}</option>
+        </select>
+        <button class="btn btn-default form-control" ng-click="vm.selectVendor()">Choose Vendor</button>
+      </div>
+      <div ng-if="vm.activeVendor !== ''">
+        <div class="panel panel-default">
+          <div class="panel-heading">{{ vm.activeVendor.name }}</div> 
+          <div class="panel-body">
+            {{ vm.activeVendor.address }}<br />
+            Last Modified Date: {{ vm.activeVendor.lastModifiedDate | date }}
+            <br />
+            <p><a href="" ng-click="vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end vendor select -->
+    <div class="col-md-3 col-sm-6" ng-if="vm.activeVendor !== ''">
+      <h3>Product</h3>
+      <div ng-if="vm.activeProduct === ''">
+        <label for="productSelect" class="control-label">Select a product</label>
+        <select ng-model="vm.productSelect" multiple id="productSelect" class="input-sm form-control" size="12">
+          <option ng-repeat="product in vm.products | orderBy: 'value'" value="{{ product.value }}">{{ product.value }}</option>
+        </select>
+        <button class="btn btn-default form-control" ng-click="vm.selectProduct()">Choose Product</button>
+      </div>
+      <div ng-if="vm.activeProduct !== ''">
+        <div class="panel panel-default">
+          <div class="panel-heading">{{ vm.activeProduct.name }}</div>
+          <div class="panel-body">
+            {{ vm.activeProduct.details }} <br />
+            Last Modified Date: {{ vm.activeProduct.lastModifiedDate | date }}
+            <br />
+            <p><a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end product select -->
+    <div class="col-md-3 col-sm-6" ng-if="vm.activeProduct !== ''">
+      <h3>Version</h3>
+      <div ng-if="vm.activeVersion === ''">
+        <label for="versionSelect" class="control-label">Select a version</label>
+        <select ng-model="vm.versionSelect" multiple id="versionSelect" class="input-sm form-control" size="12">
+          <option ng-repeat="version in vm.versions | orderBy: 'value'" value="{{ version.value }}">{{ version.value }}</option>
+        </select>
+        <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose Version</button>
+      </div>
+      <div ng-if="vm.activeVersion !== ''">
+        <div class="panel panel-default">
+          <div class="panel-heading">{{ vm.activeVersion.name }}</div>
+          <div class="panel-body">
+            {{ vm.activeVersion.details }} <br />
+            Last Modified Date: {{ vm.activeVersion.lastModifiedDate | date }}
+            <br />
+            <p><a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end version select -->
+    <div class="col-md-3 col-sm-6" ng-if="vm.activeVersion !== ''">
+      <h3>Certified Product</h3>
+      <div ng-if="vm.activeCP === ''">
+        <label for="cpSelect" class="control-label">Select a certified product</label>
+        <select ng-model="vm.cpSelect" multiple id="cpSelect" class="input-sm form-control" size="12">
+          <option ng-repeat="cp in vm.cps | orderBy: 'value'" value="{{ cp.value }}">{{ cp.value | date }}</option>
+        </select>
+        <button class="btn btn-default form-control" ng-click="vm.selectCP()">Choose Certified Product</button>
+      </div>
+      <div ng-if="vm.activeCP !== ''">
+        <div class="panel panel-default">
+          <div class="panel-heading">{{ vm.activeCP.chplNum }}</div>
+          <div class="panel-body">
+            <strong>Classification:</strong> {{ vm.activeCP.classification }} <br />
+            <strong>Practice Type:</strong> {{ vm.activeCP.practiceType }} <br />
+            <strong>Certification Edition:</strong> {{ vm.activeCP.edition }} <br />
+            <strong>Certifying Body:</strong> {{ vm.activeCP.certBody }} <br />
+            <strong>Certification Date:</strong> {{ vm.activeCP.certDate | date }} <br />
+            <strong>Additional Software:</strong> {{ vm.activeCP.additionalSoftware }} <br />
+            <strong>Last Modified Date:</strong> {{ vm.activeCP.lastModifiedDate | date }}
+            <br />
+            <p><a href="" ng-click="vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to certified product select</a></p>
+          </div>
+        </div>
+      </div>
+    </div> <!-- end cert prod select -->
+  </div><!-- end CP drill-down -->
+  <div ng-if="vm.activeCP !== ''" class="row">
+    <div class="col-md-12">
+      <h3>Certified Product Details</h3>
+    </div>
+  </div>
+</section>

@@ -93,7 +93,7 @@
             productList[product] = true;
 
             allProducts.push({
-                additionalSoftware: fakeSentence(60),
+                additionalSoftware: fakeSentence(20),
                 vendor: vendor,
                 product: product,
                 version: fakeChunk() + "." + fakeChunk(),
@@ -165,6 +165,34 @@
         return allCerts;
     }
 
+    function listCertifiedProductActivity() {
+        var ret = [];
+        ret.push({product: 'prod', vendor: 'vend', version: '123', certBody: 'ACB', edition: 2011, activityDate: '2015-02-13', activity: 'added certification'}
+                 ,{product: 'dorp', vendor: 'dnev', version: 'bde', certBody: 'ACB2', edition: 2014, activityDate: '2014-02-13', activity: 'certified'});
+        return ret;
+    };
+
+    function listVendorActivity() {
+        var ret = [];
+        ret.push({vendor: 'vend', activityDate: '2015-02-13', activity: 'A new vendor was added to the CHPL'}
+                 ,{vendor: 'dnev', activityDate: '2014-02-13', activity: 'BigCorp was acquired by SmallCorp Ltd.'});
+        return ret;
+    };
+
+    function listProductActivity() {
+        var ret = [];
+        ret.push({vendor: 'vend', product: 'prod1', activityDate: '2015-02-13', activity: '"vend" wants to certify "prod1"'}
+                 ,{vendor: 'dnev', product: 'another product', activityDate: '2014-02-13', activity: '"another product" has been purchased by "dnev"'});
+        return ret;
+    };
+
+    function listAcbActivity() {
+        var ret = [];
+        ret.push({name: 'acb1', activityDate: '2015-02-13', activity: 'A new user was added'}
+                 ,{name: 'acb2', activityDate: '2014-02-13', activity: 'A user was removed from this ACB'});
+        return ret;
+    };
+
     makeFakes(totalResults);
     /*
      * End of dummy data section
@@ -176,6 +204,7 @@
             $httpBackend.whenGET(/^admin\/.*/).passThrough();
             $httpBackend.whenGET(/^search\/.*/).passThrough();
             $httpBackend.whenGET(/^compare\/.*/).passThrough();
+            $httpBackend.whenGET(/^common\/.*/).passThrough();
             $httpBackend.whenGET(/^product\/.*/).passThrough();
             $httpBackend.whenGET(/localhost:8080/).passThrough();
             $httpBackend.whenPOST(/localhost:8080/).passThrough();
@@ -190,6 +219,10 @@
             $httpBackend.whenGET(/ainq.com\/list_vendors/).respond(200, listVendors()); // list all vendors
             $httpBackend.whenGET(/ainq.com\/list_certBodies/).respond(200, listCertBodies()); // list cerification bodies
             $httpBackend.whenGET(/ainq.com\/list_filterCerts/).respond(200, listFilterCerts()); // list cerification bodies
+            $httpBackend.whenGET(/ainq.com\/list_certifiedProductActivity/).respond(200, listCertifiedProductActivity()); // list certifiedProduct activities
+            $httpBackend.whenGET(/ainq.com\/list_vendorActivity/).respond(200, listVendorActivity()); // list vendor activities
+            $httpBackend.whenGET(/ainq.com\/list_productActivity/).respond(200, listProductActivity()); // list product activities
+            $httpBackend.whenGET(/ainq.com\/list_acbActivity/).respond(200, listAcbActivity()); // list product activities
         })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {

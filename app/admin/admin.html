@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <section ng-if="vm.isAuthed()">
+  <section ng-if="vm.isAuthed()" active="true">
     <div class="row">
       <div class="col-md-12">
         <h2>Welcome {{ vm.getUsername() }}</h2>
@@ -37,10 +37,19 @@
                             cancel-user="vm.cancelUser">
         </ai-user-management>
       </tab>
-      <tab heading="ACB Management" active="true">
+      <tab heading="ACB Management">
         <ai-acb-management acbs="vm.acbs"
                            create-acb="vm.createACB">
         </ai-acb-management>
       </tab>
+      <tab heading="Vendor &amp; Product Management" active="true">
+        <ai-vp-management>
+        </ai-vp-management>
+      </tab>
+      <tab heading="Reports">
+        <ai-reports>
+        </ai-reports>
+      </tab>
+    </tabset>
   </section> <!-- end authenticated user section -->
 </div> <!-- end controller -->
