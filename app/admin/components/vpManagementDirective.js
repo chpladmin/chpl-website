@@ -59,7 +59,6 @@
                         if (self.cpSelect) {
                             commonService.getProduct(self.cpSelect[0])
                                 .then(function (product) {
-                                    $log.warn(product);
                                     self.activeCP = product;
                                 });
                         }

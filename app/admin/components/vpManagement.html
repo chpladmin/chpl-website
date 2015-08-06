@@ -93,6 +93,10 @@
   <div ng-if="vm.activeCP !== ''" class="row">
     <div class="col-md-12">
       <h3>Certified Product Details</h3>
+      <ai-certs certs="vm.activeCP.certs"
+                default-all="true"
+                edit-mode="true">
+      </ai-certs>
     </div>
   </div>
 </section>
