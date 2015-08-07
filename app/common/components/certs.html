@@ -10,16 +10,16 @@
     </p>
     <accordion close-others="true">
       <accordion-group heading="{{ cert.title }} ({{ cert.numActive }} met)" ng-repeat="cert in vm.certs track by $index" aria-expanded="false">
-        <div ng-show="vm.viewAllCerts || n.isActive" ng-class="vm.isEditing ? 'col-sm-6' : 'col-sm-4'" ng-repeat="n in cert.certs track by $index">
+        <div ng-show="vm.viewAllCerts || n.isActive" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in cert.certs track by $index">
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.isActive && !n.hasVersion, 'fa-square-o': !n.isActive}"></i>
             <span class="sr-only">{{ n.isActive ? 'meets' : 'does not meet'}}</span>
             <b>{{ n.version }}</b> {{ n.number }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="vm.editCerts[n.number]" ng-if="!n.hasVersion" id="data-{{$parent.$parent.$index + '.' + $index}}"></input>
+            <input type="checkbox" ng-model="vm.editCerts[n.number]" ng-if="!n.hasVersion" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
             <span class="cert-bloc" ng-if="n.hasVersion">
-              <select ng-model="vm.editCerts[n.number]" multiple size="6" id="data-{{$parent.$index + '.' + $index}}">
+              <select ng-model="vm.editCerts[n.number]" multiple size="6" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}">
                 <option value=""></option>
                 <option value="v0">v0</option>
                 <option value="v1">v1</option>
@@ -28,7 +28,7 @@
                 <option value="v4">v4</option>
               </select>
             </span>
-            <label for="data-{{$parent.$index + '.' + $index}}">{{ n.number }}: {{ n.title }}</label>
+            <label for="data_{{$parent.$parent.$index + '_' + $index}}">{{ n.number }}: {{ n.title }}</label>
           </p>
         </div>
       </accordion-group>

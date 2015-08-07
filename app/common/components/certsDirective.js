@@ -33,7 +33,6 @@
                             }
                         }};
                     if (self.editMode) {
-                        $log.info('building edit object');
                         self.buildEditObject();
                     }
 

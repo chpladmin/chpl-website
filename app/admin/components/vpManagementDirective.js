@@ -15,6 +15,12 @@
                     self.activeProduct = '';
                     self.activeVersion = '';
                     self.activeCP = '';
+                    /*
+                    commonService.getProduct('dev product')
+                        .then(function (product) {
+                            self.activeCP = product;
+                        });
+                        */
                     commonService.getVendors()
                         .then(function (vendors) {
                             self.vendors = vendors;
