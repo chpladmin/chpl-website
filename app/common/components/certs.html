@@ -14,7 +14,7 @@
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.isActive && !n.hasVersion, 'fa-square-o': !n.isActive}"></i>
             <span class="sr-only">{{ n.isActive ? 'meets' : 'does not meet'}}</span>
-            <b>{{ n.version }}</b> {{ n.number }}: {{ n.title }}
+            <b ng-if="n.hasVersion">{{ n.version }}</b> {{ n.number }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="vm.editCerts[n.number]" ng-if="!n.hasVersion" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
