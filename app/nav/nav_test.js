@@ -49,8 +49,8 @@
                 var controller = createController();
                 $location.path('/privacy');
                 expect($location.path()).toBe('/privacy');
-                expect(scope.isActive('/privacy')).toBe(true);
-                expect(scope.isActive('/search')).toBe(false);
+                expect(controller.isActive('/privacy')).toBe(true);
+                expect(controller.isActive('/search')).toBe(false);
             });
         });
     });

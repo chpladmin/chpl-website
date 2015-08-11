@@ -176,8 +176,8 @@
             $httpBackend.whenGET(/^search\/.*/).passThrough();
             $httpBackend.whenGET(/^compare\/.*/).passThrough();
             $httpBackend.whenGET(/^product\/.*/).passThrough();
-            $httpBackend.whenGET(/herokuapp/).passThrough(); // for JWT quote mocking
-            $httpBackend.whenPOST(/herokuapp/).passThrough();
+            $httpBackend.whenGET(/localhost:8080/).passThrough();
+            $httpBackend.whenPOST(/localhost:8080/).passThrough();
             $httpBackend.whenGET(/ainq.com\/search/).respond(200, getAllProducts()); // fake search results
             $httpBackend.whenGET(/ainq.com\/get_product/).respond(200, makeProduct()); // fake product
             $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs

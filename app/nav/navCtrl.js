@@ -9,28 +9,33 @@
                 return route === $location.path();
             };
 
-            $scope.isActive = self.isActive;
+            function handleLogin (res) {
+                if (res.status === 200) {
+                    var token = res.data.token ? res.data : null;
+                    if (token) {
+                        $log.info('JWT:', token);
+                    }
+                    self.message = 'Log in successful';
+                } else {
+                    self.message = 'Invalid username/password';
+                }
+            }
 
             function handleRequest (res) {
-                var token = res.data ? res.data.token : null;
-                if (token) {
-                    $log.info('JWT:', token);
+                $log.info(res);
+                if (res.status === 200) {
+                    self.message = res.data;
+                } else {
                 }
-                self.message = res.data.message;
             }
 
             self.login = function () {
                 userService.login(self.username, self.password)
-                    .then(handleRequest, handleRequest)
+                    .then(handleLogin, handleLogin)
             }
 
-            self.register = function () {
-                userService.register(self.username, self.password)
-                    .then(handleRequest, handleRequest)
-            }
-
-            self.getQuote = function () {
-                userService.getQuote ()
+            self.getUsers = function () {
+                userService.getUsers ()
                     .then(handleRequest, handleRequest)
             }
 
