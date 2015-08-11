@@ -83,7 +83,7 @@
           </div>
           <div class="col-sm-3">
             <select id="cqmField" ng-model="cqmTerm" multiple class="input-sm form-control">
-              <option ng-repeat="cqm in cqms" value="{{ cqm }}">{{ cqm.number + ': ' + cqm.title }}</option>
+              <option ng-repeat="cqm in cqms.certs" value="{{ cqm }}">{{ cqm.number + ': ' + cqm.title }}</option>
             </select>
           </div>
         </div> <!-- second row of advanced -->

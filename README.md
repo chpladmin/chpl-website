@@ -56,4 +56,8 @@ npm start &
 npm run protractor
 ```
 
+# Production deployment
+
+Edit chpl-website/app/common/commonModule.js and set the API url to be the location of the tomcat server running the CHPL API
+
 [git]: http://git-scm.com/

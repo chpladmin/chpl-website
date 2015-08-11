@@ -1,0 +1,89 @@
+<section class="row">
+  <div class="col-md-12">
+    <h1>ACB Management</h1>
+    <tabset vertical="false">
+      <tab ng-repeat="acb in acbs" heading="{{acb.name}}">
+        <div class="row">
+          <div class="col-md-12">
+            <h2>ACB: {{acb.name}}</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div ng-show="isModifying">
+              <h3>ACB Information</h3>
+              <label for="acb-new-name" class="control-label">ACB Name</label>
+              <input type="text" id="acb-new-name" ng-model="acb.name" class="form-control" />
+              <label for="acb-new-website" class="control-label">ACB Website</label>
+              <input type="text" id="acb-new-website" ng-model="acb.website" class="form-control" />
+              <h3>Address</h3>
+              <label for="acb-new-line1" class="control-label">Street Address Line 1</label>
+              <input type="text" id="acb-new-line1" ng-model="acb.address.line1" class="form-control" />
+              <label for="acb-new-line2" class="control-label">Street Address Line 2</label>
+              <input type="text" id="acb-new-line2" ng-model="acb.address.line2" class="form-control" />
+              <label for="acb-new-city" class="control-label">City</label>
+              <input type="text" id="acb-new-city" ng-model="acb.address.city" class="form-control" />
+              <label for="acb-new-region" class="control-label">Region</label>
+              <input type="text" id="acb-new-region" ng-model="acb.address.region" class="form-control" />
+              <label for="acb-new-country" class="control-label">Country</label>
+              <input type="text" id="acb-new-country" ng-model="acb.address.country" class="form-control" />
+              <button class="btn btn-default btn-block" ng-click="isModifying = !isModifying; saveACB(acb)">Save changes to this ACB</button>
+              <button class="btn btn-default btn-block" ng-click="isModifying = !isModifying; cancelACB(acb)">Cancel editing this ACB</button>
+            </div>
+            <div ng-show="!isModifying">
+              <h3>ACB Information</h3>
+              <span>Name: {{ acb.name }}</span><br />
+              <span>Website: {{ acb.website }}</span><br />
+              <h3>Address</h3>
+              <span>Line 1: {{ acb.address.line1 }}</span><br />
+              <span>Line 2: {{ acb.address.line2 }}</span><br />
+              <span>City: {{ acb.address.city }}</span><br />
+              <span>Region: {{ acb.address.region }}</span><br />
+              <span>Country: {{ acb.address.country }}</span><br />
+              <button class="btn btn-default btn-block" ng-click="isModifying = !isModifying">Edit this ACB</button>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <ai-user-management
+               users="acb.users">
+            </ai-user-management>
+          </div>
+        </div>
+      </tab>
+      <tab heading="Add new ACB">
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Add a new ACB</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <h3>ACB Information</h3>
+            <label for="acb-new-name" class="control-label">ACB Name</label>
+            <input type="text" id="acb-new-name" ng-model="newACB.name" class="form-control" />
+            <label for="acb-new-website" class="control-label">ACB Website</label>
+            <input type="text" id="acb-new-website" ng-model="newACB.website" class="form-control" />
+          </div>
+          <div class="col-md-8">
+            <h3>Address</h3>
+            <label for="acb-new-line1" class="control-label">Street Address Line 1</label>
+            <input type="text" id="acb-new-line1" ng-model="newACB.address.line1" class="form-control" />
+            <label for="acb-new-line2" class="control-label">Street Address Line 2</label>
+            <input type="text" id="acb-new-line2" ng-model="newACB.address.line2" class="form-control" />
+            <label for="acb-new-city" class="control-label">City</label>
+            <input type="text" id="acb-new-city" ng-model="newACB.address.city" class="form-control" />
+            <label for="acb-new-region" class="control-label">Region</label>
+            <input type="text" id="acb-new-region" ng-model="newACB.address.region" class="form-control" />
+            <label for="acb-new-country" class="control-label">Country</label>
+            <input type="text" id="acb-new-country" ng-model="newACB.address.country" class="form-control" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-md-offset-4">
+            <button class="btn btn-default btn-block" ng-click="createACB(newACB)">Create this ACB</button>
+          </div>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</section>

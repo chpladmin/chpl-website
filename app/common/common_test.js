@@ -144,13 +144,12 @@
             var data = [{ certs: [
                 { certs: [{ isActive: true }]},
                 { certs: [{ isActive: true }]},
-                { certs: [{ isActive: false }]},
-                { certs: [{ isActive: true }]}
+                { certs: [{ isActive: false }]}
             ]}];
             data = commonService.extractInfo(data);
 
             expect(data[0].numCerts).toBe(2);
-            expect(data[0].numCQMs).toBe(1);
+            expect(data[0].numCQMs).toBe(0);
 
         });
     });

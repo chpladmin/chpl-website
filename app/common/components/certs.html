@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-sm-12">
+    <p class="text-right">
+      <span class="pull-left" ng-if="vm.editMode">
+        <button class="btn btn-default" ng-if="!vm.isEditing" ng-click="vm.isEditing = !vm.isEditing">Edit</button>
+        <button class="btn btn-default" ng-if="vm.isEditing" ng-click="vm.saveEdits()">Save</button>
+        <button class="btn btn-default" ng-if="vm.isEditing" ng-click="vm.cancelEdits()">Cancel</button>
+      </span>
+      <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts" /><label for="viewAllCerts">See all Certifications</label>
+    </p>
+    <accordion close-others="true">
+      <accordion-group heading="{{ cert.title }} ({{ cert.numActive }} met)" ng-repeat="cert in vm.certs track by $index" aria-expanded="false">
+        <div ng-show="vm.viewAllCerts || n.isActive" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in cert.certs track by $index">
+          <p ng-if="!vm.isEditing">
+            <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.isActive && !n.hasVersion, 'fa-square-o': !n.isActive}"></i>
+            <span class="sr-only">{{ n.isActive ? 'meets' : 'does not meet'}}</span>
+            <b ng-if="n.hasVersion">{{ n.version }}</b> {{ n.number }}: {{ n.title }}
+          </p>
+          <p ng-if="vm.isEditing">
+            <input type="checkbox" ng-model="vm.editCerts[n.number]" ng-if="!n.hasVersion" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
+            <span class="cert-bloc" ng-if="n.hasVersion">
+              <select ng-model="vm.editCerts[n.number]" multiple size="6" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}">
+                <option value=""></option>
+                <option value="v0">v0</option>
+                <option value="v1">v1</option>
+                <option value="v2">v2</option>
+                <option value="v3">v3</option>
+                <option value="v4">v4</option>
+              </select>
+            </span>
+            <label for="data_{{$parent.$parent.$index + '_' + $index}}">{{ n.number }}: {{ n.title }}</label>
+          </p>
+        </div>
+      </accordion-group>
+      <accordion-group heading="ATL Test Report" aria-expanded="false">
+        <h3>The test lives here</h3>
+        <p>Pellentesque dapibus suscipit ligula.  Donec posuere augue in quam.  Etiam vel tortor sodales tellus ultricies commodo.  Suspendisse potenti.  Aenean in sem ac leo mollis blandit.  Donec neque quam, dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.  Etiam laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.  Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.  Vestibulum convallis, lorem a tempus semper, dui dui euismod elit, vitae placerat urna tortor vitae lacus.  Nullam libero mauris, consequat quis, varius et, dictum id, arcu.  Mauris mollis tincidunt felis.  Aliquam feugiat tellus ut neque.  Nulla facilisis, risus a rhoncus fermentum, tellus tellus lacinia purus, et dictum nunc justo sit amet elit.</p>
+      </accordion-group>
+    </accordion>
+  </div>
+</div>

@@ -29,9 +29,8 @@
         }
     }
 
-    angular.module('app.nav', ['ngRoute', 'app.loginServices'])
+    angular.module('app.nav', ['ngRoute', 'app.loginServices', 'app.common'])
         .factory('authInterceptor', authInterceptor)
-        .constant('API', 'http://localhost:8080/chpl-service')
         .config(function($httpProvider) {
             $httpProvider.interceptors.push('authInterceptor');
         })
