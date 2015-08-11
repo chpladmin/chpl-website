@@ -30,7 +30,7 @@
             }
         });
 
-        describe('certs.directive.controller', function () {
+        describe('controller', function () {
             var scope;
             var ctrl;
 

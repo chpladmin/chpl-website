@@ -23,10 +23,11 @@ module.exports = function(config){
             'app/**/*Module.js',
             'app/common/**/*.js',
             'app/common/components/*.html',
+            'app/admin/**/*.js',
+            'app/admin/components/*.html',
             'app/compare/**/*.js',
             'app/login/**/*.js',
             'app/nav/**/*.js',
-            'app/admin/**/*.js',
             'app/product/**/*.js',
             'app/search/**/*.js'
         ],
@@ -40,7 +41,8 @@ module.exports = function(config){
             'app/product/**/!(*test).js': ['coverage'],
             'app/search/**/!(*test).js': ['coverage'],
             'app/app.js': ['coverage'],
-            'app/common/components/*.html': 'ng-html2js'
+            'app/common/components/*.html': 'ng-html2js',
+            'app/admin/components/*.html': 'ng-html2js'
         },
 
         autoWatch : true,
