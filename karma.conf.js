@@ -21,6 +21,7 @@ module.exports = function(config){
             'app/app_test.js',
             'app/appDev.js',
             'app/**/*Module.js',
+            'app/api/**/*.js',
             'app/common/**/*.js',
             'app/common/components/*.html',
             'app/admin/**/*.js',
@@ -33,6 +34,7 @@ module.exports = function(config){
         ],
 
         preprocessors: {
+            'app/api/**/!(*test).js': ['coverage'],
             'app/common/**/!(*test).js': ['coverage'],
             'app/compare/**/!(*test).js': ['coverage'],
             'app/login/**/!(*test).js': ['coverage'],
