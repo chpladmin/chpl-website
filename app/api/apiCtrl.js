@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.api')
-        .controller('ApiController', ['$scope', '$log', '$routeParams', 'apiService', function($scope, $log, $routeParams, apiService) {
+        .controller('ApiController', ['$scope', '$log', 'apiService', function($scope, $log, apiService) {
             var self = this;
 
             self.apiCalls = [];

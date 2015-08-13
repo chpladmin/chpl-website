@@ -84,6 +84,7 @@ apis.endpoints = [
         name: 'List Users',
         description: 'List all CHPL users',
         request: '/list_users',
+        id: 'list_users',
         requestType: 'GET',
         parameters: null,
         response: [apis.entities.user]
@@ -92,51 +93,58 @@ apis.endpoints = [
         name: 'List ACBs',
         description: 'List all registered ACBs',
         request: '/list_acbs',
+        id: 'list_acbs',
         requestType: 'GET',
         parameters: null,
         response: [apis.entities.acb]
     },{
 
-        name: 'List users at ACB',
+        name: 'List Users at ACB',
         description: 'List all ACB Admin or Staff with access to the parameterized ACB',
         request: '/list_users_at_acb',
+        id: 'list_users_at_acb',
         requestType: 'GET',
         parameters: 'acbId',
         response: [apis.entities.user]
     },{
-        name: 'Create user',
+        name: 'Create User',
         description: 'Create a user directly',
         note: 'The request json object will not have the userId, but will have a password. For development purposes only. Should there be a separate "create user" api call for creating a user at a particular ACB?',
         request: '/create_user',
+        id: 'create_user',
         requestType: 'POST',
         jsonParameter: [apis.entities.user],
         response: apis.entities.success
     },{
-        name: 'Invite user',
+        name: 'Invite User',
         description: 'Invite a user to register their account',
         note: 'Does the request need to have the ROLE and/or ACBs that will be associated with the user? Should there be a separate "invite user" api call to use when a user is being invited to manage an ACB?',
         request: '/invite_user',
+        id: 'invite_user',
         requestType: 'GET',
         parameters: ['example@example.com', ['ROLE'], ['acbId']],
         response: apis.entities.success
     },{
-        name: 'Modify user',
+        name: 'Modify User',
         description: 'Modify a user',
         request: '/modify_user',
+        id: 'modify_user',
         requestType: 'POST',
         jsonParameter: [apis.entities.user],
         response: apis.entities.success
     },{
-        name: 'Delete user',
+        name: 'Delete User',
         description: 'Disable a user\'s access to CHPL entirely',
         request: '/delete_user',
+        id: 'delete_user',
         requestType: 'GET',
         parameters: 'userId',
         response: apis.entities.success
     },{
-        name: 'Delete user from ACB',
+        name: 'Delete User from ACB',
         description: 'Disable a user\'s ability to manage a particular ACB, without turning off whatever other access they have',
         request: '/delete_user_from_acb',
+        id: 'delete_user_from_acb',
         requestType: 'GET',
         parameters: ['userId', 'acbId'],
         response: apis.entities.success
@@ -145,6 +153,7 @@ apis.endpoints = [
         description: 'Create an ACB',
         note: 'Will not have acbId in JSON parameter',
         request: '/create_acb',
+        id: 'create_acb',
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
         response: apis.entities.success
@@ -152,6 +161,7 @@ apis.endpoints = [
         name: 'Modify ACB',
         description: 'Modify an already existing ACB',
         request: '/modify_acb',
+        id: 'modify_acb',
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
         response: apis.entities.success
@@ -159,6 +169,7 @@ apis.endpoints = [
         name: 'List Certified Product Activity',
         description: 'Get a list of the certified product activity. If the logged in user is a CHPL admin, this will return all activity from all Certified Products. If the user is an ACB admin, this will return a filtered list of Certified Products; including only those the user has ACB admin rights over.',
         request: '/list_certified_product_activity',
+        id: 'list_certified_product_activity',
         requestType: 'GET',
         parameters: null,
         response: [apis.entities.cpActivity]
@@ -166,6 +177,7 @@ apis.endpoints = [
         name: 'List Vendor Activity',
         description: 'Get a list of the vendor activity',
         request: '/list_vendor_activity',
+        id: 'list_vendor_activity',
         requestType: 'GET',
         parameters: null,
         response: [apis.entities.vendorActivity]
@@ -173,6 +185,7 @@ apis.endpoints = [
         name: 'List Product Activity',
         description: 'Get a list of the product activity',
         request: '/list_product_activity',
+        id: 'list_product_activity',
         requestType: 'GET',
         parameters: null,
         response: [apis.entities.productActivity]
@@ -180,6 +193,7 @@ apis.endpoints = [
         name: 'List ACB Activity',
         description: 'Get a list of the acb activity. If the logged in user is a CHPL admin, this will return all activity from all Certified Products. If the user is an ACB admin, this will return a filtered list of Certified Products; including only those the user has ACB admin rights over.',
         request: '/list_acb_activity',
+        id: 'list_acb_activity',
         requestType: 'GET',
         parameters: null,
         response: [apis.entities.acbActivity]
@@ -188,6 +202,7 @@ apis.endpoints = [
         description: 'Get a list of all of the products associated with the parameterized vendor',
         note: 'Same as current "/list_products" call, but filtered down to only the products owned by the passed in vendor. Could be done on the front end, but maybe faster/easier on the back?',
         request: '/list_products_by_vendor',
+        id: 'list_products_by_vendor',
         requestType: 'GET',
         parameters: 'vendorId',
         response: [apis.entities.product]
@@ -195,6 +210,7 @@ apis.endpoints = [
         name: 'List Versions by Product',
         description: 'Get a list of all of the versions associated with the parameterized product',
         request: '/list_versions_by_product',
+        id: 'list_versions_by_product',
         requestType: 'GET',
         parameters: 'productId',
         response: [apis.entities.version]
@@ -203,6 +219,7 @@ apis.endpoints = [
         description: 'Get a list of all of the Certified Products associated with the parameterized version (and, by implication, the relevant vendor & product). If the logged in user is a CHPL admin, this will return all relevant Certified Products. If the user is an ACB admin, this will return a filtered list of the relevant Certified Products; including only those that were certified by an ACB the user has ACB admin rights over.',
         note: 'Not sure what should be displayed here for the end user to choose the particular CP they\'re looking for. Maybe CHPL_Num? Maybe CertDate?',
         request: '/list_certified_products_by_version',
+        id: 'list_certified_products_by_version',
         requestType: 'GET',
         parameters: 'versionId',
         response: [apis.entities.cps]
@@ -210,6 +227,7 @@ apis.endpoints = [
         name: 'Get Vendor',
         description: 'Get a specific vendor, with relevant data',
         request: '/get_vendor',
+        id: 'get_vendor',
         requestType: 'GET',
         parameters: 'vendorId',
         response: apis.entities.vendor
@@ -217,6 +235,7 @@ apis.endpoints = [
         name: 'Get Product',
         description: 'Get a specific product, with relevant data',
         request: '/get_product',
+        id: 'get_product',
         requestType: 'GET',
         parameters: 'productId',
         response: apis.entities.product
@@ -224,6 +243,7 @@ apis.endpoints = [
         name: 'Get Version',
         description: 'Get a specific version, with relevant data',
         request: '/get_version',
+        id: 'get_version',
         requestType: 'GET',
         parameters: 'versionId',
         response: apis.entities.version
@@ -232,6 +252,7 @@ apis.endpoints = [
         description: 'Update one or more vendors with passed in data. If more than one vendorId is supplied, merge the vendors, assigning all products originally assigned to any of the vendors to the single resulting vendor',
         note: 'The Vendor object in the Request parameter will not have a vendorId or lastModifiedDate field',
         request: '/update_vendor',
+        id: 'update_vendor',
         requestType: 'POST',
         jsonParameter: [['vendorId'], apis.entities.vendor],
         response: apis.entities.success
@@ -240,6 +261,7 @@ apis.endpoints = [
         description: 'Update one or more products with passed in data. If more than one productId is supplied, merge the products, assigning all versions originally assigned to any of the products to the single resulting product. If a newVendorId is supplied in the Request, the Product is changing ownership; merge the products (if necessary), and then reassign it to the new Vendor indicated',
         note: 'The Product object in the Request parameter will not have a productId or lastModifiedDate field',
         request: '/update_product',
+        id: 'update_product',
         requestType: 'POST',
         jsonParameter: [['productId'], apis.entities.product, 'newVendorId'],
         response: apis.entities.success
@@ -247,6 +269,7 @@ apis.endpoints = [
         name: 'Update Version',
         description: 'Update the version of a specific product',
         request: '/update_version',
+        id: 'update_version',
         requestType: 'POST',
         jsonParameter: ['versionId', 'versionText'],
         response: apis.entities.success
@@ -254,6 +277,8 @@ apis.endpoints = [
         name: 'Update Certified Product',
         description: 'Update a certified product with the passed in data',
         note: 'This is the big one. Will want to pass in a certified product in same format as what is returned from the "/get_product?id=SOMETHING" existing call, and will want that certified product to be updated accordingly. Probably should not change Vendor/Product/Version relationships, but anything(?) else is fair game. Also, would be happy to split this into two calls: one for basic certified product info (classification, practice type, certifying acb, etc.), second for certification & cqm updates. Discussion warranted?',
+        request: '/update_certified_product',
+        id: 'update_certified_product',
         requestType: 'POST',
         jsonParameter: {cpId: 'long', other: 'All of the other parts of the certified product'},
         response: apis.entities.success
