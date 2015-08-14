@@ -151,7 +151,7 @@ apis.endpoints = [
     },{
         name: 'Create ACB',
         description: 'Create an ACB',
-        note: 'Will not have acbId in JSON parameter',
+        note: 'Will not have acbId in JSON request parameter',
         request: '/create_acb',
         id: 'create_acb',
         requestType: 'POST',
@@ -254,7 +254,7 @@ apis.endpoints = [
         request: '/update_vendor',
         id: 'update_vendor',
         requestType: 'POST',
-        jsonParameter: [['vendorId'], apis.entities.vendor],
+        jsonParameter: [{'vendorIds': ['vendorId'], 'vendor': apis.entities.vendor}],
         response: apis.entities.success
     },{
         name: 'Update Product',
@@ -281,6 +281,31 @@ apis.endpoints = [
         id: 'update_certified_product',
         requestType: 'POST',
         jsonParameter: {cpId: 'long', other: 'All of the other parts of the certified product'},
+        response: apis.entities.success
+    },{
+        name: 'Get Certified Products being uploaded',
+        description: 'Retrieve the Certified Products that are in the process of being uploaded into the CHPL database. If the user is a CHPL Admin, this will return all of those CPs. If the user is an ACB Admin, it will only return those that are being certified by an ACB to which that user has access',
+        request: '/list_uploadingCps',
+        id: 'list_uploadingCps',
+        requestType: 'GET',
+        parameters: null,
+        response: [{cpId: 'long', vendor: apis.entities.vendor, product: apis.entities.product, version: apis.entities.version, certified_product: 'all the parts of a cp in the process of uploading', uploadDate: 'string'}]
+    },{
+        name: 'Confirm Certified Product being uploaded',
+        description: 'Confirm a particular Certified Product is ready to be entered in the CHPL database permanently',
+        request: '/confirm_uploadingCp',
+        id: 'confirm_uploadingCp',
+        requestType: 'GET',
+        parameters: 'cpId',
+        response: apis.entities.success
+    },{
+        name: 'Start Upload of Certified Products',
+        description: 'Provides end point for reception of Certified Product upload file',
+        note: 'Not too sure about the details for this one, but something like it will be necessary',
+        request: '/uploadCps',
+        id: 'uploadCps',
+        requestType: 'POST',
+        jsonParameter: {file: 'file'},
         response: apis.entities.success
     }
 ];
