@@ -116,5 +116,9 @@
             self.getAcbActivity = function () {
                 return self.simpleApiCall('/list_acbActivity');
             };
+
+            self.getUploadingCps = function () {
+                return self.simpleApiCall('/list_uploadingCps');
+            };
         });
 })();

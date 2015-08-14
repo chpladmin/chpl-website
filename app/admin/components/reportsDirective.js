@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .directive('aiReports', ['commonService', function (commonService) {
+        .directive('aiReports', ['commonService', 'authService', function (commonService, authService) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -30,6 +30,8 @@
                             scope.searchedACBs = data;
                             scope.displayedACBs = [].concat(scope.searchedACBs);
                         });
+                    scope.isAcbAdmin = authService.isAcbAdmin();
+                    scope.isChplAdmin = authService.isChplAdmin();
                 }
             };
         }]);

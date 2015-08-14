@@ -47,6 +47,26 @@
                 }
             }
 
+            self.isChplAdmin = function () {
+                var token = self.getToken();
+                if (token) {
+                    var authorities = self.parseJwt(token).Authorities;
+                    return authorities.indexOf('ROLE_ADMIN') > -1
+                } else {
+                    return false;
+                }
+            }
+
+            self.isAcbAdmin = function () {
+                var token = self.getToken();
+                if (token) {
+                    var authorities = self.parseJwt(token).Authorities;
+                    return authorities.indexOf('ROLE_ACB_ADMIN') > -1
+                } else {
+                    return false;
+                }
+            }
+
             self.getUsername = function () {
                 if (self.isAuthed()) {
                     var token = self.getToken();

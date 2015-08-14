@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .directive('aiAcbManagement', function () {
+        .directive('aiAcbManagement', ['authService', function (authService) {
             return {
                 restrict: 'E',
                 replace: true,
@@ -14,7 +14,9 @@
                 link: function (scope, element, attrs) {
                     scope.newACB = {};
                     scope.createACB = scope.createACB(scope.newACB);
+                    scope.isChplAdmin = authService.isChplAdmin();
+                    scope.isAcbAdmin = authService.isAcbAdmin();
                 }
             };
-        });
+        }]);
 })();

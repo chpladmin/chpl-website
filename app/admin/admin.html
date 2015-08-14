@@ -29,7 +29,7 @@
       </div>
     </div>
     <tabset>
-      <tab heading="User Management">
+      <tab ng-if="vm.isChplAdmin()" heading="User Management">
         <ai-user-management users="vm.users"
                             create-user="vm.createUser"
                             modify-user="vm.modifyUser"
@@ -50,7 +50,7 @@
         <ai-reports>
         </ai-reports>
       </tab>
-      <tab heading="CMS version bundle management">
+      <tab ng-if="vm.isChplAdmin()" heading="CMS version bundle management">
         <h2>Updating CMS Version bundles</h2>
       </tab>
     </tabset>

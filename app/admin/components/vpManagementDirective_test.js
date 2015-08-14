@@ -23,6 +23,7 @@
                 mockCommonService.classifications = ['Classification 1', 'Classification 2'];
                 mockCommonService.practices  = ['Practice 1', 'Practice 2'];
                 mockCommonService.certBodies  = ['CB 1', 'CB 2'];
+                mockCommonService.uploadingCps = [{vendor: 'Vend', product: 'Prod', version: 'version', edition: '2014', uploadDate: '2015-07-02'}];
 
                 mockCommonService.getVendors = function () {
                     var defer = $q.defer();
@@ -59,6 +60,12 @@
                     defer.resolve(this.certBodies);
                     return defer.promise;
                 };
+
+                mockCommonService.getUploadingCps = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.uploadingCps);
+                    return defer.promise;
+                };
             });
         });
 
@@ -91,10 +98,15 @@
                     $scope: scope,
                     $element: null,
                     commonService: commonService});
+                scope.$digest();
             }));
 
             it('should exist', function() {
                 expect(ctrl).toBeDefined();
+            });
+
+            it('should have vendors at load', function () {
+                expect(ctrl.vendors.length).toBe(2);
             });
         });
     });

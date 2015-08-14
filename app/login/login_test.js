@@ -15,7 +15,7 @@
             }
         });
 
-        describe('app.loginServices.authservices', function () {
+        describe('authorization services', function () {
             var authService;
             var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3QyIiwiaWQiOjIsImV4cCI6MTQzNjUyODYwNiwiaWF0IjoxNDM2NDQyMjA2fQ.Fo482cebe7EfuTtGHjvgsMByC0l-V8ZULMlCNVoxWmI';
 

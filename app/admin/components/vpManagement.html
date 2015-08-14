@@ -1,4 +1,35 @@
 <section>
+  <div class="row" ng-if="vm.uploadingCps.length > 0">
+    <div class="col-sm-12">
+      <h3>Certified Products in the process of upload</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Vendor</th>
+            <th>Product</th>
+            <th>Version</th>
+            <th>Edition</th>
+            <th>Upload date</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="cp in vm.uploadingCps">
+            <td>{{ cp.vendor.name }}</td>
+            <td>{{ cp.product.name }}</td>
+            <td>{{ cp.version.name }}</td>
+            <td>{{ cp.edition }}</td>
+            <td>{{ cp.uploadDate | date }}</td>
+            <td>
+              <button ng-if="vm.inspectingCp === ''" class="btn btn-default btn-block" ng-click="vm.inspectCp(cp)">Inspect</button>
+              <button ng-if="vm.inspectingCp !== ''" class="btn btn-default btn-block" ng-click="vm.confirmCp(cp)">Confirm</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> <!-- end of upload process table -->
+
   <div class="row">
     <div class="col-md-3 col-sm-6">
       <h3>Vendor</h3>
@@ -56,7 +87,7 @@
             <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Vendor</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Save Vendor</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Cancel Edits</button></p>
-            <p class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
+            <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
           </div>
         </div>
       </div>
@@ -121,6 +152,15 @@
       </div>
     </div> <!-- end vendor merge -->
 
+    <div class="col-sm-9" ng-if="vm.activeVendor === '' && vm.isChplAdmin">
+      <h3>Upload Certified Products</h3>
+      <div class="form-group">
+        <label for="uploadCPFile">Select your upload file</label>
+        <input class="input-sm form-control" type="file" id="uploadCPFile"></input>
+      </div>
+      <p><button class="btn btn-default" ng-click="vm.uploadFile()">Submit file</button></p>
+    </div> <!-- end upload certified products -->
+
     <div class="col-md-3 col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
       <h3>Product</h3>
       <div ng-if="vm.activeProduct === '' || vm.activeProduct.length > 1">
@@ -163,7 +203,7 @@
             <p><button class="btn btn-default btn-block" ng-if="!vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Edit Product</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Save Product</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Cancel Edits</button></p>
-            <p class="text-center"><a href="" ng-click="vm.editProduct = false; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
+            <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editProduct = false; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
           </div>
         </div>
       </div>
@@ -244,7 +284,7 @@
             <p><button class="btn btn-default btn-block" ng-if="!vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Edit Version</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Save Version</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Cancel Edits</button></p>
-            <p class="text-center"><a href="" ng-click="vm.editVersion = false; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
+            <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVersion = false; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
           </div>
         </div>
       </div>
@@ -268,7 +308,7 @@
               <strong>Classification:</strong> {{ vm.activeCP.classification }} <br />
               <strong>Practice Type:</strong> {{ vm.activeCP.practiceType }} <br />
               <strong>Certification Edition:</strong> {{ vm.activeCP.edition }} <br />
-              <strong>Certifying Body:</strong> {{ vm.activeCP.certBody }} <br />
+              <strong>Certification Body:</strong> {{ vm.activeCP.certBody }} <br />
               <strong>Certification Date:</strong> {{ vm.activeCP.certDate | date }} <br />
               <strong>Additional Software:</strong> {{ vm.activeCP.additionalSoftware }} <br />
             </span>
@@ -287,11 +327,12 @@
               </div>
               <div class="form-group">
                 <label for="cpEdition">Certification Edition</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.edition" id="cpEdition">>
+                <select class="input-sm form-control" ng-model="vm.activeCP.edition" id="cpEdition">
                   <option ng-repeat="edition in vm.editions" value="{{edition.value }}">{{ edition.value }}</option>
                 </select>
-                </div>
-              <div class="form-group">
+              </div>
+              <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.activeCP.certBody }} </div>
+              <div ng-if="vm.isChplAdmin" class="form-group">
                 <label for="cpBody">Certification Body</label>
                 <select class="input-sm form-control" ng-model="vm.activeCP.certBody" id="cpBody">
                   <option ng-repeat="body in vm.bodies" value="{{ body.value }}">{{ body.value }}</option>
@@ -312,7 +353,7 @@
             <p><button class="btn btn-default btn-block" ng-if="!vm.editCP" ng-click="vm.editCP = ! vm.editCP">Edit Certified Product</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editCP" ng-click="vm.editCP = ! vm.editCP">Save Certified Product</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editCP" ng-click="vm.editCP = ! vm.editCP">Cancel Edits</button></p>
-            <p class="text-center"><a href="" ng-click="vm.editCP = false; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to certified product select</a></p>
+            <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editCP = false; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to certified product select</a></p>
           </div>
         </div>
       </div>
