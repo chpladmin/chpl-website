@@ -19,11 +19,10 @@
                     if (typeof response.data === 'string') {
                         response.data = JSON.parse(response.data);
                     }
+                    if (response.data.token) {
+                        authService.saveToken(response.data.token);
+                    }
                 }
-                if (response.config.url.indexOf(API) === 0 && response.data.token ) {
-                    authService.saveToken(response.data.token);
-                }
-
                 return response;
             }
         }

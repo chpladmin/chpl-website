@@ -1,3 +1,5 @@
+'use strict';
+
 var apis = {};
 apis.entities = {};
 apis.entities.address = {
@@ -283,7 +285,7 @@ apis.endpoints = [
         jsonParameter: {cpId: 'long', other: 'All of the other parts of the certified product'},
         response: apis.entities.success
     },{
-        name: 'Get Certified Products being uploaded',
+        name: 'List Certified Products being uploaded',
         description: 'Retrieve the Certified Products that are in the process of being uploaded into the CHPL database. If the user is a CHPL Admin, this will return all of those CPs. If the user is an ACB Admin, it will only return those that are being certified by an ACB to which that user has access',
         request: '/list_uploadingCps',
         id: 'list_uploadingCps',

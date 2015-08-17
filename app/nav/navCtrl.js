@@ -9,7 +9,7 @@
                 return route === $location.path();
             };
 
-            function handleLogin (res) {
+            self.handleLogin = function (res) {
                 if (res.status === 200) {
                     var token = res.data.token ? res.data : null;
                     if (token) {
@@ -23,25 +23,17 @@
                 }
             }
 
-            function handleRequest (res) {
-                $log.info(res);
-                if (res.status === 200) {
-                    self.message = res.data;
-                } else {
-                }
-            }
-
             self.login = function () {
                 userService.login(self.username, self.password)
-                    .then(handleLogin, handleLogin)
+                    .then(self.handleLogin, self.handleLogin)
             }
 
             self.logout = function () {
-                authService.logout && authService.logout()
+                authService.logout()
             }
 
             self.isAuthed = function() {
-                return authService.isAuthed ? authService.isAuthed() : false
+                return authService.isAuthed()
             }
 
             self.getUsername = function() {

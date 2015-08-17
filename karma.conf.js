@@ -1,9 +1,9 @@
 module.exports = function(config){
     config.set({
 
-        basePath : './',
+        basePath: './',
 
-        files : [
+        files: [
             'app/bower_components/angular/angular.js',
             'app/bower_components/angular-route/angular-route.js',
             'app/bower_components/angular-animate/angular-animate.min.js',
@@ -47,13 +47,13 @@ module.exports = function(config){
             'app/admin/components/*.html': 'ng-html2js'
         },
 
-        autoWatch : true,
+        autoWatch: true,
 
         frameworks: ['jasmine'],
 
-        browsers : ['PhantomJS'],
+        browsers: ['PhantomJS'],
 
-        plugins : [
+        plugins: [
             'karma-jasmine',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
@@ -61,10 +61,11 @@ module.exports = function(config){
             'karma-junit-reporter',
             'karma-growl-reporter',
             'karma-coverage',
-            'karma-ng-html2js-preprocessor'
+            'karma-ng-html2js-preprocessor',
+            'karma-htmlfile-reporter'
         ],
 
-        reporters : ['dots', 'junit', 'progress', 'coverage', 'growl'],
+        reporters: ['dots', 'junit', 'coverage', 'growl', 'html'],
 
         coverageReporter: {
             type: 'lcov',
@@ -73,7 +74,11 @@ module.exports = function(config){
             file: 'coverage.lcov'
         },
 
-        junitReporter : {
+        htmlReporter: {
+            outputFile: 'test_reports/units.html'
+        },
+
+        junitReporter: {
             outputDir: 'test_reports',
             suite: 'unit'
         }
