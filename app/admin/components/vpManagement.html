@@ -14,15 +14,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="cp in vm.uploadingCps">
+          <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'uploadDate'">
             <td>{{ cp.vendor.name }}</td>
             <td>{{ cp.product.name }}</td>
             <td>{{ cp.version.name }}</td>
             <td>{{ cp.edition }}</td>
             <td>{{ cp.uploadDate | date }}</td>
-            <td>
-              <button ng-if="vm.inspectingCp === ''" class="btn btn-default btn-block" ng-click="vm.inspectCp(cp)">Inspect</button>
-              <button ng-if="vm.inspectingCp !== ''" class="btn btn-default btn-block" ng-click="vm.confirmCp(cp)">Confirm</button>
+            <td class="text-center">
+              <button ng-if="vm.inspectingCp === ''" class="btn btn-default btn-block" ng-click="vm.inspectCp(cp.id)">Inspect</button>
+              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-default btn-block" ng-click="vm.confirmCp(cp.id)">Confirm</button>
+              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-default btn-block" ng-click="vm.cancelCp(cp.id)">Cancel</button>
+              <span ng-if="vm.inspectingCp !== '' && cp.id !== vm.inspectingCp.id">No action available</span>
             </td>
           </tr>
         </tbody>

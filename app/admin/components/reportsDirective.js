@@ -7,8 +7,6 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/reports.html',
-                scope: {
-                },
                 link: function (scope, element, attrs) {
                     commonService.getCertifiedProductActivity()
                         .then(function (data) {

@@ -144,23 +144,33 @@
 
             self.uploadFile = function () {
                 // Do something smart here
-                self.uploadingCps = [{vendor: {name: 'Vend', lastModifiedDate: '2013-03-02'}, product: {name: 'Prod', lastModifiedDate: '2014-05-02'},
-                                      version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'}];
+                self.uploadingCps = [{id: 1, vendor: {name: 'Vend', lastModifiedDate: '2013-03-02'}, product: {name: 'Prod', lastModifiedDate: '2014-05-02'},
+                                      version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'},
+                                     {id: 2, vendor: {name: 'Denv', lastModifiedDate: '2013-02-02'}, product: {name: 'Dorp', lastModifiedDate: '2013-05-02'},
+                                      version: {name: '332.1'}, edition: '2011', uploadDate: '2012-07-02'},
+                                     {id: 3, vendor: {name: 'LastCo', lastModifiedDate: '2015-03-02'}, product: {name: 'Healthy', lastModifiedDate: '2014-10-02'},
+                                      version: {name: '12Ac'}, edition: '2014', uploadDate: '2015-03-22'}];
             };
 
-            self.inspectCp = function (cp) {
-                self.inspectingCp = cp;
+            self.inspectCp = function (cpId) {
+                var cp;
+                for (var i = 0; i < self.uploadingCps.length; i++) {
+                    if (cpId === self.uploadingCps[i].id) {
+                        self.inspectingCp = self.uploadingCps[i];
+                        cp = self.inspectingCp;
+                    }
+                }
                 self.activeVendor = [cp.vendor];
                 self.activeProduct = [cp.product];
                 self.activeVersion = cp.version;
-                commonService.getProduct('dev')
+                commonService.getProduct('dev') //cpId?
                     .then(function (product) {
                         self.activeCP = product;
                         self.activeCP.certDate = new Date(self.activeCP.certDate);
                     });
             };
 
-            self.confirmCp = function (cp) {
+            self.confirmCp = function (cpId) {
                 // Do something with a service here
                 self.inspectingCp = '';
                 self.activeVendor = '';
@@ -168,10 +178,18 @@
                 self.activeVersion = '';
                 self.activeCP = '';
                 for (var i = 0; i < self.uploadingCps.length; i++) {
-                    if (cp = self.uploadingCps[i]) {
+                    if (cpId === self.uploadingCps[i].id) {
                         self.uploadingCps.splice(i,1);
                     }
                 }
+            };
+
+            self.cancelCp = function (cpId) {
+                self.inspectingCp = '';
+                self.activeVendor = '';
+                self.activeProduct = '';
+                self.activeVersion = '';
+                self.activeCP = '';
             };
         }]);
 
