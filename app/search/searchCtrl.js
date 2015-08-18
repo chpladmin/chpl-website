@@ -21,13 +21,16 @@
                 } else {
                     commonService.getVendors()
                         .then(function (vendors) {
-                            $scope.lookaheadSource = $scope.lookaheadSource.concat(vendors);
+                            for (var i = 0; i < vendors.vendors.length; i++) {
+
+                                $scope.lookaheadSource.push({type: 'vendor', value: vendors.vendors[i].name});
+                            }
                             $localStorage.lookaheadSource = $scope.lookaheadSource;
                         });
                     commonService.getProducts()
                         .then(function (products) {
-                            $scope.lookaheadSource = $scope.lookaheadSource.concat(products);
-                            $localStorage.lookaheadSource = $scope.lookaheadSource;
+//                            $scope.lookaheadSource = $scope.lookaheadSource.concat(products);
+//                            $localStorage.lookaheadSource = $scope.lookaheadSource;
                         });
                 }
             };

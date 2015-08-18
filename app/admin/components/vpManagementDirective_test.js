@@ -15,7 +15,7 @@
             module('app/admin/components/vpManagement.html');
 
             inject(function($q) {
-                mockCommonService.vendors = ['Vendor 1', 'Vendor 2'];
+                mockCommonService.vendors = {vendors: ['Vendor 1', 'Vendor 2']};
                 mockCommonService.products = ['Product 1', 'Product 2'];
                 mockCommonService.certs = ['Cert 1', 'Cert 2'];
                 mockCommonService.cqms = ['CQM 1', 'CQM 2'];

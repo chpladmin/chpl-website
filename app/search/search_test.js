@@ -15,7 +15,7 @@
                 mockCommonService.products = [
                     { vendor: 'Vendor', product: 'Product' }
                 ];
-                mockCommonService.vendors = ['Vendor 1', 'Vendor 2'];
+                mockCommonService.vendors = {vendors: [{name: 'Vendor 1'}, {name: 'Vendor 2'}]};
                 mockCommonService.products = ['Product 1', 'Product 2'];
                 mockCommonService.certs = ['Cert 1', 'Cert 2'];
                 mockCommonService.cqms = ['CQM 1', 'CQM 2'];

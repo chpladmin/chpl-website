@@ -215,6 +215,7 @@
             $httpBackend.whenGET(/ainq.com\/list_practices/).respond(200, [{value: 'Inpatient'}, {value: 'Ambulatory'}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_products/).respond(200, listProducts()); // list all products
             $httpBackend.whenGET(/ainq.com\/list_vendors/).respond(200, listVendors()); // list all vendors
+            $httpBackend.whenGET(/ainq.com\/vendor\/list_vendors/).respond(200, listVendors()); // list all vendors
             $httpBackend.whenGET(/ainq.com\/list_certBodies/).respond(200, listCertBodies()); // list cerification bodies
             $httpBackend.whenGET(/ainq.com\/list_filterCerts/).respond(200, listFilterCerts()); // list cerification bodies
             $httpBackend.whenGET(/ainq.com\/list_certifiedProductActivity/).respond(200, listCertifiedProductActivity()); // list certifiedProduct activities
@@ -225,29 +226,12 @@
                                                                                version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'}]); // list fake uploadingCps
         })
         .config(function ($provide) {
-            $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {
+            $provide.decorator('$exceptionHandler', ['$delegate', '$log', function($delegate, $log) {
                 return function (exception, cause) {
                     $delegate(exception, cause);
+                    $log.debug(exception + "--" + cause + " " + exception.message);
                     //alert(exception.message);
                 };
             }])
         })
-/*        .config(function($provide) { // fake a delay
-            $provide.decorator('$httpBackend', function($delegate) {
-                var proxy = function(method, url, data, callback, headers) {
-                    var interceptor = function() {
-                        var _this = this,
-                            _arguments = arguments;
-                        setTimeout(function() {
-                            callback.apply(_this, _arguments);
-                        }, 100); // delay for .1s
-                    };
-                    return $delegate.call(this, method, url, data, interceptor, headers);
-                };
-                for(var key in $delegate) {
-                    proxy[key] = $delegate[key];
-                }
-                return proxy;
-            });
-        });
-*/})();
+})();

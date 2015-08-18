@@ -2,11 +2,11 @@
     'use strict';
 
     angular.module('app.api')
-        .service('apiService', function ($http, $q, searchAPI) {
+        .service('apiService', function ($http, $q, devAPI) {
             var self = this;
 
             self.getApiCalls = function () {
-                return $http.get(searchAPI + '/list_api_calls')
+                return $http.get(devAPI + '/list_api_calls')
                     .then(function(response) {
                         if (typeof response.data === 'object') {
                             return response.data;
@@ -19,7 +19,7 @@
             };
 
             self.getApiEntities = function () {
-                return $http.get(searchAPI + '/list_api_entities')
+                return $http.get(devAPI + '/list_api_entities')
                     .then(function(response) {
                         if (typeof response.data === 'object') {
                             return response.data;

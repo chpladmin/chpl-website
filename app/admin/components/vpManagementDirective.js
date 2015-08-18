@@ -12,107 +12,44 @@
             self.isAcbAdmin = authService.isAcbAdmin();
             self.uploadingCps = [];
             self.inspectingCp = '';
-            /*
-              commonService.getProduct('dev product')
-              .then(function (product) {
-              self.activeCP = product;
-              self.activeCP.certDate = new Date(self.activeCP.certDate);
-              });
-            */
+
             commonService.getUploadingCps()
                 .then(function (cps) {
                     self.uploadingCps = [].concat(cps);
                     self.uploadingCps = []; //dev erasing
                 });
+
             commonService.getVendors()
                 .then(function (vendors) {
-                    self.vendors = vendors;
+                    self.vendors = vendors.vendors;
                 });
-            commonService.getProducts()
-                .then(function (products) {
-                    self.products = products;
-                });
-            /*commonService.getVersions()
-              .then(function (versions) {
-              self.versions = versions;
-              });*/
             self.versions = [{type: 'version', value: '123.234'}, {type: 'version', value: '1.4.21'}];
-            /*commonService.getCertifiedProducts()
-              .then(function (CPs) {
-              self.cps = CPs;
-              });*/
             self.cps = [{type: 'cp', value: '2015-04-28'}, {type: 'cp', value: '2014-08-12'}];
 
             self.selectVendor = function () {
                 if (self.vendorSelect) {
                     if (self.vendorSelect.length === 1) {
-                        /*
-                          commonService.getVendor(self.vendorSelect[0])
-                          .then(function (vendor) {
-                          self.activeVendor = vendor;
-                          });
-                        */
-                        self.activeVendor = [{name: self.vendorSelect[0],
-                                              address: {
-                                                  line1: '123 main st',
-                                                  line2: 'Suite 170',
-                                                  city: 'Springfield',
-                                                  region: 'Southerly',
-                                                  country: 'USA'
-                                              },
-                                              lastModifiedDate: '2015-03-13' }];
+                        self.activeVendor = [self.vendorSelect[0]];
+                        commonService.getProductsByVendor(self.activeVendor[0].vendorId)
+                            .then(function (products) {
+                                self.products = products;
+                            });
                     } else if (self.vendorSelect.length > 1) {
-                        self.activeVendor = [];
-                        for (var i = 0; i < self.vendorSelect.length; i++) {
-                            /*
-                              commonService.getVendor(self.vendorSelect[i])
-                              .then(function (vendor) {
-                              self.activeVendor.push(vendor);
-                              });
-                            */
-                            self.activeVendor = [
-                                {name: self.vendorSelect[0],
-                                 address: {
-                                     line1: '123 main st',
-                                     line2: 'Suite 170',
-                                     city: 'Springfield',
-                                     region: 'Southerly',
-                                     country: 'USA'
-                                 },
-                                 lastModifiedDate: '2015-03-13' }
-                                ,
-                                {name: self.vendorSelect[1],
-                                 address: {
-                                     line1: '123 main street',
-                                     line2: 'Ste 170',
-                                     city: 'Springfield',
-                                     region: 'Southerly-Westerly',
-                                     country: 'USA'
-                                 },
-                                 lastModifiedDate: '2015-03-14' }];
-                        }
+                        self.activeVendor = [].concat(self.vendorSelect);
                     }
                 }
             };
             self.selectProduct = function () {
                 if (self.productSelect) {
                     if (self.productSelect.length === 1) {
-                        self.activeProduct = [{name: self.productSelect[0],
-                                               details: 'Some product details',
-                                               lastModifiedDate: '2015-03-13' }];
+                        self.activeProduct = [self.productSelect[0]];
+                        self.activeProduct[0].vendor = self.activeVendor[0];
+/*                        commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                            .then(function (versions) {
+                                self.versions = versions;
+                            });*/
                     } else if (self.productSelect.length > 1) {
-                        self.activeProduct = [];
-                        for (var i = 0; i < self.productSelect.length; i++) {
-                            /* commonService.getProduct */
-                        }
-                        self.activeProduct = [
-                            {name: self.productSelect[0],
-                             details: 'Some product details',
-                             lastModifiedDate: '2015-03-13' }
-                            ,
-                            {name: self.productSelect[1],
-                             details: 'Some other details',
-                             lastModifiedDate: '2015-02-12' }];
+                        self.activeProduct = [].concat(self.productSelect);
                     }
                 }
             };

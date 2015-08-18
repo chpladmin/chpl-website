@@ -274,7 +274,7 @@ apis.endpoints = [
         request: '/update_product',
         id: 'update_product',
         requestType: 'POST',
-        jsonParameter: [ "productIds": ['productId'], "product": apis.entities.product, 'newVendorId'],
+        jsonParameter: {productIds: ['productId'], product: apis.entities.product, newVendorId: 'newVendorId (optional)'},
         response: apis.entities.success
     },{
         name: 'Update Version',
