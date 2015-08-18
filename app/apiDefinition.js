@@ -31,6 +31,7 @@ apis.entities.acb = {
 apis.entities.vendor = {
     vendorId:'long',
     name:'string',
+    website: 'string',
     address:apis.entities.address,
     lastModifiedDate:'string'
 };
@@ -203,7 +204,7 @@ apis.endpoints = [
         name: 'List Products by Vendor',
         description: 'Get a list of all of the products associated with the parameterized vendor',
         note: 'Same as current "/list_products" call, but filtered down to only the products owned by the passed in vendor. Could be done on the front end, but maybe faster/easier on the back?',
-        request: '/list_products_by_vendor',
+        request: '/product/list_products_by_vendor',
         id: 'list_products_by_vendor',
         requestType: 'GET',
         parameters: 'vendorId',
@@ -211,7 +212,7 @@ apis.endpoints = [
     },{
         name: 'List Versions by Product',
         description: 'Get a list of all of the versions associated with the parameterized product',
-        request: '/list_versions_by_product',
+        request: '/product/version/list_versions_by_product',
         id: 'list_versions_by_product',
         requestType: 'GET',
         parameters: 'productId',
@@ -226,9 +227,17 @@ apis.endpoints = [
         parameters: 'versionId',
         response: [apis.entities.cps]
     },{
+        name: 'List Vendors',
+        description: 'List all vendors with relevant data',
+        request: '/vendor/list_vendors',
+        id: 'list_vendors',
+        requestType: 'GET',
+        parameters: null,
+        response: [apis.entities.vendor]
+    },{
         name: 'Get Vendor',
         description: 'Get a specific vendor, with relevant data',
-        request: '/get_vendor',
+        request: '/vendor/get_vendor',
         id: 'get_vendor',
         requestType: 'GET',
         parameters: 'vendorId',
@@ -236,7 +245,7 @@ apis.endpoints = [
     },{
         name: 'Get Product',
         description: 'Get a specific product, with relevant data',
-        request: '/get_product',
+        request: '/product/get_product',
         id: 'get_product',
         requestType: 'GET',
         parameters: 'productId',
@@ -244,7 +253,7 @@ apis.endpoints = [
     },{
         name: 'Get Version',
         description: 'Get a specific version, with relevant data',
-        request: '/get_version',
+        request: '/product/version/get_version',
         id: 'get_version',
         requestType: 'GET',
         parameters: 'versionId',
@@ -265,7 +274,7 @@ apis.endpoints = [
         request: '/update_product',
         id: 'update_product',
         requestType: 'POST',
-        jsonParameter: [['productId'], apis.entities.product, 'newVendorId'],
+        jsonParameter: [ "productIds": ['productId'], "product": apis.entities.product, 'newVendorId'],
         response: apis.entities.success
     },{
         name: 'Update Version',
@@ -273,7 +282,7 @@ apis.endpoints = [
         request: '/update_version',
         id: 'update_version',
         requestType: 'POST',
-        jsonParameter: ['versionId', 'versionText'],
+        jsonParameter: {"versionId" : 'versionId', "version": 'versionText'},
         response: apis.entities.success
     },{
         name: 'Update Certified Product',
