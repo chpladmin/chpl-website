@@ -97,6 +97,10 @@
                 return self.simpleApiCall('/product/list_products_by_vendor?vendorId=' + vendorId, API);
             };
 
+            self.getVersionsByProduct = function (productId) {
+                return self.simpleApiCall('/product/version/list_versions_by_product?productId=' + productId, API);
+            };
+
             self.getCertBodies = function () {
                 return self.simpleApiCall('/list_certBodies', devAPI);
             };

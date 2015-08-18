@@ -23,7 +23,6 @@
                 .then(function (vendors) {
                     self.vendors = vendors.vendors;
                 });
-            self.versions = [{type: 'version', value: '123.234'}, {type: 'version', value: '1.4.21'}];
             self.cps = [{type: 'cp', value: '2015-04-28'}, {type: 'cp', value: '2014-08-12'}];
 
             self.selectVendor = function () {
@@ -44,10 +43,10 @@
                     if (self.productSelect.length === 1) {
                         self.activeProduct = [self.productSelect[0]];
                         self.activeProduct[0].vendor = self.activeVendor[0];
-/*                        commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                        commonService.getVersionsByProduct(self.activeProduct[0].productId)
                             .then(function (versions) {
                                 self.versions = versions;
-                            });*/
+                            });
                     } else if (self.productSelect.length > 1) {
                         self.activeProduct = [].concat(self.productSelect);
                     }
@@ -55,9 +54,11 @@
             };
             self.selectVersion = function () {
                 if (self.versionSelect) {
-                    self.activeVersion = {name: self.versionSelect[0],
-                                          details: 'Some product version details',
-                                          lastModifiedDate: '2015-03-13' };
+                    self.activeVersion = self.versionSelect;
+/*                    commonService.getCPsByVersion(self.activeVersion[0].versionId)
+                        .then(function (cps) {
+                            self.cps = cps;
+                        });*/
                 }
             };
             self.selectCP = function () {

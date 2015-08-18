@@ -269,19 +269,21 @@
       <h3>Version</h3>
       <div ng-if="vm.activeVersion === ''">
         <label for="versionSelect" class="control-label">Select a version</label>
-        <select ng-model="vm.versionSelect" multiple id="versionSelect" class="input-sm form-control" size="12">
-          <option ng-repeat="version in vm.versions | orderBy: 'value'" value="{{ version.value }}">{{ version.value }}</option>
+        <select ng-model="vm.versionSelect"
+                id="versionSelect" class="input-sm form-control"
+                ng-options="v.version for v in vm.versions | orderBy: 'version'">
+          <option value="">Select a version</option>
         </select>
         <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose Version</button>
       </div>
       <div ng-if="vm.activeVersion !== ''">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <span ng-if="!vm.editVersion">{{ vm.activeVersion.name }}</span>
+            <span ng-if="!vm.editVersion">{{ vm.activeVersion.version }}</span>
             <span ng-if="vm.editVersion">
               <div class="form-group">
                 <label for="versionName">Version</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVersion.name" id="versionName"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.activeVersion.version" id="versionName"></input>
               </div>
             </span>
           </div>
