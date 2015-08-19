@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('VpManagementController', ['commonService', 'authService', '$log', function (commonService, authService, $log) {
+        .controller('VpManagementController', ['commonService', 'adminService', 'authService', '$log', function (commonService, adminService, authService, $log) {
             var self = this;
             self.activeVendor = '';
             self.activeProduct = '';
@@ -35,6 +35,9 @@
                             });
                     } else if (self.vendorSelect.length > 1) {
                         self.activeVendor = [].concat(self.vendorSelect);
+                        self.mergeVendor = JSON.parse(JSON.stringify(self.activeVendor[0]));
+                        delete self.mergeVendor.vendorId;
+                        delete self.mergeVendor.lastModifiedDate;
                     }
                 }
             };
@@ -128,6 +131,35 @@
                 self.activeProduct = '';
                 self.activeVersion = '';
                 self.activeCP = '';
+            };
+
+            self.saveVendor = function () {
+                self.updateVendor = {vendorIds: []};
+
+                for (var i = 0; i < self.activeVendor.length; i++) {
+                    self.updateVendor.vendorIds.push(self.activeVendor[i].vendorId);
+                }
+                if (self.activeVendor.length === 1) {
+                    self.updateVendor.vendor = self.activeVendor[0];
+                    self.editVendor = ! self.editVendor;
+                } else {
+                    self.updateVendor.vendor = self.mergeVendor;
+                    self.activeVendor = '';
+                }
+
+                adminService.updateVendor(self.updateVendor)
+                    .then(function (response) {
+                        commonService.getVendors()
+                            .then(function (vendors) {
+                                self.vendors = vendors.vendors;
+                                self.activeVendor = [response];
+                                //todo: re-select active vendor in vendorSelect
+                                commonService.getProductsByVendor(response.vendorId)
+                                    .then(function (products) {
+                                        self.products = products;
+                                    });
+                            });
+                    });
             };
         }]);
 

@@ -94,7 +94,7 @@
             Last Modified Date: {{ vm.activeVendor[0].lastModifiedDate | date }}
             <br />
             <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Vendor</button></p>
-            <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Save Vendor</button></p>
+            <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Vendor</button></p>
             <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Cancel Edits</button></p>
             <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
           </div>
@@ -130,36 +130,36 @@
             <div class="panel-heading">
               <div class="form-group">
                 <label for="vendorMergeName">Vendor Name</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].name" id="vendorMergeName"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.name" id="vendorMergeName"></input>
               </div>
             </div>
             <div class="panel-body">
               <div class="form-group">
                 <label for="addressMergeLine1">Address Line 1</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.line1" id="addressMergeLine1"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.line1" id="addressMergeLine1"></input>
               </div>
               <div class="form-group">
                 <label for="addressMergeLine2">Address Line 2</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.line2" id="addressMergeLine2"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.line2" id="addressMergeLine2"></input>
               </div>
               <div class="form-group">
                 <label for="addressMergeCity">City</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.city" id="addressMergeCity"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.city" id="addressMergeCity"></input>
               </div>
               <div class="form-group">
                 <label for="addressMergeRegion">Region</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.region" id="addressMergeRegion"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.region" id="addressMergeRegion"></input>
               </div>
               <div class="form-group">
                 <label for="addressMergeCountry">Country</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.country" id="addressMergeCountry"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.country" id="addressMergeCountry"></input>
               </div>
               <div class="form-group">
                 <label for="vendorMergeWebsite">Website</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].website" id="vendorMergeWebsite"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.website" id="vendorMergeWebsite"></input>
               </div>
               <br />
-              <p><button class="btn btn-default btn-block" ng-click="vm.activeVendor = ''">Save Combined Vendors</button></p>
+              <p><button class="btn btn-default btn-block" ng-click="vm.saveVendor()">Save Combined Vendors</button></p>
               <p><button class="btn btn-default btn-block" ng-click="vm.activeVendor = ''">Cancel Edits</button></p>
             </div>
           </div>

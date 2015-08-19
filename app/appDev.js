@@ -204,6 +204,8 @@
             $httpBackend.whenGET(/^product\/.*/).passThrough();
             $httpBackend.whenGET(/localhost:8080/).passThrough();
             $httpBackend.whenPOST(/localhost:8080/).passThrough();
+            $httpBackend.whenGET(/rest/).passThrough();
+            $httpBackend.whenPOST(/rest/).passThrough();
             $httpBackend.whenGET(/ainq.com\/list_api_calls/).respond(200, apis.endpoints); // fake search results
             $httpBackend.whenGET(/ainq.com\/list_api_entities/).respond(200, apis.entities); // fake search results
             $httpBackend.whenGET(/ainq.com\/search/).respond(200, getAllProducts()); // fake search results
