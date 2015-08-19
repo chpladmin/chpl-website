@@ -260,11 +260,11 @@ apis.endpoints = [
         name: 'Update Vendor',
         description: 'Update one or more vendors with passed in data. If more than one vendorId is supplied, merge the vendors, assigning all products originally assigned to any of the vendors to the single resulting vendor',
         note: 'The Vendor object in the Request parameter will not have a vendorId or lastModifiedDate field',
-        request: '/update_vendor',
+        request: '/vendor/update_vendor',
         id: 'update_vendor',
         requestType: 'POST',
         jsonParameter: [['vendorId'], apis.entities.vendor],
-        response: apis.entities.success
+        response: apis.entities.vendor
     },{
         name: 'Update Product',
         description: 'Update one or more products with passed in data. If more than one productId is supplied, merge the products, assigning all versions originally assigned to any of the products to the single resulting product. If a newVendorId is supplied in the Request, the Product is changing ownership; merge the products (if necessary), and then reassign it to the new Vendor indicated',
