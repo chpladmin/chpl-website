@@ -35,7 +35,7 @@
                             });
                     } else if (self.vendorSelect.length > 1) {
                         self.activeVendor = [].concat(self.vendorSelect);
-                        self.mergeVendor = JSON.parse(JSON.stringify(self.activeVendor[0]));
+                        self.mergeVendor = angular.copy(self.activeVendor[0]);
                         delete self.mergeVendor.vendorId;
                         delete self.mergeVendor.lastModifiedDate;
                     }

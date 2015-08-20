@@ -53,16 +53,14 @@
             }
         });
 
-        it('should exist', function () {
-            expect(ctrl).toBeDefined();
-        });
+        describe('controller', function () {
+            it('should exist', function () {
+                expect(ctrl).toBeDefined();
+            });
 
-        it('should load api endpoints at start', function () {
-            expect(ctrl.apiCalls.length).toBeGreaterThan(0);
-        });
-
-        it('should load api entities at start', function () {
-            expect(ctrl.apiEntities.length).toBeGreaterThan(0);
+            it('should load api endpoints at start', function () {
+                expect(ctrl.apiCalls.length).toBeGreaterThan(0);
+            });
         });
     });
 })();

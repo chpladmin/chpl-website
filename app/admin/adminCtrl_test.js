@@ -13,7 +13,7 @@
             });
         });
 
-        describe('app.admin.controller', function () {
+        describe('controller', function () {
 
             var commonService, userService, scope, ctrl, $log, $location;
 

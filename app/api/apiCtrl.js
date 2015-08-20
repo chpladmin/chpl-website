@@ -14,12 +14,5 @@
                 }, function (error) {
                     $log.debug(error);
                 });
-
-            apiService.getApiEntities()
-                .then(function (result) {
-                    self.apiEntities = result;
-                }, function (error) {
-                    $log.debug(error);
-                });
         }]);
 })();

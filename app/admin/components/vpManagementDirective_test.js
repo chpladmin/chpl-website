@@ -3,10 +3,10 @@
 
     describe('app.admin.vpManagement.directive', function () {
 
-        var element, scope, $log, commonService, ctrl;
+        var element, scope, $log, commonService, mockCommonService, ctrl;
 
         beforeEach(function () {
-            var mockCommonService = {};
+            mockCommonService = {};
 
             module('app.admin', function($provide) {
                 $provide.value('commonService', mockCommonService);
@@ -32,6 +32,12 @@
                 };
 
                 mockCommonService.getProducts = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.products);
+                    return defer.promise;
+                };
+
+                mockCommonService.getProductsByVendor = function (vendorId) {
                     var defer = $q.defer();
                     defer.resolve(this.products);
                     return defer.promise;
@@ -107,6 +113,19 @@
 
             it('should have vendors at load', function () {
                 expect(ctrl.vendors.length).toBe(2);
+            });
+
+            it('shouldn\'t do anything if no vendor is selected', function () {
+                ctrl.selectVendor();
+                expect(ctrl.activeVendor).toBe('');
+                expect(ctrl.mergeVendor).toBeUndefined();
+            });
+
+            it('should create a mergeVendor if more than one vendor is selected', function () {
+                expect(ctrl.mergeVendor).toBeUndefined();
+                ctrl.vendorSelect = [{vendor: 'vendor1'}, {vendor: 'vendor2'}];
+                ctrl.selectVendor();
+                expect(ctrl.mergeVendor).toEqual({vendor: 'vendor1'});
             });
         });
     });
