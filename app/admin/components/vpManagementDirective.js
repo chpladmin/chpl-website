@@ -133,6 +133,31 @@
                 self.activeCP = '';
             };
 
+            self.cancelVendor = function () {
+                // todo: figure out how to actually cancel the edits
+                self.activeVendor = '';
+                self.vendorMessage = null;
+                self.editVendor = false;
+            };
+
+            self.mergeAddressRequired = function () {
+                return self.addressCheck(self.mergeVendor);
+            }
+
+            self.addressRequired = function () {
+                return self.addressCheck(self.activeVendor[0]);
+            };
+
+            self.addressCheck = function (v) {
+                if (v.address === null) return false;
+                if (v.address.line1 && v.address.line1.length > 0) return true;
+                if (v.address.line2 && v.address.line2.length > 0) return true;
+                if (v.address.city && v.address.city.length > 0) return true;
+                if (v.address.region && v.address.region.length > 0) return true;
+                if (v.address.country && v.address.country.length > 0) return true;
+                return false;
+            };
+
             self.saveVendor = function () {
                 self.updateVendor = {vendorIds: []};
 
@@ -141,24 +166,29 @@
                 }
                 if (self.activeVendor.length === 1) {
                     self.updateVendor.vendor = self.activeVendor[0];
-                    self.editVendor = ! self.editVendor;
                 } else {
                     self.updateVendor.vendor = self.mergeVendor;
-                    self.activeVendor = '';
                 }
 
                 adminService.updateVendor(self.updateVendor)
                     .then(function (response) {
-                        commonService.getVendors()
-                            .then(function (vendors) {
-                                self.vendors = vendors.vendors;
-                                self.activeVendor = [response];
-                                //todo: re-select active vendor in vendorSelect
-                                commonService.getProductsByVendor(response.vendorId)
-                                    .then(function (products) {
-                                        self.products = products;
-                                    });
-                            });
+                        if (!response.status || response.status === 200) {
+                            var newVendor = response;
+                            self.vendorMessage = null;
+                            self.editVendor = false;
+                            commonService.getVendors()
+                                .then(function (vendors) {
+                                    self.vendors = vendors.vendors;
+                                    self.activeVendor = [newVendor];
+                                    //todo: re-select active vendor in vendorSelect
+                                    commonService.getProductsByVendor(newVendor.vendorId)
+                                        .then(function (products) {
+                                            self.products = products;
+                                        });
+                                });
+                        } else {
+                            self.vendorMessage = 'An error occurred. Please check your entry and try again.';
+                        }
                     });
             };
         }]);

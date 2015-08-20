@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .service('adminService', function ($http, $q, API) {
+        .service('adminService', function ($http, $q, API, $log) {
             var self = this;
 
             self.updateVendor = function (vendorObject) {
@@ -11,10 +11,10 @@
                         if (typeof response.data === 'object') {
                             return response.data;
                         } else {
-                            return $q.reject(response.data);
+                            return response;
                         }
                     }, function (response) {
-                        return $q.reject(response.data);
+                        return response;
                     });
             };
         });

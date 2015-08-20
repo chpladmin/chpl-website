@@ -40,17 +40,17 @@
             });
 
             it('should return a reject if the response is not the right type', function () {
-                $httpBackend.expectPOST(/vendor\/update_vendor/).respond('bad data');
+                $httpBackend.expectPOST(/vendor\/update_vendor/, mock.vendor).respond(200, 'bad data');
                 adminService.updateVendor(mock.vendor).then(function(response) {
-                    expect(response).toEqual('bad data');
+                    expect(response.data).toEqual('bad data');
                 });
                 $httpBackend.flush();
             });
 
             it('should return a reject if the response fails', function () {
-                $httpBackend.expectPOST(/vendor\/update_vendor/).respond(404, {message: 'bad data'});
+                $httpBackend.expectPOST(/vendor\/update_vendor/, mock.vendor).respond(500, 'bad data');
                 adminService.updateVendor(mock.vendor).then(function(response) {
-                    expect(response).toEqual(404, {message: 'bad data'});
+                    expect(response.status).toEqual(500);
                 });
                 $httpBackend.flush();
             });

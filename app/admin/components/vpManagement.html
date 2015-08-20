@@ -46,12 +46,13 @@
 
       <div ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
         <div class="panel panel-default">
+          <form name="vendorEditForm" novalidate>
           <div class="panel-heading">
             <span ng-if="!vm.editVendor">{{ vm.activeVendor[0].name }}</span>
             <span ng-if="vm.editVendor">
               <div class="form-group">
-                <label for="vendorName">Vendor Name</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].name" id="vendorName"></input>
+                <label for="vendorName">Vendor Name <span class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" required ng-model="vm.activeVendor[0].name" id="vendorName"></input>
               </div>
             </span>
           </div>
@@ -66,37 +67,39 @@
             </span>
             <span ng-if="vm.editVendor">
               <div class="form-group">
-                <label for="addressLine1">Address Line 1</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.line1" id="addressLine1"></input>
+                <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.line1" id="addressLine1" name="addressLine1"></input>
               </div>
               <div class="form-group">
                 <label for="addressLine2">Address Line 2</label>
                 <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.line2" id="addressLine2"></input>
               </div>
               <div class="form-group">
-                <label for="addressCity">City</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.city" id="addressCity"></input>
+                <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.city" id="addressCity"></input>
               </div>
               <div class="form-group">
-                <label for="addressRegion">Region</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.region" id="addressRegion"></input>
+                <label for="addressRegion">Region <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.region" id="addressRegion"></input>
               </div>
               <div class="form-group">
-                <label for="addressCountry">Country</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.country" id="addressCountry"></input>
+                <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.country" id="addressCountry"></input>
               </div>
               <div class="form-group">
                 <label for="vendorWebsite">Website</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].website" id="vendorWebsite"></input>
+                <input class="input-sm form-control" type="url" ng-model="vm.activeVendor[0].website" id="vendorWebsite"></input>
               </div>
             </span>
             <br />
             Last Modified Date: {{ vm.activeVendor[0].lastModifiedDate | date }}
             <br />
+            <p ng-if="vm.vendorMessage !== undefined && vm.editVendor" class="bg-danger">{{ vm.vendorMessage }}</p>
             <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Vendor</button></p>
-            <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Vendor</button></p>
-            <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Cancel Edits</button></p>
+            <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Vendor</button></p>
+            <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
             <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
+            </form>
           </div>
         </div>
       </div>
@@ -127,41 +130,44 @@
         <div class="col-md-6">
           <h4>To form this one</h4>
           <div class="panel panel-default">
+            <form name="vendorMergeForm" novalidate>
             <div class="panel-heading">
               <div class="form-group">
-                <label for="vendorMergeName">Vendor Name</label>
+                <label for="vendorMergeName">Vendor Name <span class="text-danger">*</span></label>
                 <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.name" id="vendorMergeName"></input>
               </div>
             </div>
             <div class="panel-body">
               <div class="form-group">
-                <label for="addressMergeLine1">Address Line 1</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.line1" id="addressMergeLine1"></input>
+                <label for="addressMergeLine1">Address Line 1 <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.line1" id="addressMergeLine1"></input>
               </div>
               <div class="form-group">
                 <label for="addressMergeLine2">Address Line 2</label>
                 <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.line2" id="addressMergeLine2"></input>
               </div>
               <div class="form-group">
-                <label for="addressMergeCity">City</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.city" id="addressMergeCity"></input>
+                <label for="addressMergeCity">City <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.city" id="addressMergeCity"></input>
               </div>
               <div class="form-group">
-                <label for="addressMergeRegion">Region</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.region" id="addressMergeRegion"></input>
+                <label for="addressMergeRegion">Region <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.region" id="addressMergeRegion"></input>
               </div>
               <div class="form-group">
-                <label for="addressMergeCountry">Country</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.country" id="addressMergeCountry"></input>
+                <label for="addressMergeCountry">Country <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.country" id="addressMergeCountry"></input>
               </div>
               <div class="form-group">
                 <label for="vendorMergeWebsite">Website</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.website" id="vendorMergeWebsite"></input>
+                <input class="input-sm form-control" type="url" ng-model="vm.mergeVendor.website" id="vendorMergeWebsite"></input>
               </div>
               <br />
-              <p><button class="btn btn-default btn-block" ng-click="vm.saveVendor()">Save Combined Vendors</button></p>
-              <p><button class="btn btn-default btn-block" ng-click="vm.activeVendor = ''">Cancel Edits</button></p>
+              <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
+              <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-default btn-block" ng-click="vm.saveVendor()">Save Combined Vendors</button></p>
+              <p><button class="btn btn-default btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
             </div>
+            </form>
           </div>
         </div>
       </div>
