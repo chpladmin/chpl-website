@@ -33,7 +33,7 @@
                             .then(function (products) {
                                 self.products = products;
                             });
-                    } else if (self.vendorSelect.length > 1) {
+                    } else { // merging
                         self.activeVendor = [].concat(self.vendorSelect);
                         self.mergeVendor = angular.copy(self.activeVendor[0]);
                         delete self.mergeVendor.vendorId;
@@ -50,8 +50,11 @@
                             .then(function (versions) {
                                 self.versions = versions;
                             });
-                    } else if (self.productSelect.length > 1) {
+                    } else { //merging
                         self.activeProduct = [].concat(self.productSelect);
+                        self.mergeProduct = angular.copy(self.activeProduct[0]);
+                        delete self.mergeProduct.productId;
+                        delete self.mergeProduct.lastModifiedDate;
                     }
                 }
             };
@@ -125,7 +128,7 @@
                 }
             };
 
-            self.cancelCp = function (cpId) {
+            self.cancelCp = function () {
                 self.inspectingCp = '';
                 self.activeVendor = '';
                 self.activeProduct = '';
