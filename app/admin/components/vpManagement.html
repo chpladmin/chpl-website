@@ -134,7 +134,7 @@
             <div class="panel-heading">
               <div class="form-group">
                 <label for="vendorMergeName">Vendor Name <span class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.name" id="vendorMergeName"></input>
+                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.name" id="vendorMergeName" required></input>
               </div>
             </div>
             <div class="panel-body">
@@ -194,40 +194,43 @@
       </div>
       <div ng-if="vm.activeProduct !== '' && vm.activeProduct.length === 1">
         <div class="panel panel-default">
-          <div class="panel-heading">
-            <span ng-if="!vm.editProduct">{{ vm.activeProduct[0].name }}</span>
-            <span ng-if="vm.editProduct">
-              <div class="form-group">
-                <label for="productName">Product Name</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeProduct[0].name" id="productName"></input>
-              </div>
-            </span>
-          </div>
-          <div class="panel-body">
-            <span ng-if="!vm.editProduct">
-              {{ vm.activeProduct[0].details }}<br />
-            </span>
-            <span ng-if="vm.editProduct">
-              <div class="form-group">
-                <label for="productDetails">Product Details</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeProduct[0].details" id="productDetails"></input>
-              </div>
-              <div class="form-group">
-                <label for="productOwner">Change Product owner</label>
-                <select ng-model="vm.activeProduct[0].vendor"
-                        id="productOwner" class="input-sm form-control"
-                        ng-options="v.name for v in vm.vendors | orderBy: 'name'">
-                </select>
-              </div>
-            </span>
-            <br />
-            Last Modified Date: {{ vm.activeProduct[0].lastModifiedDate | date }}
-            <br />
-            <p><button class="btn btn-default btn-block" ng-if="!vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Edit Product</button></p>
-            <p><button class="btn btn-default btn-block" ng-if="vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Save Product</button></p>
-            <p><button class="btn btn-default btn-block" ng-if="vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Cancel Edits</button></p>
-            <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editProduct = false; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
-          </div>
+          <form name="productEditForm" novalidate>
+            <div class="panel-heading">
+              <span ng-if="!vm.editProduct">{{ vm.activeProduct[0].name }}</span>
+              <span ng-if="vm.editProduct">
+                <div class="form-group">
+                  <label for="productName">Product Name</label>
+                  <input class="input-sm form-control" type="text" ng-model="vm.activeProduct[0].name" id="productName" required></input>
+                </div>
+              </span>
+            </div>
+            <div class="panel-body">
+              <span ng-if="!vm.editProduct">
+                {{ vm.activeProduct[0].details }}<br />
+              </span>
+              <span ng-if="vm.editProduct">
+                <div class="form-group">
+                  <label for="productDetails">Product Details</label>
+                  <input class="input-sm form-control" type="text" ng-model="vm.activeProduct[0].details" id="productDetails"></input>
+                </div>
+                <div class="form-group">
+                  <label for="productOwner">Change Product owner</label>
+                  <select ng-model="vm.activeProduct[0].vendorId"
+                          id="productOwner" class="input-sm form-control"
+                          ng-options="v.vendorId as v.name for v in vm.vendors | orderBy: 'name'">
+                  </select>
+                </div>
+              </span>
+              <br />
+              Last Modified Date: {{ vm.activeProduct[0].lastModifiedDate | date }}
+              <br />
+              <p ng-if="vm.productMessage !== undefined && vm.editProduct" class="bg-danger">{{ vm.productMessage }}</p>
+              <p><button class="btn btn-default btn-block" ng-if="!vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Edit Product</button></p>
+              <p><button ng-disabled="productEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editProduct" ng-click="vm.saveProduct()">Save Product</button></p>
+              <p><button class="btn btn-default btn-block" ng-if="vm.editProduct" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
+              <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editProduct = false; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
+            </div>
+          </form>
         </div>
       </div>
     </div> <!-- end product select -->
@@ -251,21 +254,23 @@
         <div class="col-md-6">
           <h4>To form this one</h4>
           <div class="panel panel-default">
-            <div class="panel-heading">
-              <div class="form-group">
-                <label for="productMergeName">Product Name</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeProduct.name" id="productMergeName"></input>
+            <form name="productMergeForm" novalidate>
+              <div class="panel-heading">
+                <div class="form-group">
+                  <label for="productMergeName">Product Name</label>
+                  <input class="input-sm form-control" type="text" ng-model="vm.mergeProduct.name" id="productMergeName" required></input>
+                </div>
               </div>
-            </div>
-            <div class="panel-body">
-              <div class="form-group">
-                <label for="productMergeDetails">Product Details</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeProduct.details" id="productMergeDetails"></input>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label for="productMergeDetails">Product Details</label>
+                  <input class="input-sm form-control" type="text" ng-model="vm.mergeProduct.details" id="productMergeDetails"></input>
+                </div>
+                <br />
+                <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-default btn-block" ng-click="vm.saveProduct()">Save Combined Products</button></p>
+                <p><button class="btn btn-default btn-block" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
               </div>
-              <br />
-              <p><button class="btn btn-default btn-block" ng-click="vm.activeProduct = ''">Save Combined Products</button></p>
-              <p><button class="btn btn-default btn-block" ng-click="vm.activeProduct = ''">Cancel Edits</button></p>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -277,40 +282,34 @@
         <label for="versionSelect" class="control-label">Select a version</label>
         <select ng-model="vm.versionSelect"
                 id="versionSelect" class="input-sm form-control"
-                ng-options="v.version for v in vm.versions | orderBy: 'version'">
+                ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
           <option value="">Select a version</option>
         </select>
         <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose Version</button>
       </div>
       <div ng-if="vm.activeVersion !== ''">
         <div class="panel panel-default">
-          <div class="panel-heading">
-            <span ng-if="!vm.editVersion">{{ vm.activeVersion.version }}</span>
-            <span ng-if="vm.editVersion">
-              <div class="form-group">
-                <label for="versionName">Version</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVersion.version" id="versionName"></input>
-              </div>
-            </span>
-          </div>
-          <div class="panel-body">
-            <span ng-if="!vm.editVersion">
-              {{ vm.activeVersion.details }}<br />
-            </span>
-            <span ng-if="vm.editVersion">
-              <div class="form-group">
-                <label for="versionDetails">Version Details</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVersion.details" id="versionDetails"></input>
-              </div>
-            </span>
-            <br />
-            Last Modified Date: {{ vm.activeVersion.lastModifiedDate | date }}
-            <br />
-            <p><button class="btn btn-default btn-block" ng-if="!vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Edit Version</button></p>
-            <p><button class="btn btn-default btn-block" ng-if="vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Save Version</button></p>
-            <p><button class="btn btn-default btn-block" ng-if="vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Cancel Edits</button></p>
-            <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVersion = false; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
-          </div>
+          <form name="versionEditForm" novalidate>
+            <div class="panel-heading">
+              <span ng-if="!vm.editVersion">{{ vm.activeVersion.version }}</span>
+              <span ng-if="vm.editVersion">
+                <div class="form-group">
+                  <label for="versionName">Version</label>
+                  <input class="input-sm form-control" type="text" ng-model="vm.activeVersion.version" id="versionName" required></input>
+                </div>
+              </span>
+            </div>
+            <div class="panel-body">
+              <br />
+              Last Modified Date: {{ vm.activeVersion.lastModifiedDate | date }}
+              <br />
+              <p ng-if="vm.versionMessage !== undefined && vm.editVersion" class="bg-danger">{{ vm.versionMessage }}</p>
+              <p><button class="btn btn-default btn-block" ng-if="!vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Edit Version</button></p>
+              <p><button ng-disabled="versionEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editVersion" ng-click="vm.saveVersion()">Save Version</button></p>
+              <p><button class="btn btn-default btn-block" ng-if="vm.editVersion" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
+              <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVersion = false; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
+            </div>
+          </form>
         </div>
       </div>
     </div> <!-- end version select -->

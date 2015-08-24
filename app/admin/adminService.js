@@ -17,5 +17,31 @@
                         return response;
                     });
             };
+
+            self.updateProduct = function (productObject) {
+                return $http.post(API + '/product/update_product', productObject)
+                    .then(function (response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return response;
+                        }
+                    }, function (response) {
+                        return response;
+                    });
+            };
+
+            self.updateVersion = function (versionObject) {
+                return $http.post(API + '/product/version/update_version', versionObject)
+                    .then(function (response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return response;
+                        }
+                    }, function (response) {
+                        return response;
+                    });
+            };
         });
 })();

@@ -31,7 +31,8 @@
                         self.activeVendor = [self.vendorSelect[0]];
                         commonService.getProductsByVendor(self.activeVendor[0].vendorId)
                             .then(function (products) {
-                                self.products = products;
+                                $log.info(products);
+                                self.products = products.products;
                             });
                     } else { // merging
                         self.activeVendor = [].concat(self.vendorSelect);
@@ -45,7 +46,7 @@
                 if (self.productSelect) {
                     if (self.productSelect.length === 1) {
                         self.activeProduct = [self.productSelect[0]];
-                        self.activeProduct[0].vendor = self.activeVendor[0];
+                        self.activeProduct[0].vendorId = self.activeVendor[0].vendorId;
                         commonService.getVersionsByProduct(self.activeProduct[0].productId)
                             .then(function (versions) {
                                 self.versions = versions;
@@ -143,6 +144,18 @@
                 self.editVendor = false;
             };
 
+            self.cancelProduct = function () {
+                self.activeProduct = '';
+                self.productMessage = null;
+                self.editProduct = false;
+            };
+
+            self.cancelVersion = function () {
+                self.activeVersion = '';
+                self.versionMessage = null;
+                self.editVersion = false;
+            };
+
             self.mergeAddressRequired = function () {
                 return self.addressCheck(self.mergeVendor);
             }
@@ -191,6 +204,70 @@
                                 });
                         } else {
                             self.vendorMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+            };
+
+            self.saveProduct = function () {
+                self.updateProduct = {productIds: []};
+
+                for (var i = 0; i < self.activeProduct.length; i++) {
+                    self.updateProduct.productIds.push(self.activeProduct[i].productId);
+                }
+                if (self.activeProduct.length === 1) {
+                    self.updateProduct.product = self.activeProduct[0];
+                    self.updateProduct.newVendorId = self.activeProduct[0].vendorId;
+                } else {
+                    self.updateProduct.product = self.mergeProduct;
+                    self.updateProduct.newVendorId = self.activeVendor[0].vendorId;
+                }
+
+                adminService.updateProduct(self.updateProduct)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            var newProduct = response;
+                            self.productMessage = null;
+                            self.editProduct = false;
+                            commonService.getProductsByVendor(self.activeVendor[0].vendorId)
+                                .then(function (products) {
+                                    self.products = products.products;
+                                    self.activeProduct = [newProduct];
+                                    //todo: re-select active vendor in vendorSelect
+                                    commonService.getVersionsByProduct(newProduct.productId)
+                                        .then(function (versions) {
+                                            self.versions = versions;
+                                        });
+                                });
+                        } else {
+                            self.productMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+
+            };
+            self.saveVersion = function () {
+                //                self.updateVersion = {productIds: []};
+
+                adminService.updateVersion(self.activeVersion)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            var newVersion = response;
+                            self.versionMessage = null;
+                            self.editVersion = false;
+                            // call sevice
+                            /*
+                              commonService.getProductsByVendor(self.activeVendor[0].vendorId)
+                              .then(function (products) {
+                              self.products = products.products;
+                              self.activeProduct = [newProduct];
+                              //todo: re-select active vendor in vendorSelect
+                              commonService.getVersionsByProduct(newProduct.productId)
+                              .then(function (versions) {
+                              self.versions = versions;
+                              });
+                              });
+                            */
+                        } else {
+                            self.versionMessage = 'An error occurred. Please check your entry and try again.';
                         }
                     });
             };
