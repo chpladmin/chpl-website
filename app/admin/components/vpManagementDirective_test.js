@@ -181,8 +181,9 @@
             it('should set the activeProduct and call getVersionsByProduct if there\'s one selected product', function () {
                 expect(ctrl.activeProduct).toBe('');
                 ctrl.productSelect = [{product: 'product1'}];
+                ctrl.activeVendor = [].concat({vendorId: '123'});
                 ctrl.selectProduct();
-                expect(ctrl.activeProduct).toEqual([{product: 'product1', vendor: undefined}]);
+                expect(ctrl.activeProduct).toEqual([{product: 'product1', vendorId: '123'}]);
                 expect(commonService.getVersionsByProduct).toHaveBeenCalled();
             });
 
