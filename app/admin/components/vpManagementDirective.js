@@ -31,7 +31,6 @@
                         self.activeVendor = [self.vendorSelect[0]];
                         commonService.getProductsByVendor(self.activeVendor[0].vendorId)
                             .then(function (products) {
-                                $log.info(products);
                                 self.products = products.products;
                             });
                     } else { // merging
