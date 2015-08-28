@@ -24,17 +24,21 @@
           <p>{{ api.requestType }} {{ api.request }}</p>
           <h4>Request</h4>
           <div ng-if="api.requestType === 'GET'">
-            <p>The request is a simple query<span ng-if="api.parameters !== null && api.parameters !== undefined">, with parameters:</span><br />
+            <p>The request is a query<span ng-if="api.parameters !== null && api.parameters !== undefined">, with parameters:</span><br />
               <pre ng-if="api.parameters !== null && api.parameters !== undefined">{{ api.parameters | json }}</pre>
             </p>
           </div>
           <div ng-if="api.requestType === 'POST'">
-            <p>The request is a simple request, with a JSON object as parameter<br />
+            <p>The request is a request, with a JSON object as parameter<br />
               <pre>{{ api.jsonParameter | json }}</pre>
+              <p ng-if="api.parameters !== null && api.parameters !== undefined">
+                The request may be parameterized with parameters:
+                <pre>{{ api.parameters | json }}</pre>
+              </p>
             </p>
           </div>
           <h4>Response</h4>
-          <p>The response is a simple JSON object, with the format<br />
+          <p>The response is a JSON object, with the format<br />
             <pre>{{ api.response | json }}</pre>
           </p>
         </accordion-group>

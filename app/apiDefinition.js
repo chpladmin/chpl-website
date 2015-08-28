@@ -81,6 +81,61 @@ apis.entities.acbActivity = {
     activityDate:'string',
     activity:'string'
 };
+apis.entities.searchResults = {
+    recordCount:'long',
+    pageSize:'int',
+    pageNumber:'int',
+    results:[{
+        id:'long',
+        testingLabId: 'long',
+        chplProductNumber: 'string',
+        reportFileLocation: 'string',
+        qualityManagementSystemAtt: 'string',
+        acbCertificationId: 'string',
+        classificationType: {
+            name: 'string',
+            id: 'long'
+        },
+        otherAcb: 'long',
+        certificationStatusId: 'long',
+        vendor: {
+            name: 'string',
+            id: 'long'
+        },
+        product: {
+            versionId: 'long',
+            name: 'string',
+            id: 'long',
+            version: 'version'
+        },
+        certificationEdition: {
+            name: 'string',
+            id: 'long'
+        },
+        practiceType: {
+            name: 'string',
+            id: 'long'
+        },
+        certifyingBody: {
+            name: 'string',
+            id: 'long'
+        },
+        certificationDate: 'string in format yyyy-mm-dd hh:mm:ss.S',
+        countCerts: 'long',
+        countCqms: 'long'
+    }]
+};
+apis.entities.searchRequest = {
+    vendor: 'string (optional)',
+    product: 'string (optional)',
+    version: 'string (optional)',
+    certificationEdition: 'string (optional)',
+    productClassification: 'string (optional)',
+    certificationCriteria: ['string (optional)'],
+    cqms: ['string (optional)'],
+    practiceType: 'string (optional)',
+    orderBy: 'string (optional)'
+};
 
 apis.endpoints = [
     {
@@ -346,5 +401,24 @@ apis.endpoints = [
         jsonParameter: {file: 'file'},
         security: 'Admin',
         response: apis.entities.success
+    },{
+        name: 'Simple Search',
+        description: 'Provides an endpoint for performing a keyword search of Vendor and Product fields',
+        request: '/simple_search',
+        id: 'simple_search',
+        requestType: 'GET',
+        parameters: ['searchTerm', 'pageNum (optional)', 'pageSize (optional)', 'orderBy (optional)'],
+        security: null,
+        response: apis.entities.searchResults
+    },{
+        name: 'Advanced Search',
+        description: 'Provides an endpoint for performing an advanced search, choosing specific fields to search on',
+        request: '/advanced_search',
+        id: 'advanced_search',
+        requestType: 'POST',
+        parameters: ['pageNum (optional)', 'pageSize (optional)'],
+        jsonParameter: apis.entities.searchRequest,
+        security: null,
+        response: apis.entities.searchResults
     }
 ];
