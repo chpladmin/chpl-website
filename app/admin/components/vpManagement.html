@@ -318,47 +318,47 @@
       <div ng-if="vm.activeCP === ''">
         <label for="cpSelect" class="control-label">Select a certified product</label>
         <select ng-model="vm.cpSelect" multiple id="cpSelect" class="input-sm form-control" size="12">
-          <option ng-repeat="cp in vm.cps | orderBy: 'value'" value="{{ cp.value }}">{{ cp.value | date }}</option>
+          <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.certificationDate.split(' ')[0] | date }})</option>
         </select>
         <button class="btn btn-default form-control" ng-click="vm.selectCP()">Choose Certified Product</button>
       </div>
       <div ng-if="vm.activeCP !== ''">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <span>{{ vm.activeCP.chplNum }}</span>
+            <span>{{ vm.activeCP.chplProductNumber }}</span>
           </div>
           <div class="panel-body">
             <span ng-if="!vm.editCP">
-              <strong>Classification:</strong> {{ vm.activeCP.classification }} <br />
-              <strong>Practice Type:</strong> {{ vm.activeCP.practiceType }} <br />
-              <strong>Certification Edition:</strong> {{ vm.activeCP.edition }} <br />
-              <strong>Certification Body:</strong> {{ vm.activeCP.certBody }} <br />
-              <strong>Certification Date:</strong> {{ vm.activeCP.certDate | date }} <br />
+              <strong>Classification:</strong> {{ vm.activeCP.classificationType.name }} <br />
+              <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
+              <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
+              <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
+              <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate.split(' ')[0] | date }} <br />
               <strong>Additional Software:</strong> {{ vm.activeCP.additionalSoftware }} <br />
             </span>
             <span ng-if="vm.editCP">
               <div class="form-group">
                 <label for="cpClassification">Classification</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.classification" id="cpClassification">
+                <select class="input-sm form-control" ng-model="vm.activeCP.classificationType.name" id="cpClassification">
                   <option ng-repeat="classification in vm.classifications" value="{{ classification.value }}">{{ classification.value }}</option>
                 </select>
               </div>
               <div class="form-group">
                 <label for="cpPractice">Practice Type</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.practiceType" id="cpPractice">
+                <select class="input-sm form-control" ng-model="vm.activeCP.practiceType.name" id="cpPractice">
                   <option ng-repeat="practice in vm.practices" value="{{ practice.value }}">{{ practice.value }}</option>
                 </select>
               </div>
               <div class="form-group">
                 <label for="cpEdition">Certification Edition</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.edition" id="cpEdition">
+                <select class="input-sm form-control" ng-model="vm.activeCP.certificationEdition.name" id="cpEdition">
                   <option ng-repeat="edition in vm.editions" value="{{edition.value }}">{{ edition.value }}</option>
                 </select>
               </div>
-              <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.activeCP.certBody }} </div>
+              <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} </div>
               <div ng-if="vm.isChplAdmin" class="form-group">
                 <label for="cpBody">Certification Body</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.certBody" id="cpBody">
+                <select class="input-sm form-control" ng-model="vm.activeCP.certifyingBody.name" id="cpBody">
                   <option ng-repeat="body in vm.bodies" value="{{ body.value }}">{{ body.value }}</option>
                 </select>
               </div>
@@ -386,7 +386,10 @@
   <div ng-if="vm.activeCP !== ''" class="row">
     <div class="col-md-12">
       <h3>Certified Product Details</h3>
-      <ai-certs certs="vm.activeCP.certs"
+      <ai-certs certs="vm.activeCP.certificationResults"
+                cqms="vm.activeCP.cqmResults"
+                count-certs="{{ vm.activeCP.countCerts }}"
+                count-cqms="{{ vm.activeCP.countCqms }}"
                 default-all="true"
                 edit-mode="true">
       </ai-certs>

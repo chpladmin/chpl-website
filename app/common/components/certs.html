@@ -9,17 +9,30 @@
       <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts" /><label for="viewAllCerts">See all Certifications</label>
     </p>
     <accordion close-others="true">
-      <accordion-group heading="{{ cert.title }} ({{ cert.numActive }} met)" ng-repeat="cert in vm.certs track by $index" aria-expanded="false">
-        <div ng-show="vm.viewAllCerts || n.isActive" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in cert.certs track by $index">
+      <accordion-group heading="Certifications ({{ vm.countCerts }} met)" aria-expanded="false">
+        <div ng-show="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.certs track by $index">
           <p ng-if="!vm.isEditing">
-            <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.isActive && !n.hasVersion, 'fa-square-o': !n.isActive}"></i>
-            <span class="sr-only">{{ n.isActive ? 'meets' : 'does not meet'}}</span>
-            <b ng-if="n.hasVersion">{{ n.version }}</b> {{ n.number }}: {{ n.title }}
+            <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
+            <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
+            {{ n.number }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="vm.editCerts[n.number]" ng-if="!n.hasVersion" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
-            <span class="cert-bloc" ng-if="n.hasVersion">
-              <select ng-model="vm.editCerts[n.number]" multiple size="6" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}">
+            <input type="checkbox" ng-model="vm.editCerts[n.number]" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
+            <label for="data_{{$parent.$parent.$index + '_' + $index}}">{{ n.number }}: {{ n.title }}</label>
+          </p>
+        </div>
+      </accordion-group>
+      <accordion-group heading="Clinical Quality Measures ({{ vm.countCqms }} met)" aria-expanded="false">
+        <div ng-show="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.cqms track by $index">
+          <p ng-if="!vm.isEditing">
+            <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.version, 'fa-square-o': !n.success}"></i>
+            <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
+            <b ng-if="n.version">{{ n.version }}</b> {{ n.number }}: {{ n.title }}
+          </p>
+          <p ng-if="vm.isEditing">
+            <input type="checkbox" ng-model="vm.editCqms[n.number]" ng-if="!n.version" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
+            <span class="cert-bloc" ng-if="n.version">
+              <select ng-model="vm.editCqms[n.number]" multiple size="6" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}">
                 <option value=""></option>
                 <option value="v0">v0</option>
                 <option value="v1">v1</option>

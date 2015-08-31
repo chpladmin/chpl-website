@@ -45,10 +45,10 @@
             };
 
             self.getProduct = function (productId) {
-                return $http.get(devAPI + '/get_product?id=' + productId)
+                return $http.get(API + '/certified_product/get_certified_product?certifiedProductId=' + productId)
                     .then(function (response) {
                         if (typeof response.data === 'object') {
-                            return response.data[0];
+                            return response.data;
                         } else {
                             return $q.reject(response.data);
                         }

@@ -23,7 +23,6 @@
                 .then(function (vendors) {
                     self.vendors = vendors.vendors;
                 });
-            self.cps = [{type: 'cp', value: '2015-04-28'}, {type: 'cp', value: '2014-08-12'}];
 
             self.selectVendor = function () {
                 if (self.vendorSelect) {
@@ -61,18 +60,26 @@
             self.selectVersion = function () {
                 if (self.versionSelect) {
                     self.activeVersion = self.versionSelect;
-/*                    commonService.getCPsByVersion(self.activeVersion[0].versionId)
-                        .then(function (cps) {
-                            self.cps = cps;
-                        });*/
+
+                    var queryObj = {orderBy: 'vendor'}; //certificationDate ?
+                    queryObj.vendor = self.activeVendor[0].name;
+                    queryObj.product = self.activeProduct[0].name;
+                    queryObj.version = self.activeVersion.version;
+
+                    commonService.searchAdvanced(queryObj,0,100)
+                        .then(function (data) {
+                            self.cps = data.results;
+                        }, function (error) {
+                            $log.error(error);
+                        });
                 }
             };
             self.selectCP = function () {
                 if (self.cpSelect) {
                     commonService.getProduct(self.cpSelect[0])
-                        .then(function (product) {
-                            self.activeCP = product;
-                            self.activeCP.certDate = new Date(self.activeCP.certDate);
+                        .then(function (cp) {
+                            self.activeCP = cp;
+                            self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
                         });
                 }
             };

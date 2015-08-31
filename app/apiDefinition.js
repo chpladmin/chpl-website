@@ -136,6 +136,44 @@ apis.entities.searchRequest = {
     practiceType: 'string (optional)',
     orderBy: 'string (optional)'
 };
+apis.entities.certifiedProduct = {
+    id:'long',
+    testingLabId:'long',
+    chplProductNumber:'string',
+    reportFileLocation:'string',
+    qualityManagementSystemAtt:'string',
+    acbCertificationId:'string',
+    classificationType:{name:'string',
+                        id:'long'},
+    otherAcb:'string',
+    certificationStatusId:'long',
+    vendor:{'name':'string',
+            id:'long'},
+    product:{'versionId':'long',
+             name:'string',
+             id:'long',
+             version:'string'},
+    certificationEdition:{'name':'string',
+                          id:'long'},
+    practiceType:{'name':'string',
+                  id:'long'},
+    certifyingBody:{'name':'string',
+                    id:'long'},
+    certificationDate:'string (yyyy-mm-dd HH:mm:ss.S)',
+    countCerts:'long',
+    countCqms:'long',
+    certificationResults:[{number:'string',
+                           title:'string',
+                           success:'boolean'},
+                         ],
+    cqmResults:[{number:'string',
+                 cmsId:'string',
+                 title:'string',
+                 nqfNumber:'string',
+                 success:'boolean',
+                 version:'string'}
+               ]
+};
 
 apis.endpoints = [
     {
@@ -420,5 +458,14 @@ apis.endpoints = [
         jsonParameter: apis.entities.searchRequest,
         security: null,
         response: apis.entities.searchResults
+    },{
+        name: 'Get Certified Product',
+        description: 'Return the certified product specified by the passed in parameter',
+        request: '/certified_product/get_certified_product',
+        id:'get_certified_product',
+        requestType: 'GET',
+        parameters: 'certifiedProductId',
+        security: null,
+        response: apis.entities.certifiedProduct
     }
 ];
