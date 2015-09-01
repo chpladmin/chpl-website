@@ -61,16 +61,9 @@
                 if (self.versionSelect) {
                     self.activeVersion = self.versionSelect;
 
-                    var queryObj = {orderBy: 'vendor'}; //certificationDate ?
-                    queryObj.vendor = self.activeVendor[0].name;
-                    queryObj.product = self.activeProduct[0].name;
-                    queryObj.version = self.activeVersion.version;
-
-                    commonService.searchAdvanced(queryObj,0,100)
-                        .then(function (data) {
-                            self.cps = data.results;
-                        }, function (error) {
-                            $log.error(error);
+                    commonService.getProductsByVersion(self.activeVersion.versionId)
+                        .then(function (cps) {
+                            self.cps = cps;
                         });
                 }
             };
@@ -92,6 +85,7 @@
                 .then(function (practices) { self.practices = practices; });
             commonService.getCertBodies()
                 .then(function (bodies) { self.bodies = bodies; });
+            self.statuses = [{id: '1', value: 'Active'},{id: '2', value: 'Retired'}];
 
             self.uploadFile = function () {
                 // Do something smart here

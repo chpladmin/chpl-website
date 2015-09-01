@@ -318,7 +318,7 @@
       <div ng-if="vm.activeCP === ''">
         <label for="cpSelect" class="control-label">Select a certified product</label>
         <select ng-model="vm.cpSelect" multiple id="cpSelect" class="input-sm form-control" size="12">
-          <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.certificationDate.split(' ')[0] | date }})</option>
+          <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
         </select>
         <button class="btn btn-default form-control" ng-click="vm.selectCP()">Choose Certified Product</button>
       </div>
@@ -335,31 +335,27 @@
               <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
               <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate.split(' ')[0] | date }} <br />
               <strong>Additional Software:</strong> {{ vm.activeCP.additionalSoftware }} <br />
+              <strong>Status:</strong> {{ vm.activeCP.certificationStatusId === '1' ? 'Active' : 'Retired' }}<br />
             </span>
             <span ng-if="vm.editCP">
               <div class="form-group">
                 <label for="cpClassification">Classification</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.classificationType.name" id="cpClassification">
-                  <option ng-repeat="classification in vm.classifications" value="{{ classification.value }}">{{ classification.value }}</option>
+                <select class="input-sm form-control" ng-model="vm.activeCP.classificationType.name" id="cpClassification"
+                        ng-options="classification.value as classification.value for classification in vm.classifications">
                 </select>
               </div>
               <div class="form-group">
                 <label for="cpPractice">Practice Type</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.practiceType.name" id="cpPractice">
-                  <option ng-repeat="practice in vm.practices" value="{{ practice.value }}">{{ practice.value }}</option>
+                <select class="input-sm form-control" ng-model="vm.activeCP.practiceType.name" id="cpPractice"
+                        ng-options="practice.value as practice.value for practice in vm.practices">
                 </select>
               </div>
-              <div class="form-group">
-                <label for="cpEdition">Certification Edition</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.certificationEdition.name" id="cpEdition">
-                  <option ng-repeat="edition in vm.editions" value="{{edition.value }}">{{ edition.value }}</option>
-                </select>
-              </div>
+              <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
               <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} </div>
               <div ng-if="vm.isChplAdmin" class="form-group">
                 <label for="cpBody">Certification Body</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.certifyingBody.name" id="cpBody">
-                  <option ng-repeat="body in vm.bodies" value="{{ body.value }}">{{ body.value }}</option>
+                <select class="input-sm form-control" ng-model="vm.activeCP.certifyingBody.name" id="cpBody"
+                        ng-options="body.value as body.value for body in vm.bodies">
                 </select>
               </div>
               <div class="form-group">
@@ -369,6 +365,12 @@
               <div class="form-group">
                 <label for="cpAdditionalSW">Additional Software</label>
                 <textarea rows="4" class="input-sm form-control" ng-model="vm.activeCP.additionalSoftware" id="cpAdditionalSW"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="cpStatus">Status</label>
+                <select class="input-sm form-control" ng-model="vm.activeCP.certificationStatusId" id="cpStatus"
+                        ng-options="status.id as status.value for status in vm.statuses">
+                </select>
               </div>
             </span>
             <br />
