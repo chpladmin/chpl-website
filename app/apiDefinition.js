@@ -16,11 +16,42 @@ apis.entities.user = {
     lastName:'string',
     email:'string',
     phoneNumber:'string',
-    title:'string',
-    accountLocked:'boolean',
-    accountEnabled:'boolean',
-    userRole:['role1', 'role2?'],
-    userACBs:['acb1', 'acb2?]']
+    title:'string'
+};
+apis.entities.userAndRoles = {
+	    userId:'long',
+	    subjectName:'string',
+	    firstName:'string',
+	    lastName:'string',
+	    email:'string',
+	    phoneNumber:'string',
+	    title:'string',
+	    accountLocked:'boolean',
+	    accountEnabled:'boolean',
+	    userRole:['role1', 'role2?']
+	};
+apis.entities.usersAtAcb = {
+	users: [
+	        {
+	        	user: {
+				    userId:'long',
+				    subjectName:'string',
+				    firstName:'string',
+				    lastName:'string',
+				    email:'string',
+				    phoneNumber:'string',
+				    title:'string',
+				    accountLocked:'boolean',
+				    accountEnabled:'boolean'
+	        	},
+	        	certificationBodyId: 'long',
+	        	permissions: ['ADMIN', 'READ']
+	        }
+	  ]
+	};
+apis.entities.grantRole = {
+		subjectName: 'string',
+		role: 'string'
 };
 apis.entities.acb = {
     acbId:'long',
@@ -199,20 +230,30 @@ apis.endpoints = [
 
         name: 'List Users at ACB',
         description: 'List all ACB Admin or Staff with access to the parameterized ACB',
-        request: '/list_users_at_acb',
+        request: '/acb/list_users/ACB_ID',
         id: 'list_users_at_acb',
         requestType: 'GET',
         parameters: 'acbId',
-        security: 'Admin',
-        response: [apis.entities.user]
+        security: 'Admin or ACB Admin',
+        response: [apis.entities.usersAtAcb]
     },{
         name: 'Create User',
-        description: 'Create a user directly',
+        description: 'Create a user. Do not grant any special permissions.',
         note: 'The request json object will not have the userId, but will have a password. For development purposes only. Should there be a separate "create user" api call for creating a user at a particular ACB?',
-        request: '/create_user',
+        request: '/auth/create_user',
         id: 'create_user',
         requestType: 'POST',
         jsonParameter: [apis.entities.user],
+        security: 'Admin',
+        response: apis.entities.success
+    },{
+        name: 'Create User With Role(s)',
+        description: 'Create a user and grant them role(s) in the CHPL system.',
+        note: 'The request json object will not have the userId, but will have a password. For development purposes only.",
+        request: '/auth/create_user_with_roles',
+        id: 'create_user_with_roles',
+        requestType: 'POST',
+        jsonParameter: [apis.entities.userAndRoles],
         security: 'Admin',
         response: apis.entities.success
     },{
@@ -226,37 +267,64 @@ apis.endpoints = [
         security: 'Admin',
         response: apis.entities.success
     },{
+    	name: 'Grant Role to User',
+        description: 'Add a role for the user. One of ROLE_ACB_STAFF, and ROLE_ACB_ADMIN',
+        request: '/auth/grant_user_role',
+        id: 'grant_user_role',
+        requestType: 'POST',
+        jsonParameter: [apis.entities.grantRole],
+        security: 'Admin',
+        response: {"roleAdded": "true"}
+    },{
+    	name: 'Revoke Role from User',
+        description: 'Remove a role for the user. One of ROLE_ACB_STAFF, and ROLE_ACB_ADMIN',
+        request: '/auth/revoke_user_role',
+        id: 'revoke_user_role',
+        requestType: 'POST',
+        jsonParameter: [apis.entities.grantRole],
+        security: 'Admin',
+        response: {"roleRemoved": "true"}
+    },{
         name: 'Modify User',
         description: 'Modify a user',
-        request: '/modify_user',
+        request: '/auth/update_user',
         id: 'modify_user',
         requestType: 'POST',
         jsonParameter: [apis.entities.user],
-        security: 'Admin',
+        security: 'Admin or the user themselves',
         response: apis.entities.success
     },{
         name: 'Delete User',
         description: 'Disable a user\'s access to CHPL entirely',
-        request: '/delete_user',
+        request: '/auth/delete_user?userId=USER_ID',
         id: 'delete_user',
-        requestType: 'GET',
-        parameters: 'userId',
+        requestType: 'POST',
+        parameters: 'userId: long',
         security: 'Admin',
+        response: apis.entities.success
+    },{
+        name: 'Add User to ACB',
+        description: 'Give a user a role at a particular ACB',
+        note: "Authority is one of 'READ', 'DELETE', or 'ADMIN' and defines the capabilities that user has on that ACB.",
+        request: '/acb/add_user?acbId=ACB_ID&userId=USER_ID&authority=ROLE',
+        id: 'add_user_to_acb',
+        requestType: 'POST',
+        security: 'Admin or ACB Admin',
         response: apis.entities.success
     },{
         name: 'Delete User from ACB',
         description: 'Disable a user\'s ability to manage a particular ACB, without turning off whatever other access they have',
-        request: '/delete_user_from_acb',
+        note: "Authority is one of 'READ', 'DELETE', or 'ADMIN' and defines the capabilities that user has on that ACB. It is optional on this request. If provided, only that specific authority will be removed for that user and ACB. If not provided, all authorities on that ACB will be removed for that user.",
+        request: '/acb/delete_user_from_acb?acbId=ACB_ID&userId=USER_ID[&authority=ROLE]',
         id: 'delete_user_from_acb',
-        requestType: 'GET',
-        parameters: ['userId', 'acbId'],
-        security: 'Admin',
+        requestType: 'POST',
+        security: 'Admin or ACB Admin',
         response: apis.entities.success
     },{
         name: 'Create ACB',
         description: 'Create an ACB',
         note: 'Will not have acbId in JSON request parameter',
-        request: '/create_acb',
+        request: '/acb/create',
         id: 'create_acb',
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
@@ -265,11 +333,19 @@ apis.endpoints = [
     },{
         name: 'Modify ACB',
         description: 'Modify an already existing ACB',
-        request: '/modify_acb',
+        request: '/acb/update_acb',
         id: 'modify_acb',
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
         security: 'Admin',
+        response: apis.entities.success
+    },{
+        name: 'Delete ACB',
+        description: 'Delete an existing ACB',
+        request: '/acb/delete/ACB_ID',
+        id: 'delete_acb',
+        requestType: 'POST',
+        security: 'Admin or ACB Admin or ACB Delete',
         response: apis.entities.success
     },{
         name: 'List Certified Product Activity',
