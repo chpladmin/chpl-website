@@ -53,6 +53,11 @@ apis.entities.grantRole = {
 		subjectName: 'string',
 		role: 'string'
 };
+apis.entities.grantAcb = {
+		acbId: 'long',
+		userId: 'long',
+		authority: 'string'
+};
 apis.entities.acb = {
     acbId:'long',
     name:'string',
@@ -296,28 +301,30 @@ apis.endpoints = [
     },{
         name: 'Delete User',
         description: 'Disable a user\'s access to CHPL entirely',
-        request: '/auth/delete_user?userId=USER_ID',
+        request: '/auth/delete_user/USER_ID',
         id: 'delete_user',
         requestType: 'POST',
-        parameters: 'userId: long',
+        parameters: 'USER_ID: long',
         security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Add User to ACB',
         description: 'Give a user a role at a particular ACB',
         note: "Authority is one of 'READ', 'DELETE', or 'ADMIN' and defines the capabilities that user has on that ACB.",
-        request: '/acb/add_user?acbId=ACB_ID&userId=USER_ID&authority=ROLE',
+        request: '/acb/add_user',
         id: 'add_user_to_acb',
         requestType: 'POST',
+        jsonParameter: apis.entities.grantAcb,
         security: 'Admin or ACB Admin',
         response: apis.entities.success
     },{
         name: 'Delete User from ACB',
         description: 'Disable a user\'s ability to manage a particular ACB, without turning off whatever other access they have',
         note: "Authority is one of 'READ', 'DELETE', or 'ADMIN' and defines the capabilities that user has on that ACB. It is optional on this request. If provided, only that specific authority will be removed for that user and ACB. If not provided, all authorities on that ACB will be removed for that user.",
-        request: '/acb/delete_user_from_acb?acbId=ACB_ID&userId=USER_ID[&authority=ROLE]',
+        request: '/acb/delete_user',
         id: 'delete_user_from_acb',
         requestType: 'POST',
+        jsonParameter: apis.entities.grantAcb,
         security: 'Admin or ACB Admin',
         response: apis.entities.success
     },{
