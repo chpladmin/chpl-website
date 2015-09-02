@@ -18,6 +18,19 @@
                     });
             };
 
+            self.postApiCall = function (endpoint, workingApi, postObject) {
+                return $http.post(workingApi + endpoint, postObject)
+                    .then(function (response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return response;
+                        }
+                    }, function (response) {
+                        return response;
+                    });
+            };
+
             self.search = function (query, pageNum, pageSize) {
                 return $http.get(API + '/simple_search?searchTerm=' + query + '&pageNum=' + pageNum + '&pageSize=' + pageSize)
                     .then(function (response) {

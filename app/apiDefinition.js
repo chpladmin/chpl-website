@@ -19,39 +19,39 @@ apis.entities.user = {
     title:'string'
 };
 apis.entities.userAndRoles = {
-	    userId:'long',
-	    subjectName:'string',
-	    firstName:'string',
-	    lastName:'string',
-	    email:'string',
-	    phoneNumber:'string',
-	    title:'string',
-	    accountLocked:'boolean',
-	    accountEnabled:'boolean',
-	    userRole:['role1', 'role2?']
-	};
+	userId:'long',
+	subjectName:'string',
+	firstName:'string',
+	lastName:'string',
+	email:'string',
+	phoneNumber:'string',
+	title:'string',
+	accountLocked:'boolean',
+	accountEnabled:'boolean',
+	userRole:['role1', 'role2?']
+};
 apis.entities.usersAtAcb = {
 	users: [
-	        {
-	        	user: {
-				    userId:'long',
-				    subjectName:'string',
-				    firstName:'string',
-				    lastName:'string',
-				    email:'string',
-				    phoneNumber:'string',
-				    title:'string',
-				    accountLocked:'boolean',
-				    accountEnabled:'boolean'
-	        	},
-	        	certificationBodyId: 'long',
-	        	permissions: ['ADMIN', 'READ']
-	        }
-	  ]
-	};
+	    {
+	        user: {
+				userId:'long',
+				subjectName:'string',
+				firstName:'string',
+				lastName:'string',
+				email:'string',
+				phoneNumber:'string',
+				title:'string',
+				accountLocked:'boolean',
+				accountEnabled:'boolean'
+	        },
+	        certificationBodyId: 'long',
+	        permissions: ['ADMIN', 'READ']
+	    }
+	]
+};
 apis.entities.grantRole = {
-		subjectName: 'string',
-		role: 'string'
+	subjectName: 'string',
+	role: 'string'
 };
 apis.entities.acb = {
     acbId:'long',
@@ -217,17 +217,15 @@ apis.endpoints = [
         security: 'Admin',
         response: [apis.entities.user]
     },{
-
         name: 'List ACBs',
         description: 'List all registered ACBs',
-        request: '/list_acbs',
+        request: '/acb/list_acbs',
         id: 'list_acbs',
         requestType: 'GET',
         parameters: null,
         security: null,
         response: [apis.entities.acb]
     },{
-
         name: 'List Users at ACB',
         description: 'List all ACB Admin or Staff with access to the parameterized ACB',
         request: '/acb/list_users/ACB_ID',
@@ -249,7 +247,7 @@ apis.endpoints = [
     },{
         name: 'Create User With Role(s)',
         description: 'Create a user and grant them role(s) in the CHPL system.',
-        note: 'The request json object will not have the userId, but will have a password. For development purposes only.",
+        note: 'The request json object will not have the userId, but will have a password. For development purposes only.',
         request: '/auth/create_user_with_roles',
         id: 'create_user_with_roles',
         requestType: 'POST',
@@ -296,7 +294,7 @@ apis.endpoints = [
     },{
         name: 'Delete User',
         description: 'Disable a user\'s access to CHPL entirely',
-        request: '/auth/delete_user?userId=USER_ID',
+        request: '/auth/delete_user',
         id: 'delete_user',
         requestType: 'POST',
         parameters: 'userId: long',
@@ -306,8 +304,9 @@ apis.endpoints = [
         name: 'Add User to ACB',
         description: 'Give a user a role at a particular ACB',
         note: "Authority is one of 'READ', 'DELETE', or 'ADMIN' and defines the capabilities that user has on that ACB.",
-        request: '/acb/add_user?acbId=ACB_ID&userId=USER_ID&authority=ROLE',
+        request: '/acb/add_user',
         id: 'add_user_to_acb',
+        parameters: 'acbId: long, userId: long, authority: string [READ, DELETE, ADMIN]',
         requestType: 'POST',
         security: 'Admin or ACB Admin',
         response: apis.entities.success
@@ -315,9 +314,10 @@ apis.endpoints = [
         name: 'Delete User from ACB',
         description: 'Disable a user\'s ability to manage a particular ACB, without turning off whatever other access they have',
         note: "Authority is one of 'READ', 'DELETE', or 'ADMIN' and defines the capabilities that user has on that ACB. It is optional on this request. If provided, only that specific authority will be removed for that user and ACB. If not provided, all authorities on that ACB will be removed for that user.",
-        request: '/acb/delete_user_from_acb?acbId=ACB_ID&userId=USER_ID[&authority=ROLE]',
+        request: '/acb/delete_user_from_acb',
         id: 'delete_user_from_acb',
         requestType: 'POST',
+        parameters: 'acbId: long, userId: long, authority: string [READ, DELETE, ADMIN] (optional)',
         security: 'Admin or ACB Admin',
         response: apis.entities.success
     },{
@@ -331,10 +331,10 @@ apis.endpoints = [
         security: 'Admin',
         response: apis.entities.success
     },{
-        name: 'Modify ACB',
+        name: 'Update ACB',
         description: 'Modify an already existing ACB',
-        request: '/acb/update_acb',
-        id: 'modify_acb',
+        request: '/acb/update',
+        id: 'update_acb',
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
         security: 'Admin',

@@ -84,16 +84,6 @@
                     expect(ctrl.cancelUser).toBeDefined();
                 });
             });
-
-            describe('ACB Management', function () {
-                it('should (not) have ACB information at load time', function () {
-                    expect(ctrl.acbs.length).toBeGreaterThan(0);
-                });
-
-                it('should have a function to create a new ACB', function () {
-                    expect(ctrl.createACB).toBeDefined();
-                });
-            });
         });
     });
 })();

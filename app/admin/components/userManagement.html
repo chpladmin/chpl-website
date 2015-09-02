@@ -16,28 +16,28 @@
       <tbody>
         <tr ng-repeat="user in users">
           <td>
-            <span ng-if="!isModifying">{{ user.subjectName }}</span>
-            <input ng-if="isModifying" type="text" ng-model="user.subjectName" class="form-control"/>
+            <span ng-if="!isModifying">{{ user.user.subjectName }}</span>
+            <input ng-if="isModifying" type="text" ng-model="user.user.subjectName" class="form-control"/>
           </td>
           <td>
-            <span ng-if="!isModifying">{{ user.firstName }}</span>
-            <input ng-if="isModifying" type="text" ng-model="user.firstName" class="form-control"/>
+            <span ng-if="!isModifying">{{ user.user.firstName }}</span>
+            <input ng-if="isModifying" type="text" ng-model="user.user.firstName" class="form-control"/>
           </td>
           <td>
-            <span ng-if="!isModifying">{{ user.lastName }}</span>
-            <input ng-if="isModifying" type="text" ng-model="user.lastName" class="form-control"/>
+            <span ng-if="!isModifying">{{ user.user.lastName }}</span>
+            <input ng-if="isModifying" type="text" ng-model="user.user.lastName" class="form-control"/>
           </td>
           <td>
-            <span ng-if="!isModifying">{{ user.email }}</span>
-            <input ng-if="isModifying" type="text" ng-model="user.email" class="form-control"/>
+            <span ng-if="!isModifying">{{ user.user.email }}</span>
+            <input ng-if="isModifying" type="text" ng-model="user.user.email" class="form-control"/>
           </td>
           <td>
-            <span ng-if="!isModifying">{{ user.phoneNumber }}</span>
-            <input ng-if="isModifying" type="text" ng-model="user.phoneNumber" class="form-control"/>
+            <span ng-if="!isModifying">{{ user.user.phoneNumber }}</span>
+            <input ng-if="isModifying" type="text" ng-model="user.user.phoneNumber" class="form-control"/>
           </td>
           <td>
-            <span>Locked: <input type="checkbox" ng-model="user.accountLocked" ng-disabled="!isModifying" /></span><br />
-            <span>Enabled: <input type="checkbox" ng-model="user.accountEnabled" ng-disabled="!isModifying" /></span>
+            <span>Locked: <input type="checkbox" ng-model="user.user.accountLocked" ng-disabled="!isModifying" /></span><br />
+            <span>Enabled: <input type="checkbox" ng-model="user.user.accountEnabled" ng-disabled="!isModifying" /></span>
           </td>
           <td>
             <button class="btn btn-default btn-block" ng-show="!isModifying" ng-click="isModifying = !isModifying">Modify</button>

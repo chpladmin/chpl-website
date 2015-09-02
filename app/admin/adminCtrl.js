@@ -5,8 +5,6 @@
         .controller('AdminController', ['$scope', '$rootScope', '$log', '$location', 'commonService', 'userService', 'authService', function ($scope, $rootScope, $log, $location, commonService, userService, authService) {
             var self = this;
             self.users = [];
-            self.acbs = [{ name: 'ACB 1', website: 'http://www.example.com', address: {line1: '123 Main St', line2: 'Suite 456', city: 'Springfield', region: 'State', country: 'USA'},
-                           users: [{subjectName: 'admin1', firstName: 'ad', lastName: 'min', email: '123@example.com', phoneNumber: '123-456-7890'}]}];
 
             self.refreshUsers = function () {
                 userService.getUsers()
@@ -17,13 +15,8 @@
                     });
             };
 
-            self.refreshACBs = function () {
-                // do service things here
-            };
-
             self.refreshAll = function () {
                 self.refreshUsers();
-                self.refreshACBs();
             };
             self.refreshAll();
 
@@ -70,13 +63,6 @@
                 $log.info('in adminCtrl.cancelUser');
                 $log.info(currentUser);
                 self.refreshUsers();
-            };
-
-            self.createACB = function (newACB) {
-                $log.info('in adminCtrl.createACB');
-                $log.info(newACB);
-                //replace this with a service call:
-                self.acbs.push(angular.copy(newACB));
             };
         }]);
 })();
