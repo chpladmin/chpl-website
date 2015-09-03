@@ -18,7 +18,17 @@ apis.entities.user = {
     phoneNumber:'string',
     title:'string'
 };
-apis.entities.userAndRoles = {
+apis.entities.createUserAndRoles = {
+	    userId:'long',
+	    subjectName:'string',
+	    firstName:'string',
+	    lastName:'string',
+	    email:'string',
+	    phoneNumber:'string',
+	    title:'string',
+	    userRole:['role1', 'role2?']
+	};
+apis.entities.createdUser = {
 	    userId:'long',
 	    subjectName:'string',
 	    firstName:'string',
@@ -27,10 +37,9 @@ apis.entities.userAndRoles = {
 	    phoneNumber:'string',
 	    title:'string',
 	    accountLocked:'boolean',
-	    accountEnabled:'boolean',
-	    userRole:['role1', 'role2?']
+	    accountEnabled:'boolean'
 	};
-apis.entities.usersAtAcb = {
+apis.entities.userWithPermissions = {
 	users: [
 	        {
 	        	user: {
@@ -44,7 +53,6 @@ apis.entities.usersAtAcb = {
 				    accountLocked:'boolean',
 				    accountEnabled:'boolean'
 	        	},
-	        	certificationBodyId: 'long',
 	        	permissions: ['ADMIN', 'READ']
 	        }
 	  ]
@@ -215,12 +223,12 @@ apis.endpoints = [
     {
         name: 'List Users',
         description: 'List all CHPL users',
-        request: '/list_users',
+        request: '/auth/list_users',
         id: 'list_users',
         requestType: 'GET',
         parameters: null,
         security: 'Admin',
-        response: [apis.entities.user]
+        response: [apis.entities.userWithPermissions]
     },{
 
         name: 'List ACBs',
@@ -240,27 +248,32 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: 'acbId',
         security: 'Admin or ACB Admin',
-        response: [apis.entities.usersAtAcb]
+        response: [apis.entities.userWithPermissions]
     },{
         name: 'Create User',
         description: 'Create a user. Do not grant any special permissions.',
-        note: 'The request json object will not have the userId, but will have a password. For development purposes only. Should there be a separate "create user" api call for creating a user at a particular ACB?',
+        note: 'The request json object will not have the userId, but will have a password.' +
+        	'<ul>Optional fields: <li>title</li></ul>' +
+        	'For development purposes only. Should there be a separate "create user" api call for creating a user at a particular ACB?',
         request: '/auth/create_user',
         id: 'create_user',
         requestType: 'POST',
-        jsonParameter: [apis.entities.user],
+        jsonParameter: apis.entities.user,
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.createdUser
     },{
         name: 'Create User With Role(s)',
         description: 'Create a user and grant them role(s) in the CHPL system.',
-        note: 'The request json object will not have the userId, but will have a password. The roles specified may be ROLE_ADMIN, ROLE_ACB_STAFF, or ROLE_ACB_ADMIN. For development purposes only.",
+        note: 'The request json object will not have the userId, but will have a password.' +
+        '<br/>The roles specified may be ROLE_ADMIN, ROLE_ACB_STAFF, or ROLE_ACB_ADMIN' +
+    	'<ul>Optional fields: <li>title</li></ul>' +
+    	'For development purposes only. Should there be a separate "create user" api call for creating a user at a particular ACB?',
         request: '/auth/create_user_with_roles',
         id: 'create_user_with_roles',
         requestType: 'POST',
-        jsonParameter: [apis.entities.userAndRoles],
+        jsonParameter: apis.entities.createUserAndRoles,
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.createdUser
     },{
         name: 'Invite User',
         description: 'Invite a user to register their account',
@@ -277,7 +290,7 @@ apis.endpoints = [
         request: '/auth/grant_user_role',
         id: 'grant_user_role',
         requestType: 'POST',
-        jsonParameter: [apis.entities.grantRole],
+        jsonParameter: apis.entities.grantRole,
         security: 'Admin',
         response: {"roleAdded": "true"}
     },{
@@ -286,7 +299,7 @@ apis.endpoints = [
         request: '/auth/revoke_user_role',
         id: 'revoke_user_role',
         requestType: 'POST',
-        jsonParameter: [apis.entities.grantRole],
+        jsonParameter: apis.entities.grantRole,
         security: 'Admin',
         response: {"roleRemoved": "true"}
     },{
@@ -295,7 +308,7 @@ apis.endpoints = [
         request: '/auth/update_user',
         id: 'modify_user',
         requestType: 'POST',
-        jsonParameter: [apis.entities.user],
+        jsonParameter: apis.entities.createdUser,
         security: 'Admin or the user themselves',
         response: apis.entities.success
     },{
