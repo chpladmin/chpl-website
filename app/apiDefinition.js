@@ -225,7 +225,7 @@ apis.endpoints = [
 
         name: 'List ACBs',
         description: 'List all registered ACBs',
-        request: '/list_acbs',
+        request: '/acb/list_acbs',
         id: 'list_acbs',
         requestType: 'GET',
         parameters: null,
@@ -254,7 +254,7 @@ apis.endpoints = [
     },{
         name: 'Create User With Role(s)',
         description: 'Create a user and grant them role(s) in the CHPL system.',
-        note: 'The request json object will not have the userId, but will have a password. For development purposes only.",
+        note: 'The request json object will not have the userId, but will have a password. The roles specified may be ROLE_ADMIN, ROLE_ACB_STAFF, or ROLE_ACB_ADMIN. For development purposes only.",
         request: '/auth/create_user_with_roles',
         id: 'create_user_with_roles',
         requestType: 'POST',
