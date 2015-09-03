@@ -5,10 +5,6 @@
         .service('userService', function ($http, API) {
             var self = this;
 
-            self.getUsers = function () {
-                return $http.get(API + '/auth/list_users');
-            }
-
             self.login = function (username, password) {
                 return $http({
                     method: 'POST',

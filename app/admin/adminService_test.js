@@ -6,6 +6,7 @@
         var adminService, commonService, $httpBackend, $log;
         var mock = {};
         mock.vendor = {vendorId: 1, address: {}};
+        mock.users = {users: [{user: {}},{user: {}}]};
 
 
         beforeEach(function () {
@@ -23,15 +24,14 @@
             $httpBackend = _$httpBackend_;
 
             $httpBackend.whenPOST(/vendor\/update_vendor/).respond(mock.vendor);
+            $httpBackend.whenGET(/list_users/).respond(mock.users);
         }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
                 console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
             }
-        });
 
-        afterEach(function () {
             $httpBackend.verifyNoOutstandingExpectation();
             $httpBackend.verifyNoOutstandingRequest();
         });
@@ -57,6 +57,14 @@
                 adminService.updateVendor(mock.vendor).then(function(response) {
                     expect(response.status).toEqual(500);
                 });
+                $httpBackend.flush();
+            });
+
+            it('should return a list of users', function () {
+                adminService.getUsers()
+                    .then(function (response) {
+                        expect(response).toEqual(mock.users);
+                    });
                 $httpBackend.flush();
             });
         });

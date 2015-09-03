@@ -15,19 +15,8 @@
                         self.acbs = data.acbs;
                     });
             };
-            self.loadUsers = function (acb) {
-                adminService.getUsersAtAcb(acb.id)
-                    .then(function (data) {
-                        acb.users = data.users;
-                    });
-            };
             self.loadData = function () {
-                self.loadAcbs()
-                .then(function () {
-                    for (var i = 0; i < self.acbs.length; i++) {
-                        self.loadUsers(self.acbs[i]);
-                    }
-                });
+                self.loadAcbs();
             };
             self.loadData();
 

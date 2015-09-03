@@ -47,6 +47,12 @@
                     defer.resolve({});
                     return defer.promise;
                 };
+
+                mockAdminService.getUsers = function (endpoint) {
+                    var defer = $q.defer();
+                    defer.resolve({data: {}});
+                    return defer.promise;
+                };
             });
         });
 

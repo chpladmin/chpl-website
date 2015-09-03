@@ -29,15 +29,11 @@
       </div>
     </div>
     <tabset>
-      <tab ng-if="vm.isChplAdmin()" heading="User Management">
-        <ai-user-management users="vm.users"
-                            create-user="vm.createUser"
-                            modify-user="vm.modifyUser"
-                            delete-user="vm.deleteUser"
-                            cancel-user="vm.cancelUser">
+      <tab ng-if="vm.isChplAdmin()" heading="User Management" active="true">
+        <ai-user-management>
         </ai-user-management>
       </tab>
-      <tab heading="ACB Management" active="true">
+      <tab ng-if="vm.isChplAdmin() || vm.isAcbAdmin()" heading="ACB Management">
         <ai-acb-management>
         </ai-acb-management>
       </tab>

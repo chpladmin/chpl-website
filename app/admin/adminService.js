@@ -36,5 +36,33 @@
             self.deleteACB = function (acbId) {
                 return commonService.postApiCall('/acb/delete/' + acbId, API, {})
             };
+
+            self.getUsers = function () {
+                return commonService.simpleApiCall('/auth/list_users', API);
+            };
+
+            self.createUser = function (newUser) {
+                return commonService.postApiCall('/auth/create_user_with_roles', API, newUser);
+            };
+
+            self.addUserToAcb = function (userObject) {
+                return commonService.postApiCall('/acb/add_user', API, userObject);
+            };
+
+            self.addRole = function (roleObject) {
+                return commonService.postApiCall('/auth/grant_user_role', API, roleObject);
+            };
+
+            self.revokeRole = function (roleObject) {
+                return commonService.postApiCall('/auth/revoke_user_role', API, roleObject);
+            };
+
+            self.updateUser = function (user) {
+                return commonService.postApiCall('/auth/update_user', API, user);
+            };
+
+            self.deleteUser = function (userId) {
+                return commonService.postApiCall('/auth/delete_user/' + userId, API, {});
+            };
         }]);
 })();
