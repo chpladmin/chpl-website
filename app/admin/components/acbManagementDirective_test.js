@@ -3,17 +3,23 @@
 
     describe('app.admin.acbManagement.directive', function () {
 
-        var element, scope, $log, authService;
+        var element, scope, $log, authService, ctrl, commonService;
 
         beforeEach(function () {
             var mockAuthService = {};
+            var mockCommonService = {};
+            var mockAdminService = {};
 
             module('app.admin', function($provide) {
                 $provide.value('authService', mockAuthService);
+                $provide.value('commonService', mockCommonService);
+                $provide.value('adminService', mockAdminService);
             });
 
             module('app/admin/components/acbManagement.html');
             module('app/admin/components/userManagement.html');
+
+            mockAdminService.acbs = {acbs: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
 
             inject(function($q) {
                 mockAuthService.isAcbAdmin = function () {
@@ -22,6 +28,24 @@
 
                 mockAuthService.isChplAdmin = function () {
                     return true;
+                };
+
+                mockAdminService.getAcbs = function () {
+                    var defer = $q.defer();
+                    defer.resolve(mockAdminService.acbs);
+                    return defer.promise;
+                };
+
+                mockAdminService.getUsersAtAcb = function (acbId) {
+                    var defer = $q.defer();
+                    defer.resolve({});
+                    return defer.promise;
+                };
+
+                mockCommonService.simpleApiCall = function (endpoint) {
+                    var defer = $q.defer();
+                    defer.resolve({});
+                    return defer.promise;
                 };
             });
         });
@@ -48,17 +72,30 @@
             }
         });
 
-        it('should have a function to create an ACB', function () {
-            expect(element.isolateScope().createACB).toBeDefined();
-        });
+        describe('controller', function () {
 
-        it('should have an empty object for a new ACB', function () {
-            expect(element.isolateScope().newACB).toEqual({});
-        });
+            beforeEach(inject(function ($controller, _commonService_, $q, $httpBackend) {
+                commonService = _commonService_;
 
-        it('should know if the logged in user is ACB and/or CHPL admin', function () {
-            expect(element.isolateScope().isAcbAdmin).toBeTruthy();
-            expect(element.isolateScope().isChplAdmin).toBeTruthy();
+                ctrl = $controller('AcbManagementController', {
+                    $scope: scope,
+                    $element: null,
+                    commonService: commonService});
+                scope.$digest();
+            }));
+
+            it('should exist', function() {
+                expect(ctrl).toBeDefined();
+            });
+
+            it('should have an empty ACB ready', function () {
+                expect(ctrl.newACB).toEqual({address:{}});
+            });
+
+            it('should know if the logged in user is ACB and/or CHPL admin', function () {
+                expect(ctrl.isAcbAdmin).toBeTruthy();
+                expect(ctrl.isChplAdmin).toBeTruthy();
+            });
         });
     });
 })();

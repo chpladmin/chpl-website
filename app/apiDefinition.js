@@ -18,6 +18,7 @@ apis.entities.user = {
     phoneNumber:'string',
     title:'string'
 };
+<<<<<<< HEAD
 apis.entities.createUserAndRoles = {
 	    userId:'long',
 	    subjectName:'string',
@@ -57,9 +58,42 @@ apis.entities.userWithPermissions = {
 	        }
 	  ]
 	};
+=======
+apis.entities.userAndRoles = {
+	userId:'long',
+	subjectName:'string',
+	firstName:'string',
+	lastName:'string',
+	email:'string',
+	phoneNumber:'string',
+	title:'string',
+	accountLocked:'boolean',
+	accountEnabled:'boolean',
+	userRole:['role1', 'role2?']
+};
+apis.entities.usersAtAcb = {
+	users: [
+	    {
+	        user: {
+				userId:'long',
+				subjectName:'string',
+				firstName:'string',
+				lastName:'string',
+				email:'string',
+				phoneNumber:'string',
+				title:'string',
+				accountLocked:'boolean',
+				accountEnabled:'boolean'
+	        },
+	        certificationBodyId: 'long',
+	        permissions: ['ADMIN', 'READ']
+	    }
+	]
+};
+>>>>>>> andlar/ocd-170
 apis.entities.grantRole = {
-		subjectName: 'string',
-		role: 'string'
+	subjectName: 'string',
+	role: 'string'
 };
 apis.entities.grantAcb = {
 		acbId: 'long',
@@ -230,7 +264,6 @@ apis.endpoints = [
         security: 'Admin',
         response: [apis.entities.userWithPermissions]
     },{
-
         name: 'List ACBs',
         description: 'List all registered ACBs',
         request: '/acb/list_acbs',
@@ -240,7 +273,6 @@ apis.endpoints = [
         security: null,
         response: [apis.entities.acb]
     },{
-
         name: 'List Users at ACB',
         description: 'List all ACB Admin or Staff with access to the parameterized ACB',
         request: '/acb/list_users/ACB_ID',
@@ -326,6 +358,7 @@ apis.endpoints = [
         note: "Authority is one of 'READ', 'DELETE', or 'ADMIN' and defines the capabilities that user has on that ACB.",
         request: '/acb/add_user',
         id: 'add_user_to_acb',
+        parameters: 'acbId: long, userId: long, authority: string [READ, DELETE, ADMIN]',
         requestType: 'POST',
         jsonParameter: apis.entities.grantAcb,
         security: 'Admin or ACB Admin',
@@ -351,10 +384,10 @@ apis.endpoints = [
         security: 'Admin',
         response: apis.entities.success
     },{
-        name: 'Modify ACB',
+        name: 'Update ACB',
         description: 'Modify an already existing ACB',
-        request: '/acb/update_acb',
-        id: 'modify_acb',
+        request: '/acb/update',
+        id: 'update_acb',
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
         security: 'Admin',

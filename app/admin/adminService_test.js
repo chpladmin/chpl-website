@@ -3,18 +3,23 @@
 
     describe('app.admin', function () {
 
-        beforeEach(module('app.admin', function ($provide) {
-            $provide.constant('API', 'http://localhost:8080/chpl-service');
-        }));
-
-        var adminService, $httpBackend, $log;
-
+        var adminService, commonService, $httpBackend, $log;
         var mock = {};
         mock.vendor = {vendorId: 1, address: {}};
 
-        beforeEach(inject(function (_$log_, _adminService_, _$httpBackend_) {
+
+        beforeEach(function () {
+            var mockCommonService = {};
+
+            module('app.admin', function ($provide) {
+                $provide.constant('API', 'http://localhost:8080/chpl-service');
+            })
+        });
+
+        beforeEach(inject(function (_$log_, _adminService_, _commonService_, _$httpBackend_) {
             $log = _$log_;
             adminService  = _adminService_;
+            commonService = _commonService_;
             $httpBackend = _$httpBackend_;
 
             $httpBackend.whenPOST(/vendor\/update_vendor/).respond(mock.vendor);
