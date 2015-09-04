@@ -2,6 +2,15 @@
   <div class="col-md-12">
     <h1>ACB Management</h1>
     <tabset vertical="false">
+      <tab heading="Overview" active="true">
+        <div class="row">
+          <div class="col-md-12">
+            <h2>Overview of ACB Management</h2>
+            <p ng-if="vm.isChplAdmin">You are a CHPL admin. You can do stuff like:</p>
+            <p ng-if="vm.isAcbAdmin">You are an ACB admin. You can do stuff like:</p>
+          </div>
+        </div>
+      </tab>
       <tab ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id" heading="{{ acb.name }}">
         <div class="row">
           <div class="col-md-12">
@@ -30,7 +39,7 @@
                 <input type="text" id="acb-new-country" ng-model="acb.address.country" class="form-control" ng-required="vm.addressRequired(acb)" />
                 <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.modifyACB(acb)" ng-disabled="acbEditForm{{acb.id}}.$invalid">Save changes to this ACB</button>
                 <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.cancelACB()">Cancel editing this ACB</button>
-                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.deleteACB(acb)">Remove this ACB</button>
+                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.deleteACB(acb)" ng-if="vm.isChplAdmin">Remove this ACB</button>
               </form>
             </div>
             <div ng-show="!vm.isModifying">

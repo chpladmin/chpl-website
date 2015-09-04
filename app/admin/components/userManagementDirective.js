@@ -38,7 +38,10 @@
                             var userObject = {acbId: self.acbId,
                                               userId: response.userId,
                                               authority: 'ADMIN'};
-                            adminService.addUserToAcb(userObject);
+                            $timeout(adminService.addUserToAcb,
+                                     1000,
+                                     true,
+                                     userObject);
                         }
                         $timeout(self.freshenUsers,1000);
                     });
@@ -48,22 +51,31 @@
             self.updateUser = function (user) {
                 if (!user.roles)
                     user.roles = [];
+
                 var roleObject = {subjectName: user.user.subjectName};
                 for (var i = 0; i < self.roles.length; i++) {
                     roleObject.role = self.roles[i].name;
                     if (user.roles.indexOf(self.roles[i]) > -1) {
                         adminService.addRole(roleObject);
-                    } else {
+                    } else if (!self.acbId) {
                         adminService.revokeRole(roleObject);
                     }
+                }
                 adminService.updateUser(user.user)
                     .then($timeout(self.freshenUsers,1000));
-                }
             };
 
             self.deleteUser = function (user) {
-                adminService.deleteUser(user.user.userId)
-                    .then($timeout(self.freshenUsers,1000));
+                if (self.acbId) {
+                    var userObject = {acbId: self.acbId,
+                                      userId: user.user.userId};
+
+                    adminService.removeUserFromAcb(userObject)
+                        .then($timeout(self.freshenUsers,1000));
+                } else {
+                    adminService.deleteUser(user.user.userId)
+                        .then($timeout(self.freshenUsers,1000));
+                }
             };
 
             self.cancelUser = function (user) {

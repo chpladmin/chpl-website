@@ -1,5 +1,5 @@
 <section>
-  <div class="row" ng-if="vm.uploadingCps.length > 0">
+  <div class="row" ng-if="vm.uploadingCps.length > 0 && vm.isAcbAdmin">
     <div class="col-sm-12">
       <h3>Certified Products in the process of upload</h3>
       <table class="table table-striped">
@@ -173,7 +173,7 @@
       </div>
     </div> <!-- end vendor merge -->
 
-    <div class="col-sm-9" ng-if="vm.activeVendor === '' && vm.isChplAdmin">
+    <div class="col-sm-9" ng-if="vm.activeVendor === '' && vm.isAcbAdmin">
       <h3>Upload Certified Products</h3>
       <div class="form-group">
         <label for="uploadCPFile">Select your upload file</label>

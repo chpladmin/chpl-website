@@ -18,47 +18,45 @@ apis.entities.user = {
     phoneNumber:'string',
     title:'string'
 };
-<<<<<<< HEAD
 apis.entities.createUserAndRoles = {
-	    userId:'long',
-	    subjectName:'string',
-	    firstName:'string',
-	    lastName:'string',
-	    email:'string',
-	    phoneNumber:'string',
-	    title:'string',
-	    userRole:['role1', 'role2?']
-	};
+	userId:'long',
+	subjectName:'string',
+	firstName:'string',
+	lastName:'string',
+	email:'string',
+	phoneNumber:'string',
+	title:'string',
+	userRole:['role1', 'role2?']
+};
 apis.entities.createdUser = {
-	    userId:'long',
-	    subjectName:'string',
-	    firstName:'string',
-	    lastName:'string',
-	    email:'string',
-	    phoneNumber:'string',
-	    title:'string',
-	    accountLocked:'boolean',
-	    accountEnabled:'boolean'
-	};
+	userId:'long',
+	subjectName:'string',
+	firstName:'string',
+	lastName:'string',
+	email:'string',
+	phoneNumber:'string',
+	title:'string',
+	accountLocked:'boolean',
+	accountEnabled:'boolean'
+};
 apis.entities.userWithPermissions = {
 	users: [
-	        {
-	        	user: {
-				    userId:'long',
-				    subjectName:'string',
-				    firstName:'string',
-				    lastName:'string',
-				    email:'string',
-				    phoneNumber:'string',
-				    title:'string',
-				    accountLocked:'boolean',
-				    accountEnabled:'boolean'
-	        	},
-	        	permissions: ['ADMIN', 'READ']
-	        }
-	  ]
-	};
-=======
+	    {
+	        user: {
+				userId:'long',
+				subjectName:'string',
+				firstName:'string',
+				lastName:'string',
+				email:'string',
+				phoneNumber:'string',
+				title:'string',
+				accountLocked:'boolean',
+				accountEnabled:'boolean'
+	        },
+	        permissions: ['ADMIN', 'READ']
+	    }
+	]
+};
 apis.entities.userAndRoles = {
 	userId:'long',
 	subjectName:'string',
@@ -90,15 +88,14 @@ apis.entities.usersAtAcb = {
 	    }
 	]
 };
->>>>>>> andlar/ocd-170
 apis.entities.grantRole = {
 	subjectName: 'string',
 	role: 'string'
 };
 apis.entities.grantAcb = {
-		acbId: 'long',
-		userId: 'long',
-		authority: 'string'
+	acbId: 'long',
+	userId: 'long',
+	authority: 'string'
 };
 apis.entities.acb = {
     acbId:'long',
@@ -297,9 +294,9 @@ apis.endpoints = [
         name: 'Create User With Role(s)',
         description: 'Create a user and grant them role(s) in the CHPL system.',
         note: 'The request json object will not have the userId, but will have a password.' +
-        '<br/>The roles specified may be ROLE_ADMIN, ROLE_ACB_STAFF, or ROLE_ACB_ADMIN' +
-    	'<ul>Optional fields: <li>title</li></ul>' +
-    	'For development purposes only. Should there be a separate "create user" api call for creating a user at a particular ACB?',
+            '<br/>The roles specified may be ROLE_ADMIN, ROLE_ACB_STAFF, or ROLE_ACB_ADMIN' +
+    	    '<ul>Optional fields: <li>title</li></ul>' +
+    	    'For development purposes only. Should there be a separate "create user" api call for creating a user at a particular ACB?',
         request: '/auth/create_user_with_roles',
         id: 'create_user_with_roles',
         requestType: 'POST',

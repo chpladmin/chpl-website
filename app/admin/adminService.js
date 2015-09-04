@@ -64,5 +64,9 @@
             self.deleteUser = function (userId) {
                 return commonService.postApiCall('/auth/delete_user/' + userId, API, {});
             };
+
+            self.removeUserFromAcb = function (userObject) {
+                return commonService.postApiCall('/acb/delete_user', API, userObject);
+            };
         }]);
 })();
