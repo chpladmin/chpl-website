@@ -26,7 +26,7 @@ apis.entities.createUserAndRoles = {
 	email:'string',
 	phoneNumber:'string',
 	title:'string',
-	userRole:['role1', 'role2?']
+	roles:['role1', 'role2?']
 };
 apis.entities.createdUser = {
 	userId:'long',
@@ -53,6 +53,7 @@ apis.entities.userWithPermissions = {
 				accountLocked:'boolean',
 				accountEnabled:'boolean'
 	        },
+	        roles: [],
 	        permissions: ['ADMIN', 'READ']
 	    }
 	]
@@ -67,7 +68,7 @@ apis.entities.userAndRoles = {
 	title:'string',
 	accountLocked:'boolean',
 	accountEnabled:'boolean',
-	userRole:['role1', 'role2?']
+	roles:['role1', 'role2?']
 };
 apis.entities.usersAtAcb = {
 	users: [
@@ -96,6 +97,11 @@ apis.entities.grantAcb = {
 	acbId: 'long',
 	userId: 'long',
 	authority: 'string'
+};
+apis.entities.createUserAndGrantAcb = {
+	acbId: 'long',
+	authority: 'string',
+	user: apis.entities.createUserAndRoles
 };
 apis.entities.acb = {
     acbId:'long',
@@ -360,6 +366,16 @@ apis.endpoints = [
         jsonParameter: apis.entities.grantAcb,
         security: 'Admin or ACB Admin',
         response: apis.entities.success
+    },{
+    	name: "Create a User and Add them to an ACB",
+    	description: "Look for a user's account based on subjectName. If not found, create them and any desired system roles. Then add them to an ACB.",
+    	note: "'userId' will be blank. 'title' is optional. It is also not required for a user to have roles, but they probably will.",
+    	request: "/acb/create_and_add_user",
+    	id: 'create_and_add_user',
+    	requestType: "POST",
+    	jsonParameter: apis.entities.createUserAndGrantAcb,
+    	security: "Admin or ACB Admin",
+    	response: apis.entities.success
     },{
         name: 'Delete User from ACB',
         description: 'Disable a user\'s ability to manage a particular ACB, without turning off whatever other access they have',
