@@ -15,6 +15,7 @@
                 mockCommonService.products = [
                     { vendor: 'Vendor', product: 'Product' }
                 ];
+                mockCommonService.searchResult = {data: {recordCount: 2, results: [{}, {}]}};
                 mockCommonService.vendors = {vendors: [{name: 'Vendor 1'}, {name: 'Vendor 2'}]};
                 mockCommonService.products = ['Product 1', 'Product 2'];
                 mockCommonService.certs = ['Cert 1', 'Cert 2'];
@@ -24,9 +25,15 @@
                 mockCommonService.practices  = ['Practice 1', 'Practice 2'];
                 mockCommonService.certBodies  = ['CB 1', 'CB 2'];
 
-                mockCommonService.search = function (query) {
+                mockCommonService.search = function (query,pageNum,pageSize) {
                     var defer = $q.defer();
-                    defer.resolve(this.products);
+                    defer.resolve(this.searchResult.data);
+                    return defer.promise;
+                };
+
+                mockCommonService.searchAdvanced = function (query,pageNum,pageSize) {
+                    var defer = $q.defer();
+                    defer.resolve(this.searchResult.data);
                     return defer.promise;
                 };
 
@@ -201,11 +208,6 @@
 
             scope.compare();
             expect($location.path).not.toHaveBeenCalled();
-        });
-
-        it('should return a number to help with sorting of certs and CQMs', function () {
-            var value = { numCerts: 4, numCQMs: 4 };
-            expect(scope.sorts.certs(value)).toBe(8);
         });
 
         it('should have a way to clear search terms and results', function () {

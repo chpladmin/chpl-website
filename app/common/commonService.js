@@ -2,29 +2,8 @@
     'use strict';
 
     angular.module('app.common')
-        .service('commonService', function ($http, $q, devAPI, API) {
+        .service('commonService', function ($http, $q, devAPI, API, $log) {
             var self = this;
-
-            self.extractInfo = function (data) {
-                var numCerts;
-                var numCQMs;
-
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].certs !== null && typeof(data[i].certs) !== 'undefined') {
-                        for (var j = 0; j < 3; j++) {
-                            numCerts = 0;
-                            for (var k = 0; k < data[i].certs[j].certs.length; k++) {
-                                numCerts += data[i].certs[j].certs[k].isActive ? 1 : 0;
-                            }
-
-                            data[i].certs[j].numActive = numCerts;
-                        }
-                        data[i].numCerts = data[i].certs[0].numActive + data[i].certs[1].numActive;
-                        data[i].numCQMs = data[i].certs[2].numActive;
-                    }
-                }
-                return data;
-            };
 
             self.simpleApiCall = function (endpoint, workingApi) {
                 return $http.get(workingApi + endpoint)
@@ -39,11 +18,24 @@
                     });
             };
 
-            self.search = function (query) {
-                return $http.get(devAPI + '/search?q=' + query)
+            self.search = function (query, pageNum, pageSize) {
+                return $http.get(API + '/simple_search?searchTerm=' + query + '&pageNum=' + pageNum + '&pageSize=' + pageSize)
                     .then(function (response) {
                         if (typeof response.data === 'object') {
-                            return self.extractInfo(response.data);
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
+            self.searchAdvanced = function (queryObj, pageNum, pageSize) {
+                return $http.post(API + '/advanced_search?pageNum=' + pageNum + '&pageSize=' + pageSize, queryObj)
+                    .then(function (response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
                         } else {
                             return $q.reject(response.data);
                         }
@@ -56,7 +48,7 @@
                 return $http.get(devAPI + '/get_product?id=' + productId)
                     .then(function (response) {
                         if (typeof response.data === 'object') {
-                            return self.extractInfo([response.data])[0];
+                            return response.data[0];
                         } else {
                             return $q.reject(response.data);
                         }

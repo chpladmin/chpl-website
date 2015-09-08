@@ -1,5 +1,5 @@
 <div ng-controller="SearchController">
-  <div class="row" ng-hide="hasResults()">
+  <div class="row" ng-hide="hasSearched()">
     <div class="col-md-12">
       <h1>The Authoritative listing of Certified Health Information Products</h1>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
@@ -24,7 +24,7 @@
           <div class="col-sm-2">
             <button id="searchButton" type="button" class="btn btn-default btn-lg form-control" ng-click="search()">Search</button>
             <br /><a href="" ng-click="isSimpleSearch = !isSimpleSearch">Advanced search</a>
-            <span ng-show="hasResults()"><br /><a href="" ng-click="clear()">Clear results</a></span>
+            <span ng-show="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
           </div>
         </div>
       </form>
@@ -56,7 +56,7 @@
           <div class="col-sm-2">
             <button type="button" class="btn btn-default form-control" ng-click="search()">Search</button>
             <br /><a href="" ng-click="isSimpleSearch = !isSimpleSearch">Simple search</a>
-            <span ng-show="hasResults()"><br /><a href="" ng-click="clear()">Clear results</a></span>
+            <span ng-show="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
           </div>
         </div> <!-- first row of advanced search -->
 
@@ -75,7 +75,7 @@
           </div>
           <div class="col-sm-3">
             <select id="certField" ng-model="certTerm" multiple class="input-sm form-control">
-              <option ng-repeat="cert in certs" value="{{ cert }}">{{ cert.number + ': ' + cert.title }}</option>
+              <option ng-repeat="cert in certs" value="{{ cert.number }}">{{ cert.number + ': ' + cert.title }}</option>
             </select>
           </div>
           <div class="col-sm-1">
@@ -83,7 +83,7 @@
           </div>
           <div class="col-sm-3">
             <select id="cqmField" ng-model="cqmTerm" multiple class="input-sm form-control">
-              <option ng-repeat="cqm in cqms.certs" value="{{ cqm }}">{{ cqm.number + ': ' + cqm.title }}</option>
+              <option ng-repeat="cqm in cqms.certs" value="{{ cqm.number }}">{{ cqm.number + ': ' + cqm.title }}</option>
             </select>
           </div>
         </div> <!-- second row of advanced -->
@@ -93,24 +93,24 @@
             <label for="editionField" class="control-label">Certification Edition</label>
           </div>
           <div class="col-sm-3">
-            <select id="editionField" ng-model="editionTerm" multiple class="input-sm form-control">
-              <option ng-repeat="edition in editions" value="{{ edition }}">{{ edition.value }}</option>
+            <select id="editionField" ng-model="editionTerm" class="input-sm form-control">
+              <option ng-repeat="edition in editions" value="{{ edition.value }}">{{ edition.value }}</option>
             </select>
           </div>
           <div class="col-sm-1">
             <label for="classificationField" class="control-label">Product Classification</label>
           </div>
           <div class="col-sm-3">
-            <select id="classificationField" ng-model="classificationTerm" multiple class="input-sm form-control">
-              <option ng-repeat="classification in classifications" value="{{ classification }}">{{ classification.value }}</option>
+            <select id="classificationField" ng-model="classificationTerm" class="input-sm form-control">
+              <option ng-repeat="classification in classifications" value="{{ classification.value }}">{{ classification.value }}</option>
             </select>
           </div>
           <div class="col-sm-1">
             <label for="practiceField" class="control-label">Practice Type</label>
           </div>
           <div class="col-sm-3">
-            <select id="practiceField" ng-model="practiceTerm" multiple class="input-sm form-control">
-              <option ng-repeat="practice in practices" value="{{ practice }}">{{ practice.value }}</option>
+            <select id="practiceField" ng-model="practiceTerm" class="input-sm form-control">
+              <option ng-repeat="practice in practices" value="{{ practice.value }}">{{ practice.value }}</option>
             </select>
           </div>
         </div> <!-- third row of advanced search -->
@@ -119,46 +119,54 @@
     </div>
   </div> <!-- advanced search row -->
 
-  <div id="resultsSection" ng-show="hasResults()">
+  <div id="resultsSection" ng-show="hasSearched()">
     <div class="row">
       <div class="col-md-12">
         <h2>Results</h2>
+        <p ng-hide="hasResults()">No results found</p>
+        <p ng-show="hasResults()">There were {{ resultCount }} results that matched your search.</p>
       </div>
     </div>
-    <div class="row" st-table="displayedResults" st-safe-src="searchResults" st-set-filter="tableFilter">
+    <div ng-show="hasResults()" class="row">
       <div ng-show="visibleFilter" class="col-md-4">
         <h3>Filter</h3>
-        <a id="resetLink" href="" ng-click="clearFilter()" class="pull-right" ai-reset-filter>Clear Filter</a>
+        <a href="" ng-click="clearFilter()" class="pull-right">Clear Filter</a>
+
         <label for="vendor-search">Filter on Vendor</label>
-        <input id="vendor-search" st-search="vendor" placeholder="filter on vendor" class="input-sm form-control" type="search" ng-model="filterGroup.vendor"/>
+        <input id="vendor-search" placeholder="filter on vendor" class="input-sm form-control" type="search" ng-model="filterGroup.vendor"/>
         <label for="product-search">Filter on Product</label>
-        <input id="product-search" st-search="product" placeholder="filter on product" class="input-sm form-control" type="search" ng-model="filterGroup.product"/>
+        <input id="product-search" placeholder="filter on product" class="input-sm form-control" type="search" ng-model="filterGroup.product"/>
 
         <label for="edition-search">Filter on Edition</label>
-        <select id="edition-search" st-search="edition" class="input-sm form-control" ng-model="filterGroup.edition">
+        <select id="edition-search" class="input-sm form-control" ng-model="filterGroup.edition">
           <option value="">None</option>
           <option ng-repeat="edition in editions" value="{{ edition.value }}">{{ edition.value }}</option>
         </select>
 
-        <label for="classification-searcn">Filter on Classification</label>
-        <select id="classification-search" st-search="classification" class="input-sm form-control" ng-model="filterGroup.classification">
+        <label for="classification-search">Filter on Classification</label>
+        <select id="classification-search" class="input-sm form-control" ng-model="filterGroup.classification">
           <option value="">None</option>
           <option ng-repeat="classification in classifications" value="{{ classification.value }}">{{ classification.value }}</option>
         </select>
 
         <label for="practiceType-search">Filter on Practice Type</label>
-        <select id="practiceType-search" st-search="practiceType" class="input-sm form-control" ng-model="filterGroup.practiceType">
+        <select id="practiceType-search" class="input-sm form-control" ng-model="filterGroup.practiceType">
           <option value="">None</option>
           <option ng-repeat="practice in practices" value="{{ practice.value }}">{{ practice.value }}</option>
         </select>
 
         <label for="certBody-search">Filter on Certification Body</label>
-        <select id="certBody-search" st-search="certBody" class="input-sm form-control" ng-model="filterGroup.certBody">
+        <select id="certBody-search" class="input-sm form-control" ng-model="filterGroup.certBody">
           <option value="">None</option>
           <option ng-repeat="body in certBodies" value="{{ body.value }}">{{ body.value }}</option>
         </select>
 
-        <ai-cert-filter>
+        <div>
+          <button class="btn btn-default btn-block" href="" ng-click="doFilter()">Filter results</button>
+        </div>
+
+        <div>
+          <h3>Filter on Certifications and CQMs</h3>
           <div class="panel panel-default">
             <div class="panel-body">
               <div ng-repeat="category in certsNcqms">
@@ -175,30 +183,31 @@
               </div>
             </div>
           </div>
-        </ai-cert-filter>
+        </div>
       </div>
+
       <div ng-class="visibleFilter ? 'col-md-8' : 'col-md-12'">
         <span class="search-activate-filter" ng-click="visibleFilter = !visibleFilter"><i class="fa fa-2x fa-angle-double-right" ng-class="{ 'fa-flip-horizontal' : visibleFilter }"></i>
           {{ visibleFilter ? 'Hide' : 'Show'}}  Filter
         </span>
-        <table class="table table-striped st-table">
+        <table class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
-		      <th class="search-header" st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
-              <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
-		      <th class="search-header" st-sort="sorts.certs" st-skip-natural="true">Certs & CQMs</th>
-              <th class="search-header" st-sort="certDate" st-skip-natural="true">Certification Date</th>
+              <th class="search-header" ng-click="orderBy='vendor'; search();">Vendor</th>
+		      <th class="search-header" ng-click="orderBy='product'; search();">Product</th>
+              <th class="search-header">Version</th>
+		      <th class="search-header">Certs & CQMs</th>
+              <th class="search-header" ng-click="orderBy='certificationDate'; search();">Certification Date</th>
               <th><a href="" ng-click="compare()">Compare</a></th>
 	        </tr>
 	      </thead>
 	      <tbody>
 	        <tr ng-repeat-start="row in displayedResults">
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor }}</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product }}</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.version }}</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.numCerts }} Certifications / {{ row.numCQMs }} CQMs</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certDate | date }}</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor.name }}</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.countCerts }} Certifications / {{ row.countCqms }} CQMs</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certificationDate.split(' ')[0] | date }}</td>
               <td align="center">
                 <input type="checkbox" ng-click="toggleCompareId(row.id)" ng-model="compareBoxes[row.id]" id="compareBoxes{{ row.id }}"/>
                 <label class="sr-only" for="compareBoxes{{ row.id }}">Select to compare</label>
@@ -219,10 +228,10 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{{ row.practiceType }}</td>
-                      <td>{{ row.classification }}</td>
-                      <td>{{ row.certBody }}</td>
-                      <td>{{ row.edition }}</td>
+                      <td>{{ row.practiceType.name }}</td>
+                      <td>{{ row.classificationType.name }}</td>
+                      <td>{{ row.certifyingBody.name }}</td>
+                      <td>{{ row.certificationEdition.name }}</td>
                       <td><a href="#/product/{{ row.id }}">details</a></td>
                     </tr>
                   </tbody>
@@ -232,8 +241,9 @@
           </tbody>
           <tfoot>
             <tr>
-	          <td colspan="5" class="text-center">
-	            <div st-pagination st-items-by-page="20" st-displayed-pages="10"></div>
+	          <td colspan="6" class="text-center">
+                <pagination total-items="resultCount" ng-model="currentPage" items-per-page="resultsPerPage" ng-change="pageChanged()"
+                            max-size="10" class="pagination-sm" boundary-links="true"></pagination>
 	          </td>
             </tr>
           </tfoot>
@@ -242,7 +252,7 @@
     </div>
   </div> <!-- end of search results -->
 
-  <div ng-hide="hasResults()">
+  <div ng-hide="hasSearched()">
     <div class="row">
       <div class="col-md-12">
         <h2>How the CHPL works</h2>
@@ -255,7 +265,7 @@
     </div>
   </div> <!-- end of other agencies -->
 
-  <div ng-hide="hasResults()">
+  <div ng-hide="hasSearched()">
     <div class="row">
       <div class="col-md-12">
         <h2>Other Agencies</h2>

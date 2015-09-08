@@ -52,29 +52,9 @@
             $httpBackend.verifyNoOutstandingRequest();
         });
 
-        it('"search" should return a promise', function () {
-            $httpBackend.expectGET('http://ainq.com/search?q=all');
-            expect(commonService.search('all').then).toBeDefined();
-            $httpBackend.flush();
-        });
-
-        it('"search" should resolve with expected values', function () {
-            commonService.search('all').then(function(response) {
-                expect(response).toEqual([mock.aProduct, mock.aProduct, mock.aProduct]);
-            });
-            $httpBackend.flush();
-        });
-
         it('should return a promise when a particular product is searched for', function () {
             $httpBackend.expectGET('http://ainq.com/get_product?id=123');
             expect(commonService.getProduct('123').then).toBeDefined();
-            $httpBackend.flush();
-        });
-
-        it('should return a product when a particular product is seached for', function () {
-            commonService.getProduct('123').then(function(response) {
-                expect(response).toEqual(mock.aProduct);
-            });
             $httpBackend.flush();
         });
 
@@ -139,19 +119,6 @@
                 expect(response).toEqual(mock.certs.concat(mock.cqms));
             });
             $httpBackend.flush();
-        });
-
-        it('should calculate the number of active certs and cqms', function () {
-            var data = [{ certs: [
-                { certs: [{ isActive: true }]},
-                { certs: [{ isActive: true }]},
-                { certs: [{ isActive: false }]}
-            ]}];
-            data = commonService.extractInfo(data);
-
-            expect(data[0].numCerts).toBe(2);
-            expect(data[0].numCQMs).toBe(0);
-
         });
     });
 })();
