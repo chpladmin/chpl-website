@@ -13,46 +13,46 @@
         <thead>
           <tr>
             <th></th>
-            <th ng-repeat="product in vm.products">{{ product.product.name }}<br />{{ product.vendor.name }}</th>
+            <th ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'">{{ product.product.name }}<br />{{ product.vendor.name }}</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="compare-rowLead">Version</td>
-            <td class="compare-element" ng-repeat="product in vm.products">{{ product.product.version }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'">{{ product.product.version }}</td>
           </tr>
           <tr>
             <td class="compare-rowLead">Certification Edition</td>
-            <td class="compare-element" ng-repeat="product in vm.products">{{ product.certificationEdition.name }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'">{{ product.certificationEdition.name }}</td>
           </tr>
           <tr>
             <td class="compare-rowLead">Classification</td>
-            <td class="compare-element" ng-repeat="product in vm.products">{{ product.classificationType.name }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'">{{ product.classificationType.name }}</td>
           </tr>
           <tr>
             <td class="compare-rowLead">Practice Type</td>
-            <td class="compare-element" ng-repeat="product in vm.products">{{ product.practiceType.name }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'">{{ product.practiceType.name }}</td>
           </tr>
           <tr>
             <td class="compare-rowLead">Certifying Body</td>
-            <td class="compare-element" ng-repeat="product in vm.products">{{ product.certifyingBody.name }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'">{{ product.certifyingBody.name }}</td>
           </tr>
           <tr>
             <td class="compare-rowLead">Certification Date</td>
-            <td class="compare-element" ng-repeat="product in vm.products">{{ product.certificationDate.split(' ')[0] | date }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'">{{ product.certificationDate.split(' ')[0] | date }}</td>
           </tr>
           <tr>
             <td class="compare-rowLead">CHPL Product Number</td>
-            <td class="compare-element" ng-repeat="product in vm.products">{{ product.chplProductNumber }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'">{{ product.chplProductNumber }}</td>
           </tr>
 
           <tr>
             <td class="compare-rowLead">Certifications</td>
-            <td class="compare-element" ng-repeat="product in vm.products"><a href="" aria-expanded="false" ng-click="vm.toggle('certifications')">{{ product.countCerts }} met</a></td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'"><a href="" aria-expanded="false" ng-click="vm.toggle('certifications')">{{ product.countCerts }} met</a></td>
           </tr>
           <tr ng-repeat="cert in vm.products[0].certificationResults track by $index" ng-show="vm.isShowing('certifications')">
             <td class="compare-rowCert">{{ cert.number + ": " + cert.title }}</td>
-            <td class="compare-element" ng-repeat="product in vm.products"><i class="fa fa-lg" ng-class="{'fa-check-square-o': product.certificationResults[$parent.$index].success, 'fa-square-o': !product.certificationResults[$parent.$index].success}"></i><span class="sr-only">{{ product.certificationResults[$parent.$index].success ? 'meets' : 'does not meet'}}</span></td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'"><i class="fa fa-lg" ng-class="{'fa-check-square-o': product.certificationResults[$parent.$index].success, 'fa-square-o': !product.certificationResults[$parent.$index].success}"></i><span class="sr-only">{{ product.certificationResults[$parent.$index].success ? 'meets' : 'does not meet'}}</span></td>
           </tr>
 
           <tr>
@@ -61,12 +61,12 @@
           </tr>
           <tr ng-repeat="cert in vm.products[0].cqmResults track by $index" ng-show="vm.isShowing('CQMs')">
             <td class="compare-rowCert">{{ cert.number + ": " + cert.title }}</td>
-            <td class="compare-element" ng-repeat="product in vm.products"><i class="fa fa-lg" ng-class="{'fa-check-square-o': product.cqmResults[$parent.$index].success && !product.cqmResults[$parent.$index].version, 'fa-square-o': !product.cqmResults[$parent.$index].success}"></i><b ng-show="product.cqmResults[$parent.$index].version">{{ product.cqmResults[$parent.$index].version }}</b><span class="sr-only">{{ product.cqmResults[$parent.$index].success ? 'meets' : 'does not meet'}}</span></td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'"><i class="fa fa-lg" ng-class="{'fa-check-square-o': product.cqmResults[$parent.$index].success && !product.cqmResults[$parent.$index].version, 'fa-square-o': !product.cqmResults[$parent.$index].success}"></i><b ng-show="product.cqmResults[$parent.$index].version">{{ product.cqmResults[$parent.$index].version }}</b><span class="sr-only">{{ product.cqmResults[$parent.$index].success ? 'meets' : 'does not meet'}}</span></td>
           </tr>
 
           <tr>
             <td></td>
-            <td class="compare-element" ng-repeat="product in vm.products"><a href="#/product/{{ product.id }}">details</a></td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate.split(\' \')[0]'"><a href="#/product/{{ product.id }}">details</a></td>
           </tr>
         </tbody>
       </table>

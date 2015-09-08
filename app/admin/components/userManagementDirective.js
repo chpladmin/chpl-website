@@ -2,13 +2,13 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('UserManagementController', ['adminService', '$log', '$timeout', '$scope', function (adminService, $log, $timeout, $scope) {
+        .controller('UserManagementController', ['adminService', '$log', '$scope', function (adminService, $log, $scope) {
             var self = this;
             self.newUser = {roles: []};
             self.acbId = $scope.acbId;
-            self.roles = [{name: 'ROLE_ACB_ADMIN'},{name: 'ROLE_ACB_STAFF'}];
+            self.roles = ['ROLE_ACB_ADMIN','ROLE_ACB_STAFF'];
             if (!self.acbId) {
-                self.roles.push({name: 'ROLE_ADMIN'});
+                self.roles.push('ROLE_ADMIN');
             }
 
             self.freshenUsers = function () {
@@ -31,20 +31,22 @@
             self.freshenUsers();
 
             self.createUser = function () {
-                adminService.createUser(self.newUser)
-                    .then(function (response) {
-                            $log.debug(response);
-                        if (self.acbId) {
-                            var userObject = {acbId: self.acbId,
-                                              userId: response.userId,
-                                              authority: 'ADMIN'};
-                            $timeout(adminService.addUserToAcb,
-                                     1000,
-                                     true,
-                                     userObject);
-                        }
-                        $timeout(self.freshenUsers,1000);
-                    });
+                if(self.acbId) {
+                    var userObject = {acbId: self.acbId,
+                                      user: self.newUser,
+                                      authority: 'ADMIN'};
+                    adminService.addUserToAcb(userObject)
+                        .then(function (response) {
+                            self.freshenUsers();
+                        });
+                } else {
+                    adminService.createUser(self.newUser)
+                        .then(function (response) {
+                            self.freshenUsers();
+                        })
+                }
+                $scope.userManagementNewUser.$setPristine();
+                $scope.userManagementNewUser.$setUntouched();
                 self.newUser = {roles: []};
             };
 
@@ -54,15 +56,20 @@
 
                 var roleObject = {subjectName: user.user.subjectName};
                 for (var i = 0; i < self.roles.length; i++) {
-                    roleObject.role = self.roles[i].name;
+                    var payload = angular.copy(roleObject);
+                    payload.role = self.roles[i];
                     if (user.roles.indexOf(self.roles[i]) > -1) {
-                        adminService.addRole(roleObject);
+                        adminService.addRole(payload);
                     } else if (!self.acbId) {
-                        adminService.revokeRole(roleObject);
+                        adminService.revokeRole(payload);
                     }
                 }
+
                 adminService.updateUser(user.user)
-                    .then($timeout(self.freshenUsers,1000));
+                    .then(function (response) {
+                        self.freshenUsers();
+                    });
+
             };
 
             self.deleteUser = function (user) {
@@ -70,11 +77,23 @@
                     var userObject = {acbId: self.acbId,
                                       userId: user.user.userId};
 
+                    $log.debug(self.users);
+                    for (var i = 0; i < self.users.length; i++) {
+                        if (self.users[i].user.userId === userObject.userId) {
+                            self.users.splice(i,1);
+                        }
+                    }
+                    $log.debug(self.users);
+
                     adminService.removeUserFromAcb(userObject)
-                        .then($timeout(self.freshenUsers,1000));
+                        .then(function (response) {
+                            self.freshenUsers();
+                        });
                 } else {
                     adminService.deleteUser(user.user.userId)
-                        .then($timeout(self.freshenUsers,1000));
+                        .then(function (response) {
+                            self.freshenUsers();
+                    });
                 }
             };
 
