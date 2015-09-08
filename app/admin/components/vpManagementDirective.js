@@ -23,7 +23,6 @@
                 .then(function (vendors) {
                     self.vendors = vendors.vendors;
                 });
-            self.cps = [{type: 'cp', value: '2015-04-28'}, {type: 'cp', value: '2014-08-12'}];
 
             self.selectVendor = function () {
                 if (self.vendorSelect) {
@@ -61,18 +60,19 @@
             self.selectVersion = function () {
                 if (self.versionSelect) {
                     self.activeVersion = self.versionSelect;
-/*                    commonService.getCPsByVersion(self.activeVersion[0].versionId)
+
+                    commonService.getProductsByVersion(self.activeVersion.versionId)
                         .then(function (cps) {
                             self.cps = cps;
-                        });*/
+                        });
                 }
             };
             self.selectCP = function () {
                 if (self.cpSelect) {
                     commonService.getProduct(self.cpSelect[0])
-                        .then(function (product) {
-                            self.activeCP = product;
-                            self.activeCP.certDate = new Date(self.activeCP.certDate);
+                        .then(function (cp) {
+                            self.activeCP = cp;
+                            self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
                         });
                 }
             };
@@ -85,6 +85,7 @@
                 .then(function (practices) { self.practices = practices; });
             commonService.getCertBodies()
                 .then(function (bodies) { self.bodies = bodies; });
+            self.statuses = [{id: '1', value: 'Active'},{id: '2', value: 'Retired'}];
 
             self.uploadFile = function () {
                 // Do something smart here

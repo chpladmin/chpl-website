@@ -18,6 +18,19 @@
                     });
             };
 
+            self.postApiCall = function (endpoint, workingApi, postObject) {
+                return $http.post(workingApi + endpoint, postObject)
+                    .then(function (response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response);
+                        }
+                    }, function (response) {
+                        return $q.reject(response);
+                    });
+            };
+
             self.search = function (query, pageNum, pageSize) {
                 return $http.get(API + '/simple_search?searchTerm=' + query + '&pageNum=' + pageNum + '&pageSize=' + pageSize)
                     .then(function (response) {
@@ -45,10 +58,10 @@
             };
 
             self.getProduct = function (productId) {
-                return $http.get(devAPI + '/get_product?id=' + productId)
+                return $http.get(API + '/certified_product/get_certified_product?certifiedProductId=' + productId)
                     .then(function (response) {
                         if (typeof response.data === 'object') {
-                            return response.data[0];
+                            return response.data;
                         } else {
                             return $q.reject(response.data);
                         }
@@ -91,6 +104,10 @@
 
             self.getVersionsByProduct = function (productId) {
                 return self.simpleApiCall('/product/version/list_versions_by_product?productId=' + productId, API);
+            };
+
+            self.getProductsByVersion = function (versionId) {
+                return self.simpleApiCall('/certified_product/list_certified_products_by_version?versionId=' + versionId, API);
             };
 
             self.getCertBodies = function () {

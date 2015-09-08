@@ -34,7 +34,7 @@
             $httpBackend = _$httpBackend_;
 
             $httpBackend.whenGET('http://ainq.com/search?q=all').respond([mock.aProduct, mock.aProduct, mock.aProduct]);
-            $httpBackend.whenGET('http://ainq.com/get_product?id=123').respond(mock.aProduct);
+            $httpBackend.whenGET(/certified_product\/get_certified_product?certifiedProductId=123/).respond(mock.aProduct);
             $httpBackend.whenGET('http://ainq.com/list_certs').respond(mock.certs);
             $httpBackend.whenGET('http://ainq.com/list_cqms').respond(mock.cqms);
             $httpBackend.whenGET('http://ainq.com/list_editions').respond(mock.editions);
@@ -50,12 +50,6 @@
         afterEach(function () {
             $httpBackend.verifyNoOutstandingExpectation();
             $httpBackend.verifyNoOutstandingRequest();
-        });
-
-        it('should return a promise when a particular product is searched for', function () {
-            $httpBackend.expectGET('http://ainq.com/get_product?id=123');
-            expect(commonService.getProduct('123').then).toBeDefined();
-            $httpBackend.flush();
         });
 
         it('should return certs', function () {

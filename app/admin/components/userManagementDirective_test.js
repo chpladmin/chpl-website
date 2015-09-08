@@ -1,14 +1,25 @@
 ;(function () {
     'use strict';
 
-    describe('app.admin.reports.directive', function () {
+    describe('app.admin.userManagement.directive', function () {
 
-        var element, scope, $log;
+        var element, scope, $log, ctrl, adminService;
 
         beforeEach(function () {
+            var mockAdminService = {};
+            module('app.admin', function($provide) {
+                $provide.value('adminService', mockAdminService);
+            },'app/admin/components/userManagement.html');
 
-            module('app.admin');
-            module('app/admin/components/userManagement.html');
+            inject(function($q) {
+                mockAdminService.users = {"data": {"users":[{"subjectName":"admin","firstName":"Administrator","lastName":"Administrator","email":"info@ainq.com","phoneNumber":"(301) 560-6999","title":null,"accountLocked":false,"accountEnabled":true}]}};
+
+                mockAdminService.getUsers = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.users);
+                    return defer.promise;
+                };
+            });
         });
 
         beforeEach(inject(function ($compile, $rootScope, _$log_, $templateCache, $httpBackend) {
@@ -31,15 +42,30 @@
             }
         });
 
-        it('should have CRUD user functions', function () {
-            expect(element.isolateScope().createUser).toBeDefined();
-            expect(element.isolateScope().modifyUser).toBeDefined();
-            expect(element.isolateScope().deleteUser).toBeDefined();
-            expect(element.isolateScope().cancelUser).toBeDefined();
-        });
+        describe('controller', function () {
 
-        it('should have an empty object for a new User', function () {
-            expect(element.isolateScope().newUser).toEqual({});
+            beforeEach(inject(function ($controller) {
+                ctrl = $controller('UserManagementController', {
+                    $scope: scope,
+                    $element: null
+                });
+                scope.$digest();
+            }));
+
+            it('should exist', function() {
+                expect(ctrl).toBeDefined();
+            });
+
+            it('should have CRUD user functions', function () {
+                expect(ctrl.createUser).toBeDefined();
+                expect(ctrl.updateUser).toBeDefined();
+                expect(ctrl.deleteUser).toBeDefined();
+                expect(ctrl.cancelUser).toBeDefined();
+            });
+
+            it('should have an empty object for a new User', function () {
+                expect(ctrl.newUser).toEqual({roles:[]});
+            });
         });
     });
 })();

@@ -19,12 +19,11 @@
   </script>
   <div class="row product-productHeader">
     <div class="col-sm-8">
-      <h1>{{ vm.product.product }}</h1>
-      <p>Version: {{ vm.product.version }}</p>
+      <h1>{{ vm.product.product.name }}</h1>
     </div>
     <div class="col-sm-4 text-right">
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
-      <p>Certification Date: {{ vm.product.certDate | date }}</p>
+      <p>Certification Date: {{ vm.product.certificationDate.split(' ')[0] | date }}</p>
       <p><a href="" ng-click="vm.openLastModifiedDate('lg')">Last modified Date: {{ vm.product.lastModifiedDate | date }}</a></p>
     </div>
   </div>
@@ -33,29 +32,29 @@
       <div class="row">
         <div class="col-sm-4">
           <h3>Vendor</h3>
-          <p>{{ vm.product.vendor }}</p>
+          <p>{{ vm.product.vendor.name }}</p>
         </div>
         <div class="col-sm-4">
-          <h3>Versions</h3>
-          <p>{{ vm.product.version }}</p>
+          <h3>Version</h3>
+          <p>{{ vm.product.product.version }}</p>
         </div>
         <div class="col-sm-4">
           <h3>Certification Edition</h3>
-          <p>{{ vm.product.edition }}</p>
+          <p>{{ vm.product.certificationEdition.name }}</p>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-4">
           <h3>Certifying Body</h3>
-          <p>{{ vm.product.certBody }}</p>
+          <p>{{ vm.product.certifyingBody.name }}</p>
         </div>
         <div class="col-sm-4">
           <h3>Classification</h3>
-          <p>{{ vm.product.classification }}</p>
+          <p>{{ vm.product.classificationType.name }}</p>
         </div>
         <div class="col-sm-4">
           <h3>Practice Type</h3>
-          <p>{{ vm.product.practiceType }}</p>
+          <p>{{ vm.product.practiceType.name }}</p>
         </div>
       </div>
     </div>
@@ -66,10 +65,10 @@
       <p>{{ vm.product.additionalSoftware }}</p>
     </div>
     <div class="col-sm-2 text-right">
-      <p>CHPL Product Number: {{ vm.product.chplNum }}</p>
+      <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
     </div>
   </div>
   <div class="product-productAccordion">
-    <ai-certs certs="vm.product.certs"></ai-certs>
+    <ai-certs certs="vm.product.certificationResults" cqms="vm.product.cqmResults" count-certs="{{ vm.product.countCerts }}" count-cqms="{{ vm.product.countCqms }}"></ai-certs>
   </div>
 </div>

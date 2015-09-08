@@ -1,5 +1,5 @@
 <section>
-  <div class="row" ng-if="vm.uploadingCps.length > 0">
+  <div class="row" ng-if="vm.uploadingCps.length > 0 && vm.isAcbAdmin">
     <div class="col-sm-12">
       <h3>Certified Products in the process of upload</h3>
       <table class="table table-striped">
@@ -47,60 +47,60 @@
       <div ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
         <div class="panel panel-default">
           <form name="vendorEditForm" novalidate>
-          <div class="panel-heading">
-            <span ng-if="!vm.editVendor">{{ vm.activeVendor[0].name }}</span>
-            <span ng-if="vm.editVendor">
-              <div class="form-group">
-                <label for="vendorName">Vendor Name <span class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" required ng-model="vm.activeVendor[0].name" id="vendorName"></input>
-              </div>
-            </span>
-          </div>
-          <div class="panel-body">
-            <span ng-if="!vm.editVendor">
-              {{ vm.activeVendor[0].address.line1 }}<br />
-              {{ vm.activeVendor[0].address.line2 }}<br />
-              {{ vm.activeVendor[0].address.city }}<br />
-              {{ vm.activeVendor[0].address.region }}<br />
-              {{ vm.activeVendor[0].address.country }}<br />
-              {{ vm.activeVendor[0].website }}<br />
-            </span>
-            <span ng-if="vm.editVendor">
-              <div class="form-group">
-                <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.line1" id="addressLine1" name="addressLine1"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressLine2">Address Line 2</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.line2" id="addressLine2"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.city" id="addressCity"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressRegion">Region <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.region" id="addressRegion"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.country" id="addressCountry"></input>
-              </div>
-              <div class="form-group">
-                <label for="vendorWebsite">Website</label>
-                <input class="input-sm form-control" type="url" ng-model="vm.activeVendor[0].website" id="vendorWebsite"></input>
-              </div>
-            </span>
-            <br />
-            Last Modified Date: {{ vm.activeVendor[0].lastModifiedDate | date }}
-            <br />
-            <p ng-if="vm.vendorMessage !== undefined && vm.editVendor" class="bg-danger">{{ vm.vendorMessage }}</p>
-            <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Vendor</button></p>
-            <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Vendor</button></p>
-            <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
-            <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
-            </form>
-          </div>
+            <div class="panel-heading">
+              <span ng-if="!vm.editVendor">{{ vm.activeVendor[0].name }}</span>
+              <span ng-if="vm.editVendor">
+                <div class="form-group">
+                  <label for="vendorName">Vendor Name <span class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" required ng-model="vm.activeVendor[0].name" id="vendorName"></input>
+                </div>
+              </span>
+            </div>
+            <div class="panel-body">
+              <span ng-if="!vm.editVendor">
+                {{ vm.activeVendor[0].address.line1 }}<br />
+                {{ vm.activeVendor[0].address.line2 }}<br />
+                {{ vm.activeVendor[0].address.city }}<br />
+                {{ vm.activeVendor[0].address.region }}<br />
+                {{ vm.activeVendor[0].address.country }}<br />
+                {{ vm.activeVendor[0].website }}<br />
+              </span>
+              <span ng-if="vm.editVendor">
+                <div class="form-group">
+                  <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.line1" id="addressLine1" name="addressLine1"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressLine2">Address Line 2</label>
+                  <input class="input-sm form-control" type="text" ng-model="vm.activeVendor[0].address.line2" id="addressLine2"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.city" id="addressCity"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressRegion">Region <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.region" id="addressRegion"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor[0].address.country" id="addressCountry"></input>
+                </div>
+                <div class="form-group">
+                  <label for="vendorWebsite">Website</label>
+                  <input class="input-sm form-control" type="url" ng-model="vm.activeVendor[0].website" id="vendorWebsite"></input>
+                </div>
+              </span>
+              <br />
+              Last Modified Date: {{ vm.activeVendor[0].lastModifiedDate | date }}
+              <br />
+              <p ng-if="vm.vendorMessage !== undefined && vm.editVendor" class="bg-danger">{{ vm.vendorMessage }}</p>
+              <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Vendor</button></p>
+              <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Vendor</button></p>
+              <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
+              <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
+            </div>
+          </form>
         </div>
       </div>
     </div> <!-- end single vendor -->
@@ -173,7 +173,7 @@
       </div>
     </div> <!-- end vendor merge -->
 
-    <div class="col-sm-9" ng-if="vm.activeVendor === '' && vm.isChplAdmin">
+    <div class="col-sm-9" ng-if="vm.activeVendor === '' && vm.isAcbAdmin">
       <h3>Upload Certified Products</h3>
       <div class="form-group">
         <label for="uploadCPFile">Select your upload file</label>
@@ -318,48 +318,44 @@
       <div ng-if="vm.activeCP === ''">
         <label for="cpSelect" class="control-label">Select a certified product</label>
         <select ng-model="vm.cpSelect" multiple id="cpSelect" class="input-sm form-control" size="12">
-          <option ng-repeat="cp in vm.cps | orderBy: 'value'" value="{{ cp.value }}">{{ cp.value | date }}</option>
+          <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
         </select>
         <button class="btn btn-default form-control" ng-click="vm.selectCP()">Choose Certified Product</button>
       </div>
       <div ng-if="vm.activeCP !== ''">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <span>{{ vm.activeCP.chplNum }}</span>
+            <span>{{ vm.activeCP.chplProductNumber }}</span>
           </div>
           <div class="panel-body">
             <span ng-if="!vm.editCP">
-              <strong>Classification:</strong> {{ vm.activeCP.classification }} <br />
-              <strong>Practice Type:</strong> {{ vm.activeCP.practiceType }} <br />
-              <strong>Certification Edition:</strong> {{ vm.activeCP.edition }} <br />
-              <strong>Certification Body:</strong> {{ vm.activeCP.certBody }} <br />
-              <strong>Certification Date:</strong> {{ vm.activeCP.certDate | date }} <br />
+              <strong>Classification:</strong> {{ vm.activeCP.classificationType.name }} <br />
+              <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
+              <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
+              <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
+              <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate.split(' ')[0] | date }} <br />
               <strong>Additional Software:</strong> {{ vm.activeCP.additionalSoftware }} <br />
+              <strong>Status:</strong> {{ vm.activeCP.certificationStatusId === '1' ? 'Active' : 'Retired' }}<br />
             </span>
             <span ng-if="vm.editCP">
               <div class="form-group">
                 <label for="cpClassification">Classification</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.classification" id="cpClassification">
-                  <option ng-repeat="classification in vm.classifications" value="{{ classification.value }}">{{ classification.value }}</option>
+                <select class="input-sm form-control" ng-model="vm.activeCP.classificationType.name" id="cpClassification"
+                        ng-options="classification.value as classification.value for classification in vm.classifications">
                 </select>
               </div>
               <div class="form-group">
                 <label for="cpPractice">Practice Type</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.practiceType" id="cpPractice">
-                  <option ng-repeat="practice in vm.practices" value="{{ practice.value }}">{{ practice.value }}</option>
+                <select class="input-sm form-control" ng-model="vm.activeCP.practiceType.name" id="cpPractice"
+                        ng-options="practice.value as practice.value for practice in vm.practices">
                 </select>
               </div>
-              <div class="form-group">
-                <label for="cpEdition">Certification Edition</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.edition" id="cpEdition">
-                  <option ng-repeat="edition in vm.editions" value="{{edition.value }}">{{ edition.value }}</option>
-                </select>
-              </div>
-              <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.activeCP.certBody }} </div>
+              <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
+              <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} </div>
               <div ng-if="vm.isChplAdmin" class="form-group">
                 <label for="cpBody">Certification Body</label>
-                <select class="input-sm form-control" ng-model="vm.activeCP.certBody" id="cpBody">
-                  <option ng-repeat="body in vm.bodies" value="{{ body.value }}">{{ body.value }}</option>
+                <select class="input-sm form-control" ng-model="vm.activeCP.certifyingBody.name" id="cpBody"
+                        ng-options="body.value as body.value for body in vm.bodies">
                 </select>
               </div>
               <div class="form-group">
@@ -369,6 +365,12 @@
               <div class="form-group">
                 <label for="cpAdditionalSW">Additional Software</label>
                 <textarea rows="4" class="input-sm form-control" ng-model="vm.activeCP.additionalSoftware" id="cpAdditionalSW"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="cpStatus">Status</label>
+                <select class="input-sm form-control" ng-model="vm.activeCP.certificationStatusId" id="cpStatus"
+                        ng-options="status.id as status.value for status in vm.statuses">
+                </select>
               </div>
             </span>
             <br />
@@ -386,7 +388,10 @@
   <div ng-if="vm.activeCP !== ''" class="row">
     <div class="col-md-12">
       <h3>Certified Product Details</h3>
-      <ai-certs certs="vm.activeCP.certs"
+      <ai-certs certs="vm.activeCP.certificationResults"
+                cqms="vm.activeCP.cqmResults"
+                count-certs="{{ vm.activeCP.countCerts }}"
+                count-cqms="{{ vm.activeCP.countCqms }}"
                 default-all="true"
                 edit-mode="true">
       </ai-certs>

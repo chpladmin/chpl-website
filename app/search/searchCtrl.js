@@ -16,9 +16,10 @@
             $scope.orderBy = 'vendor';
 
             if ($localStorage.searchResults) {
-                $scope.searchResults = $localStorage.searchResults;
+                $scope.searchResults = $localStorage.searchResults.results;
                 $scope.displayedResults = [].concat($scope.searchResults);
                 self.hasDoneASearch = true;
+                $scope.resultCount = $localStorage.searchResults.recordCount;
             }
 
             self.setupLookahead = function () {
@@ -108,7 +109,7 @@
 
                     commonService.search(query,$scope.currentPage - 1,$scope.resultsPerPage)
                         .then(function (data) {
-                            //$localStorage.searchResults = data;
+                            $localStorage.searchResults = data;
                             $scope.searchResults = data.results;
                             $scope.displayedResults = [].concat($scope.searchResults);
                             $scope.resultCount = data.recordCount;
@@ -128,7 +129,7 @@
 
                     commonService.searchAdvanced(queryObj,$scope.currentPage - 1,$scope.resultsPerPage)
                         .then(function (data) {
-                            //$localStorage.searchResults = data;
+                            $localStorage.searchResults = data;
                             $scope.searchResults = data.results;
                             $scope.displayedResults = [].concat($scope.searchResults);
                             $scope.resultCount = data.recordCount;
@@ -163,7 +164,7 @@
                 $scope.currentPage = 1;
                 commonService.searchAdvanced(queryObj,$scope.currentPage - 1,$scope.resultsPerPage)
                     .then(function (data) {
-                        //$localStorage.searchResults = data;
+                        $localStorage.searchResults = data;
                         $scope.searchResults = data.results;
                         $scope.displayedResults = [].concat($scope.searchResults);
                         $scope.resultCount = data.recordCount;
