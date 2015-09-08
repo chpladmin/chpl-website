@@ -221,6 +221,8 @@
             $httpBackend.whenGET(/ainq.com\/list_vendorActivity/).respond(200, listVendorActivity()); // list vendor activities
             $httpBackend.whenGET(/ainq.com\/list_productActivity/).respond(200, listProductActivity()); // list product activities
             $httpBackend.whenGET(/ainq.com\/list_acbActivity/).respond(200, listAcbActivity()); // list product activities
+            $httpBackend.whenGET(/ainq.com\/list_uploadingCps/).respond(200, [{vendor: {name: 'Vend', lastModifiedDate: '2013-03-02'}, product: {name: 'Prod', lastModifiedDate: '2014-05-02'},
+                                                                               version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'}]); // list fake uploadingCps
         })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {

@@ -2,13 +2,11 @@
     'use strict';
 
     angular.module('app.admin')
-        .directive('aiReports', ['commonService', function (commonService) {
+        .directive('aiReports', ['commonService', 'authService', function (commonService, authService) {
             return {
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/reports.html',
-                scope: {
-                },
                 link: function (scope, element, attrs) {
                     commonService.getCertifiedProductActivity()
                         .then(function (data) {
@@ -30,6 +28,8 @@
                             scope.searchedACBs = data;
                             scope.displayedACBs = [].concat(scope.searchedACBs);
                         });
+                    scope.isAcbAdmin = authService.isAcbAdmin();
+                    scope.isChplAdmin = authService.isChplAdmin();
                 }
             };
         }]);

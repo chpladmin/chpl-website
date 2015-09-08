@@ -3,12 +3,48 @@
 
     describe('app.nav', function () {
 
-        var httpProvider, authInterceptor;
-        var token = 'sample';
+        var httpProvider, authInterceptor, authService, userService;
+        var token = 'example token';
+        var username = 'user name';
+        var invalidLogin = 'Invalid username or password';
+        var mockAuthService, mockUserService;
+        var trueApiUrl = 'http://localhost:8080/chpl-service';
+        var falseApiUrl = 'http://example.com';
 
         beforeEach(function() {
-            module('app.nav', function ($httpProvider) {
-                httpProvider = $httpProvider
+            mockAuthService = {};
+            mockUserService = {};
+
+            module('app.nav', function ($provide, $httpProvider) {
+                $provide.value('authService', mockAuthService);
+                $provide.value('userService', mockUserService);
+                httpProvider = $httpProvider;
+            });
+
+            inject(function($q) {
+                mockAuthService.getToken = function () {
+                    return token;
+                };
+
+                mockAuthService.saveToken = function (token) {
+                };
+
+                mockAuthService.getUsername = function () {
+                    return username;
+                };
+
+                mockAuthService.logout = function () {
+                };
+
+                mockAuthService.isAuthed = function () {
+                };
+
+                mockUserService.login = function () {
+                    console.log('debug');
+                    var defer = $q.defer();
+                    defer.resolve({status: 404});
+                    return defer.promise;
+                };
             });
 
             inject(function (_authInterceptor_) {
@@ -16,41 +52,112 @@
             });
         });
 
-        describe('app.nav.authInterceptor', function () {
-            it('should have a definied authInterceptor', function () {
+        describe('authInterceptor', function () {
+            it('should have a defined Interceptor', function () {
                 expect(authInterceptor).toBeDefined();
             });
 
             it('should have the interceptor as an interceptor', function () {
                 expect(httpProvider.interceptors).toContain('authInterceptor');
             });
+
+            it('should not put a token in the headers if there isn\'t one', function () {
+                inject(function($q) {
+                    mockAuthService.getToken = function () {
+                        return '';
+                    }
+                });
+                var config = authInterceptor.request({headers: {}, url: trueApiUrl });
+                expect(config.headers['Authorization']).toBe(undefined);
+            });
+
+            it('should put a token in the headers when there is one, and the API location matches', function () {
+                var config = authInterceptor.request({headers: {}, url: trueApiUrl });
+                expect(config.headers['Authorization']).toBe('Bearer ' + token);
+            });
+
+            it('should not put a token in the headers when there is one, but the API location is not correct', function () {
+                var config = authInterceptor.request({headers: {}, url: falseApiUrl });
+                expect(config.headers['Authorization']).toBe(undefined);
+            });
+
+            it('should pass the response through unchanged if it\' not coming from the defined URL', function () {
+                var headers = {config: {url: falseApiUrl}};
+                var response = authInterceptor.response(headers);
+                expect(response).toBe(headers);
+            });
+
+            it('should set the token if one is found, from the correct URL', function () {
+                var headers = {config: {url: trueApiUrl}, data: {token: token}};
+                spyOn(mockAuthService, 'saveToken');
+                authInterceptor.response(headers);
+                expect(mockAuthService.saveToken).toHaveBeenCalled();
+            });
+
+            it('should JSON parse a "string" data object', function () {
+                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}"};
+                var response = authInterceptor.response(headers);
+                expect(response).toEqual({config: {url: trueApiUrl}, data: {token: 'this is my token'}});
+            });
         });
 
-        describe('app.nav.controller', function () {
-            var scope, $location, createController;
+        describe('controller', function () {
+            var scope, $location, createController, ctrl;
 
             beforeEach(inject(function ($rootScope, $controller, _$location_) {
                 $location = _$location_;
                 scope = $rootScope.$new();
 
-                createController = function () {
-                    return $controller('NavigationController', {
+                ctrl = $controller('NavigationController', {
                         '$scope': scope
-                    });
-                };
+                });
             }));
 
             it('should exist', function () {
-                var controller = createController();
-                expect(controller).toBeDefined();
+                expect(ctrl).toBeDefined();
             });
 
             it('should have a method to check if the path is active', function () {
-                var controller = createController();
                 $location.path('/privacy');
                 expect($location.path()).toBe('/privacy');
-                expect(controller.isActive('/privacy')).toBe(true);
-                expect(controller.isActive('/search')).toBe(false);
+                expect(ctrl.isActive('/privacy')).toBe(true);
+                expect(ctrl.isActive('/search')).toBe(false);
+            });
+
+            it('should return the user name of the logged in user', function () {
+                expect(ctrl.getUsername()).toEqual(username);
+            });
+
+            it('should return an invalid username message if the request is bad', function () {
+                var response = {status: 404};
+                expect(ctrl.message).toBe(undefined);
+                ctrl.handleLogin(response);
+                expect(ctrl.message).toBe(invalidLogin);
+            });
+
+            it('should return an invalid username message if the credentials are bad', function () {
+                var response = {status: 200, data: {}};
+                ctrl.handleLogin(response);
+                expect(ctrl.message).toBe(invalidLogin);
+            });
+
+            it('should change the location to "/admin" on a successful login', function () {
+                var response = {status: 200, data: {token: 'a token'}};
+                ctrl.handleLogin(response);
+                expect($location.path()).toBe('/admin');
+                expect(ctrl.message).toBe('');
+            });
+
+            it('should call the authService to log out', function () {
+                spyOn(mockAuthService, 'logout');
+                ctrl.logout();
+                expect(mockAuthService.logout).toHaveBeenCalled();
+            });
+
+            it('should call the authService to check if the user is authenticated', function () {
+                spyOn(mockAuthService, 'isAuthed');
+                ctrl.isAuthed();
+                expect(mockAuthService.isAuthed).toHaveBeenCalled();
             });
         });
     });

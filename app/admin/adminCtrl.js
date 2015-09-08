@@ -31,6 +31,14 @@
                 return authService.isAuthed ? authService.isAuthed() : false
             };
 
+            self.isChplAdmin = function () {
+                return authService.isChplAdmin();
+            };
+
+            self.isAcbAdmin = function () {
+                return authService.isAcbAdmin();
+            };
+
             self.getUsername = function () {
                 return authService.getUsername();
             };

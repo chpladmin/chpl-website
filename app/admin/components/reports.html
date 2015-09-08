@@ -66,6 +66,7 @@
           </tbody>
         </table>
       </tab>
+
       <tab heading="ACBs">
         <h2>ACB activities</h2>
         <table st-table="displayedACBs" st-safe-src="searchedACBs" class="table table-striped">
@@ -85,7 +86,8 @@
           </tbody>
         </table>
       </tab>
-      <tab heading="Visitors">
+
+      <tab ng-if="isChplAdmin" heading="Visitors">
         <h2>Visitor analytics</h2>
         <p>Analytics to be inserted here</p>
       </tab>
