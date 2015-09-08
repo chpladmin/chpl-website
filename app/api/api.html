@@ -13,16 +13,19 @@
     <div class="col-sm-12">
       <accordion close-others="false">
         <accordion-group heading="{{ api.name }}" ng-repeat="api in vm.apiCalls | orderBy: 'request'" aria-expanded="false">
-          <!--      <div ng-repeat="api in vm.apiCalls | orderBy: 'request'">-->
           <h3 id="{{ api.id }}">{{ api.name }}</h3>
           <p>{{ api.description }}</p>
           <p ng-if="api.note !== undefined" class="bg-warning">Special note: {{ api.note }}</p>
+          <span ng-if="api.security !== null && api.security !== undefined">
+            <h4>Security</h4>
+            <p>Restricted to users with the role: {{ api.security}}</p>
+          </span>
           <h4>URL</h4>
           <p>{{ api.requestType }} {{ api.request }}</p>
           <h4>Request</h4>
           <div ng-if="api.requestType === 'GET'">
-            <p>The request is a simple query<span ng-if="api.parameters !== null">, with parameters:</span><br />
-              <pre ng-if="api.parameters !== null">{{ api.parameters | json }}</pre>
+            <p>The request is a simple query<span ng-if="api.parameters !== null && api.parameters !== undefined">, with parameters:</span><br />
+              <pre ng-if="api.parameters !== null && api.parameters !== undefined">{{ api.parameters | json }}</pre>
             </p>
           </div>
           <div ng-if="api.requestType === 'POST'">
@@ -34,10 +37,6 @@
           <p>The response is a simple JSON object, with the format<br />
             <pre>{{ api.response | json }}</pre>
           </p>
-          <!--
-              <hr />
-    </div>
-    -->
         </accordion-group>
       </accordion>
     </div>

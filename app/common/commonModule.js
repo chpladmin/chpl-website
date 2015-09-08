@@ -3,5 +3,6 @@
 
     angular.module('app.common', [])
         .constant('API', 'http://localhost:8080/chpl-service')
-        .constant('searchAPI', 'http://ainq.com');
+        .constant('RealAPI', '/rest')
+        .constant('devAPI', 'http://ainq.com');
 })();

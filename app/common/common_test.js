@@ -41,6 +41,7 @@
             $httpBackend.whenGET('http://ainq.com/list_classifications').respond(mock.classifications);
             $httpBackend.whenGET('http://ainq.com/list_practices').respond(mock.practices);
             $httpBackend.whenGET('http://ainq.com/list_vendors').respond(mock.vendors);
+            $httpBackend.whenGET(/vendor\/list_vendors/).respond(mock.vendors);
             $httpBackend.whenGET('http://ainq.com/list_products').respond(mock.products);
             $httpBackend.whenGET('http://ainq.com/list_certBodies').respond(mock.certBodies);
             $httpBackend.whenGET('http://ainq.com/list_filterCerts').respond(mock.certs.concat(mock.cqms));

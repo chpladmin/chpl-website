@@ -90,6 +90,7 @@ apis.endpoints = [
         id: 'list_users',
         requestType: 'GET',
         parameters: null,
+        security: 'Admin',
         response: [apis.entities.user]
     },{
 
@@ -99,6 +100,7 @@ apis.endpoints = [
         id: 'list_acbs',
         requestType: 'GET',
         parameters: null,
+        security: null,
         response: [apis.entities.acb]
     },{
 
@@ -108,6 +110,7 @@ apis.endpoints = [
         id: 'list_users_at_acb',
         requestType: 'GET',
         parameters: 'acbId',
+        security: 'Admin',
         response: [apis.entities.user]
     },{
         name: 'Create User',
@@ -117,6 +120,7 @@ apis.endpoints = [
         id: 'create_user',
         requestType: 'POST',
         jsonParameter: [apis.entities.user],
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Invite User',
@@ -126,6 +130,7 @@ apis.endpoints = [
         id: 'invite_user',
         requestType: 'GET',
         parameters: ['example@example.com', ['ROLE'], ['acbId']],
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Modify User',
@@ -134,6 +139,7 @@ apis.endpoints = [
         id: 'modify_user',
         requestType: 'POST',
         jsonParameter: [apis.entities.user],
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Delete User',
@@ -142,6 +148,7 @@ apis.endpoints = [
         id: 'delete_user',
         requestType: 'GET',
         parameters: 'userId',
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Delete User from ACB',
@@ -150,6 +157,7 @@ apis.endpoints = [
         id: 'delete_user_from_acb',
         requestType: 'GET',
         parameters: ['userId', 'acbId'],
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Create ACB',
@@ -159,6 +167,7 @@ apis.endpoints = [
         id: 'create_acb',
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Modify ACB',
@@ -167,6 +176,7 @@ apis.endpoints = [
         id: 'modify_acb',
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'List Certified Product Activity',
@@ -175,6 +185,7 @@ apis.endpoints = [
         id: 'list_certified_product_activity',
         requestType: 'GET',
         parameters: null,
+        security: 'Admin',
         response: [apis.entities.cpActivity]
     },{
         name: 'List Vendor Activity',
@@ -183,6 +194,7 @@ apis.endpoints = [
         id: 'list_vendor_activity',
         requestType: 'GET',
         parameters: null,
+        security: 'Admin',
         response: [apis.entities.vendorActivity]
     },{
         name: 'List Product Activity',
@@ -191,6 +203,7 @@ apis.endpoints = [
         id: 'list_product_activity',
         requestType: 'GET',
         parameters: null,
+        security: 'Admin',
         response: [apis.entities.productActivity]
     },{
         name: 'List ACB Activity',
@@ -199,6 +212,7 @@ apis.endpoints = [
         id: 'list_acb_activity',
         requestType: 'GET',
         parameters: null,
+        security: 'Admin',
         response: [apis.entities.acbActivity]
     },{
         name: 'List Products by Vendor',
@@ -208,6 +222,7 @@ apis.endpoints = [
         id: 'list_products_by_vendor',
         requestType: 'GET',
         parameters: 'vendorId',
+        security: null,
         response: [apis.entities.product]
     },{
         name: 'List Versions by Product',
@@ -216,6 +231,7 @@ apis.endpoints = [
         id: 'list_versions_by_product',
         requestType: 'GET',
         parameters: 'productId',
+        security: null,
         response: [apis.entities.version]
     },{
         name: 'List Certified Products by Version',
@@ -225,6 +241,7 @@ apis.endpoints = [
         id: 'list_certified_products_by_version',
         requestType: 'GET',
         parameters: 'versionId',
+        security: 'Admin',
         response: [apis.entities.cps]
     },{
         name: 'List Vendors',
@@ -233,6 +250,7 @@ apis.endpoints = [
         id: 'list_vendors',
         requestType: 'GET',
         parameters: null,
+        security: null,
         response: [apis.entities.vendor]
     },{
         name: 'Get Vendor',
@@ -241,6 +259,7 @@ apis.endpoints = [
         id: 'get_vendor',
         requestType: 'GET',
         parameters: 'vendorId',
+        security: null,
         response: apis.entities.vendor
     },{
         name: 'Get Product',
@@ -249,6 +268,7 @@ apis.endpoints = [
         id: 'get_product',
         requestType: 'GET',
         parameters: 'productId',
+        security: null,
         response: apis.entities.product
     },{
         name: 'Get Version',
@@ -257,16 +277,18 @@ apis.endpoints = [
         id: 'get_version',
         requestType: 'GET',
         parameters: 'versionId',
+        security: null,
         response: apis.entities.version
     },{
         name: 'Update Vendor',
         description: 'Update one or more vendors with passed in data. If more than one vendorId is supplied, merge the vendors, assigning all products originally assigned to any of the vendors to the single resulting vendor',
-        note: 'The Vendor object in the Request parameter will not have a vendorId or lastModifiedDate field',
-        request: '/update_vendor',
+        note: 'The Vendor object in the Request parameter may or may not have a vendorId or lastModifiedDate field',
+        request: '/vendor/update_vendor',
         id: 'update_vendor',
         requestType: 'POST',
-        jsonParameter: [{'vendorIds': ['vendorId'], 'vendor': apis.entities.vendor}],
-        response: apis.entities.success
+        jsonParameter: {'vendorIds': ['long'], 'vendor': apis.entities.vendor},
+        security: 'Admin',
+        response: apis.entities.vendor
     },{
         name: 'Update Product',
         description: 'Update one or more products with passed in data. If more than one productId is supplied, merge the products, assigning all versions originally assigned to any of the products to the single resulting product. If a newVendorId is supplied in the Request, the Product is changing ownership; merge the products (if necessary), and then reassign it to the new Vendor indicated',
@@ -274,7 +296,8 @@ apis.endpoints = [
         request: '/update_product',
         id: 'update_product',
         requestType: 'POST',
-        jsonParameter: [ "productIds": ['productId'], "product": apis.entities.product, 'newVendorId'],
+        jsonParameter: {'productIds': ['long'], product: apis.entities.product, newVendorId: 'long (optional)'},
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Update Version',
@@ -282,7 +305,8 @@ apis.endpoints = [
         request: '/update_version',
         id: 'update_version',
         requestType: 'POST',
-        jsonParameter: {"versionId" : 'versionId', "version": 'versionText'},
+        jsonParameter: {"versionId" : 'long', "version": 'string'},
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Update Certified Product',
@@ -292,6 +316,7 @@ apis.endpoints = [
         id: 'update_certified_product',
         requestType: 'POST',
         jsonParameter: {cpId: 'long', other: 'All of the other parts of the certified product'},
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'List Certified Products being uploaded',
@@ -300,6 +325,7 @@ apis.endpoints = [
         id: 'list_uploadingCps',
         requestType: 'GET',
         parameters: null,
+        security: 'Admin',
         response: [{cpId: 'long', vendor: apis.entities.vendor, product: apis.entities.product, version: apis.entities.version, certified_product: 'all the parts of a cp in the process of uploading', uploadDate: 'string'}]
     },{
         name: 'Confirm Certified Product being uploaded',
@@ -308,6 +334,7 @@ apis.endpoints = [
         id: 'confirm_uploadingCp',
         requestType: 'GET',
         parameters: 'cpId',
+        security: 'Admin',
         response: apis.entities.success
     },{
         name: 'Start Upload of Certified Products',
@@ -317,6 +344,7 @@ apis.endpoints = [
         id: 'uploadCps',
         requestType: 'POST',
         jsonParameter: {file: 'file'},
+        security: 'Admin',
         response: apis.entities.success
     }
 ];
