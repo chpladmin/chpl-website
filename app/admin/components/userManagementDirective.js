@@ -6,13 +6,12 @@
             var self = this;
             self.newUser = {roles: []};
             self.acbId = $scope.acbId;
-            self.roles = [{name: 'ROLE_ACB_ADMIN'},{name: 'ROLE_ACB_STAFF'}];
+            self.roles = ['ROLE_ACB_ADMIN','ROLE_ACB_STAFF'];
             if (!self.acbId) {
-                self.roles.push({name: 'ROLE_ADMIN'});
+                self.roles.push('ROLE_ADMIN');
             }
 
             self.freshenUsers = function () {
-                $log.info($scope);
                 if (self.acbId) {
                     adminService.getUsersAtAcb(self.acbId)
                         .then(function (response) {
@@ -24,7 +23,6 @@
                     adminService.getUsers()
                         .then(function (response) {
                             self.users = response.users;
-                            $log.info(self.users);
                         }, function (error) {
                             $log.debug(error);
                         });
@@ -33,19 +31,19 @@
             self.freshenUsers();
 
             self.createUser = function () {
-                adminService.createUser(self.newUser)
-                    .then(function (response) {
+                if(self.acbId) {
+                    var userObject = {acbId: self.acbId,
+                                      user: self.newUser,
+                                      authority: 'ADMIN'};
+                    adminService.addUserToAcb(userObject)
+                        .then(self.freshenUsers());
+                } else {
+                    adminService.createUser(self.newUser)
+                        .then(function (response) {
                             $log.debug(response);
-                        if (self.acbId) {
-                            var userObject = {acbId: self.acbId,
-                                              userId: response.userId,
-                                              authority: 'ADMIN'};
-                            adminService.addUserToAcb(userObject)
-                                .then(self.freshenUsers());
-                        } else {
                             self.freshenUsers();
-                        }
-                    });
+                        })
+                }
                 self.newUser = {roles: []};
             };
 
@@ -55,13 +53,15 @@
 
                 var roleObject = {subjectName: user.user.subjectName};
                 for (var i = 0; i < self.roles.length; i++) {
-                    roleObject.role = self.roles[i].name;
+                    var payload = angular.copy(roleObject);
+                    payload.role = self.roles[i];
                     if (user.roles.indexOf(self.roles[i]) > -1) {
-                        adminService.addRole(roleObject);
+                        adminService.addRole(payload);
                     } else if (!self.acbId) {
-                        adminService.revokeRole(roleObject);
+                        adminService.revokeRole(payload);
                     }
                 }
+
                 adminService.updateUser(user.user)
                     .then(function (response) {
                         self.freshenUsers();

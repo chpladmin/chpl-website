@@ -640,6 +640,7 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: 'certifiedProductId',
         security: null,
-        response: apis.entities.certifiedProduct
+        response: apis.entities.certifiedProduct,
+        status: 'Working'
     }
 ];

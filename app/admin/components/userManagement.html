@@ -43,7 +43,7 @@
           <td>
             <span>Locked: <input type="checkbox" ng-model="user.user.accountLocked" ng-disabled="!user.isModifying" /></span><br />
             <span>Enabled: <input type="checkbox" ng-model="user.user.accountEnabled" ng-disabled="!user.isModifying" /></span><br />
-            <select ng-options="role.name for role in vm.roles" ng-model="user.roles" multiple ng-disabled="!user.isModifying" required></select>
+            <select ng-options="role as role for role in vm.roles" ng-model="user.roles" multiple ng-disabled="!user.isModifying" required></select>
           </td>
           <td>
             <button class="btn btn-default btn-block" ng-show="!user.isModifying" ng-click="user.isModifying = !user.isModifying">Modify</button>
@@ -83,7 +83,7 @@
           </td>
           <td>
             <label for="admin.new.roles" class="control-label sr-only">User Role(s)</label>
-            <select id="admin.new.roles" ng-options="role.name as role.name for role in vm.roles" ng-model="vm.newUser.roles" class="form-control" multiple required></select>
+            <select id="admin.new.roles" ng-options="role as role for role in vm.roles" ng-model="vm.newUser.roles" class="form-control" multiple required></select>
           </td>
           <td>
             <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="userManagementNewUser.$invalid">Create new user</button>

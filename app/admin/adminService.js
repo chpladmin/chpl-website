@@ -46,15 +46,15 @@
             };
 
             self.addUserToAcb = function (userObject) {
-                return commonService.postApiCall('/acb/add_user', API, userObject);
+                return commonService.postApiCall('/acb/create_and_add_user', API, userObject);
             };
 
-            self.addRole = function (roleObject) {
-                return commonService.postApiCall('/auth/grant_user_role', API, roleObject);
+            self.addRole = function (payload) {
+                return commonService.postApiCall('/auth/grant_user_role', API, payload);
             };
 
-            self.revokeRole = function (roleObject) {
-                return commonService.postApiCall('/auth/revoke_user_role', API, roleObject);
+            self.revokeRole = function (payload) {
+                return commonService.postApiCall('/auth/revoke_user_role', API, payload);
             };
 
             self.updateUser = function (user) {
