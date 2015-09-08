@@ -16,6 +16,8 @@
           <h3 id="{{ api.id }}">{{ api.name }}</h3>
           <p>{{ api.description }}</p>
           <p ng-if="api.note !== undefined" class="bg-warning">Special note: {{ api.note }}</p>
+          <h4>Status</h4>
+          <p>{{ api.status }}</p>
           <span ng-if="api.security !== null && api.security !== undefined">
             <h4>Security</h4>
             <p>Restricted to users with the role: {{ api.security}}</p>
@@ -43,6 +45,30 @@
           </p>
         </accordion-group>
       </accordion>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>URL</th>
+            <th>Type</th>
+            <th>Security</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="api in vm.apiCalls | orderBy: 'request'">
+            <td>{{ api.name }}</td>
+            <td>{{ api.request }}</td>
+            <td>{{ api.requestType }}</td>
+            <td>{{ api.security }}</td>
+            <td>{{ api.status }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

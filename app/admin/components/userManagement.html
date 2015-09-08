@@ -15,10 +15,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="user in vm.users">
+        <tr ng-repeat="user in vm.users" ng-form="userManagementUpdateUser">
           <td>
             <span ng-if="!user.isModifying">{{ user.user.subjectName }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.subjectName" class="form-control"/>
+            <input ng-if="user.isModifying" type="text" ng-model="user.user.subjectName" class="form-control" required />
           </td>
           <td>
             <span ng-if="!user.isModifying">{{ user.user.title }}</span>
@@ -26,70 +26,68 @@
           </td>
           <td>
             <span ng-if="!user.isModifying">{{ user.user.firstName }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.firstName" class="form-control"/>
+            <input ng-if="user.isModifying" type="text" ng-model="user.user.firstName" class="form-control" required/>
           </td>
           <td>
             <span ng-if="!user.isModifying">{{ user.user.lastName }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.lastName" class="form-control"/>
+            <input ng-if="user.isModifying" type="text" ng-model="user.user.lastName" class="form-control" required/>
           </td>
           <td>
             <span ng-if="!user.isModifying">{{ user.user.email }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.email" class="form-control"/>
+            <input ng-if="user.isModifying" type="email" ng-model="user.user.email" class="form-control" required/>
           </td>
           <td>
             <span ng-if="!user.isModifying">{{ user.user.phoneNumber }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.phoneNumber" class="form-control"/>
+            <input ng-if="user.isModifying" type="text" ng-model="user.user.phoneNumber" class="form-control" required/>
           </td>
           <td>
             <span>Locked: <input type="checkbox" ng-model="user.user.accountLocked" ng-disabled="!user.isModifying" /></span><br />
             <span>Enabled: <input type="checkbox" ng-model="user.user.accountEnabled" ng-disabled="!user.isModifying" /></span><br />
-            <select ng-options="role.name for role in vm.roles" ng-model="user.roles" multiple ng-disabled="!user.isModifying"></select>
+            <select ng-options="role.name for role in vm.roles" ng-model="user.roles" multiple ng-disabled="!user.isModifying" required></select>
           </td>
           <td>
             <button class="btn btn-default btn-block" ng-show="!user.isModifying" ng-click="user.isModifying = !user.isModifying">Modify</button>
-            <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.updateUser(user); user.isModifying = !user.isModifying">Save</button>
+            <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.updateUser(user); user.isModifying = !user.isModifying" ng-disabled="userManagementUpdateUser.$invalid">Save</button>
             <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.cancelUser(user); user.isModifying = !user.isModifying">Cancel</button>
             <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.deleteUser(user)">Delete</button>
           </td>
         </tr>
       </tbody>
       <tfoot>
-        <tr>
-          <form name="admin.newUser" novalidate>
-            <td>
-              <label for="admin.new.username" class="control-label sr-only">New username</label>
-              <input type="text" id="admin.new.username" ng-model="vm.newUser.subjectName" class="form-control" required />
-              <label for="admin.new.password" class="control-label sr-only">New password</label>
-              <input type="password" id="admin.new.password" ng-model="vm.newUser.password" class="form-control" required />
-            </td>
-            <td>
-              <label for="admin.new.title" class="control-label sr-only">New Title</label>
-              <input type="text" id="admin.new.title" ng-model="vm.newUser.title" class="form-control" />
-            </td>
-            <td>
-              <label for="admin.new.firstname" class="control-label sr-only">New First Name</label>
-              <input type="text" id="admin.new.firstname" ng-model="vm.newUser.firstName" class="form-control" required />
-            </td>
-            <td>
-              <label for="admin.new.lastname" class="control-label sr-only">New Last Name</label>
-              <input type="text" id="admin.new.lastname" ng-model="vm.newUser.lastName" class="form-control" required />
-            </td>
-            <td>
-              <label for="admin.new.email" class="control-label sr-only">New email</label>
-              <input type="text" id="admin.new.email" ng-model="vm.newUser.email" class="form-control" required />
-            </td>
-            <td>
-              <label for="admin.new.phone" class="control-label sr-only">New Phone</label>
-              <input type="text" id="admin.new.phone" ng-model="vm.newUser.phoneNumber" class="form-control" required />
-            </td>
-            <td>
-              <label for="admin.new.roles" class="control-label sr-only">User Role(s)</label>
-              <select id="admin.new.roles" ng-options="role.name as role.name for role in vm.roles" ng-model="vm.newUser.roles" class="form-control" multiple required></select>
-            </td>
-            <td>
-              <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="admin.newUser.$invalid">Create new user</button>
-            </td>
-          </form>
+        <tr ng-form="userManagementNewUser">
+          <td>
+            <label for="admin.new.username" class="control-label sr-only">New username</label>
+            <input type="text" id="admin.new.username" ng-model="vm.newUser.subjectName" class="form-control" required />
+            <label for="admin.new.password" class="control-label sr-only">New password</label>
+            <input type="password" id="admin.new.password" ng-model="vm.newUser.password" class="form-control" required />
+          </td>
+          <td>
+            <label for="admin.new.title" class="control-label sr-only">New Title</label>
+            <input type="text" id="admin.new.title" ng-model="vm.newUser.title" class="form-control" />
+          </td>
+          <td>
+            <label for="admin.new.firstname" class="control-label sr-only">New First Name</label>
+            <input type="text" id="admin.new.firstname" ng-model="vm.newUser.firstName" class="form-control" required />
+          </td>
+          <td>
+            <label for="admin.new.lastname" class="control-label sr-only">New Last Name</label>
+            <input type="text" id="admin.new.lastname" ng-model="vm.newUser.lastName" class="form-control" required />
+          </td>
+          <td>
+            <label for="admin.new.email" class="control-label sr-only">New email</label>
+            <input type="email" id="admin.new.email" ng-model="vm.newUser.email" class="form-control" required />
+          </td>
+          <td>
+            <label for="admin.new.phone" class="control-label sr-only">New Phone</label>
+            <input type="text" id="admin.new.phone" ng-model="vm.newUser.phoneNumber" class="form-control" required />
+          </td>
+          <td>
+            <label for="admin.new.roles" class="control-label sr-only">User Role(s)</label>
+            <select id="admin.new.roles" ng-options="role.name as role.name for role in vm.roles" ng-model="vm.newUser.roles" class="form-control" multiple required></select>
+          </td>
+          <td>
+            <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="userManagementNewUser.$invalid">Create new user</button>
+          </td>
         </tr>
       </tfoot>
     </table>

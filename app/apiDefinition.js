@@ -259,7 +259,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: null,
         security: 'Admin',
-        response: [apis.entities.userWithPermissions]
+        response: [apis.entities.userWithPermissions],
+        status: 'Working'
     },{
         name: 'List ACBs',
         description: 'List all registered ACBs',
@@ -268,7 +269,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: null,
         security: null,
-        response: [apis.entities.acb]
+        response: [apis.entities.acb],
+        status: 'Working'
     },{
         name: 'List Users at ACB',
         description: 'List all ACB Admin or Staff with access to the parameterized ACB',
@@ -277,7 +279,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: 'acbId',
         security: 'Admin or ACB Admin',
-        response: [apis.entities.userWithPermissions]
+        response: [apis.entities.userWithPermissions],
+        status: 'Working'
     },{
         name: 'Create User',
         description: 'Create a user. Do not grant any special permissions.',
@@ -302,7 +305,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: apis.entities.createUserAndRoles,
         security: 'Admin',
-        response: apis.entities.createdUser
+        response: apis.entities.createdUser,
+        status: 'Working'
     },{
         name: 'Invite User',
         description: 'Invite a user to register their account',
@@ -312,7 +316,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: ['example@example.com', ['ROLE'], ['acbId']],
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Planned'
     },{
     	name: 'Grant Role to User',
         description: 'Add a role for the user. One of ROLE_ACB_STAFF, and ROLE_ACB_ADMIN',
@@ -321,7 +326,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: apis.entities.grantRole,
         security: 'Admin',
-        response: {"roleAdded": "true"}
+        response: {"roleAdded": "true"},
+        status: 'Working'
     },{
     	name: 'Revoke Role from User',
         description: 'Remove a role for the user. One of ROLE_ACB_STAFF, and ROLE_ACB_ADMIN',
@@ -330,7 +336,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: apis.entities.grantRole,
         security: 'Admin',
-        response: {"roleRemoved": "true"}
+        response: {"roleRemoved": "true"},
+        status: 'Working'
     },{
         name: 'Modify User',
         description: 'Modify a user',
@@ -339,7 +346,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: apis.entities.createdUser,
         security: 'Admin or the user themselves',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Working'
     },{
         name: 'Delete User',
         description: 'Disable a user\'s access to CHPL entirely',
@@ -348,7 +356,8 @@ apis.endpoints = [
         requestType: 'POST',
         parameters: 'USER_ID: long',
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Working'
     },{
         name: 'Add User to ACB',
         description: 'Give a user a role at a particular ACB',
@@ -359,7 +368,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: apis.entities.grantAcb,
         security: 'Admin or ACB Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Working'
     },{
         name: 'Delete User from ACB',
         description: 'Disable a user\'s ability to manage a particular ACB, without turning off whatever other access they have',
@@ -369,7 +379,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: apis.entities.grantAcb,
         security: 'Admin or ACB Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Working'
     },{
         name: 'Create ACB',
         description: 'Create an ACB',
@@ -379,7 +390,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Working'
     },{
         name: 'Update ACB',
         description: 'Modify an already existing ACB',
@@ -388,7 +400,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: apis.entities.acb,
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Working'
     },{
         name: 'Delete ACB',
         description: 'Delete an existing ACB',
@@ -396,7 +409,8 @@ apis.endpoints = [
         id: 'delete_acb',
         requestType: 'POST',
         security: 'Admin or ACB Admin or ACB Delete',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Working'
     },{
         name: 'List Certified Product Activity',
         description: 'Get a list of the certified product activity. If the logged in user is a CHPL admin, this will return all activity from all Certified Products. If the user is an ACB admin, this will return a filtered list of Certified Products; including only those the user has ACB admin rights over.',
@@ -405,7 +419,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: null,
         security: 'Admin',
-        response: [apis.entities.cpActivity]
+        response: [apis.entities.cpActivity],
+        status: 'Planned'
     },{
         name: 'List Vendor Activity',
         description: 'Get a list of the vendor activity',
@@ -414,7 +429,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: null,
         security: 'Admin',
-        response: [apis.entities.vendorActivity]
+        response: [apis.entities.vendorActivity],
+        status: 'Planned'
     },{
         name: 'List Product Activity',
         description: 'Get a list of the product activity',
@@ -423,7 +439,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: null,
         security: 'Admin',
-        response: [apis.entities.productActivity]
+        response: [apis.entities.productActivity],
+        status: 'Planned'
     },{
         name: 'List ACB Activity',
         description: 'Get a list of the acb activity. If the logged in user is a CHPL admin, this will return all activity from all Certified Products. If the user is an ACB admin, this will return a filtered list of Certified Products; including only those the user has ACB admin rights over.',
@@ -432,7 +449,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: null,
         security: 'Admin',
-        response: [apis.entities.acbActivity]
+        response: [apis.entities.acbActivity],
+        status: 'Planned'
     },{
         name: 'List Products by Vendor',
         description: 'Get a list of all of the products associated with the parameterized vendor',
@@ -442,7 +460,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: 'vendorId',
         security: null,
-        response: [apis.entities.product]
+        response: [apis.entities.product],
+        status: 'Working'
     },{
         name: 'List Versions by Product',
         description: 'Get a list of all of the versions associated with the parameterized product',
@@ -451,7 +470,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: 'productId',
         security: null,
-        response: [apis.entities.version]
+        response: [apis.entities.version],
+        status: 'Working'
     },{
         name: 'List Certified Products by Version',
         description: 'Get a list of all of the Certified Products associated with the parameterized version (and, by implication, the relevant vendor & product). If the logged in user is a CHPL admin, this will return all relevant Certified Products. If the user is an ACB admin, this will return a filtered list of the relevant Certified Products; including only those that were certified by an ACB the user has ACB admin rights over.',
@@ -461,7 +481,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: 'versionId',
         security: 'Admin',
-        response: [apis.entities.cps]
+        response: [apis.entities.cps],
+        status: 'Working'
     },{
         name: 'List Vendors',
         description: 'List all vendors with relevant data',
@@ -470,7 +491,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: null,
         security: null,
-        response: [apis.entities.vendor]
+        response: [apis.entities.vendor],
+        status: 'Working'
     },{
         name: 'Get Vendor',
         description: 'Get a specific vendor, with relevant data',
@@ -488,7 +510,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: 'productId',
         security: null,
-        response: apis.entities.product
+        response: apis.entities.product,
+        status: 'Working'
     },{
         name: 'Get Version',
         description: 'Get a specific version, with relevant data',
@@ -507,7 +530,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: {'vendorIds': ['long'], 'vendor': apis.entities.vendor},
         security: 'Admin',
-        response: apis.entities.vendor
+        response: apis.entities.vendor,
+        status: 'Working'
     },{
         name: 'Update Product',
         description: 'Update one or more products with passed in data. If more than one productId is supplied, merge the products, assigning all versions originally assigned to any of the products to the single resulting product. If a newVendorId is supplied in the Request, the Product is changing ownership; merge the products (if necessary), and then reassign it to the new Vendor indicated',
@@ -517,7 +541,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: {'productIds': ['long'], product: apis.entities.product, newVendorId: 'long (optional)'},
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Working'
     },{
         name: 'Update Version',
         description: 'Update the version of a specific product',
@@ -526,7 +551,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: {"versionId" : 'long', "version": 'string'},
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Partially implemented; needs Version merge'
     },{
         name: 'Update Certified Product',
         description: 'Update a certified product with the passed in data',
@@ -536,7 +562,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: {cpId: 'long', other: 'All of the other parts of the certified product'},
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Planned'
     },{
         name: 'List Certified Products being uploaded',
         description: 'Retrieve the Certified Products that are in the process of being uploaded into the CHPL database. If the user is a CHPL Admin, this will return all of those CPs. If the user is an ACB Admin, it will only return those that are being certified by an ACB to which that user has access',
@@ -545,7 +572,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: null,
         security: 'Admin',
-        response: [{cpId: 'long', vendor: apis.entities.vendor, product: apis.entities.product, version: apis.entities.version, certified_product: 'all the parts of a cp in the process of uploading', uploadDate: 'string'}]
+        response: [{cpId: 'long', vendor: apis.entities.vendor, product: apis.entities.product, version: apis.entities.version, certified_product: 'all the parts of a cp in the process of uploading', uploadDate: 'string'}],
+        status: 'Planned'
     },{
         name: 'Confirm Certified Product being uploaded',
         description: 'Confirm a particular Certified Product is ready to be entered in the CHPL database permanently',
@@ -554,7 +582,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: 'cpId',
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Planned'
     },{
         name: 'Start Upload of Certified Products',
         description: 'Provides end point for reception of Certified Product upload file',
@@ -564,7 +593,8 @@ apis.endpoints = [
         requestType: 'POST',
         jsonParameter: {file: 'file'},
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.success,
+        status: 'Planned'
     },{
         name: 'Simple Search',
         description: 'Provides an endpoint for performing a keyword search of Vendor and Product fields',
@@ -573,7 +603,8 @@ apis.endpoints = [
         requestType: 'GET',
         parameters: ['searchTerm', 'pageNum (optional)', 'pageSize (optional)', 'orderBy (optional)'],
         security: null,
-        response: apis.entities.searchResults
+        response: apis.entities.searchResults,
+        status: 'Working'
     },{
         name: 'Advanced Search',
         description: 'Provides an endpoint for performing an advanced search, choosing specific fields to search on',
@@ -583,7 +614,8 @@ apis.endpoints = [
         parameters: ['pageNum (optional)', 'pageSize (optional)'],
         jsonParameter: apis.entities.searchRequest,
         security: null,
-        response: apis.entities.searchResults
+        response: apis.entities.searchResults,
+        status: 'Working'
     },{
         name: 'Get Certified Product',
         description: 'Return the certified product specified by the passed in parameter',

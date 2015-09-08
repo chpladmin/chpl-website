@@ -24,10 +24,10 @@
                         if (typeof response.data === 'object') {
                             return response.data;
                         } else {
-                            return response;
+                            return $q.reject(response);
                         }
                     }, function (response) {
-                        return response;
+                        return $q.reject(response);
                     });
             };
 

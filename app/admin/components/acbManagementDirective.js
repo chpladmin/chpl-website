@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AcbManagementController', ['commonService', 'adminService', 'authService', '$log', '$timeout', function (commonService, adminService, authService, $log, $timeout) {
+        .controller('AcbManagementController', ['commonService', 'adminService', 'authService', '$log', function (commonService, adminService, authService, $log) {
             var self = this;
             self.isChplAdmin = authService.isChplAdmin();
             self.isAcbAdmin = authService.isAcbAdmin();
@@ -22,13 +22,17 @@
 
             self.createACB = function () {
                 adminService.createACB(self.newACB)
-                    .then($timeout(self.loadData,1000));
+                    .then(function (response) {
+                        self.loadData();
+                    });
                 self.newACB = {address: {}};
             };
 
             self.modifyACB = function (acb) {
                 adminService.modifyACB(acb)
-                    .then($timeout(self.loadData,1000));
+                    .then(function (response) {
+                        self.loadData();
+                    });
             };
 
             self.cancelACB = function() {
@@ -37,7 +41,9 @@
 
             self.deleteACB = function (acb) {
                 adminService.deleteACB(acb.id)
-                    .then($timeout(self.loadData,1000));
+                    .then(function (response) {
+                        self.loadData();
+                    });
             };
 
             self.addressRequired = function (acb) {

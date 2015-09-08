@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('UserManagementController', ['adminService', '$log', '$timeout', '$scope', function (adminService, $log, $timeout, $scope) {
+        .controller('UserManagementController', ['adminService', '$log', '$scope', function (adminService, $log, $scope) {
             var self = this;
             self.newUser = {roles: []};
             self.acbId = $scope.acbId;
@@ -12,6 +12,7 @@
             }
 
             self.freshenUsers = function () {
+                $log.info($scope);
                 if (self.acbId) {
                     adminService.getUsersAtAcb(self.acbId)
                         .then(function (response) {
@@ -23,6 +24,7 @@
                     adminService.getUsers()
                         .then(function (response) {
                             self.users = response.users;
+                            $log.info(self.users);
                         }, function (error) {
                             $log.debug(error);
                         });
@@ -38,12 +40,11 @@
                             var userObject = {acbId: self.acbId,
                                               userId: response.userId,
                                               authority: 'ADMIN'};
-                            $timeout(adminService.addUserToAcb,
-                                     1000,
-                                     true,
-                                     userObject);
+                            adminService.addUserToAcb(userObject)
+                                .then(self.freshenUsers());
+                        } else {
+                            self.freshenUsers();
                         }
-                        $timeout(self.freshenUsers,1000);
                     });
                 self.newUser = {roles: []};
             };
@@ -62,7 +63,10 @@
                     }
                 }
                 adminService.updateUser(user.user)
-                    .then($timeout(self.freshenUsers,1000));
+                    .then(function (response) {
+                        self.freshenUsers();
+                    });
+
             };
 
             self.deleteUser = function (user) {
@@ -71,10 +75,14 @@
                                       userId: user.user.userId};
 
                     adminService.removeUserFromAcb(userObject)
-                        .then($timeout(self.freshenUsers,1000));
+                    .then(function (response) {
+                        self.freshenUsers();
+                    });
                 } else {
                     adminService.deleteUser(user.user.userId)
-                        .then($timeout(self.freshenUsers,1000));
+                    .then(function (response) {
+                        self.freshenUsers();
+                    });
                 }
             };
 
