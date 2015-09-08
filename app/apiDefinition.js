@@ -536,13 +536,13 @@ apis.endpoints = [
         response: apis.entities.success
     },{
         name: 'Update Version',
-        description: 'Update the version of a specific product',
+        description: 'Update one or more versions with passed in data. If more than one versionId is supplied, merge the products, assigning all certified products originally assigned to any of the versions to the single resulting version. If a newProductId is supplied in the Request, the version is changing ownership; merge the versions (if necessary), and then reassign it to the new product indicated',
         request: '/update_version',
         id: 'update_version',
         requestType: 'POST',
-        jsonParameter: {"versionId" : 'long', "version": 'string'},
+        jsonParameter: {'versionIds': ['long'], version: apis.entities.version, newProductId: 'long (optional)'},
         security: 'Admin',
-        response: apis.entities.success
+        response: apis.entities.version
     },{
         name: 'Update Certified Product',
         description: 'Update a certified product with the passed in data',
