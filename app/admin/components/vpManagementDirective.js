@@ -59,12 +59,19 @@
             };
             self.selectVersion = function () {
                 if (self.versionSelect) {
-                    self.activeVersion = self.versionSelect;
-
-                    commonService.getProductsByVersion(self.activeVersion.versionId)
-                        .then(function (cps) {
-                            self.cps = cps;
-                        });
+                    if (self.versionSelect.length === 1) {
+                        self.activeVersion = [self.versionSelect[0]];
+                        self.activeVersion[0].productId = self.activeProduct[0].productId;
+                        commonService.getProductsByVersion(self.activeVersion[0].versionId)
+                            .then(function (cps) {
+                                self.cps = cps;
+                            });
+                    } else { //merging
+                        self.activeVersion = [].concat(self.versionSelect);
+                        self.mergeVersion = angular.copy(self.activeVersion[0]);
+                        delete self.mergeVersion.versionId;
+                        delete self.mergeVersion.lastModifiedDate;
+                    }
                 }
             };
             self.selectCP = function () {
@@ -245,27 +252,35 @@
 
             };
             self.saveVersion = function () {
-                //                self.updateVersion = {productIds: []};
+                self.updateVersion = {versionIds: []};
 
-                adminService.updateVersion(self.activeVersion)
+                for (var i = 0; i < self.activeVersion.length; i++) {
+                    self.updateVersion.versionIds.push(self.activeVersion[i].versionId);
+                }
+                if (self.activeVersion.length === 1) {
+                    self.updateVersion.version = self.activeVersion[0];
+                    self.updateVersion.newProductId = self.activeVersion[0].prodcutId;
+                } else {
+                    self.updateVersion.version = self.mergeVersion;
+                    self.updateVersion.newProductId = self.activeVersion[0].productId;
+                }
+
+                adminService.updateVersion(self.updateVersion)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             var newVersion = response;
                             self.versionMessage = null;
                             self.editVersion = false;
-                            // call sevice
-                            /*
-                              commonService.getProductsByVendor(self.activeVendor[0].vendorId)
-                              .then(function (products) {
-                              self.products = products.products;
-                              self.activeProduct = [newProduct];
-                              //todo: re-select active vendor in vendorSelect
-                              commonService.getVersionsByProduct(newProduct.productId)
-                              .then(function (versions) {
-                              self.versions = versions;
-                              });
-                              });
-                            */
+                            commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                                .then(function (versions) {
+                                    self.versions = versions.versions;
+                                    self.activeVersion = [newVersion];
+                                    //todo: re-select active version in versionSelect
+                                    commonService.getProductsByVersion(newVersion.versionId)
+                                        .then(function (cps) {
+                                            self.cps = cps;
+                                        });
+                                });
                         } else {
                             self.versionMessage = 'An error occurred. Please check your entry and try again.';
                         }
