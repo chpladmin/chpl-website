@@ -21,16 +21,20 @@ module.exports = function(config){
             'app/app_test.js',
             'app/appDev.js',
             'app/**/*Module.js',
+            'app/api/**/*.js',
             'app/common/**/*.js',
+            'app/common/components/*.html',
+            'app/admin/**/*.js',
+            'app/admin/components/*.html',
             'app/compare/**/*.js',
             'app/login/**/*.js',
             'app/nav/**/*.js',
-            'app/admin/**/*.js',
             'app/product/**/*.js',
             'app/search/**/*.js'
         ],
 
         preprocessors: {
+            'app/api/**/!(*test).js': ['coverage'],
             'app/common/**/!(*test).js': ['coverage'],
             'app/compare/**/!(*test).js': ['coverage'],
             'app/login/**/!(*test).js': ['coverage'],
@@ -38,7 +42,9 @@ module.exports = function(config){
             'app/admin/**/!(*test).js': ['coverage'],
             'app/product/**/!(*test).js': ['coverage'],
             'app/search/**/!(*test).js': ['coverage'],
-            'app/app.js': ['coverage']
+            'app/app.js': ['coverage'],
+            'app/common/components/*.html': 'ng-html2js',
+            'app/admin/components/*.html': 'ng-html2js'
         },
 
         autoWatch : true,
@@ -54,7 +60,8 @@ module.exports = function(config){
             'karma-phantomjs-launcher',
             'karma-junit-reporter',
             'karma-growl-reporter',
-            'karma-coverage'
+            'karma-coverage',
+            'karma-ng-html2js-preprocessor'
         ],
 
         reporters : ['dots', 'junit', 'progress', 'coverage', 'growl'],
