@@ -36,14 +36,17 @@
                                       user: self.newUser,
                                       authority: 'ADMIN'};
                     adminService.addUserToAcb(userObject)
-                        .then(self.freshenUsers());
+                        .then(function (response) {
+                            self.freshenUsers();
+                        });
                 } else {
                     adminService.createUser(self.newUser)
                         .then(function (response) {
-                            $log.debug(response);
                             self.freshenUsers();
                         })
                 }
+                $scope.userManagementNewUser.$setPristine();
+                $scope.userManagementNewUser.$setUntouched();
                 self.newUser = {roles: []};
             };
 
@@ -74,14 +77,22 @@
                     var userObject = {acbId: self.acbId,
                                       userId: user.user.userId};
 
+                    $log.debug(self.users);
+                    for (var i = 0; i < self.users.length; i++) {
+                        if (self.users[i].user.userId === userObject.userId) {
+                            self.users.splice(i,1);
+                        }
+                    }
+                    $log.debug(self.users);
+
                     adminService.removeUserFromAcb(userObject)
-                    .then(function (response) {
-                        self.freshenUsers();
-                    });
+                        .then(function (response) {
+                            self.freshenUsers();
+                        });
                 } else {
                     adminService.deleteUser(user.user.userId)
-                    .then(function (response) {
-                        self.freshenUsers();
+                        .then(function (response) {
+                            self.freshenUsers();
                     });
                 }
             };

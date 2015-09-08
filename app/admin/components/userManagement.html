@@ -1,6 +1,8 @@
 <section class="row">
   <div class="col-md-12">
     <h2>User Management</h2>
+    <pre>{{ vm.users }} </pre>
+    {{ vm.users.length }}
     <table class="table table-striped">
       <thead>
         <tr>
@@ -15,7 +17,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="user in vm.users" ng-form="userManagementUpdateUser">
+        <tr ng-repeat="user in vm.users track by user.user.userId" ng-form="userManagementUpdateUser">
           <td>
             <span ng-if="!user.isModifying">{{ user.user.subjectName }}</span>
             <input ng-if="user.isModifying" type="text" ng-model="user.user.subjectName" class="form-control" required />
