@@ -1,19 +1,10 @@
-.st-table th {
-    width: 20%;
-}
-
-.st-table th:last-child {
-    text-align: center;
-    width: auto;
-}
-
-.st-sort-ascent:after {
+.sort-ascent:after {
     content: "\f0d8";
     font-family: FontAwesome;
     padding: 0 3px;
 }
 
-.st-sort-descent:after {
+.sort-descent:after {
     content: "\f0d7";
     font-family: FontAwesome;
     padding: 0 3px;
