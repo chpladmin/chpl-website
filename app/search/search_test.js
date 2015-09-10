@@ -214,28 +214,28 @@
             scope.clear();
             expect(scope.searchResults).toEqual([]);
             expect(scope.displayedResults).toEqual([]);
-            expect(scope.searchTerm).toEqual('');
-            expect(scope.vendorTerm).toEqual('');
-            expect(scope.productTerm).toEqual('');
-            expect(scope.versionTerm).toEqual('');
-            expect(scope.certTerm).toEqual('');
-            expect(scope.cqmTerm).toEqual('');
-            expect(scope.editionTerm).toEqual('');
-            expect(scope.classificationTerm).toEqual('');
-            expect(scope.practiceTerm).toEqual('');
+            expect(scope.query.searchTerm).toBeUndefined();
+            expect(scope.query.vendor).toBeUndefined();
+            expect(scope.query.product).toBeUndefined();
+            expect(scope.query.version).toBeUndefined();
+            expect(scope.query.certificationCriteria).toBeUndefined();
+            expect(scope.query.cqms).toBeUndefined();
+            expect(scope.query.certificationEdition).toBeUndefined();
+            expect(scope.query.productClassification).toBeUndefined();
+            expect(scope.query.practiceType).toBeUndefined();
             expect(ctrl.compareIds).toEqual(Object.create(null));
         });
 
         it('should have a way to clear filters', function () {
             scope.clearFilter();
 
-            expect(scope.filterGroup.vendor).toEqual('');
-            expect(scope.filterGroup.product).toEqual('');
-            expect(scope.filterGroup.edition).toEqual('');
-            expect(scope.filterGroup.classification).toEqual('');
-            expect(scope.filterGroup.practiceType).toEqual('');
-            expect(scope.filterGroup.certBody).toEqual('');
-
+            expect(scope.query.vendor).toBeUndefined();
+            expect(scope.query.product).toBeUndefined();
+            expect(scope.query.version).toBeUndefined();
+            expect(scope.query.certificationEdition).toBeUndefined();
+            expect(scope.query.productClassification).toBeUndefined();
+            expect(scope.query.practiceType).toBeUndefined();
+            expect(scope.query.certificationBody).toBeUndefined();
         });
     });
 })();
