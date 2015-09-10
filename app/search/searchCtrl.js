@@ -141,15 +141,6 @@
             $scope.search = self.search;
 
             $scope.doFilter = function () {
-                self.search();/*
-                var queryObj = {orderBy: $scope.orderBy};
-                if ($scope.filterGroup.vendor !== undefined && $scope.filterGroup.vendor.length > 0) queryObj.vendor = $scope.filterGroup.vendor;
-                if ($scope.filterGroup.product !== undefined && $scope.filterGroup.product.length > 0) queryObj.product = $scope.filterGroup.product;
-                if ($scope.filterGroup.edition !== undefined && $scope.filterGroup.edition.length > 0) queryObj.certificationEdition = $scope.filterGroup.edition;
-                if ($scope.filterGroup.classification !== undefined && $scope.filterGroup.classification.length > 0) queryObj.productClassification = $scope.filterGroup.classification;
-                if ($scope.filterGroup.practiceType !== undefined && $scope.filterGroup.practiceType.length > 0) queryObj.practiceType = $scope.filterGroup.practiceType;
-                if ($scope.filterGroup.certBody !== undefined && $scope.filterGroup.certBody.length > 0) queryObj.certificationBody = $scope.filterGroup.certBody;
-
                 var certs = [];
                 var cqms = [];
                 for (var key in self.certFilters) {
@@ -159,19 +150,10 @@
                         cqms.push(self.certFilters[key]);
                     }
                 }
-                if (certs.length > 0) queryObj.certificationCriteria = certs;
-                if (cqms.length > 0) queryObj.cqms = cqms;
-
-                $scope.currentPage = 1;
-                commonService.searchAdvanced(queryObj,$scope.currentPage - 1,$scope.resultsPerPage)
-                    .then(function (data) {
-                        $localStorage.searchResults = data;
-                        $scope.searchResults = data.results;
-                        $scope.displayedResults = [].concat($scope.searchResults);
-                        $scope.resultCount = data.recordCount;
-                    }, function (error) {
-                        $log.error(error);
-                    });*/
+                if (certs.length > 0) $scope.query.certificationCriteria = certs;
+                if (cqms.length > 0) $scope.query.cqms = cqms;
+                $scope.query.simple = false;
+                self.search();
             };
 
             $scope.hasResults = function () {

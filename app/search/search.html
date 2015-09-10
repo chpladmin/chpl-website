@@ -1,15 +1,4 @@
 <div ng-controller="SearchController">
-              <div>
-                checkboxes
-                <ai-checkbox-list
-                   selection="query.cqms"
-                   items="cqms.certs"
-                   value="number"
-                   label="title">
-                </ai-checkbox-list>
-                {{ query | json }}
-              </div>
-
   <div class="row" ng-hide="hasSearched()">
     <div class="col-md-12">
       <h1>The Authoritative listing of Certified Health Information Products</h1>
