@@ -575,9 +575,22 @@ apis.endpoints = [
         request: '/update_certified_product',
         id: 'update_certified_product',
         requestType: 'POST',
-        jsonParameter: {cpId: 'long', other: 'All of the other parts of the certified product'},
+        jsonParameter: {
+            'id': 'long',
+            'testingLabId': 'long',
+            'certificationBodyId': 'long',
+            'practiceTypeId': 'long',
+            'productClassificationTypeId': 'long',
+            'certificationStatusId': 'long',
+            'chplProductNumber': 'string',
+            'reportFileLocation': 'string',
+            'qualityManagementSystemAtt': 'string',
+            'acbCertificationId': 'string',
+            'otherAcb': 'string',
+            'isChplVisible': 'boolean'
+        },
         security: 'Admin',
-        response: apis.entities.success,
+        response: apis.entities.certifiedProduct,
         status: 'Planned'
     },{
         name: 'List Certified Products being uploaded',
