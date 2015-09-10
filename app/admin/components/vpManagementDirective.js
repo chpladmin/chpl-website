@@ -163,6 +163,12 @@
                 self.editVersion = false;
             };
 
+            self.cancelCP = function () {
+                self.activeCP = '';
+                self.cpMessage = null;
+                self.editCP = false;
+            };
+
             self.mergeAddressRequired = function () {
                 return self.addressCheck(self.mergeVendor);
             }
@@ -259,7 +265,7 @@
                 }
                 if (self.activeVersion.length === 1) {
                     self.updateVersion.version = self.activeVersion[0];
-                    self.updateVersion.newProductId = self.activeVersion[0].prodcutId;
+                    self.updateVersion.newProductId = self.activeVersion[0].productId;
                 } else {
                     self.updateVersion.version = self.mergeVersion;
                     self.updateVersion.newProductId = self.activeVersion[0].productId;
@@ -286,6 +292,40 @@
                         }
                     });
             };
+
+            self.saveCP = function () {
+                self.updateCP = {};
+                $log.debug(self.activeCP);
+
+                self.updateCP.id = self.activeCP.id;
+                self.updateCP.testingLabId = self.activeCP.testingLabId;
+                self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
+                self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
+                self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
+                self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
+                self.updateCP.chplProductNumber = self.activeCP.chplProductNum;
+                self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
+                self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
+                self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
+                self.updateCP.otherAcb = self.activeCP.otherAcb;;
+                self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
+
+                self.editCP = false;
+                $log.debug(self.updateCP);
+/*
+                adminService.updateCP(self.updateCP)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                        self.editCP = false;
+                            self.activeCP = response;
+                            self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
+                        } else {
+                            self.cpMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+*/
+            };
+
         }]);
 
     angular.module('app.admin')
