@@ -379,28 +379,24 @@
                 <strong>Visible on CHPL:</strong> {{ vm.activeCP.visibleOnChpl }} <br />
               </span>
               <span ng-if="vm.editCP">
-                <pre>{{ vm.classifications }}
-                  {{ vm.practices }}
-                  {{ vm.bodies }}
-                  </pre>
                 <div class="form-group">
                   <label for="cpClassification">Classification</label>
-                  <select class="input-sm form-control" ng-model="vm.activeCP.classificationType" id="cpClassification"
-                          ng-options="classification.name for classification in vm.classifications" required>
+                  <select class="input-sm form-control" ng-model="vm.activeCP.classificationType.id" id="cpClassification"
+                          ng-options="classification.id as classification.name for classification in vm.classifications" required>
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="cpPractice">Practice Type</label>
-                  <select class="input-sm form-control" ng-model="vm.activeCP.practiceType" id="cpPractice"
-                          ng-options="practice.name for practice in vm.practices" required>
+                  <select class="input-sm form-control" ng-model="vm.activeCP.practiceType.id" id="cpPractice"
+                          ng-options="practice.id as practice.name for practice in vm.practices" required>
                   </select>
                 </div>
                 <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                 <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} </div>
                 <div ng-if="vm.isChplAdmin" class="form-group">
                   <label for="cpBody">Certification Body</label>
-                  <select class="input-sm form-control" ng-model="vm.activeCP.certifyingBody" id="cpBody"
-                          ng-options="body.name for body in vm.bodies" required>
+                  <select class="input-sm form-control" ng-model="vm.activeCP.certifyingBody.id" id="cpBody"
+                          ng-options="body.id as body.name for body in vm.bodies" required>
                   </select>
                 </div>
                 <div class="form-group">
@@ -414,7 +410,7 @@
                 <div class="form-group">
                   <label for="cpStatus">Status</label>
                   <select class="input-sm form-control" ng-model="vm.activeCP.certificationStatusId" id="cpStatus"
-                          ng-options="status.id as status.value for status in vm.statuses" required>
+                          ng-options="status.id as status.name for status in vm.statuses" required>
                   </select>
                 </div>
                 <div class="form-group">
