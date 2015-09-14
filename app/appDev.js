@@ -198,6 +198,7 @@
             $httpBackend.whenPOST(/localhost:8080/).passThrough();
             $httpBackend.whenGET(/rest/).passThrough();
             $httpBackend.whenPOST(/rest/).passThrough();
+            $httpBackend.whenGET(/openchpl.appspot.com/).passThrough();
             $httpBackend.whenGET(/ainq.com\/list_api_calls/).respond(200, apis.endpoints); // fake search results
             $httpBackend.whenGET(/ainq.com\/search/).respond(200, getAllProducts()); // fake search results
             $httpBackend.whenGET(/ainq.com\/get_product/).respond(200, makeProduct()); // fake product

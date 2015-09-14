@@ -137,5 +137,18 @@
             self.getUploadingCps = function () {
                 return self.simpleApiCall('/list_uploadingCps', devAPI);
             };
+
+            self.getSourceMediumReport = function () {
+                return $http.get('https://openchpl.appspot.com/query?id=agpzfm9wZW5jaHBschULEghBcGlRdWVyeRiAgICAvKGCCgw&format=data-table-response')
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
         });
 })();

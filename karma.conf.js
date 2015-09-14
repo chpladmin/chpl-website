@@ -19,6 +19,7 @@ module.exports = function(config){
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'app/bower_components/angulartics/dist/angulartics.min.js',
             'app/bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
+            'app/bower_components/angular-google-chart/ng-google-chart.js',
             'app/app.js',
             'app/app_test.js',
             'app/appDev.js',

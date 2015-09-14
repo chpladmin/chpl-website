@@ -1,9 +1,9 @@
 <section class="row">
   <div class="col-md-12">
     <tabset>
-      <tab heading="Products &amp; Vendors" active="true">
+      <tab heading="Products &amp; Vendors">
         <h2>Certified Product Activity</h2>
-        <table st-table="displayedCertifiedProducts" st-safe-src="searchedCertifiedProducts" class="table table-striped">
+        <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
           <thead>
             <tr>
               <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
@@ -16,7 +16,7 @@
             </tr>
           </thead>
           <tbody>
-	        <tr ng-repeat="activity in displayedCertifiedProducts">
+	        <tr ng-repeat="activity in vm.displayedCertifiedProducts">
 		      <td class="productHeader">{{ activity.vendor }}</td>
 		      <td class="productHeader">{{ activity.product }}</td>
 		      <td class="productHeader">{{ activity.version }}</td>
@@ -29,7 +29,7 @@
         </table>
 
         <h2>Vendor Activity</h2>
-        <table st-table="displayedVendors" st-safe-src="searchedVendors" class="table table-striped">
+        <table st-table="vm.displayedVendors" st-safe-src="vm.searchedVendors" class="table table-striped">
           <thead>
             <tr>
               <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
@@ -38,7 +38,7 @@
             </tr>
           </thead>
           <tbody>
-	        <tr ng-repeat="activity in displayedVendors">
+	        <tr ng-repeat="activity in vm.displayedVendors">
 		      <td class="productHeader">{{ activity.vendor }}</td>
 		      <td class="productHeader">{{ activity.activity }}</td>
 		      <td class="productHeader">{{ activity.activityDate | date }}</td>
@@ -47,7 +47,7 @@
         </table>
 
         <h2>Product Activity</h2>
-        <table st-table="displayedProducts" st-safe-src="searchedProducts" class="table table-striped">
+        <table st-table="vm.displayedProducts" st-safe-src="vm.searchedProducts" class="table table-striped">
           <thead>
             <tr>
               <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
@@ -57,7 +57,7 @@
             </tr>
           </thead>
           <tbody>
-	        <tr ng-repeat="activity in displayedProducts">
+	        <tr ng-repeat="activity in vm.displayedProducts">
 		      <td class="productHeader">{{ activity.vendor }}</td>
 		      <td class="productHeader">{{ activity.product }}</td>
 		      <td class="productHeader">{{ activity.activity }}</td>
@@ -69,7 +69,7 @@
 
       <tab heading="ACBs">
         <h2>ACB activities</h2>
-        <table st-table="displayedACBs" st-safe-src="searchedACBs" class="table table-striped">
+        <table st-table="vm.displayedACBs" st-safe-src="vm.searchedACBs" class="table table-striped">
           <thead>
             <tr>
               <th class="search-header" st-sort="name" st-skip-natural="true">ACB</th>
@@ -78,7 +78,7 @@
             </tr>
           </thead>
           <tbody>
-	        <tr ng-repeat="activity in displayedACBs">
+	        <tr ng-repeat="activity in vm.displayedACBs">
 		      <td class="productHeader">{{ activity.name }}</td>
 		      <td class="productHeader">{{ activity.activity }}</td>
 		      <td class="productHeader">{{ activity.activityDate | date }}</td>
@@ -87,9 +87,27 @@
         </table>
       </tab>
 
-      <tab ng-if="isChplAdmin" heading="Visitors">
+      <tab ng-if="vm.isChplAdmin" heading="Visitors" active="true">
         <h2>Visitor analytics</h2>
-        <p>Analytics to be inserted here</p>
+        <div class="row">
+          <div class="col-md-3">
+            <div google-chart chart="vm.sourceMedium"></div>
+          </div>
+          <div class="col-md-3">
+            <div google-chart chart="vm.browserVariety"></div>
+          </div>
+          <div class="col-md-3">
+            <div google-chart chart="vm.country"></div>
+          </div>
+          <div class="col-md-3">
+            <div google-chart chart="vm.cities"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div google-chart chart="vm.traffic"></div>
+          </div>
+        </div>
       </tab>
     </tabset>
   </div>
