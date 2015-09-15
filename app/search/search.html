@@ -102,7 +102,7 @@
           </div>
           <div class="col-sm-3">
             <select id="classificationField" ng-model="query.productClassification" class="input-sm form-control">
-              <option ng-repeat="classification in classifications" value="{{ classification.value }}">{{ classification.value }}</option>
+              <option ng-repeat="classification in classifications" value="{{ classification.name }}">{{ classification.name }}</option>
             </select>
           </div>
           <div class="col-sm-1">
@@ -110,7 +110,7 @@
           </div>
           <div class="col-sm-3">
             <select id="practiceField" ng-model="query.practiceType" class="input-sm form-control">
-              <option ng-repeat="practice in practices" value="{{ practice.value }}">{{ practice.value }}</option>
+              <option ng-repeat="practice in practices" value="{{ practice.name }}">{{ practice.name }}</option>
             </select>
           </div>
         </div> <!-- third row of advanced search -->
@@ -144,17 +144,17 @@
 
         <label for="classification-search">Filter on Classification</label>
         <select id="classification-search" class="input-sm form-control" ng-model="query.productClassification">
-          <option ng-repeat="classification in classifications" value="{{ classification.value }}">{{ classification.value }}</option>
+          <option ng-repeat="classification in classifications" value="{{ classification.name }}">{{ classification.name }}</option>
         </select>
 
         <label for="practiceType-search">Filter on Practice Type</label>
         <select id="practiceType-search" class="input-sm form-control" ng-model="query.practiceType">
-          <option ng-repeat="practice in practices" value="{{ practice.value }}">{{ practice.value }}</option>
+          <option ng-repeat="practice in practices" value="{{ practice.name }}">{{ practice.name }}</option>
         </select>
 
         <label for="certBody-search">Filter on Certification Body</label>
         <select id="certBody-search" class="input-sm form-control" ng-model="query.certificationBody">
-          <option ng-repeat="body in certBodies" value="{{ body.value }}">{{ body.value }}</option>
+          <option ng-repeat="body in certBodies" value="{{ body.name }}">{{ body.name }}</option>
         </select>
 
         <div>
