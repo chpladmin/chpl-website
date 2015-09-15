@@ -28,15 +28,6 @@
             self.isAcbAdmin = authService.isAcbAdmin();
             self.isChplAdmin = authService.isChplAdmin();
 
-            self.sourceMedium = {
-                type: 'PieChart',
-                displayed: true,
-                options: {
-                    sliceVisibilityThreshold: .4,
-                    is3D: true,
-                    title: 'Source / Medium (last 7 days)'
-                }
-            };
             self.browserVariety = {
                 type: 'PieChart',
                 displayed: true,
@@ -65,9 +56,7 @@
                 type: 'LineChart',
                 displayed: true,
                 options: {
-                    curveType: 'function',
                     hAxis: {
-                        format: 'd MMM yyyy',
                         slantedText: true
                     },
                     legend: null,
@@ -75,38 +64,26 @@
                 }
             };
 
-            reportService.getSourceMedium()
-                .then(function (data) {
-                    $log.debug(data);
-                    self.sourceMedium.data = data;
-                });
             reportService.getBrowserVariety()
                 .then(function (data) {
-                    $log.debug(data);
                     self.browserVariety.data = data;
                 });
             reportService.getCountry()
                 .then(function (data) {
-                    $log.debug(data);
                     self.country.data = data;
                 });
             reportService.getCities()
                 .then(function (data) {
-                    $log.debug(data);
                     self.cities.data = data;
                 });
             reportService.getTraffic()
                 .then(function (data) {
-                    $log.debug(data)
                     self.traffic.data = data;
                 });
         }])
         .service('reportService', ['commonService', '$log', function (commonService, $log) {
             var self = this;
 
-            self.getSourceMedium = function () {
-                return commonService.simpleApiCall('https://openchpl.appspot.com/query?id=agpzfm9wZW5jaHBschULEghBcGlRdWVyeRiAgICAgICACgw&format=data-table','');
-            };
             self.getBrowserVariety = function () {
                 return commonService.simpleApiCall('https://openchpl.appspot.com/query?id=agpzfm9wZW5jaHBschULEghBcGlRdWVyeRiAgICAvKGCCgw&format=data-table','');
             };
