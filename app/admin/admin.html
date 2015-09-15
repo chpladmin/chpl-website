@@ -17,6 +17,7 @@
           <label for="admin.password">Password</label>
           <input type="password" class="form-control" id="admin.password" ng-model="vm.password" placeholder="password" />
         </div>
+        <p class="" ng-if="vm.message.length > 0">{{ vm.message }}</p>
         <button class="btn btn-default btn-block" ng-click="vm.login()">Log In</button>
       </form>
     </div>

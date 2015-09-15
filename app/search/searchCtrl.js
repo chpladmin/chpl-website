@@ -6,7 +6,7 @@
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
-            $scope.lookaheadSource = [];
+            $scope.lookaheadSource = {all: [], vendors: [], products: []};
             $scope.filterGroup = {};
             self.hasDoneASearch = false;
             $scope.resultCount = 0;
@@ -28,20 +28,24 @@
             }
 
             self.setupLookahead = function () {
-                if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.length > 0) {
+                if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.all.length > 0) {
                     $log.info('Restoring lookahead from localstorage');
                     $scope.lookaheadSource = $localStorage.lookaheadSource;
                 } else {
                     commonService.getVendors()
                         .then(function (vendors) {
                             for (var i = 0; i < vendors.vendors.length; i++) {
-                                $scope.lookaheadSource.push({type: 'vendor', value: vendors.vendors[i].name});
+                                $scope.lookaheadSource.all.push({type: 'vendor', value: vendors.vendors[i].name});
+                                $scope.lookaheadSource.vendors.push({type: 'vendor', value: vendors.vendors[i].name});
                             }
                             $localStorage.lookaheadSource = $scope.lookaheadSource;
                         });
                     commonService.getProducts()
                         .then(function (products) {
-//                            $scope.lookaheadSource = $scope.lookaheadSource.concat(products);
+//                            for (var i = 0; i < products.products.length; i++) {
+//                                $scope.lookaheadSource.all.push({type: 'product', value: products.products[i].name});
+//                                $scope.lookaheadSource.products.push({type: 'product', value: products.products[i].name});
+//                            }
 //                            $localStorage.lookaheadSource = $scope.lookaheadSource;
                         });
                 }
@@ -125,7 +129,11 @@
                             $log.error(error);
                     });
                 } else {
-
+                    if ($scope.query.vendor !== undefined) {
+                        if (typeof($scope.query.vendor) === 'object') {
+                            $scope.query.vendor = $scope.query.vendor.value;
+                        }
+                    }
                     commonService.searchAdvanced($scope.query,$scope.query.currentPage - 1,$scope.query.resultsPerPage)
                         .then(function (data) {
                             $localStorage.searchResults = data;
@@ -167,6 +175,7 @@
             $scope.clear = function () {
                 delete $localStorage.searchResults;
                 delete $localStorage.query;
+                delete $localStorage.lookaheadSource;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
                 $scope.resultCount = 0;

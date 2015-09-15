@@ -30,7 +30,6 @@
 
             self.browserVariety = {
                 type: 'PieChart',
-                displayed: true,
                 options: {
                     is3D: true,
                     title: 'Visitors by browser (last 7 days)'
@@ -38,7 +37,6 @@
             };
             self.cities = {
                 type: 'PieChart',
-                displayed: true,
                 options: {
                     is3D: true,
                     title: 'Visitors by city (last 7 days)'
@@ -46,7 +44,6 @@
             };
             self.country = {
                 type: 'PieChart',
-                displayed: true,
                 options: {
                     is3D: true,
                     title: 'Visitors by country (last 7 days)'
@@ -54,13 +51,24 @@
             };
             self.traffic = {
                 type: 'LineChart',
-                displayed: true,
                 options: {
+                    legend: { position: 'none' },
                     hAxis: {
                         slantedText: true
                     },
-                    legend: null,
                     title: 'Visitors for the last 14 days'
+                }
+            };
+            self.map = {
+                type: 'GeoChart',
+                options: {
+                }
+            };
+            self.cityMap = {
+                type: 'GeoChart',
+                options: {
+                    region: 'US',
+                    displayMode: 'markers'
                 }
             };
 
@@ -71,13 +79,23 @@
             reportService.getCountry()
                 .then(function (data) {
                     self.country.data = data;
+                    self.map.data = data;
                 });
             reportService.getCities()
                 .then(function (data) {
                     self.cities.data = data;
+                    self.cityMap.data = data;
                 });
             reportService.getTraffic()
                 .then(function (data) {
+                    data.cols[0].type = 'date';
+                    var date;
+                    for (var i = 0; i < data.rows.length; i++) {
+                        date = data.rows[i].c[0].v;
+                        data.rows[i].c[0].v = new Date(date.substring(0,4),
+                                                       parseInt(date.substring(4,6)) - 1,
+                                                       date.substring(6,8));
+                    }
                     self.traffic.data = data;
                 });
         }])

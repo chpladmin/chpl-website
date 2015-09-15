@@ -24,7 +24,10 @@
 
                 mockCommonService.simpleApiCall = function () {
                     var defer = $q.defer();
-                    defer.resolve({});
+                    defer.resolve({
+                        cols:[{type:'string'}],
+                        rows:[]
+                    });
                     return defer.promise;
                 };
 

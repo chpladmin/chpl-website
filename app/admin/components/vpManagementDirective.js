@@ -218,7 +218,7 @@
                                     //todo: re-select active vendor in vendorSelect
                                     commonService.getProductsByVendor(newVendor.vendorId)
                                         .then(function (products) {
-                                            self.products = products;
+                                            self.products = products.products;
                                         });
                                 });
                         } else {
@@ -269,12 +269,11 @@
                 for (var i = 0; i < self.activeVersion.length; i++) {
                     self.updateVersion.versionIds.push(self.activeVersion[i].versionId);
                 }
+                self.updateVersion.newProductId = self.activeProduct[0].productId;
                 if (self.activeVersion.length === 1) {
                     self.updateVersion.version = self.activeVersion[0];
-                    self.updateVersion.newProductId = self.activeVersion[0].productId;
                 } else {
                     self.updateVersion.version = self.mergeVersion;
-                    self.updateVersion.newProductId = self.activeVersion[0].productId;
                 }
 
                 adminService.updateVersion(self.updateVersion)
