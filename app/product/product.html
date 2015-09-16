@@ -61,14 +61,22 @@
   </div>
   <div class="row">
     <div class="col-sm-10">
-      <h3>Required Software</h3>
-      <p>{{ vm.product.additionalSoftware }}</p>
+      <h3>Required Additional Software</h3>
+      <ul>
+        <li ng-repeat="sw in vm.product.additionalSoftware">{{ sw.name }}</li>
+      </ul>
     </div>
     <div class="col-sm-2 text-right">
       <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
     </div>
   </div>
   <div class="product-productAccordion">
-    <ai-certs certs="vm.product.certificationResults" cqms="vm.product.cqmResults" count-certs="{{ vm.product.countCerts }}" count-cqms="{{ vm.product.countCqms }}"></ai-certs>
+    <ai-certs certs="vm.product.certificationResults"
+              cqms="vm.product.cqmResults"
+              count-certs="{{ vm.product.countCerts }}"
+              count-cqms="{{ vm.product.countCqms }}"
+              report-file-location="{{ vm.product.reportFileLocation }}"
+              applicable-cqm-criteria="vm.product.applicableCqmCriteria">
+    </ai-certs>
   </div>
 </div>
