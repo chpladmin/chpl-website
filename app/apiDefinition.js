@@ -572,12 +572,25 @@ apis.endpoints = [
         name: 'Update Certified Product',
         description: 'Update a certified product with the passed in data',
         note: 'This is the big one. Will want to pass in a certified product in same format as what is returned from the "/get_product?id=SOMETHING" existing call, and will want that certified product to be updated accordingly. Probably should not change Vendor/Product/Version relationships, but anything(?) else is fair game. Also, would be happy to split this into two calls: one for basic certified product info (classification, practice type, certifying acb, etc.), second for certification & cqm updates. Discussion warranted?',
-        request: '/update_certified_product',
+        request: '/certified_product/update',
         id: 'update_certified_product',
         requestType: 'POST',
-        jsonParameter: {cpId: 'long', other: 'All of the other parts of the certified product'},
+        jsonParameter: {
+            'id': 'long',
+            'testingLabId': 'long',
+            'certificationBodyId': 'long',
+            'practiceTypeId': 'long',
+            'productClassificationTypeId': 'long',
+            'certificationStatusId': 'long',
+            'chplProductNumber': 'string',
+            'reportFileLocation': 'string',
+            'qualityManagementSystemAtt': 'string',
+            'acbCertificationId': 'string',
+            'otherAcb': 'string',
+            'isChplVisible': 'boolean'
+        },
         security: 'Admin',
-        response: apis.entities.success,
+        response: apis.entities.certifiedProduct,
         status: 'Planned'
     },{
         name: 'List Certified Products being uploaded',

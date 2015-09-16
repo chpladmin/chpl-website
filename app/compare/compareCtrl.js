@@ -29,7 +29,7 @@
             };
 
             self.updateProductList = function (product) {
-                self.productList.push({id: product.id, certDate: product.certificationDate});
+                self.productList.push({id: product.id, chplProductNumber: product.chplProductNumber, certDate: product.certificationDate});
             };
 
             self.updateCerts = function (product) {
@@ -38,7 +38,7 @@
                     cert = product.certificationResults[i];
                     if (self.allCerts[cert.number] === undefined)
                         self.allCerts[cert.number] = {number: cert.number, title: cert.title, values: []};
-                    self.allCerts[cert.number].values.push({productId: product.id, success: cert.success, certDate: product.certificationDate});
+                    self.allCerts[cert.number].values.push({productId: product.id, success: cert.success, chplProductNumber: product.chplProductNumber, certDate: product.certificationDate});
                 }
             };
 
@@ -48,7 +48,7 @@
                     cqm = product.cqmResults[i];
                     if (self.allCqms[cqm.number] === undefined)
                         self.allCqms[cqm.number] = {number: cqm.number, title: cqm.title, values: []};
-                    self.allCqms[cqm.number].values.push({productId: product.id, success: cqm.success, allowed: true, version: cqm.version, certDate: product.certificationDate});
+                    self.allCqms[cqm.number].values.push({productId: product.id, success: cqm.success, allowed: true, version: cqm.version, chplProductNumber: product.chplProductNumber, certDate: product.certificationDate});
                 }
             }
 
@@ -64,7 +64,7 @@
                             }
                         }
                         if (needToAddBlank) {
-                            self.allCqms[cqm].values.push({productId: product.id, allowed: false, certDate: product.certDate});
+                            self.allCqms[cqm].values.push({productId: product.id, allowed: false, chplProductNumber: product.chplProductNumber, certDate: product.certDate});
                         }
                     }
                 }

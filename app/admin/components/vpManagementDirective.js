@@ -76,9 +76,15 @@
             };
             self.selectCP = function () {
                 if (self.cpSelect) {
+                    self.activeCP = {};
+                    self.activeCP.classificationType = {};
+                    self.activeCP.certifyingBody = {};
+                    self.activeCP.practiceType = {};
                     commonService.getProduct(self.cpSelect[0])
                         .then(function (cp) {
                             self.activeCP = cp;
+                            if (self.activeCP.visibleOnChpl === undefined)
+                                self.activeCP.visibleOnChpl = true;
                             self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
                         });
                 }
@@ -92,7 +98,7 @@
                 .then(function (practices) { self.practices = practices; });
             commonService.getCertBodies()
                 .then(function (bodies) { self.bodies = bodies; });
-            self.statuses = [{id: '1', value: 'Active'},{id: '2', value: 'Retired'}];
+            self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'}];
 
             self.uploadFile = function () {
                 // Do something smart here
@@ -163,6 +169,12 @@
                 self.editVersion = false;
             };
 
+            self.cancelCP = function () {
+                self.activeCP = '';
+                self.cpMessage = null;
+                self.editCP = false;
+            };
+
             self.mergeAddressRequired = function () {
                 return self.addressCheck(self.mergeVendor);
             }
@@ -206,7 +218,7 @@
                                     //todo: re-select active vendor in vendorSelect
                                     commonService.getProductsByVendor(newVendor.vendorId)
                                         .then(function (products) {
-                                            self.products = products;
+                                            self.products = products.products;
                                         });
                                 });
                         } else {
@@ -257,12 +269,11 @@
                 for (var i = 0; i < self.activeVersion.length; i++) {
                     self.updateVersion.versionIds.push(self.activeVersion[i].versionId);
                 }
+                self.updateVersion.newProductId = self.activeProduct[0].productId;
                 if (self.activeVersion.length === 1) {
                     self.updateVersion.version = self.activeVersion[0];
-                    self.updateVersion.newProductId = self.activeVersion[0].prodcutId;
                 } else {
                     self.updateVersion.version = self.mergeVersion;
-                    self.updateVersion.newProductId = self.activeVersion[0].productId;
                 }
 
                 adminService.updateVersion(self.updateVersion)
@@ -286,6 +297,38 @@
                         }
                     });
             };
+
+            self.saveCP = function () {
+                self.updateCP = {};
+
+                self.updateCP.id = self.activeCP.id;
+                self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
+                self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
+                self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
+                self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
+                self.updateCP.chplProductNumber = self.activeCP.chplProductNumber;
+                self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
+                self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
+                self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
+                self.updateCP.otherAcb = self.activeCP.otherAcb;;
+                self.updateCP.testingLabId = self.activeCP.testingLabId;
+                self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
+
+                self.editCP = false;
+                $log.debug(self.updateCP);
+
+                adminService.updateCP(self.updateCP)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                        self.editCP = false;
+                            self.activeCP = response;
+                            self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
+                        } else {
+                            self.cpMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+            };
+
         }]);
 
     angular.module('app.admin')
