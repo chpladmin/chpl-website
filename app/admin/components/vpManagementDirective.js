@@ -98,7 +98,8 @@
                 .then(function (practices) { self.practices = practices; });
             commonService.getCertBodies()
                 .then(function (bodies) { self.bodies = bodies; });
-            self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'}];
+            self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'},
+                             {id: '3', name: 'Withdrawn'},{id: '4', name: 'Decertified'}];
 
             self.uploadFile = function () {
                 // Do something smart here

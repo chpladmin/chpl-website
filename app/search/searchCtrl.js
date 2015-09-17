@@ -28,10 +28,10 @@
             }
 
             self.setupLookahead = function () {
-                if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.all.length > 0) {
-                    $log.info('Restoring lookahead from localstorage');
-                    $scope.lookaheadSource = $localStorage.lookaheadSource;
-                } else {
+//                if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.all.length > 0) {
+//                    $log.info('Restoring lookahead from localstorage');
+//                    $scope.lookaheadSource = $localStorage.lookaheadSource;
+//                } else {
                     commonService.getVendors()
                         .then(function (vendors) {
                             for (var i = 0; i < vendors.vendors.length; i++) {
@@ -48,7 +48,7 @@
 //                            }
 //                            $localStorage.lookaheadSource = $scope.lookaheadSource;
                         });
-                }
+//                }
             };
             self.setupLookahead();
 

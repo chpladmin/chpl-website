@@ -105,7 +105,7 @@
       </div>
     </div> <!-- end single vendor -->
 
-    <div class="col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length > 1">
+    <div class="col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length !== 1">
       <h3>Vendor merge</h3>
       <div class="row">
         <div class="col-md-6">
@@ -184,7 +184,7 @@
 
     <div class="col-md-3 col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
       <h3>Product</h3>
-      <div ng-if="vm.activeProduct === '' || vm.activeProduct.length > 1">
+      <div ng-if="vm.activeProduct === '' || vm.activeProduct.length !== 1">
         <label for="productSelect" class="control-label">Select a product</label>
         <select ng-model="vm.productSelect" multiple="true"
                 id="productSelect" class="input-sm form-control"
