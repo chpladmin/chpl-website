@@ -3,7 +3,7 @@
 
     describe('app.admin.reports.directive', function () {
 
-        var element, scope, $log, commonService, authService;
+        var element, scope, $log, commonService, authService, ctrl;
 
         beforeEach(function () {
             var mockCommonService = {};
@@ -21,6 +21,15 @@
                 mockCommonService.productActivity = ['Product 1', 'Product 2'];
                 mockCommonService.certBodyActivity  = ['CB 1', 'CB 2'];
                 mockCommonService.cpActivity = [{vendor: 'Vend', product: 'Prod', version: 'version', edition: '2014', uploadDate: '2015-07-02'}];
+
+                mockCommonService.simpleApiCall = function () {
+                    var defer = $q.defer();
+                    defer.resolve({
+                        cols:[{type:'string'}],
+                        rows:[]
+                    });
+                    return defer.promise;
+                };
 
                 mockCommonService.getCertifiedProductActivity = function () {
                     var defer = $q.defer();
@@ -74,16 +83,27 @@
             }
         });
 
-        it('should have loaded activity', function () {
-            expect(scope.searchedVendors.length).toBeGreaterThan(0);
-            expect(scope.searchedProducts.length).toBeGreaterThan(0);
-            expect(scope.searchedACBs.length).toBeGreaterThan(0);
-            expect(scope.searchedCertifiedProducts.length).toBeGreaterThan(0);
-        });
+        describe('controller', function () {
 
-        it('should know if the logged in user is ACB and/or CHPL admin', function () {
-            expect(scope.isAcbAdmin).toBeTruthy();
-            expect(scope.isChplAdmin).toBeTruthy();
+            beforeEach(inject(function ($controller) {
+                ctrl = $controller('ReportController', {
+                    $scope: scope,
+                    $element: null
+                });
+                scope.$digest();
+            }));
+
+            it('should have loaded activity', function () {
+                expect(ctrl.searchedVendors.length).toBeGreaterThan(0);
+                expect(ctrl.searchedProducts.length).toBeGreaterThan(0);
+                expect(ctrl.searchedACBs.length).toBeGreaterThan(0);
+                expect(ctrl.searchedCertifiedProducts.length).toBeGreaterThan(0);
+            });
+
+            it('should know if the logged in user is ACB and/or CHPL admin', function () {
+                expect(ctrl.isAcbAdmin).toBeTruthy();
+                expect(ctrl.isChplAdmin).toBeTruthy();
+            });
         });
     });
 })();

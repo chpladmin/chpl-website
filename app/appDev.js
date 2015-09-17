@@ -198,9 +198,8 @@
             $httpBackend.whenPOST(/localhost:8080/).passThrough();
             $httpBackend.whenGET(/rest/).passThrough();
             $httpBackend.whenPOST(/rest/).passThrough();
+            $httpBackend.whenGET(/openchpl.appspot.com/).passThrough();
             $httpBackend.whenGET(/ainq.com\/list_api_calls/).respond(200, apis.endpoints); // fake search results
-            $httpBackend.whenGET(/ainq.com\/search/).respond(200, getAllProducts()); // fake search results
-            $httpBackend.whenGET(/ainq.com\/get_product/).respond(200, makeProduct()); // fake product
             $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_cqms/).respond(200, listCQMs()); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_editions/).respond(200, [{value: '2011'}, {value: '2014'}]); // fake all certs
@@ -208,7 +207,6 @@
             $httpBackend.whenGET(/ainq.com\/list_practices/).respond(200, [{name: 'Inpatient', id:'2'}, {name: 'Ambulatory', id:'1'}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_products/).respond(200, listProducts()); // list all products
             $httpBackend.whenGET(/ainq.com\/list_vendors/).respond(200, listVendors()); // list all vendors
-            $httpBackend.whenGET(/ainq.com\/vendor\/list_vendors/).respond(200, listVendors()); // list all vendors
             $httpBackend.whenGET(/ainq.com\/list_certBodies/).respond(200, certBodies); // list cerification bodies
             $httpBackend.whenGET(/ainq.com\/list_filterCerts/).respond(200, listFilterCerts()); // list cerification bodies
             $httpBackend.whenGET(/ainq.com\/list_certifiedProductActivity/).respond(200, listCertifiedProductActivity()); // list certifiedProduct activities
