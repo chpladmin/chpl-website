@@ -31,12 +31,9 @@
                     });
             };
 
-            self.search = function (query, pageNum, pageSize) {
-                return self.simpleApiCall('/simple_search?searchTerm=' + query + '&pageNum=' + pageNum + '&pageSize=' + pageSize, API);
-            };
-
-            self.searchAdvanced = function (queryObj, pageNum, pageSize) {
-                return self.postApiCall('/advanced_search?pageNum=' + pageNum + '&pageSize=' + pageSize, API, queryObj);
+            self.search = function (queryObj, pageNum, pageSize) {
+                return self.postApiCall('/advanced_search', API, queryObj);
+//                return self.postApiCall('/search', API, queryObj);
             };
 
             self.getProduct = function (productId) {

@@ -6,120 +6,128 @@
     </div>
   </div> <!-- search introduction 'header' -->
 
-  <div class="row" ng-show="query.simple">
-    <div class="col-xs-12">
-      <form class="form-horizontal" role="search">
+  <form class="form-horizontal" role="search">
+    <div class="row">
+      <div class="col-xs-12">
+        <pre>{{ query | json }}</pre>
         <div class="form-group form-group-lg">
           <div class="col-sm-1">
             <label for="searchField" class="control-label">Search</label>
           </div>
-          <div class="col-sm-9">
+          <div class="col-sm-7">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-search"></i></div>
-              <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="query.searchTerm"
-                     typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
+              <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="query.searchTermObject"
+                     typeahead="element.value as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
                      typeahead-input-formatter="$model.value" />
             </div>
           </div>
           <div class="col-sm-2">
             <button id="searchButton" type="button" class="btn btn-default btn-lg form-control" ng-click="search()">Search</button>
-            <br /><a href="" ng-click="query.simple = !query.simple">Advanced search</a>
+          </div>
+          <div class="col-sm-2">
+            <a href="" ng-if="query.simple" ng-click="query.simple = !query.simple">Advanced search</a>
+            <a href="" ng-if="!query.simple" ng-click="query.simple = !query.simple">Simple search</a>
             <span ng-show="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
           </div>
         </div>
-      </form>
-    </div>
-  </div> <!-- simple search row -->
+      </div>
+    </div> <!-- simple search row -->
 
-  <div class="row" ng-show="!query.simple">
-    <div class="col-xs-12">
-      <form class="form-horizontal" role="search">
-        <div class="form-group form-group-sm">
-          <div class="col-sm-1">
-            <label for="vendorField" class="control-label">Vendor</label>
-          </div>
-          <div class="col-sm-4">
-            <div class="input-group">
-              <div class="input-group-addon"><i class="fa fa-search"></i></div>
-              <input type="text" class="form-control" id="vendorField" placeholder="Search" ng-model="query.vendor"
-                     typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.vendors | filter:{value:$viewValue} | limitTo:16"
-                     typeahead-input-formatter="$model.value" />
+    <div class="row" ng-show="!query.simple">
+      <div class="col-xs-12">
+          <div class="form-group form-group-sm">
+            <div class="col-sm-1">
+              <label for="vendorField" class="control-label">Vendor</label>
             </div>
-          </div>
-          <div class="col-sm-1">
-            <label for="productField" class="control-label">Product</label>
-          </div>
-          <div class="col-sm-4">
-            <div class="input-group">
-              <div class="input-group-addon"><i class="fa fa-search"></i></div>
-              <input type="text" class="form-control" id="productField" placeholder="Product" ng-model="query.product" />
+            <div class="col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control" id="vendorField" placeholder="Vendor" ng-model="query.vendorObject"
+                       typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.vendors | filter:{value:$viewValue} | limitTo:16"
+                       typeahead-input-formatter="$model.value" />
+              </div>
             </div>
-          </div>
-          <div class="col-sm-2">
-            <button type="button" class="btn btn-default form-control" ng-click="search()">Search</button>
-            <br /><a href="" ng-click="query.simple = !query.simple">Simple search</a>
-            <span ng-show="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
-          </div>
-        </div> <!-- first row of advanced search -->
-
-        <div class="form-group form-group-sm">
-          <div class="col-sm-1">
-            <label for="versionField" class="control-label">Version</label>
-          </div>
-          <div class="col-sm-3">
-            <div class="input-group">
-              <div class="input-group-addon"><i class="fa fa-search"></i></div>
-              <input type="text" class="form-control" id="versionField" placeholder="Version" ng-model="query.version" />
+            <div class="col-sm-1">
+              <label for="productField" class="control-label">Product</label>
             </div>
-          </div>
-          <div class="col-sm-1">
-            <label for="certField" class="control-label">Certification Criteria</label>
-          </div>
-          <div class="col-sm-3">
-            <select id="certField" ng-model="query.certificationCriteria" multiple class="input-sm form-control">
-              <option ng-repeat="cert in certs" value="{{ cert.number }}">{{ cert.number + ': ' + cert.title }}</option>
-            </select>
-          </div>
-          <div class="col-sm-1">
-            <label for="cqmField" class="control-label">Clinical Quality Measurements</label>
-          </div>
-          <div class="col-sm-3">
-            <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control">
-              <option ng-repeat="cqm in cqms.certs" value="{{ cqm.number }}">{{ cqm.number + ': ' + cqm.title }}</option>
-            </select>
-          </div>
-        </div> <!-- second row of advanced -->
+            <div class="col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control" id="productField" placeholder="Product" ng-model="query.productObject" />
+              </div>
+            </div>
+            <div class="col-sm-1">
+              <label for="visibleField" class="control-label">Visible on CHPL</label>
+            </div>
+            <div class="col-sm-1">
+              <select id="visibleField" ng-model="query.visibleOnCHPL" class="input-sm form-control">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+          </div> <!-- first row of advanced search -->
 
-        <div class="form-group form-group-sm">
-          <div class="col-sm-1">
-            <label for="editionField" class="control-label">Certification Edition</label>
-          </div>
-          <div class="col-sm-3">
-            <select id="editionField" ng-model="query.certificationEdition" class="input-sm form-control">
-              <option ng-repeat="edition in editions" value="{{ edition.value }}">{{ edition.value }}</option>
-            </select>
-          </div>
-          <div class="col-sm-1">
-            <label for="classificationField" class="control-label">Product Classification</label>
-          </div>
-          <div class="col-sm-3">
-            <select id="classificationField" ng-model="query.productClassification" class="input-sm form-control">
-              <option ng-repeat="classification in classifications" value="{{ classification.name }}">{{ classification.name }}</option>
-            </select>
-          </div>
-          <div class="col-sm-1">
-            <label for="practiceField" class="control-label">Practice Type</label>
-          </div>
-          <div class="col-sm-3">
-            <select id="practiceField" ng-model="query.practiceType" class="input-sm form-control">
-              <option ng-repeat="practice in practices" value="{{ practice.name }}">{{ practice.name }}</option>
-            </select>
-          </div>
-        </div> <!-- third row of advanced search -->
+          <div class="form-group form-group-sm">
+            <div class="col-sm-1">
+              <label for="versionField" class="control-label">Version</label>
+            </div>
+            <div class="col-sm-3">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control" id="versionField" placeholder="Version" ng-model="query.version" />
+              </div>
+            </div>
+            <div class="col-sm-1">
+              <label for="certField" class="control-label">Certification Criteria</label>
+            </div>
+            <div class="col-sm-3">
+              <select id="certField" ng-model="query.certificationCriteria" multiple class="input-sm form-control">
+                <option ng-repeat="cert in certs" value="{{ cert.number }}">{{ cert.number + ': ' + cert.title }}</option>
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <label for="cqmField" class="control-label">Clinical Quality Measurements</label>
+            </div>
+            <div class="col-sm-3">
+              <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control">
+                <option ng-repeat="cqm in cqms.certs" value="{{ cqm.number }}">{{ cqm.number + ': ' + cqm.title }}</option>
+              </select>
+            </div>
+          </div> <!-- second row of advanced -->
 
-      </form>
-    </div>
-  </div> <!-- advanced search row -->
+          <div class="form-group form-group-sm">
+            <div class="col-sm-1">
+              <label for="editionField" class="control-label">Certification Edition</label>
+            </div>
+            <div class="col-sm-3">
+              <select id="editionField" ng-model="query.certificationEdition" class="input-sm form-control">
+                <option ng-repeat="edition in editions" value="{{ edition.value }}">{{ edition.value }}</option>
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <label for="classificationField" class="control-label">Product Classification</label>
+            </div>
+            <div class="col-sm-3">
+              <select id="classificationField" ng-model="query.productClassification" class="input-sm form-control">
+                <option ng-repeat="classification in classifications" value="{{ classification.name }}">{{ classification.name }}</option>
+              </select>
+            </div>
+            <div class="col-sm-1">
+              <label for="practiceField" class="control-label">Practice Type</label>
+            </div>
+            <div class="col-sm-3">
+              <select id="practiceField" ng-model="query.practiceType" class="input-sm form-control">
+                <option ng-repeat="practice in practices" value="{{ practice.name }}">{{ practice.name }}</option>
+              </select>
+            </div>
+          </div> <!-- third row of advanced search -->
+
+        </form>
+      </div>
+    </div> <!-- advanced search row -->
+  </form>
 
   <div id="resultsSection" ng-show="hasSearched()">
     <div class="row">
@@ -243,7 +251,7 @@
           <tfoot>
             <tr>
 	          <td colspan="6" class="text-center">
-                <pagination total-items="resultCount" ng-model="query.currentPage" items-per-page="query.resultsPerPage" ng-change="pageChanged()"
+                <pagination total-items="resultCount" ng-model="visiblePage" items-per-page="query.pageSize" ng-change="pageChanged()"
                             max-size="10" class="pagination-sm" boundary-links="true"></pagination>
 	          </td>
             </tr>

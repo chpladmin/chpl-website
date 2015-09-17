@@ -149,13 +149,13 @@
 
         it('should toggle cert filters on and off', function () {
             var result = Object.create(null);
-            expect(scope.certFilters).toEqual(result);
+            expect(ctrl.certFilters).toEqual(result);
             scope.toggleCertFilter('category', 'title', 'number');
             result['category:title'] = 'number';
-            expect(scope.certFilters).toEqual(result);
+            expect(ctrl.certFilters).toEqual(result);
             delete result['category:title'];
             scope.toggleCertFilter('category', 'title', 'number');
-            expect(scope.certFilters).toEqual(result);
+            expect(ctrl.certFilters).toEqual(result);
         });
 
         it('should perform a simple string search', function () {

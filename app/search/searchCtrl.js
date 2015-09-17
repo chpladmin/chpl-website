@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$rootScope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $rootScope, $log, $location, $localStorage, commonService) {
+        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $log, $location, $localStorage, commonService) {
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
@@ -13,8 +13,9 @@
             $scope.query = {simple: true,
                             orderBy: 'vendor',
                             sortDescending: false,
-                            currentPage: 1,
-                            resultsPerPage: 10};
+                            pageNumber: 0,
+                            pageSize: 10,
+                            visibleOnCHPL: 'yes'};
 
             if ($localStorage.searchResults) {
                 $scope.searchResults = $localStorage.searchResults.results;
@@ -71,7 +72,6 @@
             self.setupFilters();
 
             self.certFilters = Object.create(null);
-            $rootScope.certFilters = self.certFilters;
 
             self.toggleCertFilter = function (category, title, number) {
                 var key = category + ":" + title;
@@ -101,49 +101,37 @@
             self.search = function () {
                 self.hasDoneASearch = true;
 
-                if ($scope.query.simple) {
-                    var query;
-                    if ($scope.query.searchTerm !== undefined) {
-                        if (typeof($scope.query.searchTerm) === 'object') {
-                            query = $scope.query.searchTerm.value;
-                        } else {
-                            query = $scope.query.searchTerm;
-                            $scope.query.searchTerm = {value: query};
-                        }
-                        if (query.length > 0)
-                            query = encodeURIComponent(query);
+                if ($scope.query.searchTermObject !== undefined) {
+                    if (typeof($scope.query.searchTermObject) === 'object') {
+                        $scope.query.searchTerm = $scope.query.searchTermObject.value;
                     } else {
-                        query = "";
+                        $scope.query.searchTerm = $scope.query.searchTermObject;
                     }
-
-                    query = query + '&orderBy=' + $scope.query.orderBy;
-                    query = query + '&sortDescending=' + $scope.query.sortDescending;
-
-                    commonService.search(query,$scope.query.currentPage - 1,$scope.query.resultsPerPage)
-                        .then(function (data) {
-                            $localStorage.searchResults = data;
-                            $scope.searchResults = data.results;
-                            $scope.displayedResults = [].concat($scope.searchResults);
-                            $scope.resultCount = data.recordCount;
-                        }, function (error) {
-                            $log.error(error);
-                    });
-                } else {
-                    if ($scope.query.vendor !== undefined) {
-                        if (typeof($scope.query.vendor) === 'object') {
-                            $scope.query.vendor = $scope.query.vendor.value;
-                        }
-                    }
-                    commonService.searchAdvanced($scope.query,$scope.query.currentPage - 1,$scope.query.resultsPerPage)
-                        .then(function (data) {
-                            $localStorage.searchResults = data;
-                            $scope.searchResults = data.results;
-                            $scope.displayedResults = [].concat($scope.searchResults);
-                            $scope.resultCount = data.recordCount;
-                        }, function (error) {
-                            $log.error(error);
-                        });
                 }
+                if ($scope.query.vendorObject !== undefined) {
+                    if (typeof($scope.query.vendorObject) === 'object') {
+                        $scope.query.vendor = $scope.query.vendorObject.value;
+                    } else {
+                        $scope.query.vendor = $scope.query.vendorObject;
+                    }
+                }
+                if ($scope.query.productObject !== undefined) {
+                    if (typeof($scope.query.productObject) === 'object') {
+                        $scope.query.product = $scope.query.productObject.value;
+                    } else {
+                        $scope.query.product = $scope.query.productObject;
+                    }
+                }
+                commonService.search($scope.query)
+                    .then(function (data) {
+                        $localStorage.searchResults = data;
+                        $scope.searchResults = data.results;
+                        $scope.displayedResults = [].concat($scope.searchResults);
+                        $scope.resultCount = data.recordCount;
+                    }, function (error) {
+                        $log.error(error);
+                    });
+
                 $localStorage.query = $scope.query;
             };
             $scope.search = self.search;
@@ -160,7 +148,6 @@
                 }
                 if (certs.length > 0) $scope.query.certificationCriteria = certs;
                 if (cqms.length > 0) $scope.query.cqms = cqms;
-                $scope.query.simple = false;
                 self.search();
             };
 
@@ -184,8 +171,9 @@
                 $scope.query = {simple: true,
                                 orderBy: 'vendor',
                                 sortDescending: false,
-                                currentPage: 1,
-                                resultsPerPage: 10};
+                                pageNumber: 0,
+                                pageSize: 10,
+                                visibleOnCHPL: 'yes'};
             };
 
             $scope.clearFilter = function () {
@@ -225,6 +213,7 @@
             }
 
             $scope.pageChanged = function () {
+                $scope.query.pageNumber = $scope.visiblePage - 1;
                 self.search();
             };
         }]);
