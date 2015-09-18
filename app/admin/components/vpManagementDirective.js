@@ -21,7 +21,8 @@
 
             self.uploader = new FileUploader({
                 url: API + '/certified_product/upload',
-                removeAfterUpload: true
+                removeAfterUpload: true,
+                headers: { Authorization: 'Bearer ' + authService.getToken() }
             });
 
             commonService.getVendors()
