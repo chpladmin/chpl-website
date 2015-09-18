@@ -572,7 +572,7 @@ apis.endpoints = [
         name: 'Update Certified Product',
         description: 'Update a certified product with the passed in data',
         note: 'This is the big one. Will want to pass in a certified product in same format as what is returned from the "/get_product?id=SOMETHING" existing call, and will want that certified product to be updated accordingly. Probably should not change Vendor/Product/Version relationships, but anything(?) else is fair game. Also, would be happy to split this into two calls: one for basic certified product info (classification, practice type, certifying acb, etc.), second for certification & cqm updates. Discussion warranted?',
-        request: '/update_certified_product',
+        request: '/certified_product/update',
         id: 'update_certified_product',
         requestType: 'POST',
         jsonParameter: {

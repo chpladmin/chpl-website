@@ -31,43 +31,29 @@
                     });
             };
 
-            self.search = function (query, pageNum, pageSize) {
-                return $http.get(API + '/simple_search?searchTerm=' + query + '&pageNum=' + pageNum + '&pageSize=' + pageSize)
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
-            };
-
-            self.searchAdvanced = function (queryObj, pageNum, pageSize) {
-                return $http.post(API + '/advanced_search?pageNum=' + pageNum + '&pageSize=' + pageSize, queryObj)
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+            self.search = function (queryObj, pageNum, pageSize) {
+                return self.postApiCall('/advanced_search', API, queryObj);
+//                return self.postApiCall('/search', API, queryObj);
             };
 
             self.getProduct = function (productId) {
-                return $http.get(API + '/certified_product/get_certified_product?certifiedProductId=' + productId)
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+                return self.simpleApiCall('/certified_product/get_certified_product?certifiedProductId=' + productId, API);
+            };
+
+            self.getVendors = function () {
+                return self.simpleApiCall('/vendor/list_vendors', API);
+            };
+
+            self.getProductsByVendor = function (vendorId) {
+                return self.simpleApiCall('/product/list_products_by_vendor?vendorId=' + vendorId, API);
+            };
+
+            self.getVersionsByProduct = function (productId) {
+                return self.simpleApiCall('/product/version/list_versions_by_product?productId=' + productId, API);
+            };
+
+            self.getProductsByVersion = function (versionId) {
+                return self.simpleApiCall('/certified_product/list_certified_products_by_version?versionId=' + versionId, API);
             };
 
             self.getCerts = function () {
@@ -90,24 +76,8 @@
                 return self.simpleApiCall('/list_practices', devAPI);
             };
 
-            self.getVendors = function () {
-                return self.simpleApiCall('/vendor/list_vendors', API);
-            };
-
             self.getProducts = function () {
                 return self.simpleApiCall('/list_products', devAPI);
-            };
-
-            self.getProductsByVendor = function (vendorId) {
-                return self.simpleApiCall('/product/list_products_by_vendor?vendorId=' + vendorId, API);
-            };
-
-            self.getVersionsByProduct = function (productId) {
-                return self.simpleApiCall('/product/version/list_versions_by_product?productId=' + productId, API);
-            };
-
-            self.getProductsByVersion = function (versionId) {
-                return self.simpleApiCall('/certified_product/list_certified_products_by_version?versionId=' + versionId, API);
             };
 
             self.getCertBodies = function () {

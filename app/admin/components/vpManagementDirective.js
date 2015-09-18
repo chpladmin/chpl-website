@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('VpManagementController', ['commonService', 'adminService', 'authService', '$log', function (commonService, adminService, authService, $log) {
+        .controller('VpManagementController', ['commonService', 'adminService', 'authService', '$log', 'FileUploader', 'API', function (commonService, adminService, authService, $log, FileUploader, API) {
             var self = this;
             self.activeVendor = '';
             self.activeProduct = '';
@@ -18,6 +18,11 @@
                     self.uploadingCps = [].concat(cps);
                     self.uploadingCps = []; //dev erasing
                 });
+
+            self.uploader = new FileUploader({
+                url: API + '/certified_product/upload',
+                removeAfterUpload: true
+            });
 
             commonService.getVendors()
                 .then(function (vendors) {
@@ -59,19 +64,32 @@
             };
             self.selectVersion = function () {
                 if (self.versionSelect) {
-                    self.activeVersion = self.versionSelect;
-
-                    commonService.getProductsByVersion(self.activeVersion.versionId)
-                        .then(function (cps) {
-                            self.cps = cps;
-                        });
+                    if (self.versionSelect.length === 1) {
+                        self.activeVersion = [self.versionSelect[0]];
+                        self.activeVersion[0].productId = self.activeProduct[0].productId;
+                        commonService.getProductsByVersion(self.activeVersion[0].versionId)
+                            .then(function (cps) {
+                                self.cps = cps;
+                            });
+                    } else { //merging
+                        self.activeVersion = [].concat(self.versionSelect);
+                        self.mergeVersion = angular.copy(self.activeVersion[0]);
+                        delete self.mergeVersion.versionId;
+                        delete self.mergeVersion.lastModifiedDate;
+                    }
                 }
             };
             self.selectCP = function () {
                 if (self.cpSelect) {
+                    self.activeCP = {};
+                    self.activeCP.classificationType = {};
+                    self.activeCP.certifyingBody = {};
+                    self.activeCP.practiceType = {};
                     commonService.getProduct(self.cpSelect[0])
                         .then(function (cp) {
                             self.activeCP = cp;
+                            if (self.activeCP.visibleOnChpl === undefined)
+                                self.activeCP.visibleOnChpl = true;
                             self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
                         });
                 }
@@ -85,17 +103,9 @@
                 .then(function (practices) { self.practices = practices; });
             commonService.getCertBodies()
                 .then(function (bodies) { self.bodies = bodies; });
-            self.statuses = [{id: '1', value: 'Active'},{id: '2', value: 'Retired'}];
+            self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'},
+                             {id: '3', name: 'Withdrawn'},{id: '4', name: 'Decertified'}];
 
-            self.uploadFile = function () {
-                // Do something smart here
-                self.uploadingCps = [{id: 1, vendor: {name: 'Vend', lastModifiedDate: '2013-03-02'}, product: {name: 'Prod', lastModifiedDate: '2014-05-02'},
-                                      version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'},
-                                     {id: 2, vendor: {name: 'Denv', lastModifiedDate: '2013-02-02'}, product: {name: 'Dorp', lastModifiedDate: '2013-05-02'},
-                                      version: {name: '332.1'}, edition: '2011', uploadDate: '2012-07-02'},
-                                     {id: 3, vendor: {name: 'LastCo', lastModifiedDate: '2015-03-02'}, product: {name: 'Healthy', lastModifiedDate: '2014-10-02'},
-                                      version: {name: '12Ac'}, edition: '2014', uploadDate: '2015-03-22'}];
-            };
 
             self.inspectCp = function (cpId) {
                 var cp;
@@ -156,6 +166,12 @@
                 self.editVersion = false;
             };
 
+            self.cancelCP = function () {
+                self.activeCP = '';
+                self.cpMessage = null;
+                self.editCP = false;
+            };
+
             self.mergeAddressRequired = function () {
                 return self.addressCheck(self.mergeVendor);
             }
@@ -199,7 +215,7 @@
                                     //todo: re-select active vendor in vendorSelect
                                     commonService.getProductsByVendor(newVendor.vendorId)
                                         .then(function (products) {
-                                            self.products = products;
+                                            self.products = products.products;
                                         });
                                 });
                         } else {
@@ -245,36 +261,75 @@
 
             };
             self.saveVersion = function () {
-                //                self.updateVersion = {productIds: []};
+                self.updateVersion = {versionIds: []};
 
-                adminService.updateVersion(self.activeVersion)
+                for (var i = 0; i < self.activeVersion.length; i++) {
+                    self.updateVersion.versionIds.push(self.activeVersion[i].versionId);
+                }
+                self.updateVersion.newProductId = self.activeProduct[0].productId;
+                if (self.activeVersion.length === 1) {
+                    self.updateVersion.version = self.activeVersion[0];
+                } else {
+                    self.updateVersion.version = self.mergeVersion;
+                }
+
+                adminService.updateVersion(self.updateVersion)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             var newVersion = response;
                             self.versionMessage = null;
                             self.editVersion = false;
-                            // call sevice
-                            /*
-                              commonService.getProductsByVendor(self.activeVendor[0].vendorId)
-                              .then(function (products) {
-                              self.products = products.products;
-                              self.activeProduct = [newProduct];
-                              //todo: re-select active vendor in vendorSelect
-                              commonService.getVersionsByProduct(newProduct.productId)
-                              .then(function (versions) {
-                              self.versions = versions;
-                              });
-                              });
-                            */
+                            commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                                .then(function (versions) {
+                                    self.versions = versions.versions;
+                                    self.activeVersion = [newVersion];
+                                    //todo: re-select active version in versionSelect
+                                    commonService.getProductsByVersion(newVersion.versionId)
+                                        .then(function (cps) {
+                                            self.cps = cps;
+                                        });
+                                });
                         } else {
                             self.versionMessage = 'An error occurred. Please check your entry and try again.';
                         }
                     });
             };
+
+            self.saveCP = function () {
+                self.updateCP = {};
+
+                self.updateCP.id = self.activeCP.id;
+                self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
+                self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
+                self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
+                self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
+                self.updateCP.chplProductNumber = self.activeCP.chplProductNumber;
+                self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
+                self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
+                self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
+                self.updateCP.otherAcb = self.activeCP.otherAcb;;
+                self.updateCP.testingLabId = self.activeCP.testingLabId;
+                self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
+
+                self.editCP = false;
+                $log.debug(self.updateCP);
+
+                adminService.updateCP(self.updateCP)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                        self.editCP = false;
+                            self.activeCP = response;
+                            self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
+                        } else {
+                            self.cpMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+            };
+
         }]);
 
     angular.module('app.admin')
-        .directive('aiVpManagement', ['commonService', '$log', function (commonService, $log) {
+        .directive('aiVpManagement', function () {
             return {
                 restrict: 'E',
                 replace: true,
@@ -283,5 +338,5 @@
                 controllerAs: 'vm',
                 controller: 'VpManagementController'
             };
-        }]);
+        });
 })();

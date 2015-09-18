@@ -17,6 +17,10 @@
                 return commonService.postApiCall('/product/version/update_version', API, versionObject);
             };
 
+            self.updateCP = function (cpObject) {
+                return commonService.postApiCall('/certified_product/update', API, cpObject);
+            };
+
             self.getAcbs = function () {
                 return commonService.simpleApiCall('/acb/list_acbs', API);
             };
