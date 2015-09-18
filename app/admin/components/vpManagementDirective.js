@@ -19,11 +19,13 @@
                     self.uploadingCps = []; //dev erasing
                 });
 
-            self.uploader = new FileUploader({
-                url: API + '/certified_product/upload',
-                removeAfterUpload: true,
-                headers: { Authorization: 'Bearer ' + authService.getToken() }
-            });
+            if (self.isAcbAdmin) {
+                self.uploader = new FileUploader({
+                    url: API + '/certified_product/upload',
+                    removeAfterUpload: true,
+                    headers: { Authorization: 'Bearer ' + authService.getToken() }
+                });
+            }
 
             commonService.getVendors()
                 .then(function (vendors) {
