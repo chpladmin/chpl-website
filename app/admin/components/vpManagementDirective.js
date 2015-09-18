@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('VpManagementController', ['commonService', 'adminService', 'authService', '$log', function (commonService, adminService, authService, $log) {
+        .controller('VpManagementController', ['commonService', 'adminService', 'authService', '$log', 'FileUploader', 'API', function (commonService, adminService, authService, $log, FileUploader, API) {
             var self = this;
             self.activeVendor = '';
             self.activeProduct = '';
@@ -18,6 +18,11 @@
                     self.uploadingCps = [].concat(cps);
                     self.uploadingCps = []; //dev erasing
                 });
+
+            self.uploader = new FileUploader({
+                url: API + '/certified_product/upload',
+                removeAfterUpload: true
+            });
 
             commonService.getVendors()
                 .then(function (vendors) {
@@ -101,15 +106,6 @@
             self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'},
                              {id: '3', name: 'Withdrawn'},{id: '4', name: 'Decertified'}];
 
-            self.uploadFile = function () {
-                // Do something smart here
-                self.uploadingCps = [{id: 1, vendor: {name: 'Vend', lastModifiedDate: '2013-03-02'}, product: {name: 'Prod', lastModifiedDate: '2014-05-02'},
-                                      version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'},
-                                     {id: 2, vendor: {name: 'Denv', lastModifiedDate: '2013-02-02'}, product: {name: 'Dorp', lastModifiedDate: '2013-05-02'},
-                                      version: {name: '332.1'}, edition: '2011', uploadDate: '2012-07-02'},
-                                     {id: 3, vendor: {name: 'LastCo', lastModifiedDate: '2015-03-02'}, product: {name: 'Healthy', lastModifiedDate: '2014-10-02'},
-                                      version: {name: '12Ac'}, edition: '2014', uploadDate: '2015-03-22'}];
-            };
 
             self.inspectCp = function (cpId) {
                 var cp;
@@ -333,7 +329,7 @@
         }]);
 
     angular.module('app.admin')
-        .directive('aiVpManagement', ['commonService', '$log', function (commonService, $log) {
+        .directive('aiVpManagement', function () {
             return {
                 restrict: 'E',
                 replace: true,
@@ -342,5 +338,5 @@
                 controllerAs: 'vm',
                 controller: 'VpManagementController'
             };
-        }]);
+        });
 })();
