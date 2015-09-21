@@ -14,17 +14,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'uploadDate'">
+          <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate'">
             <td>{{ cp.vendor.name }}</td>
             <td>{{ cp.product.name }}</td>
-            <td>{{ cp.version.name }}</td>
-            <td>{{ cp.edition }}</td>
-            <td>{{ cp.uploadDate | date }}</td>
+            <td>{{ cp.product.version }}</td>
+            <td>{{ cp.certificationEdition.name }}</td>
+            <td>{{ cp.certificationDate | date }}</td>
             <td class="text-center">
               <button ng-if="vm.inspectingCp === ''" class="btn btn-default btn-block" ng-click="vm.inspectCp(cp.id)">Inspect</button>
               <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-default btn-block" ng-click="vm.confirmCp(cp.id)">Confirm</button>
               <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-default btn-block" ng-click="vm.cancelCp(cp.id)">Cancel</button>
-              <span ng-if="vm.inspectingCp !== '' && cp.id !== vm.inspectingCp.id">No action available</span>
+              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-default btn-block" ng-click="vm.rejectCp(cp.id)">Reject</button>
+              <span ng-if="vm.inspectingCp !== '' && cp.id !== vm.inspectingCp.id">Complete or cancel currently open Product</span>
             </td>
           </tr>
         </tbody>
@@ -48,6 +49,16 @@
         <div class="panel panel-default">
           <form name="vendorEditForm" novalidate>
             <div class="panel-heading">
+              <span ng-if="vm.inspectingCp && !vm.activeVendor[0].id">
+                Vendor <strong>"{{ vm.inspectingCp.vendor.name }}"</strong> not found. Would you like to select an existing vendor?<br />
+                <label for="vendorInspectSelect" class="control-label">Select a vendor</label>
+                <select ng-model="vm.vendorSelect"
+                        id="vendorInspectSelect" class="input-sm form-control"
+                        ng-options="v.name for v in vm.vendors | orderBy: 'name'">
+                </select>
+                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVendor()">Select Vendor</button></p>
+                Or create a new one?<br />
+              </span>
               <span ng-if="!vm.editVendor">{{ vm.activeVendor[0].name }}</span>
               <span ng-if="vm.editVendor">
                 <div class="form-group">
@@ -90,6 +101,14 @@
                   <label for="vendorWebsite">Website</label>
                   <input class="input-sm form-control" type="url" ng-model="vm.activeVendor[0].website" id="vendorWebsite"></input>
                 </div>
+              </span>
+              <span ng-if="vm.inspectingCp && vm.activeVendor[0].id">Uploaded vendor address information:<br />
+                {{ vm.inspectingCp.vendorAddress.line1 }}<br />
+                {{ vm.inspectingCp.vendorAddress.line2 }}<br />
+                {{ vm.inspectingCp.vendorAddress.city }}<br />
+                {{ vm.inspectingCp.vendorAddress.region }}<br />
+                {{ vm.inspectingCp.vendorAddress.country }}<br />
+                {{ vm.inspectingCp.website }}<br />
               </span>
               <br />
               Last Modified Date: {{ vm.activeVendor[0].lastModifiedDate | date }}
@@ -214,23 +233,6 @@
           </tr>
         </tbody>
       </table>
-      <div>
-        <div>
-          Queue progress:
-          <div class="progress" style="">
-            <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-          </div>
-        </div>
-        <button type="button" class="btn btn-success btn-s" ng-click="vm.uploader.uploadAll()" ng-disabled="!vm.uploader.getNotUploadedItems().length">
-          <span class="glyphicon glyphicon-upload"></span> Upload all
-        </button>
-        <button type="button" class="btn btn-warning btn-s" ng-click="vm.uploader.cancelAll()" ng-disabled="!vm.uploader.isUploading">
-          <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-        </button>
-        <button type="button" class="btn btn-danger btn-s" ng-click="vm.uploader.clearQueue()" ng-disabled="!vm.uploader.queue.length">
-          <span class="glyphicon glyphicon-trash"></span> Remove all
-        </button>
-      </div>
     </div> <!-- end upload certified products -->
 
     <div class="col-md-3 col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
@@ -247,6 +249,16 @@
         <div class="panel panel-default">
           <form name="productEditForm" novalidate>
             <div class="panel-heading">
+              <span ng-if="vm.inspectingCp && !vm.activeProduct[0].id && vm.activeVendor[0].id">
+                Product <strong>"{{ vm.inspectingCp.product.name }}"</strong> not found. Would you like to select an existing product?<br />
+                <label for="productInspectSelect" class="control-label">Select a product</label>
+                <select ng-model="vm.productSelect"
+                        id="productInspectSelect" class="input-sm form-control"
+                        ng-options="p.name for p in vm.products | orderBy: 'name'">
+                </select>
+                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
+                Or create a new one?<br />
+              </span>
               <span ng-if="!vm.editProduct">{{ vm.activeProduct[0].name }}</span>
               <span ng-if="vm.editProduct">
                 <div class="form-group">
@@ -341,6 +353,16 @@
         <div class="panel panel-default">
           <form name="versionEditForm" novalidate>
             <div class="panel-heading">
+              <span ng-if="vm.inspectingCp && !vm.inspectingCp.product.versionId && vm.activeProduct[0].id">
+                Version <strong>"{{ vm.inspectingCp.product.version }}"</strong> not found. Would you like to select an existing version?<br />
+                <label for="versionInspectSelect" class="control-label">Select a version</label>
+                <select ng-model="vm.versionSelect"
+                        id="versionInspectSelect" class="input-sm form-control"
+                        ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
+                </select>
+                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVersion()">Select Version</button></p>
+                Or create a new one?<br />
+              </span>
               <span ng-if="!vm.editVersion">{{ vm.activeVersion[0].version }}</span>
               <span ng-if="vm.editVersion">
                 <div class="form-group">
@@ -410,7 +432,7 @@
       <div ng-if="vm.activeCP !== ''">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <span>{{ vm.activeCP.chplProductNumber }}</span>
+            <span>{{ vm.activeCP.chplProductNumber ? vm.activeCP.chplProductNumber : 'CHPL Product Number not assigned' }}</span>
           </div>
           <div class="panel-body">
             <form name="CPEditForm" novalidate>
@@ -419,9 +441,10 @@
                 <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
                 <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                 <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
-                <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate.split(' ')[0] | date }} <br />
-                <strong>Additional Software:</strong> {{ vm.activeCP.additionalSoftware }} <br />
-                <strong>Status:</strong> {{ vm.activeCP.certificationStatusId === '1' ? 'Active' : 'Retired' }}<br />
+                <strong>Certification Date:</strong> {{ vm.parseCertificationDate(vm.activeCP.certificationDate) | date }} <br />
+                <strong>Additional Software:</strong> {{ vm.concatAddlSw(vm.activeCP.additionalSoftware) }} <br />
+                <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="false"></ai-additional-software>
+                <strong>Status:</strong> {{ vm.getStatusText(vm.activeCP.certificationStatusId) }}<br />
                 <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                 <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb }} <br />
                 <strong>Quality Management System Attestation:</strong> {{ vm.activeCP.qualityManagementSystemAtt }} <br />
@@ -458,6 +481,7 @@
                   <label for="cpAdditionalSW">Additional Software</label>
                   <textarea rows="4" class="input-sm form-control" ng-model="vm.activeCP.additionalSoftware" id="cpAdditionalSW"></textarea>
                 </div>
+                <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="true"></ai-additional-software>
                 <div class="form-group">
                   <label for="cpStatus">Status</label>
                   <select class="input-sm form-control" ng-model="vm.activeCP.certificationStatusId" id="cpStatus"
@@ -514,7 +538,7 @@
                 default-all="true"
                 edit-mode="true"
                 report-file-location="{{ vm.activeCP.reportFileLocation }}"
-                applicable-cqm-criteria="vm.product.applicableCqmCriteria">
+                applicable-cqm-criteria="vm.activeCP.applicableCqmCriteria">
       </ai-certs>
     </div>
   </div>

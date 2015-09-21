@@ -97,6 +97,8 @@
 
             $httpBackend.whenGET('common/components/certs.html')
                 .respond(200, '<div></div>');
+            $httpBackend.whenGET('admin/components/additionalSoftware.html')
+                .respond(200, '<div></div>');
             element = angular.element('<ai-vp-management></ai-vp-management');
             $compile(element)(scope);
             scope.$digest();

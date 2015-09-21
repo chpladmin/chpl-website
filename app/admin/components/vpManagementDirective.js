@@ -13,11 +13,10 @@
             self.uploadingCps = [];
             self.inspectingCp = '';
 
-            commonService.getUploadingCps()
+/*            commonService.getUploadingCps()
                 .then(function (cps) {
                     self.uploadingCps = [].concat(cps);
-                    self.uploadingCps = []; //dev erasing
-                });
+                });*/
 
             if (self.isAcbAdmin) {
                 self.uploader = new FileUploader({
@@ -25,6 +24,13 @@
                     removeAfterUpload: true,
                     headers: { Authorization: 'Bearer ' + authService.getToken() }
                 });
+                self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                    $log.info('onSuccessItem', fileItem, response, status, headers);
+                    self.uploadingCps = self.uploadingCps.concat(response.pendingCertifiedProducts);
+                };
+                self.uploader.onErrorItem = function(fileItem, response, status, headers) {
+                    $log.info('onErrorItem', fileItem, response, status, headers);
+                };
             }
 
             commonService.getVendors()
@@ -109,6 +115,31 @@
             self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'},
                              {id: '3', name: 'Withdrawn'},{id: '4', name: 'Decertified'}];
 
+            self.getStatusText = function (statusId) {
+                for (var i = 0; i < self.statuses.length; i++) {
+                    if (self.statuses[i].id === statusId) {
+                        return self.statuses[i].name;
+                    }
+                }
+                return 'Unknown';
+            }
+            self.parseCertificationDate = function (certDate) {
+                if (certDate && certDate.indexOf(' ') > 0) {
+                    return certDate.split(' ')[0];
+                } else {
+                    return certDate;
+                }
+            }
+            self.concatAddlSw = function (addlSw) {
+                var retval = '';
+                if (addlSw) {
+                    for (var i = 0; i < addlSw.length; i++) {
+                        retval += addlSw[i].name + ', ';
+                    }
+                    retval = retval.substring(0,retval.length - 2)
+                }
+                return retval;
+            }
 
             self.inspectCp = function (cpId) {
                 var cp;
@@ -119,13 +150,74 @@
                     }
                 }
                 self.activeVendor = [cp.vendor];
+                self.activeVendor[0].address = cp.vendorAddress;
                 self.activeProduct = [cp.product];
-                self.activeVersion = cp.version;
-                commonService.getProduct('dev') //cpId?
-                    .then(function (product) {
-                        self.activeCP = product;
-                        self.activeCP.certDate = new Date(self.activeCP.certDate);
+                self.activeVersion = [cp.product];
+                self.activeCP = cp;
+
+                if (!cp.product.versionId && cp.product.id) {
+                    commonService.getVersionsByProduct(cp.product.id)
+                        .then(function (versions) {
+                            self.versions = versions;
+                        });
+                }
+                if (!cp.product.id && cp.vendor.id) {
+                    commonService.getProductsByVendor(cp.vendor.id)
+                        .then(function (products) {
+                            self.products = products.products;
+                        });
+                }
+            };
+
+            self.selectInspectingVendor = function () {
+                self.activeVendor = [self.vendorSelect];
+                commonService.getProductsByVendor(self.activeVendor[0].vendorId)
+                    .then(function (products) {
+                        self.products = products.products;
+                        for (var i = 0; i < self.products.length; i++) {
+                            if (self.products[i].name === self.inspectingCp.product.name) {
+                                self.inspectingCp.product.id = self.products[i].productId;
+                                self.activeProduct = [self.inspectingCp.product];
+                                self.activeProduct[0].id = self.activeProduct[0].productId;
+                                commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                                    .then(function (versions) {
+                                        self.versions = versions;
+                                        for (var j = 0; j < self.versions.length; j++) {
+                                            if (self.versions[j].version = self.inspectingCp.product.version) {
+                                                self.inspectingCp.product.versionId = self.versions[j].versionId;
+                                                self.activeVersion = [self.inspectingCp.version];
+                                                self.activeVersion[0].id = self.activeVersion[0].versionId;
+                                                break;
+                                            }
+                                        }
+                                    });
+                                break;
+                            }
+                        }
                     });
+                self.activeVendor[0].id = self.activeVendor[0].vendorId;
+            };
+
+            self.selectInspectingProduct = function () {
+                self.activeProduct = [self.productSelect];
+                commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                    .then(function (versions) {
+                        self.versions = versions;
+                        for (var i = 0; j < self.versions.length; j++) {
+                            if (self.versions[i].version = self.inspectingCp.product.version) {
+                                self.inspectingCp.product.versionId = self.versions[i].versionId;
+                                self.activeVersion = [self.inspectingCp.version];
+                                self.activeVersion[0].id = self.activeVersion[0].versionId;
+                                break;
+                            }
+                        }
+                    });
+                self.activeProduct[0].id = self.activeProduct[0].productId;
+            };
+
+            self.selectInspectingVersion = function () {
+                self.activeVersion = [self.versionSelect];
+                self.inspectingCp.product.versionId = self.activeVersion[0].versionId;
             };
 
             self.confirmCp = function (cpId) {
@@ -150,29 +242,41 @@
                 self.activeCP = '';
             };
 
+            self.rejectCp = function () {
+                self.inspectingCp = '';
+                self.activeVendor = '';
+                self.activeProduct = '';
+                self.activeVersion = '';
+                self.activeCP = '';
+            };
+
             self.cancelVendor = function () {
                 // todo: figure out how to actually cancel the edits
                 self.activeVendor = '';
                 self.vendorMessage = null;
                 self.editVendor = false;
+                self.selectVendor();
             };
 
             self.cancelProduct = function () {
                 self.activeProduct = '';
                 self.productMessage = null;
                 self.editProduct = false;
+                self.selectProduct();
             };
 
             self.cancelVersion = function () {
                 self.activeVersion = '';
                 self.versionMessage = null;
                 self.editVersion = false;
+                self.selectVersion();
             };
 
             self.cancelCP = function () {
                 self.activeCP = '';
                 self.cpMessage = null;
                 self.editCP = false;
+                self.selectCP();
             };
 
             self.mergeAddressRequired = function () {

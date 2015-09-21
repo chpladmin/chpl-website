@@ -105,7 +105,7 @@
             };
 
             self.getUploadingCps = function () {
-                return self.simpleApiCall('/list_uploadingCps', devAPI);
+                return self.simpleApiCall('/certified_product/get_pending', API);
             };
         });
 })();
