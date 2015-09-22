@@ -16,14 +16,16 @@
                     { vendor: 'Vendor', product: 'Product' }
                 ];
                 mockCommonService.searchResult = {data: {recordCount: 2, results: [{}, {}]}};
-                mockCommonService.vendors = {vendors: [{name: 'Vendor 1'}, {name: 'Vendor 2'}]};
-                mockCommonService.products = ['Product 1', 'Product 2'];
-                mockCommonService.certs = ['Cert 1', 'Cert 2'];
-                mockCommonService.cqms = ['CQM 1', 'CQM 2'];
-                mockCommonService.editions = ['Edition 1', 'Edition 2'];
-                mockCommonService.classifications = ['Classification 1', 'Classification 2'];
-                mockCommonService.practices  = ['Practice 1', 'Practice 2'];
-                mockCommonService.certBodies  = ['CB 1', 'CB 2'];
+                mockCommonService.options = {};
+                mockCommonService.options.vendorNames = ['Vendor 1', 'Vendor 2'];
+                mockCommonService.options.productNames = ['Product 1', 'Product 2'];
+                mockCommonService.options.certificationCriterionNumbers = ['Cert 1', 'Cert 2'];
+                mockCommonService.options.cqmCriterionNumbers = ['CQM 1', 'CQM 2'];
+                mockCommonService.options.editions = ['Edition 1', 'Edition 2'];
+                mockCommonService.options.productClassifications = ['Classification 1', 'Classification 2'];
+                mockCommonService.options.practiceTypeNames  = ['Practice 1', 'Practice 2'];
+                mockCommonService.options.certBodyNames  = ['CB 1', 'CB 2'];
+                mockCommonService.options.certsNcqms = mockCommonService.options.certificationCriterionNumbers.concat(mockCommonService.options.cqmCriterionNumbers);
 
                 mockCommonService.search = function (query,pageNum,pageSize) {
                     var defer = $q.defer();
@@ -37,57 +39,9 @@
                     return defer.promise;
                 };
 
-                mockCommonService.getVendors = function () {
+                mockCommonService.getSearchOptions = function () {
                     var defer = $q.defer();
-                    defer.resolve(this.vendors);
-                    return defer.promise;
-                };
-
-                mockCommonService.getProducts = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.products);
-                    return defer.promise;
-                };
-
-                mockCommonService.getCerts = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.certs);
-                    return defer.promise;
-                };
-
-                mockCommonService.getCQMs = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.cqms);
-                    return defer.promise;
-                };
-
-                mockCommonService.getEditions = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.editions);
-                    return defer.promise;
-                };
-
-                mockCommonService.getClassifications = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.classifications);
-                    return defer.promise;
-                };
-
-                mockCommonService.getPractices = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.practices);
-                    return defer.promise;
-                };
-
-                mockCommonService.getCertBodies = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.certBodies);
-                    return defer.promise;
-                };
-
-                mockCommonService.getCertsNCQMs = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.certs.concat(this.cqms));
+                    defer.resolve(this.options);
                     return defer.promise;
                 };
             });
@@ -138,13 +92,13 @@
         });
 
         it('should load filter data on init', function () {
-            expect(scope.certs).toEqual(commonService.certs);
-            expect(scope.cqms).toEqual(commonService.cqms);
-            expect(scope.editions).toEqual(commonService.editions);
-            expect(scope.classifications).toEqual(commonService.classifications);
-            expect(scope.practices).toEqual(commonService.practices);
-            expect(scope.bodies).toEqual(commonService.bodies);
-            expect(scope.certsNcqms).toEqual(commonService.certs.concat(commonService.cqms));
+            expect(scope.certs).toEqual(commonService.options.certificationCriterionNumbers);
+            expect(scope.cqms).toEqual(commonService.options.cqmCriterionNumbers);
+            expect(scope.editions).toEqual(commonService.options.editions);
+            expect(scope.classifications).toEqual(commonService.options.productClassifications);
+            expect(scope.practices).toEqual(commonService.options.practiceTypeNames);
+            expect(scope.certBodies).toEqual(commonService.options.certBodyNames);
+            expect(scope.certsNcqms).toEqual(commonService.options.certificationCriterionNumbers.concat(commonService.options.cqmCriterionNumbers));
         });
 
         it('should toggle cert filters on and off', function () {

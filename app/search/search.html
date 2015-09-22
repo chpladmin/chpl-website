@@ -6,10 +6,9 @@
     </div>
   </div> <!-- search introduction 'header' -->
 
-  <form class="form-horizontal" role="search">
+  <form class="form-horizontal" role="search"> <!-- simple search -->
     <div class="row">
       <div class="col-xs-12">
-        <pre>{{ query | json }}</pre>
         <div class="form-group form-group-lg">
           <div class="col-sm-1">
             <label for="searchField" class="control-label">Search</label>
@@ -18,7 +17,7 @@
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-search"></i></div>
               <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="query.searchTermObject"
-                     typeahead="element.value as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
+                     typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
                      typeahead-input-formatter="$model.value" />
             </div>
           </div>
@@ -29,12 +28,13 @@
             <a href="" ng-if="query.simple" ng-click="query.simple = !query.simple">Advanced search</a>
             <a href="" ng-if="!query.simple" ng-click="query.simple = !query.simple">Simple search</a>
             <span ng-show="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
+            <br /><a href="" ng-click="browseAll()">Browse all</a>
           </div>
         </div>
       </div>
     </div> <!-- simple search row -->
 
-    <div class="row" ng-show="!query.simple">
+    <div class="row" ng-show="!query.simple"> <!-- advanced search -->
       <div class="col-xs-12">
           <div class="form-group form-group-sm">
             <div class="col-sm-1">
@@ -54,7 +54,9 @@
             <div class="col-sm-4">
               <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" id="productField" placeholder="Product" ng-model="query.productObject" />
+                <input type="text" class="form-control" id="productField" placeholder="Product" ng-model="query.productObject"
+                       typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.products | filter:{value:$viewValue} | limitTo:16"
+                       typeahead-input-formatter="$model.value" />
               </div>
             </div>
             <div class="col-sm-1">
@@ -102,24 +104,24 @@
               <label for="editionField" class="control-label">Certification Edition</label>
             </div>
             <div class="col-sm-3">
-              <select id="editionField" ng-model="query.certificationEdition" class="input-sm form-control">
-                <option ng-repeat="edition in editions" value="{{ edition.value }}">{{ edition.value }}</option>
+              <select id="editionField" ng-model="query.certificationEdition" class="input-sm form-control"
+                      ng-options="edition as edition for edition in editions | orderBy:'toString()'">
               </select>
             </div>
             <div class="col-sm-1">
               <label for="classificationField" class="control-label">Product Classification</label>
             </div>
             <div class="col-sm-3">
-              <select id="classificationField" ng-model="query.productClassification" class="input-sm form-control">
-                <option ng-repeat="classification in classifications" value="{{ classification.name }}">{{ classification.name }}</option>
+              <select id="classificationField" ng-model="query.productClassification" class="input-sm form-control"
+                      ng-options="c as c for c in classifications | orderBy:'toString()'">
               </select>
             </div>
             <div class="col-sm-1">
               <label for="practiceField" class="control-label">Practice Type</label>
             </div>
             <div class="col-sm-3">
-              <select id="practiceField" ng-model="query.practiceType" class="input-sm form-control">
-                <option ng-repeat="practice in practices" value="{{ practice.name }}">{{ practice.name }}</option>
+              <select id="practiceField" ng-model="query.practiceType" class="input-sm form-control"
+                      ng-options="p as p for p in practices | orderBy:'toString()'">
               </select>
             </div>
           </div> <!-- third row of advanced search -->
@@ -148,23 +150,23 @@
         <input id="product-search" placeholder="filter on product" class="input-sm form-control" type="search" ng-model="query.product"/>
 
         <label for="edition-search">Filter on Edition</label>
-        <select id="edition-search" class="input-sm form-control" ng-model="query.certificationEdition">
-          <option ng-repeat="edition in editions" value="{{ edition.value }}">{{ edition.value }}</option>
+        <select id="edition-search" class="input-sm form-control" ng-model="query.certificationEdition"
+                ng-options="e as e for e in editions | orderBy:'toString()'">
         </select>
 
         <label for="classification-search">Filter on Classification</label>
-        <select id="classification-search" class="input-sm form-control" ng-model="query.productClassification">
-          <option ng-repeat="classification in classifications" value="{{ classification.name }}">{{ classification.name }}</option>
+        <select id="classification-search" class="input-sm form-control" ng-model="query.productClassification"
+                ng-options="c as c for c in classifications | orderBy:'toString()'">
         </select>
 
         <label for="practiceType-search">Filter on Practice Type</label>
-        <select id="practiceType-search" class="input-sm form-control" ng-model="query.practiceType">
-          <option ng-repeat="practice in practices" value="{{ practice.name }}">{{ practice.name }}</option>
+        <select id="practiceType-search" class="input-sm form-control" ng-model="query.practiceType"
+                ng-options="p as p for p in practices | orderBy:'toString()'">
         </select>
 
         <label for="certBody-search">Filter on Certification Body</label>
-        <select id="certBody-search" class="input-sm form-control" ng-model="query.certificationBody">
-          <option ng-repeat="body in certBodies" value="{{ body.name }}">{{ body.name }}</option>
+        <select id="certBody-search" class="input-sm form-control" ng-model="query.certificationBody"
+                ng-options="cb as cb for cb in certBodies | orderBy:'toString()'">
         </select>
 
         <div>

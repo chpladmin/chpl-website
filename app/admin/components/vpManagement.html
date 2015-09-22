@@ -268,14 +268,7 @@
               </span>
             </div>
             <div class="panel-body">
-              <span ng-if="!vm.editProduct">
-                {{ vm.activeProduct[0].details }}<br />
-              </span>
               <span ng-if="vm.editProduct">
-                <div class="form-group">
-                  <label for="productDetails">Product Details</label>
-                  <input class="input-sm form-control" type="text" ng-model="vm.activeProduct[0].details" id="productDetails"></input>
-                </div>
                 <div class="form-group">
                   <label for="productOwner">Change Product owner</label>
                   <select ng-model="vm.activeProduct[0].vendorId"
@@ -325,11 +318,6 @@
                 </div>
               </div>
               <div class="panel-body">
-                <div class="form-group">
-                  <label for="productMergeDetails">Product Details</label>
-                  <input class="input-sm form-control" type="text" ng-model="vm.mergeProduct.details" id="productMergeDetails"></input>
-                </div>
-                <br />
                 <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-default btn-block" ng-click="vm.saveProduct()">Save Combined Products</button></p>
                 <p><button class="btn btn-default btn-block" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
               </div>
@@ -442,8 +430,7 @@
                 <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                 <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                 <strong>Certification Date:</strong> {{ vm.parseCertificationDate(vm.activeCP.certificationDate) | date }} <br />
-                <strong>Additional Software:</strong> {{ vm.concatAddlSw(vm.activeCP.additionalSoftware) }} <br />
-                <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="false"></ai-additional-software>
+                <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="false"></ai-additional-software> <br />
                 <strong>Status:</strong> {{ vm.getStatusText(vm.activeCP.certificationStatusId) }}<br />
                 <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                 <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb }} <br />
@@ -476,10 +463,6 @@
                 <div class="form-group">
                   <label for="cpCertDate">Certification Date</label>
                   <input class="input-sm form-control" type="date" ng-model="vm.activeCP.certDate" id="cpCertDate" required></input>
-                </div>
-                <div class="form-group">
-                  <label for="cpAdditionalSW">Additional Software</label>
-                  <textarea rows="4" class="input-sm form-control" ng-model="vm.activeCP.additionalSoftware" id="cpAdditionalSW"></textarea>
                 </div>
                 <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="true"></ai-additional-software>
                 <div class="form-group">

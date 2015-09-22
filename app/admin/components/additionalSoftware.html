@@ -2,6 +2,8 @@
   <span ng-if="!vm.isEditing"><strong>Additional Software: </strong>{{ vm.prettyPrint }}</span>
   <div ng-if="vm.isEditing" class="form-group">
     <label for="cpAdditionalSW">Additional Software</label>
-    <input ng-repeat="item in vm.additionalSoftware" type="text" class="input-sm form-control" ng-model="item"></input>
+    <input ng-repeat="item in vm.additionalSoftware" type="text" class="input-sm form-control" ng-model="item.name"></input>
+    <input type="text" class="input-sm form-control" ng-model="vm.newItem"></input>
+    <button class="btn btn-block" ng-click="vm.addItem()">Add item</button>
   </div>
 </span>

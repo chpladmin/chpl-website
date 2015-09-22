@@ -36,6 +36,10 @@
 //                return self.postApiCall('/search', API, queryObj);
             };
 
+            self.getSearchOptions = function () {
+                return self.simpleApiCall('/populate_search_options', API);
+            };
+
             self.getProduct = function (productId) {
                 return self.simpleApiCall('/certified_product/get_certified_product?certifiedProductId=' + productId, API);
             };
@@ -55,7 +59,7 @@
             self.getProductsByVersion = function (versionId) {
                 return self.simpleApiCall('/certified_product/list_certified_products_by_version?versionId=' + versionId, API);
             };
-
+/*
             self.getCerts = function () {
                 return self.simpleApiCall('/list_certs', devAPI);
             };
@@ -63,7 +67,7 @@
             self.getCQMs = function () {
                 return self.simpleApiCall('/list_cqms', devAPI);
             };
-
+*/
             self.getEditions = function () {
                 return self.simpleApiCall('/list_editions', devAPI);
             };
@@ -75,19 +79,23 @@
             self.getPractices = function () {
                 return self.simpleApiCall('/list_practices', devAPI);
             };
-
-            self.getProducts = function () {
-                return self.simpleApiCall('/list_products', devAPI);
+/*
+            self.getVendorNames = function () {
+                return self.simpleApiCall('/list_vendor_names', API);
             };
 
+            self.getProductNames = function () {
+                return self.simpleApiCall('/list_product_names', API);
+            };
+*/
             self.getCertBodies = function () {
                 return self.simpleApiCall('/list_certBodies', devAPI);
             };
-
+/*
             self.getCertsNCQMs = function () {
                 return self.simpleApiCall('/list_filterCerts', devAPI);
             };
-
+*/
             self.getCertifiedProductActivity = function () {
                 return self.simpleApiCall('/list_certifiedProductActivity', devAPI);
             };

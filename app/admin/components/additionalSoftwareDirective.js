@@ -22,6 +22,14 @@
                 newString = newString.substring(0, newString.length - 2);
                 self.prettyPrint = newString;
             };
+
+            self.addItem = function () {
+                if (self.newItem.length > 0) {
+                    self.additionalSoftware.push({name: self.newItem});
+                    self.newItem = '';
+                    self.format();
+                }
+            };
         }])
         .directive('aiAdditionalSoftware', [function () {
             return {
