@@ -2,18 +2,21 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$rootScope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $rootScope, $log, $location, $localStorage, commonService) {
+        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $log, $location, $localStorage, commonService) {
             var self = this;
             $scope.searchResults = [];
             $scope.displayedResults = [];
-            $scope.lookaheadSource = [];
-            $scope.isSimpleSearch = true;
+            $scope.lookaheadSource = {all: [], vendors: [], products: []};
             $scope.filterGroup = {};
             self.hasDoneASearch = false;
             $scope.resultCount = 0;
-            $scope.currentPage = 1;
-            $scope.resultsPerPage = 10;
-            $scope.orderBy = 'vendor';
+            self.defaultQuery = {simple: true,
+                            orderBy: 'vendor',
+                            sortDescending: false,
+                            pageNumber: 0,
+                            pageSize: 20,
+                            visibleOnCHPL: 'yes'};
+            $scope.query = angular.copy(self.defaultQuery);
 
             if ($localStorage.searchResults) {
                 $scope.searchResults = $localStorage.searchResults.results;
@@ -22,48 +25,39 @@
                 $scope.resultCount = $localStorage.searchResults.recordCount;
             }
 
-            self.setupLookahead = function () {
-                if ($localStorage.lookaheadResults && $localStorage.lookaheadResults.length > 0) {
-                    $log.info('Restoring lookahead from localstorage');
-                    $scope.lookaheadResults = $localStorage.lookaheadResults;
-                } else {
-                    commonService.getVendors()
-                        .then(function (vendors) {
-                            for (var i = 0; i < vendors.vendors.length; i++) {
-                                $scope.lookaheadSource.push({type: 'vendor', value: vendors.vendors[i].name});
+            if ($localStorage.query) {
+                $scope.query = $localStorage.query;
+            }
+
+            self.populateSearchOptions = function () {
+                commonService.getSearchOptions()
+                    .then(function (options) {
+                        $scope.certs = options.certificationCriterionNumbers;
+                        $scope.cqms = options.cqmCriterionNumbers;
+                        $scope.editions = options.editions;
+                        $scope.classifications = options.productClassifications;
+                        $scope.practices = options.practiceTypeNames;
+                        $scope.certBodies = options.certBodyNames;
+                        $scope.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
+                        if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.all.length > 0) {
+                            $log.info('Restoring lookahead from localstorage');
+                            $scope.lookaheadSource = $localStorage.lookaheadSource;
+                        } else {
+                            for (var i = 0; i < options.vendorNames.length; i++) {
+                                $scope.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i]});
+                                $scope.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i]});
+                            }
+                            for (var i = 0; i < options.productNames.length; i++) {
+                                $scope.lookaheadSource.all.push({type: 'product', value: options.productNames[i]});
+                                $scope.lookaheadSource.products.push({type: 'product', value: options.productNames[i]});
                             }
                             $localStorage.lookaheadSource = $scope.lookaheadSource;
-                        });
-                    commonService.getProducts()
-                        .then(function (products) {
-//                            $scope.lookaheadSource = $scope.lookaheadSource.concat(products);
-//                            $localStorage.lookaheadSource = $scope.lookaheadSource;
-                        });
-                }
+                        }
+                    });
             };
-            self.setupLookahead();
-
-            self.setupFilters = function () {
-                commonService.getCerts()
-                    .then(function (certs) { $scope.certs = certs; });
-                commonService.getCQMs()
-                    .then(function (cqms) { $scope.cqms = cqms; });
-                commonService.getEditions()
-                    .then(function (editions) { $scope.editions = editions; });
-                commonService.getClassifications()
-                    .then(function (classifications) { $scope.classifications = classifications; });
-                commonService.getPractices()
-                    .then(function (practices) { $scope.practices = practices; });
-                commonService.getCertBodies()
-                    .then(function (bodies) { $scope.certBodies = bodies; });
-                commonService.getCertsNCQMs()
-                    .then(function (certsNcqms) { $scope.certsNcqms = certsNcqms; });
-            };
-            self.setupFilters();
+            self.populateSearchOptions();
 
             self.certFilters = Object.create(null);
-            $rootScope.certFilters = self.certFilters;
-
             self.toggleCertFilter = function (category, title, number) {
                 var key = category + ":" + title;
                 if (key in self.certFilters) {
@@ -91,64 +85,44 @@
 
             self.search = function () {
                 self.hasDoneASearch = true;
-                $scope.clearFilter();
-                if ($scope.isSimpleSearch) {
-                    var query;
-                    if ($scope.searchTerm !== undefined) {
-                        if (typeof $scope.searchTerm === 'object') {
-                            query = $scope.searchTerm.value;
-                        } else {
-                            query = $scope.searchTerm;
-                        }
-                        if (query.length > 0)
-                            query = encodeURIComponent(query);
-                    } else {
-                        query = "";
+
+                if ($scope.query.searchTermObject !== undefined) {
+                    if (typeof($scope.query.searchTermObject) === 'string' && $scope.query.searchTermObject.length > 0) {
+                        $scope.query.searchTermObject = {type: 'previous search', value: $scope.query.searchTermObject};
+                        $scope.lookaheadSource.all.push($scope.query.searchTermObject);
                     }
-                    query = query + '&orderBy=' + $scope.orderBy;
-
-                    commonService.search(query,$scope.currentPage - 1,$scope.resultsPerPage)
-                        .then(function (data) {
-                            $localStorage.searchResults = data;
-                            $scope.searchResults = data.results;
-                            $scope.displayedResults = [].concat($scope.searchResults);
-                            $scope.resultCount = data.recordCount;
-                        }, function (error) {
-                            $log.error(error);
-                    });
-                } else {
-                    var queryObj = {orderBy: $scope.orderBy};
-                    if ($scope.vendorTerm !== undefined && $scope.vendorTerm.length > 0) queryObj.vendor = $scope.vendorTerm;
-                    if ($scope.productTerm !== undefined && $scope.productTerm.length > 0) queryObj.product = $scope.productTerm;
-                    if ($scope.versionTerm !== undefined && $scope.versionTerm.length > 0) queryObj.version = $scope.versionTerm;
-                    if ($scope.editionTerm !== undefined && $scope.editionTerm.length > 0) queryObj.certificationEdition = $scope.editionTerm;
-                    if ($scope.classificationTerm !== undefined && $scope.classificationTerm.length > 0) queryObj.productClassification = $scope.classificationTerm;
-                    if ($scope.practiceTerm !== undefined && $scope.practiceTerm.length > 0) queryObj.practiceType = $scope.practiceTerm;
-                    if ($scope.certTerm !== undefined && $scope.certTerm.length > 0) queryObj.certificationCriteria = $scope.certTerm;
-                    if ($scope.cqmTerm !== undefined && $scope.cqmTerm.length > 0) queryObj.cqms = $scope.cqmTerm;
-
-                    commonService.searchAdvanced(queryObj,$scope.currentPage - 1,$scope.resultsPerPage)
-                        .then(function (data) {
-                            $localStorage.searchResults = data;
-                            $scope.searchResults = data.results;
-                            $scope.displayedResults = [].concat($scope.searchResults);
-                            $scope.resultCount = data.recordCount;
-                        }, function (error) {
-                            $log.error(error);
-                        });
+                    $scope.query.searchTerm = $scope.query.searchTermObject.value;
                 }
+                if ($scope.query.vendorObject !== undefined) {
+                    if (typeof($scope.query.vendorObject) === 'string' && $scope.query.vendorObject.length > 0) {
+                        $scope.query.vendorObject = {type: 'previous search', value: $scope.query.vendorObject};
+                        $scope.lookaheadSource.vendors.push($scope.query.vendorObject);
+                    }
+                    $scope.query.vendor = $scope.query.vendorObject.value;
+                }
+                if ($scope.query.productObject !== undefined) {
+                    if (typeof($scope.query.productObject) === 'string' && $scope.query.productObject.length > 0) {
+                        $scope.query.productObject = {type: 'previous search', value: $scope.query.productObject};
+                        $scope.lookaheadSource.products.push($scope.query.productObject);
+                    }
+                    $scope.query.product = $scope.query.productObject.value;
+                }
+                $localStorage.lookaheadSource = $scope.lookaheadSource;
+                commonService.search($scope.query)
+                    .then(function (data) {
+                        $localStorage.searchResults = data;
+                        $scope.searchResults = data.results;
+                        $scope.displayedResults = [].concat($scope.searchResults);
+                        $scope.resultCount = data.recordCount;
+                    }, function (error) {
+                        $log.error(error);
+                    });
+
+                $localStorage.query = $scope.query;
             };
             $scope.search = self.search;
 
             $scope.doFilter = function () {
-                var queryObj = {orderBy: $scope.orderBy};
-                if ($scope.filterGroup.vendor !== undefined && $scope.filterGroup.vendor.length > 0) queryObj.vendor = $scope.filterGroup.vendor;
-                if ($scope.filterGroup.product !== undefined && $scope.filterGroup.product.length > 0) queryObj.product = $scope.filterGroup.product;
-                if ($scope.filterGroup.edition !== undefined && $scope.filterGroup.edition.length > 0) queryObj.certificationEdition = $scope.filterGroup.edition;
-                if ($scope.filterGroup.classification !== undefined && $scope.filterGroup.classification.length > 0) queryObj.productClassification = $scope.filterGroup.classification;
-                if ($scope.filterGroup.practiceType !== undefined && $scope.filterGroup.practiceType.length > 0) queryObj.practiceType = $scope.filterGroup.practiceType;
-                if ($scope.filterGroup.certBody !== undefined && $scope.filterGroup.certBody.length > 0) queryObj.practiceType = $scope.filterGroup.certBody;
-
                 var certs = [];
                 var cqms = [];
                 for (var key in self.certFilters) {
@@ -158,19 +132,9 @@
                         cqms.push(self.certFilters[key]);
                     }
                 }
-                if (certs.length > 0) queryObj.certificationCriteria = certs;
-                if (cqms.length > 0) queryObj.cqms = cqms;
-
-                $scope.currentPage = 1;
-                commonService.searchAdvanced(queryObj,$scope.currentPage - 1,$scope.resultsPerPage)
-                    .then(function (data) {
-                        $localStorage.searchResults = data;
-                        $scope.searchResults = data.results;
-                        $scope.displayedResults = [].concat($scope.searchResults);
-                        $scope.resultCount = data.recordCount;
-                    }, function (error) {
-                        $log.error(error);
-                    });
+                if (certs.length > 0) $scope.query.certificationCriteria = certs;
+                if (cqms.length > 0) $scope.query.cqms = cqms;
+                self.search();
             };
 
             $scope.hasResults = function () {
@@ -181,34 +145,30 @@
                 return self.hasDoneASearch;
             };
 
+            $scope.browseAll = function () {
+                $scope.clear();
+                $scope.search();
+            };
+
             $scope.clear = function () {
                 delete $localStorage.searchResults;
+                delete $localStorage.query;
+                delete $localStorage.lookaheadSource;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
-                $scope.searchTerm = '';
-                $scope.vendorTerm = '';
-                $scope.productTerm = '';
-                $scope.versionTerm = '';
-                $scope.certTerm = '';
-                $scope.cqmTerm = '';
-                $scope.editionTerm = '';
-                $scope.classificationTerm = '';
-                $scope.practiceTerm = '';
                 $scope.resultCount = 0;
-                $scope.orderBy = 'vendor';
                 self.compareIds = Object.create(null);
                 self.hasDoneASearch = false;
-
-//                angular.element.find('#resetLink').click();
+                $scope.query = angular.copy(self.defaultQuery);
             };
 
             $scope.clearFilter = function () {
-                $scope.filterGroup.vendor = '';
-                $scope.filterGroup.product = '';
-                $scope.filterGroup.edition = '';
-                $scope.filterGroup.classification = '';
-                $scope.filterGroup.practiceType = '';
-                $scope.filterGroup.certBody = '';
+                delete($scope.query.vendor);
+                delete($scope.query.product);
+                delete($scope.query.certificationEdition);
+                delete($scope.query.productClassification);
+                delete($scope.query.practiceType);
+                delete($scope.query.certificationBody);
 
                 for (var elem in self.certFilters) {
 //                    $log.info(elem);
@@ -228,7 +188,18 @@
                 }
             };
 
+            $scope.sort = function(header) {
+                if (header === $scope.query.orderBy) {
+                    $scope.query.sortDescending = !$scope.query.sortDescending;
+                } else {
+                    $scope.query.sortDescending = false;
+                    $scope.query.orderBy = header;
+                }
+                self.search();
+            }
+
             $scope.pageChanged = function () {
+                $scope.query.pageNumber = $scope.visiblePage - 1;
                 self.search();
             };
         }]);

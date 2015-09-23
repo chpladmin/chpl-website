@@ -1,22 +1,15 @@
-.st-table th {
-    width: 20%;
-}
-
-.st-table th:last-child {
-    text-align: center;
-    width: auto;
-}
-
-.st-sort-ascent:after {
+.sort-ascent:after {
     content: "\f0d8";
     font-family: FontAwesome;
-    padding: 0 3px;
+    padding: 0 6px;
+    font-size: large;
 }
 
-.st-sort-descent:after {
+.sort-descent:after {
     content: "\f0d7";
     font-family: FontAwesome;
-    padding: 0 3px;
+    padding: 0 6px;
+    font-size: large;
 }
 
 ul.pagination li {
@@ -35,7 +28,7 @@ ul.pagination li {
     cursor: pointer;
 }
 
-.productDetails td:last-child table td:last-child{
+.productDetails td:last-child table td:last-child {
     vertical-align: middle;
     text-align: right;
 }

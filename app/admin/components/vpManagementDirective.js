@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('VpManagementController', ['commonService', 'adminService', 'authService', '$log', function (commonService, adminService, authService, $log) {
+        .controller('VpManagementController', ['commonService', 'adminService', 'authService', '$log', 'FileUploader', 'API', function (commonService, adminService, authService, $log, FileUploader, API) {
             var self = this;
             self.activeVendor = '';
             self.activeProduct = '';
@@ -13,11 +13,25 @@
             self.uploadingCps = [];
             self.inspectingCp = '';
 
-            commonService.getUploadingCps()
+/*            commonService.getUploadingCps()
                 .then(function (cps) {
                     self.uploadingCps = [].concat(cps);
-                    self.uploadingCps = []; //dev erasing
+                });*/
+
+            if (self.isAcbAdmin) {
+                self.uploader = new FileUploader({
+                    url: API + '/certified_product/upload',
+                    removeAfterUpload: true,
+                    headers: { Authorization: 'Bearer ' + authService.getToken() }
                 });
+                self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                    $log.info('onSuccessItem', fileItem, response, status, headers);
+                    self.uploadingCps = self.uploadingCps.concat(response.pendingCertifiedProducts);
+                };
+                self.uploader.onErrorItem = function(fileItem, response, status, headers) {
+                    $log.info('onErrorItem', fileItem, response, status, headers);
+                };
+            }
 
             commonService.getVendors()
                 .then(function (vendors) {
@@ -59,19 +73,32 @@
             };
             self.selectVersion = function () {
                 if (self.versionSelect) {
-                    self.activeVersion = self.versionSelect;
-
-                    commonService.getProductsByVersion(self.activeVersion.versionId)
-                        .then(function (cps) {
-                            self.cps = cps;
-                        });
+                    if (self.versionSelect.length === 1) {
+                        self.activeVersion = [self.versionSelect[0]];
+                        self.activeVersion[0].productId = self.activeProduct[0].productId;
+                        commonService.getProductsByVersion(self.activeVersion[0].versionId)
+                            .then(function (cps) {
+                                self.cps = cps;
+                            });
+                    } else { //merging
+                        self.activeVersion = [].concat(self.versionSelect);
+                        self.mergeVersion = angular.copy(self.activeVersion[0]);
+                        delete self.mergeVersion.versionId;
+                        delete self.mergeVersion.lastModifiedDate;
+                    }
                 }
             };
             self.selectCP = function () {
                 if (self.cpSelect) {
+                    self.activeCP = {};
+                    self.activeCP.classificationType = {};
+                    self.activeCP.certifyingBody = {};
+                    self.activeCP.practiceType = {};
                     commonService.getProduct(self.cpSelect[0])
                         .then(function (cp) {
                             self.activeCP = cp;
+                            if (self.activeCP.visibleOnChpl === undefined)
+                                self.activeCP.visibleOnChpl = true;
                             self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
                         });
                 }
@@ -85,17 +112,34 @@
                 .then(function (practices) { self.practices = practices; });
             commonService.getCertBodies()
                 .then(function (bodies) { self.bodies = bodies; });
-            self.statuses = [{id: '1', value: 'Active'},{id: '2', value: 'Retired'}];
+            self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'},
+                             {id: '3', name: 'Withdrawn'},{id: '4', name: 'Decertified'}];
 
-            self.uploadFile = function () {
-                // Do something smart here
-                self.uploadingCps = [{id: 1, vendor: {name: 'Vend', lastModifiedDate: '2013-03-02'}, product: {name: 'Prod', lastModifiedDate: '2014-05-02'},
-                                      version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'},
-                                     {id: 2, vendor: {name: 'Denv', lastModifiedDate: '2013-02-02'}, product: {name: 'Dorp', lastModifiedDate: '2013-05-02'},
-                                      version: {name: '332.1'}, edition: '2011', uploadDate: '2012-07-02'},
-                                     {id: 3, vendor: {name: 'LastCo', lastModifiedDate: '2015-03-02'}, product: {name: 'Healthy', lastModifiedDate: '2014-10-02'},
-                                      version: {name: '12Ac'}, edition: '2014', uploadDate: '2015-03-22'}];
-            };
+            self.getStatusText = function (statusId) {
+                for (var i = 0; i < self.statuses.length; i++) {
+                    if (self.statuses[i].id === statusId) {
+                        return self.statuses[i].name;
+                    }
+                }
+                return 'Unknown';
+            }
+            self.parseCertificationDate = function (certDate) {
+                if (certDate && certDate.indexOf(' ') > 0) {
+                    return certDate.split(' ')[0];
+                } else {
+                    return certDate;
+                }
+            }
+            self.concatAddlSw = function (addlSw) {
+                var retval = '';
+                if (addlSw) {
+                    for (var i = 0; i < addlSw.length; i++) {
+                        retval += addlSw[i].name + ', ';
+                    }
+                    retval = retval.substring(0,retval.length - 2)
+                }
+                return retval;
+            }
 
             self.inspectCp = function (cpId) {
                 var cp;
@@ -106,13 +150,74 @@
                     }
                 }
                 self.activeVendor = [cp.vendor];
+                self.activeVendor[0].address = cp.vendorAddress;
                 self.activeProduct = [cp.product];
-                self.activeVersion = cp.version;
-                commonService.getProduct('dev') //cpId?
-                    .then(function (product) {
-                        self.activeCP = product;
-                        self.activeCP.certDate = new Date(self.activeCP.certDate);
+                self.activeVersion = [cp.product];
+                self.activeCP = cp;
+
+                if (!cp.product.versionId && cp.product.id) {
+                    commonService.getVersionsByProduct(cp.product.id)
+                        .then(function (versions) {
+                            self.versions = versions;
+                        });
+                }
+                if (!cp.product.id && cp.vendor.id) {
+                    commonService.getProductsByVendor(cp.vendor.id)
+                        .then(function (products) {
+                            self.products = products.products;
+                        });
+                }
+            };
+
+            self.selectInspectingVendor = function () {
+                self.activeVendor = [self.vendorSelect];
+                commonService.getProductsByVendor(self.activeVendor[0].vendorId)
+                    .then(function (products) {
+                        self.products = products.products;
+                        for (var i = 0; i < self.products.length; i++) {
+                            if (self.products[i].name === self.inspectingCp.product.name) {
+                                self.inspectingCp.product.id = self.products[i].productId;
+                                self.activeProduct = [self.inspectingCp.product];
+                                self.activeProduct[0].id = self.activeProduct[0].productId;
+                                commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                                    .then(function (versions) {
+                                        self.versions = versions;
+                                        for (var j = 0; j < self.versions.length; j++) {
+                                            if (self.versions[j].version = self.inspectingCp.product.version) {
+                                                self.inspectingCp.product.versionId = self.versions[j].versionId;
+                                                self.activeVersion = [self.inspectingCp.version];
+                                                self.activeVersion[0].id = self.activeVersion[0].versionId;
+                                                break;
+                                            }
+                                        }
+                                    });
+                                break;
+                            }
+                        }
                     });
+                self.activeVendor[0].id = self.activeVendor[0].vendorId;
+            };
+
+            self.selectInspectingProduct = function () {
+                self.activeProduct = [self.productSelect];
+                commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                    .then(function (versions) {
+                        self.versions = versions;
+                        for (var i = 0; j < self.versions.length; j++) {
+                            if (self.versions[i].version = self.inspectingCp.product.version) {
+                                self.inspectingCp.product.versionId = self.versions[i].versionId;
+                                self.activeVersion = [self.inspectingCp.version];
+                                self.activeVersion[0].id = self.activeVersion[0].versionId;
+                                break;
+                            }
+                        }
+                    });
+                self.activeProduct[0].id = self.activeProduct[0].productId;
+            };
+
+            self.selectInspectingVersion = function () {
+                self.activeVersion = [self.versionSelect];
+                self.inspectingCp.product.versionId = self.activeVersion[0].versionId;
             };
 
             self.confirmCp = function (cpId) {
@@ -137,23 +242,41 @@
                 self.activeCP = '';
             };
 
+            self.rejectCp = function () {
+                self.inspectingCp = '';
+                self.activeVendor = '';
+                self.activeProduct = '';
+                self.activeVersion = '';
+                self.activeCP = '';
+            };
+
             self.cancelVendor = function () {
                 // todo: figure out how to actually cancel the edits
                 self.activeVendor = '';
                 self.vendorMessage = null;
                 self.editVendor = false;
+                self.selectVendor();
             };
 
             self.cancelProduct = function () {
                 self.activeProduct = '';
                 self.productMessage = null;
                 self.editProduct = false;
+                self.selectProduct();
             };
 
             self.cancelVersion = function () {
                 self.activeVersion = '';
                 self.versionMessage = null;
                 self.editVersion = false;
+                self.selectVersion();
+            };
+
+            self.cancelCP = function () {
+                self.activeCP = '';
+                self.cpMessage = null;
+                self.editCP = false;
+                self.selectCP();
             };
 
             self.mergeAddressRequired = function () {
@@ -199,7 +322,7 @@
                                     //todo: re-select active vendor in vendorSelect
                                     commonService.getProductsByVendor(newVendor.vendorId)
                                         .then(function (products) {
-                                            self.products = products;
+                                            self.products = products.products;
                                         });
                                 });
                         } else {
@@ -245,36 +368,75 @@
 
             };
             self.saveVersion = function () {
-                //                self.updateVersion = {productIds: []};
+                self.updateVersion = {versionIds: []};
 
-                adminService.updateVersion(self.activeVersion)
+                for (var i = 0; i < self.activeVersion.length; i++) {
+                    self.updateVersion.versionIds.push(self.activeVersion[i].versionId);
+                }
+                self.updateVersion.newProductId = self.activeProduct[0].productId;
+                if (self.activeVersion.length === 1) {
+                    self.updateVersion.version = self.activeVersion[0];
+                } else {
+                    self.updateVersion.version = self.mergeVersion;
+                }
+
+                adminService.updateVersion(self.updateVersion)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             var newVersion = response;
                             self.versionMessage = null;
                             self.editVersion = false;
-                            // call sevice
-                            /*
-                              commonService.getProductsByVendor(self.activeVendor[0].vendorId)
-                              .then(function (products) {
-                              self.products = products.products;
-                              self.activeProduct = [newProduct];
-                              //todo: re-select active vendor in vendorSelect
-                              commonService.getVersionsByProduct(newProduct.productId)
-                              .then(function (versions) {
-                              self.versions = versions;
-                              });
-                              });
-                            */
+                            commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                                .then(function (versions) {
+                                    self.versions = versions.versions;
+                                    self.activeVersion = [newVersion];
+                                    //todo: re-select active version in versionSelect
+                                    commonService.getProductsByVersion(newVersion.versionId)
+                                        .then(function (cps) {
+                                            self.cps = cps;
+                                        });
+                                });
                         } else {
                             self.versionMessage = 'An error occurred. Please check your entry and try again.';
                         }
                     });
             };
+
+            self.saveCP = function () {
+                self.updateCP = {};
+
+                self.updateCP.id = self.activeCP.id;
+                self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
+                self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
+                self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
+                self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
+                self.updateCP.chplProductNumber = self.activeCP.chplProductNumber;
+                self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
+                self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
+                self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
+                self.updateCP.otherAcb = self.activeCP.otherAcb;;
+                self.updateCP.testingLabId = self.activeCP.testingLabId;
+                self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
+
+                self.editCP = false;
+                $log.debug(self.updateCP);
+
+                adminService.updateCP(self.updateCP)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                        self.editCP = false;
+                            self.activeCP = response;
+                            self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
+                        } else {
+                            self.cpMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+            };
+
         }]);
 
     angular.module('app.admin')
-        .directive('aiVpManagement', ['commonService', '$log', function (commonService, $log) {
+        .directive('aiVpManagement', function () {
             return {
                 restrict: 'E',
                 replace: true,
@@ -283,5 +445,5 @@
                 controllerAs: 'vm',
                 controller: 'VpManagementController'
             };
-        }]);
+        });
 })();

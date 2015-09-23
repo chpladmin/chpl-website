@@ -31,71 +31,21 @@
                     });
             };
 
-            self.search = function (query, pageNum, pageSize) {
-                return $http.get(API + '/simple_search?searchTerm=' + query + '&pageNum=' + pageNum + '&pageSize=' + pageSize)
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+            self.search = function (queryObj, pageNum, pageSize) {
+                return self.postApiCall('/advanced_search', API, queryObj);
+//                return self.postApiCall('/search', API, queryObj);
             };
 
-            self.searchAdvanced = function (queryObj, pageNum, pageSize) {
-                return $http.post(API + '/advanced_search?pageNum=' + pageNum + '&pageSize=' + pageSize, queryObj)
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
+            self.getSearchOptions = function () {
+                return self.simpleApiCall('/populate_search_options', API);
             };
 
             self.getProduct = function (productId) {
-                return $http.get(API + '/certified_product/get_certified_product?certifiedProductId=' + productId)
-                    .then(function (response) {
-                        if (typeof response.data === 'object') {
-                            return response.data;
-                        } else {
-                            return $q.reject(response.data);
-                        }
-                    }, function (response) {
-                        return $q.reject(response.data);
-                    });
-            };
-
-            self.getCerts = function () {
-                return self.simpleApiCall('/list_certs', devAPI);
-            };
-
-            self.getCQMs = function () {
-                return self.simpleApiCall('/list_cqms', devAPI);
-            };
-
-            self.getEditions = function () {
-                return self.simpleApiCall('/list_editions', devAPI);
-            };
-
-            self.getClassifications = function () {
-                return self.simpleApiCall('/list_classifications', devAPI);
-            };
-
-            self.getPractices = function () {
-                return self.simpleApiCall('/list_practices', devAPI);
+                return self.simpleApiCall('/certified_product/get_certified_product?certifiedProductId=' + productId, API);
             };
 
             self.getVendors = function () {
                 return self.simpleApiCall('/vendor/list_vendors', API);
-            };
-
-            self.getProducts = function () {
-                return self.simpleApiCall('/list_products', devAPI);
             };
 
             self.getProductsByVendor = function (vendorId) {
@@ -109,15 +59,43 @@
             self.getProductsByVersion = function (versionId) {
                 return self.simpleApiCall('/certified_product/list_certified_products_by_version?versionId=' + versionId, API);
             };
+/*
+            self.getCerts = function () {
+                return self.simpleApiCall('/list_certs', devAPI);
+            };
 
+            self.getCQMs = function () {
+                return self.simpleApiCall('/list_cqms', devAPI);
+            };
+*/
+            self.getEditions = function () {
+                return self.simpleApiCall('/list_editions', devAPI);
+            };
+
+            self.getClassifications = function () {
+                return self.simpleApiCall('/list_classifications', devAPI);
+            };
+
+            self.getPractices = function () {
+                return self.simpleApiCall('/list_practices', devAPI);
+            };
+/*
+            self.getVendorNames = function () {
+                return self.simpleApiCall('/list_vendor_names', API);
+            };
+
+            self.getProductNames = function () {
+                return self.simpleApiCall('/list_product_names', API);
+            };
+*/
             self.getCertBodies = function () {
                 return self.simpleApiCall('/list_certBodies', devAPI);
             };
-
+/*
             self.getCertsNCQMs = function () {
                 return self.simpleApiCall('/list_filterCerts', devAPI);
             };
-
+*/
             self.getCertifiedProductActivity = function () {
                 return self.simpleApiCall('/list_certifiedProductActivity', devAPI);
             };
@@ -135,7 +113,7 @@
             };
 
             self.getUploadingCps = function () {
-                return self.simpleApiCall('/list_uploadingCps', devAPI);
+                return self.simpleApiCall('/certified_product/get_pending', API);
             };
         });
 })();

@@ -11,6 +11,8 @@
             $scope.$watch('cqms', function (newCqms) {
                 if (newCqms) {
                     self.cqms = newCqms;
+                    if (self.editMode)
+                        self.buildEditObject();
                 }}, true);
             $scope.$watch('countCerts', function (newCount) {
                 if (newCount) {
@@ -20,12 +22,18 @@
                 if (newCount) {
                     self.countCqms = newCount;
                 }}, true);
-            self.certs = $scope.certs;
-            self.cqms = $scope.cqms;
-            self.countCerts = $scope.countCerts;
-            self.countCqms = $scope.countCqms;
+            $scope.$watch('reportFileLocation', function (location) {
+                if (location) {
+                    self.reportFileLocation = location;
+                }}, true);
+            $scope.$watch('applicableCqmCriteria', function (cqmCriteria) {
+                if (cqmCriteria) {
+                    self.applicableCqmCriteria = cqmCriteria;
+                    self.buildCqmObject();
+                }}, true);
             self.viewAllCerts = $scope.viewAllCerts;
             self.editMode = $scope.editMode;
+
             self.editCerts = {};
             self.editCqms = {};
 
@@ -35,27 +43,83 @@
                         self.editCerts[self.certs[i].number] = self.certs[i].success;
                     }
                 }
-                if (self.cqms) {
-                    for (var i = 0; i < self.cqms.length; i++) {
-                        if (self.cqms[i].version) {
-                            self.editCqms[self.cqms[i].number] = [self.cqms[i].version];
+                if (self.builtCqms) {
+                    for (var i = 0; i < self.builtCqms.length; i++) {
+                        if (self.builtCqms[i].version) {
+                            self.editCqms[self.builtCqms[i].number] = self.builtCqms[i].version;
                         } else {
-                            self.editCqms[self.cqms[i].number] = self.cqms[i].success;
+                            self.editCqms[self.builtCqms[i].number] = self.builtCqms[i].success;
                         }
                     }
                 }
-            }
+            };
 
-            if (self.editMode) {
-                self.buildEditObject();
-            }
+            self.buildCqmObject = function () {
+                self.allCqms = {};
+                var active;
+                for (var i = 0; i < self.applicableCqmCriteria.length; i++) {
+                    active = self.applicableCqmCriteria[i];
+                    if (!self.allCqms[active.number]) {
+                        self.allCqms[active.number] = {number: active.number,
+                                                       title: active.title,
+                                                       versions: []};
+                    }
+                    if (active.cqmVersion) {
+                        self.allCqms[active.number].hasVersion = true;
+                        self.allCqms[active.number].versions.push(active.cqmVersion);
+                    } else {
+                        self.allCqms[active.number].hasVersion = false;
+                    }
+                }
+                if (self.cqms) {
+                    self.compileCqms();
+                }
+            };
+
+            self.compileCqms = function () {
+                var foundCqms = [];
+                self.builtCqms = [];
+                for (var i = 0; i < self.cqms.length; i++) {
+                    var cqm = self.cqms[i];
+                    if (foundCqms.indexOf(cqm.number) >= 0) {
+                        if (cqm.version) {
+                            for (var j = 0; j < self.builtCqms.length; j++) {
+                                if (self.builtCqms[j].number === cqm.number) {
+                                    self.builtCqms[j].version.push(cqm.version);
+                                }
+                            }
+                        }
+                    } else {
+                        if (cqm.version) {
+                            cqm.hasVersion = true;
+                            cqm.version = [cqm.version];
+                        }
+                        self.builtCqms.push(cqm);
+                        foundCqms.push(cqm.number);
+                    }
+                }
+                for (var cqm in self.allCqms) {
+                    if (foundCqms.indexOf(cqm) < 0) {
+                        self.builtCqms.push({
+                            number: self.allCqms[cqm].number,
+                            title: self.allCqms[cqm].title,
+                            success: false,
+                            hasVersion: self.allCqms[cqm].hasVersion
+                        })
+                    }
+                }
+
+                if (self.editMode) {
+                    self.buildEditObject();
+                }
+            };
 
             self.saveEdits = function () {
                 $log.info('saving edits');
                 $log.info(self.editCerts);
                 $log.info(self.editCqms);
                 self.isEditing = !self.isEditing
-            }
+            };
 
             self.cancelEdits = function () {
                 $log.info('cancelling edits');
@@ -63,7 +127,7 @@
                 self.cqms = $scope.cqms;
                 self.buildEditObject();
                 self.isEditing = !self.isEditing
-            }
+            };
         }]);
 
     angular.module('app.common')
@@ -77,7 +141,10 @@
                          viewAllCerts: '=defaultAll',
                          countCerts: '@countCerts',
                          countCqms: '@countCqms',
-                         editMode: '=editMode' },
+                         editMode: '=editMode',
+                         reportFileLocation: '@',
+                         applicableCqmCriteria: '='
+                       },
                 controllerAs: 'vm',
                 controller: 'CertsController'
             };

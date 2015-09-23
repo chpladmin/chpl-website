@@ -3,13 +3,15 @@
 
     describe('app.admin.vpManagement.directive', function () {
 
-        var element, scope, $log, commonService, mockCommonService, ctrl;
+        var element, scope, $log, commonService, mockCommonService, mockFileUploader, ctrl, FileUploader;
 
         beforeEach(function () {
             mockCommonService = {};
+            mockFileUploader = function(){};
 
             module('app.admin', function($provide) {
                 $provide.value('commonService', mockCommonService);
+                $provide.value('FileUploader', mockFileUploader);
             });
 
             module('app/admin/components/vpManagement.html');
@@ -23,7 +25,6 @@
                 mockCommonService.classifications = ['Classification 1', 'Classification 2'];
                 mockCommonService.practices  = ['Practice 1', 'Practice 2'];
                 mockCommonService.certBodies  = ['CB 1', 'CB 2'];
-                mockCommonService.uploadingCps = [{vendor: 'Vend', product: 'Prod', version: 'version', edition: '2014', uploadDate: '2015-07-02'}];
 
                 mockCommonService.getVendors = function () {
                     var defer = $q.defer();
@@ -96,6 +97,8 @@
 
             $httpBackend.whenGET('common/components/certs.html')
                 .respond(200, '<div></div>');
+            $httpBackend.whenGET('admin/components/additionalSoftware.html')
+                .respond(200, '<div></div>');
             element = angular.element('<ai-vp-management></ai-vp-management');
             $compile(element)(scope);
             scope.$digest();
@@ -109,8 +112,11 @@
 
         describe('controller', function () {
 
-            beforeEach(inject(function ($controller, _commonService_, $q) {
+            var fileUploader;
+
+            beforeEach(inject(function ($controller, _commonService_, $q, _FileUploader_) {
                 commonService = _commonService_;
+                FileUploader = _FileUploader_;
 
                 spyOn(commonService, 'getProduct').and.callFake(function () {
                     var defer = $q.defer();
@@ -133,14 +139,9 @@
                 ctrl = $controller('VpManagementController', {
                     $scope: scope,
                     $element: null,
-                    commonService: commonService});
+                    commonService: commonService,
+                    FileUploader: FileUploader});
                 scope.$digest();
-                ctrl.uploadingCps = [{id: 1, vendor: {name: 'Vend', lastModifiedDate: '2013-03-02'}, product: {name: 'Prod', lastModifiedDate: '2014-05-02'},
-                                      version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'},
-                                     {id: 2, vendor: {name: 'Denv', lastModifiedDate: '2013-02-02'}, product: {name: 'Dorp', lastModifiedDate: '2013-05-02'},
-                                      version: {name: '332.1'}, edition: '2011', uploadDate: '2012-07-02'},
-                                     {id: 3, vendor: {name: 'LastCo', lastModifiedDate: '2015-03-02'}, product: {name: 'Healthy', lastModifiedDate: '2014-10-02'},
-                                      version: {name: '12Ac'}, edition: '2014', uploadDate: '2015-03-22'}];
             }));
 
             it('should exist', function() {
@@ -192,24 +193,6 @@
                 ctrl.productSelect = [{product: 'product1'}, {product: 'product2'}];
                 ctrl.selectProduct();
                 expect(ctrl.mergeProduct).toEqual({product: 'product1'});
-            });
-
-            it('should load a CP to confirm when one is chosen', function () {
-                ctrl.inspectCp(1);
-                expect(ctrl.activeVendor).toEqual([{name: 'Vend', lastModifiedDate: '2013-03-02'}]);
-                expect(ctrl.activeProduct).toEqual([{name: 'Prod', lastModifiedDate: '2014-05-02'}]);
-                expect(ctrl.activeVersion).toEqual({name: '1.2.3'});
-                expect(commonService.getProduct).toHaveBeenCalled();
-            });
-
-            it('should cancel inspection of a cp when required', function () {
-                ctrl.inspectCp(2);
-                ctrl.cancelCp();
-                expect(self.inspectingCp).toBeUndefined();
-                expect(self.activeVendor).toBeUndefined();
-                expect(self.activeProduct).toBeUndefined();
-                expect(self.activeVersion).toBeUndefined();
-                expect(self.activeCP).toBeUndefined();
             });
 
             it('should know when address fields are required', function () {

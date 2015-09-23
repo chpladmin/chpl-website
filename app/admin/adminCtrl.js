@@ -21,8 +21,22 @@
                 return authService.getUsername();
             };
 
+            self.handleLogin = function (res) {
+                if (res.status === 200) {
+                    var token = res.data.token ? res.data : null;
+                    if (token) {
+                        self.message = '';
+                    } else {
+                        self.message = 'Invalid username or password';
+                    }
+                } else {
+                    self.message = 'Invalid username or password';
+                }
+            }
+
             self.login = function () {
-                userService.login(self.username, self.password);
-            };
+                userService.login(self.username, self.password)
+                    .then(self.handleLogin, self.handleLogin)
+            }
         }]);
 })();
