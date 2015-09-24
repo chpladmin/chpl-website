@@ -72,5 +72,17 @@
             self.removeUserFromAcb = function (userObject) {
                 return commonService.postApiCall('/acb/delete_user', API, userObject);
             };
+
+            self.inviteUser = function (invitationObject) {
+                return commonService.postApiCall('/invite_user', API, invitationObject);
+            };
+
+            self.createInvitedUser = function (contactDetails) {
+                return commonService.postApiCall('/create_invited_user', '/ainq.com', contactDetails);
+            };
+
+            self.authorizeUser = function (userAuthorization) {
+                return commonService.postApiCall('/authorize_user', '/ainq.com', userAuthorization);
+            };
         }]);
 })();

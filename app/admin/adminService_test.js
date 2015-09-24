@@ -7,6 +7,9 @@
         var mock = {};
         mock.vendor = {vendorId: 1, address: {}};
         mock.users = {users: [{user: {}},{user: {}}]};
+        mock.userInvitation = {email: 'test@example.com', roles:['TEST']};
+        mock.userAuthorization = {email: 'test@example.com', password: 'password', hash: 'hash'};
+        mock.userContactDetails = {};
 
 
         beforeEach(function () {
@@ -25,6 +28,9 @@
 
             $httpBackend.whenPOST(/vendor\/update_vendor/).respond(mock.vendor);
             $httpBackend.whenGET(/list_users/).respond(mock.users);
+            $httpBackend.whenPOST(/invite_user/).respond({});
+            $httpBackend.whenPOST(/create_invited_user/).respond({});
+            $httpBackend.whenPOST(/authorize_user/).respond({});
         }));
 
         afterEach(function () {
@@ -65,6 +71,30 @@
                     .then(function (response) {
                         expect(response).toEqual(mock.users);
                     });
+                $httpBackend.flush();
+            });
+
+            it('should return an empty object when inviteUser is called', function () {
+                $httpBackend.expectPOST(/invite_user/, mock.userInvitation).respond(200, {});
+                adminService.inviteUser(mock.userInvitation).then(function (response) {
+                    expect(response).toEqual({});
+                });
+                $httpBackend.flush();
+            });
+
+            it('should return an empty object when createInvitedUser is called', function () {
+                $httpBackend.expectPOST(/create_invited_user/, mock.userContactDetails).respond(200, {});
+                adminService.createInvitedUser(mock.userContactDetails).then(function (response) {
+                    expect(response).toEqual({});
+                });
+                $httpBackend.flush();
+            });
+
+            it('should return an empty object when authorizeUser is called', function () {
+                $httpBackend.expectPOST(/authorize_user/, mock.userAuthorization).respond(200, {});
+                adminService.authorizeUser(mock.userAuthorization).then(function (response) {
+                    expect(response).toEqual({});
+                });
                 $httpBackend.flush();
             });
         });

@@ -66,7 +66,7 @@
             });
             $httpBackend.flush();
         });
-
+*/
         it('should return classifications', function () {
             commonService.getClassifications().then(function(response) {
                 expect(response).toEqual(mock.classifications);
@@ -87,14 +87,14 @@
             });
             $httpBackend.flush();
         });
-
+/*
         it('should return products', function () {
             commonService.getProducts().then(function(response) {
                 expect(response).toEqual(mock.products);
             });
             $httpBackend.flush();
         });
-
+*/
         it('should return practices', function () {
             commonService.getPractices().then(function(response) {
                 expect(response).toEqual(mock.practices);
@@ -108,7 +108,7 @@
             });
             $httpBackend.flush();
         });
-
+/*
         it('should return certs and cqms', function () {
             commonService.getCertsNCQMs().then(function(response) {
                 expect(response).toEqual(mock.certs.concat(mock.cqms));

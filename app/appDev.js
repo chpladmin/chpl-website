@@ -194,6 +194,7 @@
             $httpBackend.whenGET(/^compare\/.*/).passThrough();
             $httpBackend.whenGET(/^common\/.*/).passThrough();
             $httpBackend.whenGET(/^product\/.*/).passThrough();
+            $httpBackend.whenGET(/^userRegistration\/.*/).passThrough();
             $httpBackend.whenGET(/localhost:8080/).passThrough();
             $httpBackend.whenPOST(/localhost:8080/).passThrough();
             $httpBackend.whenGET(/rest/).passThrough();
@@ -215,6 +216,8 @@
             $httpBackend.whenGET(/ainq.com\/list_acbActivity/).respond(200, listAcbActivity()); // list product activities
             $httpBackend.whenGET(/ainq.com\/list_uploadingCps/).respond(200, [{vendor: {name: 'Vend', lastModifiedDate: '2013-03-02'}, product: {name: 'Prod', lastModifiedDate: '2014-05-02'},
                                                                                version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'}]); // list fake uploadingCps
+            $httpBackend.whenPOST(/ainq.com\/create_invited_user/).respond(200, {});
+            $httpBackend.whenPOST(/ainq.com\/authorize_user/).respond(200, {});
         })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', '$log', function($delegate, $log) {

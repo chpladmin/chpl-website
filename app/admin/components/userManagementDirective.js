@@ -5,6 +5,7 @@
         .controller('UserManagementController', ['adminService', '$log', '$scope', function (adminService, $log, $scope) {
             var self = this;
             self.newUser = {roles: []};
+            self.userInvitation = {roles: []};
             self.acbId = $scope.acbId;
             self.roles = ['ROLE_ACB_ADMIN','ROLE_ACB_STAFF'];
             if (!self.acbId) {
@@ -100,6 +101,18 @@
             self.cancelUser = function (user) {
                 $log.info('cancelling changes');
                 self.freshenUsers();
+            };
+
+            self.inviteUser = function () {
+                if (self.acbId) {
+                    self.userInvitation.acbId = self.acbId;
+                }
+                if (self.userInvitation.email && self.userInvitation.email.length > 0 && self.userInvitation.roles.length > 0) {
+                    adminService.inviteUser(self.userInvitation);
+                    $scope.userManagementInviteUser.$setPristine();
+                    $scope.userManagementInviteUser.$setUntouched();
+                    self.userInvitation = {roles:[]};
+                }
             };
         }])
         .directive('aiUserManagement', function () {
