@@ -4,13 +4,15 @@
     angular.module('app.common')
         .controller('CertsController', ['$scope', '$log', function ($scope, $log) {
             var self = this;
+            self.certs = [];
+            self.cqms = [];
             $scope.$watch('certs', function (newCerts) {
                 if (newCerts) {
-                    self.certs = newCerts;
+                    self.certs = angular.copy(newCerts);
                 }}, true);
             $scope.$watch('cqms', function (newCqms) {
                 if (newCqms) {
-                    self.cqms = newCqms;
+                    self.cqms = angular.copy(newCqms);
                     if (self.editMode)
                         self.buildEditObject();
                 }}, true);
@@ -115,16 +117,48 @@
             };
 
             self.saveEdits = function () {
-                $log.info('saving edits');
-                $log.info(self.editCerts);
-                $log.info(self.editCqms);
+                self.countCerts = 0;
+                self.countCqms = 0;
+
+                for (var i = 0; i < self.certs.length; i++) {
+                    self.certs[i].success = self.editCerts[self.certs[i].number];
+                    if (self.certs[i].success) {
+                        self.countCerts += 1;
+                    }
+                }
+                $scope.certs = angular.copy(self.certs);
+                $scope.cqms = [];
+                for (var i = 0; i < self.builtCqms.length; i++) {
+                    if (self.editCqms[self.builtCqms[i].number]) {
+                        self.builtCqms[i].success = true;
+                        if (self.builtCqms[i].hasVersion) {
+                            if (self.editCqms[self.builtCqms[i].number].length > 0) {
+                                self.builtCqms[i].version = self.editCqms[self.builtCqms[i].number];
+                            } else {
+                                self.builtCqms[i].success = false;
+                                delete(self.builtCqms[i].version);
+                            }
+                        }
+                        if (self.builtCqms[i].success) {
+                            $scope.cqms.push(self.builtCqms[i]);
+                            self.countCqms += 1;
+                        }
+                    } else {
+                        self.builtCqms[i].success = false;
+                        if (self.builtCqms[i].hasVersion) {
+                            delete(self.builtCqms[i].version);
+                        } else {
+                            $scope.cqms.push(self.builtCqms[i]);
+                        }
+                    }
+                }
                 self.isEditing = !self.isEditing
             };
 
             self.cancelEdits = function () {
                 $log.info('cancelling edits');
-                self.certs = $scope.certs;
-                self.cqms = $scope.cqms;
+                self.certs = angular.copy($scope.certs);
+                self.cqms = angular.copy($scope.cqms);
                 self.buildEditObject();
                 self.isEditing = !self.isEditing
             };
