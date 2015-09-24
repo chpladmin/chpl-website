@@ -2,8 +2,42 @@
     'use strict';
 
     angular.module('app.nav')
-        .controller('NavigationController', ['$scope', 'userService', 'authService', '$log', '$location', function ($scope, userService, authService, $log, $location) {
+        .controller('NavigationController', ['$scope', 'userService', 'authService', 'commonService', '$log', '$location', 'Idle', 'Keepalive', function ($scope, userService, authService, commonService, $log, $location, Idle, Keepalive) {
             var self = this;
+
+            $scope.$on('IdleStart', function() {
+                $log.info('IdleStart');
+                // the user appears to have gone idle
+            });
+
+            $scope.$on('IdleWarn', function(e, countdown) {
+                $log.info('IdleWarn');
+                // follows after the IdleStart event, but includes a countdown until the user is considered timed out
+                // the countdown arg is the number of seconds remaining until then.
+                // you can change the title or display a warning dialog from here.
+                // you can let them resume their session by calling Idle.watch()
+            });
+
+            $scope.$on('IdleTimeout', function() {
+                $log.info('IdleTimeout');
+                // the user has timed out (meaning idleDuration + timeout has passed without any activity)
+                // this is where you'd log them
+            });
+
+            $scope.$on('IdleEnd', function() {
+                $log.info('IdleEnd');
+                // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
+            });
+
+            $scope.$on('Keepalive', function() {
+                $log.info('Keepalive');
+
+                if (authService.isAuthed()) {
+                    var token = authService.getToken();
+                    commonService.keepalive(token);
+                }
+                // do something to keep the user's session alive
+            });
 
             self.isActive = function (route) {
                 return route === $location.path();
@@ -14,6 +48,7 @@
                     var token = res.data.token ? res.data : null;
                     if (token) {
                         self.message = '';
+                        Idle.watch();
                         $location.path('/admin');
                     } else {
                         self.message = 'Invalid username or password';
@@ -29,6 +64,7 @@
             }
 
             self.logout = function () {
+                Idle.unwatch();
                 authService.logout()
             }
 

@@ -199,6 +199,7 @@
             $httpBackend.whenPOST(/localhost:8080/).passThrough();
             $httpBackend.whenGET(/rest/).passThrough();
             $httpBackend.whenPOST(/rest/).passThrough();
+            $httpBackend.whenPOST(/keepalive/).passThrough();
             $httpBackend.whenGET(/openchpl.appspot.com/).passThrough();
             $httpBackend.whenGET(/ainq.com\/list_api_calls/).respond(200, apis.endpoints); // fake search results
             $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs

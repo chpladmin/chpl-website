@@ -115,5 +115,9 @@
             self.getUploadingCps = function () {
                 return self.simpleApiCall('/certified_product/get_pending', API);
             };
+
+            self.keepalive = function (token) {
+                return self.postApiCall('/keepalive', API, token)
+            };
         });
 })();
