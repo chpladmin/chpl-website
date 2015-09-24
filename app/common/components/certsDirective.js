@@ -6,6 +6,7 @@
             var self = this;
             self.certs = [];
             self.cqms = [];
+            self.builtCqms = [];
             $scope.$watch('certs', function (newCerts) {
                 if (newCerts) {
                     self.certs = angular.copy(newCerts);

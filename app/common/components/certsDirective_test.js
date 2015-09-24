@@ -19,7 +19,7 @@
             var template = $templateCache.get('app/common/components/certs.html');
             $templateCache.put('common/components/certs.html', template);
 
-            element = angular.element('<ai-certs edit-mode="true" certs=\'' + certs + '\'></ai-certs');
+            element = angular.element('<ai-certs edit-mode="true" certs=\'' + certs + '\' cqms=\'[]\'></ai-certs');
             $compile(element)(scope);
             scope.$digest();
         }));
