@@ -134,14 +134,24 @@
                         if (self.builtCqms[i].hasVersion) {
                             if (self.editCqms[self.builtCqms[i].number].length > 0) {
                                 self.builtCqms[i].version = self.editCqms[self.builtCqms[i].number];
+                                self.countCqms += 1;
+                                for (var j = 0; j < self.builtCqms[i].version.length; j++) {
+                                    $scope.cqms.push({number: self.builtCqms[i].number,
+                                                      hasVersion: true,
+                                                      success: true,
+                                                      title: self.builtCqms[i].title,
+                                                      version: self.builtCqms[i].version[j]
+                                                     });
+                                }
                             } else {
                                 self.builtCqms[i].success = false;
                                 delete(self.builtCqms[i].version);
                             }
-                        }
-                        if (self.builtCqms[i].success) {
-                            $scope.cqms.push(self.builtCqms[i]);
-                            self.countCqms += 1;
+                        } else {
+                            if (self.builtCqms[i].success) {
+                                $scope.cqms.push(self.builtCqms[i]);
+                                self.countCqms += 1;
+                            }
                         }
                     } else {
                         self.builtCqms[i].success = false;

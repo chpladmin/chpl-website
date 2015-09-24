@@ -414,14 +414,14 @@
                 self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
                 self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
                 self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
-                self.updateCP.otherAcb = self.activeCP.otherAcb;;
+                self.updateCP.otherAcb = self.activeCP.otherAcb;
                 self.updateCP.testingLabId = self.activeCP.testingLabId;
                 self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
 
                 self.editCP = false;
                 $log.debug(self.updateCP);
 
-                adminService.updateCP(self.updateCP)
+                adminService.updateCP(self.activeCP)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                         self.editCP = false;
