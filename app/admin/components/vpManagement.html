@@ -3,7 +3,7 @@
     <div class="col-sm-12" ng-if="vm.activeVendor === '' && vm.isAcbAdmin">
       <h3>Upload Certified Products</h3>
       <input type="file" nv-file-select uploader="vm.uploader" />
-      <table class="table"  ng-if="vm.uploader.queue.length > 0">
+      <table class="table" ng-if="vm.uploader.queue.length > 0">
         <thead>
           <tr>
             <th width="50%">Name</th>
@@ -29,20 +29,20 @@
             </td>
             <td nowrap>
               <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                <span class="glyphicon glyphicon-upload"></span> Upload
+                <i class="fa fa-cloud-upload"></i> Upload
               </button>
               <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                <i class="fa fa-ban"></i> Cancel
               </button>
               <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                <span class="glyphicon glyphicon-trash"></span> Remove
+                <i class="fa fa-trash-o"></i> Remove
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-    </div> <!-- end upload certified products -->
-  </div>
+    </div>
+  </div> <!-- end upload certified products -->
 
   <div class="row" ng-if="vm.isAcbAdmin">
     <div class="col-sm-12">
@@ -68,9 +68,15 @@
             <td>{{ cp.certificationDate | date }}</td>
             <td class="text-center">
               <button ng-if="vm.inspectingCp === ''" class="btn btn-default btn-block" ng-click="vm.inspectCp(cp.id)">Inspect</button>
-              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-default btn-block" ng-click="vm.confirmCp(cp.id)">Confirm</button>
-              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-default btn-block" ng-click="vm.cancelCp(cp.id)">Cancel</button>
-              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-default btn-block" ng-click="vm.rejectCp(cp.id)">Reject</button>
+              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-success btn-block" ng-click="vm.confirmCp(cp.id)">
+                <i class="fa fa-cloud-upload"></i> Confirm
+              </button>
+              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-warning btn-block" ng-click="vm.cancelCp(cp.id)">
+                <i class="fa fa-ban"></i> Cancel
+              </button>
+              <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-danger btn-block" ng-click="vm.rejectCp(cp.id)">
+                <i class="fa fa-trash-o"></i> Reject
+              </button>
               <span ng-if="vm.inspectingCp !== '' && cp.id !== vm.inspectingCp.id">Complete or cancel currently open Product</span>
             </td>
           </tr>
@@ -87,7 +93,6 @@
 
   <div class="row">
     <div class="col-md-3 col-sm-6">
-<!--      <h3>Vendor</h3>-->
       <div ng-if="vm.activeVendor === '' || vm.activeVendor.length > 1">
         <label for="vendorSelect" class="control-label">Select a vendor</label>
         <select ng-model="vm.vendorSelect" multiple="true"
@@ -98,8 +103,7 @@
       </div> <!-- end select -->
 
       <div ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
-        <div class="panel panel-default">
-          <form name="vendorEditForm" novalidate>
+        <div class="panel panel-default" ng-form="vendorEditForm">
             <div class="panel-heading">
               <span ng-if="vm.inspectingCp && !vm.activeVendor[0].id">
                 Vendor <strong>"{{ vm.inspectingCp.vendor.name }}"</strong> not found. Would you like to select an existing vendor?<br />
@@ -167,17 +171,15 @@
               <br />
               <p ng-if="vm.vendorMessage !== undefined && vm.editVendor" class="bg-danger">{{ vm.vendorMessage }}</p>
               <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Vendor</button></p>
-              <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Vendor</button></p>
-              <p><button class="btn btn-default btn-block" ng-if="vm.editVendor" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
+              <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Vendor</button></p>
+              <p><button class="btn btn-warning btn-block" ng-if="vm.editVendor" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
               <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
             </div>
-          </form>
         </div>
       </div>
     </div> <!-- end single vendor -->
 
     <div class="col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length !== 1">
-<!--      <h3>Vendor merge</h3>-->
       <div class="row">
         <div class="col-md-6">
           <h4>Merge selected vendors</h4>
@@ -200,8 +202,7 @@
         </div>
         <div class="col-md-6">
           <h4>To form this one</h4>
-          <div class="panel panel-default">
-            <form name="vendorMergeForm" novalidate>
+          <div class="panel panel-default" ng-form="vendorMergeForm">
               <div class="panel-heading">
                 <div class="form-group">
                   <label for="vendorMergeName">Vendor Name <span class="text-danger">*</span></label>
@@ -235,17 +236,15 @@
                 </div>
                 <br />
                 <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
-                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-default btn-block" ng-click="vm.saveVendor()">Save Combined Vendors</button></p>
-                <p><button class="btn btn-default btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
+                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor()">Save Combined Vendors</button></p>
+                <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
               </div>
-            </form>
           </div>
         </div>
       </div>
     </div> <!-- end vendor merge -->
 
     <div class="col-md-3 col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
-<!--      <h3>Product</h3>-->
       <div ng-if="vm.activeProduct === '' || vm.activeProduct.length !== 1">
         <label for="productSelect" class="control-label">Select a product</label>
         <select ng-model="vm.productSelect" multiple="true"
@@ -255,8 +254,7 @@
         <button class="btn btn-default form-control" ng-click="vm.selectProduct()">{{ vm.productSelect.length > 1 ? 'Merge' : 'Choose' }} Product{{ vm.productSelect.length !== 1 ? '(s)' : ''}}</button>
       </div>
       <div ng-if="vm.activeProduct !== '' && vm.activeProduct.length === 1">
-        <div class="panel panel-default">
-          <form name="productEditForm" novalidate>
+        <div class="panel panel-default" ng-form="productEditForm">
             <div class="panel-heading">
               <span ng-if="vm.inspectingCp && !vm.activeProduct[0].id && vm.activeVendor[0].id">
                 Product <strong>"{{ vm.inspectingCp.product.name }}"</strong> not found. Would you like to select an existing product?<br />
@@ -291,16 +289,14 @@
               <br />
               <p ng-if="vm.productMessage !== undefined && vm.editProduct" class="bg-danger">{{ vm.productMessage }}</p>
               <p><button class="btn btn-default btn-block" ng-if="!vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Edit Product</button></p>
-              <p><button ng-disabled="productEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editProduct" ng-click="vm.saveProduct()">Save Product</button></p>
-              <p><button class="btn btn-default btn-block" ng-if="vm.editProduct" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
+              <p><button ng-disabled="productEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editProduct" ng-click="vm.saveProduct()">Save Product</button></p>
+              <p><button class="btn btn-warning btn-block" ng-if="vm.editProduct" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
               <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editProduct = false; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
             </div>
-          </form>
         </div>
       </div>
     </div> <!-- end product select -->
     <div class="col-sm-6" ng-if="vm.activeProduct !== '' && vm.activeProduct.length > 1">
-<!--      <h3>Product merge</h3>-->
       <div class="row">
         <div class="col-md-6">
           <h4>Merge selected products</h4>
@@ -318,8 +314,7 @@
         </div>
         <div class="col-md-6">
           <h4>To form this one</h4>
-          <div class="panel panel-default">
-            <form name="productMergeForm" novalidate>
+          <div class="panel panel-default" ng-form="productMergeForm">
               <div class="panel-heading">
                 <div class="form-group">
                   <label for="productMergeName">Product Name</label>
@@ -327,17 +322,15 @@
                 </div>
               </div>
               <div class="panel-body">
-                <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-default btn-block" ng-click="vm.saveProduct()">Save Combined Products</button></p>
-                <p><button class="btn btn-default btn-block" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
+                <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveProduct()">Save Combined Products</button></p>
+                <p><button class="btn btn-warning btn-block" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
               </div>
-            </form>
           </div>
         </div>
       </div>
     </div> <!-- end product merge -->
 
     <div class="col-md-3 col-sm-6" ng-if="vm.activeProduct !== '' && vm.activeProduct.length === 1">
-<!--      <h3>Version</h3>-->
       <div ng-if="vm.activeVersion === '' || vm.activeVersion.length > 1">
         <label for="versionSelect" class="control-label">Select a version</label>
         <select ng-model="vm.versionSelect" multiple="true"
@@ -347,8 +340,7 @@
         <button class="btn btn-default form-control" ng-click="vm.selectVersion()">{{ vm.versionSelect.length > 1 ? 'Merge' : 'Choose' }} Version{{ vm.versionSelect.length !== 1 ? '(s)' : ''}}</button>
       </div>
       <div ng-if="vm.activeVersion !== '' && vm.activeVersion.length === 1">
-        <div class="panel panel-default">
-          <form name="versionEditForm" novalidate>
+        <div class="panel panel-default" ng-form="versionEditForm">
             <div class="panel-heading">
               <span ng-if="vm.inspectingCp && !vm.inspectingCp.product.versionId && vm.activeProduct[0].id">
                 Version <strong>"{{ vm.inspectingCp.product.version }}"</strong> not found. Would you like to select an existing version?<br />
@@ -374,16 +366,15 @@
               <br />
               <p ng-if="vm.versionMessage !== undefined && vm.editVersion" class="bg-danger">{{ vm.versionMessage }}</p>
               <p><button class="btn btn-default btn-block" ng-if="!vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Edit Version</button></p>
-              <p><button ng-disabled="versionEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editVersion" ng-click="vm.saveVersion()">Save Version</button></p>
-              <p><button class="btn btn-default btn-block" ng-if="vm.editVersion" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
+              <p><button ng-disabled="versionEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVersion" ng-click="vm.saveVersion()">Save Version</button></p>
+              <p><button class="btn btn-warning btn-block" ng-if="vm.editVersion" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
               <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVersion = false; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
             </div>
-          </form>
         </div>
       </div>
     </div> <!-- end version select -->
+
     <div class="col-sm-6" ng-if="vm.activeVersion !== '' && vm.activeVersion.length > 1">
-<!--      <h3>Version merge</h3>-->
       <div class="row">
         <div class="col-md-6">
           <h4>Merge selected versions</h4>
@@ -399,8 +390,7 @@
         </div>
         <div class="col-md-6">
           <h4>To form this one</h4>
-          <div class="panel panel-default">
-            <form name="versionMergeForm" novalidate>
+          <div class="panel panel-default" ng-form="versionMergeForm">
               <div class="panel-heading">
                 <div class="form-group">
                   <label for="versionMergeVersion">Version</label>
@@ -409,16 +399,15 @@
               </div>
               <div class="panel-body">
                 <br />
-                <p><button ng-disabled="versionMergeForm.$invalid" class="btn btn-default btn-block" ng-click="vm.saveVersion()">Save Combined Versions</button></p>
-                <p><button class="btn btn-default btn-block" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
+                <p><button ng-disabled="versionMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVersion()">Save Combined Versions</button></p>
+                <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
               </div>
-            </form>
           </div>
         </div>
       </div>
     </div> <!-- end product merge -->
+
     <div class="col-md-3 col-sm-6" ng-if="vm.activeVersion !== '' && vm.activeVersion.length === 1">
-<!--      <h3>Certified Product</h3>-->
       <div ng-if="vm.activeCP === ''">
         <label for="cpSelect" class="control-label">Select a certified product</label>
         <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
@@ -511,8 +500,8 @@
               <br />
               <p ng-if="vm.cpMessage !== undefined && vm.editCP" class="bg-danger">{{ vm.cpMessage }}</p>
               <p><button class="btn btn-default btn-block" ng-if="!vm.editCP" ng-click="vm.editCP = ! vm.editCP">Edit Certified Product</button></p>
-              <p><button ng-disabled="CPEditForm.$invalid" class="btn btn-default btn-block" ng-if="vm.editCP" ng-click="vm.saveCP()">Save Certified Product</button></p>
-              <p><button class="btn btn-default btn-block" ng-if="vm.editCP" ng-click="vm.cancelCP()">Cancel Edits</button></p>
+              <p><button ng-disabled="CPEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editCP" ng-click="vm.saveCP()">Save Certified Product</button></p>
+              <p><button class="btn btn-warning btn-block" ng-if="vm.editCP" ng-click="vm.cancelCP()">Cancel Edits</button></p>
               <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editCP = false; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to certified product select</a></p>
             </form>
           </div>
