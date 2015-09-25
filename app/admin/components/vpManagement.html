@@ -1,8 +1,54 @@
 <section>
-  <div class="row" ng-if="vm.uploadingCps.length > 0 && vm.isAcbAdmin">
+  <div class="row">
+    <div class="col-sm-12" ng-if="vm.activeVendor === '' && vm.isAcbAdmin">
+      <h3>Upload Certified Products</h3>
+      <input type="file" nv-file-select uploader="vm.uploader" />
+      <table class="table"  ng-if="vm.uploader.queue.length > 0">
+        <thead>
+          <tr>
+            <th width="50%">Name</th>
+            <th ng-show="vm.uploader.isHTML5">Size</th>
+            <th ng-show="vm.uploader.isHTML5">Progress</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in vm.uploader.queue">
+            <td><strong>{{ item.file.name }}</strong></td>
+            <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="vm.uploader.isHTML5">
+              <div class="progress" style="margin-bottom: 0;">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+              </div>
+            </td>
+            <td class="text-center">
+              <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+              <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+              <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+            </td>
+            <td nowrap>
+              <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                <span class="glyphicon glyphicon-upload"></span> Upload
+              </button>
+              <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+              </button>
+              <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                <span class="glyphicon glyphicon-trash"></span> Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> <!-- end upload certified products -->
+  </div>
+
+  <div class="row" ng-if="vm.isAcbAdmin">
     <div class="col-sm-12">
-      <h3>Certified Products in the process of upload</h3>
-      <table class="table table-striped">
+      <h3>View Certified Products in the process of upload</h3>
+      <p ng-if="vm.uploadingCps.length === 0">No products currently in queue</p>
+      <table class="table table-striped" ng-if="vm.uploadingCps.length > 0">
         <thead>
           <tr>
             <th>Vendor</th>
@@ -34,8 +80,14 @@
   </div> <!-- end of upload process table -->
 
   <div class="row">
+    <div class="col-sm-12">
+      <h3>Modify Vendor &amp; Product Details</h3>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-md-3 col-sm-6">
-      <h3>Vendor</h3>
+<!--      <h3>Vendor</h3>-->
       <div ng-if="vm.activeVendor === '' || vm.activeVendor.length > 1">
         <label for="vendorSelect" class="control-label">Select a vendor</label>
         <select ng-model="vm.vendorSelect" multiple="true"
@@ -125,10 +177,10 @@
     </div> <!-- end single vendor -->
 
     <div class="col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length !== 1">
-      <h3>Vendor merge</h3>
+<!--      <h3>Vendor merge</h3>-->
       <div class="row">
         <div class="col-md-6">
-          <h4>You are merging these vendors</h4>
+          <h4>Merge selected vendors</h4>
           <div class="panel panel-default" ng-repeat="vendor in vm.activeVendor">
             <div class="panel-heading">
               <span>{{ vendor.name }}</span>
@@ -150,93 +202,50 @@
           <h4>To form this one</h4>
           <div class="panel panel-default">
             <form name="vendorMergeForm" novalidate>
-            <div class="panel-heading">
-              <div class="form-group">
-                <label for="vendorMergeName">Vendor Name <span class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.name" id="vendorMergeName" required></input>
+              <div class="panel-heading">
+                <div class="form-group">
+                  <label for="vendorMergeName">Vendor Name <span class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.name" id="vendorMergeName" required></input>
+                </div>
               </div>
-            </div>
-            <div class="panel-body">
-              <div class="form-group">
-                <label for="addressMergeLine1">Address Line 1 <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.line1" id="addressMergeLine1"></input>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label for="addressMergeLine1">Address Line 1 <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.line1" id="addressMergeLine1"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressMergeLine2">Address Line 2</label>
+                  <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.line2" id="addressMergeLine2"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressMergeCity">City <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.city" id="addressMergeCity"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressMergeRegion">Region <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.region" id="addressMergeRegion"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressMergeCountry">Country <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.country" id="addressMergeCountry"></input>
+                </div>
+                <div class="form-group">
+                  <label for="vendorMergeWebsite">Website</label>
+                  <input class="input-sm form-control" type="url" ng-model="vm.mergeVendor.website" id="vendorMergeWebsite"></input>
+                </div>
+                <br />
+                <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
+                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-default btn-block" ng-click="vm.saveVendor()">Save Combined Vendors</button></p>
+                <p><button class="btn btn-default btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
               </div>
-              <div class="form-group">
-                <label for="addressMergeLine2">Address Line 2</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.line2" id="addressMergeLine2"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressMergeCity">City <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.city" id="addressMergeCity"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressMergeRegion">Region <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.region" id="addressMergeRegion"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressMergeCountry">Country <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.country" id="addressMergeCountry"></input>
-              </div>
-              <div class="form-group">
-                <label for="vendorMergeWebsite">Website</label>
-                <input class="input-sm form-control" type="url" ng-model="vm.mergeVendor.website" id="vendorMergeWebsite"></input>
-              </div>
-              <br />
-              <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
-              <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-default btn-block" ng-click="vm.saveVendor()">Save Combined Vendors</button></p>
-              <p><button class="btn btn-default btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
-            </div>
             </form>
           </div>
         </div>
       </div>
     </div> <!-- end vendor merge -->
 
-    <div class="col-sm-9" ng-if="vm.activeVendor === '' && vm.isAcbAdmin">
-      <h3>Upload Certified Products</h3>
-      <input type="file" nv-file-select uploader="vm.uploader" />
-      <table class="table">
-        <thead>
-          <tr>
-            <th width="50%">Name</th>
-            <th ng-show="vm.uploader.isHTML5">Size</th>
-            <th ng-show="vm.uploader.isHTML5">Progress</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="item in vm.uploader.queue">
-            <td><strong>{{ item.file.name }}</strong></td>
-            <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-            <td ng-show="vm.uploader.isHTML5">
-              <div class="progress" style="margin-bottom: 0;">
-                <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-              </div>
-            </td>
-            <td class="text-center">
-              <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-              <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-              <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-            </td>
-            <td nowrap>
-              <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                <span class="glyphicon glyphicon-upload"></span> Upload
-              </button>
-              <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-              </button>
-              <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                <span class="glyphicon glyphicon-trash"></span> Remove
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div> <!-- end upload certified products -->
-
     <div class="col-md-3 col-sm-6" ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
-      <h3>Product</h3>
+<!--      <h3>Product</h3>-->
       <div ng-if="vm.activeProduct === '' || vm.activeProduct.length !== 1">
         <label for="productSelect" class="control-label">Select a product</label>
         <select ng-model="vm.productSelect" multiple="true"
@@ -291,10 +300,10 @@
       </div>
     </div> <!-- end product select -->
     <div class="col-sm-6" ng-if="vm.activeProduct !== '' && vm.activeProduct.length > 1">
-      <h3>Product merge</h3>
+<!--      <h3>Product merge</h3>-->
       <div class="row">
         <div class="col-md-6">
-          <h4>You are merging these products</h4>
+          <h4>Merge selected products</h4>
           <div class="panel panel-default" ng-repeat="product in vm.activeProduct">
             <div class="panel-heading">
               <span>{{ product.name }}</span>
@@ -328,7 +337,7 @@
     </div> <!-- end product merge -->
 
     <div class="col-md-3 col-sm-6" ng-if="vm.activeProduct !== '' && vm.activeProduct.length === 1">
-      <h3>Version</h3>
+<!--      <h3>Version</h3>-->
       <div ng-if="vm.activeVersion === '' || vm.activeVersion.length > 1">
         <label for="versionSelect" class="control-label">Select a version</label>
         <select ng-model="vm.versionSelect" multiple="true"
@@ -374,10 +383,10 @@
       </div>
     </div> <!-- end version select -->
     <div class="col-sm-6" ng-if="vm.activeVersion !== '' && vm.activeVersion.length > 1">
-      <h3>Version merge</h3>
+<!--      <h3>Version merge</h3>-->
       <div class="row">
         <div class="col-md-6">
-          <h4>You are merging these versions</h4>
+          <h4>Merge selected versions</h4>
           <div class="panel panel-default" ng-repeat="version in vm.activeVersion">
             <div class="panel-heading">
               <span>{{ version.version }}</span>
@@ -409,7 +418,7 @@
       </div>
     </div> <!-- end product merge -->
     <div class="col-md-3 col-sm-6" ng-if="vm.activeVersion !== '' && vm.activeVersion.length === 1">
-      <h3>Certified Product</h3>
+<!--      <h3>Certified Product</h3>-->
       <div ng-if="vm.activeCP === ''">
         <label for="cpSelect" class="control-label">Select a certified product</label>
         <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
