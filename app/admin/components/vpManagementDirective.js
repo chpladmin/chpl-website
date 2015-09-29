@@ -13,14 +13,14 @@
             self.uploadingCps = [];
             self.inspectingCp = '';
 
-/*            commonService.getUploadingCps()
+            commonService.getUploadingCps()
                 .then(function (cps) {
-                    self.uploadingCps = [].concat(cps);
-                });*/
+                    self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
+                });
 
             if (self.isAcbAdmin) {
                 self.uploader = new FileUploader({
-                    url: API + '/certified_product/upload',
+                    url: API + '/certified_products/upload',
                     removeAfterUpload: true,
                     headers: { Authorization: 'Bearer ' + authService.getToken() }
                 });
@@ -221,6 +221,8 @@
             };
 
             self.confirmCp = function (cpId) {
+//                $log.debug(self.activeCP);
+
                 // Do something with a service here
                 self.inspectingCp = '';
                 self.activeVendor = '';
@@ -229,7 +231,7 @@
                 self.activeCP = '';
                 for (var i = 0; i < self.uploadingCps.length; i++) {
                     if (cpId === self.uploadingCps[i].id) {
-                        self.uploadingCps.splice(i,1);
+//                        self.uploadingCps.splice(i,1);
                     }
                 }
             };

@@ -23,8 +23,9 @@
                 mockCommonService.cqms = ['CQM 1', 'CQM 2'];
                 mockCommonService.editions = ['Edition 1', 'Edition 2'];
                 mockCommonService.classifications = ['Classification 1', 'Classification 2'];
-                mockCommonService.practices  = ['Practice 1', 'Practice 2'];
-                mockCommonService.certBodies  = ['CB 1', 'CB 2'];
+                mockCommonService.practices = ['Practice 1', 'Practice 2'];
+                mockCommonService.certBodies = ['CB 1', 'CB 2'];
+                mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
 
                 mockCommonService.getVendors = function () {
                     var defer = $q.defer();

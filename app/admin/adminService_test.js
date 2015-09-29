@@ -26,11 +26,11 @@
             commonService = _commonService_;
             $httpBackend = _$httpBackend_;
 
-            $httpBackend.whenPOST(/vendor\/update_vendor/).respond(mock.vendor);
-            $httpBackend.whenGET(/list_users/).respond(mock.users);
-            $httpBackend.whenPOST(/invite_user/).respond({});
-            $httpBackend.whenPOST(/create_invited_user/).respond({});
-            $httpBackend.whenPOST(/authorize_user/).respond({});
+            $httpBackend.whenPOST(/vendors\/update/).respond(mock.vendor);
+            $httpBackend.whenGET(/users/).respond(mock.users);
+            $httpBackend.whenPOST(/users\/invite/).respond({});
+            $httpBackend.whenPOST(/users\/create/).respond({});
+            $httpBackend.whenPOST(/users\/authorize/).respond({});
         }));
 
         afterEach(function () {
@@ -51,7 +51,7 @@
             });
 
             it('should return a reject if the response is not the right type', function () {
-                $httpBackend.expectPOST(/vendor\/update_vendor/, mock.vendor).respond(200, 'bad data');
+                $httpBackend.expectPOST(/vendors\/update/, mock.vendor).respond(200, 'bad data');
                 adminService.updateVendor(mock.vendor).then(function(response) {
                     expect(response.data).toEqual('bad data');
                 });
@@ -59,7 +59,7 @@
             });
 
             it('should return a reject if the response fails', function () {
-                $httpBackend.expectPOST(/vendor\/update_vendor/, mock.vendor).respond(500, 'bad data');
+                $httpBackend.expectPOST(/vendors\/update/, mock.vendor).respond(500, 'bad data');
                 adminService.updateVendor(mock.vendor).then(function(response) {
                     expect(response.status).toEqual(500);
                 });
@@ -75,7 +75,7 @@
             });
 
             it('should return an empty object when inviteUser is called', function () {
-                $httpBackend.expectPOST(/invite_user/, mock.userInvitation).respond(200, {});
+                $httpBackend.expectPOST(/users\/invite/, mock.userInvitation).respond(200, {});
                 adminService.inviteUser(mock.userInvitation).then(function (response) {
                     expect(response).toEqual({});
                 });
@@ -83,7 +83,7 @@
             });
 
             it('should return an empty object when createInvitedUser is called', function () {
-                $httpBackend.expectPOST(/create_invited_user/, mock.userContactDetails).respond(200, {});
+                $httpBackend.expectPOST(/users\/create/, mock.userContactDetails).respond(200, {});
                 adminService.createInvitedUser(mock.userContactDetails).then(function (response) {
                     expect(response).toEqual({});
                 });
@@ -91,7 +91,7 @@
             });
 
             it('should return an empty object when authorizeUser is called', function () {
-                $httpBackend.expectPOST(/authorize_user/, mock.userAuthorization).respond(200, {});
+                $httpBackend.expectPOST(/users\/authorize/, mock.userAuthorization).respond(200, {});
                 adminService.authorizeUser(mock.userAuthorization).then(function (response) {
                     expect(response).toEqual({});
                 });

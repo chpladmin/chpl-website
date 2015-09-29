@@ -208,7 +208,6 @@
             $httpBackend.whenGET(/ainq.com\/list_classifications/).respond(200, [{name: 'Complete EHR', id:'2'}, {name: 'Modular EHR', id:'1'}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_practices/).respond(200, [{name: 'Inpatient', id:'2'}, {name: 'Ambulatory', id:'1'}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_products/).respond(200, listProducts()); // list all products
-            $httpBackend.whenGET(/ainq.com\/list_vendors/).respond(200, listVendors()); // list all vendors
             $httpBackend.whenGET(/ainq.com\/list_certBodies/).respond(200, certBodies); // list cerification bodies
             $httpBackend.whenGET(/ainq.com\/list_filterCerts/).respond(200, listFilterCerts()); // list cerification bodies
             $httpBackend.whenGET(/ainq.com\/list_certifiedProductActivity/).respond(200, listCertifiedProductActivity()); // list certifiedProduct activities

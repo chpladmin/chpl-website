@@ -86,7 +86,7 @@
                     }
                     $log.debug(self.users);
 
-                    adminService.removeUserFromAcb(userObject)
+                    adminService.removeUserFromAcb(userObject.userId, userObject.acbId)
                         .then(function (response) {
                             self.freshenUsers();
                         });
