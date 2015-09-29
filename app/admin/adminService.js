@@ -85,5 +85,13 @@
             self.authorizeUser = function (userAuthorization) {
                 return commonService.postApiCall('/users/authorize', API, userAuthorization);
             };
+
+            self.confirmPendingCp = function (pendingCp) {
+                return commonService.postApiCall('/certified_products/pending/confirm', API, pendingCp);
+            };
+
+            self.rejectPendingCp = function (cpId) {
+                return commonService.postApiCall('/certified_products/pending/' + cpId + '/reject', API, {});
+            };
         }]);
 })();

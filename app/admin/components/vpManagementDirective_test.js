@@ -25,6 +25,7 @@
                 mockCommonService.classifications = ['Classification 1', 'Classification 2'];
                 mockCommonService.practices = ['Practice 1', 'Practice 2'];
                 mockCommonService.certBodies = ['CB 1', 'CB 2'];
+                mockCommonService.certificationStatuses = ['Active', 'Retired'];
                 mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
 
                 mockCommonService.getVendors = function () {
@@ -78,6 +79,12 @@
                 mockCommonService.getCertBodies = function () {
                     var defer = $q.defer();
                     defer.resolve(this.certBodies);
+                    return defer.promise;
+                };
+
+                mockCommonService.getCertificationStatuses = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.certificationStatuses);
                     return defer.promise;
                 };
 

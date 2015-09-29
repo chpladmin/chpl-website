@@ -13,11 +13,6 @@
             self.uploadingCps = [];
             self.inspectingCp = '';
 
-            commonService.getUploadingCps()
-                .then(function (cps) {
-                    self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
-                });
-
             if (self.isAcbAdmin) {
                 self.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
@@ -112,6 +107,9 @@
                 .then(function (practices) { self.practices = practices; });
             commonService.getCertBodies()
                 .then(function (bodies) { self.bodies = bodies; });
+            commonService.getCertificationStatuses()
+                .then(function (statuses) { self.statuses = statuses; });
+
             self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'},
                              {id: '3', name: 'Withdrawn'},{id: '4', name: 'Decertified'}];
 
@@ -171,6 +169,7 @@
 
             self.selectInspectingVendor = function () {
                 self.activeVendor = [self.vendorSelect];
+                self.inspectingCp.vendor.id = self.activeVendor[0].vendorId;
                 commonService.getProductsByVendor(self.activeVendor[0].vendorId)
                     .then(function (products) {
                         self.products = products.products;
@@ -221,19 +220,17 @@
             };
 
             self.confirmCp = function (cpId) {
-//                $log.debug(self.activeCP);
+                $log.debug(self.inspectingCp);
 
-                // Do something with a service here
+                delete(self.inspectingCp.vendor.address);
+                adminService.confirmPendingCp(self.inspectingCp)
+                    .then(self.refreshPending);
+
                 self.inspectingCp = '';
                 self.activeVendor = '';
                 self.activeProduct = '';
                 self.activeVersion = '';
                 self.activeCP = '';
-                for (var i = 0; i < self.uploadingCps.length; i++) {
-                    if (cpId === self.uploadingCps[i].id) {
-//                        self.uploadingCps.splice(i,1);
-                    }
-                }
             };
 
             self.cancelCp = function () {
@@ -244,13 +241,24 @@
                 self.activeCP = '';
             };
 
-            self.rejectCp = function () {
+            self.rejectCp = function (cpId) {
+                adminService.rejectPendingCp(cpId)
+                    .then(self.refreshPending);
+
                 self.inspectingCp = '';
                 self.activeVendor = '';
                 self.activeProduct = '';
                 self.activeVersion = '';
                 self.activeCP = '';
             };
+
+            self.refreshPending = function () {
+                commonService.getUploadingCps()
+                    .then(function (cps) {
+                        self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
+                    })
+            };
+            self.refreshPending();
 
             self.cancelVendor = function () {
                 // todo: figure out how to actually cancel the edits
@@ -300,139 +308,161 @@
             };
 
             self.saveVendor = function () {
-                self.updateVendor = {vendorIds: []};
-
-                for (var i = 0; i < self.activeVendor.length; i++) {
-                    self.updateVendor.vendorIds.push(self.activeVendor[i].vendorId);
-                }
-                if (self.activeVendor.length === 1) {
-                    self.updateVendor.vendor = self.activeVendor[0];
+                if (self.inspectingCp) {
+                    $log.info(self.inspectingCp, self.activeVendor[0]);
+                    self.inspectingCp.vendor = self.activeVendor[0];
+                    self.editVendor = false;
                 } else {
-                    self.updateVendor.vendor = self.mergeVendor;
-                }
+                    self.updateVendor = {vendorIds: []};
 
-                adminService.updateVendor(self.updateVendor)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200) {
-                            var newVendor = response;
-                            self.vendorMessage = null;
-                            self.editVendor = false;
-                            commonService.getVendors()
-                                .then(function (vendors) {
-                                    self.vendors = vendors.vendors;
-                                    self.activeVendor = [newVendor];
-                                    //todo: re-select active vendor in vendorSelect
-                                    commonService.getProductsByVendor(newVendor.vendorId)
-                                        .then(function (products) {
-                                            self.products = products.products;
-                                        });
-                                });
-                        } else {
-                            self.vendorMessage = 'An error occurred. Please check your entry and try again.';
-                        }
-                    });
+                    for (var i = 0; i < self.activeVendor.length; i++) {
+                        self.updateVendor.vendorIds.push(self.activeVendor[i].vendorId);
+                    }
+                    if (self.activeVendor.length === 1) {
+                        self.updateVendor.vendor = self.activeVendor[0];
+                    } else {
+                        self.updateVendor.vendor = self.mergeVendor;
+                    }
+
+                    adminService.updateVendor(self.updateVendor)
+                        .then(function (response) {
+                            if (!response.status || response.status === 200) {
+                                var newVendor = response;
+                                self.vendorMessage = null;
+                                self.editVendor = false;
+                                commonService.getVendors()
+                                    .then(function (vendors) {
+                                        self.vendors = vendors.vendors;
+                                        self.activeVendor = [newVendor];
+                                        //todo: re-select active vendor in vendorSelect
+                                        commonService.getProductsByVendor(newVendor.vendorId)
+                                            .then(function (products) {
+                                                self.products = products.products;
+                                            });
+                                    });
+                            } else {
+                                self.vendorMessage = 'An error occurred. Please check your entry and try again.';
+                            }
+                        });
+                }
             };
 
             self.saveProduct = function () {
-                self.updateProduct = {productIds: []};
-
-                for (var i = 0; i < self.activeProduct.length; i++) {
-                    self.updateProduct.productIds.push(self.activeProduct[i].productId);
-                }
-                if (self.activeProduct.length === 1) {
-                    self.updateProduct.product = self.activeProduct[0];
-                    self.updateProduct.newVendorId = self.activeProduct[0].vendorId;
+                if (self.inspectingCp) {
+                    self.inspectingCp.product = self.activeProduct[0];
+                    $log.info(self.inspectingCp, self.activeProduct[0]);
+                    self.editProduct = false;
                 } else {
-                    self.updateProduct.product = self.mergeProduct;
-                    self.updateProduct.newVendorId = self.activeVendor[0].vendorId;
+                    self.updateProduct = {productIds: []};
+
+                    for (var i = 0; i < self.activeProduct.length; i++) {
+                        self.updateProduct.productIds.push(self.activeProduct[i].productId);
+                    }
+                    if (self.activeProduct.length === 1) {
+                        self.updateProduct.product = self.activeProduct[0];
+                        self.updateProduct.newVendorId = self.activeProduct[0].vendorId;
+                    } else {
+                        self.updateProduct.product = self.mergeProduct;
+                        self.updateProduct.newVendorId = self.activeVendor[0].vendorId;
+                    }
+
+                    adminService.updateProduct(self.updateProduct)
+                        .then(function (response) {
+                            if (!response.status || response.status === 200) {
+                                var newProduct = response;
+                                self.productMessage = null;
+                                self.editProduct = false;
+                                commonService.getProductsByVendor(self.activeVendor[0].vendorId)
+                                    .then(function (products) {
+                                        self.products = products.products;
+                                        self.activeProduct = [newProduct];
+                                        //todo: re-select active vendor in vendorSelect
+                                        commonService.getVersionsByProduct(newProduct.productId)
+                                            .then(function (versions) {
+                                                self.versions = versions;
+                                            });
+                                    });
+                            } else {
+                                self.productMessage = 'An error occurred. Please check your entry and try again.';
+                            }
+                        });
                 }
-
-                adminService.updateProduct(self.updateProduct)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200) {
-                            var newProduct = response;
-                            self.productMessage = null;
-                            self.editProduct = false;
-                            commonService.getProductsByVendor(self.activeVendor[0].vendorId)
-                                .then(function (products) {
-                                    self.products = products.products;
-                                    self.activeProduct = [newProduct];
-                                    //todo: re-select active vendor in vendorSelect
-                                    commonService.getVersionsByProduct(newProduct.productId)
-                                        .then(function (versions) {
-                                            self.versions = versions;
-                                        });
-                                });
-                        } else {
-                            self.productMessage = 'An error occurred. Please check your entry and try again.';
-                        }
-                    });
-
             };
             self.saveVersion = function () {
-                self.updateVersion = {versionIds: []};
-
-                for (var i = 0; i < self.activeVersion.length; i++) {
-                    self.updateVersion.versionIds.push(self.activeVersion[i].versionId);
-                }
-                self.updateVersion.newProductId = self.activeProduct[0].productId;
-                if (self.activeVersion.length === 1) {
-                    self.updateVersion.version = self.activeVersion[0];
+                if (self.inspectingCp) {
+                    self.inspectingCp.product.version = self.activeVersion[0].version;
+                    self.inspectingCp.product.versionId = self.activeVersion[0].versionId;
+                    $log.info(self.inspectingCp, self.activeVersion[0]);
+                    self.editVersion = false;
                 } else {
-                    self.updateVersion.version = self.mergeVersion;
-                }
+                    self.updateVersion = {versionIds: []};
 
-                adminService.updateVersion(self.updateVersion)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200) {
-                            var newVersion = response;
-                            self.versionMessage = null;
-                            self.editVersion = false;
-                            commonService.getVersionsByProduct(self.activeProduct[0].productId)
-                                .then(function (versions) {
-                                    self.versions = versions.versions;
-                                    self.activeVersion = [newVersion];
-                                    //todo: re-select active version in versionSelect
-                                    commonService.getProductsByVersion(newVersion.versionId)
-                                        .then(function (cps) {
-                                            self.cps = cps;
-                                        });
-                                });
-                        } else {
-                            self.versionMessage = 'An error occurred. Please check your entry and try again.';
-                        }
-                    });
+                    for (var i = 0; i < self.activeVersion.length; i++) {
+                        self.updateVersion.versionIds.push(self.activeVersion[i].versionId);
+                    }
+                    self.updateVersion.newProductId = self.activeProduct[0].productId;
+                    if (self.activeVersion.length === 1) {
+                        self.updateVersion.version = self.activeVersion[0];
+                    } else {
+                        self.updateVersion.version = self.mergeVersion;
+                    }
+
+                    adminService.updateVersion(self.updateVersion)
+                        .then(function (response) {
+                            if (!response.status || response.status === 200) {
+                                var newVersion = response;
+                                self.versionMessage = null;
+                                self.editVersion = false;
+                                commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                                    .then(function (versions) {
+                                        self.versions = versions.versions;
+                                        self.activeVersion = [newVersion];
+                                        //todo: re-select active version in versionSelect
+                                        commonService.getProductsByVersion(newVersion.versionId)
+                                            .then(function (cps) {
+                                                self.cps = cps;
+                                            });
+                                    });
+                            } else {
+                                self.versionMessage = 'An error occurred. Please check your entry and try again.';
+                            }
+                        });
+                }
             };
 
             self.saveCP = function () {
-                self.updateCP = {};
+                if (self.inspectingCp) {
+                    self.editCP = false;
+                } else {
+                    self.updateCP = {};
 
-                self.updateCP.id = self.activeCP.id;
-                self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
-                self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
-                self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
-                self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
-                self.updateCP.chplProductNumber = self.activeCP.chplProductNumber;
-                self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
-                self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
-                self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
-                self.updateCP.otherAcb = self.activeCP.otherAcb;
-                self.updateCP.testingLabId = self.activeCP.testingLabId;
-                self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
+                    self.updateCP.id = self.activeCP.id;
+                    self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
+                    self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
+                    self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
+                    self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
+                    self.updateCP.chplProductNumber = self.activeCP.chplProductNumber;
+                    self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
+                    self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
+                    self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
+                    self.updateCP.otherAcb = self.activeCP.otherAcb;
+                    self.updateCP.testingLabId = self.activeCP.testingLabId;
+                    self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
 
-                self.editCP = false;
-                $log.debug(self.updateCP);
+                    self.editCP = false;
+                    $log.debug(self.updateCP);
 
-                adminService.updateCP(self.activeCP)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200) {
-                        self.editCP = false;
-                            self.activeCP = response;
-                            self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
-                        } else {
-                            self.cpMessage = 'An error occurred. Please check your entry and try again.';
-                        }
-                    });
+                    adminService.updateCP(self.activeCP)
+                        .then(function (response) {
+                            if (!response.status || response.status === 200) {
+                                self.editCP = false;
+                                self.activeCP = response;
+                                self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
+                            } else {
+                                self.cpMessage = 'An error occurred. Please check your entry and try again.';
+                            }
+                        });
+                }
             };
 
         }]);

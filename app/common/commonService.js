@@ -78,6 +78,10 @@
             self.getPractices = function () {
                 return self.simpleApiCall('/data/practice_types', API);
             };
+
+            self.getCertificationStatuses = function () {
+                return self.simpleApiCall('/data/certification_statuses', API);
+            };
 /*
             self.getVendorNames = function () {
                 return self.simpleApiCall('/list_vendor_names', API);
@@ -115,8 +119,8 @@
                 return self.simpleApiCall('/certified_products/pending', API);
             };
 
-            self.keepalive = function (token) {
-                return self.postApiCall('/auth/keepalive', API, token)
+            self.keepalive = function () {
+                return self.simpleApiCall('/auth/keep_alive', API);
             };
         });
 })();

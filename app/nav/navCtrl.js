@@ -33,8 +33,7 @@
                 $log.info('Keepalive');
 
                 if (authService.isAuthed()) {
-                    var token = authService.getToken();
-                    commonService.keepalive(token);
+                    commonService.keepalive();
                 }
                 // do something to keep the user's session alive
             });
