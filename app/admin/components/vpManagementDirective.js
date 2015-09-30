@@ -232,6 +232,7 @@
             self.confirmCp = function (cpId) {
                 $log.debug(self.inspectingCp);
 
+                delete(self.inspectingCp.vendor.address);
                 adminService.confirmPendingCp(self.inspectingCp)
                     .then(self.refreshPending);
 
