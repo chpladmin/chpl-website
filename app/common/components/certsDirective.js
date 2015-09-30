@@ -29,6 +29,10 @@
                 if (location) {
                     self.reportFileLocation = location;
                 }}, true);
+            $scope.$watch('isEditing', function (editing) {
+                if (editing !== null) {
+                    self.isEditing = editing;
+                }}, true);
             $scope.$watch('applicableCqmCriteria', function (cqmCriteria) {
                 if (cqmCriteria) {
                     self.applicableCqmCriteria = cqmCriteria;
@@ -188,6 +192,7 @@
                          countCqms: '@countCqms',
                          editMode: '=editMode',
                          reportFileLocation: '@',
+                         isEditing: '=',
                          applicableCqmCriteria: '='
                        },
                 controllerAs: 'vm',

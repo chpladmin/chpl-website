@@ -40,8 +40,8 @@
         }])
         .config(function(IdleProvider, KeepaliveProvider) {
             // configure Idle settings
-//            IdleProvider.idle(5); // in seconds
+            IdleProvider.idle(60 * 20); // in seconds
             IdleProvider.timeout(false); // in seconds
-//            KeepaliveProvider.interval(2); // in seconds
+            KeepaliveProvider.interval(60 * 10); // in seconds
         });
 })();

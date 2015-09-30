@@ -96,7 +96,7 @@
         </div>
       </div> <!-- end of upload process table -->
 
-      <div ng-if="vm.workType === 'manage' || vm.inspectingCp !== ''">
+      <div ng-if="vm.workType === 'manage' || vm.inspectingCp !== '' || vm.isChplAdmin">
         <div class="row">
           <div class="col-sm-12">
             <div ng-if="vm.activeVendor === '' || vm.activeVendor.length > 1">
@@ -501,6 +501,17 @@
                       </div>
                     </span>
                     <br />
+                    <ai-certs ng-if="vm.activeCP !== ''"
+                              certs="vm.activeCP.certificationResults"
+                              cqms="vm.activeCP.cqmResults"
+                              count-certs="{{ vm.activeCP.countCerts }}"
+                              count-cqms="{{ vm.activeCP.countCqms }}"
+                              default-all="true"
+                              edit-mode="true"
+                              is-editing="vm.editCP"
+                              report-file-location="{{ vm.activeCP.reportFileLocation }}"
+                              applicable-cqm-criteria="vm.activeCP.applicableCqmCriteria">
+                    </ai-certs>
                     Last Modified Date: {{ vm.activeCP.lastModifiedDate | date }}
                     <br />
                     <p ng-if="vm.cpMessage !== undefined && vm.editCP" class="bg-danger">{{ vm.cpMessage }}</p>
@@ -512,16 +523,6 @@
                 </div>
               </div>
             </div>
-            <ai-certs ng-if="vm.activeCP !== ''"
-                      certs="vm.activeCP.certificationResults"
-                      cqms="vm.activeCP.cqmResults"
-                      count-certs="{{ vm.activeCP.countCerts }}"
-                      count-cqms="{{ vm.activeCP.countCqms }}"
-                      default-all="true"
-                      edit-mode="true"
-                      report-file-location="{{ vm.activeCP.reportFileLocation }}"
-                      applicable-cqm-criteria="vm.activeCP.applicableCqmCriteria">
-            </ai-certs>
           </div>
         </div>
       </div>

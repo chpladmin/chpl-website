@@ -284,6 +284,9 @@
                 self.selectVersion();
             };
 
+/*            self.startEditingCp(shouldStart) {
+                if (shouldStart) {
+                    self.isEditing = */
             self.cancelCP = function () {
                 self.activeCP = '';
                 self.cpMessage = null;
