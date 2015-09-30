@@ -12,8 +12,17 @@
             self.isAcbAdmin = authService.isAcbAdmin();
             self.uploadingCps = [];
             self.inspectingCp = '';
+            self.workType = 'upload';
+
+            self.refreshPending = function () {
+                commonService.getUploadingCps()
+                    .then(function (cps) {
+                        self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
+                    })
+            };
 
             if (self.isAcbAdmin) {
+                self.refreshPending();
                 self.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
                     removeAfterUpload: true,
@@ -22,6 +31,7 @@
                 self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                     $log.info('onSuccessItem', fileItem, response, status, headers);
                     self.uploadingCps = self.uploadingCps.concat(response.pendingCertifiedProducts);
+                    self.workType = 'confirm';
                 };
                 self.uploader.onErrorItem = function(fileItem, response, status, headers) {
                     $log.info('onErrorItem', fileItem, response, status, headers);
@@ -176,16 +186,16 @@
                         for (var i = 0; i < self.products.length; i++) {
                             if (self.products[i].name === self.inspectingCp.product.name) {
                                 self.inspectingCp.product.id = self.products[i].productId;
-                                self.activeProduct = [self.inspectingCp.product];
-                                self.activeProduct[0].id = self.activeProduct[0].productId;
+                                self.activeProduct = [angular.copy(self.inspectingCp.product)];
+                                self.activeProduct[0].productId = self.inspectingCp.product.id;
                                 commonService.getVersionsByProduct(self.activeProduct[0].productId)
                                     .then(function (versions) {
                                         self.versions = versions;
                                         for (var j = 0; j < self.versions.length; j++) {
-                                            if (self.versions[j].version = self.inspectingCp.product.version) {
+                                            if (self.versions[j].version === self.inspectingCp.product.version) {
                                                 self.inspectingCp.product.versionId = self.versions[j].versionId;
-                                                self.activeVersion = [self.inspectingCp.version];
-                                                self.activeVersion[0].id = self.activeVersion[0].versionId;
+                                                self.activeVersion = [angular.copy(self.inspectingCp.product)];
+                                                self.activeVersion[0].versionId = self.inspectingCp.product.versionId;
                                                 break;
                                             }
                                         }
@@ -202,11 +212,11 @@
                 commonService.getVersionsByProduct(self.activeProduct[0].productId)
                     .then(function (versions) {
                         self.versions = versions;
-                        for (var i = 0; j < self.versions.length; j++) {
-                            if (self.versions[i].version = self.inspectingCp.product.version) {
-                                self.inspectingCp.product.versionId = self.versions[i].versionId;
-                                self.activeVersion = [self.inspectingCp.version];
-                                self.activeVersion[0].id = self.activeVersion[0].versionId;
+                        for (var j = 0; j < self.versions.length; j++) {
+                            if (self.versions[j].version === self.inspectingCp.product.version) {
+                                self.inspectingCp.product.versionId = self.versions[j].versionId;
+                                self.activeVersion = [angular.copy(self.inspectingCp.product)];
+                                self.activeVersion[0].versionId = self.inspectingCp.product.versionId;
                                 break;
                             }
                         }
@@ -222,7 +232,6 @@
             self.confirmCp = function (cpId) {
                 $log.debug(self.inspectingCp);
 
-                delete(self.inspectingCp.vendor.address);
                 adminService.confirmPendingCp(self.inspectingCp)
                     .then(self.refreshPending);
 
@@ -251,14 +260,6 @@
                 self.activeVersion = '';
                 self.activeCP = '';
             };
-
-            self.refreshPending = function () {
-                commonService.getUploadingCps()
-                    .then(function (cps) {
-                        self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
-                    })
-            };
-            self.refreshPending();
 
             self.cancelVendor = function () {
                 // todo: figure out how to actually cancel the edits

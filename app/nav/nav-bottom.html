@@ -1,23 +1,9 @@
 <footer>
-  <nav class="navbar navbar-default navbar-fixed-bottom" ng-controller="NavigationController as nav">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#odc-navbar-bottom" aria-expanded="false">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="odc-navbar-bottom">
-      <p class="nav-text">This product was funded by a contract from the <a href="onc">Office of the National Coordinator for Health Information Technology (ONC)</a></p>
-        <ul class="nav navbar-nav">
-          <li ng-class="{'active': nav.isActive('/privacy') }"><a href="#/privacy">Privacy Policy</a></li>
-          <li ng-class="{'active': nav.isActive('/disclaimer') }"><a href="#/disclaimer">Disclaimer</a></li>
-        </ul>
-      </div><!-- /.navbar-collapse -->
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <p class="nav-text">This product was funded by a contract from the <a href="onc">Office of the National Coordinator for Health Information Technology (ONC)</a><br />
+        <a href="#/privacy">Privacy Policy</a> | <a href="#/disclaimer">Disclaimer</a>
+      </p>
     </div><!-- /.container-fluid -->
   </nav>
 </footer>

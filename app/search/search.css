@@ -41,10 +41,6 @@ ul.pagination li {
     cursor: pointer;
 }
 
-.search-header {
-    border: 2px solid #e1e1e1;
-}
-
 .search-inputs {
     padding-top: 15px;
     background: #e1e1e1;
