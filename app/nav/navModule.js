@@ -42,6 +42,6 @@
             // configure Idle settings
             IdleProvider.idle(60 * 20); // in seconds
             IdleProvider.timeout(false); // in seconds
-            KeepaliveProvider.interval(60 * 10); // in seconds
+            KeepaliveProvider.interval(60); // in seconds
         });
 })();

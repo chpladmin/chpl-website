@@ -5,7 +5,7 @@
         <ul class="list list-unstyled">
           <li><i class="fa fa-chevron-right" ng-if="vm.workType==='upload'"></i> <a href="" class="" ng-click="vm.workType='upload'">Upload Certified Products</a></li>
           <li ng-if="vm.uploadingCps.length > 0"><i class="fa fa-chevron-right" ng-if="vm.workType==='confirm'"></i> <a href="" class="" ng-click="vm.workType='confirm'">Manage {{ vm.uploadingCps.length }} Pending Certified Product<span ng-if="vm.uploadingCps.length > 1">s</span></a></li>
-          <li><i class="fa fa-chevron-right" ng-if="vm.workType==='manage'"></i> <a href="" class="" ng-click="vm.workType='manage'">Manage Vendors, Products, &amp; Confirmed Certified Products</a></li>
+          <li ng-if="vm.inspectingCp===''"><i class="fa fa-chevron-right" ng-if="vm.workType==='manage'"></i> <a href="" class="" ng-click="vm.workType='manage'">Manage Vendors, Products, &amp; Confirmed Certified Products</a></li>
         </ul>
       </div>
     </div>
@@ -432,7 +432,7 @@
                       <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
                       <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                       <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
-                      <strong>Certification Date:</strong> {{ vm.parseCertificationDate(vm.activeCP.certificationDate) | date }} <br />
+                      <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date }} <br />
                       <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="false"></ai-additional-software> <br />
                       <strong>Status:</strong> {{ vm.getStatusText(vm.activeCP.certificationStatusId) }}<br />
                       <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />

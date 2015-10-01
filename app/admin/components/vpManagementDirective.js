@@ -109,19 +109,30 @@
                 }
             };
 
-            commonService.getEditions()
-                .then(function (editions) { self.editions = editions; });
-            commonService.getClassifications()
-                .then(function (classifications) { self.classifications = classifications; });
-            commonService.getPractices()
-                .then(function (practices) { self.practices = practices; });
-            commonService.getCertBodies()
-                .then(function (bodies) { self.bodies = bodies; });
-            commonService.getCertificationStatuses()
-                .then(function (statuses) { self.statuses = statuses; });
-
-            self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'},
-                             {id: '3', name: 'Withdrawn'},{id: '4', name: 'Decertified'}];
+            self.populateData = function () {
+                commonService.getSearchOptions()
+                    .then(function (options) {
+                        self.editions = options.editions;
+                        self.classifications = options.productClassifications;
+                        self.practices = options.practiceTypeNames;
+                        self.bodies = options.certBodyNames;
+                        //                        self.statuses = options.certificationStatuses;
+                        self.editions = [{id: '1', name: '2011'},{id: '2', name: '2014'}];
+                        self.classifications = [{name: 'Modular EHR', id: '1'},{name: 'Complete EHR', id: '2'}];
+                        self.practices = [{name: 'Ambulatory', id: '1'},{name: 'Inpatient', id: '2'}];
+                        self.bodies = [{id: 1, name: 'InfoGard'},
+                                       {id: 2, name: 'CCHIT'},
+                                       {id: 3, name: 'Drummond Group Inc.'},
+                                       {id: 4, name: 'SLI Global'},
+                                       {id: 5, name: 'Surescripts LLC'},
+                                       {id: 6, name: 'ICSA Labs'},
+                                       {id: 7, name: 'Pending'}];
+                        self.statuses = [{id: '1', name: 'Active'},{id: '2', name: 'Retired'},
+                                         {id: '3', name: 'Withdrawn'},{id: '4', name: 'Decertified'},
+                                         {id: '5', name: 'Pending'}];
+                    });
+            };
+            self.populateData();
 
             self.getStatusText = function (statusId) {
                 for (var i = 0; i < self.statuses.length; i++) {
@@ -162,6 +173,10 @@
                 self.activeProduct = [cp.product];
                 self.activeVersion = [cp.product];
                 self.activeCP = cp;
+                self.activeCP.certificationStatus = {id: 5, name: 'Pending'};
+                self.activeCP.certificationDate = new Date(parseInt(cp.certificationDate));
+                self.activeCP.certDate = self.activeCP.certificationDate;
+                self.activeCP.certificationStatusId = '5';
 
                 if (!cp.product.versionId && cp.product.id) {
                     commonService.getVersionsByProduct(cp.product.id)
