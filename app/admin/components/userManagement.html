@@ -99,7 +99,11 @@
             <button class="btn btn-default btn-block" ng-show="!user.isModifying" ng-click="user.isModifying = !user.isModifying">Modify</button>
             <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.updateUser(user); user.isModifying = !user.isModifying" ng-disabled="userManagementUpdateUser.$invalid">Save</button>
             <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.cancelUser(user); user.isModifying = !user.isModifying">Cancel</button>
-            <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.deleteUser(user)">Delete</button>
+            <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.deleteUser(user)"
+                    confirm="Are you sure you wish to delete user: {{ user.user.firstName }} {{ user.user.lastName }} ({{user.user.subjectName }})? This action can not be undone."
+                    confirm-ok="Yes"
+                    confirm-cancel="No"
+                    confirm-settings="{animation: false}">Delete</button>
           </td>
         </tr>
       </tbody>

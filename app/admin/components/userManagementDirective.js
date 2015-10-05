@@ -77,15 +77,6 @@
                 if (self.acbId) {
                     var userObject = {acbId: self.acbId,
                                       userId: user.user.userId};
-
-                    $log.debug(self.users);
-                    for (var i = 0; i < self.users.length; i++) {
-                        if (self.users[i].user.userId === userObject.userId) {
-                            self.users.splice(i,1);
-                        }
-                    }
-                    $log.debug(self.users);
-
                     adminService.removeUserFromAcb(userObject.userId, userObject.acbId)
                         .then(function (response) {
                             self.freshenUsers();

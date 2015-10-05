@@ -22,6 +22,7 @@ module.exports = function(config){
             'app/bower_components/angular-google-chart/ng-google-chart.js',
             'app/bower_components/angular-file-upload/dist/angular-file-upload.min.js',
             'app/bower_components/ng-idle/angular-idle.min.js',
+            'app/bower_components/angular-confirm-modal/angular-confirm.js',
             'app/app.js',
             'app/app_test.js',
             'app/appDev.js',

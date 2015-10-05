@@ -39,7 +39,12 @@
                 <input type="text" id="acb-new-country" ng-model="acb.address.country" class="form-control" ng-required="vm.addressRequired(acb)" />
                 <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.modifyACB(acb)" ng-disabled="acbEditForm{{acb.id}}.$invalid">Save changes to this ACB</button>
                 <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.cancelACB()">Cancel editing this ACB</button>
-                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.deleteACB(acb)" ng-if="vm.isChplAdmin">Remove this ACB</button>
+                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.deleteACB(acb)"
+                        confirm="Are you sure you wish to delete ACB: {{ acb.name }}? This action can not be undone."
+                        confirm-ok="Yes"
+                        confirm-cancel="No"
+                        confirm-settings="{animation: false}"
+                        ng-if="vm.isChplAdmin">Remove this ACB</button>
               </form>
             </div>
             <div ng-show="!vm.isModifying">
