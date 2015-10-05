@@ -2,10 +2,10 @@
   <div class="row">
     <div class="col-sm-3" ng-if="vm.isAcbAdmin">
       <div class="panel panel-default">
-        <ul class="list list-unstyled">
-          <li><i class="fa fa-chevron-right" ng-if="vm.workType==='upload'"></i> <a href="" class="" ng-click="vm.workType='upload'">Upload Certified Products</a></li>
-          <li ng-if="vm.uploadingCps.length > 0"><i class="fa fa-chevron-right" ng-if="vm.workType==='confirm'"></i> <a href="" class="" ng-click="vm.workType='confirm'">Manage {{ vm.uploadingCps.length }} Pending Certified Product<span ng-if="vm.uploadingCps.length > 1">s</span></a></li>
-          <li ng-if="vm.inspectingCp===''"><i class="fa fa-chevron-right" ng-if="vm.workType==='manage'"></i> <a href="" class="" ng-click="vm.workType='manage'">Manage Vendors, Products, &amp; Confirmed Certified Products</a></li>
+        <ul class="nav nav-pills nav-stacked">
+          <li ng-class="{'active': vm.workType === 'upload'}"><a href="" class="" ng-click="vm.workType='upload'">Upload Certified Products</a></li>
+          <li ng-class="{'active': vm.workType === 'confirm'}" ng-if="vm.uploadingCps.length > 0"><a href="" class="" ng-click="vm.workType='confirm'">Confirm <span class="badge">{{ vm.uploadingCps.length }}</span> Pending Product<span ng-if="vm.uploadingCps.length > 1">s</span></a></li>
+          <li ng-class="{'active': vm.workType === 'manage'}" ng-if="vm.inspectingCp===''"><a href="" class="" ng-click="vm.workType='manage'">Manage Vendors &amp; Products</a></li>
         </ul>
       </div>
     </div>
@@ -57,7 +57,7 @@
 
       <div class="row" ng-if="vm.isAcbAdmin && vm.workType === 'confirm'">
         <div class="col-sm-12">
-          <h3>View Certified Products in the process of upload</h3>
+          <h3>View Products in the process of upload</h3>
           <p ng-if="vm.uploadingCps.length === 0">No products currently in queue</p>
           <table class="table table-striped" ng-if="vm.uploadingCps.length > 0">
             <thead>

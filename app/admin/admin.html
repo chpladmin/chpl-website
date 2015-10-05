@@ -1,11 +1,11 @@
 <div ng-controller="AdminController as vm">
   <div class="row splash-row">
-    <div class="col-md-10 col-md-offset-1 text-center" ng-if="vm.isAcbAdmin() && !vm.isChplAdmin()">
-      <h1>ACB Administration</h1>
-      <p>From this page, ACB staff can upload new certified products; manage existing health IT developers and certified products; and see reports on recent activity</p>
+    <div class="col-md-8 col-md-offset-2 text-center" ng-if="vm.isAcbAdmin() && !vm.isChplAdmin()">
+      <h1 class="spaced-out">ACB Administration</h1>
+      <p>From this page, ACB staff can upload new certified products; manage existing health IT developers and certified products; and see reports on recent activity.</p>
     </div>
-    <div class="col-md-10 col-md-offset-1 text-center" ng-if="!vm.isAcbAdmin()">
-      <h1>CHPL Administration</h1>
+    <div class="col-md-8 col-md-offset-2 text-center" ng-if="!vm.isAcbAdmin()">
+      <h1 class="spaced-out">CHPL Administration</h1>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
     </div>
   </div>

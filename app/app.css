@@ -19,8 +19,28 @@ header {
     background-image: url("lib/CHPL_Header.png");
     background-repeat: no-repeat;
     background-size: cover;
-    height: 130px;
     border-bottom: 20px solid #0070c9;
+    min-height: 130px;
+}
+
+@media (max-width: 767px) {
+    .navbar-nav > li > a {
+    line-height: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;}
+}
+
+@media (min-width: 767px) {
+    .navbar-fixed-top .container {
+        position: relative;
+        min-height: 130px;
+    }
+
+    .navbar-fixed-top .nav {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
 }
 
 footer .navbar-default .navbar-nav>li>a {
@@ -28,7 +48,7 @@ footer .navbar-default .navbar-nav>li>a {
 }
 
 footer .navbar-default {
-    background-color: #a9a8b0;
+    background-color: #ebebeb;
     background-image: none;
 }
 
@@ -44,12 +64,26 @@ footer {
 
 h1 {
     font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    color: #0070c9;
+}
+
+h2 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
     color: #0070c9;
 }
 
 .splash-row {
+    margin-top: 40px;
     border: 2px solid #e1e1e1;
     background: #fff;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.spaced-out {
+    margin: 40px;
 }
 
 #loading-bar .bar {

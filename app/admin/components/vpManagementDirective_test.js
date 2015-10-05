@@ -93,6 +93,12 @@
                     defer.resolve(this.uploadingCps);
                     return defer.promise;
                 };
+
+                mockCommonService.getSearchOptions = function () {
+                    var defer = $q.defer();
+                    defer.resolve({});
+                    return defer.promise;
+                };
             });
         });
 
