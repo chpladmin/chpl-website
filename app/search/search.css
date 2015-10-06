@@ -1,13 +1,15 @@
 .sort-ascent:after {
     content: "\f0d8";
     font-family: FontAwesome;
-    padding: 0 3px;
+    padding: 0 6px;
+    font-size: large;
 }
 
 .sort-descent:after {
     content: "\f0d7";
     font-family: FontAwesome;
-    padding: 0 3px;
+    padding: 0 6px;
+    font-size: large;
 }
 
 ul.pagination li {
@@ -26,7 +28,7 @@ ul.pagination li {
     cursor: pointer;
 }
 
-.productDetails td:last-child table td:last-child{
+.productDetails td:last-child table td:last-child {
     vertical-align: middle;
     text-align: right;
 }
@@ -37,4 +39,11 @@ ul.pagination li {
 
 .pointer {
     cursor: pointer;
+}
+
+.search-inputs {
+    padding-top: 15px;
+    background: #e1e1e1;
+    margin-left: 0px;
+    margin-right: 0px;
 }

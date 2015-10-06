@@ -1,7 +1,11 @@
 <div ng-controller="AdminController as vm">
-  <div class="row">
-    <div class="col-md-12">
-      <h1>CHPL Administration</h1>
+  <div class="row splash-row">
+    <div class="col-md-8 col-md-offset-2 text-center" ng-if="vm.isAcbAdmin() && !vm.isChplAdmin()">
+      <h1 class="spaced-out">ACB Administration</h1>
+      <p>From this page, ACB staff can upload new certified products; manage existing health IT developers and certified products; and see reports on recent activity.</p>
+    </div>
+    <div class="col-md-8 col-md-offset-2 text-center" ng-if="!vm.isAcbAdmin()">
+      <h1 class="spaced-out">CHPL Administration</h1>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
     </div>
   </div>
@@ -26,7 +30,7 @@
   <section ng-if="vm.isAuthed()" active="true">
     <div class="row">
       <div class="col-md-12">
-        <h2>Welcome {{ vm.getUsername() }}</h2>
+        <h2>Welcome, {{ vm.getUsername() }}</h2>
       </div>
     </div>
     <tabset>
@@ -34,13 +38,13 @@
         <ai-user-management>
         </ai-user-management>
       </tab>
-      <tab ng-if="vm.isChplAdmin() || vm.isAcbAdmin()" heading="ACB Management">
-        <ai-acb-management>
-        </ai-acb-management>
-      </tab>
       <tab heading="Vendor &amp; Product Management">
         <ai-vp-management>
         </ai-vp-management>
+      </tab>
+      <tab ng-if="vm.isChplAdmin() || vm.isAcbAdmin()" heading="ACB Management">
+        <ai-acb-management>
+        </ai-acb-management>
       </tab>
       <tab heading="Reports">
         <ai-reports>

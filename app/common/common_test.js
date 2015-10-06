@@ -37,13 +37,13 @@
             $httpBackend.whenGET(/certified_product\/get_certified_product?certifiedProductId=123/).respond(mock.aProduct);
             $httpBackend.whenGET('http://ainq.com/list_certs').respond(mock.certs);
             $httpBackend.whenGET('http://ainq.com/list_cqms').respond(mock.cqms);
-            $httpBackend.whenGET('http://ainq.com/list_editions').respond(mock.editions);
-            $httpBackend.whenGET('http://ainq.com/list_classifications').respond(mock.classifications);
-            $httpBackend.whenGET('http://ainq.com/list_practices').respond(mock.practices);
-            $httpBackend.whenGET('http://ainq.com/list_vendors').respond(mock.vendors);
-            $httpBackend.whenGET(/vendor\/list_vendors/).respond(mock.vendors);
-            $httpBackend.whenGET('http://ainq.com/list_products').respond(mock.products);
-            $httpBackend.whenGET('http://ainq.com/list_certBodies').respond(mock.certBodies);
+            $httpBackend.whenGET(/data\/certification_editions/).respond(mock.editions);
+            $httpBackend.whenGET(/data\/classification_types/).respond(mock.classifications);
+            $httpBackend.whenGET(/data\/practice_types/).respond(mock.practices);
+            $httpBackend.whenGET(/vendors\//).respond(mock.vendors);
+            $httpBackend.whenGET(/list_vendor_names/).respond(mock.vendors);
+            $httpBackend.whenGET(/list_product_names/).respond(mock.products);
+            $httpBackend.whenGET(/data\/certification_bodies/).respond(mock.certBodies);
             $httpBackend.whenGET('http://ainq.com/list_filterCerts').respond(mock.certs.concat(mock.cqms));
         }));
 
@@ -51,7 +51,7 @@
             $httpBackend.verifyNoOutstandingExpectation();
             $httpBackend.verifyNoOutstandingRequest();
         });
-
+/*
         it('should return certs', function () {
             commonService.getCerts().then(function(response) {
                 expect(response).toEqual(mock.certs);
@@ -65,7 +65,7 @@
             });
             $httpBackend.flush();
         });
-
+*/
         it('should return classifications', function () {
             commonService.getClassifications().then(function(response) {
                 expect(response).toEqual(mock.classifications);
@@ -86,14 +86,14 @@
             });
             $httpBackend.flush();
         });
-
+/*
         it('should return products', function () {
             commonService.getProducts().then(function(response) {
                 expect(response).toEqual(mock.products);
             });
             $httpBackend.flush();
         });
-
+*/
         it('should return practices', function () {
             commonService.getPractices().then(function(response) {
                 expect(response).toEqual(mock.practices);
@@ -107,12 +107,13 @@
             });
             $httpBackend.flush();
         });
-
+/*
         it('should return certs and cqms', function () {
             commonService.getCertsNCQMs().then(function(response) {
                 expect(response).toEqual(mock.certs.concat(mock.cqms));
             });
             $httpBackend.flush();
         });
+*/
     });
 })();

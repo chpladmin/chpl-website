@@ -23,8 +23,10 @@
                 mockCommonService.cqms = ['CQM 1', 'CQM 2'];
                 mockCommonService.editions = ['Edition 1', 'Edition 2'];
                 mockCommonService.classifications = ['Classification 1', 'Classification 2'];
-                mockCommonService.practices  = ['Practice 1', 'Practice 2'];
-                mockCommonService.certBodies  = ['CB 1', 'CB 2'];
+                mockCommonService.practices = ['Practice 1', 'Practice 2'];
+                mockCommonService.certBodies = ['CB 1', 'CB 2'];
+                mockCommonService.certificationStatuses = ['Active', 'Retired'];
+                mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
 
                 mockCommonService.getVendors = function () {
                     var defer = $q.defer();
@@ -80,9 +82,21 @@
                     return defer.promise;
                 };
 
+                mockCommonService.getCertificationStatuses = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.certificationStatuses);
+                    return defer.promise;
+                };
+
                 mockCommonService.getUploadingCps = function () {
                     var defer = $q.defer();
                     defer.resolve(this.uploadingCps);
+                    return defer.promise;
+                };
+
+                mockCommonService.getSearchOptions = function () {
+                    var defer = $q.defer();
+                    defer.resolve({});
                     return defer.promise;
                 };
             });
@@ -96,6 +110,8 @@
             $templateCache.put('admin/components/vpManagement.html', template);
 
             $httpBackend.whenGET('common/components/certs.html')
+                .respond(200, '<div></div>');
+            $httpBackend.whenGET('admin/components/additionalSoftware.html')
                 .respond(200, '<div></div>');
             element = angular.element('<ai-vp-management></ai-vp-management');
             $compile(element)(scope);

@@ -21,6 +21,8 @@ module.exports = function(config){
             'app/bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
             'app/bower_components/angular-google-chart/ng-google-chart.js',
             'app/bower_components/angular-file-upload/dist/angular-file-upload.min.js',
+            'app/bower_components/ng-idle/angular-idle.min.js',
+            'app/bower_components/angular-confirm-modal/angular-confirm.js',
             'app/app.js',
             'app/app_test.js',
             'app/appDev.js',
@@ -34,7 +36,8 @@ module.exports = function(config){
             'app/login/**/*.js',
             'app/nav/**/*.js',
             'app/product/**/*.js',
-            'app/search/**/*.js'
+            'app/search/**/*.js',
+            'app/userRegistration/**/*.js'
         ],
 
         preprocessors: {
@@ -46,6 +49,7 @@ module.exports = function(config){
             'app/admin/**/!(*test).js': ['coverage'],
             'app/product/**/!(*test).js': ['coverage'],
             'app/search/**/!(*test).js': ['coverage'],
+            'app/userRegistration/**/!(*test).js': ['coverage'],
             'app/app.js': ['coverage'],
             'app/common/components/*.html': 'ng-html2js',
             'app/admin/components/*.html': 'ng-html2js'

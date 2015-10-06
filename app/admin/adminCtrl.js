@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$scope', '$rootScope', '$log', '$location', 'commonService', 'userService', 'authService', function ($scope, $rootScope, $log, $location, commonService, userService, authService) {
+        .controller('AdminController', ['$log', 'commonService', 'userService', 'authService', function ($log, commonService, userService, authService) {
             var self = this;
 
             self.isAuthed = function () {
