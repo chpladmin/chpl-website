@@ -4,8 +4,7 @@
     angular.module('app.admin')
         .controller('UserManagementController', ['adminService', '$log', '$scope', function (adminService, $log, $scope) {
             var self = this;
-            self.newUser = {roles: []};
-            self.userInvitation = {roles: []};
+            self.userInvitation = {permissions: []};
             self.acbId = $scope.acbId;
             self.roles = ['ROLE_ACB_ADMIN','ROLE_ACB_STAFF'];
             if (!self.acbId) {
@@ -30,26 +29,6 @@
                 }
             };
             self.freshenUsers();
-
-            self.createUser = function () {
-                if(self.acbId) {
-                    var userObject = {acbId: self.acbId,
-                                      user: self.newUser,
-                                      authority: 'ADMIN'};
-                    adminService.addUserToAcb(userObject)
-                        .then(function (response) {
-                            self.freshenUsers();
-                        });
-                } else {
-                    adminService.createUser(self.newUser)
-                        .then(function (response) {
-                            self.freshenUsers();
-                        })
-                }
-                $scope.userManagementNewUser.$setPristine();
-                $scope.userManagementNewUser.$setUntouched();
-                self.newUser = {roles: []};
-            };
 
             self.updateUser = function (user) {
                 if (!user.roles)
@@ -98,8 +77,12 @@
                 if (self.acbId) {
                     self.userInvitation.acbId = self.acbId;
                 }
-                if (self.userInvitation.email && self.userInvitation.email.length > 0 && self.userInvitation.roles.length > 0) {
-                    adminService.inviteUser(self.userInvitation);
+                if (self.userInvitation.emailAddress && self.userInvitation.emailAddress.length > 0 && self.userInvitation.permissions.length > 0) {
+                    adminService.inviteUser(self.userInvitation)
+                        .then(function (response) {
+                            self.inviteMessage = response.hash;
+                            // dev setup until email's working
+                        });
                     $scope.userManagementInviteUser.$setPristine();
                     $scope.userManagementInviteUser.$setUntouched();
                     self.userInvitation = {roles:[]};

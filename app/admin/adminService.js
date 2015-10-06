@@ -42,8 +42,7 @@
             };
 
             self.getUsers = function () {
-                return commonService.simpleApiCall('/auth/list_users/', API);
-//                return commonService.simpleApiCall('/users/', API);
+                return commonService.simpleApiCall('/users/', API);
             };
 
             self.createUser = function (newUser) {
@@ -79,7 +78,7 @@
             };
 
             self.createInvitedUser = function (contactDetails) {
-                return commonService.postApiCall('/users/create_invited', API, contactDetails);
+                return commonService.postApiCall('/users/create', API, contactDetails);
             };
 
             self.authorizeUser = function (userAuthorization) {

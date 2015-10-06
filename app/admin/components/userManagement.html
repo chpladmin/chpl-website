@@ -15,53 +15,21 @@
         </tr>
       </thead>
       <tfoot>
-        <tr ng-form="userManagementNewUser">
-          <td>
-            <label for="admin.new.username" class="control-label sr-only">New username</label>
-            <input type="text" id="admin.new.username" ng-model="vm.newUser.subjectName" class="form-control" required />
-            <label for="admin.new.password" class="control-label sr-only">New password</label>
-            <input type="password" id="admin.new.password" ng-model="vm.newUser.password" class="form-control" required />
-          </td>
-          <td>
-            <label for="admin.new.title" class="control-label sr-only">New Title</label>
-            <input type="text" id="admin.new.title" ng-model="vm.newUser.title" class="form-control" />
-          </td>
-          <td>
-            <label for="admin.new.firstname" class="control-label sr-only">New First Name</label>
-            <input type="text" id="admin.new.firstname" ng-model="vm.newUser.firstName" class="form-control" required />
-          </td>
-          <td>
-            <label for="admin.new.lastname" class="control-label sr-only">New Last Name</label>
-            <input type="text" id="admin.new.lastname" ng-model="vm.newUser.lastName" class="form-control" required />
-          </td>
-          <td>
-            <label for="admin.new.email" class="control-label sr-only">New email</label>
-            <input type="email" id="admin.new.email" ng-model="vm.newUser.email" class="form-control" required />
-          </td>
-          <td>
-            <label for="admin.new.phone" class="control-label sr-only">New Phone</label>
-            <input type="text" id="admin.new.phone" ng-model="vm.newUser.phoneNumber" class="form-control" required />
-          </td>
-          <td>
-            <label for="admin.new.roles" class="control-label sr-only">User Role(s)</label>
-            <select id="admin.new.roles" ng-options="role as role for role in vm.roles" ng-model="vm.newUser.roles" class="form-control" multiple required></select>
-          </td>
-          <td>
-            <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="userManagementNewUser.$invalid">Create new user</button>
-          </td>
-        </tr>
         <tr ng-form="userManagementInviteUser">
           <td colspan="5">
             <label for="admin.invite.email" class="control-label">Email</label>
-            <input type="email" id="admin.invite.email" ng-model="vm.userInvitation.email" class="form-control" required />
+            <input type="email" id="admin.invite.email" ng-model="vm.userInvitation.emailAddress" class="form-control" required />
           </td>
           <td colspan="2">
             <label for="admin.new.roles" class="control-label">User Role(s)</label>
-            <select id="admin.new.roles" ng-options="role as role for role in vm.roles" ng-model="vm.userInvitation.roles" class="form-control" multiple required></select>
+            <select id="admin.new.roles" ng-options="role as role for role in vm.roles" ng-model="vm.userInvitation.permissions" class="form-control" multiple required></select>
           </td>
           <td>
             <button class="btn btn-default btn-block" ng-click="vm.inviteUser()" ng-disabled="userManagementInviteUser.$invalid">Invite new user</button>
           </td>
+        </tr>
+        <tr ng-if="vm.inviteMessage && vm.inviteMessage.length > 0">
+          <td colspan="8">The user will have an email with the link: <a href="#/userRegistration/{{ vm.inviteMessage }}">#/userRegistration/{{ vm.inviteMessage }}</a></td>
         </tr>
       </tfoot>
       <tbody>

@@ -51,17 +51,19 @@
                     $location: $location
                 });
                 validUser = { hash: 'hash',
-                              username: 'username',
-                              password: 'password',
-                              passwordverify: 'password',
-                              title: 'title',
-                              firstName: 'firstName',
-                              lastName: 'lastName',
-                              email: 'email@email.email',
-                              phoneNumber: 'phone'
+                              user: {
+                                  subjectName: 'subjectName',
+                                  password: 'password',
+                                  passwordverify: 'password',
+                                  title: 'title',
+                                  firstName: 'firstName',
+                                  lastName: 'lastName',
+                                  email: 'email@email.email',
+                                  phoneNumber: 'phone'
+                              }
                             }
                 authorizeUser = { hash: 'hash',
-                                  username: 'username',
+                                  userName: 'subjectName',
                                   password: 'password'
                                 }
                 scope.$digest();
@@ -101,8 +103,8 @@
             it('should require password and verify password to be equal', function () {
                 ctrl.userDetails = validUser;
                 expect(ctrl.validateUser()).toBe(true);
-                ctrl.userDetails.password = 'test';
-                ctrl.userDetails.passwordverify = 'test2';
+                ctrl.userDetails.user.password = 'test';
+                ctrl.userDetails.user.passwordverify = 'test2';
                 expect(ctrl.validateUser()).not.toBe(true);
             });
 
@@ -110,7 +112,7 @@
                 ctrl.authorizeDetails = authorizeUser;
                 spyOn(adminService, 'authorizeUser');
                 ctrl.authorizeUser();
-                expect(adminService.authorizeUser).toHaveBeenCalledWith({username: 'username', password: 'password', hash: 'hash'});
+                expect(adminService.authorizeUser).toHaveBeenCalledWith({subjectName: 'subjectName', password: 'password', hash: 'hash'});
             });
 
             xit('should redirect to /admin after createUser is finished', function () {
