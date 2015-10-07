@@ -49,17 +49,24 @@
             <td class="compare-rowLead">Certification Criteria</td>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'"><a href="" aria-expanded="false" ng-click="vm.toggle('certifications')">{{ product.countCerts }} met</a></td>
           </tr>
-          <tr ng-repeat="cert in vm.allCerts" ng-show="vm.isShowing('certifications')">
+          <tr ng-repeat="cert in vm.allCerts" ng-if="vm.isShowing('certifications')">
             <td class="compare-rowCert">{{cert.number + ": " + cert.title}}</td>
-            <td class="compare-element" ng-repeat="item in cert.values | orderBy:'chplProductNumber'"><i class="fa fa-lg" ng-class="{'fa-check-square-o':item.success, 'fa-square-o': !item.success}"></i><span class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span></td>
+            <td class="compare-element" ng-repeat="item in cert.values | orderBy:'chplProductNumber'">
+              <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
+              <span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span>
+            </td>
           </tr>
           <tr>
             <td class="compare-rowLead">Clinical Quality Measures</td>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'"><a href="" aria-expanded="false" ng-click="vm.toggle('CQMs')">{{ product.countCqms }} met</a></td>
           </tr>
-          <tr ng-repeat="cqm in vm.allCqms | orderBy:'title'" ng-show="vm.isShowing('CQMs')">
+          <tr ng-repeat="cqm in vm.allCqms | orderBy:'title'" ng-if="vm.isShowing('CQMs')">
             <td class="compare-rowCert">{{cqm.number + ": " + cqm.title}}</td>
-            <td class="compare-element" ng-repeat="item in cqm.values | orderBy:'chplProductNumber'"><i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success && !item.version, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i><b ng-if="item.version">{{ item.version.join(', ') }}</b><span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span></td>
+            <td class="compare-element" ng-repeat="item in cqm.values | orderBy:'chplProductNumber'">
+              <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success && !item.version, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
+              <b ng-if="item.version">{{ item.version.join(', ') }}</b>
+              <span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span>
+            </td>
           </tr>
           <tr>
             <td></td>

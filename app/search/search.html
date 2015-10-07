@@ -27,14 +27,14 @@
           <div class="col-sm-2">
             <a href="" ng-if="query.simple" ng-click="query.simple = !query.simple">Advanced search</a>
             <a href="" ng-if="!query.simple" ng-click="query.simple = !query.simple">Simple search</a>
-            <span ng-show="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
+            <span ng-if="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
             <br /><a href="" ng-click="browseAll()">Browse all</a>
           </div>
         </div>
       </div>
     </div> <!-- simple search row -->
 
-    <div class="row" ng-show="!query.simple"> <!-- advanced search -->
+    <div class="row" ng-if="!query.simple"> <!-- advanced search -->
       <div class="col-xs-12">
           <div class="form-group form-group-sm">
             <div class="col-sm-1">
@@ -131,16 +131,16 @@
   </form>
   </div>
 
-  <div id="resultsSection" ng-show="hasSearched()">
+  <div id="resultsSection" ng-if="hasSearched()">
     <div class="row">
       <div class="col-md-12">
         <h2>Results</h2>
-        <p ng-hide="hasResults()">No results found</p>
-        <p ng-show="hasResults()">There are {{ resultCount }} results that match your search.</p>
+        <p ng-if="!hasResults()">No results found</p>
+        <p ng-if="hasResults()">There are {{ resultCount }} results that match your search.</p>
       </div>
     </div>
-    <div ng-show="hasResults()" class="row">
-      <div ng-show="visibleFilter" class="col-md-4">
+    <div ng-if="hasResults()" class="row">
+      <div ng-if="visibleFilter" class="col-md-4">
         <h3>Filter</h3>
         <a href="" ng-click="clearFilter()" class="pull-right">Clear Filter</a>
 

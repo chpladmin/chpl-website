@@ -84,8 +84,6 @@
             $scope.toggleCompareId = self.toggleCompareId;
 
             self.search = function () {
-                self.hasDoneASearch = true;
-
                 if ($scope.query.searchTermObject !== undefined) {
                     if (typeof($scope.query.searchTermObject) === 'string' && $scope.query.searchTermObject.length > 0) {
                         $scope.query.searchTermObject = {type: 'previous search', value: $scope.query.searchTermObject};
@@ -110,6 +108,8 @@
                 $localStorage.lookaheadSource = $scope.lookaheadSource;
                 commonService.search($scope.query)
                     .then(function (data) {
+                        self.hasDoneASearch = true;
+
                         $localStorage.searchResults = data;
                         $scope.searchResults = data.results;
                         $scope.displayedResults = [].concat($scope.searchResults);

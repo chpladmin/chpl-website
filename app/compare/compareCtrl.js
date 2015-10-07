@@ -38,7 +38,7 @@
                     cert = product.certificationResults[i];
                     if (self.allCerts[cert.number] === undefined)
                         self.allCerts[cert.number] = {number: cert.number, title: cert.title, values: []};
-                    self.allCerts[cert.number].values.push({productId: product.id, success: cert.success, chplProductNumber: product.chplProductNumber});
+                    self.allCerts[cert.number].values.push({productId: product.id, allowed: true, success: cert.success, chplProductNumber: product.chplProductNumber});
                 }
             };
 
@@ -79,6 +79,17 @@
                 var needToAddBlank, product;
                 for (var i = 0; i < self.productList.length; i++) {
                     product = self.productList[i];
+                    for (var cert in self.allCerts) {
+                        needToAddBlank = true;
+                        for (var k = 0; k < self.allCerts[cert].values.length; k++) {
+                            if (self.allCerts[cert].values[k].productId === product.id) {
+                                needToAddBlank = false;
+                            }
+                        }
+                        if (needToAddBlank) {
+                            self.allCerts[cert].values.push({productId: product.id, allowed: false, chplProductNumber: product.chplProductNumber});
+                        }
+                    }
                     for (var cqm in self.allCqms) {
                         needToAddBlank = true;
                         for (var k = 0; k < self.allCqms[cqm].values.length; k++) {
