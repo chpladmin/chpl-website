@@ -5,7 +5,7 @@
         <ul class="nav nav-pills nav-stacked">
           <li ng-class="{'active': vm.workType === 'upload'}"><a href="" class="" ng-click="vm.workType='upload'">Upload Certified Products</a></li>
           <li ng-class="{'active': vm.workType === 'confirm'}" ng-if="vm.uploadingCps.length > 0"><a href="" class="" ng-click="vm.workType='confirm'">Confirm <span class="badge">{{ vm.uploadingCps.length }}</span> Pending Product<span ng-if="vm.uploadingCps.length > 1">s</span></a></li>
-          <li ng-class="{'active': vm.workType === 'manage'}" ng-if="vm.inspectingCp===''"><a href="" class="" ng-click="vm.workType='manage'">Manage Vendors &amp; Products</a></li>
+          <li ng-class="{'active': vm.workType === 'manage'}" ng-if="vm.inspectingCp===''"><a href="" class="" ng-click="vm.workType='manage'">Manage Developers &amp; Products</a></li>
         </ul>
       </div>
     </div>
@@ -62,7 +62,7 @@
           <table class="table table-striped" ng-if="vm.uploadingCps.length > 0">
             <thead>
               <tr>
-                <th>Vendor</th>
+                <th>Developer</th>
                 <th>Product</th>
                 <th>Version</th>
                 <th>Edition</th>
@@ -100,31 +100,31 @@
         <div class="row">
           <div class="col-sm-12">
             <div ng-if="vm.activeVendor === '' || vm.activeVendor.length > 1">
-              <label for="vendorSelect" class="control-label">Select a vendor</label>
+              <label for="vendorSelect" class="control-label">Select a developer</label>
               <select ng-model="vm.vendorSelect" multiple="true"
                       id="vendorSelect" class="input-sm form-control"
                       size="12" ng-options="v.name for v in vm.vendors | orderBy: 'name'">
               </select>
-              <button class="btn btn-default form-control" ng-click="vm.selectVendor()">{{ vm.vendorSelect.length > 1 ? 'Merge' : 'Choose' }} Vendor{{ vm.vendorSelect.length !== 1 ? '(s)' : '' }}</button>
+              <button class="btn btn-default form-control" ng-click="vm.selectVendor()">{{ vm.vendorSelect.length > 1 ? 'Merge' : 'Choose' }} Developer{{ vm.vendorSelect.length !== 1 ? '(s)' : '' }}</button>
             </div> <!-- end select -->
 
             <div ng-if="vm.activeVendor !== '' && vm.activeVendor.length === 1">
               <div class="panel panel-default" ng-form="vendorEditForm">
                 <div class="panel-heading">
                   <span ng-if="vm.inspectingCp && !vm.activeVendor[0].id">
-                    Vendor <strong>"{{ vm.inspectingCp.vendor.name }}"</strong> not found. Would you like to select an existing vendor?<br />
-                    <label for="vendorInspectSelect" class="control-label">Select a vendor</label>
+                    Developer <strong>"{{ vm.inspectingCp.vendor.name }}"</strong> not found. Would you like to select an existing developer?<br />
+                    <label for="vendorInspectSelect" class="control-label">Select a developer</label>
                     <select ng-model="vm.vendorSelect"
                             id="vendorInspectSelect" class="input-sm form-control"
                             ng-options="v.name for v in vm.vendors | orderBy: 'name'">
                     </select>
-                    <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVendor()">Select Vendor</button></p>
+                    <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVendor()">Select Developer</button></p>
                     Or create a new one?<br />
                   </span>
                   <span ng-if="!vm.editVendor">{{ vm.activeVendor[0].name }}</span>
                   <span ng-if="vm.editVendor">
                     <div class="form-group">
-                      <label for="vendorName">Vendor Name <span class="text-danger">*</span></label>
+                      <label for="vendorName">Developer Name <span class="text-danger">*</span></label>
                       <input class="input-sm form-control" type="text" required ng-model="vm.activeVendor[0].name" id="vendorName"></input>
                     </div>
                   </span>
@@ -164,7 +164,7 @@
                       <input class="input-sm form-control" type="url" ng-model="vm.activeVendor[0].website" id="vendorWebsite"></input>
                     </div>
                   </span>
-                  <span ng-if="vm.inspectingCp && vm.activeVendor[0].id">Uploaded vendor address information:<br />
+                  <span ng-if="vm.inspectingCp && vm.activeVendor[0].id">Uploaded developer address information:<br />
                     {{ vm.inspectingCp.vendorAddress.line1 }}<br />
                     {{ vm.inspectingCp.vendorAddress.line2 }}<br />
                     {{ vm.inspectingCp.vendorAddress.city }}<br />
@@ -176,10 +176,10 @@
                   Last Modified Date: {{ vm.activeVendor[0].lastModifiedDate | date }}
                   <br />
                   <p ng-if="vm.vendorMessage !== undefined && vm.editVendor" class="bg-danger">{{ vm.vendorMessage }}</p>
-                  <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Vendor</button></p>
-                  <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Vendor</button></p>
+                  <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Developer</button></p>
+                  <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Developer</button></p>
                   <p><button class="btn btn-warning btn-block" ng-if="vm.editVendor" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
-                  <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to vendor select</a></p>
+                  <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to developer select</a></p>
                 </div>
               </div>
             </div>
@@ -187,7 +187,7 @@
         </div>
         <div class="row" ng-if="vm.activeVendor !== '' && vm.activeVendor.length !== 1">
           <div class="col-md-6">
-            <h4>Merge selected vendors</h4>
+            <h4>Merge selected developers</h4>
             <div class="panel panel-default" ng-repeat="vendor in vm.activeVendor">
               <div class="panel-heading">
                 <span>{{ vendor.name }}</span>
@@ -210,7 +210,7 @@
             <div class="panel panel-default" ng-form="vendorMergeForm">
               <div class="panel-heading">
                 <div class="form-group">
-                  <label for="vendorMergeName">Vendor Name <span class="text-danger">*</span></label>
+                  <label for="vendorMergeName">Developer Name <span class="text-danger">*</span></label>
                   <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.name" id="vendorMergeName" required></input>
                 </div>
               </div>
@@ -241,7 +241,7 @@
                 </div>
                 <br />
                 <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
-                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor()">Save Combined Vendors</button></p>
+                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor()">Save Combined Developers</button></p>
                 <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
               </div>
             </div>

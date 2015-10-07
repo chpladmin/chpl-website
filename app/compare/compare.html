@@ -46,7 +46,7 @@
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.chplProductNumber }}</td>
           </tr>
           <tr>
-            <td class="compare-rowLead">Certifications</td>
+            <td class="compare-rowLead">Certification Criteria</td>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'"><a href="" aria-expanded="false" ng-click="vm.toggle('certifications')">{{ product.countCerts }} met</a></td>
           </tr>
           <tr ng-repeat="cert in vm.allCerts" ng-show="vm.isShowing('certifications')">

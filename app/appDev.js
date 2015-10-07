@@ -194,6 +194,7 @@
             $httpBackend.whenGET(/^compare\/.*/).passThrough();
             $httpBackend.whenGET(/^common\/.*/).passThrough();
             $httpBackend.whenGET(/^product\/.*/).passThrough();
+            $httpBackend.whenGET(/^overview\/.*/).passThrough();
             $httpBackend.whenGET(/^userRegistration\/.*/).passThrough();
             $httpBackend.whenGET(/localhost:8080/).passThrough();
             $httpBackend.whenPOST(/localhost:8080/).passThrough();

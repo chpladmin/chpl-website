@@ -16,7 +16,7 @@
           <div class="col-sm-7">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-search"></i></div>
-              <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Vendors" ng-model="query.searchTermObject"
+              <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="query.searchTermObject"
                      typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
                      typeahead-input-formatter="$model.value" />
             </div>
@@ -38,12 +38,12 @@
       <div class="col-xs-12">
           <div class="form-group form-group-sm">
             <div class="col-sm-1">
-              <label for="vendorField" class="control-label">Vendor</label>
+              <label for="vendorField" class="control-label">Developer</label>
             </div>
             <div class="col-sm-4">
               <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" id="vendorField" placeholder="Vendor" ng-model="query.vendorObject"
+                <input type="text" class="form-control" id="vendorField" placeholder="Developer" ng-model="query.vendorObject"
                        typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.vendors | filter:{value:$viewValue} | limitTo:16"
                        typeahead-input-formatter="$model.value" />
               </div>
@@ -90,7 +90,7 @@
               </select>
             </div>
             <div class="col-sm-1">
-              <label for="cqmField" class="control-label">Clinical Quality Measurements</label>
+              <label for="cqmField" class="control-label">Clinical Quality Measures</label>
             </div>
             <div class="col-sm-3">
               <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control">
@@ -144,8 +144,8 @@
         <h3>Filter</h3>
         <a href="" ng-click="clearFilter()" class="pull-right">Clear Filter</a>
 
-        <label for="vendor-search">Filter on Vendor</label>
-        <input id="vendor-search" placeholder="filter on vendor" class="input-sm form-control" type="search" ng-model="query.vendor"/>
+        <label for="vendor-search">Filter on Developer</label>
+        <input id="vendor-search" placeholder="filter on developer" class="input-sm form-control" type="search" ng-model="query.vendor"/>
         <label for="product-search">Filter on Product</label>
         <input id="product-search" placeholder="filter on product" class="input-sm form-control" type="search" ng-model="query.product"/>
 
@@ -174,7 +174,7 @@
         </div>
 
         <div ng-if="false">
-          <h3>Filter on Certifications and CQMs</h3>
+          <h3>Filter on Certification Criteria and Clinical Quality Measures</h3>
           <div class="panel panel-default">
             <div class="panel-body">
               <div ng-repeat="category in certsNcqms">
@@ -202,11 +202,11 @@
           <thead>
             <tr>
               <th class="search-header" ng-click="sort('vendor')"
-                  ng-class="{'sort-ascent': query.orderBy==='vendor' && !query.sortDescending, 'sort-descent': query.orderBy==='vendor' && query.sortDescending}">Vendor</th>
+                  ng-class="{'sort-ascent': query.orderBy==='vendor' && !query.sortDescending, 'sort-descent': query.orderBy==='vendor' && query.sortDescending}">Developer</th>
 		      <th class="search-header" ng-click="sort('product')"
                   ng-class="{'sort-ascent': query.orderBy==='product' && !query.sortDescending, 'sort-descent': query.orderBy==='product' && query.sortDescending}">Product</th>
               <th class="">Version</th>
-		      <th class="">Certs & CQMs</th>
+		      <th class="">Certification Criteria & Clinical Quality Measures</th>
               <th class="search-header" ng-click="sort('certificationDate')"
                   ng-class="{'sort-ascent': query.orderBy==='certificationDate' && !query.sortDescending, 'sort-descent': query.orderBy==='certificationDate' && query.sortDescending}">Certification Date</th>
               <th><a href="" ng-click="compare()">Compare</a></th>
@@ -217,7 +217,7 @@
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor.name }}</td>
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.countCerts }} Certifications / {{ row.countCqms }} CQMs</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certificationDate.split(' ')[0] | date }}</td>
               <td align="center">
                 <input type="checkbox" ng-click="toggleCompareId(row.id)" ng-model="compareBoxes[row.id]" id="compareBoxes{{ row.id }}"/>
@@ -262,14 +262,4 @@
       </div>
     </div>
   </div> <!-- end of search results -->
-
-  <div class="row" ng-hide="hasSearched()">
-    <div class="col-md-6">
-      <h2>How the CHPL works</h2>
-      <p>Welcome to the Office of the National Coordinator for Health IT's (ONC) Certified Health IT Product List (CHPL). Here, you will find the comprehensive and authoritative listing of all Health Information Technology products which have been successfully tested and certified through the ONC Health IT certification program. All products listed on the CHPL have been successfully tested by an Accredited Testing Laboratory (ATL) and successfully certified by an ONC-Authorized Certification Body (ACB) to meet criteria adopted by the Secretary of Health and Human Services.</p>
-    </div>
-    <div class="col-sm-6">
-      <img src="lib/infographic.png" width="300" height="200" alt="Infographic describing how the CHPL works"></img>
-    </div>
-  </div> <!-- end of other infographic -->
 </div> <!-- end controller -->
