@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.common')
-        .service('commonService', function ($http, $q, devAPI, API, $log) {
+        .service('commonService', function ($http, $q, API, $log) {
             var self = this;
 
             self.simpleApiCall = function (endpoint, workingApi) {
@@ -36,7 +36,7 @@
             };
 
             self.getSearchOptions = function () {
-                return self.simpleApiCall('/populate_search_options', API);
+                return self.simpleApiCall('/data/search_options', API);
             };
 
             self.getProduct = function (productId) {
@@ -58,15 +58,7 @@
             self.getProductsByVersion = function (versionId) {
                 return self.simpleApiCall('/certified_products/?versionId=' + versionId, API);
             };
-/*
-            self.getCerts = function () {
-                return self.simpleApiCall('/list_certs', devAPI);
-            };
 
-            self.getCQMs = function () {
-                return self.simpleApiCall('/list_cqms', devAPI);
-            };
-*/
             self.getEditions = function () {
                 return self.simpleApiCall('/data/certification_editions', API);
             };
@@ -82,23 +74,11 @@
             self.getCertificationStatuses = function () {
                 return self.simpleApiCall('/data/certification_statuses', API);
             };
-/*
-            self.getVendorNames = function () {
-                return self.simpleApiCall('/list_vendor_names', API);
-            };
 
-            self.getProductNames = function () {
-                return self.simpleApiCall('/list_product_names', API);
-            };
-*/
             self.getCertBodies = function () {
                 return self.simpleApiCall('/data/certification_bodies', API);
             };
-/*
-            self.getCertsNCQMs = function () {
-                return self.simpleApiCall('/list_filterCerts', devAPI);
-            };
-*/
+
             self.getCertifiedProductActivity = function () {
                 return self.simpleApiCall('/activity/certified_products', API);
             };
