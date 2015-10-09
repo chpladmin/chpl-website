@@ -66,7 +66,7 @@
                 <th>Product</th>
                 <th>Version</th>
                 <th>Edition</th>
-                <th>Upload date</th>
+                <th>Certification date</th>
                 <th class="text-center">Action</th>
               </tr>
             </thead>
@@ -96,7 +96,7 @@
         </div>
       </div> <!-- end of upload process table -->
 
-      <div ng-if="vm.workType === 'manage' || vm.inspectingCp !== '' || vm.isChplAdmin">
+      <div ng-if="vm.workType === 'manage' || vm.inspectingCp !== '' || vm.isChplAdmin"> <!-- developer -->
         <div class="row" ng-if="vm.activeVendor === ''">
           <div class="col-sm-12">
             <label for="vendorSelect" class="control-label">Select a developer</label>
@@ -106,9 +106,10 @@
             </select>
             <button class="btn btn-default form-control" ng-click="vm.selectVendor()">Choose Developer</button>
           </div>
-        </div>
+        </div> <!-- end select developer -->
         <div class="row" ng-if="vm.activeVendor !== ''">
           <div class="col-sm-6">
+            <h3 ng-if="vm.inspectingCp">System developer information</h3>
             <div class="panel panel-default" ng-form="vendorEditForm">
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.activeVendor.id">
@@ -119,7 +120,7 @@
                           ng-options="v.name for v in vm.vendors | orderBy: 'name'">
                   </select>
                   <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVendor()">Select Developer</button></p>
-                  Or create a new one?<br />
+                  Or use the uploaded information?<br />
                 </span>
                 <span ng-if="!vm.editVendor">{{ vm.activeVendor.name }}</span>
                 <span ng-if="vm.editVendor">
@@ -164,14 +165,6 @@
                     <input class="input-sm form-control" type="url" ng-model="vm.activeVendor.website" id="vendorWebsite"></input>
                   </div>
                 </span>
-                <span ng-if="vm.inspectingCp && vm.activeVendor.id">Uploaded developer address information:<br />
-                  {{ vm.inspectingCp.vendorAddress.line1 }}<br />
-                  {{ vm.inspectingCp.vendorAddress.line2 }}<br />
-                  {{ vm.inspectingCp.vendorAddress.city }}<br />
-                  {{ vm.inspectingCp.vendorAddress.region }}<br />
-                  {{ vm.inspectingCp.vendorAddress.country }}<br />
-                  {{ vm.inspectingCp.website }}<br />
-                </span>
                 <br />
                 Last Modified Date: {{ vm.activeVendor.lastModifiedDate | date }}
                 <br />
@@ -182,15 +175,31 @@
                 <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to developer select</a></p>
               </div>
             </div>
-          </div> <!-- end single vendor -->
-          <div class="col-sm-6" ng-if="vm.activeVendor !== ''">
+          </div> <!-- end system developer -->
+          <div class="col-sm-6" ng-if="vm.inspectingCp">
+            <h3>Uploaded developer information</h3>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                {{ vm.inspectingCp.vendor.name }}
+              </div>
+              <div class="panel-body">
+                {{ vm.inspectingCp.vendorAddress.line1 }}<br />
+                {{ vm.inspectingCp.vendorAddress.line2 }}<br />
+                {{ vm.inspectingCp.vendorAddress.city }}<br />
+                {{ vm.inspectingCp.vendorAddress.region }}<br />
+                {{ vm.inspectingCp.vendorAddress.country }}<br />
+                {{ vm.inspectingCp.website }}<br />
+              </div>
+            </div>
+          </div> <!-- end uploaded developer -->
+          <div class="col-sm-6" ng-if="vm.activeVendor !== '' && !vm.inspectingCp">
             <label for="vendorMergeSelect" class="control-label">Select developers to merge with {{ vm.activeVendor.name }}</label>
             <select ng-model="vm.mergingVendors" multiple="true"
                     id="vendorMergeSelect" class="input-sm form-control"
                     size="12" ng-options="v.name for v in vm.vendors | orderBy: 'name'">
             </select>
             <p ng-if="vm.mergingVendors.length > 0"><button class="btn btn-default btn-block" ng-click="vm.mergingVendors = []">Clear selection</button></p>
-          </div>
+          </div> <!-- end vendor merge select -->
         </div>
         <div class="row" ng-if="vm.activeVendor !== '' && vm.mergingVendors.length > 0">
           <div class="col-md-6">
@@ -269,9 +278,9 @@
               </div>
             </div>
           </div>
-        </div> <!-- end vendor merge -->
+        </div> <!-- end merged developer -->
 
-        <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== ''">
+        <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== ''"> <!-- product -->
           <div class="col-sm-12">
             <label for="productSelect" class="control-label">Select a product</label>
             <select ng-model="vm.productSelect"
@@ -280,9 +289,10 @@
             </select>
             <button class="btn btn-default form-control" ng-click="vm.selectProduct()">Choose Product</button>
           </div>
-        </div>
+        </div> <!-- end select product -->
         <div class="row" ng-if="vm.activeProduct !== ''">
           <div class="col-sm-6">
+            <h3 ng-if="vm.inspectingCp">System product information</h3>
             <div class="panel panel-default" ng-form="productEditForm">
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.activeProduct.id && vm.activeVendor.id">
@@ -293,7 +303,7 @@
                           ng-options="p.name for p in vm.products | orderBy: 'name'">
                   </select>
                   <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
-                  Or create a new one?<br />
+                  Or use the uploaded information?<br />
                 </span>
                 <span ng-if="!vm.editProduct">{{ vm.activeProduct.name }}</span>
                 <span ng-if="vm.editProduct">
@@ -323,8 +333,18 @@
                 <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editProduct = false; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6" ng-if="vm.activeProduct !==''">
+          </div> <!-- end system product -->
+          <div class="col-sm-6" ng-if="vm.inspectingCp">
+            <h3>Uploaded developer information</h3>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                {{ vm.inspectingCp.product.name }}
+              </div>
+              <div class="panel-body">
+              </div>
+            </div>
+          </div> <!-- end uploaded product -->
+          <div class="col-sm-6" ng-if="vm.activeProduct !=='' && !vm.inspectingCp && vm.products.length > 1">
             <label for="productMergeSelect" class="control-label">Select products to merge with {{ vm.activeProduct.name }}</label>
             <select ng-model="vm.mergingProducts" multiple="true"
                     id="productMergeSelect" class="input-sm form-control"
@@ -332,6 +352,9 @@
             </select>
             <p ng-if="vm.mergingProducts.length > 0"><button class="btn btn-default btn-block" ng-click="vm.mergingProducts = []">Clear selection</button></p>
           </div>
+          <div class="col-sm-6" ng-if="vm.activeProduct !=='' && !vm.inspectingCp && vm.products.length <= 1">
+            <p><strong>No products are available for merge</strong></p>
+          </div> <!-- end product merge select -->
         </div>
         <div class="row" ng-if="vm.activeProduct !== '' && vm.mergingProducts.length > 0">
           <div class="col-md-6">
@@ -370,9 +393,9 @@
               </div>
             </div>
           </div>
-        </div> <!-- end product merge -->
+        </div> <!-- end merged product -->
 
-        <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === ''">
+        <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === ''"> <!-- version -->
           <div class="col-sm-12">
             <label for="versionSelect" class="control-label">Select a version</label>
             <select ng-model="vm.versionSelect"
@@ -381,9 +404,10 @@
             </select>
             <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose Version</button>
           </div>
-        </div>
+        </div> <!-- end select product -->
         <div class="row" ng-if="vm.activeVersion !== ''">
           <div class="col-sm-6">
+            <h3 ng-if="vm.inspectingCp">System version information</h3>
             <div class="panel panel-default" ng-form="versionEditForm">
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.inspectingCp.product.versionId && vm.activeProduct.id">
@@ -394,7 +418,7 @@
                           ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
                   </select>
                   <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVersion()">Select Version</button></p>
-                  Or create a new one?<br />
+                  Or use the uploaded information?<br />
                 </span>
                 <span ng-if="!vm.editVersion">{{ vm.activeVersion.version }}</span>
                 <span ng-if="vm.editVersion">
@@ -415,8 +439,18 @@
                 <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVersion = false; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
               </div>
             </div>
-          </div> <!-- end version select -->
-          <div class="col-sm-6" ng-if="vm.activeVersion !== ''">
+          </div> <!-- end system version -->
+          <div class="col-sm-6" ng-if="vm.inspectingCp">
+            <h3>Uploaded version information</h3>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                {{ vm.inspectingCp.product.version }}
+              </div>
+              <div class="panel-body">
+              </div>
+            </div>
+          </div> <!-- end uploaded version -->
+          <div class="col-sm-6" ng-if="vm.activeVersion !== '' && !vm.inspectingCp && vm.versions.length > 1">
             <label for="versionMergeSelect" class="control-label">Select versions to merge with {{ vm.activeVersion.version }}</label>
             <select ng-model="vm.mergingVersions" multiple="true"
                     id="versionMergeSelect" class="input-sm form-control"
@@ -424,6 +458,9 @@
             </select>
             <p ng-if="vm.mergingVersions.length > 0"><button class="btn btn-default btn-block" ng-click="vm.mergingVersions = []">Clear selection</button></p>
           </div>
+          <div class="col-sm-6" ng-if="vm.activeProduct !=='' && !vm.inspectingCp && vm.versions.length <= 1">
+            <p><strong>No versions are available for merge</strong></p>
+          </div> <!-- end version merge select -->
         </div>
         <div class="row" ng-if="vm.activeVersion !== '' && vm.mergingVersions.length > 0">
           <div class="col-md-6">
@@ -463,7 +500,7 @@
               </div>
             </div>
           </div>
-        </div> <!-- end product merge -->
+        </div> <!-- end merged version -->
 
         <div class="row" ng-if="vm.activeVersion !== ''">
           <div class="col-sm-12">
