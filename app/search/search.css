@@ -40,3 +40,10 @@ ul.pagination li {
 .pointer {
     cursor: pointer;
 }
+
+.search-inputs {
+    padding-top: 15px;
+    background: #e1e1e1;
+    margin-left: 0px;
+    margin-right: 0px;
+}

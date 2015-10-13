@@ -32,8 +32,7 @@
             };
 
             self.search = function (queryObj, pageNum, pageSize) {
-                return self.postApiCall('/advanced_search', API, queryObj);
-//                return self.postApiCall('/search', API, queryObj);
+                return self.postApiCall('/search', API, queryObj);
             };
 
             self.getSearchOptions = function () {
@@ -41,23 +40,23 @@
             };
 
             self.getProduct = function (productId) {
-                return self.simpleApiCall('/certified_product/get_certified_product?certifiedProductId=' + productId, API);
+                return self.simpleApiCall('/certified_products/' + productId + '/details', API);
             };
 
             self.getVendors = function () {
-                return self.simpleApiCall('/vendor/list_vendors', API);
+                return self.simpleApiCall('/vendors/', API);
             };
 
             self.getProductsByVendor = function (vendorId) {
-                return self.simpleApiCall('/product/list_products_by_vendor?vendorId=' + vendorId, API);
+                return self.simpleApiCall('/products/?vendorId=' + vendorId, API);
             };
 
             self.getVersionsByProduct = function (productId) {
-                return self.simpleApiCall('/product/version/list_versions_by_product?productId=' + productId, API);
+                return self.simpleApiCall('/versions/?productId=' + productId, API);
             };
 
             self.getProductsByVersion = function (versionId) {
-                return self.simpleApiCall('/certified_product/list_certified_products_by_version?versionId=' + versionId, API);
+                return self.simpleApiCall('/certified_products/?versionId=' + versionId, API);
             };
 /*
             self.getCerts = function () {
@@ -69,15 +68,19 @@
             };
 */
             self.getEditions = function () {
-                return self.simpleApiCall('/list_editions', devAPI);
+                return self.simpleApiCall('/data/certification_editions', API);
             };
 
             self.getClassifications = function () {
-                return self.simpleApiCall('/list_classifications', devAPI);
+                return self.simpleApiCall('/data/classification_types', API);
             };
 
             self.getPractices = function () {
-                return self.simpleApiCall('/list_practices', devAPI);
+                return self.simpleApiCall('/data/practice_types', API);
+            };
+
+            self.getCertificationStatuses = function () {
+                return self.simpleApiCall('/data/certification_statuses', API);
             };
 /*
             self.getVendorNames = function () {
@@ -89,7 +92,7 @@
             };
 */
             self.getCertBodies = function () {
-                return self.simpleApiCall('/list_certBodies', devAPI);
+                return self.simpleApiCall('/data/certification_bodies', API);
             };
 /*
             self.getCertsNCQMs = function () {
@@ -97,23 +100,27 @@
             };
 */
             self.getCertifiedProductActivity = function () {
-                return self.simpleApiCall('/list_certifiedProductActivity', devAPI);
+                return self.simpleApiCall('/activity/certified_products', API);
             };
 
             self.getVendorActivity = function () {
-                return self.simpleApiCall('/list_vendorActivity', devAPI);
+                return self.simpleApiCall('/activity/vendors', API);
             };
 
             self.getProductActivity = function () {
-                return self.simpleApiCall('/list_productActivity', devAPI);
+                return self.simpleApiCall('/activity/products', API);
             };
 
             self.getAcbActivity = function () {
-                return self.simpleApiCall('/list_acbActivity', devAPI);
+                return self.simpleApiCall('/activity/acbs', API);
             };
 
             self.getUploadingCps = function () {
-                return self.simpleApiCall('/certified_product/get_pending', API);
+                return self.simpleApiCall('/certified_products/pending', API);
+            };
+
+            self.keepalive = function () {
+                return self.simpleApiCall('/auth/keep_alive', API);
             };
         });
 })();

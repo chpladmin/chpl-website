@@ -1,22 +1,23 @@
 <div ng-controller="SearchController">
-  <div class="row" ng-hide="hasSearched()">
-    <div class="col-md-12">
-      <h1>The Authoritative listing of Certified Health Information Products</h1>
-      <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+  <div class="row splash-row" ng-hide="hasSearched()">
+    <div class="col-md-10 col-md-offset-1 text-center">
+      <h1><strong>CHPL:</strong> The Authoritative Listing of Certified Health Information Products</h1>
+      <p>Welcome to the Office of the National Coordinator for Health IT's (ONC) Certified Health IT Product List (CHPL). Here, you will find the comprehensive and authoritative listing of all Health Information Technology products which have been successfully tested and certified through the ONC Health IT certification program. All products listed on the CHPL have been successfully tested by an Accredited Testing Laboratory (ATL) and successfully certified by an ONC-Authorized Certification Body (ACB) to meet criteria adopted by the Secretary of Health and Human Services.</p>
     </div>
   </div> <!-- search introduction 'header' -->
 
+  <div class="row search-inputs">
   <form class="form-horizontal" role="search"> <!-- simple search -->
     <div class="row">
       <div class="col-xs-12">
         <div class="form-group form-group-lg">
           <div class="col-sm-1">
-            <label for="searchField" class="control-label">Search</label>
+            <label for="searchField" class="control-label sr-only">Search</label>
           </div>
           <div class="col-sm-7">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-search"></i></div>
-              <input type="text" class="form-control" id="searchField" placeholder="Search" ng-model="query.searchTermObject"
+              <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Vendors" ng-model="query.searchTermObject"
                      typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
                      typeahead-input-formatter="$model.value" />
             </div>
@@ -86,7 +87,7 @@
             </div>
             <div class="col-sm-3">
               <select id="certField" ng-model="query.certificationCriteria" multiple class="input-sm form-control">
-                <option ng-repeat="cert in certs" value="{{ cert.number }}">{{ cert.number + ': ' + cert.title }}</option>
+                <option ng-repeat="cert in certs" value="{{ cert }}">{{ cert + ': ' + cert }}</option>
               </select>
             </div>
             <div class="col-sm-1">
@@ -94,7 +95,7 @@
             </div>
             <div class="col-sm-3">
               <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control">
-                <option ng-repeat="cqm in cqms.certs" value="{{ cqm.number }}">{{ cqm.number + ': ' + cqm.title }}</option>
+                <option ng-repeat="cqm in cqms" value="{{ cqm }}">{{ cqm + ': ' + cqm }}</option>
               </select>
             </div>
           </div> <!-- second row of advanced -->
@@ -126,10 +127,10 @@
             </div>
           </div> <!-- third row of advanced search -->
 
-        </form>
       </div>
     </div> <!-- advanced search row -->
   </form>
+  </div>
 
   <div id="resultsSection" ng-show="hasSearched()">
     <div class="row">
@@ -173,7 +174,7 @@
           <button class="btn btn-default btn-block" href="" ng-click="doFilter()">Filter results</button>
         </div>
 
-        <div>
+        <div ng-if="false">
           <h3>Filter on Certifications and CQMs</h3>
           <div class="panel panel-default">
             <div class="panel-body">
@@ -263,43 +264,13 @@
     </div>
   </div> <!-- end of search results -->
 
-  <div ng-hide="hasSearched()">
-    <div class="row">
-      <div class="col-md-12">
-        <h2>How the CHPL works</h2>
-      </div>
+  <div class="row" ng-hide="hasSearched()">
+    <div class="col-md-6">
+      <h2>How the CHPL works</h2>
+      <p>Pellentesque dapibus suscipit ligula.  Donec posuere augue in quam.  Etiam vel tortor sodales tellus ultricies commodo.  Suspendisse potenti.  Aenean in sem ac leo mollis blandit.  Donec neque quam, dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.  Etiam laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.  Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.  Vestibulum convallis, lorem a tempus semper, dui dui euismod elit, vitae placerat urna tortor vitae lacus.  Nullam libero mauris, consequat quis, varius et, dictum id, arcu.  Mauris mollis tincidunt felis.  Aliquam feugiat tellus ut neque.  Nulla facilisis, risus a rhoncus fermentum, tellus tellus lacinia purus, et dictum nunc justo sit amet elit.</p>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        Infographic here
-      </div>
+    <div class="col-sm-6">
+      <img src="lib/infographic.png" width="300" height="200" alt="Infographic describing how the CHPL works"></img>
     </div>
-  </div> <!-- end of other agencies -->
-
-  <div ng-hide="hasSearched()">
-    <div class="row">
-      <div class="col-md-12">
-        <h2>Other Agencies</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-3 col-sm-6">
-        <img src="" width="100px" height="100px" alt="Other agency 1" />
-        <a href="#">Other agency 1</a>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <img src="" width="100px" height="100px" alt="Other agency 2" />
-        <a href="#">Other agency 2</a>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <img src="" width="100px" height="100px" alt="Other agency 3" />
-        <a href="#">Other agency 3</a>
-      </div>
-      <div class="col-md-3 col-sm-6">
-        <img src="" width="100px" height="100px" alt="Other agency 4" />
-        <a href="#">Other agency 4</a>
-      </div>
-    </div>
-  </div> <!-- end of other agencies -->
-
+  </div> <!-- end of other infographic -->
 </div> <!-- end controller -->

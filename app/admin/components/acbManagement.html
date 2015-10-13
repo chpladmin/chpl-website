@@ -1,11 +1,11 @@
 <section class="row">
   <div class="col-md-12">
-    <h1>ACB Management</h1>
+    <h2>ACB Management</h2>
     <tabset vertical="false">
       <tab heading="Overview" active="true">
         <div class="row">
           <div class="col-md-12">
-            <h2>Overview of ACB Management</h2>
+            <h3>Overview of ACB Management</h3>
             <p ng-if="vm.isChplAdmin">You are a CHPL admin. You can do stuff like:</p>
             <p ng-if="vm.isAcbAdmin">You are an ACB admin. You can do stuff like:</p>
           </div>
@@ -14,19 +14,19 @@
       <tab ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id" heading="{{ acb.name }}">
         <div class="row">
           <div class="col-md-12">
-            <h2>ACB: {{acb.name}}</h2>
+            <h3>ACB: {{acb.name}}</h3>
           </div>
         </div>
         <div class="row">
           <div class="col-md-4">
             <div ng-show="vm.isModifying">
               <form name="acbEditForm{{acb.id}}" novalidate>
-                <h3>ACB Information</h3>
+                <h4>ACB Information</h4>
                 <label for="acb-new-name" class="control-label">ACB Name <span class="text-danger">*</span></label>
                 <input type="text" id="acb-new-name" ng-model="acb.name" class="form-control" required />
                 <label for="acb-new-website" class="control-label">ACB Website</label>
                 <input type="text" id="acb-new-website" ng-model="acb.website" class="form-control" />
-                <h3>Address</h3>
+                <h4>Address</h4>
                 <label for="acb-new-line1" class="control-label">Street Address Line 1 <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
                 <input type="text" id="acb-new-line1" ng-model="acb.address.line1" class="form-control" ng-required="vm.addressRequired(acb)" />
                 <label for="acb-new-line2" class="control-label">Street Address Line 2</label>
@@ -39,14 +39,19 @@
                 <input type="text" id="acb-new-country" ng-model="acb.address.country" class="form-control" ng-required="vm.addressRequired(acb)" />
                 <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.modifyACB(acb)" ng-disabled="acbEditForm{{acb.id}}.$invalid">Save changes to this ACB</button>
                 <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.cancelACB()">Cancel editing this ACB</button>
-                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.deleteACB(acb)" ng-if="vm.isChplAdmin">Remove this ACB</button>
+                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.deleteACB(acb)"
+                        confirm="Are you sure you wish to delete ACB: {{ acb.name }}? This action can not be undone."
+                        confirm-ok="Yes"
+                        confirm-cancel="No"
+                        confirm-settings="{animation: false}"
+                        ng-if="vm.isChplAdmin">Remove this ACB</button>
               </form>
             </div>
             <div ng-show="!vm.isModifying">
-              <h3>ACB Information</h3>
+              <h4>ACB Information</h4>
               <span>Name: {{ acb.name }}</span><br />
               <span>Website: {{ acb.website }}</span><br />
-              <h3>Address</h3>
+              <h4>Address</h4>
               <span>Line 1: {{ acb.address.line1 }}</span><br />
               <span>Line 2: {{ acb.address.line2 }}</span><br />
               <span>City: {{ acb.address.city }}</span><br />
@@ -71,14 +76,14 @@
         <div class="row">
           <form name="acbNewForm" novalidate>
             <div class="col-md-4">
-              <h3>ACB Information</h3>
+              <h4>ACB Information</h4>
               <label for="acb-new-name" class="control-label">ACB Name <span class="text-danger">*</span></label>
               <input type="text" id="acb-new-name" ng-model="vm.newACB.name" class="form-control" required />
               <label for="acb-new-website" class="control-label">ACB Website</label>
               <input type="text" id="acb-new-website" ng-model="vm.newACB.website" class="form-control" />
             </div>
             <div class="col-md-8">
-              <h3>Address</h3>
+              <h4>Address</h4>
               <label for="acb-new-line1" class="control-label">Street Address Line 1 <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
               <input type="text" id="acb-new-line1" ng-model="vm.newACB.address.line1" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
               <label for="acb-new-line2" class="control-label">Street Address Line 2</label>

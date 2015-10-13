@@ -1,15 +1,106 @@
-/* app css stylesheet */
+@import url(https://fonts.googleapis.com/css?family=Oswald:400,300|Lato:400,300,300italic);
 
 body {
-    margin-top: 60px;
-    margin-bottom: 85px;
+    margin-top: 150px;
+    background-image: url("lib/CHPL_BackgroundPattern.png");
+    font-family: 'Lato', sans-serif;
 }
 
 header {
     transition: all 0.4s ease;
 }
 
+.navbar-inverse .navbar-nav>li>a {
+    font-family: 'Oswald', sans-serif;
+    color: #ffdd3c;
+}
+
+.navbar-inverse {
+    background-image: url("lib/CHPL_Header.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-bottom: 20px solid #0070c9;
+    min-height: 130px;
+}
+
+@media (max-width: 767px) {
+    .navbar-nav > li > a {
+    line-height: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;}
+}
+
+@media (min-width: 767px) {
+    .navbar-fixed-top .container {
+        position: relative;
+        min-height: 130px;
+    }
+
+    .navbar-fixed-top .nav {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+}
+
+footer .navbar-default .navbar-nav>li>a {
+    color: #0070c9;
+}
+
+footer .navbar-default {
+    background-color: #ebebeb;
+    background-image: none;
+}
+
+footer p {
+    color: #363636;
+}
+
+footer {
+    margin-top: 150px;
+}
+
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    color: #0070c9;
+}
+
+h2 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    color: #0070c9;
+}
+
+.splash-row {
+    margin-top: 40px;
+    border: 2px solid #e1e1e1;
+    background: #fff;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.spaced-out {
+    margin: 40px;
+}
+
+#loading-bar .bar {
+  background: #ffdd3c;
+ }
+
+#loading-bar .peg {
+  -moz-box-shadow: #ffdd3c 1px 0 6px 1px;
+  -ms-box-shadow: #ffdd3c 1px 0 6px 1px;
+  -webkit-box-shadow: #ffdd3c 1px 0 6px 1px;
+  box-shadow: #ffdd3c 1px 0 6px 1px;
+}
+
+#loading-bar-spinner .spinner-icon {
+  border-top-color:  #ffdd3c;
+  border-left-color: #ffdd3c;
+}
 
 /*
 header.sticky {
