@@ -10,12 +10,13 @@
             $scope.filterGroup = {};
             self.hasDoneASearch = false;
             $scope.resultCount = 0;
+            $scope.visiblePage = 1;
             self.defaultQuery = {simple: true,
-                            orderBy: 'vendor',
-                            sortDescending: false,
-                            pageNumber: 0,
-                            pageSize: 20,
-                            visibleOnCHPL: 'yes'};
+                                 orderBy: 'vendor',
+                                 sortDescending: false,
+                                 pageNumber: 0,
+                                 pageSize: 20,
+                                 visibleOnCHPL: 'yes'};
             $scope.query = angular.copy(self.defaultQuery);
 
             if ($localStorage.searchResults) {
@@ -27,6 +28,7 @@
 
             if ($localStorage.query) {
                 $scope.query = $localStorage.query;
+                $scope.visiblePage = $scope.query.pageNumber + 1;
             }
 
             self.populateSearchOptions = function () {
@@ -156,6 +158,7 @@
                 delete $localStorage.lookaheadSource;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
+                $scope.visiblePage = 1;
                 $scope.resultCount = 0;
                 self.compareIds = Object.create(null);
                 self.hasDoneASearch = false;
@@ -171,8 +174,8 @@
                 delete($scope.query.certificationBody);
 
                 for (var elem in self.certFilters) {
-//                    $log.info(elem);
-//                    $scope.certFilter[self.certFilters[elem]].click();
+                    //                    $log.info(elem);
+                    //                    $scope.certFilter[self.certFilters[elem]].click();
                     delete self.certFilters[elem];
                 }
             };
@@ -198,8 +201,8 @@
                 self.search();
             }
 
-            $scope.pageChanged = function () {
-                $scope.query.pageNumber = $scope.visiblePage - 1;
+            $scope.pageChanged = function (pageNumber) {
+                $scope.query.pageNumber = pageNumber - 1;
                 self.search();
             };
         }]);
