@@ -51,7 +51,8 @@
                 if (acb.address.line1 && acb.address.line1.length > 0) return true;
                 if (acb.address.line2 && acb.address.line2.length > 0) return true;
                 if (acb.address.city && acb.address.city.length > 0) return true;
-                if (acb.address.region && acb.address.region.length > 0) return true;
+                if (acb.address.state && acb.address.state.length > 0) return true;
+                if (acb.address.zipcode && acb.address.zipcode.length > 0) return true;
                 if (acb.address.country && acb.address.country.length > 0) return true;
                 return false;
             };

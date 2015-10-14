@@ -6,7 +6,8 @@ apis.entities.address = {
     line1:'string',
     line2:'string',
     city:'string',
-    region:'string',
+    state:'string',
+    zipcode:'string',
     country:'string'};
 
 apis.entities.user = {

@@ -33,8 +33,10 @@
                 <input type="text" id="acb-new-line2" ng-model="acb.address.line2" class="form-control" />
                 <label for="acb-new-city" class="control-label">City <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
                 <input type="text" id="acb-new-city" ng-model="acb.address.city" class="form-control" ng-required="vm.addressRequired(acb)" />
-                <label for="acb-new-region" class="control-label">Region <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
-                <input type="text" id="acb-new-region" ng-model="acb.address.region" class="form-control" ng-required="vm.addressRequired(acb)" />
+                <label for="acb-new-state" class="control-label">State <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
+                <input type="text" id="acb-new-state" ng-model="acb.address.state" class="form-control" ng-required="vm.addressRequired(acb)" />
+                <label for="acb-new-zipcode" class="control-label">Zip Code <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
+                <input type="text" id="acb-new-zipcode" ng-model="acb.address.zipcode" class="form-control" ng-required="vm.addressRequired(acb)" />
                 <label for="acb-new-country" class="control-label">Country <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
                 <input type="text" id="acb-new-country" ng-model="acb.address.country" class="form-control" ng-required="vm.addressRequired(acb)" />
                 <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.modifyACB(acb)" ng-disabled="acbEditForm{{acb.id}}.$invalid">Save changes to this ACB</button>
@@ -55,7 +57,8 @@
               <span>Line 1: {{ acb.address.line1 }}</span><br />
               <span>Line 2: {{ acb.address.line2 }}</span><br />
               <span>City: {{ acb.address.city }}</span><br />
-              <span>Region: {{ acb.address.region }}</span><br />
+              <span>State: {{ acb.address.state }}</span><br />
+              <span>Zip Code: {{ acb.address.zipcode }}</span><br />
               <span>Country: {{ acb.address.country }}</span><br />
               <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying">Edit this ACB</button>
             </div>
@@ -90,8 +93,8 @@
               <input type="text" id="acb-new-line2" ng-model="vm.newACB.address.line2" class="form-control" />
               <label for="acb-new-city" class="control-label">City <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
               <input type="text" id="acb-new-city" ng-model="vm.newACB.address.city" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
-              <label for="acb-new-region" class="control-label">Region <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
-              <input type="text" id="acb-new-region" ng-model="vm.newACB.address.region" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
+              <label for="acb-new-zipcode" class="control-label">Zip Code <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
+              <input type="text" id="acb-new-zipcode" ng-model="vm.newACB.address.zipcode" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
               <label for="acb-new-country" class="control-label">Country <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
               <input type="text" id="acb-new-country" ng-model="vm.newACB.address.country" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
             </div>

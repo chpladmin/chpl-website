@@ -135,7 +135,8 @@
                   {{ vm.activeVendor.address.line1 }}<br />
                   {{ vm.activeVendor.address.line2 }}<br />
                   {{ vm.activeVendor.address.city }}<br />
-                  {{ vm.activeVendor.address.region }}<br />
+                  {{ vm.activeVendor.address.state }}<br />
+                  {{ vm.activeVendor.address.zipcode }}<br />
                   {{ vm.activeVendor.address.country }}<br />
                   {{ vm.activeVendor.website }}<br />
                 </span>
@@ -153,8 +154,12 @@
                     <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.city" id="addressCity"></input>
                   </div>
                   <div class="form-group">
-                    <label for="addressRegion">Region <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.region" id="addressRegion"></input>
+                    <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.state" id="addressState"></input>
+                  </div>
+                  <div class="form-group">
+                    <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.zipcode" id="addressZipcode"></input>
                   </div>
                   <div class="form-group">
                     <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
@@ -186,9 +191,10 @@
                 {{ vm.inspectingCp.vendorAddress.line1 }}<br />
                 {{ vm.inspectingCp.vendorAddress.line2 }}<br />
                 {{ vm.inspectingCp.vendorAddress.city }}<br />
-                {{ vm.inspectingCp.vendorAddress.region }}<br />
+                {{ vm.inspectingCp.vendorAddress.state }}<br />
+                {{ vm.inspectingCp.vendorAddress.zipcode }}<br />
                 {{ vm.inspectingCp.vendorAddress.country }}<br />
-                {{ vm.inspectingCp.website }}<br />
+                {{ vm.inspectingCp.vendor.website }}<br />
               </div>
             </div>
           </div> <!-- end uploaded developer -->
@@ -212,7 +218,8 @@
                 {{ vm.activeVendor.address.line1 }}<br />
                 {{ vm.activeVendor.address.line2 }}<br />
                 {{ vm.activeVendor.address.city }}<br />
-                {{ vm.activeVendor.address.region }}<br />
+                {{ vm.activeVendor.address.state }}<br />
+                {{ vm.activeVendor.address.zipcode }}<br />
                 {{ vm.activeVendor.address.country }}<br />
                 {{ vm.activeVendor.website }}<br />
                 <br />
@@ -228,7 +235,8 @@
                 {{ vendor.address.line1 }}<br />
                 {{ vendor.address.line2 }}<br />
                 {{ vendor.address.city }}<br />
-                {{ vendor.address.region }}<br />
+                {{ vendor.address.state }}<br />
+                {{ vendor.address.zipcode }}<br />
                 {{ vendor.address.country }}<br />
                 {{ vendor.website }}<br />
                 <br />
@@ -260,8 +268,12 @@
                   <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.city" id="addressMergeCity"></input>
                 </div>
                 <div class="form-group">
-                  <label for="addressMergeRegion">Region <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.region" id="addressMergeRegion"></input>
+                  <label for="addressMergeState">State <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.state" id="addressMergeState"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressMergeZipcode">Zip Code <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.zipcode" id="addressMergeZipcode"></input>
                 </div>
                 <div class="form-group">
                   <label for="addressMergeCountry">Country <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>

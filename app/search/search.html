@@ -86,7 +86,7 @@
             </div>
             <div class="col-sm-3">
               <select id="certField" ng-model="query.certificationCriteria" multiple class="input-sm form-control"
-                      ng-options="cert.name as cert.name + ': ' + cert.name for cert in certs | orderBy:'name'">
+                      ng-options="cert.name as cert.name + ': ' + cert.title for cert in certs | orderBy:'name'">
               </select>
             </div>
             <div class="col-sm-1">
@@ -94,7 +94,7 @@
             </div>
             <div class="col-sm-3">
               <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control"
-                      ng-options="cqm.name as cqm.name + ': ' + cqm.name for cqm in cqms | orderBy:'name'">
+                      ng-options="cqm.name as cqm.name + ': ' + cqm.title for cqm in cqms | orderBy:'name'">
               </select>
             </div>
           </div> <!-- second row of advanced -->

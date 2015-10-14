@@ -161,11 +161,10 @@
                         cp = self.inspectingCp;
                     }
                 }
-                self.activeVendor = cp.vendor;
-                self.activeVendor.address = cp.vendorAddress;
-                self.activeProduct = cp.product;
-                self.activeVersion = cp.product;
-                self.activeCP = cp;
+                self.activeVendor = angular.copy(cp.vendor);
+                self.activeProduct = angular.copy(cp.product);
+                self.activeVersion = angular.copy(cp.product);
+                self.activeCP = angular.copy(cp);
                 self.activeCP.certificationStatus = {id: 5, name: 'Pending'};
                 self.activeCP.certificationDate = new Date(parseInt(cp.certificationDate));
                 self.activeCP.certDate = self.activeCP.certificationDate;
@@ -315,7 +314,8 @@
                 if (v.address.line1 && v.address.line1.length > 0) return true;
                 if (v.address.line2 && v.address.line2.length > 0) return true;
                 if (v.address.city && v.address.city.length > 0) return true;
-                if (v.address.region && v.address.region.length > 0) return true;
+                if (v.address.state && v.address.state.length > 0) return true;
+                if (v.address.zipcode && v.address.zipcode.length > 0) return true;
                 if (v.address.country && v.address.country.length > 0) return true;
                 return false;
             };
