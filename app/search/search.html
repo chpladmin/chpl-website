@@ -85,16 +85,16 @@
               <label for="certField" class="control-label">Certification Criteria</label>
             </div>
             <div class="col-sm-3">
-              <select id="certField" ng-model="query.certificationCriteria" multiple class="input-sm form-control">
-                <option ng-repeat="cert in certs" value="{{ cert }}">{{ cert + ': ' + cert }}</option>
+              <select id="certField" ng-model="query.certificationCriteria" multiple class="input-sm form-control"
+                      ng-options="cert.name as cert.name + ': ' + cert.name for cert in certs | orderBy:'name'">
               </select>
             </div>
             <div class="col-sm-1">
               <label for="cqmField" class="control-label">Clinical Quality Measures</label>
             </div>
             <div class="col-sm-3">
-              <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control">
-                <option ng-repeat="cqm in cqms" value="{{ cqm }}">{{ cqm + ': ' + cqm }}</option>
+              <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control"
+                      ng-options="cqm.name as cqm.name + ': ' + cqm.name for cqm in cqms | orderBy:'name'">
               </select>
             </div>
           </div> <!-- second row of advanced -->
@@ -105,7 +105,7 @@
             </div>
             <div class="col-sm-3">
               <select id="editionField" ng-model="query.certificationEdition" class="input-sm form-control"
-                      ng-options="edition as edition for edition in editions | orderBy:'toString()'">
+                      ng-options="edition.name as edition.name for edition in editions | orderBy:'name'">
               </select>
             </div>
             <div class="col-sm-1">
@@ -113,7 +113,7 @@
             </div>
             <div class="col-sm-3">
               <select id="classificationField" ng-model="query.productClassification" class="input-sm form-control"
-                      ng-options="c as c for c in classifications | orderBy:'toString()'">
+                      ng-options="c.name as c.name for c in classifications | orderBy:'name'">
               </select>
             </div>
             <div class="col-sm-1">
@@ -121,7 +121,7 @@
             </div>
             <div class="col-sm-3">
               <select id="practiceField" ng-model="query.practiceType" class="input-sm form-control"
-                      ng-options="p as p for p in practices | orderBy:'toString()'">
+                      ng-options="p.name as p.name for p in practices | orderBy:'name'">
               </select>
             </div>
           </div> <!-- third row of advanced search -->
@@ -151,22 +151,22 @@
 
         <label for="edition-search">Filter on Edition</label>
         <select id="edition-search" class="input-sm form-control" ng-model="query.certificationEdition"
-                ng-options="e as e for e in editions | orderBy:'toString()'">
+                ng-options="e.name as e.name for e in editions | orderBy:'name'">
         </select>
 
         <label for="classification-search">Filter on Classification</label>
         <select id="classification-search" class="input-sm form-control" ng-model="query.productClassification"
-                ng-options="c as c for c in classifications | orderBy:'toString()'">
+                ng-options="c.name as c.name for c in classifications | orderBy:'name'">
         </select>
 
         <label for="practiceType-search">Filter on Practice Type</label>
         <select id="practiceType-search" class="input-sm form-control" ng-model="query.practiceType"
-                ng-options="p as p for p in practices | orderBy:'toString()'">
+                ng-options="p.name as p.name for p in practices | orderBy:'name'">
         </select>
 
         <label for="certBody-search">Filter on Certification Body</label>
         <select id="certBody-search" class="input-sm form-control" ng-model="query.certificationBody"
-                ng-options="cb as cb for cb in certBodies | orderBy:'toString()'">
+                ng-options="cb.name as cb.name for cb in certBodies | orderBy:'name'">
         </select>
 
         <div>

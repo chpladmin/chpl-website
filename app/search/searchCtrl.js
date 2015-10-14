@@ -44,12 +44,12 @@
                             $scope.lookaheadSource = $localStorage.lookaheadSource;
                         } else {
                             for (var i = 0; i < options.vendorNames.length; i++) {
-                                $scope.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i]});
-                                $scope.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i]});
+                                $scope.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i].name});
+                                $scope.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i].name});
                             }
                             for (var i = 0; i < options.productNames.length; i++) {
-                                $scope.lookaheadSource.all.push({type: 'product', value: options.productNames[i]});
-                                $scope.lookaheadSource.products.push({type: 'product', value: options.productNames[i]});
+                                $scope.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name});
+                                $scope.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name});
                             }
                             $localStorage.lookaheadSource = $scope.lookaheadSource;
                         }
