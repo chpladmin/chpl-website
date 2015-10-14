@@ -14,85 +14,91 @@
             self.inspectingCp = '';
             self.workType = 'upload';
 
-            self.refreshPending = function () {
+            self.activate = activate;
+            self.refreshPending = refreshPending;
+            self.selectVendor = selectVendor;
+            self.selectProduct = selectProduct;
+            self.selectVersion = selectVersion;
+            self.saveVendor = saveVendor;
+            self.saveProduct = saveProduct;
+            self.saveVersion = saveVersion;
+
+            self.activate();
+
+            /////////////////////////////////////////////////////////
+
+            function activate () {
+                if (self.isAcbAdmin) {
+                    self.refreshPending();
+                    self.uploader = new FileUploader({
+                        url: API + '/certified_products/upload',
+                        removeAfterUpload: true,
+                        headers: { Authorization: 'Bearer ' + authService.getToken() }
+                    });
+                    self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                        $log.info('onSuccessItem', fileItem, response, status, headers);
+                        self.uploadingCps = self.uploadingCps.concat(response.pendingCertifiedProducts);
+                        self.workType = 'confirm';
+                    };
+                    self.uploader.onErrorItem = function(fileItem, response, status, headers) {
+                        $log.info('onErrorItem', fileItem, response, status, headers);
+                    };
+                }
+
+                commonService.getVendors()
+                    .then(function (vendors) {
+                        self.vendors = vendors.vendors;
+                    });
+            }
+
+            function refreshPending () {
                 commonService.getUploadingCps()
                     .then(function (cps) {
                         self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
                     })
-            };
-
-            if (self.isAcbAdmin) {
-                self.refreshPending();
-                self.uploader = new FileUploader({
-                    url: API + '/certified_products/upload',
-                    removeAfterUpload: true,
-                    headers: { Authorization: 'Bearer ' + authService.getToken() }
-                });
-                self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                    $log.info('onSuccessItem', fileItem, response, status, headers);
-                    self.uploadingCps = self.uploadingCps.concat(response.pendingCertifiedProducts);
-                    self.workType = 'confirm';
-                };
-                self.uploader.onErrorItem = function(fileItem, response, status, headers) {
-                    $log.info('onErrorItem', fileItem, response, status, headers);
-                };
             }
 
-            commonService.getVendors()
-                .then(function (vendors) {
-                    self.vendors = vendors.vendors;
-                });
-
-            self.selectVendor = function () {
+            function selectVendor () {
                 if (self.vendorSelect) {
-                    if (self.vendorSelect.length === 1) {
-                        self.activeVendor = [self.vendorSelect[0]];
-                        commonService.getProductsByVendor(self.activeVendor[0].vendorId)
-                            .then(function (products) {
-                                self.products = products.products;
-                            });
-                    } else { // merging
-                        self.activeVendor = [].concat(self.vendorSelect);
-                        self.mergeVendor = angular.copy(self.activeVendor[0]);
-                        delete self.mergeVendor.vendorId;
-                        delete self.mergeVendor.lastModifiedDate;
-                    }
+                    self.activeVendor = self.vendorSelect;
+                    commonService.getProductsByVendor(self.activeVendor.vendorId)
+                        .then(function (products) {
+                            self.products = products.products;
+                        });
+                    self.mergeVendor = angular.copy(self.activeVendor);
+                    delete self.mergeVendor.vendorId;
+                    delete self.mergeVendor.lastModifiedDate;
                 }
-            };
-            self.selectProduct = function () {
+            }
+
+            function selectProduct () {
                 if (self.productSelect) {
-                    if (self.productSelect.length === 1) {
-                        self.activeProduct = [self.productSelect[0]];
-                        self.activeProduct[0].vendorId = self.activeVendor[0].vendorId;
-                        commonService.getVersionsByProduct(self.activeProduct[0].productId)
-                            .then(function (versions) {
-                                self.versions = versions;
-                            });
-                    } else { //merging
-                        self.activeProduct = [].concat(self.productSelect);
-                        self.mergeProduct = angular.copy(self.activeProduct[0]);
-                        delete self.mergeProduct.productId;
-                        delete self.mergeProduct.lastModifiedDate;
-                    }
+                    self.activeProduct = self.productSelect;
+                    self.activeProduct.vendorId = self.activeVendor.vendorId;
+                    commonService.getVersionsByProduct(self.activeProduct.productId)
+                        .then(function (versions) {
+                            self.versions = versions;
+                        });
+                    self.mergeProduct = angular.copy(self.activeProduct);
+                    delete self.mergeProduct.productId;
+                    delete self.mergeProduct.lastModifiedDate;
                 }
-            };
-            self.selectVersion = function () {
+            }
+
+            function selectVersion () {
                 if (self.versionSelect) {
-                    if (self.versionSelect.length === 1) {
-                        self.activeVersion = [self.versionSelect[0]];
-                        self.activeVersion[0].productId = self.activeProduct[0].productId;
-                        commonService.getProductsByVersion(self.activeVersion[0].versionId)
-                            .then(function (cps) {
-                                self.cps = cps;
-                            });
-                    } else { //merging
-                        self.activeVersion = [].concat(self.versionSelect);
-                        self.mergeVersion = angular.copy(self.activeVersion[0]);
-                        delete self.mergeVersion.versionId;
-                        delete self.mergeVersion.lastModifiedDate;
-                    }
+                    self.activeVersion = self.versionSelect;
+                    self.activeVersion.productId = self.activeProduct.productId;
+                    commonService.getProductsByVersion(self.activeVersion.versionId)
+                        .then(function (cps) {
+                            self.cps = cps;
+                        });
+                    self.mergeVersion = angular.copy(self.activeVersion);
+                    delete self.mergeVersion.versionId;
+                    delete self.mergeVersion.lastModifiedDate;
                 }
-            };
+            }
+
             self.selectCP = function () {
                 if (self.cpSelect) {
                     self.activeCP = {};
@@ -168,10 +174,10 @@
                         cp = self.inspectingCp;
                     }
                 }
-                self.activeVendor = [cp.vendor];
-                self.activeVendor[0].address = cp.vendorAddress;
-                self.activeProduct = [cp.product];
-                self.activeVersion = [cp.product];
+                self.activeVendor = cp.vendor;
+                self.activeVendor.address = cp.vendorAddress;
+                self.activeProduct = cp.product;
+                self.activeVersion = cp.product;
                 self.activeCP = cp;
                 self.activeCP.certificationStatus = {id: 5, name: 'Pending'};
                 self.activeCP.certificationDate = new Date(parseInt(cp.certificationDate));
@@ -193,24 +199,24 @@
             };
 
             self.selectInspectingVendor = function () {
-                self.activeVendor = [self.vendorSelect];
-                self.inspectingCp.vendor.id = self.activeVendor[0].vendorId;
-                commonService.getProductsByVendor(self.activeVendor[0].vendorId)
+                self.activeVendor = self.vendorSelect;
+                self.inspectingCp.vendor.id = self.activeVendor.vendorId;
+                commonService.getProductsByVendor(self.activeVendor.vendorId)
                     .then(function (products) {
                         self.products = products.products;
                         for (var i = 0; i < self.products.length; i++) {
                             if (self.products[i].name === self.inspectingCp.product.name) {
                                 self.inspectingCp.product.id = self.products[i].productId;
-                                self.activeProduct = [angular.copy(self.inspectingCp.product)];
-                                self.activeProduct[0].productId = self.inspectingCp.product.id;
-                                commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                                self.activeProduct = angular.copy(self.inspectingCp.product);
+                                self.activeProduct.productId = self.inspectingCp.product.id;
+                                commonService.getVersionsByProduct(self.activeProduct.productId)
                                     .then(function (versions) {
                                         self.versions = versions;
                                         for (var j = 0; j < self.versions.length; j++) {
                                             if (self.versions[j].version === self.inspectingCp.product.version) {
                                                 self.inspectingCp.product.versionId = self.versions[j].versionId;
-                                                self.activeVersion = [angular.copy(self.inspectingCp.product)];
-                                                self.activeVersion[0].versionId = self.inspectingCp.product.versionId;
+                                                self.activeVersion = angular.copy(self.inspectingCp.product);
+                                                self.activeVersion.versionId = self.inspectingCp.product.versionId;
                                                 break;
                                             }
                                         }
@@ -219,29 +225,29 @@
                             }
                         }
                     });
-                self.activeVendor[0].id = self.activeVendor[0].vendorId;
+                self.activeVendor.id = self.activeVendor.vendorId;
             };
 
             self.selectInspectingProduct = function () {
-                self.activeProduct = [self.productSelect];
-                commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                self.activeProduct = self.productSelect;
+                commonService.getVersionsByProduct(self.activeProduct.productId)
                     .then(function (versions) {
                         self.versions = versions;
                         for (var j = 0; j < self.versions.length; j++) {
                             if (self.versions[j].version === self.inspectingCp.product.version) {
                                 self.inspectingCp.product.versionId = self.versions[j].versionId;
-                                self.activeVersion = [angular.copy(self.inspectingCp.product)];
-                                self.activeVersion[0].versionId = self.inspectingCp.product.versionId;
+                                self.activeVersion = angular.copy(self.inspectingCp.product);
+                                self.activeVersion.versionId = self.inspectingCp.product.versionId;
                                 break;
                             }
                         }
                     });
-                self.activeProduct[0].id = self.activeProduct[0].productId;
+                self.activeProduct.id = self.activeProduct.productId;
             };
 
             self.selectInspectingVersion = function () {
-                self.activeVersion = [self.versionSelect];
-                self.inspectingCp.product.versionId = self.activeVersion[0].versionId;
+                self.activeVersion = self.versionSelect;
+                self.inspectingCp.product.versionId = self.activeVersion.versionId;
             };
 
             self.confirmCp = function (cpId) {
@@ -314,7 +320,7 @@
             }
 
             self.addressRequired = function () {
-                return self.addressCheck(self.activeVendor[0]);
+                return self.addressCheck(self.activeVendor);
             };
 
             self.addressCheck = function (v) {
@@ -327,19 +333,26 @@
                 return false;
             };
 
-            self.saveVendor = function () {
+            function saveVendor () {
                 if (self.inspectingCp) {
-                    $log.info(self.inspectingCp, self.activeVendor[0]);
-                    self.inspectingCp.vendor = self.activeVendor[0];
+                    $log.info(self.inspectingCp, self.activeVendor);
+                    self.inspectingCp.vendor = self.activeVendor;
                     self.editVendor = false;
                 } else {
                     self.updateVendor = {vendorIds: []};
 
-                    for (var i = 0; i < self.activeVendor.length; i++) {
-                        self.updateVendor.vendorIds.push(self.activeVendor[i].vendorId);
+                    var addActive = true;
+                    for (var i = 0; i < self.mergingVendors.length; i++) {
+                        self.updateVendor.vendorIds.push(self.mergingVendors[i].vendorId);
+                        if (self.mergingVendors[i].vendorId === self.activeVendor.vendorId) {
+                            addActive = false;
+                        }
+                    }
+                    if (addActive) {
+                        self.updateVendor.vendorIds.push(self.activeVendor.vendorId);
                     }
                     if (self.activeVendor.length === 1) {
-                        self.updateVendor.vendor = self.activeVendor[0];
+                        self.updateVendor.vendor = self.activeVendor;
                     } else {
                         self.updateVendor.vendor = self.mergeVendor;
                     }
@@ -353,7 +366,7 @@
                                 commonService.getVendors()
                                     .then(function (vendors) {
                                         self.vendors = vendors.vendors;
-                                        self.activeVendor = [newVendor];
+                                        self.activeVendor = newVendor;
                                         //todo: re-select active vendor in vendorSelect
                                         commonService.getProductsByVendor(newVendor.vendorId)
                                             .then(function (products) {
@@ -367,23 +380,31 @@
                 }
             };
 
-            self.saveProduct = function () {
+            function saveProduct () {
                 if (self.inspectingCp) {
-                    self.inspectingCp.product = self.activeProduct[0];
-                    $log.info(self.inspectingCp, self.activeProduct[0]);
+                    self.inspectingCp.product = self.activeProduct;
+                    $log.info(self.inspectingCp, self.activeProduct);
                     self.editProduct = false;
                 } else {
                     self.updateProduct = {productIds: []};
 
-                    for (var i = 0; i < self.activeProduct.length; i++) {
-                        self.updateProduct.productIds.push(self.activeProduct[i].productId);
+                    var addActive = true;
+
+                    for (var i = 0; i < self.mergingProducts.length; i++) {
+                        self.updateProduct.productIds.push(self.mergingProducts[i].productId);
+                        if (self.mergingProducts[i].productId === self.activeProduct.productId) {
+                            addActive = false;
+                        }
                     }
-                    if (self.activeProduct.length === 1) {
-                        self.updateProduct.product = self.activeProduct[0];
-                        self.updateProduct.newVendorId = self.activeProduct[0].vendorId;
+                    if (addActive) {
+                        self.updateProduct.productIds.push(self.activeProduct.productId);
+                    }
+                    if (self.mergingProducts.length === 1) {
+                        self.updateProduct.product = self.activeProduct;
+                        self.updateProduct.newVendorId = self.activeProduct.vendorId;
                     } else {
                         self.updateProduct.product = self.mergeProduct;
-                        self.updateProduct.newVendorId = self.activeVendor[0].vendorId;
+                        self.updateProduct.newVendorId = self.activeVendor.vendorId;
                     }
 
                     adminService.updateProduct(self.updateProduct)
@@ -392,10 +413,10 @@
                                 var newProduct = response;
                                 self.productMessage = null;
                                 self.editProduct = false;
-                                commonService.getProductsByVendor(self.activeVendor[0].vendorId)
+                                commonService.getProductsByVendor(self.activeVendor.vendorId)
                                     .then(function (products) {
                                         self.products = products.products;
-                                        self.activeProduct = [newProduct];
+                                        self.activeProduct = newProduct;
                                         //todo: re-select active vendor in vendorSelect
                                         commonService.getVersionsByProduct(newProduct.productId)
                                             .then(function (versions) {
@@ -407,22 +428,31 @@
                             }
                         });
                 }
-            };
-            self.saveVersion = function () {
+            }
+
+            function saveVersion () {
                 if (self.inspectingCp) {
-                    self.inspectingCp.product.version = self.activeVersion[0].version;
-                    self.inspectingCp.product.versionId = self.activeVersion[0].versionId;
-                    $log.info(self.inspectingCp, self.activeVersion[0]);
+                    self.inspectingCp.product.version = self.activeVersion.version;
+                    self.inspectingCp.product.versionId = self.activeVersion.versionId;
+                    $log.info(self.inspectingCp, self.activeVersion);
                     self.editVersion = false;
                 } else {
                     self.updateVersion = {versionIds: []};
 
-                    for (var i = 0; i < self.activeVersion.length; i++) {
-                        self.updateVersion.versionIds.push(self.activeVersion[i].versionId);
+                    var addActive = true;
+
+                    for (var i = 0; i < self.mergingVersions.length; i++) {
+                        self.updateVersion.versionIds.push(self.mergingVersions[i].versionId);
+                        if (self.mergingVersions[i].versionId === self.activeVersion.versionId) {
+                            addActive = false;
+                        }
                     }
-                    self.updateVersion.newProductId = self.activeProduct[0].productId;
-                    if (self.activeVersion.length === 1) {
-                        self.updateVersion.version = self.activeVersion[0];
+                    if (addActive) {
+                        self.updateVersion.versionIds.push(self.activeVersion.versionId);
+                    }
+                    self.updateVersion.newProductId = self.activeProduct.productId;
+                    if (self.mergingVersions.length === 1) {
+                        self.updateVersion.version = self.activeVersion;
                     } else {
                         self.updateVersion.version = self.mergeVersion;
                     }
@@ -433,10 +463,10 @@
                                 var newVersion = response;
                                 self.versionMessage = null;
                                 self.editVersion = false;
-                                commonService.getVersionsByProduct(self.activeProduct[0].productId)
+                                commonService.getVersionsByProduct(self.activeProduct.productId)
                                     .then(function (versions) {
                                         self.versions = versions.versions;
-                                        self.activeVersion = [newVersion];
+                                        self.activeVersion = newVersion;
                                         //todo: re-select active version in versionSelect
                                         commonService.getProductsByVersion(newVersion.versionId)
                                             .then(function (cps) {

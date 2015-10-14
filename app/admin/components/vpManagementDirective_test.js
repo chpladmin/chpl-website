@@ -182,7 +182,8 @@
 
             it('should create a mergeVendor if more than one vendor is selected', function () {
                 expect(ctrl.mergeVendor).toBeUndefined();
-                ctrl.vendorSelect = [{vendor: 'vendor1'}, {vendor: 'vendor2'}];
+                ctrl.vendorSelect = {vendor: 'vendor1'};
+                ctrl.mergingVendors = [{vendor: 'vendor2'}];
                 ctrl.selectVendor();
                 expect(ctrl.mergeVendor).toEqual({vendor: 'vendor1'});
             });
@@ -195,18 +196,20 @@
 
             it('should set the activeProduct and call getVersionsByProduct if there\'s one selected product', function () {
                 expect(ctrl.activeProduct).toBe('');
-                ctrl.productSelect = [{product: 'product1'}];
-                ctrl.activeVendor = [].concat({vendorId: '123'});
+                ctrl.productSelect = {product: 'product1'};
+                ctrl.activeVendor = {vendorId: '123'};
                 ctrl.selectProduct();
-                expect(ctrl.activeProduct).toEqual([{product: 'product1', vendorId: '123'}]);
+                expect(ctrl.activeProduct).toEqual({product: 'product1', vendorId: '123'});
                 expect(commonService.getVersionsByProduct).toHaveBeenCalled();
             });
 
             it('should create a mergeProduct if more than one product is selected', function () {
                 expect(ctrl.mergeProduct).toBeUndefined();
-                ctrl.productSelect = [{product: 'product1'}, {product: 'product2'}];
+                ctrl.activeVendor = {vendorId: '123'};
+                ctrl.productSelect = {product: 'product1'};
+                ctrl.mergingProducts = [{product: 'product1'}, {product: 'product2'}];
                 ctrl.selectProduct();
-                expect(ctrl.mergeProduct).toEqual({product: 'product1'});
+                expect(ctrl.mergeProduct).toEqual({product: 'product1', vendorId: '123'});
             });
 
             it('should know when address fields are required', function () {
