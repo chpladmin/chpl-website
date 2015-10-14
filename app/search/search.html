@@ -253,7 +253,7 @@
           <tfoot>
             <tr>
 	          <td colspan="6" class="text-center">
-                <pagination total-items="resultCount" ng-model="visiblePage" items-per-page="query.pageSize" ng-change="pageChanged()"
+                <pagination total-items="resultCount" ng-model="visiblePage" items-per-page="query.pageSize" ng-change="pageChanged(visiblePage)"
                             max-size="10" class="pagination-sm" boundary-links="true"></pagination>
 	          </td>
             </tr>
