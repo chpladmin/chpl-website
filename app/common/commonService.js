@@ -31,6 +31,10 @@
                     });
             };
 
+            self.login = function (userObj) {
+                return self.postApiCall('/auth/authenticate', API, userObj);
+            };
+
             self.search = function (queryObj, pageNum, pageSize) {
                 return self.postApiCall('/search', API, queryObj);
             };
@@ -101,6 +105,94 @@
 
             self.keepalive = function () {
                 return self.simpleApiCall('/auth/keep_alive', API);
+            };
+
+            self.updateVendor = function (vendorObject) {
+                return self.postApiCall('/vendors/update', API, vendorObject);
+            };
+
+            self.updateProduct = function (productObject) {
+                return self.postApiCall('/products/update', API, productObject);
+            };
+
+            self.updateVersion = function (versionObject) {
+                return self.postApiCall('/versions/update', API, versionObject);
+            };
+
+            self.updateCP = function (cpObject) {
+                return self.postApiCall('/certified_products/update', API, cpObject);
+            };
+
+            self.getAcbs = function () {
+                return self.simpleApiCall('/acbs/', API);
+            };
+
+            self.getUsersAtAcb = function (acbId) {
+                return self.simpleApiCall('/acbs/' + acbId + '/users', API);
+            };
+
+            self.createACB = function (acb) {
+                return self.postApiCall('/acbs/create', API, acb)
+            };
+
+            self.modifyACB = function (acb) {
+                return self.postApiCall('/acbs/update', API, acb)
+            };
+
+            self.deleteACB = function (acbId) {
+                return self.postApiCall('/acbs/' + acbId + '/delete', API, {})
+            };
+
+            self.getUsers = function () {
+                return self.simpleApiCall('/users/', API);
+            };
+
+            self.createUser = function (newUser) {
+                return self.postApiCall('/users/create', API, newUser);
+            };
+
+            self.addUserToAcb = function (userObject) {
+                return self.postApiCall('/acbs/create_and_add_user', API, userObject);
+            };
+
+            self.addRole = function (payload) {
+                return self.postApiCall('/users/grant_role', API, payload);
+            };
+
+            self.revokeRole = function (payload) {
+                return self.postApiCall('/users/revoke_role', API, payload);
+            };
+
+            self.updateUser = function (user) {
+                return self.postApiCall('/users/update', API, user);
+            };
+
+            self.deleteUser = function (userId) {
+                return self.postApiCall('/users/delete', API, {userId: userId});
+            };
+
+            self.removeUserFromAcb = function (userId, acbId) {
+                return self.postApiCall('/acbs/' + acbId + '/remove_user/' + userId, API, {});
+            };
+
+            self.inviteUser = function (invitationObject) {
+                return self.postApiCall('/users/invite', API, invitationObject);
+            };
+
+            self.createInvitedUser = function (contactDetails) {
+                return self.postApiCall('/users/create', API, contactDetails);
+            };
+
+            self.authorizeUser = function (userAuthorization) {
+                return self.postApiCall('/users/authorize', API, userAuthorization);
+            };
+
+            self.confirmPendingCp = function (pendingCp) {
+                return self.postApiCall('/certified_products/pending/confirm', API, pendingCp);
+            };
+
+            self.rejectPendingCp = function (cpId) {
+                return self.postApiCall('/certified_products/pending/' + cpId + '/reject', API, {});
             };
         });
 })();

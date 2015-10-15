@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.nav')
-        .controller('NavigationController', ['$scope', 'userService', 'authService', 'commonService', '$log', '$location', 'Idle', 'Keepalive', function ($scope, userService, authService, commonService, $log, $location, Idle, Keepalive) {
+        .controller('NavigationController', ['$scope', 'authService', 'commonService', '$log', '$location', 'Idle', 'Keepalive', function ($scope, authService, commonService, $log, $location, Idle, Keepalive) {
             var self = this;
 
             $scope.$on('IdleStart', function() {
@@ -61,7 +61,7 @@
             }
 
             self.login = function () {
-                userService.login(self.username, self.password)
+                commonService.login({userName: self.username, password: self.password})
                     .then(self.handleLogin, self.handleLogin)
             }
 
@@ -70,12 +70,21 @@
                 authService.logout()
             }
 
-            self.isAuthed = function() {
+            self.isAuthed = function () {
                 return authService.isAuthed()
             }
 
-            self.getUsername = function() {
+            self.getUsername = function () {
                 return authService.getUsername();
+            }
+
+            self.forgot = function () {
+                self.hasForgotten = !self.hasForgotten;
             }
         }]);
 })();
+
+/*
+    /auth/reset_password POST { userName: , email}
+    /auth/change_password POST { userName: , password: }
+    */

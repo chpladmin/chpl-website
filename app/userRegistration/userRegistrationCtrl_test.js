@@ -15,23 +15,23 @@
 
         describe('controller', function () {
 
-            var adminService, mockAdminService, scope, ctrl, $log, $location;
+            var commonService, mockCommonService, scope, ctrl, $log, $location;
             var validUser, authorizeUser;
 
             beforeEach(function () {
-                mockAdminService = {};
+                mockCommonService = {};
                 module('app.userRegistration', function($provide) {
-                    $provide.value('adminService', mockAdminService);
+                    $provide.value('commonService', mockCommonService);
                 });
 
                 inject(function($q) {
-                    mockAdminService.createInvitedUser = function () {
+                    mockCommonService.createInvitedUser = function () {
                         $log.debug('createInvitedUser');
                         var defer = $q.defer();
                         defer.resolve();
                         return defer.promise;
                     };
-                    mockAdminService.authorizeUser = function () {
+                    mockCommonService.authorizeUser = function () {
                         var defer = $q.defer();
                         defer.resolve();
                         return defer.promise;
@@ -39,15 +39,15 @@
                 });
             });
 
-            beforeEach(inject(function (_$log_, $rootScope, $controller, _adminService_, _$location_) {
+            beforeEach(inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_) {
                 $log = _$log_;
                 scope = $rootScope.$new();
-                adminService = _adminService_;
+                commonService = _commonService_;
                 $location = _$location_;
                 ctrl = $controller('UserRegistrationController', {
                     $scope: scope,
                     $routeParams: {hash: 'fakehash'},
-                    adminService: adminService,
+                    commonService: commonService,
                     $location: $location
                 });
                 validUser = { hash: 'hash',
@@ -88,16 +88,16 @@
             });
 
             it('should not call createUser if the details aren\'t complete', function () {
-                spyOn(adminService, 'createInvitedUser');
+                spyOn(commonService, 'createInvitedUser');
                 ctrl.createUser();
-                expect(adminService.createInvitedUser).not.toHaveBeenCalled();
+                expect(commonService.createInvitedUser).not.toHaveBeenCalled();
             });
 
             xit('should call createUser if the details are complete', function () {
-                spyOn(adminService, 'createInvitedUser');
+                spyOn(commonService, 'createInvitedUser');
                 ctrl.userDetails = validUser;
                 ctrl.createUser();
-                expect(adminService.createInvitedUser).toHaveBeenCalled();
+                expect(commonService.createInvitedUser).toHaveBeenCalled();
             });
 
             it('should require password and verify password to be equal', function () {
@@ -110,9 +110,9 @@
 
             xit('should call "authorizeUser" if the user tries to log in', function () {
                 ctrl.authorizeDetails = authorizeUser;
-                spyOn(adminService, 'authorizeUser');
+                spyOn(commonService, 'authorizeUser');
                 ctrl.authorizeUser();
-                expect(adminService.authorizeUser).toHaveBeenCalledWith({subjectName: 'subjectName', password: 'password', hash: 'hash'});
+                expect(commonService.authorizeUser).toHaveBeenCalledWith({subjectName: 'subjectName', password: 'password', hash: 'hash'});
             });
 
             xit('should redirect to /admin after createUser is finished', function () {

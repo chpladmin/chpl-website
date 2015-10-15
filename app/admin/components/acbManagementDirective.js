@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AcbManagementController', ['commonService', 'adminService', 'authService', '$log', function (commonService, adminService, authService, $log) {
+        .controller('AcbManagementController', ['commonService', 'authService', '$log', function (commonService, authService, $log) {
             var self = this;
             self.isChplAdmin = authService.isChplAdmin();
             self.isAcbAdmin = authService.isAcbAdmin();
@@ -10,7 +10,7 @@
             self.acbs = [];
 
             self.loadAcbs = function () {
-                return adminService.getAcbs()
+                return commonService.getAcbs()
                     .then (function (data) {
                         self.acbs = data.acbs;
                     });
@@ -21,7 +21,7 @@
             self.loadData();
 
             self.createACB = function () {
-                adminService.createACB(self.newACB)
+                commonService.createACB(self.newACB)
                     .then(function (response) {
                         self.loadData();
                     });
@@ -29,7 +29,7 @@
             };
 
             self.modifyACB = function (acb) {
-                adminService.modifyACB(acb)
+                commonService.modifyACB(acb)
                     .then(function (response) {
                         self.loadData();
                     });
@@ -40,7 +40,7 @@
             };
 
             self.deleteACB = function (acb) {
-                adminService.deleteACB(acb.id)
+                commonService.deleteACB(acb.id)
                     .then(function (response) {
                         self.loadData();
                     });
