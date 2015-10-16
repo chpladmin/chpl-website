@@ -13,7 +13,6 @@
                 self.compareIds = compareString.split('&');
 
                 var successResult = function (product) {
-                    product.certificationDate = product.certificationDate.split(' ')[0];
                     self.updateProductList(product);
                     self.updateCerts(product);
                     self.updateCqms(product);

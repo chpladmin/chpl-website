@@ -113,7 +113,7 @@
                             self.activeCP = cp;
                             if (self.activeCP.visibleOnChpl === undefined)
                                 self.activeCP.visibleOnChpl = true;
-                            self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
+                            self.activeCP.certDate = new Date(self.activeCP.certificationDate);
                         });
                 }
             };
@@ -130,21 +130,6 @@
             };
             self.populateData();
 
-            self.getStatusText = function (statusId) {
-                for (var i = 0; i < self.statuses.length; i++) {
-                    if (self.statuses[i].id === statusId) {
-                        return self.statuses[i].name;
-                    }
-                }
-                return 'Unknown';
-            }
-            self.parseCertificationDate = function (certDate) {
-                if (certDate && certDate.indexOf(' ') > 0) {
-                    return certDate.split(' ')[0];
-                } else {
-                    return certDate;
-                }
-            }
             self.concatAddlSw = function (addlSw) {
                 var retval = '';
                 if (addlSw) {
@@ -168,10 +153,16 @@
                 self.activeProduct = angular.copy(cp.product);
                 self.activeVersion = angular.copy(cp.product);
                 self.activeCP = angular.copy(cp);
-                self.activeCP.certificationStatus = {id: 5, name: 'Pending'};
+                if (!cp.certificationStatus) {
+                    for (var i = 0; i < self.statuses.length; i++) {
+                        if (self.statuses[i].name === 'Pending') {
+                            self.activeCP.certificationStatus = self.statuses[i];
+                            break;
+                        }
+                    }
+                }
                 self.activeCP.certificationDate = new Date(parseInt(cp.certificationDate));
                 self.activeCP.certDate = self.activeCP.certificationDate;
-                self.activeCP.certificationStatusId = '5';
 
                 if (!cp.product.versionId && cp.product.id) {
                     commonService.getVersionsByProduct(cp.product.id)
@@ -483,7 +474,8 @@
                     self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
                     self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
                     self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
-                    self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
+                    //self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
+                    self.updateCP.certificationStatus = self.activeCP.certificationStatus;
                     self.updateCP.chplProductNumber = self.activeCP.chplProductNumber;
                     self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
                     self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
@@ -500,7 +492,7 @@
                             if (!response.status || response.status === 200) {
                                 self.editCP = false;
                                 self.activeCP = response;
-                                self.activeCP.certDate = new Date(self.activeCP.certificationDate.split(' ')[0]);
+                                self.activeCP.certDate = new Date(self.activeCP.certificationDate);
                             } else {
                                 self.cpMessage = 'An error occurred. Please check your entry and try again.';
                             }

@@ -537,7 +537,7 @@
                       <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                       <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date }} <br />
                       <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="false"></ai-additional-software> <br />
-                      <strong>Status:</strong> {{ vm.getStatusText(vm.activeCP.certificationStatusId) }}<br />
+                      <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                       <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                       <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb }} <br />
                       <strong>Quality Management System Attestation:</strong> {{ vm.activeCP.qualityManagementSystemAtt }} <br />
@@ -573,7 +573,7 @@
                       <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="true"></ai-additional-software>
                       <div class="form-group">
                         <label for="cpStatus">Status</label>
-                        <select class="input-sm form-control" ng-model="vm.activeCP.certificationStatusId" id="cpStatus"
+                        <select class="input-sm form-control" ng-model="vm.activeCP.certificationStatus.id" id="cpStatus"
                                 ng-options="status.id as status.name for status in vm.statuses" required>
                         </select>
                       </div>

@@ -218,7 +218,7 @@
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certificationDate.split(' ')[0] | date }}</td>
+		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certificationDate | date }}</td>
               <td align="center">
                 <input type="checkbox" ng-click="toggleCompareId(row.id)" ng-model="compareBoxes[row.id]" id="compareBoxes{{ row.id }}"/>
                 <label class="sr-only" for="compareBoxes{{ row.id }}">Select to compare</label>
