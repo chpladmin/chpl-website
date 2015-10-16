@@ -82,7 +82,7 @@
                   <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-success btn-block" ng-click="vm.confirmCp(cp.id)">
                     <i class="fa fa-cloud-upload"></i> Confirm
                   </button>
-                  <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-warning btn-block" ng-click="vm.cancelCp(cp.id)">
+                  <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-warning btn-block" ng-click="vm.cancelInspectingCp(cp.id)">
                     <i class="fa fa-ban"></i> Cancel
                   </button>
                   <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-danger btn-block" ng-click="vm.rejectCp(cp.id)">
@@ -135,7 +135,8 @@
                   {{ vm.activeVendor.address.line1 }}<br />
                   {{ vm.activeVendor.address.line2 }}<br />
                   {{ vm.activeVendor.address.city }}<br />
-                  {{ vm.activeVendor.address.region }}<br />
+                  {{ vm.activeVendor.address.state }}<br />
+                  {{ vm.activeVendor.address.zipcode }}<br />
                   {{ vm.activeVendor.address.country }}<br />
                   {{ vm.activeVendor.website }}<br />
                 </span>
@@ -153,8 +154,12 @@
                     <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.city" id="addressCity"></input>
                   </div>
                   <div class="form-group">
-                    <label for="addressRegion">Region <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.region" id="addressRegion"></input>
+                    <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.state" id="addressState"></input>
+                  </div>
+                  <div class="form-group">
+                    <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.zipcode" id="addressZipcode"></input>
                   </div>
                   <div class="form-group">
                     <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
@@ -170,7 +175,7 @@
                 <br />
                 <p ng-if="vm.vendorMessage !== undefined && vm.editVendor" class="bg-danger">{{ vm.vendorMessage }}</p>
                 <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Developer</button></p>
-                <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor()">Save Developer</button></p>
+                <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor(false)">Save Developer</button></p>
                 <p><button class="btn btn-warning btn-block" ng-if="vm.editVendor" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
                 <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to developer select</a></p>
               </div>
@@ -186,9 +191,10 @@
                 {{ vm.inspectingCp.vendorAddress.line1 }}<br />
                 {{ vm.inspectingCp.vendorAddress.line2 }}<br />
                 {{ vm.inspectingCp.vendorAddress.city }}<br />
-                {{ vm.inspectingCp.vendorAddress.region }}<br />
+                {{ vm.inspectingCp.vendorAddress.state }}<br />
+                {{ vm.inspectingCp.vendorAddress.zipcode }}<br />
                 {{ vm.inspectingCp.vendorAddress.country }}<br />
-                {{ vm.inspectingCp.website }}<br />
+                {{ vm.inspectingCp.vendor.website }}<br />
               </div>
             </div>
           </div> <!-- end uploaded developer -->
@@ -212,7 +218,8 @@
                 {{ vm.activeVendor.address.line1 }}<br />
                 {{ vm.activeVendor.address.line2 }}<br />
                 {{ vm.activeVendor.address.city }}<br />
-                {{ vm.activeVendor.address.region }}<br />
+                {{ vm.activeVendor.address.state }}<br />
+                {{ vm.activeVendor.address.zipcode }}<br />
                 {{ vm.activeVendor.address.country }}<br />
                 {{ vm.activeVendor.website }}<br />
                 <br />
@@ -228,7 +235,8 @@
                 {{ vendor.address.line1 }}<br />
                 {{ vendor.address.line2 }}<br />
                 {{ vendor.address.city }}<br />
-                {{ vendor.address.region }}<br />
+                {{ vendor.address.state }}<br />
+                {{ vendor.address.zipcode }}<br />
                 {{ vendor.address.country }}<br />
                 {{ vendor.website }}<br />
                 <br />
@@ -260,8 +268,12 @@
                   <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.city" id="addressMergeCity"></input>
                 </div>
                 <div class="form-group">
-                  <label for="addressMergeRegion">Region <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.region" id="addressMergeRegion"></input>
+                  <label for="addressMergeState">State <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.state" id="addressMergeState"></input>
+                </div>
+                <div class="form-group">
+                  <label for="addressMergeZipcode">Zip Code <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.zipcode" id="addressMergeZipcode"></input>
                 </div>
                 <div class="form-group">
                   <label for="addressMergeCountry">Country <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
@@ -273,7 +285,7 @@
                 </div>
                 <br />
                 <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
-                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor()">Save Combined Developers</button></p>
+                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor(true)">Save Combined Developers</button></p>
                 <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
               </div>
             </div>
@@ -328,7 +340,7 @@
                 <br />
                 <p ng-if="vm.productMessage !== undefined && vm.editProduct" class="bg-danger">{{ vm.productMessage }}</p>
                 <p><button class="btn btn-default btn-block" ng-if="!vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Edit Product</button></p>
-                <p><button ng-disabled="productEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editProduct" ng-click="vm.saveProduct()">Save Product</button></p>
+                <p><button ng-disabled="productEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editProduct" ng-click="vm.saveProduct(false)">Save Product</button></p>
                 <p><button class="btn btn-warning btn-block" ng-if="vm.editProduct" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
                 <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editProduct = false; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
               </div>
@@ -388,7 +400,7 @@
                 </div>
               </div>
               <div class="panel-body">
-                <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveProduct()">Save Combined Products</button></p>
+                <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveProduct(true)">Save Combined Products</button></p>
                 <p><button class="btn btn-warning btn-block" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
               </div>
             </div>
@@ -434,7 +446,7 @@
                 <br />
                 <p ng-if="vm.versionMessage !== undefined && vm.editVersion" class="bg-danger">{{ vm.versionMessage }}</p>
                 <p><button class="btn btn-default btn-block" ng-if="!vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Edit Version</button></p>
-                <p><button ng-disabled="versionEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVersion" ng-click="vm.saveVersion()">Save Version</button></p>
+                <p><button ng-disabled="versionEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVersion" ng-click="vm.saveVersion(false)">Save Version</button></p>
                 <p><button class="btn btn-warning btn-block" ng-if="vm.editVersion" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
                 <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVersion = false; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
               </div>
@@ -495,7 +507,7 @@
               </div>
               <div class="panel-body">
                 <br />
-                <p><button ng-disabled="versionMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVersion()">Save Combined Versions</button></p>
+                <p><button ng-disabled="versionMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVersion(true)">Save Combined Versions</button></p>
                 <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
               </div>
             </div>
@@ -525,7 +537,7 @@
                       <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                       <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date }} <br />
                       <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="false"></ai-additional-software> <br />
-                      <strong>Status:</strong> {{ vm.getStatusText(vm.activeCP.certificationStatusId) }}<br />
+                      <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                       <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                       <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb }} <br />
                       <strong>Quality Management System Attestation:</strong> {{ vm.activeCP.qualityManagementSystemAtt }} <br />
@@ -561,7 +573,7 @@
                       <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="true"></ai-additional-software>
                       <div class="form-group">
                         <label for="cpStatus">Status</label>
-                        <select class="input-sm form-control" ng-model="vm.activeCP.certificationStatusId" id="cpStatus"
+                        <select class="input-sm form-control" ng-model="vm.activeCP.certificationStatus.id" id="cpStatus"
                                 ng-options="status.id as status.name for status in vm.statuses" required>
                         </select>
                       </div>

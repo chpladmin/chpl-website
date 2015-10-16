@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$log', 'commonService', 'userService', 'authService', function ($log, commonService, userService, authService) {
+        .controller('AdminController', ['$log', 'commonService', 'authService', function ($log, commonService, authService) {
             var self = this;
 
             self.isAuthed = function () {
@@ -35,7 +35,7 @@
             }
 
             self.login = function () {
-                userService.login(self.username, self.password)
+                commonService.login({userName: self.username, password: self.password})
                     .then(self.handleLogin, self.handleLogin)
             }
         }]);

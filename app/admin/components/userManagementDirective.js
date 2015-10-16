@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('UserManagementController', ['adminService', '$log', '$scope', function (adminService, $log, $scope) {
+        .controller('UserManagementController', ['commonService', '$log', '$scope', function (commonService, $log, $scope) {
             var self = this;
             self.userInvitation = {permissions: []};
             self.acbId = $scope.acbId;
@@ -13,14 +13,14 @@
 
             self.freshenUsers = function () {
                 if (self.acbId) {
-                    adminService.getUsersAtAcb(self.acbId)
+                    commonService.getUsersAtAcb(self.acbId)
                         .then(function (response) {
                             self.users = response.users;
                         }, function (error) {
                             $log.debug(error);
                         });
                 } else {
-                    adminService.getUsers()
+                    commonService.getUsers()
                         .then(function (response) {
                             self.users = response.users;
                         }, function (error) {
@@ -39,13 +39,13 @@
                     var payload = angular.copy(roleObject);
                     payload.role = self.roles[i];
                     if (user.roles.indexOf(self.roles[i]) > -1) {
-                        adminService.addRole(payload);
+                        commonService.addRole(payload);
                     } else if (!self.acbId) {
-                        adminService.revokeRole(payload);
+                        commonService.revokeRole(payload);
                     }
                 }
 
-                adminService.updateUser(user.user)
+                commonService.updateUser(user.user)
                     .then(function (response) {
                         self.freshenUsers();
                     });
@@ -56,12 +56,12 @@
                 if (self.acbId) {
                     var userObject = {acbId: self.acbId,
                                       userId: user.user.userId};
-                    adminService.removeUserFromAcb(userObject.userId, userObject.acbId)
+                    commonService.removeUserFromAcb(userObject.userId, userObject.acbId)
                         .then(function (response) {
                             self.freshenUsers();
                         });
                 } else {
-                    adminService.deleteUser(user.user.userId)
+                    commonService.deleteUser(user.user.userId)
                         .then(function (response) {
                             self.freshenUsers();
                     });
@@ -78,7 +78,7 @@
                     self.userInvitation.acbId = self.acbId;
                 }
                 if (self.userInvitation.emailAddress && self.userInvitation.emailAddress.length > 0 && self.userInvitation.permissions.length > 0) {
-                    adminService.inviteUser(self.userInvitation)
+                    commonService.inviteUser(self.userInvitation)
                         .then(function (response) {
                             self.inviteMessage = response.hash;
                             // dev setup until email's working

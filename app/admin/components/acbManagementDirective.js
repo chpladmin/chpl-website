@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AcbManagementController', ['commonService', 'adminService', 'authService', '$log', function (commonService, adminService, authService, $log) {
+        .controller('AcbManagementController', ['commonService', 'authService', '$log', function (commonService, authService, $log) {
             var self = this;
             self.isChplAdmin = authService.isChplAdmin();
             self.isAcbAdmin = authService.isAcbAdmin();
@@ -10,7 +10,7 @@
             self.acbs = [];
 
             self.loadAcbs = function () {
-                return adminService.getAcbs()
+                return commonService.getAcbs()
                     .then (function (data) {
                         self.acbs = data.acbs;
                     });
@@ -21,7 +21,7 @@
             self.loadData();
 
             self.createACB = function () {
-                adminService.createACB(self.newACB)
+                commonService.createACB(self.newACB)
                     .then(function (response) {
                         self.loadData();
                     });
@@ -29,7 +29,7 @@
             };
 
             self.modifyACB = function (acb) {
-                adminService.modifyACB(acb)
+                commonService.modifyACB(acb)
                     .then(function (response) {
                         self.loadData();
                     });
@@ -40,7 +40,7 @@
             };
 
             self.deleteACB = function (acb) {
-                adminService.deleteACB(acb.id)
+                commonService.deleteACB(acb.id)
                     .then(function (response) {
                         self.loadData();
                     });
@@ -51,7 +51,8 @@
                 if (acb.address.line1 && acb.address.line1.length > 0) return true;
                 if (acb.address.line2 && acb.address.line2.length > 0) return true;
                 if (acb.address.city && acb.address.city.length > 0) return true;
-                if (acb.address.region && acb.address.region.length > 0) return true;
+                if (acb.address.state && acb.address.state.length > 0) return true;
+                if (acb.address.zipcode && acb.address.zipcode.length > 0) return true;
                 if (acb.address.country && acb.address.country.length > 0) return true;
                 return false;
             };

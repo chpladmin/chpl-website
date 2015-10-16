@@ -3,21 +3,19 @@
 
     describe('app.nav', function () {
 
-        var httpProvider, authInterceptor, authService, userService;
+        var httpProvider, authInterceptor, authService;
         var token = 'example token';
         var username = 'user name';
         var invalidLogin = 'Invalid username or password';
-        var mockAuthService, mockUserService;
+        var mockAuthService;
         var trueApiUrl = 'http://localhost:8080/chpl-service';
         var falseApiUrl = 'http://example.com';
 
         beforeEach(function() {
             mockAuthService = {};
-            mockUserService = {};
 
             module('app.nav', function ($provide, $httpProvider) {
                 $provide.value('authService', mockAuthService);
-                $provide.value('userService', mockUserService);
                 httpProvider = $httpProvider;
             });
 
@@ -37,13 +35,6 @@
                 };
 
                 mockAuthService.isAuthed = function () {
-                };
-
-                mockUserService.login = function () {
-                    console.log('debug');
-                    var defer = $q.defer();
-                    defer.resolve({status: 404});
-                    return defer.promise;
                 };
             });
 

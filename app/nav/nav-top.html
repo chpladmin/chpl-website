@@ -26,16 +26,22 @@
               <li ng-if="nav.isAuthed()"><a href="#/admin">CHPL Administration</a></li>
               <li>
                 <form class="navbar-form" role="log in / log out">
-                  <div class="form-group" ng-hide="nav.isAuthed()">
-                    <label for="username">User Name</label>
-                    <input type="text" class="form-control" id="username" ng-model="nav.username" placeholder="username" />
+                  <div ng-if="!nav.isAuthed()">
+                    <div class="form-group">
+                      <label for="username">User Name</label>
+                      <input type="text" class="form-control" id="username" ng-model="nav.username" placeholder="username" />
+                    </div>
+                    <div class="form-group">
+                      <label for="password">Password</label>
+                      <input type="password" class="form-control" id="password" ng-model="nav.password" placeholder="password" />
+                    </div>
+                    <button class="btn btn-default btn-block" ng-click="nav.login()">Log In</button>
+                    <button class="btn btn-default btn-block" ng-click="nav.forgot()">Forgot Password</button>
                   </div>
-                  <div class="form-group" ng-hide="nav.isAuthed()">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" ng-model="nav.password" placeholder="password" />
+                  <div ng-if="nav.isAuthed()">
+                    <button class="btn btn-default btn-block" ng-click="nav.logout()">Log Out</button>
+                    <button class="btn btn-default btn-block" ng-click="nav.change()">Change Password</button>
                   </div>
-                  <button class="btn btn-default btn-block" ng-click="nav.login()" ng-hide="nav.isAuthed()">Log In</button>
-                  <button class="btn btn-default btn-block" ng-click="nav.logout()" ng-show="nav.isAuthed()">Log Out</button>
                 </form>
               </li>
               <p class="navbar-text" ng-if="nav.message.length > 0">{{ nav.message }}</p>
