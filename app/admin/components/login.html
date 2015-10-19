@@ -1,21 +1,28 @@
 <div>
   <form ng-class="vm.formClass" role="log in / log out">
-    <div ng-if="!vm.isAuthed()">
-      <div class="form-group">
-        <label for="username">User Name</label>
-        <input type="text" class="form-control" id="username" ng-model="vm.userName" placeholder="username" />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" ng-model="vm.password" placeholder="password" />
-      </div>
-      <button class="btn btn-default btn-block" ng-click="vm.login()">Log In</button>
-      <button class="btn btn-default btn-block" ng-click="vm.forgot()">Forgot Password</button>
+    <div class="form-group" ng-if="vm.activity !== vm.activityEnum.NONE">
+      <label for="username">User Name</label>
+      <input type="text" class="form-control" id="username" ng-model="vm.userName" placeholder="username" />
     </div>
-    <div ng-if="vm.isAuthed()">
-      <button class="btn btn-default btn-block" ng-click="vm.logout()">Log Out</button>
-      <button class="btn btn-default btn-block" ng-click="vm.change()">Change Password</button>
+    <div class="form-group" ng-if="vm.activity === vm.activityEnum.LOGIN || vm.activity === vm.activityEnum.CHANGE">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" ng-model="vm.password" placeholder="password" />
     </div>
+    <div class="form-group" ng-if="vm.activity === vm.activityEnum.CHANGE">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" class="form-control" id="confirmPassword" ng-model="vm.confirmPassword" placeholder="confirm password" />
+    </div>
+    <div class="form-group" ng-if="vm.activity === vm.activityEnum.RESET">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" ng-model="vm.email" placeholder="sample@example.com" />
+    </div>
+    <button class="btn btn-default btn-block" ng-click="vm.login()" ng-if="vm.activity === vm.activityEnum.LOGIN">Log In</button>
+    <button class="btn btn-default btn-block" ng-click="vm.sendReset()" ng-if="vm.activity === vm.activityEnum.RESET">Send reset email</button>
+    <button class="btn btn-default btn-block" ng-click="vm.setActivity(vm.activityEnum.RESET); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN">Forgot Password</button>
+    <button class="btn btn-default btn-block" ng-click="vm.logout()" ng-if="vm.activity == vm.activityEnum.NONE">Log Out</button>
+    <button class="btn btn-default btn-block" ng-click="vm.changePassword()" ng-if="vm.activity === vm.activityEnum.CHANGE">Confirm new Password</button>
+    <button class="btn btn-default btn-block" ng-click="vm.setActivity(vm.activityEnum.CHANGE); $event.stopPropagation()" ng-if="vm.activity !== vm.activityEnum.CHANGE && vm.isAuthed()">Change Password</button>
+    <button class="btn btn-default btn-block" ng-click="vm.activate(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.RESET">Cancel</button>
   </form>
   <p ng-class="vm.pClass" ng-if="vm.message.length > 0">{{ vm.message }}</p>
 </div>
