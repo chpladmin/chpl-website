@@ -202,8 +202,8 @@
             $httpBackend.whenPOST(/rest/).passThrough();
             $httpBackend.whenPOST(/keepalive/).passThrough();
             $httpBackend.whenGET(/openchpl.appspot.com/).passThrough();
-/*            $httpBackend.whenGET(/ainq.com\/list_api_calls/).respond(200, apis.endpoints); // fake search results
-            $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs
+            $httpBackend.whenGET(/ainq.com\/list_api_calls/).respond(200, apis.endpoints); // fake search results
+/*            $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_cqms/).respond(200, listCQMs()); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_editions/).respond(200, [{value: '2011'}, {value: '2014'}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_classifications/).respond(200, [{name: 'Complete EHR', id:'2'}, {name: 'Modular EHR', id:'1'}]); // fake all certs

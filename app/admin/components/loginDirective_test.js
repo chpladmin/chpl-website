@@ -19,6 +19,7 @@
             inject(function($q) {
                 mockAuthService.logout = function () {};
                 mockCommonService.login = function (userObject) {};
+                mockAuthService.isAuthed = function () {return true};
             });
         });
 

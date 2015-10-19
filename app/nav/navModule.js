@@ -28,7 +28,7 @@
         }
     }
 
-    angular.module('app.nav', ['ngRoute', 'ngIdle', 'app.loginServices', 'app.common'])
+    angular.module('app.nav', ['ngRoute', 'app.loginServices', 'app.common'])
         .factory('authInterceptor', authInterceptor)
         .config(function($httpProvider) {
             $httpProvider.interceptors.push('authInterceptor');
@@ -37,11 +37,5 @@
             $routeProvider.when('/privacy', {
                 templateUrl: 'nav/layouts/privacy.html'
             });
-        }])
-        .config(function(IdleProvider, KeepaliveProvider) {
-            // configure Idle settings
-            IdleProvider.idle(60 * 20); // in seconds
-            IdleProvider.timeout(false); // in seconds
-            KeepaliveProvider.interval(60); // in seconds
-        });
+        }]);
 })();
