@@ -35,6 +35,14 @@
                 return self.postApiCall('/auth/authenticate', API, userObj);
             };
 
+            self.changePassword = function (userObj) {
+                return self.postApiCall('/auth/change_password', API, userObj);
+            };
+
+            self.resetPassword = function (userObj) {
+                return self.postApiCall('/auth/reset_password', API, userObj);
+            };
+
             self.search = function (queryObj, pageNum, pageSize) {
                 return self.postApiCall('/search', API, queryObj);
             };
@@ -168,7 +176,7 @@
             };
 
             self.deleteUser = function (userId) {
-                return self.postApiCall('/users/delete', API, {userId: userId});
+                return self.postApiCall('/users/' + userId + '/delete', API, {});
             };
 
             self.removeUserFromAcb = function (userId, acbId) {
