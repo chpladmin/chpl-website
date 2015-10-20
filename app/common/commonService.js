@@ -159,6 +159,10 @@
                 return self.postApiCall('/users/create', API, newUser);
             };
 
+            self.confirmUser = function (userObject) {
+                return self.postApiCall('/users/confirm', API, userObject);
+            };
+
             self.addUserToAcb = function (userObject) {
                 return self.postApiCall('/acbs/create_and_add_user', API, userObject);
             };

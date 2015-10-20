@@ -38,7 +38,7 @@ module.exports = function(config){
             'app/product/**/*.js',
             'app/search/**/*.js',
             'app/overview/**/*.js',
-            'app/userRegistration/**/*.js'
+            'app/registration/**/*.js'
         ],
 
         preprocessors: {
