@@ -18,7 +18,7 @@
     "angular-route": "~1.4.2",
     "angular-smart-table": "~2.1.0",
     "angulartics": "~0.20.0",
-    "angulartics-google-analytics": "~0.1.1",
+    "angulartics-ga": "angulartics-google-analytics#~0.1.1",
     "bootstrap": "~3.3.5",
     "fontawesome": "~4.3.0",
     "html5-boilerplate": "~5.2.0",

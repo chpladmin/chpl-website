@@ -18,7 +18,7 @@ module.exports = function(config){
             'app/bower_components/angular-smart-table/dist/smart-table.min.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'app/bower_components/angulartics/dist/angulartics.min.js',
-            'app/bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
+            'app/bower_components/angulartics-ga/dist/angulartics-ga.min.js',
             'app/bower_components/angular-google-chart/ng-google-chart.js',
             'app/bower_components/angular-file-upload/dist/angular-file-upload.min.js',
             'app/bower_components/ng-idle/angular-idle.min.js',
