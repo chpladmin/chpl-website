@@ -19,6 +19,7 @@
             self.selectVendor = selectVendor;
             self.selectProduct = selectProduct;
             self.selectVersion = selectVersion;
+            self.selectCp = selectCp;
             self.saveVendor = saveVendor;
             self.saveProduct = saveProduct;
             self.saveVersion = saveVersion;
@@ -102,13 +103,13 @@
                 }
             }
 
-            self.selectCP = function () {
+            function selectCp () {
                 if (self.cpSelect) {
                     self.activeCP = {};
                     self.activeCP.classificationType = {};
                     self.activeCP.certifyingBody = {};
                     self.activeCP.practiceType = {};
-                    commonService.getProduct(self.cpSelect[0])
+                    commonService.getProduct(self.cpSelect)
                         .then(function (cp) {
                             self.activeCP = cp;
                             if (self.activeCP.visibleOnChpl === undefined)
@@ -290,7 +291,7 @@
                 self.activeCP = '';
                 self.cpMessage = null;
                 self.editCP = false;
-                self.selectCP();
+                self.selectCp();
             };
 
             self.mergeAddressRequired = function () {

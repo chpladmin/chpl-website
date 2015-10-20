@@ -521,7 +521,7 @@
               <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
                 <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
               </select>
-              <button class="btn btn-default form-control" ng-click="vm.selectCP()">Choose Certified Product</button>
+              <button class="btn btn-default form-control" ng-click="vm.selectCp()">Choose Certified Product</button>
             </div>
             <div ng-if="vm.activeCP !== ''">
               <div class="panel panel-default">
