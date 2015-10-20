@@ -1,12 +1,12 @@
 <section class="row">
   <div class="col-md-12">
     <tabset>
-      <tab heading="Products &amp; Vendors">
+      <tab heading="Products &amp; Developers">
         <h2>Certified Product Activity</h2>
         <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
+              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
 		      <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
               <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
               <th class="search-header" st-sort="certBody" st-skip-natural="true">Certification Body</th>
@@ -28,11 +28,11 @@
           </tbody>
         </table>
 
-        <h2>Vendor Activity</h2>
+        <h2>Developer Activity</h2>
         <table st-table="vm.displayedVendors" st-safe-src="vm.searchedVendors" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
+              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
               <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
               <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="true">Date</th>
             </tr>
@@ -50,7 +50,7 @@
         <table st-table="vm.displayedProducts" st-safe-src="vm.searchedProducts" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Vendor</th>
+              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
               <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
               <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
               <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="true">Date</th>

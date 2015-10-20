@@ -10,12 +10,13 @@
             $scope.filterGroup = {};
             self.hasDoneASearch = false;
             $scope.resultCount = 0;
+            $scope.visiblePage = 1;
             self.defaultQuery = {simple: true,
-                            orderBy: 'vendor',
-                            sortDescending: false,
-                            pageNumber: 0,
-                            pageSize: 20,
-                            visibleOnCHPL: 'yes'};
+                                 orderBy: 'vendor',
+                                 sortDescending: false,
+                                 pageNumber: 0,
+                                 pageSize: 20,
+                                 visibleOnCHPL: 'yes'};
             $scope.query = angular.copy(self.defaultQuery);
 
             if ($localStorage.searchResults) {
@@ -27,6 +28,7 @@
 
             if ($localStorage.query) {
                 $scope.query = $localStorage.query;
+                $scope.visiblePage = $scope.query.pageNumber + 1;
             }
 
             self.populateSearchOptions = function () {
@@ -44,12 +46,12 @@
                             $scope.lookaheadSource = $localStorage.lookaheadSource;
                         } else {
                             for (var i = 0; i < options.vendorNames.length; i++) {
-                                $scope.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i]});
-                                $scope.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i]});
+                                $scope.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i].name});
+                                $scope.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i].name});
                             }
                             for (var i = 0; i < options.productNames.length; i++) {
-                                $scope.lookaheadSource.all.push({type: 'product', value: options.productNames[i]});
-                                $scope.lookaheadSource.products.push({type: 'product', value: options.productNames[i]});
+                                $scope.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name});
+                                $scope.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name});
                             }
                             $localStorage.lookaheadSource = $scope.lookaheadSource;
                         }
@@ -84,8 +86,6 @@
             $scope.toggleCompareId = self.toggleCompareId;
 
             self.search = function () {
-                self.hasDoneASearch = true;
-
                 if ($scope.query.searchTermObject !== undefined) {
                     if (typeof($scope.query.searchTermObject) === 'string' && $scope.query.searchTermObject.length > 0) {
                         $scope.query.searchTermObject = {type: 'previous search', value: $scope.query.searchTermObject};
@@ -110,6 +110,8 @@
                 $localStorage.lookaheadSource = $scope.lookaheadSource;
                 commonService.search($scope.query)
                     .then(function (data) {
+                        self.hasDoneASearch = true;
+
                         $localStorage.searchResults = data;
                         $scope.searchResults = data.results;
                         $scope.displayedResults = [].concat($scope.searchResults);
@@ -156,6 +158,7 @@
                 delete $localStorage.lookaheadSource;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
+                $scope.visiblePage = 1;
                 $scope.resultCount = 0;
                 self.compareIds = Object.create(null);
                 self.hasDoneASearch = false;
@@ -171,8 +174,8 @@
                 delete($scope.query.certificationBody);
 
                 for (var elem in self.certFilters) {
-//                    $log.info(elem);
-//                    $scope.certFilter[self.certFilters[elem]].click();
+                    //                    $log.info(elem);
+                    //                    $scope.certFilter[self.certFilters[elem]].click();
                     delete self.certFilters[elem];
                 }
             };
@@ -198,8 +201,8 @@
                 self.search();
             }
 
-            $scope.pageChanged = function () {
-                $scope.query.pageNumber = $scope.visiblePage - 1;
+            $scope.pageChanged = function (pageNumber) {
+                $scope.query.pageNumber = pageNumber - 1;
                 self.search();
             };
         }]);

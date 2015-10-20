@@ -37,6 +37,7 @@ module.exports = function(config){
             'app/nav/**/*.js',
             'app/product/**/*.js',
             'app/search/**/*.js',
+            'app/overview/**/*.js',
             'app/userRegistration/**/*.js'
         ],
 
@@ -49,6 +50,7 @@ module.exports = function(config){
             'app/admin/**/!(*test).js': ['coverage'],
             'app/product/**/!(*test).js': ['coverage'],
             'app/search/**/!(*test).js': ['coverage'],
+            'app/overview/**/!(*test).js': ['coverage'],
             'app/userRegistration/**/!(*test).js': ['coverage'],
             'app/app.js': ['coverage'],
             'app/common/components/*.html': 'ng-html2js',

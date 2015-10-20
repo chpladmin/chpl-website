@@ -2,21 +2,6 @@
     'use strict';
 
     angular.module('app.loginServices')
-        .service('userService', function ($http, API) {
-            var self = this;
-
-            self.login = function (username, password) {
-                return $http({
-                    method: 'POST',
-                    url: API + '/auth/authenticate',
-//                    transformResponse: undefined,
-                    data: {
-                        userName: username,
-                        password: password
-                    }
-                });
-            }
-        })
         .service('authService', function ($window, $localStorage) {
             var self = this;
 

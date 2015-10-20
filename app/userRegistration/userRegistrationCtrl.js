@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.userRegistration')
-        .controller('UserRegistrationController', ['$log', '$routeParams', '$location', 'adminService', function ($log, $routeParams, $location, adminService) {
+        .controller('UserRegistrationController', ['$log', '$routeParams', '$location', 'commonService', function ($log, $routeParams, $location, commonService) {
             var self = this;
             self.userDetails = {user:{}};
             self.authorizeDetails = {};
@@ -24,7 +24,7 @@
 
             self.createUser = function () {
                 if (self.validateUser()) {
-                    adminService.createInvitedUser(self.userDetails)
+                    commonService.createInvitedUser(self.userDetails)
                         .then(function (response) {
                             $location.path('/admin');
                         });
@@ -35,7 +35,7 @@
                 if (self.authorizeDetails.userName &&
                     self.authorizeDetails.password &&
                     self.authorizeDetails.hash) {
-                    adminService.authorizeUser(self.authorizeDetails)
+                    commonService.authorizeUser(self.authorizeDetails)
                         .then(function (response) {
                             $location.path('/admin');
                         });

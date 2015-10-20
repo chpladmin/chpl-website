@@ -12,18 +12,9 @@
 
   <div class="row" ng-if="!vm.isAuthed()">
     <div class="col-md-4 col-md-offset-4">
-      <form class="form" role="log in / log out">
-        <div class="form-group">
-          <label for="admin.username">User Name</label>
-          <input type="text" class="form-control" id="admin.username" ng-model="vm.username" placeholder="username" />
-        </div>
-        <div class="form-group">
-          <label for="admin.password">Password</label>
-          <input type="password" class="form-control" id="admin.password" ng-model="vm.password" placeholder="password" />
-        </div>
-        <p class="" ng-if="vm.message.length > 0">{{ vm.message }}</p>
-        <button class="btn btn-default btn-block" ng-click="vm.login()">Log In</button>
-      </form>
+      <ai-login form-class=""
+                p-class="bg-danger lead">
+      </ai-login>
     </div>
   </div>
 
@@ -38,7 +29,7 @@
         <ai-user-management>
         </ai-user-management>
       </tab>
-      <tab heading="Vendor &amp; Product Management">
+      <tab heading="Developer &amp; Product Management">
         <ai-vp-management>
         </ai-vp-management>
       </tab>

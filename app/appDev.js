@@ -4,7 +4,7 @@
     /*****************************************************
      * This section is dummy data until the API can be wired up
      */
-    var totalResults = 400;
+/*    var totalResults = 400;
     var allProducts = [];
     var words = ['Aliquam', 'Erat', 'Volutpat', 'Nunc', 'Eleifend', 'Leo', 'Vitae', 'Magna', 'In', 'Id', 'Erat', 'Non', 'Orci', 'Commodo', 'Lobortis', 'Proin', 'Neque', 'Massa', 'Cursus', 'Ut', 'Gravida', 'Ut', 'Lobortis', 'Eget', 'Lacus', 'Sed', 'Diam', 'Praesent', 'Fermentum', 'Tempor', 'Tellus', 'Nullam', 'Tempus', 'Mauris', 'Ac', 'Felis', 'Vel', 'Velit', 'Tristique', 'Imperdiet', 'Donec', 'At', 'Pede', 'Etiam', 'Vel', 'Neque', 'Nec', 'Dui', 'Dignissim', 'Bibendum', 'Vivamus', 'Id', 'Enim', 'Phasellus', 'Neque', 'Orci', 'Porta', 'A', 'Aliquet', 'Quis', 'Semper', 'A', 'Massa', 'Phasellus', 'Purus', 'Pellentesque', 'Tristique', 'Imperdiet', 'Tortor', 'Nam', 'Euismod', 'Tellus', 'Id', 'Erat', 'Lorem', 'Ipsum', 'Dolor', 'Sit', 'Amet', 'Consectetuer', 'Adipiscing', 'Elit', 'Donec', 'Hendrerit', 'Tempor', 'Tellus', 'Donec', 'Pretium', 'Posuere', 'Tellus', 'Proin', 'Quam', 'Nisl', 'Tincidunt', 'Et', 'Mattis', 'Eget', 'Convallis', 'Nec', 'Purus', 'Sociis', 'Natoque', 'Penatibus', 'Et', 'Magnis', 'Dis', 'Parturient', 'Montes', 'Nascetur', 'Ridiculus', 'Mus', 'Nulla', 'Posuere', 'Donec', 'Vitae', 'Dolor', 'Nullam', 'Tristique', 'Diam', 'Non', 'Turpis', 'Cras', 'Placerat', 'Accumsan', 'Nulla', 'Nullam', 'Rutrum', 'Nam', 'Vestibulum', 'Accumsan', 'Nisl'];
     var months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
@@ -194,6 +194,7 @@
             $httpBackend.whenGET(/^compare\/.*/).passThrough();
             $httpBackend.whenGET(/^common\/.*/).passThrough();
             $httpBackend.whenGET(/^product\/.*/).passThrough();
+            $httpBackend.whenGET(/^overview\/.*/).passThrough();
             $httpBackend.whenGET(/^userRegistration\/.*/).passThrough();
             $httpBackend.whenGET(/localhost:8080/).passThrough();
             $httpBackend.whenPOST(/localhost:8080/).passThrough();
@@ -202,7 +203,7 @@
             $httpBackend.whenPOST(/keepalive/).passThrough();
             $httpBackend.whenGET(/openchpl.appspot.com/).passThrough();
             $httpBackend.whenGET(/ainq.com\/list_api_calls/).respond(200, apis.endpoints); // fake search results
-            $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs
+/*            $httpBackend.whenGET(/ainq.com\/list_certs/).respond(200, listCerts()); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_cqms/).respond(200, listCQMs()); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_editions/).respond(200, [{value: '2011'}, {value: '2014'}]); // fake all certs
             $httpBackend.whenGET(/ainq.com\/list_classifications/).respond(200, [{name: 'Complete EHR', id:'2'}, {name: 'Modular EHR', id:'1'}]); // fake all certs
@@ -218,7 +219,7 @@
                                                                                version: {name: '1.2.3'}, edition: '2014', uploadDate: '2015-07-02'}]); // list fake uploadingCps
             $httpBackend.whenPOST(/ainq.com\/create_invited_user/).respond(200, {});
             $httpBackend.whenPOST(/ainq.com\/authorize_user/).respond(200, {});
-        })
+  */      })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', '$log', function($delegate, $log) {
                 return function (exception, cause) {
