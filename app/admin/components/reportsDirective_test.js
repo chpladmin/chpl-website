@@ -20,7 +20,7 @@
                 mockCommonService.vendorActivity = [{description: 'string', name: 'Vendor 1', date: 123123123}];
                 mockCommonService.productActivity = ['Product 1', 'Product 2'];
                 mockCommonService.certBodyActivity  = ['CB 1', 'CB 2'];
-                mockCommonService.cpActivity = [{vendor: 'Vend', product: 'Prod', version: 'version', edition: '2014', uploadDate: '2015-07-02'}];
+                mockCommonService.cpActivity = [{newData: {vendor: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}}];
 
                 mockCommonService.simpleApiCall = function () {
                     var defer = $q.defer();

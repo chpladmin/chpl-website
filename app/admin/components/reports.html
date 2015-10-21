@@ -16,22 +16,18 @@
             <tr>
               <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
 		      <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
               <th class="search-header" st-sort="certBody" st-skip-natural="true">Certification Body</th>
-              <th class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
-              <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
-              <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="reverse">Date</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedCertifiedProducts">
 		      <td class="">{{ activity.vendor }}</td>
 		      <td class="">{{ activity.product }}</td>
-		      <td class="">{{ activity.version }}</td>
 		      <td class="">{{ activity.certBody }}</td>
-		      <td class="">{{ activity.edition }}</td>
-		      <td class="">{{ activity.activity }}</td>
-		      <td class="">{{ activity.activityDate | date : 'medium' }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
         </table>
@@ -48,7 +44,7 @@
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedVendors">
 		      <td class="">{{ activity.name }}</td>
-		      <td class=""><span ng-bind-html="activity.action.join('')"></span></td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
 		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
@@ -58,18 +54,16 @@
         <table st-table="vm.displayedProducts" st-safe-src="vm.searchedProducts" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
-              <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
-              <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="reverse">Date</th>
+              <th class="search-header" st-sort="name" st-skip-natural="true">Product</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedProducts">
-		      <td class="">{{ activity.vendor }}</td>
-		      <td class="">{{ activity.product }}</td>
-		      <td class="">{{ activity.activity }}</td>
-		      <td class="">{{ activity.activityDate | date : 'medium' }}</td>
+		      <td class="">{{ activity.name }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
         </table>
@@ -79,15 +73,15 @@
           <thead>
             <tr>
               <th class="search-header" st-sort="name" st-skip-natural="true">ACB</th>
-              <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
-              <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="reverse">Date</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedACBs">
 		      <td class="">{{ activity.name }}</td>
-		      <td class="">{{ activity.activity }}</td>
-		      <td class="">{{ activity.activityDate | date : 'medium' }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
         </table>

@@ -97,7 +97,7 @@
             function refreshActivity () {
                 commonService.getCertifiedProductActivity(7)
                     .then(function (data) {
-                        vm.searchedCertifiedProducts = data;
+                        vm.searchedCertifiedProducts = vm.interpretCps(data);
                         vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
                 commonService.getVendorActivity(7)
@@ -107,12 +107,12 @@
                     });
                 commonService.getProductActivity(7)
                     .then(function (data) {
-                        vm.searchedProducts = data;
+                        vm.searchedProducts = vm.interpretProducts(data);
                         vm.displayedProducts = [].concat(vm.searchedProducts);
                     });
                 commonService.getAcbActivity(7)
                     .then(function (data) {
-                        vm.searchedACBs = data;
+                        vm.searchedACBs = vm.interpretAcbs(data);
                         vm.displayedACBs = [].concat(vm.searchedACBs);
                     });
             }
@@ -126,6 +126,35 @@
             ////////////////////////////////////////////////////////////////////
             // Helper functions
 
+            vm.simpleCpFields = [{key: 'acbCertificationId', display: 'ACB Certification ID'},
+                                 {key: 'certificationDate', display: 'Certification Date'},
+                                 {key: 'chplProductNumber', display: 'CHPL Product Number'},
+                                 {key: 'reportFileLocation', display: 'ATL Test Report File Location'},
+                                 {key: 'visibleOnChpl', display: 'Visible on CHPL'}];
+            vm.interpretCps = function (data) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < data.length; i++) {
+                    var activity = {date: data[i].activityDate,
+                                    vendor: data[i].newData.vendor.name,
+                                    product: data[i].newData.product.name,
+                                    certBody: data[i].newData.certifyingBody.name};
+                    if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
+                        activity.name = data[i].newData.name;
+                        activity.action = 'Update:<ul>';
+                        for (var j = 0; j < vm.simpleCpFields.length; j++) {
+                            change = vm.compareItem(data[i].originalData, data[i].newData, vm.simpleCpFields[j].key, vm.simpleCpFields[j].display);
+                            if (change) activity.action += '<li>' + change + '</li>';
+                        }
+                        activity.action += '</ul>';
+                    }
+                    vm.interpretNonUpdate(activity, data[i], 'Certified Product');
+                    ret.push(activity);
+                }
+                return ret;
+            };
+
             vm.interpretVendors = function (data) {
                 var ret = [];
                 var change;
@@ -134,50 +163,96 @@
                     var activity = {date: data[i].activityDate};
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
-                        activity.action = ['Update:<ul>'];
-                        if (data[i].newData.deleted !== data[i].originalData.deleted) {
-                            activity.action.push(data[i].newData.deleted ? 'Deleted' : 'Created');
-                        }
+                        activity.action = 'Update:<ul>';
                         change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action.push('<li>' + change + '</li>');
+                        if (change) activity.action += '<li>' + change + '</li>';
                         change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action.push('<li>' + change + '</li>');
-                        if (data[i].originalData.address !== data[i].newData.address) {
-                            activity.action.push('<li>Address changed:<ul>');
-                            change = vm.compareItem(data[i].originalData.address, data[i].newData.address, 'streetLineOne', 'Street Line 1');
-                            if (change) activity.action.push('<li>' + change + '</li>');
-                            change = vm.compareItem(data[i].originalData.address, data[i].newData.address, 'streetLineTwo', 'Street Line 2');
-                            if (change) activity.action.push('<li>' + change + '</li>');
-                            change = vm.compareItem(data[i].originalData.address, data[i].newData.address, 'city', 'City');
-                            if (change) activity.action.push('<li>' + change + '</li>');
-                            change = vm.compareItem(data[i].originalData.address, data[i].newData.address, 'state', 'State');
-                            if (change) activity.action.push('<li>' + change + '</li>');
-                            change = vm.compareItem(data[i].originalData.address, data[i].newData.address, 'zipcode', 'Zipcode');
-                            if (change) activity.action.push('<li>' + change + '</li>');
-                            change = vm.compareItem(data[i].originalData.address, data[i].newData.address, 'country', 'Country');
-                            if (change) activity.action.push('<li>' + change + '</li>');
-                            activity.action.push('</ul></li>');
-                        }
-                        activity.action.push('</ul>');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        vm.analyzeAddress(activity, data[i]);
+                        activity.action += '</ul>';
                     }
-
-                    if (data[i].originalData && !data[i].newData) { // no new data: deleted
-                        activity.name = data[i].originalData.name;
-                        activity.action = [activity.name + ' has been deleted'];
-                    }
-
-                    if (!data[i].originalData && data[i].newData) { // no old data: created
-                        activity.name = data[i].newData.name;
-                        activity.action = [activity.name + ' has been created'];
-                    }
-                    if (data[i].originalData && data[i].originalData.length > 1 && data[i].newData) { // both exist, more than one originalData: update
-                        activity.name = data[i].newData.name;
-                        activity.action = ['Merged ' + data[i].originalData.length + ' developers to form developer: ' + activity.name];
-                    }
+                    vm.interpretNonUpdate(activity, data[i], 'developer');
                     ret.push(activity);
                 }
                 return ret;
-            }
+            };
+
+            vm.interpretProducts = function (data) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < data.length; i++) {
+                    var activity = {date: data[i].activityDate};
+                    if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
+                        activity.name = data[i].newData.name;
+                        activity.action = 'Update:<ul>';
+                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        // check on vendorId change
+                        activity.action += '</ul>';
+                    }
+                    vm.interpretNonUpdate(activity, data[i], 'product');
+                    ret.push(activity);
+                }
+                return ret;
+            };
+
+            vm.interpretAcbs = function (data) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < data.length; i++) {
+                    var activity = {date: data[i].activityDate};
+                    if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
+                        activity.name = data[i].newData.name;
+                        activity.action = 'Update:<ul>';
+                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        vm.analyzeAddress(activity, data[i]);
+                        activity.action += '</ul>';
+                    }
+                    vm.interpretNonUpdate(activity, data[i], 'ACB');
+                    ret.push(activity);
+                }
+                return ret;
+            };
+
+            vm.interpretNonUpdate = function (activity, data, text) {
+                if (data.originalData && !data.newData) { // no new data: deleted
+                    activity.name = data.originalData.name;
+                    activity.action = [activity.name + ' has been deleted'];
+                }
+                if (!data.originalData && data.newData) { // no old data: created
+                    activity.name = data.newData.name;
+                    activity.action = [activity.name + ' has been created'];
+                }
+                if (data.originalData && data.originalData.length > 1 && data.newData) { // both exist, more than one originalData: update
+                    activity.name = data.newData.name;
+                    activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': ' + activity.name];
+                }
+            };
+
+            vm.analyzeAddress = function (activity, data) {
+                if (data.originalData.address !== data.newData.address) {
+                    var change;
+                    activity.action += '<li>Address changed:<ul>';
+                    change = vm.compareItem(data.originalData.address, data.newData.address, 'streetLineOne', 'Street Line 1');
+                    if (change) activity.action += '<li>' + change + '</li>';
+                    change = vm.compareItem(data.originalData.address, data.newData.address, 'streetLineTwo', 'Street Line 2');
+                    if (change) activity.action += '<li>' + change + '</li>';
+                    change = vm.compareItem(data.originalData.address, data.newData.address, 'city', 'City');
+                    if (change) activity.action += '<li>' + change + '</li>';
+                    change = vm.compareItem(data.originalData.address, data.newData.address, 'state', 'State');
+                    if (change) activity.action += '<li>' + change + '</li>';
+                    change = vm.compareItem(data.originalData.address, data.newData.address, 'zipcode', 'Zipcode');
+                    if (change) activity.action += '<li>' + change + '</li>';
+                    change = vm.compareItem(data.originalData.address, data.newData.address, 'country', 'Country');
+                    if (change) activity.action += '<li>' + change + '</li>';
+                    activity.action += '</ul></li>';
+                }
+            };
 
             vm.compareItem = function (oldData, newData, key, display) {
                 if (oldData && oldData[key] && newData && newData[key] && oldData[key] !== newData[key]) {
@@ -189,7 +264,7 @@
                 if (oldData && oldData[key] && (!newData || !newData[key])) {
                     return display + ' removed. Was: ' + oldData[key];
                 }
-            }
+            };
 
         }])
         .directive('aiReports', function () {

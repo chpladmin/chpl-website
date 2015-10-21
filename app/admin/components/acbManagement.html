@@ -93,6 +93,8 @@
               <input type="text" id="acb-new-line2" ng-model="vm.newACB.address.line2" class="form-control" />
               <label for="acb-new-city" class="control-label">City <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
               <input type="text" id="acb-new-city" ng-model="vm.newACB.address.city" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
+              <label for="acb-new-state" class="control-label">State <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
+              <input type="text" id="acb-new-state" ng-model="vm.newACB.address.state" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
               <label for="acb-new-zipcode" class="control-label">Zip Code <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
               <input type="text" id="acb-new-zipcode" ng-model="vm.newACB.address.zipcode" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
               <label for="acb-new-country" class="control-label">Country <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
