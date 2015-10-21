@@ -1,0 +1,13 @@
+.st-sort-ascent:after {
+    content: "\f0d8";
+    font-family: FontAwesome;
+    padding: 0 6px;
+    font-size: large;
+}
+
+.st-sort-descent:after {
+    content: "\f0d7";
+    font-family: FontAwesome;
+    padding: 0 6px;
+    font-size: large;
+}

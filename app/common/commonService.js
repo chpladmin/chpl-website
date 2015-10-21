@@ -91,20 +91,20 @@
                 return self.simpleApiCall('/data/certification_bodies', API);
             };
 
-            self.getCertifiedProductActivity = function () {
-                return self.simpleApiCall('/activity/certified_products', API);
+            self.getCertifiedProductActivity = function (nDays) {
+                return self.simpleApiCall('/activity/certified_products?lastNDays=' + nDays, API);
             };
 
-            self.getVendorActivity = function () {
-                return self.simpleApiCall('/activity/vendors', API);
+            self.getVendorActivity = function (nDays) {
+                return self.simpleApiCall('/activity/vendors?lastNDays=' + nDays, API);
             };
 
-            self.getProductActivity = function () {
-                return self.simpleApiCall('/activity/products', API);
+            self.getProductActivity = function (nDays) {
+                return self.simpleApiCall('/activity/products?lastNDays=' + nDays, API);
             };
 
-            self.getAcbActivity = function () {
-                return self.simpleApiCall('/activity/acbs', API);
+            self.getAcbActivity = function (nDays) {
+                return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays, API);
             };
 
             self.getUploadingCps = function () {

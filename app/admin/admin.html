@@ -18,14 +18,14 @@
     </div>
   </div>
 
-  <section ng-if="vm.isAuthed()" active="true">
+  <section ng-if="vm.isAuthed()">
     <div class="row">
       <div class="col-md-12">
         <h2>Welcome, {{ vm.getUsername() }}</h2>
       </div>
     </div>
     <tabset>
-      <tab ng-if="vm.isChplAdmin()" heading="User Management" active="true">
+      <tab ng-if="vm.isChplAdmin()" heading="User Management">
         <ai-user-management>
         </ai-user-management>
       </tab>
@@ -37,7 +37,7 @@
         <ai-acb-management>
         </ai-acb-management>
       </tab>
-      <tab heading="Reports">
+      <tab heading="Reports" active="true">
         <ai-reports>
         </ai-reports>
       </tab>
