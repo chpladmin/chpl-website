@@ -4,8 +4,7 @@
     angular.module('app.registration')
         .controller('ConfirmController', ['$log', '$routeParams', '$location', 'commonService', function ($log, $routeParams, $location, commonService) {
             var vm = this;
-            vm.userDetails = {user:{}};
-            vm.userDetails.hash = $routeParams.hash;
+            vm.userDetails = $routeParams.hash;
 
             vm.confirmUser = confirmUser;
 
@@ -19,9 +18,7 @@
             };
 
             vm.activate = function () {
-                if (vm.userDetails.hash.length > 0) {
-                    vm.confirmUser();
-                }
+                vm.confirmUser();
             };
             vm.activate();
         }]);

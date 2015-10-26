@@ -20,7 +20,6 @@
                     commonService.createInvitedUser(self.userDetails)
                         .then(function (response) {
                             self.message = response.hash;
-                            self.message = 'fakehash';
                         });
                 }
             };

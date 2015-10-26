@@ -28,9 +28,6 @@
             <button class="btn btn-default btn-block" ng-click="vm.inviteUser()" ng-disabled="userManagementInviteUser.$invalid">Invite new user</button>
           </td>
         </tr>
-        <tr ng-if="vm.inviteMessage && vm.inviteMessage.length > 0">
-          <td colspan="8">The user will have an email with the link: <a href="#/registration/create-user/{{ vm.inviteMessage }}">#/registration/create-user/{{ vm.inviteMessage }}</a></td>
-        </tr>
       </tfoot>
       <tbody>
         <tr ng-repeat="user in vm.users track by user.user.userId" ng-form="userManagementUpdateUser">

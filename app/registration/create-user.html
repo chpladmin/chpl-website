@@ -34,7 +34,7 @@
       <input type="text" id="phone" ng-model="vm.userDetails.user.phoneNumber" class="form-control" required />
 
       <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="createUserForm.$invalid">Create account</button>
-      <p ng-if="vm.message.length > 0">An email will be sent to your provided address. Please check your email to confirm you account creation. You'll have a link that looks like: <a href="#/registration/confirm-user/{{ vm.message }}">#/registration/confirm-user/{{ vm.message }}</a></p>
+      <p ng-if="vm.message.length > 0">An email will be sent to your provided address. Please check your email to confirm your account creation.</p>
     </div>
     <div class="col-md-6" ng-form="authorizeUserForm">
       <p>Or sign into your existing account</p>

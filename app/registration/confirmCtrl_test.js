@@ -62,8 +62,8 @@
                 expect(ctrl.confirmUser).toBeDefined();
             });
 
-            it('should have the hash as part of the userDetails object', function () {
-                expect(ctrl.userDetails.hash).toBe('fakehash');
+            it('should have the hash as the string to confirm with', function () {
+                expect(ctrl.userDetails).toBe('fakehash');
             });
         });
     });
