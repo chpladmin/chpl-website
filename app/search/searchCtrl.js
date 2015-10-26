@@ -107,6 +107,12 @@
                     }
                     $scope.query.product = $scope.query.productObject.value;
                 }
+                if ($scope.query.simple) {
+                    var searchTerm = $scope.query.searchTerm;
+                    $scope.query = angular.copy(self.defaultQuery);
+                    $scope.query.searchTerm = searchTerm;
+                }
+
                 $localStorage.lookaheadSource = $scope.lookaheadSource;
                 commonService.search($scope.query)
                     .then(function (data) {
@@ -117,7 +123,7 @@
                         $scope.displayedResults = [].concat($scope.searchResults);
                         $scope.resultCount = data.recordCount;
                     }, function (error) {
-                        $log.error(error);
+                        self.errorResult();
                     });
 
                 $localStorage.query = $scope.query;
@@ -150,6 +156,16 @@
             $scope.browseAll = function () {
                 $scope.clear();
                 $scope.search();
+            };
+
+            self.errorResult = function () {
+                delete $localStorage.searchResults;
+                self.hasDoneASearch = true;
+                $scope.searchResults = [];
+                $scope.displayedResults = [];
+                $scope.visiblePage = 1;
+                $scope.resultCount = 0;
+                self.compareIds = Object.create(null);
             };
 
             $scope.clear = function () {
