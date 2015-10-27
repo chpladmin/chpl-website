@@ -8,7 +8,7 @@
             self.authorizeDetails = {};
             self.userDetails.hash = $routeParams.hash;
             self.authorizeDetails.hash = $routeParams.hash;
-            self.message = '';
+            self.message = {value: '', success: null};
 
             self.createUser = createUser;
             self.authorizeUser = authorizeUser;
@@ -19,10 +19,14 @@
                 if (self.validateUser()) {
                     commonService.createInvitedUser(self.userDetails)
                         .then(function (response) {
-                            self.message = response.hash;
+                            self.message.value = 'Your account has been created. Please check your email to confirm your account';
+                            self.message.success = true;
+                        },function (error) {
+                            self.message.value = error.data.error;
+                            self.message.success = false;
                         });
                 }
-            };
+            }
 
             function authorizeUser () {
                 if (self.authorizeDetails.userName &&
@@ -31,9 +35,12 @@
                     commonService.authorizeUser(self.authorizeDetails)
                         .then(function (response) {
                             $location.path('/admin');
+                        },function (error) {
+                            self.message.value = error.data.error;
+                            self.message.success = false;
                         });
                 }
-            };
+            }
 
             self.validateUser = function () {
                 var valid = true;
