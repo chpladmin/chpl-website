@@ -37,8 +37,8 @@
         <ai-acb-management>
         </ai-acb-management>
       </tab>
-      <tab heading="Reports" active="true">
-        <ai-reports>
+      <tab heading="Reports" select="vm.refresh()">
+        <ai-reports trigger-refresh="vm.triggerRefresh(handler)">
         </ai-reports>
       </tab>
       <tab ng-if="vm.isChplAdmin()" heading="CMS version bundle management">

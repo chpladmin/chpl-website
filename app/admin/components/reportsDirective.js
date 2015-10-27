@@ -272,9 +272,17 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/reports.html',
-                scope: {},
+                scope: {triggerRefresh: '&'},
                 controllerAs: 'vm',
-                controller: 'ReportController'
+                controller: 'ReportController',
+                link: function (scope, element, attr, ctrl) {
+                    var handler = scope.triggerRefresh({
+                        handler: function () {
+                            ctrl.refreshActivity();
+                        }
+                    });
+                    scope.$on('$destroy', handler);
+                }
             };
         });
 })();
