@@ -100,12 +100,13 @@ apis.entities.vendor = {
     name:'string',
     website: 'string',
     address:apis.entities.address,
-    lastModifiedDate:'string'
+    lastModifiedDate:'long'
 };
 apis.entities.product = {
     productId:'long',
     name:'string',
-    lastModifiedDate:'string'
+    reportFileLocation:'string',
+    lastModifiedDate:'long'
 };
 apis.entities.version = {
     versionId:'long',
@@ -113,10 +114,24 @@ apis.entities.version = {
     lastModifiedDate:'string'
 };
 apis.entities.cps = {
-    cpId:'long',
-    chplNum:'string',
-    certDate:'string',
-    lastModifiedDate:'string'
+    id: 'long',
+    testingLabId: 'long',
+    chplProductNumber: 'string',
+    reportFileLocation: 'string',
+    qualityManagementSystemAtt: 'string',
+    acbCertificationId: 'long',
+    classificationType: {},
+    otherAcb: 'string',
+    certificationStatusId: 'long',
+    vendor: {},
+    product: {},
+    certificationEdition: {},
+    practiceType: {},
+    certifyingBody: {},
+    certificationDate: null,
+    certificationResults: [],
+    cqmResults: [],
+    lastModifiedDate: 'long'
 };
 apis.entities.success = {
     response: 200
@@ -349,7 +364,6 @@ apis.endpoints = [
         description: 'Refresh login token with new expiration time',
         request: '/auth/keep_alive',
         requestType: 'POST',
-        jsonParameter: {},
         security: 'Admin',
         response: {token: 'string'}
     },{
@@ -584,10 +598,9 @@ apis.endpoints = [
         response: apis.entities.vendor
     },{
         category: 'Versions',
-        description: 'Returns all versions, or only single passed in version',
-        request: '/versions/(:id)(?productId)',
+        description: 'Returns all versions of given product, based on the passed in productId',
+        request: '/versions/:productId',
         requestType: 'GET',
-        parameters: 'productId: optional product identifier. If present, filters results to only those versions owned by relevant Product',
         response: [apis.entities.version]
     },{
         category: 'Versions',
