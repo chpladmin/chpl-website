@@ -12,7 +12,8 @@
       <div class="row" ng-if="vm.workType === 'upload'">
         <div class="col-sm-12" ng-if="vm.isAcbAdmin">
           <h3>Upload Certified Products</h3>
-          <input type="file" nv-file-select uploader="vm.uploader" />
+          <input type="file" nv-file-select="" uploader="vm.uploader" />
+          <p ng-if="vm.uploadMessage.length > 0">{{ vm.uploadMessage }}</p>
           <table class="table" ng-if="vm.uploader.queue.length > 0">
             <thead>
               <tr>

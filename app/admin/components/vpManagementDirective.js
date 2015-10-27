@@ -13,6 +13,7 @@
             self.uploadingCps = [];
             self.inspectingCp = '';
             self.workType = 'upload';
+            self.uploadMessage = '';
 
             self.activate = activate;
             self.refreshPending = refreshPending;
@@ -37,15 +38,19 @@
                         headers: { Authorization: 'Bearer ' + authService.getToken() }
                     });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                        $log.info('onSuccessItem', fileItem, response, status, headers);
+                        $log.info('onErrorItem', fileItem, response, status, headers);
                         self.uploadingCps = self.uploadingCps.concat(response.pendingCertifiedProducts);
-                        self.workType = 'confirm';
+                        self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. Pending products are ready for confirmation.';
                     };
+/*                    self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                        if (self.uploader.queue.length === 0)
+                            self.workType = 'confirm';
+                    };*/
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
                         $log.info('onErrorItem', fileItem, response, status, headers);
                     };
-                    FileUploader.FileSelect.prototype.isEmptyAfterSelection = function() {
-                        return true; // true|false
+                    self.uploader.onCancelItem = function(fileItem, response, status, headers) {
+                        $log.info('onCancelItem', fileItem, response, status, headers);
                     };
                 }
 
