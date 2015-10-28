@@ -99,7 +99,7 @@
       <div ng-if="vm.workType === 'manage' || vm.inspectingCp !== '' || vm.isChplAdmin"> <!-- developer -->
         <div class="row" ng-if="vm.activeVendor === ''">
           <div class="col-sm-12">
-            <label for="vendorSelect" class="control-label">Select a developer</label>
+            <label for="vendorSelect" class="control-label admin-label-spaced">Select a developer</label>
             <select ng-model="vm.vendorSelect"
                     id="vendorSelect" class="form-control"
                     ng-options="v.name for v in vm.vendors | orderBy: 'name'">
@@ -114,7 +114,7 @@
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.activeVendor.id">
                   Developer <strong>"{{ vm.inspectingCp.vendor.name }}"</strong> not found. Would you like to select an existing developer?<br />
-                  <label for="vendorInspectSelect" class="control-label">Select a developer</label>
+                  <label for="vendorInspectSelect" class="control-label admin-label-spaced">Select a developer</label>
                   <select ng-model="vm.vendorSelect"
                           id="vendorInspectSelect" class="input-sm form-control"
                           ng-options="v.name for v in vm.vendors | orderBy: 'name'">
@@ -199,7 +199,7 @@
             </div>
           </div> <!-- end uploaded developer -->
           <div class="col-sm-6" ng-if="vm.activeVendor !== '' && !vm.inspectingCp">
-            <label for="vendorMergeSelect" class="control-label">Select developers to merge with {{ vm.activeVendor.name }}</label>
+            <label for="vendorMergeSelect" class="control-label admin-label-spaced">Select developers to merge with {{ vm.activeVendor.name }}</label>
             <select ng-model="vm.mergingVendors" multiple="true"
                     id="vendorMergeSelect" class="input-sm form-control"
                     size="12" ng-options="v.name for v in vm.vendors | orderBy: 'name'">
@@ -294,7 +294,7 @@
 
         <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== ''"> <!-- product -->
           <div class="col-sm-12">
-            <label for="productSelect" class="control-label">Select a product</label>
+            <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
             <select ng-model="vm.productSelect"
                     id="productSelect" class="form-control"
                     ng-options="p.name for p in vm.products | orderBy: 'name'">
@@ -309,7 +309,7 @@
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.activeProduct.id && vm.activeVendor.id">
                   Product <strong>"{{ vm.inspectingCp.product.name }}"</strong> not found. Would you like to select an existing product?<br />
-                  <label for="productInspectSelect" class="control-label">Select a product</label>
+                  <label for="productInspectSelect" class="control-label admin-label-spaced">Select a product</label>
                   <select ng-model="vm.productSelect"
                           id="productInspectSelect" class="input-sm form-control"
                           ng-options="p.name for p in vm.products | orderBy: 'name'">
@@ -357,7 +357,7 @@
             </div>
           </div> <!-- end uploaded product -->
           <div class="col-sm-6" ng-if="vm.activeProduct !=='' && !vm.inspectingCp && vm.products.length > 1">
-            <label for="productMergeSelect" class="control-label">Select products to merge with {{ vm.activeProduct.name }}</label>
+            <label for="productMergeSelect" class="control-label admin-label-spaced">Select products to merge with {{ vm.activeProduct.name }}</label>
             <select ng-model="vm.mergingProducts" multiple="true"
                     id="productMergeSelect" class="input-sm form-control"
                     size="12" ng-options="p.name for p in vm.products | orderBy: 'name'">
@@ -409,7 +409,7 @@
 
         <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === ''"> <!-- version -->
           <div class="col-sm-12">
-            <label for="versionSelect" class="control-label">Select a version</label>
+            <label for="versionSelect" class="control-label admin-label-spaced">Select a version</label>
             <select ng-model="vm.versionSelect"
                     id="versionSelect" class="form-control"
                     ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
@@ -424,7 +424,7 @@
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.inspectingCp.product.versionId && vm.activeProduct.id">
                   Version <strong>"{{ vm.inspectingCp.product.version }}"</strong> not found. Would you like to select an existing version?<br />
-                  <label for="versionInspectSelect" class="control-label">Select a version</label>
+                  <label for="versionInspectSelect" class="control-label admin-label-spaced">Select a version</label>
                   <select ng-model="vm.versionSelect"
                           id="versionInspectSelect" class="input-sm form-control"
                           ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
@@ -463,7 +463,7 @@
             </div>
           </div> <!-- end uploaded version -->
           <div class="col-sm-6" ng-if="vm.activeVersion !== '' && !vm.inspectingCp && vm.versions.length > 1">
-            <label for="versionMergeSelect" class="control-label">Select versions to merge with {{ vm.activeVersion.version }}</label>
+            <label for="versionMergeSelect" class="control-label admin-label-spaced">Select versions to merge with {{ vm.activeVersion.version }}</label>
             <select ng-model="vm.mergingVersions" multiple="true"
                     id="versionMergeSelect" class="input-sm form-control"
                     size="12" ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
@@ -517,7 +517,7 @@
         <div class="row" ng-if="vm.activeVersion !== ''">
           <div class="col-sm-12">
             <div ng-if="vm.activeCP === ''">
-              <label for="cpSelect" class="control-label">Select a certified product</label>
+              <label for="cpSelect" class="control-label admin-label-spaced">Select a certified product</label>
               <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
                 <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
               </select>
