@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('VpManagementController', ['commonService', 'authService', '$log', 'FileUploader', 'API', function (commonService, authService, $log, FileUploader, API) {
+        .controller('VpManagementController', ['commonService', 'authService', '$log', 'FileUploader', 'API', '$modal', function (commonService, authService, $log, FileUploader, API, $modal) {
             var self = this;
             self.activeVendor = '';
             self.activeProduct = '';
@@ -18,6 +18,7 @@
             self.activate = activate;
             self.refreshPending = refreshPending;
             self.selectVendor = selectVendor;
+            self.editDeveloper = editDeveloper;
             self.selectProduct = selectProduct;
             self.selectVersion = selectVersion;
             self.selectCp = selectCp;
@@ -78,6 +79,27 @@
                     delete self.mergeVendor.vendorId;
                     delete self.mergeVendor.lastModifiedDate;
                 }
+            }
+
+            function editDeveloper () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditDeveloper.html',
+                    controller: 'EditDeveloperController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeVendor: function() {
+                            return self.activeVendor;
+                        }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activeVendor = result;
+                }, function (result) {
+                    $log.info('dismissed', result);
+                });
             }
 
             function selectProduct () {
@@ -271,7 +293,6 @@
                 // todo: figure out how to actually cancel the edits
                 self.activeVendor = '';
                 self.vendorMessage = null;
-                self.editVendor = false;
                 self.selectVendor();
                 self.mergingVendors = [];
             };
@@ -300,72 +321,49 @@
             };
 
             self.mergeAddressRequired = function () {
-                return self.addressCheck(self.mergeVendor);
-            }
+                return commonService.addressRequired(self.mergeVendor.address);
+            };
 
             self.addressRequired = function () {
-                return self.addressCheck(self.activeVendor);
+                return commonService.addressRequired(self.activeVendor);
             };
 
-            self.addressCheck = function (v) {
-                if (v.address === null) return false;
-                if (v.address.line1 && v.address.line1.length > 0) return true;
-                if (v.address.line2 && v.address.line2.length > 0) return true;
-                if (v.address.city && v.address.city.length > 0) return true;
-                if (v.address.state && v.address.state.length > 0) return true;
-                if (v.address.zipcode && v.address.zipcode.length > 0) return true;
-                if (v.address.country && v.address.country.length > 0) return true;
-                return false;
-            };
+            function saveVendor () {
+                self.updateVendor = {vendorIds: []};
 
-            function saveVendor (merging) {
-                if (self.inspectingCp) {
-                    $log.info(self.inspectingCp, self.activeVendor);
-                    self.inspectingCp.vendor = self.activeVendor;
-                    self.editVendor = false;
-                } else {
-                    self.updateVendor = {vendorIds: []};
-
-                    if (merging) {
-                        var addActive = true;
-                        for (var i = 0; i < self.mergingVendors.length; i++) {
-                            self.updateVendor.vendorIds.push(self.mergingVendors[i].vendorId);
-                            if (self.mergingVendors[i].vendorId === self.activeVendor.vendorId) {
-                                addActive = false;
-                            }
-                        }
-                        if (addActive) {
-                            self.updateVendor.vendorIds.push(self.activeVendor.vendorId);
-                        }
-                        self.updateVendor.vendor = self.mergeVendor;
-                    } else {
-                        self.updateVendor.vendorIds.push(self.activeVendor.vendorId);
-                        self.updateVendor.vendor = self.activeVendor;
+                var addActive = true;
+                for (var i = 0; i < self.mergingVendors.length; i++) {
+                    self.updateVendor.vendorIds.push(self.mergingVendors[i].vendorId);
+                    if (self.mergingVendors[i].vendorId === self.activeVendor.vendorId) {
+                        addActive = false;
                     }
-
-                    commonService.updateVendor(self.updateVendor)
-                        .then(function (response) {
-                            if (!response.status || response.status === 200) {
-                                var newVendor = response;
-                                self.vendorMessage = null;
-                                self.editVendor = false;
-                                commonService.getVendors()
-                                    .then(function (vendors) {
-                                        self.vendors = vendors.vendors;
-                                        self.activeVendor = newVendor;
-                                        //todo: re-select active vendor in vendorSelect
-                                        commonService.getProductsByVendor(newVendor.vendorId)
-                                            .then(function (products) {
-                                                self.products = products.products;
-                                            });
-                                    });
-                            } else {
-                                self.vendorMessage = 'An error occurred. Please check your entry and try again.';
-                            }
-                        });
-                    self.cancelVendor();
                 }
-            };
+                if (addActive) {
+                    self.updateVendor.vendorIds.push(self.activeVendor.vendorId);
+                }
+                self.updateVendor.vendor = self.mergeVendor;
+
+                commonService.updateVendor(self.updateVendor)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            var newVendor = response;
+                            self.vendorMessage = null;
+                            commonService.getVendors()
+                                .then(function (vendors) {
+                                    self.vendors = vendors.vendors;
+                                    self.activeVendor = newVendor;
+                                    //todo: re-select active vendor in vendorSelect
+                                    commonService.getProductsByVendor(newVendor.vendorId)
+                                        .then(function (products) {
+                                            self.products = products.products;
+                                        });
+                                });
+                        } else {
+                            self.vendorMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+                self.cancelVendor();
+            }
 
             function saveProduct (merging) {
                 if (self.inspectingCp) {

@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    angular.module('app.admin', ['ngRoute', 'smart-table', 'app.common', 'app.loginServices', 'ngIdle', 'ngSanitize'])
+    angular.module('app.admin', ['ngRoute', 'smart-table', 'app.common', 'app.loginServices', 'ngIdle', 'ngSanitize', 'ui.bootstrap'])
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/admin', {
                 templateUrl: 'admin/admin.html'

@@ -110,7 +110,7 @@
         <div class="row" ng-if="vm.activeVendor !== ''">
           <div class="col-sm-6">
             <h3 ng-if="vm.inspectingCp">System developer information</h3>
-            <div class="panel panel-default" ng-form="vendorEditForm">
+            <div class="panel panel-default">
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.activeVendor.id">
                   Developer <strong>"{{ vm.inspectingCp.vendor.name }}"</strong> not found. Would you like to select an existing developer?<br />
@@ -122,16 +122,10 @@
                   <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVendor()">Select Developer</button></p>
                   Or use the uploaded information?<br />
                 </span>
-                <span ng-if="!vm.editVendor">{{ vm.activeVendor.name }}</span>
-                <span ng-if="vm.editVendor">
-                  <div class="form-group">
-                    <label for="vendorName">Developer Name <span class="text-danger">*</span></label>
-                    <input class="input-sm form-control" type="text" required ng-model="vm.activeVendor.name" id="vendorName"></input>
-                  </div>
-                </span>
+                <span>{{ vm.activeVendor.name }}</span>
               </div>
               <div class="panel-body">
-                <span ng-if="!vm.editVendor">
+                <span>
                   {{ vm.activeVendor.address.line1 }}<br />
                   {{ vm.activeVendor.address.line2 }}<br />
                   {{ vm.activeVendor.address.city }}<br />
@@ -140,44 +134,12 @@
                   {{ vm.activeVendor.address.country }}<br />
                   {{ vm.activeVendor.website }}<br />
                 </span>
-                <span ng-if="vm.editVendor">
-                  <div class="form-group">
-                    <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.line1" id="addressLine1" name="addressLine1"></input>
-                  </div>
-                  <div class="form-group">
-                    <label for="addressLine2">Address Line 2</label>
-                    <input class="input-sm form-control" type="text" ng-model="vm.activeVendor.address.line2" id="addressLine2"></input>
-                  </div>
-                  <div class="form-group">
-                    <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.city" id="addressCity"></input>
-                  </div>
-                  <div class="form-group">
-                    <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.state" id="addressState"></input>
-                  </div>
-                  <div class="form-group">
-                    <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.zipcode" id="addressZipcode"></input>
-                  </div>
-                  <div class="form-group">
-                    <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-                    <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.activeVendor.address.country" id="addressCountry"></input>
-                  </div>
-                  <div class="form-group">
-                    <label for="vendorWebsite">Website</label>
-                    <input class="input-sm form-control" type="url" ng-model="vm.activeVendor.website" id="vendorWebsite"></input>
-                  </div>
-                </span>
                 <br />
                 Last Modified Date: {{ vm.activeVendor.lastModifiedDate | date }}
                 <br />
-                <p ng-if="vm.vendorMessage !== undefined && vm.editVendor" class="bg-danger">{{ vm.vendorMessage }}</p>
-                <p><button class="btn btn-default btn-block" ng-if="!vm.editVendor" ng-click="vm.editVendor = ! vm.editVendor">Edit Developer</button></p>
-                <p><button ng-disabled="vendorEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVendor" ng-click="vm.saveVendor(false)">Save Developer</button></p>
-                <p><button class="btn btn-warning btn-block" ng-if="vm.editVendor" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
-                <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVendor = false; vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to developer select</a></p>
+                <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
+                <p><button class="btn btn-default btn-block" ng-click="vm.editDeveloper()">Edit Developer</button></p>
+                <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to developer select</a></p>
               </div>
             </div>
           </div> <!-- end system developer -->
@@ -285,7 +247,7 @@
                 </div>
                 <br />
                 <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
-                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor(true)">Save Combined Developers</button></p>
+                <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor()">Save Combined Developers</button></p>
                 <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
               </div>
             </div>

@@ -5,6 +5,21 @@
         .service('commonService', function ($http, $q, API, $log) {
             var self = this;
 
+            self.addressRequired = addressRequired;
+
+            ////////////////////////////////////////////////////////////////////
+
+            function addressRequired (address) {
+                if (!address) return false;
+                if (address.line1 && address.line1.length > 0) return true;
+                if (address.line2 && address.line2.length > 0) return true;
+                if (address.city && address.city.length > 0) return true;
+                if (address.state && address.state.length > 0) return true;
+                if (address.zipcode && address.zipcode.length > 0) return true;
+                if (address.country && address.country.length > 0) return true;
+                return false;
+            }
+
             self.simpleApiCall = function (endpoint, workingApi) {
                 return $http.get(workingApi + endpoint)
                     .then(function(response) {
