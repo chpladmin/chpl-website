@@ -20,6 +20,7 @@
             self.selectVendor = selectVendor;
             self.editDeveloper = editDeveloper;
             self.selectProduct = selectProduct;
+            self.editProduct = editProduct;
             self.selectVersion = selectVersion;
             self.selectCp = selectCp;
             self.saveVendor = saveVendor;
@@ -90,7 +91,7 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeVendor: function() {
+                        activeVendor: function () {
                             return self.activeVendor;
                         }
                     }
@@ -98,7 +99,9 @@
                 self.modalInstance.result.then(function (result) {
                     self.activeVendor = result;
                 }, function (result) {
-                    $log.info('dismissed', result);
+                    if (result !== 'cancelled') {
+                        self.vendorMessage = result;
+                    }
                 });
             }
 
@@ -114,6 +117,32 @@
                     delete self.mergeProduct.productId;
                     delete self.mergeProduct.lastModifiedDate;
                 }
+            }
+
+            function editProduct () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditProduct.html',
+                    controller: 'EditProductController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeProduct: function () {
+                            return self.activeProduct;
+                        },
+                        vendors: function () {
+                            return self.vendors;
+                        }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activeProduct = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.productMessage = result;
+                    }
+                });
             }
 
             function selectVersion () {
@@ -300,7 +329,6 @@
             self.cancelProduct = function () {
                 self.activeProduct = '';
                 self.productMessage = null;
-                self.editProduct = false;
                 self.selectProduct();
                 self.mergingProducts = [];
             };
@@ -365,56 +393,42 @@
                 self.cancelVendor();
             }
 
-            function saveProduct (merging) {
-                if (self.inspectingCp) {
-                    self.inspectingCp.product = self.activeProduct;
-                    $log.info(self.inspectingCp, self.activeProduct);
-                    self.editProduct = false;
-                } else {
-                    self.updateProduct = {productIds: []};
+            function saveProduct () {
+                self.updateProduct = {productIds: []};
 
-                    if (merging) {
-                        var addActive = true;
-                        for (var i = 0; i < self.mergingProducts.length; i++) {
-                            self.updateProduct.productIds.push(self.mergingProducts[i].productId);
-                            if (self.mergingProducts[i].productId === self.activeProduct.productId) {
-                                addActive = false;
-                            }
-                        }
-                        if (addActive) {
-                            self.updateProduct.productIds.push(self.activeProduct.productId);
-                        }
-                        self.updateProduct.product = self.mergeProduct;
-                        self.updateProduct.newVendorId = self.activeVendor.vendorId;
-
-                    } else {
-                        self.updateProduct.productIds.push(self.activeProduct.productId);
-                        self.updateProduct.product = self.activeProduct;
-                        self.updateProduct.newVendorId = self.activeProduct.vendorId;
+                var addActive = true;
+                for (var i = 0; i < self.mergingProducts.length; i++) {
+                    self.updateProduct.productIds.push(self.mergingProducts[i].productId);
+                    if (self.mergingProducts[i].productId === self.activeProduct.productId) {
+                        addActive = false;
                     }
-
-                    commonService.updateProduct(self.updateProduct)
-                        .then(function (response) {
-                            if (!response.status || response.status === 200) {
-                                var newProduct = response;
-                                self.productMessage = null;
-                                self.editProduct = false;
-                                commonService.getProductsByVendor(self.activeVendor.vendorId)
-                                    .then(function (products) {
-                                        self.products = products.products;
-                                        self.activeProduct = newProduct;
-                                        //todo: re-select active vendor in vendorSelect
-                                        commonService.getVersionsByProduct(newProduct.productId)
-                                            .then(function (versions) {
-                                                self.versions = versions;
-                                            });
-                                    });
-                            } else {
-                                self.productMessage = 'An error occurred. Please check your entry and try again.';
-                            }
-                        });
-                    self.cancelProduct();
                 }
+                if (addActive) {
+                    self.updateProduct.productIds.push(self.activeProduct.productId);
+                }
+                self.updateProduct.product = self.mergeProduct;
+                self.updateProduct.newVendorId = self.activeVendor.vendorId;
+
+                commonService.updateProduct(self.updateProduct)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            var newProduct = response;
+                            self.productMessage = null;
+                            commonService.getProductsByVendor(self.activeVendor.vendorId)
+                                .then(function (products) {
+                                    self.products = products.products;
+                                    self.activeProduct = newProduct;
+                                    //todo: re-select active vendor in vendorSelect
+                                    commonService.getVersionsByProduct(newProduct.productId)
+                                        .then(function (versions) {
+                                            self.versions = versions;
+                                        });
+                                });
+                        } else {
+                            self.productMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+                self.cancelProduct();
             }
 
             function saveVersion (merging) {

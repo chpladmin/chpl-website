@@ -8,7 +8,7 @@
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="editDeveloperLabel">Edit Developer</h4>
   </div>
-  <div class="modal-body" ng-form="vendorEditForm">
+  <div class="modal-body" ng-form="editForm">
     <div class="form-group">
       <label for="vendorName">Developer Name <span class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="vendorName"></input>
@@ -43,7 +43,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="vendorEditForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Developer</button>
+    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Developer</button>
     <button class="btn btn-warning btn-block"
             confirm="Are you sure you wish cancel editing? Your changes will not be saved."
             confirm-ok="Yes"

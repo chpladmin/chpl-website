@@ -267,7 +267,7 @@
         <div class="row" ng-if="vm.activeProduct !== ''">
           <div class="col-sm-6">
             <h3 ng-if="vm.inspectingCp">System product information</h3>
-            <div class="panel panel-default" ng-form="productEditForm">
+            <div class="panel panel-default">
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.activeProduct.id && vm.activeVendor.id">
                   Product <strong>"{{ vm.inspectingCp.product.name }}"</strong> not found. Would you like to select an existing product?<br />
@@ -279,32 +279,15 @@
                   <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
                   Or use the uploaded information?<br />
                 </span>
-                <span ng-if="!vm.editProduct">{{ vm.activeProduct.name }}</span>
-                <span ng-if="vm.editProduct">
-                  <div class="form-group">
-                    <label for="productName">Product Name</label>
-                    <input class="input-sm form-control" type="text" ng-model="vm.activeProduct.name" id="productName" required></input>
-                  </div>
-                </span>
+                <span>{{ vm.activeProduct.name }}</span>
               </div>
               <div class="panel-body">
-                <span ng-if="vm.editProduct">
-                  <div class="form-group">
-                    <label for="productOwner">Change Product owner</label>
-                    <select ng-model="vm.activeProduct.vendorId"
-                            id="productOwner" class="input-sm form-control"
-                            ng-options="v.vendorId as v.name for v in vm.vendors | orderBy: 'name'">
-                    </select>
-                  </div>
-                </span>
                 <br />
                 Last Modified Date: {{ vm.activeProduct.lastModifiedDate | date }}
                 <br />
-                <p ng-if="vm.productMessage !== undefined && vm.editProduct" class="bg-danger">{{ vm.productMessage }}</p>
-                <p><button class="btn btn-default btn-block" ng-if="!vm.editProduct" ng-click="vm.editProduct = ! vm.editProduct">Edit Product</button></p>
-                <p><button ng-disabled="productEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editProduct" ng-click="vm.saveProduct(false)">Save Product</button></p>
-                <p><button class="btn btn-warning btn-block" ng-if="vm.editProduct" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
-                <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editProduct = false; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
+                <p ng-if="vm.productMessage !== undefined" class="bg-danger">{{ vm.productMessage }}</p>
+                <p><button class="btn btn-default btn-block" ng-click="vm.editProduct()">Edit Product</button></p>
+                <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
               </div>
             </div>
           </div> <!-- end system product -->
@@ -362,7 +345,7 @@
                 </div>
               </div>
               <div class="panel-body">
-                <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveProduct(true)">Save Combined Products</button></p>
+                <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveProduct()">Save Combined Products</button></p>
                 <p><button class="btn btn-warning btn-block" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
               </div>
             </div>
