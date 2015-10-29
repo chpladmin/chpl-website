@@ -24,6 +24,7 @@
             self.selectVersion = selectVersion;
             self.editVersion = editVersion;
             self.selectCp = selectCp;
+            self.editCertifiedProduct = editCertifiedProduct;
             self.saveVendor = saveVendor;
             self.saveProduct = saveProduct;
             self.saveVersion = saveVersion;
@@ -92,9 +93,7 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeVendor: function () {
-                            return self.activeVendor;
-                        }
+                        activeVendor: function () { return self.activeVendor; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
@@ -129,12 +128,8 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeProduct: function () {
-                            return self.activeProduct;
-                        },
-                        vendors: function () {
-                            return self.vendors;
-                        }
+                        activeProduct: function () { return self.activeProduct; },
+                        vendors: function () { return self.vendors; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
@@ -169,9 +164,7 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeVersion: function () {
-                            return self.activeVersion;
-                        }
+                        activeVersion: function () { return self.activeVersion; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
@@ -198,6 +191,33 @@
                         });
                 }
             };
+
+            function editCertifiedProduct () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditCertifiedProduct.html',
+                    controller: 'EditCertifiedProductController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeCP: function () { return self.activeCP; },
+                        classifications: function () { return self.classifications; },
+                        practices: function () { return self.practices; },
+                        isAcbAdmin: function () { return self.isAcbAdmin; },
+                        isChplAdmin: function () { return self.isChplAdmin; },
+                        bodies: function () { return self.bodies; },
+                        statuses: function () { return self.statuses; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activeCP = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.cpMessage = result;
+                    }
+                });
+            }
 
             self.populateData = function () {
                 commonService.getSearchOptions()
@@ -367,7 +387,6 @@
             self.cancelCP = function () {
                 self.activeCP = '';
                 self.cpMessage = null;
-                self.editCP = false;
                 self.selectCp();
             };
 
@@ -491,43 +510,6 @@
                     });
                 self.cancelVersion();
             };
-
-            self.saveCP = function () {
-                if (self.inspectingCp) {
-                    self.editCP = false;
-                } else {
-                    self.updateCP = {};
-
-                    self.updateCP.id = self.activeCP.id;
-                    self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
-                    self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
-                    self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
-                    //self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
-                    self.updateCP.certificationStatus = self.activeCP.certificationStatus;
-                    self.updateCP.chplProductNumber = self.activeCP.chplProductNumber;
-                    self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
-                    self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
-                    self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
-                    self.updateCP.otherAcb = self.activeCP.otherAcb;
-                    self.updateCP.testingLabId = self.activeCP.testingLabId;
-                    self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
-
-                    self.editCP = false;
-                    $log.debug(self.updateCP);
-
-                    commonService.updateCP(self.activeCP)
-                        .then(function (response) {
-                            if (!response.status || response.status === 200) {
-                                self.editCP = false;
-                                self.activeCP = response;
-                                self.activeCP.certDate = new Date(self.activeCP.certificationDate);
-                            } else {
-                                self.cpMessage = 'An error occurred. Please check your entry and try again.';
-                            }
-                        });
-                }
-            };
-
         }]);
 
     angular.module('app.admin')

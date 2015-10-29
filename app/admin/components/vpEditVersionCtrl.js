@@ -22,6 +22,8 @@
                         } else {
                             $modalInstance.dismiss('An error occurred');
                         }
+                    },function (error) {
+                        $modalInstance.dismiss(error.data.error);
                     });
             }
 
