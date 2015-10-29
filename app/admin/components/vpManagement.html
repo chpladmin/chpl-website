@@ -365,7 +365,7 @@
         <div class="row" ng-if="vm.activeVersion !== ''">
           <div class="col-sm-6">
             <h3 ng-if="vm.inspectingCp">System version information</h3>
-            <div class="panel panel-default" ng-form="versionEditForm">
+            <div class="panel panel-default">
               <div class="panel-heading">
                 <span ng-if="vm.inspectingCp && !vm.inspectingCp.product.versionId && vm.activeProduct.id">
                   Version <strong>"{{ vm.inspectingCp.product.version }}"</strong> not found. Would you like to select an existing version?<br />
@@ -377,23 +377,15 @@
                   <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVersion()">Select Version</button></p>
                   Or use the uploaded information?<br />
                 </span>
-                <span ng-if="!vm.editVersion">{{ vm.activeVersion.version }}</span>
-                <span ng-if="vm.editVersion">
-                  <div class="form-group">
-                    <label for="versionName">Version</label>
-                    <input class="input-sm form-control" type="text" ng-model="vm.activeVersion.version" id="versionName" required></input>
-                  </div>
-                </span>
+                <span>{{ vm.activeVersion.version }}</span>
               </div>
               <div class="panel-body">
                 <br />
                 Last Modified Date: {{ vm.activeVersion.lastModifiedDate | date }}
                 <br />
-                <p ng-if="vm.versionMessage !== undefined && vm.editVersion" class="bg-danger">{{ vm.versionMessage }}</p>
-                <p><button class="btn btn-default btn-block" ng-if="!vm.editVersion" ng-click="vm.editVersion = ! vm.editVersion">Edit Version</button></p>
-                <p><button ng-disabled="versionEditForm.$invalid" class="btn btn-success btn-block" ng-if="vm.editVersion" ng-click="vm.saveVersion(false)">Save Version</button></p>
-                <p><button class="btn btn-warning btn-block" ng-if="vm.editVersion" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
-                <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.editVersion = false; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
+                <p ng-if="vm.versionMessage !== undefined" class="bg-danger">{{ vm.versionMessage }}</p>
+                <p><button class="btn btn-default btn-block" ng-click="vm.editVersion()">Edit Version</button></p>
+                <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
               </div>
             </div>
           </div> <!-- end system version -->

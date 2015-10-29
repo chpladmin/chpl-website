@@ -22,6 +22,7 @@
             self.selectProduct = selectProduct;
             self.editProduct = editProduct;
             self.selectVersion = selectVersion;
+            self.editVersion = editVersion;
             self.selectCp = selectCp;
             self.saveVendor = saveVendor;
             self.saveProduct = saveProduct;
@@ -157,6 +158,29 @@
                     delete self.mergeVersion.versionId;
                     delete self.mergeVersion.lastModifiedDate;
                 }
+            }
+
+            function editVersion () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditVersion.html',
+                    controller: 'EditVersionController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeVersion: function () {
+                            return self.activeVersion;
+                        }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activeVersion = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.versionMessage = result;
+                    }
+                });
             }
 
             function selectCp () {
@@ -336,7 +360,6 @@
             self.cancelVersion = function () {
                 self.activeVersion = '';
                 self.versionMessage = null;
-                self.editVersion = false;
                 self.selectVersion();
                 self.mergingVersions = [];
             };
@@ -431,55 +454,42 @@
                 self.cancelProduct();
             }
 
-            function saveVersion (merging) {
-                if (self.inspectingCp) {
-                    self.inspectingCp.product.version = self.activeVersion.version;
-                    self.inspectingCp.product.versionId = self.activeVersion.versionId;
-                    $log.info(self.inspectingCp, self.activeVersion);
-                    self.editVersion = false;
-                } else {
-                    self.updateVersion = {versionIds: []};
+            function saveVersion () {
+                self.updateVersion = {versionIds: []};
 
-                    if (merging) {
-                        var addActive = true;
-                        for (var i = 0; i < self.mergingVersions.length; i++) {
-                            self.updateVersion.versionIds.push(self.mergingVersions[i].versionId);
-                            if (self.mergingVersions[i].versionId === self.activeVersion.versionId) {
-                                addActive = false;
-                            }
-                        }
-                        if (addActive) {
-                            self.updateVersion.versionIds.push(self.activeVersion.versionId);
-                        }
-                        self.updateVersion.newProductId = self.activeProduct.productId;
-                        self.updateVersion.version = self.mergeVersion;
-                    } else {
-                        self.updateVersion.newProductId = self.activeProduct.productId;
-                        self.updateVersion.version = self.activeVersion;
+                var addActive = true;
+                for (var i = 0; i < self.mergingVersions.length; i++) {
+                    self.updateVersion.versionIds.push(self.mergingVersions[i].versionId);
+                    if (self.mergingVersions[i].versionId === self.activeVersion.versionId) {
+                        addActive = false;
                     }
-
-                    commonService.updateVersion(self.updateVersion)
-                        .then(function (response) {
-                            if (!response.status || response.status === 200) {
-                                var newVersion = response;
-                                self.versionMessage = null;
-                                self.editVersion = false;
-                                commonService.getVersionsByProduct(self.activeProduct.productId)
-                                    .then(function (versions) {
-                                        self.versions = versions.versions;
-                                        self.activeVersion = newVersion;
-                                        //todo: re-select active version in versionSelect
-                                        commonService.getProductsByVersion(newVersion.versionId)
-                                            .then(function (cps) {
-                                                self.cps = cps;
-                                            });
-                                    });
-                            } else {
-                                self.versionMessage = 'An error occurred. Please check your entry and try again.';
-                            }
-                        });
-                    self.cancelVersion();
                 }
+                if (addActive) {
+                    self.updateVersion.versionIds.push(self.activeVersion.versionId);
+                }
+                self.updateVersion.newProductId = self.activeProduct.productId;
+                self.updateVersion.version = self.mergeVersion;
+
+                commonService.updateVersion(self.updateVersion)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            var newVersion = response;
+                            self.versionMessage = null;
+                            commonService.getVersionsByProduct(self.activeProduct.productId)
+                                .then(function (versions) {
+                                    self.versions = versions.versions;
+                                    self.activeVersion = newVersion;
+                                    //todo: re-select active version in versionSelect
+                                    commonService.getProductsByVersion(newVersion.versionId)
+                                        .then(function (cps) {
+                                            self.cps = cps;
+                                        });
+                                });
+                        } else {
+                            self.versionMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+                self.cancelVersion();
             };
 
             self.saveCP = function () {
