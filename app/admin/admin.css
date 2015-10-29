@@ -27,6 +27,19 @@
     background: linear-gradient(#0070c9, #004378); /* Standard syntax */
 }
 
+.admin-tabset .nav-tabs>li>a {
+    background-color: #fff;
+}
+
+.admin-tabset .nav-tabs>li>a:hover,
+.admin-tabset .nav-tabs>li>a:focus {
+    background-color: #eee;
+}
+
+.admin-tabset .table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #ccc;
+}
+
 .admin-label-spaced {
     padding: 10px;
 }

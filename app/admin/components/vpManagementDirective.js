@@ -28,6 +28,7 @@
             self.saveVendor = saveVendor;
             self.saveProduct = saveProduct;
             self.saveVersion = saveVersion;
+            self.parseUploadError = parseUploadError;
 
             self.activate();
 
@@ -42,14 +43,12 @@
                         headers: { Authorization: 'Bearer ' + authService.getToken() }
                     });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                        $log.info('onErrorItem', fileItem, response, status, headers);
-                        self.uploadingCps = self.uploadingCps.concat(response.pendingCertifiedProducts);
+                        $log.info('onSuccessItem', fileItem, response, status, headers);
                         self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. Pending products are ready for confirmation.';
                     };
-/*                    self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
-                        if (self.uploader.queue.length === 0)
-                            self.workType = 'confirm';
-                    };*/
+                    self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                        self.refreshPending();
+                    };
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
                         $log.info('onErrorItem', fileItem, response, status, headers);
                     };
@@ -251,6 +250,11 @@
                     }
                 }
                 self.activeVendor = angular.copy(cp.vendor);
+                if (!self.activeVendor.id) {
+                    self.activeVendor.address = angular.copy(cp.vendorAddress);
+                } else {
+                    delete self.activeVendor.website;
+                }
                 self.activeProduct = angular.copy(cp.product);
                 self.activeVersion = angular.copy(cp.product);
                 self.activeCP = angular.copy(cp);
@@ -510,6 +514,14 @@
                     });
                 self.cancelVersion();
             };
+
+            function parseUploadError(status, messages) {
+                if (status === 'ERROR') {
+                    return 'Errors:&nbsp;' + messages.length;
+                } else {
+                    return status;
+                }
+            }
         }]);
 
     angular.module('app.admin')

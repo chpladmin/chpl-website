@@ -60,18 +60,18 @@
               <th>Developer</th>
               <th>Product</th>
               <th>Version</th>
-              <th>Edition</th>
               <th>Certification date</th>
+              <th>Status</th>
               <th class="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate'">
+            <tr ng-repeat-start="cp in vm.uploadingCps | orderBy: 'certificationDate'">
               <td>{{ cp.vendor.name }}</td>
               <td>{{ cp.product.name }}</td>
               <td>{{ cp.product.version }}</td>
-              <td>{{ cp.certificationEdition.name }}</td>
               <td>{{ cp.certificationDate | date }}</td>
+              <td><span ng-bind-html="vm.parseUploadError(cp.validationStatus, cp.validationMessages)"</span></td>
               <td class="text-center">
                 <button ng-if="vm.inspectingCp === ''" class="btn btn-default btn-block" ng-click="vm.inspectCp(cp.id)">Inspect</button>
                 <button ng-if="vm.inspectingCp !== '' && cp.id === vm.inspectingCp.id" class="btn btn-success btn-block" ng-click="vm.confirmCp(cp.id)">
@@ -84,6 +84,14 @@
                   <i class="fa fa-trash-o"></i> Reject
                 </button>
                 <span ng-if="vm.inspectingCp !== '' && cp.id !== vm.inspectingCp.id">Complete or cancel currently open Product</span>
+              </td>
+            </tr>
+            <tr ng-repeat-end ng-class="{ 'hidden': vm.inspectingCp === '' || cp.id !== vm.inspectingCp.id }">
+              <td colspan="6">
+                <div ng-if="cp.validationMessages.length > 0" ng-repeat="error in cp.validationMessages">
+                  {{ error }}
+                </div>
+                <div ng-if="cp.validationMessages.length === 0">No errors found</div>
               </td>
             </tr>
           </tbody>
