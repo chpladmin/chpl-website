@@ -12,7 +12,7 @@
             self.isAcbAdmin = authService.isAcbAdmin();
             self.uploadingCps = [];
             self.inspectingCp = '';
-            self.workType = 'upload';
+            self.workType = self.isChplAdmin ? 'manage' : 'upload';
             self.uploadMessage = '';
 
             self.activate = activate;
