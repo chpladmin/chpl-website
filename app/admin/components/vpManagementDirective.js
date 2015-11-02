@@ -206,10 +206,12 @@
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
-                        statuses: function () { return self.statuses; }
+                        statuses: function () { return self.statuses; },
+                        workType: function () { return self.workType; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
+                    $log.debug(result.cqmResults);
                     self.activeCP = result;
                 }, function (result) {
                     if (result !== 'cancelled') {

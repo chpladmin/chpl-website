@@ -12,22 +12,22 @@
     <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }} <br />
     <div class="form-group">
       <label for="cpClassification">Classification</label>
-      <select class="input-sm form-control" ng-model="vm.cp.classificationType.id" id="cpClassification"
-              ng-options="classification.id as classification.name for classification in vm.classifications" required>
+      <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cpClassification"
+              ng-options="classification as classification.name for classification in vm.classifications" required>
       </select>
     </div>
     <div class="form-group">
       <label for="cpPractice">Practice Type</label>
-      <select class="input-sm form-control" ng-model="vm.cp.practiceType.id" id="cpPractice"
-              ng-options="practice.id as practice.name for practice in vm.practices" required>
+      <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice"
+              ng-options="practice as practice.name for practice in vm.practices" required>
       </select>
     </div>
     <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
     <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} </div>
     <div ng-if="vm.isChplAdmin" class="form-group">
       <label for="cpBody">Certification Body</label>
-      <select class="input-sm form-control" ng-model="vm.cp.certifyingBody.id" id="cpBody"
-              ng-options="body.id as body.name for body in vm.bodies" required>
+      <select class="input-sm form-control" ng-model="vm.cp.certifyingBody" id="cpBody"
+              ng-options="body as body.name for body in vm.bodies" required>
       </select>
     </div>
     <div class="form-group">
@@ -37,8 +37,8 @@
     <ai-additional-software additional-software="vm.cp.additionalSoftware" is-editing="true"></ai-additional-software>
     <div class="form-group">
       <label for="cpStatus">Status</label>
-      <select class="input-sm form-control" ng-model="vm.cp.certificationStatus.id" id="cpStatus"
-              ng-options="status.id as status.name for status in vm.statuses" required>
+      <select class="input-sm form-control" ng-model="vm.cp.certificationStatus" id="cpStatus"
+              ng-options="status as status.name for status in vm.statuses" required>
       </select>
     </div>
     <div class="form-group">

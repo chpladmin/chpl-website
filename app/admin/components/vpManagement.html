@@ -88,8 +88,12 @@
             </tr>
             <tr ng-repeat-end ng-class="{ 'hidden': vm.inspectingCp === '' || cp.id !== vm.inspectingCp.id }">
               <td colspan="6">
-                <div ng-if="cp.validationMessages.length > 0" ng-repeat="error in cp.validationMessages">
-                  {{ error }}
+                <div ng-if="cp.validationMessages.length > 0">Please fix the following <ng-pluralize count="cp.validationMessages.length"
+                                                                                                     when="{'one': 'error',
+                                                                                                           'other': '{} errors'}"></ng-pluralize> before confirming:
+                  <ul>
+                    <li ng-repeat="error in cp.validationMessages">{{ error }}</li>
+                  </ul>
                 </div>
                 <div ng-if="cp.validationMessages.length === 0">No errors found</div>
               </td>
