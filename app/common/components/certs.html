@@ -17,18 +17,6 @@
           </p>
         </div>
       </accordion-group>
-      <accordion-group heading="cqms">
-        <pre>{{ vm.cqms | json }}</pre>
-      </accordion-group>
-      <accordion-group heading="allCqms">
-        <pre>{{ vm.allCqms | json }}</pre>
-      </accordion-group>
-      <accordion-group heading="builtCqms">
-        <pre>{{ vm.builtCqms | json }}</pre>
-      </accordion-group>
-      <accordion-group heading="editCqms">
-        <pre>{{ vm.editCqms | json }}</pre>
-      </accordion-group>
       <accordion-group heading="Clinical Quality Measures ({{ vm.countCqms }} met)" aria-expanded="false">
         <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.builtCqms | orderBy:'id' track by $index">
           <p ng-if="!vm.isEditing">
