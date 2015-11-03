@@ -29,6 +29,7 @@
             self.saveProduct = saveProduct;
             self.saveVersion = saveVersion;
             self.parseUploadError = parseUploadError;
+            self.doWork = doWork;
 
             self.activate();
 
@@ -366,27 +367,29 @@
                 self.cancelProduct();
                 self.cancelVersion();
                 self.cancelCP();
+                self.mergeType = 'developer';
+                self.uploadMessage = '';
             };
 
             self.cancelVendor = function () {
                 // todo: figure out how to actually cancel the edits
                 self.activeVendor = '';
                 self.vendorMessage = null;
-                self.selectVendor();
+                //self.selectVendor();
                 self.mergingVendors = [];
             };
 
             self.cancelProduct = function () {
                 self.activeProduct = '';
                 self.productMessage = null;
-                self.selectProduct();
+                //self.selectProduct();
                 self.mergingProducts = [];
             };
 
             self.cancelVersion = function () {
                 self.activeVersion = '';
                 self.versionMessage = null;
-                self.selectVersion();
+                //self.selectVersion();
                 self.mergingVersions = [];
             };
 
@@ -517,12 +520,17 @@
                 self.cancelVersion();
             };
 
-            function parseUploadError(status, messages) {
+            function parseUploadError (status, messages) {
                 if (status === 'ERROR') {
                     return 'Errors:&nbsp;' + messages.length;
                 } else {
                     return status;
                 }
+            }
+
+            function doWork (workType) {
+                self.cancelAll();
+                self.workType = workType;
             }
         }]);
 

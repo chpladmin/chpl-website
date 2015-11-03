@@ -4,10 +4,25 @@
     angular.module('app.admin')
         .controller('AcbManagementController', ['commonService', 'authService', '$log', function (commonService, authService, $log) {
             var self = this;
-            self.isChplAdmin = authService.isChplAdmin();
-            self.isAcbAdmin = authService.isAcbAdmin();
-            self.newACB = {address: {}};
-            self.acbs = [];
+
+            self.doWork = doWork;
+            self.activate = activate;
+
+            self.activate();
+
+            ////////////////////////////////////////////////////////////////////
+
+            function doWork (workType) {
+                self.workType = workType;
+            }
+
+            function activate () {
+                self.isChplAdmin = authService.isChplAdmin();
+                self.isAcbAdmin = authService.isAcbAdmin();
+                self.newACB = {address: {}};
+                self.acbs = [];
+                self.workType = 'acb';
+            }
 
             self.loadAcbs = function () {
                 return commonService.getAcbs()

@@ -6,7 +6,7 @@
             var vm = this;
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
-            vm.tab = 'activity';
+            vm.tab = 'cp';
 
             vm.activate = activate;
             vm.refreshActivity = refreshActivity;
@@ -119,8 +119,7 @@
 
             function changeTab(newTab) {
                 vm.tab = newTab;
-                if (newTab === 'activity')
-                    vm.refreshActivity();
+                vm.refreshActivity();
             }
 
             ////////////////////////////////////////////////////////////////////
@@ -148,8 +147,9 @@
                             if (change) activity.action += '<li>' + change + '</li>';
                         }
                         activity.action += '</ul>';
+                    } else {
+                        activity.action = data[i].description;
                     }
-                    vm.interpretNonUpdate(activity, data[i], 'Certified Product');
                     ret.push(activity);
                 }
                 return ret;
@@ -170,8 +170,9 @@
                         if (change) activity.action += '<li>' + change + '</li>';
                         vm.analyzeAddress(activity, data[i]);
                         activity.action += '</ul>';
+                    } else {
+                        vm.interpretNonUpdate(activity, data[i], 'developer');
                     }
-                    vm.interpretNonUpdate(activity, data[i], 'developer');
                     ret.push(activity);
                 }
                 return ret;
@@ -190,8 +191,9 @@
                         if (change) activity.action += '<li>' + change + '</li>';
                         // check on vendorId change
                         activity.action += '</ul>';
+                    } else {
+                        vm.interpretNonUpdate(activity, data[i], 'product');
                     }
-                    vm.interpretNonUpdate(activity, data[i], 'product');
                     ret.push(activity);
                 }
                 return ret;
@@ -212,8 +214,9 @@
                         if (change) activity.action += '<li>' + change + '</li>';
                         vm.analyzeAddress(activity, data[i]);
                         activity.action += '</ul>';
+                    } else {
+                        vm.interpretNonUpdate(activity, data[i], 'ACB');
                     }
-                    vm.interpretNonUpdate(activity, data[i], 'ACB');
                     ret.push(activity);
                 }
                 return ret;
@@ -228,7 +231,7 @@
                     activity.name = data.newData.name;
                     activity.action = [activity.name + ' has been created'];
                 }
-                if (data.originalData && data.originalData.length > 1 && data.newData) { // both exist, more than one originalData: update
+                if (data.originalData && data.originalData.length > 1 && data.newData) { // both exist, more than one originalData: merge
                     activity.name = data.newData.name;
                     activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': ' + activity.name];
                 }

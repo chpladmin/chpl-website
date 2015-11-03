@@ -43,3 +43,8 @@
 .admin-label-spaced {
     padding: 10px;
 }
+
+.google-chart {
+    border: 3px solid #000;
+    margin: 2px;
+}
