@@ -104,8 +104,8 @@
     </div> <!-- end of upload process table -->
 
     <div ng-if="vm.workType === 'manage' || vm.workType === 'merge' || vm.inspectingCp !== ''"> <!-- developer -->
-      <div class="row" ng-if="vm.activeVendor === ''">
-        <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-12" ng-if="vm.activeVendor === '' && (vm.workType === 'manage' || vm.mergeType !== 'developer')">
           <label for="vendorSelect" class="control-label admin-label-spaced">Select a developer</label>
           <select ng-model="vm.vendorSelect"
                   id="vendorSelect" class="form-control"
@@ -113,7 +113,16 @@
           </select>
           <button class="btn btn-default form-control" ng-click="vm.selectVendor()">Choose Developer</button>
         </div>
+        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'developer'">
+          <label for="vendorMergeSelect" class="control-label admin-label-spaced">Select developers to merge</label>
+          <select ng-model="vm.mergingVendors" multiple="true"
+                  id="vendorMergeSelect" class="input-sm form-control"
+                  size="12" ng-options="v.name for v in vm.vendors | orderBy: 'name'">
+          </select>
+          <p><button ng-disabled="vm.mergingVendors.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
+        </div>
       </div> <!-- end select developer -->
+
       <div class="row" ng-if="vm.activeVendor !== ''">
         <div ng-class="{'col-sm-12': vm.workType === 'manage', 'col-sm-6': vm.workType !== 'manage'}">
           <h3 ng-if="vm.inspectingCp">System developer information</h3>
@@ -167,103 +176,7 @@
             </div>
           </div>
         </div> <!-- end uploaded developer -->
-        <div class="col-sm-6" ng-if="vm.activeVendor !== '' && !vm.inspectingCp && vm.workType === 'merge' && vm.mergeType === 'developer'">
-          <label for="vendorMergeSelect" class="control-label admin-label-spaced">Select developer(s) to merge with {{ vm.activeVendor.name }}</label>
-          <select ng-model="vm.mergingVendors" multiple="true"
-                  id="vendorMergeSelect" class="input-sm form-control"
-                  size="12" ng-options="v.name for v in vm.vendors | orderBy: 'name'">
-          </select>
-          <p ng-if="vm.mergingVendors.length > 0"><button class="btn btn-default btn-block" ng-click="vm.mergingVendors = []">Clear selection</button></p>
-        </div> <!-- end vendor merge select -->
-      </div>
-      <div class="row" ng-if="vm.activeVendor !== '' && vm.mergingVendors.length > 0 && vm.mergeType === 'developer'">
-        <div class="col-md-6">
-          <h4>Merge selected developers</h4>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <span>{{ vm.activeVendor.name }}</span>
-            </div>
-            <div class="panel-body">
-              Line 1: {{ vm.activeVendor.address.line1 }}<br />
-              Line 2: {{ vm.activeVendor.address.line2 }}<br />
-              City: {{ vm.activeVendor.address.city }}<br />
-              State: {{ vm.activeVendor.address.state }}<br />
-              Zip: {{ vm.activeVendor.address.zipcode }}<br />
-              Country: {{ vm.activeVendor.address.country }}<br />
-              Website: {{ vm.activeVendor.website }}<br />
-              <br />
-              Last Modified Date: {{ vm.activeVendor.lastModifiedDate | date }}
-              <br />
-            </div>
-          </div>
-          <div class="panel panel-default" ng-repeat="vendor in vm.mergingVendors">
-            <div class="panel-heading">
-              <span>{{ vendor.name }}</span>
-            </div>
-            <div class="panel-body">
-              Line 1: {{ vendor.address.line1 }}<br />
-              Line 2: {{ vendor.address.line2 }}<br />
-              City: {{ vendor.address.city }}<br />
-              State: {{ vendor.address.state }}<br />
-              Zip: {{ vendor.address.zipcode }}<br />
-              Country: {{ vendor.address.country }}<br />
-              Website: {{ vendor.website }}<br />
-              <br />
-              Last Modified Date: {{ vendor.lastModifiedDate | date }}
-              <br />
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <h4>To form this one</h4>
-          <div class="panel panel-default" ng-form="vendorMergeForm">
-            <div class="panel-heading">
-              <div class="form-group">
-                <label for="vendorMergeName">Developer Name <span class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.name" id="vendorMergeName" required></input>
-              </div>
-            </div>
-            <div class="panel-body">
-              <div class="form-group">
-                <label for="addressMergeLine1">Address Line 1 <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.line1" id="addressMergeLine1"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressMergeLine2">Address Line 2</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVendor.address.line2" id="addressMergeLine2"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressMergeCity">City <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.city" id="addressMergeCity"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressMergeState">State <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.state" id="addressMergeState"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressMergeZipcode">Zip Code <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.zipcode" id="addressMergeZipcode"></input>
-              </div>
-              <div class="form-group">
-                <label for="addressMergeCountry">Country <span ng-if="vm.mergeAddressRequired()" class="text-danger">*</span></label>
-                <input class="input-sm form-control" type="text" ng-required="vm.mergeAddressRequired()" ng-model="vm.mergeVendor.address.country" id="addressMergeCountry"></input>
-              </div>
-              <div class="form-group">
-                <label for="vendorMergeWebsite">Website</label>
-                <input class="input-sm form-control" type="url" ng-model="vm.mergeVendor.website" id="vendorMergeWebsite"></input>
-              </div>
-              <br />
-              <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
-              <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor()"
-                         confirm="Are you sure you wish to merge these developers? This action can not be undone."
-                         confirm-ok="Yes"
-                         confirm-cancel="No"
-                         confirm-settings="{animation: false}">Save Combined Developers</button></p>
-              <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
-            </div>
-          </div>
-        </div>
-      </div> <!-- end merged developer -->
+      </div> <!-- end active developer -->
 
       <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== '' && (vm.mergeType !== 'developer' || vm.workType !== 'merge')"> <!-- product -->
         <div class="col-sm-12">

@@ -19,13 +19,13 @@
             self.refreshPending = refreshPending;
             self.selectVendor = selectVendor;
             self.editDeveloper = editDeveloper;
+            self.mergeDevelopers = mergeDevelopers;
             self.selectProduct = selectProduct;
             self.editProduct = editProduct;
             self.selectVersion = selectVersion;
             self.editVersion = editVersion;
             self.selectCp = selectCp;
             self.editCertifiedProduct = editCertifiedProduct;
-            self.saveVendor = saveVendor;
             self.saveProduct = saveProduct;
             self.saveVersion = saveVersion;
             self.parseUploadError = parseUploadError;
@@ -98,6 +98,31 @@
                 });
                 self.modalInstance.result.then(function (result) {
                     self.activeVendor = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.vendorMessage = result;
+                    }
+                });
+            }
+
+            function mergeDevelopers () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpMergeDeveloper.html',
+                    controller: 'MergeDeveloperController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        developers: function () { return self.mergingVendors; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.vendorMessage = null;
+                    commonService.getVendors()
+                        .then(function (vendors) {
+                            self.vendors = vendors.vendors;
+                        });
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.vendorMessage = result;
@@ -372,10 +397,8 @@
             };
 
             self.cancelVendor = function () {
-                // todo: figure out how to actually cancel the edits
                 self.activeVendor = '';
                 self.vendorMessage = null;
-                //self.selectVendor();
                 self.mergingVendors = [];
             };
 
@@ -398,51 +421,6 @@
                 self.cpMessage = null;
                 self.selectCp();
             };
-
-            self.mergeAddressRequired = function () {
-                return commonService.addressRequired(self.mergeVendor.address);
-            };
-
-            self.addressRequired = function () {
-                return commonService.addressRequired(self.activeVendor);
-            };
-
-            function saveVendor () {
-                self.updateVendor = {vendorIds: []};
-
-                var addActive = true;
-                for (var i = 0; i < self.mergingVendors.length; i++) {
-                    self.updateVendor.vendorIds.push(self.mergingVendors[i].vendorId);
-                    if (self.mergingVendors[i].vendorId === self.activeVendor.vendorId) {
-                        addActive = false;
-                    }
-                }
-                if (addActive) {
-                    self.updateVendor.vendorIds.push(self.activeVendor.vendorId);
-                }
-                self.updateVendor.vendor = self.mergeVendor;
-
-                commonService.updateVendor(self.updateVendor)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200) {
-                            var newVendor = response;
-                            self.vendorMessage = null;
-                            commonService.getVendors()
-                                .then(function (vendors) {
-                                    self.vendors = vendors.vendors;
-                                    self.activeVendor = newVendor;
-                                    //todo: re-select active vendor in vendorSelect
-                                    commonService.getProductsByVendor(newVendor.vendorId)
-                                        .then(function (products) {
-                                            self.products = products.products;
-                                        });
-                                });
-                        } else {
-                            self.vendorMessage = 'An error occurred. Please check your entry and try again.';
-                        }
-                    });
-                self.cancelVendor();
-            }
 
             function saveProduct () {
                 self.updateProduct = {productIds: []};
