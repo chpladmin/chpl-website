@@ -254,7 +254,11 @@
               </div>
               <br />
               <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
-              <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor()">Save Combined Developers</button></p>
+              <p><button ng-disabled="vendorMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVendor()"
+                         confirm="Are you sure you wish to merge these developers? This action can not be undone."
+                         confirm-ok="Yes"
+                         confirm-cancel="No"
+                         confirm-settings="{animation: false}">Save Combined Developers</button></p>
               <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVendor()">Cancel Edits</button></p>
             </div>
           </div>
@@ -352,7 +356,11 @@
               </div>
             </div>
             <div class="panel-body">
-              <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveProduct()">Save Combined Products</button></p>
+              <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveProduct()"
+                         confirm="Are you sure you wish to merge these products? This action can not be undone."
+                         confirm-ok="Yes"
+                         confirm-cancel="No"
+                         confirm-settings="{animation: false}">Save Combined Products</button></p>
               <p><button class="btn btn-warning btn-block" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
             </div>
           </div>
@@ -451,7 +459,11 @@
             </div>
             <div class="panel-body">
               <br />
-              <p><button ng-disabled="versionMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVersion()">Save Combined Versions</button></p>
+              <p><button ng-disabled="versionMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVersion()"
+                         confirm="Are you sure you wish to merge these versions? This action can not be undone."
+                         confirm-ok="Yes"
+                         confirm-cancel="No"
+                         confirm-settings="{animation: false}">Save Combined Versions</button></p>
               <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
             </div>
           </div>

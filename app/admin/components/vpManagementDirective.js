@@ -529,7 +529,7 @@
             }
 
             function doWork (workType) {
-                self.cancelAll();
+                self.cancelInspectingCp();
                 self.workType = workType;
             }
         }]);
