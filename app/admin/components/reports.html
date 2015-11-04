@@ -1,119 +1,136 @@
 <section class="row">
-  <div class="col-md-12">
-    <tabset>
-      <tab heading="Products &amp; Developers">
-        <h2>Certified Product Activity</h2>
+  <div class="col-sm-3">
+    <div class="panel panel-default">
+      <ul class="nav nav-pills nav-stacked">
+        <li ng-class="{'active': vm.tab === 'cp'}"><a href="" class="" ng-click="vm.changeTab('cp')">Certified Products</a></li>
+        <li ng-class="{'active': vm.tab === 'dev'}"><a href="" class="" ng-click="vm.changeTab('dev')">Developers</a></li>
+        <li ng-class="{'active': vm.tab === 'prod'}"><a href="" class="" ng-click="vm.changeTab('prod')">Products</a></li>
+        <li ng-class="{'active': vm.tab === 'acb'}"><a href="" class="" ng-click="vm.changeTab('acb')">ACBs</a></li>
+        <li ng-class="{'active': vm.tab === 'visitors'}"><a href="" class="" ng-click="vm.changeTab('visitors')">Visitors</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-9">
+    <div class="row" ng-if="vm.tab === 'cp'">
+      <div class="col-sm-12">
+        <h3>Certified Product Activity</h3>
         <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
           <thead>
             <tr>
               <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
 		      <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th class="search-header" st-sort="version" st-skip-natural="true">Version</th>
               <th class="search-header" st-sort="certBody" st-skip-natural="true">Certification Body</th>
-              <th class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
-              <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
-              <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="true">Date</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedCertifiedProducts">
-		      <td class="productHeader">{{ activity.vendor }}</td>
-		      <td class="productHeader">{{ activity.product }}</td>
-		      <td class="productHeader">{{ activity.version }}</td>
-		      <td class="productHeader">{{ activity.certBody }}</td>
-		      <td class="productHeader">{{ activity.edition }}</td>
-		      <td class="productHeader">{{ activity.activity }}</td>
-		      <td class="productHeader">{{ activity.activityDate | date }}</td>
+		      <td class="">{{ activity.vendor }}</td>
+		      <td class="">{{ activity.product }}</td>
+		      <td class="">{{ activity.certBody }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
 
-        <h2>Developer Activity</h2>
+    <div class="row" ng-if="vm.tab === 'dev'">
+      <div class="col-sm-12">
+        <h3>Developer Activity</h3>
         <table st-table="vm.displayedVendors" st-safe-src="vm.searchedVendors" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
-              <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
-              <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="true">Date</th>
+              <th class="search-header" st-sort="name" st-skip-natural="true">Developer</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedVendors">
-		      <td class="productHeader">{{ activity.vendor }}</td>
-		      <td class="productHeader">{{ activity.activity }}</td>
-		      <td class="productHeader">{{ activity.activityDate | date }}</td>
+		      <td class="">{{ activity.name }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
 
-        <h2>Product Activity</h2>
+    <div class="row" ng-if="vm.tab === 'prod'">
+      <div class="col-sm-12">
+        <h3>Product Activity</h3>
         <table st-table="vm.displayedProducts" st-safe-src="vm.searchedProducts" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
-              <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
-              <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="true">Date</th>
+              <th class="search-header" st-sort="name" st-skip-natural="true">Product</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedProducts">
-		      <td class="productHeader">{{ activity.vendor }}</td>
-		      <td class="productHeader">{{ activity.product }}</td>
-		      <td class="productHeader">{{ activity.activity }}</td>
-		      <td class="productHeader">{{ activity.activityDate | date }}</td>
+		      <td class="">{{ activity.name }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
         </table>
-      </tab>
+      </div>
+    </div>
 
-      <tab heading="ACBs">
-        <h2>ACB activities</h2>
+    <div class="row" ng-if="vm.tab === 'acb'">
+      <div class="col-sm-12">
+        <h3>ACB Activity</h3>
         <table st-table="vm.displayedACBs" st-safe-src="vm.searchedACBs" class="table table-striped">
           <thead>
             <tr>
               <th class="search-header" st-sort="name" st-skip-natural="true">ACB</th>
-              <th class="search-header" st-sort="activity" st-skip-natural="true">Activity</th>
-              <th class="search-header" st-sort="activityDate" st-skip-natural="true" st-sort-default="true">Date</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedACBs">
-		      <td class="productHeader">{{ activity.name }}</td>
-		      <td class="productHeader">{{ activity.activity }}</td>
-		      <td class="productHeader">{{ activity.activityDate | date }}</td>
+		      <td class="">{{ activity.name }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
         </table>
-      </tab>
+      </div>
+    </div>
 
-      <tab ng-if="vm.isChplAdmin" heading="Visitors" active="true">
-        <h2>Visitor analytics</h2>
+    <div class="row" ng-if="vm.tab === 'visitors'">
+      <div class="col-sm-12">
+        <h3>Visitor analytics</h3>
         <div class="row">
           <div class="col-md-4">
-            <div google-chart chart="vm.browserVariety"></div>
+            <div google-chart chart="vm.browserVariety" class="google-chart"></div>
           </div>
           <div class="col-md-4">
-            <div google-chart chart="vm.country"></div>
+            <div google-chart chart="vm.country" class="google-chart"></div>
           </div>
           <div class="col-md-4">
-            <div google-chart chart="vm.cities"></div>
+            <div google-chart chart="vm.cities" class="google-chart"></div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <div google-chart chart="vm.map"></div>
+            <div google-chart chart="vm.map" class="google-chart"></div>
           </div>
           <div class="col-md-6">
-            <div google-chart chart="vm.cityMap"></div>
+            <div google-chart chart="vm.cityMap" class="google-chart"></div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <div google-chart chart="vm.traffic"></div>
+            <div google-chart chart="vm.traffic" class="google-chart"></div>
           </div>
         </div>
-      </tab>
-    </tabset>
+      </div>
+    </div>
   </div>
 </section>

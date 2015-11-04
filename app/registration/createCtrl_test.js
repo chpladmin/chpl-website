@@ -1,15 +1,15 @@
 ;(function () {
     'use strict';
 
-    describe('app.userRegistration', function () {
+    describe('app.registration', function () {
 
         beforeEach(function () {
-            module('app.userRegistration');
+            module('app.registration');
         });
 
-        it('should map /userRegistration/hash routes to /userRegistration', function () {
+        it('should map /registration/create-user/:hash route to /registration/create-user.html', function () {
             inject(function($route) {
-                expect($route.routes['/userRegistration/:hash'].templateUrl).toEqual('userRegistration/userRegistration.html');
+                expect($route.routes['/registration/create-user/:hash'].templateUrl).toEqual('registration/create-user.html');
             });
         });
 
@@ -20,7 +20,7 @@
 
             beforeEach(function () {
                 mockCommonService = {};
-                module('app.userRegistration', function($provide) {
+                module('app.registration', function($provide) {
                     $provide.value('commonService', mockCommonService);
                 });
 
@@ -44,28 +44,30 @@
                 scope = $rootScope.$new();
                 commonService = _commonService_;
                 $location = _$location_;
-                ctrl = $controller('UserRegistrationController', {
+                ctrl = $controller('CreateController', {
                     $scope: scope,
                     $routeParams: {hash: 'fakehash'},
                     commonService: commonService,
                     $location: $location
                 });
-                validUser = { hash: 'hash',
-                              user: {
-                                  subjectName: 'subjectName',
-                                  password: 'password',
-                                  passwordverify: 'password',
-                                  title: 'title',
-                                  firstName: 'firstName',
-                                  lastName: 'lastName',
-                                  email: 'email@email.email',
-                                  phoneNumber: 'phone'
-                              }
-                            }
-                authorizeUser = { hash: 'hash',
-                                  userName: 'subjectName',
-                                  password: 'password'
-                                }
+                validUser = {
+                    hash: 'hash',
+                    user: {
+                        subjectName: 'subjectName',
+                        password: 'password',
+                        passwordverify: 'password',
+                        title: 'title',
+                        firstName: 'firstName',
+                        lastName: 'lastName',
+                        email: 'email@email.email',
+                        phoneNumber: 'phone'
+                    }
+                }
+                authorizeUser = {
+                    hash: 'hash',
+                    userName: 'subjectName',
+                    password: 'password'
+                }
                 scope.$digest();
             }));
 
