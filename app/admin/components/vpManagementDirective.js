@@ -22,6 +22,7 @@
             self.mergeDevelopers = mergeDevelopers;
             self.selectProduct = selectProduct;
             self.editProduct = editProduct;
+            self.mergeProducts = mergeProducts;
             self.selectVersion = selectVersion;
             self.editVersion = editVersion;
             self.selectCp = selectCp;
@@ -159,6 +160,32 @@
                 });
                 self.modalInstance.result.then(function (result) {
                     self.activeProduct = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.productMessage = result;
+                    }
+                });
+            }
+
+            function mergeProducts () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpMergeProduct.html',
+                    controller: 'MergeProductController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        products: function () { return self.mergingProducts; },
+                        vendorId: function () { return self.activeVendor.vendorId; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.productMessage = null;
+                    commonService.getProductsByVendor(self.activeVendor.vendorId)
+                        .then(function (products) {
+                            self.products = products.products;
+                        });
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.productMessage = result;

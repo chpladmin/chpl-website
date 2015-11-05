@@ -179,7 +179,7 @@
       </div> <!-- end active developer -->
 
       <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== '' && (vm.mergeType !== 'developer' || vm.workType !== 'merge')"> <!-- product -->
-        <div class="col-sm-12">
+        <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'product'">
           <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
           <select ng-model="vm.productSelect"
                   id="productSelect" class="form-control"
@@ -187,7 +187,19 @@
           </select>
           <button class="btn btn-default form-control" ng-click="vm.selectProduct()">Choose Product</button>
         </div>
+        <div class="col-sm-12" ng-if="vm.mergeType === 'product' && vm.products.length > 1">
+          <label for="productMergeSelect" class="control-label admin-label-spaced">Select products to merge</label>
+          <select ng-model="vm.mergingProducts" multiple="true"
+                  id="productMergeSelect" class="input-sm form-control"
+                  size="12" ng-options="p.name for p in vm.products | orderBy: 'name'">
+          </select>
+          <p><button ng-disabled="vm.mergingProducts.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeProducts()">Chose Products</button></p>
+        </div>
+        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.products.length <= 1">
+          <p><strong>No products are available for merge</strong></p>
+        </div> <!-- end product merge select -->
       </div> <!-- end select product -->
+
       <div class="row" ng-if="vm.activeProduct !== ''">
         <div ng-class="{'col-sm-12': vm.workType === 'manage', 'col-sm-6': vm.workType !== 'manage'}">
           <h3 ng-if="vm.inspectingCp">System product information</h3>
@@ -225,60 +237,7 @@
             </div>
           </div>
         </div> <!-- end uploaded product -->
-        <div class="col-sm-6" ng-if="vm.activeProduct !=='' && !vm.inspectingCp && vm.products.length > 1 && vm.workType === 'merge' && vm.mergeType === 'product'">
-          <label for="productMergeSelect" class="control-label admin-label-spaced">Select product(s) to merge with {{ vm.activeProduct.name }}</label>
-          <select ng-model="vm.mergingProducts" multiple="true"
-                  id="productMergeSelect" class="input-sm form-control"
-                  size="12" ng-options="p.name for p in vm.products | orderBy: 'name'">
-          </select>
-          <p ng-if="vm.mergingProducts.length > 0"><button class="btn btn-default btn-block" ng-click="vm.mergingProducts = []">Clear selection</button></p>
-        </div>
-        <div class="col-sm-6" ng-if="vm.activeProduct !=='' && !vm.inspectingCp && vm.products.length <= 1 && vm.workType === 'merge' && vm.mergeType === 'product'">
-          <p><strong>No products are available for merge</strong></p>
-        </div> <!-- end product merge select -->
       </div>
-      <div class="row" ng-if="vm.activeProduct !== '' && vm.mergingProducts.length > 0 && vm.mergeType === 'product'">
-        <div class="col-md-6">
-          <h4>Merge selected products</h4>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <span>{{ vm.activeProduct.name }}</span>
-            </div>
-            <div class="panel-body">
-              Last Modified Date: {{ vm.activeProduct.lastModifiedDate | date }}
-              <br />
-            </div>
-          </div>
-          <div class="panel panel-default" ng-repeat="product in vm.mergingProducts">
-            <div class="panel-heading">
-              <span>{{ product.name }}</span>
-            </div>
-            <div class="panel-body">
-              Last Modified Date: {{ product.lastModifiedDate | date }}
-              <br />
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <h4>To form this one</h4>
-          <div class="panel panel-default" ng-form="productMergeForm">
-            <div class="panel-heading">
-              <div class="form-group">
-                <label for="productMergeName">Product Name</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeProduct.name" id="productMergeName" required></input>
-              </div>
-            </div>
-            <div class="panel-body">
-              <p><button ng-disabled="productMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveProduct()"
-                         confirm="Are you sure you wish to merge these products? This action can not be undone."
-                         confirm-ok="Yes"
-                         confirm-cancel="No"
-                         confirm-settings="{animation: false}">Save Combined Products</button></p>
-              <p><button class="btn btn-warning btn-block" ng-click="vm.cancelProduct()">Cancel Edits</button></p>
-            </div>
-          </div>
-        </div>
-      </div> <!-- end merged product -->
 
       <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === '' && ((vm.mergeType !== 'developer' && vm.mergeType !== 'product') || vm.workType !== 'merge')"> <!-- version -->
         <div class="col-sm-12">
