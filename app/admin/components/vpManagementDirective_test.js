@@ -28,10 +28,6 @@
                 mockCommonService.certificationStatuses = ['Active', 'Retired'];
                 mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
 
-                mockCommonService.addressRequired = function () {
-                    return false;
-                };
-
                 mockCommonService.getVendors = function () {
                     var defer = $q.defer();
                     defer.resolve(this.vendors);
@@ -214,13 +210,6 @@
                 ctrl.mergingProducts = [{product: 'product1'}, {product: 'product2'}];
                 ctrl.selectProduct();
                 expect(ctrl.mergeProduct).toEqual({product: 'product1', vendorId: '123'});
-            });
-
-            it('should check with commonService when address fields might be required', function () {
-                var vendor = {name: 'name', address: null};
-                spyOn(commonService, 'addressRequired');
-                ctrl.addressRequired(vendor.address);
-                expect(commonService.addressRequired).toHaveBeenCalled();
             });
         });
     });
