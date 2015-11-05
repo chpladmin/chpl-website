@@ -1,5 +1,5 @@
 <section class="row">
-  <div class="col-sm-3">
+  <div class="col-sm-3 admin-nav">
     <div class="panel panel-default">
       <ul class="nav nav-pills nav-stacked">
         <li ng-class="{'active': vm.activeAcb.id === acb.id}" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" class="" ng-click="vm.activateAcb(acb)">{{ acb.name }}</a></li>
@@ -7,7 +7,7 @@
       </ul>
     </div>
   </div>
-  <div class="col-sm-9">
+  <div class="col-sm-9 admin-inner-tab">
     <div class="row admin-label-spaced" ng-if="vm.workType !== 'newAcb'">
       <ul class="list-inline">
         <li>Manage what?</li>

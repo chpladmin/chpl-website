@@ -474,11 +474,20 @@
                 self.selectCp();
             };
 
-            function parseUploadError (status, messages) {
-                if (status === 'ERROR') {
-                    return 'Errors:&nbsp;' + messages.length;
+            function parseUploadError (cp) {
+                var ret = '';
+                if (cp.errorMessages.length > 0) {
+                    ret += 'Errors:&nbsp;' + cp.errorMessages.length;
+                }
+                if (cp.warningMessages.length > 0) {
+                    if (ret.length > 0)
+                        ret += '<br />';
+                    ret += 'Warnings:&nbsp;' + cp.warningMessages.length;
+                }
+                if (ret.length > 0) {
+                    return ret;
                 } else {
-                    return status;
+                    return 'OK';
                 }
             }
 

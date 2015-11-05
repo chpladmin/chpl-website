@@ -1,5 +1,5 @@
 <section class="row">
-  <div class="col-sm-3">
+  <div class="col-sm-3 admin-nav">
     <div class="panel panel-default">
       <ul class="nav nav-pills nav-stacked">
         <li ng-class="{'active': vm.workType === 'upload'}" ng-if="vm.isAcbAdmin"><a href="" class="" ng-click="vm.doWork('upload')">Upload Certified Products</a></li>
@@ -9,7 +9,7 @@
       </ul>
     </div>
   </div>
-  <div class="col-sm-9">
+  <div class="col-sm-9 admin-inner-tab">
     <div class="row admin-label-spaced" ng-if="vm.workType==='merge'">
       <ul class="list-inline">
         <li>Merge what?</li>
@@ -17,6 +17,9 @@
         <li><input type="radio" ng-model="vm.mergeType" value="product" id="rdPrd"></input><label for="rdPrd">Products</label></li>
         <li><input type="radio" ng-model="vm.mergeType" value="version" id="rdVer"></input><label for="rdVer">Versions</label></li>
       </ul>
+    </div>
+    <div class="row" ng-if="vm.workType==='manage'">
+      &nbsp;
     </div>
     <div class="row" ng-if="vm.workType === 'upload'">
       <div class="col-sm-12" ng-if="vm.isAcbAdmin">
@@ -79,26 +82,38 @@
               <td>{{ cp.product.name }}</td>
               <td>{{ cp.product.version }}</td>
               <td>{{ cp.certificationDate | date }}</td>
-              <td><span ng-bind-html="vm.parseUploadError(cp.validationStatus, cp.validationMessages)"></span></td>
+              <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="vm.inspectingCp === ''">
                 <button class="btn btn-default btn-block" ng-click="vm.inspectCp(cp.id)">Inspect</button>
               </td>
               <td class="text-center" ng-if="vm.inspectingCp !== ''">
-                <button class="btn btn-success btn-block" ng-click="vm.confirmCp(cp.id)"><i class="fa fa-cloud-upload"></i> Confirm</button>
+                <span ng-if="cp.recordStatus === 'New'">
+                  <button class="btn btn-success btn-block" ng-click="vm.confirmCp(cp.id)"><i class="fa fa-cloud-upload"></i> Confirm</button>
+                </span>
+                <span ng-if="cp.recordStatus !== 'New'">
+                  Please {{ cp.recordStatus }} the already exisiting product using the OpenCHPL Website
+                </span>
                 <button class="btn btn-warning btn-block" ng-click="vm.cancelInspectingCp(cp.id)"><i class="fa fa-ban"></i> Cancel</button>
                 <button class="btn btn-danger btn-block" ng-click="vm.rejectCp(cp.id)"><i class="fa fa-trash-o"></i> Reject</button>
               </td>
             </tr>
             <tr ng-repeat-end ng-class="{ 'hidden': vm.inspectingCp === '' || cp.id !== vm.inspectingCp.id }">
               <td colspan="6">
-                <div ng-if="cp.validationMessages.length > 0">Please fix the following <ng-pluralize count="cp.validationMessages.length"
+                <div ng-if="cp.errorMessages.length > 0">Please fix the following <ng-pluralize count="cp.errorMessages.length"
                                                                                                      when="{'one': 'error',
                                                                                                            'other': '{} errors'}"></ng-pluralize> before confirming:
                   <ul>
-                    <li ng-repeat="error in cp.validationMessages">{{ error }}</li>
+                    <li ng-repeat="error in cp.errorMessages">{{ error }}</li>
                   </ul>
                 </div>
-                <div ng-if="cp.validationMessages.length === 0">No errors found</div>
+                <div ng-if="cp.warningMessages.length > 0">Be aware of the following <ng-pluralize count="cp.warningMessages.length"
+                                                                                                     when="{'one': 'error',
+                                                                                                           'other': '{} errors'}"></ng-pluralize> warnings:
+                  <ul>
+                    <li ng-repeat="error in cp.warningMessages">{{ error }}</li>
+                  </ul>
+                </div>
+                <div ng-if="cp.errorMessages.length === 0 && cp.warningMessages.length === 0">No errors or warnings found</div>
               </td>
             </tr>
           </tbody>
@@ -138,7 +153,7 @@
       </div> <!-- end select developer -->
 
       <div class="row" ng-if="vm.activeVendor !== ''">
-        <div ng-class="{'col-sm-12': vm.workType === 'manage', 'col-sm-6': vm.workType !== 'manage'}">
+        <div ng-class="{'col-sm-12': vm.workType === 'manage' || vm.workType === 'merge', 'col-sm-6': vm.workType == 'confirm'}">
           <h3 ng-if="vm.inspectingCp">System developer information</h3>
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -226,7 +241,7 @@
       </div> <!-- end select product -->
 
       <div class="row" ng-if="vm.activeProduct !== ''">
-        <div ng-class="{'col-sm-12': vm.workType === 'manage', 'col-sm-6': vm.workType !== 'manage'}">
+        <div ng-class="{'col-sm-12': vm.workType === 'manage' || vm.workType === 'merge', 'col-sm-6': vm.workType === 'confirm'}">
           <h3 ng-if="vm.inspectingCp">System product information</h3>
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -297,7 +312,7 @@
         </div> <!-- end version merge select -->
       </div> <!-- end select version -->
       <div class="row" ng-if="vm.activeVersion !== ''">
-        <div ng-class="{'col-sm-12': vm.workType === 'manage', 'col-sm-6': vm.workType !== 'manage'}">
+        <div ng-class="{'col-sm-12': vm.workType === 'manage' || vm-workType === 'merge', 'col-sm-6': vm.workType === 'confirm'}">
           <h3 ng-if="vm.inspectingCp">System version information</h3>
           <div class="panel panel-default">
             <div class="panel-heading">

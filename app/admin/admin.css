@@ -14,8 +14,13 @@
 
 .admin-tabset {
     background-color: #7da7d9;
-    padding: 10px;
-    box-shadow: inset 0 0 10px #000000;
+    padding: 20px;
+    box-shadow: inset 0 0 10px #666;
+}
+
+.admin-tabset .admin-inner-tab {
+    background-color: #fff;
+    margin-top: 5px;
 }
 
 .admin-tabset .nav-tabs>li.active>a {
@@ -61,8 +66,12 @@
     content: "\f0da";
 }
 
-.admin-tabset .table-striped>tbody>tr:nth-of-type(even) {
+.admin-tabset :not(.admin-inner-tab) .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #ccc;
+}
+
+.admin-tabset .admin-nav .panel {
+    border: 0px;
 }
 
 .admin-label-spaced {
