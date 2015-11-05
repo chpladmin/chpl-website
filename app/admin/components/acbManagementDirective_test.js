@@ -28,6 +28,10 @@
                     return true;
                 };
 
+                mockCommonService.addressRequired = function () {
+                    return false;
+                };
+
                 mockCommonService.getAcbs = function () {
                     return $q.when(mockCommonService.acbs);
                 };

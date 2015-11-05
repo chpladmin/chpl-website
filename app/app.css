@@ -64,7 +64,7 @@ footer {
 
 h1 {
     font-family: 'Oswald', sans-serif;
-    font-weight: 300;
+    font-weight: 400; /* 400-regular, 300-light */
     color: #0070c9;
 }
 
@@ -82,7 +82,11 @@ h2 {
     margin-right: 0px;
 }
 
-.spaced-out {
+.splash-row .spaced-out {
+    margin: 40px 40px;
+}
+
+footer .spaced-out {
     margin: 10px 40px;
 }
 

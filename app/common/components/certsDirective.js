@@ -44,38 +44,23 @@
             self.editCerts = {};
             self.editCqms = {};
 
-            self.buildEditObject = function () {
-                if (self.certs) {
-                    for (var i = 0; i < self.certs.length; i++) {
-                        self.editCerts[self.certs[i].number] = self.certs[i].success;
-                    }
-                }
-                if (self.builtCqms) {
-                    for (var i = 0; i < self.builtCqms.length; i++) {
-                        if (self.builtCqms[i].version) {
-                            self.editCqms[self.builtCqms[i].number] = self.builtCqms[i].version;
-                        } else {
-                            self.editCqms[self.builtCqms[i].number] = self.builtCqms[i].success;
-                        }
-                    }
-                }
-            };
-
             self.buildCqmObject = function () {
                 self.allCqms = {};
                 var active;
                 for (var i = 0; i < self.applicableCqmCriteria.length; i++) {
                     active = self.applicableCqmCriteria[i];
-                    if (!self.allCqms[active.number]) {
-                        self.allCqms[active.number] = {number: active.number,
-                                                       title: active.title,
-                                                       versions: []};
-                    }
-                    if (active.cqmVersion) {
-                        self.allCqms[active.number].hasVersion = true;
-                        self.allCqms[active.number].versions.push(active.cqmVersion);
+                    if (active.cmsId) {
+                        if (!self.allCqms[active.cmsId]) {
+                            self.allCqms[active.cmsId] = {id: active.cmsId,
+                                                          title: active.title,
+                                                          versions: [],
+                                                          hasVersion: true};
+                        }
+                        self.allCqms[active.cmsId].versions.push(active.cqmVersion);
                     } else {
-                        self.allCqms[active.number].hasVersion = false;
+                        self.allCqms['NQF-' + active.nqfNumber] = {id: 'NQF-' + active.nqfNumber,
+                                                                   title: active.title,
+                                                                   hasVersion: false};
                     }
                 }
                 if (self.cqms) {
@@ -88,27 +73,29 @@
                 self.builtCqms = [];
                 for (var i = 0; i < self.cqms.length; i++) {
                     var cqm = self.cqms[i];
-                    if (foundCqms.indexOf(cqm.number) >= 0) {
-                        if (cqm.version) {
-                            for (var j = 0; j < self.builtCqms.length; j++) {
-                                if (self.builtCqms[j].number === cqm.number) {
-                                    self.builtCqms[j].version.push(cqm.version);
-                                }
+                    if (cqm.cmsId && foundCqms.indexOf(cqm.cmsId) >= 0) {
+                        for (var j = 0; j < self.builtCqms.length; j++) {
+                            if (self.builtCqms[j].id === cqm.cmsId) {
+                                self.builtCqms[j].version.push(cqm.version);
                             }
                         }
                     } else {
-                        if (cqm.version) {
+                        if (cqm.cmsId) {
+                            cqm.id = cqm.cmsId;
                             cqm.hasVersion = true;
                             cqm.version = [cqm.version];
+                        } else {
+                            cqm.id = 'NQF-' + cqm.nqfNumber;
+                            cqm.hasVersion = false;
                         }
                         self.builtCqms.push(cqm);
-                        foundCqms.push(cqm.number);
+                        foundCqms.push(cqm.id);
                     }
                 }
                 for (var cqm in self.allCqms) {
                     if (foundCqms.indexOf(cqm) < 0) {
                         self.builtCqms.push({
-                            number: self.allCqms[cqm].number,
+                            id: self.allCqms[cqm].id,
                             title: self.allCqms[cqm].title,
                             success: false,
                             hasVersion: self.allCqms[cqm].hasVersion
@@ -118,6 +105,23 @@
 
                 if (self.editMode) {
                     self.buildEditObject();
+                }
+            };
+
+            self.buildEditObject = function () {
+                if (self.certs) {
+                    for (var i = 0; i < self.certs.length; i++) {
+                        self.editCerts[self.certs[i].number] = self.certs[i].success;
+                    }
+                }
+                if (self.builtCqms) {
+                    for (var i = 0; i < self.builtCqms.length; i++) {
+                        if (self.builtCqms[i].version) {
+                            self.editCqms[self.builtCqms[i].id] = self.builtCqms[i].version;
+                        } else {
+                            self.editCqms[self.builtCqms[i].id] = self.builtCqms[i].success;
+                        }
+                    }
                 }
             };
 

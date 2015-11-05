@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('VpManagementController', ['commonService', 'authService', '$log', 'FileUploader', 'API', function (commonService, authService, $log, FileUploader, API) {
+        .controller('VpManagementController', ['commonService', 'authService', '$log', 'FileUploader', 'API', '$modal', function (commonService, authService, $log, FileUploader, API, $modal) {
             var self = this;
             self.activeVendor = '';
             self.activeProduct = '';
@@ -12,20 +12,28 @@
             self.isAcbAdmin = authService.isAcbAdmin();
             self.uploadingCps = [];
             self.inspectingCp = '';
-            self.workType = 'upload';
+            self.workType = self.isChplAdmin ? 'manage' : 'upload';
+            self.uploadMessage = '';
 
             self.activate = activate;
             self.refreshPending = refreshPending;
             self.selectVendor = selectVendor;
+            self.editDeveloper = editDeveloper;
             self.selectProduct = selectProduct;
+            self.editProduct = editProduct;
             self.selectVersion = selectVersion;
+            self.editVersion = editVersion;
+            self.selectCp = selectCp;
+            self.editCertifiedProduct = editCertifiedProduct;
             self.saveVendor = saveVendor;
             self.saveProduct = saveProduct;
             self.saveVersion = saveVersion;
+            self.parseUploadError = parseUploadError;
+            self.doWork = doWork;
 
             self.activate();
 
-            /////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////
 
             function activate () {
                 if (self.isAcbAdmin) {
@@ -37,14 +45,16 @@
                     });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         $log.info('onSuccessItem', fileItem, response, status, headers);
-                        self.uploadingCps = self.uploadingCps.concat(response.pendingCertifiedProducts);
-                        self.workType = 'confirm';
+                        self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. Pending products are ready for confirmation.';
+                    };
+                    self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                        self.refreshPending();
                     };
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
                         $log.info('onErrorItem', fileItem, response, status, headers);
                     };
-                    FileUploader.FileSelect.prototype.isEmptyAfterSelection = function() {
-                        return true; // true|false
+                    self.uploader.onCancelItem = function(fileItem, response, status, headers) {
+                        $log.info('onCancelItem', fileItem, response, status, headers);
                     };
                 }
 
@@ -74,6 +84,27 @@
                 }
             }
 
+            function editDeveloper () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditDeveloper.html',
+                    controller: 'EditDeveloperController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeVendor: function () { return self.activeVendor; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activeVendor = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.vendorMessage = result;
+                    }
+                });
+            }
+
             function selectProduct () {
                 if (self.productSelect) {
                     self.activeProduct = self.productSelect;
@@ -86,6 +117,28 @@
                     delete self.mergeProduct.productId;
                     delete self.mergeProduct.lastModifiedDate;
                 }
+            }
+
+            function editProduct () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditProduct.html',
+                    controller: 'EditProductController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeProduct: function () { return self.activeProduct; },
+                        vendors: function () { return self.vendors; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activeProduct = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.productMessage = result;
+                    }
+                });
             }
 
             function selectVersion () {
@@ -102,13 +155,34 @@
                 }
             }
 
-            self.selectCP = function () {
+            function editVersion () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditVersion.html',
+                    controller: 'EditVersionController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeVersion: function () { return self.activeVersion; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activeVersion = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.versionMessage = result;
+                    }
+                });
+            }
+
+            function selectCp () {
                 if (self.cpSelect) {
                     self.activeCP = {};
                     self.activeCP.classificationType = {};
                     self.activeCP.certifyingBody = {};
                     self.activeCP.practiceType = {};
-                    commonService.getProduct(self.cpSelect[0])
+                    commonService.getProduct(self.cpSelect)
                         .then(function (cp) {
                             self.activeCP = cp;
                             if (self.activeCP.visibleOnChpl === undefined)
@@ -117,6 +191,35 @@
                         });
                 }
             };
+
+            function editCertifiedProduct () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditCertifiedProduct.html',
+                    controller: 'EditCertifiedProductController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeCP: function () { return self.activeCP; },
+                        classifications: function () { return self.classifications; },
+                        practices: function () { return self.practices; },
+                        isAcbAdmin: function () { return self.isAcbAdmin; },
+                        isChplAdmin: function () { return self.isChplAdmin; },
+                        bodies: function () { return self.bodies; },
+                        statuses: function () { return self.statuses; },
+                        workType: function () { return self.workType; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    $log.debug(result.cqmResults);
+                    self.activeCP = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.cpMessage = result;
+                    }
+                });
+            }
 
             self.populateData = function () {
                 commonService.getSearchOptions()
@@ -150,6 +253,11 @@
                     }
                 }
                 self.activeVendor = angular.copy(cp.vendor);
+                if (!self.activeVendor.id) {
+                    self.activeVendor.address = angular.copy(cp.vendorAddress);
+                } else {
+                    delete self.activeVendor.website;
+                }
                 self.activeProduct = angular.copy(cp.product);
                 self.activeVersion = angular.copy(cp.product);
                 self.activeCP = angular.copy(cp);
@@ -259,247 +367,171 @@
                 self.cancelProduct();
                 self.cancelVersion();
                 self.cancelCP();
+                self.mergeType = 'developer';
+                self.uploadMessage = '';
             };
 
             self.cancelVendor = function () {
                 // todo: figure out how to actually cancel the edits
                 self.activeVendor = '';
                 self.vendorMessage = null;
-                self.editVendor = false;
-                self.selectVendor();
+                //self.selectVendor();
                 self.mergingVendors = [];
             };
 
             self.cancelProduct = function () {
                 self.activeProduct = '';
                 self.productMessage = null;
-                self.editProduct = false;
-                self.selectProduct();
+                //self.selectProduct();
                 self.mergingProducts = [];
             };
 
             self.cancelVersion = function () {
                 self.activeVersion = '';
                 self.versionMessage = null;
-                self.editVersion = false;
-                self.selectVersion();
+                //self.selectVersion();
                 self.mergingVersions = [];
             };
 
             self.cancelCP = function () {
                 self.activeCP = '';
                 self.cpMessage = null;
-                self.editCP = false;
-                self.selectCP();
+                self.selectCp();
             };
 
             self.mergeAddressRequired = function () {
-                return self.addressCheck(self.mergeVendor);
-            }
+                return commonService.addressRequired(self.mergeVendor.address);
+            };
 
             self.addressRequired = function () {
-                return self.addressCheck(self.activeVendor);
+                return commonService.addressRequired(self.activeVendor);
             };
 
-            self.addressCheck = function (v) {
-                if (v.address === null) return false;
-                if (v.address.line1 && v.address.line1.length > 0) return true;
-                if (v.address.line2 && v.address.line2.length > 0) return true;
-                if (v.address.city && v.address.city.length > 0) return true;
-                if (v.address.state && v.address.state.length > 0) return true;
-                if (v.address.zipcode && v.address.zipcode.length > 0) return true;
-                if (v.address.country && v.address.country.length > 0) return true;
-                return false;
-            };
+            function saveVendor () {
+                self.updateVendor = {vendorIds: []};
 
-            function saveVendor (merging) {
-                if (self.inspectingCp) {
-                    $log.info(self.inspectingCp, self.activeVendor);
-                    self.inspectingCp.vendor = self.activeVendor;
-                    self.editVendor = false;
-                } else {
-                    self.updateVendor = {vendorIds: []};
-
-                    if (merging) {
-                        var addActive = true;
-                        for (var i = 0; i < self.mergingVendors.length; i++) {
-                            self.updateVendor.vendorIds.push(self.mergingVendors[i].vendorId);
-                            if (self.mergingVendors[i].vendorId === self.activeVendor.vendorId) {
-                                addActive = false;
-                            }
-                        }
-                        if (addActive) {
-                            self.updateVendor.vendorIds.push(self.activeVendor.vendorId);
-                        }
-                        self.updateVendor.vendor = self.mergeVendor;
-                    } else {
-                        self.updateVendor.vendorIds.push(self.activeVendor.vendorId);
-                        self.updateVendor.vendor = self.activeVendor;
+                var addActive = true;
+                for (var i = 0; i < self.mergingVendors.length; i++) {
+                    self.updateVendor.vendorIds.push(self.mergingVendors[i].vendorId);
+                    if (self.mergingVendors[i].vendorId === self.activeVendor.vendorId) {
+                        addActive = false;
                     }
-
-                    commonService.updateVendor(self.updateVendor)
-                        .then(function (response) {
-                            if (!response.status || response.status === 200) {
-                                var newVendor = response;
-                                self.vendorMessage = null;
-                                self.editVendor = false;
-                                commonService.getVendors()
-                                    .then(function (vendors) {
-                                        self.vendors = vendors.vendors;
-                                        self.activeVendor = newVendor;
-                                        //todo: re-select active vendor in vendorSelect
-                                        commonService.getProductsByVendor(newVendor.vendorId)
-                                            .then(function (products) {
-                                                self.products = products.products;
-                                            });
-                                    });
-                            } else {
-                                self.vendorMessage = 'An error occurred. Please check your entry and try again.';
-                            }
-                        });
-                    self.cancelVendor();
                 }
+                if (addActive) {
+                    self.updateVendor.vendorIds.push(self.activeVendor.vendorId);
+                }
+                self.updateVendor.vendor = self.mergeVendor;
+
+                commonService.updateVendor(self.updateVendor)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            var newVendor = response;
+                            self.vendorMessage = null;
+                            commonService.getVendors()
+                                .then(function (vendors) {
+                                    self.vendors = vendors.vendors;
+                                    self.activeVendor = newVendor;
+                                    //todo: re-select active vendor in vendorSelect
+                                    commonService.getProductsByVendor(newVendor.vendorId)
+                                        .then(function (products) {
+                                            self.products = products.products;
+                                        });
+                                });
+                        } else {
+                            self.vendorMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+                self.cancelVendor();
+            }
+
+            function saveProduct () {
+                self.updateProduct = {productIds: []};
+
+                var addActive = true;
+                for (var i = 0; i < self.mergingProducts.length; i++) {
+                    self.updateProduct.productIds.push(self.mergingProducts[i].productId);
+                    if (self.mergingProducts[i].productId === self.activeProduct.productId) {
+                        addActive = false;
+                    }
+                }
+                if (addActive) {
+                    self.updateProduct.productIds.push(self.activeProduct.productId);
+                }
+                self.updateProduct.product = self.mergeProduct;
+                self.updateProduct.newVendorId = self.activeVendor.vendorId;
+
+                commonService.updateProduct(self.updateProduct)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            var newProduct = response;
+                            self.productMessage = null;
+                            commonService.getProductsByVendor(self.activeVendor.vendorId)
+                                .then(function (products) {
+                                    self.products = products.products;
+                                    self.activeProduct = newProduct;
+                                    //todo: re-select active vendor in vendorSelect
+                                    commonService.getVersionsByProduct(newProduct.productId)
+                                        .then(function (versions) {
+                                            self.versions = versions;
+                                        });
+                                });
+                        } else {
+                            self.productMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+                self.cancelProduct();
+            }
+
+            function saveVersion () {
+                self.updateVersion = {versionIds: []};
+
+                var addActive = true;
+                for (var i = 0; i < self.mergingVersions.length; i++) {
+                    self.updateVersion.versionIds.push(self.mergingVersions[i].versionId);
+                    if (self.mergingVersions[i].versionId === self.activeVersion.versionId) {
+                        addActive = false;
+                    }
+                }
+                if (addActive) {
+                    self.updateVersion.versionIds.push(self.activeVersion.versionId);
+                }
+                self.updateVersion.newProductId = self.activeProduct.productId;
+                self.updateVersion.version = self.mergeVersion;
+
+                commonService.updateVersion(self.updateVersion)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            var newVersion = response;
+                            self.versionMessage = null;
+                            commonService.getVersionsByProduct(self.activeProduct.productId)
+                                .then(function (versions) {
+                                    self.versions = versions.versions;
+                                    self.activeVersion = newVersion;
+                                    //todo: re-select active version in versionSelect
+                                    commonService.getProductsByVersion(newVersion.versionId)
+                                        .then(function (cps) {
+                                            self.cps = cps;
+                                        });
+                                });
+                        } else {
+                            self.versionMessage = 'An error occurred. Please check your entry and try again.';
+                        }
+                    });
+                self.cancelVersion();
             };
 
-            function saveProduct (merging) {
-                if (self.inspectingCp) {
-                    self.inspectingCp.product = self.activeProduct;
-                    $log.info(self.inspectingCp, self.activeProduct);
-                    self.editProduct = false;
+            function parseUploadError (status, messages) {
+                if (status === 'ERROR') {
+                    return 'Errors:&nbsp;' + messages.length;
                 } else {
-                    self.updateProduct = {productIds: []};
-
-                    if (merging) {
-                        var addActive = true;
-                        for (var i = 0; i < self.mergingProducts.length; i++) {
-                            self.updateProduct.productIds.push(self.mergingProducts[i].productId);
-                            if (self.mergingProducts[i].productId === self.activeProduct.productId) {
-                                addActive = false;
-                            }
-                        }
-                        if (addActive) {
-                            self.updateProduct.productIds.push(self.activeProduct.productId);
-                        }
-                        self.updateProduct.product = self.mergeProduct;
-                        self.updateProduct.newVendorId = self.activeVendor.vendorId;
-
-                    } else {
-                        self.updateProduct.productIds.push(self.activeProduct.productId);
-                        self.updateProduct.product = self.activeProduct;
-                        self.updateProduct.newVendorId = self.activeProduct.vendorId;
-                    }
-
-                    commonService.updateProduct(self.updateProduct)
-                        .then(function (response) {
-                            if (!response.status || response.status === 200) {
-                                var newProduct = response;
-                                self.productMessage = null;
-                                self.editProduct = false;
-                                commonService.getProductsByVendor(self.activeVendor.vendorId)
-                                    .then(function (products) {
-                                        self.products = products.products;
-                                        self.activeProduct = newProduct;
-                                        //todo: re-select active vendor in vendorSelect
-                                        commonService.getVersionsByProduct(newProduct.productId)
-                                            .then(function (versions) {
-                                                self.versions = versions;
-                                            });
-                                    });
-                            } else {
-                                self.productMessage = 'An error occurred. Please check your entry and try again.';
-                            }
-                        });
-                    self.cancelProduct();
+                    return status;
                 }
             }
 
-            function saveVersion (merging) {
-                if (self.inspectingCp) {
-                    self.inspectingCp.product.version = self.activeVersion.version;
-                    self.inspectingCp.product.versionId = self.activeVersion.versionId;
-                    $log.info(self.inspectingCp, self.activeVersion);
-                    self.editVersion = false;
-                } else {
-                    self.updateVersion = {versionIds: []};
-
-                    if (merging) {
-                        var addActive = true;
-                        for (var i = 0; i < self.mergingVersions.length; i++) {
-                            self.updateVersion.versionIds.push(self.mergingVersions[i].versionId);
-                            if (self.mergingVersions[i].versionId === self.activeVersion.versionId) {
-                                addActive = false;
-                            }
-                        }
-                        if (addActive) {
-                            self.updateVersion.versionIds.push(self.activeVersion.versionId);
-                        }
-                        self.updateVersion.newProductId = self.activeProduct.productId;
-                        self.updateVersion.version = self.mergeVersion;
-                    } else {
-                        self.updateVersion.newProductId = self.activeProduct.productId;
-                        self.updateVersion.version = self.activeVersion;
-                    }
-
-                    commonService.updateVersion(self.updateVersion)
-                        .then(function (response) {
-                            if (!response.status || response.status === 200) {
-                                var newVersion = response;
-                                self.versionMessage = null;
-                                self.editVersion = false;
-                                commonService.getVersionsByProduct(self.activeProduct.productId)
-                                    .then(function (versions) {
-                                        self.versions = versions.versions;
-                                        self.activeVersion = newVersion;
-                                        //todo: re-select active version in versionSelect
-                                        commonService.getProductsByVersion(newVersion.versionId)
-                                            .then(function (cps) {
-                                                self.cps = cps;
-                                            });
-                                    });
-                            } else {
-                                self.versionMessage = 'An error occurred. Please check your entry and try again.';
-                            }
-                        });
-                    self.cancelVersion();
-                }
-            };
-
-            self.saveCP = function () {
-                if (self.inspectingCp) {
-                    self.editCP = false;
-                } else {
-                    self.updateCP = {};
-
-                    self.updateCP.id = self.activeCP.id;
-                    self.updateCP.certificationBodyId = self.activeCP.certifyingBody.id;
-                    self.updateCP.practiceTypeId = self.activeCP.practiceType.id;
-                    self.updateCP.productClassificationTypeId = self.activeCP.classificationType.id;
-                    //self.updateCP.certificationStatusId = self.activeCP.certificationStatusId;
-                    self.updateCP.certificationStatus = self.activeCP.certificationStatus;
-                    self.updateCP.chplProductNumber = self.activeCP.chplProductNumber;
-                    self.updateCP.reportFileLocation = self.activeCP.reportFileLocation;
-                    self.updateCP.qualityManagementSystemAtt = self.activeCP.qualityManagementSystemAtt;
-                    self.updateCP.acbCertificationId = self.activeCP.acbCertificationId;
-                    self.updateCP.otherAcb = self.activeCP.otherAcb;
-                    self.updateCP.testingLabId = self.activeCP.testingLabId;
-                    self.updateCP.isChplVisible = self.activeCP.visibleOnChpl;
-
-                    self.editCP = false;
-                    $log.debug(self.updateCP);
-
-                    commonService.updateCP(self.activeCP)
-                        .then(function (response) {
-                            if (!response.status || response.status === 200) {
-                                self.editCP = false;
-                                self.activeCP = response;
-                                self.activeCP.certDate = new Date(self.activeCP.certificationDate);
-                            } else {
-                                self.cpMessage = 'An error occurred. Please check your entry and try again.';
-                            }
-                        });
-                }
-            };
-
+            function doWork (workType) {
+                self.cancelAll();
+                self.workType = workType;
+            }
         }]);
 
     angular.module('app.admin')

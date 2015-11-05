@@ -28,6 +28,10 @@
                 mockCommonService.certificationStatuses = ['Active', 'Retired'];
                 mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
 
+                mockCommonService.addressRequired = function () {
+                    return false;
+                };
+
                 mockCommonService.getVendors = function () {
                     var defer = $q.defer();
                     defer.resolve(this.vendors);
@@ -212,40 +216,11 @@
                 expect(ctrl.mergeProduct).toEqual({product: 'product1', vendorId: '123'});
             });
 
-            it('should know when address fields are required', function () {
+            it('should check with commonService when address fields might be required', function () {
                 var vendor = {name: 'name', address: null};
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address = {};
-                vendor.address.line1 = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.line1 = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.line1);
-                vendor.address.line2 = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.line2 = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.line2);
-                vendor.address.city = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.city = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.city);
-                vendor.address.state = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.state = 'MD';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.state);
-                vendor.address.zipcode = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.zipcode = '90210';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.zipcode);
-                vendor.address.country = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.country = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.country);
+                spyOn(commonService, 'addressRequired');
+                ctrl.addressRequired(vendor.address);
+                expect(commonService.addressRequired).toHaveBeenCalled();
             });
         });
     });

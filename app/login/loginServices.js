@@ -57,7 +57,7 @@
                     return identity[2] + " " + identity[3];
                 } else {
                     self.logout();
-                    return 'Anonymous User';
+                    return '';
                 }
             }
 

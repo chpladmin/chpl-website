@@ -5,6 +5,21 @@
         .service('commonService', function ($http, $q, API, $log) {
             var self = this;
 
+            self.addressRequired = addressRequired;
+
+            ////////////////////////////////////////////////////////////////////
+
+            function addressRequired (address) {
+                if (!address) return false;
+                if (address.line1 && address.line1.length > 0) return true;
+                if (address.line2 && address.line2.length > 0) return true;
+                if (address.city && address.city.length > 0) return true;
+                if (address.state && address.state.length > 0) return true;
+                if (address.zipcode && address.zipcode.length > 0) return true;
+                if (address.country && address.country.length > 0) return true;
+                return false;
+            }
+
             self.simpleApiCall = function (endpoint, workingApi) {
                 return $http.get(workingApi + endpoint)
                     .then(function(response) {
@@ -91,20 +106,20 @@
                 return self.simpleApiCall('/data/certification_bodies', API);
             };
 
-            self.getCertifiedProductActivity = function () {
-                return self.simpleApiCall('/activity/certified_products', API);
+            self.getCertifiedProductActivity = function (nDays) {
+                return self.simpleApiCall('/activity/certified_products?lastNDays=' + nDays, API);
             };
 
-            self.getVendorActivity = function () {
-                return self.simpleApiCall('/activity/vendors', API);
+            self.getVendorActivity = function (nDays) {
+                return self.simpleApiCall('/activity/vendors?lastNDays=' + nDays, API);
             };
 
-            self.getProductActivity = function () {
-                return self.simpleApiCall('/activity/products', API);
+            self.getProductActivity = function (nDays) {
+                return self.simpleApiCall('/activity/products?lastNDays=' + nDays, API);
             };
 
-            self.getAcbActivity = function () {
-                return self.simpleApiCall('/activity/acbs', API);
+            self.getAcbActivity = function (nDays) {
+                return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays, API);
             };
 
             self.getUploadingCps = function () {
@@ -159,8 +174,8 @@
                 return self.postApiCall('/users/create', API, newUser);
             };
 
-            self.addUserToAcb = function (userObject) {
-                return self.postApiCall('/acbs/create_and_add_user', API, userObject);
+            self.confirmUser = function (userObject) {
+                return self.postApiCall('/users/confirm', API, userObject);
             };
 
             self.addRole = function (payload) {
