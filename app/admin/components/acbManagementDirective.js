@@ -7,12 +7,17 @@
 
             self.doWork = doWork;
             self.activate = activate;
+            self.activateAcb = activateAcb;
+            self.loadData = loadData;
 
             self.activate();
 
             ////////////////////////////////////////////////////////////////////
 
             function doWork (workType) {
+                if (workType === 'newAcb') {
+                    self.activeAcb = null;
+                }
                 self.workType = workType;
             }
 
@@ -22,18 +27,23 @@
                 self.newACB = {address: {}};
                 self.acbs = [];
                 self.workType = 'acb';
+                self.loadData()
+                    .then(function () {
+                        self.activeAcb = self.acbs[0]
+                    });
             }
 
-            self.loadAcbs = function () {
+            function activateAcb (acb) {
+                self.workType = 'acb';
+                self.activeAcb = acb;
+            }
+
+            function loadData () {
                 return commonService.getAcbs()
                     .then (function (data) {
                         self.acbs = data.acbs;
                     });
-            };
-            self.loadData = function () {
-                self.loadAcbs();
-            };
-            self.loadData();
+            }
 
             self.createACB = function () {
                 commonService.createACB(self.newACB)
@@ -57,12 +67,13 @@
             self.deleteACB = function (acb) {
                 commonService.deleteACB(acb.id)
                     .then(function (response) {
-                        self.loadData();
+                        self.activate();
                     });
             };
 
             self.addressRequired = function (acb) {
-                return commonService.addressRequired(acb.address);
+                if (acb)
+                    return commonService.addressRequired(acb.address);
             };
         }])
         .directive('aiAcbManagement', ['commonService', 'authService', '$log', function (commonService, authService, $log) {

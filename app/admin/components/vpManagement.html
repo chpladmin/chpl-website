@@ -5,16 +5,19 @@
         <li ng-class="{'active': vm.workType === 'upload'}" ng-if="vm.isAcbAdmin"><a href="" class="" ng-click="vm.doWork('upload')">Upload Certified Products</a></li>
         <li ng-class="{'active': vm.workType === 'confirm'}" ng-if="vm.isAcbAdmin"><a href="" class="" ng-click="vm.doWork('confirm')">Confirm Pending Product<span ng-if="vm.uploadingCps.length > 1">s</span> <span class="badge">{{ vm.uploadingCps.length }}</span> </a></li>
         <li ng-class="{'active': vm.workType === 'manage'}"><a href="" class="" ng-click="vm.doWork('manage')">Manage Developers &amp; Products</a></li>
-        <li ng-class="{'active': vm.workType === 'merge'}"><a href="" class="" ng-click="vm.doWork('merge')">Merge Developers &amp; Products</a><span ng-if="vm.workType==='merge'"><br />
-            Merge what?<br />
-            <input type="radio" ng-model="vm.mergeType" value="developer" id="rdDev"></input><label for="rdDev">Developers</label><br />
-            <input type="radio" ng-model="vm.mergeType" value="product" id="rdPrd"></input><label for="rdPrd">Products</label><br />
-            <input type="radio" ng-model="vm.mergeType" value="version" id="rdVer"></input><label for="rdVer">Versions</label>
-        </span></li>
+        <li ng-class="{'active': vm.workType === 'merge'}"><a href="" class="" ng-click="vm.doWork('merge')">Merge Developers &amp; Products</a></li>
       </ul>
     </div>
   </div>
   <div class="col-sm-9">
+    <div class="row admin-label-spaced" ng-if="vm.workType==='merge'">
+      <ul class="list-inline">
+        <li>Merge what?</li>
+        <li><input type="radio" ng-model="vm.mergeType" value="developer" id="rdDev"></input><label for="rdDev">Developers</label></li>
+        <li><input type="radio" ng-model="vm.mergeType" value="product" id="rdPrd"></input><label for="rdPrd">Products</label></li>
+        <li><input type="radio" ng-model="vm.mergeType" value="version" id="rdVer"></input><label for="rdVer">Versions</label></li>
+      </ul>
+    </div>
     <div class="row" ng-if="vm.workType === 'upload'">
       <div class="col-sm-12" ng-if="vm.isAcbAdmin">
         <h3>Upload Certified Products</h3>
@@ -106,12 +109,23 @@
     <div ng-if="vm.workType === 'manage' || vm.workType === 'merge' || vm.inspectingCp !== ''"> <!-- developer -->
       <div class="row">
         <div class="col-sm-12" ng-if="vm.activeVendor === '' && (vm.workType === 'manage' || vm.mergeType !== 'developer')">
-          <label for="vendorSelect" class="control-label admin-label-spaced">Select a developer</label>
-          <select ng-model="vm.vendorSelect"
-                  id="vendorSelect" class="form-control"
-                  ng-options="v.name for v in vm.vendors | orderBy: 'name'">
-          </select>
-          <button class="btn btn-default form-control" ng-click="vm.selectVendor()">Choose Developer</button>
+          <div class="form-horizontal">
+            <div class="form-group admin-label-spaced">
+              <div class="col-sm-3">
+                <label for="vendorSelect" class="control-label">Select a developer</label>
+              </div>
+              <div class="col-sm-7">
+                <select ng-model="vm.vendorSelect"
+                        id="vendorSelect" class="form-control col-sm-8"
+                        ng-options="v.name for v in vm.vendors | orderBy: 'name'">
+                  <option value="" selected disabled>Select a developer</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <button class="btn btn-default form-control" ng-click="vm.selectVendor()">Choose</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'developer'">
           <label for="vendorMergeSelect" class="control-label admin-label-spaced">Select developers to merge</label>
@@ -180,12 +194,23 @@
 
       <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== '' && (vm.mergeType !== 'developer' || vm.workType !== 'merge')"> <!-- product -->
         <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'product'">
-          <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
-          <select ng-model="vm.productSelect"
-                  id="productSelect" class="form-control"
-                  ng-options="p.name for p in vm.products | orderBy: 'name'">
-          </select>
-          <button class="btn btn-default form-control" ng-click="vm.selectProduct()">Choose Product</button>
+          <div class="form-horizontal">
+            <div class="form-group admin-label-spaced">
+              <div class="col-sm-3">
+                <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
+              </div>
+              <div class="col-sm-7">
+                <select ng-model="vm.productSelect"
+                        id="productSelect" class="form-control"
+                        ng-options="p.name for p in vm.products | orderBy: 'name'">
+                  <option value="" selected disabled>Select a product</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <button class="btn btn-default form-control" ng-click="vm.selectProduct()">Choose</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-sm-12" ng-if="vm.mergeType === 'product' && vm.products.length > 1">
           <label for="productMergeSelect" class="control-label admin-label-spaced">Select products to merge</label>
@@ -195,7 +220,7 @@
           </select>
           <p><button ng-disabled="vm.mergingProducts.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeProducts()">Chose Products</button></p>
         </div>
-        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.products.length <= 1">
+        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'product' && vm.products.length <= 1">
           <p><strong>No products are available for merge</strong></p>
         </div> <!-- end product merge select -->
       </div> <!-- end select product -->
@@ -241,12 +266,23 @@
 
       <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === '' && ((vm.mergeType !== 'developer' && vm.mergeType !== 'product') || vm.workType !== 'merge')"> <!-- version -->
         <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'version'">
-          <label for="versionSelect" class="control-label admin-label-spaced">Select a version</label>
-          <select ng-model="vm.versionSelect"
-                  id="versionSelect" class="form-control"
-                  ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
-          </select>
-          <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose Version</button>
+          <div class="form-horizontal">
+            <div class="form-group admin-label-spaced">
+              <div class="col-sm-3">
+                <label for="versionSelect" class="control-label admin-label-spaced">Select a version</label>
+              </div>
+              <div class="col-sm-7">
+                <select ng-model="vm.versionSelect"
+                        id="versionSelect" class="form-control"
+                        ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
+                  <option value="" selected disabled>Select a version</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-sm-12" ng-if="vm.mergeType === 'version' && vm.versions.length > 1">
           <label for="versionMergeSelect" class="control-label admin-label-spaced">Select versions to merge</label>
@@ -256,7 +292,7 @@
           </select>
           <p><button ng-disabled="vm.mergingVersions.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeVersions()">Choose Versions</button></p>
         </div>
-        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.versions.length <= 1">
+        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'version' && vm.versions.length <= 1">
           <p><strong>No versions are available for merge</strong></p>
         </div> <!-- end version merge select -->
       </div> <!-- end select version -->
@@ -301,12 +337,21 @@
 
       <div class="row" ng-if="vm.activeVersion !== '' && vm.workType !== 'merge'">
         <div class="col-sm-12">
-          <div ng-if="vm.activeCP === ''">
-            <label for="cpSelect" class="control-label admin-label-spaced">Select a certified product</label>
-            <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
-              <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
-            </select>
-            <button class="btn btn-default form-control" ng-click="vm.selectCp()">Choose Certified Product</button>
+          <div class="form-horizontal" ng-if="vm.activeCP === ''">
+            <div class="form-group admin-label-spaced">
+              <div class="col-sm-3">
+                <label for="cpSelect" class="control-label admin-label-spaced">Select a certified product</label>
+              </div>
+              <div class="col-sm-7">
+                <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
+                  <option value="" selected disabled>Select a Certified Product</option>
+                  <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <button class="btn btn-default form-control" ng-click="vm.selectCp()">Choose</button>
+              </div>
+            </div>
           </div>
           <div ng-if="vm.activeCP !== ''">
             <div class="panel panel-default">
