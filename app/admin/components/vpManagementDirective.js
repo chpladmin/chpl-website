@@ -25,10 +25,9 @@
             self.mergeProducts = mergeProducts;
             self.selectVersion = selectVersion;
             self.editVersion = editVersion;
+            self.mergeVersions = mergeVersions;
             self.selectCp = selectCp;
             self.editCertifiedProduct = editCertifiedProduct;
-            self.saveProduct = saveProduct;
-            self.saveVersion = saveVersion;
             self.parseUploadError = parseUploadError;
             self.doWork = doWork;
 
@@ -185,6 +184,32 @@
                     commonService.getProductsByVendor(self.activeVendor.vendorId)
                         .then(function (products) {
                             self.products = products.products;
+                        });
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.productMessage = result;
+                    }
+                });
+            }
+
+            function mergeVersions () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpMergeVersion.html',
+                    controller: 'MergeVersionController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        versions: function () { return self.mergingVersions; },
+                        productId: function () { return self.activeProduct.productId; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.productMessage = null;
+                    commonService.getVersionsByProduct(self.activeProduct.productId)
+                        .then(function (versions) {
+                            self.versions = versions;
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
@@ -447,82 +472,6 @@
                 self.activeCP = '';
                 self.cpMessage = null;
                 self.selectCp();
-            };
-
-            function saveProduct () {
-                self.updateProduct = {productIds: []};
-
-                var addActive = true;
-                for (var i = 0; i < self.mergingProducts.length; i++) {
-                    self.updateProduct.productIds.push(self.mergingProducts[i].productId);
-                    if (self.mergingProducts[i].productId === self.activeProduct.productId) {
-                        addActive = false;
-                    }
-                }
-                if (addActive) {
-                    self.updateProduct.productIds.push(self.activeProduct.productId);
-                }
-                self.updateProduct.product = self.mergeProduct;
-                self.updateProduct.newVendorId = self.activeVendor.vendorId;
-
-                commonService.updateProduct(self.updateProduct)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200) {
-                            var newProduct = response;
-                            self.productMessage = null;
-                            commonService.getProductsByVendor(self.activeVendor.vendorId)
-                                .then(function (products) {
-                                    self.products = products.products;
-                                    self.activeProduct = newProduct;
-                                    //todo: re-select active vendor in vendorSelect
-                                    commonService.getVersionsByProduct(newProduct.productId)
-                                        .then(function (versions) {
-                                            self.versions = versions;
-                                        });
-                                });
-                        } else {
-                            self.productMessage = 'An error occurred. Please check your entry and try again.';
-                        }
-                    });
-                self.cancelProduct();
-            }
-
-            function saveVersion () {
-                self.updateVersion = {versionIds: []};
-
-                var addActive = true;
-                for (var i = 0; i < self.mergingVersions.length; i++) {
-                    self.updateVersion.versionIds.push(self.mergingVersions[i].versionId);
-                    if (self.mergingVersions[i].versionId === self.activeVersion.versionId) {
-                        addActive = false;
-                    }
-                }
-                if (addActive) {
-                    self.updateVersion.versionIds.push(self.activeVersion.versionId);
-                }
-                self.updateVersion.newProductId = self.activeProduct.productId;
-                self.updateVersion.version = self.mergeVersion;
-
-                commonService.updateVersion(self.updateVersion)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200) {
-                            var newVersion = response;
-                            self.versionMessage = null;
-                            commonService.getVersionsByProduct(self.activeProduct.productId)
-                                .then(function (versions) {
-                                    self.versions = versions.versions;
-                                    self.activeVersion = newVersion;
-                                    //todo: re-select active version in versionSelect
-                                    commonService.getProductsByVersion(newVersion.versionId)
-                                        .then(function (cps) {
-                                            self.cps = cps;
-                                        });
-                                });
-                        } else {
-                            self.versionMessage = 'An error occurred. Please check your entry and try again.';
-                        }
-                    });
-                self.cancelVersion();
             };
 
             function parseUploadError (status, messages) {

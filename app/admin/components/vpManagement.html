@@ -228,7 +228,7 @@
           </div>
         </div> <!-- end system product -->
         <div class="col-sm-6" ng-if="vm.inspectingCp">
-          <h3>Uploaded developer information</h3>
+          <h3>Uploaded product information</h3>
           <div class="panel panel-default">
             <div class="panel-heading">
               {{ vm.inspectingCp.product.name }}
@@ -240,7 +240,7 @@
       </div>
 
       <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === '' && ((vm.mergeType !== 'developer' && vm.mergeType !== 'product') || vm.workType !== 'merge')"> <!-- version -->
-        <div class="col-sm-12">
+        <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'version'">
           <label for="versionSelect" class="control-label admin-label-spaced">Select a version</label>
           <select ng-model="vm.versionSelect"
                   id="versionSelect" class="form-control"
@@ -248,7 +248,18 @@
           </select>
           <button class="btn btn-default form-control" ng-click="vm.selectVersion()">Choose Version</button>
         </div>
-      </div> <!-- end select product -->
+        <div class="col-sm-12" ng-if="vm.mergeType === 'version' && vm.versions.length > 1">
+          <label for="versionMergeSelect" class="control-label admin-label-spaced">Select versions to merge</label>
+          <select ng-model="vm.mergingVersions" multiple="true"
+                  id="versionMergeSelect" class="input-sm form-control"
+                  size="12" ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
+          </select>
+          <p><button ng-disabled="vm.mergingVersions.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeVersions()">Choose Versions</button></p>
+        </div>
+        <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.versions.length <= 1">
+          <p><strong>No versions are available for merge</strong></p>
+        </div> <!-- end version merge select -->
+      </div> <!-- end select version -->
       <div class="row" ng-if="vm.activeVersion !== ''">
         <div ng-class="{'col-sm-12': vm.workType === 'manage', 'col-sm-6': vm.workType !== 'manage'}">
           <h3 ng-if="vm.inspectingCp">System version information</h3>
@@ -286,61 +297,7 @@
             </div>
           </div>
         </div> <!-- end uploaded version -->
-        <div class="col-sm-6" ng-if="vm.activeVersion !== '' && !vm.inspectingCp && vm.versions.length > 1 && vm.workType === 'merge' && vm.mergeType === 'version'">
-          <label for="versionMergeSelect" class="control-label admin-label-spaced">Select version(s) to merge with {{ vm.activeVersion.version }}</label>
-          <select ng-model="vm.mergingVersions" multiple="true"
-                  id="versionMergeSelect" class="input-sm form-control"
-                  size="12" ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
-          </select>
-          <p ng-if="vm.mergingVersions.length > 0"><button class="btn btn-default btn-block" ng-click="vm.mergingVersions = []">Clear selection</button></p>
-        </div>
-        <div class="col-sm-6" ng-if="vm.activeProduct !=='' && !vm.inspectingCp && vm.versions.length <= 1 && vm.workType === 'merge' && vm.mergeType === 'version'">
-          <p><strong>No versions are available for merge</strong></p>
-        </div> <!-- end version merge select -->
       </div>
-      <div class="row" ng-if="vm.activeVersion !== '' && vm.mergingVersions.length > 0 && vm.mergeType === 'version'">
-        <div class="col-md-6">
-          <h4>Merge selected versions</h4>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <span>{{ vm.activeVersion.version }}</span>
-            </div>
-            <div class="panel-body">
-              Last Modified Date: {{ vm.activeVersion.lastModifiedDate | date }}
-              <br />
-            </div>
-          </div>
-          <div class="panel panel-default" ng-repeat="version in vm.mergingVersions">
-            <div class="panel-heading">
-              <span>{{ version.version }}</span>
-            </div>
-            <div class="panel-body">
-              Last Modified Date: {{ version.lastModifiedDate | date }}
-              <br />
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <h4>To form this one</h4>
-          <div class="panel panel-default" ng-form="versionMergeForm">
-            <div class="panel-heading">
-              <div class="form-group">
-                <label for="versionMergeVersion">Version</label>
-                <input class="input-sm form-control" type="text" ng-model="vm.mergeVersion.version" id="versionMergeVersion" required></input>
-              </div>
-            </div>
-            <div class="panel-body">
-              <br />
-              <p><button ng-disabled="versionMergeForm.$invalid" class="btn btn-success btn-block" ng-click="vm.saveVersion()"
-                         confirm="Are you sure you wish to merge these versions? This action can not be undone."
-                         confirm-ok="Yes"
-                         confirm-cancel="No"
-                         confirm-settings="{animation: false}">Save Combined Versions</button></p>
-              <p><button class="btn btn-warning btn-block" ng-click="vm.cancelVersion()">Cancel Edits</button></p>
-            </div>
-          </div>
-        </div>
-      </div> <!-- end merged version -->
 
       <div class="row" ng-if="vm.activeVersion !== '' && vm.workType !== 'merge'">
         <div class="col-sm-12">
