@@ -599,7 +599,13 @@ apis.endpoints = [
     },{
         category: 'Versions',
         description: 'Returns all versions of given product, based on the passed in productId',
-        request: '/versions/:productId',
+        request: '/versions/?productId=:productId',
+        requestType: 'GET',
+        response: [apis.entities.version]
+    },{
+        category: 'Versions',
+        description: 'Returns one version with the corresponding versionId',
+        request: '/versions/:versionId',
         requestType: 'GET',
         response: [apis.entities.version]
     },{
