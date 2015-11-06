@@ -66,12 +66,20 @@
                 return self.simpleApiCall('/data/search_options', API);
             };
 
+            self.getSimpleProduct = function (productId) {
+                return self.simpleApiCall('/products/' + productId, API);
+            };
+
             self.getProduct = function (productId) {
                 return self.simpleApiCall('/certified_products/' + productId + '/details', API);
             };
 
             self.getVendors = function () {
                 return self.simpleApiCall('/vendors/', API);
+            };
+
+            self.getVendor = function (vendorId) {
+                return self.simpleApiCall('/vendors/' + vendorId, API);
             };
 
             self.getProductsByVendor = function (vendorId) {

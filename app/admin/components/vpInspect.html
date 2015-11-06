@@ -1,0 +1,200 @@
+<div role="modal" aria-labeled-by="inspectLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="inspectLabel">Inspect Certified Product</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-12">
+        <div ng-if="vm.cp.errorMessages.length > 0">
+          Errors:
+          <ul>
+            <li ng-repeat="error in vm.cp.errorMessages">{{ error }}</li>
+          </ul>
+        </div>
+        <div ng-if="vm.cp.warningMessages.length > 0">
+          Warnings:
+          <ul>
+            <li ng-repeat="error in vm.cp.warningMessages">{{ error }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Developer -->
+    <div ng-if="vm.stage === 'dev'">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1>Developer</h1>
+          <p>Step 1 of 4</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6" ng-if="!vm.cp.vendor.id">
+          <h3>System developer information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Developer <strong>"{{ vm.cp.vendor.name }}"</strong> not found
+            </div>
+            <div class="panel-body">
+              <div class="row admin-label-spaced">
+                <ul class="list-inline">
+                  <li><input type="radio" ng-model="vm.developerChoice" value="choose" id="rdDevChoose"></input><label for="rdDevChoose">Select existing developer</label></li>
+                  <li><input type="radio" ng-model="vm.developerChoice" value="create" id="rdDevCreate"></input><label for="rdDevCreate">Create new developer</label></li>
+                </ul>
+              </div>
+              <div ng-if="vm.developerChoice === 'choose'">
+                <label for="developerSelect" class="control-label admin-label-spaced">Select a developer</label>
+                <select ng-model="vm.developerSelect"
+                        id="developerSelect" class="input-sm form-control"
+                        ng-options="v.name for v in vm.vendors | orderBy: 'name'">
+                </select>
+                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingDeveloper()">Select Developer</button></p>
+              </div>
+              <div ng-if="vm.developerChoice === 'create'">
+                Uploaded developer information will be used to create a new developer
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" ng-if="vm.cp.vendor.id">
+          <h3>System developer information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              {{ vm.developer.name }}
+            </div>
+            <div class="panel-body">
+              Line 1: {{ vm.developer.address.line1 }}<br />
+              Line 2: {{ vm.developer.address.line2 }}<br />
+              City: {{ vm.developer.address.city }}<br />
+              State: {{ vm.developer.address.state }}<br />
+              Zip: {{ vm.developer.address.zipcode }}<br />
+              Country: {{ vm.developer.address.country }}<br />
+              Website: {{ vm.developer.website }}<br />
+              <br />
+              Last Modified Date: {{ vm.developer.lastModifiedDate | date }}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <h3>Uploaded developer information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              {{ vm.cp.vendor.name }}
+            </div>
+            <div class="panel-body">
+              Line 1: {{ vm.cp.vendorAddress.line1 }}<br />
+              Line 2: {{ vm.cp.vendorAddress.line2 }}<br />
+              City: {{ vm.cp.vendorAddress.city }}<br />
+              State: {{ vm.cp.vendorAddress.state }}<br />
+              Zip: {{ vm.cp.vendorAddress.zipcode }}<br />
+              Country: {{ vm.cp.vendorAddress.country }}<br />
+              Website: {{ vm.cp.vendor.website }}<br />
+            </div>
+            <div class="panel-footer" ng-if="vm.cp.vendor.id">
+              <button class="btn btn-default btn-block" ng-click="vm.saveInspectingDeveloper()">Save as Developer Information</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Developer -->
+
+    <!-- Product -->
+    <div ng-if="vm.stage === 'prd'">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1>Product</h1>
+          <p>Step 2 of 4</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6" ng-if="!vm.cp.product.id">
+          <h3>System product information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Product <strong>"{{ vm.cp.product.name }}"</strong> not found
+            </div>
+            <div class="panel-body">
+              <div class="row admin-label-spaced">
+                <ul class="list-inline">
+                  <li><input type="radio" ng-model="vm.productChoice" value="choose" id="rdPrdChoose"></input><label for="rdPrdChoose">Select existing product</label></li>
+                  <li><input type="radio" ng-model="vm.productChoice" value="create" id="rdPrdCreate"></input><label for="rdPrdCreate">Create new product</label></li>
+                </ul>
+              </div>
+              <div ng-if="vm.productChoice === 'choose'">
+                <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
+                <select ng-model="vm.productSelect"
+                        id="productSelect" class="input-sm form-control"
+                        ng-options="p.name for  in vm.products | orderBy: 'name'">
+                </select>
+                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
+              </div>
+              <div ng-if="vm.productChoice === 'create'">
+                Uploaded product information will be used to create a new product
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" ng-if="vm.cp.product.id">
+          <h3>System product information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              {{ vm.product.name }}
+            </div>
+            <div class="panel-body">
+              <br />
+              Last Modified Date: {{ vm.product.lastModifiedDate | date }}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <h3>Uploaded product information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              {{ vm.cp.product.name }}
+            </div>
+            <div class="panel-body">
+            </div>
+            <div class="panel-footer" ng-if="vm.cp.product.id">
+              <button class="btn btn-default btn-block" ng-click="vm.saveInspectingProduct()">Save as Product Information</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Product -->
+
+    <div class="row" ng-if="vm.stage === 'ver'" ng-form="inspectVersionForm">
+    </div>
+    <div class="row" ng-if="vm.stage === 'cp'" ng-form="inspectCpForm">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-warning btn-large pull-left"
+            ng-disabled="vm.stage === 'dev'"
+            ng-click="vm.previous()">Previous</button>
+    <button class="btn btn-success btn-large pull-right"
+            ng-disabled="vm.isDisabled()"
+            ng-click="vm.next()">Next</button>
+    <pre>{{ vm.product | json }}</pre>
+    <pre>{{ vm.cp | json }}</pre>
+    <button ng-disabled="mergeForm.$invalid" class="btn btn-success btn-block"
+            confirm="Are you sure you wish to merge these versions? This action may not be undone."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.save()">Save Combined Version</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()">Cancel Edits</button>
+  </div>
+</div>

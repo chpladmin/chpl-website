@@ -325,10 +325,32 @@
                 var cp;
                 for (var i = 0; i < self.uploadingCps.length; i++) {
                     if (cpId === self.uploadingCps[i].id) {
-                        self.inspectingCp = self.uploadingCps[i];
-                        cp = self.inspectingCp;
+                        cp = self.uploadingCps[i];
                     }
                 }
+
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpInspect.html',
+                    controller: 'InspectController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        inspectingCp: function () { return cp; },
+                        vendors: function () { return self.vendors; }
+                    },
+                    size: 'lg'
+                });
+                self.modalInstance.result.then(function (result) {
+                    $log.info(result);
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
+
+/*
                 self.activeVendor = angular.copy(cp.vendor);
                 if (!self.activeVendor.id) {
                     self.activeVendor.address = angular.copy(cp.vendorAddress);
@@ -361,7 +383,7 @@
                             self.products = products.products;
                         });
                 }
-            };
+*/            };
 
             self.selectInspectingVendor = function () {
                 self.activeVendor = self.vendorSelect;
