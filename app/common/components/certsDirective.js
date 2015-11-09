@@ -9,11 +9,11 @@
             self.builtCqms = [];
             $scope.$watch('certs', function (newCerts) {
                 if (newCerts) {
-                    self.certs = angular.copy(newCerts);
+                    self.certs = newCerts;
                 }}, true);
             $scope.$watch('cqms', function (newCqms) {
                 if (newCqms) {
-                    self.cqms = angular.copy(newCqms);
+                    self.cqms = newCqms;
                     if (self.editMode)
                         self.buildEditObject();
                 }}, true);
@@ -41,7 +41,7 @@
             self.viewAllCerts = $scope.viewAllCerts;
             self.editMode = $scope.editMode;
 
-            self.editCerts = {};
+//            self.editCerts = {};
             self.editCqms = {};
 
             self.buildCqmObject = function () {
@@ -52,6 +52,7 @@
                     if (active.cmsId) {
                         if (!self.allCqms[active.cmsId]) {
                             self.allCqms[active.cmsId] = {id: active.cmsId,
+                                                          cmsId: active.cmsId,
                                                           title: active.title,
                                                           versions: [],
                                                           hasVersion: true};
@@ -83,7 +84,9 @@
                         if (cqm.cmsId) {
                             cqm.id = cqm.cmsId;
                             cqm.hasVersion = true;
-                            cqm.version = [cqm.version];
+                            if (typeof(cqm.version) === 'string') {
+                                cqm.version = [cqm.version];
+                            }
                         } else {
                             cqm.id = 'NQF-' + cqm.nqfNumber;
                             cqm.hasVersion = false;
@@ -96,6 +99,7 @@
                     if (foundCqms.indexOf(cqm) < 0) {
                         self.builtCqms.push({
                             id: self.allCqms[cqm].id,
+                            cmsId: self.allCqms[cqm].cmsId,
                             title: self.allCqms[cqm].title,
                             success: false,
                             hasVersion: self.allCqms[cqm].hasVersion
@@ -109,15 +113,10 @@
             };
 
             self.buildEditObject = function () {
-                if (self.certs) {
-                    for (var i = 0; i < self.certs.length; i++) {
-                        self.editCerts[self.certs[i].number] = self.certs[i].success;
-                    }
-                }
                 if (self.builtCqms) {
                     for (var i = 0; i < self.builtCqms.length; i++) {
                         if (self.builtCqms[i].version) {
-                            self.editCqms[self.builtCqms[i].id] = self.builtCqms[i].version;
+                            self.editCqms[self.builtCqms[i].cmsId] = self.builtCqms[i].version;
                         } else {
                             self.editCqms[self.builtCqms[i].id] = self.builtCqms[i].success;
                         }
@@ -129,49 +128,44 @@
                 self.countCerts = 0;
                 self.countCqms = 0;
 
+                console.debug('save');
+
                 for (var i = 0; i < self.certs.length; i++) {
-                    self.certs[i].success = self.editCerts[self.certs[i].number];
                     if (self.certs[i].success) {
                         self.countCerts += 1;
                     }
                 }
-                $scope.certs = angular.copy(self.certs);
+
                 $scope.cqms = [];
                 for (var i = 0; i < self.builtCqms.length; i++) {
-                    if (self.editCqms[self.builtCqms[i].number]) {
-                        self.builtCqms[i].success = true;
-                        if (self.builtCqms[i].hasVersion) {
-                            if (self.editCqms[self.builtCqms[i].number].length > 0) {
-                                self.builtCqms[i].version = self.editCqms[self.builtCqms[i].number];
-                                self.countCqms += 1;
-                                for (var j = 0; j < self.builtCqms[i].version.length; j++) {
-                                    $scope.cqms.push({number: self.builtCqms[i].number,
-                                                      hasVersion: true,
-                                                      success: true,
-                                                      title: self.builtCqms[i].title,
-                                                      version: self.builtCqms[i].version[j]
-                                                     });
-                                }
-                            } else {
-                                self.builtCqms[i].success = false;
-                                delete(self.builtCqms[i].version);
+                    if (self.editCqms[self.builtCqms[i].cmsId]) {
+                        if (self.editCqms[self.builtCqms[i].cmsId].length > 0) {
+                            self.builtCqms[i].success = true;
+                            self.builtCqms[i].version = self.editCqms[self.builtCqms[i].cmsId];
+                            self.countCqms += 1;
+                            for (var j = 0; j < self.builtCqms[i].version.length; j++) {
+                                var cqm = {cmsId: self.builtCqms[i].cmsId,
+                                                  hasVersion: true,
+                                                  success: true,
+                                                  title: self.builtCqms[i].title,
+                                                  version: self.builtCqms[i].version[j]
+                                          }
+                                $scope.cqms.push(cqm);
                             }
                         } else {
-                            if (self.builtCqms[i].success) {
-                                $scope.cqms.push(self.builtCqms[i]);
-                                self.countCqms += 1;
-                            }
+                            self.builtCqms[i].success = false;
+                            delete(self.builtCqms[i].version);
                         }
                     } else {
-                        self.builtCqms[i].success = false;
-                        if (self.builtCqms[i].hasVersion) {
-                            delete(self.builtCqms[i].version);
-                        } else {
+                        if (!self.builtCqms[i].cmsId) {
+                            self.builtCqms[i].success = self.editCqms[self.builtCqms[i].id];
+                            if (self.builtCqms[i].success) {
+                                self.countCqms += 1;
+                            }
                             $scope.cqms.push(self.builtCqms[i]);
                         }
                     }
                 }
-                self.isEditing = !self.isEditing
             };
 
             self.cancelEdits = function () {
@@ -197,10 +191,19 @@
                          editMode: '=editMode',
                          reportFileLocation: '@',
                          isEditing: '=',
-                         applicableCqmCriteria: '='
+                         applicableCqmCriteria: '=',
+                         save: '&'
                        },
                 controllerAs: 'vm',
-                controller: 'CertsController'
+                controller: 'CertsController',
+                link: function (scope, element, attr, ctrl) {
+                    var handler = scope.save({
+                        handler: function () {
+                            ctrl.saveEdits();
+                        }
+                    });
+                    scope.$on('$destroy', handler);
+                }
             };
         }]);
 })();

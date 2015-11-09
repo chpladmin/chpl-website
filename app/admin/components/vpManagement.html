@@ -83,10 +83,10 @@
               <td>{{ cp.product.version }}</td>
               <td>{{ cp.certificationDate | date }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
-              <td class="text-center" ng-if="cp.recordStatus === 'new'">
+              <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
                 <button class="btn btn-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
               </td>
-              <td class="text-center" ng-if="cp.recordStatus !== 'new'">
+              <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
                 <span>
                   Please {{ cp.recordStatus }} the already exisiting product using the OpenCHPL Website
                   <button class="btn btn-danger btn-block"

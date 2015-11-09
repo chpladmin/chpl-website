@@ -12,10 +12,14 @@
             {{ n.number }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="vm.editCerts[n.number]" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
-            <label for="data_{{$parent.$parent.$index + '_' + $index}}">{{ n.number }}: {{ n.title }}</label>
+            <input type="checkbox" ng-model="n.success" id="data_{{n.number}}"></input>
+            <label for="data_{{n.number}}">{{ n.number }}: {{ n.title }}</label>
           </p>
         </div>
+      </accordion-group>
+      <accordion-group heading="debug">
+        <pre>{{ vm.builtCqms | json }}</pre>
+        <pre>{{ vm.editCqms | json }}</pre>
       </accordion-group>
       <accordion-group heading="Clinical Quality Measures ({{ vm.countCqms }} met)" aria-expanded="false">
         <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.builtCqms | orderBy:'id' track by $index">
@@ -25,14 +29,14 @@
             <b ng-if="n.hasVersion">{{ n.version.join(', ') }}</b> {{ n.id }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="vm.editCqms[n.id]" ng-if="!n.hasVersion" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
+            <input type="checkbox" ng-model="vm.editCqms[n.id]" ng-if="!n.hasVersion" id="data_{{n.id}}"></input>
             <span class="cert-bloc" ng-if="n.hasVersion">
-              <select ng-model="vm.editCqms[n.id]" multiple data-ng-attr-size="{{ vm.allCqms[n.id].versions.length + 1 }}" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"
+              <select ng-model="vm.editCqms[n.id]" multiple data-ng-attr-size="{{ vm.allCqms[n.id].versions.length + 1 }}" id="data_{{n.id}}"
                       ng-options="version for version in vm.allCqms[n.id].versions">
                 <option value=""></option>
               </select>
             </span>
-            <label for="data_{{$parent.$parent.$parent.$index + '_' + $index}}">{{ n.id }}: {{ n.title }}</label>
+            <label for="data_{{n.id}}">{{ n.id }}: {{ n.title }}</label>
           </p>
         </div>
       </accordion-group>

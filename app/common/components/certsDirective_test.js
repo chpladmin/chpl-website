@@ -44,12 +44,6 @@
                 expect(ctrl).toBeDefined();
             });
 
-            it('should switch out of editing mode after saving edits', function () {
-                ctrl.isEditing = true;
-                ctrl.saveEdits();
-                expect(ctrl.isEditing).toBe(false);
-            });
-
             it('should switch out of editing mode after cancelling edits', function () {
                 ctrl.isEditing = true;
                 ctrl.cancelEdits();

@@ -202,9 +202,10 @@
                 });
                 vm.editModalInstance.result.then(function (result) {
                     vm.cp = result;
+                    console.debug('success', result);
                 }, function (result) {
                     if (result !== 'cancelled') {
-                        console.debug(result);
+                        console.debug('dismissed', result);
                     }
                 });
             }

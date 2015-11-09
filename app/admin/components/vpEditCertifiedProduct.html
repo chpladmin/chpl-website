@@ -75,11 +75,12 @@
               edit-mode="true"
               is-editing="true"
               report-file-location="{{ vm.cp.reportFileLocation }}"
-              applicable-cqm-criteria="vm.cp.applicableCqmCriteria">
+              applicable-cqm-criteria="vm.cp.applicableCqmCriteria"
+              save="vm.registerCerts(handler)">
     </ai-certs>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Certified Product</button>
+    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.prep()">Save Certified Product</button>
     <button class="btn btn-warning btn-block"
             confirm="Are you sure you wish cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
