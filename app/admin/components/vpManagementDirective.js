@@ -4,16 +4,6 @@
     angular.module('app.admin')
         .controller('VpManagementController', ['commonService', 'authService', '$log', 'FileUploader', 'API', '$modal', function (commonService, authService, $log, FileUploader, API, $modal) {
             var self = this;
-            self.activeVendor = '';
-            self.activeProduct = '';
-            self.activeVersion = '';
-            self.activeCP = '';
-            self.isChplAdmin = authService.isChplAdmin();
-            self.isAcbAdmin = authService.isAcbAdmin();
-            self.uploadingCps = [];
-            self.inspectingCp = '';
-            self.workType = self.isChplAdmin ? 'manage' : 'upload';
-            self.uploadMessage = '';
 
             self.activate = activate;
             self.refreshPending = refreshPending;
@@ -28,6 +18,8 @@
             self.mergeVersions = mergeVersions;
             self.selectCp = selectCp;
             self.editCertifiedProduct = editCertifiedProduct;
+            self.inspectCp = inspectCp;
+            self.rejectCp = rejectCp;
             self.parseUploadError = parseUploadError;
             self.doWork = doWork;
 
@@ -36,6 +28,17 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
+                self.activeVendor = '';
+                self.activeProduct = '';
+                self.activeVersion = '';
+                self.activeCP = '';
+                self.isChplAdmin = authService.isChplAdmin();
+                self.isAcbAdmin = authService.isAcbAdmin();
+                self.uploadingCps = [];
+                self.workType = self.isChplAdmin ? 'manage' : 'upload';
+                self.mergeType = 'developer';
+                self.uploadMessage = '';
+
                 if (self.isAcbAdmin) {
                     self.refreshPending();
                     self.uploader = new FileUploader({
@@ -57,6 +60,15 @@
                         $log.info('onCancelItem', fileItem, response, status, headers);
                     };
                 }
+
+                commonService.getSearchOptions()
+                    .then(function (options) {
+                        self.editions = options.editions;
+                        self.classifications = options.productClassifications;
+                        self.practices = options.practiceTypeNames;
+                        self.bodies = options.certBodyNames;
+                        self.statuses = options.certificationStatuses;
+                    });
 
                 commonService.getVendors()
                     .then(function (vendors) {
@@ -298,30 +310,7 @@
                 });
             }
 
-            self.populateData = function () {
-                commonService.getSearchOptions()
-                    .then(function (options) {
-                        self.editions = options.editions;
-                        self.classifications = options.productClassifications;
-                        self.practices = options.practiceTypeNames;
-                        self.bodies = options.certBodyNames;
-                        self.statuses = options.certificationStatuses;
-                    });
-            };
-            self.populateData();
-
-            self.concatAddlSw = function (addlSw) {
-                var retval = '';
-                if (addlSw) {
-                    for (var i = 0; i < addlSw.length; i++) {
-                        retval += addlSw[i].name + ', ';
-                    }
-                    retval = retval.substring(0,retval.length - 2)
-                }
-                return retval;
-            }
-
-            self.inspectCp = function (cpId) {
+            function inspectCp (cpId) {
                 var cp;
                 for (var i = 0; i < self.uploadingCps.length; i++) {
                     if (cpId === self.uploadingCps[i].id) {
@@ -338,163 +327,31 @@
                     keyboard: false,
                     resolve: {
                         inspectingCp: function () { return cp; },
-                        vendors: function () { return self.vendors; }
+                        vendors: function () { return self.vendors; },
+                        classifications: function () { return self.classifications; },
+                        practices: function () { return self.practices; },
+                        isAcbAdmin: function () { return self.isAcbAdmin; },
+                        isChplAdmin: function () { return self.isChplAdmin; },
+                        bodies: function () { return self.bodies; },
+                        statuses: function () { return self.statuses; },
+                        workType: function () { return self.workType; }
                     },
                     size: 'lg'
                 });
                 self.modalInstance.result.then(function (result) {
-                    $log.info(result);
+                    self.refreshPending();
                 }, function (result) {
                     if (result !== 'cancelled') {
+                        self.refreshPending();
                         $log.debug(result);
                     }
                 });
+            }
 
-/*
-                self.activeVendor = angular.copy(cp.vendor);
-                if (!self.activeVendor.id) {
-                    self.activeVendor.address = angular.copy(cp.vendorAddress);
-                } else {
-                    delete self.activeVendor.website;
-                }
-                self.activeProduct = angular.copy(cp.product);
-                self.activeVersion = angular.copy(cp.product);
-                self.activeCP = angular.copy(cp);
-                if (!cp.certificationStatus) {
-                    for (var i = 0; i < self.statuses.length; i++) {
-                        if (self.statuses[i].name === 'Pending') {
-                            self.activeCP.certificationStatus = self.statuses[i];
-                            break;
-                        }
-                    }
-                }
-                self.activeCP.certificationDate = new Date(parseInt(cp.certificationDate));
-                self.activeCP.certDate = self.activeCP.certificationDate;
-
-                if (!cp.product.versionId && cp.product.id) {
-                    commonService.getVersionsByProduct(cp.product.id)
-                        .then(function (versions) {
-                            self.versions = versions;
-                        });
-                }
-                if (!cp.product.id && cp.vendor.id) {
-                    commonService.getProductsByVendor(cp.vendor.id)
-                        .then(function (products) {
-                            self.products = products.products;
-                        });
-                }
-*/            };
-
-            self.selectInspectingVendor = function () {
-                self.activeVendor = self.vendorSelect;
-                self.inspectingCp.vendor.id = self.activeVendor.vendorId;
-                commonService.getProductsByVendor(self.activeVendor.vendorId)
-                    .then(function (products) {
-                        self.products = products.products;
-                        for (var i = 0; i < self.products.length; i++) {
-                            if (self.products[i].name === self.inspectingCp.product.name) {
-                                self.inspectingCp.product.id = self.products[i].productId;
-                                self.activeProduct = angular.copy(self.inspectingCp.product);
-                                self.activeProduct.productId = self.inspectingCp.product.id;
-                                commonService.getVersionsByProduct(self.activeProduct.productId)
-                                    .then(function (versions) {
-                                        self.versions = versions;
-                                        for (var j = 0; j < self.versions.length; j++) {
-                                            if (self.versions[j].version === self.inspectingCp.product.version) {
-                                                self.inspectingCp.product.versionId = self.versions[j].versionId;
-                                                self.activeVersion = angular.copy(self.inspectingCp.product);
-                                                self.activeVersion.versionId = self.inspectingCp.product.versionId;
-                                                break;
-                                            }
-                                        }
-                                    });
-                                break;
-                            }
-                        }
-                    });
-                self.activeVendor.id = self.activeVendor.vendorId;
-            };
-
-            self.selectInspectingProduct = function () {
-                self.activeProduct = self.productSelect;
-                commonService.getVersionsByProduct(self.activeProduct.productId)
-                    .then(function (versions) {
-                        self.versions = versions;
-                        for (var j = 0; j < self.versions.length; j++) {
-                            if (self.versions[j].version === self.inspectingCp.product.version) {
-                                self.inspectingCp.product.versionId = self.versions[j].versionId;
-                                self.activeVersion = angular.copy(self.inspectingCp.product);
-                                self.activeVersion.versionId = self.inspectingCp.product.versionId;
-                                break;
-                            }
-                        }
-                    });
-                self.activeProduct.id = self.activeProduct.productId;
-            };
-
-            self.selectInspectingVersion = function () {
-                self.activeVersion = self.versionSelect;
-                self.inspectingCp.product.versionId = self.activeVersion.versionId;
-            };
-
-            self.confirmCp = function (cpId) {
-                $log.debug(self.inspectingCp);
-
-                delete(self.inspectingCp.vendor.address);
-                commonService.confirmPendingCp(self.inspectingCp)
-                    .then(self.refreshPending);
-
-                self.inspectingCp = '';
-                self.cancelAll();
-            };
-
-            self.cancelInspectingCp = function () {
-                self.inspectingCp = '';
-                self.cancelAll();
-            };
-
-            self.rejectCp = function (cpId) {
+            function rejectCp  (cpId) {
                 commonService.rejectPendingCp(cpId)
                     .then(self.refreshPending);
-
-                self.inspectingCp = '';
-                self.cancelAll();
-            };
-
-            self.cancelAll = function () {
-                self.cancelVendor();
-                self.cancelProduct();
-                self.cancelVersion();
-                self.cancelCP();
-                self.mergeType = 'developer';
-                self.uploadMessage = '';
-            };
-
-            self.cancelVendor = function () {
-                self.activeVendor = '';
-                self.vendorMessage = null;
-                self.mergingVendors = [];
-            };
-
-            self.cancelProduct = function () {
-                self.activeProduct = '';
-                self.productMessage = null;
-                //self.selectProduct();
-                self.mergingProducts = [];
-            };
-
-            self.cancelVersion = function () {
-                self.activeVersion = '';
-                self.versionMessage = null;
-                //self.selectVersion();
-                self.mergingVersions = [];
-            };
-
-            self.cancelCP = function () {
-                self.activeCP = '';
-                self.cpMessage = null;
-                self.selectCp();
-            };
+            }
 
             function parseUploadError (cp) {
                 var ret = '';
@@ -514,7 +371,6 @@
             }
 
             function doWork (workType) {
-                self.cancelInspectingCp();
                 self.workType = workType;
             }
         }]);

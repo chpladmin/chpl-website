@@ -70,6 +70,10 @@
                 return self.simpleApiCall('/products/' + productId, API);
             };
 
+            self.getVersion = function (versionId) {
+                return self.simpleApiCall('/versions/' + versionId, API);
+            };
+
             self.getProduct = function (productId) {
                 return self.simpleApiCall('/certified_products/' + productId + '/details', API);
             };

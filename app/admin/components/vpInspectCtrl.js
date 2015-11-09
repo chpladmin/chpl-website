@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('InspectController', ['$modalInstance', 'inspectingCp', 'vendors', 'commonService', function ($modalInstance, inspectingCp, vendors, commonService) {
+        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'vendors', 'classifications', 'practices', 'isAcbAdmin', 'isChplAdmin', 'bodies', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, vendors, classifications, practices, isAcbAdmin, isChplAdmin, bodies, statuses, commonService) {
             var vm = this;
 
             vm.activate = activate;
@@ -14,6 +14,14 @@
             vm.loadPrd = loadPrd;
             vm.selectInspectingProduct = selectInspectingProduct;
             vm.saveInspectingProduct = saveInspectingProduct;
+
+            vm.loadVer = loadVer;
+            vm.selectInspectingVersion = selectInspectingVersion;
+            vm.saveInspectingVersion = saveInspectingVersion;
+
+            vm.confirm = confirm;
+            vm.reject = reject;
+            vm.editCertifiedProduct = editCertifiedProduct;
 
             vm.next = next;
             vm.previous = previous;
@@ -29,12 +37,28 @@
                 vm.cp = angular.copy(inspectingCp);
                 vm.stage = 'dev';
 
-                //developer initiation
                 vm.vendors = vendors;
                 vm.developerChoice = 'choose';
                 vm.loadDev();
 
                 vm.products = [];
+                vm.productChoice = 'choose';
+
+                vm.versions = [];
+                vm.versionChoice = 'choose';
+
+                vm.classifications = classifications;
+                vm.practices = practices;
+                vm.isAcbAdmin = isAcbAdmin;
+                vm.isChplAdmin = isChplAdmin;
+                vm.bodies = bodies;
+                vm.statuses = statuses;
+                for (var i = 0; i < vm.statuses.length; i++) {
+                    if (vm.statuses[i].name === 'Pending') {
+                        vm.cp.certificationStatus = vm.statuses[i];
+                        break;
+                    }
+                }
             }
 
             function loadDev () {
@@ -71,11 +95,13 @@
             }
 
             function loadPrd () {
-                if (vm.cp.developer.id) {
-                    commonService.getProductsByVendor(vm.cp.product.id)
+                if (vm.developer && vm.developer.vendorId) {
+                    commonService.getProductsByVendor(vm.developer.vendorId)
                         .then(function (result) {
-                            vm.products = result;
+                            vm.products = result.products;
                         });
+                } else {
+                    vm.productChoice = 'create';
                 }
                 if (vm.cp.product.id) {
                     commonService.getSimpleProduct(vm.cp.product.id)
@@ -105,6 +131,84 @@
                     });
             }
 
+            function loadVer () {
+                if (vm.product && vm.product.productId) {
+                    commonService.getVersionsByProduct(vm.product.productId)
+                        .then(function (result) {
+                            vm.versions = result;
+                        });
+                } else {
+                    vm.versionChoice = 'create';
+                }
+                if (vm.cp.product.versionId) {
+                    commonService.getVersion(vm.cp.product.versionId)
+                        .then(function (result) {
+                            vm.version = result;
+                        });
+                }
+            }
+
+            function selectInspectingVersion() {
+                vm.cp.product.versionId = vm.versionSelect.versionId;
+                vm.loadVer();
+            }
+
+            function saveInspectingVersion() {
+                var ver = {
+                    version: {
+                        version: vm.cp.product.version,
+                        productId: vm.cp.product.versionId
+                    },
+                    versionIds: [vm.cp.product.versionId]
+                };
+                commonService.updateVersion(ver)
+                    .then(function () {
+                        vm.loadVer();
+                    });
+            }
+
+            function confirm () {
+                commonService.confirmPendingCp(vm.cp)
+                    .then(function () {
+                        $modalInstance.close('confirmed');
+                        });
+            }
+
+            function reject () {
+                commonService.rejectPendingCp(vm.cp.id)
+                    .then(function () {
+                        $modalInstance.dismiss('rejected');
+                    });
+            }
+
+            function editCertifiedProduct () {
+                vm.editModalInstance = $modal.open({
+                    templateUrl: 'admin/components/vpEditCertifiedProduct.html',
+                    controller: 'EditCertifiedProductController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        activeCP: function () { return vm.cp; },
+                        classifications: function () { return vm.classifications; },
+                        practices: function () { return vm.practices; },
+                        isAcbAdmin: function () { return vm.isAcbAdmin; },
+                        isChplAdmin: function () { return vm.isChplAdmin; },
+                        bodies: function () { return vm.bodies; },
+                        statuses: function () { return vm.statuses; },
+                        workType: function () { return 'confirm'; }
+                    }
+                });
+                vm.editModalInstance.result.then(function (result) {
+                    vm.cp = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        console.debug(result);
+                    }
+                });
+            }
+
             function next () {
                 switch (vm.stage) {
                 case 'dev':
@@ -113,6 +217,10 @@
                     break;
                 case 'prd':
                     vm.stage = 'ver';
+                    vm.loadVer();
+                    break;
+                case 'ver':
+                    vm.stage = 'cp';
                     break;
                 default:
                     break;
@@ -123,6 +231,10 @@
                 switch (vm.stage) {
                 case 'prd': vm.stage = 'dev';
                     break;
+                case 'ver': vm.stage = 'prd';
+                    break;
+                case 'cp': vm.stage = 'ver';
+                    break;
                 default:
                     break;
                 }
@@ -132,6 +244,16 @@
                 switch (vm.stage) {
                 case 'dev':
                     if (vm.developerChoice === 'choose' && !vm.cp.vendor.id)
+                        return true;
+                    return false;
+                    break;
+                case 'prd':
+                    if (vm.productChoice === 'choose' && !vm.cp.product.id)
+                        return true;
+                    return false;
+                    break;
+                case 'ver':
+                    if (vm.versionChoice === 'choose' && !vm.cp.product.versionId)
                         return true;
                     return false;
                     break;

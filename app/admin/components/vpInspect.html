@@ -117,13 +117,16 @@
         <div class="col-sm-6" ng-if="!vm.cp.product.id">
           <h3>System product information</h3>
           <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading" ng-if="vm.developer">
               Product <strong>"{{ vm.cp.product.name }}"</strong> not found
+            </div>
+            <div class="panel-heading" ng-if="!vm.developer">
+              {{ vm.cp.product.name }}
             </div>
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li><input type="radio" ng-model="vm.productChoice" value="choose" id="rdPrdChoose"></input><label for="rdPrdChoose">Select existing product</label></li>
+                  <li ng-if="vm.developer"><input type="radio" ng-model="vm.productChoice" value="choose" id="rdPrdChoose"></input><label for="rdPrdChoose">Select existing product</label></li>
                   <li><input type="radio" ng-model="vm.productChoice" value="create" id="rdPrdCreate"></input><label for="rdPrdCreate">Create new product</label></li>
                 </ul>
               </div>
@@ -131,7 +134,7 @@
                 <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
                 <select ng-model="vm.productSelect"
                         id="productSelect" class="input-sm form-control"
-                        ng-options="p.name for  in vm.products | orderBy: 'name'">
+                        ng-options="p.name for p in vm.products | orderBy: 'name'">
                 </select>
                 <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
               </div>
@@ -170,31 +173,136 @@
     </div>
     <!-- /Product -->
 
-    <div class="row" ng-if="vm.stage === 'ver'" ng-form="inspectVersionForm">
+    <!-- Version -->
+    <div ng-if="vm.stage === 'ver'">
+      <div class="row">
+        <div class="col-sm-12">
+          <h1>Version</h1>
+          <p>Step 3 of 4</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6" ng-if="!vm.cp.product.versionId">
+          <h3>System version information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading" ng-if="vm.product">
+              Version <strong>"{{ vm.cp.product.version }}"</strong> not found
+            </div>
+            <div class="panel-heading" ng-if="!vm.product">
+              {{ vm.cp.product.version }}
+            </div>
+            <div class="panel-body">
+              <div class="row admin-label-spaced">
+                <ul class="list-inline">
+                  <li ng-if="vm.product"><input type="radio" ng-model="vm.versionChoice" value="choose" id="rdVerChoose"></input><label for="rdVerChoose">Select existing version</label></li>
+                  <li><input type="radio" ng-model="vm.versionChoice" value="create" id="rdVerCreate"></input><label for="rdVerCreate">Create new version</label></li>
+                </ul>
+              </div>
+              <div ng-if="vm.versionChoice === 'choose'">
+                <label for="versionSelect" class="control-label admin-label-spaced">Select a version</label>
+                <select ng-model="vm.versionSelect"
+                        id="versionSelect" class="input-sm form-control"
+                        ng-options="v.version for v in vm.versions | orderBy: 'version'">
+                </select>
+                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVersion()">Select Version</button></p>
+              </div>
+              <div ng-if="vm.versionChoice === 'create'">
+                Uploaded version information will be used to create a new version
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" ng-if="vm.cp.product.versionId">
+          <h3>System version information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              {{ vm.version.version }}
+            </div>
+            <div class="panel-body">
+              <br />
+              Last Modified Date: {{ vm.version.lastModifiedDate | date }}
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <h3>Uploaded version information</h3>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              {{ vm.cp.product.version }}
+            </div>
+            <div class="panel-body">
+            </div>
+            <div class="panel-footer" ng-if="vm.cp.product.versionId">
+              <button class="btn btn-default btn-block" ng-click="vm.saveInspectingVersion()">Save as Version Information</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="row" ng-if="vm.stage === 'cp'" ng-form="inspectCpForm">
+    <!-- /Version -->
+
+    <!-- Certified Product -->
+    <div class="row" ng-if="vm.stage === 'cp'">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <span>CHPL Product Number not assigned</span>
+          </div>
+          <div class="panel-body">
+            <span>
+              <strong>Classification:</strong> {{ vm.cp.classificationType.name }} <br />
+              <strong>Practice Type:</strong> {{ vm.cp.practiceType.name }} <br />
+              <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
+              <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
+              <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date }} <br />
+              <ai-additional-software additional-software="vm.cp.additionalSoftware" is-editing="false"></ai-additional-software> <br />
+              <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
+              <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
+              <strong>Other ACB:</strong> {{ vm.cp.otherAcb }} <br />
+              <strong>Quality Management System Attestation:</strong> {{ vm.cp.qualityManagementSystemAtt }} <br />
+              <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation }} <br />
+              <strong>Testing Lab:</strong> {{ vm.cp.testingLabId }} <br />
+              <strong>Visible on CHPL:</strong> {{ vm.cp.visibleOnChpl }} <br />
+            </span>
+            <br />
+            <ai-certs ng-if="vm.cp !== ''"
+                      certs="vm.cp.certificationResults"
+                      cqms="vm.cp.cqmResults"
+                      count-certs="{{ vm.cp.countCerts }}"
+                      count-cqms="{{ vm.cp.countCqms }}"
+                      default-all="true"
+                      edit-mode="false"
+                      report-file-location="{{ vm.cp.reportFileLocation }}"
+                      applicable-cqm-criteria="vm.cp.applicableCqmCriteria">
+            </ai-certs>
+            <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()">Edit Certified Product</button></p>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- /Certified Product -->
+
   </div>
   <div class="modal-footer">
     <button class="btn btn-warning btn-large pull-left"
             ng-disabled="vm.stage === 'dev'"
             ng-click="vm.previous()">Previous</button>
+    <button class="btn btn-danger pull-left"
+            confirm="Are you sure you wish to reject this Certified Product?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.reject()"><i class="fa fa-trash-o"></i> Reject</button>
     <button class="btn btn-success btn-large pull-right"
             ng-disabled="vm.isDisabled()"
+            ng-if="vm.stage !== 'cp'"
             ng-click="vm.next()">Next</button>
-    <pre>{{ vm.product | json }}</pre>
-    <pre>{{ vm.cp | json }}</pre>
-    <button ng-disabled="mergeForm.$invalid" class="btn btn-success btn-block"
-            confirm="Are you sure you wish to merge these versions? This action may not be undone."
+    <button class="btn btn-success btn-large pull-right"
+            ng-if="vm.stage === 'cp'"
+            confirm="Are you sure you wish to confirm this Certified Product?"
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.save()">Save Combined Version</button>
-    <button class="btn btn-warning btn-block"
-            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
-            confirm-ok="Yes"
-            confirm-cancel="No"
-            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()">Cancel Edits</button>
+            ng-click="vm.confirm()"><i class="fa fa-cloud-upload"></i> Confirm</button>
   </div>
 </div>

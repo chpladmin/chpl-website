@@ -6,6 +6,7 @@
 
             var vm = this;
             vm.cp = angular.copy(activeCP);
+            vm.cp.certDate = new Date(vm.cp.certificationDate);
             vm.updateCP = {};
             vm.classifications = classifications;
             vm.practices = practices;

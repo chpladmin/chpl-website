@@ -77,43 +77,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat-start="cp in vm.uploadingCps | orderBy: 'certificationDate'" ng-class="{ 'hidden': vm.inspectingCp !== '' && cp.id !== vm.inspectingCp.id}">
+            <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate'">
               <td>{{ cp.vendor.name }}</td>
               <td>{{ cp.product.name }}</td>
               <td>{{ cp.product.version }}</td>
               <td>{{ cp.certificationDate | date }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
-              <td class="text-center" ng-if="vm.inspectingCp === ''">
-                <button class="btn btn-default btn-block" ng-click="vm.inspectCp(cp.id)">Inspect</button>
+              <td class="text-center" ng-if="cp.recordStatus === 'new'">
+                <button class="btn btn-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
               </td>
-              <td class="text-center" ng-if="vm.inspectingCp !== ''">
-                <span ng-if="cp.recordStatus === 'New'">
-                  <button class="btn btn-success btn-block" ng-click="vm.confirmCp(cp.id)"><i class="fa fa-cloud-upload"></i> Confirm</button>
-                </span>
-                <span ng-if="cp.recordStatus !== 'New'">
+              <td class="text-center" ng-if="cp.recordStatus !== 'new'">
+                <span>
                   Please {{ cp.recordStatus }} the already exisiting product using the OpenCHPL Website
+                  <button class="btn btn-danger btn-block"
+                          confirm="Are you sure you wish to reject this Certified Product?"
+                          confirm-ok="Yes"
+                          confirm-cancel="No"
+                          confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                          ng-click="vm.rejectCp(cp.id)"><i class="fa fa-trash-o"></i> Reject</button>
                 </span>
-                <button class="btn btn-warning btn-block" ng-click="vm.cancelInspectingCp(cp.id)"><i class="fa fa-ban"></i> Cancel</button>
-                <button class="btn btn-danger btn-block" ng-click="vm.rejectCp(cp.id)"><i class="fa fa-trash-o"></i> Reject</button>
-              </td>
-            </tr>
-            <tr ng-repeat-end ng-class="{ 'hidden': vm.inspectingCp === '' || cp.id !== vm.inspectingCp.id }">
-              <td colspan="6">
-                <div ng-if="cp.errorMessages.length > 0">Please fix the following <ng-pluralize count="cp.errorMessages.length"
-                                                                                                     when="{'one': 'error',
-                                                                                                           'other': '{} errors'}"></ng-pluralize> before confirming:
-                  <ul>
-                    <li ng-repeat="error in cp.errorMessages">{{ error }}</li>
-                  </ul>
-                </div>
-                <div ng-if="cp.warningMessages.length > 0">Be aware of the following <ng-pluralize count="cp.warningMessages.length"
-                                                                                                     when="{'one': 'error',
-                                                                                                           'other': '{} errors'}"></ng-pluralize> warnings:
-                  <ul>
-                    <li ng-repeat="error in cp.warningMessages">{{ error }}</li>
-                  </ul>
-                </div>
-                <div ng-if="cp.errorMessages.length === 0 && cp.warningMessages.length === 0">No errors or warnings found</div>
               </td>
             </tr>
           </tbody>
@@ -121,7 +103,7 @@
       </div>
     </div> <!-- end of upload process table -->
 
-    <div ng-if="vm.workType === 'manage' || vm.workType === 'merge' || vm.inspectingCp !== ''"> <!-- developer -->
+    <div ng-if="vm.workType === 'manage' || vm.workType === 'merge'"> <!-- developer -->
       <div class="row">
         <div class="col-sm-12" ng-if="vm.activeVendor === '' && (vm.workType === 'manage' || vm.mergeType !== 'developer')">
           <div class="form-horizontal">
@@ -153,20 +135,10 @@
       </div> <!-- end select developer -->
 
       <div class="row" ng-if="vm.activeVendor !== ''">
-        <div ng-class="{'col-sm-12': vm.workType === 'manage' || vm.workType === 'merge', 'col-sm-6': vm.workType == 'confirm'}">
+        <div class="col-sm-12">
           <h3 ng-if="vm.inspectingCp">System developer information</h3>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <span ng-if="vm.inspectingCp && !vm.activeVendor.id">
-                Developer <strong>"{{ vm.inspectingCp.vendor.name }}"</strong> not found. Would you like to select an existing developer?<br />
-                <label for="vendorInspectSelect" class="control-label admin-label-spaced">Select a developer</label>
-                <select ng-model="vm.vendorSelect"
-                        id="vendorInspectSelect" class="input-sm form-control"
-                        ng-options="v.name for v in vm.vendors | orderBy: 'name'">
-                </select>
-                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVendor()">Select Developer</button></p>
-                Or use the uploaded information?<br />
-              </span>
               <span>{{ vm.activeVendor.name }}</span>
             </div>
             <div class="panel-body">
@@ -184,27 +156,10 @@
               <br />
               <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
               <p><button class="btn btn-default btn-block" ng-if="vm.workType !== 'merge'" ng-click="vm.editDeveloper()">Edit Developer</button></p>
-              <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to developer select</a></p>
+              <p class="text-center"><a href="" ng-click="vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to developer select</a></p>
             </div>
           </div>
         </div> <!-- end system developer -->
-        <div class="col-sm-6" ng-if="vm.inspectingCp">
-          <h3>Uploaded developer information</h3>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              {{ vm.inspectingCp.vendor.name }}
-            </div>
-            <div class="panel-body">
-              Line 1: {{ vm.inspectingCp.vendorAddress.line1 }}<br />
-              Line 2: {{ vm.inspectingCp.vendorAddress.line2 }}<br />
-              City: {{ vm.inspectingCp.vendorAddress.city }}<br />
-              State: {{ vm.inspectingCp.vendorAddress.state }}<br />
-              Zip: {{ vm.inspectingCp.vendorAddress.zipcode }}<br />
-              Country: {{ vm.inspectingCp.vendorAddress.country }}<br />
-              Website: {{ vm.inspectingCp.vendor.website }}<br />
-            </div>
-          </div>
-        </div> <!-- end uploaded developer -->
       </div> <!-- end active developer -->
 
       <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== '' && (vm.mergeType !== 'developer' || vm.workType !== 'merge')"> <!-- product -->
@@ -241,20 +196,9 @@
       </div> <!-- end select product -->
 
       <div class="row" ng-if="vm.activeProduct !== ''">
-        <div ng-class="{'col-sm-12': vm.workType === 'manage' || vm.workType === 'merge', 'col-sm-6': vm.workType === 'confirm'}">
-          <h3 ng-if="vm.inspectingCp">System product information</h3>
+        <div class="col-sm-12">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <span ng-if="vm.inspectingCp && !vm.activeProduct.id && vm.activeVendor.id">
-                Product <strong>"{{ vm.inspectingCp.product.name }}"</strong> not found. Would you like to select an existing product?<br />
-                <label for="productInspectSelect" class="control-label admin-label-spaced">Select a product</label>
-                <select ng-model="vm.productSelect"
-                        id="productInspectSelect" class="input-sm form-control"
-                        ng-options="p.name for p in vm.products | orderBy: 'name'">
-                </select>
-                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
-                Or use the uploaded information?<br />
-              </span>
               <span>{{ vm.activeProduct.name }}</span>
             </div>
             <div class="panel-body">
@@ -263,20 +207,10 @@
               <br />
               <p ng-if="vm.productMessage !== undefined" class="bg-danger">{{ vm.productMessage }}</p>
               <p><button class="btn btn-default btn-block" ng-if="vm.workType !== 'merge'" ng-click="vm.editProduct()">Edit Product</button></p>
-              <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
+              <p class="text-center"><a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
             </div>
           </div>
         </div> <!-- end system product -->
-        <div class="col-sm-6" ng-if="vm.inspectingCp">
-          <h3>Uploaded product information</h3>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              {{ vm.inspectingCp.product.name }}
-            </div>
-            <div class="panel-body">
-            </div>
-          </div>
-        </div> <!-- end uploaded product -->
       </div>
 
       <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === '' && ((vm.mergeType !== 'developer' && vm.mergeType !== 'product') || vm.workType !== 'merge')"> <!-- version -->
@@ -312,20 +246,9 @@
         </div> <!-- end version merge select -->
       </div> <!-- end select version -->
       <div class="row" ng-if="vm.activeVersion !== ''">
-        <div ng-class="{'col-sm-12': vm.workType === 'manage' || vm-workType === 'merge', 'col-sm-6': vm.workType === 'confirm'}">
-          <h3 ng-if="vm.inspectingCp">System version information</h3>
+        <div class="col-sm-12">
           <div class="panel panel-default">
             <div class="panel-heading">
-              <span ng-if="vm.inspectingCp && !vm.inspectingCp.product.versionId && vm.activeProduct.id">
-                Version <strong>"{{ vm.inspectingCp.product.version }}"</strong> not found. Would you like to select an existing version?<br />
-                <label for="versionInspectSelect" class="control-label admin-label-spaced">Select a version</label>
-                <select ng-model="vm.versionSelect"
-                        id="versionInspectSelect" class="input-sm form-control"
-                        ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
-                </select>
-                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVersion()">Select Version</button></p>
-                Or use the uploaded information?<br />
-              </span>
               <span>{{ vm.activeVersion.version }}</span>
             </div>
             <div class="panel-body">
@@ -334,20 +257,10 @@
               <br />
               <p ng-if="vm.versionMessage !== undefined" class="bg-danger">{{ vm.versionMessage }}</p>
               <p><button class="btn btn-default btn-block" ng-if="vm.workType !== 'merge'" ng-click="vm.editVersion()">Edit Version</button></p>
-              <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
+              <p class="text-center"><a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
             </div>
           </div>
         </div> <!-- end system version -->
-        <div class="col-sm-6" ng-if="vm.inspectingCp">
-          <h3>Uploaded version information</h3>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              {{ vm.inspectingCp.product.version }}
-            </div>
-            <div class="panel-body">
-            </div>
-          </div>
-        </div> <!-- end uploaded version -->
       </div>
 
       <div class="row" ng-if="vm.activeVersion !== '' && vm.workType !== 'merge'">
@@ -371,7 +284,7 @@
           <div ng-if="vm.activeCP !== ''">
             <div class="panel panel-default">
               <div class="panel-heading">
-                <span>{{ vm.activeCP.chplProductNumber ? vm.activeCP.chplProductNumber : 'CHPL Product Number not assigned' }}</span>
+                <span>{{ vm.activeCP.chplProductNumber }}</span>
               </div>
               <div class="panel-body">
                 <span>
@@ -404,7 +317,7 @@
                 <br />
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
                 <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()">Edit Certified Product</button></p>
-                <p ng-if="vm.inspectingCp === ''" class="text-center"><a href="" ng-click="vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to certified product select</a></p>
+                <p class="text-center"><a href="" ng-click="vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to certified product select</a></p>
               </div>
             </div>
           </div>
