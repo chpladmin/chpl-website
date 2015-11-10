@@ -103,13 +103,31 @@
       </div>
     </div> <!-- end of upload process table -->
 
+    <div ng-if="vm.workType === 'manage'" class="row">
+      <div class="col-sm-12">
+          <p>In the 'Manage Developers and Products' module, you can manage existing health IT developers and certified products. To edit developer or product information, begin by selecting the desired developer below. To edit information about that developer, click the 'Edit Developer' button, and make any desired changes. Once you are satisfied with your changes, click the 'Save Developer' button, or click 'Cancel Edits' to discard your changes.</p>
+          <p>To make changes to a certified product or a version of a product, continue by selecting the desired product and version, and clicking the corresponding 'Edit Product' or 'Edit Version' button.</p>
+      </div>
+    </div>
+
+    <div ng-if="vm.workType === 'merge'" class="row">
+      <div class="col-sm-12">
+        <p>In the 'Merge Developers and Products' module, you can merge existing health IT developers, certified products, or versions of certified products. To begin, select either developers, products, or versions, for merging.</p>
+        <span ng-if="vm.mergeType === 'developer'">
+          <p>Select the developers to merge by holding the Control (CTRL) button while clicking the desired developers. Then click the 'Choose Developers' button.</p>
+          <p>Inspect the chosen developers to be merged, and enter or edit information for the new merged Developer. Once you are satisfied with your changes, click the 'Save Combined Developer' button, or click 'Cancel Edits' to discard your changes.</p>
+        </span>
+        <p ng-if="vm.mergeType !== 'developer'">Select a desired developer from the dropdown list, and click 'Choose Developer' to proceed.</p>
+      </div>
+    </div>
+
     <div ng-if="vm.workType === 'manage' || vm.workType === 'merge'"> <!-- developer -->
       <div class="row">
         <div class="col-sm-12" ng-if="vm.activeVendor === '' && (vm.workType === 'manage' || vm.mergeType !== 'developer')">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="vendorSelect" class="control-label">Select a developer</label>
+                <label for="vendorSelect" class="control-label">Developer</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.vendorSelect"
@@ -162,12 +180,22 @@
         </div> <!-- end system developer -->
       </div> <!-- end active developer -->
 
+      <div ng-if="vm.workType === 'merge' && vm.activeVendor !== ''" class="row">
+        <div class="col-sm-12">
+          <span ng-if="vm.mergeType === 'product' && vm.products.length > 1">
+            <p>Select the products to merge by holding the Control (CTRL) button while clicking the desired products. Then click the 'Choose Products' button.</p>
+            <p>Inspect the chosen products to be merged, and enter or edit information for the new merged Product. When you are satisfied with your changes, click the 'Save Combined Product' button, or click 'Cancel Edits' to discard your changes.</p>
+          </span>
+          <p ng-if="vm.mergeType !== 'product'">Select a desired product from the dropdown list, and click 'Choose Product' to proceed.</p>
+        </div>
+      </div>
+
       <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== '' && (vm.mergeType !== 'developer' || vm.workType !== 'merge')"> <!-- product -->
         <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'product'">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
+                <label for="productSelect" class="control-label admin-label-spaced">Product</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.productSelect"
@@ -213,12 +241,22 @@
         </div> <!-- end system product -->
       </div>
 
+      <div ng-if="vm.workType === 'merge' && vm.activeProduct !== ''" class="row">
+        <div class="col-sm-12">
+          <span ng-if="vm.mergeType === 'version' && vm.versions.length > 1">
+            <p>Select the versions to merge by holding the Control (CTRL) button while clicking the desired versions. Then click the 'Choose Versions' button.</p>
+            <p>Inspect the chosen versions to be merged, and enter or edit information for the new merged Version. When you are satisfied with your changes, click the 'Save Combined Version' button, or click 'Cancel Edits' to discard your changes.</p>
+          </span>
+          <p ng-if="vm.mergeType !== 'version'">Select a desired version from the dropdown list, and click 'Choose Version' to proceed.</p>
+        </div>
+      </div>
+
       <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === '' && ((vm.mergeType !== 'developer' && vm.mergeType !== 'product') || vm.workType !== 'merge')"> <!-- version -->
         <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'version'">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="versionSelect" class="control-label admin-label-spaced">Select a version</label>
+                <label for="versionSelect" class="control-label admin-label-spaced">Version</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.versionSelect"
@@ -267,17 +305,22 @@
         <div class="col-sm-12">
           <div class="form-horizontal" ng-if="vm.activeCP === ''">
             <div class="form-group admin-label-spaced">
-              <div class="col-sm-3">
-                <label for="cpSelect" class="control-label admin-label-spaced">Select a certified product</label>
-              </div>
-              <div class="col-sm-7">
-                <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
-                  <option value="" selected disabled>Select a Certified Product</option>
-                  <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
-                </select>
-              </div>
-              <div class="col-sm-2">
-                <button class="btn btn-default form-control" ng-click="vm.selectCp()">Choose</button>
+              <span ng-if="vm.cps.length > 0">
+                <div class="col-sm-3">
+                  <label for="cpSelect" class="control-label admin-label-spaced">Certified Product</label>
+                </div>
+                <div class="col-sm-7">
+                  <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
+                    <option value="" selected disabled>Select a Certified Product</option>
+                    <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
+                  </select>
+                </div>
+                <div class="col-sm-2">
+                  <button class="btn btn-default form-control" ng-click="vm.selectCp()">Choose</button>
+                </div>
+              </span>
+              <div class="col-sm-12" ng-if="vm.cps.length === 0">
+                <p><strong>No Certified Products are available for edit</strong></p>
               </div>
             </div>
           </div>

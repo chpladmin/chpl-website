@@ -234,7 +234,7 @@
                 if (self.versionSelect) {
                     self.activeVersion = self.versionSelect;
                     self.activeVersion.productId = self.activeProduct.productId;
-                    commonService.getProductsByVersion(self.activeVersion.versionId)
+                    commonService.getProductsByVersion(self.activeVersion.versionId, true)
                         .then(function (cps) {
                             self.cps = cps;
                         });
@@ -371,7 +371,14 @@
             }
 
             function doWork (workType) {
-                self.workType = workType;
+                if (self.workType !== workType) {
+                    self.activeVendor = '';
+                    self.activeProduct = '';
+                    self.activeVersion = '';
+                    self.activeCP = '';
+                    self.mergeType = 'developer';
+                    self.workType = workType;
+                }
             }
         }]);
 

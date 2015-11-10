@@ -94,8 +94,8 @@
                 return self.simpleApiCall('/versions/?productId=' + productId, API);
             };
 
-            self.getProductsByVersion = function (versionId) {
-                return self.simpleApiCall('/certified_products/?versionId=' + versionId, API);
+            self.getProductsByVersion = function (versionId, editable) {
+                return self.simpleApiCall('/certified_products/?versionId=' + versionId + '&editable=' + editable, API);
             };
 
             self.getEditions = function () {

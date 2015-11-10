@@ -34,8 +34,8 @@
             $httpProvider.interceptors.push('authInterceptor');
         })
         .config(['$routeProvider', function($routeProvider) {
-            $routeProvider.when('/privacy', {
-                templateUrl: 'nav/layouts/privacy.html'
+            $routeProvider.when('/listing', {
+                templateUrl: 'nav/layouts/product_listing.html'
             });
         }]);
 })();
