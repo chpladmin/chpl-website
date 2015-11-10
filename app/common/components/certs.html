@@ -17,16 +17,12 @@
           </p>
         </div>
       </accordion-group>
-      <accordion-group heading="debug">
-        <pre>{{ vm.builtCqms | json }}</pre>
-        <pre>{{ vm.editCqms | json }}</pre>
-      </accordion-group>
       <accordion-group heading="Clinical Quality Measures ({{ vm.countCqms }} met)" aria-expanded="false">
         <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.builtCqms | orderBy:'id' track by $index">
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-            <b ng-if="n.hasVersion">{{ n.version.join(', ') }}</b> {{ n.id }}: {{ n.title }}
+            <b ng-if="n.hasVersion">{{ n.version.sort().join(', ') }}</b> {{ n.id }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="vm.editCqms[n.id]" ng-if="!n.hasVersion" id="data_{{n.id}}"></input>
