@@ -41,7 +41,6 @@
             self.viewAllCerts = $scope.viewAllCerts;
             self.editMode = $scope.editMode;
 
-//            self.editCerts = {};
             self.editCqms = {};
 
             self.buildCqmObject = function () {
@@ -102,14 +101,6 @@
                         var newCqm = angular.copy(self.allCqms[cqm]);
                         newCqm.success = false;
                         delete newCqm.versions;
-                        /*{
-                            id: self.allCqms[cqm].id,
-                            cmsId: self.allCqms[cqm].cmsId,
-                            title: self.allCqms[cqm].title,
-                            success: false,
-                            hasVersion: self.allCqms[cqm].hasVersion
-                        };*/
-                        $log.debug(newCqm, self.allCqms[cqm]);
                         self.builtCqms.push(newCqm)
                     }
                 }
