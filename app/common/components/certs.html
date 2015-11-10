@@ -26,7 +26,7 @@
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-            <b ng-if="n.hasVersion">{{ n.version.join(', ') }}</b> {{ n.id }}: {{ n.title }}
+            <b ng-if="n.hasVersion">{{ n.version.sort().join(', ') }}</b> {{ n.id }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="vm.editCqms[n.id]" ng-if="!n.hasVersion" id="data_{{n.id}}"></input>
