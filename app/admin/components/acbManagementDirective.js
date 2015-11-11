@@ -2,13 +2,14 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AcbManagementController', ['commonService', 'authService', '$log', function (commonService, authService, $log) {
+        .controller('AcbManagementController', ['commonService', 'authService', '$log', '$modal', function (commonService, authService, $log, $modal) {
             var self = this;
 
             self.doWork = doWork;
             self.activate = activate;
             self.activateAcb = activateAcb;
             self.loadData = loadData;
+            self.editAcb = editAcb;
 
             self.activate();
 
@@ -53,12 +54,31 @@
                 self.newACB = {address: {}};
             };
 
-            self.modifyACB = function (acb) {
-                commonService.modifyACB(acb)
-                    .then(function (response) {
-                        self.loadData();
-                    });
-            };
+            function editAcb (acb) {
+                $log.debug(acb);
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/acbEdit.html',
+                    controller: 'EditAcbController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        acb: function () { return acb; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    if (result !== 'deleted') {
+                        self.activeAcb = result;
+                    } else {
+                        self.activate();
+                    }
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
+            }
 
             self.cancelACB = function() {
                 self.loadData();
