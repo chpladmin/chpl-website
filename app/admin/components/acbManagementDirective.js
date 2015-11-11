@@ -9,6 +9,7 @@
             self.activate = activate;
             self.activateAcb = activateAcb;
             self.loadData = loadData;
+            self.createAcb = createAcb;
             self.editAcb = editAcb;
 
             self.activate();
@@ -46,16 +47,7 @@
                     });
             }
 
-            self.createACB = function () {
-                commonService.createACB(self.newACB)
-                    .then(function (response) {
-                        self.loadData();
-                    });
-                self.newACB = {address: {}};
-            };
-
-            function editAcb (acb) {
-                $log.debug(acb);
+            function createAcb () {
                 self.modalInstance = $modal.open({
                     templateUrl: 'admin/components/acbEdit.html',
                     controller: 'EditAcbController',
@@ -64,7 +56,30 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        acb: function () { return acb; }
+                        acb: function () { return {}; },
+                        action: function () { return 'create'; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activate();
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
+            }
+
+            function editAcb (acb) {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/acbEdit.html',
+                    controller: 'EditAcbController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        acb: function () { return acb; },
+                        action: function () { return 'edit'; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {

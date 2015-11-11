@@ -6,7 +6,8 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editLabel">Edit ACB</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit ACB</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ACB</h4>
   </div>
   <div class="modal-body" ng-form="editForm">
     <div class="form-group">
@@ -43,14 +44,20 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()"><i class="fa fa-save"></i> Save ACB</button>
+    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block"
+            ng-if="vm.action === 'edit'"
+            ng-click="vm.save()"><i class="fa fa-save"></i> Save ACB</button>
+    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block"
+            ng-if="vm.action === 'create'"
+            ng-click="vm.create()"><i class="fa fa-save"></i> Create ACB</button>
     <button class="btn btn-warning btn-block"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel Edits</button>
+            ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
     <button class="btn btn-danger btn-block"
+            ng-if="vm.action === 'edit'"
             confirm="Are you sure you wish to delete this ACB? This action is permanent."
             confirm-ok="Yes"
             confirm-cancel="No"
