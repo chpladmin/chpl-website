@@ -147,6 +147,9 @@
                             if (change) activity.action += '<li>' + change + '</li>';
                         }
                         activity.action += '</ul>';
+                        if (activity.action.length === 16) {
+                            activity.action = data[i].description;
+                        }
                     } else {
                         activity.action = data[i].description;
                     }

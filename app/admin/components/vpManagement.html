@@ -117,7 +117,7 @@
           <p>Select the developers to merge by holding the Control (CTRL) button while clicking the desired developers. Then click the 'Choose Developers' button.</p>
           <p>Inspect the chosen developers to be merged, and enter or edit information for the new merged Developer. Once you are satisfied with your changes, click the 'Save Combined Developer' button, or click 'Cancel Edits' to discard your changes.</p>
         </span>
-        <p ng-if="vm.mergeType !== 'developer'">Select a desired developer from the dropdown list, and click 'Choose Developer' to proceed.</p>
+        <p ng-if="vm.mergeType !== 'developer'">Select a desired developer from the dropdown list, and click 'Choose' to proceed.</p>
       </div>
     </div>
 
@@ -186,7 +186,7 @@
             <p>Select the products to merge by holding the Control (CTRL) button while clicking the desired products. Then click the 'Choose Products' button.</p>
             <p>Inspect the chosen products to be merged, and enter or edit information for the new merged Product. When you are satisfied with your changes, click the 'Save Combined Product' button, or click 'Cancel Edits' to discard your changes.</p>
           </span>
-          <p ng-if="vm.mergeType !== 'product'">Select a desired product from the dropdown list, and click 'Choose Product' to proceed.</p>
+          <p ng-if="vm.mergeType !== 'product'">Select a desired product from the dropdown list, and click 'Choose' to proceed.</p>
         </div>
       </div>
 
@@ -216,7 +216,7 @@
                   id="productMergeSelect" class="input-sm form-control"
                   size="12" ng-options="p.name for p in vm.products | orderBy: 'name'">
           </select>
-          <p><button ng-disabled="vm.mergingProducts.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeProducts()">Chose Products</button></p>
+          <p><button ng-disabled="vm.mergingProducts.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeProducts()">Choose Products</button></p>
         </div>
         <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'product' && vm.products.length <= 1">
           <p><strong>No products are available for merge</strong></p>
@@ -247,7 +247,7 @@
             <p>Select the versions to merge by holding the Control (CTRL) button while clicking the desired versions. Then click the 'Choose Versions' button.</p>
             <p>Inspect the chosen versions to be merged, and enter or edit information for the new merged Version. When you are satisfied with your changes, click the 'Save Combined Version' button, or click 'Cancel Edits' to discard your changes.</p>
           </span>
-          <p ng-if="vm.mergeType !== 'version'">Select a desired version from the dropdown list, and click 'Choose Version' to proceed.</p>
+          <p ng-if="vm.mergeType !== 'version'">Select a desired version from the dropdown list, and click 'Choose' to proceed.</p>
         </div>
       </div>
 
