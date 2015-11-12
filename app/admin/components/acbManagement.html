@@ -8,12 +8,14 @@
     </div>
   </div>
   <div class="col-sm-9 admin-inner-tab">
-    <div class="row admin-label-spaced" ng-if="vm.workType !== 'newAcb'">
-      <ul class="list-inline">
-        <li>Manage what?</li>
-        <li><input type="radio" ng-model="vm.workType" value="acb" id="rdAcb"></input><label for="rdAcb">ACB</label></li>
-        <li><input type="radio" ng-model="vm.workType" value="user" id="rdUsr"></input><label for="rdUsr">Users</label></li>
-      </ul>
+    <div class="row admin-label-spaced lead text-center" ng-if="vm.workType !== 'newAcb'">
+      <div class="col-sm-12">
+        <ul class="list-inline">
+          <li><strong>What would you like to manage?</strong></li>
+          <li><input type="radio" ng-model="vm.workType" value="acb" id="rdAcb"></input><label for="rdAcb">ACB</label></li>
+          <li><input type="radio" ng-model="vm.workType" value="user" id="rdUsr"></input><label for="rdUsr">Users</label></li>
+        </ul>
+      </div>
     </div>
     <div class="row">
       <div class="col-sm-12" ng-if="vm.workType === 'acb'">

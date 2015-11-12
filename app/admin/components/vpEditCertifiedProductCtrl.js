@@ -46,14 +46,11 @@
             }
 
             function prep () {
-                console.debug('prep', vm.cp.cqmResults);
                 vm.directCertsDirective();
                 $timeout(vm.save, 1000);
             }
 
             function save () {
-                console.debug('save', vm.cp.cqmResults);
-
                 if (vm.workType === 'manage') {
                     commonService.updateCP(vm.cp)
                         .then(function (response) {

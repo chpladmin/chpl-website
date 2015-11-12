@@ -10,9 +10,9 @@
     </div>
   </div>
   <div class="col-sm-9 admin-inner-tab">
-    <div class="row admin-label-spaced" ng-if="vm.workType==='merge'">
+    <div class="row admin-label-spaced lead text-center" ng-if="vm.workType==='merge'">
       <ul class="list-inline">
-        <li>Merge what?</li>
+        <li><strong>What would you like to merge?</strong></li>
         <li><input type="radio" ng-model="vm.mergeType" value="developer" id="rdDev"></input><label for="rdDev">Developers</label></li>
         <li><input type="radio" ng-model="vm.mergeType" value="product" id="rdPrd"></input><label for="rdPrd">Products</label></li>
         <li><input type="radio" ng-model="vm.mergeType" value="version" id="rdVer"></input><label for="rdVer">Versions</label></li>

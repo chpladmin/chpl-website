@@ -2,10 +2,11 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditAcbController', ['$modalInstance', 'acb', 'action', 'commonService', function ($modalInstance, acb, action, commonService) {
+        .controller('EditAcbController', ['$modalInstance', 'acb', 'action', 'isChplAdmin', 'commonService', function ($modalInstance, acb, action, isChplAdmin, commonService) {
             var vm = this;
             vm.acb = angular.copy(acb);
             vm.action = action;
+            vm.isChplAdmin = isChplAdmin;
 
             vm.activate = activate;
             vm.addressRequired = addressRequired;

@@ -10,19 +10,21 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      <div class="col-sm-12">
-        <div ng-if="vm.cp.errorMessages.length > 0">
-          Errors:
-          <ul>
-            <li ng-repeat="error in vm.cp.errorMessages">{{ error }}</li>
-          </ul>
-        </div>
-        <div ng-if="vm.cp.warningMessages.length > 0">
-          Warnings:
-          <ul>
-            <li ng-repeat="error in vm.cp.warningMessages">{{ error }}</li>
-          </ul>
-        </div>
+      <div class="col-sm-12 lead">
+        <strong>
+          <div ng-if="vm.cp.errorMessages.length > 0">
+            <span class="text-danger">Error<span ng-if="vm.cp.errorMessages.length > 1">s</span>:</span>
+            <ul>
+              <li ng-repeat="error in vm.cp.errorMessages">{{ error }}</li>
+            </ul>
+          </div>
+          <div ng-if="vm.cp.warningMessages.length > 0">
+            <span class="text-danger">Warning<span ng-if="vm.cp.warningMessages.length > 1">s</span>:</span>
+            <ul>
+              <li ng-repeat="error in vm.cp.warningMessages">{{ error }}</li>
+            </ul>
+          </div>
+        </strong>
       </div>
     </div>
 
@@ -37,6 +39,7 @@
       <div class="row">
         <div class="col-sm-6" ng-if="!vm.cp.vendor.id">
           <h3>System developer information</h3>
+          <p>This is the developer information that will be added to the Open Data CHPL database.</p>
           <div class="panel panel-default">
             <div class="panel-heading">
               Developer <strong>"{{ vm.cp.vendor.name }}"</strong> not found
@@ -64,6 +67,7 @@
         </div>
         <div class="col-sm-6" ng-if="vm.cp.vendor.id">
           <h3>System developer information</h3>
+          <p>This is the developer information that will be added to the Open Data CHPL database.</p>
           <div class="panel panel-default">
             <div class="panel-heading">
               {{ vm.developer.name }}
@@ -83,6 +87,7 @@
         </div>
         <div class="col-sm-6">
           <h3>Uploaded developer information</h3>
+          <p>This is the developer information from your Upload File.<span ng-if="vm.cp.vendor.id"> To add this information to the Open Data CHPL database, click the Save as Developer Information button below.</span></p>
           <div class="panel panel-default">
             <div class="panel-heading">
               {{ vm.cp.vendor.name }}
@@ -116,6 +121,7 @@
       <div class="row">
         <div class="col-sm-6" ng-if="!vm.cp.product.id">
           <h3>System product information</h3>
+          <p>This is the product information that will be added to the Open Data CHPL database.</p>
           <div class="panel panel-default">
             <div class="panel-heading" ng-if="vm.developer">
               Product <strong>"{{ vm.cp.product.name }}"</strong> not found
@@ -146,6 +152,7 @@
         </div>
         <div class="col-sm-6" ng-if="vm.cp.product.id">
           <h3>System product information</h3>
+          <p>This is the product information that will be added to the Open Data CHPL database.</p>
           <div class="panel panel-default">
             <div class="panel-heading">
               {{ vm.product.name }}
@@ -158,6 +165,7 @@
         </div>
         <div class="col-sm-6">
           <h3>Uploaded product information</h3>
+          <p>This is the product information from your Upload File.<span ng-if="vm.cp.product.id"> To add this information to the Open Data CHPL database, click the Save as Product Information button below.</span></p>
           <div class="panel panel-default">
             <div class="panel-heading">
               {{ vm.cp.product.name }}
@@ -184,6 +192,7 @@
       <div class="row">
         <div class="col-sm-6" ng-if="!vm.cp.product.versionId">
           <h3>System version information</h3>
+          <p>This is the version information that will be added to the Open Data CHPL database.</p>
           <div class="panel panel-default">
             <div class="panel-heading" ng-if="vm.product">
               Version <strong>"{{ vm.cp.product.version }}"</strong> not found
@@ -214,6 +223,7 @@
         </div>
         <div class="col-sm-6" ng-if="vm.cp.product.versionId">
           <h3>System version information</h3>
+          <p>This is the version information that will be added to the Open Data CHPL database.</p>
           <div class="panel panel-default">
             <div class="panel-heading">
               {{ vm.version.version }}
@@ -226,6 +236,7 @@
         </div>
         <div class="col-sm-6">
           <h3>Uploaded version information</h3>
+          <p>This is the version information from your Upload File.<span ng-if="vm.cp.product.versionId"> To add this information to the Open Data CHPL database, click the Save as Version Information button below.</span></p>
           <div class="panel panel-default">
             <div class="panel-heading">
               {{ vm.cp.product.version }}
