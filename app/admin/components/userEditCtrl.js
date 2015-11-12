@@ -34,7 +34,7 @@
                 for (var i = 0; i < vm.roles.length; i++) {
                     var payload = angular.copy(roleObject);
                     payload.role = vm.roles[i];
-                    if (vm.roles.indexOf(vm.roles[i]) > -1) {
+                    if (vm.user.roles.indexOf(payload.role) > -1) {
                         commonService.addRole(payload);
                     } else if (!vm.acbId) {
                         commonService.revokeRole(payload);
