@@ -72,6 +72,14 @@
             };
             $scope.toggleCompareId = self.toggleCompareId;
 
+            $scope.prepend = function (name) {
+                if (name.substring(0,3) !== 'CMS') {
+                    return 'NQF-' + name;
+                } else {
+                    return name;
+                }
+            };
+
             self.search = function () {
                 if ($scope.query.searchTermObject !== undefined) {
                     if (typeof($scope.query.searchTermObject) === 'string' && $scope.query.searchTermObject.length > 0) {

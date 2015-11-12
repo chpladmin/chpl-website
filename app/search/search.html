@@ -94,7 +94,7 @@
             </div>
             <div class="col-sm-3">
               <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control"
-                      ng-options="cqm.name as cqm.name + ': ' + cqm.title for cqm in cqms | orderBy:'name'">
+                      ng-options="cqm.name as prepend(cqm.name) + ': ' + cqm.title for cqm in cqms | orderBy:'name'">
               </select>
             </div>
           </div> <!-- second row of advanced -->
