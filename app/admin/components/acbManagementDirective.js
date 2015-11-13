@@ -2,58 +2,114 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AcbManagementController', ['commonService', 'adminService', 'authService', '$log', function (commonService, adminService, authService, $log) {
+        .controller('AcbManagementController', ['commonService', 'authService', '$log', '$modal', function (commonService, authService, $log, $modal) {
             var self = this;
-            self.isChplAdmin = authService.isChplAdmin();
-            self.isAcbAdmin = authService.isAcbAdmin();
-            self.newACB = {address: {}};
-            self.acbs = [];
 
-            self.loadAcbs = function () {
-                return adminService.getAcbs()
+            self.doWork = doWork;
+            self.activate = activate;
+            self.activateAcb = activateAcb;
+            self.loadData = loadData;
+            self.createAcb = createAcb;
+            self.editAcb = editAcb;
+
+            self.activate();
+
+            ////////////////////////////////////////////////////////////////////
+
+            function doWork (workType) {
+                if (workType === 'newAcb') {
+                    self.activeAcb = null;
+                }
+                self.workType = workType;
+            }
+
+            function activate () {
+                self.isChplAdmin = authService.isChplAdmin();
+                self.isAcbAdmin = authService.isAcbAdmin();
+                self.newACB = {address: {}};
+                self.acbs = [];
+                self.workType = 'acb';
+                self.loadData()
+                    .then(function () {
+                        self.activeAcb = self.acbs[0]
+                    });
+            }
+
+            function activateAcb (acb) {
+                self.workType = 'acb';
+                self.activeAcb = acb;
+            }
+
+            function loadData () {
+                return commonService.getAcbs()
                     .then (function (data) {
                         self.acbs = data.acbs;
                     });
-            };
-            self.loadData = function () {
-                self.loadAcbs();
-            };
-            self.loadData();
+            }
 
-            self.createACB = function () {
-                adminService.createACB(self.newACB)
-                    .then(function (response) {
-                        self.loadData();
-                    });
-                self.newACB = {address: {}};
-            };
+            function createAcb () {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/acbEdit.html',
+                    controller: 'EditAcbController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        acb: function () { return {}; },
+                        action: function () { return 'create'; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    self.activate();
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
+            }
 
-            self.modifyACB = function (acb) {
-                adminService.modifyACB(acb)
-                    .then(function (response) {
-                        self.loadData();
-                    });
-            };
+            function editAcb (acb) {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/acbEdit.html',
+                    controller: 'EditAcbController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        acb: function () { return acb; },
+                        action: function () { return 'edit'; },
+                        isChplAdmin: function () { return self.isChplAdmin; }
+                    }
+                });
+                self.modalInstance.result.then(function (result) {
+                    if (result !== 'deleted') {
+                        self.activeAcb = result;
+                    } else {
+                        self.activate();
+                    }
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
+            }
 
             self.cancelACB = function() {
                 self.loadData();
             };
 
             self.deleteACB = function (acb) {
-                adminService.deleteACB(acb.id)
+                commonService.deleteACB(acb.id)
                     .then(function (response) {
-                        self.loadData();
+                        self.activate();
                     });
             };
 
             self.addressRequired = function (acb) {
-                if (acb.address === null) return false;
-                if (acb.address.line1 && acb.address.line1.length > 0) return true;
-                if (acb.address.line2 && acb.address.line2.length > 0) return true;
-                if (acb.address.city && acb.address.city.length > 0) return true;
-                if (acb.address.region && acb.address.region.length > 0) return true;
-                if (acb.address.country && acb.address.country.length > 0) return true;
-                return false;
+                if (acb)
+                    return commonService.addressRequired(acb.address);
             };
         }])
         .directive('aiAcbManagement', ['commonService', 'authService', '$log', function (commonService, authService, $log) {

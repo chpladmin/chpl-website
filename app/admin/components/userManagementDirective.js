@@ -2,92 +2,83 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('UserManagementController', ['adminService', '$log', '$scope', function (adminService, $log, $scope) {
-            var self = this;
-            self.userInvitation = {permissions: []};
-            self.acbId = $scope.acbId;
-            self.roles = ['ROLE_ACB_ADMIN','ROLE_ACB_STAFF'];
-            if (!self.acbId) {
-                self.roles.push('ROLE_ADMIN');
+        .controller('UserManagementController', ['commonService', '$log', '$modal', '$scope', function (commonService, $log, $modal, $scope) {
+            var vm = this;
+            vm.acbId = $scope.acbId;
+            vm.roles = ['ROLE_ACB_ADMIN','ROLE_ACB_STAFF'];
+            if (!vm.acbId) {
+                vm.roles.push('ROLE_ADMIN');
             }
 
-            self.freshenUsers = function () {
-                if (self.acbId) {
-                    adminService.getUsersAtAcb(self.acbId)
-                        .then(function (response) {
-                            self.users = response.users;
-                        }, function (error) {
-                            $log.debug(error);
-                        });
-                } else {
-                    adminService.getUsers()
-                        .then(function (response) {
-                            self.users = response.users;
-                        }, function (error) {
-                            $log.debug(error);
-                        });
-                }
-            };
-            self.freshenUsers();
+            vm.updateUser = updateUser;
+            vm.inviteUser = inviteUser;
 
-            self.updateUser = function (user) {
-                if (!user.roles)
-                    user.roles = [];
+            ////////////////////////////////////////////////////////////////////
 
-                var roleObject = {subjectName: user.user.subjectName};
-                for (var i = 0; i < self.roles.length; i++) {
-                    var payload = angular.copy(roleObject);
-                    payload.role = self.roles[i];
-                    if (user.roles.indexOf(self.roles[i]) > -1) {
-                        adminService.addRole(payload);
-                    } else if (!self.acbId) {
-                        adminService.revokeRole(payload);
+            function updateUser (user) {
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/userEdit.html',
+                    controller: 'EditUserController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        user: function () { return user; },
+                        action: function () { return 'edit'; },
+                        acbId: function () { return vm.acbId; }
                     }
-                }
+                });
+                vm.modalInstance.result.then(function (result) {
+                    vm.freshenUsers();
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
+            }
 
-                adminService.updateUser(user.user)
-                    .then(function (response) {
-                        self.freshenUsers();
-                    });
+            function inviteUser () {
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/userEdit.html',
+                    controller: 'EditUserController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        user: function () { return {}; },
+                        action: function () { return 'invite'; },
+                        acbId: function () { return vm.acbId; }
+                    }
+                });
+                vm.modalInstance.result.then(function (result) {
+                    $log.info(result);
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
+            }
 
-            };
-
-            self.deleteUser = function (user) {
-                if (self.acbId) {
-                    var userObject = {acbId: self.acbId,
-                                      userId: user.user.userId};
-                    adminService.removeUserFromAcb(userObject.userId, userObject.acbId)
+            vm.freshenUsers = function () {
+                if (vm.acbId) {
+                    commonService.getUsersAtAcb(vm.acbId)
                         .then(function (response) {
-                            self.freshenUsers();
+                            vm.users = response.users;
+                        }, function (error) {
+                            $log.debug(error);
                         });
                 } else {
-                    adminService.deleteUser(user.user.userId)
+                    commonService.getUsers()
                         .then(function (response) {
-                            self.freshenUsers();
-                    });
-                }
-            };
-
-            self.cancelUser = function (user) {
-                $log.info('cancelling changes');
-                self.freshenUsers();
-            };
-
-            self.inviteUser = function () {
-                if (self.acbId) {
-                    self.userInvitation.acbId = self.acbId;
-                }
-                if (self.userInvitation.emailAddress && self.userInvitation.emailAddress.length > 0 && self.userInvitation.permissions.length > 0) {
-                    adminService.inviteUser(self.userInvitation)
-                        .then(function (response) {
-                            self.inviteMessage = response.hash;
-                            // dev setup until email's working
+                            vm.users = response.users;
+                        }, function (error) {
+                            $log.debug(error);
                         });
-                    $scope.userManagementInviteUser.$setPristine();
-                    $scope.userManagementInviteUser.$setUntouched();
-                    self.userInvitation = {roles:[]};
                 }
             };
+            vm.freshenUsers();
         }])
         .directive('aiUserManagement', function () {
             return {

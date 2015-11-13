@@ -8,18 +8,16 @@
         beforeEach(function () {
             var mockAuthService = {};
             var mockCommonService = {};
-            var mockAdminService = {};
 
             module('app.admin', function($provide) {
                 $provide.value('authService', mockAuthService);
                 $provide.value('commonService', mockCommonService);
-                $provide.value('adminService', mockAdminService);
             });
 
             module('app/admin/components/acbManagement.html');
             module('app/admin/components/userManagement.html');
 
-            mockAdminService.acbs = {acbs: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
+            mockCommonService.acbs = {acbs: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
 
             inject(function($q) {
                 mockAuthService.isAcbAdmin = function () {
@@ -30,28 +28,24 @@
                     return true;
                 };
 
-                mockAdminService.getAcbs = function () {
-                    var defer = $q.defer();
-                    defer.resolve(mockAdminService.acbs);
-                    return defer.promise;
+                mockCommonService.addressRequired = function () {
+                    return false;
                 };
 
-                mockAdminService.getUsersAtAcb = function (acbId) {
-                    var defer = $q.defer();
-                    defer.resolve({});
-                    return defer.promise;
+                mockCommonService.getAcbs = function () {
+                    return $q.when(mockCommonService.acbs);
+                };
+
+                mockCommonService.getUsersAtAcb = function (acbId) {
+                    return $q.when({});
                 };
 
                 mockCommonService.simpleApiCall = function (endpoint) {
-                    var defer = $q.defer();
-                    defer.resolve({});
-                    return defer.promise;
+                    return $q.when({});
                 };
 
-                mockAdminService.getUsers = function (endpoint) {
-                    var defer = $q.defer();
-                    defer.resolve({data: {}});
-                    return defer.promise;
+                mockCommonService.getUsers = function (endpoint) {
+                    return $q.when({});
                 };
             });
         });

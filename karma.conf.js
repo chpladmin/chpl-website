@@ -17,8 +17,9 @@ module.exports = function(config){
             'app/bower_components/jquery/dist/jquery.min.js',
             'app/bower_components/angular-smart-table/dist/smart-table.min.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+            'app/bower_components/angular-sanitize/angular-sanitize.min.js',
             'app/bower_components/angulartics/dist/angulartics.min.js',
-            'app/bower_components/angulartics-google-analytics/dist/angulartics-google-analytics.min.js',
+            'app/bower_components/angulartics-ga/dist/angulartics-ga.min.js',
             'app/bower_components/angular-google-chart/ng-google-chart.js',
             'app/bower_components/angular-file-upload/dist/angular-file-upload.min.js',
             'app/bower_components/ng-idle/angular-idle.min.js',
@@ -37,7 +38,8 @@ module.exports = function(config){
             'app/nav/**/*.js',
             'app/product/**/*.js',
             'app/search/**/*.js',
-            'app/userRegistration/**/*.js'
+            'app/overview/**/*.js',
+            'app/registration/**/*.js'
         ],
 
         preprocessors: {
@@ -49,6 +51,7 @@ module.exports = function(config){
             'app/admin/**/!(*test).js': ['coverage'],
             'app/product/**/!(*test).js': ['coverage'],
             'app/search/**/!(*test).js': ['coverage'],
+            'app/overview/**/!(*test).js': ['coverage'],
             'app/userRegistration/**/!(*test).js': ['coverage'],
             'app/app.js': ['coverage'],
             'app/common/components/*.html': 'ng-html2js',

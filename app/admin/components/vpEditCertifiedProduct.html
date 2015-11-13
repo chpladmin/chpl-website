@@ -1,0 +1,95 @@
+<div role="modal" aria-labeled-by="editCertifiedProductLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="editCertifiedProductLabel">Edit Certified Product</h4>
+  </div>
+  <div class="modal-body" ng-form="editForm">
+    <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }} <br />
+    <div class="form-group">
+      <label for="cpClassification">Classification</label>
+      <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cpClassification"
+              ng-options="classification as classification.name for classification in vm.classifications" required>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="cpPractice">Practice Type</label>
+      <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice"
+              ng-options="practice as practice.name for practice in vm.practices" required>
+      </select>
+    </div>
+    <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
+    <div ng-if="vm.isAcbAdmin && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} </div>
+    <div ng-if="vm.isChplAdmin" class="form-group">
+      <label for="cpBody">Certification Body</label>
+      <select class="input-sm form-control" ng-model="vm.cp.certifyingBody" id="cpBody"
+              ng-options="body as body.name for body in vm.bodies" required>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="cpCertDate">Certification Date</label>
+      <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" required></input>
+    </div>
+    <ai-additional-software additional-software="vm.cp.additionalSoftware" is-editing="true"></ai-additional-software>
+    <div class="form-group">
+      <label for="cpStatus">Status</label>
+      <select class="input-sm form-control" ng-model="vm.cp.certificationStatus" id="cpStatus"
+              ng-options="status as status.name for status in vm.statuses" required>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="cpAcbCertId">ACB Certification Id</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.acbCertificationId" id="cpAcbCertId"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpOtherAcb">Other ACB</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cpOtherAcb"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpQMSAtt">Quality Management System Attestation</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.qualityManagementSystemAtt" id="cpQMSAtt"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpPrivacyAtt">Privacy and Security Attestation</label>
+      <input class="" type="checkbox" ng-model="vm.cp.privacyAttestation" id="cpPrivacyAtt"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpReportFileLoc">Report File Location</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpTestingLab">Testing Lab</label>
+      <select class="input-sm form-control" ng-model="vm.cp.testingLabId" id="cpTestingLab"></input>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="cpVisibleOnChpl">Visible On CHPL</label>
+      <input class="" type="checkbox" ng-model="vm.cp.visibleOnChpl" id="cpVisibleOnChpl"></input>
+    </div>
+    <br />
+    <ai-certs certs="vm.cp.certificationResults"
+              cqms="vm.cp.cqmResults"
+              count-certs="{{ vm.cp.countCerts }}"
+              count-cqms="{{ vm.cp.countCqms }}"
+              default-all="true"
+              edit-mode="true"
+              is-editing="true"
+              report-file-location="{{ vm.cp.reportFileLocation }}"
+              applicable-cqm-criteria="vm.cp.applicableCqmCriteria"
+              save="vm.registerCerts(handler)">
+    </ai-certs>
+  </div>
+  <div class="modal-footer">
+    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.prep()">Save Certified Product</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()">Cancel Edits</button>
+  </div>
+</div>

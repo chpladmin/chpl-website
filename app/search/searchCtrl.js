@@ -7,15 +7,15 @@
             $scope.searchResults = [];
             $scope.displayedResults = [];
             $scope.lookaheadSource = {all: [], vendors: [], products: []};
-            $scope.filterGroup = {};
             self.hasDoneASearch = false;
             $scope.resultCount = 0;
+            $scope.visiblePage = 1;
             self.defaultQuery = {simple: true,
-                            orderBy: 'vendor',
-                            sortDescending: false,
-                            pageNumber: 0,
-                            pageSize: 20,
-                            visibleOnCHPL: 'yes'};
+                                 orderBy: 'vendor',
+                                 sortDescending: false,
+                                 pageNumber: 0,
+                                 pageSize: 20,
+                                 visibleOnCHPL: 'yes'};
             $scope.query = angular.copy(self.defaultQuery);
 
             if ($localStorage.searchResults) {
@@ -27,6 +27,7 @@
 
             if ($localStorage.query) {
                 $scope.query = $localStorage.query;
+                $scope.visiblePage = $scope.query.pageNumber + 1;
             }
 
             self.populateSearchOptions = function () {
@@ -44,30 +45,18 @@
                             $scope.lookaheadSource = $localStorage.lookaheadSource;
                         } else {
                             for (var i = 0; i < options.vendorNames.length; i++) {
-                                $scope.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i]});
-                                $scope.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i]});
+                                $scope.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i].name});
+                                $scope.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i].name});
                             }
                             for (var i = 0; i < options.productNames.length; i++) {
-                                $scope.lookaheadSource.all.push({type: 'product', value: options.productNames[i]});
-                                $scope.lookaheadSource.products.push({type: 'product', value: options.productNames[i]});
+                                $scope.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name});
+                                $scope.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name});
                             }
                             $localStorage.lookaheadSource = $scope.lookaheadSource;
                         }
                     });
             };
             self.populateSearchOptions();
-
-            self.certFilters = Object.create(null);
-            self.toggleCertFilter = function (category, title, number) {
-                var key = category + ":" + title;
-                if (key in self.certFilters) {
-                    delete self.certFilters[key];
-                } else {
-                    self.certFilters[key] = number;
-                }
-                $log.info(self.certFilters);
-            };
-            $scope.toggleCertFilter = self.toggleCertFilter;
 
             self.compareIds = Object.create(null);
             self.getCompareIds = function() {
@@ -83,9 +72,15 @@
             };
             $scope.toggleCompareId = self.toggleCompareId;
 
-            self.search = function () {
-                self.hasDoneASearch = true;
+            $scope.prepend = function (name) {
+                if (name.substring(0,3) !== 'CMS') {
+                    return 'NQF-' + name;
+                } else {
+                    return name;
+                }
+            };
 
+            self.search = function () {
                 if ($scope.query.searchTermObject !== undefined) {
                     if (typeof($scope.query.searchTermObject) === 'string' && $scope.query.searchTermObject.length > 0) {
                         $scope.query.searchTermObject = {type: 'previous search', value: $scope.query.searchTermObject};
@@ -107,35 +102,33 @@
                     }
                     $scope.query.product = $scope.query.productObject.value;
                 }
+                if ($scope.query.simple) {
+                    var searchTerm = $scope.query.searchTerm;
+                    for (var key in $scope.query) {
+                        if ('simple-orderBy-sortDescending-pageNumber-pageSize'.indexOf(key) === -1) {
+                            delete $scope.query[key]
+                        }
+                    }
+                    $scope.query.visibleOnCHPL = true;
+                    $scope.query.searchTerm = searchTerm;
+                }
+
                 $localStorage.lookaheadSource = $scope.lookaheadSource;
                 commonService.search($scope.query)
                     .then(function (data) {
+                        self.hasDoneASearch = true;
+
                         $localStorage.searchResults = data;
                         $scope.searchResults = data.results;
                         $scope.displayedResults = [].concat($scope.searchResults);
                         $scope.resultCount = data.recordCount;
                     }, function (error) {
-                        $log.error(error);
+                        self.errorResult();
                     });
 
                 $localStorage.query = $scope.query;
             };
             $scope.search = self.search;
-
-            $scope.doFilter = function () {
-                var certs = [];
-                var cqms = [];
-                for (var key in self.certFilters) {
-                    if (key.indexOf('Clinical') !== 0) {
-                        certs.push(self.certFilters[key]);
-                    } else {
-                        cqms.push(self.certFilters[key]);
-                    }
-                }
-                if (certs.length > 0) $scope.query.certificationCriteria = certs;
-                if (cqms.length > 0) $scope.query.cqms = cqms;
-                self.search();
-            };
 
             $scope.hasResults = function () {
                 return $scope.searchResults !== undefined && $scope.searchResults.length > 0;
@@ -150,31 +143,27 @@
                 $scope.search();
             };
 
+            self.errorResult = function () {
+                delete $localStorage.searchResults;
+                self.hasDoneASearch = true;
+                $scope.searchResults = [];
+                $scope.displayedResults = [];
+                $scope.visiblePage = 1;
+                $scope.resultCount = 0;
+                self.compareIds = Object.create(null);
+            };
+
             $scope.clear = function () {
                 delete $localStorage.searchResults;
                 delete $localStorage.query;
                 delete $localStorage.lookaheadSource;
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
+                $scope.visiblePage = 1;
                 $scope.resultCount = 0;
                 self.compareIds = Object.create(null);
                 self.hasDoneASearch = false;
                 $scope.query = angular.copy(self.defaultQuery);
-            };
-
-            $scope.clearFilter = function () {
-                delete($scope.query.vendor);
-                delete($scope.query.product);
-                delete($scope.query.certificationEdition);
-                delete($scope.query.productClassification);
-                delete($scope.query.practiceType);
-                delete($scope.query.certificationBody);
-
-                for (var elem in self.certFilters) {
-//                    $log.info(elem);
-//                    $scope.certFilter[self.certFilters[elem]].click();
-                    delete self.certFilters[elem];
-                }
             };
 
             $scope.compare = function () {
@@ -198,8 +187,8 @@
                 self.search();
             }
 
-            $scope.pageChanged = function () {
-                $scope.query.pageNumber = $scope.visiblePage - 1;
+            $scope.pageChanged = function (pageNumber) {
+                $scope.query.pageNumber = pageNumber - 1;
                 self.search();
             };
         }]);

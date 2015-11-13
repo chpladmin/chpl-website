@@ -1,44 +1,44 @@
 <div class="row">
   <div class="col-sm-12">
     <p class="text-right">
-      <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts" /><label for="viewAllCerts">See all Certifications</label>
+      <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts" /><label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
     </p>
     <accordion close-others="true">
-      <accordion-group heading="Certifications ({{ vm.countCerts }} met)" aria-expanded="false">
-        <div ng-show="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.certs track by $index">
+      <accordion-group heading="Certification Criteria ({{ vm.countCerts }} met)" aria-expanded="false">
+        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.certs | orderBy:'number' track by $index">
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
             {{ n.number }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="vm.editCerts[n.number]" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
-            <label for="data_{{$parent.$parent.$index + '_' + $index}}">{{ n.number }}: {{ n.title }}</label>
+            <input type="checkbox" ng-model="n.success" id="data_{{n.number}}"></input>
+            <label for="data_{{n.number}}">{{ n.number }}: {{ n.title }}</label>
           </p>
         </div>
       </accordion-group>
       <accordion-group heading="Clinical Quality Measures ({{ vm.countCqms }} met)" aria-expanded="false">
-        <div ng-show="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.builtCqms | orderBy:'number' track by $index">
+        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-6' : 'col-md-4'" ng-repeat="n in vm.builtCqms | orderBy:'id' track by $index">
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-            <b ng-if="n.hasVersion">{{ n.version.join(', ') }}</b> {{ n.number }}: {{ n.title }}
+            <b ng-if="n.hasVersion">{{ n.version.sort().join(', ') }}</b> {{ n.id }}: {{ n.title }}
           </p>
           <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="vm.editCqms[n.number]" ng-if="!n.hasVersion" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"></input>
+            <input type="checkbox" ng-model="vm.editCqms[n.id]" ng-if="!n.hasVersion" id="data_{{n.id}}"></input>
             <span class="cert-bloc" ng-if="n.hasVersion">
-              <select ng-model="vm.editCqms[n.number]" multiple data-ng-attr-size="{{ vm.allCqms[n.number].versions.length + 1 }}" id="data_{{$parent.$parent.$parent.$index + '_' + $index}}"
-                      ng-options="version for version in vm.allCqms[n.number].versions">
+              <select ng-model="vm.editCqms[n.id]" multiple data-ng-attr-size="{{ vm.allCqms[n.id].versions.length + 1 }}" id="data_{{n.id}}"
+                      ng-options="version for version in vm.allCqms[n.id].versions">
                 <option value=""></option>
               </select>
             </span>
-            <label for="data_{{$parent.$parent.$index + '_' + $index}}">{{ n.number }}: {{ n.title }}</label>
+            <label for="data_{{n.id}}">{{ n.id }}: {{ n.title }}</label>
           </p>
         </div>
       </accordion-group>
       <accordion-group heading="ATL Test Report" aria-expanded="false">
-        <h3>The test lives here</h3>
-        <p>Pellentesque dapibus suscipit ligula.  Donec posuere augue in quam.  Etiam vel tortor sodales tellus ultricies commodo.  Suspendisse potenti.  Aenean in sem ac leo mollis blandit.  Donec neque quam, dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.  Etiam laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.  Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.  Vestibulum convallis, lorem a tempus semper, dui dui euismod elit, vitae placerat urna tortor vitae lacus.  Nullam libero mauris, consequat quis, varius et, dictum id, arcu.  Mauris mollis tincidunt felis.  Aliquam feugiat tellus ut neque.  Nulla facilisis, risus a rhoncus fermentum, tellus tellus lacinia purus, et dictum nunc justo sit amet elit.</p>
+        <h3>ATL Test Report</h3>
+        <p>The following link provides the detailed test results summary from the Accredited Testing Laboratory (ATL) responsible for testing the corresponding certified product.</p>
         <h4>Report File Location</h4>
         <a href="{{ vm.reportFileLocation }}">{{ vm.reportFileLocation }}</a>
       </accordion-group>

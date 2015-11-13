@@ -182,7 +182,8 @@
 
             it('should create a mergeVendor if more than one vendor is selected', function () {
                 expect(ctrl.mergeVendor).toBeUndefined();
-                ctrl.vendorSelect = [{vendor: 'vendor1'}, {vendor: 'vendor2'}];
+                ctrl.vendorSelect = {vendor: 'vendor1'};
+                ctrl.mergingVendors = [{vendor: 'vendor2'}];
                 ctrl.selectVendor();
                 expect(ctrl.mergeVendor).toEqual({vendor: 'vendor1'});
             });
@@ -195,49 +196,20 @@
 
             it('should set the activeProduct and call getVersionsByProduct if there\'s one selected product', function () {
                 expect(ctrl.activeProduct).toBe('');
-                ctrl.productSelect = [{product: 'product1'}];
-                ctrl.activeVendor = [].concat({vendorId: '123'});
+                ctrl.productSelect = {product: 'product1'};
+                ctrl.activeVendor = {vendorId: '123'};
                 ctrl.selectProduct();
-                expect(ctrl.activeProduct).toEqual([{product: 'product1', vendorId: '123'}]);
+                expect(ctrl.activeProduct).toEqual({product: 'product1', vendorId: '123'});
                 expect(commonService.getVersionsByProduct).toHaveBeenCalled();
             });
 
             it('should create a mergeProduct if more than one product is selected', function () {
                 expect(ctrl.mergeProduct).toBeUndefined();
-                ctrl.productSelect = [{product: 'product1'}, {product: 'product2'}];
+                ctrl.activeVendor = {vendorId: '123'};
+                ctrl.productSelect = {product: 'product1'};
+                ctrl.mergingProducts = [{product: 'product1'}, {product: 'product2'}];
                 ctrl.selectProduct();
-                expect(ctrl.mergeProduct).toEqual({product: 'product1'});
-            });
-
-            it('should know when address fields are required', function () {
-                var vendor = {name: 'name', address: null};
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address = {};
-                vendor.address.line1 = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.line1 = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.line1);
-                vendor.address.line2 = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.line2 = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.line2);
-                vendor.address.city = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.city = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.city);
-                vendor.address.region = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.region = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.region);
-                vendor.address.country = '';
-                expect(ctrl.addressCheck(vendor)).toBeFalsy();
-                vendor.address.country = 'line';
-                expect(ctrl.addressCheck(vendor)).toBeTruthy();
-                delete(vendor.address.country);
+                expect(ctrl.mergeProduct).toEqual({product: 'product1', vendorId: '123'});
             });
         });
     });
