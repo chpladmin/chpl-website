@@ -1,0 +1,67 @@
+<div role="modal" aria-labeled-by="editLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit ACB</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ACB</h4>
+  </div>
+  <div class="modal-body" ng-form="editForm">
+    <div class="form-group">
+      <label for="acbName">ACB Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.acb.name" id="acbName"></input>
+    </div>
+    <div class="form-group">
+      <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.acb.address.line1" id="addressLine1" name="addressLine1"></input>
+    </div>
+    <div class="form-group">
+      <label for="addressLine2">Address Line 2</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.acb.address.line2" id="addressLine2"></input>
+    </div>
+    <div class="form-group">
+      <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.acb.address.city" id="addressCity"></input>
+    </div>
+    <div class="form-group">
+      <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.acb.address.state" id="addressState"></input>
+    </div>
+    <div class="form-group">
+      <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.acb.address.zipcode" id="addressZipcode"></input>
+    </div>
+    <div class="form-group">
+      <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.acb.address.country" id="addressCountry"></input>
+    </div>
+    <div class="form-group">
+      <label for="acbWebsite">Website</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.acb.website" id="acbWebsite"></input>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block"
+            ng-if="vm.action === 'edit'"
+            ng-click="vm.save()"><i class="fa fa-save"></i> Save ACB</button>
+    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block"
+            ng-if="vm.action === 'create'"
+            ng-click="vm.create()"><i class="fa fa-save"></i> Create ACB</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
+    <button class="btn btn-danger btn-block"
+            ng-if="vm.action === 'edit' && vm.isChplAdmin"
+            confirm="Are you sure you wish to delete this ACB? This action is permanent."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.deleteAcb()"><i class="fa fa-trash-o"></i> Delete ACB</button>
+  </div>
+</div>

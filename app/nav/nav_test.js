@@ -3,21 +3,17 @@
 
     describe('app.nav', function () {
 
-        var httpProvider, authInterceptor, authService, userService;
-        var token = 'example token';
+        var httpProvider, authInterceptor, authService, mockAuthService;
         var username = 'user name';
-        var invalidLogin = 'Invalid username or password';
-        var mockAuthService, mockUserService;
+        var token = 'example token';
         var trueApiUrl = 'http://localhost:8080/chpl-service';
         var falseApiUrl = 'http://example.com';
 
         beforeEach(function() {
             mockAuthService = {};
-            mockUserService = {};
 
             module('app.nav', function ($provide, $httpProvider) {
                 $provide.value('authService', mockAuthService);
-                $provide.value('userService', mockUserService);
                 httpProvider = $httpProvider;
             });
 
@@ -37,13 +33,6 @@
                 };
 
                 mockAuthService.isAuthed = function () {
-                };
-
-                mockUserService.login = function () {
-                    console.log('debug');
-                    var defer = $q.defer();
-                    defer.resolve({status: 404});
-                    return defer.promise;
                 };
             });
 
@@ -117,41 +106,8 @@
                 expect(ctrl).toBeDefined();
             });
 
-            it('should have a method to check if the path is active', function () {
-                $location.path('/privacy');
-                expect($location.path()).toBe('/privacy');
-                expect(ctrl.isActive('/privacy')).toBe(true);
-                expect(ctrl.isActive('/search')).toBe(false);
-            });
-
             it('should return the user name of the logged in user', function () {
                 expect(ctrl.getUsername()).toEqual(username);
-            });
-
-            it('should return an invalid username message if the request is bad', function () {
-                var response = {status: 404};
-                expect(ctrl.message).toBe(undefined);
-                ctrl.handleLogin(response);
-                expect(ctrl.message).toBe(invalidLogin);
-            });
-
-            it('should return an invalid username message if the credentials are bad', function () {
-                var response = {status: 200, data: {}};
-                ctrl.handleLogin(response);
-                expect(ctrl.message).toBe(invalidLogin);
-            });
-
-            it('should change the location to "/admin" on a successful login', function () {
-                var response = {status: 200, data: {token: 'a token'}};
-                ctrl.handleLogin(response);
-                expect($location.path()).toBe('/admin');
-                expect(ctrl.message).toBe('');
-            });
-
-            it('should call the authService to log out', function () {
-                spyOn(mockAuthService, 'logout');
-                ctrl.logout();
-                expect(mockAuthService.logout).toHaveBeenCalled();
             });
 
             it('should call the authService to check if the user is authenticated', function () {

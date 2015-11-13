@@ -1,48 +1,51 @@
-<div ng-controller="UserRegistrationController as vm">
+<div>
   <div class="row">
     <div class="col-md-12">
       <h1>User Registration</h1>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
-      <p>{{ vm.authorizeDetails.hash }}</p>
-
+    </div>
+  </div>
+  <div ng-if="vm.message.value.length > 0" class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <p ng-class="{ 'bg-success': vm.message.success, 'bg-danger': !vm.message.success }">{{ vm.message.value }}</p>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-6" ng-form="createUserForm">
       <p>Create a new account</p>
-      <label for="username" class="control-label">Username</label>
+      <label for="username" class="control-label">Username <span class="text-danger">*</span></label>
       <input type="text" id="username" ng-model="vm.userDetails.user.subjectName" class="form-control" required />
 
-      <label for="password" class="control-label">Password</label>
+      <label for="password" class="control-label">Password <span class="text-danger">*</span></label>
       <input type="password" id="password" ng-model="vm.userDetails.user.password" class="form-control" required />
 
-      <label for="passwordverify" class="control-label">Verify password</label>
+      <label for="passwordverify" class="control-label">Verify password <span class="text-danger">*</span></label>
       <input type="password" id="passwordverify" ng-model="vm.userDetails.user.passwordverify" class="form-control" required />
 
       <label for="title" class="control-label">Title</label>
       <input type="text" id="title" ng-model="vm.userDetails.user.title" class="form-control" />
 
-      <label for="firstname" class="control-label">First Name</label>
+      <label for="firstname" class="control-label">First Name <span class="text-danger">*</span></label>
       <input type="text" id="firstname" ng-model="vm.userDetails.user.firstName" class="form-control" required />
 
-      <label for="lastname" class="control-label">Last Name</label>
+      <label for="lastname" class="control-label">Last Name <span class="text-danger">*</span></label>
       <input type="text" id="lastname" ng-model="vm.userDetails.user.lastName" class="form-control" required />
 
-      <label for="email" class="control-label">Email</label>
+      <label for="email" class="control-label">Email <span class="text-danger">*</span></label>
       <input type="email" id="email" ng-model="vm.userDetails.user.email" class="form-control" required />
 
-      <label for="phone" class="control-label">Phone</label>
+      <label for="phone" class="control-label">Phone <span class="text-danger">*</span></label>
       <input type="text" id="phone" ng-model="vm.userDetails.user.phoneNumber" class="form-control" required />
 
       <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="createUserForm.$invalid">Create account</button>
     </div>
     <div class="col-md-6" ng-form="authorizeUserForm">
       <p>Or sign into your existing account</p>
-      <label for="authorize-username" class="control-label">Username</label>
+      <label for="authorize-username" class="control-label">Username <span class="text-danger">*</span></label>
       <input type="text" id="authorize-username" ng-model="vm.authorizeDetails.userName" class="form-control" required />
 
-      <label for="authorize-password" class="control-label">Password</label>
+      <label for="authorize-password" class="control-label">Password <span class="text-danger">*</span></label>
       <input type="password" id="authorize-password" ng-model="vm.authorizeDetails.password" class="form-control" required />
 
       <button class="btn btn-default btn-block" ng-click="vm.authorizeUser()" ng-disabled="authorizeUserForm.$invalid">Sign into your account</button>

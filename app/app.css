@@ -64,7 +64,7 @@ footer {
 
 h1 {
     font-family: 'Oswald', sans-serif;
-    font-weight: 300;
+    font-weight: 400; /* 400-regular, 300-light */
     color: #0070c9;
 }
 
@@ -82,8 +82,12 @@ h2 {
     margin-right: 0px;
 }
 
-.spaced-out {
-    margin: 40px;
+.splash-row .spaced-out {
+    margin: 40px 40px;
+}
+
+footer .spaced-out {
+    margin: 10px 40px;
 }
 
 #loading-bar .bar {
@@ -98,8 +102,16 @@ h2 {
 }
 
 #loading-bar-spinner .spinner-icon {
+  border:10px solid transparent;
   border-top-color:  #ffdd3c;
   border-left-color: #ffdd3c;
+  top: 50%;
+  left: 50%;
+  margin-top: -64px;
+  margin-left: -64px;
+  width:128px;
+  height: 128px;
+  position: fixed;
 }
 
 /*

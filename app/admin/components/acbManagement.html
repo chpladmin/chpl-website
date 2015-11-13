@@ -1,108 +1,43 @@
 <section class="row">
-  <div class="col-md-12">
-    <h2>ACB Management</h2>
-    <tabset vertical="false">
-      <tab heading="Overview" active="true">
-        <div class="row">
-          <div class="col-md-12">
-            <h3>Overview of ACB Management</h3>
-            <p ng-if="vm.isChplAdmin">You are a CHPL admin. You can do stuff like:</p>
-            <p ng-if="vm.isAcbAdmin">You are an ACB admin. You can do stuff like:</p>
-          </div>
-        </div>
-      </tab>
-      <tab ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id" heading="{{ acb.name }}">
-        <div class="row">
-          <div class="col-md-12">
-            <h3>ACB: {{acb.name}}</h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <div ng-show="vm.isModifying">
-              <form name="acbEditForm{{acb.id}}" novalidate>
-                <h4>ACB Information</h4>
-                <label for="acb-new-name" class="control-label">ACB Name <span class="text-danger">*</span></label>
-                <input type="text" id="acb-new-name" ng-model="acb.name" class="form-control" required />
-                <label for="acb-new-website" class="control-label">ACB Website</label>
-                <input type="text" id="acb-new-website" ng-model="acb.website" class="form-control" />
-                <h4>Address</h4>
-                <label for="acb-new-line1" class="control-label">Street Address Line 1 <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
-                <input type="text" id="acb-new-line1" ng-model="acb.address.line1" class="form-control" ng-required="vm.addressRequired(acb)" />
-                <label for="acb-new-line2" class="control-label">Street Address Line 2</label>
-                <input type="text" id="acb-new-line2" ng-model="acb.address.line2" class="form-control" />
-                <label for="acb-new-city" class="control-label">City <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
-                <input type="text" id="acb-new-city" ng-model="acb.address.city" class="form-control" ng-required="vm.addressRequired(acb)" />
-                <label for="acb-new-region" class="control-label">Region <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
-                <input type="text" id="acb-new-region" ng-model="acb.address.region" class="form-control" ng-required="vm.addressRequired(acb)" />
-                <label for="acb-new-country" class="control-label">Country <span ng-if="vm.addressRequired(acb)" class="text-danger">*</span></label>
-                <input type="text" id="acb-new-country" ng-model="acb.address.country" class="form-control" ng-required="vm.addressRequired(acb)" />
-                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.modifyACB(acb)" ng-disabled="acbEditForm{{acb.id}}.$invalid">Save changes to this ACB</button>
-                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.cancelACB()">Cancel editing this ACB</button>
-                <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying; vm.deleteACB(acb)"
-                        confirm="Are you sure you wish to delete ACB: {{ acb.name }}? This action can not be undone."
-                        confirm-ok="Yes"
-                        confirm-cancel="No"
-                        confirm-settings="{animation: false}"
-                        ng-if="vm.isChplAdmin">Remove this ACB</button>
-              </form>
-            </div>
-            <div ng-show="!vm.isModifying">
-              <h4>ACB Information</h4>
-              <span>Name: {{ acb.name }}</span><br />
-              <span>Website: {{ acb.website }}</span><br />
-              <h4>Address</h4>
-              <span>Line 1: {{ acb.address.line1 }}</span><br />
-              <span>Line 2: {{ acb.address.line2 }}</span><br />
-              <span>City: {{ acb.address.city }}</span><br />
-              <span>Region: {{ acb.address.region }}</span><br />
-              <span>Country: {{ acb.address.country }}</span><br />
-              <button class="btn btn-default btn-block" ng-click="vm.isModifying = !vm.isModifying">Edit this ACB</button>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <ai-user-management
-               acb-id="{{ acb.id }}">
-            </ai-user-management>
-          </div>
-        </div>
-      </tab>
-      <tab ng-if="vm.isChplAdmin" heading="Add new ACB">
-        <div class="row">
-          <div class="col-md-12">
-            <h2>Add a new ACB</h2>
-          </div>
-        </div>
-        <div class="row">
-          <form name="acbNewForm" novalidate>
-            <div class="col-md-4">
-              <h4>ACB Information</h4>
-              <label for="acb-new-name" class="control-label">ACB Name <span class="text-danger">*</span></label>
-              <input type="text" id="acb-new-name" ng-model="vm.newACB.name" class="form-control" required />
-              <label for="acb-new-website" class="control-label">ACB Website</label>
-              <input type="text" id="acb-new-website" ng-model="vm.newACB.website" class="form-control" />
-            </div>
-            <div class="col-md-8">
-              <h4>Address</h4>
-              <label for="acb-new-line1" class="control-label">Street Address Line 1 <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
-              <input type="text" id="acb-new-line1" ng-model="vm.newACB.address.line1" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
-              <label for="acb-new-line2" class="control-label">Street Address Line 2</label>
-              <input type="text" id="acb-new-line2" ng-model="vm.newACB.address.line2" class="form-control" />
-              <label for="acb-new-city" class="control-label">City <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
-              <input type="text" id="acb-new-city" ng-model="vm.newACB.address.city" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
-              <label for="acb-new-region" class="control-label">Region <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
-              <input type="text" id="acb-new-region" ng-model="vm.newACB.address.region" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
-              <label for="acb-new-country" class="control-label">Country <span ng-if="vm.addressRequired(vm.newACB)" class="text-danger">*</span></label>
-              <input type="text" id="acb-new-country" ng-model="vm.newACB.address.country" class="form-control" ng-required="vm.addressRequired(vm.newACB)" />
-            </div>
-          </form>
-        </div>
-        <div class="row">
-          <div class="col-md-4 col-md-offset-4">
-            <button class="btn btn-default btn-block" ng-click="vm.createACB()" ng-disabled="acbNewForm.$invalid">Create this ACB</button>
-          </div>
-        </div>
-      </tab>
-    </tabset>
+  <div class="col-sm-3 admin-nav">
+    <div class="panel panel-default">
+      <ul class="nav nav-pills nav-stacked">
+        <li ng-class="{'active': vm.activeAcb.id === acb.id}" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" class="" ng-click="vm.activateAcb(acb)">{{ acb.name }}</a></li>
+        <li ng-if="vm.isChplAdmin"><a href="" class="" ng-click="vm.createAcb()">New ACB</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-9 admin-inner-tab">
+    <div class="row admin-label-spaced lead text-center" ng-if="vm.workType !== 'newAcb'">
+      <div class="col-sm-12">
+        <ul class="list-inline">
+          <li><strong>What would you like to manage?</strong></li>
+          <li><input type="radio" ng-model="vm.workType" value="acb" id="rdAcb"></input><label for="rdAcb">ACB</label></li>
+          <li><input type="radio" ng-model="vm.workType" value="user" id="rdUsr"></input><label for="rdUsr">Users</label></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" ng-if="vm.workType === 'acb'">
+        <h2>ACB Information</h2>
+        <span>Name: {{ vm.activeAcb.name }}</span><br />
+        <span>Website: {{ vm.activeAcb.website }}</span><br />
+        <h3>Address</h3>
+        <span>Line 1: {{ vm.activeAcb.address.line1 }}</span><br />
+        <span>Line 2: {{ vm.activeAcb.address.line2 }}</span><br />
+        <span>City: {{ vm.activeAcb.address.city }}</span><br />
+        <span>State: {{ vm.activeAcb.address.state }}</span><br />
+        <span>Zip Code: {{ vm.activeAcb.address.zipcode }}</span><br />
+        <span>Country: {{ vm.activeAcb.address.country }}</span><br />
+        <button class="btn btn-default btn-block" ng-click="vm.editAcb(vm.activeAcb)">Edit this ACB</button>
+      </div>
+    </div>
+    <div class="row" ng-if="vm.workType === 'user'">
+      <div class="col-md-12">
+        <ai-user-management
+           acb-id="{{ vm.activeAcb.id }}">
+        </ai-user-management>
+      </div>
+    </div>
   </div>
 </section>

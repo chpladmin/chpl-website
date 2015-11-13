@@ -20,6 +20,14 @@ ul.pagination li {
     cursor: pointer;
 }
 
+.splash-row .jumbotron {
+    background-color: inherit;
+}
+
+.jumbotron h1 {
+    color: #0070c9;
+}
+
 .productHeader {
     cursor: pointer;
 }

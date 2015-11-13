@@ -6,24 +6,46 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>URL</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Security</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="api in vm.apiCalls | orderBy: 'request'">
+            <td>{{ api.category }}</td>
+            <td>{{ api.request }}</td>
+            <td>{{ api.requestType }}</td>
+            <td>{{ api.description }}</td>
+            <td>{{ api.security }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
       <h2>API Calls</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-12">
       <accordion close-others="false">
-        <accordion-group heading="{{ api.name }}" ng-repeat="api in vm.apiCalls | orderBy: 'request'" aria-expanded="false">
-          <h3 id="{{ api.id }}">{{ api.name }}</h3>
+        <accordion-group heading="{{ api.request }}" ng-repeat="api in vm.apiCalls | orderBy: 'request'" aria-expanded="false">
+          <h3>{{ api.category }}</h3>
           <p>{{ api.description }}</p>
           <p ng-if="api.note !== undefined" class="bg-warning">Special note: {{ api.note }}</p>
-          <h4>Status</h4>
-          <p>{{ api.status }}</p>
           <span ng-if="api.security !== null && api.security !== undefined">
             <h4>Security</h4>
             <p>Restricted to users with the role: {{ api.security}}</p>
           </span>
           <h4>URL</h4>
-          <p>{{ api.requestType }} {{ api.request }}</p>
+          <p>{{ api.requestType }}: {{ api.request }}</p>
           <h4>Request</h4>
           <div ng-if="api.requestType === 'GET'">
             <p>The request is a query<span ng-if="api.parameters !== null && api.parameters !== undefined">, with parameters:</span><br />
@@ -45,30 +67,6 @@
           </p>
         </accordion-group>
       </accordion>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>URL</th>
-            <th>Type</th>
-            <th>Security</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="api in vm.apiCalls | orderBy: 'request'">
-            <td>{{ api.name }}</td>
-            <td>{{ api.request }}</td>
-            <td>{{ api.requestType }}</td>
-            <td>{{ api.security }}</td>
-            <td>{{ api.status }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>

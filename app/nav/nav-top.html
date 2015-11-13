@@ -16,7 +16,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li ng-class="{'active': nav.isActive('/search') }"><a href="#/search">Home</a></li>
           <li ng-class="{'active': nav.isActive('/overview') }"><a href="#/overview">Overview</a></li>
-          <li ng-class="{'active': nav.isActive('/contact') }"><a href="#/contact">Contact</a></li>
+          <li ng-class="{'active': nav.isActive('/contact') }"><a href="mailto:ONC.Certification@hhs.gov">Contact</a></li>
           <li ng-class="{'active': nav.isActive('/listing') }"><a href="#/listing">Product Listing</a></li>
           <li ng-class="{'active': nav.isActive('/api') }"><a href="#/api">API</a></li>
 
@@ -25,20 +25,9 @@
             <ul class="dropdown-menu">
               <li ng-if="nav.isAuthed()"><a href="#/admin">CHPL Administration</a></li>
               <li>
-                <form class="navbar-form" role="log in / log out">
-                  <div class="form-group" ng-hide="nav.isAuthed()">
-                    <label for="username">User Name</label>
-                    <input type="text" class="form-control" id="username" ng-model="nav.username" placeholder="username" />
-                  </div>
-                  <div class="form-group" ng-hide="nav.isAuthed()">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" ng-model="nav.password" placeholder="password" />
-                  </div>
-                  <button class="btn btn-default btn-block" ng-click="nav.login()" ng-hide="nav.isAuthed()">Log In</button>
-                  <button class="btn btn-default btn-block" ng-click="nav.logout()" ng-show="nav.isAuthed()">Log Out</button>
-                </form>
-              </li>
-              <p class="navbar-text" ng-if="nav.message.length > 0">{{ nav.message }}</p>
+                <ai-login form-class="navbar-form"
+                          p-class="navbar-text">
+                </ai-login>
             </ul>
           </li>
         </ul>
