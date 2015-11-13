@@ -57,6 +57,21 @@
           <p>{{ vm.product.practiceType.name }}</p>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <h3>Quality Management System Attestation</h3>
+          <p>{{ vm.product.qualityManagementSystemAtt }}</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Privacy and Security Attestation</h3>
+          <p ng-if="vm.product.privacyAttestation">True</p>
+          <p ng-if="!vm.product.privacyAttestation">False</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Other ACB</h3>
+          <p>{{ vm.product.otherAcb }}</p>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row">
