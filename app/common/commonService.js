@@ -134,6 +134,14 @@
                 return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays, API);
             };
 
+            self.getUserActivity = function (nDays) {
+                return self.simpleApiCall('/activity/users?lastNDays=' + nDays, API);
+            };
+
+            self.getUserActivities = function (nDays) {
+                return self.simpleApiCall('/activity/user_activities?lastNDays=' + nDays, API);
+            };
+
             self.getUploadingCps = function () {
                 return self.simpleApiCall('/certified_products/pending', API);
             };

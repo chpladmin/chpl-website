@@ -6,6 +6,7 @@
         <li ng-class="{'active': vm.tab === 'dev'}"><a href="" class="" ng-click="vm.changeTab('dev')">Developers</a></li>
         <li ng-class="{'active': vm.tab === 'prod'}"><a href="" class="" ng-click="vm.changeTab('prod')">Products</a></li>
         <li ng-class="{'active': vm.tab === 'acb'}"><a href="" class="" ng-click="vm.changeTab('acb')">ACBs</a></li>
+        <li ng-class="{'active': vm.tab === 'users'}" ng-if="vm.isChplAdmin"><a href="" class="" ng-click="vm.changeTab('users')">Users</a></li>
         <li ng-class="{'active': vm.tab === 'visitors'}"><a href="" class="" ng-click="vm.changeTab('visitors')">Visitors</a></li>
       </ul>
     </div>
@@ -97,6 +98,62 @@
 		      <td class="">{{ activity.name }}</td>
 		      <td class=""><span ng-bind-html="activity.action"></span></td>
 		      <td class="">{{ activity.date | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" ng-if="vm.tab === 'users' && vm.isChplAdmin">
+      <div class="col-sm-12">
+        <h3>User Activity</h3>
+        <table st-table="vm.displayedUsers" st-safe-src="vm.searchedUsers" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
+		      <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
+              <th class="search-header" st-sort="certBody" st-skip-natural="true">Certification Body</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+	        <tr ng-repeat="activity in vm.displayedUsers">
+		      <td class="">{{ activity.vendor }}</td>
+		      <td class="">{{ activity.product }}</td>
+		      <td class="">{{ activity.certBody }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>User Actions</h3>
+        <table st-table="vm.displayedUserActivities" st-safe-src="vm.searchedUserActivities" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="user.lastName" st-skip-natural="true" st-sort-default>User</th>
+              <th class="">Activities</th>
+            </tr>
+          </thead>
+          <tbody>
+	        <tr ng-repeat="activity in vm.displayedUserActivities">
+		      <td class="">{{ activity.user.firstName }} {{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
+		      <td class="">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Action</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="action in activity.activities">
+                      <td>{{ action.description }}</td>
+                      <td>{{ action.activityDate | date : 'medium' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
             </tr>
           </tbody>
         </table>
