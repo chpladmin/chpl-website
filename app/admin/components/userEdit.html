@@ -50,11 +50,11 @@
     </div>
     <div ng-if="vm.action === 'invite'">
       <div class="form-group">
-        <label for="inviteEmail" class="control-label">Email</label>
+        <label for="inviteEmail" class="control-label">Email <span class="text-danger">*</span></label>
         <input type="email" id="inviteEmail" ng-model="vm.userInvitation.emailAddress" class="form-control" required />
       </div>
       <div class="form-group">
-        <label for="newRoles" class="control-label">User Role(s)</label>
+        <label for="newRoles" class="control-label">User Role(s) <span class="text-danger">*</span></label>
         <select id="newRoles" ng-options="role as role for role in vm.roles" ng-model="vm.userInvitation.permissions" class="form-control" multiple required></select>
       </div>
     </div>

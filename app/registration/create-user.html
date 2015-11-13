@@ -7,7 +7,7 @@
   </div>
   <div ng-if="vm.message.value.length > 0" class="row">
     <div class="col-md-6 col-md-offset-3">
-      <p ng-class="{ vm.message.success ? 'bg-success' : 'bg-danger' }">{{ vm.message.value }}</p>
+      <p ng-class="{ 'bg-success': vm.message.success, 'bg-danger': !vm.message.success }">{{ vm.message.value }}</p>
     </div>
   </div>
 

@@ -116,17 +116,19 @@
             }
 
             function refreshUser () {
-                commonService.getUserActivity(7)
-                    .then(function (data) {
-                        vm.searchedUsers = vm.interpretUsers(data);
-                        vm.displayedUsers = [].concat(vm.searchedUsers);
-                    });
                 if (vm.isChplAdmin) {
+                    commonService.getUserActivity(7)
+                        .then(function (data) {
+                            vm.searchedUsers = vm.interpretUsers(data);
+                            vm.displayedUsers = [].concat(vm.searchedUsers);
+                        });
+/*
                     commonService.getUserActivities(7)
                         .then(function (data) {
                             vm.searchedUserActivities = vm.interpretUserActivities(data);
                             vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
                         });
+*/
                 }
             }
 
