@@ -6,36 +6,36 @@
   </div> <!-- search introduction 'header' -->
 
   <div class="row search-inputs">
-  <form class="form-horizontal" role="search"> <!-- simple search -->
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="form-group form-group-lg">
-          <div class="col-sm-1">
-            <label for="searchField" class="control-label sr-only">Search</label>
-          </div>
-          <div class="col-sm-7">
-            <div class="input-group">
-              <div class="input-group-addon"><i class="fa fa-search"></i></div>
-              <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="query.searchTermObject"
-                     typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
-                     typeahead-input-formatter="$model.value" />
+    <form class="form-horizontal" role="search"> <!-- simple search -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group form-group-lg">
+            <div class="col-sm-1">
+              <label for="searchField" class="control-label sr-only">Search</label>
+            </div>
+            <div class="col-sm-7">
+              <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="query.searchTermObject"
+                       typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
+                       typeahead-input-formatter="$model.value" />
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <button id="searchButton" type="button" class="btn btn-default btn-lg form-control" ng-click="search()">Search</button>
+            </div>
+            <div class="col-sm-2">
+              <a href="" ng-if="query.simple" ng-click="query.simple = !query.simple">Advanced search</a>
+              <a href="" ng-if="!query.simple" ng-click="query.simple = !query.simple">Simple search</a>
+              <span ng-if="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
+              <br /><a href="" ng-click="browseAll()">Browse all</a>
             </div>
           </div>
-          <div class="col-sm-2">
-            <button id="searchButton" type="button" class="btn btn-default btn-lg form-control" ng-click="search()">Search</button>
-          </div>
-          <div class="col-sm-2">
-            <a href="" ng-if="query.simple" ng-click="query.simple = !query.simple">Advanced search</a>
-            <a href="" ng-if="!query.simple" ng-click="query.simple = !query.simple">Simple search</a>
-            <span ng-if="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
-            <br /><a href="" ng-click="browseAll()">Browse all</a>
-          </div>
         </div>
-      </div>
-    </div> <!-- simple search row -->
+      </div> <!-- simple search row -->
 
-    <div class="row" ng-if="!query.simple"> <!-- advanced search -->
-      <div class="col-xs-12">
+      <div class="row" ng-if="!query.simple"> <!-- advanced search -->
+        <div class="col-xs-12">
           <div class="form-group form-group-sm">
             <div class="col-sm-1">
               <label for="vendorField" class="control-label">Developer</label>
@@ -94,7 +94,7 @@
             </div>
             <div class="col-sm-3">
               <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control"
-                      ng-options="cqm.name as cqm.name + ': ' + cqm.title for cqm in cqms | orderBy:'name'">
+                      ng-options="cqm.name as prepend(cqm.name) + ': ' + cqm.title for cqm in cqms | orderBy:'name'">
               </select>
             </div>
           </div> <!-- second row of advanced -->
@@ -126,9 +126,9 @@
             </div>
           </div> <!-- third row of advanced search -->
 
-      </div>
-    </div> <!-- advanced search row -->
-  </form>
+        </div>
+      </div> <!-- advanced search row -->
+    </form>
   </div>
 
   <div id="resultsSection" ng-if="hasSearched()">
@@ -140,64 +140,7 @@
       </div>
     </div>
     <div ng-if="hasResults()" class="row">
-      <div ng-if="visibleFilter" class="col-md-4">
-        <h3>Filter</h3>
-        <a href="" ng-click="clearFilter()" class="pull-right">Clear Filter</a>
-
-        <label for="vendor-search">Filter on Developer</label>
-        <input id="vendor-search" placeholder="filter on developer" class="input-sm form-control" type="search" ng-model="query.vendor"/>
-        <label for="product-search">Filter on Product</label>
-        <input id="product-search" placeholder="filter on product" class="input-sm form-control" type="search" ng-model="query.product"/>
-
-        <label for="edition-search">Filter on Edition</label>
-        <select id="edition-search" class="input-sm form-control" ng-model="query.certificationEdition"
-                ng-options="e.name as e.name for e in editions | orderBy:'name'">
-        </select>
-
-        <label for="classification-search">Filter on Classification</label>
-        <select id="classification-search" class="input-sm form-control" ng-model="query.productClassification"
-                ng-options="c.name as c.name for c in classifications | orderBy:'name'">
-        </select>
-
-        <label for="practiceType-search">Filter on Practice Type</label>
-        <select id="practiceType-search" class="input-sm form-control" ng-model="query.practiceType"
-                ng-options="p.name as p.name for p in practices | orderBy:'name'">
-        </select>
-
-        <label for="certBody-search">Filter on Certification Body</label>
-        <select id="certBody-search" class="input-sm form-control" ng-model="query.certificationBody"
-                ng-options="cb.name as cb.name for cb in certBodies | orderBy:'name'">
-        </select>
-
-        <div>
-          <button class="btn btn-default btn-block" href="" ng-click="doFilter()">Filter results</button>
-        </div>
-
-        <div ng-if="false">
-          <h3>Filter on Certification Criteria and Clinical Quality Measures</h3>
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <div ng-repeat="category in certsNcqms">
-                <label class="filter-category" ng-click="showCategory = !showCategory">
-                  <i class="fa fa-chevron-right" ng-class="{'fa-rotate-90' : showCategory}"></i>
-                  {{ category.title }}
-                </label>
-                <br />
-                <span ng-class="{'hidden' : !showCategory}" ng-repeat="cert in category.certs">
-                  <input type="checkbox" ng-model="certFilter[cert.number]" ng-change="toggleCertFilter(category.title, cert.title, cert.number); certsChanged()" id="certFilter{{ cert.number }}" />
-                  <label for="certFilter{{ cert.number }}">{{ cert.number + ": " + cert.title }}</label>
-                  <br />
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div ng-class="visibleFilter ? 'col-md-8' : 'col-md-12'">
-        <span class="search-activate-filter" ng-click="visibleFilter = !visibleFilter"><i class="fa fa-2x fa-angle-double-right" ng-class="{ 'fa-flip-horizontal' : visibleFilter }"></i>
-          {{ visibleFilter ? 'Hide' : 'Show'}}  Filter
-        </span>
+      <div class="col-md-12">
         <table class="table table-striped">
           <thead>
             <tr>
@@ -209,7 +152,7 @@
 		      <th class="">Certification Criteria & Clinical Quality Measures</th>
               <th class="search-header" ng-click="sort('certificationDate')"
                   ng-class="{'sort-ascent': query.orderBy==='certificationDate' && !query.sortDescending, 'sort-descent': query.orderBy==='certificationDate' && query.sortDescending}">Certification Date</th>
-              <th><a href="" ng-click="compare()">Compare</a></th>
+              <th><button class="btn btn-default" ng-click="compare()">Compare</button></th>
 	        </tr>
 	      </thead>
 	      <tbody>

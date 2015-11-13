@@ -46,27 +46,37 @@
                 var needToAdd
                 for (var i = 0; i < product.applicableCqmCriteria.length; i++) {
                     cqm = product.applicableCqmCriteria[i];
-                    if (self.allCqms[cqm.number] === undefined)
-                        self.allCqms[cqm.number] = {number: cqm.number, title: cqm.title, values: []};
+                    if (cqm.cmsId) {
+                        cqm.displayId = cqm.cmsId;
+                    } else {
+                        cqm.displayId = 'NQF-' + cqm.nqfNumber;
+                    }
+                    if (self.allCqms[cqm.displayId] === undefined)
+                        self.allCqms[cqm.displayId] = {displayId: cqm.displayId, title: cqm.title, values: []};
                     needToAdd = true;
-                    for (var j = 0; j < self.allCqms[cqm.number].values.length; j++) {
-                        if (self.allCqms[cqm.number].values[j].productId === product.id) {
+                    for (var j = 0; j < self.allCqms[cqm.displayId].values.length; j++) {
+                        if (self.allCqms[cqm.displayId].values[j].productId === product.id) {
                             needToAdd = false;
                         }
                     }
                     if (needToAdd)
-                        self.allCqms[cqm.number].values.push({productId: product.id, allowed: true, chplProductNumber: product.chplProductNumber});
-                }
-                for (var i = 0; i < product.cqmResults.length; i++) {
+                        self.allCqms[cqm.displayId].values.push({productId: product.id, allowed: true, chplProductNumber: product.chplProductNumber});
+                        }
+                        for (var i = 0; i < product.cqmResults.length; i++) {
                     cqm = product.cqmResults[i];
-                    for (var j = 0; j < self.allCqms[cqm.number].values.length; j++) {
-                        if (self.allCqms[cqm.number].values[j].productId === product.id) {
-                            self.allCqms[cqm.number].values[j].success = cqm.success;
+                    if (cqm.cmsId) {
+                        cqm.displayId = cqm.cmsId;
+                    } else {
+                        cqm.displayId = 'NQF-' + cqm.nqfNumber;
+                    }
+                    for (var j = 0; j < self.allCqms[cqm.displayId].values.length; j++) {
+                        if (self.allCqms[cqm.displayId].values[j].productId === product.id) {
+                            self.allCqms[cqm.displayId].values[j].success = cqm.success;
                             if (cqm.version) {
-                                if (self.allCqms[cqm.number].values[j].version) {
-                                    self.allCqms[cqm.number].values[j].version.push(cqm.version);
+                                if (self.allCqms[cqm.displayId].values[j].version) {
+                                    self.allCqms[cqm.displayId].values[j].version.push(cqm.version);
                                 } else {
-                                    self.allCqms[cqm.number].values[j].version = [cqm.version];
+                                    self.allCqms[cqm.displayId].values[j].version = [cqm.version];
                                 }
                             }
                         }

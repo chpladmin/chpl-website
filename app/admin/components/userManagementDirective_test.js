@@ -63,60 +63,10 @@
 
             it('should have CRUD user functions', function () {
                 expect(ctrl.updateUser).toBeDefined();
-                expect(ctrl.deleteUser).toBeDefined();
-                expect(ctrl.cancelUser).toBeDefined();
-            });
-
-            it('should have an empty object for a to-be-invited User', function () {
-                expect(ctrl.userInvitation).toEqual({permissions:[]});
             });
 
             it('should have an invite user function', function () {
                 expect(ctrl.inviteUser).toBeDefined();
-            });
-
-            it('should reset invitation fields when user is invited', function () {
-                ctrl.userInvitation.emailAddress = 'test@example.com';
-                ctrl.userInvitation.permissions = ['TEST'];
-
-                spyOn(scope.userManagementInviteUser, '$setUntouched');
-                spyOn(scope.userManagementInviteUser, '$setPristine');
-
-                ctrl.inviteUser();
-
-                expect(ctrl.userInvitation).toEqual({roles:[]});
-                expect(scope.userManagementInviteUser.$setUntouched).toHaveBeenCalled();
-                expect(scope.userManagementInviteUser.$setPristine).toHaveBeenCalled();
-            });
-
-            it('should call commonService.inviteUser when user is invited', function () {
-                ctrl.userInvitation.emailAddress = 'test@example.com';
-                ctrl.userInvitation.permissions = ['TEST'];
-
-                ctrl.inviteUser();
-                expect(mockCommonService.inviteUser).toHaveBeenCalled();
-            });
-
-            it('should call inviteUser with correct parameters', function () {
-                ctrl.userInvitation.emailAddress = 'test@example.com';
-                ctrl.userInvitation.permissions = ['TEST'];
-
-                ctrl.inviteUser();
-                expect(mockCommonService.inviteUser).toHaveBeenCalledWith({emailAddress: 'test@example.com', permissions: ['TEST']});
-            });
-
-            it('should pass in acbId if such exists', function () {
-                ctrl.userInvitation.emailAddress = 'test@example.com';
-                ctrl.userInvitation.permissions = ['TEST'];
-                ctrl.acbId = 4;
-
-                ctrl.inviteUser();
-                expect(mockCommonService.inviteUser).toHaveBeenCalledWith({emailAddress: 'test@example.com', permissions: ['TEST'], acbId: 4});
-            });
-
-            it('should only call inviteUser if there is an email address and at least one role', function () {
-                ctrl.inviteUser();
-                expect(mockCommonService.inviteUser).not.toHaveBeenCalled();
             });
         });
     });

@@ -66,12 +66,24 @@
                 return self.simpleApiCall('/data/search_options', API);
             };
 
+            self.getSimpleProduct = function (productId) {
+                return self.simpleApiCall('/products/' + productId, API);
+            };
+
+            self.getVersion = function (versionId) {
+                return self.simpleApiCall('/versions/' + versionId, API);
+            };
+
             self.getProduct = function (productId) {
                 return self.simpleApiCall('/certified_products/' + productId + '/details', API);
             };
 
             self.getVendors = function () {
                 return self.simpleApiCall('/vendors/', API);
+            };
+
+            self.getVendor = function (vendorId) {
+                return self.simpleApiCall('/vendors/' + vendorId, API);
             };
 
             self.getProductsByVendor = function (vendorId) {
@@ -82,8 +94,8 @@
                 return self.simpleApiCall('/versions/?productId=' + productId, API);
             };
 
-            self.getProductsByVersion = function (versionId) {
-                return self.simpleApiCall('/certified_products/?versionId=' + versionId, API);
+            self.getProductsByVersion = function (versionId, editable) {
+                return self.simpleApiCall('/certified_products/?versionId=' + versionId + '&editable=' + editable, API);
             };
 
             self.getEditions = function () {
@@ -120,6 +132,14 @@
 
             self.getAcbActivity = function (nDays) {
                 return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays, API);
+            };
+
+            self.getUserActivity = function (nDays) {
+                return self.simpleApiCall('/activity/users?lastNDays=' + nDays, API);
+            };
+
+            self.getUserActivities = function (nDays) {
+                return self.simpleApiCall('/activity/user_activities?lastNDays=' + nDays, API);
             };
 
             self.getUploadingCps = function () {

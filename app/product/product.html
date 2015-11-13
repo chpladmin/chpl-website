@@ -24,7 +24,7 @@
     <div class="col-sm-4 text-right">
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
       <p>Certification Date: {{ vm.product.certificationDate | date }}</p>
-      <p><a href="" ng-click="vm.openLastModifiedDate('lg')">Last modified Date: {{ vm.product.lastModifiedDate | date }}</a></p>
+      <p>Last modified Date: {{ vm.product.lastModifiedDate | date }}</p>
     </div>
   </div>
   <div class="product-productSummary panel">
@@ -55,6 +55,21 @@
         <div class="col-sm-4">
           <h3>Practice Type</h3>
           <p>{{ vm.product.practiceType.name }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <h3>Quality Management System Attestation</h3>
+          <p>{{ vm.product.qualityManagementSystemAtt }}</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Privacy and Security Attestation</h3>
+          <p ng-if="vm.product.privacyAttestation">True</p>
+          <p ng-if="!vm.product.privacyAttestation">False</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Other ACB</h3>
+          <p>{{ vm.product.otherAcb }}</p>
         </div>
       </div>
     </div>

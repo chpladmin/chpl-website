@@ -102,8 +102,16 @@ footer .spaced-out {
 }
 
 #loading-bar-spinner .spinner-icon {
+  border:10px solid transparent;
   border-top-color:  #ffdd3c;
   border-left-color: #ffdd3c;
+  top: 50%;
+  left: 50%;
+  margin-top: -64px;
+  margin-left: -64px;
+  width:128px;
+  height: 128px;
+  position: fixed;
 }
 
 /*

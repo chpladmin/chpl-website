@@ -21,6 +21,8 @@
                 mockCommonService.productActivity = ['Product 1', 'Product 2'];
                 mockCommonService.certBodyActivity  = ['CB 1', 'CB 2'];
                 mockCommonService.cpActivity = [{newData: {vendor: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}}];
+                mockCommonService.userActivity = [];
+                mockCommonService.userActivities = [];
 
                 mockCommonService.simpleApiCall = function () {
                     var defer = $q.defer();
@@ -52,6 +54,18 @@
                 mockCommonService.getAcbActivity = function () {
                     var defer = $q.defer();
                     defer.resolve(this.certBodyActivity);
+                    return defer.promise;
+                };
+
+                mockCommonService.getUserActivity = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.userActivity);
+                    return defer.promise;
+                };
+
+                mockCommonService.getUserActivities = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.userActivities);
                     return defer.promise;
                 };
 

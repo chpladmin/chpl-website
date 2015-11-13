@@ -2,11 +2,11 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditCertifiedProductController', ['$modalInstance', 'activeCP', 'commonService', 'classifications', 'practices', 'isAcbAdmin', 'isChplAdmin', 'bodies', 'statuses', 'workType', function ($modalInstance, activeCP, commonService, classifications, practices, isAcbAdmin, isChplAdmin, bodies, statuses, workType) {
+        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'classifications', 'practices', 'isAcbAdmin', 'isChplAdmin', 'bodies', 'statuses', 'workType', function ($modalInstance, $timeout, activeCP, commonService, classifications, practices, isAcbAdmin, isChplAdmin, bodies, statuses, workType) {
 
             var vm = this;
             vm.cp = angular.copy(activeCP);
-            vm.updateCP = {};
+            vm.cp.certDate = new Date(vm.cp.certificationDate);
             vm.classifications = classifications;
             vm.practices = practices;
             vm.isAcbAdmin = isAcbAdmin;
@@ -15,30 +15,42 @@
             vm.statuses = statuses;
             vm.workType = workType;
 
+            vm.handlers = [];
+            vm.prep = prep;
             vm.save = save;
             vm.cancel = cancel;
             vm.attachModel = attachModel;
             vm.findModel = findModel;
+            vm.directCertsDirective = directCertsDirective;
+            vm.registerCerts = registerCerts;
 
             vm.attachModel();
 
             ////////////////////////////////////////////////////////////////////
 
+            function directCertsDirective () {
+                angular.forEach(vm.handlers, function (handler) {
+                    handler();
+                });
+            }
+
+            function registerCerts (handler) {
+                vm.handlers.push(handler);
+                var removeHandler = function () {
+                    vm.handlers = vm.handlers.filter(function (aHandler) {
+                        return aHandler !== handler;
+                    });
+                };
+                return removeHandler;
+            }
+
+            function prep () {
+                vm.directCertsDirective();
+                $timeout(vm.save, 1000);
+            }
+
             function save () {
                 if (vm.workType === 'manage') {
-                    vm.updateCP.id = vm.cp.id;
-                    vm.updateCP.certificationBodyId = vm.cp.certifyingBody.id;
-                    vm.updateCP.practiceTypeId = vm.cp.practiceType.id;
-                    vm.updateCP.productClassificationTypeId = vm.cp.classificationType.id;
-                    vm.updateCP.certificationStatus = vm.cp.certificationStatus.id;
-                    vm.updateCP.chplProductNumber = vm.cp.chplProductNumber;
-                    vm.updateCP.reportFileLocation = vm.cp.reportFileLocation;
-                    vm.updateCP.qualityManagementSystemAtt = vm.cp.qualityManagementSystemAtt;
-                    vm.updateCP.acbCertificationId = vm.cp.acbCertificationId;
-                    vm.updateCP.otherAcb = vm.cp.otherAcb;
-                    vm.updateCP.testingLabId = vm.cp.testingLabId;
-                    vm.updateCP.isChplVisible = vm.cp.visibleOnChpl;
-
                     commonService.updateCP(vm.cp)
                         .then(function (response) {
                             if (!response.status || response.status === 200) {
@@ -50,9 +62,9 @@
                             $modalInstance.dismiss(error.data.error);
                         });
                 } else if (vm.workType === 'confirm') {
-                    console.debug(vm.cp.cqmResults);
                     $modalInstance.close(vm.cp);
                 }
+
             }
 
             function cancel () {

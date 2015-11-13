@@ -15,60 +15,27 @@
         </tr>
       </thead>
       <tfoot>
-        <tr ng-form="userManagementInviteUser">
-          <td colspan="5">
-            <label for="admin.invite.email" class="control-label">Email</label>
-            <input type="email" id="admin.invite.email" ng-model="vm.userInvitation.emailAddress" class="form-control" required />
-          </td>
-          <td colspan="2">
-            <label for="admin.new.roles" class="control-label">User Role(s)</label>
-            <select id="admin.new.roles" ng-options="role as role for role in vm.roles" ng-model="vm.userInvitation.permissions" class="form-control" multiple required></select>
-          </td>
-          <td>
-            <button class="btn btn-default btn-block" ng-click="vm.inviteUser()" ng-disabled="userManagementInviteUser.$invalid">Invite new user</button>
+        <tr>
+          <td colspan="8">
+            <button class="btn btn-default btn-block" ng-click="vm.inviteUser()">Invite new user</button>
           </td>
         </tr>
       </tfoot>
       <tbody>
         <tr ng-repeat="user in vm.users track by user.user.userId" ng-form="userManagementUpdateUser">
+          <td>{{ user.user.subjectName }}</td>
+          <td>{{ user.user.title }}</td>
+          <td>{{ user.user.firstName }}</td>
+          <td>{{ user.user.lastName }}</td>
+          <td>{{ user.user.email }}</td>
+          <td>{{ user.user.phoneNumber }}</td>
           <td>
-            <span ng-if="!user.isModifying">{{ user.user.subjectName }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.subjectName" class="form-control" required />
+            <span>Locked: <input type="checkbox" ng-model="user.user.accountLocked" disabled /></span><br />
+            <span>Enabled: <input type="checkbox" ng-model="user.user.accountEnabled" disabled /></span><br />
+            <select ng-options="role as role for role in vm.roles" ng-model="user.roles" multiple disabled></select>
           </td>
           <td>
-            <span ng-if="!user.isModifying">{{ user.user.title }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.title" class="form-control"/>
-          </td>
-          <td>
-            <span ng-if="!user.isModifying">{{ user.user.firstName }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.firstName" class="form-control" required/>
-          </td>
-          <td>
-            <span ng-if="!user.isModifying">{{ user.user.lastName }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.lastName" class="form-control" required/>
-          </td>
-          <td>
-            <span ng-if="!user.isModifying">{{ user.user.email }}</span>
-            <input ng-if="user.isModifying" type="email" ng-model="user.user.email" class="form-control" required/>
-          </td>
-          <td>
-            <span ng-if="!user.isModifying">{{ user.user.phoneNumber }}</span>
-            <input ng-if="user.isModifying" type="text" ng-model="user.user.phoneNumber" class="form-control" required/>
-          </td>
-          <td>
-            <span>Locked: <input type="checkbox" ng-model="user.user.accountLocked" ng-disabled="!user.isModifying" /></span><br />
-            <span>Enabled: <input type="checkbox" ng-model="user.user.accountEnabled" ng-disabled="!user.isModifying" /></span><br />
-            <select ng-options="role as role for role in vm.roles" ng-model="user.roles" multiple ng-disabled="!user.isModifying" required></select>
-          </td>
-          <td>
-            <button class="btn btn-default btn-block" ng-show="!user.isModifying" ng-click="user.isModifying = !user.isModifying">Modify</button>
-            <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.updateUser(user); user.isModifying = !user.isModifying" ng-disabled="userManagementUpdateUser.$invalid">Save</button>
-            <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.cancelUser(user); user.isModifying = !user.isModifying">Cancel</button>
-            <button class="btn btn-default btn-block" ng-show="user.isModifying" ng-click="vm.deleteUser(user)"
-                    confirm="Are you sure you wish to delete user: {{ user.user.firstName }} {{ user.user.lastName }} ({{user.user.subjectName }})? This action can not be undone."
-                    confirm-ok="Yes"
-                    confirm-cancel="No"
-                    confirm-settings="{animation: false}">Delete</button>
+            <button class="btn btn-default btn-block" ng-click="vm.updateUser(user)">Update</button>
           </td>
         </tr>
       </tbody>

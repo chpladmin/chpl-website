@@ -14,12 +14,16 @@
 
 .admin-tabset {
     background-color: #7da7d9;
-    padding: 10px;
-    box-shadow: inset 0 0 10px #000000;
+    padding: 20px;
+    box-shadow: inset 0 0 10px #666;
 }
 
-.admin-tabset .nav-tabs>li.active>a,
-.admin-tabset .nav-pills>li.active>a {
+.admin-tabset .admin-inner-tab {
+    background-color: #fff;
+    margin-top: 5px;
+}
+
+.admin-tabset .nav-tabs>li.active>a {
     color: #f5d43c;
     background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
@@ -36,8 +40,38 @@
     background-color: #eee;
 }
 
-.admin-tabset .table-striped>tbody>tr:nth-of-type(even) {
+.admin-tabset .nav-pills {
+    color: #000;
+    background: #999;
+}
+.admin-tabset .nav-pills>li>a {
+    color: #000;
+    background: #999;
+}
+
+.admin-tabset .nav-pills>li>a:before {
+    content: "\00a0";
+    font-family: FontAwesome;
+    padding: 0 6px;
+    font-size: large;
+}
+.admin-tabset .nav-pills>li.active>a {
+    color: #000;
+    background: #999;
+}
+.admin-tabset .nav-pills>li.active>a:before {
+    color: #000;
+    font-family: FontAwesome;
+    background: #999;
+    content: "\f0da";
+}
+
+.admin-tabset :not(.admin-inner-tab) .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #ccc;
+}
+
+.admin-tabset .admin-nav .panel {
+    border: 0px;
 }
 
 .admin-label-spaced {

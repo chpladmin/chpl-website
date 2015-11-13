@@ -11,6 +11,12 @@
             vm.activate = activate;
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
+            vm.refreshCp = refreshCp;
+            vm.refreshVendor = refreshVendor;
+            vm.refreshProduct = refreshProduct;
+            vm.refreshAcb = refreshAcb;
+            vm.refreshUser = refreshUser;
+            vm.refreshVisitors = refreshVisitors;
 
             vm.activate();
 
@@ -66,6 +72,67 @@
 
             function activate () {
                 vm.refreshActivity();
+                vm.refreshVisitors();
+            }
+
+            function refreshActivity () {
+                vm.refreshCp();
+                vm.refreshVendor();
+                vm.refreshProduct();
+                vm.refreshAcb();
+                vm.refreshUser();
+            }
+
+            function refreshCp () {
+                commonService.getCertifiedProductActivity(7)
+                    .then(function (data) {
+                        vm.searchedCertifiedProducts = vm.interpretCps(data);
+                        vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
+                    });
+            }
+
+            function refreshVendor () {
+                commonService.getVendorActivity(7)
+                    .then(function (data) {
+                        vm.searchedVendors = vm.interpretVendors(data);
+                        vm.displayedVendors = [].concat(vm.searchedVendors);
+                    });
+            }
+
+            function refreshProduct () {
+                commonService.getProductActivity(7)
+                    .then(function (data) {
+                        vm.searchedProducts = vm.interpretProducts(data);
+                        vm.displayedProducts = [].concat(vm.searchedProducts);
+                    });
+            }
+
+            function refreshAcb () {
+                commonService.getAcbActivity(7)
+                    .then(function (data) {
+                        vm.searchedACBs = vm.interpretAcbs(data);
+                        vm.displayedACBs = [].concat(vm.searchedACBs);
+                    });
+            }
+
+            function refreshUser () {
+                if (vm.isChplAdmin) {
+                    commonService.getUserActivity(7)
+                        .then(function (data) {
+                            vm.searchedUsers = vm.interpretUsers(data);
+                            vm.displayedUsers = [].concat(vm.searchedUsers);
+                        });
+/*
+                    commonService.getUserActivities(7)
+                        .then(function (data) {
+                            vm.searchedUserActivities = vm.interpretUserActivities(data);
+                            vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
+                        });
+*/
+                }
+            }
+
+            function refreshVisitors () {
                 commonService.simpleApiCall('https://openchpl.appspot.com/query?id=agpzfm9wZW5jaHBschULEghBcGlRdWVyeRiAgICAvKGCCgw&format=data-table','')
                     .then(function (data) {
                         vm.browserVariety.data = data;
@@ -94,32 +161,28 @@
                     });
             }
 
-            function refreshActivity () {
-                commonService.getCertifiedProductActivity(7)
-                    .then(function (data) {
-                        vm.searchedCertifiedProducts = vm.interpretCps(data);
-                        vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
-                    });
-                commonService.getVendorActivity(7)
-                    .then(function (data) {
-                        vm.searchedVendors = vm.interpretVendors(data);
-                        vm.displayedVendors = [].concat(vm.searchedVendors);
-                    });
-                commonService.getProductActivity(7)
-                    .then(function (data) {
-                        vm.searchedProducts = vm.interpretProducts(data);
-                        vm.displayedProducts = [].concat(vm.searchedProducts);
-                    });
-                commonService.getAcbActivity(7)
-                    .then(function (data) {
-                        vm.searchedACBs = vm.interpretAcbs(data);
-                        vm.displayedACBs = [].concat(vm.searchedACBs);
-                    });
-            }
-
             function changeTab(newTab) {
+                switch (newTab) {
+                case 'cp':
+                    vm.refreshCp();
+                    break;
+                case 'dev':
+                    vm.refreshVendor();
+                    break;
+                case 'prod':
+                    vm.refreshProduct();
+                    break;
+                case 'acb':
+                    vm.refreshAcb();
+                    break;
+                case 'users':
+                    vm.refreshUser();
+                    break;
+                case 'visitors':
+                    vm.refreshVisitors();
+                    break;
+                }
                 vm.tab = newTab;
-                vm.refreshActivity();
             }
 
             ////////////////////////////////////////////////////////////////////
@@ -147,6 +210,9 @@
                             if (change) activity.action += '<li>' + change + '</li>';
                         }
                         activity.action += '</ul>';
+                        if (activity.action.length === 16) {
+                            activity.action = data[i].description;
+                        }
                     } else {
                         activity.action = data[i].description;
                     }
@@ -220,6 +286,15 @@
                     ret.push(activity);
                 }
                 return ret;
+            };
+
+            vm.interpretUsers = function (data) {
+                var ret = data;
+                return ret;
+            };
+
+            vm.interpretUserActivities = function (data) {
+                return data;
             };
 
             vm.interpretNonUpdate = function (activity, data, text) {
