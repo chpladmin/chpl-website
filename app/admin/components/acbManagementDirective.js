@@ -57,7 +57,8 @@
                     keyboard: false,
                     resolve: {
                         acb: function () { return {}; },
-                        action: function () { return 'create'; }
+                        action: function () { return 'create'; },
+                        isChplAdmin: function () { return self.isChplAdmin; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
