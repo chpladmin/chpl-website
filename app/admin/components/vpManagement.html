@@ -155,12 +155,17 @@
       <div class="row" ng-if="vm.activeVendor !== ''">
         <div class="col-sm-12">
           <h3 ng-if="vm.inspectingCp">System developer information</h3>
-          <div class="panel panel-default">
+          <div class="panel panel-default panel-admin">
             <div class="panel-heading">
-              <span>{{ vm.activeVendor.name }}</span>
+              <span>Select a developer</span>
+              <span class="pull-right">
+                <span ng-if="vm.workType !== 'merge'"><a href="" ng-click="vm.editDeveloper()"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |</span>
+                <a href="" ng-click="vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+              </span>
             </div>
             <div class="panel-body">
-              <span>
+              <div>{{ vm.activeVendor.name }} <em class="pull-right">Last modified date: {{ vm.activeVendor.lastModifiedDate | date }}</em></div>
+              <div>
                 Line 1: {{ vm.activeVendor.address.line1 }}<br />
                 Line 2: {{ vm.activeVendor.address.line2 }}<br />
                 City: {{ vm.activeVendor.address.city }}<br />
@@ -168,13 +173,8 @@
                 Zip: {{ vm.activeVendor.address.zipcode }}<br />
                 Country: {{ vm.activeVendor.address.country }}<br />
                 Website: {{ vm.activeVendor.website }}<br />
-              </span>
-              <br />
-              Last Modified Date: {{ vm.activeVendor.lastModifiedDate | date }}
-              <br />
+              </div>
               <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
-              <p><button class="btn btn-default btn-block" ng-if="vm.workType !== 'merge'" ng-click="vm.editDeveloper()">Edit Developer</button></p>
-              <p class="text-center"><a href="" ng-click="vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to developer select</a></p>
             </div>
           </div>
         </div> <!-- end system developer -->
@@ -225,17 +225,17 @@
 
       <div class="row" ng-if="vm.activeProduct !== ''">
         <div class="col-sm-12">
-          <div class="panel panel-default">
+          <div class="panel panel-default panel-admin">
             <div class="panel-heading">
-              <span>{{ vm.activeProduct.name }}</span>
+              <span>Select a product</span>
+              <span class="pull-right">
+                <span ng-if="vm.workType !== 'merge'"><a href="" ng-click="vm.editProduct()"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |</span>
+                <a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+              </span>
             </div>
             <div class="panel-body">
-              <br />
-              Last Modified Date: {{ vm.activeProduct.lastModifiedDate | date }}
-              <br />
+              <div>{{ vm.activeProduct.name }} <em class="pull-right">Last modified date: {{ vm.activeProduct.lastModifiedDate | date }}</em></div>
               <p ng-if="vm.productMessage !== undefined" class="bg-danger">{{ vm.productMessage }}</p>
-              <p><button class="btn btn-default btn-block" ng-if="vm.workType !== 'merge'" ng-click="vm.editProduct()">Edit Product</button></p>
-              <p class="text-center"><a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to product select</a></p>
             </div>
           </div>
         </div> <!-- end system product -->
@@ -285,17 +285,17 @@
       </div> <!-- end select version -->
       <div class="row" ng-if="vm.activeVersion !== ''">
         <div class="col-sm-12">
-          <div class="panel panel-default">
+          <div class="panel panel-default panel-admin">
             <div class="panel-heading">
-              <span>{{ vm.activeVersion.version }}</span>
+              <span>Select a version</span>
+              <span class="pull-right">
+                <span ng-if="vm.workType !== 'merge'"><a href="" ng-click="vm.editVersion()"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |
+                <a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+              </span>
             </div>
             <div class="panel-body">
-              <br />
-              Last Modified Date: {{ vm.activeVersion.lastModifiedDate | date }}
-              <br />
+              <div>{{ vm.activeVersion.version }} <em class="pull-right">Last modified date: {{ vm.activeVersion.lastModifiedDate | date }}</em></div>
               <p ng-if="vm.versionMessage !== undefined" class="bg-danger">{{ vm.versionMessage }}</p>
-              <p><button class="btn btn-default btn-block" ng-if="vm.workType !== 'merge'" ng-click="vm.editVersion()">Edit Version</button></p>
-              <p class="text-center"><a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to version select</a></p>
             </div>
           </div>
         </div> <!-- end system version -->
@@ -325,12 +325,17 @@
             </div>
           </div>
           <div ng-if="vm.activeCP !== ''">
-            <div class="panel panel-default">
+            <div class="panel panel-default panel-admin">
               <div class="panel-heading">
-                <span>{{ vm.activeCP.chplProductNumber }}</span>
+                <span>Select a Certified Product</span>
+                <span class="pull-right">
+                  <a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |
+                  <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+                </span>
               </div>
               <div class="panel-body">
                 <span>
+                  <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date }}</em><br />
                   <strong>Classification:</strong> {{ vm.activeCP.classificationType.name }} <br />
                   <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
@@ -357,11 +362,7 @@
                           report-file-location="{{ vm.activeCP.reportFileLocation }}"
                           applicable-cqm-criteria="vm.activeCP.applicableCqmCriteria">
                 </ai-certs>
-                Last Modified Date: {{ vm.activeCP.lastModifiedDate | date }}
-                <br />
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
-                <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()">Edit Certified Product</button></p>
-                <p class="text-center"><a href="" ng-click="vm.activeCP = ''"><i class="fa fa-arrow-left fa-lg"></i> Return to certified product select</a></p>
               </div>
             </div>
           </div>
