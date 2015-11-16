@@ -26,7 +26,6 @@
             function activate () {
                 self.isChplAdmin = authService.isChplAdmin();
                 self.isAcbAdmin = authService.isAcbAdmin();
-                self.newACB = {address: {}};
                 self.acbs = [];
                 self.workType = 'acb';
                 self.loadData()

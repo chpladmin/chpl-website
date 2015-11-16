@@ -88,10 +88,6 @@
                 expect(ctrl).toBeDefined();
             });
 
-            it('should have an empty ACB ready', function () {
-                expect(ctrl.newACB).toEqual({address:{}});
-            });
-
             it('should know if the logged in user is ACB and/or CHPL admin', function () {
                 expect(ctrl.isAcbAdmin).toBeTruthy();
                 expect(ctrl.isChplAdmin).toBeTruthy();

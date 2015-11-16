@@ -81,7 +81,7 @@
         it('should have items in the modal', function () {
             ctrl.product.lastModifiedItems = ["test", "test"];
             expect(ctrl.modalInstance).not.toBeDefined();
-            ctrl.openLastModifiedDate('sm');
+            ctrl.openLastModified();
             expect(ctrl.modalInstance).toBeDefined();
         });
     });

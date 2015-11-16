@@ -1,0 +1,30 @@
+<div role="modal" aria-labeled-by="titleLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="titleLabel">Corrective Action Plan</h4>
+  </div>
+  <div class="modal-body" ng-form="editForm">
+    <div class="form-group">
+      <label for="swName">Additional Software <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.sw.name" id="swName"></input>
+    </div>
+    <div class="form-group">
+      <label for="swVersion">Version <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.sw.version" id="swVersion"></input>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Corrective Action Plan</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()">Cancel Edits</button>
+  </div>
+</div>
