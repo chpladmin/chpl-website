@@ -50,6 +50,17 @@
                 return false;
             }
 
+            self.isAcbStaff = function () {
+                var token = self.getToken();
+                if (token) {
+                    var authorities = self.parseJwt(token).Authorities;
+                    if (authorities) {
+                        return authorities.indexOf('ROLE_ACB_STAFF') > -1
+                    }
+                }
+                return false;
+            }
+
             self.getUsername = function () {
                 if (self.isAuthed()) {
                     var token = self.getToken();

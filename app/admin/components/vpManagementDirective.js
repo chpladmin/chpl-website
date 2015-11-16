@@ -34,12 +34,13 @@
                 self.activeCP = '';
                 self.isChplAdmin = authService.isChplAdmin();
                 self.isAcbAdmin = authService.isAcbAdmin();
+                self.isAcbStaff = authService.isAcbStaff();
                 self.uploadingCps = [];
                 self.workType = self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
 
-                if (self.isAcbAdmin) {
+                if (self.isAcbAdmin || self.isAcbStaff) {
                     self.refreshPending();
                     self.uploader = new FileUploader({
                         url: API + '/certified_products/upload',
@@ -294,6 +295,7 @@
                         classifications: function () { return self.classifications; },
                         practices: function () { return self.practices; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
+                        isAcbStaff: function () { return self.isChplStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
                         statuses: function () { return self.statuses; },
@@ -331,6 +333,7 @@
                         classifications: function () { return self.classifications; },
                         practices: function () { return self.practices; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
+                        isAcbStaff: function () { return self.isAcbStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
                         statuses: function () { return self.statuses; },

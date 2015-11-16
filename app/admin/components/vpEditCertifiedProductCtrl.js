@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'classifications', 'practices', 'isAcbAdmin', 'isChplAdmin', 'bodies', 'statuses', 'workType', function ($modalInstance, $timeout, activeCP, commonService, classifications, practices, isAcbAdmin, isChplAdmin, bodies, statuses, workType) {
+        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'classifications', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'workType', function ($modalInstance, $timeout, activeCP, commonService, classifications, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, workType) {
 
             var vm = this;
             vm.cp = angular.copy(activeCP);
@@ -10,6 +10,7 @@
             vm.classifications = classifications;
             vm.practices = practices;
             vm.isAcbAdmin = isAcbAdmin;
+            vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
             vm.bodies = bodies;
             vm.statuses = statuses;
