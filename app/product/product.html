@@ -75,8 +75,10 @@
       <div class="row">
         <div class="col-sm-12">
           <h3>Corrective Action Plan</h3>
-          <ai-corrective-action-plan corrective-action-plan="vm.product.correctiveActionPlan" is-editing="false" ng-if="vm.product.correctiveActionPlan && vm.product.correctiveActionPlan.length > 0"></ai-corrective-action-plan>
-          <p ng-if="!vm.product.correctiveActionPlan || vm.product.correctiveActionPlan.length === 0">No corrective action plan in effect</p>
+          <ai-corrective-action-plan
+             corrective-action-plan="vm.product.correctiveActionPlan"
+             is-editing="false"
+             is-admin="false"></ai-corrective-action-plan>
         </div>
       </div>
     </div>

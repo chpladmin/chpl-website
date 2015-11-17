@@ -134,11 +134,11 @@
 	        <tr ng-repeat-start="activity in vm.displayedUserActivities">
 		      <td class="" rowspan="{{ activity.events.length }}">{{ activity.user.firstName }}&nbsp;{{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
               <td>{{ activity.events[0].description }}</td>
-              <td>{{ activity.events[0].activityDate | date : 'medium'}}</td>
+              <td><span ng-bind-html="activity.events[0].activityDate | date : 'MMM&nbsp;d,&nbsp;y&nbsp;h:mm:ss&nbsp;a'"></span></td>
             </tr>
             <tr ng-repeat="action in activity.events" ng-if="!$first" ng-repeat-end>
               <td>{{ action.description }}</td>
-              <td>{{ action.activityDate | date : 'medium' }}</td>
+              <td><span ng-bind-html="action.activityDate | date : 'MMM&nbsp;d,&nbsp;y&nbsp;h:mm:ss&nbsp;a'"></span></td>
             </tr>
           </tbody>
         </table>

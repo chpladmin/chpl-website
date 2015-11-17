@@ -5,8 +5,17 @@
         .controller('CorrectiveActionPlanController', ['$log', '$scope', '$modal', function ($log, $scope, $modal) {
             var vm = this;
 
+            vm.activate = activate;
+
+            vm.activate();
+
             ////////////////////////////////////////////////////////////////////
 
+            function activate () {
+                if (!vm.correctiveActionPlan) {
+                    vm.correctiveActionPlan = [];
+                }
+            }
         }])
         .directive('aiCorrectiveActionPlan', [function () {
             return {
@@ -16,7 +25,8 @@
                 scope: {},
                 bindToController: {
                     correctiveActionPlan: '=',
-                    isEditing: '='
+                    isEditing: '=',
+                    isAdmin: '='
                 },
                 controllerAs: 'vm',
                 controller: 'CorrectiveActionPlanController'
