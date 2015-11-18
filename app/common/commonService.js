@@ -62,8 +62,11 @@
                 return self.postApiCall('/search', API, queryObj);
             };
 
-            self.getSearchOptions = function () {
-                return self.simpleApiCall('/data/search_options', API);
+            self.getSearchOptions = function (simple) {
+                if (simple)
+                    return self.simpleApiCall('/data/search_options?simple=true', API);
+                else
+                    return self.simpleApiCall('/data/search_options', API);
             };
 
             self.getSimpleProduct = function (productId) {
@@ -236,6 +239,10 @@
 
             self.rejectPendingCp = function (cpId) {
                 return self.postApiCall('/certified_products/pending/' + cpId + '/reject', API, {});
+            };
+
+            self.initiateCap = function (cap) {
+                return self.postApiCall('/', API, cap);
             };
         });
 })();

@@ -31,7 +31,7 @@
             }
 
             self.populateSearchOptions = function () {
-                commonService.getSearchOptions()
+                commonService.getSearchOptions(true)
                     .then(function (options) {
                         $scope.certs = options.certificationCriterionNumbers;
                         $scope.cqms = options.cqmCriterionNumbers;
