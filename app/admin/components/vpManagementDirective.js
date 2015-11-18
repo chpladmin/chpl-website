@@ -111,6 +111,10 @@
                 });
                 self.modalInstance.result.then(function (result) {
                     self.activeVendor = result;
+                    commonService.getVendors()
+                        .then(function (vendors) {
+                            self.vendors = vendors.vendors;
+                        });
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.vendorMessage = result;
