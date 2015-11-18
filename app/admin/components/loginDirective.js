@@ -57,6 +57,7 @@
                 commonService.login({userName: vm.userName, password: vm.password})
                     .then(function (response) {
                         Idle.watch();
+                        Keepalive.ping();
                         $location.path('/admin');
                         vm.clear();
                     }, function (error) {

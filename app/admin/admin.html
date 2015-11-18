@@ -14,13 +14,13 @@
       </div>
     </div>
     <tabset class="admin-tabset">
-      <tab ng-if="vm.isChplAdmin()" heading="User Management">
-        <ai-user-management>
-        </ai-user-management>
-      </tab>
       <tab heading="Developer &amp; Product Management">
         <ai-vp-management>
         </ai-vp-management>
+      </tab>
+      <tab ng-if="vm.isChplAdmin()" heading="User Management">
+        <ai-user-management>
+        </ai-user-management>
       </tab>
       <tab ng-if="vm.isChplAdmin() || vm.isAcbAdmin()" heading="ACB Management">
         <ai-acb-management>
