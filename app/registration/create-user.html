@@ -7,12 +7,12 @@
   </div>
   <div ng-if="vm.message.value.length > 0" class="row">
     <div class="col-md-6 col-md-offset-3">
-      <p ng-class="{ 'bg-success': vm.message.success, 'bg-danger': !vm.message.success }">{{ vm.message.value }}</p>
+      <p class="lead" ng-class="{ 'bg-success': vm.message.success, 'bg-danger': !vm.message.success }">{{ vm.message.value }}</p>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-6" ng-form="createUserForm">
+    <div class="col-md-6" ng-form="vm.createUserForm">
       <p>Create a new account</p>
       <label for="username" class="control-label">Username <span class="text-danger">*</span></label>
       <input type="text" id="username" ng-model="vm.userDetails.user.subjectName" class="form-control" required />
@@ -38,9 +38,9 @@
       <label for="phone" class="control-label">Phone <span class="text-danger">*</span></label>
       <input type="text" id="phone" ng-model="vm.userDetails.user.phoneNumber" class="form-control" required />
 
-      <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="createUserForm.$invalid">Create account</button>
+      <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="vm.createUserForm.$invalid">Create account</button>
     </div>
-    <div class="col-md-6" ng-form="authorizeUserForm">
+    <div class="col-md-6" ng-form="vm.authorizeUserForm">
       <p>Or sign into your existing account</p>
       <label for="authorize-username" class="control-label">Username <span class="text-danger">*</span></label>
       <input type="text" id="authorize-username" ng-model="vm.authorizeDetails.userName" class="form-control" required />
@@ -48,7 +48,7 @@
       <label for="authorize-password" class="control-label">Password <span class="text-danger">*</span></label>
       <input type="password" id="authorize-password" ng-model="vm.authorizeDetails.password" class="form-control" required />
 
-      <button class="btn btn-default btn-block" ng-click="vm.authorizeUser()" ng-disabled="authorizeUserForm.$invalid">Sign into your account</button>
+      <button class="btn btn-default btn-block" ng-click="vm.authorizeUser()" ng-disabled="vm.authorizeUserForm.$invalid">Sign into your account</button>
     </div>
   </div>
 </div> <!-- end controller -->
