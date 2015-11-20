@@ -242,7 +242,19 @@
             };
 
             self.initiateCap = function (cap) {
-                return self.postApiCall('/', API, cap);
+                return self.postApiCall('/corrective_action_plan/create', API, cap);
+            };
+
+            self.updateCap = function (cap) {
+                return self.postApiCall('/corrective_action_plan/update', API, cap);
+            };
+
+            self.getCap = function (certifiedProductId) {
+                return self.simpleApiCall('/corrective_action_plan/?certifiedProductId=' + certifiedProductId, API);
+            };
+
+            self.deleteCap = function (capId) {
+                return self.postApiCall('/corrective_action_plan/' + capId + '/delete', API, {});
             };
         });
 })();

@@ -2,10 +2,11 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('CorrectiveActionPlanController', ['$log', '$scope', '$modal', function ($log, $scope, $modal) {
+        .controller('CorrectiveActionPlanController', ['$log', '$scope', '$modal', 'commonService', function ($log, $scope, $modal, commonService) {
             var vm = this;
 
             vm.activate = activate;
+            vm.editCap = editCap;
             vm.initiateCap = initiateCap;
 
             vm.activate();
@@ -16,6 +17,34 @@
                 if (!vm.correctiveActionPlan) {
                     vm.correctiveActionPlan = [];
                 }
+            }
+
+            function editCap (cap) {
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'common/components/capModal.html',
+                    controller: 'EditCorrectiveActionPlanController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'lg',
+                    resolve: {
+                        action: function () { return 'edit'; },
+                        certifiedProductId: function () { return vm.certifiedProductId; },
+                        certificationResults: function () { return vm.certificationResults; },
+                        correctiveActionPlan: function () { return cap; }
+                    }
+                });
+                vm.modalInstance.result.then(function (result) {
+                    commonService.getCap(vm.certifiedProductId)
+                        .then(function (result) {
+                            vm.correctiveActionPlan = result.plans;
+                        });
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
             }
 
             function initiateCap () {
@@ -29,11 +58,16 @@
                     size: 'lg',
                     resolve: {
                         action: function () { return 'initiate'; },
-                        certificationResults: function () { return vm.certificationResults; }
+                        certifiedProductId: function () { return vm.certifiedProductId; },
+                        certificationResults: function () { return vm.certificationResults; },
+                        correctiveActionPlan: function () { return {}; }
                     }
                 });
                 vm.modalInstance.result.then(function (result) {
-                    $log.info(result);
+                    commonService.getCap(vm.certifiedProductId)
+                        .then(function (result) {
+                            vm.correctiveActionPlan = result.plans;
+                        });
                 }, function (result) {
                     if (result !== 'cancelled') {
                         $log.debug(result);
@@ -49,10 +83,12 @@
                 scope: {},
                 bindToController: {
                     correctiveActionPlan: '=',
+                    certifiedProductId: '=',
                     certificationResults: '=',
                     isEditing: '=',
                     isAdmin: '='
                 },
+                size: 'lg',
                 controllerAs: 'vm',
                 controller: 'CorrectiveActionPlanController'
             };

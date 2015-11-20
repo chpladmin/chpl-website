@@ -13,13 +13,18 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                //vm.modalInstance;
                 vm.productId = $routeParams.id;
                 commonService.getProduct(vm.productId)
                     .then(function (data) {
                         vm.product = data;
                     }, function (error) {
                         $log.error(error);
+                    });
+                commonService.getCap(vm.productId)
+                    .then(function (data) {
+                        vm.correctiveActionPlan = data.plans;
+                    }, function (error) {
+                        $log.error (error);
                     });
             }
 

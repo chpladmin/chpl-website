@@ -5,6 +5,7 @@ _Date TBD_
 
 New or updated features
 * Added 'Actions by User' reporting
+* Integrated with Corrective Action Plan API
 
 Bugs fixed
 * Logging in from /admin reflects in log-in dropdown

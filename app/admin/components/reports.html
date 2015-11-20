@@ -18,19 +18,13 @@
         <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
-		      <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th class="search-header" st-sort="certBody" st-skip-natural="true">Certification Body</th>
               <th class="">Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedCertifiedProducts">
-		      <td class="">{{ activity.vendor }}</td>
-		      <td class="">{{ activity.product }}</td>
-		      <td class="">{{ activity.certBody }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class=""><span ng-bind-html="activity.description"></span></td>
 		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>

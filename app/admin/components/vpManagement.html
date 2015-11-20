@@ -350,10 +350,12 @@
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLabId }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.activeCP.visibleOnChpl }} <br />
-                  <strong>Corrective Action Plan:</strong> <ai-corrective-action-plan corrective-action-plan="vm.activeCP.correctiveActionPlan"
-                                                                                      certification-results="vm.activeCP.certificationResults"
-                                                                                      is-editing="false"
-                                                                                      is-admin="true"></ai-corrective-action-plan><br />
+                  <strong>Corrective Action Plan:</strong> <ai-corrective-action-plan
+                                                              corrective-action-plan="vm.activeCP.cap"
+                                                              certified-product-id="vm.activeCP.id"
+                                                              certification-results="vm.activeCP.certificationResults"
+                                                              is-editing="false"
+                                                              is-admin="true"></ai-corrective-action-plan><br />
                 </span>
                 <br />
                 <ai-certs ng-if="vm.activeCP !== ''"

@@ -48,6 +48,10 @@
                     defer.resolve(this.products[0]);
                     return defer.promise;
                 };
+
+                mockCommonService.getCap = function (pid) {
+                    return $q.when({plans: []});
+                };
             });
 
             inject(function($modal) {
