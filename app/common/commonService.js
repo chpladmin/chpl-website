@@ -256,5 +256,17 @@
             self.deleteCap = function (capId) {
                 return self.postApiCall('/corrective_action_plan/' + capId + '/delete', API, {});
             };
+
+            self.registerApi = function (user) {
+                return self.postApiCall('/api_key/register', API, user);
+            };
+
+            self.getApiUsers = function () {
+                return self.simpleApiCall('/api_key/users', API);
+            };
+
+            self.revokeApi = function (user) {
+                return self.postApiCall('/api_key/revoke', API, user);
+            };
         });
 })();

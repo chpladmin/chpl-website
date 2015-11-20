@@ -5,6 +5,14 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-sm-6">
+      <p>Nullam tristique diam non turpis.  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+    </div>
+    <div class="col-sm-6">
+      <ai-api-key></ai-api-key>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-sm-12">
       <table class="table table-striped">
         <thead>
@@ -55,10 +63,10 @@
           <div ng-if="api.requestType === 'POST'">
             <p>The request is a request, with a JSON object as parameter<br />
               <pre>{{ api.jsonParameter | json }}</pre>
-              <p ng-if="api.parameters !== null && api.parameters !== undefined">
-                The request may be parameterized with parameters:
-                <pre>{{ api.parameters | json }}</pre>
-              </p>
+            </p>
+            <p ng-if="api.parameters !== null && api.parameters !== undefined">
+              The request may be parameterized with parameters:
+              <pre>{{ api.parameters | json }}</pre>
             </p>
           </div>
           <h4>Response</h4>
