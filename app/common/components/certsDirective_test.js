@@ -49,12 +49,6 @@
                 ctrl.cancelEdits();
                 expect(ctrl.isEditing).toBe(false);
             });
-
-            it('should rebuild Editing object after cancelling edits', function () {
-                spyOn(ctrl, 'buildEditObject')
-                ctrl.cancelEdits();
-                expect(ctrl.buildEditObject).toHaveBeenCalled()
-            });
         });
     });
 })();

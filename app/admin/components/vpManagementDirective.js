@@ -48,17 +48,17 @@
                         headers: { Authorization: 'Bearer ' + authService.getToken() }
                     });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                        $log.info('onSuccessItem', fileItem, response, status, headers);
+                        //$log.info('onSuccessItem', fileItem, response, status, headers);
                         self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. Pending products are ready for confirmation.';
                     };
                     self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
                         self.refreshPending();
                     };
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
-                        $log.info('onErrorItem', fileItem, response, status, headers);
+                        //$log.info('onErrorItem', fileItem, response, status, headers);
                     };
                     self.uploader.onCancelItem = function(fileItem, response, status, headers) {
-                        $log.info('onCancelItem', fileItem, response, status, headers);
+                        //$log.info('onCancelItem', fileItem, response, status, headers);
                     };
                 }
 
@@ -311,7 +311,6 @@
                     }
                 });
                 self.modalInstance.result.then(function (result) {
-                    $log.debug(result.cqmResults);
                     self.activeCP = result;
                 }, function (result) {
                     if (result !== 'cancelled') {
@@ -354,7 +353,6 @@
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.refreshPending();
-                        $log.debug(result);
                     }
                 });
             }

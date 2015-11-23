@@ -169,12 +169,6 @@
             }
 
             function confirm () {
-                for (var i = 0; i < vm.cp.cqmResults.length; i++) {
-                    var cqm = vm.cp.cqmResults[i];
-                    if (typeof(cqm.version) === 'object' && cqm.version.length === 1)
-                        cqm.version = cqm.version[0];
-                }
-
                 commonService.confirmPendingCp(vm.cp)
                     .then(function () {
                         $modalInstance.close('confirmed');
@@ -210,7 +204,6 @@
                 });
                 vm.editModalInstance.result.then(function (result) {
                     vm.cp = result;
-                    console.debug('success', result);
                 }, function (result) {
                     if (result !== 'cancelled') {
                         console.debug('dismissed', result);

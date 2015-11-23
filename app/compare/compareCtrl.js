@@ -37,15 +37,19 @@
                     cert = product.certificationResults[i];
                     if (self.allCerts[cert.number] === undefined)
                         self.allCerts[cert.number] = {number: cert.number, title: cert.title, values: []};
-                    self.allCerts[cert.number].values.push({productId: product.id, allowed: true, success: cert.success, chplProductNumber: product.chplProductNumber});
+                    self.allCerts[cert.number].values.push({
+                        productId: product.id,
+                        allowed: true,
+                        success: cert.success,
+                        chplProductNumber: product.chplProductNumber
+                    });
                 }
             };
 
             self.updateCqms = function (product) {
                 var cqm;
-                var needToAdd
-                for (var i = 0; i < product.applicableCqmCriteria.length; i++) {
-                    cqm = product.applicableCqmCriteria[i];
+                for (var i = 0; i < product.cqmResults.length; i++) {
+                    cqm = product.cqmResults[i];
                     if (cqm.cmsId) {
                         cqm.displayId = cqm.cmsId;
                     } else {
@@ -53,36 +57,15 @@
                     }
                     if (self.allCqms[cqm.displayId] === undefined)
                         self.allCqms[cqm.displayId] = {displayId: cqm.displayId, title: cqm.title, values: []};
-                    needToAdd = true;
-                    for (var j = 0; j < self.allCqms[cqm.displayId].values.length; j++) {
-                        if (self.allCqms[cqm.displayId].values[j].productId === product.id) {
-                            needToAdd = false;
-                        }
-                    }
-                    if (needToAdd)
-                        self.allCqms[cqm.displayId].values.push({productId: product.id, allowed: true, chplProductNumber: product.chplProductNumber});
-                        }
-                        for (var i = 0; i < product.cqmResults.length; i++) {
-                    cqm = product.cqmResults[i];
-                    if (cqm.cmsId) {
-                        cqm.displayId = cqm.cmsId;
-                    } else {
-                        cqm.displayId = 'NQF-' + cqm.nqfNumber;
-                    }
-                    for (var j = 0; j < self.allCqms[cqm.displayId].values.length; j++) {
-                        if (self.allCqms[cqm.displayId].values[j].productId === product.id) {
-                            self.allCqms[cqm.displayId].values[j].success = cqm.success;
-                            if (cqm.version) {
-                                if (self.allCqms[cqm.displayId].values[j].version) {
-                                    self.allCqms[cqm.displayId].values[j].version.push(cqm.version);
-                                } else {
-                                    self.allCqms[cqm.displayId].values[j].version = [cqm.version];
-                                }
-                            }
-                        }
-                    }
+                    self.allCqms[cqm.displayId].values.push({
+                        productId: product.id,
+                        allowed: true,
+                        success: cqm.success,
+                        chplProductNumber: product.chplProductNumber,
+                        successVersions: cqm.successVersions
+                    });
                 }
-            }
+            };
 
             self.fillInBlanks = function () {
                 var needToAddBlank, product;
