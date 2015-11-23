@@ -36,7 +36,7 @@
                     $log.info('Keepalive');
 
                     if (authService.isAuthed()) {
-                        if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN){
+                        if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                             vm.activity = vm.activityEnum.NONE;
                         }
                         commonService.keepalive()
@@ -44,6 +44,7 @@
                                 authService.saveToken(response.token);
                             });
                     } else {
+                        vm.activity = vm.activityEnum.LOGIN;
                         Idle.unwatch();
                     }
                 });

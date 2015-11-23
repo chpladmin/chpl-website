@@ -22,6 +22,10 @@
                     return token;
                 };
 
+                mockAuthService.getApiKey = function () {
+                    return 'key';
+                };
+
                 mockAuthService.saveToken = function (token) {
                 };
 
