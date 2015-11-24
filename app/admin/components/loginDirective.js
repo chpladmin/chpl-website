@@ -13,6 +13,7 @@
             vm.changePassword = changePassword;
             vm.isAuthed = isAuthed;
             vm.clear = clear;
+            vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
 
             vm.activityEnum = {
                 LOGIN: 1,
