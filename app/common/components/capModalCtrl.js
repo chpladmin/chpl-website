@@ -2,11 +2,12 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('EditCorrectiveActionPlanController', ['$modalInstance', 'action', 'certifiedProductId', 'certificationResults', 'correctiveActionPlan', 'commonService', function ($modalInstance, action, certifiedProductId, certificationResults, correctiveActionPlan, commonService) {
+        .controller('EditCorrectiveActionPlanController', ['$modalInstance', 'action', 'certifiedProductId', 'certificationResults', 'correctiveActionPlan', 'commonService', 'authService', 'API', 'FileUploader', function ($modalInstance, action, certifiedProductId, certificationResults, correctiveActionPlan, commonService, authService, API, FileUploader) {
             var vm = this;
 
             vm.activate = activate;
             vm.cancel = cancel;
+            vm.certsChecked = certsChecked;
             vm.deleteCap = deleteCap;
             vm.save = save;
 
@@ -17,6 +18,7 @@
             function activate () {
                 vm.action = action;
                 vm.certificationResults = certificationResults;
+                vm.uploadMessage = '';
                 if (vm.action === 'initiate') {
                     vm.cap = {
                         certifiedProductId: certifiedProductId
@@ -48,11 +50,42 @@
                     if (vm.cap.estimatedCompletionDate) { vm.cap.estimatedCompletionDate = new Date(vm.cap.estimatedCompletionDate); }
                     if (vm.cap.actualCompletionDate) { vm.cap.actualCompletionDate = new Date(vm.cap.actualCompletionDate); }
                     if (vm.cap.noncomplianceDate) { vm.cap.noncomplianceDate = new Date(vm.cap.noncomplianceDate); }
+                    vm.uploader = new FileUploader({
+                        url: API + '/corrective_action_plan/upload_document',
+                        removeAfterUpload: true,
+                        headers: {
+                            Authorization: 'Bearer ' + authService.getToken(),
+                            'API-Key': authService.getApiKey()
+                        },
+                        formData: [{ id: vm.cap.id }]
+                    });
+                    vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                        //$log.info('onSuccessItem', fileItem, response, status, headers);
+                        vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully';
+                    };
+                    vm.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                        //vm.refreshPending();
+                    };
+                    vm.uploader.onErrorItem = function(fileItem, response, status, headers) {
+                        //$log.info('onErrorItem', fileItem, response, status, headers);
+                    };
+                    vm.uploader.onCancelItem = function(fileItem, response, status, headers) {
+                        //$log.info('onCancelItem', fileItem, response, status, headers);
+                    };
                 }
             }
 
             function cancel () {
                 $modalInstance.dismiss('cancelled');
+            }
+
+            function certsChecked () {
+                for (var i = 0; i < vm.cap.certifications.length; i++) {
+                    if (vm.cap.certifications[i].error) {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             function deleteCap () {

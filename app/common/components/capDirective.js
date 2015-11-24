@@ -85,7 +85,6 @@
                     correctiveActionPlan: '=',
                     certifiedProductId: '=',
                     certificationResults: '=',
-                    isEditing: '=',
                     isAdmin: '='
                 },
                 size: 'lg',

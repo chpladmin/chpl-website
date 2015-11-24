@@ -45,7 +45,10 @@
                     self.uploader = new FileUploader({
                         url: API + '/certified_products/upload',
                         removeAfterUpload: true,
-                        headers: { Authorization: 'Bearer ' + authService.getToken() }
+                        headers: {
+                            Authorization: 'Bearer ' + authService.getToken(),
+                            'API-Key': authService.getApiKey()
+                        }
                     });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         //$log.info('onSuccessItem', fileItem, response, status, headers);
