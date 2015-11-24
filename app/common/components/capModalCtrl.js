@@ -21,9 +21,9 @@
                 vm.uploadMessage = '';
                 if (vm.action === 'initiate') {
                     vm.cap = {
-                        certifiedProductId: certifiedProductId
+                        certifiedProductId: certifiedProductId,
+                        certifications: []
                     };
-                    vm.cap.certifications = [];
                     for (var i = 0; i < vm.certificationResults.length; i++) {
                         if (vm.certificationResults[i].success) {
                             vm.cap.certifications.push({

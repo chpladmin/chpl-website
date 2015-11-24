@@ -329,6 +329,7 @@
               <div class="panel-heading">
                 <span>Select a Certified Product</span>
                 <span class="pull-right">
+                  <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Product Listing</a> |
                   <a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
                 </span>
@@ -350,11 +351,15 @@
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLabId }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.activeCP.visibleOnChpl }} <br />
+                  <strong>Surveillance:</strong> <ai-surveillance
+                                                    surveillance="vm.activeCP.surveillance"
+                                                    certified-product-id="vm.activeCP.id"
+                                                    certification-results="vm.activeCP.certificationResults"
+                                                    is-admin="true"></ai-surveillance><br />
                   <strong>Corrective Action Plan:</strong> <ai-corrective-action-plan
                                                               corrective-action-plan="vm.activeCP.cap"
                                                               certified-product-id="vm.activeCP.id"
                                                               certification-results="vm.activeCP.certificationResults"
-                                                              is-editing="false"
                                                               is-admin="true"></ai-corrective-action-plan><br />
                 </span>
                 <br />

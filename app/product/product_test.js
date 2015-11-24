@@ -52,6 +52,10 @@
                 mockCommonService.getCap = function (pid) {
                     return $q.when({plans: []});
                 };
+
+                mockCommonService.getSurveillance = function (pid) {
+                    return $q.when({surveillance: []});
+                };
             });
 
             inject(function($modal) {

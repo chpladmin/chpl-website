@@ -290,6 +290,10 @@
                         .then(function (cap) {
                             self.activeCP.cap = cap.plans;
                         });
+                    commonService.getSurveillance(self.cpSelect)
+                        .then(function (surv) {
+                            self.activeCP.surveillance = surv.surveillance;
+                        });
                 }
             };
 

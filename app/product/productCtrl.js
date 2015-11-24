@@ -26,6 +26,12 @@
                     }, function (error) {
                         $log.error (error);
                     });
+                commonService.getSurveillance(vm.productId)
+                    .then(function (data) {
+                        vm.surveillance = data.surveillance;
+                    }, function (error) {
+//                        $log.error (error);
+                    });
             }
 
             function openLastModified () {

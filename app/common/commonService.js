@@ -257,6 +257,22 @@
                 return self.postApiCall('/corrective_action_plan/' + capId + '/delete', API, {});
             };
 
+            self.initiateSurveillance = function (surveillance) {
+                return self.postApiCall('/surveillance/create', API, surveillance);
+            };
+
+            self.updateSurveillance = function (surveillance) {
+                return self.postApiCall('/surveillance/update', API, surveillance);
+            };
+
+            self.getSurveillance = function (certifiedProductId) {
+                return self.simpleApiCall('/surveillance/?certifiedProductId=' + certifiedProductId, API);
+            };
+
+            self.deleteSurveillance = function (surveillanceId) {
+                return self.postApiCall('/surveillance/' + surveillanceId + '/delete', API, {});
+            };
+
             self.registerApi = function (user) {
                 return self.postApiCall('/api_key/register', API, user);
             };
