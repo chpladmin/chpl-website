@@ -51,13 +51,12 @@
                     if (vm.cap.actualCompletionDate) { vm.cap.actualCompletionDate = new Date(vm.cap.actualCompletionDate); }
                     if (vm.cap.noncomplianceDate) { vm.cap.noncomplianceDate = new Date(vm.cap.noncomplianceDate); }
                     vm.uploader = new FileUploader({
-                        url: API + '/corrective_action_plan/upload_document',
+                        url: API + '/corrective_action_plan/' + vm.cap.id + '/documentation',
                         removeAfterUpload: true,
                         headers: {
                             Authorization: 'Bearer ' + authService.getToken(),
                             'API-Key': authService.getApiKey()
-                        },
-                        formData: [{ id: vm.cap.id }]
+                        }
                     });
                     vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         //$log.info('onSuccessItem', fileItem, response, status, headers);
