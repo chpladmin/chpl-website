@@ -34,7 +34,10 @@
       <label for="cpCertDate">Certification Date</label>
       <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" required></input>
     </div>
-    <ai-additional-software additional-software="vm.cp.additionalSoftware" is-editing="true"></ai-additional-software>
+    <div>
+      <label>Additional Software</label>
+      <ai-additional-software additional-software="vm.cp.additionalSoftware" is-editing="true"></ai-additional-software>
+    </div>
     <div class="form-group">
       <label for="cpStatus">Status</label>
       <select class="input-sm form-control" ng-model="vm.cp.certificationStatus" id="cpStatus"

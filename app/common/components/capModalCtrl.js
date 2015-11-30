@@ -9,6 +9,7 @@
             vm.cancel = cancel;
             vm.certsChecked = certsChecked;
             vm.deleteCap = deleteCap;
+            vm.deleteDoc = deleteDoc;
             vm.save = save;
 
             vm.activate();
@@ -60,7 +61,7 @@
                     });
                     vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         //$log.info('onSuccessItem', fileItem, response, status, headers);
-                        vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully';
+                        vm.cap.documentation.push({fileName: fileItem.file.name + ' is pending'});
                     };
                     vm.uploader.onCompleteItem = function(fileItem, response, status, headers) {
                         //vm.refreshPending();
@@ -93,6 +94,19 @@
                         $modalInstance.close(result);
                     }), function (error) {
                         $modalInstance.dismss(error);
+                    };
+            }
+
+            function deleteDoc (docId) {
+                commonService.deleteDoc(docId)
+                    .then(function (result) {
+                        for (var i = 0; i < vm.cap.documentation.length; i++) {
+                            if (vm.cap.documentation[i].id === docId) {
+                                vm.cap.documentation.splice(i,1);
+                            }
+                        }
+                    }), function (error) {
+                        console.log (error);
                     };
             }
 

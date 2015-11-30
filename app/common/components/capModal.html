@@ -81,6 +81,35 @@
     </div>
     <div class="row" ng-if="vm.action === 'edit'">
       <div class="col-sm-12">
+        <h3>Supporting documentation</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>File Type</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="doc in vm.cap.documentation">
+              <td>{{ doc.fileName }}</td>
+              <td>{{ doc.fileType }}</td>
+              <td>
+                <button class="btn btn-danger btn-block pull-left"
+                        ng-if="doc.id"
+                        confirm="Are you sure you wish to remove this documentation?"
+                        confirm-ok="Yes"
+                        confirm-cancel="No"
+                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                        ng-click="vm.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row" ng-if="vm.action === 'edit'">
+      <div class="col-sm-12">
         <h3>Upload supporting document(s)</h3>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
         <p ng-if="vm.uploadMessage.length > 0">{{ vm.uploadMessage }}</p>
@@ -137,7 +166,7 @@
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.save()"><i class="fa fa-save"></i> Update</button>
     <button class="btn btn-warning btn-large pull-left"
-            confirm="Are you sure you wish to cancel? Your changes will not be saved."
+            confirm="Are you sure you wish to cancel? Changes other than documentation updates will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"

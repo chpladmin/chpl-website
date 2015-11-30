@@ -1,4 +1,4 @@
-<div>
+<div style="background: white">
   <div ng-if="!vm.correctiveActionPlan || vm.correctiveActionPlan.length === 0">
     No Corrective Action Plan in effect
   </div>
@@ -32,7 +32,7 @@
           <button class="btn btn-success" ng-click="vm.editCap(cap)">Edit</button>
         </td>
       </tr>
-      <tr ng-repeat-end>
+      <tr>
         <td colspan="{{ vm.isAdmin ? '10' : '9'}}">
           <table class="table table-striped">
             <thead>
@@ -49,6 +49,26 @@
                 <td>{{ cert.acbSummary }}</td>
                 <td>{{ cert.developerSummary }}</td>
                 <td>{{ cert.resolution }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr ng-repeat-end>
+        <td colspan="{{ vm.isAdmin ? '10' : '9'}}">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>File Type</th>
+                <th class="text-center">Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="doc in cap.documentation">
+                <td>{{ doc.fileName }}</td>
+                <td>{{ doc.fileType }}</td>
+                <td><a type="button" class="btn btn-block btn-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a></td>
               </tr>
             </tbody>
           </table>
