@@ -9,7 +9,6 @@
             vm.isChplAdmin = isChplAdmin;
 
             vm.activate = activate;
-            vm.addressRequired = addressRequired;
             vm.save = save;
             vm.cancel = cancel;
             vm.deleteAcb = deleteAcb;
@@ -23,10 +22,6 @@
                 if (vm.action === 'create') {
                     vm.acb.address = {};
                 }
-            }
-
-            function addressRequired () {
-                return commonService.addressRequired(vm.acb.address);
             }
 
             function save () {
