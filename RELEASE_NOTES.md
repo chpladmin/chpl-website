@@ -8,6 +8,7 @@ New or updated features
 * Integrated with Corrective Action Plan API
 * Updated to use new CQM format from API
 * Added password strength requirements
+* Require ACBs to have address/website information
 
 Bugs fixed
 * Logging in from /admin reflects in log-in dropdown
