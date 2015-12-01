@@ -18,19 +18,13 @@
         <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="vendor" st-skip-natural="true">Developer</th>
-		      <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th class="search-header" st-sort="certBody" st-skip-natural="true">Certification Body</th>
               <th class="">Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedCertifiedProducts">
-		      <td class="">{{ activity.vendor }}</td>
-		      <td class="">{{ activity.product }}</td>
-		      <td class="">{{ activity.certBody }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class=""><span ng-bind-html="activity.description"></span></td>
 		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>
@@ -121,38 +115,27 @@
             </tr>
           </tbody>
         </table>
-        <div ng-if="false">
         <h3>User Actions</h3>
-        <table st-table="vm.displayedUserActivities" st-safe-src="vm.searchedUserActivities" class="table table-striped">
+        <table st-table="vm.displayedUserActivities" st-safe-src="vm.searchedUserActivities" class="table">
           <thead>
             <tr>
               <th class="search-header" st-sort="user.lastName" st-skip-natural="true" st-sort-default>User</th>
-              <th class="">Activities</th>
+              <th>Action</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
-	        <tr ng-repeat="activity in vm.displayedUserActivities">
-		      <td class="">{{ activity.user.firstName }} {{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
-		      <td class="">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Action</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr ng-repeat="action in activity.activities">
-                      <td>{{ action.description }}</td>
-                      <td>{{ action.activityDate | date : 'medium' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
+	        <tr ng-repeat-start="activity in vm.displayedUserActivities">
+		      <td class="" rowspan="{{ activity.events.length }}">{{ activity.user.firstName }}&nbsp;{{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
+              <td>{{ activity.events[0].description }}</td>
+              <td><span ng-bind-html="activity.events[0].activityDate | date : 'MMM&nbsp;d,&nbsp;y&nbsp;h:mm:ss&nbsp;a'"></span></td>
+            </tr>
+            <tr ng-repeat="action in activity.events" ng-if="!$first" ng-repeat-end>
+              <td>{{ action.description }}</td>
+              <td><span ng-bind-html="action.activityDate | date : 'MMM&nbsp;d,&nbsp;y&nbsp;h:mm:ss&nbsp;a'"></span></td>
             </tr>
           </tbody>
         </table>
-        </div>
       </div>
     </div>
 

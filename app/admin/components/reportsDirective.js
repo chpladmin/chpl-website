@@ -122,13 +122,11 @@
                             vm.searchedUsers = vm.interpretUsers(data);
                             vm.displayedUsers = [].concat(vm.searchedUsers);
                         });
-/*
                     commonService.getUserActivities(7)
                         .then(function (data) {
                             vm.searchedUserActivities = vm.interpretUserActivities(data);
                             vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
                         });
-*/
                 }
             }
 
@@ -198,24 +196,10 @@
                 var change;
 
                 for (var i = 0; i < data.length; i++) {
-                    var activity = {date: data[i].activityDate,
-                                    vendor: data[i].newData.vendor.name,
-                                    product: data[i].newData.product.name,
-                                    certBody: data[i].newData.certifyingBody.name};
-                    if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                        activity.name = data[i].newData.name;
-                        activity.action = 'Update:<ul>';
-                        for (var j = 0; j < vm.simpleCpFields.length; j++) {
-                            change = vm.compareItem(data[i].originalData, data[i].newData, vm.simpleCpFields[j].key, vm.simpleCpFields[j].display);
-                            if (change) activity.action += '<li>' + change + '</li>';
-                        }
-                        activity.action += '</ul>';
-                        if (activity.action.length === 16) {
-                            activity.action = data[i].description;
-                        }
-                    } else {
-                        activity.action = data[i].description;
-                    }
+                    var activity = {
+                        date: data[i].activityDate,
+                        description: data[i].description
+                    };
                     ret.push(activity);
                 }
                 return ret;

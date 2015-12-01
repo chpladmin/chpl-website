@@ -48,6 +48,14 @@
                     defer.resolve(this.products[0]);
                     return defer.promise;
                 };
+
+                mockCommonService.getCap = function (pid) {
+                    return $q.when({plans: []});
+                };
+
+                mockCommonService.getSurveillance = function (pid) {
+                    return $q.when({surveillance: []});
+                };
             });
 
             inject(function($modal) {
@@ -81,7 +89,7 @@
         it('should have items in the modal', function () {
             ctrl.product.lastModifiedItems = ["test", "test"];
             expect(ctrl.modalInstance).not.toBeDefined();
-            ctrl.openLastModifiedDate('sm');
+            ctrl.openLastModified();
             expect(ctrl.modalInstance).toBeDefined();
         });
     });

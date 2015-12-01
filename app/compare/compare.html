@@ -63,8 +63,8 @@
           <tr ng-repeat="cqm in vm.allCqms | orderBy:'title'" ng-if="vm.isShowing('CQMs')">
             <td class="compare-rowCert">{{cqm.displayId + ": " + cqm.title}}</td>
             <td class="compare-element" ng-repeat="item in cqm.values | orderBy:'chplProductNumber'">
-              <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success && !item.version, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
-              <b ng-if="item.version">{{ item.version.join(', ') }}</b>
+              <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success && item.successVersions.length === 0, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
+              <b ng-if="item.successVersions.length > 0">{{ item.successVersions.join(', ') }}</b>
               <span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span>
             </td>
           </tr>

@@ -1,0 +1,182 @@
+<div role="modal" aria-labeled-by="titleLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="titleLabel">Corrective Action Plan</h4>
+  </div>
+  <div class="modal-body">
+    <div ng-form="capForm" class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-8" for="noncomplianceDate">Date of determination of non-compliance <span class="text-danger">*</span></label>
+        <div class="col-sm-4">
+          <input class="form-control" type="date" ng-model="vm.cap.noncomplianceDate" id="noncomplianceDate" required></input>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-8" for="approvalDate">Date of ONC approval of Corrective Action Plan <span class="text-danger">*</span></label>
+        <div class="col-sm-4">
+          <input class="form-control" type="date" ng-model="vm.cap.approvalDate" id="approvalDate" required></input>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-8" for="beginDate">Date corrective action began <span class="text-danger">*</span></label>
+        <div class="col-sm-4">
+          <input class="form-control" type="date" ng-model="vm.cap.effectiveDate" id="beginDate" required></input>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-8" for="requiredEndDate">Date corrective action must be completed <span class="text-danger">*</span></label>
+        <div class="col-sm-4">
+          <input class="form-control" type="date" ng-model="vm.cap.estimatedCompletionDate" id="requiredEndDate" required></input>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-8" for="actualEndDate">Date corrective action was completed</label>
+        <div class="col-sm-4">
+          <input class="form-control" type="date" ng-model="vm.cap.actualCompletionDate" id="actualEndDate"></input>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3" for="deficiencySummary">Summary of deficiency or deficiencies <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <textarea class="form-control" ng-model="vm.cap.acbSummary" id="deficiencySummary" required></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3" for="developerExplanation">Developer's explanation of deficiency or deficiencies <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <textarea class="form-control" ng-model="vm.cap.developerSummary" id="developerExplanation" required></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3" for="resolutionDescription">Description of the resolution <span class="text-danger" ng-if="vm.cap.actualCompletionDate">*</span></label>
+        <div class="col-sm-9">
+          <textarea class="form-control" ng-model="vm.cap.resolution" id="resolutionDescription" ng-required="vm.cap.actualCompletionDate"></textarea>
+        </div>
+      </div>
+      <div class="form-group" ng-repeat="cert in vm.cap.certifications">
+        <div class="col-sm-1">
+          <input type="checkbox" ng-model="cert.error" id="cert{{ cert.id}}_chk"></input>
+        </div>
+        <div class="col-sm-2">
+          <label for="cert{{ cert.id }}_chk">{{ cert.number }}: {{ cert.title }}</label>
+        </div>
+        <div class="col-sm-3">
+          <label for="cert{{ cert.id }}_desc">Summary of deficiency <span class="text-danger" ng-if="cert.error">*</span></label>
+          <textarea class="form-control" ng-model="cert.acbSummary" id="cert{{ cert.id }}_desc" ng-required="cert.error"></textarea>
+        </div>
+        <div class="col-sm-3">
+          <label for="cert{{ cert.id }}_dev">Developer explanation <span class="text-danger" ng-if="cert.error">*</span></label>
+          <textarea class="form-control" ng-model="cert.developerSummary" id="cert{{ cert.id }}_dev" ng-required="cert.error"></textarea>
+        </div>
+        <div class="col-sm-3">
+          <label for="cert{{ cert.id }}_res">Description of resolution <span class="text-danger" ng-if="vm.cap.actualCompletionDate">*</span></label>
+          <textarea class="form-control" ng-model="cert.resolution" id="cert{{ cert.id }}_res" ng-required="vm.cap.actualCompletionDate"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-if="vm.action === 'edit'">
+      <div class="col-sm-12">
+        <h3>Supporting documentation</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>File Type</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="doc in vm.cap.documentation">
+              <td>{{ doc.fileName }}</td>
+              <td>{{ doc.fileType }}</td>
+              <td>
+                <button class="btn btn-danger btn-block pull-left"
+                        ng-if="doc.id"
+                        confirm="Are you sure you wish to remove this documentation?"
+                        confirm-ok="Yes"
+                        confirm-cancel="No"
+                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                        ng-click="vm.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row" ng-if="vm.action === 'edit'">
+      <div class="col-sm-12">
+        <h3>Upload supporting document(s)</h3>
+        <input type="file" nv-file-select="" uploader="vm.uploader" />
+        <p ng-if="vm.uploadMessage.length > 0">{{ vm.uploadMessage }}</p>
+        <table class="table" ng-if="vm.uploader.queue.length > 0">
+          <thead>
+            <tr>
+              <th width="50%">Name</th>
+              <th ng-show="vm.uploader.isHTML5">Size</th>
+              <th ng-show="vm.uploader.isHTML5">Progress</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in vm.uploader.queue">
+              <td><strong>{{ item.file.name }}</strong></td>
+              <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+              <td ng-show="vm.uploader.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+              </td>
+              <td nowrap>
+                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                  <i class="fa fa-cloud-upload"></i> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                  <i class="fa fa-ban"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                  <i class="fa fa-trash-o"></i> Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success btn-large pull-right"
+            ng-if="vm.action === 'initiate'"
+            ng-disabled="capForm.$invalid || !vm.certsChecked()"
+            confirm="Are you sure you wish to initiate this Corrective Action Plan?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.save()"><i class="fa fa-save"></i> Initiate</button>
+    <button class="btn btn-success btn-large pull-right"
+            ng-if="vm.action === 'edit'"
+            ng-disabled="capForm.$invalid || !vm.certsChecked()"
+            confirm="Are you sure you wish to update this Corrective Action Plan?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.save()"><i class="fa fa-save"></i> Update</button>
+    <button class="btn btn-warning btn-large pull-left"
+            confirm="Are you sure you wish to cancel? Changes other than documentation updates will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
+    <button class="btn btn-danger btn-large pull-left"
+            confirm="Are you sure you wish to delete this Corrective Action Plan?"
+            ng-if="vm.action === 'edit'"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.deleteCap()"><i class="fa fa-trash-o"></i> Delete</button>
+  </div>
+</div>

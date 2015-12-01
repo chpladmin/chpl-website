@@ -3,55 +3,65 @@
 
     angular.module('app.registration')
         .controller('CreateController', ['$log', '$routeParams', '$location', 'commonService', function ($log, $routeParams, $location, commonService) {
-            var self = this;
-            self.userDetails = {user:{}};
-            self.authorizeDetails = {};
-            self.userDetails.hash = $routeParams.hash;
-            self.authorizeDetails.hash = $routeParams.hash;
-            self.message = {value: '', success: null};
+            var vm = this;
+            vm.userDetails = {user:{}};
+            vm.authorizeDetails = {};
+            vm.userDetails.hash = $routeParams.hash;
+            vm.authorizeDetails.hash = $routeParams.hash;
+            vm.message = {value: '', success: null};
+            vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
 
-            self.createUser = createUser;
-            self.authorizeUser = authorizeUser;
+            vm.createUser = createUser;
+            vm.authorizeUser = authorizeUser;
 
             ////////////////////////////////////////////////////////////////////
 
             function createUser () {
-                if (self.validateUser()) {
-                    commonService.createInvitedUser(self.userDetails)
+                if (vm.validateUser()) {
+                    commonService.createInvitedUser(vm.userDetails)
                         .then(function (response) {
-                            self.message.value = 'Your account has been created. Please check your email to confirm your account';
-                            self.message.success = true;
+                            vm.message.value = 'Your account has been created. Please check your email to confirm your account';
+                            vm.userDetails = {user:{}};
+                            vm.createUserForm.$setPristine();
+                            vm.createUserForm.$setUntouched();
+                            vm.message.success = true;
                         },function (error) {
-                            self.message.value = error.data.error;
-                            self.message.success = false;
+                            vm.message.value = error.data.error;
+                            vm.userDetails = {user:{}};
+                            vm.createUserForm.$setPristine();
+                            vm.createUserForm.$setUntouched();
+                            vm.message.success = false;
                         });
                 }
             }
 
             function authorizeUser () {
-                if (self.authorizeDetails.userName &&
-                    self.authorizeDetails.password &&
-                    self.authorizeDetails.hash) {
-                    commonService.authorizeUser(self.authorizeDetails)
+                if (vm.authorizeDetails.userName &&
+                    vm.authorizeDetails.password &&
+                    vm.authorizeDetails.hash) {
+                    commonService.authorizeUser(vm.authorizeDetails)
                         .then(function (response) {
                             $location.path('/admin');
                         },function (error) {
-                            self.message.value = error.data.error;
-                            self.message.success = false;
+                            vm.message.value = error.data.error;
+                            vm.authorizeDetails = {};
+                            vm.authorizeUserForm.$setPristine();
+                            vm.authorizeUserForm.$setUntouched();
+                            vm.message.success = false;
                         });
                 }
             }
 
-            self.validateUser = function () {
+            vm.validateUser = function () {
                 var valid = true;
-                valid = valid && self.userDetails.hash && self.userDetails.hash.length > 0;
-                valid = valid && self.userDetails.user.subjectName && self.userDetails.user.subjectName.length > 0;
-                valid = valid && self.userDetails.user.password && self.userDetails.user.password.length > 0;
-                valid = valid && self.userDetails.user.firstName && self.userDetails.user.firstName.length > 0;
-                valid = valid && self.userDetails.user.lastName && self.userDetails.user.lastName.length > 0;
-                valid = valid && self.userDetails.user.email && self.userDetails.user.email.length > 0;
-                valid = valid && self.userDetails.user.phoneNumber && self.userDetails.user.phoneNumber.length > 0;
-                valid = valid && self.userDetails.user.password === self.userDetails.user.passwordverify;
+                valid = valid && vm.userDetails.hash && vm.userDetails.hash.length > 0;
+                valid = valid && vm.userDetails.user.subjectName && vm.userDetails.user.subjectName.length > 0;
+                valid = valid && vm.userDetails.user.password && vm.userDetails.user.password.length > 0;
+                valid = valid && vm.userDetails.user.firstName && vm.userDetails.user.firstName.length > 0;
+                valid = valid && vm.userDetails.user.lastName && vm.userDetails.user.lastName.length > 0;
+                valid = valid && vm.userDetails.user.email && vm.userDetails.user.email.length > 0;
+                valid = valid && vm.userDetails.user.phoneNumber && vm.userDetails.user.phoneNumber.length > 0;
+                valid = valid && vm.userDetails.user.password === vm.userDetails.user.passwordverify;
                 return valid;
             };
         }]);

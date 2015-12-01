@@ -26,7 +26,6 @@
             function activate () {
                 self.isChplAdmin = authService.isChplAdmin();
                 self.isAcbAdmin = authService.isAcbAdmin();
-                self.newACB = {address: {}};
                 self.acbs = [];
                 self.workType = 'acb';
                 self.loadData()
@@ -57,7 +56,8 @@
                     keyboard: false,
                     resolve: {
                         acb: function () { return {}; },
-                        action: function () { return 'create'; }
+                        action: function () { return 'create'; },
+                        isChplAdmin: function () { return self.isChplAdmin; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {

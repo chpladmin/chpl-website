@@ -31,7 +31,7 @@
             }
 
             self.populateSearchOptions = function () {
-                commonService.getSearchOptions()
+                commonService.getSearchOptions(false) // use 'true' in production, to hide retired CQMs & Certs
                     .then(function (options) {
                         $scope.certs = options.certificationCriterionNumbers;
                         $scope.cqms = options.cqmCriterionNumbers;

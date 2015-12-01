@@ -2,21 +2,25 @@
     'use strict';
 
     angular.module('app.loginServices')
-        .service('authService', function ($window, $localStorage) {
+        .service('authService', function ($window, $localStorage, API_KEY) {
             var self = this;
 
             self.parseJwt = function (token) {
                 var base64 = token.split('.')[1].replace('-','+').replace('_','/');
                 return JSON.parse($window.atob(base64));
-            }
+            };
 
             self.saveToken = function (token) {
                 $localStorage.jwtToken = token;
-            }
+            };
 
             self.getToken = function () {
                 return $localStorage.jwtToken;
-            }
+            };
+
+            self.getApiKey = function () {
+                return API_KEY;
+            };
 
             self.isAuthed = function () {
                 var token = self.getToken();
@@ -26,7 +30,7 @@
                 } else {
                     return false;
                 }
-            }
+            };
 
             self.isChplAdmin = function () {
                 var token = self.getToken();
@@ -37,7 +41,7 @@
                     }
                 }
                 return false;
-            }
+            };
 
             self.isAcbAdmin = function () {
                 var token = self.getToken();
@@ -48,7 +52,18 @@
                     }
                 }
                 return false;
-            }
+            };
+
+            self.isAcbStaff = function () {
+                var token = self.getToken();
+                if (token) {
+                    var authorities = self.parseJwt(token).Authorities;
+                    if (authorities) {
+                        return authorities.indexOf('ROLE_ACB_STAFF') > -1
+                    }
+                }
+                return false;
+            };
 
             self.getUsername = function () {
                 if (self.isAuthed()) {
@@ -59,10 +74,10 @@
                     self.logout();
                     return '';
                 }
-            }
+            };
 
             self.logout = function () {
                 delete $localStorage.jwtToken;
-            }
+            };
         });
 })();

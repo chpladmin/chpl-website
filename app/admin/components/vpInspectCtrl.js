@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'vendors', 'classifications', 'practices', 'isAcbAdmin', 'isChplAdmin', 'bodies', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, vendors, classifications, practices, isAcbAdmin, isChplAdmin, bodies, statuses, commonService) {
+        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'vendors', 'classifications', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, vendors, classifications, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, commonService) {
             var vm = this;
 
             vm.activate = activate;
@@ -50,6 +50,7 @@
                 vm.classifications = classifications;
                 vm.practices = practices;
                 vm.isAcbAdmin = isAcbAdmin;
+                vm.isAcbStaff = isAcbStaff;
                 vm.isChplAdmin = isChplAdmin;
                 vm.bodies = bodies;
                 vm.statuses = statuses;
@@ -168,12 +169,6 @@
             }
 
             function confirm () {
-                for (var i = 0; i < vm.cp.cqmResults.length; i++) {
-                    var cqm = vm.cp.cqmResults[i];
-                    if (typeof(cqm.version) === 'object' && cqm.version.length === 1)
-                        cqm.version = cqm.version[0];
-                }
-
                 commonService.confirmPendingCp(vm.cp)
                     .then(function () {
                         $modalInstance.close('confirmed');
@@ -200,6 +195,7 @@
                         classifications: function () { return vm.classifications; },
                         practices: function () { return vm.practices; },
                         isAcbAdmin: function () { return vm.isAcbAdmin; },
+                        isAcbStaff: function () { return vm.isAcbStaff; },
                         isChplAdmin: function () { return vm.isChplAdmin; },
                         bodies: function () { return vm.bodies; },
                         statuses: function () { return vm.statuses; },
@@ -208,7 +204,6 @@
                 });
                 vm.editModalInstance.result.then(function (result) {
                     vm.cp = result;
-                    console.debug('success', result);
                 }, function (result) {
                     if (result !== 'cancelled') {
                         console.debug('dismissed', result);

@@ -1,0 +1,82 @@
+<div style="background: white">
+  <div ng-if="!vm.correctiveActionPlan || vm.correctiveActionPlan.length === 0">
+    No Corrective Action Plan in effect
+  </div>
+  <table class="table table-striped" ng-if="vm.correctiveActionPlan.length > 0">
+    <thead>
+      <tr>
+        <th>Is In Effect</th>
+        <th>Date of Determination</th>
+        <th>Action Began</th>
+        <th>Plan Approved</th>
+        <th>Must be Completed</th>
+        <th>Was Completed</th>
+        <th>ACB Summary</th>
+        <th>Developer Summary</th>
+        <th>Resolution</th>
+        <th ng-if="vm.isAdmin">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat-start="cap in vm.correctiveActionPlan | orderBy: 'id'">
+        <td><span ng-if="cap.actualCompletionDate">No</span><span ng-if="!cap.actualCompletionDate">Yes</span></td>
+        <td>{{ cap.noncomplianceDate | date }}</td>
+        <td>{{ cap.effectiveDate | date }}</td>
+        <td>{{ cap.approvalDate | date }}</td>
+        <td>{{ cap.estimatedCompletionDate | date }}</td>
+        <td>{{ cap.actualCompletionDate | date }}</td>
+        <td>{{ cap.acbSummary }}</td>
+        <td>{{ cap.developerSummary }}</td>
+        <td>{{ cap.resolution }}</td>
+        <td ng-if="vm.isAdmin">
+          <button class="btn btn-success" ng-click="vm.editCap(cap)">Edit</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="{{ vm.isAdmin ? '10' : '9'}}">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Certification Criteria</th>
+                <th>ACB Summary</th>
+                <th>Developer Summary</th>
+                <th>Resolution</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="cert in cap.certifications">
+                <td>{{ cert.certificationCriterionNumber + ': ' + cert.certificationCriterionTitle }}</td>
+                <td>{{ cert.acbSummary }}</td>
+                <td>{{ cert.developerSummary }}</td>
+                <td>{{ cert.resolution }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr ng-repeat-end>
+        <td colspan="{{ vm.isAdmin ? '10' : '9'}}">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>File Type</th>
+                <th class="text-center">Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="doc in cap.documentation">
+                <td>{{ doc.fileName }}</td>
+                <td>{{ doc.fileType }}</td>
+                <td><a type="button" class="btn btn-block btn-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div ng-if="vm.isAdmin">
+    <button class="btn btn-success" ng-click="vm.initiateCap()">Initiate Corrective Action Plan</button>
+  </div>
+</div>

@@ -45,7 +45,6 @@
                 });
                 vm.editModalInstance.result.then(function (result) {
                     vm.additionalSoftware.push(result);
-                    console.debug('success', result);
                     vm.format();
                 }, function (result) {
                     if (result !== 'cancelled') {
@@ -68,7 +67,6 @@
                 });
                 vm.editModalInstance.result.then(function (result) {
                     vm.additionalSoftware[index] = result;
-                    console.debug('success', result);
                     vm.format();
                 }, function (result) {
                     if (result !== 'cancelled') {
