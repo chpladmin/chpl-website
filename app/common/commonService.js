@@ -33,6 +33,19 @@
                     });
             };
 
+            self.externalApiCall = function (endpoint) {
+                return $http.get(endpoint)
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            return response.data;
+                        } else {
+                            return $q.reject(response.data);
+                        }
+                    }, function (response) {
+                        return $q.reject(response.data);
+                    });
+            };
+
             self.postApiCall = function (endpoint, postObject) {
                 return $http.post(API + endpoint, postObject)
                     .then(function (response) {
