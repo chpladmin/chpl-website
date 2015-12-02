@@ -86,7 +86,7 @@
                         $scope.query.searchTermObject = {type: 'previous search', value: $scope.query.searchTermObject};
                         $scope.lookaheadSource.all.push($scope.query.searchTermObject);
                     }
-                    $scope.query.searchTerm = $scope.query.searchTermObject.value;
+                    $scope.query.searchTerm = angular.copy($scope.query.searchTermObject.value);
                 }
                 if ($scope.query.vendorObject !== undefined) {
                     if (typeof($scope.query.vendorObject) === 'string' && $scope.query.vendorObject.length > 0) {
@@ -104,6 +104,7 @@
                 }
                 if ($scope.query.simple) {
                     var searchTerm = $scope.query.searchTerm;
+                    var searchTermObject = $scope.query.searchTermObject;
                     for (var key in $scope.query) {
                         if ('simple-orderBy-sortDescending-pageNumber-pageSize'.indexOf(key) === -1) {
                             delete $scope.query[key]
@@ -111,6 +112,7 @@
                     }
                     $scope.query.visibleOnCHPL = true;
                     $scope.query.searchTerm = searchTerm;
+                    $scope.query.searchTermObject = searchTermObject;
                 }
 
                 $localStorage.lookaheadSource = $scope.lookaheadSource;
