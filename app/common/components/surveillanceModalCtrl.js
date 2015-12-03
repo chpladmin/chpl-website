@@ -39,14 +39,14 @@
                 }
                 if (vm.action === 'edit') {
                     vm.surveillance = surveillance;
-                    for (var i = 0; i < vm.surv.certifications.length; i++) {
+                    for (var i = 0; i < vm.surveillance.certifications.length; i++) {
                         vm.surveillance.certifications[i].id = i;
                         vm.surveillance.certifications[i].number = vm.surveillance.certifications[i].certificationCriterionNumber;
                         vm.surveillance.certifications[i].title = vm.surveillance.certifications[i].certificationCriterionTitle;
                         vm.surveillance.certifications[i].error = true;
                     }
-                    if (vm.surveillance.dateBegan) { vm.surveillance.dateBegan = new Date(vm.surveillance.dateBegan); }
-                    if (vm.surveillance.dateEnded) { vm.surveillance.dateEnded = new Date(vm.surveillance.dateEnded); }
+                    if (vm.surveillance.startDate) { vm.surveillance.startDate = new Date(vm.surveillance.startDate); }
+                    if (vm.surveillance.endDate) { vm.surveillance.endDate = new Date(vm.surveillance.endDate); }
                 }
             }
 

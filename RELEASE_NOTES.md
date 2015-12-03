@@ -6,6 +6,7 @@ _Date TBD_
 New or updated features
 * Added 'Actions by User' reporting
 * Integrated with Corrective Action Plan API
+* Integrated with Surveillance API
 * Updated to use new CQM format from API
 * Added password strength requirements
 * Require ACBs to have address/website information

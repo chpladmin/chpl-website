@@ -285,14 +285,14 @@
                             if (self.activeCP.visibleOnChpl === undefined)
                                 self.activeCP.visibleOnChpl = true;
                             self.activeCP.certDate = new Date(self.activeCP.certificationDate);
-                        });
-                    commonService.getCap(self.cpSelect)
-                        .then(function (cap) {
-                            self.activeCP.cap = cap.plans;
-                        });
-                    commonService.getSurveillance(self.cpSelect)
-                        .then(function (surv) {
-                            self.activeCP.surveillance = surv.surveillance;
+                            commonService.getCap(self.cpSelect)
+                                .then(function (cap) {
+                                    self.activeCP.cap = cap.plans;
+                                });
+                            commonService.getSurveillance(self.cpSelect)
+                                .then(function (surv) {
+                                    self.activeCP.surveillances = surv.surveillances;
+                                });
                         });
                 }
             };

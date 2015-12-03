@@ -14,8 +14,8 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                if (!vm.surveillance) {
-                    vm.surveillance = [];
+                if (!vm.surveillances) {
+                    vm.surveillances = [];
                 }
             }
 
@@ -30,15 +30,15 @@
                     size: 'lg',
                     resolve: {
                         action: function () { return 'edit'; },
-                        certifiedProductId: function () { return vm.certifiedProductId; },
-                        certificationResults: function () { return vm.certificationResults; },
-                        surveillance: function () { return vm.surveillance; }
+                        certifiedProductId: function () { return surveillance.certifiedProductId; },
+                        certificationResults: function () { return surveillance.certificationResults; },
+                        surveillance: function () { return surveillance; }
                     }
                 });
                 vm.modalInstance.result.then(function (result) {
                     commonService.getSurveillance(vm.certifiedProductId)
                         .then(function (result) {
-                            vm.surveillance = result.surveillance;
+                            vm.surveillances = result.surveillances;
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
@@ -66,7 +66,7 @@
                 vm.modalInstance.result.then(function (result) {
                     commonService.getSurveillance(vm.certifiedProductId)
                         .then(function (result) {
-                            vm.surveillance = result.surveillance;
+                            vm.surveillances = result.surveillances;
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
@@ -82,7 +82,7 @@
                 templateUrl: 'common/components/surveillance.html',
                 scope: {},
                 bindToController: {
-                    surveillance: '=',
+                    surveillances: '=',
                     certifiedProductId: '=',
                     certificationResults: '=',
                     isAdmin: '='
