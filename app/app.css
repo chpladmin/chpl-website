@@ -114,13 +114,22 @@ footer .spaced-out {
   position: fixed;
 }
 
-/*
-header.sticky {
-  font-size: 24px;
-  line-height: 48px;
-  height: 48px;
-  background: #efc47D;
-  text-align: left;
-  padding-left: 20px;
+.table-striped-foldout>tbody>tr:nth-of-type(even) {
+    background-color: #fff;
 }
-*/
+
+.table-striped-foldout>tbody>tr:nth-of-type(4n+1) {
+    background-color: #dee1ff;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #dee1ff;
+}
+
+.table-striped-foldout>tbody>tr:nth-of-type(4n+3) {
+    background-color: #f6f6fa;
+}
+
+.table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #f6f6fa;
+}

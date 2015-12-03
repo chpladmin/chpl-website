@@ -1,162 +1,149 @@
-<div ng-controller="SearchController">
-  <div class="row splash-row" ng-hide="hasSearched()">
-    <div class="col-md-10 col-md-offset-1 text-center jumbotron">
-      <h1><strong>CHPL</strong></h1>
+<div ng-controller="SearchController as vm">
+  <div class="form-horizontal search-inputs" ng-form="vm.searchForm">
+    <div class="form-group form-group-lg">
+      <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
+        <label for="searchField" class="control-label sr-only">Search</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="vm.query.searchTermObject"
+                 typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
+                 typeahead-input-formatter="$model.value" />
+          <div class="input-group-addon pointer" ng-click="vm.search()"><i class="fa fa-search"></i></div>
+        </div>
+      </div>
+      <div class="col-sm-3" ng-if="vm.activeSearch">
+        <label for="refine" class="sr-only">Select the what category to refine your search by</label>
+        <select id="refine" class="form-control" ng-change="vm.refineSearch()" ng-model="vm.refineType">
+          <option value="" disabled>Refine search by</option>
+          <option value="vendor">Developer</option>
+          <option value="product">Product</option>
+          <option value="version">Version</option>
+          <option value="visibleOnCHPL">Visible on CHPL</option>
+          <option value="certificationCriteria">Certification Criteria</option>
+          <option value="cqms">Clinical Quality Measure</option>
+          <option value="certificationEdition">Certification Edition</option>
+          <option value="productClassification">Product Classification</option>
+          <option value="practiceType">Practice Type</option>
+        </select>
+      </div>
+      <div class="col-sm-4" ng-if="vm.refineType === 'vendor'">
+        <label for="developerRefine" class="control-label sr-only">Developer</label>
+        <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.vendor"
+               ng-required="vm.refineType === 'vendor'"
+               typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.vendors | filter:{value:$viewValue} | limitTo:16"
+               typeahead-input-formatter="$model.value" />
+      </div>
+      <div class="col-sm-3" ng-if="vm.refineType === 'product'">
+        <label for="productRefine" class="control-label sr-only">Product</label>
+        <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.refine.product"
+               ng-required="vm.refineType === 'product'"
+               typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:{value:$viewValue} | limitTo:16"
+               typeahead-input-formatter="$model.value" />
+      </div>
+      <div class="col-sm-3" ng-if="vm.refineType === 'version'">
+        <label for="versionRefine" class="control-label sr-only">Version</label>
+        <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refine.version"
+               ng-required="vm.refineType === 'version'"/>
+      </div>
+      <div class="col-sm-3" ng-if="vm.refineType === 'visibleOnCHPL'">
+        <label for="visibleRefine" class="control-label sr-only">Visible on CHPL</label>
+        <select id="visibleRefine" ng-model="vm.refine.visibleOnCHPL" class="input-sm form-control">
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+          <option value="both">Both</option>
+        </select>
+      </div>
+      <div class="col-sm-3" ng-if="vm.refineType === 'certificationEdition'">
+        <label for="editionRefine" class="control-label sr-only">Certification Edition</label>
+        <select id="editionRefine" ng-model="vm.refine.certificationEdition" class="input-sm form-control"
+                ng-required="vm.refineType === 'certificationEdition'"
+                ng-options="edition.name as edition.name for edition in vm.editions | orderBy:'name'">
+        </select>
+      </div>
+      <div class="col-sm-3" ng-if="vm.refineType === 'productClassification'">
+        <label for="classificationRefine" class="control-label sr-only">Product Classification</label>
+        <select id="classificationRefine" ng-model="vm.refine.productClassification" class="input-sm form-control"
+                ng-required="vm.refineType === 'productClassification'"
+                ng-options="c.name as c.name for c in vm.classifications | orderBy:'name'">
+        </select>
+      </div>
+      <div class="col-sm-3" ng-if="vm.refineType === 'practiceType'">
+        <label for="practiceRefine" class="control-label sr-only">Practice Type</label>
+        <select id="practiceRefine" ng-model="vm.refine.practiceType" class="input-sm form-control"
+                ng-required="vm.refineType === 'practiceType'"
+                ng-options="p.name as p.name for p in vm.practices | orderBy:'name'">
+        </select>
+      </div>
+      <div class="col-sm-3" ng-if="vm.refineType === 'certificationCriteria'">
+        <label for="certField" class="control-label sr-only">Certification Criteria</label>
+        <select id="certRefine" ng-model="vm.refine.certificationCriteria" class="input-sm form-control"
+                ng-required="vm.refineType === 'certificationCriteria'"
+                ng-options="cert.name as cert.name + ': ' + cert.title for cert in vm.certs | orderBy:'name'">
+        </select>
+      </div>
+      <div class="col-sm-3" ng-if="vm.refineType === 'cqms'">
+        <label for="cqmRefine" class="control-label sr-only">Clinical Quality Measures</label>
+        <select id="cqmRefine" ng-model="vm.refine.cqms" class="input-sm form-control"
+                ng-required="vm.refineType === 'cqms'"
+                ng-options="cqm.name as prepend(cqm.name) + ': ' + cqm.title for cqm in vm.cqms | orderBy:'name'">
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <button ng-if="vm.refineType" ng-disabled="!vm.searchForm.$valid" class="btn btn-default form-control" ng-click="vm.addRefine()">Add refinement</button>
+      </div>
     </div>
-  </div> <!-- search introduction 'header' -->
-
-  <div class="row search-inputs">
-    <form class="form-horizontal" role="search"> <!-- simple search -->
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group form-group-lg">
-            <div class="col-sm-1">
-              <label for="searchField" class="control-label sr-only">Search</label>
-            </div>
-            <div class="col-sm-7">
-              <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="query.searchTermObject"
-                       typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
-                       typeahead-input-formatter="$model.value" />
-              </div>
-            </div>
-            <div class="col-sm-2">
-              <button id="searchButton" type="button" class="btn btn-default btn-lg form-control" ng-click="search()">Search</button>
-            </div>
-            <div class="col-sm-2">
-              <a href="" ng-if="query.simple" ng-click="query.simple = !query.simple">Advanced search</a>
-              <a href="" ng-if="!query.simple" ng-click="query.simple = !query.simple">Simple search</a>
-              <span ng-if="hasSearched()"><br /><a href="" ng-click="clear()">Clear results</a></span>
-              <br /><a href="" ng-click="browseAll()">Browse all</a>
-            </div>
-          </div>
-        </div>
-      </div> <!-- simple search row -->
-
-      <div class="row" ng-if="!query.simple"> <!-- advanced search -->
-        <div class="col-xs-12">
-          <div class="form-group form-group-sm">
-            <div class="col-sm-1">
-              <label for="vendorField" class="control-label">Developer</label>
-            </div>
-            <div class="col-sm-4">
-              <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" id="vendorField" placeholder="Developer" ng-model="query.vendorObject"
-                       typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.vendors | filter:{value:$viewValue} | limitTo:16"
-                       typeahead-input-formatter="$model.value" />
-              </div>
-            </div>
-            <div class="col-sm-1">
-              <label for="productField" class="control-label">Product</label>
-            </div>
-            <div class="col-sm-4">
-              <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" id="productField" placeholder="Product" ng-model="query.productObject"
-                       typeahead="element as element.value + ' (' + element.type + ')' for element in lookaheadSource.products | filter:{value:$viewValue} | limitTo:16"
-                       typeahead-input-formatter="$model.value" />
-              </div>
-            </div>
-            <div class="col-sm-1">
-              <label for="visibleField" class="control-label">Visible on CHPL</label>
-            </div>
-            <div class="col-sm-1">
-              <select id="visibleField" ng-model="query.visibleOnCHPL" class="input-sm form-control">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-                <option value="both">Both</option>
-              </select>
-            </div>
-          </div> <!-- first row of advanced search -->
-
-          <div class="form-group form-group-sm">
-            <div class="col-sm-1">
-              <label for="versionField" class="control-label">Version</label>
-            </div>
-            <div class="col-sm-3">
-              <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" id="versionField" placeholder="Version" ng-model="query.version" />
-              </div>
-            </div>
-            <div class="col-sm-1">
-              <label for="certField" class="control-label">Certification Criteria</label>
-            </div>
-            <div class="col-sm-3">
-              <select id="certField" ng-model="query.certificationCriteria" multiple class="input-sm form-control"
-                      ng-options="cert.name as cert.name + ': ' + cert.title for cert in certs | orderBy:'name'">
-              </select>
-            </div>
-            <div class="col-sm-1">
-              <label for="cqmField" class="control-label">Clinical Quality Measures</label>
-            </div>
-            <div class="col-sm-3">
-              <select id="cqmField" ng-model="query.cqms" multiple class="input-sm form-control"
-                      ng-options="cqm.name as prepend(cqm.name) + ': ' + cqm.title for cqm in cqms | orderBy:'name'">
-              </select>
-            </div>
-          </div> <!-- second row of advanced -->
-
-          <div class="form-group form-group-sm">
-            <div class="col-sm-1">
-              <label for="editionField" class="control-label">Certification Edition</label>
-            </div>
-            <div class="col-sm-3">
-              <select id="editionField" ng-model="query.certificationEdition" class="input-sm form-control"
-                      ng-options="edition.name as edition.name for edition in editions | orderBy:'name'">
-              </select>
-            </div>
-            <div class="col-sm-1">
-              <label for="classificationField" class="control-label">Product Classification</label>
-            </div>
-            <div class="col-sm-3">
-              <select id="classificationField" ng-model="query.productClassification" class="input-sm form-control"
-                      ng-options="c.name as c.name for c in classifications | orderBy:'name'">
-              </select>
-            </div>
-            <div class="col-sm-1">
-              <label for="practiceField" class="control-label">Practice Type</label>
-            </div>
-            <div class="col-sm-3">
-              <select id="practiceField" ng-model="query.practiceType" class="input-sm form-control"
-                      ng-options="p.name as p.name for p in practices | orderBy:'name'">
-              </select>
-            </div>
-          </div> <!-- third row of advanced search -->
-
-        </div>
-      </div> <!-- advanced search row -->
-    </form>
+  </div>
+  <div class="row" ng-if="vm.activeSearch">
+    <div class="col-sm-12">
+      <ul class="list-inline">
+        <li ng-if="vm.query.vendor"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('vendor')"><em>Developer:</em> {{ vm.query.vendor }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.product"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('product')"><em>Product:</em> {{ vm.query.product }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.version"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('version')"><em>Version:</em> {{ vm.query.version }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('certificationEdition')"><em>Certification Edition:</em> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.productClassification"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('productClassification')"><em>Product Classification:</em> {{ vm.query.productClassification }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.practiceType"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('practiceType')"><em>Practice Type:</em> {{ vm.query.practiceType }} <i class="fa fa-close"></i></button></li>
+        <li ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('certificationCriteria',cert)"><em>Certification Criteria:</em> {{ cert }} <i class="fa fa-close"></i></button></li>
+        <li ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('cqms',cqm)"><em>Clinical Quality Measure:</em> {{ cqm }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.visibleOnCHPL !== 'yes'"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('visibleOnCHPL')"><em>Visible on CHPL:</em> {{ vm.query.visibleOnCHPL }} <i class="fa fa-close"></i></button></li>
+      </ul>
+    </div>
   </div>
 
-  <div id="resultsSection" ng-if="hasSearched()">
+  <div id="resultsSection" ng-if="hasSearched()" style="background:#fff; padding: 5px; border:1px solid #333;">
     <div class="row">
-      <div class="col-md-12">
-        <h2>Results</h2>
+      <div class="col-md-6">
         <p ng-if="!hasResults()">No results found</p>
-        <p ng-if="hasResults()">There are {{ resultCount }} results that match your search.</p>
+        <p ng-if="hasResults()">Showing
+          <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="1000">1000</option>
+          </select>
+          of {{ resultCount }} results</p>
+      </div>
+      <div class="col-md-6 text-right">
+        <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="clear()">Clear results</a>
       </div>
     </div>
     <div ng-if="hasResults()" class="row">
       <div class="col-md-12">
-        <table class="table table-striped">
+        <table class="table table-striped-foldout">
           <thead>
             <tr>
               <th class="search-header" ng-click="sort('vendor')"
-                  ng-class="{'sort-ascent': query.orderBy==='vendor' && !query.sortDescending, 'sort-descent': query.orderBy==='vendor' && query.sortDescending}">Developer</th>
+                  ng-class="{'sort-ascent': vm.query.orderBy==='vendor' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='vendor' && vm.query.sortDescending}">Developer</th>
 		      <th class="search-header" ng-click="sort('product')"
-                  ng-class="{'sort-ascent': query.orderBy==='product' && !query.sortDescending, 'sort-descent': query.orderBy==='product' && query.sortDescending}">Product</th>
+                  ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
               <th class="">Version</th>
 		      <th class="">Certification Criteria & Clinical Quality Measures</th>
               <th class="search-header" ng-click="sort('certificationDate')"
-                  ng-class="{'sort-ascent': query.orderBy==='certificationDate' && !query.sortDescending, 'sort-descent': query.orderBy==='certificationDate' && query.sortDescending}">Certification Date</th>
+                  ng-class="{'sort-ascent': vm.query.orderBy==='certificationDate' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationDate' && vm.query.sortDescending}">Certification Date</th>
               <th><button class="btn btn-default" ng-click="compare()">Compare</button></th>
 	        </tr>
 	      </thead>
 	      <tbody>
-	        <tr ng-repeat-start="row in displayedResults">
+	        <tr ng-repeat-start="row in displayedResults" class="search-row">
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor.name }}</td>
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
 		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
@@ -170,7 +157,7 @@
 	        </tr>
             <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
               <td colspan="6">
-                <table class="table" width="100%">
+                <table class="" width="100%">
                   <thead>
                     <tr>
                       <th>Practice Type</th>
@@ -196,7 +183,7 @@
           <tfoot>
             <tr>
 	          <td colspan="6" class="text-center">
-                <pagination total-items="resultCount" ng-model="visiblePage" items-per-page="query.pageSize" ng-change="pageChanged(visiblePage)"
+                <pagination total-items="resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
                             max-size="10" class="pagination-sm" boundary-links="true"></pagination>
 	          </td>
             </tr>

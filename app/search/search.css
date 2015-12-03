@@ -1,12 +1,12 @@
 .sort-ascent:after {
-    content: "\f0d8";
+    content: "\f077";
     font-family: FontAwesome;
     padding: 0 6px;
     font-size: large;
 }
 
 .sort-descent:after {
-    content: "\f0d7";
+    content: "\f078";
     font-family: FontAwesome;
     padding: 0 6px;
     font-size: large;
@@ -32,6 +32,10 @@ ul.pagination li {
     cursor: pointer;
 }
 
+.search-row:hover>td {
+    font-weight: 700;
+}
+
 .search-activate-filter {
     cursor: pointer;
 }
@@ -51,7 +55,12 @@ ul.pagination li {
 
 .search-inputs {
     padding-top: 15px;
-    background: #e1e1e1;
     margin-left: 0px;
     margin-right: 0px;
+}
+
+.search-pristine {
+    position: relative;
+    top: 50%;
+    transform: translateY(400%);
 }

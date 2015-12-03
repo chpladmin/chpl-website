@@ -6,7 +6,6 @@
             var vm = this;
 
             vm.activate = activate;
-            vm.downloadDoc = downloadDoc
             vm.editCap = editCap;
             vm.initiateCap = initiateCap;
 
@@ -17,18 +16,9 @@
             function activate () {
                 vm.API = API;
                 vm.API_KEY = authService.getApiKey();
-                if (!vm.correctiveActionPlan) {
+/*                if (!vm.correctiveActionPlan) {
                     vm.correctiveActionPlan = [];
-                }
-            }
-
-            function downloadDoc (docId) {
-                commonService.getCapDoc(docId)
-                    .then(function (result) {
-                        $log.info(result);
-                    }, function (error) {
-                        $log.debug(error);
-                    });
+                }*/
             }
 
             function editCap (cap) {
