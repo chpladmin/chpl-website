@@ -133,3 +133,23 @@ footer .spaced-out {
 .table-striped>tbody>tr:nth-of-type(even) {
     background-color: #f6f6fa;
 }
+
+.main-content {
+    background: #fff;
+    padding: 5px;
+    border:1px solid #333;
+}
+
+.sort-ascent:after, .st-sort-ascent:after {
+    content: "\f077";
+    font-family: FontAwesome;
+    padding: 0 6px;
+    font-size: large;
+}
+
+.sort-descent:after, .st-sort-descent:after {
+    content: "\f078";
+    font-family: FontAwesome;
+    padding: 0 6px;
+    font-size: large;
+}
