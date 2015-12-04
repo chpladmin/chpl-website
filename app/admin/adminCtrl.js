@@ -2,43 +2,45 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$log', 'commonService', 'authService', function ($log, commonService, authService) {
-            var self = this;
+        .controller('AdminController', ['$log', 'authService', function ($log, authService) {
+            var vm = this;
 
-            self.handlers = [];
-            self.refresh = refresh;
-            self.triggerRefresh = triggerRefresh;
+            vm.activate = activate;
+            vm.changeScreen = changeScreen;
+            vm.refresh = refresh;
+            vm.triggerRefresh = triggerRefresh;
+
+            vm.activate();
+
+            ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                vm.handlers = [];
+                vm.isAuthed = authService.isAuthed ? authService.isAuthed() : false;
+                vm.isChplAdmin = authService.isChplAdmin();
+                vm.isAcbAdmin = authService.isAcbAdmin();
+                vm.username = authService.getUsername();
+                vm.screen = 'dpManagement';
+            }
+
+            function changeScreen (screen) {
+                vm.screen = screen;
+            }
 
             function refresh () {
-                angular.forEach(self.handlers, function (handler) {
+                angular.forEach(vm.handlers, function (handler) {
                     handler();
                 });
             }
 
             function triggerRefresh (handler) {
-                self.handlers.push(handler);
+                vm.handlers.push(handler);
                 var removeHandler = function () {
-                    self.handlers = self.handlers.filter(function (aHandler) {
+                    vm.handlers = vm.handlers.filter(function (aHandler) {
                         return aHandler !== handler;
                     });
                 };
                 return removeHandler;
             }
-
-            self.isAuthed = function () {
-                return authService.isAuthed ? authService.isAuthed() : false
-            };
-
-            self.isChplAdmin = function () {
-                return authService.isChplAdmin();
-            };
-
-            self.isAcbAdmin = function () {
-                return authService.isAcbAdmin();
-            };
-
-            self.getUsername = function () {
-                return authService.getUsername();
-            };
         }]);
 })();
