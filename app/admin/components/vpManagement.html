@@ -5,7 +5,7 @@
         <li ng-class="{'active': vm.workType === 'upload'}" ng-if="vm.isAcbAdmin || vm.isAcbStaff"><a href="" class="" ng-click="vm.doWork('upload')">Upload Certified Products</a></li>
         <li ng-class="{'active': vm.workType === 'confirm'}" ng-if="vm.isAcbAdmin || vm.isAcbStaff"><a href="" class="" ng-click="vm.doWork('confirm')">Confirm Pending Product<span ng-if="vm.uploadingCps.length > 1">s</span> <span class="badge">{{ vm.uploadingCps.length }}</span> </a></li>
         <li ng-class="{'active': vm.workType === 'manage'}"><a href="" class="" ng-click="vm.doWork('manage')">Manage Developers &amp; Products</a></li>
-        <li ng-class="{'active': vm.workType === 'merge'}"><a href="" class="" ng-click="vm.doWork('merge')">Merge Developers &amp; Products</a></li>
+        <li ng-class="{'active': vm.workType === 'merge'}" ng-if="vm.isChplAdmin"><a href="" class="" ng-click="vm.doWork('merge')">Merge Developers &amp; Products</a></li>
       </ul>
     </div>
   </div>

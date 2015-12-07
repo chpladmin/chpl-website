@@ -1,7 +1,10 @@
 # Release Notes
 
-## Next version
+## Next Version
 _Date TBD_
+
+## Version 0.0.2
+_7 December 2015_
 
 New or updated features
 * Added 'Actions by User' reporting
