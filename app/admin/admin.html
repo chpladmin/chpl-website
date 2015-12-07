@@ -1,5 +1,5 @@
 <div ng-controller="AdminController as vm">
-  <div class="row splash-row" ng-if="!vm.isAuthed()">
+  <div class="row splash-row" ng-if="!vm.isAuthed">
     <div class="col-md-4 col-md-offset-4 jumbotron">
       <ai-login form-class=""
                 p-class="bg-danger lead">
@@ -7,33 +7,31 @@
     </div>
   </div>
 
-  <section ng-if="vm.isAuthed()">
+  <section ng-if="vm.isAuthed">
     <div class="row">
       <div class="col-md-12">
-        <h2>Welcome, {{ vm.getUsername() }}</h2>
+        <h2>Welcome, {{ vm.username }}</h2>
       </div>
     </div>
-    <tabset class="admin-tabset">
-      <tab heading="Developer &amp; Product Management">
-        <ai-vp-management>
-        </ai-vp-management>
-      </tab>
-      <tab ng-if="vm.isChplAdmin()" heading="User Management">
-        <ai-user-management>
-        </ai-user-management>
-      </tab>
-      <tab ng-if="vm.isChplAdmin() || vm.isAcbAdmin()" heading="ACB Management">
-        <ai-acb-management>
-        </ai-acb-management>
-      </tab>
-      <tab heading="Reports" select="vm.refresh()">
-        <ai-reports trigger-refresh="vm.triggerRefresh(handler)">
-        </ai-reports>
-      </tab>
-      <tab heading="API Key Management" ng-if="vm.isChplAdmin()">
-        <ai-api-key admin="true">
-        </ai-api-key>
-      </tab>
-    </tabset>
+    <div class="row">
+      <div class="col-sm-2 admin-nav">
+        <div class="panel panel-default">
+          <ul class="nav nav-pills nav-stacked">
+            <li ng-class="{'active': vm.screen === 'dpManagement'}"><a href="" class="" ng-click="vm.changeScreen('dpManagement')">Developer &amp; Product Management</a></li>
+            <li ng-class="{'active': vm.screen === 'userManagement'}" ng-if="vm.isChplAdmin"><a href="" class="" ng-click="vm.changeScreen('userManagement')">User Management</a></li>
+            <li ng-class="{'active': vm.screen === 'acbManagment'}" ng-if="vm.isChplAdmin || vm.isAcbAdmin"><a href="" class="" ng-click="vm.changeScreen('acbManagement')">ACB Managment</a></li>
+            <li ng-class="{'active': vm.screen === 'reports'}"><a href="" class="" ng-click="vm.changeScreen('reports')">Reports</a></li>
+            <li ng-class="{'active': vm.screen === 'apiKeyManagement'}" ng-if="vm.isChplAdmin"><a href="" class="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-10 admin-inner-tab">
+        <ai-vp-management ng-if="vm.screen === 'dpManagement'"></ai-vp-management>
+        <ai-user-management ng-if="vm.screen === 'userManagement'"></ai-user-management>
+        <ai-acb-management ng-if="vm.screen === 'acbManagement'"></ai-acb-management>
+        <ai-reports trigger-refresh="vm.triggerRefresh(handler)" ng-if="vm.screen === 'reports'"></ai-reports>
+        <ai-api-key admin="true" ng-if="vm.screen === 'apiKeyManagement'"></ai-api-key>
+      </div>
+    </div>
   </section> <!-- end authenticated user section -->
 </div> <!-- end controller -->
