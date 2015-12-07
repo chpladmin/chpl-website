@@ -2,15 +2,16 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$log', 'authService', function ($log, authService) {
+        .controller('AdminController', ['$log', 'authService', 'commonService', function ($log, authService, commonService) {
             var vm = this;
 
-            vm.activate = activate;
+            vm.changeAcb = changeAcb
             vm.changeScreen = changeScreen;
+            vm.changeSubNav = changeSubNav;
             vm.refresh = refresh;
             vm.triggerRefresh = triggerRefresh;
 
-            vm.activate();
+            activate();
 
             ////////////////////////////////////////////////////////////////////
 
@@ -20,11 +21,34 @@
                 vm.isChplAdmin = authService.isChplAdmin();
                 vm.isAcbAdmin = authService.isAcbAdmin();
                 vm.username = authService.getUsername();
-                vm.screen = 'dpManagement';
+                vm.navState = {
+                    screen: 'dpManagement',
+                    reports: 'cp'
+                };
+                if (!vm.isChplAdmin) {
+                    vm.navState.dpManagement = 'upload';
+                } else {
+                    vm.navState.dpManagement = 'manage';
+                }
+                commonService.getAcbs()
+                    .then (function (data) {
+                        vm.acbs = data.acbs;
+                        vm.activeAcb = vm.acbs[0];
+                        vm.navState.acbManagement = vm.activeAcb.id;
+                    });
+            }
+
+            function changeAcb (acb) {
+                vm.activeAcb = acb;
+                vm.changeSubNav(acb.id);
             }
 
             function changeScreen (screen) {
-                vm.screen = screen;
+                vm.navState.screen = screen;
+            }
+
+            function changeSubNav (subScreen) {
+                vm.navState[vm.navState.screen] = subScreen;
             }
 
             function refresh () {

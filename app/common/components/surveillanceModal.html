@@ -31,15 +31,15 @@
         </div>
         <div class="col-sm-3">
           <label for="cert{{ cert.id }}_sites">Number of sites tested <span class="text-danger" ng-if="cert.error">*</span></label>
-          <input type="text" class="form-control" ng-model="cert.numSites" id="cert{{ cert.id }}_sites" ng-required="cert.error"></input>
+          <input type="number" class="form-control" ng-model="cert.numSites" id="cert{{ cert.id }}_sites" ng-required="cert.error"></input>
         </div>
         <div class="col-sm-3">
           <label for="cert{{ cert.id }}_passRate">Pass rate <span class="text-danger" ng-if="cert.error">*</span></label>
           <input type="text" class="form-control" ng-model="cert.passRate" id="cert{{ cert.id }}_passRate" ng-required="cert.error"></input>
         </div>
         <div class="col-sm-3">
-          <label for="cert{{ cert.id }}_res">Results <span class="text-danger" ng-if="vm.surveillance.endDate">*</span></label>
-          <textarea class="form-control" ng-model="cert.result" id="cert{{ cert.id }}_res" ng-required="vm.surveillance.endDate"></textarea>
+          <label for="cert{{ cert.id }}_res">Results <span class="text-danger" ng-if="cert.error && vm.surveillance.endDate">*</span></label>
+          <textarea class="form-control" ng-model="cert.result" id="cert{{ cert.id }}_res" ng-required="cert.error && vm.surveillance.endDate"></textarea>
         </div>
       </div>
     </div>

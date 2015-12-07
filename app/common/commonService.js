@@ -291,15 +291,19 @@
             };
 
             self.registerApi = function (user) {
-                return self.postApiCall('/api_key/register', user);
+                return self.postApiCall('/key/register', user);
             };
 
             self.getApiUsers = function () {
-                return self.simpleApiCall('/api_key/users');
+                return self.simpleApiCall('/key/list');
             };
 
             self.revokeApi = function (user) {
-                return self.postApiCall('/api_key/revoke', user);
+                return self.postApiCall('/key/revoke', user);
+            };
+
+            self.getApiActivity = function (pageNum, pageSize) {
+                return self.postApiCall('/key/activity/?pageNumber=' + pageNum + '&pageSize=' + pageSize, {});
             };
         });
 })();
