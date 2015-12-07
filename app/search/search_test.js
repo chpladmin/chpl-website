@@ -79,11 +79,11 @@
         });
 
         it('should know which elements are selected for comparison', function () {
-            expect(ctrl.getCompareIds).toBeDefined();
-            ctrl.toggleCompareId('an id');
-            expect('an id' in ctrl.getCompareIds()).toBeTruthy();
-            ctrl.toggleCompareId('an id');
-            expect('an id' in ctrl.getCompareIds()).toBeFalsy();
+            expect(ctrl.compareCps).toEqual([]);
+            ctrl.toggleCompare({id: 1});
+            expect(ctrl.compareCps.length).toBe(1);
+            ctrl.toggleCompare({id: 1});
+            expect(ctrl.compareCps.length).toBe(0);
         });
 
         it('should know if it has results', function () {
@@ -123,9 +123,9 @@
         it('should redirect to /compare when "compare" is clicked', function () {
             spyOn($location, 'path');
 
-            scope.toggleCompareId('123');
-            scope.toggleCompareId('234');
-            scope.compare();
+            ctrl.toggleCompare({id: 123});
+            ctrl.toggleCompare({id: 234});
+            ctrl.compare();
 
             expect($location.path).toHaveBeenCalledWith('/compare/123&234');
         });
@@ -133,13 +133,13 @@
         it('should not redirect to /compare unless there are at least 2 ids to compare', function () {
             spyOn($location, 'path');
 
-            scope.compare();
+            ctrl.compare();
 
             expect($location.path).not.toHaveBeenCalled();
 
-            scope.toggleCompareId('123');
+            ctrl.toggleCompare({id:123});
 
-            scope.compare();
+            ctrl.compare();
             expect($location.path).not.toHaveBeenCalled();
         });
 
@@ -158,7 +158,7 @@
             expect(ctrl.query.certificationEdition).toBeUndefined();
             expect(ctrl.query.productClassification).toBeUndefined();
             expect(ctrl.query.practiceType).toBeUndefined();
-            expect(ctrl.compareIds).toEqual(Object.create(null));
+            expect(ctrl.compareCps).toEqual([]);
         });
     });
 })();

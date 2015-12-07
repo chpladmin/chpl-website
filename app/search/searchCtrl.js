@@ -5,12 +5,14 @@
         .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $log, $location, $localStorage, commonService) {
             var vm = this;
 
-            vm.activate = activate;
             vm.addRefine = addRefine;
+            vm.compare = compare;
             vm.search = search;
+            vm.toggleCompare = toggleCompare;
             vm.unrefine = unrefine;
+            vm.viewProduct = viewProduct;
 
-            vm.activate();
+            activate();
 
             ////////////////////////////////////////////////////////////////////
 
@@ -23,6 +25,72 @@
                     vm.refine = $localStorage.refine;
                 } else {
                     vm.refine = angular.copy(vm.defaultRefine);
+                }
+                vm.compareCps = [];
+                if (!$localStorage.previouslyCompared) {
+                    $localStorage.previouslyCompared = [];
+                }
+                vm.previouslyCompared = $localStorage.previouslyCompared;
+                if (!$localStorage.previouslyViewed) {
+                    $localStorage.previouslyViewed = [];
+                }
+                vm.previouslyViewed = $localStorage.previouslyViewed;
+            }
+
+            function addRefine () {
+                switch (vm.refineType) {
+                case 'vendor':
+                    vm.query.vendorObject = vm.refine.vendor;
+                    break;
+                case 'product':
+                    vm.query.productObject = vm.refine.product;
+                    break;
+                case 'certificationCriteria':
+                    if (!vm.query.certificationCriteria) {
+                        vm.query.certificationCriteria = [vm.refine.certificationCriteria];
+                    } else if (vm.query.certificationCriteria.indexOf(vm.refine.certificationCriteria) === -1) {
+                        vm.query.certificationCriteria.push(vm.refine.certificationCriteria)
+                    }
+                    break;
+                case 'cqms':
+                    if (!vm.query.cqms) {
+                        vm.query.cqms = [vm.refine.cqms];
+                    } else if (vm.query.cqms.indexOf(vm.refine.cqms) === -1) {
+                        vm.query.cqms.push(vm.refine.cqms)
+                    }
+                    break;
+                default:
+                    vm.query[vm.refineType] = vm.refine[vm.refineType];
+                    break;
+                }
+                vm.search();
+            }
+
+            function compare () {
+                var comparePath = '/compare/';
+                for (var i = 0; i < vm.compareCps.length; i++) {
+                    comparePath += vm.compareCps[i].id + '&';
+                }
+                comparePath = comparePath.substring(0, comparePath.length - 1);
+                if (comparePath.indexOf('&') > 0) {
+                    var prev = $localStorage.previouslyCompared;
+                    var toAdd;
+                    for (var i = 0; i < vm.compareCps.length; i++) {
+                        toAdd = true;
+                        for (var j = 0; j < prev.length; j++) {
+                            if (prev[i].id === vm.compareCps[i].id) {
+                                toAdd = false;
+                            }
+                        }
+                        if (toAdd) {
+                            prev.concat(vm.compareCps[i]);
+                        }
+                    }
+                    while (prev.length > 20) {
+                        prev.shift();
+                    }
+                    $localStorage.previouslyCompared = prev;
+                    $location.path(comparePath);
                 }
             }
 
@@ -66,33 +134,17 @@
                 $localStorage.query = vm.query;
             }
 
-            function addRefine () {
-                switch (vm.refineType) {
-                case 'vendor':
-                    vm.query.vendorObject = vm.refine.vendor;
-                    break;
-                case 'product':
-                    vm.query.productObject = vm.refine.product;
-                    break;
-                case 'certificationCriteria':
-                    if (!vm.query.certificationCriteria) {
-                        vm.query.certificationCriteria = [vm.refine.certificationCriteria];
-                    } else if (vm.query.certificationCriteria.indexOf(vm.refine.certificationCriteria) === -1) {
-                        vm.query.certificationCriteria.push(vm.refine.certificationCriteria)
+            function toggleCompare (row) {
+                var toAdd = true;
+                for (var i = 0; i < vm.compareCps.length; i++) {
+                    if (vm.compareCps[i].id === row.id) {
+                        vm.compareCps.splice(i,1);
+                        toAdd = false;
                     }
-                    break;
-                case 'cqms':
-                    if (!vm.query.cqms) {
-                        vm.query.cqms = [vm.refine.cqms];
-                    } else if (vm.query.cqms.indexOf(vm.refine.cqms) === -1) {
-                        vm.query.cqms.push(vm.refine.cqms)
-                    }
-                    break;
-                default:
-                    vm.query[vm.refineType] = vm.refine[vm.refineType];
-                    break;
                 }
-                vm.search();
+                if (toAdd) {
+                    vm.compareCps.push(row);
+                }
             }
 
             function unrefine (key, cert) {
@@ -133,6 +185,23 @@
                     break;
                 }
                 vm.search();
+            }
+
+            function viewProduct (cp) {
+                var toAdd = true;
+                for (var i = 0; i < vm.previouslyViewed.length; i++) {
+                    if (vm.previouslyViewed[i].id === cp.id) {
+                        toAdd = false;
+                    }
+                }
+                if (toAdd) {
+                    vm.previouslyViewed.push(cp);
+                    if (vm.previouslyViewed.length > 20) {
+                        vm.previouslyViewed.shift();
+                    }
+                    $localStorage.previouslyViewed = vm.previouslyViewed;
+                }
+                $location.path('/product/' + cp.id);
             }
 
             $scope.searchResults = [];
@@ -191,20 +260,6 @@
             };
             vm.populateSearchOptions();
 
-            vm.compareIds = Object.create(null);
-            vm.getCompareIds = function() {
-                return vm.compareIds;
-            };
-
-            vm.toggleCompareId = function (anId) {
-                if (anId in vm.compareIds) {
-                    delete vm.compareIds[anId];
-                } else {
-                    vm.compareIds[anId] = true;
-                }
-            };
-            $scope.toggleCompareId = vm.toggleCompareId;
-
             $scope.prepend = function (name) {
                 if (name.substring(0,3) !== 'CMS') {
                     return 'NQF-' + name;
@@ -233,7 +288,7 @@
                 $scope.displayedResults = [];
                 $scope.visiblePage = 1;
                 $scope.resultCount = 0;
-                vm.compareIds = Object.create(null);
+                vm.compareCps = [];
             };
 
             $scope.clear = function () {
@@ -245,24 +300,13 @@
                 $scope.displayedResults = [];
                 $scope.visiblePage = 1;
                 $scope.resultCount = 0;
-                vm.compareIds = Object.create(null);
+                vm.compareCps = [];;
                 vm.hasDoneASearch = false;
                 vm.activeSearch = false;
                 vm.query = angular.copy(vm.defaultQuery);
                 vm.refineType = '';
                 vm.refine = angular.copy(vm.defaultRefine);
                 vm.searchForm.$setPristine();
-            };
-
-            $scope.compare = function () {
-                var comparePath = '/compare/';
-                for (var property in vm.compareIds) {
-                    comparePath += property + '&';
-                }
-                comparePath = comparePath.substring(0, comparePath.length - 1);
-                if (comparePath.indexOf('&') > 0) {
-                    $location.path(comparePath);
-                }
             };
 
             $scope.sort = function(header) {

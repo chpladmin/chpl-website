@@ -153,3 +153,21 @@ footer .spaced-out {
     padding: 0 6px;
     font-size: large;
 }
+
+.btn-ai-grey {
+    background: #e1e1e1;
+    color: #000;
+}
+
+.btn-ai-grey.btn-sm {
+    border-radius: 12px;
+}
+
+.btn-ai-grey .fa {
+    color: #db411e;
+}
+
+.btn-ai-grey .ai-lead {
+    color: #0070c9;
+    font-family: 'Oswald', sans-serif;
+}

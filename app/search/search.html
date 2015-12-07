@@ -25,7 +25,7 @@
           <option value="practiceType">Practice Type</option>
         </select>
       </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'vendor'">
+      <div class="col-sm-3" ng-if="vm.refineType === 'vendor'">
         <label for="developerRefine" class="control-label sr-only">Developer</label>
         <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.vendor"
                ng-required="vm.refineType === 'vendor'"
@@ -88,107 +88,141 @@
         </select>
       </div>
       <div class="col-sm-2">
-        <button ng-if="vm.refineType" ng-disabled="!vm.searchForm.$valid" class="btn btn-default form-control" ng-click="vm.addRefine()">Add refinement</button>
+        <button ng-if="vm.refineType" ng-disabled="!vm.searchForm.$valid" class="btn btn-default form-control" ng-click="vm.addRefine()">Filter</button>
       </div>
     </div>
   </div>
   <div class="row" ng-if="vm.activeSearch">
     <div class="col-sm-12">
       <ul class="list-inline">
-        <li ng-if="vm.query.vendor"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('vendor')"><em>Developer:</em> {{ vm.query.vendor }} <i class="fa fa-close"></i></button></li>
-        <li ng-if="vm.query.product"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('product')"><em>Product:</em> {{ vm.query.product }} <i class="fa fa-close"></i></button></li>
-        <li ng-if="vm.query.version"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('version')"><em>Version:</em> {{ vm.query.version }} <i class="fa fa-close"></i></button></li>
-        <li ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('certificationEdition')"><em>Certification Edition:</em> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i></button></li>
-        <li ng-if="vm.query.productClassification"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('productClassification')"><em>Product Classification:</em> {{ vm.query.productClassification }} <i class="fa fa-close"></i></button></li>
-        <li ng-if="vm.query.practiceType"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('practiceType')"><em>Practice Type:</em> {{ vm.query.practiceType }} <i class="fa fa-close"></i></button></li>
-        <li ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('certificationCriteria',cert)"><em>Certification Criteria:</em> {{ cert }} <i class="fa fa-close"></i></button></li>
-        <li ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('cqms',cqm)"><em>Clinical Quality Measure:</em> {{ cqm }} <i class="fa fa-close"></i></button></li>
-        <li ng-if="vm.query.visibleOnCHPL !== 'yes'"><button type="button" class="btn btn-primary btn-xs" ng-click="vm.unrefine('visibleOnCHPL')"><em>Visible on CHPL:</em> {{ vm.query.visibleOnCHPL }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.vendor"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('vendor')"><span class="ai-lead">Developer:</span> {{ vm.query.vendor }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.product"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('product')"><span class="ai-lead">Product:</span> {{ vm.query.product }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.version"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('version')"><span class="ai-lead">Version:</span> {{ vm.query.version }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationEdition')"><span class="ai-lead">Certification Edition:</span> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.productClassification"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('productClassification')"><span class="ai-lead">Product Classification:</span> {{ vm.query.productClassification }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.practiceType"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('practiceType')"><span class="ai-lead">Practice Type:</span> {{ vm.query.practiceType }} <i class="fa fa-close"></i></button></li>
+        <li ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i></button></li>
+        <li ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('cqms',cqm)"><span class="ai-lead">Clinical Quality Measure:</span> {{ cqm }} <i class="fa fa-close"></i></button></li>
+        <li ng-if="vm.query.visibleOnCHPL !== 'yes'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('visibleOnCHPL')"><span class="ai-lead">Visible on CHPL:</span> {{ vm.query.visibleOnCHPL }} <i class="fa fa-close"></i></button></li>
       </ul>
     </div>
   </div>
 
   <div id="resultsSection" ng-if="hasSearched()" class="main-content">
     <div class="row">
-      <div class="col-md-6">
-        <p ng-if="!hasResults()">No results found</p>
-        <p ng-if="hasResults()">Showing
-          <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="1000">1000</option>
-          </select>
-          of {{ resultCount }} results</p>
+      <div ng-class="{ 'col-md-12': vm.compareCps.length === 0, 'col-md-9': vm.compareCps.length > 0 }">
+        <div class="row">
+          <div class="col-md-6">
+            <p ng-if="!hasResults()">No results found</p>
+            <p ng-if="hasResults()">Showing
+              <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="1000">1000</option>
+              </select>
+              of {{ resultCount }} results</p>
+          </div>
+          <div class="col-md-6 text-right">
+            <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="clear()">Clear results</a>
+          </div>
+        </div>
+        <div ng-if="hasResults()" class="row">
+          <div class="col-md-12">
+            <table class="table table-striped-foldout">
+              <thead>
+                <tr>
+		          <th class="search-header" ng-click="sort('product')"
+                      ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
+                  <th class="search-header" ng-click="sort('vendor')"
+                      ng-class="{'sort-ascent': vm.query.orderBy==='vendor' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='vendor' && vm.query.sortDescending}">Developer</th>
+                  <th class="">Version</th>
+                  <!--
+	                  <th class="">Certification Criteria & Clinical Quality Measures</th>
+                  <th class="search-header" ng-click="sort('certificationDate')"
+                      ng-class="{'sort-ascent': vm.query.orderBy==='certificationDate' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationDate' && vm.query.sortDescending}">Certification Date</th>
+                  -->
+                  <th colspan="2"></th>
+	            </tr>
+	          </thead>
+	          <tbody>
+	            <tr ng-repeat-start="row in displayedResults" class="search-row">
+		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
+		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor.name }}</td>
+		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
+                  <!--
+		              <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
+		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certificationDate | date }}</td>
+                  -->
+                  <td>
+                    <a class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>
+                  </td>
+                  <td>
+                    <button class="btn btn-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> Compare</button>
+                  </td>
+	            </tr>
+                <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
+                  <td colspan="6">
+                    <table class="" width="100%">
+                      <thead>
+                        <tr>
+                          <th>Practice Type</th>
+                          <th>Classification</th>
+                          <th>Certifying Body</th>
+                          <th>Certification Edition</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{ row.practiceType.name }}</td>
+                          <td>{{ row.classificationType.name }}</td>
+                          <td>{{ row.certifyingBody.name }}</td>
+                          <td>{{ row.certificationEdition.name }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+	              <td colspan="6" class="text-center">
+                    <pagination total-items="resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
+                                max-size="10" class="pagination-sm" boundary-links="true"></pagination>
+	              </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 text-right">
-        <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="clear()">Clear results</a>
-      </div>
-    </div>
-    <div ng-if="hasResults()" class="row">
-      <div class="col-md-12">
-        <table class="table table-striped-foldout">
-          <thead>
-            <tr>
-              <th class="search-header" ng-click="sort('vendor')"
-                  ng-class="{'sort-ascent': vm.query.orderBy==='vendor' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='vendor' && vm.query.sortDescending}">Developer</th>
-		      <th class="search-header" ng-click="sort('product')"
-                  ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
-              <th class="">Version</th>
-		      <th class="">Certification Criteria & Clinical Quality Measures</th>
-              <th class="search-header" ng-click="sort('certificationDate')"
-                  ng-class="{'sort-ascent': vm.query.orderBy==='certificationDate' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationDate' && vm.query.sortDescending}">Certification Date</th>
-              <th><button class="btn btn-default" ng-click="compare()">Compare</button></th>
-	        </tr>
-	      </thead>
-	      <tbody>
-	        <tr ng-repeat-start="row in displayedResults" class="search-row">
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor.name }}</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
-		      <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certificationDate | date }}</td>
-              <td align="center">
-                <input type="checkbox" ng-click="toggleCompareId(row.id)" ng-model="compareBoxes[row.id]" id="compareBoxes{{ row.id }}"/>
-                <label class="sr-only" for="compareBoxes{{ row.id }}">Select to compare</label>
-                <span class="sr-only"><a href="" ng-click="showDetails = !showDetails">Show Details</a></span>
-              </td>
-	        </tr>
-            <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
-              <td colspan="6">
-                <table class="" width="100%">
-                  <thead>
-                    <tr>
-                      <th>Practice Type</th>
-                      <th>Classification</th>
-                      <th>Certifying Body</th>
-                      <th>Certification Edition</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{{ row.practiceType.name }}</td>
-                      <td>{{ row.classificationType.name }}</td>
-                      <td>{{ row.certifyingBody.name }}</td>
-                      <td>{{ row.certificationEdition.name }}</td>
-                      <td><a href="#/product/{{ row.id }}">details</a></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-	          <td colspan="6" class="text-center">
-                <pagination total-items="resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
-                            max-size="10" class="pagination-sm" boundary-links="true"></pagination>
-	          </td>
-            </tr>
-          </tfoot>
-        </table>
+      <div ng-if="vm.compareCps.length > 0" class="col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Compare these {{ vm.compareCps.length }} products
+          </div>
+          <div class="panel-body">
+            <button class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }} <span class="pull-right"><i class="fa fa-close"></i></span></button>
+            <button class="btn btn-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Previous {{ vm.previouslyCompared.length }} products compared
+          </div>
+          <div class="panel-body">
+            <div ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Previous {{ vm.previouslyViewed.length }} products viewed
+          </div>
+          <div class="panel-body">
+            <div ng-repeat="cp in vm.previouslyViewed | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></div>
+          </div>
+        </div>
       </div>
     </div>
   </div> <!-- end of search results -->
