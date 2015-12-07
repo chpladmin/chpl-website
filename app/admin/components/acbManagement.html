@@ -1,14 +1,4 @@
 <section class="row">
-  <!--
-  <div class="col-sm-3 admin-nav">
-    <div class="panel panel-default">
-      <ul class="nav nav-pills nav-stacked">
-        <li ng-class="{'active': vm.activeAcb.id === acb.id}" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" class="" ng-click="vm.activateAcb(acb)">{{ acb.name }}</a></li>
-        <li ng-if="vm.isChplAdmin"><a href="" class="" ng-click="vm.createAcb()">New ACB</a></li>
-      </ul>
-    </div>
-  </div>
-  -->
   <div class="col-sm-12 admin-inner-tab">
     <div class="row admin-label-spaced lead text-center" ng-if="vm.workType !== 'newAcb'">
       <div class="col-sm-12">
@@ -17,8 +7,7 @@
           <li><input type="radio" ng-model="vm.workType" value="acb" id="rdAcb"></input><label for="rdAcb">ACB</label></li>
           <li><input type="radio" ng-model="vm.workType" value="user" id="rdUsr"></input><label for="rdUsr">Users</label></li>
         </ul>
-        Or <a href="" class="" ng-click="vm.createAcb()">Create a new ACB</a>
-        <pre>{{vm.activeAcb | json }}</pre>
+        <span ng-if="vm.isChplAdmin">Or <a href="" class="" ng-click="vm.createAcb()">Create a new ACB</a></span>
       </div>
     </div>
     <div class="row">

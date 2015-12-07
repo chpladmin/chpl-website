@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$log', 'authService', 'commonService', function ($log, authService, commonService) {
+        .controller('AdminController', ['$log', '$filter', 'authService', 'commonService', function ($log, $filter, authService, commonService) {
             var vm = this;
 
             vm.changeAcb = changeAcb
@@ -32,15 +32,16 @@
                 }
                 commonService.getAcbs()
                     .then (function (data) {
-                        vm.acbs = data.acbs;
+                        vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
-                        vm.navState.acbManagement = vm.activeAcb.id;
+                        vm.navState.acbManagement = vm.activeAcb;
                     });
             }
 
             function changeAcb (acb) {
                 vm.activeAcb = acb;
-                vm.changeSubNav(acb.id);
+                vm.navState.workType = 'acb';
+                vm.changeSubNav(acb);
             }
 
             function changeScreen (screen) {

@@ -24,15 +24,10 @@
             }
 
             function activate () {
-                $log.debug(self.activeAcb);
                 self.isChplAdmin = authService.isChplAdmin();
                 self.isAcbAdmin = authService.isAcbAdmin();
                 self.acbs = [];
                 self.workType = 'acb';
-/*                self.loadData()
-                    .then(function () {
-                        self.activeAcb = self.acbs[0]
-                    });*/
             }
 
             function activateAcb (acb) {
