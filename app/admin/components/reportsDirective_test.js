@@ -33,6 +33,15 @@
                     return defer.promise;
                 };
 
+                mockCommonService.externalApiCall = function () {
+                    var defer = $q.defer();
+                    defer.resolve({
+                        cols:[{type:'string'}],
+                        rows:[]
+                    });
+                    return defer.promise;
+                };
+
                 mockCommonService.getCertifiedProductActivity = function () {
                     var defer = $q.defer();
                     defer.resolve(this.cpActivity);

@@ -7,3 +7,4 @@ tmp
 .idea
 /coverage/
 /test_reports/
+app/login/loginModule.js

@@ -3,37 +3,58 @@
 
     angular.module('app.product')
         .controller('ProductController', ['$scope', '$log', '$routeParams', '$modal', 'commonService', function($scope, $log, $routeParams, $modal, commonService) {
-            var self = this;
-            self.modalInstance;
-            self.productId = $routeParams.id;
-            commonService.getProduct(self.productId)
-                .then(function (data) {
-                    self.product = data;
-                }, function (error) {
-                    $log.error(error);
-                });
+            var vm = this;
 
-            self.openLastModifiedDate = function (size) {
-                self.modalInstance = $modal.open({
+            vm.activate = activate;
+            vm.openLastModified = openLastModified;
+
+            vm.activate();
+
+            ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                vm.productId = $routeParams.id;
+                commonService.getProduct(vm.productId)
+                    .then(function (data) {
+                        vm.product = data;
+                    }, function (error) {
+                        $log.error(error);
+                    });
+                commonService.getCap(vm.productId)
+                    .then(function (data) {
+                        vm.correctiveActionPlan = data.plans;
+                    }, function (error) {
+                        $log.error (error);
+                    });
+                commonService.getSurveillance(vm.productId)
+                    .then(function (data) {
+                        vm.surveillance = data.surveillance;
+                    }, function (error) {
+//                        $log.error (error);
+                    });
+            }
+
+            function openLastModified () {
+                vm.modalInstance = $modal.open({
                     templateUrl: 'myModalContent.html',
                     controller: 'ModalInstanceController',
                     controllerAs: 'modalVm',
                     animation: false,
                     resolve: {
                         items: function() {
-                            return self.product.lastModifiedItems;
+                            return vm.product.lastModifiedItems;
                         }
                     },
-                    size: size
+                    size: 'sm'
                 });
-            };
+            }
         }]);
 
     angular.module('app.product')
         .controller('ModalInstanceController', ['$scope', '$modalInstance', 'items', function ($scope, $modalInstance, items) {
-            var self = this;
-            self.items = items;
-            self.ok = function () {
+            var vm = this;
+            vm.items = items;
+            vm.ok = function () {
                 $modalInstance.close('ok');
             };
         }]);

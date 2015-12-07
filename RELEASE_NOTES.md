@@ -1,6 +1,21 @@
 # Release Notes
 
-## Version 0.0.1
+## Version 0.0.2
+_7 December 2015_
 
-13 November 2015
+New or updated features
+* Added 'Actions by User' reporting
+* Integrated with Corrective Action Plan API
+* Updated to use new CQM format from API
+* Added password strength requirements
+* Require ACBs to have address/website information
+
+Bugs fixed
+* Logging in from /admin reflects in log-in dropdown
+* Fixed issue with user potentially having previously logged in user's permissions
+* Developer edits correctly show without required page refresh
+
+## Version 0.0.1
+_13 November 2015_
+
 First release

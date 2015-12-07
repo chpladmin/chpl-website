@@ -72,14 +72,32 @@
           <p>{{ vm.product.otherAcb }}</p>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <h3>Surveillance</h3>
+          <ai-surveillance
+             surveillance="vm.surveillance"
+             certified-product-id="vm.product.id"
+             certification-results="vm.product.certificationResults"
+             is-admin="false"></ai-surveillance>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <h3>Corrective Action Plan</h3>
+          <ai-corrective-action-plan
+             corrective-action-plan="vm.correctiveActionPlan"
+             certified-product-id="vm.product.id"
+             certification-results="vm.product.certificationResults"
+             is-admin="false"></ai-corrective-action-plan>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-10">
       <h3>Required Additional Software</h3>
-      <ul>
-        <li ng-repeat="sw in vm.product.additionalSoftware">{{ sw.name }}</li>
-      </ul>
+      <ai-additional-software additional-software="vm.product.additionalSoftware" is-editing="false"></ai-additional-software>
     </div>
     <div class="col-sm-2 text-right">
       <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
@@ -90,8 +108,7 @@
               cqms="vm.product.cqmResults"
               count-certs="{{ vm.product.countCerts }}"
               count-cqms="{{ vm.product.countCqms }}"
-              report-file-location="{{ vm.product.reportFileLocation }}"
-              applicable-cqm-criteria="vm.product.applicableCqmCriteria">
+              report-file-location="{{ vm.product.reportFileLocation }}">
     </ai-certs>
   </div>
 </div>

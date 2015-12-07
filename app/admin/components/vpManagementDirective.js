@@ -34,30 +34,34 @@
                 self.activeCP = '';
                 self.isChplAdmin = authService.isChplAdmin();
                 self.isAcbAdmin = authService.isAcbAdmin();
+                self.isAcbStaff = authService.isAcbStaff();
                 self.uploadingCps = [];
                 self.workType = self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
 
-                if (self.isAcbAdmin) {
+                if (self.isAcbAdmin || self.isAcbStaff) {
                     self.refreshPending();
                     self.uploader = new FileUploader({
                         url: API + '/certified_products/upload',
                         removeAfterUpload: true,
-                        headers: { Authorization: 'Bearer ' + authService.getToken() }
+                        headers: {
+                            Authorization: 'Bearer ' + authService.getToken(),
+                            'API-Key': authService.getApiKey()
+                        }
                     });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                        $log.info('onSuccessItem', fileItem, response, status, headers);
+                        //$log.info('onSuccessItem', fileItem, response, status, headers);
                         self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. Pending products are ready for confirmation.';
                     };
                     self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
                         self.refreshPending();
                     };
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
-                        $log.info('onErrorItem', fileItem, response, status, headers);
+                        //$log.info('onErrorItem', fileItem, response, status, headers);
                     };
                     self.uploader.onCancelItem = function(fileItem, response, status, headers) {
-                        $log.info('onCancelItem', fileItem, response, status, headers);
+                        //$log.info('onCancelItem', fileItem, response, status, headers);
                     };
                 }
 
@@ -110,6 +114,10 @@
                 });
                 self.modalInstance.result.then(function (result) {
                     self.activeVendor = result;
+                    commonService.getVendors()
+                        .then(function (vendors) {
+                            self.vendors = vendors.vendors;
+                        });
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.vendorMessage = result;
@@ -278,6 +286,14 @@
                                 self.activeCP.visibleOnChpl = true;
                             self.activeCP.certDate = new Date(self.activeCP.certificationDate);
                         });
+                    commonService.getCap(self.cpSelect)
+                        .then(function (cap) {
+                            self.activeCP.cap = cap.plans;
+                        });
+                    commonService.getSurveillance(self.cpSelect)
+                        .then(function (surv) {
+                            self.activeCP.surveillance = surv.surveillance;
+                        });
                 }
             };
 
@@ -294,6 +310,7 @@
                         classifications: function () { return self.classifications; },
                         practices: function () { return self.practices; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
+                        isAcbStaff: function () { return self.isChplStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
                         statuses: function () { return self.statuses; },
@@ -301,7 +318,6 @@
                     }
                 });
                 self.modalInstance.result.then(function (result) {
-                    $log.debug(result.cqmResults);
                     self.activeCP = result;
                 }, function (result) {
                     if (result !== 'cancelled') {
@@ -331,6 +347,7 @@
                         classifications: function () { return self.classifications; },
                         practices: function () { return self.practices; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
+                        isAcbStaff: function () { return self.isAcbStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
                         statuses: function () { return self.statuses; },
@@ -343,7 +360,6 @@
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.refreshPending();
-                        $log.debug(result);
                     }
                 });
             }

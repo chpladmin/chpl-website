@@ -40,8 +40,8 @@
                 expect(ctrl).toBeDefined();
             });
 
-            it('should have a way to allow users to log in', function () {
-                expect(ctrl.login).toBeDefined();
+            it('should have a way to know the logged in user\' name', function () {
+                expect(ctrl.getUsername).toBeDefined();
             });
 
         });
