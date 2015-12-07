@@ -74,8 +74,8 @@
           <textarea class="form-control" ng-model="cert.developerSummary" id="cert{{ cert.id }}_dev" ng-required="cert.error"></textarea>
         </div>
         <div class="col-sm-3">
-          <label for="cert{{ cert.id }}_res">Description of resolution <span class="text-danger" ng-if="vm.cap.actualCompletionDate">*</span></label>
-          <textarea class="form-control" ng-model="cert.resolution" id="cert{{ cert.id }}_res" ng-required="vm.cap.actualCompletionDate"></textarea>
+          <label for="cert{{ cert.id }}_res">Description of resolution <span class="text-danger" ng-if="cert.error && vm.cap.actualCompletionDate">*</span></label>
+          <textarea class="form-control" ng-model="cert.resolution" id="cert{{ cert.id }}_res" ng-required="cert.error && vm.cap.actualCompletionDate"></textarea>
         </div>
       </div>
     </div>

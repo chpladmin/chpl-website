@@ -404,6 +404,7 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/vpManagement.html',
+                bindToController: { workType: '='},
                 scope: {},
                 controllerAs: 'vm',
                 controller: 'VpManagementController'

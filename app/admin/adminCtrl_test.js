@@ -3,20 +3,23 @@
 
     describe('app.admin', function () {
 
-        var scope, $log, mockAuthService, ctrl;
+        var scope, $log, mockAuthService, mockCommonService, ctrl;
 
         beforeEach(function () {
             mockAuthService = {};
+            mockCommonService = {};
 
             module('app.admin', function($provide) {
                 $provide.value('authService', mockAuthService);
+                $provide.value('commonService', mockCommonService);
             });
 
             inject(function($q) {
-                mockAuthService.getUsername = function () { return 'fake';};
+                mockAuthService.getUsername = function () { return 'fake'; };
                 mockAuthService.isAuthed = function () { return true; };
-                mockAuthService.isChplAdmin = function () { return true ;};
-                mockAuthService.isAcbAdmin = function () { return true ;};
+                mockAuthService.isChplAdmin = function () { return true; };
+                mockAuthService.isAcbAdmin = function () { return true; };
+                mockCommonService.getAcbs = function () { return $q.when({acbs: [{id:0}]}); };
             });
         });
 
@@ -28,11 +31,12 @@
 
         describe('controller', function () {
 
-            beforeEach(inject(function (_$log_, $rootScope, $controller, _authService_) {
+            beforeEach(inject(function (_$log_, $rootScope, $controller, _authService_, _commonService_) {
                 $log = _$log_;
                 scope = $rootScope.$new();
                 ctrl = $controller('AdminController', {
-                    authService: _authService_
+                    authService: _authService_,
+                    commonService: _commonService_
                 });
                 scope.$digest();
             }));
@@ -52,7 +56,7 @@
             });
 
             it('should have a default screen set up', function () {
-                expect(ctrl.screen).toBe('dpManagement');
+                expect(ctrl.navState.screen).toBe('dpManagement');
             });
 
             it('should know if the user is an ACB admin', function () {
@@ -67,13 +71,21 @@
                 expect(ctrl.isAuthed).toBeTruthy();
             });
 
+            it('should store state of navigation', function () {
+                expect(ctrl.navState).toBeDefined();
+            });
+
             it('should have a way to change screens', function () {
                 expect(ctrl.changeScreen).toBeDefined();
             });
 
             it('should change to a different screen when called', function () {
                 ctrl.changeScreen('test');
-                expect(ctrl.screen).toBe('test');
+                expect(ctrl.navState.screen).toBe('test');
+            });
+
+            it('should have a function to change subnavigation screens', function () {
+                expect(ctrl.changeSubNav).toBeDefined();
             });
 
             it('should have a function to register handlers', function () {

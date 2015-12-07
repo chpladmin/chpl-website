@@ -68,7 +68,8 @@
               <tr ng-repeat="doc in cap.documentation">
                 <td>{{ doc.fileName }}</td>
                 <td>{{ doc.fileType }}</td>
-                <td><a type="button" class="btn btn-block btn-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a></td>
+                <td ng-if="doc.id"><a type="button" class="btn btn-block btn-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a></td>
+                <td>File is pending</td>
               </tr>
             </tbody>
           </table>

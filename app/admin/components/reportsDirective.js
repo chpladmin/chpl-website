@@ -16,6 +16,7 @@
             vm.refreshProduct = refreshProduct;
             vm.refreshAcb = refreshAcb;
             vm.refreshUser = refreshUser;
+            vm.refreshApi = refreshApi;
             vm.refreshVisitors = refreshVisitors;
 
             vm.activate();
@@ -81,6 +82,7 @@
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshUser();
+                vm.refreshApi();
             }
 
             function refreshCp () {
@@ -128,6 +130,14 @@
                             vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
                         });
                 }
+            }
+
+            function refreshApi () {
+                commonService.getApiActivity(0,100)
+                    .then(function (data) {
+                        vm.searchedApi = data;
+                        vm.displayedApi = [].concat(vm.searchedApi);
+                    });
             }
 
             function refreshVisitors () {
@@ -334,6 +344,7 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/reports.html',
+                bindToController: { workType: '='},
                 scope: {triggerRefresh: '&'},
                 controllerAs: 'vm',
                 controller: 'ReportController',
