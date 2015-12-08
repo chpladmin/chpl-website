@@ -18,6 +18,7 @@
 
             function activate () {
                 vm.activeSearch = false;
+                vm.resultCount = 0;
                 vm.defaultRefine = { visibleOnCHPL: 'yes',
                                      certificationCriteria: [],
                                      cqms: []};
@@ -126,7 +127,7 @@
                         $localStorage.searchResults = data;
                         $scope.searchResults = data.results;
                         $scope.displayedResults = [].concat($scope.searchResults);
-                        $scope.resultCount = data.recordCount;
+                        vm.resultCount = data.recordCount;
                     }, function (error) {
                         vm.errorResult();
                     });
@@ -208,13 +209,12 @@
             $scope.displayedResults = [];
             vm.lookaheadSource = {all: [], vendors: [], products: []};
             vm.hasDoneASearch = false;
-            $scope.resultCount = 0;
             $scope.visiblePage = 1;
             vm.defaultQuery = {
                 orderBy: 'vendor',
                 sortDescending: false,
                 pageNumber: 0,
-                pageSize: '25',
+                pageSize: 25,
                 visibleOnCHPL: 'yes'
             };
             vm.query = angular.copy(vm.defaultQuery);
@@ -224,7 +224,7 @@
                 $scope.displayedResults = [].concat($scope.searchResults);
                 vm.hasDoneASearch = true;
                 vm.activeSearch = true;
-                $scope.resultCount = $localStorage.searchResults.recordCount;
+                vm.resultCount = $localStorage.searchResults.recordCount;
             }
 
             if ($localStorage.query) {
@@ -287,7 +287,7 @@
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
                 $scope.visiblePage = 1;
-                $scope.resultCount = 0;
+                vm.resultCount = 0;
                 vm.compareCps = [];
             };
 
@@ -299,7 +299,7 @@
                 $scope.searchResults = [];
                 $scope.displayedResults = [];
                 $scope.visiblePage = 1;
-                $scope.resultCount = 0;
+                vm.resultCount = 0;
                 vm.compareCps = [];;
                 vm.hasDoneASearch = false;
                 vm.activeSearch = false;

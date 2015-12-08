@@ -78,8 +78,6 @@ h2 {
     margin-top: 40px;
     border: 2px solid #e1e1e1;
     background: #fff;
-    margin-left: 0px;
-    margin-right: 0px;
 }
 
 .splash-row .spaced-out {
@@ -137,7 +135,7 @@ footer .spaced-out {
 .main-content {
     background: #fff;
     padding: 5px;
-    border:1px solid #333;
+    border: 1px solid #e1e1e1;
 }
 
 .sort-ascent:after, .st-sort-ascent:after {

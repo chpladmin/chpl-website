@@ -122,7 +122,7 @@
                 <option value="200">200</option>
                 <option value="1000">1000</option>
               </select>
-              of {{ resultCount }} results</p>
+              of {{ vm.resultCount }} results</p>
           </div>
           <div class="col-md-6 text-right">
             <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="clear()">Clear results</a>
@@ -188,7 +188,7 @@
               <tfoot>
                 <tr>
 	              <td colspan="6" class="text-center">
-                    <pagination total-items="resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
+                    <pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
                                 max-size="10" class="pagination-sm" boundary-links="true"></pagination>
 	              </td>
                 </tr>

@@ -1,5 +1,5 @@
 <section class="row">
-  <div class="col-sm-12 admin-inner-tab">
+  <div class="col-sm-12 admin-inner-tab main-content">
     <div class="row admin-label-spaced lead text-center" ng-if="vm.workType !== 'newAcb'">
       <div class="col-sm-12">
         <ul class="list-inline">
@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="row" ng-if="vm.workType === 'user'">
-      <div class="col-md-12">
+      <div class="col-md-10 col-md-offset-1">
         <ai-user-management
            acb-id="{{ vm.activeAcb.id }}">
         </ai-user-management>
