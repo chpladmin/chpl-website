@@ -24,6 +24,7 @@
                 mockCommonService.userActivity = [];
                 mockCommonService.userActivities = [];
                 mockCommonService.apiActivity = [];
+                mockCommonService.apiUserActivity = [];
 
                 mockCommonService.simpleApiCall = function () {
                     var defer = $q.defer();
@@ -82,6 +83,12 @@
                 mockCommonService.getApiActivity = function () {
                     var defer = $q.defer();
                     defer.resolve(this.apiActivities);
+                    return defer.promise;
+                };
+
+                mockCommonService.getApiUserActivity = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.apiUserActivities);
                     return defer.promise;
                 };
 

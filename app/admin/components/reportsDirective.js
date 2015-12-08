@@ -87,11 +87,18 @@
             }
 
             function refreshApi () {
-                vm.apiKeyPageNum = vm.visibleApiPage - 1;
-                commonService.getApiActivity(vm.apiKeyPageNum,vm.apiKeyPageSize)
-                    .then(function (data) {
-                        vm.searchedApi = data;
-                    });
+                if (vm.isChplAdmin) {
+                    commonService.getApiUserActivity(7)
+                        .then(function (data) {
+                            vm.searchedApiActivity = data;
+                            vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
+                        });
+                    vm.apiKeyPageNum = vm.visibleApiPage - 1;
+                    commonService.getApiActivity(vm.apiKeyPageNum,vm.apiKeyPageSize)
+                        .then(function (data) {
+                            vm.searchedApi = data;
+                        });
+                }
             }
 
             function refreshVisitors () {

@@ -302,6 +302,10 @@
                 return self.postApiCall('/key/revoke', user);
             };
 
+            self.getApiUserActivity = function (nDays) {
+                return self.simpleApiCall('/activity/api_keys?lastNDays=' + nDays);
+            };
+
             self.getApiActivity = function (pageNum, pageSize) {
                 return self.postApiCall('/key/activity/?pageNumber=' + pageNum + '&pageSize=' + pageSize, {});
             };

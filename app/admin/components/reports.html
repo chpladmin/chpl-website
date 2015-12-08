@@ -129,6 +129,21 @@
 
     <div class="row" ng-if="vm.workType === 'api_key'">
       <div class="col-sm-12">
+        <h3>API User Activity</h3>
+        <table st-table="vm.displayedApiActivity" st-safe-src="vm.searchedApiActivity" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+	        <tr ng-repeat="activity in vm.displayedApiActivity">
+		      <td class=""><span ng-bind-html="activity.description"></span></td>
+		      <td class="">{{ activity.activityDate | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
         <h3>API Use</h3>
         <table class="table table-striped">
           <thead>
