@@ -130,19 +130,24 @@
     <div class="row" ng-if="vm.workType === 'api_key'">
       <div class="col-sm-12">
         <h3>API Use</h3>
-        <table st-table="vm.displayedApi" st-safe-src="vm.searchedApi" class="table table-striped">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th class="">API Key</th>
-              <th class="search-header" st-sort="email" st-skip-natural="true">Email</th>
-              <th class="search-header" st-sort="name" st-skip-natural="true">Name</th>
-              <th class="search-header" st-sort="apiCallPath" st-skip-natural="true">API Call Path</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+              <th>Email</th>
+              <th>Name</th>
+              <th>API Call Path</th>
+              <th>Date</th>
             </tr>
           </thead>
+          <tfoot>
+            <td colspan="5" class="text-center">
+              <pager ng-model="vm.visibleApiPage" ng-change="vm.refreshApi()" class="pagination-sm" total-items="20000"></pager>
+            </td>
+          </tfoot>
           <tbody>
-	        <tr ng-repeat="activity in vm.displayedApi">
-		      <td class=""><span ng-bind-html="activity.apiKey"></span></td>
+	        <tr ng-repeat="activity in vm.searchedApi">
+		      <td class="">{{ activity.apiKey }}</td>
 		      <td class="">{{ activity.email }}</td>
 		      <td class="">{{ activity.name }}</td>
 		      <td class="">{{ activity.apiCallPath }}</td>
