@@ -3,6 +3,11 @@
 ## Next Version
 _Date TBD_
 
+New or updated features
+* Added 'api-key usage' reporting
+* Updated search workflow / filtering
+* Improved Admin UI
+
 ## Version 0.0.2
 _7 December 2015_
 
