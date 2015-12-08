@@ -76,7 +76,8 @@ h2 {
 
 .splash-row {
     margin-top: 40px;
-    border: 2px solid #e1e1e1;
+    border: 1px solid #e1e1e1;
+    border-bottom: 0px;
     background: #fff;
 }
 

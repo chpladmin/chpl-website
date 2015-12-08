@@ -7,6 +7,7 @@ New or updated features
 * Added 'api-key usage' reporting
 * Updated search workflow / filtering
 * Improved Admin UI
+* Added download XML file (limited length)
 
 ## Version 0.0.2
 _7 December 2015_
