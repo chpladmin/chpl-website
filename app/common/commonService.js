@@ -295,7 +295,7 @@
             };
 
             self.getApiUsers = function () {
-                return self.simpleApiCall('/key/list');
+                return self.simpleApiCall('/key/');
             };
 
             self.revokeApi = function (user) {
