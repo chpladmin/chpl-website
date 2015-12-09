@@ -64,7 +64,7 @@ footer {
 
 h1 {
     font-family: 'Oswald', sans-serif;
-    font-weight: 400; /* 400-regular, 300-light */
+    font-weight: 300; /* 400-regular, 300-light */
     color: #0070c9;
 }
 
@@ -169,4 +169,31 @@ footer .spaced-out {
 .btn-ai-grey .ai-lead {
     color: #0070c9;
     font-family: 'Oswald', sans-serif;
+}
+
+.ai-gradient {
+    color: #f5d43c;
+    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+}
+
+.panel-ai {
+    border-color: #ddd;
+}
+
+.panel-ai .panel-heading {
+    color: #f5d43c;
+    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.open>a {
+    background-image: none;
+    background: #0070c9;
 }

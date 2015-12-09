@@ -10,12 +10,12 @@
   <section ng-if="vm.isAuthed">
     <div class="row">
       <div class="col-md-12">
-        <h2>Welcome, {{ vm.username }}</h2>
+        <h1>Welcome, {{ vm.username }}</h1>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-3 admin-nav">
-        <div class="panel panel-default">
+        <div class="panel panel-ai">
           <ul class="nav nav-pills nav-stacked">
             <li ng-class="{'active': vm.navState.screen === 'dpManagement'}"><a href="" class="" ng-click="vm.changeScreen('dpManagement')">Developer &amp; Product Management</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'upload'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin || vm.isAcbStaff)"><a href="" class="" ng-click="vm.changeSubNav('upload')">Upload Certified Products</a></li>

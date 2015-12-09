@@ -25,12 +25,7 @@ ul.pagination li {
 .search-activate-filter {
     cursor: pointer;
 }
-/*
-.productDetails td:last-child table td:last-child {
-    vertical-align: middle;
-    text-align: right;
-}
-*/
+
 .filter-category {
     cursor: pointer;
 }
@@ -49,4 +44,8 @@ ul.pagination li {
     position: relative;
     top: 50%;
     transform: translateY(400%);
+}
+
+.search-table th {
+    color: #0070c9;
 }

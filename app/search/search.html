@@ -1,4 +1,9 @@
 <div ng-controller="SearchController as vm">
+  <div class="row" ng-if="hasResults()">
+    <div class="col-sm-12">
+      <h1>Search</h1>
+    </div>
+  </div>
   <div class="form-horizontal search-inputs" ng-form="vm.searchForm">
     <div class="form-group form-group-lg">
       <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
@@ -7,7 +12,7 @@
           <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="vm.query.searchTermObject"
                  typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
                  typeahead-input-formatter="$model.value" />
-          <div class="input-group-addon pointer" ng-click="vm.search()"><i class="fa fa-search"></i></div>
+          <div class="input-group-addon pointer ai-gradient" ng-click="vm.search()"><i class="fa fa-search"></i></div>
         </div>
       </div>
       <div class="col-sm-3" ng-if="vm.activeSearch">
@@ -130,7 +135,7 @@
         </div>
         <div ng-if="hasResults()" class="row">
           <div class="col-md-12">
-            <table class="table table-striped-foldout">
+            <table class="table search-table table-striped-foldout">
               <thead>
                 <tr>
 		          <th class="search-header" ng-click="sort('product')"
@@ -138,11 +143,6 @@
                   <th class="search-header" ng-click="sort('vendor')"
                       ng-class="{'sort-ascent': vm.query.orderBy==='vendor' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='vendor' && vm.query.sortDescending}">Developer</th>
                   <th class="">Version</th>
-                  <!--
-	                  <th class="">Certification Criteria & Clinical Quality Measures</th>
-                  <th class="search-header" ng-click="sort('certificationDate')"
-                      ng-class="{'sort-ascent': vm.query.orderBy==='certificationDate' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationDate' && vm.query.sortDescending}">Certification Date</th>
-                  -->
                   <th colspan="2"></th>
 	            </tr>
 	          </thead>
@@ -151,10 +151,6 @@
 		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
 		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor.name }}</td>
 		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
-                  <!--
-		              <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
-		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.certificationDate | date }}</td>
-                  -->
                   <td>
                     <a class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>
                   </td>
@@ -164,13 +160,15 @@
 	            </tr>
                 <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
                   <td colspan="6">
-                    <table class="" width="100%">
+                    <table class="search-table" width="100%">
                       <thead>
                         <tr>
                           <th>Practice Type</th>
                           <th>Classification</th>
                           <th>Certifying Body</th>
                           <th>Certification Edition</th>
+                          <th>Certification Criteria & Clinical Quality Measures</th>
+                          <th>Certification Date</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -179,6 +177,8 @@
                           <td>{{ row.classificationType.name }}</td>
                           <td>{{ row.certifyingBody.name }}</td>
                           <td>{{ row.certificationEdition.name }}</td>
+		                  <td>{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
+		                  <td>{{ row.certificationDate | date }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -198,7 +198,7 @@
         </div>
       </div>
       <div ng-if="vm.compareCps.length > 0" class="col-md-3">
-        <div class="panel panel-default">
+        <div class="panel panel-ai">
           <div class="panel-heading">
             Compare these {{ vm.compareCps.length }} products
           </div>
@@ -207,7 +207,7 @@
             <button class="btn btn-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
           </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-ai">
           <div class="panel-heading">
             Previous {{ vm.previouslyCompared.length }} products compared
           </div>
@@ -215,7 +215,7 @@
             <div ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></div>
           </div>
         </div>
-        <div class="panel panel-default">
+        <div class="panel panel-ai">
           <div class="panel-heading">
             Previous {{ vm.previouslyViewed.length }} products viewed
           </div>
