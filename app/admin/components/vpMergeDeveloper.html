@@ -14,7 +14,7 @@
         <h4>Merge selected developers</h4>
         <div class="panel panel-ai" ng-repeat="developer in vm.developers">
           <div class="panel-heading">
-            <span>{{ developer.name }}</span>
+            <span>{{ developer.name }} (CHPL ID: {{ developer.chplId }})</span>
           </div>
           <div class="panel-body">
             Line 1: {{ developer.address.line1 }}<br />
@@ -35,6 +35,10 @@
         <div class="form-group">
           <label for="developerName">Developer Name <span class="text-danger">*</span></label>
           <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName"></input>
+        </div>
+        <div class="form-group">
+          <label for="developerId">CHPL ID <span class="text-danger">*</span></label>
+          <input class="input-sm form-control" type="text" required ng-model="vm.developer.chplId" id="developerId"></input>
         </div>
         <div class="form-group">
           <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>

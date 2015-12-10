@@ -9,7 +9,41 @@
     <h4 class="modal-title" id="editCertifiedProductLabel">Edit Certified Product</h4>
   </div>
   <div class="modal-body" ng-form="editForm">
-    <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }} <br />
+    <div ng-if="vm.cp.certificationEdition.name !== '2015'">
+      <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
+    </div>
+    <div ng-if="vm.cp.certificationEdition.name === '2015'">
+      <strong>ACB ID: </strong> {{vm.cp.chplId.acb }} <br />
+      <strong>ATL ID: </strong> {{vm.cp.chplId.atl }} <br />
+      <strong>Developer ID: </strong> {{vm.cp.chplId.dev }} <br />
+      <div class="form-group">
+        <label for="idProd">Product Id</label>
+        <input type="text" class="input-sm form-control" ng-model="vm.cp.chplId.prod" id="idProd" required></input>
+      </div>
+      <div class="form-group">
+        <label for="idVer">Version Id</label>
+        <input type="text" class="input-sm form-control" ng-model="vm.cp.chplId.ver" id="idVer" required></input>
+      </div>
+      <div class="form-group">
+        <label for="idIcs">ICS Status</label>
+        <select class="input-sm form-control" ng-model="vm.cp.chplId.ics" id="idIcs" required>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="idAdds">Additional Software</label>
+        <select class="input-sm form-control" ng-model="vm.cp.chplId.adds" id="idAdds" required>
+          <option value="0">0</option>
+          <option value="1">1</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="idDate">Certification Date</label>
+        <input type="text" class="input-sm form-control" ng-model="vm.cp.chplId.date" id="idDate" required></input>
+      </div>
+    </div>
     <div class="form-group">
       <label for="cpClassification">Classification</label>
       <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cpClassification"
