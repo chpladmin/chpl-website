@@ -6,7 +6,7 @@
   </div>
   <div class="form-horizontal search-inputs" ng-form="vm.searchForm">
     <div class="form-group form-group-lg">
-      <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
+      <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-5': vm.activeSearch || vm.searchForm.$dirty}">
         <label for="searchField" class="control-label sr-only">Search</label>
         <div class="input-group">
           <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="vm.query.searchTermObject"
@@ -101,8 +101,8 @@
                 ng-options="cqm.name as prepend(cqm.name) + ': ' + cqm.title for cqm in vm.cqms | orderBy:'name'">
         </select>
       </div>
-      <div class="col-sm-2">
-        <button ng-if="vm.refineType" ng-disabled="!vm.searchForm.$valid" class="btn btn-default form-control" ng-click="vm.addRefine()">Filter</button>
+      <div class="col-sm-1">
+        <button ng-if="vm.refineType" ng-disabled="!vm.searchForm.$valid" class="btn btn-default btn-block form-control" ng-click="vm.addRefine()">Filter</button>
       </div>
     </div>
   </div>
@@ -131,11 +131,9 @@
             <p ng-if="!hasResults()">No results found</p>
             <p ng-if="hasResults()">Showing
               <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
-                <option value="25">25</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="250">250</option>
-                <option value="1000">1000</option>
               </select>
               of {{ vm.resultCount }} results</p>
           </div>

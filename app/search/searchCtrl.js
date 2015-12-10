@@ -231,7 +231,7 @@
                 orderBy: 'vendor',
                 sortDescending: false,
                 pageNumber: 0,
-                pageSize: 25,
+                pageSize: 50,
                 visibleOnCHPL: 'yes',
                 hasCAP: 'both'
             };
