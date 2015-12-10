@@ -19,7 +19,7 @@
           <ul class="nav nav-pills nav-stacked">
             <li ng-class="{'active': vm.navState.screen === 'dpManagement'}"><a href="" class="" ng-click="vm.changeScreen('dpManagement')">Developer &amp; Product Management</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'upload'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin() || vm.isAcbStaff())"><a href="" class="" ng-click="vm.changeSubNav('upload')">Upload Certified Products</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirm'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin() || vm.isAcbStaff())"><a href="" class="" ng-click="vm.changeSubNav('confirm')">Confirm Pending Product<span ng-if="vm.uploadingCps.length > 1">s</span> <span class="badge">{{ vm.uploadingCps.length }}</span> </a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirm'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin() || vm.isAcbStaff())"><a href="" class="" ng-click="vm.changeSubNav('confirm')">Confirm Pending Product<span ng-if="vm.pendingProducts > 1">s</span> <span class="badge">{{ vm.pendingProducts }}</span> </a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'manage'}" ng-if="vm.navState.screen === 'dpManagement'"><a href="" class="" ng-click="vm.changeSubNav('manage')">Manage Developers &amp; Products</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'merge'}" ng-if="vm.navState.screen === 'dpManagement' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('merge')">Merge Developers &amp; Products</a></li>
 
@@ -43,6 +43,7 @@
       </div>
       <div class="col-sm-9 admin-inner-tab">
         <ai-vp-management ng-if="vm.navState.screen === 'dpManagement'"
+                          pending-products="vm.pendingProducts"
                           work-type="vm.navState.dpManagement"></ai-vp-management>
         <ai-user-management ng-if="vm.navState.screen === 'userManagement'"></ai-user-management>
         <ai-acb-management ng-if="vm.navState.screen === 'acbManagement'"

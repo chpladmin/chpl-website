@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12">
       <h1>User Confirmation</h1>
-      <p ng-if="vm.message.value.length > 0" ng-class="{ vm.message.success ? 'bg-success' : 'bg-danger' }">{{ vm.message.value }}</p>
+      <p ng-if="vm.message.value.length > 0" ng-class="vm.message.success ? 'bg-success' : 'bg-danger'">{{ vm.message.value }}</p>
     </div>
   </div>
 

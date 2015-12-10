@@ -6,6 +6,8 @@
             var vm = this;
 
             vm.addRefine = addRefine;
+            vm.clearPreviouslyCompared = clearPreviouslyCompared;
+            vm.clearPreviouslyViewed = clearPreviouslyViewed;
             vm.compare = compare;
             vm.search = search;
             vm.toggleCompare = toggleCompare;
@@ -20,6 +22,7 @@
                 vm.activeSearch = false;
                 vm.resultCount = 0;
                 vm.defaultRefine = { visibleOnCHPL: 'yes',
+                                     hasCAP: 'both',
                                      certificationCriteria: [],
                                      cqms: []};
                 if ($localStorage.refine) {
@@ -67,6 +70,16 @@
                 vm.search();
             }
 
+            function clearPreviouslyCompared () {
+                vm.previouslyCompared = [];
+                $localStorage.previouslyCompared = [];
+            }
+
+            function clearPreviouslyViewed () {
+                vm.previouslyViewed = [];
+                $localStorage.previouslyViewed = [];
+            }
+
             function compare () {
                 var comparePath = '/compare/';
                 for (var i = 0; i < vm.compareCps.length; i++) {
@@ -79,12 +92,12 @@
                     for (var i = 0; i < vm.compareCps.length; i++) {
                         toAdd = true;
                         for (var j = 0; j < prev.length; j++) {
-                            if (prev[i].id === vm.compareCps[i].id) {
+                            if (prev[j].id === vm.compareCps[i].id) {
                                 toAdd = false;
                             }
                         }
                         if (toAdd) {
-                            prev.concat(vm.compareCps[i]);
+                            prev.push(vm.compareCps[i]);
                         }
                     }
                     while (prev.length > 20) {
@@ -164,6 +177,10 @@
                     vm.query.visibleOnCHPL = 'yes';
                     vm.refine.visibleOnCHPL = 'yes';
                     break;
+                case 'hasCAP':
+                    vm.query.hasCAP = 'both';
+                    vm.refine.hasCAP = 'both';
+                    break;
                 case 'certificationCriteria':
                     for (var i = 0; i < vm.query.certificationCriteria.length; i++) {
                         if (vm.query.certificationCriteria[i] === cert) {
@@ -215,7 +232,8 @@
                 sortDescending: false,
                 pageNumber: 0,
                 pageSize: 25,
-                visibleOnCHPL: 'yes'
+                visibleOnCHPL: 'yes',
+                hasCAP: 'both'
             };
             vm.query = angular.copy(vm.defaultQuery);
 

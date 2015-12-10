@@ -8,6 +8,7 @@ New or updated features
 * Updated search workflow / filtering
 * Improved Admin UI
 * Added download XML file (limited length)
+* Integrated with 'Search by HAS CAP' API update
 
 Bugs fixed
 * Logging in shows appropriately visible options

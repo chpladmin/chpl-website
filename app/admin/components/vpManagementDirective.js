@@ -84,6 +84,7 @@
                 commonService.getUploadingCps()
                     .then(function (cps) {
                         self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
+                        self.pendingProducts = self.uploadingCps.length;
                     })
             }
 
@@ -404,7 +405,10 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/vpManagement.html',
-                bindToController: { workType: '='},
+                bindToController: {
+                    workType: '=',
+                    pendingProducts: '='
+                },
                 scope: {},
                 controllerAs: 'vm',
                 controller: 'VpManagementController'
