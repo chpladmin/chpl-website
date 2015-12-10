@@ -9,6 +9,10 @@ New or updated features
 * Improved Admin UI
 * Added download XML file (limited length)
 
+Bugs fixed
+* Logging in shows appropriately visible options
+* Logging out clears away admin screen info
+
 ## Version 0.0.2
 _7 December 2015_
 

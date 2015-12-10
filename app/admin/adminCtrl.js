@@ -8,6 +8,10 @@
             vm.changeAcb = changeAcb
             vm.changeScreen = changeScreen;
             vm.changeSubNav = changeSubNav;
+            vm.getUsername = getUsername;
+            vm.isAcbAdmin = isAcbAdmin;
+            vm.isAuthed = isAuthed;
+            vm.isChplAdmin = isChplAdmin;
             vm.refresh = refresh;
             vm.triggerRefresh = triggerRefresh;
 
@@ -17,15 +21,11 @@
 
             function activate () {
                 vm.handlers = [];
-                vm.isAuthed = authService.isAuthed ? authService.isAuthed() : false;
-                vm.isChplAdmin = authService.isChplAdmin();
-                vm.isAcbAdmin = authService.isAcbAdmin();
-                vm.username = authService.getUsername();
                 vm.navState = {
                     screen: 'dpManagement',
                     reports: 'cp'
                 };
-                if (!vm.isChplAdmin) {
+                if (!vm.isChplAdmin()) {
                     vm.navState.dpManagement = 'upload';
                 } else {
                     vm.navState.dpManagement = 'manage';
@@ -45,11 +45,35 @@
             }
 
             function changeScreen (screen) {
+                if (screen === 'acbManagement') {
+                commonService.getAcbs()
+                    .then (function (data) {
+                        vm.acbs = $filter('orderBy')(data.acbs,'name');
+                        vm.activeAcb = vm.acbs[0];
+                        vm.navState.acbManagement = vm.activeAcb;
+                    });
+                }
                 vm.navState.screen = screen;
             }
 
             function changeSubNav (subScreen) {
                 vm.navState[vm.navState.screen] = subScreen;
+            }
+
+            function getUsername () {
+                return authService.getUsername();
+            }
+
+            function isAcbAdmin () {
+                return authService.isAcbAdmin();
+            }
+
+            function isAuthed () {
+                return authService.isAuthed();
+            }
+
+            function isChplAdmin () {
+                return authService.isChplAdmin();
             }
 
             function refresh () {

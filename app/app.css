@@ -193,6 +193,10 @@ footer .spaced-out {
     border-top-right-radius: 5px;
 }
 
+.panel-ai .panel-heading a {
+    color: #fff;
+}
+
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.open>a {
     background-image: none;
     background: #0070c9;

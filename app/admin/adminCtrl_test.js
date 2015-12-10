@@ -52,7 +52,7 @@
             });
 
             it('should know the logged in user\' name', function () {
-                expect(ctrl.username).toBe('fake');
+                expect(ctrl.getUsername()).toBe('fake');
             });
 
             it('should have a default screen set up', function () {
