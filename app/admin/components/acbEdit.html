@@ -15,10 +15,8 @@
       <input class="input-sm form-control" type="text" required ng-model="vm.acb.name" id="acbName" name="acbName"></input>
       <div class="text-danger" ng-if="vm.editForm.acbName.$touched && vm.editForm.acbName.$error.required">ACB Name is required</div>
     </div>
-    <div class="form-group">
-      <label for="acbId">ACB ID <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.acb.chplId" id="acbId" name="acbId"></input>
-      <div class="text-danger" ng-if="vm.editForm.acbId.$touched && vm.editForm.acbId.$error.required">ACB ID is required</div>
+    <div>
+      <strong>ACB Code: </strong>{{ vm.acb.acbCode }}
     </div>
     <div class="form-group">
       <label for="addressLine1">Address Line 1 <span class="text-danger">*</span></label>
