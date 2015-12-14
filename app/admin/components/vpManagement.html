@@ -163,6 +163,7 @@
                 Zip: {{ vm.activeVendor.address.zipcode }}<br />
                 Country: {{ vm.activeVendor.address.country }}<br />
                 Website: {{ vm.activeVendor.website }}<br />
+                Transparency Attestation: {{ vm.activeVendor.transparencyAttestation }}<br />
               </div>
               <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
             </div>
@@ -338,7 +339,10 @@
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb }} <br />
                   <strong>Quality Management System Attestation:</strong> {{ vm.activeCP.qualityManagementSystemAtt }} <br />
                   <strong>Privacy and Security Attestation:</strong> {{ vm.activeCP.privacyAttestation }} <br />
+                  <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation }} <br />
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation }} <br />
+                  <strong>API Documentation:</strong> {{ vm.activeCP.apiDocumentation }} <br />
+                  <strong>Terms of Use:</strong> {{ vm.activeCP.tou }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLabId }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.activeCP.visibleOnChpl }} <br />
                   <strong>Surveillance:</strong> <ai-surveillance

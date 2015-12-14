@@ -24,6 +24,7 @@
             Zip: {{ developer.address.zipcode }}<br />
             Country: {{ developer.address.country }}<br />
             Website: {{ developer.website }}<br />
+            Transparency Attestation: {{ developer.transparencyAttestation }}<br />
             <br />
             Last Modified Date: {{ developer.lastModifiedDate | date }}
             <br />
@@ -63,6 +64,10 @@
         <div class="form-group">
           <label for="developerWebsite">Website</label>
           <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite"></input>
+        </div>
+        <div class="form-group">
+          <label for="developerTransparency">Transparency Attestation</label>
+          <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="developerTransparency"></input>
         </div>
       </div>
     </div>

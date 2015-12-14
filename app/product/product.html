@@ -61,7 +61,8 @@
       <div class="row">
         <div class="col-sm-4">
           <h3>Quality Management System Attestation</h3>
-          <p>{{ vm.product.qualityManagementSystemAtt }}</p>
+          <p ng-if="vm.product.qualityManagementSystemAtt">True</p>
+          <p ng-if="!vm.product.qualityManagementSystemAtt">False</p>
         </div>
         <div class="col-sm-4">
           <h3>Privacy and Security Attestation</h3>
@@ -69,8 +70,23 @@
           <p ng-if="!vm.product.privacyAttestation">False</p>
         </div>
         <div class="col-sm-4">
+          <h3>Transparency Attestation</h3>
+          <p ng-if="vm.product.transparencyAttestation">True</p>
+          <p ng-if="!vm.product.transparencyAttestation">False</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
           <h3>Other ACB</h3>
           <p>{{ vm.product.otherAcb }}</p>
+        </div>
+        <div class="col-sm-4">
+          <h3>Terms of Use</h3>
+          <p><a href="{{ vm.product.tou }}">{{ vm.product.tou }}</a></p>
+        </div>
+        <div class="col-sm-4">
+          <h3>API Documentation</h3>
+          <p><a href="{{ vm.product.apiDocumentation }}">{{ vm.product.apiDocumentation }}</a></p>
         </div>
       </div>
       <div class="row">
