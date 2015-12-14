@@ -1,7 +1,7 @@
 <div role="modal" aria-labeled-by="titleLabel">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
-            confirm="Are you sure you wish cancel editing? Your changes will not be saved."
+            confirm="Are you sure you wish cancel? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
@@ -55,7 +55,7 @@
       <div class="form-group">
         <label class="col-sm-3" for="resolutionDescription">Description of the resolution <span class="text-danger" ng-if="vm.cap.actualCompletionDate">*</span></label>
         <div class="col-sm-9">
-          <textarea class="form-control" ng-model="vm.cap.resolution" id="resolutionDescription" ng-required="vm.cap.actualCompletionDate"></textarea>
+          <textarea class="form-control" ng-model="vm.cap.resolution" id="resolutionDescription" ng-required="vm.cap.actualCompletionDate" ng-disabled="!vm.cap.actualCompletionDate"></textarea>
         </div>
       </div>
       <div class="form-group" ng-repeat="cert in vm.cap.certifications">
@@ -67,15 +67,15 @@
         </div>
         <div class="col-sm-3">
           <label for="cert{{ cert.id }}_desc">Summary of deficiency <span class="text-danger" ng-if="cert.error">*</span></label>
-          <textarea class="form-control" ng-model="cert.acbSummary" id="cert{{ cert.id }}_desc" ng-required="cert.error"></textarea>
+          <textarea class="form-control" ng-model="cert.acbSummary" id="cert{{ cert.id }}_desc" ng-required="cert.error" ng-disabled="!cert.error"></textarea>
         </div>
         <div class="col-sm-3">
           <label for="cert{{ cert.id }}_dev">Developer explanation <span class="text-danger" ng-if="cert.error">*</span></label>
-          <textarea class="form-control" ng-model="cert.developerSummary" id="cert{{ cert.id }}_dev" ng-required="cert.error"></textarea>
+          <textarea class="form-control" ng-model="cert.developerSummary" id="cert{{ cert.id }}_dev" ng-required="cert.error" ng-disabled="!cert.error"></textarea>
         </div>
         <div class="col-sm-3">
-          <label for="cert{{ cert.id }}_res">Description of resolution <span class="text-danger" ng-if="vm.cap.actualCompletionDate">*</span></label>
-          <textarea class="form-control" ng-model="cert.resolution" id="cert{{ cert.id }}_res" ng-required="vm.cap.actualCompletionDate"></textarea>
+          <label for="cert{{ cert.id }}_res">Description of resolution <span class="text-danger" ng-if="cert.error && vm.cap.actualCompletionDate">*</span></label>
+          <textarea class="form-control" ng-model="cert.resolution" id="cert{{ cert.id }}_res" ng-required="cert.error && vm.cap.actualCompletionDate" ng-disabled="!cert.error || !vm.cap.actualCompletionDate"></textarea>
         </div>
       </div>
     </div>
@@ -151,7 +151,7 @@
   <div class="modal-footer">
     <button class="btn btn-success btn-large pull-right"
             ng-if="vm.action === 'initiate'"
-            ng-disabled="capForm.$invalid || !vm.certsChecked()"
+            ng-disabled="capForm.$invalid"
             confirm="Are you sure you wish to initiate this Corrective Action Plan?"
             confirm-ok="Yes"
             confirm-cancel="No"
@@ -159,7 +159,7 @@
             ng-click="vm.save()"><i class="fa fa-save"></i> Initiate</button>
     <button class="btn btn-success btn-large pull-right"
             ng-if="vm.action === 'edit'"
-            ng-disabled="capForm.$invalid || !vm.certsChecked()"
+            ng-disabled="capForm.$invalid"
             confirm="Are you sure you wish to update this Corrective Action Plan?"
             confirm-ok="Yes"
             confirm-cancel="No"

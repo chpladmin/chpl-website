@@ -23,6 +23,8 @@
                 mockCommonService.cpActivity = [{newData: {vendor: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}}];
                 mockCommonService.userActivity = [];
                 mockCommonService.userActivities = [];
+                mockCommonService.apiActivity = [];
+                mockCommonService.apiUserActivity = [];
 
                 mockCommonService.simpleApiCall = function () {
                     var defer = $q.defer();
@@ -75,6 +77,18 @@
                 mockCommonService.getUserActivities = function () {
                     var defer = $q.defer();
                     defer.resolve(this.userActivities);
+                    return defer.promise;
+                };
+
+                mockCommonService.getApiActivity = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.apiActivities);
+                    return defer.promise;
+                };
+
+                mockCommonService.getApiUserActivity = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.apiUserActivities);
                     return defer.promise;
                 };
 

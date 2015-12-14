@@ -8,7 +8,6 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.tab = 'cp';
 
-            vm.activate = activate;
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
             vm.refreshCp = refreshCp;
@@ -16,61 +15,17 @@
             vm.refreshProduct = refreshProduct;
             vm.refreshAcb = refreshAcb;
             vm.refreshUser = refreshUser;
+            vm.refreshApi = refreshApi;
             vm.refreshVisitors = refreshVisitors;
 
-            vm.activate();
-
-            ////////////////////////////////////////////////////////////////////
-            // Chart options
-
-            vm.browserVariety = {
-                type: 'PieChart',
-                options: {
-                    is3D: true,
-                    title: 'Visitors by browser (last 7 days)'
-                }
-            };
-            vm.cities = {
-                type: 'PieChart',
-                options: {
-                    is3D: true,
-                    title: 'Visitors by city (last 7 days)'
-                }
-            };
-            vm.country = {
-                type: 'PieChart',
-                options: {
-                    is3D: true,
-                    title: 'Visitors by country (last 7 days)'
-                }
-            };
-            vm.traffic = {
-                type: 'LineChart',
-                options: {
-                    legend: { position: 'none' },
-                    hAxis: {
-                        slantedText: true
-                    },
-                    title: 'Visitors for the last 14 days'
-                }
-            };
-            vm.map = {
-                type: 'GeoChart',
-                options: {
-                }
-            };
-            vm.cityMap = {
-                type: 'GeoChart',
-                options: {
-                    region: 'US',
-                    displayMode: 'markers'
-                }
-            };
+            activate();
 
             ////////////////////////////////////////////////////////////////////
             // Functions
 
             function activate () {
+                vm.visibleApiPage = 1;
+                vm.apiKeyPageSize = 100;
                 vm.refreshActivity();
                 vm.refreshVisitors();
             }
@@ -81,6 +36,7 @@
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshUser();
+                vm.refreshApi();
             }
 
             function refreshCp () {
@@ -126,6 +82,21 @@
                         .then(function (data) {
                             vm.searchedUserActivities = vm.interpretUserActivities(data);
                             vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
+                        });
+                }
+            }
+
+            function refreshApi () {
+                if (vm.isChplAdmin) {
+                    commonService.getApiUserActivity(7)
+                        .then(function (data) {
+                            vm.searchedApiActivity = data;
+                            vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
+                        });
+                    vm.apiKeyPageNum = vm.visibleApiPage - 1;
+                    commonService.getApiActivity(vm.apiKeyPageNum,vm.apiKeyPageSize)
+                        .then(function (data) {
+                            vm.searchedApi = data;
                         });
                 }
             }
@@ -182,6 +153,53 @@
                 }
                 vm.tab = newTab;
             }
+
+            ////////////////////////////////////////////////////////////////////
+            // Chart options
+
+            vm.browserVariety = {
+                type: 'PieChart',
+                options: {
+                    is3D: true,
+                    title: 'Visitors by browser (last 7 days)'
+                }
+            };
+            vm.cities = {
+                type: 'PieChart',
+                options: {
+                    is3D: true,
+                    title: 'Visitors by city (last 7 days)'
+                }
+            };
+            vm.country = {
+                type: 'PieChart',
+                options: {
+                    is3D: true,
+                    title: 'Visitors by country (last 7 days)'
+                }
+            };
+            vm.traffic = {
+                type: 'LineChart',
+                options: {
+                    legend: { position: 'none' },
+                    hAxis: {
+                        slantedText: true
+                    },
+                    title: 'Visitors for the last 14 days'
+                }
+            };
+            vm.map = {
+                type: 'GeoChart',
+                options: {
+                }
+            };
+            vm.cityMap = {
+                type: 'GeoChart',
+                options: {
+                    region: 'US',
+                    displayMode: 'markers'
+                }
+            };
 
             ////////////////////////////////////////////////////////////////////
             // Helper functions
@@ -334,6 +352,7 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/reports.html',
+                bindToController: { workType: '='},
                 scope: {triggerRefresh: '&'},
                 controllerAs: 'vm',
                 controller: 'ReportController',

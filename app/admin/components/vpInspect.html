@@ -40,7 +40,7 @@
         <div class="col-sm-6" ng-if="!vm.cp.vendor.id">
           <h3>System developer information</h3>
           <p>This is the developer information that will be added to the Open Data CHPL database.</p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading">
               Developer <strong>"{{ vm.cp.vendor.name }}"</strong> not found
             </div>
@@ -68,11 +68,12 @@
         <div class="col-sm-6" ng-if="vm.cp.vendor.id">
           <h3>System developer information</h3>
           <p>This is the developer information that will be added to the Open Data CHPL database.</p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.developer.name }}
             </div>
             <div class="panel-body">
+              Developer Code: {{ vm.developer.vendorCode }}<br />
               Line 1: {{ vm.developer.address.line1 }}<br />
               Line 2: {{ vm.developer.address.line2 }}<br />
               City: {{ vm.developer.address.city }}<br />
@@ -88,7 +89,7 @@
         <div class="col-sm-6">
           <h3>Uploaded developer information</h3>
           <p>This is the developer information from your Upload File.<span ng-if="vm.cp.vendor.id"> To add this information to the Open Data CHPL database, click the Save as Developer Information button below.</span></p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.cp.vendor.name }}
             </div>
@@ -122,7 +123,7 @@
         <div class="col-sm-6" ng-if="!vm.cp.product.id">
           <h3>System product information</h3>
           <p>This is the product information that will be added to the Open Data CHPL database.</p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading" ng-if="vm.developer">
               Product <strong>"{{ vm.cp.product.name }}"</strong> not found
             </div>
@@ -153,7 +154,7 @@
         <div class="col-sm-6" ng-if="vm.cp.product.id">
           <h3>System product information</h3>
           <p>This is the product information that will be added to the Open Data CHPL database.</p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.product.name }}
             </div>
@@ -166,7 +167,7 @@
         <div class="col-sm-6">
           <h3>Uploaded product information</h3>
           <p>This is the product information from your Upload File.<span ng-if="vm.cp.product.id"> To add this information to the Open Data CHPL database, click the Save as Product Information button below.</span></p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.cp.product.name }}
             </div>
@@ -193,7 +194,7 @@
         <div class="col-sm-6" ng-if="!vm.cp.product.versionId">
           <h3>System version information</h3>
           <p>This is the version information that will be added to the Open Data CHPL database.</p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading" ng-if="vm.product">
               Version <strong>"{{ vm.cp.product.version }}"</strong> not found
             </div>
@@ -224,7 +225,7 @@
         <div class="col-sm-6" ng-if="vm.cp.product.versionId">
           <h3>System version information</h3>
           <p>This is the version information that will be added to the Open Data CHPL database.</p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.version.version }}
             </div>
@@ -237,7 +238,7 @@
         <div class="col-sm-6">
           <h3>Uploaded version information</h3>
           <p>This is the version information from your Upload File.<span ng-if="vm.cp.product.versionId"> To add this information to the Open Data CHPL database, click the Save as Version Information button below.</span></p>
-          <div class="panel panel-default">
+          <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.cp.product.version }}
             </div>
@@ -261,7 +262,7 @@
         </div>
       </div>
       <div class="col-sm-12">
-        <div class="panel panel-default">
+        <div class="panel panel-ai">
           <div class="panel-heading">
             <span>CHPL Product Number not assigned</span>
           </div>

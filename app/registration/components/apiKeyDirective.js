@@ -5,12 +5,11 @@
         .controller('ApiKeyController', ['$log', '$scope', '$modal', 'commonService', function ($log, $scope, $modal, commonService) {
             var vm = this;
 
-            vm.activate = activate;
             vm.loadUsers = loadUsers;
             vm.register = register;
             vm.revoke = revoke;
 
-            vm.activate();
+            activate();
 
             ////////////////////////////////////////////////////////////////////
 
@@ -25,19 +24,16 @@
             function loadUsers () {
                 commonService.getApiUsers()
                     .then (function (result) {
-                        vm.users = result.users;
+                        vm.users = result;
                     }, function (error) {
                         $log.debug(error);
                     });
-                vm.users = [{userName: 'test', email: 'test@test.com', key: 'alsdkjfa;lsja'}];
             }
 
             function register () {
-                vm.key = "Donec pretium posuere tellus.";
-                vm.hasKey = true;
                 commonService.registerApi(vm.user)
                     .then(function (result) {
-                        vm.key = result;
+                        vm.key = result.keyRegistered;
                         vm.hasKey = true;
                     },function (result) {
                         $log.debug(result);

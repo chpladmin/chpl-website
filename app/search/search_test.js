@@ -79,11 +79,11 @@
         });
 
         it('should know which elements are selected for comparison', function () {
-            expect(ctrl.getCompareIds).toBeDefined();
-            ctrl.toggleCompareId('an id');
-            expect('an id' in ctrl.getCompareIds()).toBeTruthy();
-            ctrl.toggleCompareId('an id');
-            expect('an id' in ctrl.getCompareIds()).toBeFalsy();
+            expect(ctrl.compareCps).toEqual([]);
+            ctrl.toggleCompare({id: 1});
+            expect(ctrl.compareCps.length).toBe(1);
+            ctrl.toggleCompare({id: 1});
+            expect(ctrl.compareCps.length).toBe(0);
         });
 
         it('should know if it has results', function () {
@@ -95,7 +95,7 @@
             scope.searchTerm = 'simpletext';
             scope.isSimpleSearch = true;
 
-            scope.search();
+            ctrl.search();
             scope.$digest();
 
             expect(scope.hasResults()).toBe(true);
@@ -105,7 +105,7 @@
             scope.searchTerm = { value: 'object value' };
             scope.isSimpleSearch = true;
 
-            scope.search();
+            ctrl.search();
             scope.$digest();
 
             expect(scope.hasResults()).toBe(true);
@@ -114,7 +114,7 @@
         it('should perform an advanced search', function () {
             scope.isSimpleSearch = false;
 
-            scope.search();
+            ctrl.search();
             scope.$digest();
 
             expect(scope.hasResults()).toBe(true);
@@ -123,9 +123,9 @@
         it('should redirect to /compare when "compare" is clicked', function () {
             spyOn($location, 'path');
 
-            scope.toggleCompareId('123');
-            scope.toggleCompareId('234');
-            scope.compare();
+            ctrl.toggleCompare({id: 123});
+            ctrl.toggleCompare({id: 234});
+            ctrl.compare();
 
             expect($location.path).toHaveBeenCalledWith('/compare/123&234');
         });
@@ -133,30 +133,32 @@
         it('should not redirect to /compare unless there are at least 2 ids to compare', function () {
             spyOn($location, 'path');
 
-            scope.compare();
+            ctrl.compare();
 
             expect($location.path).not.toHaveBeenCalled();
 
-            scope.toggleCompareId('123');
+            ctrl.toggleCompare({id:123});
 
-            scope.compare();
+            ctrl.compare();
             expect($location.path).not.toHaveBeenCalled();
         });
 
         it('should have a way to clear search terms and results', function () {
+            ctrl.searchForm = {};
+            ctrl.searchForm.$setPristine = function () {};
             scope.clear();
             expect(scope.searchResults).toEqual([]);
             expect(scope.displayedResults).toEqual([]);
-            expect(scope.query.searchTerm).toBeUndefined();
-            expect(scope.query.vendor).toBeUndefined();
-            expect(scope.query.product).toBeUndefined();
-            expect(scope.query.version).toBeUndefined();
-            expect(scope.query.certificationCriteria).toBeUndefined();
-            expect(scope.query.cqms).toBeUndefined();
-            expect(scope.query.certificationEdition).toBeUndefined();
-            expect(scope.query.productClassification).toBeUndefined();
-            expect(scope.query.practiceType).toBeUndefined();
-            expect(ctrl.compareIds).toEqual(Object.create(null));
+            expect(ctrl.query.searchTerm).toBeUndefined();
+            expect(ctrl.query.vendor).toBeUndefined();
+            expect(ctrl.query.product).toBeUndefined();
+            expect(ctrl.query.version).toBeUndefined();
+            expect(ctrl.query.certificationCriteria).toBeUndefined();
+            expect(ctrl.query.cqms).toBeUndefined();
+            expect(ctrl.query.certificationEdition).toBeUndefined();
+            expect(ctrl.query.productClassification).toBeUndefined();
+            expect(ctrl.query.practiceType).toBeUndefined();
+            expect(ctrl.compareCps).toEqual([]);
         });
     });
 })();

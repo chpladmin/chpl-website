@@ -39,7 +39,9 @@
         })
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/listing', {
-                templateUrl: 'nav/layouts/product_listing.html'
+                templateUrl: 'nav/layouts/product_listing.html',
+                controller: 'ProductListingController',
+                controllerAs: 'vm'
             });
         }]);
 })();

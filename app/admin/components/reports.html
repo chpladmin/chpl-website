@@ -1,18 +1,6 @@
 <section class="row">
-  <div class="col-sm-3 admin-nav">
-    <div class="panel panel-default">
-      <ul class="nav nav-pills nav-stacked">
-        <li ng-class="{'active': vm.tab === 'cp'}"><a href="" class="" ng-click="vm.changeTab('cp')">Certified Products</a></li>
-        <li ng-class="{'active': vm.tab === 'dev'}"><a href="" class="" ng-click="vm.changeTab('dev')">Developers</a></li>
-        <li ng-class="{'active': vm.tab === 'prod'}"><a href="" class="" ng-click="vm.changeTab('prod')">Products</a></li>
-        <li ng-class="{'active': vm.tab === 'acb'}"><a href="" class="" ng-click="vm.changeTab('acb')">ACBs</a></li>
-        <li ng-class="{'active': vm.tab === 'users'}" ng-if="vm.isChplAdmin"><a href="" class="" ng-click="vm.changeTab('users')">Users</a></li>
-        <li ng-class="{'active': vm.tab === 'visitors'}"><a href="" class="" ng-click="vm.changeTab('visitors')">Visitors</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="col-sm-9 admin-inner-tab">
-    <div class="row" ng-if="vm.tab === 'cp'">
+  <div class="col-sm-12 admin-inner-tab main-content">
+    <div class="row" ng-if="vm.workType === 'cp'">
       <div class="col-sm-12">
         <h3>Certified Product Activity</h3>
         <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
@@ -32,7 +20,7 @@
       </div>
     </div>
 
-    <div class="row" ng-if="vm.tab === 'dev'">
+    <div class="row" ng-if="vm.workType === 'dev'">
       <div class="col-sm-12">
         <h3>Developer Activity</h3>
         <table st-table="vm.displayedVendors" st-safe-src="vm.searchedVendors" class="table table-striped">
@@ -54,7 +42,7 @@
       </div>
     </div>
 
-    <div class="row" ng-if="vm.tab === 'prod'">
+    <div class="row" ng-if="vm.workType === 'prod'">
       <div class="col-sm-12">
         <h3>Product Activity</h3>
         <table st-table="vm.displayedProducts" st-safe-src="vm.searchedProducts" class="table table-striped">
@@ -76,7 +64,7 @@
       </div>
     </div>
 
-    <div class="row" ng-if="vm.tab === 'acb'">
+    <div class="row" ng-if="vm.workType === 'acb'">
       <div class="col-sm-12">
         <h3>ACB Activity</h3>
         <table st-table="vm.displayedACBs" st-safe-src="vm.searchedACBs" class="table table-striped">
@@ -98,7 +86,7 @@
       </div>
     </div>
 
-    <div class="row" ng-if="vm.tab === 'users' && vm.isChplAdmin">
+    <div class="row" ng-if="vm.workType === 'users' && vm.isChplAdmin">
       <div class="col-sm-12">
         <h3>User Activity</h3>
         <table st-table="vm.displayedUsers" st-safe-src="vm.searchedUsers" class="table table-striped">
@@ -139,7 +127,53 @@
       </div>
     </div>
 
-    <div class="row" ng-if="vm.tab === 'visitors'">
+    <div class="row" ng-if="vm.workType === 'api_key'">
+      <div class="col-sm-12">
+        <h3>API User Activity</h3>
+        <table st-table="vm.displayedApiActivity" st-safe-src="vm.searchedApiActivity" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+	        <tr ng-repeat="activity in vm.displayedApiActivity">
+		      <td class=""><span ng-bind-html="activity.description"></span></td>
+		      <td class="">{{ activity.activityDate | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>API Use</h3>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="">API Key</th>
+              <th>Email</th>
+              <th>Name</th>
+              <th>API Call Path</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <td colspan="5" class="text-center">
+              <pager ng-model="vm.visibleApiPage" ng-change="vm.refreshApi()" class="pagination-sm" total-items="20000"></pager>
+            </td>
+          </tfoot>
+          <tbody>
+	        <tr ng-repeat="activity in vm.searchedApi">
+		      <td class="">{{ activity.apiKey }}</td>
+		      <td class="">{{ activity.email }}</td>
+		      <td class="">{{ activity.name }}</td>
+		      <td class="">{{ activity.apiCallPath }}</td>
+		      <td class="">{{ activity.creationDate | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" ng-if="vm.workType === 'visitors'">
       <div class="col-sm-12">
         <h3>Visitor analytics</h3>
         <div class="row">

@@ -4,17 +4,22 @@
     angular.module('app.registration')
         .controller('CreateController', ['$log', '$routeParams', '$location', 'commonService', function ($log, $routeParams, $location, commonService) {
             var vm = this;
-            vm.userDetails = {user:{}};
-            vm.authorizeDetails = {};
-            vm.userDetails.hash = $routeParams.hash;
-            vm.authorizeDetails.hash = $routeParams.hash;
-            vm.message = {value: '', success: null};
-            vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
 
             vm.createUser = createUser;
             vm.authorizeUser = authorizeUser;
 
+            activate();
+
             ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                vm.userDetails = {user:{}};
+                vm.authorizeDetails = {};
+                vm.userDetails.hash = $routeParams.hash;
+                vm.authorizeDetails.hash = $routeParams.hash;
+                vm.message = {value: '', success: null};
+                vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
+            }
 
             function createUser () {
                 if (vm.validateUser()) {

@@ -28,10 +28,6 @@
                 self.isAcbAdmin = authService.isAcbAdmin();
                 self.acbs = [];
                 self.workType = 'acb';
-                self.loadData()
-                    .then(function () {
-                        self.activeAcb = self.acbs[0]
-                    });
             }
 
             function activateAcb (acb) {
@@ -117,6 +113,10 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/acbManagement.html',
+                bindToController: {
+                    workType: '=',
+                    activeAcb: '='
+                },
                 scope: {},
                 controllerAs: 'vm',
                 controller: 'AcbManagementController'

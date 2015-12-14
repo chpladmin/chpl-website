@@ -84,6 +84,7 @@
                 commonService.getUploadingCps()
                     .then(function (cps) {
                         self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
+                        self.pendingProducts = self.uploadingCps.length;
                     })
             }
 
@@ -285,14 +286,14 @@
                             if (self.activeCP.visibleOnChpl === undefined)
                                 self.activeCP.visibleOnChpl = true;
                             self.activeCP.certDate = new Date(self.activeCP.certificationDate);
-                        });
-                    commonService.getCap(self.cpSelect)
-                        .then(function (cap) {
-                            self.activeCP.cap = cap.plans;
-                        });
-                    commonService.getSurveillance(self.cpSelect)
-                        .then(function (surv) {
-                            self.activeCP.surveillance = surv.surveillance;
+                            commonService.getCap(self.cpSelect)
+                                .then(function (cap) {
+                                    self.activeCP.cap = cap.plans;
+                                });
+                            commonService.getSurveillance(self.cpSelect)
+                                .then(function (surv) {
+                                    self.activeCP.surveillances = surv.surveillances;
+                                });
                         });
                 }
             };
@@ -404,6 +405,10 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/vpManagement.html',
+                bindToController: {
+                    workType: '=',
+                    pendingProducts: '='
+                },
                 scope: {},
                 controllerAs: 'vm',
                 controller: 'VpManagementController'
