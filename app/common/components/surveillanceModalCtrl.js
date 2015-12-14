@@ -5,13 +5,11 @@
         .controller('EditSurveillanceController', ['$modalInstance', 'action', 'certifiedProductId', 'certificationResults', 'surveillance', 'commonService', function ($modalInstance, action, certifiedProductId, certificationResults, surveillance, commonService) {
             var vm = this;
 
-            vm.activate = activate;
             vm.cancel = cancel;
-            vm.certsChecked = certsChecked;
             vm.deleteSurveillance = deleteSurveillance;
             vm.save = save;
 
-            vm.activate();
+            activate();
 
             ////////////////////////////////////////////////////////////////////
 
@@ -52,15 +50,6 @@
 
             function cancel () {
                 $modalInstance.dismiss('cancelled');
-            }
-
-            function certsChecked () {
-                for (var i = 0; i < vm.surveillance.certifications.length; i++) {
-                    if (vm.surveillance.certifications[i].error) {
-                        return true;
-                    }
-                }
-                return false;
             }
 
             function deleteSurveillance () {
