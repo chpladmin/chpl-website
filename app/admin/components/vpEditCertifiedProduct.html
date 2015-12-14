@@ -103,9 +103,12 @@
       <select class="input-sm form-control" ng-model="vm.cp.testingLabId" id="cpTestingLab"></input>
       </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="vm.worktype === 'manage'">
       <label for="cpVisibleOnChpl">Visible On CHPL</label>
       <input class="" type="checkbox" ng-model="vm.cp.visibleOnChpl" id="cpVisibleOnChpl"></input>
+    </div>
+    <div ng-if="vm.worktype === 'confirm'">
+      <strong>Visible on CHPL: </strong> No
     </div>
     <br />
     <ai-certs certs="vm.cp.certificationResults"
