@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.registration')
-        .controller('ApiKeyController', ['$log', '$scope', '$modal', 'commonService', function ($log, $scope, $modal, commonService) {
+        .controller('ApiKeyController', ['$log', 'commonService', function ($log, commonService) {
             var vm = this;
 
             vm.loadUsers = loadUsers;
@@ -26,27 +26,31 @@
                     .then (function (result) {
                         vm.users = result;
                     }, function (error) {
-                        $log.debug(error);
+                        $log.debug('error in app.registration.controller.loadUsers', error);
                     });
             }
 
             function register () {
-                commonService.registerApi(vm.user)
-                    .then(function (result) {
-                        vm.key = result.keyRegistered;
-                        vm.hasKey = true;
-                    },function (result) {
-                        $log.debug(result);
-                    });
+                if (vm.user.name && vm.user.email) {
+                    commonService.registerApi(vm.user)
+                        .then(function (result) {
+                            vm.key = result.keyRegistered;
+                            vm.hasKey = true;
+                        },function (error) {
+                            $log.debug('error in app.registration.controller.register', error);
+                        });
+                }
             }
 
             function revoke (user) {
-                commonService.revokeApi(user)
-                    .then(function (result) {
-                        vm.loadUsers();
-                    }, function (error) {
-                        $log.debug(error);
-                    });
+                if (user.name && user.email) {
+                    commonService.revokeApi(user)
+                        .then(function (result) {
+                            vm.loadUsers();
+                        }, function (error) {
+                            $log.debug('error in app.registration.controller.revoke', error);
+                        });
+                }
             }
         }])
         .directive('aiApiKey', [function () {

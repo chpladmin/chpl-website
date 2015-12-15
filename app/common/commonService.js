@@ -206,10 +206,6 @@
                 return self.simpleApiCall('/users/');
             };
 
-            self.createUser = function (newUser) {
-                return self.postApiCall('/users/create', newUser);
-            };
-
             self.confirmUser = function (userObject) {
                 return self.postApiCall('/users/confirm', userObject);
             };
