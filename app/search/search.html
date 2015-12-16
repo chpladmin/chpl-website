@@ -1,5 +1,5 @@
 <div ng-controller="SearchController as vm">
-  <div class="row" ng-if="hasResults()">
+  <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
     <div class="col-sm-12">
       <h1>Search</h1>
     </div>
