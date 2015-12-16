@@ -26,7 +26,7 @@
                     .then (function (result) {
                         vm.users = result;
                     }, function (error) {
-                        $log.debug('error in app.registration.controller.loadUsers', error);
+                        $log.debug('error in app.registration.apiKey.controller.loadUsers', error);
                     });
             }
 
@@ -37,7 +37,7 @@
                             vm.key = result.keyRegistered;
                             vm.hasKey = true;
                         },function (error) {
-                            $log.debug('error in app.registration.controller.register', error);
+                            $log.debug('error in app.registration.apiKey.controller.register', error);
                         });
                 }
             }
@@ -48,7 +48,7 @@
                         .then(function (result) {
                             vm.loadUsers();
                         }, function (error) {
-                            $log.debug('error in app.registration.controller.revoke', error);
+                            $log.debug('error in app.registration.apiKey.controller.revoke', error);
                         });
                 }
             }

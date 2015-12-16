@@ -55,6 +55,34 @@
         </tbody>
       </table>
       <p>If the ACB cannot or does not address your issue, please <a href="http://www.healthit.gov/newsroom/contacting-onc-office-certification">contact ONC's Office of Certification.</a></p>
+      <h2>ACB and ATL information</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th>POC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3" class="text-center lead">ACBs</td>
+          </tr>
+          <tr ng-repeat="acb in vm.acbs | orderBy: 'name'">
+            <td>{{ acb.name }}</td>
+            <td>{{ acb.acbCode }}</td>
+            <td>{{ acb.contact }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-center lead">ATLs</td>
+          </tr>
+          <tr ng-repeat="atl in vm.atls | orderBy: 'name'">
+            <td>{{ atl.name }}</td>
+            <td>{{ atl.atlCode }}</td>
+            <td>{{ atl.contact }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div> <!-- end of other infographic -->
 </div> <!-- end controller -->
