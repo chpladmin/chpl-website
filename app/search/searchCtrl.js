@@ -256,7 +256,6 @@
                         vm.certs = options.certificationCriterionNumbers;
                         vm.cqms = options.cqmCriterionNumbers;
                         vm.editions = options.editions;
-                        vm.classifications = options.productClassifications;
                         vm.practices = options.practiceTypeNames;
                         vm.certBodies = options.certBodyNames;
                         vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);

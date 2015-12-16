@@ -118,10 +118,6 @@
                 return self.simpleApiCall('/data/certification_editions');
             };
 
-            self.getClassifications = function () {
-                return self.simpleApiCall('/data/classification_types');
-            };
-
             self.getPractices = function () {
                 return self.simpleApiCall('/data/practice_types');
             };

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'classifications', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'workType', function ($modalInstance, $timeout, activeCP, commonService, classifications, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, workType) {
+        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'workType', function ($modalInstance, $timeout, activeCP, commonService, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, workType) {
 
             var vm = this;
             vm.attachModel = attachModel;
@@ -20,7 +20,6 @@
             function activate () {
                 vm.cp = angular.copy(activeCP);
                 vm.cp.certDate = new Date(vm.cp.certificationDate);
-                vm.classifications = classifications;
                 vm.practices = practices;
                 vm.isAcbAdmin = isAcbAdmin;
                 vm.isAcbStaff = isAcbStaff;
@@ -48,7 +47,6 @@
             }
 
             function attachModel () {
-                vm.cp.classificationType = vm.findModel(vm.cp.classificationType, vm.classifications);
                 vm.cp.practiceType = vm.findModel(vm.cp.practiceType, vm.practices);
                 vm.cp.certifyingBody = vm.findModel(vm.cp.certifyingBody, vm.bodies);
                 vm.cp.certificationStatus = vm.findModel(vm.cp.certificationStatus, vm.statuses);

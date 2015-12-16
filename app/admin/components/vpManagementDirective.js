@@ -68,7 +68,6 @@
                 commonService.getSearchOptions()
                     .then(function (options) {
                         self.editions = options.editions;
-                        self.classifications = options.productClassifications;
                         self.practices = options.practiceTypeNames;
                         self.bodies = options.certBodyNames;
                         self.statuses = options.certificationStatuses;
@@ -277,7 +276,6 @@
             function selectCp () {
                 if (self.cpSelect) {
                     self.activeCP = {};
-                    self.activeCP.classificationType = {};
                     self.activeCP.certifyingBody = {};
                     self.activeCP.practiceType = {};
                     commonService.getProduct(self.cpSelect)
@@ -308,7 +306,6 @@
                     keyboard: false,
                     resolve: {
                         activeCP: function () { return self.activeCP; },
-                        classifications: function () { return self.classifications; },
                         practices: function () { return self.practices; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isAcbStaff: function () { return self.isChplStaff; },
@@ -345,7 +342,6 @@
                     resolve: {
                         inspectingCp: function () { return cp; },
                         vendors: function () { return self.vendors; },
-                        classifications: function () { return self.classifications; },
                         practices: function () { return self.practices; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isAcbStaff: function () { return self.isAcbStaff; },

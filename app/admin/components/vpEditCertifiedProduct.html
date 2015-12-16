@@ -45,12 +45,6 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="cpClassification">Classification</label>
-      <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cpClassification"
-              ng-options="classification as classification.name for classification in vm.classifications" required>
-      </select>
-    </div>
-    <div class="form-group">
       <label for="cpPractice">Practice Type</label>
       <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice"
               ng-options="practice as practice.name for practice in vm.practices" required>

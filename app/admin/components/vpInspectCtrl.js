@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'vendors', 'classifications', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, vendors, classifications, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, commonService) {
+        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'vendors', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, vendors, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, commonService) {
             var vm = this;
 
             vm.activate = activate;
@@ -47,7 +47,6 @@
                 vm.versions = [];
                 vm.versionChoice = 'choose';
 
-                vm.classifications = classifications;
                 vm.practices = practices;
                 vm.isAcbAdmin = isAcbAdmin;
                 vm.isAcbStaff = isAcbStaff;
@@ -192,7 +191,6 @@
                     keyboard: false,
                     resolve: {
                         activeCP: function () { return vm.cp; },
-                        classifications: function () { return vm.classifications; },
                         practices: function () { return vm.practices; },
                         isAcbAdmin: function () { return vm.isAcbAdmin; },
                         isAcbStaff: function () { return vm.isAcbStaff; },

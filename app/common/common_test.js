@@ -24,7 +24,6 @@
         mock.certs = ['Cert 1', 'Cert 2'];
         mock.cqms = ['CQM 1', 'CQM 2'];
         mock.editions = ['Edition 1', 'Edition 2'];
-        mock.classifications = ['Classification 1', 'Classification 2'];
         mock.practices  = ['Practice 1', 'Practice 2'];
         mock.certBodies  = ['CB 1', 'CB 2'];
 
@@ -38,7 +37,6 @@
             $httpBackend.whenGET('http://ainq.com/list_certs').respond(mock.certs);
             $httpBackend.whenGET('http://ainq.com/list_cqms').respond(mock.cqms);
             $httpBackend.whenGET(/data\/certification_editions/).respond(mock.editions);
-            $httpBackend.whenGET(/data\/classification_types/).respond(mock.classifications);
             $httpBackend.whenGET(/data\/practice_types/).respond(mock.practices);
             $httpBackend.whenGET(/vendors\//).respond(mock.vendors);
             $httpBackend.whenGET(/list_vendor_names/).respond(mock.vendors);
@@ -50,27 +48,6 @@
         afterEach(function () {
             $httpBackend.verifyNoOutstandingExpectation();
             $httpBackend.verifyNoOutstandingRequest();
-        });
-/*
-        it('should return certs', function () {
-            commonService.getCerts().then(function(response) {
-                expect(response).toEqual(mock.certs);
-            });
-            $httpBackend.flush();
-        });
-
-        it('should return cqms', function () {
-            commonService.getCQMs().then(function(response) {
-                expect(response).toEqual(mock.cqms);
-            });
-            $httpBackend.flush();
-        });
-*/
-        it('should return classifications', function () {
-            commonService.getClassifications().then(function(response) {
-                expect(response).toEqual(mock.classifications);
-            });
-            $httpBackend.flush();
         });
 
         it('should return editions', function () {
@@ -86,14 +63,7 @@
             });
             $httpBackend.flush();
         });
-/*
-        it('should return products', function () {
-            commonService.getProducts().then(function(response) {
-                expect(response).toEqual(mock.products);
-            });
-            $httpBackend.flush();
-        });
-*/
+
         it('should return practices', function () {
             commonService.getPractices().then(function(response) {
                 expect(response).toEqual(mock.practices);
@@ -107,13 +77,5 @@
             });
             $httpBackend.flush();
         });
-/*
-        it('should return certs and cqms', function () {
-            commonService.getCertsNCQMs().then(function(response) {
-                expect(response).toEqual(mock.certs.concat(mock.cqms));
-            });
-            $httpBackend.flush();
-        });
-*/
     });
 })();

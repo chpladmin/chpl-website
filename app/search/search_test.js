@@ -22,7 +22,6 @@
                 mockCommonService.options.certificationCriterionNumbers = ['Cert 1', 'Cert 2'];
                 mockCommonService.options.cqmCriterionNumbers = ['CQM 1', 'CQM 2'];
                 mockCommonService.options.editions = ['Edition 1', 'Edition 2'];
-                mockCommonService.options.productClassifications = ['Classification 1', 'Classification 2'];
                 mockCommonService.options.practiceTypeNames  = ['Practice 1', 'Practice 2'];
                 mockCommonService.options.certBodyNames  = ['CB 1', 'CB 2'];
                 mockCommonService.options.certsNcqms = mockCommonService.options.certificationCriterionNumbers.concat(mockCommonService.options.cqmCriterionNumbers);
@@ -156,7 +155,6 @@
             expect(ctrl.query.certificationCriteria).toBeUndefined();
             expect(ctrl.query.cqms).toBeUndefined();
             expect(ctrl.query.certificationEdition).toBeUndefined();
-            expect(ctrl.query.productClassification).toBeUndefined();
             expect(ctrl.query.practiceType).toBeUndefined();
             expect(ctrl.compareCps).toEqual([]);
         });
