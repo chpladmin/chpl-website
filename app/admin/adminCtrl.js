@@ -6,10 +6,12 @@
             var vm = this;
 
             vm.changeAcb = changeAcb
+            vm.changeAtl = changeAtl
             vm.changeScreen = changeScreen;
             vm.changeSubNav = changeSubNav;
             vm.getUsername = getUsername;
             vm.isAcbAdmin = isAcbAdmin;
+            vm.isAtlAdmin = isAtlAdmin;
             vm.isAuthed = isAuthed;
             vm.isChplAdmin = isChplAdmin;
             vm.refresh = refresh;
@@ -36,12 +38,24 @@
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
                     });
+                commonService.getAtls()
+                    .then (function (data) {
+                        vm.atls = $filter('orderBy')(data.atls,'name');
+                        vm.activeAtl = vm.atls[0];
+                        vm.navState.atlManagement = vm.activeAtl;
+                    });
             }
 
             function changeAcb (acb) {
                 vm.activeAcb = acb;
                 vm.navState.workType = 'acb';
                 vm.changeSubNav(acb);
+            }
+
+            function changeAtl (atl) {
+                vm.activeAtl = atl;
+                vm.navState.workType = 'atl';
+                vm.changeSubNav(atl);
             }
 
             function changeScreen (screen) {
@@ -51,6 +65,14 @@
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
+                    });
+                }
+                if (screen === 'atlManagement') {
+                commonService.getAtls()
+                    .then (function (data) {
+                        vm.atls = $filter('orderBy')(data.atls,'name');
+                        vm.activeAtl = vm.atls[0];
+                        vm.navState.atlManagement = vm.activeAtl;
                     });
                 }
                 vm.navState.screen = screen;
@@ -66,6 +88,10 @@
 
             function isAcbAdmin () {
                 return authService.isAcbAdmin();
+            }
+
+            function isAtlAdmin () {
+                return authService.isAtlAdmin();
             }
 
             function isAuthed () {

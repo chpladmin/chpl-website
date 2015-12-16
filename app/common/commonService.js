@@ -182,20 +182,40 @@
                 return self.simpleApiCall('/acbs/');
             };
 
+            self.getAtls = function () {
+                return self.simpleApiCall('/atls/');
+            };
+
             self.getUsersAtAcb = function (acbId) {
                 return self.simpleApiCall('/acbs/' + acbId + '/users');
+            };
+
+            self.getUsersAtAtl = function (atlId) {
+                return self.simpleApiCall('/atls/' + atlId + '/users');
             };
 
             self.createACB = function (acb) {
                 return self.postApiCall('/acbs/create', acb)
             };
 
+            self.createATL = function (atl) {
+                return self.postApiCall('/atls/create', atl)
+            };
+
             self.modifyACB = function (acb) {
                 return self.postApiCall('/acbs/update', acb)
             };
 
+            self.modifyATL = function (atl) {
+                return self.postApiCall('/atls/update', atl)
+            };
+
             self.deleteACB = function (acbId) {
                 return self.postApiCall('/acbs/' + acbId + '/delete', {})
+            };
+
+            self.deleteATL = function (atlId) {
+                return self.postApiCall('/atls/' + atlId + '/delete', {})
             };
 
             self.getUsers = function () {
@@ -224,6 +244,10 @@
 
             self.removeUserFromAcb = function (userId, acbId) {
                 return self.postApiCall('/acbs/' + acbId + '/remove_user/' + userId, {});
+            };
+
+            self.removeUserFromAtl = function (userId, atlId) {
+                return self.postApiCall('/atls/' + atlId + '/remove_user/' + userId, {});
             };
 
             self.inviteUser = function (invitationObject) {

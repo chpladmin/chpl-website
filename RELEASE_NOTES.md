@@ -9,6 +9,8 @@ New or updated features
 * Improved Admin UI
 * Added download XML file (limited length)
 * Integrated with 'Search by HAS CAP' API update
+* Removed display of Modular/Complete EHR
+* Added UI to manage / view ATLs
 
 Bugs fixed
 * Logging in shows appropriately visible options
