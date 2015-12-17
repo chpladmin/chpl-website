@@ -11,6 +11,7 @@ New or updated features
 * Integrated with 'Search by HAS CAP' API update
 * Removed display of Modular/Complete EHR
 * Added UI to manage / view ATLs
+* Updated UI for Product Details
 
 Bugs fixed
 * Logging in shows appropriately visible options
