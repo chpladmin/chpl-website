@@ -19,7 +19,7 @@
             var template = $templateCache.get('app/common/components/certs.html');
             $templateCache.put('common/components/certs.html', template);
 
-            element = angular.element('<ai-certs edit-mode="true" certs=\'' + certs + '\' cqms=\'[]\'></ai-certs');
+            element = angular.element('<ai-certs edit-mode="true" certs=\'' + certs + '\' cqms=\'' + certs + '\'></ai-certs');
             $compile(element)(scope);
             scope.$digest();
         }));
@@ -42,12 +42,6 @@
 
             it('should exist', function() {
                 expect(ctrl).toBeDefined();
-            });
-
-            it('should switch out of editing mode after cancelling edits', function () {
-                ctrl.isEditing = true;
-                ctrl.cancelEdits();
-                expect(ctrl.isEditing).toBe(false);
             });
         });
     });

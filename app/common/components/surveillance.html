@@ -2,7 +2,7 @@
   <div ng-if="!vm.surveillances || vm.surveillances.length === 0">
     No Surveillance in effect
   </div>
-  <table class="table table-striped" ng-if="vm.surveillances.length > 0">
+  <table class="table" ng-if="vm.surveillances.length > 0">
     <thead>
       <tr>
         <th>Is In Effect</th>
@@ -21,7 +21,7 @@
         </td>
       </tr>
       <tr ng-repeat-end>
-        <td colspan="{{ vm.isAdmin ? '4' : '3'}}">
+        <td colspan="{{ vm.isAdmin ? '4' : '3'}}" ng-if="surv.certifications.length > 0">
           <table class="table table-striped">
             <thead>
               <tr>

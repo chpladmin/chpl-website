@@ -32,7 +32,7 @@
           <button class="btn btn-success" ng-click="vm.editCap(cap)">Edit</button>
         </td>
       </tr>
-      <tr>
+      <tr ng-if="cap.certifications.length > 0">
         <td colspan="{{ vm.isAdmin ? '10' : '9'}}">
           <table class="table table-striped">
             <thead>
@@ -55,7 +55,7 @@
         </td>
       </tr>
       <tr ng-repeat-end>
-        <td colspan="{{ vm.isAdmin ? '10' : '9'}}">
+        <td colspan="{{ vm.isAdmin ? '10' : '9'}}" ng-if="cap.documentation.length > 0">
           <table class="table table-striped">
             <thead>
               <tr>

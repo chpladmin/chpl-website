@@ -4,7 +4,9 @@
     angular.module('app.product', ['ngRoute', 'app.common', 'ui.bootstrap'])
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/product/:id', {
-                templateUrl: 'product/product.html'
+                templateUrl: 'product/product.html',
+                controller: 'ProductController',
+                controllerAs: 'vm'
             });
         }]);
 })();
