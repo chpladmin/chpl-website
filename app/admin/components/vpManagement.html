@@ -163,7 +163,7 @@
                 Zip: {{ vm.activeVendor.address.zipcode }}<br />
                 Country: {{ vm.activeVendor.address.country }}<br />
                 Website: {{ vm.activeVendor.website }}<br />
-                Transparency Attestation: {{ vm.activeVendor.transparencyAttestation }}<br />
+                <span ng-if="vm.activeVendor.transparencyAttestation !== null">Transparency Attestation: {{ vm.activeVendor.transparencyAttestation }}<br /></span>
               </div>
               <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
             </div>
