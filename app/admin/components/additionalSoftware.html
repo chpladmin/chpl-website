@@ -6,12 +6,13 @@
         <tr>
           <th>Name</th>
           <th>Version</th>
+          <th>CHPL Id</th>
           <th>Action</th>
         </tr>
       </thead>
       <tfoot>
         <tr>
-          <td colspan="3">
+          <td colspan="4">
             <button class="btn btn-block" ng-click="vm.addItem()">Add item</button>
           </td>
         </tr>
@@ -20,6 +21,7 @@
         <tr ng-repeat="item in vm.additionalSoftware track by $index">
           <td>{{ item.name }}</td>
           <td>{{ item.version }}</td>
+          <td>{{ item.chplId }}</td>
           <td width="0">
             <button class="btn btn-success btn-block" ng-click="vm.editItem(item, $index)"><i class="fa fa-pencil-square-o"></i> Edit</button>
             <button class="btn btn-danger btn-block" ng-click="vm.removeItem($index)"><i class="fa fa-trash-o"></i> Remove</button>

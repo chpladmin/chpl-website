@@ -19,39 +19,12 @@
                 vm.panelShown = '';
             }
 
-/*            vm.certs = [];
-            vm.cqms = [];
-            vm.builtCqms = [];
-            $scope.$watch('certs', function (newCerts) {
-                if (newCerts) {
-                    vm.certs = newCerts;
-                }}, true);
-                */
             $scope.$watch('cqms', function (newCqms) {
                 if (newCqms) {
                     vm.cqms = newCqms;
                     vm.addIds();
                 }}, true);
-            /*
-            $scope.$watch('countCerts', function (newCount) {
-                if (newCount) {
-                    vm.countCerts = newCount;
-                }}, true);
-            $scope.$watch('countCqms', function (newCount) {
-                if (newCount) {
-                    vm.countCqms = newCount;
-                }}, true);
-            $scope.$watch('reportFileLocation', function (location) {
-                if (location) {
-                    vm.reportFileLocation = location;
-                }}, true);
-            $scope.$watch('isEditing', function (editing) {
-                if (editing !== null) {
-                    vm.isEditing = editing;
-                }}, true);
-            vm.viewAllCerts = $scope.viewAllCerts;
-            vm.editMode = $scope.editMode;
-*/
+
             function addIds () {
                 if (vm.cqms) {
                     for (var i = 0; i < vm.cqms.length; i++) {
@@ -84,14 +57,6 @@
                     vm.panelShown = panel
                 }
             }
-/*
-            vm.cancelEdits = function () {
-              pp  $log.info('cancelling edits');
-                vm.certs = angular.copy($scope.certs);
-                vm.cqms = angular.copy($scope.cqms);
-                vm.isEditing = !vm.isEditing
-            };
-            */
         }]);
 
     angular.module('app.common')

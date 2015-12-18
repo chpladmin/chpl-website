@@ -59,24 +59,21 @@
       <table class="table table-striped">
         <thead>
           <tr>
+            <th>Body</th>
             <th>Name</th>
             <th>Code</th>
             <th>POC</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td colspan="3" class="text-center lead">ACBs</td>
-          </tr>
           <tr ng-repeat="acb in vm.acbs | orderBy: 'name'">
+            <td>ACB</td>
             <td>{{ acb.name }}</td>
             <td>{{ acb.acbCode }}</td>
             <td>{{ acb.contact }}</td>
           </tr>
-          <tr>
-            <td colspan="3" class="text-center lead">ATLs</td>
-          </tr>
           <tr ng-repeat="atl in vm.atls | orderBy: 'name'">
+            <td>ATL</td>
             <td>{{ atl.name }}</td>
             <td>{{ atl.atlCode }}</td>
             <td>{{ atl.contact }}</td>

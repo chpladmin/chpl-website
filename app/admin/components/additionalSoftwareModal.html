@@ -17,6 +17,10 @@
       <label for="swVersion">Version <span class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" required ng-model="vm.sw.version" id="swVersion"></input>
     </div>
+    <div class="form-group">
+      <label for="swChplId">CHPL Id</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.sw.chplId" id="swChplId"></input>
+    </div>
   </div>
   <div class="modal-footer">
     <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Additional Software</button>
