@@ -32,7 +32,7 @@
           <td>
             <span>Locked: <input type="checkbox" ng-model="user.user.accountLocked" disabled /></span><br />
             <span>Enabled: <input type="checkbox" ng-model="user.user.accountEnabled" disabled /></span><br />
-            <select ng-options="role as role for role in vm.roles" ng-model="user.roles" multiple disabled></select>
+            <select ng-options="role as role for role in vm.roles" ng-model="user.roles" size="5" multiple disabled></select>
           </td>
           <td>
             <button class="btn btn-default btn-block" ng-click="vm.updateUser(user)">Update</button>
