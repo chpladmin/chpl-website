@@ -146,6 +146,10 @@
                 return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays);
             };
 
+            self.getAtlActivity = function (nDays) {
+                return self.simpleApiCall('/activity/atls?lastNDays=' + nDays);
+            };
+
             self.getUserActivity = function (nDays) {
                 return self.simpleApiCall('/activity/users?lastNDays=' + nDays);
             };
@@ -178,12 +182,12 @@
                 return self.postApiCall('/certified_products/update', cpObject);
             };
 
-            self.getAcbs = function () {
-                return self.simpleApiCall('/acbs/');
+            self.getAcbs = function (editable) {
+                return self.simpleApiCall('/acbs/?editable=' + editable);
             };
 
-            self.getAtls = function () {
-                return self.simpleApiCall('/atls/');
+            self.getAtls = function (editable) {
+                return self.simpleApiCall('/atls/?editable=' + editable);
             };
 
             self.getUsersAtAcb = function (acbId) {

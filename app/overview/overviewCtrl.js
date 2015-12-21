@@ -18,7 +18,7 @@
             }
 
             function loadAcbs () {
-                commonService.getAcbs()
+                commonService.getAcbs(false)
                     .then (function (result) {
                         vm.acbs = result.acbs;
                     }, function (error) {
@@ -27,7 +27,7 @@
             }
 
             function loadAtls () {
-                commonService.getAtls()
+                commonService.getAtls(false)
                     .then(function (result) {
                         vm.atls = result.atls;
                     }, function (error) {

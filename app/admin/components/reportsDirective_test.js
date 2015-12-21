@@ -68,6 +68,12 @@
                     return defer.promise;
                 };
 
+                mockCommonService.getAtlActivity = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.certBodyActivity);
+                    return defer.promise;
+                };
+
                 mockCommonService.getUserActivity = function () {
                     var defer = $q.defer();
                     defer.resolve(this.userActivity);

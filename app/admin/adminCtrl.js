@@ -32,13 +32,13 @@
                 } else {
                     vm.navState.dpManagement = 'manage';
                 }
-                commonService.getAcbs()
+                commonService.getAcbs(true)
                     .then (function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
                     });
-                commonService.getAtls()
+                commonService.getAtls(true)
                     .then (function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];
@@ -60,7 +60,7 @@
 
             function changeScreen (screen) {
                 if (screen === 'acbManagement') {
-                commonService.getAcbs()
+                commonService.getAcbs(true)
                     .then (function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
@@ -68,7 +68,7 @@
                     });
                 }
                 if (screen === 'atlManagement') {
-                commonService.getAtls()
+                commonService.getAtls(true)
                     .then (function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];

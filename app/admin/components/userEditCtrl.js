@@ -112,7 +112,7 @@
                     vm.userInvitation.acbId = vm.acbId;
                 }
                 if (vm.atlId) {
-                    vm.userInvitation.atlId = vm.atlId;
+                    vm.userInvitation.testingLabId = vm.atlId;
                 }
                 if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.permissions.length > 0) {
                     commonService.inviteUser(vm.userInvitation)

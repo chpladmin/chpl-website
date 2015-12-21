@@ -36,6 +36,7 @@
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'dev'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('dev')">Developers</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'prod'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('prod')">Products</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'acb'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('acb')">ACBs</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'atl'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('atl')">ATLs</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'users'}" ng-if="vm.navState.screen === 'reports' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('users')">Users</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" ng-if="vm.navState.screen === 'reports' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('api_key')">API Key Usage</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'visitors'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('visitors')">Visitors</a></li>
@@ -54,7 +55,7 @@
                            active-acb="vm.activeAcb"></ai-acb-management>
         <ai-atl-management ng-if="vm.navState.screen === 'atlManagement'"
                            work-type="vm.navState.workType"
-                           active-acb="vm.activeAtl"></ai-atl-management>
+                           active-atl="vm.activeAtl"></ai-atl-management>
         <ai-reports trigger-refresh="vm.triggerRefresh(handler)"
                     ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"></ai-reports>

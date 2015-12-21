@@ -12,6 +12,7 @@ New or updated features
 * Removed display of Modular/Complete EHR
 * Added UI to manage / view ATLs
 * Updated UI for Product Details
+* Connected to ATL APIs
 
 Bugs fixed
 * Logging in shows appropriately visible options

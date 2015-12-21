@@ -14,6 +14,7 @@
             vm.refreshVendor = refreshVendor;
             vm.refreshProduct = refreshProduct;
             vm.refreshAcb = refreshAcb;
+            vm.refreshAtl = refreshAtl;
             vm.refreshUser = refreshUser;
             vm.refreshApi = refreshApi;
             vm.refreshVisitors = refreshVisitors;
@@ -35,6 +36,7 @@
                 vm.refreshVendor();
                 vm.refreshProduct();
                 vm.refreshAcb();
+                vm.refreshAtl();
                 vm.refreshUser();
                 vm.refreshApi();
             }
@@ -68,6 +70,14 @@
                     .then(function (data) {
                         vm.searchedACBs = vm.interpretAcbs(data);
                         vm.displayedACBs = [].concat(vm.searchedACBs);
+                    });
+            }
+
+            function refreshAtl () {
+                commonService.getAtlActivity(7)
+                    .then(function (data) {
+                        vm.searchedATLs = vm.interpretAtls(data);
+                        vm.displayedATLs = [].concat(vm.searchedATLs);
                     });
             }
 
@@ -284,6 +294,29 @@
                         activity.action += '</ul>';
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'ACB');
+                    }
+                    ret.push(activity);
+                }
+                return ret;
+            };
+
+            vm.interpretAtls = function (data) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < data.length; i++) {
+                    var activity = {date: data[i].activityDate};
+                    if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
+                        activity.name = data[i].newData.name;
+                        activity.action = 'Update:<ul>';
+                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        vm.analyzeAddress(activity, data[i]);
+                        activity.action += '</ul>';
+                    } else {
+                        vm.interpretNonUpdate(activity, data[i], 'ATL');
                     }
                     ret.push(activity);
                 }
