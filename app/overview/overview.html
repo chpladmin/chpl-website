@@ -62,7 +62,7 @@
             <th>Body</th>
             <th>Name</th>
             <th>Code</th>
-            <th>POC</th>
+            <th>Website</th>
           </tr>
         </thead>
         <tbody>
@@ -70,13 +70,13 @@
             <td>ACB</td>
             <td>{{ acb.name }}</td>
             <td>{{ acb.acbCode }}</td>
-            <td>{{ acb.contact }}</td>
+            <td><a href="{{ acb.website }}">{{ acb.website }}</a></td>
           </tr>
           <tr ng-repeat="atl in vm.atls | orderBy: 'name'">
             <td>ATL</td>
             <td>{{ atl.name }}</td>
             <td>{{ atl.atlCode }}</td>
-            <td>{{ atl.contact }}</td>
+            <td><a href="{{ atl.website }}">{{ atl.website }}</a></td>
           </tr>
         </tbody>
       </table>

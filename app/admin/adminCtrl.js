@@ -24,9 +24,13 @@
             function activate () {
                 vm.handlers = [];
                 vm.navState = {
-                    screen: 'dpManagement',
                     reports: 'cp'
                 };
+                if (vm.isChplAdmin() || vm.isAcbAdmin()) {
+                    vm.navState.screen = 'dpManagement';
+                } else if (vm.isAtlAdmin()) {
+                    vm.navState.screen = 'atlManagement';
+                }
                 if (!vm.isChplAdmin()) {
                     vm.navState.dpManagement = 'upload';
                 } else {
