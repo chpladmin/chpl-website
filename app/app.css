@@ -21,6 +21,11 @@ header {
     background-size: cover;
     border-bottom: 20px solid #0070c9;
     min-height: 130px;
+    box-shadow: none;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.open>a {
+    box-shadow: none;
 }
 
 @media (max-width: 767px) {
