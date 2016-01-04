@@ -1,4 +1,4 @@
-<div>
+<div class="container">
   <script type="text/ng-template" id="myModalContent.html">
     <div role="modal" aria-labeled-by="modificationSummaryLabel">
       <div class="modal-header">
@@ -71,6 +71,20 @@
           <h3 class="product-heading">Transparency Attestation</h3>
           <p ng-if="vm.product.transparencyAttestation">True</p>
           <p ng-if="!vm.product.transparencyAttestation">False</p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">Inherited Certification Status</h3>
+          <p>{{ vm.product.ics ? vm.product.ics : '---' }} </p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">QMS Testing</h3>
+          <p ng-if="vm.product.qmsTesting">True</p>
+          <p ng-if="!vm.product.qmsTesting">False</p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">SED Testing</h3>
+          <p ng-if="vm.product.sedTesting">True</p>
+          <p ng-if="!vm.product.sedTesting">False</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Other ACB</h3>
