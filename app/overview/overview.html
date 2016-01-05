@@ -1,4 +1,4 @@
-<div>
+<div class="container">
   <div class="row">
     <div class="col-md-12">
       <h1>CHPL Overview</h1>
@@ -20,7 +20,7 @@
       <p>For more information, please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/clinicalqualitymeasures.html">Centers for Medicare and Medicaid Services CQM Basics page</a>.</p>
       <h2>USING THE CHPL WEBSITE</h2>
       <h3>How do I use the CHPL to select a Health Information Technology?</h3>
-      <p>To search for a Certified Health Information Technology, type a keyword, such as a developer name or product name, into the main search area. Alternatively, you may choose to browse all certified products by clicking the 'View All Products' option, or use the 'Advanced Search' option to search for products matching specific criteria (e.g. certification criteria, clinical quality measurements, product classification, etc.). The CHPL will display your search results.</p>
+      <p>To search for a Certified Health Information Technology, type a keyword, such as a developer name or product name, into the main search area. Alternatively, you may choose to browse all certified products by clicking the 'View All Products' option, or use the 'Advanced Search' option to search for products matching specific criteria (e.g. certification criteria, clinical quality measurements, etc.). The CHPL will display your search results.</p>
       <h3>How do I compare products?</h3>
       <p>To compare products, please select the products you would like to compare and use the 'Compare Products' button to view the products side-by-side.</p>
       <h2>FOR EHR VENDORS</h2>
@@ -55,6 +55,31 @@
         </tbody>
       </table>
       <p>If the ACB cannot or does not address your issue, please <a href="http://www.healthit.gov/newsroom/contacting-onc-office-certification">contact ONC's Office of Certification.</a></p>
+      <h2>ACB and ATL information</h2>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Body</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Website</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="acb in vm.acbs | orderBy: 'name'">
+            <td>ACB</td>
+            <td>{{ acb.name }}</td>
+            <td>{{ acb.acbCode }}</td>
+            <td><a href="{{ acb.website }}">{{ acb.website }}</a></td>
+          </tr>
+          <tr ng-repeat="atl in vm.atls | orderBy: 'name'">
+            <td>ATL</td>
+            <td>{{ atl.name }}</td>
+            <td>{{ atl.atlCode }}</td>
+            <td><a href="{{ atl.website }}">{{ atl.website }}</a></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div> <!-- end of other infographic -->
 </div> <!-- end controller -->

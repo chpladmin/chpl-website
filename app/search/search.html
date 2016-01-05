@@ -1,5 +1,6 @@
-<div ng-controller="SearchController as vm">
-  <div class="row" ng-if="hasResults()">
+<div ng-controller="SearchController as vm" ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }">
+  <div class="container">
+  <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
     <div class="col-sm-12">
       <h1>Search</h1>
     </div>
@@ -26,7 +27,6 @@
           <option value="certificationCriteria">Certification Criteria</option>
           <option value="cqms">Clinical Quality Measure</option>
           <option value="certificationEdition">Certification Edition</option>
-          <option value="productClassification">Product Classification</option>
           <option value="practiceType">Practice Type</option>
           <option value="hasCAP">Has Corrective Action Plan</option>
         </select>
@@ -73,13 +73,6 @@
                 ng-options="edition.name as edition.name for edition in vm.editions | orderBy:'name'">
         </select>
       </div>
-      <div class="col-sm-3" ng-if="vm.refineType === 'productClassification'">
-        <label for="classificationRefine" class="control-label sr-only">Product Classification</label>
-        <select id="classificationRefine" ng-model="vm.refine.productClassification" class="input-sm form-control"
-                ng-required="vm.refineType === 'productClassification'"
-                ng-options="c.name as c.name for c in vm.classifications | orderBy:'name'">
-        </select>
-      </div>
       <div class="col-sm-3" ng-if="vm.refineType === 'practiceType'">
         <label for="practiceRefine" class="control-label sr-only">Practice Type</label>
         <select id="practiceRefine" ng-model="vm.refine.practiceType" class="input-sm form-control"
@@ -113,7 +106,6 @@
         <li class="animate-if" ng-if="vm.query.product"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('product')"><span class="ai-lead">Product:</span> {{ vm.query.product }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.version"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('version')"><span class="ai-lead">Version:</span> {{ vm.query.version }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationEdition')"><span class="ai-lead">Certification Edition:</span> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-if="vm.query.productClassification"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('productClassification')"><span class="ai-lead">Product Classification:</span> {{ vm.query.productClassification }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.practiceType"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('practiceType')"><span class="ai-lead">Practice Type:</span> {{ vm.query.practiceType }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('cqms',cqm)"><span class="ai-lead">Clinical Quality Measure:</span> {{ prepend(cqm) }} <i class="fa fa-close"></i></button></li>
@@ -129,13 +121,16 @@
         <div class="row">
           <div class="col-md-6">
             <p ng-if="!hasResults()">No results found</p>
-            <p ng-if="hasResults()">Showing
+            <p ng-if="hasResults()">
+              <label for="pageSize" class="sr-only">Show how many results</label>
+              Showing
               <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="250">250</option>
               </select>
-              of {{ vm.resultCount }} results</p>
+              of {{ vm.resultCount }} results
+            </p>
           </div>
           <div class="col-md-6 text-right">
             <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="clear()">Clear results</a>
@@ -151,7 +146,7 @@
                   <th class="search-header" ng-click="sort('vendor')"
                       ng-class="{'sort-ascent': vm.query.orderBy==='vendor' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='vendor' && vm.query.sortDescending}">Developer</th>
                   <th class="">Version</th>
-                  <th colspan="2"></th>
+                  <th colspan="2"><span class="sr-only">Actions</span></th>
 	            </tr>
 	          </thead>
 	          <tbody>
@@ -172,7 +167,6 @@
                       <thead>
                         <tr>
                           <th>Practice Type</th>
-                          <th>Classification</th>
                           <th>Certifying Body</th>
                           <th>Certification Edition</th>
                           <th>Certification Criteria & Clinical Quality Measures</th>
@@ -182,7 +176,6 @@
                       <tbody>
                         <tr>
                           <td>{{ row.practiceType.name }}</td>
-                          <td>{{ row.classificationType.name }}</td>
                           <td>{{ row.certifyingBody.name }}</td>
                           <td>{{ row.certificationEdition.name }}</td>
 		                  <td>{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
@@ -240,4 +233,5 @@
       </div>
     </div>
   </div> <!-- end of search results -->
+  </div>
 </div> <!-- end controller -->

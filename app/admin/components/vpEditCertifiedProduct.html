@@ -45,12 +45,6 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="cpClassification">Classification</label>
-      <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cpClassification"
-              ng-options="classification as classification.name for classification in vm.classifications" required>
-      </select>
-    </div>
-    <div class="form-group">
       <label for="cpPractice">Practice Type</label>
       <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice"
               ng-options="practice as practice.name for practice in vm.practices" required>
@@ -95,17 +89,44 @@
       <input class="" type="checkbox" ng-model="vm.cp.privacyAttestation" id="cpPrivacyAtt"></input>
     </div>
     <div class="form-group">
+      <label for="cpTransparencyAtt">Transparency Attestation</label>
+      <input class="" type="checkbox" ng-model="vm.cp.transparencyAttestation" id="cpTransparencyAtt"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpIcs">Inherited Certification Status</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.ics" id="cpIcs"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpQmsTesting">QMS Testing</label>
+      <input class="" type="checkbox" ng-model="vm.cp.qmsTesting" id="cpQmsTesting"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpSedTesting">SED Testing</label>
+      <input class="" type="checkbox" ng-model="vm.cp.sedTesting" id="cpSedTesting"></input>
+    </div>
+    <div class="form-group">
       <label for="cpReportFileLoc">Report File Location</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpApiDocumentationLoc">API Documentation</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.apiDocumentation" id="cpApiDocumentationLoc"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpTouLoc">Terms of Use</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.termsOfUse" id="cpTouLoc"></input>
     </div>
     <div class="form-group">
       <label for="cpTestingLab">Testing Lab</label>
       <select class="input-sm form-control" ng-model="vm.cp.testingLabId" id="cpTestingLab"></input>
       </select>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="vm.worktype === 'manage'">
       <label for="cpVisibleOnChpl">Visible On CHPL</label>
       <input class="" type="checkbox" ng-model="vm.cp.visibleOnChpl" id="cpVisibleOnChpl"></input>
+    </div>
+    <div ng-if="vm.worktype === 'confirm'">
+      <strong>Visible on CHPL: </strong> No
     </div>
     <br />
     <ai-certs certs="vm.cp.certificationResults"

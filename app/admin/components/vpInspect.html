@@ -268,7 +268,6 @@
           </div>
           <div class="panel-body">
             <span>
-              <strong>Classification:</strong> {{ vm.cp.classificationType.name }} <br />
               <strong>Practice Type:</strong> {{ vm.cp.practiceType.name }} <br />
               <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
               <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
@@ -278,6 +277,9 @@
               <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
               <strong>Other ACB:</strong> {{ vm.cp.otherAcb }} <br />
               <strong>Quality Management System Attestation:</strong> {{ vm.cp.qualityManagementSystemAtt }} <br />
+              <strong>Inherited Certification Status:</strong> {{ vm.cp.ics }} <br />
+              <strong>QMS Testing:</strong> {{ vm.cp.qmsTesting ? 'True' : 'False' }} <br />
+              <strong>SED Testing:</strong> {{ vm.cp.sedTesting ? 'True' : 'False' }} <br />
               <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation }} <br />
               <strong>Testing Lab:</strong> {{ vm.cp.testingLabId }} <br />
               <strong>Visible on CHPL:</strong> {{ vm.cp.visibleOnChpl }} <br />

@@ -54,12 +54,34 @@
                 return false;
             };
 
+            self.isAtlAdmin = function () {
+                var token = self.getToken();
+                if (token) {
+                    var authorities = self.parseJwt(token).Authorities;
+                    if (authorities) {
+                        return authorities.indexOf('ROLE_ATL_ADMIN') > -1
+                    }
+                }
+                return false;
+            };
+
             self.isAcbStaff = function () {
                 var token = self.getToken();
                 if (token) {
                     var authorities = self.parseJwt(token).Authorities;
                     if (authorities) {
                         return authorities.indexOf('ROLE_ACB_STAFF') > -1
+                    }
+                }
+                return false;
+            };
+
+            self.isAtlStaff = function () {
+                var token = self.getToken();
+                if (token) {
+                    var authorities = self.parseJwt(token).Authorities;
+                    if (authorities) {
+                        return authorities.indexOf('ROLE_ATL_STAFF') > -1
                     }
                 }
                 return false;

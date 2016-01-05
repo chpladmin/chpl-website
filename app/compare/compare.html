@@ -1,4 +1,4 @@
-<div ng-controller="CompareController as vm">
+<div ng-controller="CompareController as vm" class="container">
   <div class="row">
     <div class="col-sm-8">
       <h1>Compare products</h1>
@@ -12,7 +12,7 @@
       <table class="table table-striped compare-table">
         <thead>
           <tr>
-            <th></th>
+            <th><span class="sr-only">Category</span></th>
             <th ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.product.name }}<br />({{ product.vendor.name }})</th>
           </tr>
         </thead>
@@ -24,10 +24,6 @@
           <tr>
             <td class="compare-rowLead">Certification Edition</td>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.certificationEdition.name }}</td>
-          </tr>
-          <tr>
-            <td class="compare-rowLead">Classification</td>
-            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.classificationType.name }}</td>
           </tr>
           <tr>
             <td class="compare-rowLead">Practice Type</td>

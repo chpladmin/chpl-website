@@ -118,10 +118,6 @@
                 return self.simpleApiCall('/data/certification_editions');
             };
 
-            self.getClassifications = function () {
-                return self.simpleApiCall('/data/classification_types');
-            };
-
             self.getPractices = function () {
                 return self.simpleApiCall('/data/practice_types');
             };
@@ -148,6 +144,10 @@
 
             self.getAcbActivity = function (nDays) {
                 return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays);
+            };
+
+            self.getAtlActivity = function (nDays) {
+                return self.simpleApiCall('/activity/atls?lastNDays=' + nDays);
             };
 
             self.getUserActivity = function (nDays) {
@@ -182,32 +182,48 @@
                 return self.postApiCall('/certified_products/update', cpObject);
             };
 
-            self.getAcbs = function () {
-                return self.simpleApiCall('/acbs/');
+            self.getAcbs = function (editable) {
+                return self.simpleApiCall('/acbs/?editable=' + editable);
+            };
+
+            self.getAtls = function (editable) {
+                return self.simpleApiCall('/atls/?editable=' + editable);
             };
 
             self.getUsersAtAcb = function (acbId) {
                 return self.simpleApiCall('/acbs/' + acbId + '/users');
             };
 
+            self.getUsersAtAtl = function (atlId) {
+                return self.simpleApiCall('/atls/' + atlId + '/users');
+            };
+
             self.createACB = function (acb) {
                 return self.postApiCall('/acbs/create', acb)
+            };
+
+            self.createATL = function (atl) {
+                return self.postApiCall('/atls/create', atl)
             };
 
             self.modifyACB = function (acb) {
                 return self.postApiCall('/acbs/update', acb)
             };
 
+            self.modifyATL = function (atl) {
+                return self.postApiCall('/atls/update', atl)
+            };
+
             self.deleteACB = function (acbId) {
                 return self.postApiCall('/acbs/' + acbId + '/delete', {})
             };
 
-            self.getUsers = function () {
-                return self.simpleApiCall('/users/');
+            self.deleteATL = function (atlId) {
+                return self.postApiCall('/atls/' + atlId + '/delete', {})
             };
 
-            self.createUser = function (newUser) {
-                return self.postApiCall('/users/create', newUser);
+            self.getUsers = function () {
+                return self.simpleApiCall('/users/');
             };
 
             self.confirmUser = function (userObject) {
@@ -232,6 +248,10 @@
 
             self.removeUserFromAcb = function (userId, acbId) {
                 return self.postApiCall('/acbs/' + acbId + '/remove_user/' + userId, {});
+            };
+
+            self.removeUserFromAtl = function (userId, atlId) {
+                return self.postApiCall('/atls/' + atlId + '/remove_user/' + userId, {});
             };
 
             self.inviteUser = function (invitationObject) {

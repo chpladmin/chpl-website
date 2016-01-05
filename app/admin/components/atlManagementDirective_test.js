@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    describe('app.admin.acbManagement.directive', function () {
+    describe('app.admin.atlManagement.directive', function () {
 
         var element, scope, $log, authService, ctrl, commonService;
 
@@ -14,13 +14,13 @@
                 $provide.value('commonService', mockCommonService);
             });
 
-            module('app/admin/components/acbManagement.html');
+            module('app/admin/components/atlManagement.html');
             module('app/admin/components/userManagement.html');
 
-            mockCommonService.acbs = {acbs: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
+            mockCommonService.atls = {atls: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
 
             inject(function($q) {
-                mockAuthService.isAcbAdmin = function () {
+                mockAuthService.isAtlAdmin = function () {
                     return true;
                 };
 
@@ -32,11 +32,11 @@
                     return false;
                 };
 
-                mockCommonService.getAcbs = function () {
-                    return $q.when(mockCommonService.acbs);
+                mockCommonService.getAtls = function () {
+                    return $q.when(mockCommonService.atls);
                 };
 
-                mockCommonService.getUsersAtAcb = function (acbId) {
+                mockCommonService.getUsersAtAtl = function (atlId) {
                     return $q.when({});
                 };
 
@@ -56,12 +56,12 @@
 
             scope.fakeFunction = function () {};
 
-            var template = $templateCache.get('app/admin/components/acbManagement.html');
-            $templateCache.put('admin/components/acbManagement.html', template);
+            var template = $templateCache.get('app/admin/components/atlManagement.html');
+            $templateCache.put('admin/components/atlManagement.html', template);
             template = $templateCache.get('app/admin/components/userManagement.html');
             $templateCache.put('admin/components/userManagement.html', template);
 
-            element = angular.element('<ai-acb-management create-acb="fakeFunction"></ai-acb-management');
+            element = angular.element('<ai-atl-management create-atl="fakeFunction"></ai-atl-management');
             $compile(element)(scope);
             scope.$digest();
         }));
@@ -77,7 +77,7 @@
             beforeEach(inject(function ($controller, _commonService_, $q, $httpBackend) {
                 commonService = _commonService_;
 
-                ctrl = $controller('AcbManagementController', {
+                ctrl = $controller('AtlManagementController', {
                     $scope: scope,
                     $element: null,
                     commonService: commonService
@@ -89,8 +89,8 @@
                 expect(ctrl).toBeDefined();
             });
 
-            it('should know if the logged in user is ACB and/or CHPL admin', function () {
-                expect(ctrl.isAcbAdmin).toBeTruthy();
+            it('should know if the logged in user is ATL and/or CHPL admin', function () {
+                expect(ctrl.isAtlAdmin).toBeTruthy();
                 expect(ctrl.isChplAdmin).toBeTruthy();
             });
         });
