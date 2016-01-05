@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next Version
-_Date TBD_
+## Version 0.1.0
+_5 January 2016_
 
 New or updated features
 * Added 'api-key usage' reporting
