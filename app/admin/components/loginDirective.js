@@ -5,7 +5,6 @@
         .controller('LoginController', ['$scope', 'commonService', 'authService', '$log', '$location', 'Idle', 'Keepalive', function ($scope, commonService, authService, $log, $location, Idle, Keepalive) {
             var vm = this;
 
-            vm.activate = activate;
             vm.login = login;
             vm.logout = logout;
             vm.setActivity = setActivity;
@@ -22,7 +21,7 @@
                 NONE: 4
             };
 
-            vm.activate();
+            activate();
 
             /////////////////////////////////////////////////////////
 

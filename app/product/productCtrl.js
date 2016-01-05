@@ -28,9 +28,9 @@
                     });
                 commonService.getSurveillance(vm.productId)
                     .then(function (data) {
-                        vm.surveillance = data.surveillance;
+                        vm.surveillances = data.surveillances;
                     }, function (error) {
-//                        $log.error (error);
+                        $log.error (error);
                     });
             }
 

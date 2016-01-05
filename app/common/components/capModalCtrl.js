@@ -5,14 +5,12 @@
         .controller('EditCorrectiveActionPlanController', ['$modalInstance', 'action', 'certifiedProductId', 'certificationResults', 'correctiveActionPlan', 'commonService', 'authService', 'API', 'FileUploader', function ($modalInstance, action, certifiedProductId, certificationResults, correctiveActionPlan, commonService, authService, API, FileUploader) {
             var vm = this;
 
-            vm.activate = activate;
             vm.cancel = cancel;
-            vm.certsChecked = certsChecked;
             vm.deleteCap = deleteCap;
             vm.deleteDoc = deleteDoc;
             vm.save = save;
 
-            vm.activate();
+            activate();
 
             ////////////////////////////////////////////////////////////////////
 
@@ -77,15 +75,6 @@
 
             function cancel () {
                 $modalInstance.dismiss('cancelled');
-            }
-
-            function certsChecked () {
-                for (var i = 0; i < vm.cap.certifications.length; i++) {
-                    if (vm.cap.certifications[i].error) {
-                        return true;
-                    }
-                }
-                return false;
             }
 
             function deleteCap () {

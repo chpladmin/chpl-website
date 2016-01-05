@@ -13,6 +13,9 @@
       <label for="vendorName">Developer Name <span class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="vendorName"></input>
     </div>
+    <div>
+      <strong>Developer Code: </strong>{{ vm.developer.vendorCode }}
+    </div>
     <div class="form-group">
       <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1"></input>

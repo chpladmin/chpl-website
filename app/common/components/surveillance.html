@@ -1,8 +1,8 @@
 <div>
-  <div ng-if="!vm.surveillance || vm.surveillance.length === 0">
+  <div ng-if="!vm.surveillances || vm.surveillances.length === 0">
     No Surveillance in effect
   </div>
-  <table class="table table-striped" ng-if="vm.surveillance.length > 0">
+  <table class="table table-striped" ng-if="vm.surveillances.length > 0">
     <thead>
       <tr>
         <th>Is In Effect</th>
@@ -12,10 +12,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat-start="surv in vm.surveillance | orderBy: 'dateBegan'">
-        <td><span ng-if="surv.dateEnded">No</span><span ng-if="!surv.dateEnded">Yes</span></td>
-        <td>{{ surv.dateBegan | date }}</td>
-        <td>{{ surv.dateEnded | date }}</td>
+      <tr ng-repeat-start="surv in vm.surveillances | orderBy: 'dateBegan'">
+        <td><span ng-if="surv.endDate">No</span><span ng-if="!surv.endDate">Yes</span></td>
+        <td>{{ surv.startDate | date }}</td>
+        <td>{{ surv.endDate | date }}</td>
         <td ng-if="vm.isAdmin">
           <button class="btn btn-success" ng-click="vm.editSurveillance(surv)">Edit</button>
         </td>
@@ -34,9 +34,9 @@
             <tbody>
               <tr ng-repeat="cert in surv.certifications">
                 <td>{{ cert.certificationCriterionNumber + ': ' + cert.certificationCriterionTitle }}</td>
-                <td>{{ cert.sitesTested }}</td>
+                <td>{{ cert.numSites }}</td>
                 <td>{{ cert.passRate }}</td>
-                <td>{{ cert.resolution }}</td>
+                <td>{{ cert.result }}</td>
               </tr>
             </tbody>
           </table>

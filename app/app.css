@@ -64,7 +64,7 @@ footer {
 
 h1 {
     font-family: 'Oswald', sans-serif;
-    font-weight: 400; /* 400-regular, 300-light */
+    font-weight: 300; /* 400-regular, 300-light */
     color: #0070c9;
 }
 
@@ -76,10 +76,9 @@ h2 {
 
 .splash-row {
     margin-top: 40px;
-    border: 2px solid #e1e1e1;
+    border: 1px solid #e1e1e1;
+    border-bottom: 0px;
     background: #fff;
-    margin-left: 0px;
-    margin-right: 0px;
 }
 
 .splash-row .spaced-out {
@@ -114,13 +113,91 @@ footer .spaced-out {
   position: fixed;
 }
 
-/*
-header.sticky {
-  font-size: 24px;
-  line-height: 48px;
-  height: 48px;
-  background: #efc47D;
-  text-align: left;
-  padding-left: 20px;
+.table-striped-foldout>tbody>tr:nth-of-type(even) {
+    background-color: #fff;
 }
-*/
+
+.table-striped-foldout>tbody>tr:nth-of-type(4n+1) {
+    background-color: #dee1ff;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #dee1ff;
+}
+
+.table-striped-foldout>tbody>tr:nth-of-type(4n+3) {
+    background-color: #f6f6fa;
+}
+
+.table-striped>tbody>tr:nth-of-type(even) {
+    background-color: #f6f6fa;
+}
+
+.main-content {
+    background: #fff;
+    padding: 5px;
+    border: 1px solid #e1e1e1;
+}
+
+.sort-ascent:after, .st-sort-ascent:after {
+    content: "\f077";
+    font-family: FontAwesome;
+    padding: 0 6px;
+    font-size: large;
+}
+
+.sort-descent:after, .st-sort-descent:after {
+    content: "\f078";
+    font-family: FontAwesome;
+    padding: 0 6px;
+    font-size: large;
+}
+
+.btn-ai-grey {
+    background: #e1e1e1;
+    color: #000;
+}
+
+.btn-ai-grey.btn-sm {
+    border-radius: 12px;
+}
+
+.btn-ai-grey .fa {
+    color: #db411e;
+}
+
+.btn-ai-grey .ai-lead {
+    color: #0070c9;
+    font-family: 'Oswald', sans-serif;
+}
+
+.ai-gradient {
+    color: #f5d43c;
+    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+}
+
+.panel-ai {
+    border-color: #ddd;
+}
+
+.panel-ai .panel-heading {
+    color: #f5d43c;
+    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.panel-ai .panel-heading a {
+    color: #fff;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.open>a {
+    background-image: none;
+    background: #0070c9;
+}

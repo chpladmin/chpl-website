@@ -27,6 +27,7 @@
       <p>Last modified Date: {{ vm.product.lastModifiedDate | date }}</p>
     </div>
   </div>
+  <div class="main-content">
   <div class="product-productSummary panel">
     <div class="panel-body">
       <div class="row">
@@ -76,7 +77,7 @@
         <div class="col-sm-12">
           <h3>Surveillance</h3>
           <ai-surveillance
-             surveillance="vm.surveillance"
+             surveillances="vm.surveillances"
              certified-product-id="vm.product.id"
              certification-results="vm.product.certificationResults"
              is-admin="false"></ai-surveillance>
@@ -110,5 +111,6 @@
               count-cqms="{{ vm.product.countCqms }}"
               report-file-location="{{ vm.product.reportFileLocation }}">
     </ai-certs>
+  </div>
   </div>
 </div>

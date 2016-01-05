@@ -1,14 +1,5 @@
 <section class="row">
-  <div class="col-sm-3 admin-nav">
-    <div class="panel panel-default">
-      <ul class="nav nav-pills nav-stacked">
-        <li ng-class="{'active': vm.workType === 'upload'}" ng-if="vm.isAcbAdmin || vm.isAcbStaff"><a href="" class="" ng-click="vm.doWork('upload')">Upload Certified Products</a></li>
-        <li ng-class="{'active': vm.workType === 'confirm'}" ng-if="vm.isAcbAdmin || vm.isAcbStaff"><a href="" class="" ng-click="vm.doWork('confirm')">Confirm Pending Product<span ng-if="vm.uploadingCps.length > 1">s</span> <span class="badge">{{ vm.uploadingCps.length }}</span> </a></li>
-        <li ng-class="{'active': vm.workType === 'manage'}"><a href="" class="" ng-click="vm.doWork('manage')">Manage Developers &amp; Products</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="col-sm-9 admin-inner-tab">
+  <div class="col-sm-12 admin-inner-tab main-content">
     <div class="row admin-label-spaced lead text-center" ng-if="vm.workType==='merge'">
       <ul class="list-inline">
         <li><strong>What would you like to merge?</strong></li>
@@ -154,7 +145,7 @@
       <div class="row" ng-if="vm.activeVendor !== ''">
         <div class="col-sm-12">
           <h3 ng-if="vm.inspectingCp">System developer information</h3>
-          <div class="panel panel-default panel-admin">
+          <div class="panel panel-ai panel-admin">
             <div class="panel-heading">
               <span>Select a developer</span>
               <span class="pull-right">
@@ -163,7 +154,7 @@
               </span>
             </div>
             <div class="panel-body">
-              <div>{{ vm.activeVendor.name }} <em class="pull-right">Last modified date: {{ vm.activeVendor.lastModifiedDate | date }}</em></div>
+              <div>{{ vm.activeVendor.name }} (Developer Code: {{ vm.activeVendor.vendorCode }}) <em class="pull-right">Last modified date: {{ vm.activeVendor.lastModifiedDate | date }}</em></div>
               <div>
                 Line 1: {{ vm.activeVendor.address.line1 }}<br />
                 Line 2: {{ vm.activeVendor.address.line2 }}<br />
@@ -224,7 +215,7 @@
 
       <div class="row" ng-if="vm.activeProduct !== ''">
         <div class="col-sm-12">
-          <div class="panel panel-default panel-admin">
+          <div class="panel panel-ai panel-admin">
             <div class="panel-heading">
               <span>Select a product</span>
               <span class="pull-right">
@@ -284,7 +275,7 @@
       </div> <!-- end select version -->
       <div class="row" ng-if="vm.activeVersion !== ''">
         <div class="col-sm-12">
-          <div class="panel panel-default panel-admin">
+          <div class="panel panel-ai panel-admin">
             <div class="panel-heading">
               <span>Select a version</span>
               <span class="pull-right">
@@ -324,7 +315,7 @@
             </div>
           </div>
           <div ng-if="vm.activeCP !== ''">
-            <div class="panel panel-default panel-admin">
+            <div class="panel panel-ai panel-admin">
               <div class="panel-heading">
                 <span>Select a Certified Product</span>
                 <span class="pull-right">
@@ -351,7 +342,7 @@
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLabId }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.activeCP.visibleOnChpl }} <br />
                   <strong>Surveillance:</strong> <ai-surveillance
-                                                    surveillance="vm.activeCP.surveillance"
+                                                    surveillances="vm.activeCP.surveillances"
                                                     certified-product-id="vm.activeCP.id"
                                                     certification-results="vm.activeCP.certificationResults"
                                                     is-admin="true"></ai-surveillance><br />

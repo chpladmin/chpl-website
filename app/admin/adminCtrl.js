@@ -2,43 +2,94 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$log', 'commonService', 'authService', function ($log, commonService, authService) {
-            var self = this;
+        .controller('AdminController', ['$log', '$filter', 'authService', 'commonService', function ($log, $filter, authService, commonService) {
+            var vm = this;
 
-            self.handlers = [];
-            self.refresh = refresh;
-            self.triggerRefresh = triggerRefresh;
+            vm.changeAcb = changeAcb
+            vm.changeScreen = changeScreen;
+            vm.changeSubNav = changeSubNav;
+            vm.getUsername = getUsername;
+            vm.isAcbAdmin = isAcbAdmin;
+            vm.isAuthed = isAuthed;
+            vm.isChplAdmin = isChplAdmin;
+            vm.refresh = refresh;
+            vm.triggerRefresh = triggerRefresh;
+
+            activate();
+
+            ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                vm.handlers = [];
+                vm.navState = {
+                    screen: 'dpManagement',
+                    reports: 'cp'
+                };
+                if (!vm.isChplAdmin()) {
+                    vm.navState.dpManagement = 'upload';
+                } else {
+                    vm.navState.dpManagement = 'manage';
+                }
+                commonService.getAcbs()
+                    .then (function (data) {
+                        vm.acbs = $filter('orderBy')(data.acbs,'name');
+                        vm.activeAcb = vm.acbs[0];
+                        vm.navState.acbManagement = vm.activeAcb;
+                    });
+            }
+
+            function changeAcb (acb) {
+                vm.activeAcb = acb;
+                vm.navState.workType = 'acb';
+                vm.changeSubNav(acb);
+            }
+
+            function changeScreen (screen) {
+                if (screen === 'acbManagement') {
+                commonService.getAcbs()
+                    .then (function (data) {
+                        vm.acbs = $filter('orderBy')(data.acbs,'name');
+                        vm.activeAcb = vm.acbs[0];
+                        vm.navState.acbManagement = vm.activeAcb;
+                    });
+                }
+                vm.navState.screen = screen;
+            }
+
+            function changeSubNav (subScreen) {
+                vm.navState[vm.navState.screen] = subScreen;
+            }
+
+            function getUsername () {
+                return authService.getUsername();
+            }
+
+            function isAcbAdmin () {
+                return authService.isAcbAdmin();
+            }
+
+            function isAuthed () {
+                return authService.isAuthed();
+            }
+
+            function isChplAdmin () {
+                return authService.isChplAdmin();
+            }
 
             function refresh () {
-                angular.forEach(self.handlers, function (handler) {
+                angular.forEach(vm.handlers, function (handler) {
                     handler();
                 });
             }
 
             function triggerRefresh (handler) {
-                self.handlers.push(handler);
+                vm.handlers.push(handler);
                 var removeHandler = function () {
-                    self.handlers = self.handlers.filter(function (aHandler) {
+                    vm.handlers = vm.handlers.filter(function (aHandler) {
                         return aHandler !== handler;
                     });
                 };
                 return removeHandler;
             }
-
-            self.isAuthed = function () {
-                return authService.isAuthed ? authService.isAuthed() : false
-            };
-
-            self.isChplAdmin = function () {
-                return authService.isChplAdmin();
-            };
-
-            self.isAcbAdmin = function () {
-                return authService.isAcbAdmin();
-            };
-
-            self.getUsername = function () {
-                return authService.getUsername();
-            };
         }]);
 })();
