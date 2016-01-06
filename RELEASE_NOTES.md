@@ -1,5 +1,14 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### New or updated features
+* Improved search/filter navigation / usability
+
+### Bugs fixed
+* 'Results per page' display fixed
+
 ## Version 0.1.0
 _5 January 2016_
 

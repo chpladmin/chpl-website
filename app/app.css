@@ -30,9 +30,9 @@ header {
 
 @media (max-width: 767px) {
     .navbar-nav > li > a {
-    line-height: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;}
+        line-height: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;}
 }
 
 @media (min-width: 767px) {
@@ -97,27 +97,27 @@ footer .spaced-out {
 }
 
 #loading-bar .bar {
-  background: #ffdd3c;
- }
+    background: #ffdd3c;
+}
 
 #loading-bar .peg {
-  -moz-box-shadow: #ffdd3c 1px 0 6px 1px;
-  -ms-box-shadow: #ffdd3c 1px 0 6px 1px;
-  -webkit-box-shadow: #ffdd3c 1px 0 6px 1px;
-  box-shadow: #ffdd3c 1px 0 6px 1px;
+    -moz-box-shadow: #ffdd3c 1px 0 6px 1px;
+    -ms-box-shadow: #ffdd3c 1px 0 6px 1px;
+    -webkit-box-shadow: #ffdd3c 1px 0 6px 1px;
+    box-shadow: #ffdd3c 1px 0 6px 1px;
 }
 
 #loading-bar-spinner .spinner-icon {
-  border:10px solid transparent;
-  border-top-color:  #ffdd3c;
-  border-left-color: #ffdd3c;
-  top: 50%;
-  left: 50%;
-  margin-top: -64px;
-  margin-left: -64px;
-  width:128px;
-  height: 128px;
-  position: fixed;
+    border:10px solid transparent;
+    border-top-color:  #ffdd3c;
+    border-left-color: #ffdd3c;
+    top: 50%;
+    left: 50%;
+    margin-top: -64px;
+    margin-left: -64px;
+    width:128px;
+    height: 128px;
+    position: fixed;
 }
 
 .table-striped-foldout>tbody>tr:nth-of-type(even) {
@@ -147,18 +147,18 @@ footer .spaced-out {
 }
 
 .sort-ascent:after, .st-sort-ascent:after {
-    content: "\f077";
-    font-family: FontAwesome;
-    padding: 0 6px;
-    font-size: large;
-}
+                        content: "\f077";
+                        font-family: FontAwesome;
+                        padding: 0 6px;
+                        font-size: large;
+                    }
 
 .sort-descent:after, .st-sort-descent:after {
-    content: "\f078";
-    font-family: FontAwesome;
-    padding: 0 6px;
-    font-size: large;
-}
+                         content: "\f078";
+                         font-family: FontAwesome;
+                         padding: 0 6px;
+                         font-size: large;
+                     }
 
 .btn-ai-grey {
     background: #e1e1e1;
@@ -177,6 +177,7 @@ footer .spaced-out {
     color: #0070c9;
     font-family: 'Oswald', sans-serif;
 }
+
 .ai-panel>.panel-heading {
     color: #f5d43c;
     background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
@@ -207,7 +208,7 @@ footer .spaced-out {
 }
 
 .panel-ai {
-  border-color: #337ab7;
+    border-color: #337ab7;
 }
 
 .panel-ai > .panel-heading {
@@ -218,7 +219,7 @@ footer .spaced-out {
     background: linear-gradient(#0070c9, #004378); /* Standard syntax */
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-  border-color: #337ab7;
+    border-color: #337ab7;
 }
 
 .panel-ai > .panel-heading a {
@@ -230,11 +231,11 @@ footer .spaced-out {
 }
 
 .panel-ai > .panel-heading + .panel-collapse > .panel-body {
-  border-top-color: #337ab7;
+    border-top-color: #337ab7;
 }
 
 .panel-ai > .panel-heading .badge {
-  color: #f5d43c;
+    color: #f5d43c;
     background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
@@ -242,5 +243,78 @@ footer .spaced-out {
 }
 
 .panel-ai > .panel-footer + .panel-collapse > .panel-body {
-  border-bottom-color: #337ab7;
+    border-bottom-color: #337ab7;
+}
+
+.btn-ai {
+    color: #f5d43c;
+    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+}
+.btn-ai:focus,
+.btn-ai.focus {
+    color: #f5d43c;
+    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#0057b0, #001045); /* Standard syntax */
+}
+.btn-ai:hover {
+    color: #f5d43c;
+    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#0057b0, #001045); /* Standard syntax */
+}
+.btn-ai:active,
+.btn-ai.active,
+.open > .dropdown-toggle.btn-ai {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-ai:active:hover,
+.btn-ai.active:hover,
+.open > .dropdown-toggle.btn-ai:hover,
+.btn-ai:active:focus,
+.btn-ai.active:focus,
+.open > .dropdown-toggle.btn-ai:focus,
+.btn-ai:active.focus,
+.btn-ai.active.focus,
+.open > .dropdown-toggle.btn-ai.focus {
+  color: #333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}
+.btn-ai:active,
+.btn-ai.active,
+.open > .dropdown-toggle.btn-ai {
+  background-image: none;
+}
+.btn-ai.disabled,
+.btn-ai[disabled],
+fieldset[disabled] .btn-ai,
+.btn-ai.disabled:hover,
+.btn-ai[disabled]:hover,
+fieldset[disabled] .btn-ai:hover,
+.btn-ai.disabled:focus,
+.btn-ai[disabled]:focus,
+fieldset[disabled] .btn-ai:focus,
+.btn-ai.disabled.focus,
+.btn-ai[disabled].focus,
+fieldset[disabled] .btn-ai.focus,
+.btn-ai.disabled:active,
+.btn-ai[disabled]:active,
+fieldset[disabled] .btn-ai:active,
+.btn-ai.disabled.active,
+.btn-ai[disabled].active,
+fieldset[disabled] .btn-ai.active {
+  background-color: #fff;
+  border-color: #ccc;
+}
+.btn-ai .badge {
+  color: #fff;
+  background-color: #333;
 }
