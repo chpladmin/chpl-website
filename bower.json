@@ -18,6 +18,7 @@
     "angular-route": "~1.4.7",
     "angular-sanitize": "~1.4.7",
     "angular-smart-table": "~2.1.0",
+    "angular-swagger-ui": "~0.2.7",
     "angulartics": "~0.20.0",
     "angulartics-ga": "angulartics-google-analytics#~0.1.1",
     "bootstrap": "~3.3.5",
@@ -27,7 +28,7 @@
     "ng-idle": "~1.1.0",
     "ngstorage": "~0.3.7"
   },
-    "resolutions": {
-        "angular": "~1.4.7"
-    }
+  "resolutions": {
+    "angular": "~1.4.7"
+  }
 }
