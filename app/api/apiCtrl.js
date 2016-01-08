@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.api')
-        .controller('ApiController', ['$scope', '$log', 'apiService', 'API', function($scope, $log, apiService, API) {
+        .controller('ApiController', ['$scope', '$log', '$location', 'apiService', 'API', function($scope, $log, $location, apiService, API) {
             var vm = this;
 
             activate();
@@ -21,8 +21,11 @@
                     });
 
                 vm.API = API;
-
-                vm.swaggerUrl = vm.API + '/api-docs';
+                if (vm.API === '/rest') {
+                    vm.swaggerUrl = $location.absUrl().split('#')[0] + 'rest/api-docs';
+                } else {
+                    vm.swaggerUrl = vm.API + '/api-docs';
+                }
             }
         }]);
 })();
