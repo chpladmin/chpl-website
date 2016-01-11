@@ -9,6 +9,7 @@ _Date TBD_
 
 ### Bugs fixed
 * 'Results per page' display fixed
+* Fixed bug with 'cancel' login directive
 
 ## Version 0.1.0
 _5 January 2016_
