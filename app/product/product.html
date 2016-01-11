@@ -1,91 +1,131 @@
-<div ng-controller="ProductController as vm">
+<div class="container">
   <script type="text/ng-template" id="myModalContent.html">
     <div role="modal" aria-labeled-by="modificationSummaryLabel">
       <div class="modal-header">
         <button type="button" class="close pull-right" aria-label="Close" ng-click="modalVm.ok()"><span aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title" id="modificationSummaryLabel">Last Modification Summary</h4>
-    </div>
-    <div class="modal-body">
-      <ul>
-        <li ng-repeat="item in modalVm.items | orderBy: 'date': true">
-          Actor: {{ item.actor }}, did: {{ item.action }}, on {{ item.date | date }}
-        </li>
-      </ul>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" ng-click="modalVm.ok()">OK</button>
-    </div>
+        <h4 class="modal-title" id="modificationSummaryLabel">Last Modification Summary</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li ng-repeat="item in modalVm.items | orderBy: 'date': true">
+            Actor: {{ item.actor }}, did: {{ item.action }}, on {{ item.date | date }}
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="modalVm.ok()">OK</button>
+      </div>
     </div>
   </script>
-  <div class="row product-productHeader">
+  <div class="row text-bottom">
     <div class="col-sm-8">
       <h1>{{ vm.product.product.name }}</h1>
     </div>
     <div class="col-sm-4 text-right">
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
-      <p>Certification Date: {{ vm.product.certificationDate | date }}</p>
-      <p>Last modified Date: {{ vm.product.lastModifiedDate | date }}</p>
     </div>
   </div>
   <div class="main-content">
-  <div class="product-productSummary panel">
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-sm-4">
-          <h3>Developer</h3>
+    <div class="row">
+      <div class="col-sm-4">
+        <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
+      </div>
+      <div class="col-sm-8 text-right">
+        <p>Certification Date: {{ vm.product.certificationDate | date }} | Last modified Date: {{ vm.product.lastModifiedDate | date }}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="product-element">
+          <h3 class="product-heading">Developer</h3>
           <p>{{ vm.product.vendor.name }}</p>
         </div>
-        <div class="col-sm-4">
-          <h3>Version</h3>
+        <div class="product-element">
+          <h3 class="product-heading">Version</h3>
           <p>{{ vm.product.product.version }}</p>
         </div>
-        <div class="col-sm-4">
-          <h3>Certification Edition</h3>
+        <div class="product-element">
+          <h3 class="product-heading">Certification Edition</h3>
           <p>{{ vm.product.certificationEdition.name }}</p>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-4">
-          <h3>Certifying Body</h3>
+        <div class="product-element">
+          <h3 class="product-heading">Certifying Body</h3>
           <p>{{ vm.product.certifyingBody.name }}</p>
         </div>
-        <div class="col-sm-4">
-          <h3>Classification</h3>
-          <p>{{ vm.product.classificationType.name }}</p>
-        </div>
-        <div class="col-sm-4">
-          <h3>Practice Type</h3>
+        <div class="product-element">
+          <h3 class="product-heading">Practice Type</h3>
           <p>{{ vm.product.practiceType.name }}</p>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-4">
-          <h3>Quality Management System Attestation</h3>
-          <p>{{ vm.product.qualityManagementSystemAtt }}</p>
+        <div class="product-element">
+          <h3 class="product-heading">Quality Management System Attestation</h3>
+          <p ng-if="vm.product.qualityManagementSystemAtt">True</p>
+          <p ng-if="!vm.product.qualityManagementSystemAtt">False</p>
         </div>
-        <div class="col-sm-4">
-          <h3>Privacy and Security Attestation</h3>
+        <div class="product-element">
+          <h3 class="product-heading">Privacy and Security Attestation</h3>
           <p ng-if="vm.product.privacyAttestation">True</p>
           <p ng-if="!vm.product.privacyAttestation">False</p>
         </div>
-        <div class="col-sm-4">
-          <h3>Other ACB</h3>
-          <p>{{ vm.product.otherAcb }}</p>
+        <div class="product-element">
+          <h3 class="product-heading">Transparency Attestation</h3>
+          <p ng-if="vm.product.transparencyAttestation">True</p>
+          <p ng-if="!vm.product.transparencyAttestation">False</p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">Inherited Certification Status</h3>
+          <p>{{ vm.product.ics ? vm.product.ics : '---' }} </p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">QMS Testing</h3>
+          <p ng-if="vm.product.qmsTesting">True</p>
+          <p ng-if="!vm.product.qmsTesting">False</p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">SED Testing</h3>
+          <p ng-if="vm.product.sedTesting">True</p>
+          <p ng-if="!vm.product.sedTesting">False</p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">Other ACB</h3>
+          <p>{{ vm.product.otherAcb ? vm.product.otherAcb : '---' }}</p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">Terms of Use</h3>
+          <p ng-if="vm.product.termsOfUse"><a href="{{ vm.product.termsOfUse }}">{{ vm.product.termsOfUse }}</a></p>
+          <p ng-if="!vm.product.termsOfUse">---</p>
+        </div>
+        <div class="product-element">
+          <h3 class="product-heading">API Documentation</h3>
+          <p ng-if="vm.product.apiDocumentation"><a href="{{ vm.product.apiDocumentation }}">{{ vm.product.apiDocumentation }}</a></p>
+          <p ng-if="!vm.product.apiDocumentation">---</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <h3>Surveillance</h3>
+      <div class="col-sm-8">
+        <div class="product-element">
+          <h3 class="product-heading">Required Additional Software</h3>
+          <p><ai-additional-software additional-software="vm.product.additionalSoftware" is-editing="false"></ai-additional-software></p>
+        </div>
+        <ai-certs certs="vm.product.certificationResults"
+                  cqms="vm.product.cqmResults"
+                  count-certs="{{ vm.product.countCerts }}"
+                  count-cqms="{{ vm.product.countCqms }}"
+                  report-file-location="{{ vm.product.reportFileLocation }}">
+        </ai-certs>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="product-element">
+          <h3 class="product-heading">Surveillance</h3>
           <ai-surveillance
              surveillances="vm.surveillances"
              certified-product-id="vm.product.id"
              certification-results="vm.product.certificationResults"
              is-admin="false"></ai-surveillance>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <h3>Corrective Action Plan</h3>
+        <div class="product-element">
+          <h3 class="product-heading">Corrective Action Plan</h3>
           <ai-corrective-action-plan
              corrective-action-plan="vm.correctiveActionPlan"
              certified-product-id="vm.product.id"
@@ -94,23 +134,5 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-10">
-      <h3>Required Additional Software</h3>
-      <ai-additional-software additional-software="vm.product.additionalSoftware" is-editing="false"></ai-additional-software>
-    </div>
-    <div class="col-sm-2 text-right">
-      <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
-    </div>
-  </div>
-  <div class="product-productAccordion">
-    <ai-certs certs="vm.product.certificationResults"
-              cqms="vm.product.cqmResults"
-              count-certs="{{ vm.product.countCerts }}"
-              count-cqms="{{ vm.product.countCqms }}"
-              report-file-location="{{ vm.product.reportFileLocation }}">
-    </ai-certs>
-  </div>
   </div>
 </div>

@@ -6,10 +6,12 @@
             var vm = this;
 
             vm.changeAcb = changeAcb
+            vm.changeAtl = changeAtl
             vm.changeScreen = changeScreen;
             vm.changeSubNav = changeSubNav;
             vm.getUsername = getUsername;
             vm.isAcbAdmin = isAcbAdmin;
+            vm.isAtlAdmin = isAtlAdmin;
             vm.isAuthed = isAuthed;
             vm.isChplAdmin = isChplAdmin;
             vm.refresh = refresh;
@@ -22,19 +24,29 @@
             function activate () {
                 vm.handlers = [];
                 vm.navState = {
-                    screen: 'dpManagement',
                     reports: 'cp'
                 };
+                if (vm.isChplAdmin() || vm.isAcbAdmin()) {
+                    vm.navState.screen = 'dpManagement';
+                } else if (vm.isAtlAdmin()) {
+                    vm.navState.screen = 'atlManagement';
+                }
                 if (!vm.isChplAdmin()) {
                     vm.navState.dpManagement = 'upload';
                 } else {
                     vm.navState.dpManagement = 'manage';
                 }
-                commonService.getAcbs()
+                commonService.getAcbs(true)
                     .then (function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
+                    });
+                commonService.getAtls(true)
+                    .then (function (data) {
+                        vm.atls = $filter('orderBy')(data.atls,'name');
+                        vm.activeAtl = vm.atls[0];
+                        vm.navState.atlManagement = vm.activeAtl;
                     });
             }
 
@@ -44,13 +56,27 @@
                 vm.changeSubNav(acb);
             }
 
+            function changeAtl (atl) {
+                vm.activeAtl = atl;
+                vm.navState.workType = 'atl';
+                vm.changeSubNav(atl);
+            }
+
             function changeScreen (screen) {
                 if (screen === 'acbManagement') {
-                commonService.getAcbs()
+                commonService.getAcbs(true)
                     .then (function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
+                    });
+                }
+                if (screen === 'atlManagement') {
+                commonService.getAtls(true)
+                    .then (function (data) {
+                        vm.atls = $filter('orderBy')(data.atls,'name');
+                        vm.activeAtl = vm.atls[0];
+                        vm.navState.atlManagement = vm.activeAtl;
                     });
                 }
                 vm.navState.screen = screen;
@@ -66,6 +92,10 @@
 
             function isAcbAdmin () {
                 return authService.isAcbAdmin();
+            }
+
+            function isAtlAdmin () {
+                return authService.isAtlAdmin();
             }
 
             function isAuthed () {

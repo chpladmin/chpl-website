@@ -4,16 +4,28 @@
     angular.module('app.admin')
         .controller('UserManagementController', ['commonService', '$log', '$modal', '$scope', function (commonService, $log, $modal, $scope) {
             var vm = this;
-            vm.acbId = $scope.acbId;
-            vm.roles = ['ROLE_ACB_ADMIN','ROLE_ACB_STAFF'];
-            if (!vm.acbId) {
-                vm.roles.push('ROLE_ADMIN');
-            }
 
             vm.updateUser = updateUser;
             vm.inviteUser = inviteUser;
 
+            activate();
+
             ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                vm.roles = [];
+                if (!vm.acbId && !vm.atlId) {
+                    vm.roles.push('ROLE_ADMIN');
+                }
+                if (!vm.atlId) {
+                    vm.roles.push('ROLE_ACB_ADMIN');
+                    vm.roles.push('ROLE_ACB_STAFF');
+                }
+                if (!vm.acbId) {
+                    vm.roles.push('ROLE_ATL_ADMIN');
+                    vm.roles.push('ROLE_ATL_STAFF');
+                }
+            }
 
             function updateUser (user) {
                 vm.modalInstance = $modal.open({
@@ -26,7 +38,8 @@
                     resolve: {
                         user: function () { return user; },
                         action: function () { return 'edit'; },
-                        acbId: function () { return vm.acbId; }
+                        acbId: function () { return vm.acbId; },
+                        atlId: function () { return vm.atlId; }
                     }
                 });
                 vm.modalInstance.result.then(function (result) {
@@ -49,7 +62,8 @@
                     resolve: {
                         user: function () { return {}; },
                         action: function () { return 'invite'; },
-                        acbId: function () { return vm.acbId; }
+                        acbId: function () { return vm.acbId; },
+                        atlId: function () { return vm.atlId; }
                     }
                 });
                 vm.modalInstance.result.then(function (result) {
@@ -64,6 +78,13 @@
             vm.freshenUsers = function () {
                 if (vm.acbId) {
                     commonService.getUsersAtAcb(vm.acbId)
+                        .then(function (response) {
+                            vm.users = response.users;
+                        }, function (error) {
+                            $log.debug(error);
+                        });
+                } else if (vm.atlId) {
+                    commonService.getUsersAtAtl(vm.atlId)
                         .then(function (response) {
                             vm.users = response.users;
                         }, function (error) {
@@ -85,8 +106,10 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/userManagement.html',
-                scope: {
-                    acbId: '@acbId'
+                scope: {},
+                bindToController: {
+                    acbId: '@',
+                    atlId: '@'
                 },
                 controllerAs: 'vm',
                 controller: 'UserManagementController'

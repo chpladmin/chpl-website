@@ -22,7 +22,6 @@
                 mockCommonService.certs = ['Cert 1', 'Cert 2'];
                 mockCommonService.cqms = ['CQM 1', 'CQM 2'];
                 mockCommonService.editions = ['Edition 1', 'Edition 2'];
-                mockCommonService.classifications = ['Classification 1', 'Classification 2'];
                 mockCommonService.practices = ['Practice 1', 'Practice 2'];
                 mockCommonService.certBodies = ['CB 1', 'CB 2'];
                 mockCommonService.certificationStatuses = ['Active', 'Retired'];
@@ -61,12 +60,6 @@
                 mockCommonService.getEditions = function () {
                     var defer = $q.defer();
                     defer.resolve(this.editions);
-                    return defer.promise;
-                };
-
-                mockCommonService.getClassifications = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.classifications);
                     return defer.promise;
                 };
 

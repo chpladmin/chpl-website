@@ -3,69 +3,60 @@
 
     angular.module('app.common')
         .controller('CertsController', ['$scope', '$log', function ($scope, $log) {
-            var self = this;
-            self.certs = [];
-            self.cqms = [];
-            self.builtCqms = [];
-            $scope.$watch('certs', function (newCerts) {
-                if (newCerts) {
-                    self.certs = newCerts;
-                }}, true);
+            var vm = this;
+
+            vm.addIds = addIds;
+            vm.saveEdits = saveEdits;
+            vm.showPanel = showPanel;
+
+            activate();
+
+            ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                vm.editCqms = {};
+                vm.addIds();
+                vm.panelShown = '';
+            }
+
             $scope.$watch('cqms', function (newCqms) {
                 if (newCqms) {
-                    self.cqms = newCqms;
-                    self.addIds();
+                    vm.cqms = newCqms;
+                    vm.addIds();
                 }}, true);
-            $scope.$watch('countCerts', function (newCount) {
-                if (newCount) {
-                    self.countCerts = newCount;
-                }}, true);
-            $scope.$watch('countCqms', function (newCount) {
-                if (newCount) {
-                    self.countCqms = newCount;
-                }}, true);
-            $scope.$watch('reportFileLocation', function (location) {
-                if (location) {
-                    self.reportFileLocation = location;
-                }}, true);
-            $scope.$watch('isEditing', function (editing) {
-                if (editing !== null) {
-                    self.isEditing = editing;
-                }}, true);
-            self.viewAllCerts = $scope.viewAllCerts;
-            self.editMode = $scope.editMode;
 
-            self.editCqms = {};
-
-            self.addIds = function () {
-                for (var i = 0; i < self.cqms.length; i++) {
-                    self.cqms[i].id = i;
+            function addIds () {
+                if (vm.cqms) {
+                    for (var i = 0; i < vm.cqms.length; i++) {
+                        vm.cqms[i].id = i;
+                    }
                 }
-            };
+            }
 
-            self.saveEdits = function () {
-                self.countCerts = 0;
-                self.countCqms = 0;
+            function saveEdits () {
+                vm.countCerts = 0;
+                vm.countCqms = 0;
 
-                for (var i = 0; i < self.certs.length; i++) {
-                    if (self.certs[i].success) {
-                        self.countCerts += 1;
+                for (var i = 0; i < vm.certs.length; i++) {
+                    if (vm.certs[i].success) {
+                        vm.countCerts += 1;
                     }
                 }
 
-                for (var i = 0; i < self.cqms.length; i++) {
-                    if (self.cqms[i].success || self.cqms[i].successVersions.length > 0) {
-                        self.countCqms += 1;
+                for (var i = 0; i < vm.cqms.length; i++) {
+                    if (vm.cqms[i].success || vm.cqms[i].successVersions.length > 0) {
+                        vm.countCqms += 1;
                     }
                 }
-            };
+            }
 
-            self.cancelEdits = function () {
-                $log.info('cancelling edits');
-                self.certs = angular.copy($scope.certs);
-                self.cqms = angular.copy($scope.cqms);
-                self.isEditing = !self.isEditing
-            };
+            function showPanel (panel) {
+                if (vm.panelShown === panel) {
+                    vm.panelShown = '';
+                } else {
+                    vm.panelShown = panel
+                }
+            }
         }]);
 
     angular.module('app.common')
@@ -74,20 +65,22 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'common/components/certs.html',
-                scope: { certs: '=certs',
-                         cqms: '=cqms',
-                         viewAllCerts: '=defaultAll',
-                         countCerts: '@countCerts',
-                         countCqms: '@countCqms',
-                         editMode: '=editMode',
-                         reportFileLocation: '@',
-                         isEditing: '=',
-                         save: '&'
-                       },
+                bindToController: {
+                    certs: '=',
+                    cqms: '=',
+                    viewAllCerts: '=defaultAll',
+                    countCerts: '@',
+                    countCqms: '@',
+                    editMode: '=',
+                    reportFileLocation: '@',
+                    isEditing: '=',
+                    save: '&'
+                },
+                scope: {},
                 controllerAs: 'vm',
                 controller: 'CertsController',
                 link: function (scope, element, attr, ctrl) {
-                    var handler = scope.save({
+                    var handler = ctrl.save({
                         handler: function () {
                             ctrl.saveEdits();
                         }

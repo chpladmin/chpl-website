@@ -44,6 +44,10 @@
       <label for="vendorWebsite">Website</label>
       <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="vendorWebsite"></input>
     </div>
+    <div class="form-group" ng-if="vm.developer.transparencyAttestation !== null">
+      <label for="vendorTransparency">Transparency Attestation</label>
+      <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="vendorTransparency"></input>
+    </div>
   </div>
   <div class="modal-footer">
     <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Developer</button>

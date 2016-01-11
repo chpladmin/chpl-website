@@ -1,14 +1,20 @@
 # Release Notes
 
-## Next Version
-_Date TBD_
+## Version 0.1.0
+_5 January 2016_
 
 New or updated features
 * Added 'api-key usage' reporting
 * Updated search workflow / filtering
 * Improved Admin UI
-* Added download XML file (limited length)
+* Added download XML file
 * Integrated with 'Search by HAS CAP' API update
+* Removed display of Modular/Complete EHR
+* Added UI to manage / view ATLs
+* Updated UI for Product Details
+* Updated UI for Search screen
+* Connected to ATL APIs
+* Integrated ICS/QMS/SED CP upload processing
 
 Bugs fixed
 * Logging in shows appropriately visible options

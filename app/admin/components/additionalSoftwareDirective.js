@@ -17,15 +17,15 @@
                     vm.additionalSoftware = newSw;
                     vm.format();
                 }}, true);
-            $scope.$watch('isEditing', function (editing) {
-                if (editing) {
-                    vm.isEditing = editing;
-                }}, true);
 
             function format () {
                 var newString = "";
                 for (var i = 0; i < vm.additionalSoftware.length; i++) {
-                    newString += vm.additionalSoftware[i].name + " (Version: " + vm.additionalSoftware[i].version + "); ";
+                    newString += vm.additionalSoftware[i].name + " (Version: " + vm.additionalSoftware[i].version + ")";
+                    if (vm.additionalSoftware[i].chplId) {
+                        newString += " (CHPL Id: " + vm.additionalSoftware[i].chplId + ")";
+                    }
+                    newString += "; ";
                 }
                 newString = newString.substring(0, newString.length - 2);
                 vm.prettyPrint = newString;
@@ -40,10 +40,13 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        software: function () { return { name: '', version: '' }; }
+                        software: function () { return { name: '', version: '', chplId: '' }; }
                     }
                 });
                 vm.editModalInstance.result.then(function (result) {
+                    if (!vm.additionalSoftware) {
+                        vm.additionalSoftware = [];
+                    }
                     vm.additionalSoftware.push(result);
                     vm.format();
                 }, function (result) {
@@ -84,10 +87,11 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/additionalSoftware.html',
-                scope: {
+                bindToController: {
                     additionalSoftware: '=',
                     isEditing: '='
                 },
+                scope: {},
                 controllerAs: 'vm',
                 controller: 'AdditionalSoftwareController'
             };

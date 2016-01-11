@@ -1,10 +1,12 @@
 ;(function () {
     'use strict';
 
-    angular.module('app.overview', [])
+    angular.module('app.overview', ['ngRoute'])
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/overview', {
-                templateUrl: 'overview/overview.html'
+                templateUrl: 'overview/overview.html',
+                controller: 'OverviewController',
+                controllerAs: 'vm'
             });
         }]);
 })();

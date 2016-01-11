@@ -20,7 +20,7 @@
           <li ng-class="{'active': nav.isActive('/listing') }"><a href="#/listing">Product Listing</a></li>
           <li ng-class="{'active': nav.isActive('/api') }"><a href="#/api">API</a></li>
 
-          <li class="dropdown">
+          <li ng-class="{'active': nav.isActive('/admin') }" class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ nav.getUsername() }} <span class="fa fa-caret-down"></span></a>
             <ul class="dropdown-menu">
               <li ng-if="nav.isAuthed()"><a href="#/admin">CHPL Administration</a></li>

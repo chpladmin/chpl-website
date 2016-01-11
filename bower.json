@@ -26,5 +26,8 @@
     "jquery": "~2.1.4",
     "ng-idle": "~1.1.0",
     "ngstorage": "~0.3.7"
-  }
+  },
+    "resolutions": {
+        "angular": "~1.4.7"
+    }
 }

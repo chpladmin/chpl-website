@@ -86,6 +86,28 @@
       </div>
     </div>
 
+    <div class="row" ng-if="vm.workType === 'atl'">
+      <div class="col-sm-12">
+        <h3>ATL Activity</h3>
+        <table st-table="vm.displayedATLs" st-safe-src="vm.searchedATLs" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="name" st-skip-natural="true">ATL</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+	        <tr ng-repeat="activity in vm.displayedATLs">
+		      <td class="">{{ activity.name }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="row" ng-if="vm.workType === 'users' && vm.isChplAdmin">
       <div class="col-sm-12">
         <h3>User Activity</h3>
