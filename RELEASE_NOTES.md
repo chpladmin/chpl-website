@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New or updated features
 * Improved search/filter navigation / usability
+* Incorporated SwaggerUI API documentation
 
 ### Bugs fixed
 * 'Results per page' display fixed
