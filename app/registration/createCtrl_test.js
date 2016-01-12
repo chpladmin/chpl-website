@@ -15,13 +15,15 @@
 
         describe('controller', function () {
 
-            var commonService, mockCommonService, scope, ctrl, $log, $location;
+            var authService, commonService, mockAuthService, mockCommonService, scope, ctrl, $log, $location;
             var validUser, authorizeUser;
 
             beforeEach(function () {
+                mockAuthService = {};
                 mockCommonService = {};
                 module('app.registration', function($provide) {
                     $provide.value('commonService', mockCommonService);
+                    $provide.value('authService', mockAuthService);
                 });
 
                 inject(function($q) {
@@ -36,17 +38,20 @@
                         defer.resolve();
                         return defer.promise;
                     };
+                    mockAuthService.isAuthed = function () { return $q.when(true); };
                 });
             });
 
-            beforeEach(inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_) {
+            beforeEach(inject(function (_$log_, $rootScope, $controller, _commonService_, _authService_, _$location_) {
                 $log = _$log_;
                 scope = $rootScope.$new();
+                authService = _authService_;
                 commonService = _commonService_;
                 $location = _$location_;
                 ctrl = $controller('CreateController', {
                     $scope: scope,
                     $routeParams: {hash: 'fakehash'},
+                    authService: authService,
                     commonService: commonService,
                     $location: $location
                 });
@@ -95,6 +100,10 @@
                 expect(commonService.createInvitedUser).not.toHaveBeenCalled();
             });
 
+            it('should have an isAuthed function', function () {
+                expect(ctrl.isAuthed).toBeDefined();
+            });
+
             xit('should call createUser if the details are complete', function () {
                 spyOn(commonService, 'createInvitedUser');
                 ctrl.userDetails = validUser;
@@ -112,6 +121,7 @@
 
             xit('should call "authorizeUser" if the user tries to log in', function () {
                 ctrl.authorizeDetails = authorizeUser;
+                $log.debug(ctrl.authorizeDetails.hash);
                 spyOn(commonService, 'authorizeUser');
                 ctrl.authorizeUser();
                 expect(commonService.authorizeUser).toHaveBeenCalledWith({subjectName: 'subjectName', password: 'password', hash: 'hash'});
