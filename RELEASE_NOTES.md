@@ -6,6 +6,9 @@ _Date TBD_
 ### New or updated features
 * Already logged in user with link for additional permissions gets new permissions automatically when link followed
 
+### Bugs fixed
+* Removed Swagger validator badge
+
 ## Version 0.1.1
 _12 January 2016_
 
