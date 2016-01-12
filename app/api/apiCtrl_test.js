@@ -3,46 +3,17 @@
 
     describe('app.api', function () {
 
-        var apiService, scope, ctrl, $log;
+        var scope, ctrl, $log;
 
         beforeEach(function () {
-            var mockApiService = {};
-            module('app.api', function($provide) {
-                $provide.value('apiService', mockApiService);
-            });
-
-            inject(function($q) {
-                mockApiService.apiCalls = [
-                    { name: 'List Users', endpoint: '/auth/list_users' },
-                    { name: 'Authenticate', endpoint: '/auth/authenticate' }
-                ];
-
-                mockApiService.apiEntities = [
-                    { name: 'List Users', endpoint: '/auth/list_users' },
-                    { name: 'Authenticate', endpoint: '/auth/authenticate' }
-                ];
-
-                mockApiService.getApiCalls = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.apiCalls);
-                    return defer.promise;
-                };
-
-                mockApiService.getApiEntities = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.apiEntities);
-                    return defer.promise;
-                };
-            });
+            module('app.api');
         });
 
-        beforeEach(inject(function (_$log_, $rootScope, $controller, _apiService_) {
+        beforeEach(inject(function (_$log_, $rootScope, $controller) {
             $log = _$log_;
             scope = $rootScope.$new();
-            apiService = _apiService_;
             ctrl = $controller('ApiController', {
-                $scope: scope,
-                apiService: apiService
+                $scope: scope
             });
             scope.$digest();
         }));
@@ -58,8 +29,8 @@
                 expect(ctrl).toBeDefined();
             });
 
-            it('should load api endpoints at start', function () {
-                expect(ctrl.apiCalls.length).toBeGreaterThan(0);
+            it('should load have a swaggerUI at start', function () {
+                expect(ctrl.swaggerUrl.length).toBeGreaterThan(0);
             });
         });
     });
