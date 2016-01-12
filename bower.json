@@ -1,9 +1,9 @@
 {
   "name": "chpl-website",
   "description": "Website for viewing Open Data CHPL",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "homepage": "tbd",
-  "license": "tbd",
+  "license": "https://github.com/chpladmin/chpl-api/blob/staging/LICENSE",
   "private": true,
   "dependencies": {
     "angular": "~1.4.7",

@@ -1,7 +1,7 @@
 # Release Notes
 
 ## Next version
-_Date TBD_
+_12 January 2016_
 
 ### New or updated features
 * Improved search/filter navigation / usability
