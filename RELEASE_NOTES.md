@@ -8,6 +8,8 @@ _Date TBD_
 
 ### Bugs fixed
 * Removed Swagger validator badge
+* Enter submits login/change password action
+* Login form stays open on un/pw or email error
 
 ## Version 0.1.1
 _12 January 2016_
