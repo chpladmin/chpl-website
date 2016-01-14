@@ -11,8 +11,9 @@
             vm.activate = activate;
             vm.save = save;
             vm.cancel = cancel;
-            vm.deleteAcb = deleteAcb;
             vm.create = create;
+            vm.deleteAcb = deleteAcb;
+            vm.undeleteAcb = undeleteAcb;
 
             vm.activate();
 
@@ -41,6 +42,19 @@
                 $modalInstance.dismiss('cancelled');
             }
 
+            function create () {
+                commonService.createACB(vm.acb)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            $modalInstance.close(response);
+                        } else {
+                            $modalInstance.dismiss('An error occurred');
+                        }
+                    },function (error) {
+                        $modalInstance.dismiss(error.data.error);
+                    });
+            }
+
             function deleteAcb () {
                 commonService.deleteACB(vm.acb.id)
                     .then(function (response) {
@@ -54,8 +68,8 @@
                     });
             }
 
-            function create () {
-                commonService.createACB(vm.acb)
+            function undeleteAcb () {
+                commonService.undeleteACB(vm.acb.id)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $modalInstance.close(response);

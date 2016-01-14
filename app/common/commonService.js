@@ -218,8 +218,16 @@
                 return self.postApiCall('/acbs/' + acbId + '/delete', {})
             };
 
+            self.undeleteACB = function (acbId) {
+                return self.postApiCall('/acbs/' + acbId + '/undelete', {})
+            };
+
             self.deleteATL = function (atlId) {
                 return self.postApiCall('/atls/' + atlId + '/delete', {})
+            };
+
+            self.undeleteATL = function (atlId) {
+                return self.postApiCall('/atls/' + atlId + '/undelete', {})
             };
 
             self.getUsers = function () {
