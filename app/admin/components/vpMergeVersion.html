@@ -8,7 +8,7 @@
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="mergeVersionLabel">Merge Versions</h4>
   </div>
-  <div class="modal-body" ng-form="mergeForm">
+  <div class="modal-body" ng-form="vm.mergeForm">
     <div class="row">
       <div class="col-md-6">
         <h4>Merge selected versions</h4>
@@ -25,13 +25,14 @@
         <h4>To form this one</h4>
         <div class="form-group">
           <label for="versionName">Version <span class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" required ng-model="vm.version.version" id="versionName"></input>
+          <input class="input-sm form-control" type="text" required ng-model="vm.version.version" id="versionName" name="versionName"></input>
+          <div class="text-danger" ng-if="vm.mergeForm.versionName.$touched && vm.mergeForm.versionName.$error.required">Version is required</div>
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="mergeForm.$invalid" class="btn btn-success btn-block"
+    <button ng-disabled="vm.mergeForm.$invalid" class="btn btn-success btn-block"
             confirm="Are you sure you wish to merge these versions? This action may not be undone."
             confirm-ok="Yes"
             confirm-cancel="No"
