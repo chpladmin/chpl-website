@@ -10,10 +10,13 @@
     <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ACB</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
-    <div class="form-group">
+    <div class="form-group" ng-if="vm.isChplAdmin">
       <label for="acbName">ACB Name <span class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" required ng-model="vm.acb.name" id="acbName" name="acbName"></input>
       <div class="text-danger" ng-if="vm.editForm.acbName.$touched && vm.editForm.acbName.$error.required">ACB Name is required</div>
+    </div>
+    <div ng-if="!vm.isChplAdmin">
+      <strong>ACB Name: </strong>{{ vm.acb.name }}
     </div>
     <div>
       <strong>ACB Code: </strong>{{ vm.acb.acbCode }}

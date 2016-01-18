@@ -6,7 +6,8 @@ _Date TBD_
 ### New or updated features
 * Already logged in user with link for additional permissions gets new permissions automatically when link followed
 * Added helpful error messages for form validation
-* Integrated with ACB&ATL 'undelete' feature
+* Integrated with ACB & ATL 'undelete' feature
+* Removed ability to change ACB & ATL name for any but ROLE_ADMIN
 
 ### Bugs fixed
 * Removed Swagger validator badge
