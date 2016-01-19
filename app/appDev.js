@@ -1,7 +1,6 @@
 ;(function () {
     'use strict';
 
-
     angular.module('appDev', ['app', 'ngMockE2E'])
         .run(function ($httpBackend) {
             $httpBackend.whenGET(/^api\/.*/).passThrough();

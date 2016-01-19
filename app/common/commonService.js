@@ -182,12 +182,14 @@
                 return self.postApiCall('/certified_products/update', cpObject);
             };
 
-            self.getAcbs = function (editable) {
-                return self.simpleApiCall('/acbs/?editable=' + editable);
+            self.getAcbs = function (editable, deleted) {
+                if (deleted === undefined) { deleted = false; }
+                return self.simpleApiCall('/acbs/?editable=' + editable + '&showDeleted=' + deleted);
             };
 
-            self.getAtls = function (editable) {
-                return self.simpleApiCall('/atls/?editable=' + editable);
+            self.getAtls = function (editable, deleted) {
+                if (deleted === undefined) { deleted = false; }
+                return self.simpleApiCall('/atls/?editable=' + editable + '&showDeleted=' + deleted);
             };
 
             self.getUsersAtAcb = function (acbId) {

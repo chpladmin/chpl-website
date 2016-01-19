@@ -71,11 +71,18 @@
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
     <button class="btn btn-danger btn-block"
-            ng-if="vm.action === 'edit' && vm.isChplAdmin"
-            confirm="Are you sure you wish to delete this ATL? This action is permanent."
+            ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.atl.deleted"
+            confirm="Are you sure you wish to delete this ATL?"
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.deleteAtl()"><i class="fa fa-trash-o"></i> Delete ATL</button>
+    <button class="btn btn-danger btn-block"
+            ng-if="vm.action === 'edit' && vm.isChplAdmin && vm.atl.deleted"
+            confirm="Are you sure you wish to restore this ATL?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.undeleteAtl()"><i class="fa fa-undo"></i> Restore ATL</button>
   </div>
 </div>
