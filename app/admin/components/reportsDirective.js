@@ -285,13 +285,17 @@
                     var activity = {date: data[i].activityDate};
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
-                        activity.action = 'Update:<ul>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        vm.analyzeAddress(activity, data[i]);
-                        activity.action += '</ul>';
+                        if (data[i].originalData.deleted !== data[i].newData.deleted) {
+                            activity.action = data[i].newData.deleted ? 'ACB was deleted' : 'ACB was restored';
+                        } else {
+                            activity.action = 'Update:<ul>';
+                            change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                            if (change) activity.action += '<li>' + change + '</li>';
+                            change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                            if (change) activity.action += '<li>' + change + '</li>';
+                            vm.analyzeAddress(activity, data[i]);
+                            activity.action += '</ul>';
+                        }
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'ACB');
                     }
@@ -308,13 +312,17 @@
                     var activity = {date: data[i].activityDate};
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
-                        activity.action = 'Update:<ul>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        vm.analyzeAddress(activity, data[i]);
-                        activity.action += '</ul>';
+                        if (data[i].originalData.deleted !== data[i].newData.deleted) {
+                            activity.action = data[i].newData.deleted ? 'ATL was deleted' : 'ATL was restored';
+                        } else {
+                            activity.action = 'Update:<ul>';
+                            change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                            if (change) activity.action += '<li>' + change + '</li>';
+                            change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                            if (change) activity.action += '<li>' + change + '</li>';
+                            vm.analyzeAddress(activity, data[i]);
+                            activity.action += '</ul>';
+                        }
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'ATL');
                     }

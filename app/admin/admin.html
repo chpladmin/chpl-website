@@ -26,10 +26,10 @@
             <li ng-class="{'active': vm.navState.screen === 'userManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('userManagement')">User Management</a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'acbManagement'}" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" class="" ng-click="vm.changeScreen('acbManagement')">ACB Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.acbManagement === acb}" ng-if="vm.navState.screen === 'acbManagement'" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" class="" ng-click="vm.changeAcb(acb)">{{ acb.name }}<span ng-if="acb.deleted" class="pull-right">&lt;deleted&gt;</span></a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.acbManagement === acb}" ng-if="vm.navState.screen === 'acbManagement'" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" class="" ng-click="vm.changeAcb(acb)">{{ acb.name }}<span ng-if="acb.isDeleted" class="pull-right">&lt;deleted&gt;</span></a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'atlManagement'}" ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="" class="" ng-click="vm.changeScreen('atlManagement')">ATL Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.atlManagement === atl}" ng-if="vm.navState.screen === 'atlManagement'" ng-repeat="atl in vm.atls | orderBy:'name' track by atl.id"><a href="" class="" ng-click="vm.changeAtl(atl)">{{ atl.name }}<span ng-if="atl.deleted" class="pull-right">&lt;deleted&gt;</span></a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.atlManagement === atl}" ng-if="vm.navState.screen === 'atlManagement'" ng-repeat="atl in vm.atls | orderBy:'name' track by atl.id"><a href="" class="" ng-click="vm.changeAtl(atl)">{{ atl.name }}<span ng-if="atl.isDeleted" class="pull-right">&lt;deleted&gt;</span></a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'reports'}"><a href="" class="" ng-click="vm.changeScreen('reports')">Reports</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('cp')">Certified Products</a></li>
