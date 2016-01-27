@@ -95,6 +95,14 @@ apis.entities.acb = {
     website:'string',
     address: apis.entities.address
 };
+apis.entities.announcement = {
+	id:'long',
+	title:'string',
+	text:'string',
+	startDate:'string',
+	endDate:'string',
+	isPublic:'string'
+};
 apis.entities.vendor = {
     vendorId:'long',
     name:'string',
@@ -268,7 +276,13 @@ apis.entities.certifiedProduct = {
 
 apis.endpoints = [
     {
-        category: 'ACBs',
+    	category: 'Announcements',
+    	description: 'List all announcements',
+    	request: '/announcements/',
+    	requestType: 'GET',
+    	response: [apis.entities.announcements]
+    },{
+    	category: 'ACBs',
         description: 'List all registered ACBs, or optional ACB by given ID',
         request: '/acbs/(:id)',
         requestType: 'GET',

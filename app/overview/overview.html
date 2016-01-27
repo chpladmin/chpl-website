@@ -1,4 +1,29 @@
 <div class="container">
+  
+  <div class="row">
+    <div class="col-md-12">
+      <h1>
+      	Announcements
+      </h1>
+    </div>
+  </div>
+  
+  <div class="container">
+  	<table class="table table-striped">
+  		<thead>
+          <tr>
+            <th>Title</th>
+            <th>Announcement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="announcement in vm.announcements">
+            <td>{{ announcement.title }}</td>
+            <td>{{ announcement.text }}</td>
+        </tbody>
+  	</table>
+  </div>
+  
   <div class="row">
     <div class="col-md-12">
       <h1>CHPL Overview</h1>
