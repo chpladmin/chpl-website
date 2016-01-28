@@ -8,6 +8,7 @@ _Date TBD_
 * Added helpful error messages for form validation
 * Integrated with ACB & ATL 'undelete' feature
 * Removed ability to change ACB & ATL name for any but ROLE_ADMIN
+* Integrated with Announcements API feature
 
 ### Bugs fixed
 * Removed Swagger validator badge

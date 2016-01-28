@@ -163,7 +163,7 @@
             };
 
             self.getAnnouncementActivity = function (nDays) {
-                return self.postApiCall('/activity/announcements?lastNDays=' + nDays);
+                return self.simpleApiCall('/activity/announcements?lastNDays=' + nDays);
             };
 
             self.getUploadingCps = function () {
