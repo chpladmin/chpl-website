@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'vendors', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, vendors, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, commonService) {
+        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'developers', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, developers, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, commonService) {
             var vm = this;
 
             vm.activate = activate;
@@ -37,7 +37,7 @@
                 vm.cp = angular.copy(inspectingCp);
                 vm.stage = 'dev';
 
-                vm.vendors = vendors;
+                vm.developers = developers;
                 vm.developerChoice = 'choose';
                 vm.loadDev();
 
@@ -62,8 +62,8 @@
             }
 
             function loadDev () {
-                if (vm.cp.vendor.id) {
-                    commonService.getVendor(vm.cp.vendor.id)
+                if (vm.cp.developer.id) {
+                    commonService.getDeveloper(vm.cp.developer.id)
                         .then(function (result) {
                             vm.developer = result;
                         });
@@ -71,32 +71,32 @@
             }
 
             function selectInspectingDeveloper() {
-                vm.cp.vendor.id = vm.developerSelect.vendorId;
+                vm.cp.developer.id = vm.developerSelect.developerId;
                 vm.loadDev();
             }
 
             function saveInspectingDeveloper() {
                 var dev = {
-                    vendor: {
-                        name: vm.cp.vendor.name,
-                        website: vm.cp.vendor.website,
-                        address: vm.cp.vendorAddress,
-                        vendorId: vm.cp.vendor.id
+                    developer: {
+                        name: vm.cp.developer.name,
+                        website: vm.cp.developer.website,
+                        address: vm.cp.developerAddress,
+                        developerId: vm.cp.developer.id
                     },
-                    vendorIds: [vm.cp.vendor.id]
+                    developerIds: [vm.cp.developer.id]
                 };
-                if (!dev.vendor.address.country) {
-                    dev.vendor.address.country = 'USA';
+                if (!dev.developer.address.country) {
+                    dev.developer.address.country = 'USA';
                 }
-                commonService.updateVendor(dev)
+                commonService.updateDeveloper(dev)
                     .then(function () {
                         vm.loadDev();
                     });
             }
 
             function loadPrd () {
-                if (vm.developer && vm.developer.vendorId) {
-                    commonService.getProductsByVendor(vm.developer.vendorId)
+                if (vm.developer && vm.developer.developerId) {
+                    commonService.getProductsByDeveloper(vm.developer.developerId)
                         .then(function (result) {
                             vm.products = result.products;
                         });
@@ -123,7 +123,7 @@
                         productId: vm.cp.product.id
                     },
                     productIds: [vm.cp.product.id],
-                    newVendorId: vm.cp.vendor.id
+                    newDeveloperId: vm.cp.developer.id
                 };
                 commonService.updateProduct(prd)
                     .then(function () {
@@ -243,7 +243,7 @@
             function isDisabled () {
                 switch (vm.stage) {
                 case 'dev':
-                    if (vm.developerChoice === 'choose' && !vm.cp.vendor.id)
+                    if (vm.developerChoice === 'choose' && !vm.cp.developer.id)
                         return true;
                     return false;
                     break;

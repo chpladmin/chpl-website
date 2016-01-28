@@ -18,8 +18,8 @@
         var commonService, $httpBackend;
 
         var mock = {};
-        mock.aProduct = {id: 123, product: 'product 1', vendor: 'vendor 1'};
-        mock.vendors = ['Vendor 1', 'Vendor 2'];
+        mock.aProduct = {id: 123, product: 'product 1', developer: 'developer 1'};
+        mock.developers = ['Developer 1', 'Developer 2'];
         mock.products = ['Product 1', 'Product 2'];
         mock.certs = ['Cert 1', 'Cert 2'];
         mock.cqms = ['CQM 1', 'CQM 2'];
@@ -38,8 +38,8 @@
             $httpBackend.whenGET('http://ainq.com/list_cqms').respond(mock.cqms);
             $httpBackend.whenGET(/data\/certification_editions/).respond(mock.editions);
             $httpBackend.whenGET(/data\/practice_types/).respond(mock.practices);
-            $httpBackend.whenGET(/vendors\//).respond(mock.vendors);
-            $httpBackend.whenGET(/list_vendor_names/).respond(mock.vendors);
+            $httpBackend.whenGET(/developers\//).respond(mock.developers);
+            $httpBackend.whenGET(/list_developer_names/).respond(mock.developers);
             $httpBackend.whenGET(/list_product_names/).respond(mock.products);
             $httpBackend.whenGET(/data\/certification_bodies/).respond(mock.certBodies);
             $httpBackend.whenGET('http://ainq.com/list_filterCerts').respond(mock.certs.concat(mock.cqms));
@@ -57,9 +57,9 @@
             $httpBackend.flush();
         });
 
-        it('should return vendors', function () {
-            commonService.getVendors().then(function(response) {
-                expect(response).toEqual(mock.vendors);
+        it('should return developers', function () {
+            commonService.getDevelopers().then(function(response) {
+                expect(response).toEqual(mock.developers);
             });
             $httpBackend.flush();
         });

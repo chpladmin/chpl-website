@@ -17,7 +17,7 @@
             module('app/admin/components/vpManagement.html');
 
             inject(function($q) {
-                mockCommonService.vendors = {vendors: ['Vendor 1', 'Vendor 2']};
+                mockCommonService.developers = {developers: ['Developer 1', 'Developer 2']};
                 mockCommonService.products = [{name: 'Prod', lastModifiedDate: '2014-05-02'}, 'Product 2'];
                 mockCommonService.certs = ['Cert 1', 'Cert 2'];
                 mockCommonService.cqms = ['CQM 1', 'CQM 2'];
@@ -27,9 +27,9 @@
                 mockCommonService.certificationStatuses = ['Active', 'Retired'];
                 mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
 
-                mockCommonService.getVendors = function () {
+                mockCommonService.getDevelopers = function () {
                     var defer = $q.defer();
-                    defer.resolve(this.vendors);
+                    defer.resolve(this.developers);
                     return defer.promise;
                 };
 
@@ -45,13 +45,13 @@
                     return defer.promise;
                 };
 
-                mockCommonService.getProductsByVendor = function (vendorId) {
+                mockCommonService.getProductsByDeveloper = function (developerId) {
                     var defer = $q.defer();
                     defer.resolve(this.products);
                     return defer.promise;
                 };
 
-                mockCommonService.getVersionsByProduct = function (vendorId) {
+                mockCommonService.getVersionsByProduct = function (developerId) {
                     var defer = $q.defer();
                     defer.resolve(this.products);
                     return defer.promise;
@@ -135,7 +135,7 @@
                     return defer.promise;
                 });
 
-                spyOn(commonService, 'getProductsByVendor').and.callFake(function () {
+                spyOn(commonService, 'getProductsByDeveloper').and.callFake(function () {
                     var defer = $q.defer();
                     defer.resolve({});
                     return defer.promise;
@@ -159,30 +159,30 @@
                 expect(ctrl).toBeDefined();
             });
 
-            it('should have vendors at load', function () {
-                expect(ctrl.vendors.length).toBe(2);
+            it('should have developers at load', function () {
+                expect(ctrl.developers.length).toBe(2);
             });
 
-            it('shouldn\'t do anything if no vendor is selected', function () {
-                ctrl.selectVendor();
-                expect(ctrl.activeVendor).toBe('');
-                expect(ctrl.mergeVendor).toBeUndefined();
+            it('shouldn\'t do anything if no developer is selected', function () {
+                ctrl.selectDeveloper();
+                expect(ctrl.activeDeveloper).toBe('');
+                expect(ctrl.mergeDeveloper).toBeUndefined();
             });
 
-            it('should set the activeVendor and call getProductsByVendor if there\'s one selected vendor', function () {
-                expect(ctrl.activeVendor).toEqual('');
-                ctrl.vendorSelect = [{vendor: 'vendor1'}];
-                ctrl.selectVendor();
-                expect(ctrl.activeVendor).toEqual([{vendor: 'vendor1'}]);
-                expect(commonService.getProductsByVendor).toHaveBeenCalled();
+            it('should set the activeDeveloper and call getProductsByDeveloper if there\'s one selected developer', function () {
+                expect(ctrl.activeDeveloper).toEqual('');
+                ctrl.developerSelect = [{developer: 'developer1'}];
+                ctrl.selectDeveloper();
+                expect(ctrl.activeDeveloper).toEqual([{developer: 'developer1'}]);
+                expect(commonService.getProductsByDeveloper).toHaveBeenCalled();
             });
 
-            it('should create a mergeVendor if more than one vendor is selected', function () {
-                expect(ctrl.mergeVendor).toBeUndefined();
-                ctrl.vendorSelect = {vendor: 'vendor1'};
-                ctrl.mergingVendors = [{vendor: 'vendor2'}];
-                ctrl.selectVendor();
-                expect(ctrl.mergeVendor).toEqual({vendor: 'vendor1'});
+            it('should create a mergeDeveloper if more than one developer is selected', function () {
+                expect(ctrl.mergeDeveloper).toBeUndefined();
+                ctrl.developerSelect = {developer: 'developer1'};
+                ctrl.mergingDevelopers = [{developer: 'developer2'}];
+                ctrl.selectDeveloper();
+                expect(ctrl.mergeDeveloper).toEqual({developer: 'developer1'});
             });
 
             it('shouldn\'t do anything if no product is selected', function () {
@@ -194,19 +194,19 @@
             it('should set the activeProduct and call getVersionsByProduct if there\'s one selected product', function () {
                 expect(ctrl.activeProduct).toBe('');
                 ctrl.productSelect = {product: 'product1'};
-                ctrl.activeVendor = {vendorId: '123'};
+                ctrl.activeDeveloper = {developerId: '123'};
                 ctrl.selectProduct();
-                expect(ctrl.activeProduct).toEqual({product: 'product1', vendorId: '123'});
+                expect(ctrl.activeProduct).toEqual({product: 'product1', developerId: '123'});
                 expect(commonService.getVersionsByProduct).toHaveBeenCalled();
             });
 
             it('should create a mergeProduct if more than one product is selected', function () {
                 expect(ctrl.mergeProduct).toBeUndefined();
-                ctrl.activeVendor = {vendorId: '123'};
+                ctrl.activeDeveloper = {developerId: '123'};
                 ctrl.productSelect = {product: 'product1'};
                 ctrl.mergingProducts = [{product: 'product1'}, {product: 'product2'}];
                 ctrl.selectProduct();
-                expect(ctrl.mergeProduct).toEqual({product: 'product1', vendorId: '123'});
+                expect(ctrl.mergeProduct).toEqual({product: 'product1', developerId: '123'});
             });
         });
     });

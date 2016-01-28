@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ;(function () {
     'use strict';
 

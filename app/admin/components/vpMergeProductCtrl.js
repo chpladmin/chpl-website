@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('MergeProductController', ['$modalInstance', 'products', 'vendorId', 'commonService', function ($modalInstance, products, vendorId, commonService) {
+        .controller('MergeProductController', ['$modalInstance', 'products', 'developerId', 'commonService', function ($modalInstance, products, developerId, commonService) {
             var vm = this;
 
             vm.activate = activate;
@@ -19,7 +19,7 @@
                 delete vm.product.lastModifiedDate;
                 delete vm.product.productId;
                 vm.updateProduct = {productIds: [],
-                                    newVendorId: vendorId};
+                                    newDeveloperId: developerId};
                 for (var i = 0; i < vm.products.length; i++) {
                     vm.updateProduct.productIds.push(vm.products[i].productId);
                 }

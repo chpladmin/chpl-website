@@ -18,10 +18,10 @@
                 vm.developers = angular.copy(developers);
                 vm.developer = angular.copy(vm.developers[0]);
                 delete vm.developer.lastModifiedDate;
-                delete vm.developer.vendorId;
-                vm.updateDeveloper = {vendorIds: []};
+                delete vm.developer.developerId;
+                vm.updateDeveloper = {developerIds: []};
                 for (var i = 0; i < vm.developers.length; i++) {
-                    vm.updateDeveloper.vendorIds.push(vm.developers[i].vendorId);
+                    vm.updateDeveloper.developerIds.push(vm.developers[i].developerId);
                 }
             }
 
@@ -30,8 +30,8 @@
             }
 
             function save () {
-                vm.updateDeveloper.vendor = vm.developer;
-                commonService.updateVendor(vm.updateDeveloper)
+                vm.updateDeveloper.developer = vm.developer;
+                commonService.updateDeveloper(vm.updateDeveloper)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $modalInstance.close(response);

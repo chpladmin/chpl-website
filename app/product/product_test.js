@@ -40,7 +40,7 @@
 
             inject(function($q) {
                 mockCommonService.products = [
-                    { vendor: 'Vendor', product: 'Product' }
+                    { developer: 'Developer', product: 'Product' }
                 ];
 
                 mockCommonService.getProduct = function (pid) {

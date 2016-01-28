@@ -37,12 +37,12 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6" ng-if="!vm.cp.vendor.id">
+        <div class="col-sm-6" ng-if="!vm.cp.developer.id">
           <h3>System developer information</h3>
           <p>This is the developer information that will be added to the Open Data CHPL database.</p>
           <div class="panel panel-ai">
             <div class="panel-heading">
-              Developer <strong>"{{ vm.cp.vendor.name }}"</strong> not found
+              Developer <strong>"{{ vm.cp.developer.name }}"</strong> not found
             </div>
             <div class="panel-body">
               <div class="row admin-label-spaced">
@@ -55,7 +55,7 @@
                 <label for="developerSelect" class="control-label admin-label-spaced">Select a developer</label>
                 <select ng-model="vm.developerSelect"
                         id="developerSelect" class="input-sm form-control"
-                        ng-options="v.name for v in vm.vendors | orderBy: 'name'">
+                        ng-options="v.name for v in vm.developers | orderBy: 'name'">
                 </select>
                 <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingDeveloper()">Select Developer</button></p>
               </div>
@@ -65,7 +65,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6" ng-if="vm.cp.vendor.id">
+        <div class="col-sm-6" ng-if="vm.cp.developer.id">
           <h3>System developer information</h3>
           <p>This is the developer information that will be added to the Open Data CHPL database.</p>
           <div class="panel panel-ai">
@@ -73,7 +73,7 @@
               {{ vm.developer.name }}
             </div>
             <div class="panel-body">
-              Developer Code: {{ vm.developer.vendorCode }}<br />
+              Developer Code: {{ vm.developer.developerCode }}<br />
               Line 1: {{ vm.developer.address.line1 }}<br />
               Line 2: {{ vm.developer.address.line2 }}<br />
               City: {{ vm.developer.address.city }}<br />
@@ -88,21 +88,21 @@
         </div>
         <div class="col-sm-6">
           <h3>Uploaded developer information</h3>
-          <p>This is the developer information from your Upload File.<span ng-if="vm.cp.vendor.id"> To add this information to the Open Data CHPL database, click the Save as Developer Information button below.</span></p>
+          <p>This is the developer information from your Upload File.<span ng-if="vm.cp.developer.id"> To add this information to the Open Data CHPL database, click the Save as Developer Information button below.</span></p>
           <div class="panel panel-ai">
             <div class="panel-heading">
-              {{ vm.cp.vendor.name }}
+              {{ vm.cp.developer.name }}
             </div>
             <div class="panel-body">
-              Line 1: {{ vm.cp.vendorAddress.line1 }}<br />
-              Line 2: {{ vm.cp.vendorAddress.line2 }}<br />
-              City: {{ vm.cp.vendorAddress.city }}<br />
-              State: {{ vm.cp.vendorAddress.state }}<br />
-              Zip: {{ vm.cp.vendorAddress.zipcode }}<br />
-              Country: {{ vm.cp.vendorAddress.country }}<br />
-              Website: {{ vm.cp.vendor.website }}<br />
+              Line 1: {{ vm.cp.developerAddress.line1 }}<br />
+              Line 2: {{ vm.cp.developerAddress.line2 }}<br />
+              City: {{ vm.cp.developerAddress.city }}<br />
+              State: {{ vm.cp.developerAddress.state }}<br />
+              Zip: {{ vm.cp.developerAddress.zipcode }}<br />
+              Country: {{ vm.cp.developerAddress.country }}<br />
+              Website: {{ vm.cp.developer.website }}<br />
             </div>
-            <div class="panel-footer" ng-if="vm.cp.vendor.id">
+            <div class="panel-footer" ng-if="vm.cp.developer.id">
               <button class="btn btn-default btn-block" ng-click="vm.saveInspectingDeveloper()">Save as Developer Information</button>
             </div>
           </div>

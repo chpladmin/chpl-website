@@ -13,11 +13,11 @@
 
             inject(function($q) {
                 mockCommonService.products = [
-                    { vendor: 'Vendor', product: 'Product' }
+                    { developer: 'Developer', product: 'Product' }
                 ];
                 mockCommonService.searchResult = {data: {recordCount: 2, results: [{}, {}]}};
                 mockCommonService.options = {};
-                mockCommonService.options.vendorNames = ['Vendor 1', 'Vendor 2'];
+                mockCommonService.options.developerNames = ['Developer 1', 'Developer 2'];
                 mockCommonService.options.productNames = ['Product 1', 'Product 2'];
                 mockCommonService.options.certificationCriterionNumbers = ['Cert 1', 'Cert 2'];
                 mockCommonService.options.cqmCriterionNumbers = ['CQM 1', 'CQM 2'];
@@ -149,7 +149,7 @@
             expect(scope.searchResults).toEqual([]);
             expect(scope.displayedResults).toEqual([]);
             expect(ctrl.query.searchTerm).toBeUndefined();
-            expect(ctrl.query.vendor).toBeUndefined();
+            expect(ctrl.query.developer).toBeUndefined();
             expect(ctrl.query.product).toBeUndefined();
             expect(ctrl.query.version).toBeUndefined();
             expect(ctrl.query.certificationCriteria).toBeUndefined();
