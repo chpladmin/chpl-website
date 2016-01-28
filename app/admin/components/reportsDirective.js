@@ -15,6 +15,7 @@
             vm.refreshProduct = refreshProduct;
             vm.refreshAcb = refreshAcb;
             vm.refreshAtl = refreshAtl;
+            vm.refreshAnnouncement = refreshAnnouncement;
             vm.refreshUser = refreshUser;
             vm.refreshApi = refreshApi;
             vm.refreshVisitors = refreshVisitors;
@@ -37,6 +38,7 @@
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshAtl();
+                vm.refreshAnnouncement();
                 vm.refreshUser();
                 vm.refreshApi();
             }
@@ -78,6 +80,14 @@
                     .then(function (data) {
                         vm.searchedATLs = vm.interpretAtls(data);
                         vm.displayedATLs = [].concat(vm.searchedATLs);
+                    });
+            }
+
+            function refreshAnnouncement () {
+                commonService.getAnnouncementActivity(7)
+                    .then(function (data) {
+                        vm.searchedAnnouncements = vm.interpretAnnouncements(data);
+                        vm.displayedAnnouncements = [].concat(vm.searchedAnnouncements);
                     });
             }
 
@@ -328,6 +338,11 @@
                     }
                     ret.push(activity);
                 }
+                return ret;
+            };
+
+            vm.interpretAnnouncements = function (data) {
+                var ret = data;
                 return ret;
             };
 

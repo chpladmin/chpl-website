@@ -1,58 +1,34 @@
-<div class="row">
-	<div class="col-md-12">
-		<h1>
-			Current Announcements
-			<button class="btn btn-default" ng-click="vm.create()">Add Announcement</button>
-		</h1>
-		<div ng-if="vm.admin" class="main-content">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Announcement</th>
-						<th>Start Date</th>
-						<th>End Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="announcementCurrent in vm.announcementsCurrent">
-						<td>{{ announcementCurrent.title }}</td>
-						<td>{{ announcementCurrent.text }}</td>
-						<td>{{ announcementCurrent.startDate | date: 'MM/dd/yyyy'}}</td>
-						<td>{{ announcementCurrent.endDate | date: 'MM/dd/yyyy'}}</td>
-						<td><button class="btn btn-default btn-block" ng-click="vm.edit(announcementCurrent,$index,true)">Edit</button></td>
-						<td><button class="btn btn-danger btn-block" ng-click="vm.deleteAnnouncement(announcementCurrent,$index,true)">
-							<i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<h1>
-			Future Announcements
-			<button class="btn btn-default" ng-click="vm.create()">Add Announcement</button>
-		</h1>
-		<div ng-if="vm.admin" class="main-content">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Title</th>
-						<th>Announcement</th>
-						<th>Start Date</th>
-						<th>End Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="announcementFuture in vm.announcementsFuture">
-						<td>{{ announcementFuture.title }}</td>
-						<td>{{ announcementFuture.text }}</td>
-						<td>{{ announcementFuture.startDate | date: 'MM/dd/yyyy'}}</td>
-						<td>{{ announcementFuture.endDate | date: 'MM/dd/yyyy'}}</td>
-						<td><button class="btn btn-default btn-block" ng-click="vm.edit(announcementFuture,$index,false)">Edit</button></td>
-						<td><button class="btn btn-danger btn-block" ng-click="vm.deleteAnnouncement(announcementFuture,$index,false)">
-							<i class="fa fa-trash-o"></i> Delete</button></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
+<section class="row">
+  <div class="col-md-12 main-content">
+    <h2>Announcement Management</h2>
+	<table class="table table-striped">
+	  <thead>
+		<tr>
+		  <th>Title</th>
+		  <th>Announcement</th>
+		  <th>Start Date</th>
+		  <th>End Date</th>
+          <th>Public</th>
+          <th><span class="sr-only">Action</span></th>
+		</tr>
+	  </thead>
+      <tfoot>
+        <tr>
+          <td colspan="6">
+            <button class="btn btn-default" ng-click="vm.create()">Add Announcement</button>
+          </td>
+        </tr>
+      </tfoot>
+	  <tbody>
+		<tr ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
+		  <td>{{ announcement.title }}</td>
+		  <td>{{ announcement.text }}</td>
+		  <td>{{ announcement.startDate | date: 'MM/dd/yyyy'}}</td>
+		  <td>{{ announcement.endDate | date: 'MM/dd/yyyy'}}</td>
+		  <td><span ng-if="announcement.isPublic">Yes</span><span ng-if="!announcement.isPublic">No</span></td>
+		  <td><button class="btn btn-default btn-block" ng-click="vm.edit(announcement,$index,true)">Edit</button></td>
+		</tr>
+	  </tbody>
+	</table>
+  </div>
+</section>

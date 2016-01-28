@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.overview')
-        .controller('OverviewController', ['$log', 'commonService', 'authService', function ($log, commonService, authService) {
+        .controller('OverviewController', ['$log', 'commonService', function ($log, commonService) {
             var vm = this;
 
             vm.loadAcbs = loadAcbs;
@@ -17,11 +17,10 @@
                 vm.loadAcbs();
                 vm.loadAtls();
                 vm.loadAnnouncements();
-                vm.isChplAdmin = authService.isChplAdmin();
             }
-            
+
             function loadAnnouncements () {
-            	commonService.getAnnouncementsCurrent()
+            	commonService.getAnnouncements(false)
             		.then (function (result) {
             			vm.announcements = result.announcements;
             		}, function (error) {

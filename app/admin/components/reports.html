@@ -108,6 +108,28 @@
       </div>
     </div>
 
+    <div class="row" ng-if="vm.workType === 'announcement'">
+      <div class="col-sm-12">
+        <h3>Announcement Activity</h3>
+        <table st-table="vm.displayedAnnouncements" st-safe-src="vm.searchedAnnouncementss" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="name" st-skip-natural="true">Announcement</th>
+              <th class="">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+	        <tr ng-repeat="activity in vm.displayedAnnouncementss">
+		      <td class="">{{ activity.name }}</td>
+		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">{{ activity.date | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="row" ng-if="vm.workType === 'users' && vm.isChplAdmin">
       <div class="col-sm-12">
         <h3>User Activity</h3>

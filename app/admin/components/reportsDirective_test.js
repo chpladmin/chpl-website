@@ -25,6 +25,7 @@
                 mockCommonService.userActivities = [];
                 mockCommonService.apiActivity = [];
                 mockCommonService.apiUserActivity = [];
+                mockCommonService.announcementActivity = [];
 
                 mockCommonService.simpleApiCall = function () {
                     var defer = $q.defer();
@@ -97,6 +98,8 @@
                     defer.resolve(this.apiUserActivities);
                     return defer.promise;
                 };
+
+                mockCommonService.getAnnouncementActivity = function () { return $q.when(mockCommonService.announcementActivity); };
 
                 mockAuthService.isAcbAdmin = function () {
                     return true;

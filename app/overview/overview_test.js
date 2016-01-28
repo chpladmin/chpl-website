@@ -30,6 +30,9 @@
                     mockCommonService.getAtls = function () {
                         return $q.when({atls: [{id:0, name:'test-atl'}]});
                     };
+                    mockCommonService.getAnnouncements = function () {
+                        return $q.when({announcements: [{title:0, description:'test-atl'}]});
+                    };
                 });
             });
 
@@ -55,9 +58,10 @@
                 expect(ctrl).toBeDefined();
             });
 
-            it('should load acbs and atls', function () {
+            it('should load acbs, atls, and announcements', function () {
                 expect(ctrl.acbs.length).toBeGreaterThan(0);
                 expect(ctrl.atls.length).toBeGreaterThan(0);
+                expect(ctrl.announcements.length).toBeGreaterThan(0);
             });
 
             it('should call the common service to load acbs', function () {
@@ -89,6 +93,22 @@
                 scope.$digest();
                 expect($log.debug.logs.length).toBeGreaterThan(0);
             });
+
+            it('should call the common service to load announcements', function () {
+                spyOn(commonService, 'getAnnouncements').and.callThrough();
+                ctrl.loadAnnouncements();
+                expect(commonService.getAnnouncements).toHaveBeenCalled();
+            });
+
+            it('should log an error if getAnnouncements fails', function () {
+                var deferred = $q.defer();
+                spyOn(commonService, 'getAnnouncements').and.returnValue(deferred.promise);
+                ctrl.loadAnnouncements();
+                deferred.reject('expected error');
+                scope.$digest();
+                expect($log.debug.logs.length).toBeGreaterThan(0);
+            });
+
         });
     });
 })();

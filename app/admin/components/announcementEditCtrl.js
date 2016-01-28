@@ -12,6 +12,7 @@
             vm.cancel = cancel;
             vm.create = create;
             vm.deleteAnnouncement = deleteAnnouncement;
+            vm.datesInvalid = datesInvalid;
 
             vm.activate();
 
@@ -19,6 +20,16 @@
 
             function activate () {
             	vm.isChplAdmin = authService.isChplAdmin();
+                vm.announcement.startDate = new Date(announcement.startDate);
+                vm.announcement.endDate = new Date(announcement.endDate);
+            }
+
+            function datesInvalid () {
+                if (vm.announcement.endDate && vm.announcement.startDate) {
+                    return (vm.announcement.endDate < vm.announcement.startDate) }
+                else {
+                    return false;
+                }
             }
 
             function save () {
