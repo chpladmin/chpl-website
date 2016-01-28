@@ -95,7 +95,7 @@
                         $location.path('/admin');
                         vm.clear();
                     }, function (error) {
-                        vm.message = 'Invalid username/password combination';
+                        vm.message = error.data.error; 
                     });
             }
 
