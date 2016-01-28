@@ -42,6 +42,7 @@
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'visitors'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('visitors')">Visitors</a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
           </ul>
         </div>
       </div>
@@ -60,6 +61,7 @@
                     ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"></ai-reports>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>
+        <ai-announcements-management admin="true" ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
       </div>
     </div>
   </section> <!-- end authenticated user section -->

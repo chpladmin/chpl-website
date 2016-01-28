@@ -81,7 +81,15 @@
                 else
                     return self.simpleApiCall('/data/search_options');
             };
-
+            
+            self.getAnnouncementsCurrent = function () {
+            	return self.simpleApiCall('/announcements/');
+            };
+            
+            self.getAnnouncementsFuture = function () {
+            	return self.simpleApiCall('/announcements/?future=true');
+            };
+            
             self.getSimpleProduct = function (productId) {
                 return self.simpleApiCall('/products/' + productId);
             };
@@ -94,16 +102,16 @@
                 return self.simpleApiCall('/certified_products/' + productId + '/details');
             };
 
-            self.getDevelopers = function () {
-                return self.simpleApiCall('/developers/');
+            self.getVendors = function () {
+                return self.simpleApiCall('/vendors/');
             };
 
-            self.getDeveloper = function (developerId) {
-                return self.simpleApiCall('/developers/' + developerId);
+            self.getVendor = function (vendorId) {
+                return self.simpleApiCall('/vendors/' + vendorId);
             };
 
-            self.getProductsByDeveloper = function (developerId) {
-                return self.simpleApiCall('/products/?developerId=' + developerId);
+            self.getProductsByVendor = function (vendorId) {
+                return self.simpleApiCall('/products/?vendorId=' + vendorId);
             };
 
             self.getVersionsByProduct = function (productId) {
@@ -134,8 +142,8 @@
                 return self.simpleApiCall('/activity/certified_products?lastNDays=' + nDays);
             };
 
-            self.getDeveloperActivity = function (nDays) {
-                return self.simpleApiCall('/activity/developers?lastNDays=' + nDays);
+            self.getVendorActivity = function (nDays) {
+                return self.simpleApiCall('/activity/vendors?lastNDays=' + nDays);
             };
 
             self.getProductActivity = function (nDays) {
@@ -166,8 +174,8 @@
                 return self.simpleApiCall('/auth/keep_alive');
             };
 
-            self.updateDeveloper = function (developerObject) {
-                return self.postApiCall('/developers/update', developerObject);
+            self.updateVendor = function (vendorObject) {
+                return self.postApiCall('/vendors/update', vendorObject);
             };
 
             self.updateProduct = function (productObject) {
@@ -195,41 +203,61 @@
             self.getUsersAtAcb = function (acbId) {
                 return self.simpleApiCall('/acbs/' + acbId + '/users');
             };
+            
+            self.getAnnouncement = function (announcementId) {
+                return self.simpleApiCall('/announcements/' + announcementId + '/');
+            };
 
             self.getUsersAtAtl = function (atlId) {
                 return self.simpleApiCall('/atls/' + atlId + '/users');
             };
 
             self.createACB = function (acb) {
-                return self.postApiCall('/acbs/create', acb)
+                return self.postApiCall('/acbs/create', acb);
             };
 
             self.createATL = function (atl) {
-                return self.postApiCall('/atls/create', atl)
+                return self.postApiCall('/atls/create', atl);
+            };
+            
+            self.createAnnouncement = function (announcement) {
+            	return self.postApiCall('/announcements/create/', announcement);
+            };
+            
+            self.modifyAnnouncement = function (announcement) {
+                return self.postApiCall('/announcements/update', announcement);
             };
 
             self.modifyACB = function (acb) {
-                return self.postApiCall('/acbs/update', acb)
+                return self.postApiCall('/acbs/update', acb);
             };
 
             self.modifyATL = function (atl) {
-                return self.postApiCall('/atls/update', atl)
+                return self.postApiCall('/atls/update', atl);
+            };
+            
+            self.deleteAnnouncement = function (announcementId) {
+                return self.postApiCall('/announcements/' + announcementId + '/delete', {});
+            };
+            
+            self.undeleteAnnouncement = function (announcementId) {
+                return self.postApiCall('/announcements/' + announcementId + '/undelete', {});
             };
 
             self.deleteACB = function (acbId) {
-                return self.postApiCall('/acbs/' + acbId + '/delete', {})
+                return self.postApiCall('/acbs/' + acbId + '/delete', {});
             };
 
             self.undeleteACB = function (acbId) {
-                return self.postApiCall('/acbs/' + acbId + '/undelete', {})
+                return self.postApiCall('/acbs/' + acbId + '/undelete', {});
             };
 
             self.deleteATL = function (atlId) {
-                return self.postApiCall('/atls/' + atlId + '/delete', {})
+                return self.postApiCall('/atls/' + atlId + '/delete', {});
             };
 
             self.undeleteATL = function (atlId) {
-                return self.postApiCall('/atls/' + atlId + '/undelete', {})
+                return self.postApiCall('/atls/' + atlId + '/undelete', {});
             };
 
             self.getUsers = function () {
