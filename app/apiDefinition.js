@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 'use strict';
 
 var apis = {};
