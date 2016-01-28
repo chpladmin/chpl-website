@@ -16,9 +16,9 @@
     </div>
     <div class="form-group">
       <label for="productOwner">Change Product owner</label>
-      <select ng-model="vm.product.vendorId"
+      <select ng-model="vm.product.developerId"
               id="productOwner" class="input-sm form-control"
-              ng-options="v.vendorId as v.name for v in vm.vendors | orderBy: 'name'">
+              ng-options="v.developerId as v.name for v in vm.developers | orderBy: 'name'">
       </select>
     </div>
   </div>

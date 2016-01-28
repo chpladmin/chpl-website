@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditDeveloperController', ['$modalInstance', 'activeVendor', 'commonService', function ($modalInstance, activeVendor, commonService) {
+        .controller('EditDeveloperController', ['$modalInstance', 'activeDeveloper', 'commonService', function ($modalInstance, activeDeveloper, commonService) {
             var vm = this;
-            vm.developer = angular.copy(activeVendor);
-            vm.updateDeveloper = {vendorIds: [vm.developer.vendorId]};
+            vm.developer = angular.copy(activeDeveloper);
+            vm.updateDeveloper = {developerIds: [vm.developer.developerId]};
 
             vm.addressRequired = addressRequired;
             vm.save = save;
@@ -18,8 +18,8 @@
             }
 
             function save () {
-                vm.updateDeveloper.vendor = vm.developer;
-                commonService.updateVendor(vm.updateDeveloper)
+                vm.updateDeveloper.developer = vm.developer;
+                commonService.updateDeveloper(vm.updateDeveloper)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $modalInstance.close(response);

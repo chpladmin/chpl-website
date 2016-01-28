@@ -95,8 +95,8 @@ apis.entities.acb = {
     website:'string',
     address: apis.entities.address
 };
-apis.entities.vendor = {
-    vendorId:'long',
+apis.entities.developer = {
+    developerId:'long',
     name:'string',
     website: 'string',
     address:apis.entities.address,
@@ -123,7 +123,7 @@ apis.entities.cps = {
     classificationType: {},
     otherAcb: 'string',
     certificationStatusId: 'long',
-    vendor: {},
+    developer: {},
     product: {},
     certificationEdition: {},
     practiceType: {},
@@ -144,21 +144,21 @@ apis.entities.activity = {
 };
 apis.entities.cpActivity = {
     product:'string',
-    vendor:'string',
+    developer:'string',
     version:'string',
     certBody:'string',
     edition:'string',
     activityDate:'string',
     activity:'string'
 };
-apis.entities.vendorActivity = {
-    vendor:'string',
+apis.entities.developerActivity = {
+    developer:'string',
     activityDate:'string',
     activity:'string'
 };
 apis.entities.productActivity = {
     product:'string',
-    vendor:'string',
+    developer:'string',
     activityDate:'string',
     activity:'string'
 };
@@ -184,7 +184,7 @@ apis.entities.searchResults = {
         },
         otherAcb: 'long',
         certificationStatusId: 'long',
-        vendor: {
+        developer: {
             name: 'string',
             id: 'long'
         },
@@ -213,7 +213,7 @@ apis.entities.searchResults = {
 };
 apis.entities.searchRequest = {
     searchTerm: 'string (optional)',
-    vendor: 'string (optional)',
+    developer: 'string (optional)',
     product: 'string (optional)',
     version: 'string (optional)',
     certificationEdition: 'string (optional)',
@@ -262,7 +262,7 @@ apis.entities.certifiedProduct = {
     qualityManagementSystemAtt:'string',
     reportFileLocation:'string',
     testingLabId:'long',
-    vendor:{name:'string', id:'long'},
+    developer:{name:'string', id:'long'},
     visibleOnChpl:'boolean'
 };
 
@@ -322,12 +322,12 @@ apis.endpoints = [
         response: [apis.entities.activity]
     },{
         category: 'Activity',
-        description: 'Get a list of vendor activity. If an id is passed in, will return only the activity for that vendor',
-        request: '/activity/vendors/(:id)(?lastNDays)',
+        description: 'Get a list of developer activity. If an id is passed in, will return only the activity for that developer',
+        request: '/activity/developers/(:id)(?lastNDays)',
         requestType: 'GET',
         parameters: 'lastNDays = number of days of activity to return. If not supplied, defaults to ALL',
         security: 'Admin',
-        response: [apis.entities.vendorActivity]
+        response: [apis.entities.developerActivity]
     },{
         category: 'Activity',
         description: 'Get a list of product activity. If an id is passed in, will return only the activity for that product',
@@ -421,7 +421,7 @@ apis.endpoints = [
         request: '/certified_products/pending/',
         requestType: 'GET',
         security: 'ACBAdmin',
-        response: [{cpId: 'long', vendor: apis.entities.vendor, product: apis.entities.product, version: apis.entities.version, certified_product: 'all the parts of a cp in the process of uploading', uploadDate: 'string'}]
+        response: [{cpId: 'long', developer: apis.entities.developer, product: apis.entities.product, version: apis.entities.version, certified_product: 'all the parts of a cp in the process of uploading', uploadDate: 'string'}]
     },{
         category: 'Certified Products',
         description: 'Confirm a particular Certified Product is ready to be entered in the CHPL database permanently',
@@ -480,22 +480,22 @@ apis.endpoints = [
             practiceTypeNames: [{id: 'long', name: 'string'}],
             productClassifications: [{id: 'long', name: 'string'}],
             productNames: [{id: 'long', name: 'string'}],
-            vendorNames: [{id: 'long', name: 'string'}]
+            developerNames: [{id: 'long', name: 'string'}]
         }
     },{
         category: 'Products',
         description: 'Returns all products, or only single passed in product',
-        request: '/products/(:id)(?vendorId)',
+        request: '/products/(:id)(?developerId)',
         requestType: 'GET',
-        parameters: 'vendorId: optional developer identifier. If present, filters results to only those products owned by relevant Developer',
+        parameters: 'developerId: optional developer identifier. If present, filters results to only those products owned by relevant Developer',
         response: [apis.entities.product]
     },{
         category: 'Products',
-        description: 'Update one or more products with passed in data. If more than one productId is supplied, merge the products, assigning all versions originally assigned to any of the products to the single resulting product. If a newVendorId is supplied in the Request, the Product is changing ownership; merge the products (if necessary), and then reassign it to the new Vendor indicated',
+        description: 'Update one or more products with passed in data. If more than one productId is supplied, merge the products, assigning all versions originally assigned to any of the products to the single resulting product. If a newDeveloperId is supplied in the Request, the Product is changing ownership; merge the products (if necessary), and then reassign it to the new Developer indicated',
         note: 'The Product object in the Request parameter will not have a productId or lastModifiedDate field',
         request: '/products/update',
         requestType: 'POST',
-        jsonParameter: {'productIds': ['long'], product: apis.entities.product, newVendorId: 'long (optional)'},
+        jsonParameter: {'productIds': ['long'], product: apis.entities.product, newDeveloperId: 'long (optional)'},
         security: 'Admin',
         response: apis.entities.product
     },{
@@ -584,18 +584,18 @@ apis.endpoints = [
     },{
         category: 'Developers',
         description: 'Returns all developers, or only single passed in Developer',
-        request: '/vendors/(:id)',
+        request: '/developers/(:id)',
         requestType: 'GET',
-        response: [apis.entities.vendor]
+        response: [apis.entities.developer]
     },{
         category: 'Developers',
-        description: 'Update one or more developers with passed in data. If more than one vendorId is supplied, merge the developers, assigning all products originally assigned to any of the developers to the single resulting developer',
+        description: 'Update one or more developers with passed in data. If more than one developerId is supplied, merge the developers, assigning all products originally assigned to any of the developers to the single resulting developer',
         note: 'The Developer object in the Request parameter will not have a developerId or lastModifiedDate field',
-        request: '/vendors/update',
+        request: '/developers/update',
         requestType: 'POST',
-        jsonParameter: {'vendorIds': ['long'], developer: apis.entities.vendor},
+        jsonParameter: {'developerIds': ['long'], developer: apis.entities.developer},
         security: 'Admin',
-        response: apis.entities.vendor
+        response: apis.entities.developer
     },{
         category: 'Versions',
         description: 'Returns all versions of given product, based on the passed in productId',

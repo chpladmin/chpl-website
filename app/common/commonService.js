@@ -94,16 +94,16 @@
                 return self.simpleApiCall('/certified_products/' + productId + '/details');
             };
 
-            self.getVendors = function () {
-                return self.simpleApiCall('/vendors/');
+            self.getDevelopers = function () {
+                return self.simpleApiCall('/developers/');
             };
 
-            self.getVendor = function (vendorId) {
-                return self.simpleApiCall('/vendors/' + vendorId);
+            self.getDeveloper = function (developerId) {
+                return self.simpleApiCall('/developers/' + developerId);
             };
 
-            self.getProductsByVendor = function (vendorId) {
-                return self.simpleApiCall('/products/?vendorId=' + vendorId);
+            self.getProductsByDeveloper = function (developerId) {
+                return self.simpleApiCall('/products/?developerId=' + developerId);
             };
 
             self.getVersionsByProduct = function (productId) {
@@ -134,8 +134,8 @@
                 return self.simpleApiCall('/activity/certified_products?lastNDays=' + nDays);
             };
 
-            self.getVendorActivity = function (nDays) {
-                return self.simpleApiCall('/activity/vendors?lastNDays=' + nDays);
+            self.getDeveloperActivity = function (nDays) {
+                return self.simpleApiCall('/activity/developers?lastNDays=' + nDays);
             };
 
             self.getProductActivity = function (nDays) {
@@ -166,8 +166,8 @@
                 return self.simpleApiCall('/auth/keep_alive');
             };
 
-            self.updateVendor = function (vendorObject) {
-                return self.postApiCall('/vendors/update', vendorObject);
+            self.updateDeveloper = function (developerObject) {
+                return self.postApiCall('/developers/update', developerObject);
             };
 
             self.updateProduct = function (productObject) {

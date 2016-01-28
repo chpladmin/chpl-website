@@ -7,7 +7,7 @@
 
             self.activate = activate;
             self.refreshPending = refreshPending;
-            self.selectVendor = selectVendor;
+            self.selectDeveloper = selectDeveloper;
             self.editDeveloper = editDeveloper;
             self.mergeDevelopers = mergeDevelopers;
             self.selectProduct = selectProduct;
@@ -28,7 +28,7 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                self.activeVendor = '';
+                self.activeDeveloper = '';
                 self.activeProduct = '';
                 self.activeVersion = '';
                 self.activeCP = '';
@@ -73,9 +73,9 @@
                         self.statuses = options.certificationStatuses;
                     });
 
-                commonService.getVendors()
-                    .then(function (vendors) {
-                        self.vendors = vendors.vendors;
+                commonService.getDevelopers()
+                    .then(function (developers) {
+                        self.developers = developers.developers;
                     });
             }
 
@@ -87,16 +87,16 @@
                     })
             }
 
-            function selectVendor () {
-                if (self.vendorSelect) {
-                    self.activeVendor = self.vendorSelect;
-                    commonService.getProductsByVendor(self.activeVendor.vendorId)
+            function selectDeveloper () {
+                if (self.developerSelect) {
+                    self.activeDeveloper = self.developerSelect;
+                    commonService.getProductsByDeveloper(self.activeDeveloper.developerId)
                         .then(function (products) {
                             self.products = products.products;
                         });
-                    self.mergeVendor = angular.copy(self.activeVendor);
-                    delete self.mergeVendor.vendorId;
-                    delete self.mergeVendor.lastModifiedDate;
+                    self.mergeDeveloper = angular.copy(self.activeDeveloper);
+                    delete self.mergeDeveloper.developerId;
+                    delete self.mergeDeveloper.lastModifiedDate;
                 }
             }
 
@@ -109,18 +109,18 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeVendor: function () { return self.activeVendor; }
+                        activeDeveloper: function () { return self.activeDeveloper; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
-                    self.activeVendor = result;
-                    commonService.getVendors()
-                        .then(function (vendors) {
-                            self.vendors = vendors.vendors;
+                    self.activeDeveloper = result;
+                    commonService.getDevelopers()
+                        .then(function (developers) {
+                            self.developers = developers.developers;
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
-                        self.vendorMessage = result;
+                        self.developerMessage = result;
                     }
                 });
             }
@@ -134,18 +134,18 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        developers: function () { return self.mergingVendors; }
+                        developers: function () { return self.mergingDevelopers; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
-                    self.vendorMessage = null;
-                    commonService.getVendors()
-                        .then(function (vendors) {
-                            self.vendors = vendors.vendors;
+                    self.developerMessage = null;
+                    commonService.getDevelopers()
+                        .then(function (developers) {
+                            self.developers = developers.developers;
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
-                        self.vendorMessage = result;
+                        self.developerMessage = result;
                     }
                 });
             }
@@ -153,7 +153,7 @@
             function selectProduct () {
                 if (self.productSelect) {
                     self.activeProduct = self.productSelect;
-                    self.activeProduct.vendorId = self.activeVendor.vendorId;
+                    self.activeProduct.developerId = self.activeDeveloper.developerId;
                     commonService.getVersionsByProduct(self.activeProduct.productId)
                         .then(function (versions) {
                             self.versions = versions;
@@ -174,7 +174,7 @@
                     keyboard: false,
                     resolve: {
                         activeProduct: function () { return self.activeProduct; },
-                        vendors: function () { return self.vendors; }
+                        developers: function () { return self.developers; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
@@ -196,12 +196,12 @@
                     keyboard: false,
                     resolve: {
                         products: function () { return self.mergingProducts; },
-                        vendorId: function () { return self.activeVendor.vendorId; }
+                        developerId: function () { return self.activeDeveloper.developerId; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
                     self.productMessage = null;
-                    commonService.getProductsByVendor(self.activeVendor.vendorId)
+                    commonService.getProductsByDeveloper(self.activeDeveloper.developerId)
                         .then(function (products) {
                             self.products = products.products;
                         });
@@ -341,7 +341,7 @@
                     keyboard: false,
                     resolve: {
                         inspectingCp: function () { return cp; },
-                        vendors: function () { return self.vendors; },
+                        developers: function () { return self.developers; },
                         practices: function () { return self.practices; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isAcbStaff: function () { return self.isAcbStaff; },
@@ -385,7 +385,7 @@
 
             function doWork (workType) {
                 if (self.workType !== workType) {
-                    self.activeVendor = '';
+                    self.activeDeveloper = '';
                     self.activeProduct = '';
                     self.activeVersion = '';
                     self.activeCP = '';

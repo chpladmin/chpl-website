@@ -25,7 +25,7 @@
           <label for="refine" class="sr-only">Select the what category to refine your search by</label>
           <select id="refine" class="form-control" ng-change="vm.refineSearch()" ng-model="vm.refineType">
             <option value="" disabled>Refine search by</option>
-            <option value="vendor">Developer</option>
+            <option value="developer">Developer</option>
             <option value="product">Product</option>
             <option value="version">Version</option>
             <option value="visibleOnCHPL">Visible on CHPL</option>
@@ -37,12 +37,12 @@
           </select>
         </div>
       </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'vendor'">
+      <div class="col-sm-4" ng-if="vm.refineType === 'developer'">
         <div class="input-group">
           <label for="developerRefine" class="control-label sr-only">Developer</label>
-          <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.vendor"
-                 ng-required="vm.refineType === 'vendor'"
-                 typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.vendors | filter:{value:$viewValue} | limitTo:16"
+          <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.developer"
+                 ng-required="vm.refineType === 'developer'"
+                 typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:{value:$viewValue} | limitTo:16"
                  typeahead-focus-first="false"
                  typeahead-input-formatter="$model.value" />
           <span class="input-group-btn">
@@ -157,7 +157,7 @@
   <div class="row" ng-if="vm.activeSearch">
     <div class="col-sm-12">
       <ul class="list-inline">
-        <li class="animate-if" ng-if="vm.query.vendor"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('vendor')"><span class="ai-lead">Developer:</span> {{ vm.query.vendor }} <i class="fa fa-close"></i></button></li>
+        <li class="animate-if" ng-if="vm.query.developer"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('developer')"><span class="ai-lead">Developer:</span> {{ vm.query.developer }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.product"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('product')"><span class="ai-lead">Product:</span> {{ vm.query.product }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.version"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('version')"><span class="ai-lead">Version:</span> {{ vm.query.version }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationEdition')"><span class="ai-lead">Certification Edition:</span> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i></button></li>
@@ -189,8 +189,8 @@
                 <tr>
 		          <th class="search-header" ng-click="sort('product')"
                       ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
-                  <th class="search-header" ng-click="sort('vendor')"
-                      ng-class="{'sort-ascent': vm.query.orderBy==='vendor' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='vendor' && vm.query.sortDescending}">Developer</th>
+                  <th class="search-header" ng-click="sort('developer')"
+                      ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer</th>
                   <th class="">Version</th>
                   <th colspan="2"><span class="sr-only">Actions</span></th>
 	            </tr>
@@ -216,7 +216,7 @@
 	          <tbody>
 	            <tr ng-repeat-start="row in displayedResults" class="search-row">
 		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
-		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.vendor.name }}</td>
+		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.developer.name }}</td>
 		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
                   <td>
                     <a class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>

@@ -43,8 +43,8 @@
 
             function addRefine () {
                 switch (vm.refineType) {
-                case 'vendor':
-                    vm.query.vendorObject = vm.refine.vendor;
+                case 'developer':
+                    vm.query.developerObject = vm.refine.developer;
                     break;
                 case 'product':
                     vm.query.productObject = vm.refine.product;
@@ -116,12 +116,12 @@
                     }
                     vm.query.searchTerm = angular.copy(vm.query.searchTermObject.value);
                 }
-                if (vm.query.vendorObject !== undefined) {
-                    if (typeof(vm.query.vendorObject) === 'string' && vm.query.vendorObject.length > 0) {
-                        vm.query.vendorObject = {type: 'previous search', value: vm.query.vendorObject};
-                        vm.lookaheadSource.vendors.push(vm.query.vendorObject);
+                if (vm.query.developerObject !== undefined) {
+                    if (typeof(vm.query.developerObject) === 'string' && vm.query.developerObject.length > 0) {
+                        vm.query.developerObject = {type: 'previous search', value: vm.query.developerObject};
+                        vm.lookaheadSource.developers.push(vm.query.developerObject);
                     }
-                    vm.query.vendor = vm.query.vendorObject.value;
+                    vm.query.developer = vm.query.developerObject.value;
                 }
                 if (vm.query.productObject !== undefined) {
                     if (typeof(vm.query.productObject) === 'string' && vm.query.productObject.length > 0) {
@@ -163,10 +163,10 @@
 
             function unrefine (key, cert) {
                 switch (key) {
-                case 'vendor':
-                    delete(vm.query.vendor);
-                    delete(vm.query.vendorObject);
-                    delete(vm.refine.vendor);
+                case 'developer':
+                    delete(vm.query.developer);
+                    delete(vm.query.developerObject);
+                    delete(vm.refine.developer);
                     break;
                 case 'product':
                     delete(vm.query.product);
@@ -224,11 +224,11 @@
 
             $scope.searchResults = [];
             $scope.displayedResults = [];
-            vm.lookaheadSource = {all: [], vendors: [], products: []};
+            vm.lookaheadSource = {all: [], developers: [], products: []};
             vm.hasDoneASearch = false;
             $scope.visiblePage = 1;
             vm.defaultQuery = {
-                orderBy: 'vendor',
+                orderBy: 'developer',
                 sortDescending: false,
                 pageNumber: 0,
                 pageSize: '50',
@@ -264,9 +264,9 @@
                             vm.lookaheadSource = $localStorage.lookaheadSource;
                         } else {
 */
-                            for (var i = 0; i < options.vendorNames.length; i++) {
-                                vm.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i].name});
-                                vm.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i].name});
+                            for (var i = 0; i < options.developerNames.length; i++) {
+                                vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name});
+                                vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name});
                             }
                             for (var i = 0; i < options.productNames.length; i++) {
                                 vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name});

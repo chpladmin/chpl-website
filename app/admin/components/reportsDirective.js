@@ -11,7 +11,7 @@
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
             vm.refreshCp = refreshCp;
-            vm.refreshVendor = refreshVendor;
+            vm.refreshDeveloper = refreshDeveloper;
             vm.refreshProduct = refreshProduct;
             vm.refreshAcb = refreshAcb;
             vm.refreshAtl = refreshAtl;
@@ -33,7 +33,7 @@
 
             function refreshActivity () {
                 vm.refreshCp();
-                vm.refreshVendor();
+                vm.refreshDeveloper();
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshAtl();
@@ -49,11 +49,11 @@
                     });
             }
 
-            function refreshVendor () {
-                commonService.getVendorActivity(7)
+            function refreshDeveloper () {
+                commonService.getDeveloperActivity(7)
                     .then(function (data) {
-                        vm.searchedVendors = vm.interpretVendors(data);
-                        vm.displayedVendors = [].concat(vm.searchedVendors);
+                        vm.searchedDevelopers = vm.interpretDevelopers(data);
+                        vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
                     });
             }
 
@@ -146,7 +146,7 @@
                     vm.refreshCp();
                     break;
                 case 'dev':
-                    vm.refreshVendor();
+                    vm.refreshDeveloper();
                     break;
                 case 'prod':
                     vm.refreshProduct();
@@ -233,7 +233,7 @@
                 return ret;
             };
 
-            vm.interpretVendors = function (data) {
+            vm.interpretDevelopers = function (data) {
                 var ret = [];
                 var change;
 
@@ -267,7 +267,7 @@
                         activity.action = 'Update:<ul>';
                         change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                         if (change) activity.action += '<li>' + change + '</li>';
-                        // check on vendorId change
+                        // check on developerId change
                         activity.action += '</ul>';
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'product');
