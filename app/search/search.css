@@ -44,7 +44,7 @@ ul.pagination li {
     background-color: #0070c9;
     background-image: url("../lib/CHPL_Logo-01.png");
     background-repeat: no-repeat;
-    background-position: center center;
+    background-position: bottom right;
     background-attachment: fixed;
     position: absolute;
     height: 100%;

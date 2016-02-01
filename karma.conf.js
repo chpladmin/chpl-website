@@ -17,6 +17,7 @@ module.exports = function(config){
             'app/bower_components/jquery/dist/jquery.min.js',
             'app/bower_components/angular-smart-table/dist/smart-table.min.js',
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+            'app/bower_components/angular-swagger-ui/dist/scripts/swagger-ui.min.js',
             'app/bower_components/angular-sanitize/angular-sanitize.min.js',
             'app/bower_components/angulartics/dist/angulartics.min.js',
             'app/bower_components/angulartics-ga/dist/angulartics-ga.min.js',

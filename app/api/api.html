@@ -5,78 +5,18 @@
     </div>
   </div>
   <div class="main-content">
-  <div class="row">
-    <div class="col-sm-8">
-      <p>The Open Data CHPL API provides programmatic access to ONC published data on Certified Health IT Products. Open Data CHPL's API includes methods for retrieving a subset of our statistical data and the metadata that describes it.</p>
+    <div class="row">
+      <div class="col-sm-8">
+        <p>The Open Data CHPL API provides programmatic access to ONC published data on Certified Health IT Products. Open Data CHPL's API includes methods for retrieving a subset of our statistical data and the metadata that describes it.</p>
+      </div>
+      <div class="col-sm-4">
+        <ai-api-key></ai-api-key>
+      </div>
     </div>
-    <div class="col-sm-4">
-      <ai-api-key></ai-api-key>
+    <div class="row">
+      <div class="col-sm-12">
+        <div swagger-ui url="vm.swaggerUrl"></div>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>URL</th>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Security</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="api in vm.apiCalls | orderBy: 'request'">
-            <td>{{ api.category }}</td>
-            <td>{{ api.request }}</td>
-            <td>{{ api.requestType }}</td>
-            <td>{{ api.description }}</td>
-            <td>{{ api.security }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <h2>API Calls</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <accordion close-others="false">
-        <accordion-group heading="{{ api.request }}" ng-repeat="api in vm.apiCalls | orderBy: 'request'" aria-expanded="false">
-          <h3>{{ api.category }}</h3>
-          <p>{{ api.description }}</p>
-          <p ng-if="api.note !== undefined" class="bg-warning">Special note: {{ api.note }}</p>
-          <span ng-if="api.security !== null && api.security !== undefined">
-            <h4>Security</h4>
-            <p>Restricted to users with the role: {{ api.security}}</p>
-          </span>
-          <h4>URL</h4>
-          <p>{{ api.requestType }}: {{ api.request }}</p>
-          <h4>Request</h4>
-          <div ng-if="api.requestType === 'GET'">
-            <p>The request is a query<span ng-if="api.parameters !== null && api.parameters !== undefined">, with parameters:</span><br />
-              <pre ng-if="api.parameters !== null && api.parameters !== undefined">{{ api.parameters | json }}</pre>
-            </p>
-          </div>
-          <div ng-if="api.requestType === 'POST'">
-            <p>The request is a request, with a JSON object as parameter<br />
-              <pre>{{ api.jsonParameter | json }}</pre>
-            </p>
-            <p ng-if="api.parameters !== null && api.parameters !== undefined">
-              The request may be parameterized with parameters:
-              <pre>{{ api.parameters | json }}</pre>
-            </p>
-          </div>
-          <h4>Response</h4>
-          <p>The response is a JSON object, with the format<br />
-            <pre>{{ api.response | json }}</pre>
-          </p>
-        </accordion-group>
-      </accordion>
-    </div>
-  </div>
   </div>
 </div>

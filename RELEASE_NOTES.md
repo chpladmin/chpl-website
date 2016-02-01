@@ -1,5 +1,16 @@
 # Release Notes
 
+## Next version
+_12 January 2016_
+
+### New or updated features
+* Improved search/filter navigation / usability
+* Incorporated SwaggerUI API documentation
+
+### Bugs fixed
+* 'Results per page' display fixed
+* Fixed bug with 'cancel' login directive
+
 ## Version 0.1.0
 _5 January 2016_
 

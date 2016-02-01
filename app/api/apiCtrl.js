@@ -2,17 +2,20 @@
     'use strict';
 
     angular.module('app.api')
-        .controller('ApiController', ['$scope', '$log', 'apiService', function($scope, $log, apiService) {
-            var self = this;
+        .controller('ApiController', ['$scope', '$log', '$location', 'API', function($scope, $log, $location, API) {
+            var vm = this;
 
-            self.apiCalls = [];
-            self.apiEntities = [];
+            activate();
 
-            apiService.getApiCalls()
-                .then(function (result) {
-                    self.apiCalls = result;
-                }, function (error) {
-                    $log.debug(error);
-                });
+            ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                vm.API = API;
+                if (vm.API === '/rest') {
+                    vm.swaggerUrl = $location.absUrl().split('#')[0] + 'rest/api-docs';
+                } else {
+                    vm.swaggerUrl = vm.API + '/api-docs';
+                }
+            }
         }]);
 })();

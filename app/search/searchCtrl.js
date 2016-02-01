@@ -231,7 +231,7 @@
                 orderBy: 'vendor',
                 sortDescending: false,
                 pageNumber: 0,
-                pageSize: 50,
+                pageSize: '50',
                 visibleOnCHPL: 'yes',
                 hasCAP: 'both'
             };
@@ -259,10 +259,11 @@
                         vm.practices = options.practiceTypeNames;
                         vm.certBodies = options.certBodyNames;
                         vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
-                        if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.all.length > 0) {
+/*                        if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.all.length > 0) {
                             $log.info('Restoring lookahead from localstorage');
                             vm.lookaheadSource = $localStorage.lookaheadSource;
                         } else {
+*/
                             for (var i = 0; i < options.vendorNames.length; i++) {
                                 vm.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i].name});
                                 vm.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i].name});
@@ -272,7 +273,7 @@
                                 vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name});
                             }
                             $localStorage.lookaheadSource = $scope.lookaheadSource;
-                        }
+//                        }
                     });
             };
             vm.populateSearchOptions();
