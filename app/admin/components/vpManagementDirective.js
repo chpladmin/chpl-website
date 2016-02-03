@@ -73,6 +73,11 @@
                         self.statuses = options.certificationStatuses;
                     });
 
+                commonService.getAtls(false)
+                    .then(function (data) {
+                        self.testingLabs = data.atls;
+                    });
+
                 commonService.getDevelopers()
                     .then(function (developers) {
                         self.developers = developers.developers;
@@ -311,6 +316,7 @@
                         isAcbStaff: function () { return self.isChplStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
+                        testingLabs: function () { return self.testingLabs; },
                         statuses: function () { return self.statuses; },
                         workType: function () { return self.workType; }
                     }

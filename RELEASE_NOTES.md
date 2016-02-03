@@ -8,6 +8,7 @@ _Date TBD_
 
 ### Bugs fixed
 * Change password requires old password and not username
+* Allowed editing of ATL for certified products
 
 ## Version 0.2.0
 _3 February 2016_

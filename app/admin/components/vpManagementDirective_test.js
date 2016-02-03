@@ -24,6 +24,7 @@
                 mockCommonService.editions = ['Edition 1', 'Edition 2'];
                 mockCommonService.practices = ['Practice 1', 'Practice 2'];
                 mockCommonService.certBodies = ['CB 1', 'CB 2'];
+                mockCommonService.testingLabs = ['TL 1', 'TL 2'];
                 mockCommonService.certificationStatuses = ['Active', 'Retired'];
                 mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
 
@@ -92,6 +93,8 @@
                     defer.resolve({});
                     return defer.promise;
                 };
+
+                mockCommonService.getAtls = function () { return $q.when(mockCommonService.testingLabs); };
             });
         });
 

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'workType', function ($modalInstance, $timeout, activeCP, commonService, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, workType) {
+        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'testingLabs', 'statuses', 'workType', '$log', function ($modalInstance, $timeout, activeCP, commonService, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, testingLabs, statuses, workType, $log) {
 
             var vm = this;
             vm.attachModel = attachModel;
@@ -25,6 +25,7 @@
                 vm.isAcbStaff = isAcbStaff;
                 vm.isChplAdmin = isChplAdmin;
                 vm.bodies = bodies;
+                vm.testingLabs = testingLabs;
                 vm.statuses = statuses;
                 vm.workType = workType;
 
@@ -47,8 +48,12 @@
             }
 
             function attachModel () {
+                $log.debug('testingLabs', vm.testingLabs);
                 vm.cp.practiceType = vm.findModel(vm.cp.practiceType, vm.practices);
                 vm.cp.certifyingBody = vm.findModel(vm.cp.certifyingBody, vm.bodies);
+                if (vm.cp.testingLab) {
+                    vm.cp.testingLab = vm.findModel(vm.cp.testingLab, vm.testingLabs);
+                }
                 vm.cp.certificationStatus = vm.findModel(vm.cp.certificationStatus, vm.statuses);
             }
 
