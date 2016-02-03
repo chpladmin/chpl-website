@@ -6,13 +6,13 @@
             var vm = this;
 
             vm.activate = activate;
+            vm.changePassword = changePassword;
+            vm.clear = clear;
+            vm.isAuthed = isAuthed;
             vm.login = login;
             vm.logout = logout;
-            vm.setActivity = setActivity;
             vm.sendReset = sendReset;
-            vm.changePassword = changePassword;
-            vm.isAuthed = isAuthed;
-            vm.clear = clear;
+            vm.setActivity = setActivity;
             vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
 
             vm.activityEnum = {
@@ -27,7 +27,6 @@
             /////////////////////////////////////////////////////////
 
             function activate () {
-                vm.clear();
                 if (vm.isAuthed()) {
                     vm.activity = vm.activityEnum.NONE;
                 } else {
@@ -54,6 +53,39 @@
                 }
             }
 
+            function changePassword () {
+                if (vm.password === vm.confirmPassword) {
+                    commonService.changePassword({userName: vm.userName, password: vm.password})
+                        .then(function (response) {
+                            vm.clear();
+                            vm.message = 'Password successfully changed';
+                        }, function (error) {
+                            vm.message = 'Error. Please check your credentials or contact the administrator';
+                        });
+                } else {
+                    vm.message = 'Passwords do not match. Please try again';
+                }
+            }
+
+            function clear () {
+                if (vm.isAuthed()) {
+                    vm.activity = vm.activityEnum.NONE;
+                } else {
+                    vm.activity = vm.activityEnum.LOGIN;
+                }
+                vm.userName = '';
+                vm.password = '';
+                vm.confirmPassword = '';
+                vm.email = '';
+                vm.message = '';
+                vm.loginForm.$setPristine();
+                vm.loginForm.$setUntouched();
+            }
+
+            function isAuthed () {
+                return authService.isAuthed();
+            }
+
             function login () {
                 vm.message = '';
                 commonService.login({userName: vm.userName, password: vm.password})
@@ -63,7 +95,7 @@
                         $location.path('/admin');
                         vm.clear();
                     }, function (error) {
-                        vm.message = 'Invalid username/password combination';
+                        vm.message = error.data.error; 
                     });
             }
 
@@ -86,37 +118,6 @@
                     }, function (error) {
                         vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
                     });
-            }
-
-            function changePassword () {
-                if (vm.password === vm.confirmPassword) {
-                    commonService.changePassword({userName: vm.userName, password: vm.password})
-                        .then(function (response) {
-                            vm.clear();
-                            vm.message = 'Password successfully changed';
-                        }, function (error) {
-                            vm.message = 'Error. Please check your credentials or contact the administrator';
-                        });
-                } else {
-                    vm.message = 'Passwords do not match. Please try again';
-                }
-            }
-
-            function isAuthed () {
-                return authService.isAuthed();
-            }
-
-            function clear () {
-                if (vm.isAuthed()) {
-                    vm.activity = vm.activityEnum.NONE;
-                } else {
-                    vm.activity = vm.activityEnum.LOGIN;
-                }
-                vm.userName = '';
-                vm.password = '';
-                vm.confirmPassword = '';
-                vm.email = '';
-                vm.message = '';
             }
         }]);
 

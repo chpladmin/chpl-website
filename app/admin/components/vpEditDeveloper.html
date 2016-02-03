@@ -8,17 +8,19 @@
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="editDeveloperLabel">Edit Developer</h4>
   </div>
-  <div class="modal-body" ng-form="editForm">
+  <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
-      <label for="vendorName">Developer Name <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="vendorName"></input>
+      <label for="developerName">Developer Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName" name="developerName"></input>
+      <div class="text-danger" ng-if="vm.editForm.developerName.$touched && vm.editForm.developerName.$error.required">Developer name is required</div>
     </div>
     <div>
-      <strong>Developer Code: </strong>{{ vm.developer.vendorCode }}
+      <strong>Developer Code: </strong>{{ vm.developer.developerCode }}
     </div>
     <div class="form-group">
       <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" name="addressLine1"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressLine1.$touched && vm.editForm.addressLine1.$error.required">Field is required</div>
     </div>
     <div class="form-group">
       <label for="addressLine2">Address Line 2</label>
@@ -26,31 +28,36 @@
     </div>
     <div class="form-group">
       <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressCity.$touched && vm.editForm.addressCity.$error.required">Field is required</div>
     </div>
     <div class="form-group">
       <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressState.$touched && vm.editForm.addressState.$error.required">Field is required</div>
     </div>
     <div class="form-group">
       <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressZipcode.$touched && vm.editForm.addressZipcode.$error.required">Field is required</div>
     </div>
     <div class="form-group">
       <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.country" id="addressCountry"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.country" id="addressCountry" name="addressCountry"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressCountry.$touched && vm.editForm.addressCountry.$error.required">Field is required</div>
     </div>
     <div class="form-group">
-      <label for="vendorWebsite">Website</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="vendorWebsite"></input>
+      <label for="developerWebsite">Website</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite"></input>
+      <div class="text-danger" ng-if="vm.editForm.developerWebsite.$touched && vm.editForm.developerWebsite.$error.url">Website is invalid</div>
     </div>
     <div class="form-group" ng-if="vm.developer.transparencyAttestation !== null">
-      <label for="vendorTransparency">Transparency Attestation</label>
-      <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="vendorTransparency"></input>
+      <label for="developerTransparency">Transparency Attestation</label>
+      <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="developerTransparency"></input>
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Developer</button>
+    <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Developer</button>
     <button class="btn btn-warning btn-block"
             confirm="Are you sure you wish cancel editing? Your changes will not be saved."
             confirm-ok="Yes"

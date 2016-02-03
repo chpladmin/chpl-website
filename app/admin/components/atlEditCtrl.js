@@ -11,8 +11,9 @@
             vm.activate = activate;
             vm.save = save;
             vm.cancel = cancel;
-            vm.deleteAtl = deleteAtl;
             vm.create = create;
+            vm.deleteAtl = deleteAtl;
+            vm.undeleteAtl = undeleteAtl;
 
             vm.activate();
 
@@ -41,6 +42,19 @@
                 $modalInstance.dismiss('cancelled');
             }
 
+            function create () {
+                commonService.createATL(vm.atl)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            $modalInstance.close(response);
+                        } else {
+                            $modalInstance.dismiss('An error occurred');
+                        }
+                    },function (error) {
+                        $modalInstance.dismiss(error.data.error);
+                    });
+            }
+
             function deleteAtl () {
                 commonService.deleteATL(vm.atl.id)
                     .then(function (response) {
@@ -54,8 +68,8 @@
                     });
             }
 
-            function create () {
-                commonService.createATL(vm.atl)
+            function undeleteAtl () {
+                commonService.undeleteATL(vm.atl.id)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $modalInstance.close(response);

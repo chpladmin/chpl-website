@@ -10,69 +10,81 @@
     <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ATL</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
-    <div class="form-group">
+    <div class="form-group" ng-if="vm.isChplAdmin">
       <label for="atlName">ATL Name <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.atl.name" id="atlName" name="atlName"></input>
+      <input class="input-sm form-control" type="text" required ng-model="vm.atl.name" id="atlName" name="atlName" ng-disabled="vm.atl.isDeleted"></input>
       <div class="text-danger" ng-if="vm.editForm.atlName.$touched && vm.editForm.atlName.$error.required">ATL Name is required</div>
+    </div>
+    <div ng-if="!vm.isChplAdmin">
+      <strong>ATL Name: </strong>{{ vm.atl.name }}
     </div>
     <div>
       <strong>ATL Code: </strong>{{ vm.atl.atlCode }}
     </div>
     <div class="form-group">
       <label for="addressLine1">Address Line 1 <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.line1" id="addressLine1" name="addressLine1"></input>
+      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.line1" id="addressLine1" name="addressLine1" ng-disabled="vm.atl.isDeleted"></input>
       <div class="text-danger" ng-if="vm.editForm.addressLine1.$touched && vm.editForm.addressLine1.$error.required">Address is required</div>
     </div>
     <div class="form-group">
       <label for="addressLine2">Address Line 2</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.atl.address.line2" id="addressLine2" name="addressLine2"></input>
+      <input class="input-sm form-control" type="text" ng-model="vm.atl.address.line2" id="addressLine2" name="addressLine2" ng-disabled="vm.atl.isDeleted"></input>
     </div>
     <div class="form-group">
       <label for="addressCity">City <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.city" id="addressCity" name="addressCity"></input>
+      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.city" id="addressCity" name="addressCity" ng-disabled="vm.atl.isDeleted"></input>
       <div class="text-danger" ng-if="vm.editForm.addressCity.$touched && vm.editForm.addressCity.$error.required">Address is required</div>
     </div>
     <div class="form-group">
       <label for="addressState">State <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.state" id="addressState" name="addressState"></input>
+      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.state" id="addressState" name="addressState" ng-disabled="vm.atl.isDeleted"></input>
       <div class="text-danger" ng-if="vm.editForm.addressState.$touched && vm.editForm.addressState.$error.required">Address is required</div>
     </div>
     <div class="form-group">
       <label for="addressZipcode">Zip Code <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.zipcode" id="addressZipcode" name="addressZipcode"></input>
+      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.zipcode" id="addressZipcode" name="addressZipcode" ng-disabled="vm.atl.isDeleted"></input>
       <div class="text-danger" ng-if="vm.editForm.addressZipcode.$touched && vm.editForm.addressZipcode.$error.required">Address is required</div>
     </div>
     <div class="form-group">
       <label for="addressCountry">Country <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.country" id="addressCountry" name="addressCountry"></input>
+      <input class="input-sm form-control" type="text" required ng-model="vm.atl.address.country" id="addressCountry" name="addressCountry" ng-disabled="vm.atl.isDeleted"></input>
       <div class="text-danger" ng-if="vm.editForm.addressCountry.$touched && vm.editForm.addressCountry.$error.required">Address is required</div>
     </div>
     <div class="form-group">
       <label for="atlWebsite">Website <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="url" required ng-model="vm.atl.website" id="atlWebsite" name="atlWebsite" placeholder="http://www.example.com"></input>
+      <input class="input-sm form-control" type="url" required ng-model="vm.atl.website" id="atlWebsite" name="atlWebsite" placeholder="http://www.example.com" ng-disabled="vm.atl.isDeleted"></input>
       <div class="text-danger" ng-if="vm.editForm.atlWebsite.$touched && vm.editForm.atlWebsite.$error.required">Website address is required</div>
       <div class="text-danger" ng-if="vm.editForm.atlWebsite.$touched && vm.editForm.atlWebsite.$error.url">Website is invalid</div>
     </div>
   </div>
   <div class="modal-footer">
     <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block"
-            ng-if="vm.action === 'edit'"
-            ng-click="vm.save()"><i class="fa fa-save"></i> Save ATL</button>
-    <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block"
             ng-if="vm.action === 'create'"
             ng-click="vm.create()"><i class="fa fa-save"></i> Create ATL</button>
-    <button class="btn btn-warning btn-block"
-            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+    <span ng-if="!vm.atl.isDeleted">
+      <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block"
+              ng-if="vm.action === 'edit'"
+              ng-click="vm.save()"><i class="fa fa-save"></i> Save ATL</button>
+      <button class="btn btn-warning btn-block"
+              confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
+      <button class="btn btn-danger btn-block"
+              ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.atl.isDeleted"
+              confirm="Are you sure you wish to delete this ATL?"
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.deleteAtl()"><i class="fa fa-trash-o"></i> Delete ATL</button>
+    </span>
+    <button class="btn btn-success btn-block"
+            ng-if="vm.action === 'edit' && vm.isChplAdmin && vm.atl.isDeleted"
+            confirm="Are you sure you wish to restore this ATL?"
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
-    <button class="btn btn-danger btn-block"
-            ng-if="vm.action === 'edit' && vm.isChplAdmin"
-            confirm="Are you sure you wish to delete this ATL? This action is permanent."
-            confirm-ok="Yes"
-            confirm-cancel="No"
-            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.deleteAtl()"><i class="fa fa-trash-o"></i> Delete ATL</button>
+            ng-click="vm.undeleteAtl()"><i class="fa fa-undo"></i> Restore ATL</button>
   </div>
 </div>

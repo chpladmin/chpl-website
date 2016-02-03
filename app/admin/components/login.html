@@ -1,5 +1,5 @@
 <div>
-  <div ng-form="vm.loginForm" ng-class="vm.formClass" role="log in / log out">
+  <form name="vm.loginForm" ng-class="vm.formClass" role="log in / log out">
     <div class="form-group" ng-if="vm.activity !== vm.activityEnum.NONE">
       <label for="username">Username <span class="text-danger">*</span></label>
       <input type="text" class="form-control" id="username" name="username" ng-model="vm.userName" placeholder="username" required />
@@ -32,13 +32,13 @@
       <div class="text-danger" ng-if="vm.loginForm.email.$touched && vm.loginForm.email.$error.required">Email is required</div>
       <div class="text-danger" ng-if="vm.loginForm.email.$touched && vm.loginForm.email.$error.email">Invalid email</div>
     </div>
-    <button class="btn btn-default btn-block" ng-click="vm.login()" ng-if="vm.activity === vm.activityEnum.LOGIN" ng-disabled="vm.loginForm.$invalid">Log In</button>
-    <button class="btn btn-default btn-block" ng-click="vm.sendReset()" ng-if="vm.activity === vm.activityEnum.RESET" ng-disabled="vm.loginForm.$invalid">Send reset email</button>
+    <button class="btn btn-default btn-block" ng-click="vm.login(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN" ng-disabled="vm.loginForm.$invalid">Log In</button>
+    <button class="btn btn-default btn-block" ng-click="vm.sendReset(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.RESET" ng-disabled="vm.loginForm.$invalid">Send reset email</button>
     <button class="btn btn-default btn-block" ng-click="vm.setActivity(vm.activityEnum.RESET); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN">Forgot Password</button>
     <button class="btn btn-default btn-block" ng-click="vm.logout()" ng-if="vm.activity == vm.activityEnum.NONE">Log Out</button>
     <button class="btn btn-default btn-block" ng-click="vm.changePassword()" ng-if="vm.activity === vm.activityEnum.CHANGE" ng-disabled="vm.loginForm.$invalid">Confirm new Password</button>
     <button class="btn btn-default btn-block" ng-click="vm.setActivity(vm.activityEnum.CHANGE); $event.stopPropagation()" ng-if="vm.activity !== vm.activityEnum.CHANGE && vm.isAuthed()">Change Password</button>
     <button class="btn btn-default btn-block" ng-click="vm.activate(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.RESET">Cancel</button>
-  </div>
+  </form>
   <p ng-class="vm.pClass" ng-if="vm.message.length > 0">{{ vm.message }}</p>
 </div>

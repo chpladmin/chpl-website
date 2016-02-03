@@ -15,7 +15,12 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div swagger-ui url="vm.swaggerUrl"></div>
+        <div ng-show="vm.swaggerLoading">API loading ...</div>
+        <div swagger-ui
+             url="vm.swaggerUrl"
+             loading="vm.swaggerLoading"
+             validator-url="false">
+        </div>
       </div>
     </div>
   </div>

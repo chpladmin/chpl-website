@@ -1,7 +1,6 @@
 ;(function () {
     'use strict';
 
-
     angular.module('appDev', ['app', 'ngMockE2E'])
         .run(function ($httpBackend) {
             $httpBackend.whenGET(/^api\/.*/).passThrough();
@@ -19,7 +18,6 @@
             $httpBackend.whenPOST(/rest/).passThrough();
             $httpBackend.whenPOST(/keepalive/).passThrough();
             $httpBackend.whenGET(/openchpl.appspot.com/).passThrough();
-            $httpBackend.whenGET(/ainq.com\/list_api_calls/).respond(200, apis.endpoints); // fake search results
         })
         .config(function ($provide) {
             $provide.decorator('$exceptionHandler', ['$delegate', '$log', function($delegate, $log) {

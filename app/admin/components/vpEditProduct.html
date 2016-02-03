@@ -8,21 +8,22 @@
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="editProductLabel">Edit Product</h4>
   </div>
-  <div class="modal-body" ng-form="editForm">
+  <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
       <label for="productName">Product Name</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.product.name" id="productName" required></input>
+      <input class="input-sm form-control" type="text" ng-model="vm.product.name" id="productName" name="productName" required></input>
+      <div class="text-danger" ng-if="vm.editForm.productName.$touched && vm.editForm.productName.$error.required">Product name is required</div>
     </div>
     <div class="form-group">
       <label for="productOwner">Change Product owner</label>
-      <select ng-model="vm.product.vendorId"
+      <select ng-model="vm.product.developerId"
               id="productOwner" class="input-sm form-control"
-              ng-options="v.vendorId as v.name for v in vm.vendors | orderBy: 'name'">
+              ng-options="v.developerId as v.name for v in vm.developers | orderBy: 'name'">
       </select>
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Product</button>
+    <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.save()">Save Product</button>
     <button class="btn btn-warning btn-block"
             confirm="Are you sure you wish cancel editing? Your changes will not be saved."
             confirm-ok="Yes"

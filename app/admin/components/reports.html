@@ -23,7 +23,7 @@
     <div class="row" ng-if="vm.workType === 'dev'">
       <div class="col-sm-12">
         <h3>Developer Activity</h3>
-        <table st-table="vm.displayedVendors" st-safe-src="vm.searchedVendors" class="table table-striped">
+        <table st-table="vm.displayedDevelopers" st-safe-src="vm.searchedDevelopers" class="table table-striped">
           <thead>
             <tr>
               <th class="search-header" st-sort="name" st-skip-natural="true">Developer</th>
@@ -32,7 +32,7 @@
             </tr>
           </thead>
           <tbody>
-	        <tr ng-repeat="activity in vm.displayedVendors">
+	        <tr ng-repeat="activity in vm.displayedDevelopers">
 		      <td class="">{{ activity.name }}</td>
 		      <td class=""><span ng-bind-html="activity.action"></span></td>
 		      <td class="">{{ activity.date | date : 'medium' }}</td>
@@ -102,6 +102,26 @@
 		      <td class="">{{ activity.name }}</td>
 		      <td class=""><span ng-bind-html="activity.action"></span></td>
 		      <td class="">{{ activity.date | date : 'medium' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" ng-if="vm.workType === 'announcement'">
+      <div class="col-sm-12">
+        <h3>Announcement Activity</h3>
+        <table st-table="vm.displayedAnnouncements" st-safe-src="vm.searchedAnnouncements" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="name" st-skip-natural="true">Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+	        <tr ng-repeat="activity in vm.displayedAnnouncements">
+		      <td class="">{{ activity.description }}</td>
+		      <td class="">{{ activity.activityDate | date : 'medium' }}</td>
             </tr>
           </tbody>
         </table>

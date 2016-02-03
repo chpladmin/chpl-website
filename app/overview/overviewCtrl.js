@@ -7,6 +7,7 @@
 
             vm.loadAcbs = loadAcbs;
             vm.loadAtls = loadAtls;
+            vm.loadAnnouncements = loadAnnouncements;
 
             activate();
 
@@ -15,6 +16,16 @@
             function activate () {
                 vm.loadAcbs();
                 vm.loadAtls();
+                vm.loadAnnouncements();
+            }
+
+            function loadAnnouncements () {
+            	commonService.getAnnouncements(false)
+            		.then (function (result) {
+            			vm.announcements = result.announcements;
+            		}, function (error) {
+            			$log.debug('error in app.overview.controller.loadAnnouncements', error);
+            		});
             }
 
             function loadAcbs () {

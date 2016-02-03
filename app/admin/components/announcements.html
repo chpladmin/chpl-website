@@ -1,0 +1,34 @@
+<section class="row">
+  <div class="col-md-12 main-content">
+    <h2>Announcement Management</h2>
+	<table class="table table-striped">
+	  <thead>
+		<tr>
+		  <th>Title</th>
+		  <th>Announcement</th>
+		  <th>Start Date</th>
+		  <th>End Date</th>
+          <th>Public</th>
+          <th><span class="sr-only">Action</span></th>
+		</tr>
+	  </thead>
+      <tfoot>
+        <tr>
+          <td colspan="6">
+            <button class="btn btn-default" ng-click="vm.create()">Add Announcement</button>
+          </td>
+        </tr>
+      </tfoot>
+	  <tbody>
+		<tr ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
+		  <td>{{ announcement.title }}</td>
+		  <td>{{ announcement.text }}</td>
+		  <td>{{ announcement.startDate | date: 'MM/dd/yyyy'}}</td>
+		  <td>{{ announcement.endDate | date: 'MM/dd/yyyy'}}</td>
+		  <td><span ng-if="announcement.isPublic">Yes</span><span ng-if="!announcement.isPublic">No</span></td>
+		  <td><button class="btn btn-default btn-block" ng-click="vm.edit(announcement,$index,true)">Edit</button></td>
+		</tr>
+	  </tbody>
+	</table>
+  </div>
+</section>

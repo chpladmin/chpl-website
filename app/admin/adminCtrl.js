@@ -36,13 +36,13 @@
                 } else {
                     vm.navState.dpManagement = 'manage';
                 }
-                commonService.getAcbs(true)
+                commonService.getAcbs(true, vm.isChplAdmin())
                     .then (function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
                     });
-                commonService.getAtls(true)
+                commonService.getAtls(true, vm.isChplAdmin())
                     .then (function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];
@@ -64,7 +64,7 @@
 
             function changeScreen (screen) {
                 if (screen === 'acbManagement') {
-                commonService.getAcbs(true)
+                commonService.getAcbs(true, vm.isChplAdmin())
                     .then (function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
@@ -72,7 +72,7 @@
                     });
                 }
                 if (screen === 'atlManagement') {
-                commonService.getAtls(true)
+                commonService.getAtls(true, vm.isChplAdmin())
                     .then (function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];

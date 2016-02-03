@@ -68,7 +68,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate'">
-              <td>{{ cp.vendor.name }}</td>
+              <td>{{ cp.developer.name }}</td>
               <td>{{ cp.product.name }}</td>
               <td>{{ cp.product.version }}</td>
               <td>{{ cp.certificationDate | date }}</td>
@@ -113,36 +113,36 @@
 
     <div ng-if="vm.workType === 'manage' || vm.workType === 'merge'"> <!-- developer -->
       <div class="row">
-        <div class="col-sm-12" ng-if="vm.activeVendor === '' && (vm.workType === 'manage' || vm.mergeType !== 'developer')">
+        <div class="col-sm-12" ng-if="vm.activeDeveloper === '' && (vm.workType === 'manage' || vm.mergeType !== 'developer')">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="vendorSelect" class="control-label">Developer</label>
+                <label for="developerSelect" class="control-label">Developer</label>
               </div>
               <div class="col-sm-7">
-                <select ng-model="vm.vendorSelect"
-                        id="vendorSelect" class="form-control col-sm-8"
-                        ng-options="v.name for v in vm.vendors | orderBy: 'name'">
+                <select ng-model="vm.developerSelect"
+                        id="developerSelect" class="form-control col-sm-8"
+                        ng-options="v.name for v in vm.developers | orderBy: 'name'">
                   <option value="" selected disabled>Select a developer</option>
                 </select>
               </div>
               <div class="col-sm-2">
-                <button class="btn btn-default form-control" ng-click="vm.selectVendor()">Choose</button>
+                <button class="btn btn-default form-control" ng-click="vm.selectDeveloper()">Choose</button>
               </div>
             </div>
           </div>
         </div>
         <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'developer'">
-          <label for="vendorMergeSelect" class="control-label admin-label-spaced">Select developers to merge</label>
-          <select ng-model="vm.mergingVendors" multiple="true"
-                  id="vendorMergeSelect" class="input-sm form-control"
-                  size="12" ng-options="v.name for v in vm.vendors | orderBy: 'name'">
+          <label for="developerMergeSelect" class="control-label admin-label-spaced">Select developers to merge</label>
+          <select ng-model="vm.mergingDevelopers" multiple="true"
+                  id="developerMergeSelect" class="input-sm form-control"
+                  size="12" ng-options="v.name for v in vm.developers | orderBy: 'name'">
           </select>
-          <p><button ng-disabled="vm.mergingVendors.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
+          <p><button ng-disabled="vm.mergingDevelopers.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
         </div>
       </div> <!-- end select developer -->
 
-      <div class="row" ng-if="vm.activeVendor !== ''">
+      <div class="row" ng-if="vm.activeDeveloper !== ''">
         <div class="col-sm-12">
           <h3 ng-if="vm.inspectingCp">System developer information</h3>
           <div class="panel panel-ai panel-admin">
@@ -150,28 +150,28 @@
               <span>Select a developer</span>
               <span class="pull-right">
                 <span ng-if="vm.workType !== 'merge'"><a href="" ng-click="vm.editDeveloper()"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |</span>
-                <a href="" ng-click="vm.activeVendor = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
+                <a href="" ng-click="vm.activeDeveloper = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>
             <div class="panel-body">
-              <div>{{ vm.activeVendor.name }} (Developer Code: {{ vm.activeVendor.vendorCode }}) <em class="pull-right">Last modified date: {{ vm.activeVendor.lastModifiedDate | date }}</em></div>
+              <div>{{ vm.activeDeveloper.name }} (Developer Code: {{ vm.activeDeveloper.developerCode }}) <em class="pull-right">Last modified date: {{ vm.activeDeveloper.lastModifiedDate | date }}</em></div>
               <div>
-                Line 1: {{ vm.activeVendor.address.line1 }}<br />
-                Line 2: {{ vm.activeVendor.address.line2 }}<br />
-                City: {{ vm.activeVendor.address.city }}<br />
-                State: {{ vm.activeVendor.address.state }}<br />
-                Zip: {{ vm.activeVendor.address.zipcode }}<br />
-                Country: {{ vm.activeVendor.address.country }}<br />
-                Website: {{ vm.activeVendor.website }}<br />
-                <span ng-if="vm.activeVendor.transparencyAttestation !== null">Transparency Attestation: {{ vm.activeVendor.transparencyAttestation }}<br /></span>
+                Line 1: {{ vm.activeDeveloper.address.line1 }}<br />
+                Line 2: {{ vm.activeDeveloper.address.line2 }}<br />
+                City: {{ vm.activeDeveloper.address.city }}<br />
+                State: {{ vm.activeDeveloper.address.state }}<br />
+                Zip: {{ vm.activeDeveloper.address.zipcode }}<br />
+                Country: {{ vm.activeDeveloper.address.country }}<br />
+                Website: {{ vm.activeDeveloper.website }}<br />
+                <span ng-if="vm.activeDeveloper.transparencyAttestation !== null">Transparency Attestation: {{ vm.activeDeveloper.transparencyAttestation }}<br /></span>
               </div>
-              <p ng-if="vm.vendorMessage !== undefined" class="bg-danger">{{ vm.vendorMessage }}</p>
+              <p ng-if="vm.developerMessage !== undefined" class="bg-danger">{{ vm.developerMessage }}</p>
             </div>
           </div>
         </div> <!-- end system developer -->
       </div> <!-- end active developer -->
 
-      <div ng-if="vm.workType === 'merge' && vm.activeVendor !== ''" class="row">
+      <div ng-if="vm.workType === 'merge' && vm.activeDeveloper !== ''" class="row">
         <div class="col-sm-12">
           <span ng-if="vm.mergeType === 'product' && vm.products.length > 1">
             <p>Select the products to merge by holding the Control (CTRL) button while clicking the desired products. Then click the 'Choose Products' button.</p>
@@ -181,7 +181,7 @@
         </div>
       </div>
 
-      <div class="row" ng-if="vm.activeProduct === '' && vm.activeVendor !== '' && (vm.mergeType !== 'developer' || vm.workType !== 'merge')"> <!-- product -->
+      <div class="row" ng-if="vm.activeProduct === '' && vm.activeDeveloper !== '' && (vm.mergeType !== 'developer' || vm.workType !== 'merge')"> <!-- product -->
         <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'product'">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
@@ -242,7 +242,7 @@
         </div>
       </div>
 
-      <div class="row" ng-if="vm.activeProduct !== '' && vm.activeVendor !== '' && vm.activeVersion === '' && ((vm.mergeType !== 'developer' && vm.mergeType !== 'product') || vm.workType !== 'merge')"> <!-- version -->
+      <div class="row" ng-if="vm.activeProduct !== '' && vm.activeDeveloper !== '' && vm.activeVersion === '' && ((vm.mergeType !== 'developer' && vm.mergeType !== 'product') || vm.workType !== 'merge')"> <!-- version -->
         <div class="col-sm-12" ng-if="vm.workType === 'manage' || vm.mergeType !== 'version'">
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">

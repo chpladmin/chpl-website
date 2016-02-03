@@ -1,6 +1,21 @@
 # Release Notes
 
-## Next version
+## Version 0.2.0
+_3 February 2016_
+
+### New or updated features
+* Already logged in user with link for additional permissions gets new permissions automatically when link followed
+* Added helpful error messages for form validation
+* Integrated with ACB & ATL 'undelete' feature
+* Removed ability to change ACB & ATL name for any but ROLE_ADMIN
+* Integrated with Announcements API feature
+
+### Bugs fixed
+* Removed Swagger validator badge
+* Enter submits login/change password action
+* Login form stays open on un/pw or email error
+
+## Version 0.1.1
 _12 January 2016_
 
 ### New or updated features

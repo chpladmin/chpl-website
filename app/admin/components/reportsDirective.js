@@ -11,10 +11,11 @@
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
             vm.refreshCp = refreshCp;
-            vm.refreshVendor = refreshVendor;
+            vm.refreshDeveloper = refreshDeveloper;
             vm.refreshProduct = refreshProduct;
             vm.refreshAcb = refreshAcb;
             vm.refreshAtl = refreshAtl;
+            vm.refreshAnnouncement = refreshAnnouncement;
             vm.refreshUser = refreshUser;
             vm.refreshApi = refreshApi;
             vm.refreshVisitors = refreshVisitors;
@@ -33,10 +34,11 @@
 
             function refreshActivity () {
                 vm.refreshCp();
-                vm.refreshVendor();
+                vm.refreshDeveloper();
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshAtl();
+                vm.refreshAnnouncement();
                 vm.refreshUser();
                 vm.refreshApi();
             }
@@ -49,11 +51,11 @@
                     });
             }
 
-            function refreshVendor () {
-                commonService.getVendorActivity(7)
+            function refreshDeveloper () {
+                commonService.getDeveloperActivity(7)
                     .then(function (data) {
-                        vm.searchedVendors = vm.interpretVendors(data);
-                        vm.displayedVendors = [].concat(vm.searchedVendors);
+                        vm.searchedDevelopers = vm.interpretDevelopers(data);
+                        vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
                     });
             }
 
@@ -78,6 +80,14 @@
                     .then(function (data) {
                         vm.searchedATLs = vm.interpretAtls(data);
                         vm.displayedATLs = [].concat(vm.searchedATLs);
+                    });
+            }
+
+            function refreshAnnouncement () {
+                commonService.getAnnouncementActivity(7)
+                    .then(function (data) {
+                        vm.searchedAnnouncements = vm.interpretAnnouncements(data);
+                        vm.displayedAnnouncements = [].concat(vm.searchedAnnouncements);
                     });
             }
 
@@ -146,7 +156,7 @@
                     vm.refreshCp();
                     break;
                 case 'dev':
-                    vm.refreshVendor();
+                    vm.refreshDeveloper();
                     break;
                 case 'prod':
                     vm.refreshProduct();
@@ -233,7 +243,7 @@
                 return ret;
             };
 
-            vm.interpretVendors = function (data) {
+            vm.interpretDevelopers = function (data) {
                 var ret = [];
                 var change;
 
@@ -267,7 +277,7 @@
                         activity.action = 'Update:<ul>';
                         change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                         if (change) activity.action += '<li>' + change + '</li>';
-                        // check on vendorId change
+                        // check on developerId change
                         activity.action += '</ul>';
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'product');
@@ -285,13 +295,17 @@
                     var activity = {date: data[i].activityDate};
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
-                        activity.action = 'Update:<ul>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        vm.analyzeAddress(activity, data[i]);
-                        activity.action += '</ul>';
+                        if (data[i].originalData.deleted !== data[i].newData.deleted) {
+                            activity.action = data[i].newData.deleted ? 'ACB was deleted' : 'ACB was restored';
+                        } else {
+                            activity.action = 'Update:<ul>';
+                            change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                            if (change) activity.action += '<li>' + change + '</li>';
+                            change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                            if (change) activity.action += '<li>' + change + '</li>';
+                            vm.analyzeAddress(activity, data[i]);
+                            activity.action += '</ul>';
+                        }
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'ACB');
                     }
@@ -308,18 +322,27 @@
                     var activity = {date: data[i].activityDate};
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
-                        activity.action = 'Update:<ul>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        vm.analyzeAddress(activity, data[i]);
-                        activity.action += '</ul>';
+                        if (data[i].originalData.deleted !== data[i].newData.deleted) {
+                            activity.action = data[i].newData.deleted ? 'ATL was deleted' : 'ATL was restored';
+                        } else {
+                            activity.action = 'Update:<ul>';
+                            change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                            if (change) activity.action += '<li>' + change + '</li>';
+                            change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                            if (change) activity.action += '<li>' + change + '</li>';
+                            vm.analyzeAddress(activity, data[i]);
+                            activity.action += '</ul>';
+                        }
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'ATL');
                     }
                     ret.push(activity);
                 }
+                return ret;
+            };
+
+            vm.interpretAnnouncements = function (data) {
+                var ret = data;
                 return ret;
             };
 
