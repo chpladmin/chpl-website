@@ -11,6 +11,7 @@
             vm.isAuthed = isAuthed;
             vm.login = login;
             vm.logout = logout;
+            vm.misMatchPasswords = misMatchPasswords;
             vm.sendReset = sendReset;
             vm.setActivity = setActivity;
             vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
@@ -32,6 +33,7 @@
                 } else {
                     vm.activity = vm.activityEnum.LOGIN;
                 }
+                vm.message = '';
                 $scope.$on('Keepalive', function() {
                     $log.info('Keepalive');
 
@@ -54,8 +56,8 @@
             }
 
             function changePassword () {
-                if (vm.password === vm.confirmPassword) {
-                    commonService.changePassword({userName: vm.userName, password: vm.password})
+                if (vm.newPassword === vm.confirmPassword) {
+                    commonService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
                         .then(function (response) {
                             vm.clear();
                             vm.message = 'Password successfully changed';
@@ -95,7 +97,7 @@
                         $location.path('/admin');
                         vm.clear();
                     }, function (error) {
-                        vm.message = error.data.error; 
+                        vm.message = error.data.error;
                     });
             }
 
@@ -107,6 +109,10 @@
 
             function setActivity (activity) {
                 vm.activity = activity;
+            }
+
+            function misMatchPasswords () {
+                return vm.newPassword !== vm.confirmPassword;
             }
 
             function sendReset () {
