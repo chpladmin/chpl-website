@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next Version
-_Date TBD_
+## Version 0.2.0
+_3 February 2016_
 
 ### New or updated features
 * Already logged in user with link for additional permissions gets new permissions automatically when link followed
