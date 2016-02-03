@@ -8,6 +8,7 @@
             vm.authorizeUser = authorizeUser;
             vm.createUser = createUser;
             vm.isAuthed = isAuthed;
+            vm.misMatchPasswords = misMatchPasswords;
 
             activate();
 
@@ -63,6 +64,10 @@
 
             function isAuthed () {
                 return authService.isAuthed();
+            }
+
+            function misMatchPasswords () {
+                return vm.userDetails.user.password !== vm.userDetails.user.passwordverify;
             }
 
             vm.validateUser = function () {

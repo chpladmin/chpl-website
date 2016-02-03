@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Implemented 'complicated' password requirements
+* Added 'Compliance attestation' on user creation
 
 ### Bugs fixed
 * Change password requires old password and not username
