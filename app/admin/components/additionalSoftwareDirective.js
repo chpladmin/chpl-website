@@ -19,16 +19,20 @@
                 }}, true);
 
             function format () {
-                var newString = "";
-                for (var i = 0; i < vm.additionalSoftware.length; i++) {
-                    newString += vm.additionalSoftware[i].name + " (Version: " + vm.additionalSoftware[i].version + ")";
-                    if (vm.additionalSoftware[i].chplId) {
-                        newString += " (CHPL Id: " + vm.additionalSoftware[i].chplId + ")";
+                if (vm.additionalSoftware.length === 0) {
+                    vm.prettyPrint = 'None';
+                } else {
+                    for (var i = 0; i < vm.additionalSoftware.length; i++) {
+                        var newString = '';
+                        newString += vm.additionalSoftware[i].name + " (Version: " + vm.additionalSoftware[i].version + ")";
+                        if (vm.additionalSoftware[i].chplId) {
+                            newString += " (CHPL Id: " + vm.additionalSoftware[i].chplId + ")";
+                        }
+                        newString += "; ";
                     }
-                    newString += "; ";
+                    newString = newString.substring(0, newString.length - 2);
+                    vm.prettyPrint = newString;
                 }
-                newString = newString.substring(0, newString.length - 2);
-                vm.prettyPrint = newString;
             }
 
             function addItem () {

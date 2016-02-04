@@ -353,6 +353,7 @@
                         isAcbStaff: function () { return self.isAcbStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
+                        testingLabs: function () { return self.testingLabs; },
                         statuses: function () { return self.statuses; },
                         workType: function () { return self.workType; }
                     },

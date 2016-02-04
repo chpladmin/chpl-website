@@ -59,46 +59,46 @@
         </div>
         <div class="product-element">
           <h3 class="product-heading">Quality Management System Attestation</h3>
-          <p ng-if="vm.product.qualityManagementSystemAtt">True</p>
-          <p ng-if="!vm.product.qualityManagementSystemAtt">False</p>
+          <p ng-if="vm.product.qualityManagementSystemAtt">Yes</p>
+          <p ng-if="!vm.product.qualityManagementSystemAtt">No</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Privacy and Security Attestation</h3>
-          <p ng-if="vm.product.privacyAttestation">True</p>
-          <p ng-if="!vm.product.privacyAttestation">False</p>
+          <p ng-if="vm.product.privacyAttestation">Yes</p>
+          <p ng-if="!vm.product.privacyAttestation">No</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Transparency Attestation</h3>
-          <p ng-if="vm.product.transparencyAttestation">True</p>
-          <p ng-if="!vm.product.transparencyAttestation">False</p>
+          <p ng-if="vm.product.transparencyAttestation">Yes</p>
+          <p ng-if="!vm.product.transparencyAttestation">No</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Inherited Certification Status</h3>
-          <p>{{ vm.product.ics ? vm.product.ics : '---' }} </p>
+          <p>{{ vm.product.ics ? vm.product.ics : 'N/A' }} </p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">QMS Testing</h3>
-          <p ng-if="vm.product.qmsTesting">True</p>
-          <p ng-if="!vm.product.qmsTesting">False</p>
+          <p ng-if="vm.product.qmsTesting">Yes</p>
+          <p ng-if="!vm.product.qmsTesting">No</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">SED Testing</h3>
-          <p ng-if="vm.product.sedTesting">True</p>
-          <p ng-if="!vm.product.sedTesting">False</p>
+          <p ng-if="vm.product.sedTesting">Yes</p>
+          <p ng-if="!vm.product.sedTesting">No</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Other ACB</h3>
-          <p>{{ vm.product.otherAcb ? vm.product.otherAcb : '---' }}</p>
+          <p>{{ vm.product.otherAcb ? vm.product.otherAcb : 'N/A' }}</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Terms of Use</h3>
           <p ng-if="vm.product.termsOfUse"><a href="{{ vm.product.termsOfUse }}">{{ vm.product.termsOfUse }}</a></p>
-          <p ng-if="!vm.product.termsOfUse">---</p>
+          <p ng-if="!vm.product.termsOfUse">N/A</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">API Documentation</h3>
           <p ng-if="vm.product.apiDocumentation"><a href="{{ vm.product.apiDocumentation }}">{{ vm.product.apiDocumentation }}</a></p>
-          <p ng-if="!vm.product.apiDocumentation">---</p>
+          <p ng-if="!vm.product.apiDocumentation">N/A</p>
         </div>
       </div>
       <div class="col-sm-8">
@@ -108,8 +108,8 @@
         </div>
         <ai-certs certs="vm.product.certificationResults"
                   cqms="vm.product.cqmResults"
-                  count-certs="{{ vm.product.countCerts }}"
-                  count-cqms="{{ vm.product.countCqms }}"
+                  count-certs="vm.product.countCerts"
+                  count-cqms="vm.product.countCqms"
                   report-file-location="{{ vm.product.reportFileLocation }}">
         </ai-certs>
       </div>

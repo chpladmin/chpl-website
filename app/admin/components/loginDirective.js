@@ -33,7 +33,7 @@
                 } else {
                     vm.activity = vm.activityEnum.LOGIN;
                 }
-                vm.message = '';
+                vm.clear();
                 $scope.$on('Keepalive', function() {
                     $log.info('Keepalive');
 
@@ -77,11 +77,14 @@
                 }
                 vm.userName = '';
                 vm.password = '';
+                vm.newPassword = '';
                 vm.confirmPassword = '';
                 vm.email = '';
                 vm.message = '';
-                vm.loginForm.$setPristine();
-                vm.loginForm.$setUntouched();
+                if (vm.loginForm) {
+                    vm.loginForm.$setPristine();
+                    vm.loginForm.$setUntouched();
+                }
             }
 
             function isAuthed () {
@@ -103,7 +106,7 @@
 
             function logout () {
                 authService.logout();
-                vm.activity = vm.activityEnum.LOGIN;
+                vm.clear();
                 Idle.unwatch();
             }
 

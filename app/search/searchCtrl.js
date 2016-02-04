@@ -296,6 +296,7 @@
 
             $scope.browseAll = function () {
                 $scope.clear();
+                vm.activeSearch = true;
                 vm.search();
             };
 

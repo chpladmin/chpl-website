@@ -166,15 +166,12 @@
         </div>
         <div class="col-sm-6">
           <h3>Uploaded product information</h3>
-          <p>This is the product information from your Upload File.<span ng-if="vm.cp.product.id"> To add this information to the Open Data CHPL database, click the Save as Product Information button below.</span></p>
+          <p>This is the product information from your Upload File.</p>
           <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.cp.product.name }}
             </div>
             <div class="panel-body">
-            </div>
-            <div class="panel-footer" ng-if="vm.cp.product.id">
-              <button class="btn btn-default btn-block" ng-click="vm.saveInspectingProduct()">Save as Product Information</button>
             </div>
           </div>
         </div>
@@ -237,15 +234,12 @@
         </div>
         <div class="col-sm-6">
           <h3>Uploaded version information</h3>
-          <p>This is the version information from your Upload File.<span ng-if="vm.cp.product.versionId"> To add this information to the Open Data CHPL database, click the Save as Version Information button below.</span></p>
+          <p>This is the version information from your Upload File.</p>
           <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.cp.product.version }}
             </div>
             <div class="panel-body">
-            </div>
-            <div class="panel-footer" ng-if="vm.cp.product.versionId">
-              <button class="btn btn-default btn-block" ng-click="vm.saveInspectingVersion()">Save as Version Information</button>
             </div>
           </div>
         </div>
@@ -288,8 +282,8 @@
             <ai-certs ng-if="vm.cp !== ''"
                       certs="vm.cp.certificationResults"
                       cqms="vm.cp.cqmResults"
-                      count-certs="{{ vm.cp.countCerts }}"
-                      count-cqms="{{ vm.cp.countCqms }}"
+                      count-certs="vm.cp.countCerts"
+                      count-cqms="vm.cp.countCqms"
                       default-all="true"
                       edit-mode="false"
                       report-file-location="{{ vm.cp.reportFileLocation }}">

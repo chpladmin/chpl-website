@@ -56,7 +56,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-ai">
+    <div class="panel panel-ai" ng-if="!vm.isConfirming">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('test')"><i class="fa fa-lg" ng-class="vm.panelShown === 'test' ? 'fa-caret-down' : 'fa-caret-right'"></i> ATL Test Report</a>
       </div>
@@ -64,7 +64,8 @@
         <h3>ATL Test Report</h3>
         <p>The following link provides the detailed test results summary from the Accredited Testing Laboratory (ATL) responsible for testing the corresponding certified product.</p>
         <h4>Report File Location</h4>
-        <a href="{{ vm.reportFileLocation }}">{{ vm.reportFileLocation }}</a>
+        <a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}">{{ vm.reportFileLocation }}</a>
+        <p ng-if="!vm.reportFileLocation">No report on file</p>
       </div>
     </div>
   </div>

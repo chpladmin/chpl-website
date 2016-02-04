@@ -48,7 +48,6 @@
             }
 
             function attachModel () {
-                $log.debug('testingLabs', vm.testingLabs);
                 vm.cp.practiceType = vm.findModel(vm.cp.practiceType, vm.practices);
                 vm.cp.certifyingBody = vm.findModel(vm.cp.certifyingBody, vm.bodies);
                 if (vm.cp.testingLab) {

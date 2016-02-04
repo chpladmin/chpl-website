@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'developers', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, developers, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, statuses, commonService) {
+        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'developers', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'testingLabs', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, developers, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, testingLabs, statuses, commonService) {
             var vm = this;
 
             vm.activate = activate;
@@ -52,6 +52,7 @@
                 vm.isAcbStaff = isAcbStaff;
                 vm.isChplAdmin = isChplAdmin;
                 vm.bodies = bodies;
+                vm.testingLabs = testingLabs;
                 vm.statuses = statuses;
                 for (var i = 0; i < vm.statuses.length; i++) {
                     if (vm.statuses[i].name === 'Pending') {
@@ -196,6 +197,7 @@
                         isAcbStaff: function () { return vm.isAcbStaff; },
                         isChplAdmin: function () { return vm.isChplAdmin; },
                         bodies: function () { return vm.bodies; },
+                        testingLabs: function () { return vm.testingLabs; },
                         statuses: function () { return vm.statuses; },
                         workType: function () { return 'confirm'; }
                     }

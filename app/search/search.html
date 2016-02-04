@@ -28,6 +28,7 @@
             <option value="developer">Developer</option>
             <option value="product">Product</option>
             <option value="version">Version</option>
+            <option value="certificationBody">Certification Body</option>
             <option value="visibleOnCHPL">Visible on CHPL</option>
             <option value="certificationCriteria">Certification Criteria</option>
             <option value="cqms">Clinical Quality Measure</option>
@@ -46,7 +47,7 @@
                  typeahead-focus-first="false"
                  typeahead-input-formatter="$model.value" />
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -59,7 +60,7 @@
                  typeahead-focus-first="false"
                  typeahead-input-formatter="$model.value" />
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -69,7 +70,19 @@
           <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refine.version"
                  ng-required="vm.refineType === 'version'"/>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-4" ng-if="vm.refineType === 'certificationBody'">
+        <div class="input-group">
+          <label for="acbRefine" class="control-label sr-only">Certification Body</label>
+          <select id="acbRefine" ng-model="vm.refine.certificationBody" class="input-sm form-control"
+                  ng-required="vm.refineType === 'certificationBody'"
+                  ng-options="acb.name as acb.name for acb in vm.certBodies | orderBy:'name'">
+          </select>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -82,7 +95,7 @@
             <option value="both">Both</option>
           </select>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -95,7 +108,7 @@
             <option value="both">Both</option>
           </select>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -107,7 +120,7 @@
                   ng-options="edition.name as edition.name for edition in vm.editions | orderBy:'name'">
           </select>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -119,7 +132,7 @@
                   ng-options="p.name as p.name for p in vm.practices | orderBy:'name'">
           </select>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -131,7 +144,7 @@
                   ng-options="cert.name as cert.name + ': ' + cert.title for cert in vm.certs | orderBy:'name'">
           </select>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -143,7 +156,7 @@
                   ng-options="cqm.name as prepend(cqm.name) + ': ' + cqm.title for cqm in vm.cqms | orderBy:'name'">
           </select>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Filter</button>
+            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
           </span>
         </div>
       </div>
@@ -160,6 +173,7 @@
         <li class="animate-if" ng-if="vm.query.developer"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('developer')"><span class="ai-lead">Developer:</span> {{ vm.query.developer }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.product"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('product')"><span class="ai-lead">Product:</span> {{ vm.query.product }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.version"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('version')"><span class="ai-lead">Version:</span> {{ vm.query.version }} <i class="fa fa-close"></i></button></li>
+        <li class="animate-if" ng-if="vm.query.certificationBody"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationBody')"><span class="ai-lead">Certification Body:</span> {{ vm.query.certificationBody }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationEdition')"><span class="ai-lead">Certification Edition:</span> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-if="vm.query.practiceType"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('practiceType')"><span class="ai-lead">Practice Type:</span> {{ vm.query.practiceType }} <i class="fa fa-close"></i></button></li>
         <li class="animate-if" ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i></button></li>
@@ -172,7 +186,7 @@
 
   <div id="resultsSection" ng-if="hasSearched()" class="main-content">
     <div class="row">
-      <div ng-class="{ 'col-md-12': vm.compareCps.length === 0, 'col-md-9': vm.compareCps.length > 0 }">
+      <div class="col-md-9">
         <div class="row">
           <div class="col-md-6">
             <p ng-if="!hasResults()">No results found</p>
@@ -200,13 +214,13 @@
                   <td colspan="5" class="text-center">
                     <p class="pull-right">
                       <label for="pageSize" class="sr-only">Show how many results</label>
-                      Showing
+                      Showing up to
                       <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
                         <option value="50">50</option>
                         <option value="100">100</option>
                         <option value="250">250</option>
                       </select>
-                      per page
+                      results per page
                     </p>
                     <pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
                                 max-size="10" class="pagination-sm" boundary-links="true"></pagination>
@@ -254,7 +268,7 @@
           </div>
         </div>
       </div>
-      <div ng-if="vm.compareCps.length > 0" class="col-md-3 animate-if">
+      <div class="col-md-3">
         <div class="panel panel-ai">
           <div class="panel-heading">
             Compare these {{ vm.compareCps.length }} products
@@ -270,7 +284,7 @@
           </div>
           <div class="panel-body">
             <ul class="list-unstyled">
-              <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></li>
+              <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }}</a></li>
             </ul>
             <button class="btn btn-warning btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
           </div>
