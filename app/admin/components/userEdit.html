@@ -10,6 +10,7 @@
     <h4 class="modal-title" ng-if="vm.action === 'invite'" id="editLabel">Invite User</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
+    <p ng-if="vm.message" class="bg-danger">{{ vm.message }}</p>
     <div ng-if="vm.action === 'edit'">
       <div class="form-group">
         <label for="username">Username <span class="text-danger">*</span></label>
