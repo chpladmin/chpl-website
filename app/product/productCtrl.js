@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.product')
-        .controller('ProductController', ['$scope', '$log', '$routeParams', '$modal', 'commonService', function($scope, $log, $routeParams, $modal, commonService) {
+        .controller('ProductController', ['$scope', '$log', '$routeParams', '$modal', 'commonService', 'authService', function($scope, $log, $routeParams, $modal, commonService, authService) {
             var vm = this;
 
             vm.activate = activate;
@@ -32,6 +32,7 @@
                     }, function (error) {
                         $log.error (error);
                     });
+                vm.isAuthed = authService.isAuthed();
             }
 
             function openLastModified () {

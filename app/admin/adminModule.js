@@ -7,6 +7,11 @@
                 templateUrl: 'admin/admin.html'
             });
         }])
+        .config(['$routeProvider', function($routeProvider) {
+            $routeProvider.when('/admin/:productId', {
+                templateUrl: 'admin/admin.html'
+            });
+        }])
         .config(function(IdleProvider, KeepaliveProvider) {
             // configure Idle settings
             IdleProvider.idle(60 * 20); // in seconds

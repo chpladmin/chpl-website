@@ -32,6 +32,7 @@
       </div>
       <div class="col-sm-8 text-right">
         <p>Certification Date: {{ vm.product.certificationDate | date }} | Last modified Date: {{ vm.product.lastModifiedDate | date }}</p>
+        <p ng-if="vm.isAuthed"><a ng-href="#/admin/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
       </div>
     </div>
 

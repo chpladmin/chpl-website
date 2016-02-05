@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$log', '$filter', 'authService', 'commonService', function ($log, $filter, authService, commonService) {
+        .controller('AdminController', ['$log', '$filter', '$routeParams', 'authService', 'commonService', function ($log, $filter, $routeParams, authService, commonService) {
             var vm = this;
 
             vm.changeAcb = changeAcb
@@ -26,15 +26,21 @@
                 vm.navState = {
                     reports: 'cp'
                 };
-                if (vm.isChplAdmin() || vm.isAcbAdmin()) {
+                if ($routeParams.productId && (vm.isChplAdmin() || vm.isAcbAdmin()))  {
                     vm.navState.screen = 'dpManagement';
-                } else if (vm.isAtlAdmin()) {
-                    vm.navState.screen = 'atlManagement';
-                }
-                if (!vm.isChplAdmin()) {
-                    vm.navState.dpManagement = 'upload';
-                } else {
                     vm.navState.dpManagement = 'manage';
+                    vm.productId = $routeParams.productId;
+                } else {
+                    if (vm.isChplAdmin() || vm.isAcbAdmin()) {
+                        vm.navState.screen = 'dpManagement';
+                    } else if (vm.isAtlAdmin()) {
+                        vm.navState.screen = 'atlManagement';
+                    }
+                    if (!vm.isChplAdmin()) {
+                        vm.navState.dpManagement = 'upload';
+                    } else {
+                        vm.navState.dpManagement = 'manage';
+                    }
                 }
                 commonService.getAcbs(true, vm.isChplAdmin())
                     .then (function (data) {

@@ -22,6 +22,7 @@
             self.rejectCp = rejectCp;
             self.parseUploadError = parseUploadError;
             self.doWork = doWork;
+            self.loadCp = loadCp;
 
             self.activate();
 
@@ -36,7 +37,7 @@
                 self.isAcbAdmin = authService.isAcbAdmin();
                 self.isAcbStaff = authService.isAcbStaff();
                 self.uploadingCps = [];
-                self.workType = self.isChplAdmin ? 'manage' : 'upload';
+                self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
 
@@ -81,6 +82,10 @@
                 commonService.getDevelopers()
                     .then(function (developers) {
                         self.developers = developers.developers;
+
+                        if (self.productId) {
+                            self.loadCp();
+                        }
                     });
             }
 
@@ -400,6 +405,49 @@
                     self.workType = workType;
                 }
             }
+
+            function loadCp () {
+                commonService.getProduct(self.productId)
+                    .then(function (result) {
+                        for (var i = 0; i < self.developers.length; i++) {
+                            if (result.developer.id === self.developers[i].developerId) {
+                                self.developerSelect = self.developers[i];
+                                break;
+                            }
+                        }
+                        self.activeDeveloper = self.developerSelect;
+                        commonService.getProductsByDeveloper(self.activeDeveloper.developerId)
+                            .then(function (products) {
+                                self.products = products.products;
+                                for (var i = 0; i < self.products.length; i++) {
+                                    if (result.product.id === self.products[i].productId) {
+                                        self.productSelect = self.products[i];
+                                        break;
+                                    }
+                                }
+                                self.activeProduct = self.productSelect;
+                                self.activeProduct.developerId = self.activeDeveloper.developerId;
+                                commonService.getVersionsByProduct(self.activeProduct.productId)
+                                    .then(function (versions) {
+                                        self.versions = versions;
+                                        for (var i = 0; i < self.versions.length; i++) {
+                                            if (result.product.versionId === self.versions[i].versionId) {
+                                                self.versionSelect = self.versions[i];
+                                                break;
+                                            }
+                                        }
+                                        self.activeVersion = self.versionSelect;
+                                        self.activeVersion.productId = self.activeProduct.productId;
+                                        commonService.getProductsByVersion(self.activeVersion.versionId, true)
+                                            .then(function (cps) {
+                                                self.cps = cps;
+                                                self.cpSelect = result.id;
+                                                self.selectCp();
+                                            });
+                                    });
+                            });
+                    });
+            }
         }]);
 
     angular.module('app.admin')
@@ -410,7 +458,8 @@
                 templateUrl: 'admin/components/vpManagement.html',
                 bindToController: {
                     workType: '=',
-                    pendingProducts: '='
+                    pendingProducts: '=',
+                    productId: '='
                 },
                 scope: {},
                 controllerAs: 'vm',

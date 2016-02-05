@@ -50,7 +50,8 @@
       <div class="col-sm-9 admin-inner-tab">
         <ai-vp-management ng-if="vm.navState.screen === 'dpManagement'"
                           pending-products="vm.pendingProducts"
-                          work-type="vm.navState.dpManagement"></ai-vp-management>
+                          work-type="vm.navState.dpManagement"
+                          product-id="vm.productId"></ai-vp-management>
         <ai-user-management ng-if="vm.navState.screen === 'userManagement'"></ai-user-management>
         <ai-acb-management ng-if="vm.navState.screen === 'acbManagement'"
                            work-type="vm.navState.workType"
