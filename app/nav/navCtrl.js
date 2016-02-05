@@ -2,19 +2,53 @@
     'use strict';
 
     angular.module('app.nav')
-        .controller('NavigationController', ['authService', '$location', '$log', function (authService, $location, $log) {
-            var self = this;
+        .controller('NavigationController', ['authService', '$location', '$log', '$scope', function (authService, $location, $log, $scope) {
+            var vm = this;
 
-            self.isActive = function (route) {
+            vm.getUsername = getUsername;
+            vm.isAcbAdmin = isAcbAdmin;
+            vm.isAcbStaff = isAcbStaff;
+            vm.isActive = isActive;
+            vm.isAtlAdmin = isAtlAdmin;
+            vm.isAuthed = isAuthed;
+            vm.isChplAdmin = isChplAdmin;
+
+//            activate();
+
+            ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                $scope.$on('admin.login', function (event, arg) {
+                    $log.debug('event', event, 'arg', arg);
+                });
+            }
+
+            function getUsername () {
+                return authService.getUsername();
+            }
+
+            function isAcbAdmin () {
+                return authService.isAcbAdmin();
+            }
+
+            function isAcbStaff () {
+                return authService.isAcbStaff();
+            }
+
+            function isActive (route) {
                 return route === $location.path();
-            };
+            }
 
-            self.isAuthed = function () {
+            function isAtlAdmin () {
+                return authService.isAtlAdmin();
+            }
+
+            function isAuthed () {
                 return authService.isAuthed()
             }
 
-            self.getUsername = function () {
-                return authService.getUsername();
+            function isChplAdmin () {
+                return authService.isChplAdmin();
             }
         }]);
 })();

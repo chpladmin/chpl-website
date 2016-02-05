@@ -6,6 +6,8 @@ _Date TBD_
 ### New features
 * Implemented 'complicated' password requirements
 * Added 'Compliance attestation' on user creation
+* Added 'deep link' to edit from details page
+* Updated admin navigation to show available pages
 
 ### Bugs fixed
 * Change password requires old password and not username
