@@ -160,11 +160,6 @@
           </span>
         </div>
       </div>
-<!--
-      <div class="col-sm-1">
-        <button ng-if="vm.refineType" ng-disabled="!vm.searchForm.$valid" class="btn btn-default btn-block form-control" ng-click="vm.addRefine()">Filter</button>
-      </div>
--->
     </div>
   </div>
   <div class="row" ng-if="vm.activeSearch">
@@ -201,9 +196,9 @@
             <table class="table search-table table-striped-foldout">
               <thead>
                 <tr>
-		          <th class="search-header" ng-click="sort('product')"
+		          <th class="search-header" ng-click="sort('product')" tabindex="0"
                       ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
-                  <th class="search-header" ng-click="sort('developer')"
+                  <th class="search-header" ng-click="sort('developer')" tabindex="0"
                       ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer</th>
                   <th class="">Version</th>
                   <th colspan="2"><span class="sr-only">Actions</span></th>
@@ -233,10 +228,11 @@
 		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.developer.name }}</td>
 		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
                   <td>
-                    <a class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>
+                    <a href ng-click="showDetails = !showDetails" class="sr-only">show/hide summary details</a>
+                    <a href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>
                   </td>
                   <td>
-                    <button class="btn btn-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> Compare</button>
+                    <button href class="btn btn-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> Compare</button>
                   </td>
 	            </tr>
                 <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
@@ -274,8 +270,8 @@
             Compare these {{ vm.compareCps.length }} products
           </div>
           <div class="panel-body">
-            <button class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }} <span class="pull-right"><i class="fa fa-close"></i></span></button>
-            <button class="btn btn-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
+            <button href class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }} <span class="pull-right"><i class="fa fa-close"></i></span></button>
+            <button href class="btn btn-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
           </div>
         </div>
         <div class="panel panel-ai animate-if" ng-if="vm.previouslyCompared.length > 0">

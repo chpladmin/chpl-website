@@ -14,7 +14,7 @@
       <div class="col-sm-12" ng-if="vm.workType === 'acb'">
         <h2>ACB Information</h2>
         <span>Name: {{ vm.activeAcb.name }}</span><br />
-        <span>Website: <a href="{{ vm.activeAcb.website }}" ng-if="vm.activeAcb.website">{{ vm.activeAcb.website }}</a><span ng-if="!vm.activeAcb.website">None</span></span><br />
+        <span>Website: <ai-a href="{{ vm.activeAcb.website }}" text="{{ vm.activeAcb.website }}" ng-if="vm.activeAcb.website"></ai-a><span ng-if="!vm.activeAcb.website">None</span></span><br />
         <span>ACB Code: {{ vm.activeAcb.acbCode }}</span><br />
         <h3>Address</h3>
         <span>Line 1: {{ vm.activeAcb.address.line1 }}</span><br />

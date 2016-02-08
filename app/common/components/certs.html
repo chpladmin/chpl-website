@@ -64,7 +64,7 @@
         <h3>ATL Test Report</h3>
         <p>The following link provides the detailed test results summary from the Accredited Testing Laboratory (ATL) responsible for testing the corresponding certified product.</p>
         <h4>Report File Location</h4>
-        <a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}">{{ vm.reportFileLocation }}</a>
+        <ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" text="{{ vm.reportFileLocation }}"></ai-a>
         <p ng-if="!vm.reportFileLocation">No report on file</p>
       </div>
     </div>

@@ -15,6 +15,7 @@
             });
 
             module('app/admin/components/vpManagement.html');
+            module('app/common/components/a.html');
 
             inject(function($q) {
                 mockCommonService.developers = {developers: ['Developer 1', 'Developer 2']};
@@ -104,6 +105,8 @@
 
             var template = $templateCache.get('app/admin/components/vpManagement.html');
             $templateCache.put('admin/components/vpManagement.html', template);
+            template = $templateCache.get('app/common/components/a.html');
+            $templateCache.put('common/components/a.html', template);
 
             $httpBackend.whenGET('common/components/certs.html')
                 .respond(200, '<div></div>');

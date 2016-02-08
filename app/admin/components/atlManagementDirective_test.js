@@ -16,6 +16,7 @@
 
             module('app/admin/components/atlManagement.html');
             module('app/admin/components/userManagement.html');
+            module('app/common/components/a.html');
 
             mockCommonService.atls = {atls: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
 
@@ -60,6 +61,8 @@
             $templateCache.put('admin/components/atlManagement.html', template);
             template = $templateCache.get('app/admin/components/userManagement.html');
             $templateCache.put('admin/components/userManagement.html', template);
+            template = $templateCache.get('app/common/components/a.html');
+            $templateCache.put('common/components/a.html', template);
 
             element = angular.element('<ai-atl-management create-atl="fakeFunction"></ai-atl-management');
             $compile(element)(scope);

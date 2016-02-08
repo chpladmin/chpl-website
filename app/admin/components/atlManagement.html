@@ -14,7 +14,7 @@
       <div class="col-sm-12" ng-if="vm.workType === 'atl'">
         <h2>ATL Information</h2>
         <span>Name: {{ vm.activeAtl.name }}</span><br />
-        <span>Website: <a href="{{ vm.activeAtl.website }}" ng-if="vm.activeAtl.website">{{ vm.activeAtl.website }}</a><span ng-if="!vm.activeAtl.website">None</span></span><br />
+        <span>Website: <ai-a href="{{ vm.activeAtl.website }}" text="{{ vm.activeAtl.website }}" ng-if="vm.activeAtl.website"></ai-a><span ng-if="!vm.activeAtl.website">None</span></span><br />
         <span>ATL Code: {{ vm.activeAtl.atlCode }}</span><br />
         <h3>Address</h3>
         <span>Line 1: {{ vm.activeAtl.address.line1 }}</span><br />

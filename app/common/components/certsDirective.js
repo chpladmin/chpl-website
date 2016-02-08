@@ -16,7 +16,7 @@
             function activate () {
                 vm.editCqms = {};
                 vm.addIds();
-                vm.panelShown = '';
+                vm.panelShown = 'cert';
             }
 
             $scope.$watch('cqms', function (newCqms) {

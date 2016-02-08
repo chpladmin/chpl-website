@@ -8,6 +8,9 @@ _Date TBD_
 * Added 'Compliance attestation' on user creation
 * Added 'deep link' to edit from details page
 * Updated admin navigation to show available pages
+* Update wrt 508 compliance
+  * Added tab navigation to search results
+  * Added 'external link' indicator
 
 ### Bugs fixed
 * Change password requires old password and not username

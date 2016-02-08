@@ -21,7 +21,7 @@
           <li ng-class="{'active': vm.isActive('/api') }"><a href="#/api">API</a></li>
 
           <li ng-class="{'active': vm.isActive('/admin') }" class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{ vm.getUsername() }} <span class="fa fa-caret-down"></span></a>
+            <a href class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span ng-if="!vm.getUsername()" class="sr-only">Log in</span>{{ vm.getUsername() }} <span class="fa fa-caret-down"></span></a>
             <ul class="dropdown-menu">
               <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isAcbStaff()"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
               <li ng-if="vm.isChplAdmin()"><a href="#/admin/userManagement">User Management</a></li>
