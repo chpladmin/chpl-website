@@ -11,6 +11,7 @@ _Date TBD_
 * Update wrt 508 compliance
   * Added tab navigation to search results
   * Added 'external link' indicator
+* Blended 'Surveillance' with 'Corrective Action Plan'
 
 ### Bugs fixed
 * Change password requires old password and not username

@@ -6,6 +6,9 @@
     <thead>
       <tr>
         <th>Is In Effect</th>
+        <th>Surveillance Began</th>
+        <th>Surveillance Ended</th>
+        <th>Number of Sites</th>
         <th>Date of Determination</th>
         <th>Action Began</th>
         <th>Plan Approved</th>
@@ -20,6 +23,9 @@
     <tbody>
       <tr ng-repeat-start="cap in vm.correctiveActionPlan | orderBy: 'id'">
         <td><span ng-if="cap.actualCompletionDate">No</span><span ng-if="!cap.actualCompletionDate">Yes</span></td>
+        <td>{{ cap.surveillanceStartDate | date }}</td>
+        <td>{{ cap.surveillanceEndDate | date }}</td>
+        <td>{{ cap.surveillanceSiteCount }}</td>
         <td>{{ cap.noncomplianceDate | date }}</td>
         <td>{{ cap.effectiveDate | date }}</td>
         <td>{{ cap.approvalDate | date }}</td>
@@ -33,11 +39,13 @@
         </td>
       </tr>
       <tr ng-if="cap.certifications.length > 0">
-        <td colspan="{{ vm.isAdmin ? '10' : '9'}}">
-          <table class="table table-striped">
+        <td colspan="{{ vm.isAdmin ? '13' : '12'}}">
+          <table class="table table-striped" width="100%">
             <thead>
               <tr>
                 <th>Certification Criteria</th>
+                <th>Pass Rate</th>
+                <th>Surveillance Results</th>
                 <th>ACB Summary</th>
                 <th>Developer Summary</th>
                 <th>Resolution</th>
@@ -46,6 +54,8 @@
             <tbody>
               <tr ng-repeat="cert in cap.certifications">
                 <td>{{ cert.certificationCriterionNumber + ': ' + cert.certificationCriterionTitle }}</td>
+                <td>{{ cert.surveillancePassRate }}</td>
+                <td>{{ cert.surveillanceResults }}</td>
                 <td>{{ cert.acbSummary }}</td>
                 <td>{{ cert.developerSummary }}</td>
                 <td>{{ cert.resolution }}</td>
