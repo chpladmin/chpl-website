@@ -380,19 +380,23 @@
 
             function parseUploadError (cp) {
                 var ret = '';
-                if (cp.errorMessages.length > 0) {
-                    ret += 'Errors:&nbsp;' + cp.errorMessages.length;
-                }
-                if (cp.warningMessages.length > 0) {
-                    if (ret.length > 0)
-                        ret += '<br />';
-                    ret += 'Warnings:&nbsp;' + cp.warningMessages.length;
-                }
-                if (ret.length > 0) {
-                    return ret;
+                if (cp.recordStatus.toLowerCase() !== 'new') {
+                    ret = 'Existing Certified Product found';
                 } else {
-                    return 'OK';
+                    if (cp.errorMessages.length > 0) {
+                        ret += 'Errors:&nbsp;' + cp.errorMessages.length;
+                    }
+                    if (cp.warningMessages.length > 0) {
+                        if (ret.length > 0)
+                            ret += '<br />';
+                        ret += 'Warnings:&nbsp;' + cp.warningMessages.length;
+                    }
+                    if (ret.length === 0) {
+                        ret = 'OK';
+
+                    }
                 }
+                return ret;
             }
 
             function doWork (workType) {
