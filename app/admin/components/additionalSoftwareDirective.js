@@ -10,29 +10,32 @@
             vm.editItem = editItem;
             vm.removeItem = removeItem;
 
+            activate();
+
             ////////////////////////////////////////////////////////////////////
 
-            $scope.$watch('additionalSoftware', function (newSw) {
-                if (newSw) {
-                    vm.additionalSoftware = newSw;
-                    vm.format();
-                }}, true);
+            function activate () {
+                vm.format();
+            }
 
             function format () {
-                if (vm.additionalSoftware.length === 0) {
-                    vm.prettyPrint = 'None';
+                var ret = '';
+                if (!vm.additionalSoftware || vm.additionalSoftware.length === 0) {
+                    ret = 'None';
                 } else {
                     for (var i = 0; i < vm.additionalSoftware.length; i++) {
-                        var newString = '';
-                        newString += vm.additionalSoftware[i].name + " (Version: " + vm.additionalSoftware[i].version + ")";
-                        if (vm.additionalSoftware[i].chplId) {
-                            newString += " (CHPL Id: " + vm.additionalSoftware[i].chplId + ")";
+                        ret += vm.additionalSoftware[i].name;
+                        if (vm.additionalSoftware[i].version !== '-1') {
+                            ret += " (Version: " + vm.additionalSoftware[i].version + ")";
                         }
-                        newString += "; ";
+                        if (vm.additionalSoftware[i].chplId) {
+                            ret += " (CHPL Id: " + vm.additionalSoftware[i].certifiedProductCHPLId + ")";
+                        }
+                        ret += "; ";
                     }
-                    newString = newString.substring(0, newString.length - 2);
-                    vm.prettyPrint = newString;
+                    ret = ret.substring(0, ret.length - 2);
                 }
+                return ret;
             }
 
             function addItem () {
@@ -44,7 +47,7 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        software: function () { return { name: '', version: '', chplId: '' }; }
+                        software: function () { return { name: '', version: '', certifiedProductSelfCHPLId: '' }; }
                     }
                 });
                 vm.editModalInstance.result.then(function (result) {
@@ -52,7 +55,6 @@
                         vm.additionalSoftware = [];
                     }
                     vm.additionalSoftware.push(result);
-                    vm.format();
                 }, function (result) {
                     if (result !== 'cancelled') {
                         console.debug('dismissed', result);
@@ -74,7 +76,6 @@
                 });
                 vm.editModalInstance.result.then(function (result) {
                     vm.additionalSoftware[index] = result;
-                    vm.format();
                 }, function (result) {
                     if (result !== 'cancelled') {
                         console.debug('dismissed', result);

@@ -14,14 +14,14 @@
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
             {{ n.number }}: {{ n.title }}
-            <span ng-if="n.additionalSoftware">Certification met via:
+            <span ng-if="n.additionalSoftware && n.additionalSoftware.length > 0"><br />Certification met via:
               <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
             </span>
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="n.success" id="data_{{n.number}}"></input>
             <label for="data_{{n.number}}">{{ n.number }}: {{ n.title }}</label>
-            Certification met via additional software:
+            <br />Certification met via additional software:
             <ai-additional-software additional-software="n.additionalSoftware" is-editing="true"></ai-additional-software>
           </p>
         </div>
@@ -37,9 +37,6 @@
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
             <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b> <span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}
-            <span ng-if="n.additionalSoftware">CQM met via:
-              <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
-            </span>
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
@@ -50,8 +47,6 @@
               </select>
             </span>
             <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
-            CQM met via additional software:
-            <ai-additional-software additional-software="n.additionalSoftware" is-editing="true"></ai-additional-software>
           </p>
         </div>
       </div>
