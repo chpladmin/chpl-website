@@ -7,6 +7,7 @@
 
             vm.addIds = addIds;
             vm.saveEdits = saveEdits;
+            vm.showDetails = showDetails;
             vm.showPanel = showPanel;
 
             activate();
@@ -50,12 +51,13 @@
                 }
             }
 
+            function showDetails (number) {
+                vm.certDetails = vm.certDetails === number ? '' : number;
+                vm.showSed = false;
+            }
+
             function showPanel (panel) {
-                if (vm.panelShown === panel) {
-                    vm.panelShown = '';
-                } else {
-                    vm.panelShown = panel
-                }
+                vm.panelShown = vm.panelShown === panel ? '' : panel;
             }
         }]);
 
