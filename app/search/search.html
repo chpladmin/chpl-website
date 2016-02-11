@@ -5,7 +5,7 @@
       <h1>Search</h1>
     </div>
   </div>
-  <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.search()">
+  <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.search()" aria-live="polite">
     <div class="form-group form-group-lg">
       <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-5': vm.activeSearch || vm.searchForm.$dirty}">
         <label for="searchField" class="control-label sr-only">Search</label>
@@ -162,6 +162,7 @@
       </div>
     </div>
   </div>
+  <div aria-live="polite">
   <div class="row" ng-if="vm.activeSearch">
     <div class="col-sm-12">
       <ul class="list-inline">
@@ -178,7 +179,9 @@
       </ul>
     </div>
   </div>
+  </div>
 
+  <div aria-live="polite">
   <div id="resultsSection" ng-if="hasSearched()" class="main-content">
     <div class="row">
       <div class="col-md-9">
@@ -299,5 +302,6 @@
       </div>
     </div>
   </div> <!-- end of search results -->
+  </div>
   </div>
 </div> <!-- end controller -->

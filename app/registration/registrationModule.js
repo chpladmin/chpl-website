@@ -7,12 +7,14 @@
                 .when('/registration/create-user/:hash', {
                     templateUrl: 'registration/create-user.html',
                     controller: 'CreateController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    title: 'Registration'
                 })
                 .when('/registration/confirm-user/:hash', {
                     templateUrl: 'registration/confirm-user.html',
                     controller: 'ConfirmController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                    title: 'Registration'
                 });
         }]);
 })();
