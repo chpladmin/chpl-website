@@ -9,105 +9,14 @@
         <a href="" ng-click="vm.showPanel('cert')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
-        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing || vm.certDetails === n.number ? 'col-md-12' : 'col-md-4'" ng-repeat="n in vm.certs | orderBy:'number' track by $index">
+        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-12' : 'col-md-4'" ng-repeat="n in vm.certs | orderBy:'number' track by $index">
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-            {{ n.number }}: {{ n.title }} <a href class="pull-right" ng-click="vm.showDetails(n.number)">{{ vm.certDetails === n.number ? 'Hide' : 'View' }} details</a>
-            <div ng-if="vm.certDetails === n.number">
-              <span ng-if="n.additionalSoftware && n.additionalSoftware.length > 0"><br />Certification met via:
-                <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
-              </span>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Attribute</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>GAP</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>Privacy and Security Framework</td>
-                    <td>Approach 1</td>
-                  </tr>
-                  <tr>
-                    <td>Functionality Tested</td>
-                    <td>Optional (a)(1)(ii)</td>
-                  </tr>
-                  <tr>
-                    <td>Measure Successfully Tested for G1</td>
-                    <td>True</td>
-                  </tr>
-                  <tr>
-                    <td>Measure Successfully Tested for G2</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>Test procedure version</td>
-                    <td>v1</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" class="text-center"><a href ng-click="vm.showSed = !vm.showSed">{{ vm.showSed ? 'Hide' : 'View' }} SED Details</a></td>
-                  </tr>
-                  <tr ng-if="vm.showSed">
-                    <td>UCD Process Selected</td>
-                    <td>NIST 7741</td>
-                  </tr>
-                  <tr ng-if="vm.showSed">
-                    <td>UCD Process Details</td>
-                    <td>N/A</td>
-                  </tr>
-                  <tr ng-if="vm.showSed">
-                    <td colspan="2">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>Participant Age</th>
-                            <th>Participant Sex</th>
-                            <th>Participant Education</th>
-                            <th>Participant Occupation/Role</th>
-                            <th>Participant Computer Experience</th>
-                            <th>Participant Product Experience</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td>42</td><td>Male</td><td>No Degree</td><td>Clinical Assistant/Nephrology</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>32</td><td>Female</td><td>Bachelorette Degree</td><td>Clinical Manager (RN) Nephrology</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>45</td><td>Female</td><td>Master Degree</td><td>Physician's Assistant/Nephrology</td><td>Proficient</td><td>Yes</td></tr>
-                          <tr><td>56</td><td>Female</td><td>No Degree</td><td>Clinical Assistant/Nephrology</td><td>Proficient</td><td>Yes</td></tr>
-                          <tr><td>28</td><td>Male</td><td>Master Degree</td><td>Physician's Assistant/Nephrology</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>47</td><td>Male</td><td>Medical degree</td><td>MD/Nephrology</td><td>Novice</td><td>Yes</td></tr>
-                          <tr><td>23</td><td>Female</td><td>Bachelorette Degree</td><td>RN/Pediatrics</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>48</td><td>Female</td><td>Associate Degree</td><td>RN/Pediatrics</td><td>Novice</td><td>No</td></tr>
-                          <tr><td>62</td><td>Female</td><td>Associate Degree</td><td>Triage Coordinator</td><td>Novice</td><td>No</td></tr>
-                          <tr><td>36</td><td>Female</td><td>Bachelorette Degree</td><td>(RN)OB/GYN</td><td>Proficient</td><td>No</td></tr>
-                        </tbody>
-                      </table>
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>Task Description</th>
-                            <th>Task Success (%)</th>
-                            <th>Task Failures (%)</th>
-                            <th>Task Standard Deviations (%)</th>
-                            <th>Task Performance Time</th>
-                            <th>User Satisfaction Rating</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td>Enable a user to electronically record, change, and access the following order types (i) Medications; (ii) Laboratory; and (iii) Radiology/imaging.</td><td>90%</td><td>5%</td><td>16%</td><td>1.5 min</td><td>4</td></tr>
-                          <tr><td>Task 2: Order specific medication and then change the order based on the information provided.</td><td>88%</td><td>6%</td><td>19%</td><td>2 min</td><td>4</td></tr>                          <tr>
-                        </tbody>
-                      </table>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            {{ n.number }}: {{ n.title }}
+            <span ng-if="n.additionalSoftware && n.additionalSoftware.length > 0"><br />Certification met via:
+              <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
+            </span>
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="n.success" id="data_{{n.number}}"></input>
