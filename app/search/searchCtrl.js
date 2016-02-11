@@ -11,6 +11,7 @@
             vm.compare = compare;
             vm.search = search;
             vm.toggleCompare = toggleCompare;
+            vm.truncButton = truncButton;
             vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
 
@@ -159,6 +160,15 @@
                 if (toAdd) {
                     vm.compareCps.push(row);
                 }
+            }
+
+            function truncButton (str) {
+                var ret = str;
+                if (str.length > 20) {
+                    ret = ret.substring(0,20) + '&#8230;';
+                }
+                ret +='<span class="pull-right"><i class="fa fa-close"></i></span>';
+                return ret;
             }
 
             function unrefine (key, cert) {
