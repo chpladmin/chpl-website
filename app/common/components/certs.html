@@ -9,7 +9,7 @@
         <a href="" ng-click="vm.showPanel('cert')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
-        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing || vm.certDetails === n.number ? 'col-md-12' : 'col-md-4'" ng-repeat="n in vm.certs | orderBy:'number' track by $index">
+        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-12' : 'col-md-4'" ng-repeat="n in vm.certs | orderBy:'number' track by $index">
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
