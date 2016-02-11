@@ -7,5 +7,12 @@
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider
                 .otherwise({redirectTo: '/search'});
+        }])
+        .run(['$location', '$rootScope', function($location, $rootScope) {
+            $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+                if(current.$$route) {
+                    $rootScope.title = current.$$route.title;
+                }
+            })
         }]);
 })();

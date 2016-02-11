@@ -41,7 +41,8 @@
             $routeProvider.when('/listing', {
                 templateUrl: 'nav/layouts/product_listing.html',
                 controller: 'ProductListingController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                title: 'Product Listing'
             });
         }]);
 })();
