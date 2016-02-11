@@ -75,7 +75,8 @@
                     reportFileLocation: '@',
                     isEditing: '=',
                     isConfirming: '=',
-                    save: '&'
+                    save: '&',
+                    product: '='
                 },
                 scope: {},
                 controllerAs: 'vm',
