@@ -26,12 +26,6 @@
                     }, function (error) {
                         $log.error (error);
                     });
-                commonService.getSurveillance(vm.productId)
-                    .then(function (data) {
-                        vm.surveillances = data.surveillances;
-                    }, function (error) {
-                        $log.error (error);
-                    });
                 vm.isAuthed = authService.isAuthed();
             }
 
