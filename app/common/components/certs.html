@@ -166,33 +166,5 @@
         </span>
       </div>
     </div>
-    <div class="panel panel-ai">
-      <div class="panel-heading">
-        <a href="" ng-click="vm.showPanel('additional')"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
-      </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'">
-        <h4>Practice Type</h4>
-        <p>{{ vm.product.practiceType.name }}</p>
-        <h4>Privacy and Security Approach</h4>
-        <p ng-if="vm.product.privacyAttestation">Yes</p>
-        <p ng-if="!vm.product.privacyAttestation">No</p>
-        <h4>Inherited Certification Status</h4>
-        <p>{{ vm.product.ics ? vm.product.ics : 'N/A' }} </p>
-        <h4>QMS Testing</h4>
-        <p ng-if="vm.product.qmsTesting">Yes</p>
-        <p ng-if="!vm.product.qmsTesting">No</p>
-        <h4>SED Testing</h4>
-        <p ng-if="vm.product.sedTesting">Yes</p>
-        <p ng-if="!vm.product.sedTesting">No</p>
-        <h4>Other ACB</h4>
-        <p>{{ vm.product.otherAcb ? vm.product.otherAcb : 'N/A' }}</p>
-        <h4>Terms of Use</h4>
-        <p ng-if="vm.product.termsOfUse"><a href="{{ vm.product.termsOfUse }}">{{ vm.product.termsOfUse }}</a></p>
-        <p ng-if="!vm.product.termsOfUse">N/A</p>
-        <h4>API Documentation</h4>
-        <p ng-if="vm.product.apiDocumentation"><a href="{{ vm.product.apiDocumentation }}">{{ vm.product.apiDocumentation }}</a></p>
-        <p ng-if="!vm.product.apiDocumentation">N/A</p>
-      </div>
-    </div>
   </div>
 </div>
