@@ -13,7 +13,7 @@
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-            {{ n.number }}: {{ n.title }} <a href class="pull-right" ng-click="vm.showDetails(n.number)">{{ vm.certDetails === n.number ? 'Hide' : 'View' }} details</a>
+            {{ n.number }}: {{ n.title }} <a href class="pull-right" ng-click="vm.showDetails(n.number)" ng-if="n.success">{{ vm.certDetails === n.number ? 'Hide' : 'View' }} details</a>
             <div ng-if="vm.certDetails === n.number">
               <span ng-if="n.additionalSoftware && n.additionalSoftware.length > 0"><br />Certification met via:
                 <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
@@ -76,15 +76,15 @@
                         </thead>
                         <tbody>
                           <tr><td>42</td><td>Male</td><td>No Degree</td><td>Clinical Assistant/Nephrology</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>32</td><td>Female</td><td>Bachelorette Degree</td><td>Clinical Manager (RN) Nephrology</td><td>Proficient</td><td>No</td></tr>
+                          <tr><td>32</td><td>Female</td><td>Bachelor's Degree</td><td>Clinical Manager (RN) Nephrology</td><td>Proficient</td><td>No</td></tr>
                           <tr><td>45</td><td>Female</td><td>Master Degree</td><td>Physician's Assistant/Nephrology</td><td>Proficient</td><td>Yes</td></tr>
                           <tr><td>56</td><td>Female</td><td>No Degree</td><td>Clinical Assistant/Nephrology</td><td>Proficient</td><td>Yes</td></tr>
                           <tr><td>28</td><td>Male</td><td>Master Degree</td><td>Physician's Assistant/Nephrology</td><td>Proficient</td><td>No</td></tr>
                           <tr><td>47</td><td>Male</td><td>Medical degree</td><td>MD/Nephrology</td><td>Novice</td><td>Yes</td></tr>
-                          <tr><td>23</td><td>Female</td><td>Bachelorette Degree</td><td>RN/Pediatrics</td><td>Proficient</td><td>No</td></tr>
+                          <tr><td>23</td><td>Female</td><td>Bachelor's Degree</td><td>RN/Pediatrics</td><td>Proficient</td><td>No</td></tr>
                           <tr><td>48</td><td>Female</td><td>Associate Degree</td><td>RN/Pediatrics</td><td>Novice</td><td>No</td></tr>
                           <tr><td>62</td><td>Female</td><td>Associate Degree</td><td>Triage Coordinator</td><td>Novice</td><td>No</td></tr>
-                          <tr><td>36</td><td>Female</td><td>Bachelorette Degree</td><td>(RN)OB/GYN</td><td>Proficient</td><td>No</td></tr>
+                          <tr><td>36</td><td>Female</td><td>Bachelor's Degree</td><td>(RN)OB/GYN</td><td>Proficient</td><td>No</td></tr>
                         </tbody>
                       </table>
                       <table class="table">
