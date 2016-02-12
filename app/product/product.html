@@ -61,8 +61,8 @@
         </div>
         <div class="product-element">
           <h3 class="product-heading">Transparency Attestation</h3>
-          <p ng-if="vm.product.transparencyAttestation">Yes</p>
-          <p ng-if="!vm.product.transparencyAttestation">No</p>
+          <p ng-if="vm.product.transparencyAttestation">Affirmative</p>
+          <p ng-if="!vm.product.transparencyAttestation">Negative</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Quality Management System</h3>
@@ -70,6 +70,14 @@
           <p>ISO-9001</p>
           <h4>Description</h4>
           <p>The System extends through our software development process and into implementation and support—promoting quality in the application itself as well as in its deployment and use. Our software is designed, developed, tested, implemented, and maintained following an internally developed quality management system based on the principles of ISO 9001.</p>
+        </div>
+        <div class="product-element" ng-if="vm.correctiveActionPlan.length === 0">
+          <h3 class="product-heading">Transparency Surveillance</h3>
+          <ai-corrective-action-plan
+             corrective-action-plan="vm.correctiveActionPlan"
+             certified-product-id="vm.product.id"
+             certification-results="vm.product.certificationResults"
+             is-admin="false"></ai-corrective-action-plan>
         </div>
       </div>
       <div class="col-sm-8">
@@ -82,10 +90,10 @@
         </ai-certs>
       </div>
     </div>
-    <div class="row">
+    <div class="row" ng-if="vm.correctiveActionPlan.length > 0">
       <div class="col-sm-12">
         <div class="product-element">
-          <h3 class="product-heading">Corrective Action Plan</h3>
+          <h3 class="product-heading">Transparency Surveillance</h3>
           <ai-corrective-action-plan
              corrective-action-plan="vm.correctiveActionPlan"
              certified-product-id="vm.product.id"
