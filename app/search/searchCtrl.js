@@ -105,7 +105,7 @@
                         prev.shift();
                     }
                     $localStorage.previouslyCompared = prev;
-                    $location.path(comparePath);
+                    $location.url(comparePath);
                 }
             }
 
@@ -229,7 +229,7 @@
                     }
                     $localStorage.previouslyViewed = vm.previouslyViewed;
                 }
-                $location.path('/product/' + cp.id);
+                $location.url('/product/' + cp.id);
             }
 
             $scope.searchResults = [];

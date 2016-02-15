@@ -1,307 +1,307 @@
 <div ng-controller="SearchController as vm" ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }">
   <div class="container">
-  <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
-    <div class="col-sm-12">
-      <h1>Search</h1>
-    </div>
-  </div>
-  <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.search()" aria-live="polite">
-    <div class="form-group form-group-lg">
-      <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-5': vm.activeSearch || vm.searchForm.$dirty}">
-        <label for="searchField" class="control-label sr-only">Search</label>
-        <div class="input-group">
-          <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="vm.query.searchTermObject"
-                 ng-keyup="$event.keyCode === 13 && vm.search()"
-                 typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
-                 typeahead-focus-first="false"
-                 typeahead-input-formatter="$model.value" />
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.search()"><i class="fa fa-search"></i></button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-3" ng-if="vm.activeSearch">
-        <div class="input-group">
-          <label for="refine" class="sr-only">Select the what category to refine your search by</label>
-          <select id="refine" class="form-control" ng-change="vm.refineSearch()" ng-model="vm.refineType">
-            <option value="" disabled>Refine search by</option>
-            <option value="developer">Developer</option>
-            <option value="product">Product</option>
-            <option value="version">Version</option>
-            <option value="certificationBody">Certification Body</option>
-            <option value="visibleOnCHPL">Visible on CHPL</option>
-            <option value="certificationCriteria">Certification Criteria</option>
-            <option value="cqms">Clinical Quality Measure</option>
-            <option value="certificationEdition">Certification Edition</option>
-            <option value="practiceType">Practice Type</option>
-            <option value="hasCAP">Has Corrective Action Plan</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'developer'">
-        <div class="input-group">
-          <label for="developerRefine" class="control-label sr-only">Developer</label>
-          <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.developer"
-                 ng-required="vm.refineType === 'developer'"
-                 typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:{value:$viewValue} | limitTo:16"
-                 typeahead-focus-first="false"
-                 typeahead-input-formatter="$model.value" />
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'product'">
-        <div class="input-group">
-          <label for="productRefine" class="control-label sr-only">Product</label>
-          <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.refine.product"
-                 ng-required="vm.refineType === 'product'"
-                 typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:{value:$viewValue} | limitTo:16"
-                 typeahead-focus-first="false"
-                 typeahead-input-formatter="$model.value" />
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'version'">
-        <div class="input-group">
-          <label for="versionRefine" class="control-label sr-only">Version</label>
-          <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refine.version"
-                 ng-required="vm.refineType === 'version'"/>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'certificationBody'">
-        <div class="input-group">
-          <label for="acbRefine" class="control-label sr-only">Certification Body</label>
-          <select id="acbRefine" ng-model="vm.refine.certificationBody" class="input-sm form-control"
-                  ng-required="vm.refineType === 'certificationBody'"
-                  ng-options="acb.name as acb.name for acb in vm.certBodies | orderBy:'name'">
-          </select>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'visibleOnCHPL'">
-        <div class="input-group">
-          <label for="visibleRefine" class="control-label sr-only">Visible on CHPL</label>
-          <select id="visibleRefine" ng-model="vm.refine.visibleOnCHPL" class="input-sm form-control">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-            <option value="both">Both</option>
-          </select>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'hasCAP'">
-        <div class="input-group">
-          <label for="hasCapRefine" class="control-label sr-only">Has Corrective Action Plan</label>
-          <select id="hasCapRefine" ng-model="vm.refine.hasCAP" class="input-sm form-control">
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-            <option value="both">Both</option>
-          </select>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'certificationEdition'">
-        <div class="input-group">
-          <label for="editionRefine" class="control-label sr-only">Certification Edition</label>
-          <select id="editionRefine" ng-model="vm.refine.certificationEdition" class="input-sm form-control"
-                  ng-required="vm.refineType === 'certificationEdition'"
-                  ng-options="edition.name as edition.name for edition in vm.editions | orderBy:'name'">
-          </select>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'practiceType'">
-        <div class="input-group">
-          <label for="practiceRefine" class="control-label sr-only">Practice Type</label>
-          <select id="practiceRefine" ng-model="vm.refine.practiceType" class="input-sm form-control"
-                  ng-required="vm.refineType === 'practiceType'"
-                  ng-options="p.name as p.name for p in vm.practices | orderBy:'name'">
-          </select>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'certificationCriteria'">
-        <div class="input-group">
-          <label for="certField" class="control-label sr-only">Certification Criteria</label>
-          <select id="certRefine" ng-model="vm.refine.certificationCriteria" class="input-sm form-control"
-                  ng-required="vm.refineType === 'certificationCriteria'"
-                  ng-options="cert.name as cert.name + ': ' + cert.title for cert in vm.certs | orderBy:'name'">
-          </select>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
-      </div>
-      <div class="col-sm-4" ng-if="vm.refineType === 'cqms'">
-        <div class="input-group">
-          <label for="cqmRefine" class="control-label sr-only">Clinical Quality Measures</label>
-          <select id="cqmRefine" ng-model="vm.refine.cqms" class="input-sm form-control"
-                  ng-required="vm.refineType === 'cqms'"
-                  ng-options="cqm.name as prepend(cqm.name) + ': ' + cqm.title for cqm in vm.cqms | orderBy:'name'">
-          </select>
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
-          </span>
-        </div>
+    <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
+      <div class="col-sm-12">
+        <h1>Search</h1>
       </div>
     </div>
-  </div>
-  <div aria-live="polite">
-  <div class="row" ng-if="vm.activeSearch">
-    <div class="col-sm-12">
-      <ul class="list-inline">
-        <li class="animate-if" ng-if="vm.query.developer"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('developer')"><span class="ai-lead">Developer:</span> {{ vm.query.developer }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-if="vm.query.product"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('product')"><span class="ai-lead">Product:</span> {{ vm.query.product }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-if="vm.query.version"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('version')"><span class="ai-lead">Version:</span> {{ vm.query.version }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-if="vm.query.certificationBody"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationBody')"><span class="ai-lead">Certification Body:</span> {{ vm.query.certificationBody }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationEdition')"><span class="ai-lead">Certification Edition:</span> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-if="vm.query.practiceType"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('practiceType')"><span class="ai-lead">Practice Type:</span> {{ vm.query.practiceType }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('cqms',cqm)"><span class="ai-lead">Clinical Quality Measure:</span> {{ prepend(cqm) }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-if="vm.query.visibleOnCHPL !== 'yes'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('visibleOnCHPL')"><span class="ai-lead">Visible on CHPL:</span> {{ vm.query.visibleOnCHPL }} <i class="fa fa-close"></i></button></li>
-        <li class="animate-if" ng-if="vm.query.hasCAP !== 'both'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('hasCAP')"><span class="ai-lead">Has Corrective Action Plan:</span> {{ vm.query.hasCAP }} <i class="fa fa-close"></i></button></li>
-      </ul>
+    <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.search()" aria-live="polite">
+      <div class="form-group form-group-lg">
+        <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-5': vm.activeSearch || vm.searchForm.$dirty}">
+          <label for="searchField" class="control-label sr-only">Search</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="vm.query.searchTermObject"
+                   ng-keyup="$event.keyCode === 13 && vm.search()"
+                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
+                   typeahead-focus-first="false"
+                   typeahead-input-formatter="$model.value" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.search()"><i class="fa fa-search"></i></button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-3" ng-if="vm.activeSearch">
+          <div class="input-group">
+            <label for="refine" class="sr-only">Select the what category to refine your search by</label>
+            <select id="refine" class="form-control" ng-change="vm.refineSearch()" ng-model="vm.refineType">
+              <option value="" disabled>Refine search by</option>
+              <option value="developer">Developer</option>
+              <option value="product">Product</option>
+              <option value="version">Version</option>
+              <option value="certificationBody">Certification Body</option>
+              <option value="visibleOnCHPL">Visible on CHPL</option>
+              <option value="certificationCriteria">Certification Criteria</option>
+              <option value="cqms">Clinical Quality Measure</option>
+              <option value="certificationEdition">Certification Edition</option>
+              <option value="practiceType">Practice Type</option>
+              <option value="hasCAP">Has Corrective Action Plan</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'developer'">
+          <div class="input-group">
+            <label for="developerRefine" class="control-label sr-only">Developer</label>
+            <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.developer"
+                   ng-required="vm.refineType === 'developer'"
+                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:{value:$viewValue} | limitTo:16"
+                   typeahead-focus-first="false"
+                   typeahead-input-formatter="$model.value" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'product'">
+          <div class="input-group">
+            <label for="productRefine" class="control-label sr-only">Product</label>
+            <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.refine.product"
+                   ng-required="vm.refineType === 'product'"
+                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:{value:$viewValue} | limitTo:16"
+                   typeahead-focus-first="false"
+                   typeahead-input-formatter="$model.value" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'version'">
+          <div class="input-group">
+            <label for="versionRefine" class="control-label sr-only">Version</label>
+            <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refine.version"
+                   ng-required="vm.refineType === 'version'"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'certificationBody'">
+          <div class="input-group">
+            <label for="acbRefine" class="control-label sr-only">Certification Body</label>
+            <select id="acbRefine" ng-model="vm.refine.certificationBody" class="input-sm form-control"
+                    ng-required="vm.refineType === 'certificationBody'"
+                    ng-options="acb.name as acb.name for acb in vm.certBodies | orderBy:'name'">
+            </select>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'visibleOnCHPL'">
+          <div class="input-group">
+            <label for="visibleRefine" class="control-label sr-only">Visible on CHPL</label>
+            <select id="visibleRefine" ng-model="vm.refine.visibleOnCHPL" class="input-sm form-control">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="both">Both</option>
+            </select>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'hasCAP'">
+          <div class="input-group">
+            <label for="hasCapRefine" class="control-label sr-only">Has Corrective Action Plan</label>
+            <select id="hasCapRefine" ng-model="vm.refine.hasCAP" class="input-sm form-control">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+              <option value="both">Both</option>
+            </select>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'certificationEdition'">
+          <div class="input-group">
+            <label for="editionRefine" class="control-label sr-only">Certification Edition</label>
+            <select id="editionRefine" ng-model="vm.refine.certificationEdition" class="input-sm form-control"
+                    ng-required="vm.refineType === 'certificationEdition'"
+                    ng-options="edition.name as edition.name for edition in vm.editions | orderBy:'name'">
+            </select>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'practiceType'">
+          <div class="input-group">
+            <label for="practiceRefine" class="control-label sr-only">Practice Type</label>
+            <select id="practiceRefine" ng-model="vm.refine.practiceType" class="input-sm form-control"
+                    ng-required="vm.refineType === 'practiceType'"
+                    ng-options="p.name as p.name for p in vm.practices | orderBy:'name'">
+            </select>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'certificationCriteria'">
+          <div class="input-group">
+            <label for="certField" class="control-label sr-only">Certification Criteria</label>
+            <select id="certRefine" ng-model="vm.refine.certificationCriteria" class="input-sm form-control"
+                    ng-required="vm.refineType === 'certificationCriteria'"
+                    ng-options="cert.name as cert.name + ': ' + cert.title for cert in vm.certs | orderBy:'name'">
+            </select>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'cqms'">
+          <div class="input-group">
+            <label for="cqmRefine" class="control-label sr-only">Clinical Quality Measures</label>
+            <select id="cqmRefine" ng-model="vm.refine.cqms" class="input-sm form-control"
+                    ng-required="vm.refineType === 'cqms'"
+                    ng-options="cqm.name as prepend(cqm.name) + ': ' + cqm.title for cqm in vm.cqms | orderBy:'name'">
+            </select>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  </div>
+    <div aria-live="polite">
+      <div class="row" ng-if="vm.activeSearch">
+        <div class="col-sm-12">
+          <ul class="list-inline">
+            <li class="animate-if" ng-if="vm.query.developer"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('developer')"><span class="ai-lead">Developer:</span> {{ vm.query.developer }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-if="vm.query.product"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('product')"><span class="ai-lead">Product:</span> {{ vm.query.product }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-if="vm.query.version"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('version')"><span class="ai-lead">Version:</span> {{ vm.query.version }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-if="vm.query.certificationBody"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationBody')"><span class="ai-lead">Certification Body:</span> {{ vm.query.certificationBody }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationEdition')"><span class="ai-lead">Certification Edition:</span> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-if="vm.query.practiceType"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('practiceType')"><span class="ai-lead">Practice Type:</span> {{ vm.query.practiceType }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('cqms',cqm)"><span class="ai-lead">Clinical Quality Measure:</span> {{ prepend(cqm) }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-if="vm.query.visibleOnCHPL !== 'yes'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('visibleOnCHPL')"><span class="ai-lead">Visible on CHPL:</span> {{ vm.query.visibleOnCHPL }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-if="vm.query.hasCAP !== 'both'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('hasCAP')"><span class="ai-lead">Has Corrective Action Plan:</span> {{ vm.query.hasCAP }} <i class="fa fa-close"></i></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-  <div aria-live="polite">
-  <div id="resultsSection" ng-if="hasSearched()" class="main-content">
-    <div class="row">
-      <div class="col-md-9">
+    <div aria-live="polite" id="mainContent">
+      <div id="resultsSection" ng-if="hasSearched()" class="main-content">
         <div class="row">
-          <div class="col-md-6">
-            <p ng-if="!hasResults()">No results found</p>
-            <p ng-if="hasResults()">{{ vm.resultCount }} results found</p>
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-6">
+                <p ng-if="!hasResults()">No results found</p>
+                <p ng-if="hasResults()">{{ vm.resultCount }} results found</p>
+              </div>
+              <div class="col-md-6 text-right">
+                <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="clear()">Clear results</a>
+              </div>
+            </div>
+            <div ng-if="hasResults()" class="row">
+              <div class="col-md-12">
+                <table class="table search-table table-striped-foldout">
+                  <thead>
+                    <tr>
+		              <th class="search-header" ng-click="sort('product')" tabindex="0"
+                          ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
+                      <th class="search-header" ng-click="sort('developer')" tabindex="0"
+                          ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer</th>
+                      <th class="">Version</th>
+                      <th colspan="2"><span class="sr-only">Actions</span></th>
+	                </tr>
+	              </thead>
+                  <tfoot>
+                    <tr>
+                      <td colspan="5" class="text-center">
+                        <p class="pull-right">
+                          <label for="pageSize" class="sr-only">Show how many results</label>
+                          Showing up to
+                          <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                          </select>
+                          results per page
+                        </p>
+                        <pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
+                                    max-size="10" class="pagination-sm" boundary-links="true"></pagination>
+                      </td>
+                    </tr>
+                  </tfoot>
+	              <tbody>
+	                <tr ng-repeat-start="row in displayedResults" class="search-row">
+		              <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
+		              <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.developer.name }}</td>
+		              <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
+                      <td>
+                        <a href ng-click="showDetails = !showDetails" class="sr-only">show/hide summary details</a>
+                        <a href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>
+                      </td>
+                      <td>
+                        <button href class="btn btn-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> Compare</button>
+                      </td>
+	                </tr>
+                    <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
+                      <td colspan="6">
+                        <table class="search-table" width="100%">
+                          <thead>
+                            <tr>
+                              <th>Practice Type</th>
+                              <th>Certifying Body</th>
+                              <th>Certification Edition</th>
+                              <th>Certification Criteria & Clinical Quality Measures</th>
+                              <th>Certification Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{{ row.practiceType.name }}</td>
+                              <td>{{ row.certifyingBody.name }}</td>
+                              <td>{{ row.certificationEdition.name }}</td>
+		                      <td>{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
+		                      <td>{{ row.certificationDate | date }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-          <div class="col-md-6 text-right">
-            <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="clear()">Clear results</a>
+          <div class="col-md-3">
+            <div class="panel panel-ai">
+              <div class="panel-heading">
+                Compare these {{ vm.compareCps.length }} products
+              </div>
+              <div class="panel-body">
+                <button href class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)" ng-bind-html="vm.truncButton(cp.product.name)" title="{{ cp.product.name }}"></button>
+                <button href class="btn btn-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
+              </div>
+            </div>
+            <div class="panel panel-ai animate-if" ng-if="vm.previouslyCompared.length > 0">
+              <div class="panel-heading">
+                Previous {{ vm.previouslyCompared.length }} products compared
+              </div>
+              <div class="panel-body">
+                <ul class="list-unstyled">
+                  <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }}</a></li>
+                </ul>
+                <button class="btn btn-warning btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
+              </div>
+            </div>
+            <div class="panel panel-ai andimate-if" ng-if="vm.previouslyViewed.length > 0">
+              <div class="panel-heading">
+                Previous {{ vm.previouslyViewed.length }} products viewed
+              </div>
+              <div class="panel-body">
+                <ul class="list-unstyled">
+                  <li ng-repeat="cp in vm.previouslyViewed | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></li>
+                </ul>
+                <button class="btn btn-warning btn-sm btn-block" ng-click="vm.clearPreviouslyViewed()">Clear</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div ng-if="hasResults()" class="row">
-          <div class="col-md-12">
-            <table class="table search-table table-striped-foldout">
-              <thead>
-                <tr>
-		          <th class="search-header" ng-click="sort('product')" tabindex="0"
-                      ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
-                  <th class="search-header" ng-click="sort('developer')" tabindex="0"
-                      ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer</th>
-                  <th class="">Version</th>
-                  <th colspan="2"><span class="sr-only">Actions</span></th>
-	            </tr>
-	          </thead>
-              <tfoot>
-                <tr>
-                  <td colspan="5" class="text-center">
-                    <p class="pull-right">
-                      <label for="pageSize" class="sr-only">Show how many results</label>
-                      Showing up to
-                      <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                        <option value="250">250</option>
-                      </select>
-                      results per page
-                    </p>
-                    <pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
-                                max-size="10" class="pagination-sm" boundary-links="true"></pagination>
-                  </td>
-                </tr>
-              </tfoot>
-	          <tbody>
-	            <tr ng-repeat-start="row in displayedResults" class="search-row">
-		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
-		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.developer.name }}</td>
-		          <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
-                  <td>
-                    <a href ng-click="showDetails = !showDetails" class="sr-only">show/hide summary details</a>
-                    <a href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>
-                  </td>
-                  <td>
-                    <button href class="btn btn-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> Compare</button>
-                  </td>
-	            </tr>
-                <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
-                  <td colspan="6">
-                    <table class="search-table" width="100%">
-                      <thead>
-                        <tr>
-                          <th>Practice Type</th>
-                          <th>Certifying Body</th>
-                          <th>Certification Edition</th>
-                          <th>Certification Criteria & Clinical Quality Measures</th>
-                          <th>Certification Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{{ row.practiceType.name }}</td>
-                          <td>{{ row.certifyingBody.name }}</td>
-                          <td>{{ row.certificationEdition.name }}</td>
-		                  <td>{{ row.countCerts }} Certification Criteria / {{ row.countCqms }} Clinical Quality Measures</td>
-		                  <td>{{ row.certificationDate | date }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="panel panel-ai">
-          <div class="panel-heading">
-            Compare these {{ vm.compareCps.length }} products
-          </div>
-          <div class="panel-body">
-            <button href class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)" ng-bind-html="vm.truncButton(cp.product.name)" title="{{ cp.product.name }}"></button>
-            <button href class="btn btn-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
-          </div>
-        </div>
-        <div class="panel panel-ai animate-if" ng-if="vm.previouslyCompared.length > 0">
-          <div class="panel-heading">
-            Previous {{ vm.previouslyCompared.length }} products compared
-          </div>
-          <div class="panel-body">
-            <ul class="list-unstyled">
-              <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }}</a></li>
-            </ul>
-            <button class="btn btn-warning btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
-          </div>
-        </div>
-        <div class="panel panel-ai andimate-if" ng-if="vm.previouslyViewed.length > 0">
-          <div class="panel-heading">
-            Previous {{ vm.previouslyViewed.length }} products viewed
-          </div>
-          <div class="panel-body">
-            <ul class="list-unstyled">
-              <li ng-repeat="cp in vm.previouslyViewed | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></li>
-            </ul>
-            <button class="btn btn-warning btn-sm btn-block" ng-click="vm.clearPreviouslyViewed()">Clear</button>
-          </div>
-        </div>
-      </div>
+      </div> <!-- end of search results -->
     </div>
-  </div> <!-- end of search results -->
-  </div>
   </div>
 </div> <!-- end controller -->
