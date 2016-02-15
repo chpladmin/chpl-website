@@ -34,7 +34,7 @@
               <option value="cqms">Clinical Quality Measure</option>
               <option value="certificationEdition">Certification Edition</option>
               <option value="practiceType">Practice Type</option>
-              <option value="hasCAP">Has Corrective Action Plan</option>
+              <option value="hasCAP">Surveillance Transparency</option>
             </select>
           </div>
         </div>
@@ -101,11 +101,12 @@
         </div>
         <div class="col-sm-4" ng-if="vm.refineType === 'hasCAP'">
           <div class="input-group">
-            <label for="hasCapRefine" class="control-label sr-only">Has Corrective Action Plan</label>
+            <label for="hasCapRefine" class="control-label sr-only">Surveillance Transparency Options</label>
             <select id="hasCapRefine" ng-model="vm.refine.hasCAP" class="input-sm form-control">
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-              <option value="both">Both</option>
+              <option value="current">Current</option>
+              <option value="closed">Closed</option>
+              <option value="never">Never</option>
+              <option value="all">All Products</option>
             </select>
             <span class="input-group-btn">
               <button type="button" class="btn btn-ai btn-block form-control" ng-click="vm.addRefine()">Add Filter</button>
@@ -175,7 +176,7 @@
             <li class="animate-if" ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i></button></li>
             <li class="animate-if" ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('cqms',cqm)"><span class="ai-lead">Clinical Quality Measure:</span> {{ prepend(cqm) }} <i class="fa fa-close"></i></button></li>
             <li class="animate-if" ng-if="vm.query.visibleOnCHPL !== 'yes'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('visibleOnCHPL')"><span class="ai-lead">Visible on CHPL:</span> {{ vm.query.visibleOnCHPL }} <i class="fa fa-close"></i></button></li>
-            <li class="animate-if" ng-if="vm.query.hasCAP !== 'both'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('hasCAP')"><span class="ai-lead">Has Corrective Action Plan:</span> {{ vm.query.hasCAP }} <i class="fa fa-close"></i></button></li>
+            <li class="animate-if" ng-if="vm.query.hasCAP !== 'all'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('hasCAP')"><span class="ai-lead">Surveillance Transparency:</span> {{ vm.query.hasCAP }} <i class="fa fa-close"></i></button></li>
           </ul>
         </div>
       </div>

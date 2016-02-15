@@ -23,7 +23,7 @@
                 vm.activeSearch = false;
                 vm.resultCount = 0;
                 vm.defaultRefine = { visibleOnCHPL: 'yes',
-                                     hasCAP: 'both',
+                                     hasCAP: 'all',
                                      certificationCriteria: [],
                                      cqms: []};
                 if ($localStorage.refine) {
