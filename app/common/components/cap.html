@@ -7,8 +7,8 @@
       <tr>
         <th>Is In Effect</th>
         <th>Surveillance Began</th>
-        <th>Result of randomized surveillance</th>
         <th>Date of Determination</th>
+        <th>Result of randomized surveillance</th>
         <th>Action Began</th>
         <th>Plan Approved</th>
         <th>Must be Completed</th>
@@ -21,8 +21,8 @@
       <tr ng-repeat-start="cap in vm.correctiveActionPlan | orderBy: 'id'">
         <td>{{ cap.actualCompletionDate ? 'No' : 'Yes' }}</td>
         <td>{{ cap.surveillanceStartDate | date }}</td>
-        <td>{{ cap.randomizedSurveillance ? 'True' : 'False' }}</td>
         <td>{{ cap.noncomplianceDate | date }}</td>
+        <td>{{ cap.randomizedSurveillance ? 'True' : 'False' }}</td>
         <td>{{ cap.effectiveDate | date }}</td>
         <td>{{ cap.approvalDate | date }}</td>
         <td>{{ cap.estimatedCompletionDate | date }}</td>

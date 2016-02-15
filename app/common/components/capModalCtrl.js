@@ -8,6 +8,7 @@
             vm.cancel = cancel;
             vm.deleteCap = deleteCap;
             vm.deleteDoc = deleteDoc;
+            vm.isValid = isValid;
             vm.save = save;
 
             activate();
@@ -21,7 +22,8 @@
                 if (vm.action === 'initiate') {
                     vm.cap = {
                         certifiedProductId: certifiedProductId,
-                        certifications: []
+                        certifications: [],
+                        randomizedSurveillance: false
                     };
                     for (var i = 0; i < vm.certificationResults.length; i++) {
                         if (vm.certificationResults[i].success) {
@@ -99,6 +101,15 @@
                     }), function (error) {
                         console.log (error);
                     };
+            }
+
+            function isValid () {
+                var ret = false;
+                for (var i = 0; i < vm.cap.certifications.length; i++) {
+                    ret = ret || vm.cap.certifications[i].error;
+                }
+                ret = ret && !vm.capForm.$invalid;
+                return ret;
             }
 
             function save () {
