@@ -47,7 +47,7 @@
             <tbody>
               <tr ng-repeat="cert in cap.certifications">
                 <td>{{ cert.certificationCriterionNumber + ': ' + cert.certificationCriterionTitle }}</td>
-                <td>{{ cap.randomizedSurveillance ? cert.surveillancePassRate + ' / ' + cert.surveillanceSitesSurveilled : 'N/A' }}</td>
+                <td>{{ cap.randomizedSurveillance && cert.surveillancePassRate && cert.surveillanceSitesSurveilled ? cert.surveillancePassRate + ' / ' + cert.surveillanceSitesSurveilled : 'N/A' }}</td>
                 <td>{{ cert.acbSummary }}</td>
                 <td>{{ cert.developerSummary }}</td>
                 <td>{{ cert.resolution }}</td>
