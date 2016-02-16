@@ -12,6 +12,7 @@ _Date TBD_
   * Added tab navigation to search results
   * Added 'external link' indicator
 * Blended 'Surveillance' with 'Corrective Action Plan'
+* Updated Surveillance and Corrective Action Plan to satisfy requirements
 
 ### Bugs fixed
 * Change password requires old password and not username

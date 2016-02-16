@@ -9,8 +9,8 @@
         <th>Surveillance Began</th>
         <th>Date of Determination</th>
         <th>Result of randomized surveillance</th>
-        <th>Action Began</th>
         <th>Plan Approved</th>
+        <th>Action Began</th>
         <th>Must be Completed</th>
         <th>Was Completed</th>
         <th>Surveillance Ended</th>
@@ -19,12 +19,12 @@
     </thead>
     <tbody>
       <tr ng-repeat-start="cap in vm.correctiveActionPlan | orderBy: 'id'">
-        <td>{{ cap.actualCompletionDate ? 'No' : 'Yes' }}</td>
+        <td>{{ cap.surveillanceEndDate ? 'No' : 'Yes' }}</td>
         <td>{{ cap.surveillanceStartDate | date }}</td>
         <td>{{ cap.noncomplianceDate | date }}</td>
         <td>{{ cap.randomizedSurveillance ? 'True' : 'False' }}</td>
-        <td>{{ cap.effectiveDate | date }}</td>
         <td>{{ cap.approvalDate | date }}</td>
+        <td>{{ cap.effectiveDate | date }}</td>
         <td>{{ cap.estimatedCompletionDate | date }}</td>
         <td>{{ cap.actualCompletionDate | date }}</td>
         <td>{{ cap.surveillanceEndDate | date }}</td>
@@ -47,7 +47,7 @@
             <tbody>
               <tr ng-repeat="cert in cap.certifications">
                 <td>{{ cert.certificationCriterionNumber + ': ' + cert.certificationCriterionTitle }}</td>
-                <td>{{ cert.surveillanceSiteCount ? cert.surveillancePassRate + ' / ' + cap.surveillanceSiteCount : 'N/A' }}</td>
+                <td>{{ cap.randomizedSurveillance ? cert.surveillancePassRate + ' / ' + cert.surveillanceSitesSurveilled : 'N/A' }}</td>
                 <td>{{ cert.acbSummary }}</td>
                 <td>{{ cert.developerSummary }}</td>
                 <td>{{ cert.resolution }}</td>
