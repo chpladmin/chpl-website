@@ -188,8 +188,8 @@
                     vm.refine.visibleOnCHPL = 'yes';
                     break;
                 case 'hasCAP':
-                    vm.query.hasCAP = 'both';
-                    vm.refine.hasCAP = 'both';
+                    vm.query.hasCAP = 'all';
+                    vm.refine.hasCAP = 'all';
                     break;
                 case 'certificationCriteria':
                     for (var i = 0; i < vm.query.certificationCriteria.length; i++) {
@@ -243,7 +243,7 @@
                 pageNumber: 0,
                 pageSize: '50',
                 visibleOnCHPL: 'yes',
-                hasCAP: 'both'
+                hasCAP: 'all'
             };
             vm.query = angular.copy(vm.defaultQuery);
 
