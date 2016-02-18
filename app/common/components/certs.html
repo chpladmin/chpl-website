@@ -28,42 +28,38 @@
                 <tbody>
                   <tr>
                     <td>GAP</td>
-                    <td>False</td>
-                  </tr>
-                  <tr>
-                    <td>Privacy and Security Framework</td>
-                    <td>Approach 1</td>
+                    <td>{{ n.gap ? 'True' : 'False' }}</td>
                   </tr>
                   <tr>
                     <td>Functionality Tested</td>
-                    <td>Optional (a)(1)(ii): Include a "reason for order" field.</td>
+                    <td>{{ n.testFunctionality }}</td>
                   </tr>
                   <tr>
                     <td>Standard</td>
-                    <td>N/A</td>
+                    <td>{{ n.standard }}</td>
                   </tr>
                   <tr>
                     <td>Measure Successfully Tested for G1</td>
-                    <td>True</td>
+                    <td>{{ n.g1Success ? 'True' : 'False' }}</td>
                   </tr>
                   <tr>
                     <td>Measure Successfully Tested for G2</td>
-                    <td>False</td>
+                    <td>{{ n.g2Success ? 'True' : 'False' }}</td>
                   </tr>
                   <tr>
                     <td>Test procedure version</td>
-                    <td>v1</td>
+                    <td>{{ n.testProcedures }}</td>
                   </tr>
                   <tr>
                     <td colspan="2" class="text-center"><a href ng-click="vm.showSed = !vm.showSed">{{ vm.showSed ? 'Hide' : 'View' }} SED Details</a></td>
                   </tr>
                   <tr ng-if="vm.showSed">
                     <td>UCD Process Selected</td>
-                    <td>NIST 7741</td>
+                    <td>{{ n.ucdProcessSelected }}</td>
                   </tr>
                   <tr ng-if="vm.showSed">
                     <td>UCD Process Details</td>
-                    <td>N/A</td>
+                    <td>{{ n.ucdProcessDetails ? n.ucdProcessDetails : 'N/A'</td>
                   </tr>
                   <tr ng-if="vm.showSed">
                     <td colspan="2">
@@ -71,40 +67,30 @@
                         <thead>
                           <tr>
                             <th>Task Description</th>
-                            <th>Task Success (%)</th>
-                            <th>Task Failures (%)</th>
-                            <th>Task Standard Deviations (%)</th>
-                            <th>Task Performance Time</th>
-                            <th>User Satisfaction Rating</th>
+                            <th>Task Success</th>
+                            <th>Path Deviation - Mean</th>
+                            <th>Task Time</th>
+                            <th>Errors</th>
+                            <th>Task Rating</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr><td>Enable a user to electronically record, change, and access the following order types (i) Medications; (ii) Laboratory; and (iii) Radiology/imaging.</td><td>90%</td><td>5%</td><td>16%</td><td>1.5 min</td><td>4</td></tr>
-                          <tr><td>Task 2: Order specific medication and then change the order based on the information provided.</td><td>88%</td><td>6%</td><td>19%</td><td>2 min</td><td>4</td></tr>                          <tr>
                         </tbody>
                       </table>
                       <table class="table">
                         <thead>
                           <tr>
-                            <th>Participant Age</th>
-                            <th>Participant Sex</th>
-                            <th>Participant Education</th>
                             <th>Participant Occupation/Role</th>
+                            <th>Participant Education</th>
+                            <th>Participant professional Experience</th>
+                            <th>Participant Gender</th>
+                            <th>Participant Age</th>
                             <th>Participant Computer Experience</th>
                             <th>Participant Product Experience</th>
+                            <th>Participant Assistive Technology Needs</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr><td>42</td><td>Male</td><td>No Degree</td><td>Clinical Assistant/Nephrology</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>32</td><td>Female</td><td>Bachelor's Degree</td><td>Clinical Manager (RN) Nephrology</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>45</td><td>Female</td><td>Master Degree</td><td>Physician's Assistant/Nephrology</td><td>Proficient</td><td>Yes</td></tr>
-                          <tr><td>56</td><td>Female</td><td>No Degree</td><td>Clinical Assistant/Nephrology</td><td>Proficient</td><td>Yes</td></tr>
-                          <tr><td>28</td><td>Male</td><td>Master Degree</td><td>Physician's Assistant/Nephrology</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>47</td><td>Male</td><td>Medical degree</td><td>MD/Nephrology</td><td>Novice</td><td>Yes</td></tr>
-                          <tr><td>23</td><td>Female</td><td>Bachelor's Degree</td><td>RN/Pediatrics</td><td>Proficient</td><td>No</td></tr>
-                          <tr><td>48</td><td>Female</td><td>Associate Degree</td><td>RN/Pediatrics</td><td>Novice</td><td>No</td></tr>
-                          <tr><td>62</td><td>Female</td><td>Associate Degree</td><td>Triage Coordinator</td><td>Novice</td><td>No</td></tr>
-                          <tr><td>36</td><td>Female</td><td>Bachelor's Degree</td><td>(RN)OB/GYN</td><td>Proficient</td><td>No</td></tr>
                         </tbody>
                       </table>
                     </td>

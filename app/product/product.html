@@ -66,10 +66,14 @@
         </div>
         <div class="product-element">
           <h3 class="product-heading">Quality Management System</h3>
-          <h4>Standard</h4>
-          <p>ISO-9001</p>
-          <h4>Description</h4>
-          <p>The System extends through our software development process and into implementation and support—promoting quality in the application itself as well as in its deployment and use. Our software is designed, developed, tested, implemented, and maintained following an internally developed quality management system based on the principles of ISO 9001.</p>
+          <span ng-repeat="qms in vm.product.qmsStandards">
+            <h4>Standard</h4>
+            <p>{{ qms.qmsStandardId }}</p>
+            <h4>Description</h4>
+            <p>{{ qms.qmsModification }}</p>
+            <h4>Applicable Criteria</h4>
+            <p>{{ qms.applicableCriteria }}</p>
+          </span>
         </div>
         <div class="product-element" ng-if="vm.correctiveActionPlan.length === 0">
           <h3 class="product-heading">Surveillance Transparency</h3>
