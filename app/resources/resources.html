@@ -6,21 +6,18 @@
   </div>
   <div class="main-content" id="mainContent">
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-8 col-sm-push-4">
+        <h2>Get the latest Certified Health IT Product List</h2>
+        <p>To access the complete listing of Certified Health Information Technology Products, including the 2011 edition products, 2014 edition products, and 2015 edition products, click the download button.</p>
+      </div>
+      <div class="col-sm-4 col-sm-pull-8">
         <div class="text-center">
           <a type="button" class="btn btn-lg btn-success" href="{{ vm.API }}/download?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a>
         </div>
       </div>
-      <div class="col-sm-8">
-        <h2>Get the latest Certified Health IT Product List</h2>
-        <p>To access the complete listing of Certified Health Information Technology Products, including the 2011 edition products, 2014 edition products, and 2015 edition products, click the download button.</p>
-      </div>
     </div>
     <div class="row">
-      <div class="col-sm-4">
-        <ai-api-key></ai-api-key>
-      </div>
-      <div class="col-sm-8">
+      <div class="col-sm-8 col-sm-push-4">
         <h2>Access API Documentation</h2>
         <p>The Open Data CHPL API provides programmatic access to ONC published data on Certified Health IT Products. Open Data CHPL's API includes methods for retrieving a subset of our statistical data and the metadata that describes it.</p>
         <div ng-show="vm.swaggerLoading">API loading ...</div>
@@ -29,6 +26,9 @@
              loading="vm.swaggerLoading"
              validator-url="false">
         </div>
+      </div>
+      <div class="col-sm-4 col-sm-pull-8">
+        <ai-api-key></ai-api-key>
       </div>
     </div>
   </div>
