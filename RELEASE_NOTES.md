@@ -11,8 +11,10 @@ _Date TBD_
 * Update wrt 508 compliance
   * Added tab navigation to search results
   * Added 'external link' indicator
+  * Added 'skip to main content' keyboard link
 * Blended 'Surveillance' with 'Corrective Action Plan'
 * Updated Surveillance and Corrective Action Plan to satisfy requirements
+* Combined API & Product Listing into single 'Resources' page
 
 ### Bugs fixed
 * Change password requires old password and not username

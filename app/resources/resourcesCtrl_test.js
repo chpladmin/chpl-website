@@ -1,18 +1,27 @@
 ;(function () {
     'use strict';
 
-    describe('app.api', function () {
+    describe('app.resources', function () {
 
-        var scope, ctrl, $log;
+        var scope, ctrl, $log, authService;
 
         beforeEach(function () {
-            module('app.api');
+            var mockAuthService = {};
+            module('app.resources', function($provide) {
+                $provide.value('authService', mockAuthService);
+            });
+
+            inject(function($q) {
+                mockAuthService.getApiKey = function () {
+                    return $q.when('api key');
+                };
+            });
         });
 
         beforeEach(inject(function (_$log_, $rootScope, $controller) {
             $log = _$log_;
             scope = $rootScope.$new();
-            ctrl = $controller('ApiController', {
+            ctrl = $controller('ResourcesController', {
                 $scope: scope
             });
             scope.$digest();
