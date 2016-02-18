@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 0.3.0
+_18 February 2016_
 
 ### New features
 * Implemented 'complicated' password requirements
