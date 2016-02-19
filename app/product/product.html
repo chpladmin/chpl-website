@@ -61,14 +61,13 @@
         </div>
         <div class="product-element">
           <h3 class="product-heading">Transparency Attestation</h3>
-          <p ng-if="vm.product.transparencyAttestation">Affirmative</p>
-          <p ng-if="!vm.product.transparencyAttestation">Negative</p>
+          <p>{{ vm.product.transparencyAttestation ? 'Affirmative' : 'Negative' }}</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Quality Management System</h3>
           <span ng-repeat="qms in vm.product.qmsStandards">
             <h4>Standard</h4>
-            <p>{{ qms.qmsStandardId }}</p>
+            <p>{{ qms.qmsStandardName }}</p>
             <h4>Description</h4>
             <p>{{ qms.qmsModification }}</p>
             <h4>Applicable Criteria</h4>

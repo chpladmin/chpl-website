@@ -36,13 +36,5 @@
         .factory('authInterceptor', authInterceptor)
         .config(function($httpProvider) {
             $httpProvider.interceptors.push('authInterceptor');
-        })
-        .config(['$routeProvider', function($routeProvider) {
-            $routeProvider.when('/listing', {
-                templateUrl: 'nav/layouts/product_listing.html',
-                controller: 'ProductListingController',
-                controllerAs: 'vm',
-                title: 'Product Listing'
-            });
-        }]);
+        });
 })();
