@@ -32,11 +32,13 @@
                   </tr>
                   <tr>
                     <td>Functionality Tested</td>
-                    <td>{{ n.testFunctionality }}</td>
+                    <td ng-if="n.testFunctionality && n.testFunctionality.length > 0"><div ng-repeat="m in n.testFunctionality">{{ m.name }}</div></td>
+                    <td ng-if="!n.testFunctionality || n.testFunctionality.length === 0">N/A</td>
                   </tr>
                   <tr>
                     <td>Standard</td>
-                    <td>{{ n.standard }}</td>
+                    <td ng-if="n.testStandards && n.testStandards.length > 0"><div ng-repeat="m in n.testStandards">{{ m.testStandardName }}</div></td>
+                    <td ng-if="!n.testStandards || n.testStandards.length === 0">N/A</td>
                   </tr>
                   <tr>
                     <td>Measure Successfully Tested for G1</td>
@@ -48,18 +50,29 @@
                   </tr>
                   <tr>
                     <td>Test procedure version</td>
-                    <td>{{ n.testProcedures }}</td>
+                    <td ng-if="n.testProcedures && n.testProcedures.length > 0"><div ng-repeat="m in n.testProcedures">{{ m.testProcedureVersion }}</div></td>
+                    <td ng-if="!n.testProcedures || n.testProcedures.length === 0">N/A</td>
+                  </tr>
+                  <tr>
+                    <td>Test data used</td>
+                    <td ng-if="n.testDataUsed && n.testDataUsed.length > 0"><div ng-repeat="m in n.testDataUsed">Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
+                    <td ng-if="!n.testDataUsed || n.testDataUsed.length === 0">N/A</td>
+                  </tr>
+                  <tr>
+                    <td>Test procedure version</td>
+                    <td ng-if="n.testToolsUsed && n.testToolsUsed.length > 0"><div ng-repeat="m in n.testToolsUsed">{{ m.testToolName }}</div></td>
+                    <td ng-if="!n.testToolsUsed || n.testToolsUsed.length === 0">N/A</td>
                   </tr>
                   <tr>
                     <td colspan="2" class="text-center"><a href ng-click="vm.showSed = !vm.showSed">{{ vm.showSed ? 'Hide' : 'View' }} SED Details</a></td>
                   </tr>
                   <tr ng-if="vm.showSed">
                     <td>UCD Process Selected</td>
-                    <td>{{ n.ucdProcessSelected }}</td>
+                    <td>{{ n.ucdProcessSelected ? n.ucdProcessSelected : 'N/A' }}</td>
                   </tr>
                   <tr ng-if="vm.showSed">
                     <td>UCD Process Details</td>
-                    <td>{{ n.ucdProcessDetails ? n.ucdProcessDetails : 'N/A'</td>
+                    <td>{{ n.ucdProcessDetails ? n.ucdProcessDetails : 'N/A' }}</td>
                   </tr>
                   <tr ng-if="vm.showSed">
                     <td colspan="2">
@@ -149,11 +162,12 @@
         <h4>API Documentation</h4>
         <p ng-if="vm.product.apiDocumentation"><a href="{{ vm.product.apiDocumentation }}">{{ vm.product.apiDocumentation }}</a></p>
         <p ng-if="!vm.product.apiDocumentation">N/A</p>
-        <span ng-if="!vm.isConfirming">
-          <h4>Report File Location</h4>
-          <ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" text="{{ vm.reportFileLocation }}"></ai-a>
-          <p ng-if="!vm.reportFileLocation">No report on file</p>
-        </span>
+        <h4>Report File Location</h4>
+        <ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" text="{{ vm.reportFileLocation }}"></ai-a>
+        <p ng-if="!vm.reportFileLocation">No report on file</p>
+        <h4>SED Report File Location</h4>
+        <ai-a ng-if="vm.sedReportFilelocation" href="{{ vm.sedReportFileLocation }}" text="{{ vm.sedReportFileLocation }}"></ai-a>
+        <p ng-if="!vm.sedReportFileLocation">No report on file</p>
       </div>
     </div>
   </div>

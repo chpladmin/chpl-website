@@ -55,9 +55,9 @@
           <h3 class="product-heading">Accredited Certification Body</h3>
           <p>{{ vm.product.certifyingBody.name }}</p>
         </div>
-        <div class="product-element" ng-if="vm.product.additionalSoftware">
+        <div class="product-element" ng-if="vm.product.productAdditionalSoftware">
           <h3 class="product-heading">Additional Software</h3>
-          <p><ai-additional-software additional-software="vm.product.additionalSoftware" is-editing="false"></ai-additional-software></p>
+          <p>{{ vm.product.productAdditionalSoftware }}</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Transparency Attestation</h3>
@@ -65,7 +65,7 @@
         </div>
         <div class="product-element">
           <h3 class="product-heading">Quality Management System</h3>
-          <span ng-repeat="qms in vm.product.qmsStandards">
+          <span ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" ng-repeat="qms in vm.product.qmsStandards">
             <h4>Standard</h4>
             <p>{{ qms.qmsStandardName }}</p>
             <h4>Description</h4>
@@ -73,6 +73,7 @@
             <h4>Applicable Criteria</h4>
             <p>{{ qms.applicableCriteria }}</p>
           </span>
+          <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
         </div>
         <div class="product-element" ng-if="vm.correctiveActionPlan.length === 0">
           <h3 class="product-heading">Surveillance Transparency</h3>
