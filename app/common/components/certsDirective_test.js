@@ -11,6 +11,7 @@
 
         beforeEach(module('app.common',
                           'app/common/components/certs.html',
+                          'app/common/components/certificationCriteria.html',
                           'app/common/components/a.html'));
 
         beforeEach(inject(function ($compile, $rootScope, _$log_, $templateCache) {
@@ -19,6 +20,8 @@
 
             var template = $templateCache.get('app/common/components/certs.html');
             $templateCache.put('common/components/certs.html', template);
+            template = $templateCache.get('app/common/components/certificationCriteria.html');
+            $templateCache.put('common/components/certificationCriteria.html', template);
             template = $templateCache.get('app/common/components/a.html');
             $templateCache.put('common/components/a.html', template);
 
