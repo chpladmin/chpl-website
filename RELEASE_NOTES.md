@@ -1,5 +1,12 @@
 # Release Notes
 
+## Version 0.3.1
+_22 February 2016_
+
+### Bugs fixed
+* Rearranged product listing information
+* Added 'N/A' instead of blanks
+
 ## Version 0.3.0
 _18 February 2016_
 
