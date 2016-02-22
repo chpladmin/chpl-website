@@ -6,7 +6,8 @@
             $routeProvider.when('/product/:id', {
                 templateUrl: 'product/product.html',
                 controller: 'ProductController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                title: 'Product Details'
             });
         }]);
 })();

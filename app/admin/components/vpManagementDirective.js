@@ -7,7 +7,7 @@
 
             self.activate = activate;
             self.refreshPending = refreshPending;
-            self.selectVendor = selectVendor;
+            self.selectDeveloper = selectDeveloper;
             self.editDeveloper = editDeveloper;
             self.mergeDevelopers = mergeDevelopers;
             self.selectProduct = selectProduct;
@@ -22,13 +22,14 @@
             self.rejectCp = rejectCp;
             self.parseUploadError = parseUploadError;
             self.doWork = doWork;
+            self.loadCp = loadCp;
 
             self.activate();
 
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                self.activeVendor = '';
+                self.activeDeveloper = '';
                 self.activeProduct = '';
                 self.activeVersion = '';
                 self.activeCP = '';
@@ -36,7 +37,7 @@
                 self.isAcbAdmin = authService.isAcbAdmin();
                 self.isAcbStaff = authService.isAcbStaff();
                 self.uploadingCps = [];
-                self.workType = self.isChplAdmin ? 'manage' : 'upload';
+                self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
 
@@ -73,9 +74,18 @@
                         self.statuses = options.certificationStatuses;
                     });
 
-                commonService.getVendors()
-                    .then(function (vendors) {
-                        self.vendors = vendors.vendors;
+                commonService.getAtls(false)
+                    .then(function (data) {
+                        self.testingLabs = data.atls;
+                    });
+
+                commonService.getDevelopers()
+                    .then(function (developers) {
+                        self.developers = developers.developers;
+
+                        if (self.productId) {
+                            self.loadCp();
+                        }
                     });
             }
 
@@ -87,16 +97,16 @@
                     })
             }
 
-            function selectVendor () {
-                if (self.vendorSelect) {
-                    self.activeVendor = self.vendorSelect;
-                    commonService.getProductsByVendor(self.activeVendor.vendorId)
+            function selectDeveloper () {
+                if (self.developerSelect) {
+                    self.activeDeveloper = self.developerSelect;
+                    commonService.getProductsByDeveloper(self.activeDeveloper.developerId)
                         .then(function (products) {
                             self.products = products.products;
                         });
-                    self.mergeVendor = angular.copy(self.activeVendor);
-                    delete self.mergeVendor.vendorId;
-                    delete self.mergeVendor.lastModifiedDate;
+                    self.mergeDeveloper = angular.copy(self.activeDeveloper);
+                    delete self.mergeDeveloper.developerId;
+                    delete self.mergeDeveloper.lastModifiedDate;
                 }
             }
 
@@ -109,18 +119,18 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeVendor: function () { return self.activeVendor; }
+                        activeDeveloper: function () { return self.activeDeveloper; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
-                    self.activeVendor = result;
-                    commonService.getVendors()
-                        .then(function (vendors) {
-                            self.vendors = vendors.vendors;
+                    self.activeDeveloper = result;
+                    commonService.getDevelopers()
+                        .then(function (developers) {
+                            self.developers = developers.developers;
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
-                        self.vendorMessage = result;
+                        self.developerMessage = result;
                     }
                 });
             }
@@ -134,18 +144,18 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        developers: function () { return self.mergingVendors; }
+                        developers: function () { return self.mergingDevelopers; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
-                    self.vendorMessage = null;
-                    commonService.getVendors()
-                        .then(function (vendors) {
-                            self.vendors = vendors.vendors;
+                    self.developerMessage = null;
+                    commonService.getDevelopers()
+                        .then(function (developers) {
+                            self.developers = developers.developers;
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
-                        self.vendorMessage = result;
+                        self.developerMessage = result;
                     }
                 });
             }
@@ -153,7 +163,7 @@
             function selectProduct () {
                 if (self.productSelect) {
                     self.activeProduct = self.productSelect;
-                    self.activeProduct.vendorId = self.activeVendor.vendorId;
+                    self.activeProduct.developerId = self.activeDeveloper.developerId;
                     commonService.getVersionsByProduct(self.activeProduct.productId)
                         .then(function (versions) {
                             self.versions = versions;
@@ -174,7 +184,7 @@
                     keyboard: false,
                     resolve: {
                         activeProduct: function () { return self.activeProduct; },
-                        vendors: function () { return self.vendors; }
+                        developers: function () { return self.developers; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
@@ -196,12 +206,12 @@
                     keyboard: false,
                     resolve: {
                         products: function () { return self.mergingProducts; },
-                        vendorId: function () { return self.activeVendor.vendorId; }
+                        developerId: function () { return self.activeDeveloper.developerId; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
                     self.productMessage = null;
-                    commonService.getProductsByVendor(self.activeVendor.vendorId)
+                    commonService.getProductsByDeveloper(self.activeDeveloper.developerId)
                         .then(function (products) {
                             self.products = products.products;
                         });
@@ -288,10 +298,6 @@
                                 .then(function (cap) {
                                     self.activeCP.cap = cap.plans;
                                 });
-                            commonService.getSurveillance(self.cpSelect)
-                                .then(function (surv) {
-                                    self.activeCP.surveillances = surv.surveillances;
-                                });
                         });
                 }
             };
@@ -311,6 +317,7 @@
                         isAcbStaff: function () { return self.isChplStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
+                        testingLabs: function () { return self.testingLabs; },
                         statuses: function () { return self.statuses; },
                         workType: function () { return self.workType; }
                     }
@@ -341,12 +348,13 @@
                     keyboard: false,
                     resolve: {
                         inspectingCp: function () { return cp; },
-                        vendors: function () { return self.vendors; },
+                        developers: function () { return self.developers; },
                         practices: function () { return self.practices; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isAcbStaff: function () { return self.isAcbStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
                         bodies: function () { return self.bodies; },
+                        testingLabs: function () { return self.testingLabs; },
                         statuses: function () { return self.statuses; },
                         workType: function () { return self.workType; }
                     },
@@ -368,30 +376,77 @@
 
             function parseUploadError (cp) {
                 var ret = '';
-                if (cp.errorMessages.length > 0) {
-                    ret += 'Errors:&nbsp;' + cp.errorMessages.length;
-                }
-                if (cp.warningMessages.length > 0) {
-                    if (ret.length > 0)
-                        ret += '<br />';
-                    ret += 'Warnings:&nbsp;' + cp.warningMessages.length;
-                }
-                if (ret.length > 0) {
-                    return ret;
+                if (cp.recordStatus.toLowerCase() !== 'new') {
+                    ret = 'Existing Certified Product found';
                 } else {
-                    return 'OK';
+                    if (cp.errorMessages.length > 0) {
+                        ret += 'Errors:&nbsp;' + cp.errorMessages.length;
+                    }
+                    if (cp.warningMessages.length > 0) {
+                        if (ret.length > 0)
+                            ret += '<br />';
+                        ret += 'Warnings:&nbsp;' + cp.warningMessages.length;
+                    }
+                    if (ret.length === 0) {
+                        ret = 'OK';
+
+                    }
                 }
+                return ret;
             }
 
             function doWork (workType) {
                 if (self.workType !== workType) {
-                    self.activeVendor = '';
+                    self.activeDeveloper = '';
                     self.activeProduct = '';
                     self.activeVersion = '';
                     self.activeCP = '';
                     self.mergeType = 'developer';
                     self.workType = workType;
                 }
+            }
+
+            function loadCp () {
+                commonService.getProduct(self.productId)
+                    .then(function (result) {
+                        for (var i = 0; i < self.developers.length; i++) {
+                            if (result.developer.id === self.developers[i].developerId) {
+                                self.developerSelect = self.developers[i];
+                                break;
+                            }
+                        }
+                        self.activeDeveloper = self.developerSelect;
+                        commonService.getProductsByDeveloper(self.activeDeveloper.developerId)
+                            .then(function (products) {
+                                self.products = products.products;
+                                for (var i = 0; i < self.products.length; i++) {
+                                    if (result.product.id === self.products[i].productId) {
+                                        self.productSelect = self.products[i];
+                                        break;
+                                    }
+                                }
+                                self.activeProduct = self.productSelect;
+                                self.activeProduct.developerId = self.activeDeveloper.developerId;
+                                commonService.getVersionsByProduct(self.activeProduct.productId)
+                                    .then(function (versions) {
+                                        self.versions = versions;
+                                        for (var i = 0; i < self.versions.length; i++) {
+                                            if (result.product.versionId === self.versions[i].versionId) {
+                                                self.versionSelect = self.versions[i];
+                                                break;
+                                            }
+                                        }
+                                        self.activeVersion = self.versionSelect;
+                                        self.activeVersion.productId = self.activeProduct.productId;
+                                        commonService.getProductsByVersion(self.activeVersion.versionId, true)
+                                            .then(function (cps) {
+                                                self.cps = cps;
+                                                self.cpSelect = result.id;
+                                                self.selectCp();
+                                            });
+                                    });
+                            });
+                    });
             }
         }]);
 
@@ -403,7 +458,8 @@
                 templateUrl: 'admin/components/vpManagement.html',
                 bindToController: {
                     workType: '=',
-                    pendingProducts: '='
+                    pendingProducts: '=',
+                    productId: '='
                 },
                 scope: {},
                 controllerAs: 'vm',

@@ -7,6 +7,7 @@
 
             vm.addIds = addIds;
             vm.saveEdits = saveEdits;
+            vm.showDetails = showDetails;
             vm.showPanel = showPanel;
 
             activate();
@@ -16,7 +17,7 @@
             function activate () {
                 vm.editCqms = {};
                 vm.addIds();
-                vm.panelShown = '';
+                vm.panelShown = 'cert';
             }
 
             $scope.$watch('cqms', function (newCqms) {
@@ -50,12 +51,13 @@
                 }
             }
 
+            function showDetails (number) {
+                vm.certDetails = vm.certDetails === number ? '' : number;
+                vm.showSed = false;
+            }
+
             function showPanel (panel) {
-                if (vm.panelShown === panel) {
-                    vm.panelShown = '';
-                } else {
-                    vm.panelShown = panel
-                }
+                vm.panelShown = vm.panelShown === panel ? '' : panel;
             }
         }]);
 
@@ -69,12 +71,14 @@
                     certs: '=',
                     cqms: '=',
                     viewAllCerts: '=defaultAll',
-                    countCerts: '@',
-                    countCqms: '@',
+                    countCerts: '=',
+                    countCqms: '=',
                     editMode: '=',
                     reportFileLocation: '@',
                     isEditing: '=',
-                    save: '&'
+                    isConfirming: '=',
+                    save: '&',
+                    product: '='
                 },
                 scope: {},
                 controllerAs: 'vm',

@@ -13,7 +13,7 @@
 
             inject(function($q) {
                 mockCommonService.products = [
-                    { vendor: 'Vendor',
+                    { developer: 'Developer',
                       product: 'Product',
                       certificationDate: '2015-02-01 00:00:00.00',
                       certificationResults: [],

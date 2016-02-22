@@ -3,7 +3,7 @@
 
     describe('app.product.controller', function () {
 
-        var commonService, scope, ctrl, $log;
+        var commonService, authService, scope, ctrl, $log;
 
         var fakeModal = {
             result: {
@@ -34,13 +34,15 @@
 
         beforeEach(function () {
             var mockCommonService = {};
+            var mockAuthService = {};
             module('app.product', function($provide) {
                 $provide.value('commonService', mockCommonService);
+                $provide.value('authService', mockAuthService);
             });
 
             inject(function($q) {
                 mockCommonService.products = [
-                    { vendor: 'Vendor', product: 'Product' }
+                    { developer: 'Developer', product: 'Product' }
                 ];
 
                 mockCommonService.getProduct = function (pid) {
@@ -56,6 +58,8 @@
                 mockCommonService.getSurveillance = function (pid) {
                     return $q.when({surveillance: []});
                 };
+
+                mockAuthService.isAuthed = function () { return true; };
             });
 
             inject(function($modal) {

@@ -1,7 +1,7 @@
 <div role="modal" aria-labeled-by="titleLabel">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
-            confirm="Are you sure you wish cancel? Your changes will not be saved."
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
@@ -9,73 +9,100 @@
     <h4 class="modal-title" id="titleLabel">Corrective Action Plan</h4>
   </div>
   <div class="modal-body">
-    <div ng-form="capForm" class="form-horizontal">
+    <div ng-form="vm.capForm" class="form-horizontal">
       <div class="form-group">
-        <label class="col-sm-8" for="noncomplianceDate">Date of determination of non-compliance <span class="text-danger">*</span></label>
+        <label class="col-sm-8" for="surveillanceStart">Date surveillance began <span class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.noncomplianceDate" id="noncomplianceDate" required></input>
+          <input class="form-control" type="date" ng-model="vm.cap.surveillanceStartDate" id="surveillanceStart" name="surveillanceStart" placeholder="yyyy-MM-dd" required></input>
+          <div class="text-danger" ng-if="vm.capForm.surveillanceStart.$touched && vm.capForm.surveillanceStart.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="vm.capForm.surveillanceStart.$touched && vm.capForm.surveillanceStart.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-8" for="approvalDate">Date of ONC approval of Corrective Action Plan <span class="text-danger">*</span></label>
+        <label class="col-sm-8" for="noncomplianceDate">Date of determination of non-conformity <span class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.approvalDate" id="approvalDate" required></input>
+          <input class="form-control" type="date" ng-model="vm.cap.noncomplianceDate" id="noncomplianceDate" name="noncomplianceDate" placeholder="yyyy-MM-dd" required></input>
+          <div class="text-danger" ng-if="vm.capForm.noncomplianceDate.$touched && vm.capForm.noncomplianceDate.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="vm.capForm.noncomplianceDate.$touched && vm.capForm.noncomplianceDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-8" for="beginDate">Date corrective action began <span class="text-danger">*</span></label>
+        <label class="col-sm-8" for="randomSurveillance">Result of randomized surveillance?</label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.effectiveDate" id="beginDate" required></input>
+          <input type="checkbox" ng-model="vm.cap.randomizedSurveillance" id="randomSurveillance" name="randomSurveillance"></input>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-8" for="requiredEndDate">Date corrective action must be completed <span class="text-danger">*</span></label>
+        <label class="col-sm-8" for="approvalDate">Date of ONC-ACB approval of Corrective Action Plan <span ng-if="vm.cap.surveillanceEndDate" class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.estimatedCompletionDate" id="requiredEndDate" required></input>
+          <input class="form-control" type="date" ng-model="vm.cap.approvalDate" id="approvalDate" name="approvalDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate"></input>
+          <div class="text-danger" ng-if="vm.capForm.approvalDate.$touched && vm.capForm.approvalDate.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="vm.capForm.approvalDate.$touched && vm.capForm.approvalDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-8" for="actualEndDate">Date corrective action was completed</label>
+        <label class="col-sm-8" for="beginDate">Date corrective action began <span ng-if="vm.cap.surveillanceEndDate" class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.actualCompletionDate" id="actualEndDate"></input>
+          <input class="form-control" type="date" ng-model="vm.cap.effectiveDate" id="beginDate" name="beginDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate"></input>
+          <div class="text-danger" ng-if="vm.capForm.beginDate.$touched && vm.capForm.beginDate.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="vm.capForm.beginDate.$touched && vm.capForm.beginDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3" for="deficiencySummary">Summary of deficiency or deficiencies <span class="text-danger">*</span></label>
-        <div class="col-sm-9">
-          <textarea class="form-control" ng-model="vm.cap.acbSummary" id="deficiencySummary" required></textarea>
+        <label class="col-sm-8" for="requiredEndDate">Date corrective action must be completed <span ng-if="vm.cap.surveillanceEndDate" class="text-danger">*</span></label>
+        <div class="col-sm-4">
+          <input class="form-control" type="date" ng-model="vm.cap.estimatedCompletionDate" id="requiredEndDate" name="requiredEndDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate"></input>
+          <div class="text-danger" ng-if="vm.capForm.requiredEndDate.$touched && vm.capForm.requiredEndDate.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="vm.capForm.requiredEndDate.$touched && vm.capForm.requiredEndDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3" for="developerExplanation">Developer's explanation of deficiency or deficiencies <span class="text-danger">*</span></label>
-        <div class="col-sm-9">
-          <textarea class="form-control" ng-model="vm.cap.developerSummary" id="developerExplanation" required></textarea>
+        <label class="col-sm-8" for="actualEndDate">Date corrective action was completed <span ng-if="vm.cap.surveillanceEndDate" class="text-danger">*</span></label>
+        <div class="col-sm-4">
+          <input class="form-control" type="date" ng-model="vm.cap.actualCompletionDate" id="actualEndDate" name="actualEndDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate"></input>
+          <div class="text-danger" ng-if="vm.capForm.actualEndDate.$touched && vm.capForm.actualEndDate.$error.required">Field is required</div>
+          <div class="text-danger" ng-if="vm.capForm.actualEndDate.$touched && vm.capForm.actualEndDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3" for="resolutionDescription">Description of the resolution <span class="text-danger" ng-if="vm.cap.actualCompletionDate">*</span></label>
-        <div class="col-sm-9">
-          <textarea class="form-control" ng-model="vm.cap.resolution" id="resolutionDescription" ng-required="vm.cap.actualCompletionDate" ng-disabled="!vm.cap.actualCompletionDate"></textarea>
+        <label class="col-sm-8" for="surveillanceEnd">Date surveillance ended</span></label>
+        <div class="col-sm-4">
+          <input class="form-control" type="date" ng-model="vm.cap.surveillanceEndDate" id="surveillanceEnd" name="surveillanceEnd" placeholder="yyyy-MM-dd"></input>
+          <div class="text-danger" ng-if="vm.capForm.surveillanceEnd.$touched && vm.capForm.surveillanceEnd.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
       </div>
-      <div class="form-group" ng-repeat="cert in vm.cap.certifications">
+      <div class="form-group" ng-repeat-start="cert in vm.cap.certifications">
         <div class="col-sm-1">
           <input type="checkbox" ng-model="cert.error" id="cert{{ cert.id}}_chk"></input>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <label for="cert{{ cert.id }}_chk">{{ cert.number }}: {{ cert.title }}</label>
         </div>
-        <div class="col-sm-3">
-          <label for="cert{{ cert.id }}_desc">Summary of deficiency <span class="text-danger" ng-if="cert.error">*</span></label>
-          <textarea class="form-control" ng-model="cert.acbSummary" id="cert{{ cert.id }}_desc" ng-required="cert.error" ng-disabled="!cert.error"></textarea>
+        <div class="col-sm-8">
+          <label for="cert{{ cert.id }}_passRate">Sites passed <span class="text-danger" ng-if="cert.error && vm.cap.randomizedSurveillance && vm.cap.surveillanceEndDate">*</span></label>
+          <input type="number" class="" ng-model="cert.surveillancePassRate" id="cert{{ cert.id }}_passRate" name="cert{{ cert.id }}_passRate" ng-required="cert.error && vm.cap.randomizedSurveillance && vm.cap.surveillanceEndDate" ng-disabled="!cert.error || !vm.cap.randomizedSurveillance"></input>
+          <div class="text-danger" ng-if="vm.capForm['cert' + cert.id + '_passRate'].$touched && vm.capForm['cert' + cert.id + '_passRate'].$error.required">Field is required</div>
+          /
+          <label for="cert{{ cert.id }}_sitesSurveilled">Total sites <span class="text-danger" ng-if="cert.error && vm.cap.randomizedSurveillance && vm.cap.surveillanceEndDate">*</span></label>
+          <input type="number" class="" ng-model="cert.surveillanceSitesSurveilled" id="cert{{ cert.id }}_sitesSurveilled" name="cert{{ cert.id }}_sitesSurveilled" ng-required="cert.error && vm.cap.randomizedSurveillance && vm.cap.surveillanceEndDate" ng-disabled="!cert.error || !vm.cap.randomizedSurveillance"></input>
+          <div class="text-danger" ng-if="vm.capForm['cert' + cert.id + '_sitesSurveilled'].$touched && vm.capForm['cert' + cert.id + '_sitesSurveilled'].$error.required">Field is required</div>
         </div>
-        <div class="col-sm-3">
-          <label for="cert{{ cert.id }}_dev">Developer explanation <span class="text-danger" ng-if="cert.error">*</span></label>
-          <textarea class="form-control" ng-model="cert.developerSummary" id="cert{{ cert.id }}_dev" ng-required="cert.error" ng-disabled="!cert.error"></textarea>
+      </div>
+      <div class="form-group" ng-repeat-end>
+        <div class="col-sm-4">
+          <label for="cert{{ cert.id }}_desc">Summary of non-conformity <span class="text-danger" ng-if="cert.error && vm.cap.surveillanceEndDate">*</span></label>
+          <textarea class="form-control" ng-model="cert.acbSummary" id="cert{{ cert.id }}_desc" name="cert{{ cert.id }}_desc" ng-required="cert.error && vm.cap.surveillanceEndDate" ng-disabled="!cert.error"></textarea>
+          <div class="text-danger" ng-if="vm.capForm['cert' + cert.id + '_desc'].$touched && vm.capForm['cert' + cert.id + '_desc'].$error.required">Field is required</div>
         </div>
-        <div class="col-sm-3">
-          <label for="cert{{ cert.id }}_res">Description of resolution <span class="text-danger" ng-if="cert.error && vm.cap.actualCompletionDate">*</span></label>
-          <textarea class="form-control" ng-model="cert.resolution" id="cert{{ cert.id }}_res" ng-required="cert.error && vm.cap.actualCompletionDate" ng-disabled="!cert.error || !vm.cap.actualCompletionDate"></textarea>
+        <div class="col-sm-4">
+          <label for="cert{{ cert.id }}_dev">Developer explanation <span class="text-danger" ng-if="cert.error && vm.cap.surveillanceEndDate">*</span></label>
+          <textarea class="form-control" ng-model="cert.developerSummary" id="cert{{ cert.id }}_dev" name="cert{{ cert.id }}_dev" ng-required="cert.error && vm.cap.surveillanceEndDate" ng-disabled="!cert.error"></textarea>
+          <div class="text-danger" ng-if="vm.capForm['cert' + cert.id + '_dev'].$touched && vm.capForm['cert' + cert.id + '_dev'].$error.required">Field is required</div>
+        </div>
+        <div class="col-sm-4">
+          <label for="cert{{ cert.id }}_res">Description of resolution <span class="text-danger" ng-if="cert.error && vm.cap.surveillanceEndDate">*</span></label>
+          <textarea class="form-control" ng-model="cert.resolution" id="cert{{ cert.id }}_res" name="cert{{ cert.id }}_res" ng-required="cert.error && vm.cap.surveillanceEndDate" ng-disabled="!cert.error"></textarea>
+          <div class="text-danger" ng-if="vm.capForm['cert' + cert.id + '_res'].$touched && vm.capForm['cert' + cert.id + '_res'].$error.required">Field is required</div>
         </div>
       </div>
     </div>
@@ -151,7 +178,7 @@
   <div class="modal-footer">
     <button class="btn btn-success btn-large pull-right"
             ng-if="vm.action === 'initiate'"
-            ng-disabled="capForm.$invalid"
+            ng-disabled="!vm.isValid()"
             confirm="Are you sure you wish to initiate this Corrective Action Plan?"
             confirm-ok="Yes"
             confirm-cancel="No"
@@ -159,7 +186,7 @@
             ng-click="vm.save()"><i class="fa fa-save"></i> Initiate</button>
     <button class="btn btn-success btn-large pull-right"
             ng-if="vm.action === 'edit'"
-            ng-disabled="capForm.$invalid"
+            ng-disabled="!vm.isValid()"
             confirm="Are you sure you wish to update this Corrective Action Plan?"
             confirm-ok="Yes"
             confirm-cancel="No"

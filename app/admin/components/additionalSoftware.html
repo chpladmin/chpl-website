@@ -1,5 +1,5 @@
 <span>
-  <span ng-if="!vm.isEditing"><strong>Additional Software: </strong>{{ vm.prettyPrint }}</span>
+  <span ng-if="!vm.isEditing"><strong>Additional Software: </strong>{{ vm.format() }}</span>
   <div ng-if="vm.isEditing">
     <table class="table table-striped table-condensed">
       <thead>
@@ -21,7 +21,7 @@
         <tr ng-repeat="item in vm.additionalSoftware track by $index">
           <td>{{ item.name }}</td>
           <td>{{ item.version }}</td>
-          <td>{{ item.chplId }}</td>
+          <td>{{ item.certifiedProductSelfCHPLId }}</td>
           <td width="0">
             <button class="btn btn-success btn-block" ng-click="vm.editItem(item, $index)"><i class="fa fa-pencil-square-o"></i> Edit</button>
             <button class="btn btn-danger btn-block" ng-click="vm.removeItem($index)"><i class="fa fa-trash-o"></i> Remove</button>

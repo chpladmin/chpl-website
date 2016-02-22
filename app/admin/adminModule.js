@@ -3,8 +3,9 @@
 
     angular.module('app.admin', ['ngRoute', 'smart-table', 'app.common', 'app.loginServices', 'ngIdle', 'ngSanitize', 'ui.bootstrap'])
         .config(['$routeProvider', function($routeProvider) {
-            $routeProvider.when('/admin', {
-                templateUrl: 'admin/admin.html'
+            $routeProvider.when('/admin/:section?/:productId?', {
+                templateUrl: 'admin/admin.html',
+                title: 'Administration'
             });
         }])
         .config(function(IdleProvider, KeepaliveProvider) {

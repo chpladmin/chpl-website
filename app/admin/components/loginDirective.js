@@ -6,13 +6,14 @@
             var vm = this;
 
             vm.activate = activate;
+            vm.changePassword = changePassword;
+            vm.clear = clear;
+            vm.isAuthed = isAuthed;
             vm.login = login;
             vm.logout = logout;
-            vm.setActivity = setActivity;
+            vm.misMatchPasswords = misMatchPasswords;
             vm.sendReset = sendReset;
-            vm.changePassword = changePassword;
-            vm.isAuthed = isAuthed;
-            vm.clear = clear;
+            vm.setActivity = setActivity;
             vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
 
             vm.activityEnum = {
@@ -27,12 +28,12 @@
             /////////////////////////////////////////////////////////
 
             function activate () {
-                vm.clear();
                 if (vm.isAuthed()) {
                     vm.activity = vm.activityEnum.NONE;
                 } else {
                     vm.activity = vm.activityEnum.LOGIN;
                 }
+                vm.clear();
                 $scope.$on('Keepalive', function() {
                     $log.info('Keepalive');
 
@@ -54,43 +55,9 @@
                 }
             }
 
-            function login () {
-                vm.message = '';
-                commonService.login({userName: vm.userName, password: vm.password})
-                    .then(function (response) {
-                        Idle.watch();
-                        Keepalive.ping();
-                        $location.path('/admin');
-                        vm.clear();
-                    }, function (error) {
-                        vm.message = 'Invalid username/password combination';
-                    });
-            }
-
-            function logout () {
-                authService.logout();
-                vm.activity = vm.activityEnum.LOGIN;
-                Idle.unwatch();
-            }
-
-            function setActivity (activity) {
-                vm.activity = activity;
-            }
-
-            function sendReset () {
-                commonService.resetPassword({userName: vm.userName, email: vm.email})
-                    .then(function (response) {
-                        $location.path('/admin');
-                        vm.clear();
-                        vm.message = 'Password email sent; please check your email';
-                    }, function (error) {
-                        vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
-                    });
-            }
-
             function changePassword () {
-                if (vm.password === vm.confirmPassword) {
-                    commonService.changePassword({userName: vm.userName, password: vm.password})
+                if (vm.newPassword === vm.confirmPassword) {
+                    commonService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
                         .then(function (response) {
                             vm.clear();
                             vm.message = 'Password successfully changed';
@@ -102,10 +69,6 @@
                 }
             }
 
-            function isAuthed () {
-                return authService.isAuthed();
-            }
-
             function clear () {
                 if (vm.isAuthed()) {
                     vm.activity = vm.activityEnum.NONE;
@@ -114,9 +77,56 @@
                 }
                 vm.userName = '';
                 vm.password = '';
+                vm.newPassword = '';
                 vm.confirmPassword = '';
                 vm.email = '';
                 vm.message = '';
+                if (vm.loginForm) {
+                    vm.loginForm.$setPristine();
+                    vm.loginForm.$setUntouched();
+                }
+            }
+
+            function isAuthed () {
+                return authService.isAuthed();
+            }
+
+            function login () {
+                vm.message = '';
+                commonService.login({userName: vm.userName, password: vm.password})
+                    .then(function (response) {
+                        Idle.watch();
+                        Keepalive.ping();
+                        $location.path('/admin');
+                        vm.clear();
+                    }, function (error) {
+                        vm.message = error.data.error;
+                    });
+            }
+
+            function logout () {
+                authService.logout();
+                vm.clear();
+                Idle.unwatch();
+            }
+
+            function setActivity (activity) {
+                vm.activity = activity;
+            }
+
+            function misMatchPasswords () {
+                return vm.newPassword !== vm.confirmPassword;
+            }
+
+            function sendReset () {
+                commonService.resetPassword({userName: vm.userName, email: vm.email})
+                    .then(function (response) {
+                        $location.path('/admin');
+                        vm.clear();
+                        vm.message = 'Password email sent; please check your email';
+                    }, function (error) {
+                        vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
+                    });
             }
         }]);
 

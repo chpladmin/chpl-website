@@ -25,13 +25,14 @@
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
     </div>
   </div>
-  <div class="main-content">
+  <div class="main-content" id="mainContent">
     <div class="row">
       <div class="col-sm-4">
         <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
       </div>
       <div class="col-sm-8 text-right">
         <p>Certification Date: {{ vm.product.certificationDate | date }} | Last modified Date: {{ vm.product.lastModifiedDate | date }}</p>
+        <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
       </div>
     </div>
 
@@ -39,7 +40,8 @@
       <div class="col-sm-4">
         <div class="product-element">
           <h3 class="product-heading">Developer</h3>
-          <p>{{ vm.product.vendor.name }}</p>
+          <p>{{ vm.product.developer.name }}</p>
+          <p ng-if="vm.product.developer.website"><a href="{{ vm.product.developer.website }}">{{ vm.product.developer.website }}</a></p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Version</h3>
@@ -50,82 +52,52 @@
           <p>{{ vm.product.certificationEdition.name }}</p>
         </div>
         <div class="product-element">
-          <h3 class="product-heading">Certifying Body</h3>
+          <h3 class="product-heading">Accredited Certification Body</h3>
           <p>{{ vm.product.certifyingBody.name }}</p>
         </div>
-        <div class="product-element">
-          <h3 class="product-heading">Practice Type</h3>
-          <p>{{ vm.product.practiceType.name }}</p>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">Quality Management System Attestation</h3>
-          <p ng-if="vm.product.qualityManagementSystemAtt">True</p>
-          <p ng-if="!vm.product.qualityManagementSystemAtt">False</p>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">Privacy and Security Attestation</h3>
-          <p ng-if="vm.product.privacyAttestation">True</p>
-          <p ng-if="!vm.product.privacyAttestation">False</p>
+        <div class="product-element" ng-if="vm.product.productAdditionalSoftware">
+          <h3 class="product-heading">Additional Software</h3>
+          <p>{{ vm.product.productAdditionalSoftware }}</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Transparency Attestation</h3>
-          <p ng-if="vm.product.transparencyAttestation">True</p>
-          <p ng-if="!vm.product.transparencyAttestation">False</p>
+          <p>{{ vm.product.transparencyAttestation ? 'Affirmative' : 'Negative' }}</p>
         </div>
         <div class="product-element">
-          <h3 class="product-heading">Inherited Certification Status</h3>
-          <p>{{ vm.product.ics ? vm.product.ics : '---' }} </p>
+          <h3 class="product-heading">Quality Management System</h3>
+          <span ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" ng-repeat="qms in vm.product.qmsStandards">
+            <h4>Standard</h4>
+            <p>{{ qms.qmsStandardName }}</p>
+            <h4>Description</h4>
+            <p>{{ qms.qmsModification }}</p>
+            <h4>Applicable Criteria</h4>
+            <p>{{ qms.applicableCriteria }}</p>
+          </span>
+          <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
         </div>
-        <div class="product-element">
-          <h3 class="product-heading">QMS Testing</h3>
-          <p ng-if="vm.product.qmsTesting">True</p>
-          <p ng-if="!vm.product.qmsTesting">False</p>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">SED Testing</h3>
-          <p ng-if="vm.product.sedTesting">True</p>
-          <p ng-if="!vm.product.sedTesting">False</p>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">Other ACB</h3>
-          <p>{{ vm.product.otherAcb ? vm.product.otherAcb : '---' }}</p>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">Terms of Use</h3>
-          <p ng-if="vm.product.termsOfUse"><a href="{{ vm.product.termsOfUse }}">{{ vm.product.termsOfUse }}</a></p>
-          <p ng-if="!vm.product.termsOfUse">---</p>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">API Documentation</h3>
-          <p ng-if="vm.product.apiDocumentation"><a href="{{ vm.product.apiDocumentation }}">{{ vm.product.apiDocumentation }}</a></p>
-          <p ng-if="!vm.product.apiDocumentation">---</p>
+        <div class="product-element" ng-if="vm.correctiveActionPlan.length === 0">
+          <h3 class="product-heading">Surveillance Transparency</h3>
+          <ai-corrective-action-plan
+             corrective-action-plan="vm.correctiveActionPlan"
+             certified-product-id="vm.product.id"
+             certification-results="vm.product.certificationResults"
+             is-admin="false"></ai-corrective-action-plan>
         </div>
       </div>
       <div class="col-sm-8">
-        <div class="product-element">
-          <h3 class="product-heading">Required Additional Software</h3>
-          <p><ai-additional-software additional-software="vm.product.additionalSoftware" is-editing="false"></ai-additional-software></p>
-        </div>
         <ai-certs certs="vm.product.certificationResults"
                   cqms="vm.product.cqmResults"
-                  count-certs="{{ vm.product.countCerts }}"
-                  count-cqms="{{ vm.product.countCqms }}"
-                  report-file-location="{{ vm.product.reportFileLocation }}">
+                  count-certs="vm.product.countCerts"
+                  count-cqms="vm.product.countCqms"
+                  report-file-location="{{ vm.product.reportFileLocation }}"
+                  product="vm.product">
         </ai-certs>
       </div>
     </div>
-    <div class="row">
+    <div class="row" ng-if="vm.correctiveActionPlan.length > 0">
       <div class="col-sm-12">
         <div class="product-element">
-          <h3 class="product-heading">Surveillance</h3>
-          <ai-surveillance
-             surveillances="vm.surveillances"
-             certified-product-id="vm.product.id"
-             certification-results="vm.product.certificationResults"
-             is-admin="false"></ai-surveillance>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">Corrective Action Plan</h3>
+          <h3 class="product-heading">Surveillance Transparency</h3>
           <ai-corrective-action-plan
              corrective-action-plan="vm.correctiveActionPlan"
              certified-product-id="vm.product.id"

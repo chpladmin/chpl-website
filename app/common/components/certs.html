@@ -9,19 +9,113 @@
         <a href="" ng-click="vm.showPanel('cert')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
-        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-12' : 'col-md-4'" ng-repeat="n in vm.certs | orderBy:'number' track by $index">
+        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing || vm.certDetails === n.number ? 'col-md-12' : 'col-md-4'" ng-repeat="n in vm.certs | orderBy:'number' track by $index">
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-            {{ n.number }}: {{ n.title }}
-            <span ng-if="n.additionalSoftware">Certification met via:
-              <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
-            </span>
+            {{ n.number }}: {{ n.title }} <a href class="pull-right" ng-click="vm.showDetails(n.number)" ng-if="n.success">{{ vm.certDetails === n.number ? 'Hide' : 'View' }} details</a>
+            <div ng-if="vm.certDetails === n.number">
+              <span ng-if="n.additionalSoftware && n.additionalSoftware.length > 0"><br />Certification met via:
+                <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
+              </span>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>GAP</td>
+                    <td>{{ n.gap ? 'True' : 'False' }}</td>
+                  </tr>
+                  <tr>
+                    <td>Functionality Tested</td>
+                    <td ng-if="n.testFunctionality && n.testFunctionality.length > 0"><div ng-repeat="m in n.testFunctionality">{{ m.name }}</div></td>
+                    <td ng-if="!n.testFunctionality || n.testFunctionality.length === 0">N/A</td>
+                  </tr>
+                  <tr>
+                    <td>Standard</td>
+                    <td ng-if="n.testStandards && n.testStandards.length > 0"><div ng-repeat="m in n.testStandards">{{ m.testStandardName }}</div></td>
+                    <td ng-if="!n.testStandards || n.testStandards.length === 0">N/A</td>
+                  </tr>
+                  <tr>
+                    <td>Measure Successfully Tested for G1</td>
+                    <td>{{ n.g1Success ? 'True' : 'False' }}</td>
+                  </tr>
+                  <tr>
+                    <td>Measure Successfully Tested for G2</td>
+                    <td>{{ n.g2Success ? 'True' : 'False' }}</td>
+                  </tr>
+                  <tr>
+                    <td>Test procedure version</td>
+                    <td ng-if="n.testProcedures && n.testProcedures.length > 0"><div ng-repeat="m in n.testProcedures">{{ m.testProcedureVersion }}</div></td>
+                    <td ng-if="!n.testProcedures || n.testProcedures.length === 0">N/A</td>
+                  </tr>
+                  <tr>
+                    <td>Test data used</td>
+                    <td ng-if="n.testDataUsed && n.testDataUsed.length > 0"><div ng-repeat="m in n.testDataUsed">Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
+                    <td ng-if="!n.testDataUsed || n.testDataUsed.length === 0">N/A</td>
+                  </tr>
+                  <tr>
+                    <td>Test procedure version</td>
+                    <td ng-if="n.testToolsUsed && n.testToolsUsed.length > 0"><div ng-repeat="m in n.testToolsUsed">{{ m.testToolName }}</div></td>
+                    <td ng-if="!n.testToolsUsed || n.testToolsUsed.length === 0">N/A</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="text-center"><a href ng-click="vm.showSed = !vm.showSed">{{ vm.showSed ? 'Hide' : 'View' }} SED Details</a></td>
+                  </tr>
+                  <tr ng-if="vm.showSed">
+                    <td>UCD Process Selected</td>
+                    <td>{{ n.ucdProcessSelected ? n.ucdProcessSelected : 'N/A' }}</td>
+                  </tr>
+                  <tr ng-if="vm.showSed">
+                    <td>UCD Process Details</td>
+                    <td>{{ n.ucdProcessDetails ? n.ucdProcessDetails : 'N/A' }}</td>
+                  </tr>
+                  <tr ng-if="vm.showSed">
+                    <td colspan="2">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Task Description</th>
+                            <th>Task Success</th>
+                            <th>Path Deviation - Mean</th>
+                            <th>Task Time</th>
+                            <th>Errors</th>
+                            <th>Task Rating</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Participant Occupation/Role</th>
+                            <th>Participant Education</th>
+                            <th>Participant professional Experience</th>
+                            <th>Participant Gender</th>
+                            <th>Participant Age</th>
+                            <th>Participant Computer Experience</th>
+                            <th>Participant Product Experience</th>
+                            <th>Participant Assistive Technology Needs</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="n.success" id="data_{{n.number}}"></input>
             <label for="data_{{n.number}}">{{ n.number }}: {{ n.title }}</label>
-            Certification met via additional software:
+            <br />Certification met via additional software:
             <ai-additional-software additional-software="n.additionalSoftware" is-editing="true"></ai-additional-software>
           </p>
         </div>
@@ -37,9 +131,6 @@
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
             <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b> <span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}
-            <span ng-if="n.additionalSoftware">CQM met via:
-              <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
-            </span>
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
@@ -50,21 +141,33 @@
               </select>
             </span>
             <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
-            CQM met via additional software:
-            <ai-additional-software additional-software="n.additionalSoftware" is-editing="true"></ai-additional-software>
           </p>
         </div>
       </div>
     </div>
     <div class="panel panel-ai">
       <div class="panel-heading">
-        <a href="" ng-click="vm.showPanel('test')"><i class="fa fa-lg" ng-class="vm.panelShown === 'test' ? 'fa-caret-down' : 'fa-caret-right'"></i> ATL Test Report</a>
+        <a href="" ng-click="vm.showPanel('additional')"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'test'">
-        <h3>ATL Test Report</h3>
-        <p>The following link provides the detailed test results summary from the Accredited Testing Laboratory (ATL) responsible for testing the corresponding certified product.</p>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'">
+        <h4>Practice Type</h4>
+        <p>{{ vm.product.practiceType.name }}</p>
+        <h4>Inherited Certification Status</h4>
+        <p>{{ vm.product.ics ? vm.product.ics : 'N/A' }} </p>
+        <h4>Other ACB</h4>
+        <p>{{ vm.product.otherAcb ? vm.product.otherAcb : 'N/A' }}</p>
+        <h4>Terms of Use</h4>
+        <p ng-if="vm.product.termsOfUse"><a href="{{ vm.product.termsOfUse }}">{{ vm.product.termsOfUse }}</a></p>
+        <p ng-if="!vm.product.termsOfUse">N/A</p>
+        <h4>API Documentation</h4>
+        <p ng-if="vm.product.apiDocumentation"><a href="{{ vm.product.apiDocumentation }}">{{ vm.product.apiDocumentation }}</a></p>
+        <p ng-if="!vm.product.apiDocumentation">N/A</p>
         <h4>Report File Location</h4>
-        <a href="{{ vm.reportFileLocation }}">{{ vm.reportFileLocation }}</a>
+        <ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" text="{{ vm.reportFileLocation }}"></ai-a>
+        <p ng-if="!vm.reportFileLocation">No report on file</p>
+        <h4>SED Report File Location</h4>
+        <ai-a ng-if="vm.sedReportFilelocation" href="{{ vm.sedReportFileLocation }}" text="{{ vm.sedReportFileLocation }}"></ai-a>
+        <p ng-if="!vm.sedReportFileLocation">No report on file</p>
       </div>
     </div>
   </div>

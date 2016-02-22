@@ -1,6 +1,49 @@
 # Release Notes
 
-## Next version
+## Version 0.3.1
+_22 February 2016_
+
+### Bugs fixed
+* Rearranged product listing information
+* Added 'N/A' instead of blanks
+
+## Version 0.3.0
+_18 February 2016_
+
+### New features
+* Implemented 'complicated' password requirements
+* Added 'Compliance attestation' on user creation
+* Added 'deep link' to edit from details page
+* Updated admin navigation to show available pages
+* Update wrt 508 compliance
+  * Added tab navigation to search results
+  * Added 'external link' indicator
+  * Added 'skip to main content' keyboard link
+* Blended 'Surveillance' with 'Corrective Action Plan'
+* Updated Surveillance and Corrective Action Plan to satisfy requirements
+* Combined API & Product Listing into single 'Resources' page
+
+### Bugs fixed
+* Change password requires old password and not username
+* Allowed editing of ATL for certified products
+* Truncated too-long compare button titles
+
+## Version 0.2.0
+_3 February 2016_
+
+### New or updated features
+* Already logged in user with link for additional permissions gets new permissions automatically when link followed
+* Added helpful error messages for form validation
+* Integrated with ACB & ATL 'undelete' feature
+* Removed ability to change ACB & ATL name for any but ROLE_ADMIN
+* Integrated with Announcements API feature
+
+### Bugs fixed
+* Removed Swagger validator badge
+* Enter submits login/change password action
+* Login form stays open on un/pw or email error
+
+## Version 0.1.1
 _12 January 2016_
 
 ### New or updated features

@@ -22,6 +22,7 @@
             function activate () {
                 vm.userInvitation = {permissions: []};
                 vm.roles = [];
+                vm.message = '';
                 if (!vm.acbId && !vm.atlId) {
                     vm.roles.push('ROLE_ADMIN');
                 }
@@ -55,10 +56,12 @@
                         if (!response.status || response.status === 200) {
                             $modalInstance.close(response);
                         } else {
-                            $modalInstance.dismiss('An error occurred');
+                                errorMessage(response);
+//                            $modalInstance.dismiss('An error occurred');
                         }
                     },function (error) {
-                        $modalInstance.dismiss(error.data.error);
+                            errorMessage(error.data.error);
+//                        $modalInstance.dismiss(error.data.error);
                     });
             }
 
@@ -75,10 +78,12 @@
                             if (!response.status || response.status === 200) {
                                 $modalInstance.close('deleted');
                             } else {
-                                $modalInstance.dismiss('An error occurred');
+                                errorMessage(response);
+//                                $modalInstance.dismiss('An error occurred');
                             }
                         },function (error) {
-                            $modalInstance.dismiss(error.data.error);
+                            errorMessage(error.data.error);
+//                            $modalInstance.dismiss(error.data.error);
                         });
                 } else if (vm.atlId) {
                     var userObject = {atlId: vm.atlId,
@@ -88,10 +93,12 @@
                             if (!response.status || response.status === 200) {
                                 $modalInstance.close('deleted');
                             } else {
-                                $modalInstance.dismiss('An error occurred');
+                                errorMessage(response);
+//                                $modalInstance.dismiss('An error occurred');
                             }
                         },function (error) {
-                            $modalInstance.dismiss(error.data.error);
+                            errorMessage(error.data.error);
+//                            $modalInstance.dismiss(error.data.error);
                         });
                 } else {
                     commonService.deleteUser(vm.user.user.userId)
@@ -99,10 +106,12 @@
                             if (!response.status || response.status === 200) {
                                 $modalInstance.close('deleted');
                             } else {
-                                $modalInstance.dismiss('An error occurred');
+                                  errorMessage(response);
+//                              $modalInstance.dismiss('An error occurred');
                             }
                         },function (error) {
-                            $modalInstance.dismiss(error.data.error);
+                            errorMessage(error.data.error);
+//                            $modalInstance.dismiss(error.data.error);
                         });
                 }
             }
@@ -120,12 +129,19 @@
                             if (!response.status || response.status === 200) {
                                 $modalInstance.close('invited');
                             } else {
-                                $modalInstance.dismiss('An error occurred');
+                                errorMessage(response);
+//                                $modalInstance.dismiss('An error occurred');
                             }
                         },function (error) {
-                            $modalInstance.dismiss(error.data.error);
+                            errorMessage(error.data.error);
+//                            $modalInstance.dismiss(error.data.error);
                         });
                 }
+            }
+            ////////////////////////////////////////////////////////////////////
+
+            function errorMessage (text) {
+                vm.message = 'An error occurred. Please try again or contact the administrator. The error was: "' + text + '"';
             }
         }]);
 })();

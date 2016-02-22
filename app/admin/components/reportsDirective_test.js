@@ -17,14 +17,15 @@
             module('app/admin/components/reports.html');
 
             inject(function($q) {
-                mockCommonService.vendorActivity = [{description: 'string', name: 'Vendor 1', date: 123123123}];
+                mockCommonService.developerActivity = [{description: 'string', name: 'Developer 1', date: 123123123}];
                 mockCommonService.productActivity = ['Product 1', 'Product 2'];
                 mockCommonService.certBodyActivity  = ['CB 1', 'CB 2'];
-                mockCommonService.cpActivity = [{newData: {vendor: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}}];
+                mockCommonService.cpActivity = [{newData: {developer: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}}];
                 mockCommonService.userActivity = [];
                 mockCommonService.userActivities = [];
                 mockCommonService.apiActivity = [];
                 mockCommonService.apiUserActivity = [];
+                mockCommonService.announcementActivity = [];
 
                 mockCommonService.simpleApiCall = function () {
                     var defer = $q.defer();
@@ -56,9 +57,9 @@
                     return defer.promise;
                 };
 
-                mockCommonService.getVendorActivity = function () {
+                mockCommonService.getDeveloperActivity = function () {
                     var defer = $q.defer();
-                    defer.resolve(this.vendorActivity);
+                    defer.resolve(this.developerActivity);
                     return defer.promise;
                 };
 
@@ -97,6 +98,8 @@
                     defer.resolve(this.apiUserActivities);
                     return defer.promise;
                 };
+
+                mockCommonService.getAnnouncementActivity = function () { return $q.when(mockCommonService.announcementActivity); };
 
                 mockAuthService.isAcbAdmin = function () {
                     return true;
@@ -137,7 +140,7 @@
             }));
 
             it('should have loaded activity', function () {
-                expect(ctrl.searchedVendors.length).toBeGreaterThan(0);
+                expect(ctrl.searchedDevelopers.length).toBeGreaterThan(0);
                 expect(ctrl.searchedProducts.length).toBeGreaterThan(0);
                 expect(ctrl.searchedACBs.length).toBeGreaterThan(0);
                 expect(ctrl.searchedCertifiedProducts.length).toBeGreaterThan(0);

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$log', '$filter', 'authService', 'commonService', function ($log, $filter, authService, commonService) {
+        .controller('AdminController', ['$log', '$filter', '$routeParams', 'authService', 'commonService', function ($log, $filter, $routeParams, authService, commonService) {
             var vm = this;
 
             vm.changeAcb = changeAcb
@@ -26,6 +26,8 @@
                 vm.navState = {
                     reports: 'cp'
                 };
+
+                // base case
                 if (vm.isChplAdmin() || vm.isAcbAdmin()) {
                     vm.navState.screen = 'dpManagement';
                 } else if (vm.isAtlAdmin()) {
@@ -36,13 +38,24 @@
                 } else {
                     vm.navState.dpManagement = 'manage';
                 }
-                commonService.getAcbs(true)
+
+                // chosen section
+                if ($routeParams.section) {
+                    vm.navState.screen = $routeParams.section;
+                }
+                if ($routeParams.productId)  {
+                    vm.navState.dpManagement = 'manage';
+                    vm.productId = $routeParams.productId;
+                }
+
+                // load editable acbs & atls
+                commonService.getAcbs(true, vm.isChplAdmin())
                     .then (function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
                     });
-                commonService.getAtls(true)
+                commonService.getAtls(true, vm.isChplAdmin())
                     .then (function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];
@@ -64,7 +77,7 @@
 
             function changeScreen (screen) {
                 if (screen === 'acbManagement') {
-                commonService.getAcbs(true)
+                commonService.getAcbs(true, vm.isChplAdmin())
                     .then (function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
@@ -72,7 +85,7 @@
                     });
                 }
                 if (screen === 'atlManagement') {
-                commonService.getAtls(true)
+                commonService.getAtls(true, vm.isChplAdmin())
                     .then (function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];

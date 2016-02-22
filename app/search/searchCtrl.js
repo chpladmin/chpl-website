@@ -11,6 +11,7 @@
             vm.compare = compare;
             vm.search = search;
             vm.toggleCompare = toggleCompare;
+            vm.truncButton = truncButton;
             vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
 
@@ -22,7 +23,7 @@
                 vm.activeSearch = false;
                 vm.resultCount = 0;
                 vm.defaultRefine = { visibleOnCHPL: 'yes',
-                                     hasCAP: 'both',
+                                     hasCAP: 'all',
                                      certificationCriteria: [],
                                      cqms: []};
                 if ($localStorage.refine) {
@@ -43,8 +44,8 @@
 
             function addRefine () {
                 switch (vm.refineType) {
-                case 'vendor':
-                    vm.query.vendorObject = vm.refine.vendor;
+                case 'developer':
+                    vm.query.developerObject = vm.refine.developer;
                     break;
                 case 'product':
                     vm.query.productObject = vm.refine.product;
@@ -104,7 +105,7 @@
                         prev.shift();
                     }
                     $localStorage.previouslyCompared = prev;
-                    $location.path(comparePath);
+                    $location.url(comparePath);
                 }
             }
 
@@ -116,12 +117,12 @@
                     }
                     vm.query.searchTerm = angular.copy(vm.query.searchTermObject.value);
                 }
-                if (vm.query.vendorObject !== undefined) {
-                    if (typeof(vm.query.vendorObject) === 'string' && vm.query.vendorObject.length > 0) {
-                        vm.query.vendorObject = {type: 'previous search', value: vm.query.vendorObject};
-                        vm.lookaheadSource.vendors.push(vm.query.vendorObject);
+                if (vm.query.developerObject !== undefined) {
+                    if (typeof(vm.query.developerObject) === 'string' && vm.query.developerObject.length > 0) {
+                        vm.query.developerObject = {type: 'previous search', value: vm.query.developerObject};
+                        vm.lookaheadSource.developers.push(vm.query.developerObject);
                     }
-                    vm.query.vendor = vm.query.vendorObject.value;
+                    vm.query.developer = vm.query.developerObject.value;
                 }
                 if (vm.query.productObject !== undefined) {
                     if (typeof(vm.query.productObject) === 'string' && vm.query.productObject.length > 0) {
@@ -161,12 +162,21 @@
                 }
             }
 
+            function truncButton (str) {
+                var ret = str;
+                if (str.length > 20) {
+                    ret = ret.substring(0,20) + '&#8230;';
+                }
+                ret +='<span class="pull-right"><i class="fa fa-close"></i></span>';
+                return ret;
+            }
+
             function unrefine (key, cert) {
                 switch (key) {
-                case 'vendor':
-                    delete(vm.query.vendor);
-                    delete(vm.query.vendorObject);
-                    delete(vm.refine.vendor);
+                case 'developer':
+                    delete(vm.query.developer);
+                    delete(vm.query.developerObject);
+                    delete(vm.refine.developer);
                     break;
                 case 'product':
                     delete(vm.query.product);
@@ -178,8 +188,8 @@
                     vm.refine.visibleOnCHPL = 'yes';
                     break;
                 case 'hasCAP':
-                    vm.query.hasCAP = 'both';
-                    vm.refine.hasCAP = 'both';
+                    vm.query.hasCAP = 'all';
+                    vm.refine.hasCAP = 'all';
                     break;
                 case 'certificationCriteria':
                     for (var i = 0; i < vm.query.certificationCriteria.length; i++) {
@@ -219,21 +229,21 @@
                     }
                     $localStorage.previouslyViewed = vm.previouslyViewed;
                 }
-                $location.path('/product/' + cp.id);
+                $location.url('/product/' + cp.id);
             }
 
             $scope.searchResults = [];
             $scope.displayedResults = [];
-            vm.lookaheadSource = {all: [], vendors: [], products: []};
+            vm.lookaheadSource = {all: [], developers: [], products: []};
             vm.hasDoneASearch = false;
             $scope.visiblePage = 1;
             vm.defaultQuery = {
-                orderBy: 'vendor',
+                orderBy: 'developer',
                 sortDescending: false,
                 pageNumber: 0,
                 pageSize: '50',
                 visibleOnCHPL: 'yes',
-                hasCAP: 'both'
+                hasCAP: 'all'
             };
             vm.query = angular.copy(vm.defaultQuery);
 
@@ -264,9 +274,9 @@
                             vm.lookaheadSource = $localStorage.lookaheadSource;
                         } else {
 */
-                            for (var i = 0; i < options.vendorNames.length; i++) {
-                                vm.lookaheadSource.all.push({type: 'vendor', value: options.vendorNames[i].name});
-                                vm.lookaheadSource.vendors.push({type: 'vendor', value: options.vendorNames[i].name});
+                            for (var i = 0; i < options.developerNames.length; i++) {
+                                vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name});
+                                vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name});
                             }
                             for (var i = 0; i < options.productNames.length; i++) {
                                 vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name});
@@ -296,6 +306,7 @@
 
             $scope.browseAll = function () {
                 $scope.clear();
+                vm.activeSearch = true;
                 vm.search();
             };
 

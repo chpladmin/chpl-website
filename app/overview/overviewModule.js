@@ -6,7 +6,8 @@
             $routeProvider.when('/overview', {
                 templateUrl: 'overview/overview.html',
                 controller: 'OverviewController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                title: 'Overview'
             });
         }]);
 })();

@@ -8,6 +8,7 @@
             vm.cancel = cancel;
             vm.deleteCap = deleteCap;
             vm.deleteDoc = deleteDoc;
+            vm.isValid = isValid;
             vm.save = save;
 
             activate();
@@ -21,7 +22,8 @@
                 if (vm.action === 'initiate') {
                     vm.cap = {
                         certifiedProductId: certifiedProductId,
-                        certifications: []
+                        certifications: [],
+                        randomizedSurveillance: false
                     };
                     for (var i = 0; i < vm.certificationResults.length; i++) {
                         if (vm.certificationResults[i].success) {
@@ -44,6 +46,8 @@
                         vm.cap.certifications[i].title = vm.cap.certifications[i].certificationCriterionTitle;
                         vm.cap.certifications[i].error = true;
                     }
+                    if (vm.cap.surveillanceStartDate) { vm.cap.surveillanceStartDate = new Date(vm.cap.surveillanceStartDate); }
+                    if (vm.cap.surveillanceEndDate) { vm.cap.surveillanceEndDate = new Date(vm.cap.surveillanceEndDate); }
                     if (vm.cap.approvalDate) { vm.cap.approvalDate = new Date(vm.cap.approvalDate); }
                     if (vm.cap.effectiveDate) { vm.cap.effectiveDate = new Date(vm.cap.effectiveDate); }
                     if (vm.cap.estimatedCompletionDate) { vm.cap.estimatedCompletionDate = new Date(vm.cap.estimatedCompletionDate); }
@@ -97,6 +101,15 @@
                     }), function (error) {
                         console.log (error);
                     };
+            }
+
+            function isValid () {
+                var ret = false;
+                for (var i = 0; i < vm.cap.certifications.length; i++) {
+                    ret = ret || vm.cap.certifications[i].error;
+                }
+                ret = ret && !vm.capForm.$invalid;
+                return ret;
             }
 
             function save () {

@@ -4,7 +4,7 @@
       <h1>User Registration</h1>
     </div>
   </div>
-  <div class="row main-content">
+  <div class="row main-content" id="mainContent">
     <div class="col-md-8 col-md-offset-2">
 
       <div class="row">
@@ -40,9 +40,9 @@
           </div>
 
           <label for="passwordverify" class="control-label">Verify password <span class="text-danger">*</span></label>
-          <input type="password" id="passwordverify" name="passwordverify" ng-model="vm.userDetails.user.passwordverify" class="form-control" required ng-pattern="vm.userDetails.user.password" />
+          <input type="password" id="passwordverify" name="passwordverify" ng-model="vm.userDetails.user.passwordverify" class="form-control" required />
           <div class="text-danger" ng-if="vm.createUserForm.passwordverify.$touched && vm.createUserForm.passwordverify.$error.required">Verification password is required</div>
-          <div class="text-danger" ng-if="vm.createUserForm.passwordverify.$touched && vm.createUserForm.passwordverify.$error.pattern">Passwords must match</div>
+          <div class="text-danger" ng-if="vm.createUserForm.passwordverify.$touched && vm.misMatchPasswords()">Passwords must match</div>
 
           <label for="title" class="control-label">Title</label>
           <input type="text" id="title" ng-model="vm.userDetails.user.title" class="form-control" />
@@ -63,6 +63,10 @@
           <label for="phone" class="control-label">Phone <span class="text-danger">*</span></label>
           <input type="text" id="phone" name="phone" ng-model="vm.userDetails.user.phoneNumber" class="form-control" required />
           <div class="text-danger" ng-if="vm.createUserForm.phone.$touched && vm.createUserForm.phone.$error.required">Phone is required</div>
+
+          <label for="compliance" class="control-label">Compliance Terms Accepted <span class="text-danger">*</span></label>
+          <input type="checkbox" id="compliance" name="compliance" ng-model="vm.userDetails.user.complianceTermsAccepted" required />
+          <div class="text-danger" ng-if="vm.createUserForm.compliance.$touched && vm.createUserForm.compliance.$error.required">You much accept the 508 compliance terms</div>
 
           <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="vm.createUserForm.$invalid">Create account</button>
           <p>Or <a href="" ng-click="vm.isCreateUser = ! vm.isCreateUser">sign into your existing account</a></p>

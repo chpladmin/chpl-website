@@ -2,11 +2,13 @@
     'use strict';
 
     angular.module('app.registration')
-        .controller('CreateController', ['$log', '$routeParams', '$location', 'commonService', function ($log, $routeParams, $location, commonService) {
+        .controller('CreateController', ['$log', '$routeParams', '$location', 'authService', 'commonService', function ($log, $routeParams, $location, authService, commonService) {
             var vm = this;
 
-            vm.createUser = createUser;
             vm.authorizeUser = authorizeUser;
+            vm.createUser = createUser;
+            vm.isAuthed = isAuthed;
+            vm.misMatchPasswords = misMatchPasswords;
 
             activate();
 
@@ -19,6 +21,26 @@
                 vm.authorizeDetails.hash = $routeParams.hash;
                 vm.message = {value: '', success: null};
                 vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
+                if (vm.isAuthed) {
+                    vm.authorizeUser();
+                }
+            }
+
+            function authorizeUser () {
+                if (((vm.authorizeDetails.userName && vm.authorizeDetails.password)
+                     || vm.isAuthed())
+                    && vm.authorizeDetails.hash) {
+                    commonService.authorizeUser(vm.authorizeDetails)
+                        .then(function (response) {
+                            $location.path('/admin');
+                        },function (error) {
+                            vm.message.value = error.data.error;
+                            vm.authorizeDetails = {};
+                            vm.authorizeUserForm.$setPristine();
+                            vm.authorizeUserForm.$setUntouched();
+                            vm.message.success = false;
+                        });
+                }
             }
 
             function createUser () {
@@ -40,21 +62,12 @@
                 }
             }
 
-            function authorizeUser () {
-                if (vm.authorizeDetails.userName &&
-                    vm.authorizeDetails.password &&
-                    vm.authorizeDetails.hash) {
-                    commonService.authorizeUser(vm.authorizeDetails)
-                        .then(function (response) {
-                            $location.path('/admin');
-                        },function (error) {
-                            vm.message.value = error.data.error;
-                            vm.authorizeDetails = {};
-                            vm.authorizeUserForm.$setPristine();
-                            vm.authorizeUserForm.$setUntouched();
-                            vm.message.success = false;
-                        });
-                }
+            function isAuthed () {
+                return authService.isAuthed();
+            }
+
+            function misMatchPasswords () {
+                return vm.userDetails.user.password !== vm.userDetails.user.passwordverify;
             }
 
             vm.validateUser = function () {

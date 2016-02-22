@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditProductController', ['$modalInstance', 'activeProduct', 'vendors', 'commonService', function ($modalInstance, activeProduct, vendors, commonService) {
+        .controller('EditProductController', ['$modalInstance', 'activeProduct', 'developers', 'commonService', function ($modalInstance, activeProduct, developers, commonService) {
             var vm = this;
             vm.product = angular.copy(activeProduct);
-            vm.vendors = vendors;
+            vm.developers = developers;
             vm.updateProduct = {productIds: [vm.product.productId]};
 
             vm.save = save;
@@ -15,11 +15,11 @@
 
             function save () {
                 vm.updateProduct.product = vm.product;
-                vm.updateProduct.newVendorId = vm.product.vendorId;
+                vm.updateProduct.newDeveloperId = vm.product.developerId;
                 commonService.updateProduct(vm.updateProduct)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
-                            response.vendorId = vm.product.vendorId;
+                            response.developerId = vm.product.developerId;
                             $modalInstance.close(response);
                         } else {
                             $modalInstance.dismiss('An error occurred');

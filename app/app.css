@@ -324,3 +324,20 @@ fieldset[disabled] .btn-ai.active {
   color: #fff;
   background-color: #333;
 }
+
+.skip {
+    position: absolute;
+    top: auto;
+    left: -1000px;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+a.skip:active,
+a.skip:focus,
+a.skip:hover {
+  position: static;
+  width: auto;
+  height: auto;
+}
