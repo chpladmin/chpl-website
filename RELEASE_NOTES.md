@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 0.3.2
+_23 February 2016_
 
 ### Bugs fixed
 * Added visual indicator for product summary details
