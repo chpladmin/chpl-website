@@ -297,7 +297,7 @@ footer .spaced-out {
 .btn-ai:active,
 .btn-ai.active,
 .open > .dropdown-toggle.btn-ai {
-  background-image: none;
+    background-image: none;
 }
 .btn-ai.disabled,
 .btn-ai[disabled],
@@ -317,12 +317,69 @@ fieldset[disabled] .btn-ai:active,
 .btn-ai.disabled.active,
 .btn-ai[disabled].active,
 fieldset[disabled] .btn-ai.active {
-  background-color: #fff;
-  border-color: #ccc;
+    background-color: #fff;
+    border-color: #ccc;
 }
 .btn-ai .badge {
-  color: #fff;
-  background-color: #333;
+    color: #fff;
+    background-color: #333;
+}
+
+.btn-ai-success {
+    color: #fff;
+    background: -webkit-linear-gradient(#25b925, #206f20); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#25b925, #206f20); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#25b925, #206f20); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#25b925, #206f20); /* Standard syntax */
+}
+.btn-ai-success:focus,
+.btn-ai-success.focus,
+.btn-ai-success:hover,
+.btn-ai-success:active {
+    color: #fff;
+    background: #265826;
+}
+.btn-ai-success:active:hover,
+.btn-ai-success.active:hover,
+.open > .dropdown-toggle.btn-ai-success:hover,
+.btn-ai-success:active:focus,
+.btn-ai-success.active:focus,
+.open > .dropdown-toggle.btn-ai-success:focus,
+.btn-ai-success:active.focus,
+.btn-ai-success.active.focus,
+.open > .dropdown-toggle.btn-ai-success.focus {
+    color: #fff;
+    background: #265826;
+}
+.btn-ai-success:active,
+.btn-ai-success.active,
+.open > .dropdown-toggle.btn-ai-success {
+    background-image: none;
+}
+.btn-ai-success.disabled,
+.btn-ai-success[disabled],
+fieldset[disabled] .btn-ai-success,
+.btn-ai-success.disabled:hover,
+.btn-ai-success[disabled]:hover,
+fieldset[disabled] .btn-ai-success:hover,
+.btn-ai-success.disabled:focus,
+.btn-ai-success[disabled]:focus,
+fieldset[disabled] .btn-ai-success:focus,
+.btn-ai-success.disabled.focus,
+.btn-ai-success[disabled].focus,
+fieldset[disabled] .btn-ai-success.focus,
+.btn-ai-success.disabled:active,
+.btn-ai-success[disabled]:active,
+fieldset[disabled] .btn-ai-success:active,
+.btn-ai-success.disabled.active,
+.btn-ai-success[disabled].active,
+fieldset[disabled] .btn-ai-success.active {
+    background-color: #739473;
+    border-color: #ccc;
+}
+.btn-ai-success .badge {
+    color: #fff;
+    background-color: #333;
 }
 
 .skip {
@@ -337,7 +394,13 @@ fieldset[disabled] .btn-ai.active {
 a.skip:active,
 a.skip:focus,
 a.skip:hover {
-  position: static;
-  width: auto;
-  height: auto;
+    position: static;
+    width: auto;
+    height: auto;
+}
+
+:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
 }

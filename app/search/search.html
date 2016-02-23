@@ -228,20 +228,19 @@
                   </tfoot>
 	              <tbody>
 	                <tr ng-repeat-start="row in displayedResults" class="search-row">
-		              <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.name }}</td>
+		              <td class="productHeader" ng-click="showDetails = !showDetails" tabindex="0">{{ row.product.name }}</td>
 		              <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.developer.name }}</td>
 		              <td class="productHeader" ng-click="showDetails = !showDetails">{{ row.product.version }}</td>
                       <td>
-                        <a href ng-click="showDetails = !showDetails" class="sr-only">show/hide summary details</a>
                         <a href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>
                       </td>
                       <td>
-                        <button href class="btn btn-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> Compare</button>
+                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> Compare</button>
                       </td>
 	                </tr>
                     <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !showDetails}">
                       <td colspan="6">
-                        <table class="search-table" width="100%">
+                        <table class="search-sub-table" width="100%">
                           <thead>
                             <tr>
                               <th>Practice Type</th>
@@ -275,7 +274,7 @@
               </div>
               <div class="panel-body">
                 <button href class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)" ng-bind-html="vm.truncButton(cp.product.name)" title="{{ cp.product.name }}"></button>
-                <button href class="btn btn-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
+                <button href class="btn btn-ai-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
               </div>
             </div>
             <div class="panel panel-ai animate-if" ng-if="vm.previouslyCompared.length > 0">
@@ -286,7 +285,7 @@
                 <ul class="list-unstyled">
                   <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }}</a></li>
                 </ul>
-                <button class="btn btn-warning btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
+                <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
               </div>
             </div>
             <div class="panel panel-ai andimate-if" ng-if="vm.previouslyViewed.length > 0">
@@ -297,7 +296,7 @@
                 <ul class="list-unstyled">
                   <li ng-repeat="cp in vm.previouslyViewed | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></li>
                 </ul>
-                <button class="btn btn-warning btn-sm btn-block" ng-click="vm.clearPreviouslyViewed()">Clear</button>
+                <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyViewed()">Clear</button>
               </div>
             </div>
           </div>

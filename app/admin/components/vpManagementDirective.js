@@ -23,6 +23,7 @@
             self.parseUploadError = parseUploadError;
             self.doWork = doWork;
             self.loadCp = loadCp;
+            self.ternaryFilter = ternaryFilter;
 
             self.activate();
 
@@ -447,6 +448,14 @@
                                     });
                             });
                     });
+            }
+
+            function ternaryFilter (field) {
+                if (field == null) {
+                    return 'N/A';
+                } else {
+                    return field ? 'True' : 'False';
+                }
             }
         }]);
 
