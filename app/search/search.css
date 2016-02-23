@@ -62,6 +62,10 @@ ul.pagination li {
     color: #0070c9;
 }
 
+.search-sub-table th {
+    color: #333;
+}
+
 .animate-if.ng-enter/*, .animate-if.ng-leave*/ {
   transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
 }

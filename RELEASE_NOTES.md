@@ -1,5 +1,14 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### Bugs fixed
+* Added visual indicator for product summary details
+* Added visual indicator for compare fold out
+* Updated color contrast on search results compare/clear buttons
+* Changed headers in product summary details to grey
+
 ## Version 0.3.1
 _22 February 2016_
 
