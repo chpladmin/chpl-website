@@ -327,17 +327,17 @@ fieldset[disabled] .btn-ai.active {
 
 .btn-ai-success {
     color: #fff;
-    background: -webkit-linear-gradient(#25b925, #206f20); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#25b925, #206f20); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#25b925, #206f20); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#25b925, #206f20); /* Standard syntax */
+    background: -webkit-linear-gradient(#008b00, #006800); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#008b00, #006800); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#008b00, #006800); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#008b00, #006800); /* Standard syntax */
 }
 .btn-ai-success:focus,
 .btn-ai-success.focus,
 .btn-ai-success:hover,
 .btn-ai-success:active {
     color: #fff;
-    background: #265826;
+    background: #004800;
 }
 .btn-ai-success:active:hover,
 .btn-ai-success.active:hover,
@@ -349,7 +349,7 @@ fieldset[disabled] .btn-ai.active {
 .btn-ai-success.active.focus,
 .open > .dropdown-toggle.btn-ai-success.focus {
     color: #fff;
-    background: #265826;
+    background: #004800;
 }
 .btn-ai-success:active,
 .btn-ai-success.active,
@@ -374,8 +374,10 @@ fieldset[disabled] .btn-ai-success:active,
 .btn-ai-success.disabled.active,
 .btn-ai-success[disabled].active,
 fieldset[disabled] .btn-ai-success.active {
-    background-color: #739473;
+    background-color: #344834;
     border-color: #ccc;
+    opacity: 1;
+    text-decoration: line-through;
 }
 .btn-ai-success .badge {
     color: #fff;
