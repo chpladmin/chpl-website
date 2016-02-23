@@ -1,7 +1,7 @@
 {
   "name": "chpl-website",
   "description": "Website for viewing Open Data CHPL",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage": "tbd",
   "license": "https://github.com/chpladmin/chpl-api/blob/staging/LICENSE",
   "private": true,

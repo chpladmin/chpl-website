@@ -329,21 +329,21 @@
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date }} <br />
-                  <ai-additional-software additional-software="vm.activeCP.additionalSoftware" is-editing="false"></ai-additional-software> <br />
+                  <strong>Additional Software:</strong> {{ vm.activeCP.productAdditionalSoftware }} <br />
                   <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
-                  <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb }} <br />
-                  <strong>Quality Management System Attestation:</strong> {{ vm.activeCP.qualityManagementSystemAtt }} <br />
-                  <strong>Privacy and Security Attestation:</strong> {{ vm.activeCP.privacyAttestation }} <br />
-                  <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation }} <br />
-                  <strong>Inherited Certification Status:</strong> {{ vm.activeCP.ics }} <br />
-                  <strong>QMS Testing:</strong> {{ vm.activeCP.qmsTesting ? 'True' : 'False' }} <br />
-                  <strong>SED Testing:</strong> {{ vm.activeCP.sedTesting ? 'True' : 'False' }} <br />
-                  <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation }} <br />
-                  <strong>API Documentation:</strong> {{ vm.activeCP.apiDocumentation }} <br />
-                  <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse }} <br />
+                  <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'N/A' }} <br />
+                  <strong>Quality Management System Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.qualityManagementSystemAtt) }} <br />
+                  <strong>Privacy and Security Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.privacyAttestation) }} <br />
+                  <strong>Transparency Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.transparencyAttestation) }} <br />
+                  <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
+                  <strong>QMS Testing:</strong> {{ vm.ternaryFilter(vm.cp.qmsTesting) }} <br />
+                  <strong>SED Testing:</strong> {{ vm.ternaryFilter(vm.activeCP.sedTesting) }} <br />
+                  <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'N/A' }} <br />
+                  <strong>API Documentation:</strong> {{ vm.activeCP.apiDocumentation ? vm.activeCP.apiDocumentation : 'N/A' }} <br />
+                  <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'N/A' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
-                  <strong>Visible on CHPL:</strong> {{ vm.activeCP.visibleOnChpl }} <br />
+                  <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />
                   <strong>Corrective Action Plan:</strong> <ai-corrective-action-plan
                                                               corrective-action-plan="vm.activeCP.cap"
                                                               certified-product-id="vm.activeCP.id"

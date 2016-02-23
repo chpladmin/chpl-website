@@ -15,9 +15,18 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
+                if (vm.isEditing === undefined) {
+                    vm.isEditing = false;
+                }
+                if (vm.viewAllCerts === undefined) {
+                    vm.viewAllCerts = false;
+                }
                 vm.editCqms = {};
                 vm.addIds();
                 vm.panelShown = 'cert';
+                if (vm.isEditing) {
+                    attachBooleans();
+                }
             }
 
             $scope.$watch('cqms', function (newCqms) {
@@ -42,6 +51,18 @@
                     if (vm.certs[i].success) {
                         vm.countCerts += 1;
                     }
+                    if (vm.certs[i].gap === 'null') {
+                        delete (vm.certs[i].gap);
+                    }
+                    if (vm.certs[i].g1Success === 'null') {
+                        delete (vm.certs[i].g1Success);
+                    }
+                    if (vm.certs[i].g2Success === 'null') {
+                        delete (vm.certs[i].g2Success);
+                    }
+                    if (vm.certs[i].sed === 'null') {
+                        delete (vm.certs[i].sed);
+                    }
                 }
 
                 for (var i = 0; i < vm.cqms.length; i++) {
@@ -58,6 +79,14 @@
 
             function showPanel (panel) {
                 vm.panelShown = vm.panelShown === panel ? '' : panel;
+            }
+
+            ////////////////////////////////////////////////////////////////////
+
+            function attachBooleans () {
+                for (var i = 0; i < vm.certs.length; i++) {
+//                    vm.editForm['data_' + vm.certs[i].number + '_gap'] = vm.certs[i].gap;
+                }
             }
         }]);
 

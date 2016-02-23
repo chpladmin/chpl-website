@@ -9,115 +9,12 @@
         <a href="" ng-click="vm.showPanel('cert')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
-        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing || vm.certDetails === n.number ? 'col-md-12' : 'col-md-4'" ng-repeat="n in vm.certs | orderBy:'number' track by $index">
-          <p ng-if="!vm.isEditing">
-            <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.hasVersion, 'fa-square-o': !n.success}"></i>
-            <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-            {{ n.number }}: {{ n.title }} <a href class="pull-right" ng-click="vm.showDetails(n.number)" ng-if="n.success">{{ vm.certDetails === n.number ? 'Hide' : 'View' }} details</a>
-            <div ng-if="vm.certDetails === n.number">
-              <span ng-if="n.additionalSoftware && n.additionalSoftware.length > 0"><br />Certification met via:
-                <ai-additional-software additional-software="n.additionalSoftware" is-editing="false"></ai-additional-software>
-              </span>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Attribute</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>GAP</td>
-                    <td>{{ n.gap ? 'True' : 'False' }}</td>
-                  </tr>
-                  <tr>
-                    <td>Functionality Tested</td>
-                    <td ng-if="n.testFunctionality && n.testFunctionality.length > 0"><div ng-repeat="m in n.testFunctionality">{{ m.name }}</div></td>
-                    <td ng-if="!n.testFunctionality || n.testFunctionality.length === 0">N/A</td>
-                  </tr>
-                  <tr>
-                    <td>Standard</td>
-                    <td ng-if="n.testStandards && n.testStandards.length > 0"><div ng-repeat="m in n.testStandards">{{ m.testStandardName }}</div></td>
-                    <td ng-if="!n.testStandards || n.testStandards.length === 0">N/A</td>
-                  </tr>
-                  <tr>
-                    <td>Measure Successfully Tested for G1</td>
-                    <td>{{ n.g1Success ? 'True' : 'False' }}</td>
-                  </tr>
-                  <tr>
-                    <td>Measure Successfully Tested for G2</td>
-                    <td>{{ n.g2Success ? 'True' : 'False' }}</td>
-                  </tr>
-                  <tr>
-                    <td>Test procedure version</td>
-                    <td ng-if="n.testProcedures && n.testProcedures.length > 0"><div ng-repeat="m in n.testProcedures">{{ m.testProcedureVersion }}</div></td>
-                    <td ng-if="!n.testProcedures || n.testProcedures.length === 0">N/A</td>
-                  </tr>
-                  <tr>
-                    <td>Test data used</td>
-                    <td ng-if="n.testDataUsed && n.testDataUsed.length > 0"><div ng-repeat="m in n.testDataUsed">Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
-                    <td ng-if="!n.testDataUsed || n.testDataUsed.length === 0">N/A</td>
-                  </tr>
-                  <tr>
-                    <td>Test procedure version</td>
-                    <td ng-if="n.testToolsUsed && n.testToolsUsed.length > 0"><div ng-repeat="m in n.testToolsUsed">{{ m.testToolName }}</div></td>
-                    <td ng-if="!n.testToolsUsed || n.testToolsUsed.length === 0">N/A</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" class="text-center"><a href ng-click="vm.showSed = !vm.showSed">{{ vm.showSed ? 'Hide' : 'View' }} SED Details</a></td>
-                  </tr>
-                  <tr ng-if="vm.showSed">
-                    <td>UCD Process Selected</td>
-                    <td>{{ n.ucdProcessSelected ? n.ucdProcessSelected : 'N/A' }}</td>
-                  </tr>
-                  <tr ng-if="vm.showSed">
-                    <td>UCD Process Details</td>
-                    <td>{{ n.ucdProcessDetails ? n.ucdProcessDetails : 'N/A' }}</td>
-                  </tr>
-                  <tr ng-if="vm.showSed">
-                    <td colspan="2">
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>Task Description</th>
-                            <th>Task Success</th>
-                            <th>Path Deviation - Mean</th>
-                            <th>Task Time</th>
-                            <th>Errors</th>
-                            <th>Task Rating</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
-                      <table class="table">
-                        <thead>
-                          <tr>
-                            <th>Participant Occupation/Role</th>
-                            <th>Participant Education</th>
-                            <th>Participant professional Experience</th>
-                            <th>Participant Gender</th>
-                            <th>Participant Age</th>
-                            <th>Participant Computer Experience</th>
-                            <th>Participant Product Experience</th>
-                            <th>Participant Assistive Technology Needs</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </p>
-          <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="n.success" id="data_{{n.number}}"></input>
-            <label for="data_{{n.number}}">{{ n.number }}: {{ n.title }}</label>
-            <br />Certification met via additional software:
-            <ai-additional-software additional-software="n.additionalSoftware" is-editing="true"></ai-additional-software>
-          </p>
+        <div ng-repeat="n in vm.certs | orderBy:'number' track by $index">
+          <ai-certification-criteria view-all="vm.viewAllCerts"
+                                     cert="n"
+                                     is-editing="vm.isEditing"
+                                     save="vm.registerCerts(handler)">
+            </ai-certification-criteria>
         </div>
       </div>
     </div>
@@ -126,7 +23,7 @@
         <a href="" ng-click="vm.showPanel('cqm')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'">
-        <div ng-if="vm.viewAllCerts || n.success" ng-class="vm.isEditing ? 'col-md-12' : 'col-md-4'" ng-repeat="n in vm.cqms | orderBy:'id' track by $index">
+        <div ng-if="vm.viewAllCerts || n.success" class="col-sm-12" ng-repeat="n in vm.cqms | orderBy:'id' track by $index">
           <p ng-if="!vm.isEditing">
             <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
             <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
