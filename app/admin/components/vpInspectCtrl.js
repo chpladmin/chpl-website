@@ -190,6 +190,7 @@
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'lg',
                     resolve: {
                         activeCP: function () { return vm.cp; },
                         practices: function () { return vm.practices; },

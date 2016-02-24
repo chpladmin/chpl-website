@@ -13,10 +13,12 @@
 
             function activate () {
                 if (vm.isEditing) {
-                    $timeout(attachBooleans
-                             ,1000);
-//                    attachBooleans();
+                    vm.options = [{name: 'True', value: true},
+                                  {name: 'False', value: false},
+                                  {name: 'N/A', value: null}];
                 }
+
+                vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length  > 0;
             }
 
             function saveEdits () {
@@ -36,9 +38,6 @@
 
             ////////////////////////////////////////////////////////////////////
 
-            function attachBooleans () {
-                vm.editForm['data_gap'].$viewValue = vm.cert.gap;
-            }
         }]);
 
     angular.module('app.common')
