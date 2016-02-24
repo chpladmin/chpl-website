@@ -81,6 +81,8 @@
               Zip: {{ vm.developer.address.zipcode }}<br />
               Country: {{ vm.developer.address.country }}<br />
               Website: {{ vm.developer.website }}<br />
+              Transparency Attestation: {{ vm.developer.transparencyAttestation }}<br />
+              Transparency Attestation Url: {{ vm.developer.transparencyAttestationUrl }}<br />
               <br />
               Last Modified Date: {{ vm.developer.lastModifiedDate | date }}
             </div>
@@ -101,6 +103,8 @@
               Zip: {{ vm.cp.developerAddress.zipcode }}<br />
               Country: {{ vm.cp.developerAddress.country }}<br />
               Website: {{ vm.cp.developer.website }}<br />
+              Transparency Attestation: {{ vm.cp.developer.transparencyAttestation }}<br />
+              Transparency Attestation Url: {{ vm.cp.developer.transparencyAttestationUrl }}<br />
             </div>
             <div class="panel-footer" ng-if="vm.cp.developer.id">
               <button class="btn btn-default btn-block" ng-click="vm.saveInspectingDeveloper()">Save as Developer Information</button>

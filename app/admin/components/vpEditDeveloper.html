@@ -48,12 +48,17 @@
     </div>
     <div class="form-group">
       <label for="developerWebsite">Website</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite"></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite" placeholder="http://www.example.com"></input>
       <div class="text-danger" ng-if="vm.editForm.developerWebsite.$touched && vm.editForm.developerWebsite.$error.url">Website is invalid</div>
     </div>
-    <div class="form-group" ng-if="vm.developer.transparencyAttestation !== null">
+    <div class="form-group">
       <label for="developerTransparency">Transparency Attestation</label>
       <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="developerTransparency"></input>
+    </div>
+    <div class="form-group">
+      <label for="developerTransparencyUrl">Transparency Attestation URL</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.transparencyAttestationUrl" id="developerTransparencyUrl" placeholder="http://www.example.com"></input>
+      <div class="text-danger" ng-if="vm.editForm.transparencyAttestationUrl.$touched && vm.editForm.transparencyAttestationUrl.$error.url">Website is invalid</div>
     </div>
   </div>
   <div class="modal-footer">
