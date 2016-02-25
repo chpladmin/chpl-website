@@ -162,6 +162,12 @@
                 Website: <span ng-if="vm.activeDeveloper.website"><ai-a href="{{vm.activeDeveloper.website}}" text="{{ vm.activeDeveloper.website }}"></ai-a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
                 <span ng-if="vm.activeDeveloper.transparencyAttestation !== null">Transparency Attestation: {{ vm.activeDeveloper.transparencyAttestation }}<br /></span>
                 <span ng-if="vm.activeDeveloper.transparencyAttestationUrl !== null">Transparency Attestation URL: {{ vm.activeDeveloper.transparencyAttestationUrl }}<br /></span>
+                Contact information:<br />
+                First name: {{ vm.activeDeveloper.contact.firstName }}<br />
+                Last name: {{ vm.activeDeveloper.contact.lastName }}<br />
+                Title: {{ vm.activeDeveloper.contact.title }}<br />
+                Email: {{ vm.activeDeveloper.contact.email }}<br />
+                Phone: {{ vm.activeDeveloper.contact.phoneNumber }}<br />
               </div>
               <p ng-if="vm.developerMessage !== undefined" class="bg-danger">{{ vm.developerMessage }}</p>
             </div>
