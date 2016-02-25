@@ -84,6 +84,7 @@
                         address: vm.cp.developerAddress,
                         transparencyAttestation: vm.cp.developer.transparencyAttestation,
                         transparencyAttestationUrl: vm.cp.developer.transparencyAttestationUrl,
+                        contact: vm.cp.developer.contact,
                         developerId: vm.cp.developer.id
                     },
                     developerIds: [vm.cp.developer.id]
