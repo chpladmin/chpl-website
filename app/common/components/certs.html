@@ -9,7 +9,7 @@
         <a href="" ng-click="vm.showPanel('cert')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
-        <div ng-repeat="n in vm.certs | orderBy:'number' track by $index">
+        <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
           <ai-certification-criteria view-all="vm.viewAllCerts"
                                      cert="n"
                                      is-editing="vm.isEditing"
@@ -23,11 +23,16 @@
         <a href="" ng-click="vm.showPanel('cqm')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'">
-        <div ng-if="vm.viewAllCerts || n.success" class="col-sm-12" ng-repeat="n in vm.cqms | orderBy:'id' track by $index">
+        <div ng-if="vm.viewAllCerts || n.success" ng-repeat="n in vm.cqms | orderBy:vm.sortCqms track by $index">
           <p ng-if="!vm.isEditing">
-            <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
-            <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-            <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b> <span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}
+            <div class="col-sm-1">
+              <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
+              <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
+              <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b> 
+            </div>
+            <div class="col-sm-11">
+              <span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}
+            </div>
           </p>
           <p ng-if="vm.isEditing">
             <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
