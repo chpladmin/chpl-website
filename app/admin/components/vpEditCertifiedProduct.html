@@ -9,10 +9,10 @@
     <h4 class="modal-title" id="editCertifiedProductLabel">Edit Certified Product</h4>
   </div>
   <div class="modal-body" ng-form="editForm">
-    <div ng-if="vm.cp.certificationEdition.name !== '2015'">
+    <div ng-if="vm.cp.certificationEdition.name !== '2015' || true">
       <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
     </div>
-    <div ng-if="vm.cp.certificationEdition.name === '2015'">
+    <div ng-if="vm.cp.certificationEdition.name === '2015' && false">
       <strong>ACB ID: </strong> {{vm.cp.chplId.acb }} <br />
       <strong>ATL ID: </strong> {{vm.cp.chplId.atl }} <br />
       <strong>Developer ID: </strong> {{vm.cp.chplId.dev }} <br />
