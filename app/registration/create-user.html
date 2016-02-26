@@ -64,10 +64,6 @@
           <input type="text" id="phone" name="phone" ng-model="vm.userDetails.user.phoneNumber" class="form-control" required />
           <div class="text-danger" ng-if="vm.createUserForm.phone.$touched && vm.createUserForm.phone.$error.required">Phone is required</div>
 
-          <label for="compliance" class="control-label">Compliance Terms Accepted <span class="text-danger">*</span></label>
-          <input type="checkbox" id="compliance" name="compliance" ng-model="vm.userDetails.user.complianceTermsAccepted" required />
-          <div class="text-danger" ng-if="vm.createUserForm.compliance.$touched && vm.createUserForm.compliance.$error.required">You much accept the 508 compliance terms</div>
-
           <button class="btn btn-default btn-block" ng-click="vm.createUser()" ng-disabled="vm.createUserForm.$invalid">Create account</button>
           <p>Or <a href="" ng-click="vm.isCreateUser = ! vm.isCreateUser">sign into your existing account</a></p>
         </div>
