@@ -53,8 +53,8 @@
             <td ng-if="!vm.cert.testDataUsed || vm.cert.testDataUsed.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.sed !== null">
-            <td>SED <a href ng-click="vm.showSed = !vm.showSed">({{ vm.showSed ? 'Hide' : 'View' }}  Details)</a></td>
-            <td>{{ vm.cert.sed ? 'True' : 'False' }}</td>
+            <td>SED</td>
+            <td>{{ vm.cert.sed ? 'True' : 'False' }} <a href ng-if="vm.cert.sed" ng-click="vm.showSed = !vm.showSed">({{ vm.showSed ? 'Hide' : 'View' }}  Details)</a></td>
           </tr>
           <tr ng-if="vm.showSed" ng-if="vm.cert.ucdProcessSelected !== null">
             <td>UCD Process Selected</td>
