@@ -58,11 +58,8 @@
           </tr>
           <tr ng-if="vm.showSed" ng-if="vm.cert.ucdProcessSelected !== null">
             <td>UCD Process Selected</td>
-            <td>{{ vm.cert.ucdProcessSelected ? vm.cert.ucdProcessSelected : 'None' }}</td>
-          </tr>
-          <tr ng-if="vm.showSed" ng-if="vm.cert.ucdProcessDetails !== null">
-            <td>UCD Process Details</td>
-            <td>{{ vm.cert.ucdProcessDetails ? vm.cert.ucdProcessDetails : 'None' }}</td>
+            <td ng-if="vm.cert.ucdProcesses && vm.cert.ucdProcesses.length > 0"><div ng-repeat="m in vm.cert.ucdProcesses">Process: {{ m.ucdProcessSelected }}; Extra details {{ m.ucdProcessDetails ? m.ucdProcessDetails : 'N/A' }}</div></td>
+            <td ng-if="!vm.cert.ucdProcesses || vm.cert.ucdProcesses.length === 0">None</td>
           </tr>
           <tr ng-if="vm.showSed">
             <td colspan="2">
