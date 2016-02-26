@@ -2,12 +2,13 @@
     'use strict';
 
     angular.module('app.registration')
-        .controller('ApiKeyController', ['$log', 'commonService', function ($log, commonService) {
+        .controller('ApiKeyController', ['$log', '$modal', 'commonService', function ($log, $modal, commonService) {
             var vm = this;
 
             vm.loadUsers = loadUsers;
             vm.register = register;
             vm.revoke = revoke;
+            vm.viewTos = viewTos;
 
             activate();
 
@@ -52,6 +53,24 @@
                         });
                 }
             }
+
+            function viewTos () {
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'registration/components/apiKeyTos.html',
+                    controller: 'ApiKeyTosController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    size: 'lg'
+                });
+                vm.modalInstance.result.then(function (result) {
+                    // nothing needed
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        $log.debug(result);
+                    }
+                });
+            }
+
         }])
         .directive('aiApiKey', [function () {
             return {

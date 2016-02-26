@@ -6,6 +6,7 @@ _Date TBD_
 ### New features
 * Added list of recommended web browsers
 * Allowed editing of all most new 2014 fields
+* Added Terms of Service for API Key usage
 
 ## Version 0.3.2
 _23 February 2016_
