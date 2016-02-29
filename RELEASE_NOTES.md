@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 0.3.3
+_29 February 2016_
 
 ### New features
 * Added list of recommended web browsers
