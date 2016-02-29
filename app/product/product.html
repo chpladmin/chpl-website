@@ -67,15 +67,17 @@
           <h3 class="product-heading">Additional Software</h3>
           <p>{{ vm.product.productAdditionalSoftware }}</p>
         </div>
-        <div class="product-element">
-          <h3 class="product-heading">Transparency Attestation</h3>
-          <p>{{ vm.product.transparencyAttestation ? 'Affirmative' : 'Negative' }}</p>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">Transparency Attestation URL</h3>
-          <ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" text="{{ vm.product.transparencyAttestationUrl }}"></ai-a>
-          <p ng-if="!vm.product.transparencyAttestationUrl">No report on file</p>
-        </div>
+        <span ng-if="vm.product.transparencyAttestationUrl">
+          <div class="product-element">
+            <h3 class="product-heading">Transparency Attestation</h3>
+            <p>{{ vm.product.transparencyAttestation ? 'Affirmative' : 'Negative' }}</p>
+          </div>
+          <div class="product-element">
+            <h3 class="product-heading">Transparency Attestation URL</h3>
+            <ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" text="{{ vm.product.transparencyAttestationUrl }}"></ai-a>
+            <p ng-if="!vm.product.transparencyAttestationUrl">No report on file</p>
+          </div>
+        </span>
         <div class="product-element" ng-if="vm.correctiveActionPlan.length === 0">
           <h3 class="product-heading">Surveillance Transparency</h3>
           <ai-corrective-action-plan

@@ -45,7 +45,7 @@
       <h3>How can a product be added to the CHPL?</h3>
       <p>To be listed on the CHPL, a Health Information Technology must first be successfully tested by an ATL, and then certified by an ONC-ACB against the <a href="http://www.healthit.gov/policy-researchers-implementers/standards-and-certification-regulations">certification criteria adopted by HHS</a>. For more information on the ONC Certification Program, ATLs, and ONC-ACBs, please see the <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health It Certification Program page</a>.</p>
       <h3>How do I report an error?</h3>
-      <p>Errors or questions regarding product listings should be directed based on the table below. A list of ACB contact information can be found on <a href="http://www.healthit.gov/policy-researchers-implementers/certification-bodies-testing-laboratories">ONC's Certification Bodies and Testing Laboratories Page</a>.</p>
+      <p>Errors or questions regarding product listings should be directed based on the table below. A list of ONC-ACB contact information can be found on <a href="http://www.healthit.gov/policy-researchers-implementers/certification-bodies-testing-laboratories">ONC's Certification Bodies and Testing Laboratories Page</a>.</p>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -59,12 +59,12 @@
             <td>Please contact the vendor/developer</td>
           </tr>
           <tr>
-            <td>Developer complaint against an ATL or ACB</td>
-            <td>Please contact the ATL or ACB first, to resolve the issue. Complaints should be escalated to NVLAP or the ONC-AA if the issue persists.</td>
+            <td>Developer complaint against an ATL or ONC-ACB</td>
+            <td>Please contact the ATL or ONC-ACB first, to resolve the issue. Complaints should be escalated to NVLAP or the ONC-AA if the issue persists.</td>
           </tr>
           <tr>
             <td>Product Listing on the CHPL</td>
-            <td>Please contact the ATL or ACB that certified the product</td>
+            <td>Please contact the ATL or ONC-ACB that certified the product</td>
           </tr>
           <tr>
             <td>Other comments or complaints</td>
@@ -72,8 +72,8 @@
           </tr>
         </tbody>
       </table>
-      <p>If the ACB cannot or does not address your issue, please <a href="http://www.healthit.gov/newsroom/contacting-onc-office-certification">contact ONC's Office of Certification.</a></p>
-      <h2>ACB and ATL information</h2>
+      <p>If the ONC-ACB cannot or does not address your issue, please <a href="http://www.healthit.gov/newsroom/contacting-onc-office-certification">contact ONC's Office of Certification.</a></p>
+      <h2>ONC-ACB and ATL information</h2>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -85,7 +85,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="acb in vm.acbs | orderBy: 'name'">
-            <td>ACB</td>
+            <td>ONC-ACB</td>
             <td>{{ acb.name }}</td>
             <td>{{ acb.acbCode }}</td>
             <td><ai-a ng-if="acb.website" href="{{ acb.website }}" text="{{ acb.website }}"></ai-a></td>

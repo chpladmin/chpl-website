@@ -65,6 +65,10 @@ footer {
     margin-top: 150px;
 }
 
+.announcement.badge {
+    white-space: inherit;
+}
+
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 .clickable { cursor: pointer; }

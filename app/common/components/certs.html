@@ -57,25 +57,31 @@
           <ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" text="{{ vm.reportFileLocation }}"></ai-a>
           <p ng-if="!vm.reportFileLocation">No report on file</p>
         </span>
-        <h4>Usability Report</h4>
-        <ai-a ng-if="vm.sedReportFilelocation" href="{{ vm.sedReportFileLocation }}" text="{{ vm.sedReportFileLocation }}"></ai-a>
-        <p ng-if="!vm.sedReportFileLocation">No report on file</p>
-        <h4>Quality Management System</h4>
-        <span ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" ng-repeat="qms in vm.product.qmsStandards">
-          <h5>Standard</h5>
-          <p>{{ qms.qmsStandardName }}</p>
-          <h5>Description</h5>
-          <p>{{ qms.qmsModification ? qms.qmsModification : 'N/A' }}</p>
-          <h5>Applicable Criteria</h5>
-          <p>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}</p>
+        <span ng-if="vm.product.sedReportFileLocation !== null">
+          <h4>Usability Report</h4>
+          <ai-a ng-if="vm.product.sedReportFilelocation" href="{{ vm.product.sedReportFileLocation }}" text="{{ vm.product.sedReportFileLocation }}"></ai-a>
+          <p ng-if="!vm.product.sedReportFileLocation">No report on file</p>
         </span>
-        <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
-        <h4>Inherited Certification Status</h4>
-        <p ng-if="vm.product.ics !== null">{{ vm.product.ics ? 'True' : 'False' }}</p>
-        <p ng-if="vm.product.ics == null">N/A</p>
+        <span ng-if="vm.product.qmsStandards.length > 0 || vm.product.chplProductNumber.substring(0,3) !== 'CHP'">
+          <h4>Quality Management System</h4>
+          <span ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" ng-repeat="qms in vm.product.qmsStandards">
+            <h5>Standard</h5>
+            <p>{{ qms.qmsStandardName }}</p>
+            <h5>Description</h5>
+            <p>{{ qms.qmsModification ? qms.qmsModification : 'N/A' }}</p>
+            <h5>Applicable Criteria</h5>
+            <p>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}</p>
+          </span>
+          <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
+        </span>
+        <span ng-if="vm.product.ics !== null">
+          <h4>Inherited Certification Status</h4>
+          <p ng-if="vm.product.ics !== null">{{ vm.product.ics ? 'True' : 'False' }}</p>
+          <p ng-if="vm.product.ics == null">N/A</p>
+        </span>
         <span ng-if="vm.product.otherAcb">
           <h4>Other ACB</h4>
-          <p>vm.product.otherAcb</p>
+          <p>{{ vm.product.otherAcb }}</p>
         </span>
         <span ng-if="vm.product.certificationEdition.name === '2015'">
           <h4>API Documentation</h4>
