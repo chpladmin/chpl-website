@@ -365,7 +365,8 @@
                           count-cqms="vm.activeCP.countCqms"
                           default-all="true"
                           edit-mode="false"
-                          report-file-location="{{ vm.activeCP.reportFileLocation }}">
+                          report-file-location="{{ vm.activeCP.reportFileLocation }}"
+                          product="vm.activeCP">
                 </ai-certs>
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>
               </div>

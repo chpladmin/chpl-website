@@ -65,9 +65,9 @@
           <h5>Standard</h5>
           <p>{{ qms.qmsStandardName }}</p>
           <h5>Description</h5>
-          <p>{{ qms.qmsModification }}</p>
+          <p>{{ qms.qmsModification ? qms.qmsModification : 'N/A' }}</p>
           <h5>Applicable Criteria</h5>
-          <p>{{ qms.applicableCriteria }}</p>
+          <p>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}</p>
         </span>
         <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
         <h4>Inherited Certification Status</h4>

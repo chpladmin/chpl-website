@@ -152,12 +152,8 @@
           <td><select id="data_sed{{ vm.cert.number }}" name="data_sed" ng_model="vm.cert.sed" ng-options="b.value as b.name for b in vm.options" ng-disabled="vm.cert.certificationEdition.name === '2015'"></select></td>
         </tr>
         <tr>
-          <td><label for="data_ucdProcess{{ vm.cert.number }}">UCD Process Selected</label></td>
-          <td><input type="text" class="form-control" id="data_ucdProcess{{ vm.cert.number }}" name="data_ucdProcess" ng-model="vm.cert.ucdProcessName" ng-disabled="!vm.cert.sed"></input></td>
-        </tr>
-        <tr>
-          <td><label for="data_ucdDetails{{ vm.cert.number }}">UCD Process Details</label></td>
-          <td><input type="text" class="form-control" id="data_ucdDetails{{ vm.cert.number }}" name="data_ucdDetails" ng-model="vm.cert.ucdProcessDetails" ng-disabled="!vm.cert.sed"></input></td>
+          <td>UCD Process</td>
+          <td><ai-array item-type="UCD Process & Details" items="vm.cert.ucdProcesses" key="ucdProcessName" key-second="ucdProcessDetails"></ai-array></td>
         </tr>
       </tbody>
     </table>
