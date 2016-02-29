@@ -53,7 +53,6 @@
             function loadAnnouncements () {
             	commonService.getAnnouncements(false)
             		.then (function (result) {
-                        $log.debug(result);
             			vm.announcements = result.announcements;
             		}, function (error) {
             			$log.debug('error in app.overview.controller.loadAnnouncements', error);

@@ -7,6 +7,10 @@ _Date TBD_
 * Added list of recommended web browsers
 * Allowed editing of all most new 2014 fields
 * Added Terms of Service for API Key usage
+* Integrated with more robust UCD objects
+* Prepended ai-a links with http as needed
+* Improved UI of Announcements in Overview
+* Made Developer website an 'external link'
 
 ## Version 0.3.2
 _23 February 2016_

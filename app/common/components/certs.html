@@ -71,7 +71,8 @@
         </span>
         <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
         <h4>Inherited Certification Status</h4>
-        <p>{{ vm.product.ics ? vm.product.ics : 'N/A' }} </p>
+        <p ng-if="vm.product.ics !== null">{{ vm.product.ics ? 'True' : 'False' }}</p>
+        <p ng-if="vm.product.ics == null">N/A</p>
         <span ng-if="vm.product.otherAcb">
           <h4>Other ACB</h4>
           <p>vm.product.otherAcb</p>

@@ -58,7 +58,7 @@
           </tr>
           <tr ng-if="vm.showSed" ng-if="vm.cert.ucdProcessSelected !== null">
             <td>UCD Process Selected</td>
-            <td ng-if="vm.cert.ucdProcesses && vm.cert.ucdProcesses.length > 0"><div ng-repeat="m in vm.cert.ucdProcesses">Process: {{ m.ucdProcessSelected }}; Extra details {{ m.ucdProcessDetails ? m.ucdProcessDetails : 'N/A' }}</div></td>
+            <td ng-if="vm.cert.ucdProcesses && vm.cert.ucdProcesses.length > 0"><div ng-repeat="m in vm.cert.ucdProcesses">Process: {{ m.ucdProcessName }}<br />Extra details: {{ m.ucdProcessDetails ? m.ucdProcessDetails : 'N/A' }}</div></td>
             <td ng-if="!vm.cert.ucdProcesses || vm.cert.ucdProcesses.length === 0">None</td>
           </tr>
           <tr ng-if="vm.showSed">
@@ -153,7 +153,7 @@
         </tr>
         <tr>
           <td><label for="data_ucdProcess{{ vm.cert.number }}">UCD Process Selected</label></td>
-          <td><input type="text" class="form-control" id="data_ucdProcess{{ vm.cert.number }}" name="data_ucdProcess" ng-model="vm.cert.ucdProcessSelected" ng-disabled="!vm.cert.sed"></input></td>
+          <td><input type="text" class="form-control" id="data_ucdProcess{{ vm.cert.number }}" name="data_ucdProcess" ng-model="vm.cert.ucdProcessName" ng-disabled="!vm.cert.sed"></input></td>
         </tr>
         <tr>
           <td><label for="data_ucdDetails{{ vm.cert.number }}">UCD Process Details</label></td>
