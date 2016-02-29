@@ -81,6 +81,14 @@
               Zip: {{ vm.developer.address.zipcode }}<br />
               Country: {{ vm.developer.address.country }}<br />
               Website: {{ vm.developer.website }}<br />
+              Transparency Attestation: {{ vm.developer.transparencyAttestation }}<br />
+              Transparency Attestation Url: {{ vm.developer.transparencyAttestationUrl }}<br />
+              <strong>Contact information</strong><br />
+              First name: {{ vm.developer.contact.firstName }}<br />
+              Last name: {{ vm.developer.contact.lastName }}<br />
+              Title: {{ vm.developer.contact.title }}<br />
+              Email: {{ vm.developer.contact.email }}<br />
+              Phone: {{ vm.developer.contact.phoneNumber }}<br />
               <br />
               Last Modified Date: {{ vm.developer.lastModifiedDate | date }}
             </div>
@@ -101,6 +109,14 @@
               Zip: {{ vm.cp.developerAddress.zipcode }}<br />
               Country: {{ vm.cp.developerAddress.country }}<br />
               Website: {{ vm.cp.developer.website }}<br />
+              Transparency Attestation: {{ vm.cp.transparencyAttestation }}<br />
+              Transparency Attestation Url: {{ vm.cp.transparencyAttestationUrl }}<br />
+              <strong>Contact information</strong><br />
+              First name: {{ vm.cp.developer.contact.firstName }}<br />
+              Last name: {{ vm.cp.developer.contact.lastName }}<br />
+              Title: {{ vm.cp.developer.contact.title }}<br />
+              Email: {{ vm.cp.developer.contact.email }}<br />
+              Phone: {{ vm.cp.developer.contact.phoneNumber }}<br />
             </div>
             <div class="panel-footer" ng-if="vm.cp.developer.id">
               <button class="btn btn-default btn-block" ng-click="vm.saveInspectingDeveloper()">Save as Developer Information</button>
@@ -258,7 +274,7 @@
       <div class="col-sm-12">
         <div class="panel panel-ai">
           <div class="panel-heading">
-            <span>CHPL Product Number not assigned</span>
+            <span>{{ vm.cp.chplProductNumber }}</span>
           </div>
           <div class="panel-body">
             <span>
@@ -275,7 +291,7 @@
               <strong>QMS Testing:</strong> {{ vm.cp.qmsTesting ? 'True' : 'False' }} <br />
               <strong>SED Testing:</strong> {{ vm.cp.sedTesting ? 'True' : 'False' }} <br />
               <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation }} <br />
-              <strong>Testing Lab:</strong> {{ vm.cp.testingLabId }} <br />
+              <strong>Testing Lab:</strong> {{ vm.cp.testingLab.name }} <br />
               <strong>Visible on CHPL:</strong> {{ vm.cp.visibleOnChpl }} <br />
             </span>
             <br />

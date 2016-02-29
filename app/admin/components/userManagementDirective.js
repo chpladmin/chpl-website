@@ -14,14 +14,14 @@
 
             function activate () {
                 vm.roles = [];
-                if (!vm.acbId && !vm.atlId) {
+                if (!vm.acbId && !vm.atlId) { // not managing acb or atl, managing entire CHPL
                     vm.roles.push('ROLE_ADMIN');
                 }
-                if (!vm.atlId) {
+                if (!vm.atlId) { // not managing ATL; either managing entire CHPL or single ACB
                     vm.roles.push('ROLE_ACB_ADMIN');
                     vm.roles.push('ROLE_ACB_STAFF');
                 }
-                if (!vm.acbId) {
+                if (!vm.acbId) { // not managing ACB; either managing entire CHPL or single ATL
                     vm.roles.push('ROLE_ATL_ADMIN');
                     vm.roles.push('ROLE_ATL_STAFF');
                 }

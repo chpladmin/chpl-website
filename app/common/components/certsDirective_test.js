@@ -12,7 +12,8 @@
         beforeEach(module('app.common',
                           'app/common/components/certs.html',
                           'app/common/components/certificationCriteria.html',
-                          'app/common/components/a.html'));
+                          'app/common/components/a.html',
+                          'app/common/components/array.html'));
 
         beforeEach(inject(function ($compile, $rootScope, _$log_, $templateCache) {
             $log = _$log_;
@@ -24,6 +25,8 @@
             $templateCache.put('common/components/certificationCriteria.html', template);
             template = $templateCache.get('app/common/components/a.html');
             $templateCache.put('common/components/a.html', template);
+            template = $templateCache.get('app/common/components/array.html');
+            $templateCache.put('common/components/array.html', template);
 
             element = angular.element('<ai-certs edit-mode="true" certs=\'' + certs + '\' cqms=\'' + certs + '\'></ai-certs');
             $compile(element)(scope);

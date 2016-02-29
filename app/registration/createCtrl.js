@@ -15,7 +15,9 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                vm.userDetails = {user:{}};
+                vm.userDetails = {user:{
+                    complianceTermsAccepted: true
+                }};
                 vm.authorizeDetails = {};
                 vm.userDetails.hash = $routeParams.hash;
                 vm.authorizeDetails.hash = $routeParams.hash;
@@ -45,6 +47,7 @@
 
             function createUser () {
                 if (vm.validateUser()) {
+                    vm.userDetails.user.complianceTermsAccepted = true;
                     commonService.createInvitedUser(vm.userDetails)
                         .then(function (response) {
                             vm.message.value = 'Your account has been created. Please check your email to confirm your account';

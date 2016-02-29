@@ -8,6 +8,7 @@
 }
 
 .nav-pills>.subnav>a {
+    color: #214e75;
     border-radius: 0px;
     background-color: #ccc;
 }
@@ -22,11 +23,11 @@
 .nav-pills>.subnav.active>a:before {
     color: #000;
     font-family: FontAwesome;
-    background: #999;
+    background: #666;
     content: "\f0da";
 }
 .nav-pills>.subnav.active>a, .nav-pills>.subnav.active>a:focus, .nav-pills>.subnav.active>a:hover {
-    background-color: #999;
+    background-color: #666;
 }
 
 .animate-if.ng-enter/*, .animate-if.ng-leave*/ {

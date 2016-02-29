@@ -48,8 +48,8 @@ header {
     }
 }
 
-footer .navbar-default .navbar-nav>li>a {
-    color: #0070c9;
+footer .navbar-default a {
+    color: #214e75;
 }
 
 footer .navbar-default {

@@ -5,8 +5,16 @@
         .controller('AController', ['$scope', '$log', function ($scope, $log) {
             var vm = this;
 
+            activate();
+
             ////////////////////////////////////////////////////////////////////
 
+            function activate () {
+                vm.actualLink = vm.href;
+                if (vm.href.substring(0,4) !== 'http') {
+                    vm.actualLink = 'http://' + vm.href;
+                }
+            }
         }]);
 
     angular.module('app.common')

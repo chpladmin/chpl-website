@@ -41,7 +41,7 @@
         <div class="product-element">
           <h3 class="product-heading">Developer</h3>
           <p>{{ vm.product.developer.name }}</p>
-          <p ng-if="vm.product.developer.website"><a href="{{ vm.product.developer.website }}">{{ vm.product.developer.website }}</a></p>
+          <p ng-if="vm.product.developer.website"><ai-a href="{{ vm.product.developer.website }}" text="{{ vm.product.developer.website }}"></ai-a></p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Version</h3>
@@ -50,6 +50,14 @@
         <div class="product-element">
           <h3 class="product-heading">Certification Edition</h3>
           <p>{{ vm.product.certificationEdition.name }}</p>
+        </div>
+        <div class="product-element" ng-if="vm.product.certificationEdition.name === '2014'">
+          <h3 class="product-heading">Practice Type</h3>
+          <p>{{ vm.product.practiceType.name }}</p>
+        </div>
+        <div class="product-element" ng-if="vm.product.certificationEdition.name === '2014'">
+          <h3 class="product-heading">Classification Type</h3>
+          <p>{{ vm.product.classificationType.name }}</p>
         </div>
         <div class="product-element">
           <h3 class="product-heading">Accredited Certification Body</h3>
@@ -64,16 +72,9 @@
           <p>{{ vm.product.transparencyAttestation ? 'Affirmative' : 'Negative' }}</p>
         </div>
         <div class="product-element">
-          <h3 class="product-heading">Quality Management System</h3>
-          <span ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" ng-repeat="qms in vm.product.qmsStandards">
-            <h4>Standard</h4>
-            <p>{{ qms.qmsStandardName }}</p>
-            <h4>Description</h4>
-            <p>{{ qms.qmsModification }}</p>
-            <h4>Applicable Criteria</h4>
-            <p>{{ qms.applicableCriteria }}</p>
-          </span>
-          <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
+          <h3 class="product-heading">Transparency Attestation URL</h3>
+          <ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" text="{{ vm.product.transparencyAttestationUrl }}"></ai-a>
+          <p ng-if="!vm.product.transparencyAttestationUrl">No report on file</p>
         </div>
         <div class="product-element" ng-if="vm.correctiveActionPlan.length === 0">
           <h3 class="product-heading">Surveillance Transparency</h3>

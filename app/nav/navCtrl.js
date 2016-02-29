@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.nav')
-        .controller('NavigationController', ['authService', '$location', '$log', '$scope', function (authService, $location, $log, $scope) {
+        .controller('NavigationController', ['authService', 'commonService', '$location', '$log', '$scope', function (authService, commonService, $location, $log, $scope) {
             var vm = this;
 
             vm.getUsername = getUsername;
@@ -12,15 +12,14 @@
             vm.isAtlAdmin = isAtlAdmin;
             vm.isAuthed = isAuthed;
             vm.isChplAdmin = isChplAdmin;
+            vm.loadAnnouncements = loadAnnouncements;
 
-//            activate();
+            activate();
 
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                $scope.$on('admin.login', function (event, arg) {
-                    $log.debug('event', event, 'arg', arg);
-                });
+                vm.loadAnnouncements();
             }
 
             function getUsername () {
@@ -49,6 +48,15 @@
 
             function isChplAdmin () {
                 return authService.isChplAdmin();
+            }
+
+            function loadAnnouncements () {
+            	commonService.getAnnouncements(false)
+            		.then (function (result) {
+            			vm.announcements = result.announcements;
+            		}, function (error) {
+            			$log.debug('error in app.overview.controller.loadAnnouncements', error);
+            		});
             }
         }]);
 })();

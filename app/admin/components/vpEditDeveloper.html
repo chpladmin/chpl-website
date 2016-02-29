@@ -48,12 +48,43 @@
     </div>
     <div class="form-group">
       <label for="developerWebsite">Website</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite"></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite" placeholder="http://www.example.com"></input>
       <div class="text-danger" ng-if="vm.editForm.developerWebsite.$touched && vm.editForm.developerWebsite.$error.url">Website is invalid</div>
     </div>
-    <div class="form-group" ng-if="vm.developer.transparencyAttestation !== null">
+    <div class="form-group">
       <label for="developerTransparency">Transparency Attestation</label>
       <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="developerTransparency"></input>
+    </div>
+    <div class="form-group">
+      <label for="transparencyAttestationUrl">Transparency Attestation URL</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.transparencyAttestationUrl" id="transparencyAttestationUrl" name="transparencyAttestationUrl" placeholder="http://www.example.com"></input>
+      <div class="text-danger" ng-if="vm.editForm.transparencyAttestationUrl.$touched && vm.editForm.transparencyAttestationUrl.$error.url">Website is invalid</div>
+    </div>
+    Contact information:<br />
+    <div class="form-group">
+      <label for="contactFirst">First Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.firstName" id="contactFirst" name="contactFirst"></input>
+      <div class="text-danger" ng-if="vm.editForm.contactFirst.$touched && vm.editForm.contactFirst.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="contactLast">Last Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.lastName" id="contactLast" name="contactLast"></input>
+      <div class="text-danger" ng-if="vm.editForm.contactLast.$touched && vm.editForm.contactLast.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="contactTitle">Title</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.developer.contact.title" id="contactTitle" name="contactTitle"></input>
+    </div>
+    <div class="form-group">
+      <label for="contactEmail">Email <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="email" required ng-model="vm.developer.contact.email" id="contactEmail" name="contactEmail"></input>
+      <div class="text-danger" ng-if="vm.editForm.contactEmail.$touched && vm.editForm.contactEmail.$error.required">Field is required</div>
+      <div class="text-danger" ng-if="vm.editForm.contactEmail.$touched && vm.editForm.contactEmail.$error.email">Invalid email</div>
+    </div>
+    <div class="form-group">
+      <label for="contactPhoneNumber">Phone <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.phoneNumber" id="contactPhoneNumber" name="contactPhoneNumber"></input>
+      <div class="text-danger" ng-if="vm.editForm.contactPhoneNumber.$touched && vm.editForm.contactPhoneNumber.$error.required">Field is required</div>
     </div>
   </div>
   <div class="modal-footer">

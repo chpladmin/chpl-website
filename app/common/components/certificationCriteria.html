@@ -2,11 +2,11 @@
   <div ng-if="!vm.isEditing && (vm.cert.success || vm.viewAll)">
     <i class="fa fa-lg" ng-class="{'fa-check-square-o': vm.cert.success && !vm.cert.hasVersion, 'fa-square-o': !vm.cert.success}"></i>
     <span class="sr-only">{{ vm.cert.success ? 'meets' : 'does not meet'}}</span>
-    {{ vm.cert.number }}: {{ vm.cert.title }} <a href class="pull-right" ng-click="vm.showDetails = !vm.showDetails" ng-if="vm.cert.success">{{ vm.showDetails ? 'Hide' : 'View' }} details</a>
+    {{ vm.cert.number }}: {{ vm.cert.title }} <a href class="pull-right" ng-click="vm.showDetails = !vm.showDetails" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details</a>
     <div ng-if="vm.showDetails">
-      <span ng-if="vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0"><br />Certification met via:
+      <div ng-if="vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0">
         <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="false"></ai-additional-software>
-      </span>
+      </div>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -15,57 +15,55 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr ng-if="vm.cert.gap !== null">
             <td>GAP</td>
             <td>{{ vm.cert.gap ? 'True' : 'False' }}</td>
           </tr>
-          <tr>
-            <td>Functionality Tested</td>
-            <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0"><div ng-repeat="m in vm.cert.testFunctionality">{{ m.name }}</div></td>
-            <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">N/A</td>
-          </tr>
-          <tr>
+          <tr ng-if="vm.cert.testStandards !== null">
             <td>Standard</td>
             <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0"><div ng-repeat="m in vm.cert.testStandards">{{ m.testStandardName }}</div></td>
-            <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">N/A</td>
+            <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">None</td>
           </tr>
-          <tr>
+          <tr ng-if="vm.cert.g1Success">
             <td>Measure Successfully Tested for G1</td>
-            <td>{{ vm.cert.g1Success ? 'True' : 'False' }}</td>
+            <td>True</td>
           </tr>
-          <tr>
+          <tr ng-if="vm.cert.g2Success">
             <td>Measure Successfully Tested for G2</td>
-            <td>{{ vm.cert.g2Success ? 'True' : 'False' }}</td>
+            <td>True</td>
           </tr>
-          <tr>
+          <tr ng-if="vm.cert.testFunctionality !== null">
+            <td>Functionality Tested</td>
+            <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0"><div ng-repeat="m in vm.cert.testFunctionality">{{ m.name }}</div></td>
+            <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.testProcedures !== null">
             <td>Test procedure version</td>
             <td ng-if="vm.cert.testProcedures && vm.cert.testProcedures.length > 0"><div ng-repeat="m in vm.cert.testProcedures">{{ m.testProcedureVersion }}</div></td>
-            <td ng-if="!vm.cert.testProcedures || vm.cert.testProcedures.length === 0">N/A</td>
+            <td ng-if="!vm.cert.testProcedures || vm.cert.testProcedures.length === 0">None</td>
           </tr>
-          <tr>
+          <tr ng-if="vm.cert.testToolsUsed !== null">
+            <td>Test tool</td>
+            <td ng-if="vm.cert.testToolsUsed && vm.cert.testToolsUsed.length > 0"><div ng-repeat="m in vm.cert.testToolsUsed">Tool: {{ m.testToolName }}; Version: {{ m.testToolVersion ? m.testToolVersion : 'N/A' }}</div></td>
+            <td ng-if="!vm.cert.testToolsUsed || vm.cert.testToolsUsed.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.testDataUsed !== null">
             <td>Test data used</td>
             <td ng-if="vm.cert.testDataUsed && vm.cert.testDataUsed.length > 0"><div ng-repeat="m in vm.cert.testDataUsed">Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
-            <td ng-if="!vm.cert.testDataUsed || vm.cert.testDataUsed.length === 0">N/A</td>
+            <td ng-if="!vm.cert.testDataUsed || vm.cert.testDataUsed.length === 0">None</td>
           </tr>
-          <tr>
-            <td>Test procedure version</td>
-            <td ng-if="vm.cert.testToolsUsed && vm.cert.testToolsUsed.length > 0"><div ng-repeat="m in vm.cert.testToolsUsed">{{ m.testToolName }}</div></td>
-            <td ng-if="!vm.cert.testToolsUsed || vm.cert.testToolsUsed.length === 0">N/A</td>
+          <tr ng-if="vm.cert.sed !== null">
+            <td>SED</td>
+            <td>{{ vm.cert.sed ? 'True' : 'False' }} <a href ng-if="vm.cert.sed" ng-click="vm.showSed = !vm.showSed">({{ vm.showSed ? 'Hide' : 'View' }}  Details)</a></td>
           </tr>
-          <tr ng-if="vm.cert.sed">
-            <td colspan="2" class="text-center"><a href ng-click="vm.showSed = !vm.showSed">{{ vm.showSed ? 'Hide' : 'View' }} SED Details</a></td>
-          </tr>
-          <tr ng-if="vm.showSed">
+          <tr ng-if="vm.showSed" ng-if="vm.cert.ucdProcessSelected !== null">
             <td>UCD Process Selected</td>
-            <td>{{ vm.cert.ucdProcessSelected ? vm.cert.ucdProcessSelected : 'N/A' }}</td>
-          </tr>
-          <tr ng-if="vm.showSed">
-            <td>UCD Process Details</td>
-            <td>{{ vm.cert.ucdProcessDetails ? vm.cert.ucdProcessDetails : 'N/A' }}</td>
+            <td ng-if="vm.cert.ucdProcesses && vm.cert.ucdProcesses.length > 0"><div ng-repeat="m in vm.cert.ucdProcesses">Process: {{ m.ucdProcessName }}<br />Extra details: {{ m.ucdProcessDetails ? m.ucdProcessDetails : 'N/A' }}</div></td>
+            <td ng-if="!vm.cert.ucdProcesses || vm.cert.ucdProcesses.length === 0">None</td>
           </tr>
           <tr ng-if="vm.showSed">
             <td colspan="2">
-              <table class="table">
+              <table class="table" ng-if="vm.cert.testTasks && vm.cert.testTasks.length > 0">
                 <thead>
                   <tr>
                     <th>Task Description</th>
@@ -79,7 +77,7 @@
                 <tbody>
                 </tbody>
               </table>
-              <table class="table">
+              <table class="table" ng-if="vm.cert.testParticipants && vm.cert.testParticipants.length > 0">
                 <thead>
                   <tr>
                     <th>Participant Occupation/Role</th>
@@ -102,12 +100,14 @@
     </div>
   </div>
   <div ng-if="vm.isEditing">
-    <pre>{{ vm.editForm | json }}</pre>
-    <input type="checkbox" ng-model="vm.cert.success" id="data" name="data"></input>
-    <label for="data">{{ vm.cert.number }}: {{ vm.cert.title }}</label>
-    <br />Certification met via additional software:
-    <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="true"></ai-additional-software>
-    <table class="table table-striped">
+    <input type="checkbox" ng-model="vm.cert.success" id="data{{ vm.cert.number }}" name="data"></input>
+    <label for="data{{ vm.cert.number }}">{{ vm.cert.number }}: {{ vm.cert.title }}</label>
+    <div ng-if="vm.cert.success">
+      <input type="checkbox" ng-model="vm.cert.metViaAdditionalSoftware" id="data_additionalSoftware{{ vm.cert.number }}" name="data_additionalSoftware"></input>
+      <label for="data_additionalSoftware{{ vm.cert.number }}">Certification met via additional software</label>
+      <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="true" ng-if="vm.cert.metViaAdditionalSoftware"></ai-additional-software>
+    </div>
+    <table class="table table-striped" ng-if="vm.cert.success">
       <thead>
         <tr>
           <th>Attribute</th>
@@ -116,53 +116,44 @@
       </thead>
       <tbody>
         <tr>
-          <td><label for="data_gap">GAP</label><pre>{{ vm.cert.gap || json }}</pre></td>
-          <td><select id="data_gap" name="data_gap" ng_model="vm.cert.gap"><option value="null">N/A</option><option value="true">True</option><option value="false">False</option></select></td>
-        </tr>
-        <tr>
-          <td>Functionality Tested</td>
-          <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0"><div ng-repeat="m in vm.cert.testFunctionality">{{ m.name }}</div></td>
-          <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">N/A</td>
+          <td><label for="data_gap{{ vm.cert.number }}">GAP</label></td>
+          <td><select id="data_gap{{ vm.cert.number }}" name="data_gap" ng_model="vm.cert.gap" ng-options="b.value as b.name for b in vm.options"></select></td>
         </tr>
         <tr>
           <td>Standard</td>
-          <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0"><div ng-repeat="m in vm.cert.testStandards">{{ m.testStandardName }}</div></td>
-          <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">N/A</td>
+          <td><ai-array item-type="Standard" items="vm.cert.testStandards" key="testStandardNumber"></ai-array></td>
         </tr>
         <tr>
-          <td><label for="data_g1Success">Measure Successfully Tested for G1</label></td>
-          <td><select id="data_g1Success" name="data_g1Success" ng_model="vm.cert.g1Success"><option value="null">N/A</option><option value="true">True</option><option value="false">False</option></select></td>
+          <td><label for="data_g1Success{{ vm.cert.number }}">Measure Successfully Tested for G1</label></td>
+          <td><select id="data_g1Success{{ vm.cert.number }}" name="data_g1Success" ng_model="vm.cert.g1Success" ng-options="b.value as b.name for b in vm.options"></select></td>
         </tr>
         <tr>
-          <td><label for="data_g2Success">Measure Successfully Tested for G2</label></td>
-          <td><select id="data_g2Success" name="data_g2Success" ng_model="vm.cert.g2Success"><option value="null">N/A</option><option value="true">True</option><option value="false">False</option></select></td>
+          <td><label for="data_g2Success{{ vm.cert.number }}">Measure Successfully Tested for G2</label></td>
+          <td><select id="data_g2Success{{ vm.cert.number }}" name="data_g2Success" ng_model="vm.cert.g2Success" ng-options="b.value as b.name for b in vm.options"></select></td>
         </tr>
         <tr>
-          <td>Test procedure version</td>
-          <td ng-if="vm.cert.testProcedures && vm.cert.testProcedures.length > 0"><div ng-repeat="m in vm.cert.testProcedures">{{ m.testProcedureVersion }}</div></td>
-          <td ng-if="!vm.cert.testProcedures || vm.cert.testProcedures.length === 0">N/A</td>
-        </tr>
-        <tr>
-          <td>Test data used</td>
-          <td ng-if="vm.cert.testDataUsed && vm.cert.testDataUsed.length > 0"><div ng-repeat="m in vm.cert.testDataUsed">Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
-          <td ng-if="!vm.cert.testDataUsed || vm.cert.testDataUsed.length === 0">N/A</td>
+          <td>Functionality Tested</td>
+          <td><ai-array item-type="Functionality Tested" items="vm.cert.testFunctionality" key="number"></ai-array></td>
         </tr>
         <tr>
           <td>Test procedure version</td>
-          <td ng-if="vm.cert.testToolsUsed && vm.cert.testToolsUsed.length > 0"><div ng-repeat="m in vm.cert.testToolsUsed">{{ m.testToolName }}</div></td>
-          <td ng-if="!vm.cert.testToolsUsed || vm.cert.testToolsUsed.length === 0">N/A</td>
+          <td><ai-array item-type="Test Procedure Version" items="vm.cert.testProcedures" key="testProcedureVersion"></ai-array></td>
         </tr>
         <tr>
-          <td><label for="data_sed">SED</label></td>
-          <td><select id="data_sed" name="data_sed" ng_model="vm.cert.sed"><option value="null">N/A</option><option value="true">True</option><option value="false">False</option></select></td>
+          <td>Test tool</td>
+          <td><ai-array item-type="Test Tool & Version" items="vm.cert.testToolsUsed" key="testToolName" key-second="testToolVersion"></ai-array></td>
         </tr>
-        <tr ng-if="vm.showSed">
-          <td>UCD Process Selected</td>
-          <td>{{ vm.cert.ucdProcessSelected ? vm.cert.ucdProcessSelected : 'N/A' }}</td>
+        <tr>
+          <td>Test data</td>
+          <td><ai-array item-type="Test Data Version & Alteration" items="vm.cert.testDataUsed" key="version" key-second="alteration"></ai-array></td>
         </tr>
-        <tr ng-if="vm.showSed">
-          <td>UCD Process Details</td>
-          <td>{{ vm.cert.ucdProcessDetails ? vm.cert.ucdProcessDetails : 'N/A' }}</td>
+        <tr>
+          <td><label for="data_sed{{ vm.cert.number }}">SED</label></td>
+          <td><select id="data_sed{{ vm.cert.number }}" name="data_sed" ng_model="vm.cert.sed" ng-options="b.value as b.name for b in vm.options" ng-disabled="vm.cert.certificationEdition.name === '2015'"></select></td>
+        </tr>
+        <tr>
+          <td>UCD Process</td>
+          <td><ai-array item-type="UCD Process & Details" items="vm.cert.ucdProcesses" key="ucdProcessName" key-second="ucdProcessDetails"></ai-array></td>
         </tr>
       </tbody>
     </table>

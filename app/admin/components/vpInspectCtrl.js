@@ -82,6 +82,9 @@
                         name: vm.cp.developer.name,
                         website: vm.cp.developer.website,
                         address: vm.cp.developerAddress,
+                        transparencyAttestation: vm.cp.transparencyAttestation,
+                        transparencyAttestationUrl: vm.cp.transparencyAttestationUrl,
+                        contact: vm.cp.developer.contact,
                         developerId: vm.cp.developer.id
                     },
                     developerIds: [vm.cp.developer.id]
@@ -190,6 +193,7 @@
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'lg',
                     resolve: {
                         activeCP: function () { return vm.cp; },
                         practices: function () { return vm.practices; },

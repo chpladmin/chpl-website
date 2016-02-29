@@ -311,6 +311,7 @@
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'lg',
                     resolve: {
                         activeCP: function () { return self.activeCP; },
                         practices: function () { return self.practices; },
