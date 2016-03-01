@@ -73,6 +73,10 @@
                     clear();
                     delete $localStorage.clearResults;
                 }
+                $scope.$on('ClearResults', function (event, args) {
+                    clear();
+                    delete $localStorage.clearResults;
+                });
             }
 
             function addRefine () {

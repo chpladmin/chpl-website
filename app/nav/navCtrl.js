@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.nav')
-        .controller('NavigationController', ['authService', 'commonService', '$location', '$log', '$scope', '$localStorage', function (authService, commonService, $location, $log, $scope, $localStorage) {
+        .controller('NavigationController', ['authService', 'commonService', '$location', '$log', '$scope', '$rootScope', '$localStorage', function (authService, commonService, $location, $log, $scope, $rootScope, $localStorage) {
             var vm = this;
 
             vm.clear = clear;
@@ -24,6 +24,7 @@
             }
 
             function clear () {
+                $rootScope.$broadcast('ClearResults', {});
                 $localStorage.clearResults = true;
             }
 
