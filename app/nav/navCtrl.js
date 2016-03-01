@@ -2,9 +2,10 @@
     'use strict';
 
     angular.module('app.nav')
-        .controller('NavigationController', ['authService', 'commonService', '$location', '$log', '$scope', function (authService, commonService, $location, $log, $scope) {
+        .controller('NavigationController', ['authService', 'commonService', '$location', '$log', '$scope', '$localStorage', function (authService, commonService, $location, $log, $scope, $localStorage) {
             var vm = this;
 
+            vm.clear = clear;
             vm.getUsername = getUsername;
             vm.isAcbAdmin = isAcbAdmin;
             vm.isAcbStaff = isAcbStaff;
@@ -20,6 +21,10 @@
 
             function activate () {
                 vm.loadAnnouncements();
+            }
+
+            function clear () {
+                $localStorage.clearResults = true;
             }
 
             function getUsername () {
