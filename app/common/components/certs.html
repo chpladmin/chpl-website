@@ -24,26 +24,28 @@
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'">
         <div ng-if="vm.viewAllCerts || n.success" ng-repeat="n in vm.cqms | orderBy:vm.sortCqms track by $index">
-          <p ng-if="!vm.isEditing">
-            <div class="col-sm-1">
+          <div class="row" ng-if="!vm.isEditing">
+            <div class="col-sm-12">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
               <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-              <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b> 
-            </div>
-            <div class="col-sm-11">
+              <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b>
               <span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}
             </div>
-          </p>
-          <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
-            <span class="cert-bloc" ng-if="n.cmsId">
-              <select ng-model="n.successVersions" multiple data-ng-attr-size="{{ n.allVersions.length + 1 }}" id="data_{{n.id}}"
-                      ng-options="version for version in n.allVersions">
-                <option value=""></option>
-              </select>
-            </span>
-            <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
-          </p>
+          </div>
+          <div class="row" ng-if="vm.isEditing">
+            <div class="col-sm-1">
+              <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
+              <span class="cert-bloc" ng-if="n.cmsId">
+                <select ng-model="n.successVersions" multiple data-ng-attr-size="{{ n.allVersions.length + 1 }}" id="data_{{n.id}}"
+                        ng-options="version for version in n.allVersions">
+                  <option value=""></option>
+                </select>
+              </span>
+            </div>
+            <div class="col-sm-11">
+              <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -340,13 +340,13 @@
                   <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'N/A' }} <br />
-                  <strong>Quality Management System Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.qualityManagementSystemAtt) }} <br />
-                  <strong>Privacy and Security Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.privacyAttestation) }} <br />
                   <strong>Transparency Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.transparencyAttestation) }} <br />
+                  <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
-                  <strong>QMS Testing:</strong> {{ vm.ternaryFilter(vm.cp.qmsTesting) }} <br />
-                  <strong>SED Testing:</strong> {{ vm.ternaryFilter(vm.activeCP.sedTesting) }} <br />
+                  <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
+                  <span ng-repeat="qms in vm.activeCP.qmsStandards">{{ qms.name }} <span ng-if="qms.details">: {{ qms.details }}</span><br /></span>
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'N/A' }} <br />
+                  <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'N/A' }} <br />
                   <strong>API Documentation:</strong> {{ vm.activeCP.apiDocumentation ? vm.activeCP.apiDocumentation : 'N/A' }} <br />
                   <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'N/A' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
