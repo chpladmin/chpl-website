@@ -1,5 +1,12 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### New features
+* Made 'Home' and 'logo' links clear search results
+* Added 'external link' indicator to Swagger License link
+
 ## Version 0.3.3
 _29 February 2016_
 
