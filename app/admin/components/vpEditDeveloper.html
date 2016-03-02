@@ -53,11 +53,11 @@
     </div>
     <div class="form-group">
       <label for="developerTransparency">Transparency Attestation</label>
-      <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="developerTransparency"></input>
+      <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="developerTransparency" ng-disabled="!vm.isAcbAdmin"></input>
     </div>
     <div class="form-group">
       <label for="transparencyAttestationUrl">Transparency Attestation URL</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.developer.transparencyAttestationUrl" id="transparencyAttestationUrl" name="transparencyAttestationUrl" placeholder="http://www.example.com"></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.transparencyAttestationUrl" id="transparencyAttestationUrl" ng-disabled="!vm.isAcbAdmin" name="transparencyAttestationUrl" placeholder="http://www.example.com"></input>
       <div class="text-danger" ng-if="vm.editForm.transparencyAttestationUrl.$touched && vm.editForm.transparencyAttestationUrl.$error.url">Website is invalid</div>
     </div>
     Contact information:<br />
