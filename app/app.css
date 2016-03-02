@@ -410,3 +410,40 @@ a.skip:hover {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
 }
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #333 !important;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #333 !important;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #333 !important;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #333 !important;
+}
+:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+  color:    #333 !important;
+}
+
+.btn-default[disabled] {
+    color: #000;
+}
+.btn[disabled] {
+    opacity: 1;
+}
+
+.swagger-ui .endpoint a {
+    color: #337ab7;
+}
+
+.swagger-ui .endpoint .endpoint-heading span {
+    color: #333;
+}
+
+.swagger-ui .api-version {
+    color: #333;
+}

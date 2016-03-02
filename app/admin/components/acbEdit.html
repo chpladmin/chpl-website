@@ -6,20 +6,20 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit ACB</h4>
-    <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ACB</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit ONC-ACB</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ONC-ACB</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group" ng-if="vm.isChplAdmin">
-      <label for="acbName">ACB Name <span class="text-danger">*</span></label>
+      <label for="acbName">ONC-ACB Name <span class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" required ng-model="vm.acb.name" id="acbName" name="acbName" ng-disabled="vm.acb.isDeleted"></input>
-      <div class="text-danger" ng-if="vm.editForm.acbName.$touched && vm.editForm.acbName.$error.required">ACB Name is required</div>
+      <div class="text-danger" ng-if="vm.editForm.acbName.$touched && vm.editForm.acbName.$error.required">ONC-ACB Name is required</div>
     </div>
     <div ng-if="!vm.isChplAdmin">
-      <strong>ACB Name: </strong>{{ vm.acb.name }}
+      <strong>ONC-ACB Name: </strong>{{ vm.acb.name }}
     </div>
     <div>
-      <strong>ACB Code: </strong>{{ vm.acb.acbCode }}
+      <strong>ONC-ACB Code: </strong>{{ vm.acb.acbCode }}
     </div>
     <div class="form-group">
       <label for="addressLine1">Address Line 1 <span class="text-danger">*</span></label>
@@ -60,11 +60,11 @@
   <div class="modal-footer">
     <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block"
             ng-if="vm.action === 'create'"
-            ng-click="vm.create()"><i class="fa fa-save"></i> Create ACB</button>
+            ng-click="vm.create()"><i class="fa fa-save"></i> Create ONC-ACB</button>
     <span ng-if="!vm.acb.isDeleted">
       <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block"
               ng-if="vm.action === 'edit'"
-              ng-click="vm.save()"><i class="fa fa-save"></i> Save ACB</button>
+              ng-click="vm.save()"><i class="fa fa-save"></i> Save ONC-ACB</button>
       <button class="btn btn-warning btn-block"
               confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
               confirm-ok="Yes"
@@ -73,18 +73,18 @@
               ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
       <button class="btn btn-danger btn-block"
               ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.acb.isDeleted"
-              confirm="Are you sure you wish to delete this ACB?"
+              confirm="Are you sure you wish to delete this ONC-ACB?"
               confirm-ok="Yes"
               confirm-cancel="No"
               confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="vm.deleteAcb()"><i class="fa fa-trash-o"></i> Delete ACB</button>
+              ng-click="vm.deleteAcb()"><i class="fa fa-trash-o"></i> Delete ONC-ACB</button>
     </span>
     <button class="btn btn-success btn-block"
             ng-if="vm.action === 'edit' && vm.isChplAdmin && vm.acb.isDeleted"
-            confirm="Are you sure you wish to restore this ACB?"
+            confirm="Are you sure you wish to restore this ONC-ACB?"
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.undeleteAcb()"><i class="fa fa-undo"></i> Restore ACB</button>
+            ng-click="vm.undeleteAcb()"><i class="fa fa-undo"></i> Restore ONC-ACB</button>
   </div>
 </div>
