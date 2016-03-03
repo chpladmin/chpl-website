@@ -12,8 +12,8 @@
       <table class="table table-striped compare-table" aria-live="polite">
         <thead>
           <tr>
-            <th><span class="sr-only">Category</span></th>
-            <th ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.product.name }}<br />({{ product.developer.name }})</th>
+            <th scope="col"><span class="sr-only">Category</span></th>
+            <th scope="col" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.product.name }}<br />({{ product.developer.name }})</th>
           </tr>
         </thead>
         <tbody>

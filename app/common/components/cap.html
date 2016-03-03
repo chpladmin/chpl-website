@@ -5,15 +5,15 @@
   <table class="table" ng-if="vm.correctiveActionPlan.length > 0">
     <thead>
       <tr>
-        <th>Is In Effect</th>
-        <th>Surveillance Began</th>
-        <th>Date of Determination</th>
-        <th>Result of randomized surveillance</th>
-        <th>Plan Approved</th>
-        <th>Action Began</th>
-        <th>Must be Completed</th>
-        <th>Was Completed</th>
-        <th>Surveillance Ended</th>
+        <th scope="col">Is In Effect</th>
+        <th scope="col">Surveillance Began</th>
+        <th scope="col">Date of Determination</th>
+        <th scope="col">Result of randomized surveillance</th>
+        <th scope="col">Plan Approved</th>
+        <th scope="col">Action Began</th>
+        <th scope="col">Must be Completed</th>
+        <th scope="col">Was Completed</th>
+        <th scope="col">Surveillance Ended</th>
         <th ng-if="vm.isAdmin">Action</th>
       </tr>
     </thead>
@@ -37,11 +37,11 @@
           <table class="table table-striped" width="100%">
             <thead>
               <tr>
-                <th>Certification Criteria</th>
-                <th>Pass Rate</th>
-                <th>ACB Summary</th>
-                <th>Developer Summary</th>
-                <th>Resolution</th>
+                <th scope="col">Certification Criteria</th>
+                <th scope="col">Pass Rate</th>
+                <th scope="col">ACB Summary</th>
+                <th scope="col">Developer Summary</th>
+                <th scope="col">Resolution</th>
               </tr>
             </thead>
             <tbody>
@@ -61,8 +61,8 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>File Name</th>
-                <th>File Type</th>
+                <th scope="col">File Name</th>
+                <th scope="col">File Type</th>
                 <th class="text-center">Download</th>
               </tr>
             </thead>
