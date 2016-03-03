@@ -28,6 +28,7 @@
             vm.isDisabled = isDisabled;
 
             vm.cancel = cancel;
+            vm.ternaryFilter = ternaryFilter;
 
             vm.activate();
 
@@ -270,6 +271,14 @@
 
             function cancel () {
                 $modalInstance.dismiss('cancelled');
+            }
+
+            function ternaryFilter (field) {
+                if (field == null) {
+                    return 'N/A';
+                } else {
+                    return field ? 'True' : 'False';
+                }
             }
         }]);
 })();

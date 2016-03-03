@@ -282,17 +282,21 @@
               <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
               <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
               <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date }} <br />
-              <ai-additional-software additional-software="vm.cp.additionalSoftware" is-editing="false"></ai-additional-software> <br />
+              <strong>Additional Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br />
               <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
               <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
-              <strong>Other ACB:</strong> {{ vm.cp.otherAcb }} <br />
-              <strong>Quality Management System Attestation:</strong> {{ vm.cp.qualityManagementSystemAtt }} <br />
-              <strong>Inherited Certification Status:</strong> {{ vm.cp.ics }} <br />
-              <strong>QMS Testing:</strong> {{ vm.cp.qmsTesting ? 'True' : 'False' }} <br />
-              <strong>SED Testing:</strong> {{ vm.cp.sedTesting ? 'True' : 'False' }} <br />
-              <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation }} <br />
+              <strong>Other ACB:</strong> {{ vm.cp.otherAcb ? vm.cp.otherAcb : 'N/A' }} <br />
+              <strong>Transparency Attestation:</strong> {{ vm.ternaryFilter(vm.cp.transparencyAttestation) }} <br />
+              <strong>Transparency URL:</strong> {{ vm.cp.transparencyAttestationUrl ? vm.cp.transparencyUrl : 'None' }} <br />
+              <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics) }} <br />
+              <strong>QMS:</strong> {{ vm.cp.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
+              <span ng-repeat="qms in vm.cp.qmsStandards">{{ qms.name }} <span ng-if="qms.details">: {{ qms.details }}</span><br /></span>
+              <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation ? vm.cp.reportFileLocation : 'N/A' }} <br />
+              <strong>SED Report File Location:</strong> {{ vm.cp.sedReportFileLocation ? vm.cp.sedReportFileLocation : 'N/A' }} <br />
+              <strong>API Documentation:</strong> {{ vm.cp.apiDocumentation ? vm.cp.apiDocumentation : 'N/A' }} <br />
+              <strong>Terms of Use:</strong> {{ vm.cp.termsOfUse ? vm.cp.termsOfUse : 'N/A' }} <br />
               <strong>Testing Lab:</strong> {{ vm.cp.testingLab.name }} <br />
-              <strong>Visible on CHPL:</strong> {{ vm.cp.visibleOnChpl }} <br />
+              <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.cp.visibleOnChpl) }} <br />
             </span>
             <br />
             <ai-certs ng-if="vm.cp !== ''"
