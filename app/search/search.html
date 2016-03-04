@@ -200,12 +200,12 @@
                 <table class="table search-table table-striped-foldout">
                   <thead>
                     <tr>
-		              <th class="search-header" ng-click="sort('product')" tabindex="0"
+		              <th scope="col" class="search-header" ng-click="sort('product')" tabindex="0"
                           ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
-                      <th class="search-header" ng-click="sort('developer')" tabindex="0"
+                      <th scope="col" class="search-header" ng-click="sort('developer')" tabindex="0"
                           ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer</th>
-                      <th class="">Version</th>
-                      <th colspan="2"><span class="sr-only">Actions</span></th>
+                      <th scope="col" class="">Version</th>
+                      <th scope="col" colspan="2"><span class="sr-only">Actions</span></th>
 	                </tr>
 	              </thead>
                   <tfoot>
