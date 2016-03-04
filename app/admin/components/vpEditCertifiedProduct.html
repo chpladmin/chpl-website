@@ -47,16 +47,8 @@
       <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cpOtherAcb"></input>
     </div>
     <div class="form-group">
-      <label for="cpQMSAtt">Quality Management System Attestation</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.qualityManagementSystemAtt" id="cpQMSAtt"></input>
-    </div>
-    <div class="form-group">
-      <label for="cpTransparencyAtt">Transparency Attestation</label>
-      <input class="" type="checkbox" ng-model="vm.cp.transparencyAttestation" id="cpTransparencyAtt" disabled></input>
-    </div>
-    <div class="form-group">
       <label for="cpTransparencyUrl">Transparency Attestation Url</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cpTransparencyAttUrl" disabled></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cpTransparencyAttUrl"></input>
     </div>
     <div class="form-group">
       <label for="cpIcs">Inherited Certification Status</label>
@@ -64,7 +56,7 @@
     </div>
     <div class="form-group">
       QMS Testing
-      <ai-array item-type="QMS Standard & Details" items="vm.cp.qmsStandards" key="name" key-second="details"></ai-array></td>
+      <ai-array item-type="QMS Standard & Details" items="vm.cp.qmsStandards" key="qmsStandardName" key-second="qmsModification"></ai-array></td>
     </div>
     <div class="form-group">
       <label for="cpReportFileLoc">Report File Location</label>

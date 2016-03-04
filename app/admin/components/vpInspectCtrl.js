@@ -61,6 +61,9 @@
                         break;
                     }
                 }
+                if (!vm.cp.developerAddress.country) {
+                    vm.cp.developerAddress.country = 'USA';
+                }
             }
 
             function loadDev () {
