@@ -52,6 +52,13 @@
                             'API-Key': authService.getApiKey()
                         }
                     });
+                    self.uploader.filters.push({
+                        name: 'csvFilter',
+                        fn: function(item, options) {
+                            var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
+                            return '|csv|'.indexOf(extension) !== -1;
+                        }
+                    });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         //$log.info('onSuccessItem', fileItem, response, status, headers);
                         self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. Pending products are ready for confirmation.';
