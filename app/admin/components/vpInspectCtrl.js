@@ -48,6 +48,7 @@
                 vm.versions = [];
                 vm.versionChoice = 'choose';
 
+                vm.errorMessages = [];
                 vm.practices = practices;
                 vm.isAcbAdmin = isAcbAdmin;
                 vm.isAcbStaff = isAcbStaff;
@@ -179,6 +180,8 @@
                 commonService.confirmPendingCp(vm.cp)
                     .then(function () {
                         $modalInstance.close('confirmed');
+                    }, function (error) {
+                        vm.errorMessages = error.data.errorMessages;
                     });
             }
 

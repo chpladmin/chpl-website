@@ -58,6 +58,7 @@
         <table class="table table-striped" ng-if="vm.uploadingCps.length > 0">
           <thead>
             <tr>
+              <th scope="col">CHPL ID</th>
               <th scope="col">Developer</th>
               <th scope="col">Product</th>
               <th scope="col">Version</th>
@@ -68,6 +69,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate'">
+              <td>{{ cp.chplProductNumber }}</td>
               <td>{{ cp.developer.name }}</td>
               <td>{{ cp.product.name }}</td>
               <td>{{ cp.product.version }}</td>

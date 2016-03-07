@@ -60,7 +60,7 @@
                         self.refreshPending();
                     };
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
-                        //$log.info('onErrorItem', fileItem, response, status, headers);
+                        self.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully. Error was: ' + response.error;
                     };
                     self.uploader.onCancelItem = function(fileItem, response, status, headers) {
                         //$log.info('onCancelItem', fileItem, response, status, headers);

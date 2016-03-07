@@ -16,7 +16,7 @@
         </div>
         <div class="col-sm-6" ng-if="vm.announcements.length > 0">
           <div ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
-            <p class="announcement nav-text spaced-out badge">{{ announcement.title }}<span ng-if="announcement.text">: {{ announcement.text }}</span></p>
+            <p class="announcement nav-text spaced-out badge pull-right">{{ announcement.title }}<span ng-if="announcement.text">: {{ announcement.text }}</span></p>
           </div>
         </div>
       </div><!-- /.container-fluid -->
