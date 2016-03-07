@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-ai" ng-if="!vm.isEditing">
+    <div class="panel panel-ai" ng-if="!vm.isEditing && !vm.isConfirming">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('additional')"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
       </div>
