@@ -28,6 +28,7 @@
                 vm.testingLabs = testingLabs;
                 vm.statuses = statuses;
                 vm.workType = workType;
+                vm.showFormErrors = false;
 
                 vm.handlers = [];
 
