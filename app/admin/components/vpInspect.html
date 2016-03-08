@@ -337,11 +337,11 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.reject()"><i class="fa fa-trash-o"></i> Reject</button>
-    <button class="btn btn-success btn-large pull-right"
+    <button class="btn btn-ai-success btn-large pull-right"
             ng-disabled="vm.isDisabled()"
             ng-if="vm.stage !== 'cp'"
             ng-click="vm.next()">Next</button>
-    <button class="btn btn-success btn-large pull-right"
+    <button class="btn btn-ai-success btn-large pull-right"
             ng-if="vm.stage === 'cp'"
             confirm="Are you sure you wish to confirm this Certified Product?"
             confirm-ok="Yes"

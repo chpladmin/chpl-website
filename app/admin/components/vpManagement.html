@@ -36,7 +36,7 @@
                 </div>
               </td>
               <td nowrap>
-                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
                   <i class="fa fa-cloud-upload"></i> Upload
                 </button>
                 <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -77,7 +77,7 @@
               <td>{{ cp.certificationDate | date }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <button class="btn btn-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
               </td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
                 <button class="btn btn-warning btn-block"

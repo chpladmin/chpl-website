@@ -200,10 +200,10 @@
                 <table class="table search-table table-striped-foldout">
                   <thead>
                     <tr>
-		              <th scope="col" class="search-header" ng-click="sort('product')" tabindex="0"
-                          ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product</th>
-                      <th scope="col" class="search-header" ng-click="sort('developer')" tabindex="0"
-                          ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer</th>
+		              <th scope="col" class="search-header" ng-click="sort('product')"
+                          ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product <a class="skip" href ng-click="sort('product')"><br />Sort by product</a></th>
+                      <th scope="col" class="search-header" ng-click="sort('developer')"
+                          ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer <a class="skip" href ng-click="sort('developer')"><br />Sort by developer</a></th>
                       <th scope="col" class="">Version</th>
                       <th scope="col" colspan="2"><span class="sr-only">Actions</span></th>
 	                </tr>

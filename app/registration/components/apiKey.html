@@ -26,7 +26,7 @@
           <div class="text-danger col-sm-12" ng-if="vm.registerForm.acceptTos.$touched && vm.registerForm.acceptTos.$error.required">You must accept the Terms of Service before continuing</div>
         </div>
       </div>
-      <button class="btn btn-block btn-success" ng-click="vm.register()" ng-disabled="vm.registerForm.$invalid">Register</button>
+      <button class="btn btn-block btn-ai-success" ng-click="vm.register()" ng-disabled="vm.registerForm.$invalid">Register</button>
     </div>
     <div ng-if="vm.hasKey">
       <p>Thank you for registering. You will receive an email with your unique key at the address you provided. In the meantime, your unique key is: <pre>{{ vm.key }}</pre></p>

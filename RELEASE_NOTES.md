@@ -6,6 +6,11 @@ _Date TBD_
 ### New features
 * Made 'Home' and 'logo' links clear search results
 * Added 'external link' indicator to Swagger License link
+* Better display of errors when editing a Certified Product
+* Limited file upload to CSV only
+* Removed 'additional information' accordion during upload/confirm
+* Added error handling to announcements
+* Further 508 compliance work
 
 ## Version 0.3.3
 _29 February 2016_

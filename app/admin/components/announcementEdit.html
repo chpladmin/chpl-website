@@ -36,11 +36,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="vm.editForm.$invalid || vm.datesInvalid()" class="btn btn-success btn-block"
+    <button ng-disabled="vm.editForm.$invalid || vm.datesInvalid()" class="btn btn-ai-success btn-block"
             ng-if="vm.action === 'create'"
             ng-click="vm.create()"><i class="fa fa-save"></i> Create announcement</button>
     <span ng-if="!vm.announcement.isDeleted">
-      <button ng-disabled="vm.editForm.$invalid || vm.datesInvalid()" class="btn btn-success btn-block"
+      <button ng-disabled="vm.editForm.$invalid || vm.datesInvalid()" class="btn btn-ai-success btn-block"
               ng-if="vm.action === 'edit'"
               ng-click="vm.save()"><i class="fa fa-save"></i> Save announcement</button>
       <button class="btn btn-warning btn-block"

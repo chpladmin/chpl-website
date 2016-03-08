@@ -29,7 +29,7 @@
         <td>{{ cap.actualCompletionDate | date }}</td>
         <td>{{ cap.surveillanceEndDate | date }}</td>
         <td ng-if="vm.isAdmin">
-          <button class="btn btn-success" ng-click="vm.editCap(cap)">Edit</button>
+          <button class="btn btn-ai-success" ng-click="vm.editCap(cap)">Edit</button>
         </td>
       </tr>
       <tr ng-if="cap.certifications.length > 0">
@@ -70,7 +70,7 @@
               <tr ng-repeat="doc in cap.documentation">
                 <td>{{ doc.fileName }}</td>
                 <td>{{ doc.fileType }}</td>
-                <td ng-if="doc.id"><a type="button" class="btn btn-block btn-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a></td>
+                <td ng-if="doc.id"><a type="button" class="btn btn-block btn-ai-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a></td>
                 <td ng-if="!doc.id">File is pending</td>
               </tr>
             </tbody>
@@ -80,6 +80,6 @@
     </tbody>
   </table>
   <div ng-if="vm.isAdmin">
-    <button class="btn btn-success" ng-click="vm.initiateCap()">Initiate Surveillance Reporting</button>
+    <button class="btn btn-ai-success" ng-click="vm.initiateCap()">Initiate Surveillance Reporting</button>
   </div>
 </div>

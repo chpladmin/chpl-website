@@ -58,11 +58,11 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block"
+    <button ng-disabled="vm.editForm.$invalid" class="btn btn-ai-success btn-block"
             ng-if="vm.action === 'create'"
             ng-click="vm.create()"><i class="fa fa-save"></i> Create ATL</button>
     <span ng-if="!vm.atl.isDeleted">
-      <button ng-disabled="vm.editForm.$invalid" class="btn btn-success btn-block"
+      <button ng-disabled="vm.editForm.$invalid" class="btn btn-ai-success btn-block"
               ng-if="vm.action === 'edit'"
               ng-click="vm.save()"><i class="fa fa-save"></i> Save ATL</button>
       <button class="btn btn-warning btn-block"
@@ -79,7 +79,7 @@
               confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
               ng-click="vm.deleteAtl()"><i class="fa fa-trash-o"></i> Delete ATL</button>
     </span>
-    <button class="btn btn-success btn-block"
+    <button class="btn btn-ai-success btn-block"
             ng-if="vm.action === 'edit' && vm.isChplAdmin && vm.atl.isDeleted"
             confirm="Are you sure you wish to restore this ATL?"
             confirm-ok="Yes"
