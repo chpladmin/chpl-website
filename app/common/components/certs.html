@@ -8,7 +8,7 @@
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cert')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'" aria-expanded="{{ vm.panelShown === 'cert' ? 'true' : 'false' }}">
         <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
           <ai-certification-criteria view-all="vm.viewAllCerts"
                                      cert="n"
@@ -22,7 +22,7 @@
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cqm')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'" aria-expanded="{{ vm.panelShown === 'cqm' ? 'true' : 'false' }}">
         <div ng-if="vm.viewAllCerts || n.success" ng-repeat="n in vm.cqms | orderBy:vm.sortCqms track by $index">
           <div class="row" ng-if="!vm.isEditing">
             <div class="col-sm-12">
@@ -53,7 +53,7 @@
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('additional')"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'" aria-expanded="{{ vm.panelShown === 'additional' ? 'true' : 'false' }}">
         <span>
           <span ng-if="vm.product.certificationEdition.name === '2014'">
             <h4>Test Results Summary</h4>
