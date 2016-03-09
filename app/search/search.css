@@ -50,6 +50,7 @@ ul.pagination li {
     height: 100%;
     width: 100%;
     top: 0;
+    min-height: 600px;
 }
 
 .search-pristine {
