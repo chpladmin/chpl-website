@@ -62,7 +62,7 @@
           </span>
           <span ng-if="vm.product.sedReportFileLocation !== null">
             <h4>Usability Report</h4>
-            <ai-a ng-if="vm.product.sedReportFilelocation" href="{{ vm.product.sedReportFileLocation }}" text="{{ vm.product.sedReportFileLocation }}"></ai-a>
+            <ai-a ng-if="vm.product.sedReportFileLocation" href="{{ vm.product.sedReportFileLocation }}" text="{{ vm.product.sedReportFileLocation }}"></ai-a>
             <p ng-if="!vm.product.sedReportFileLocation">No report on file</p>
           </span>
           <span ng-if="vm.product.qmsStandards.length > 0 || vm.product.chplProductNumber.substring(0,3) !== 'CHP'">

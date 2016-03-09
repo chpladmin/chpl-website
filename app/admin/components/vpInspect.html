@@ -82,7 +82,6 @@
               Country: {{ vm.developer.address.country }}<br />
               Website: {{ vm.developer.website }}<br />
               Transparency Attestation: {{ vm.developer.transparencyAttestation }}<br />
-              Transparency Attestation Url: {{ vm.developer.transparencyAttestationUrl }}<br />
               <strong>Contact information</strong><br />
               First name: {{ vm.developer.contact.firstName }}<br />
               Last name: {{ vm.developer.contact.lastName }}<br />
@@ -110,7 +109,6 @@
               Country: {{ vm.cp.developerAddress.country }}<br />
               Website: {{ vm.cp.developer.website }}<br />
               Transparency Attestation: {{ vm.cp.transparencyAttestation }}<br />
-              Transparency Attestation Url: {{ vm.cp.transparencyAttestationUrl }}<br />
               <strong>Contact information</strong><br />
               First name: {{ vm.cp.developer.contact.firstName }}<br />
               Last name: {{ vm.cp.developer.contact.lastName }}<br />
@@ -287,7 +285,6 @@
                 <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
                 <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
                 <strong>Other ACB:</strong> {{ vm.cp.otherAcb ? vm.cp.otherAcb : 'N/A' }} <br />
-                <strong>Transparency Attestation:</strong> {{ vm.ternaryFilter(vm.cp.transparencyAttestation) }} <br />
                 <strong>Transparency URL:</strong> {{ vm.cp.transparencyAttestationUrl ? vm.cp.transparencyAttestationUrl : 'None' }} <br />
                 <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics) }} <br />
                 <strong>QMS:</strong> {{ vm.cp.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
