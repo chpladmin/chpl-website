@@ -2,7 +2,7 @@
   <div ng-if="!vm.isEditing && (vm.cert.success || vm.viewAll)">
     <i class="fa fa-lg" ng-class="{'fa-check-square-o': vm.cert.success && !vm.cert.hasVersion, 'fa-square-o': !vm.cert.success}"></i>
     <span class="sr-only">{{ vm.cert.success ? 'meets' : 'does not meet'}}</span>
-    {{ vm.cert.number }}: {{ vm.cert.title }} <a href class="pull-right" ng-click="vm.showDetails = !vm.showDetails" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details</a>
+    {{ vm.cert.number }}: {{ vm.cert.title }} <a href class="pull-right" ng-click="vm.showDetails = !vm.showDetails" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ vm.cert.number }}</span></a>
     <div ng-if="vm.showDetails">
       <div ng-if="vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0">
         <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="false"></ai-additional-software>

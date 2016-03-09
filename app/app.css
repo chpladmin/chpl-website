@@ -10,6 +10,11 @@ header {
     transition: all 0.4s ease;
 }
 
+a {
+    color: #1a67a9;
+    text-decoration: underline;
+}
+
 .navbar-inverse .navbar-nav>li>a {
     font-family: 'Oswald', sans-serif;
     color: #ffdd3c;
@@ -386,23 +391,6 @@ fieldset[disabled] .btn-ai-success.active {
 .btn-ai-success .badge {
     color: #fff;
     background-color: #333;
-}
-
-.skip {
-    position: absolute;
-    top: auto;
-    left: -1000px;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-}
-
-a.skip:active,
-a.skip:focus,
-a.skip:hover {
-    position: static;
-    width: auto;
-    height: auto;
 }
 
 :focus {

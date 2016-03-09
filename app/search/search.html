@@ -201,9 +201,9 @@
                   <thead>
                     <tr>
 		              <th scope="col" class="search-header" ng-click="sort('product')"
-                          ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product <a class="skip" href ng-click="sort('product')"><br />Sort by product</a></th>
+                          ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product <a class="sr-only sr-only-focusable" href ng-click="sort('product')"><br />Sort by product</a></th>
                       <th scope="col" class="search-header" ng-click="sort('developer')"
-                          ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer <a class="skip" href ng-click="sort('developer')"><br />Sort by developer</a></th>
+                          ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer <a class="sr-only sr-only-focusable" href ng-click="sort('developer')"><br />Sort by developer</a></th>
                       <th scope="col" class="">Version</th>
                       <th scope="col" colspan="2"><span class="sr-only">Actions</span></th>
 	                </tr>
@@ -228,14 +228,14 @@
                   </tfoot>
 	              <tbody>
 	                <tr ng-repeat-start="row in displayedResults" class="search-row">
-		              <td class="productHeader" ng-click="row.showDetails = !row.showDetails">{{ row.product.name }}<a href class="skip"><br />{{ row.showDetails ? 'Hide' : 'Show' }} summary details</a></td>
+		              <td class="productHeader" ng-click="row.showDetails = !row.showDetails">{{ row.product.name }}<a href class="sr-only sr-only-focusable"><br />{{ row.showDetails ? 'Hide' : 'Show' }} summary details for {{ row.product.name }}</a></td>
 		              <td class="productHeader" ng-click="row.showDetails = !row.showDetails">{{ row.developer.name }}</td>
 		              <td class="productHeader" ng-click="row.showDetails = !row.showDetails">{{ row.product.version }}</td>
                       <td>
-                        <a href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details</a>
+                        <button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
                       </td>
                       <td>
-                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> Compare</button>
+                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
 	                </tr>
                     <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !row.showDetails}">
