@@ -354,6 +354,10 @@
                   <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'None' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />
+                  <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? 'True' : 'None' }} <br />
+                  <ul>
+                    <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
+                  </ul>
                   <strong>Corrective Action Plan:</strong> <ai-corrective-action-plan
                                                               corrective-action-plan="vm.activeCP.cap"
                                                               certified-product-id="vm.activeCP.id"

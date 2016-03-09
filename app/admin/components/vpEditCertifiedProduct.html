@@ -97,6 +97,10 @@
     <div ng-if="vm.worktype === 'confirm'">
       <strong>Visible on CHPL: </strong> No
     </div>
+    <div class="form-group">
+      Targeted Users
+      <ai-array item-type="Targeted User" items="vm.cp.targetedUsers" key="targetedUserName"></ai-array>
+    </div>
     <br />
     <ai-certs certs="vm.cp.certificationResults"
               cqms="vm.cp.cqmResults"
