@@ -237,6 +237,7 @@ footer .spaced-out {
 
 .panel-ai > .panel-heading a {
     color: #f5d43c;
+    text-decoration: none;
 }
 
 .panel-ai > .panel-heading a .pull-right {

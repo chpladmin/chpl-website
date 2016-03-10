@@ -268,37 +268,37 @@
             </div>
           </div>
           <div class="col-md-3">
-            <div class="panel panel-ai">
-              <div class="panel-heading">
-                Compare these {{ vm.compareCps.length }} products
-              </div>
-              <div class="panel-body">
+            <accordion>
+              <accordion-group class="panel-ai" is-open="vm.boxes.compare">
+                <accordion-heading>
+                  Compare products (minimum 2)
+                  <i class="fa fa-lg pull-right" ng-class="vm.boxes.compare ? 'fa-caret-down' : 'fa-caret-right'"></i>
+                </accordion-heading>
                 <button href class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)" ng-bind-html="vm.truncButton(cp.product.name)" title="{{ cp.product.name }}"></button>
                 <button href class="btn btn-ai-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
-              </div>
-            </div>
-            <div class="panel panel-ai animate-if" ng-if="vm.previouslyCompared.length > 0">
-              <div class="panel-heading">
-                Previous {{ vm.previouslyCompared.length }} products compared
-              </div>
-              <div class="panel-body">
+              </accordion-group>
+              <accordion-group class="panel-ai" is-open="vm.boxes.prevComp">
+                <accordion-heading>
+                  {{status}}
+                  Previous {{ vm.previouslyCompared.length }} products compared
+                  <i class="fa fa-lg pull-right" ng-class="vm.boxes.prevComp ? 'fa-caret-down' : 'fa-caret-right'"></i>
+                </accordion-heading>
                 <ul class="list-unstyled">
                   <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }}</a></li>
                 </ul>
                 <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
-              </div>
-            </div>
-            <div class="panel panel-ai andimate-if" ng-if="vm.previouslyViewed.length > 0">
-              <div class="panel-heading">
-                Previous {{ vm.previouslyViewed.length }} products viewed
-              </div>
-              <div class="panel-body">
+              </accordion-group>
+              <accordion-group class="panel-ai" is-open="vm.boxes.prevView">
+                <accordion-heading>
+                  Previous {{ vm.previouslyViewed.length }} products viewed
+                  <i class="fa fa-lg pull-right" ng-class="vm.boxes.prevView ? 'fa-caret-down' : 'fa-caret-right'"></i>
+                </accordion-heading>
                 <ul class="list-unstyled">
                   <li ng-repeat="cp in vm.previouslyViewed | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></li>
                 </ul>
                 <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyViewed()">Clear</button>
-              </div>
-            </div>
+              </accordion-group>
+            </accordion>
           </div>
         </div>
       </div> <!-- end of search results -->

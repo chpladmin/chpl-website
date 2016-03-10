@@ -72,7 +72,7 @@
                     };
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
                         self.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
-                        self.uploadErrors = response.error;
+                        self.uploadErrors = response.errorMessages;
                         self.uploadSuccess = false;
                     };
                     self.uploader.onCancelItem = function(fileItem, response, status, headers) {

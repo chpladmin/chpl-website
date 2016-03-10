@@ -46,6 +46,11 @@
                 vm.lookaheadSource = {all: [], developers: [], products: []};
                 vm.hasDoneASearch = false;
                 $scope.visiblePage = 1;
+                vm.boxes = {
+                    compare: true,
+                    prevComp: false,
+                    prevView: false,
+                };
                 vm.defaultQuery = {
                     orderBy: 'developer',
                     sortDescending: false,
@@ -197,6 +202,11 @@
                 if (toAdd) {
                     vm.compareCps.push(row);
                 }
+                vm.boxes = {
+                    compare: true,
+                    prevComp: false,
+                    prevView: false,
+                };
             }
 
             function truncButton (str) {
