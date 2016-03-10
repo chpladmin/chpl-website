@@ -202,11 +202,7 @@
                 if (toAdd) {
                     vm.compareCps.push(row);
                 }
-                vm.boxes = {
-                    compare: true,
-                    prevComp: false,
-                    prevView: false,
-                };
+                vm.boxes.compare = true;
             }
 
             function truncButton (str) {

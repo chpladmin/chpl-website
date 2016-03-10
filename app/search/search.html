@@ -200,6 +200,22 @@
                 <table class="table search-table table-striped-foldout">
                   <thead>
                     <tr>
+                      <td colspan="5" class="text-center">
+                        <p class="pull-right">
+                          <label for="pageSize" class="sr-only">Show how many results</label>
+                          Showing up to
+                          <select ng-model="vm.query.pageSize" id="pageSize" ng-change="vm.search()">
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                          </select>
+                          results per page
+                        </p>
+                        <pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
+                                    max-size="10" class="pagination-sm" boundary-links="true"></pagination>
+                      </td>
+                    </tr>
+                    <tr>
 		              <th scope="col" class="search-header" ng-click="sort('product')"
                           ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product <a class="sr-only sr-only-focusable" href ng-click="sort('product')"><br />Sort by product</a></th>
                       <th scope="col" class="search-header" ng-click="sort('developer')"
@@ -268,10 +284,10 @@
             </div>
           </div>
           <div class="col-md-3">
-            <accordion>
+            <accordion close-others="false">
               <accordion-group class="panel-ai" is-open="vm.boxes.compare">
                 <accordion-heading>
-                  Compare products (minimum 2)
+                  Compare <span ng-if="vm.compareCps.length >= 2">{{ vm.compareCps.length }}</span> products <span ng-if="vm.compareCps.length < 2">(minimum 2)</span>
                   <i class="fa fa-lg pull-right" ng-class="vm.boxes.compare ? 'fa-caret-down' : 'fa-caret-right'"></i>
                 </accordion-heading>
                 <button href class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)" ng-bind-html="vm.truncButton(cp.product.name)" title="{{ cp.product.name }}"></button>
