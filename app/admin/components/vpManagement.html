@@ -16,7 +16,12 @@
         <h3>Upload Certified Products</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
-        <p ng-if="vm.uploadMessage.length > 0">{{ vm.uploadMessage }}</p>
+        <div ng-if="vm.uploadMessage.length > 0" ng-class="vm.uploadSuccess ? 'bg-success' : 'bg-danger'">
+          {{ vm.uploadMessage }}
+          <ul ng-if="vm.uploadErrors.length > 0">
+            <li ng-repeat="error in vm.uploadErrors">{{ error }}</li>
+          </ul>
+        </div>
         <table class="table" ng-if="vm.uploader.queue.length > 0">
           <thead>
             <tr>

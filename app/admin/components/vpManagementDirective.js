@@ -41,6 +41,8 @@
                 self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
+                self.uploadErrors = [];
+                self.uploadSuccess = true;
 
                 if (self.isAcbAdmin || self.isAcbStaff) {
                     self.refreshPending();
@@ -62,12 +64,16 @@
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         //$log.info('onSuccessItem', fileItem, response, status, headers);
                         self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
+                        self.uploadErrors = [];
+                        self.uploadSuccess = true;
                     };
                     self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
                         self.refreshPending();
                     };
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
-                        self.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully. Error was: ' + response.error;
+                        self.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
+                        self.uploadErrors = response.error;
+                        self.uploadSuccess = false;
                     };
                     self.uploader.onCancelItem = function(fileItem, response, status, headers) {
                         //$log.info('onCancelItem', fileItem, response, status, headers);
