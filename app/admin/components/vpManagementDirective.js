@@ -61,7 +61,7 @@
                     });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         //$log.info('onSuccessItem', fileItem, response, status, headers);
-                        self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. Pending products are ready for confirmation.';
+                        self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
                     };
                     self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
                         self.refreshPending();
