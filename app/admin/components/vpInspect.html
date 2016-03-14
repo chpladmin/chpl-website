@@ -282,7 +282,7 @@
                 <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
                 <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
                 <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date }} <br />
-                <strong>Additional Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br />
+                <span ng-if="vm.cp.productAdditionalSoftware"><strong>Additional Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br /></span>
                 <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
                 <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
                 <strong>Other ACB:</strong> {{ vm.cp.otherAcb ? vm.cp.otherAcb : 'N/A' }} <br />

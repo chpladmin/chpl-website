@@ -11,6 +11,8 @@ _Date TBD_
 * Removed 'additional information' accordion during upload/confirm
 * Added error handling to announcements
 * Further 508 compliance work
+* Clarification of Additional Software
+* Expanded page titles
 
 ## Version 0.3.3
 _29 February 2016_

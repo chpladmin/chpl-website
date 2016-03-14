@@ -10,7 +10,8 @@
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'" aria-expanded="{{ vm.panelShown === 'cert' ? 'true' : 'false' }}">
         <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
-          <ai-certification-criteria view-all="vm.viewAllCerts"
+          <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
+                                     view-all="vm.viewAllCerts"
                                      cert="n"
                                      is-editing="vm.isEditing"
                                      save="vm.registerCerts(handler)">

@@ -39,8 +39,8 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
-    <div>
-      <label for="cpAdditionalSoftware">Additional Software</label>
+    <div ng-if="!vm.workType === 'confirm'">
+      <label for="cpAdditionalSoftware">Product wide Additional Software</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cpAdditionalSoftware"></input>
     </div>
     <div class="form-group">

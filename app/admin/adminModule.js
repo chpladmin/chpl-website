@@ -5,7 +5,7 @@
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/admin/:section?/:productId?', {
                 templateUrl: 'admin/admin.html',
-                title: 'Administration'
+                title: 'CHPL Administration'
             });
         }])
         .config(function(IdleProvider, KeepaliveProvider) {

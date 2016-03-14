@@ -5,7 +5,7 @@
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/resources', {
                 templateUrl: 'resources/resources.html',
-                title: 'Resources'
+                title: 'CHPL Resources'
             });
         }]);
 })();
