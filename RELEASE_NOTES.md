@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 0.4.0
+_14 March 2016_
 
 ### New features
 * Made 'Home' and 'logo' links clear search results
