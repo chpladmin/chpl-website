@@ -25,7 +25,7 @@
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
     </div>
   </div>
-  <div class="main-content" id="mainContent">
+  <div class="main-content" id="mainContent" tabindex="-1">
     <div class="row">
       <div class="col-sm-4">
         <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
@@ -39,45 +39,47 @@
     <div class="row">
       <div class="col-sm-4">
         <div class="product-element">
-          <h3 class="product-heading">Developer</h3>
+          <h2 class="product-heading">Developer</h2>
           <p>{{ vm.product.developer.name }}</p>
           <p ng-if="vm.product.developer.website"><ai-a href="{{ vm.product.developer.website }}" text="{{ vm.product.developer.website }}"></ai-a></p>
         </div>
         <div class="product-element">
-          <h3 class="product-heading">Version</h3>
+          <h2 class="product-heading">Version</h2>
           <p>{{ vm.product.product.version }}</p>
         </div>
         <div class="product-element">
-          <h3 class="product-heading">Certification Edition</h3>
+          <h2 class="product-heading">Certification Edition</h2>
           <p>{{ vm.product.certificationEdition.name }}</p>
         </div>
         <div class="product-element" ng-if="vm.product.certificationEdition.name === '2014'">
-          <h3 class="product-heading">Practice Type</h3>
+          <h2 class="product-heading">Practice Type</h2>
           <p>{{ vm.product.practiceType.name }}</p>
         </div>
         <div class="product-element" ng-if="vm.product.certificationEdition.name === '2014'">
-          <h3 class="product-heading">Classification Type</h3>
+          <h2 class="product-heading">Classification Type</h2>
           <p>{{ vm.product.classificationType.name }}</p>
         </div>
         <div class="product-element">
-          <h3 class="product-heading">Accredited Certification Body</h3>
+          <h2 class="product-heading">ONC-Accredited Certification Body</h2>
           <p>{{ vm.product.certifyingBody.name }}</p>
         </div>
         <div class="product-element" ng-if="vm.product.productAdditionalSoftware">
-          <h3 class="product-heading">Additional Software</h3>
+          <h2 class="product-heading">Additional Software</h2>
           <p>{{ vm.product.productAdditionalSoftware }}</p>
         </div>
-        <div class="product-element">
-          <h3 class="product-heading">Transparency Attestation</h3>
-          <p>{{ vm.product.transparencyAttestation ? 'Affirmative' : 'Negative' }}</p>
-        </div>
-        <div class="product-element">
-          <h3 class="product-heading">Transparency Attestation URL</h3>
-          <ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" text="{{ vm.product.transparencyAttestationUrl }}"></ai-a>
-          <p ng-if="!vm.product.transparencyAttestationUrl">No report on file</p>
-        </div>
+        <span ng-if="vm.product.transparencyAttestationUrl">
+          <div class="product-element">
+            <h2 class="product-heading">Transparency Attestation</h2>
+            <p>{{ vm.product.transparencyAttestation ? 'Affirmative' : 'Negative' }}</p>
+          </div>
+          <div class="product-element">
+            <h2 class="product-heading">Transparency Attestation URL</h2>
+            <ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" text="{{ vm.product.transparencyAttestationUrl }}"></ai-a>
+            <p ng-if="!vm.product.transparencyAttestationUrl">No report on file</p>
+          </div>
+        </span>
         <div class="product-element" ng-if="vm.correctiveActionPlan.length === 0">
-          <h3 class="product-heading">Surveillance Transparency</h3>
+          <h2 class="product-heading">Surveillance Transparency</h2>
           <ai-corrective-action-plan
              corrective-action-plan="vm.correctiveActionPlan"
              certified-product-id="vm.product.id"
@@ -98,7 +100,7 @@
     <div class="row" ng-if="vm.correctiveActionPlan.length > 0">
       <div class="col-sm-12">
         <div class="product-element">
-          <h3 class="product-heading">Surveillance Transparency</h3>
+          <h2 class="product-heading">Surveillance Transparency</h2>
           <ai-corrective-action-plan
              corrective-action-plan="vm.correctiveActionPlan"
              certified-product-id="vm.product.id"

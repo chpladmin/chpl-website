@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'developers', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'testingLabs', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, developers, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, testingLabs, statuses, commonService) {
+        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'developers', 'practices', 'classifications', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'testingLabs', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, developers, practices, classifications, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, testingLabs, statuses, commonService) {
             var vm = this;
 
             vm.activate = activate;
@@ -28,6 +28,7 @@
             vm.isDisabled = isDisabled;
 
             vm.cancel = cancel;
+            vm.ternaryFilter = ternaryFilter;
 
             vm.activate();
 
@@ -47,7 +48,9 @@
                 vm.versions = [];
                 vm.versionChoice = 'choose';
 
+                vm.errorMessages = [];
                 vm.practices = practices;
+                vm.classifications = classifications;
                 vm.isAcbAdmin = isAcbAdmin;
                 vm.isAcbStaff = isAcbStaff;
                 vm.isChplAdmin = isChplAdmin;
@@ -59,6 +62,9 @@
                         vm.cp.certificationStatus = vm.statuses[i];
                         break;
                     }
+                }
+                if (!vm.cp.developerAddress.country) {
+                    vm.cp.developerAddress.country = 'USA';
                 }
             }
 
@@ -175,6 +181,8 @@
                 commonService.confirmPendingCp(vm.cp)
                     .then(function () {
                         $modalInstance.close('confirmed');
+                    }, function (error) {
+                        vm.errorMessages = error.data.errorMessages;
                     });
             }
 
@@ -197,6 +205,7 @@
                     resolve: {
                         activeCP: function () { return vm.cp; },
                         practices: function () { return vm.practices; },
+                        classifications: function () { return vm.classifications; },
                         isAcbAdmin: function () { return vm.isAcbAdmin; },
                         isAcbStaff: function () { return vm.isAcbStaff; },
                         isChplAdmin: function () { return vm.isChplAdmin; },
@@ -270,6 +279,14 @@
 
             function cancel () {
                 $modalInstance.dismiss('cancelled');
+            }
+
+            function ternaryFilter (field) {
+                if (field == null) {
+                    return 'N/A';
+                } else {
+                    return field ? 'True' : 'False';
+                }
             }
         }]);
 })();

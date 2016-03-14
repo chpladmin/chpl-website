@@ -8,9 +8,10 @@
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cert')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'" aria-expanded="{{ vm.panelShown === 'cert' ? 'true' : 'false' }}">
         <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
-          <ai-certification-criteria view-all="vm.viewAllCerts"
+          <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
+                                     view-all="vm.viewAllCerts"
                                      cert="n"
                                      is-editing="vm.isEditing"
                                      save="vm.registerCerts(handler)">
@@ -22,68 +23,78 @@
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cqm')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'" aria-expanded="{{ vm.panelShown === 'cqm' ? 'true' : 'false' }}">
         <div ng-if="vm.viewAllCerts || n.success" ng-repeat="n in vm.cqms | orderBy:vm.sortCqms track by $index">
-          <p ng-if="!vm.isEditing">
-            <div class="col-sm-1">
+          <div class="row" ng-if="!vm.isEditing">
+            <div class="col-sm-12">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
               <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
-              <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b> 
-            </div>
-            <div class="col-sm-11">
+              <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b>
               <span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}
             </div>
-          </p>
-          <p ng-if="vm.isEditing">
-            <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
-            <span class="cert-bloc" ng-if="n.cmsId">
-              <select ng-model="n.successVersions" multiple data-ng-attr-size="{{ n.allVersions.length + 1 }}" id="data_{{n.id}}"
-                      ng-options="version for version in n.allVersions">
-                <option value=""></option>
-              </select>
-            </span>
-            <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
-          </p>
+          </div>
+          <div class="row" ng-if="vm.isEditing">
+            <div class="col-sm-1">
+              <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
+              <span class="cert-bloc" ng-if="n.cmsId">
+                <select ng-model="n.successVersions" multiple data-ng-attr-size="{{ n.allVersions.length + 1 }}" id="data_{{n.id}}"
+                        ng-options="version for version in n.allVersions">
+                  <option value=""></option>
+                </select>
+              </span>
+            </div>
+            <div class="col-sm-11">
+              <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="panel panel-ai">
+    <div class="panel panel-ai" ng-if="!vm.isEditing && !vm.isConfirming">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('additional')"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'">
-        <span ng-if="vm.product.certificationEdition.name === '2014'">
-          <h4>Test Results Summary</h4>
-          <ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" text="{{ vm.reportFileLocation }}"></ai-a>
-          <p ng-if="!vm.reportFileLocation">No report on file</p>
-        </span>
-        <h4>Usability Report</h4>
-        <ai-a ng-if="vm.sedReportFilelocation" href="{{ vm.sedReportFileLocation }}" text="{{ vm.sedReportFileLocation }}"></ai-a>
-        <p ng-if="!vm.sedReportFileLocation">No report on file</p>
-        <h4>Quality Management System</h4>
-        <span ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" ng-repeat="qms in vm.product.qmsStandards">
-          <h5>Standard</h5>
-          <p>{{ qms.qmsStandardName }}</p>
-          <h5>Description</h5>
-          <p>{{ qms.qmsModification ? qms.qmsModification : 'N/A' }}</p>
-          <h5>Applicable Criteria</h5>
-          <p>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}</p>
-        </span>
-        <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
-        <h4>Inherited Certification Status</h4>
-        <p ng-if="vm.product.ics !== null">{{ vm.product.ics ? 'True' : 'False' }}</p>
-        <p ng-if="vm.product.ics == null">N/A</p>
-        <span ng-if="vm.product.otherAcb">
-          <h4>Other ACB</h4>
-          <p>vm.product.otherAcb</p>
-        </span>
-        <span ng-if="vm.product.certificationEdition.name === '2015'">
-          <h4>API Documentation</h4>
-          <p ng-if="vm.product.apiDocumentation"><ai-a href="{{ vm.product.apiDocumentation }}" text="{{ vm.product.apiDocumentation }}"></ai-a></p>
-          <p ng-if="!vm.product.apiDocumentation">N/A</p>
-          <h4>Terms of Use</h4>
-          <p ng-if="vm.product.termsOfUse"><ai-a href="{{ vm.product.termsOfUse }}" text="{{ vm.product.termsOfUse }}"></ai-a></p>
-          <p ng-if="!vm.product.termsOfUse">N/A</p>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'" aria-expanded="{{ vm.panelShown === 'additional' ? 'true' : 'false' }}">
+        <span>
+          <span ng-if="vm.product.certificationEdition.name === '2014'">
+            <h4>Test Results Summary</h4>
+            <ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" text="{{ vm.reportFileLocation }}"></ai-a>
+            <p ng-if="!vm.reportFileLocation">No report on file</p>
+          </span>
+          <span ng-if="vm.product.sedReportFileLocation !== null">
+            <h4>Usability Report</h4>
+            <ai-a ng-if="vm.product.sedReportFileLocation" href="{{ vm.product.sedReportFileLocation }}" text="{{ vm.product.sedReportFileLocation }}"></ai-a>
+            <p ng-if="!vm.product.sedReportFileLocation">No report on file</p>
+          </span>
+          <span ng-if="vm.product.qmsStandards.length > 0 || vm.product.chplProductNumber.substring(0,3) !== 'CHP'">
+            <h4>Quality Management System</h4>
+            <span ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" ng-repeat="qms in vm.product.qmsStandards">
+              <h5>Standard</h5>
+              <p>{{ qms.qmsStandardName }}</p>
+              <h5>Description</h5>
+              <p>{{ qms.qmsModification ? qms.qmsModification : 'N/A' }}</p>
+              <h5>Applicable Criteria</h5>
+              <p>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}</p>
+            </span>
+            <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
+          </span>
+          <span ng-if="vm.product.ics !== null">
+            <h4>Inherited Certification Status</h4>
+            <p ng-if="vm.product.ics !== null">{{ vm.product.ics ? 'True' : 'False' }}</p>
+            <p ng-if="vm.product.ics == null">N/A</p>
+          </span>
+          <span ng-if="vm.product.otherAcb">
+            <h4>Other ACB</h4>
+            <p>{{ vm.product.otherAcb }}</p>
+          </span>
+          <span ng-if="vm.product.certificationEdition.name === '2015'">
+            <h4>API Documentation</h4>
+            <p ng-if="vm.product.apiDocumentation"><ai-a href="{{ vm.product.apiDocumentation }}" text="{{ vm.product.apiDocumentation }}"></ai-a></p>
+            <p ng-if="!vm.product.apiDocumentation">N/A</p>
+            <h4>Terms of Use</h4>
+            <p ng-if="vm.product.termsOfUse"><ai-a href="{{ vm.product.termsOfUse }}" text="{{ vm.product.termsOfUse }}"></ai-a></p>
+            <p ng-if="!vm.product.termsOfUse">N/A</p>
+          </span>
         </span>
       </div>
     </div>

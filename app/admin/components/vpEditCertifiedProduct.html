@@ -8,62 +8,39 @@
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="editCertifiedProductLabel">Edit Certified Product</h4>
   </div>
-  <div class="modal-body" ng-form="editForm">
-    <div ng-if="vm.cp.certificationEdition.name !== '2015' || true">
-      <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
-    </div>
-    <div ng-if="vm.cp.certificationEdition.name === '2015' && false">
-      <strong>ACB ID: </strong> {{vm.cp.chplId.acb }} <br />
-      <strong>ATL ID: </strong> {{vm.cp.chplId.atl }} <br />
-      <strong>Developer ID: </strong> {{vm.cp.chplId.dev }} <br />
-      <div class="form-group">
-        <label for="idProd">Product Id</label>
-        <input type="text" class="input-sm form-control" ng-model="vm.cp.chplId.prod" id="idProd" required></input>
-      </div>
-      <div class="form-group">
-        <label for="idVer">Version Id</label>
-        <input type="text" class="input-sm form-control" ng-model="vm.cp.chplId.ver" id="idVer" required></input>
-      </div>
-      <div class="form-group">
-        <label for="idIcs">ICS Status</label>
-        <select class="input-sm form-control" ng-model="vm.cp.chplId.ics" id="idIcs" required>
-          <option value="0">0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="idAdds">Additional Software</label>
-        <select class="input-sm form-control" ng-model="vm.cp.chplId.adds" id="idAdds" required>
-          <option value="0">0</option>
-          <option value="1">1</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="idDate">Certification Date</label>
-        <input type="text" class="input-sm form-control" ng-model="vm.cp.chplId.date" id="idDate" required></input>
-      </div>
-    </div>
+  <div class="modal-body" ng-form="vm.editForm">
+    <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
     <div class="form-group">
       <label for="cpPractice">Practice Type</label>
-      <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice"
+      <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice" name="cpPractice"
               ng-options="practice as practice.name for practice in vm.practices" required>
       </select>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpPractice.$touched) && vm.editForm.cpPractice.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="cpClassification">Classification Type</label>
+      <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cpClassification" name="cpClassification"
+              ng-options="classification as classification.name for classification in vm.classifications" required>
+      </select>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpClassification.$touched) && vm.editForm.cpClassification.$error.required">Field is required</div>
     </div>
     <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
     <div ng-if="(vm.isAcbAdmin || vm.isAcbStaff) && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} </div>
     <div ng-if="vm.isChplAdmin" class="form-group">
       <label for="cpBody">Certification Body</label>
-      <select class="input-sm form-control" ng-model="vm.cp.certifyingBody" id="cpBody"
+      <select class="input-sm form-control" ng-model="vm.cp.certifyingBody" id="cpBody" name="cpBody"
               ng-options="body as body.name for body in vm.bodies" required>
       </select>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpBody.$touched) && vm.editForm.cpBody.$error.required">Field is required</div>
     </div>
     <div class="form-group">
       <label for="cpCertDate">Certification Date</label>
-      <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" required></input>
+      <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" name="cpCertDate" required></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.required">Field is required</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
-    <div>
-      <label for="cpAdditionalSoftware">Additional Software</label>
+    <div ng-if="!vm.workType === 'confirm'">
+      <label for="cpAdditionalSoftware">Product wide Additional Software</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cpAdditionalSoftware"></input>
     </div>
     <div class="form-group">
@@ -81,46 +58,44 @@
       <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cpOtherAcb"></input>
     </div>
     <div class="form-group">
-      <label for="cpQMSAtt">Quality Management System Attestation</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.qualityManagementSystemAtt" id="cpQMSAtt"></input>
-    </div>
-    <div class="form-group">
-      <label for="cpPrivacyAtt">Privacy and Security Attestation</label>
-      <input class="" type="checkbox" ng-model="vm.cp.privacyAttestation" id="cpPrivacyAtt"></input>
-    </div>
-    <div class="form-group">
-      <label for="cpTransparencyAtt">Transparency Attestation</label>
-      <input class="" type="checkbox" ng-model="vm.cp.transparencyAttestation" id="cpTransparencyAtt" disabled></input>
+      <label for="cpTransparencyUrl">Transparency Attestation Url</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cpTransparencyAttUrl" name="cpTransparencyAttUrl"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
     </div>
     <div class="form-group">
       <label for="cpIcs">Inherited Certification Status</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.ics" id="cpIcs"></input>
+      <input class="" type="checkbox" ng-model="vm.cp.ics" id="cpIcs"></input>
     </div>
     <div class="form-group">
-      <label for="cpQmsTesting">QMS Testing</label>
-      <input class="" type="checkbox" ng-model="vm.cp.qmsTesting" id="cpQmsTesting"></input>
-    </div>
-    <div class="form-group">
-      <label for="cpSedTesting">SED Testing</label>
-      <input class="" type="checkbox" ng-model="vm.cp.sedTesting" id="cpSedTesting"></input>
+      QMS Testing
+      <ai-array item-type="QMS Standard & Details" items="vm.cp.qmsStandards" key="qmsStandardName" key-second="qmsModification"></ai-array>
     </div>
     <div class="form-group">
       <label for="cpReportFileLoc">Report File Location</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc"></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc" name="cpReportFileLoc"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
+    </div>
+    <div class="form-group">
+      <label for="cpSedReportFileLoc">SED Report File Location</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.sedReportFileLocation" id="cpSedReportFileLoc" name="cpSedReportFileLoc"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedReportFileLoc.$touched) && vm.editForm.cpSedReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
     </div>
     <div class="form-group">
       <label for="cpApiDocumentationLoc">API Documentation</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.apiDocumentation" id="cpApiDocumentationLoc"></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.apiDocumentation" id="cpApiDocumentationLoc" name="cpApiDocumentationLoc"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpApiDocumentationLoc.$touched) && vm.editForm.cpApiDocumentationLoc.$error.url">Improper format (http://www.example.com)</div>
     </div>
     <div class="form-group">
       <label for="cpTouLoc">Terms of Use</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.termsOfUse" id="cpTouLoc"></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.termsOfUse" id="cpTouLoc" name="cpTouLoc"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTouLoc.$touched) && vm.editForm.cpTouLoc.$error.url">Improper format (http://www.example.com)</div>
     </div>
     <div class="form-group">
       <label for="cpTestingLab">Testing Lab</label>
-      <select class="input-sm form-control" ng-model="vm.cp.testingLab" id="cpTestingLab"
+      <select class="input-sm form-control" ng-model="vm.cp.testingLab" id="cpTestingLab" name="cpTestingLab"
               ng-options="body as body.name for body in vm.testingLabs" required>
       </select>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTestingLab.$touched) && vm.editForm.cpTestingLab.$error.required">Field is required</div>
     </div>
     <div class="form-group" ng-if="vm.worktype === 'manage'">
       <label for="cpVisibleOnChpl">Visible On CHPL</label>
@@ -128,6 +103,10 @@
     </div>
     <div ng-if="vm.worktype === 'confirm'">
       <strong>Visible on CHPL: </strong> No
+    </div>
+    <div class="form-group">
+      Targeted Users
+      <ai-array item-type="Targeted User" items="vm.cp.targetedUsers" key="targetedUserName"></ai-array>
     </div>
     <br />
     <ai-certs certs="vm.cp.certificationResults"
@@ -144,7 +123,25 @@
     </ai-certs>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="editForm.$invalid" class="btn btn-success btn-block" ng-click="vm.prep()">Save Certified Product</button>
+    <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
+      The following error(s) must be fixed:
+      <ul>
+        <li ng-if="vm.editForm.cpPractice.$error.required">Practice Type is required</li>
+        <li ng-if="vm.editForm.cpClassification.$error.required">Classification Type is required</li>
+        <li ng-if="vm.editForm.cpBody.$error.required">Certification Body is required</li>
+        <li ng-if="vm.editForm.cpCertDate.$error.required">Certification Date is required</li>
+        <li ng-if="vm.editForm.cpCertDate.$error.date">Certification Date is an invalid format (mm/dd/yyyy)</li>
+        <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.url">Transparency Attestation URL is an invalid format (http://www.example.com)</li>
+        <li ng-if="vm.editForm.cpReportFileLoc.$error.url">Report File Location URL is an invalid format (http://www.example.com)</li>
+        <li ng-if="vm.editForm.cpSedReportFileLoc.$error.url">SED Report File Location URL is an invalid format (http://www.example.com)</li>
+        <li ng-if="vm.editForm.cpApiDocumentationLoc.$error.url">API Documentation URL is an invalidformat (http://www.example.com)</li>
+        <li ng-if="vm.editForm.cpTouLoc.$error.url">Terms of Use URL is an invalid format (http://www.example.com)</li>
+      </ul>
+    </div>
+    <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors"
+            class="btn btn-ai-success btn-block"
+            ng-mouseover="vm.showFormErrors = true"
+            ng-click="vm.prep()">Save Certified Product</button>
     <button class="btn btn-warning btn-block"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"

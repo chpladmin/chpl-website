@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'practices', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'testingLabs', 'statuses', 'workType', '$log', function ($modalInstance, $timeout, activeCP, commonService, practices, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, testingLabs, statuses, workType, $log) {
+        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'practices', 'classifications', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'testingLabs', 'statuses', 'workType', '$log', function ($modalInstance, $timeout, activeCP, commonService, practices, classifications, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, testingLabs, statuses, workType, $log) {
 
             var vm = this;
             vm.attachModel = attachModel;
@@ -21,6 +21,7 @@
                 vm.cp = angular.copy(activeCP);
                 vm.cp.certDate = new Date(vm.cp.certificationDate);
                 vm.practices = practices;
+                vm.classifications = classifications;
                 vm.isAcbAdmin = isAcbAdmin;
                 vm.isAcbStaff = isAcbStaff;
                 vm.isChplAdmin = isChplAdmin;
@@ -28,6 +29,7 @@
                 vm.testingLabs = testingLabs;
                 vm.statuses = statuses;
                 vm.workType = workType;
+                vm.showFormErrors = false;
 
                 vm.handlers = [];
 
@@ -49,6 +51,7 @@
 
             function attachModel () {
                 vm.cp.practiceType = vm.findModel(vm.cp.practiceType, vm.practices);
+                vm.cp.classificationType = vm.findModel(vm.cp.classificationType, vm.classifications);
                 vm.cp.certifyingBody = vm.findModel(vm.cp.certifyingBody, vm.bodies);
                 if (vm.cp.testingLab) {
                     vm.cp.testingLab = vm.findModel(vm.cp.testingLab, vm.testingLabs);

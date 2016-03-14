@@ -15,13 +15,13 @@
           <div ng-if="vm.cp.errorMessages.length > 0">
             <span class="text-danger">Error<span ng-if="vm.cp.errorMessages.length > 1">s</span>:</span>
             <ul>
-              <li ng-repeat="error in vm.cp.errorMessages">{{ error }}</li>
+              <li ng-repeat="error in vm.cp.errorMessages"><pre>{{ error }}</pre></li>
             </ul>
           </div>
           <div ng-if="vm.cp.warningMessages.length > 0">
             <span class="text-danger">Warning<span ng-if="vm.cp.warningMessages.length > 1">s</span>:</span>
             <ul>
-              <li ng-repeat="error in vm.cp.warningMessages">{{ error }}</li>
+              <li ng-repeat="error in vm.cp.warningMessages"><pre>{{ error }}</pre></li>
             </ul>
           </div>
         </strong>
@@ -82,7 +82,6 @@
               Country: {{ vm.developer.address.country }}<br />
               Website: {{ vm.developer.website }}<br />
               Transparency Attestation: {{ vm.developer.transparencyAttestation }}<br />
-              Transparency Attestation Url: {{ vm.developer.transparencyAttestationUrl }}<br />
               <strong>Contact information</strong><br />
               First name: {{ vm.developer.contact.firstName }}<br />
               Last name: {{ vm.developer.contact.lastName }}<br />
@@ -110,7 +109,6 @@
               Country: {{ vm.cp.developerAddress.country }}<br />
               Website: {{ vm.cp.developer.website }}<br />
               Transparency Attestation: {{ vm.cp.transparencyAttestation }}<br />
-              Transparency Attestation Url: {{ vm.cp.transparencyAttestationUrl }}<br />
               <strong>Contact information</strong><br />
               First name: {{ vm.cp.developer.contact.firstName }}<br />
               Last name: {{ vm.cp.developer.contact.lastName }}<br />
@@ -271,40 +269,51 @@
           <p>Step 4 of 4</p>
         </div>
       </div>
-      <div class="col-sm-12">
-        <div class="panel panel-ai">
-          <div class="panel-heading">
-            <span>{{ vm.cp.chplProductNumber }}</span>
-          </div>
-          <div class="panel-body">
-            <span>
-              <strong>Practice Type:</strong> {{ vm.cp.practiceType.name }} <br />
-              <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
-              <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
-              <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date }} <br />
-              <ai-additional-software additional-software="vm.cp.additionalSoftware" is-editing="false"></ai-additional-software> <br />
-              <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
-              <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
-              <strong>Other ACB:</strong> {{ vm.cp.otherAcb }} <br />
-              <strong>Quality Management System Attestation:</strong> {{ vm.cp.qualityManagementSystemAtt }} <br />
-              <strong>Inherited Certification Status:</strong> {{ vm.cp.ics }} <br />
-              <strong>QMS Testing:</strong> {{ vm.cp.qmsTesting ? 'True' : 'False' }} <br />
-              <strong>SED Testing:</strong> {{ vm.cp.sedTesting ? 'True' : 'False' }} <br />
-              <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation }} <br />
-              <strong>Testing Lab:</strong> {{ vm.cp.testingLab.name }} <br />
-              <strong>Visible on CHPL:</strong> {{ vm.cp.visibleOnChpl }} <br />
-            </span>
-            <br />
-            <ai-certs ng-if="vm.cp !== ''"
-                      certs="vm.cp.certificationResults"
-                      cqms="vm.cp.cqmResults"
-                      count-certs="vm.cp.countCerts"
-                      count-cqms="vm.cp.countCqms"
-                      default-all="true"
-                      edit-mode="false"
-                      report-file-location="{{ vm.cp.reportFileLocation }}">
-            </ai-certs>
-            <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()">Edit Certified Product</button></p>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-ai">
+            <div class="panel-heading">
+              <span>{{ vm.cp.chplProductNumber }}</span>
+            </div>
+            <div class="panel-body">
+              <span>
+                <strong>Practice Type:</strong> {{ vm.cp.practiceType.name }} <br />
+                <strong>Classification Type:</strong> {{ vm.cp.classificationType.name }} <br />
+                <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
+                <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
+                <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date }} <br />
+                <span ng-if="vm.cp.productAdditionalSoftware"><strong>Additional Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br /></span>
+                <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
+                <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
+                <strong>Other ACB:</strong> {{ vm.cp.otherAcb ? vm.cp.otherAcb : 'N/A' }} <br />
+                <strong>Transparency URL:</strong> {{ vm.cp.transparencyAttestationUrl ? vm.cp.transparencyAttestationUrl : 'None' }} <br />
+                <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics) }} <br />
+                <strong>QMS:</strong> {{ vm.cp.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
+                <span ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">: {{ qms.qmsModification }}</span><br /></span>
+                <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation ? vm.cp.reportFileLocation : 'N/A' }} <br />
+                <strong>SED Report File Location:</strong> {{ vm.cp.sedReportFileLocation ? vm.cp.sedReportFileLocation : 'N/A' }} <br />
+                <strong>API Documentation:</strong> {{ vm.cp.apiDocumentation ? vm.cp.apiDocumentation : 'N/A' }} <br />
+                <strong>Terms of Use:</strong> {{ vm.cp.termsOfUse ? vm.cp.termsOfUse : 'N/A' }} <br />
+                <strong>Testing Lab:</strong> {{ vm.cp.testingLab.name }} <br />
+                <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.cp.visibleOnChpl) }} <br />
+                <strong>Targeted Users:</strong> {{ vm.cp.targetedUsers.length > 0 ? 'True' : 'None' }} <br />
+                  <ul>
+                    <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
+                  </ul>
+              </span>
+              <br />
+              <ai-certs ng-if="vm.cp !== ''"
+                        certs="vm.cp.certificationResults"
+                        cqms="vm.cp.cqmResults"
+                        count-certs="vm.cp.countCerts"
+                        count-cqms="vm.cp.countCqms"
+                        default-all="true"
+                        edit-mode="false"
+                        is-confirming="true"
+                        report-file-location="{{ vm.cp.reportFileLocation }}">
+              </ai-certs>
+              <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()">Edit Certified Product</button></p>
+            </div>
           </div>
         </div>
       </div>
@@ -313,6 +322,14 @@
 
   </div>
   <div class="modal-footer">
+    <div ng-if="vm.errorMessages && vm.errorMessages.length !== 0" class="row">
+      <div class="col-sm-12 text-left bg-danger">
+        Error in product confirmation
+        <ul>
+          <li ng-repeat="error in vm.cp.errorMessages">{{ error }}</li>
+        </ul>
+      </div>
+    </div>
     <button class="btn btn-warning btn-large pull-left"
             ng-disabled="vm.stage === 'dev'"
             ng-click="vm.previous()">Previous</button>
@@ -322,11 +339,11 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.reject()"><i class="fa fa-trash-o"></i> Reject</button>
-    <button class="btn btn-success btn-large pull-right"
+    <button class="btn btn-ai-success btn-large pull-right"
             ng-disabled="vm.isDisabled()"
             ng-if="vm.stage !== 'cp'"
             ng-click="vm.next()">Next</button>
-    <button class="btn btn-success btn-large pull-right"
+    <button class="btn btn-ai-success btn-large pull-right"
             ng-if="vm.stage === 'cp'"
             confirm="Are you sure you wish to confirm this Certified Product?"
             confirm-ok="Yes"

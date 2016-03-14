@@ -41,6 +41,8 @@
                 self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
+                self.uploadErrors = [];
+                self.uploadSuccess = true;
 
                 if (self.isAcbAdmin || self.isAcbStaff) {
                     self.refreshPending();
@@ -52,15 +54,26 @@
                             'API-Key': authService.getApiKey()
                         }
                     });
+                    self.uploader.filters.push({
+                        name: 'csvFilter',
+                        fn: function(item, options) {
+                            var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
+                            return '|csv|'.indexOf(extension) !== -1;
+                        }
+                    });
                     self.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                         //$log.info('onSuccessItem', fileItem, response, status, headers);
-                        self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. Pending products are ready for confirmation.';
+                        self.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
+                        self.uploadErrors = [];
+                        self.uploadSuccess = true;
                     };
                     self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
                         self.refreshPending();
                     };
                     self.uploader.onErrorItem = function(fileItem, response, status, headers) {
-                        //$log.info('onErrorItem', fileItem, response, status, headers);
+                        self.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
+                        self.uploadErrors = response.errorMessages;
+                        self.uploadSuccess = false;
                     };
                     self.uploader.onCancelItem = function(fileItem, response, status, headers) {
                         //$log.info('onCancelItem', fileItem, response, status, headers);
@@ -71,6 +84,7 @@
                     .then(function (options) {
                         self.editions = options.editions;
                         self.practices = options.practiceTypeNames;
+                        self.classifications = options.productClassifications;
                         self.bodies = options.certBodyNames;
                         self.statuses = options.certificationStatuses;
                     });
@@ -289,6 +303,7 @@
                     self.activeCP = {};
                     self.activeCP.certifyingBody = {};
                     self.activeCP.practiceType = {};
+                    self.activeCP.classificationType = {};
                     commonService.getProduct(self.cpSelect)
                         .then(function (cp) {
                             self.activeCP = cp;
@@ -315,6 +330,7 @@
                     resolve: {
                         activeCP: function () { return self.activeCP; },
                         practices: function () { return self.practices; },
+                        classifications: function () { return self.classifications; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isAcbStaff: function () { return self.isChplStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
@@ -352,6 +368,7 @@
                         inspectingCp: function () { return cp; },
                         developers: function () { return self.developers; },
                         practices: function () { return self.practices; },
+                        classifications: function () { return self.classifications; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isAcbStaff: function () { return self.isAcbStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },

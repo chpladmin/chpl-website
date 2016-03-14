@@ -5,7 +5,7 @@
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider.when('/compare/:compareIds', {
                 templateUrl: 'compare/compare.html',
-                title: 'Product Comparison'
+                title: 'CHPL Product Comparison'
             });
         }]);
 })();

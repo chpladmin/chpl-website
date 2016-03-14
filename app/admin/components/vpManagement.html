@@ -14,15 +14,21 @@
     <div class="row" ng-if="vm.workType === 'upload'">
       <div class="col-sm-12" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
         <h3>Upload Certified Products</h3>
+        <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
-        <p ng-if="vm.uploadMessage.length > 0">{{ vm.uploadMessage }}</p>
+        <div ng-if="vm.uploadMessage.length > 0" ng-class="vm.uploadSuccess ? 'bg-success' : 'bg-danger'">
+          {{ vm.uploadMessage }}
+          <ul ng-if="vm.uploadErrors.length > 0">
+            <li ng-repeat="error in vm.uploadErrors">{{ error }}</li>
+          </ul>
+        </div>
         <table class="table" ng-if="vm.uploader.queue.length > 0">
           <thead>
             <tr>
-              <th width="50%">Name</th>
-              <th ng-show="vm.uploader.isHTML5">Size</th>
-              <th ng-show="vm.uploader.isHTML5">Progress</th>
-              <th>Actions</th>
+              <th scope="col" width="50%">Name</th>
+              <th scope="col" ng-show="vm.uploader.isHTML5">Size</th>
+              <th scope="col" ng-show="vm.uploader.isHTML5">Progress</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -35,7 +41,7 @@
                 </div>
               </td>
               <td nowrap>
-                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
                   <i class="fa fa-cloud-upload"></i> Upload
                 </button>
                 <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -58,23 +64,25 @@
         <table class="table table-striped" ng-if="vm.uploadingCps.length > 0">
           <thead>
             <tr>
-              <th>Developer</th>
-              <th>Product</th>
-              <th>Version</th>
-              <th>Certification date</th>
-              <th>Status</th>
+              <th scope="col">CHPL ID</th>
+              <th scope="col">Developer</th>
+              <th scope="col">Product</th>
+              <th scope="col">Version</th>
+              <th scope="col">Certification date</th>
+              <th scope="col">Status</th>
               <th class="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate'">
+              <td>{{ cp.chplProductNumber }}</td>
               <td>{{ cp.developer.name }}</td>
               <td>{{ cp.product.name }}</td>
               <td>{{ cp.product.version }}</td>
               <td>{{ cp.certificationDate | date }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <button class="btn btn-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
               </td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
                 <button class="btn btn-warning btn-block"
@@ -161,7 +169,6 @@
                 Country: {{ vm.activeDeveloper.address.country }}<br />
                 Website: <span ng-if="vm.activeDeveloper.website"><ai-a href="{{vm.activeDeveloper.website}}" text="{{ vm.activeDeveloper.website }}"></ai-a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
                 <span ng-if="vm.activeDeveloper.transparencyAttestation !== null">Transparency Attestation: {{ vm.activeDeveloper.transparencyAttestation }}<br /></span>
-                <span ng-if="vm.activeDeveloper.transparencyAttestationUrl !== null">Transparency Attestation URL: <ai-a href="{{ vm.activeDeveloper.transparencyAttestationUrl }}" text="{{ vm.activeDeveloper.transparencyAttestationUrl }}"></ai-a><br /></span>
                 <strong>Contact information</strong><br />
                 First name: {{ vm.activeDeveloper.contact.firstName }}<br />
                 Last name: {{ vm.activeDeveloper.contact.lastName }}<br />
@@ -333,24 +340,29 @@
                 <span>
                   <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date }}</em><br />
                   <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
+                  <strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br />
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date }} <br />
-                  <strong>Additional Software:</strong> {{ vm.activeCP.productAdditionalSoftware }} <br />
+                  <strong>Product wide Additional Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
                   <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
-                  <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'N/A' }} <br />
-                  <strong>Quality Management System Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.qualityManagementSystemAtt) }} <br />
-                  <strong>Privacy and Security Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.privacyAttestation) }} <br />
+                  <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
                   <strong>Transparency Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.transparencyAttestation) }} <br />
+                  <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
-                  <strong>QMS Testing:</strong> {{ vm.ternaryFilter(vm.cp.qmsTesting) }} <br />
-                  <strong>SED Testing:</strong> {{ vm.ternaryFilter(vm.activeCP.sedTesting) }} <br />
-                  <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'N/A' }} <br />
-                  <strong>API Documentation:</strong> {{ vm.activeCP.apiDocumentation ? vm.activeCP.apiDocumentation : 'N/A' }} <br />
-                  <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'N/A' }} <br />
+                  <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
+                  <span ng-repeat="qms in vm.activeCP.qmsStandards">Standard: {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">Modification: {{ qms.qmsModification }}</span><br /></span>
+                  <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'None' }} <br />
+                  <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
+                  <strong>API Documentation:</strong> {{ vm.activeCP.apiDocumentation ? vm.activeCP.apiDocumentation : 'None' }} <br />
+                  <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'None' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />
+                  <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? 'True' : 'None' }} <br />
+                  <ul>
+                    <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
+                  </ul>
                   <strong>Corrective Action Plan:</strong> <ai-corrective-action-plan
                                                               corrective-action-plan="vm.activeCP.cap"
                                                               certified-product-id="vm.activeCP.id"

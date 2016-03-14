@@ -2,7 +2,7 @@
   <div ng-if="!vm.isEditing && (vm.cert.success || vm.viewAll)">
     <i class="fa fa-lg" ng-class="{'fa-check-square-o': vm.cert.success && !vm.cert.hasVersion, 'fa-square-o': !vm.cert.success}"></i>
     <span class="sr-only">{{ vm.cert.success ? 'meets' : 'does not meet'}}</span>
-    {{ vm.cert.number }}: {{ vm.cert.title }} <a href class="pull-right" ng-click="vm.showDetails = !vm.showDetails" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details</a>
+    {{ vm.cert.number }}: {{ vm.cert.title }} <a href class="pull-right" ng-click="vm.showDetails = !vm.showDetails" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ vm.cert.number }}</span></a>
     <div ng-if="vm.showDetails">
       <div ng-if="vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0">
         <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="false"></ai-additional-software>
@@ -10,8 +10,8 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Attribute</th>
-            <th>Value</th>
+            <th scope="col">Attribute</th>
+            <th scope="col">Value</th>
           </tr>
         </thead>
         <tbody>
@@ -66,12 +66,12 @@
               <table class="table" ng-if="vm.cert.testTasks && vm.cert.testTasks.length > 0">
                 <thead>
                   <tr>
-                    <th>Task Description</th>
-                    <th>Task Success</th>
-                    <th>Path Deviation - Mean</th>
-                    <th>Task Time</th>
-                    <th>Errors</th>
-                    <th>Task Rating</th>
+                    <th scope="col">Task Description</th>
+                    <th scope="col">Task Success</th>
+                    <th scope="col">Path Deviation - Mean</th>
+                    <th scope="col">Task Time</th>
+                    <th scope="col">Errors</th>
+                    <th scope="col">Task Rating</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -80,14 +80,14 @@
               <table class="table" ng-if="vm.cert.testParticipants && vm.cert.testParticipants.length > 0">
                 <thead>
                   <tr>
-                    <th>Participant Occupation/Role</th>
-                    <th>Participant Education</th>
-                    <th>Participant professional Experience</th>
-                    <th>Participant Gender</th>
-                    <th>Participant Age</th>
-                    <th>Participant Computer Experience</th>
-                    <th>Participant Product Experience</th>
-                    <th>Participant Assistive Technology Needs</th>
+                    <th scope="col">Participant Occupation/Role</th>
+                    <th scope="col">Participant Education</th>
+                    <th scope="col">Participant professional Experience</th>
+                    <th scope="col">Participant Gender</th>
+                    <th scope="col">Participant Age</th>
+                    <th scope="col">Participant Computer Experience</th>
+                    <th scope="col">Participant Product Experience</th>
+                    <th scope="col">Participant Assistive Technology Needs</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -110,8 +110,8 @@
     <table class="table table-striped" ng-if="vm.cert.success">
       <thead>
         <tr>
-          <th>Attribute</th>
-          <th>Value</th>
+          <th scope="col">Attribute</th>
+          <th scope="col">Value</th>
         </tr>
       </thead>
       <tbody>

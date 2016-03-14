@@ -1,15 +1,16 @@
 <section class="row">
   <div class="col-md-12 main-content">
     <h2>Announcement Management</h2>
+    <p ng-if="vm.errorMessage" class="bg-danger">{{ vm.errorMessage }}</p>
 	<table class="table table-striped">
 	  <thead>
 		<tr>
-		  <th>Title</th>
-		  <th>Announcement</th>
-		  <th>Start Date</th>
-		  <th>End Date</th>
-          <th>Public</th>
-          <th><span class="sr-only">Action</span></th>
+		  <th scope="col">Title</th>
+		  <th scope="col">Announcement</th>
+		  <th scope="col">Start Date</th>
+		  <th scope="col">End Date</th>
+          <th scope="col">Public</th>
+          <th scope="col"><span class="sr-only">Action</span></th>
 		</tr>
 	  </thead>
       <tfoot>

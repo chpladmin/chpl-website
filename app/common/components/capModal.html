@@ -112,8 +112,8 @@
         <table class="table">
           <thead>
             <tr>
-              <th>File Name</th>
-              <th>File Type</th>
+              <th scope="col">File Name</th>
+              <th scope="col">File Type</th>
               <th class="text-center">Action</th>
             </tr>
           </thead>
@@ -146,7 +146,7 @@
               <th width="50%">Name</th>
               <th ng-show="vm.uploader.isHTML5">Size</th>
               <th ng-show="vm.uploader.isHTML5">Progress</th>
-              <th>Actions</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -159,7 +159,7 @@
                 </div>
               </td>
               <td nowrap>
-                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
                   <i class="fa fa-cloud-upload"></i> Upload
                 </button>
                 <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -176,7 +176,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-success btn-large pull-right"
+    <button class="btn btn-ai-success btn-large pull-right"
             ng-if="vm.action === 'initiate'"
             ng-disabled="!vm.isValid()"
             confirm="Are you sure you wish to initiate this Corrective Action Plan?"
@@ -184,7 +184,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.save()"><i class="fa fa-save"></i> Initiate</button>
-    <button class="btn btn-success btn-large pull-right"
+    <button class="btn btn-ai-success btn-large pull-right"
             ng-if="vm.action === 'edit'"
             ng-disabled="!vm.isValid()"
             confirm="Are you sure you wish to update this Corrective Action Plan?"

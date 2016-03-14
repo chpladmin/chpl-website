@@ -16,6 +16,7 @@
             function activate () {
                 vm.loadAnnouncements();
                 vm.isChplAdmin = authService.isChplAdmin();
+                vm.errorMessage = '';
             }
 
             function loadAnnouncements () {
@@ -46,9 +47,11 @@
                         vm.announcement = [];
                     }
                     vm.announcements.push(result);
+                    vm.errorMessage = '';
                 }, function (result) {
                     if (result !== 'cancelled') {
                         console.debug('dismissed', result);
+                        vm.errorMessage = result;
                     }
                 });
             }
@@ -70,11 +73,14 @@
                 vm.editModalInstance.result.then(function (result) {
                     if (result === 'deleted') {
                         vm.loadAnnouncements();
-                    } else
+                    } else {
                         vm.announcements[index] = result;
+                    }
+                    vm.errorMessage = '';
                 }, function (result) {
                     if (result !== 'cancelled') {
                         console.debug('dismissed', result);
+                        vm.errorMessage = result;
                     }
                 });
             }

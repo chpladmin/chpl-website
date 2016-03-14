@@ -6,6 +6,7 @@
             var vm = this;
 
             vm.addRefine = addRefine;
+            vm.clear = clear;
             vm.clearPreviouslyCompared = clearPreviouslyCompared;
             vm.clearPreviouslyViewed = clearPreviouslyViewed;
             vm.compare = compare;
@@ -40,6 +41,47 @@
                     $localStorage.previouslyViewed = [];
                 }
                 vm.previouslyViewed = $localStorage.previouslyViewed;
+                $scope.searchResults = [];
+                $scope.displayedResults = [];
+                vm.lookaheadSource = {all: [], developers: [], products: []};
+                vm.hasDoneASearch = false;
+                $scope.visiblePage = 1;
+                vm.boxes = {
+                    compare: true,
+                    prevComp: false,
+                    prevView: false,
+                };
+                vm.defaultQuery = {
+                    orderBy: 'developer',
+                    sortDescending: false,
+                    pageNumber: 0,
+                    pageSize: '50',
+                    visibleOnCHPL: 'yes',
+                    hasCAP: 'all'
+                };
+                vm.query = angular.copy(vm.defaultQuery);
+
+                if ($localStorage.searchResults) {
+                    $scope.searchResults = $localStorage.searchResults.results;
+                    $scope.displayedResults = [].concat($scope.searchResults);
+                    vm.hasDoneASearch = true;
+                    vm.activeSearch = true;
+                    vm.resultCount = $localStorage.searchResults.recordCount;
+                }
+
+                if ($localStorage.query) {
+                    vm.query = $localStorage.query;
+                    $scope.visiblePage = vm.query.pageNumber + 1;
+                }
+
+                if ($localStorage.clearResults) {
+                    clear();
+                    delete $localStorage.clearResults;
+                }
+                $scope.$on('ClearResults', function (event, args) {
+                    clear();
+                    delete $localStorage.clearResults;
+                });
             }
 
             function addRefine () {
@@ -160,6 +202,7 @@
                 if (toAdd) {
                     vm.compareCps.push(row);
                 }
+                vm.boxes.compare = true;
             }
 
             function truncButton (str) {
@@ -232,34 +275,6 @@
                 $location.url('/product/' + cp.id);
             }
 
-            $scope.searchResults = [];
-            $scope.displayedResults = [];
-            vm.lookaheadSource = {all: [], developers: [], products: []};
-            vm.hasDoneASearch = false;
-            $scope.visiblePage = 1;
-            vm.defaultQuery = {
-                orderBy: 'developer',
-                sortDescending: false,
-                pageNumber: 0,
-                pageSize: '50',
-                visibleOnCHPL: 'yes',
-                hasCAP: 'all'
-            };
-            vm.query = angular.copy(vm.defaultQuery);
-
-            if ($localStorage.searchResults) {
-                $scope.searchResults = $localStorage.searchResults.results;
-                $scope.displayedResults = [].concat($scope.searchResults);
-                vm.hasDoneASearch = true;
-                vm.activeSearch = true;
-                vm.resultCount = $localStorage.searchResults.recordCount;
-            }
-
-            if ($localStorage.query) {
-                vm.query = $localStorage.query;
-                $scope.visiblePage = vm.query.pageNumber + 1;
-            }
-
             vm.populateSearchOptions = function () {
                 commonService.getSearchOptions(true) // use 'true' in production, to hide retired CQMs & Certs
                     .then(function (options) {
@@ -320,7 +335,7 @@
                 vm.compareCps = [];
             };
 
-            $scope.clear = function () {
+            function clear () {
                 delete $localStorage.searchResults;
                 delete $localStorage.query;
                 delete $localStorage.lookaheadSource;
@@ -335,8 +350,11 @@
                 vm.query = angular.copy(vm.defaultQuery);
                 vm.refineType = '';
                 vm.refine = angular.copy(vm.defaultRefine);
-                vm.searchForm.$setPristine();
-            };
+                if (vm.searchForm) {
+                    vm.searchForm.$setPristine();
+                }
+            }
+            $scope.clear = clear;
 
             $scope.sort = function(header) {
                 if (header === vm.query.orderBy) {

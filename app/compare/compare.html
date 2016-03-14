@@ -7,13 +7,13 @@
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
     </div>
   </div>
-  <div class="row main-content" id="mainContent">
+  <div class="row main-content" id="mainContent" tabindex="-1">
     <div class="col-sm-12">
       <table class="table table-striped compare-table" aria-live="polite">
         <thead>
           <tr>
-            <th><span class="sr-only">Category</span></th>
-            <th ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.product.name }}<br />({{ product.developer.name }})</th>
+            <th scope="col"><span class="sr-only">Category</span></th>
+            <th scope="col" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.product.name }}<br />({{ product.developer.name }})</th>
           </tr>
         </thead>
         <tbody>
@@ -42,7 +42,7 @@
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.chplProductNumber }}</td>
           </tr>
           <tr ng-click="vm.toggle('certifications')" class="clickable" aria-expanded="false">
-            <td class="compare-rowLead"><i class="fa fa-lg" ng-class="vm.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<a href class="skip"><br />{{ vm.isShowing('certifications') ? 'Collapse' : 'Expand' }} certification criteria</a></td>
+            <td class="compare-rowLead"><i class="fa fa-lg" ng-class="vm.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<a href class="sr-only sr-only-focusable"><br />{{ vm.isShowing('certifications') ? 'Collapse' : 'Expand' }} certification criteria</a></td>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.countCerts }} met</td>
           </tr>
           <tr ng-repeat="cert in vm.allCerts" ng-if="vm.isShowing('certifications')">
@@ -53,7 +53,7 @@
             </td>
           </tr>
           <tr ng-click="vm.toggle('CQMs')" class="clickable" aria-expanded="false">
-            <td class="compare-rowLead"><i class="fa fa-lg" ng-class="vm.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<a href class="skip"><br />{{ vm.isShowing('CQMs') ? 'Collapse' : 'Expand' }} CQMs</a></td>
+            <td class="compare-rowLead"><i class="fa fa-lg" ng-class="vm.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<a href class="sr-only sr-only-focusable"><br />{{ vm.isShowing('CQMs') ? 'Collapse' : 'Expand' }} CQMs</a></td>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.countCqms }} met</td>
           </tr>
           <tr ng-repeat="cqm in vm.allCqms | orderBy:'title'" ng-if="vm.isShowing('CQMs')">

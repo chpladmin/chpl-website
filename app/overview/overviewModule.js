@@ -7,7 +7,7 @@
                 templateUrl: 'overview/overview.html',
                 controller: 'OverviewController',
                 controllerAs: 'vm',
-                title: 'Overview'
+                title: 'CHPL Overview'
             });
         }]);
 })();

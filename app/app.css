@@ -10,6 +10,15 @@ header {
     transition: all 0.4s ease;
 }
 
+a {
+    color: #1a67a9;
+    text-decoration: underline;
+}
+
+a.btn {
+    text-decoration: none;
+}
+
 .navbar-inverse .navbar-nav>li>a {
     font-family: 'Oswald', sans-serif;
     color: #ffdd3c;
@@ -63,6 +72,10 @@ footer p {
 
 footer {
     margin-top: 150px;
+}
+
+.announcement.badge {
+    white-space: inherit;
 }
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -224,6 +237,7 @@ footer .spaced-out {
 
 .panel-ai > .panel-heading a {
     color: #f5d43c;
+    text-decoration: none;
 }
 
 .panel-ai > .panel-heading a .pull-right {
@@ -384,25 +398,45 @@ fieldset[disabled] .btn-ai-success.active {
     background-color: #333;
 }
 
-.skip {
-    position: absolute;
-    top: auto;
-    left: -1000px;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-}
-
-a.skip:active,
-a.skip:focus,
-a.skip:hover {
-    position: static;
-    width: auto;
-    height: auto;
-}
-
 :focus {
     outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #333 !important;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #333 !important;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #333 !important;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #333 !important;
+}
+:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+  color:    #333 !important;
+}
+
+.btn-default[disabled] {
+    color: #000;
+}
+.btn[disabled] {
+    opacity: 1;
+}
+
+.swagger-ui .endpoint a {
+    color: #337ab7;
+}
+
+.swagger-ui .endpoint .endpoint-heading span {
+    color: #333;
+}
+
+.swagger-ui .api-version {
+    color: #333;
 }

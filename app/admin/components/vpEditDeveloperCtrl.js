@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditDeveloperController', ['$modalInstance', 'activeDeveloper', 'commonService', function ($modalInstance, activeDeveloper, commonService) {
+        .controller('EditDeveloperController', ['$modalInstance', 'activeDeveloper', 'commonService', 'authService', function ($modalInstance, activeDeveloper, commonService, authService) {
             var vm = this;
             vm.developer = angular.copy(activeDeveloper);
             vm.updateDeveloper = {developerIds: [vm.developer.developerId]};
@@ -11,7 +11,13 @@
             vm.save = save;
             vm.cancel = cancel;
 
+            activate();
+
             ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                vm.isAcbAdmin = authService.isAcbAdmin();
+            }
 
             function addressRequired () {
                 return commonService.addressRequired(vm.developer.address);
