@@ -216,7 +216,7 @@
                 if (str.length > 20) {
                     ret = ret.substring(0,20) + '&#8230;';
                 }
-                ret +='<span class="pull-right"><i class="fa fa-close"></i></span>';
+                ret +='<span class="pull-right"><i class="fa fa-close"></i></span><span class="sr-only">Remove ' + str + ' from compare</span>';
                 return ret;
             }
 
