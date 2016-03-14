@@ -88,9 +88,15 @@
                 switch (vm.refineType) {
                 case 'developer':
                     vm.query.developerObject = vm.refine.developer;
+                    if (vm.query.orderBy === 'developer') {
+                        vm.query.orderBy = 'product';
+                    }
                     break;
                 case 'product':
                     vm.query.productObject = vm.refine.product;
+                    if (vm.query.orderBy === 'developer' || vm.query.orderBy === 'product') {
+                        vm.query.orderBy = 'version';
+                    }
                     break;
                 case 'certificationCriteria':
                     if (!vm.query.certificationCriteria) {
@@ -225,6 +231,9 @@
                     delete(vm.query.product);
                     delete(vm.query.productObject);
                     delete(vm.refine.product);
+                    if (vm.query.orderBy === 'version') {
+                        vm.query.orderBy = 'product';
+                    }
                     break;
                 case 'visibleOnCHPL':
                     vm.query.visibleOnCHPL = 'yes';

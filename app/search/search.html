@@ -217,10 +217,14 @@
                     </tr>
                     <tr>
 		              <th scope="col" class="search-header" ng-click="sort('product')"
-                          ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending}">Product <a class="sr-only sr-only-focusable" href ng-click="sort('product')"><br />Sort by product</a></th>
+                          ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'product'}">Product <a class="sr-only sr-only-focusable" href ng-click="sort('product')"><br />Sort by product</a></th>
                       <th scope="col" class="search-header" ng-click="sort('developer')"
-                          ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending}">Developer <a class="sr-only sr-only-focusable" href ng-click="sort('developer')"><br />Sort by developer</a></th>
-                      <th scope="col" class="">Version</th>
+                          ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'developer'}">Developer <a class="sr-only sr-only-focusable" href ng-click="sort('developer')"><br />Sort by developer</a></th>
+                      <th scope="col" class="search-header" ng-click="sort('version')"
+                          ng-if="vm.refine.product"
+                          ng-class="{'sort-ascent': vm.query.orderBy==='version' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='version' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'version'}">Version <a class="sr-only sr-only-focusable" href ng-click="sort('version')"><br />Sort by version</a></th>
+                      <th scope="col" class=""
+                          ng-if="!vm.refine.product">Version</th>
                       <th scope="col" colspan="2"><span class="sr-only">Actions</span></th>
 	                </tr>
 	              </thead>
