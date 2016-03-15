@@ -1,5 +1,11 @@
 # Release Notes
 
+## Next Version
+_Date TBD_
+
+### New features
+* Improved 508 compliance
+
 ## Version 0.4.0
 _14 March 2016_
 
