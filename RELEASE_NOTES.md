@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Improved 508 compliance
+* View/edit groupings of additional software works
 
 ## Version 0.4.0
 _14 March 2016_

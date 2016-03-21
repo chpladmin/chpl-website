@@ -43,7 +43,7 @@ module.exports = function(config){
         ],
 
         preprocessors: {
-            'app/common/**/!(*test).js': ['coverage'],
+            'app/common/**/!(*test|swagger*).js': ['coverage'],
             'app/compare/**/!(*test).js': ['coverage'],
             'app/login/**/!(*test).js': ['coverage'],
             'app/nav/**/!(*test).js': ['coverage'],
