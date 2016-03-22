@@ -355,7 +355,6 @@
                   <span ng-repeat="qms in vm.activeCP.qmsStandards">Standard: {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">Modification: {{ qms.qmsModification }}</span><br /></span>
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'None' }} <br />
                   <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
-                  <strong>API Documentation:</strong> {{ vm.activeCP.apiDocumentation ? vm.activeCP.apiDocumentation : 'None' }} <br />
                   <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'None' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />

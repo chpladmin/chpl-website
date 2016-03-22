@@ -1,23 +1,23 @@
 <div class="form-horizontal">
   <div class="form-group form-group-sm" ng-repeat="item in vm.items track by $index">
-    <label class="col-sm-6 control-label" for="item{{ $index }}">{{ vm.itemType }}</label>
+    <label class="col-sm-6 control-label" for="item{{ vm.localId }}">{{ vm.itemType }}</label>
     <div class="col-sm-6">
       <div class="input-group">
-        <input type="text" class="form-control" ng-model="item[vm.key]" id="item{{ $index }}"></input>
+        <input type="text" class="form-control" ng-model="item[vm.key]" id="item{{ vm.localId }}"></input>
         <div ng-if="!vm.keySecond" class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.removeItem($index)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
         <span ng-if="vm.keySecond">
-          <input type="text" class="form-control" ng-model="item[vm.keySecond]" id="itemSecond{{ $index }}"></input>
+          <input type="text" class="form-control" ng-model="item[vm.keySecond]" id="itemSecond{{ vm.localId }}"></input>
           <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.removeItem($index)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
         </span>
       </div>
     </div>
   </div>
   <div class="form-group form-group-sm">
-    <label class="col-sm-6 control-label" for="newItem">New {{ vm.itemType }}</label>
+    <label class="col-sm-6 control-label" for="newItem{{ vm.localId }}">New {{ vm.itemType }}</label>
     <div class="col-sm-6">
       <div class="input-group">
-        <input type="text" class="form-control" ng-model="vm.newItem" id="newItem"></input>
-        <input type="text" class="form-control" ng-model="vm.newSecond" id="newSecond" ng-if="vm.keySecond"></input>
+        <input type="text" class="form-control" ng-model="vm.newItem" id="newItem{{ vm.localId }}"></input>
+        <input type="text" class="form-control" ng-model="vm.newSecond" id="newSecond{{ vm.localId }}" ng-if="vm.keySecond"></input>
         <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addItem()"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
       </div>
     </div>

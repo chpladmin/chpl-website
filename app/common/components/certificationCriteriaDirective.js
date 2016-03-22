@@ -21,6 +21,9 @@
                 vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length  > 0;
             }
 
+            /*
+             * remove any keys where the select used 'vm.options' and the display was N/A
+             */
             function saveEdits () {
                 if (vm.cert.gap === 'null') {
                     delete (vm.cert.gap);
