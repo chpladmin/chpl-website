@@ -15,9 +15,10 @@
             vm.truncButton = truncButton;
             vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
+			vm.toggleCart = toggleCart;
 
             activate();
-
+	
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
@@ -203,6 +204,15 @@
                     vm.compareCps.push(row);
                 }
                 vm.boxes.compare = true;
+            }
+
+			function toggleCart (row) {
+				if (isProductInCart(row.product.id)) {
+					removeProductFromCart(row.product.id);
+				} else {
+					addProductToCart(row.product.id);
+                }
+				vm.boxes.certificationId = true;
             }
 
             function truncButton (str) {

@@ -253,6 +253,9 @@
                       <td>
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
+                      <td>
+                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCart(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Add</button>
+                      </td>
 	                </tr>
                     <tr ng-repeat-end class="productDetails" ng-class="{ 'hidden': !row.showDetails}">
                       <td colspan="6">
@@ -285,6 +288,13 @@
           </div>
           <div class="col-md-3">
             <accordion close-others="false">
+              <accordion-group class="panel-ai" is-open="vm.boxes.certificationId">
+                <accordion-heading>
+					<span>CMS EHR Certification ID</span>
+					<i class="fa fa-lg pull-right" ng-class="vm.boxes.certificationId ? 'fa-caret-down' : 'fa-caret-right'"></i>
+                </accordion-heading>
+				<div ng-include="'search/certid.html'"></div>
+              </accordion-group>
               <accordion-group class="panel-ai" is-open="vm.boxes.compare">
                 <accordion-heading>
                   Compare <span ng-if="vm.compareCps.length >= 2">{{ vm.compareCps.length }}</span> products <span ng-if="vm.compareCps.length < 2">(minimum 2)</span>

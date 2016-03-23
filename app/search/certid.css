@@ -1,0 +1,30 @@
+.widgetcertidbar {
+	width: 100%;
+	text-align: center;
+	padding: 5px;
+}
+
+.criteriaMetList ul {
+	padding: 0;
+}
+
+.criteriaMetList li {
+    font-size: 14px;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    list-style-type: none;
+}
+
+.selectedProducts ul {
+	padding: 0;
+}
+
+.selectedProducts li {
+    list-style-type: none;
+	padding: 2px;
+}

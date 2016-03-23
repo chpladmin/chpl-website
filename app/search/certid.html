@@ -1,0 +1,49 @@
+<div class="widgetcontainer" >
+
+	<div>
+
+		<div id="slidableProductsList" >
+
+			<section>
+			
+				<div class="selectedProducts">
+					<div id="txtNoProductsSelected">No products selected.</div>
+					<ul id="selectedProductsList">
+						<li id="productListItemTemplate" style="display: none;"><button href class="btn btn-ai-grey btn-sm btn-block" title="ProductNameHere">ProductNameHere</button></li>
+					</ul>
+				</div>
+			</section>
+			<section>
+
+				<div class="criteriaMetList" id="certificationsMet" >
+			
+					<table style="margin-right: auto; margin-left: auto;">
+						<tbody>
+							<tr>
+								<td class="criteriaMetListColumn">
+									<ul>
+										<li style="width: 100%;">Base Criteria <span id="baseCriteriaPercentage" style="float: right; margin-right: 20px;"></span></li>
+										<li style="width: 100%;">CQM Domains <span id="domainsPercentage" style="float: right; margin-right: 20px;"></span></li>
+									</ul>
+								</td>
+								<td style="width: 40px;">
+								</td>
+								<td class="criteriaMetListColumn">
+									<ul>
+										<li style="width: 100%;">Inpatient CQMs <span id="inpatientCqmsPercentage" style="float: right; margin-right: 20px;"></span></li>
+										<li style="width: 100%;">Ambulatory CQMs <span id="ambulatoryCqmsPercentage" style="float: right; margin-right: 20px;"></span></li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="widgetcertidbar">
+					<span style="font-weight: 600;">Your CMS EHR Certification ID</span><br/>
+					<span id="certId"></span>
+				</div>
+				<button id="btnEhrGetCertificationId" href class="btn btn-ai-success btn-sm btn-block" disabled>Get EHR Certification ID</button>
+			</section>
+		</div>
+	</div>
+</div>
