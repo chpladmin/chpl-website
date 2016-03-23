@@ -7,7 +7,7 @@
                 templateUrl: 'product/product.html',
                 controller: 'ProductController',
                 controllerAs: 'vm',
-                title: 'Product Details'
+                title: 'CHPL Product Details'
             });
         }]);
 })();

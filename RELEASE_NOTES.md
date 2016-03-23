@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 0.4.0
+_14 March 2016_
 
 ### New features
 * Made 'Home' and 'logo' links clear search results
@@ -11,6 +11,8 @@ _Date TBD_
 * Removed 'additional information' accordion during upload/confirm
 * Added error handling to announcements
 * Further 508 compliance work
+* Clarification of Additional Software
+* Expanded page titles
 
 ## Version 0.3.3
 _29 February 2016_
