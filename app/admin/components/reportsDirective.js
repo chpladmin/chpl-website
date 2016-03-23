@@ -2,11 +2,12 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('ReportController', ['$log', 'commonService', 'authService', function($log, commonService, authService) {
+        .controller('ReportController', ['$log', '$filter', 'commonService', 'authService', function($log, $filter, commonService, authService) {
             var vm = this;
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.tab = 'cp';
+            vm.activityRange = 7;
 
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
@@ -44,15 +45,15 @@
             }
 
             function refreshCp () {
-                commonService.getCertifiedProductActivity(7)
+                commonService.getCertifiedProductActivity(vm.activityRange)
                     .then(function (data) {
-                        vm.searchedCertifiedProducts = vm.interpretCps(data);
+                        vm.searchedCertifiedProducts = interpretCps(data);
                         vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
             }
 
             function refreshDeveloper () {
-                commonService.getDeveloperActivity(7)
+                commonService.getDeveloperActivity(vm.activityRange)
                     .then(function (data) {
                         vm.searchedDevelopers = vm.interpretDevelopers(data);
                         vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
@@ -60,7 +61,7 @@
             }
 
             function refreshProduct () {
-                commonService.getProductActivity(7)
+                commonService.getProductActivity(vm.activityRange)
                     .then(function (data) {
                         vm.searchedProducts = vm.interpretProducts(data);
                         vm.displayedProducts = [].concat(vm.searchedProducts);
@@ -68,7 +69,7 @@
             }
 
             function refreshAcb () {
-                commonService.getAcbActivity(7)
+                commonService.getAcbActivity(vm.activityRange)
                     .then(function (data) {
                         vm.searchedACBs = vm.interpretAcbs(data);
                         vm.displayedACBs = [].concat(vm.searchedACBs);
@@ -76,7 +77,7 @@
             }
 
             function refreshAtl () {
-                commonService.getAtlActivity(7)
+                commonService.getAtlActivity(vm.activityRange)
                     .then(function (data) {
                         vm.searchedATLs = vm.interpretAtls(data);
                         vm.displayedATLs = [].concat(vm.searchedATLs);
@@ -84,7 +85,7 @@
             }
 
             function refreshAnnouncement () {
-                commonService.getAnnouncementActivity(7)
+                commonService.getAnnouncementActivity(vm.activityRange)
                     .then(function (data) {
                         vm.searchedAnnouncements = vm.interpretAnnouncements(data);
                         vm.displayedAnnouncements = [].concat(vm.searchedAnnouncements);
@@ -93,12 +94,12 @@
 
             function refreshUser () {
                 if (vm.isChplAdmin) {
-                    commonService.getUserActivity(7)
+                    commonService.getUserActivity(vm.activityRange)
                         .then(function (data) {
                             vm.searchedUsers = vm.interpretUsers(data);
                             vm.displayedUsers = [].concat(vm.searchedUsers);
                         });
-                    commonService.getUserActivities(7)
+                    commonService.getUserActivities(vm.activityRange)
                         .then(function (data) {
                             vm.searchedUserActivities = vm.interpretUserActivities(data);
                             vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
@@ -108,7 +109,7 @@
 
             function refreshApi () {
                 if (vm.isChplAdmin) {
-                    commonService.getApiUserActivity(7)
+                    commonService.getApiUserActivity(vm.activityRange)
                         .then(function (data) {
                             vm.searchedApiActivity = data;
                             vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
@@ -224,24 +225,110 @@
             ////////////////////////////////////////////////////////////////////
             // Helper functions
 
-            vm.simpleCpFields = [{key: 'acbCertificationId', display: 'ACB Certification ID'},
-                                 {key: 'certificationDate', display: 'Certification Date'},
-                                 {key: 'chplProductNumber', display: 'CHPL Product Number'},
-                                 {key: 'reportFileLocation', display: 'ATL Test Report File Location'},
-                                 {key: 'visibleOnChpl', display: 'Visible on CHPL'}];
-            vm.interpretCps = function (data) {
+            function interpretCps (data) {
+                var simpleCpFields = [
+                    {key: 'acbCertificationId', display: 'ACB Certification ID'},
+                    {key: 'accessibilityCertified', display: 'accessibilityCertified'},
+                    {key: 'additionalSoftwareCode', display: 'additionalSoftwareCode'},
+                    {key: 'apiDocumentation', display: 'apiDocumentation'},
+                    {key: 'certificationBodyId', display: 'certificationBodyId'},
+                    {key: 'certificationDate', display: 'Certification Date', filter: 'date'},
+                    {key: 'certificationEditionId', display: 'certificationEditionId'},
+                    {key: 'certificationStatusId', display: 'certificationStatusId'},
+                    {key: 'certifiedDateCode', display: 'certifiedDateCode'},
+                    {key: 'chplProductNumber', display: 'CHPL Product Number'},
+                    {key: 'chplProductNumberForActivity', display: 'chplProductNumberForActivity'},
+                    {key: 'creationDate', display: 'creationDate', filter: 'date'},
+                    {key: 'deleted', display: 'deleted'},
+                    {key: 'ics', display: 'ics'},
+                    {key: 'icsCode', display: 'icsCode'},
+                    {key: 'id', display: 'id'},
+                    {key: 'lastModifiedDate', display: 'lastModifiedDate', filter: 'date'},
+                    {key: 'lastModifiedUser', display: 'lastModifiedUser'},
+                    {key: 'otherAcb', display: 'otherAcb'},
+                    {key: 'practiceTypeId', display: 'practiceTypeId'},
+                    {key: 'productAdditionalSoftware', display: 'productAdditionalSoftware'},
+                    {key: 'productClassificationTypeId', display: 'productClassificationTypeId'},
+                    {key: 'productCode', display: 'productCode'},
+                    {key: 'productVersionId', display: 'productVersionId'},
+                    {key: 'qmsTesting', display: 'qmsTesting'},
+                    {key: 'reportFileLocation', display: 'ATL Test Report File Location'},
+                    {key: 'sedIntendedUserDescription', display: 'sedIntendedUserDescription'},
+                    {key: 'sedReportFileLocation', display: 'sedReportFileLocation'},
+                    {key: 'sedTesting', display: 'sedTesting'},
+                    {key: 'sedTestingEnd', display: 'sedTestingEnd'},
+                    {key: 'termsOfUse', display: 'termsOfUse'},
+                    {key: 'testingLabId', display: 'testingLabId'},
+                    {key: 'transparencyAttestation', display: 'transparencyAttestation'},
+                    {key: 'transparencyAttestationUrl', display: 'transparencyAttestationUrl'},
+                    {key: 'versionCode', display: 'versionCode'},
+                    {key: 'visibleOnChpl', display: 'Visible on CHPL'}
+                ];
                 var ret = [];
                 var change;
 
                 for (var i = 0; i < data.length; i++) {
                     var activity = {
                         date: data[i].activityDate,
-                        description: data[i].description
+                        newId: data[i].id
                     };
+                    if (data[i].description === 'Created a certified product') {
+                        activity.action = 'Created certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
+                    } else if (data[i].description.substring(0,7) === 'Updated') {
+                        activity.action = 'Updated certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
+                        activity.details = [];
+                        for (var j = 0; j < simpleCpFields.length; j++) {
+                            change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
+                            if (change) activity.details.push(change);
+                        }
+                        if (activity.details.length === 0) delete activity.details;
+                    } else if (data[i].description.substring(0,14) === 'Certifications') {
+                        activity.action = 'Updated certifications for certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
+                        activity.details = [];
+                        for (var j = 0; j < simpleCpFields.length; j++) {
+                            change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
+                            if (change) activity.details.push(change);
+                        }
+                        var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
+                        for (var j = 0; j < certChanges.length; j++) {
+                            activity.details.push('Certification ' + certChanges[j].number + ' changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                        }
+                        if (activity.details.length === 0) delete activity.details;
+                    } else {
+                        activity.action = data[i].description;
+                    }
                     ret.push(activity);
                 }
                 return ret;
-            };
+            }
+
+            function compareCerts (prev, curr) {
+                var ret = [];
+                var change;
+                var certKeys = [
+                    {key: 'apiDocumentation', display: 'apiDocumentation'},
+                    {key: 'g1Success', display: 'g1Success'},
+                    {key: 'g2Success', display: 'g2Success'},
+                    {key: 'gap', display: 'gap'},
+                    {key: 'number', display: 'number'},
+                    {key: 'privacySecurityFramework', display: 'privacySecurityFramework'},
+                    {key: 'sed', display: 'sed'},
+                    {key: 'success', display: 'success'},
+                    {key: 'title', display: 'title'}
+                ];
+                prev.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+                curr.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+                for (var i = 0; i < prev.length; i++) {
+                    var obj = { number: curr[i].number, changes: [] };
+                    for (var j = 0; j < certKeys.length; j++) {
+                        change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
+                        if (change) obj.changes.push('<li>' + change + '</li>');
+                    }
+                    if (obj.changes.length > 0)
+                        ret.push(obj);
+                }
+                return ret;
+            }
 
             vm.interpretDevelopers = function (data) {
                 var ret = [];
@@ -252,9 +339,9 @@
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
                         activity.action = 'Update:<ul>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                        change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                         if (change) activity.action += '<li>' + change + '</li>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                        change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                         if (change) activity.action += '<li>' + change + '</li>';
                         vm.analyzeAddress(activity, data[i]);
                         activity.action += '</ul>';
@@ -275,7 +362,7 @@
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
                         activity.action = 'Update:<ul>';
-                        change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                        change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                         if (change) activity.action += '<li>' + change + '</li>';
                         // check on developerId change
                         activity.action += '</ul>';
@@ -299,9 +386,9 @@
                             activity.action = data[i].newData.deleted ? 'ACB was deleted' : 'ACB was restored';
                         } else {
                             activity.action = 'Update:<ul>';
-                            change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                            change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                             if (change) activity.action += '<li>' + change + '</li>';
-                            change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                            change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                             if (change) activity.action += '<li>' + change + '</li>';
                             vm.analyzeAddress(activity, data[i]);
                             activity.action += '</ul>';
@@ -326,9 +413,9 @@
                             activity.action = data[i].newData.deleted ? 'ATL was deleted' : 'ATL was restored';
                         } else {
                             activity.action = 'Update:<ul>';
-                            change = vm.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                            change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                             if (change) activity.action += '<li>' + change + '</li>';
-                            change = vm.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                            change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                             if (change) activity.action += '<li>' + change + '</li>';
                             vm.analyzeAddress(activity, data[i]);
                             activity.action += '</ul>';
@@ -374,33 +461,42 @@
                 if (data.originalData.address !== data.newData.address) {
                     var change;
                     activity.action += '<li>Address changed:<ul>';
-                    change = vm.compareItem(data.originalData.address, data.newData.address, 'streetLineOne', 'Street Line 1');
+                    change = compareItem(data.originalData.address, data.newData.address, 'streetLineOne', 'Street Line 1');
                     if (change) activity.action += '<li>' + change + '</li>';
-                    change = vm.compareItem(data.originalData.address, data.newData.address, 'streetLineTwo', 'Street Line 2');
+                    change = compareItem(data.originalData.address, data.newData.address, 'streetLineTwo', 'Street Line 2');
                     if (change) activity.action += '<li>' + change + '</li>';
-                    change = vm.compareItem(data.originalData.address, data.newData.address, 'city', 'City');
+                    change = compareItem(data.originalData.address, data.newData.address, 'city', 'City');
                     if (change) activity.action += '<li>' + change + '</li>';
-                    change = vm.compareItem(data.originalData.address, data.newData.address, 'state', 'State');
+                    change = compareItem(data.originalData.address, data.newData.address, 'state', 'State');
                     if (change) activity.action += '<li>' + change + '</li>';
-                    change = vm.compareItem(data.originalData.address, data.newData.address, 'zipcode', 'Zipcode');
+                    change = compareItem(data.originalData.address, data.newData.address, 'zipcode', 'Zipcode');
                     if (change) activity.action += '<li>' + change + '</li>';
-                    change = vm.compareItem(data.originalData.address, data.newData.address, 'country', 'Country');
+                    change = compareItem(data.originalData.address, data.newData.address, 'country', 'Country');
                     if (change) activity.action += '<li>' + change + '</li>';
                     activity.action += '</ul></li>';
                 }
             };
 
-            vm.compareItem = function (oldData, newData, key, display) {
+            function compareItem (oldData, newData, key, display, filter) {
                 if (oldData && oldData[key] && newData && newData[key] && oldData[key] !== newData[key]) {
-                    return display + ' changed from ' + oldData[key] + ' to ' + newData[key];
+                    if (filter)
+                        return display + ' changed from ' + $filter(filter)(oldData[key]) + ' to ' + $filter(filter)(newData[key]);
+                    else
+                        return display + ' changed from ' + oldData[key] + ' to ' + newData[key];
                 }
                 if ((!oldData || !oldData[key]) && newData && newData[key]) {
-                    return display + ' added: ' + newData[key];
+                    if (filter)
+                        return display + ' added: ' + $filter(filter)(newData[key]);
+                    else
+                        return display + ' added: ' + newData[key];
                 }
                 if (oldData && oldData[key] && (!newData || !newData[key])) {
-                    return display + ' removed. Was: ' + oldData[key];
+                    if (filter)
+                        return display + ' removed. Was: ' + $filter(filter)(oldData[key]);
+                    else
+                        return display + ' removed. Was: ' + oldData[key];
                 }
-            };
+            }
 
         }])
         .directive('aiReports', function () {

@@ -20,7 +20,7 @@
                 mockCommonService.developerActivity = [{description: 'string', name: 'Developer 1', date: 123123123}];
                 mockCommonService.productActivity = ['Product 1', 'Product 2'];
                 mockCommonService.certBodyActivity  = ['CB 1', 'CB 2'];
-                mockCommonService.cpActivity = [{newData: {developer: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}}];
+                mockCommonService.cpActivity = [{newData: {developer: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}, description: 'something happened'}];
                 mockCommonService.userActivity = [];
                 mockCommonService.userActivities = [];
                 mockCommonService.apiActivity = [];
