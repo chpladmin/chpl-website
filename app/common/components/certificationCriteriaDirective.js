@@ -2,9 +2,10 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('CertificationCriteriaController', ['$scope', '$log', '$timeout', function ($scope, $log, $timeout) {
+        .controller('CertificationCriteriaController', ['$scope', '$log', '$modal', function ($scope, $log, $modal) {
             var vm = this;
 
+            vm.editCert = editCert;
             vm.saveEdits = saveEdits;
 
             activate();
@@ -12,13 +13,28 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                if (vm.isEditing) {
-                    vm.options = [{name: 'True', value: true},
-                                  {name: 'False', value: false},
-                                  {name: 'N/A', value: null}];
-                }
+            }
 
-                vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length  > 0;
+            function editCert () {
+                vm.editModalInstance = $modal.open({
+                    templateUrl: 'common/components/certificationCriteriaModal.html',
+                    controller: 'EditCertificationCriteriaController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'lg',
+                    resolve: {
+                        cert: function () { return vm.cert; }
+                    }
+                });
+                vm.editModalInstance.result.then(function (result) {
+                    vm.cert = result;
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        console.debug('dismissed', result);
+                    }
+                });
             }
 
             /*
