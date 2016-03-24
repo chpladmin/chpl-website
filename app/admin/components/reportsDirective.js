@@ -291,7 +291,7 @@
                         }
                         var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
                         for (var j = 0; j < certChanges.length; j++) {
-                            activity.details.push('Certification ' + certChanges[j].number + ' changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                            activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                         }
                         if (activity.details.length === 0) delete activity.details;
                     } else {
@@ -324,8 +324,47 @@
                         change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
                         if (change) obj.changes.push('<li>' + change + '</li>');
                     }
+                    var addlSwChanges = compareAddlSw(prev[i].additionalSoftware, curr[i].additionalSoftware);
+                    for (var j = 0; j < addlSwChanges.length; j++) {
+                        obj.changes.push('<li>Additional software "' + addlSwChanges[j].name + '" changes<ul>' + addlSwChanges[j].changes.join('') + '</ul></li>');
+                    }
                     if (obj.changes.length > 0)
                         ret.push(obj);
+                }
+                return ret;
+            }
+
+            function compareAddlSw (prev, curr) {
+                var ret = [];
+                var change;
+                var keys = [
+                    {key: 'version', display: 'version'},
+                    {key: 'grouping', display: 'grouping'},
+                    {key: 'certifiedProductNumber', display: 'certifiedProductNumber'},
+                    {key: 'justification', display: 'justification'}
+                ];
+                for (var i = 0; i < prev.length; i++) {
+                    for (var j = 0; j < curr.length; j++) {
+                        var obj = { name: curr[j].name, changes: [] };
+                        if (prev[i].name === curr[j].name) {
+                            for (var k = 0; k < keys.length; k++) {
+                                change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
+                                if (change) obj.changes.push('<li>' + change + '</li>');
+                            }
+                            prev[i].evaluated = true;
+                            curr[j].evaluated = true;
+                        }
+                        if (obj.changes.length > 0)
+                            ret.push(obj);
+                    }
+                    if (!prev[i].evaluated) {
+                        ret.push({ name: prev[i].name, changes: ['<li>' + prev[i].name + ' removed</li>']});
+                    }
+                }
+                for (var i = 0; i < curr.length; i++) {
+                    if (!curr[i].evaluated) {
+                        ret.push({ name: curr[i].name, changes: ['<li>' + curr[i].name + ' added</li>']});
+                    }
                 }
                 return ret;
             }

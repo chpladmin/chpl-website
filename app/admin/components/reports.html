@@ -15,7 +15,7 @@
 		      <td class="">
                 <span ng-bind-html="activity.action"></span>
                 <ul ng-if="activity.details">
-                  <li ng-repeat="str in activity.details">{{ str }}</li>
+                  <li ng-repeat="str in activity.details" ng-bind-html="str"></li>
                 </ul>
               </td>
 		      <td class="">{{ activity.date | date : 'medium' }}</td>
