@@ -228,40 +228,20 @@
             function interpretCps (data) {
                 var simpleCpFields = [
                     {key: 'acbCertificationId', display: 'ACB Certification ID'},
-                    {key: 'accessibilityCertified', display: 'accessibilityCertified'},
-                    {key: 'additionalSoftwareCode', display: 'additionalSoftwareCode'},
-                    {key: 'apiDocumentation', display: 'apiDocumentation'},
-                    {key: 'certificationBodyId', display: 'certificationBodyId'},
+                    {key: 'accessibilityCertified', display: 'Accessibility Certified'},
                     {key: 'certificationDate', display: 'Certification Date', filter: 'date'},
-                    {key: 'certificationEditionId', display: 'certificationEditionId'},
-                    {key: 'certificationStatusId', display: 'certificationStatusId'},
-                    {key: 'certifiedDateCode', display: 'certifiedDateCode'},
                     {key: 'chplProductNumber', display: 'CHPL Product Number'},
-                    {key: 'chplProductNumberForActivity', display: 'chplProductNumberForActivity'},
-                    {key: 'creationDate', display: 'creationDate', filter: 'date'},
-                    {key: 'deleted', display: 'deleted'},
-                    {key: 'ics', display: 'ics'},
-                    {key: 'icsCode', display: 'icsCode'},
-                    {key: 'id', display: 'id'},
-                    {key: 'lastModifiedDate', display: 'lastModifiedDate', filter: 'date'},
-                    {key: 'lastModifiedUser', display: 'lastModifiedUser'},
-                    {key: 'otherAcb', display: 'otherAcb'},
-                    {key: 'practiceTypeId', display: 'practiceTypeId'},
-                    {key: 'productAdditionalSoftware', display: 'productAdditionalSoftware'},
-                    {key: 'productClassificationTypeId', display: 'productClassificationTypeId'},
-                    {key: 'productCode', display: 'productCode'},
-                    {key: 'productVersionId', display: 'productVersionId'},
-                    {key: 'qmsTesting', display: 'qmsTesting'},
+                    {key: 'ics', display: 'ICS Status'},
+                    {key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
+                    {key: 'otherAcb', display: 'Other ONC-ACB'},
+                    {key: 'productAdditionalSoftware', display: 'Product-wide Additional Software'},
                     {key: 'reportFileLocation', display: 'ATL Test Report File Location'},
-                    {key: 'sedIntendedUserDescription', display: 'sedIntendedUserDescription'},
-                    {key: 'sedReportFileLocation', display: 'sedReportFileLocation'},
-                    {key: 'sedTesting', display: 'sedTesting'},
-                    {key: 'sedTestingEnd', display: 'sedTestingEnd'},
-                    {key: 'termsOfUse', display: 'termsOfUse'},
-                    {key: 'testingLabId', display: 'testingLabId'},
-                    {key: 'transparencyAttestation', display: 'transparencyAttestation'},
-                    {key: 'transparencyAttestationUrl', display: 'transparencyAttestationUrl'},
-                    {key: 'versionCode', display: 'versionCode'},
+                    {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
+                    {key: 'sedReportFileLocation', display: 'SED Report File Location'},
+                    {key: 'sedTesting', display: 'SED Tested'},
+                    {key: 'sedTestingEnd', display: 'SED Testing End Date', filter: 'date'},
+                    {key: 'termsOfUse', display: 'Terms Of Use'},
+                    {key: 'transparencyAttestationUrl', display: 'Transparency Attestation URL'},
                     {key: 'visibleOnChpl', display: 'Visible on CHPL'}
                 ];
                 var ret = [];
@@ -281,17 +261,13 @@
                             change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
                             if (change) activity.details.push(change);
                         }
-                        if (activity.details.length === 0) delete activity.details;
-                    } else if (data[i].description.substring(0,14) === 'Certifications') {
-                        activity.action = 'Updated certifications for certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
-                        activity.details = [];
-                        for (var j = 0; j < simpleCpFields.length; j++) {
-                            change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
-                            if (change) activity.details.push(change);
-                        }
                         var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
                         for (var j = 0; j < certChanges.length; j++) {
                             activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                        }
+                        var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults);
+                        for (var j = 0; j < cqmChanges.length; j++) {
+                            activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                         }
                         if (activity.details.length === 0) delete activity.details;
                     } else {
@@ -306,15 +282,13 @@
                 var ret = [];
                 var change;
                 var certKeys = [
-                    {key: 'apiDocumentation', display: 'apiDocumentation'},
-                    {key: 'g1Success', display: 'g1Success'},
-                    {key: 'g2Success', display: 'g2Success'},
-                    {key: 'gap', display: 'gap'},
-                    {key: 'number', display: 'number'},
-                    {key: 'privacySecurityFramework', display: 'privacySecurityFramework'},
-                    {key: 'sed', display: 'sed'},
-                    {key: 'success', display: 'success'},
-                    {key: 'title', display: 'title'}
+                    {key: 'apiDocumentation', display: 'API Documentation'},
+                    {key: 'g1Success', display: 'Certified to G1'},
+                    {key: 'g2Success', display: 'Certified to G2'},
+                    {key: 'gap', display: 'GAP Tested'},
+                    {key: 'privacySecurityFramework', display: 'Privacy &amp; Security Framework'},
+                    {key: 'sed', display: 'SED tested'},
+                    {key: 'success', display: 'Successful'}
                 ];
                 prev.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
                 curr.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
@@ -338,10 +312,10 @@
                 var ret = [];
                 var change;
                 var keys = [
-                    {key: 'version', display: 'version'},
-                    {key: 'grouping', display: 'grouping'},
-                    {key: 'certifiedProductNumber', display: 'certifiedProductNumber'},
-                    {key: 'justification', display: 'justification'}
+                    {key: 'version', display: 'Version'},
+                    {key: 'grouping', display: 'Grouping'},
+                    {key: 'certifiedProductNumber', display: 'CHPL Product Number'},
+                    {key: 'justification', display: 'Justification'}
                 ];
                 for (var i = 0; i < prev.length; i++) {
                     for (var j = 0; j < curr.length; j++) {
@@ -365,6 +339,27 @@
                     if (!curr[i].evaluated) {
                         ret.push({ name: curr[i].name, changes: ['<li>' + curr[i].name + ' added</li>']});
                     }
+                }
+                return ret;
+            }
+
+            function compareCqms (prev, curr) {
+                var ret = [];
+                var change;
+                prev.sort(function(a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
+                curr.sort(function(a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
+                for (var i = 0; i < prev.length; i++) {
+                    var obj = { cmsId: curr[i].cmsId, changes: [] };
+                    change = compareItem(prev[i], curr[i], 'success', 'Success');
+                    if (change) obj.changes.push('<li>' + change + '</li>');
+                    for (var j = 0; j < prev[i].allVersions.length; j++) {
+                        if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) < 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0)
+                            obj.changes.push('<li>' + prev[i].allVersions[j] + ' added</li>');
+                        if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) < 0)
+                            obj.changes.push('<li>' + prev[i].allVersions[j] + ' removed</li>');
+                    }
+                    if (obj.changes.length > 0)
+                        ret.push(obj);
                 }
                 return ret;
             }

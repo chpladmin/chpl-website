@@ -370,7 +370,7 @@
                   <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
-                  <strong>Transparency Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.transparencyAttestation) }} <br />
+                  <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
@@ -380,7 +380,7 @@
                   <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'None' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />
-                  <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? 'True' : 'None' }} <br />
+                  <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? '' : 'None' }} <br />
                   <ul>
                     <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
                   </ul>
