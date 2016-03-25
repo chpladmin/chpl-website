@@ -147,6 +147,28 @@
         </div>
       </div> <!-- end select developer -->
 
+      <div class="row" ng-if="vm.activeDeveloper === '' && vm.developers.length > 0">
+        <div class="col-sm-12">
+          <button class="btn btn-ai-success" ng-click="vm.viewDeveloperCodes = !vm.viewDeveloperCodes">{{ vm.viewDeveloperCodes ? 'Hide' : 'Show' }} Developer Codes</button>
+          <table class="table table-striped table-condensed" ng-if="vm.viewDeveloperCodes">
+            <thead>
+              <tr>
+                <th scope="cols">Code</th>
+                <th scope="cols">Name</th>
+                <th scope="cols">Last modified date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="dev in vm.developers | orderBy: 'name'">
+                <td>{{ dev.developerCode }}</td>
+                <td>{{ dev.name }}</td>
+                <td>{{ dev.lastModifiedDate | date }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <div class="row" ng-if="vm.activeDeveloper !== ''">
         <div class="col-sm-12">
           <h3 ng-if="vm.inspectingCp">System developer information</h3>
@@ -348,18 +370,17 @@
                   <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
-                  <strong>Transparency Attestation:</strong> {{ vm.ternaryFilter(vm.activeCP.transparencyAttestation) }} <br />
+                  <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
                   <span ng-repeat="qms in vm.activeCP.qmsStandards">Standard: {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">Modification: {{ qms.qmsModification }}</span><br /></span>
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'None' }} <br />
                   <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
-                  <strong>API Documentation:</strong> {{ vm.activeCP.apiDocumentation ? vm.activeCP.apiDocumentation : 'None' }} <br />
                   <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'None' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />
-                  <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? 'True' : 'None' }} <br />
+                  <strong>Targeted Users:</strong> {{ vm.activeCP.targetedUsers.length > 0 ? '' : 'None' }} <br />
                   <ul>
                     <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
                   </ul>

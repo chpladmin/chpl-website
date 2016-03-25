@@ -18,46 +18,46 @@
         </thead>
         <tbody>
           <tr>
-            <td class="compare-rowLead">Version</td>
+            <th scope="row" class="compare-rowLead">Version</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.product.version }}</td>
           </tr>
           <tr>
-            <td class="compare-rowLead">Certification Edition</td>
+            <th scope="row" class="compare-rowLead">Certification Edition</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.certificationEdition.name }}</td>
           </tr>
           <tr>
-            <td class="compare-rowLead">Practice Type</td>
+            <th scope="row" class="compare-rowLead">Practice Type</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.practiceType.name }}</td>
           </tr>
           <tr>
-            <td class="compare-rowLead">Certifying Body</td>
+            <th scope="row" class="compare-rowLead">Certifying Body</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.certifyingBody.name }}</td>
           </tr>
           <tr>
-            <td class="compare-rowLead">Certification Date</td>
+            <th scope="row" class="compare-rowLead">Certification Date</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.certificationDate | date }}</td>
           </tr>
           <tr>
-            <td class="compare-rowLead">CHPL Product Number</td>
+            <th scope="row" class="compare-rowLead">CHPL Product Number</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.chplProductNumber }}</td>
           </tr>
-          <tr ng-click="vm.toggle('certifications')" class="clickable" aria-expanded="false">
-            <td class="compare-rowLead"><i class="fa fa-lg" ng-class="vm.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<a href class="sr-only sr-only-focusable"><br />{{ vm.isShowing('certifications') ? 'Collapse' : 'Expand' }} certification criteria</a></td>
+          <tr>
+            <th scope="row" class="compare-rowLead"><a href ng-click="vm.toggle('certifications')" aria-expanded="{{ vm.isShowing('certifications') }}" class=""><i class="fa fa-lg" ng-class="vm.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ vm.isShowing('certifications') ? 'Collapse' : 'Expand' }}</span> Certification Criteria</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.countCerts }} met</td>
           </tr>
           <tr ng-repeat="cert in vm.allCerts" ng-if="vm.isShowing('certifications')">
-            <td class="compare-rowCert">{{cert.number + ": " + cert.title}}</td>
+            <th scope="row" class="compare-rowCert">{{cert.number + ": " + cert.title}}</th>
             <td class="compare-element" ng-repeat="item in cert.values | orderBy:'chplProductNumber'">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
               <span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span>
             </td>
           </tr>
-          <tr ng-click="vm.toggle('CQMs')" class="clickable" aria-expanded="false">
-            <td class="compare-rowLead"><i class="fa fa-lg" ng-class="vm.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<a href class="sr-only sr-only-focusable"><br />{{ vm.isShowing('CQMs') ? 'Collapse' : 'Expand' }} CQMs</a></td>
+          <tr>
+            <th scope="row" class="compare-rowLead"><a href ng-click="vm.toggle('CQMs')" aria-expanded="{{ vm.isShowing('CQMs') }}" class=""><i class="fa fa-lg" ng-class="vm.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ vm.isShowing('CQMs') ? 'Collapse' : 'Expand' }}</span> Clinical Quality Measures</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.countCqms }} met</td>
           </tr>
           <tr ng-repeat="cqm in vm.allCqms | orderBy:'title'" ng-if="vm.isShowing('CQMs')">
-            <td class="compare-rowCert">{{cqm.displayId + ": " + cqm.title}}</td>
+            <th scope="row" class="compare-rowCert">{{cqm.displayId + ": " + cqm.title}}</th>
             <td class="compare-element" ng-repeat="item in cqm.values | orderBy:'chplProductNumber'">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success && item.successVersions.length === 0, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
               <b ng-if="item.successVersions.length > 0">{{ item.successVersions.join(', ') }}</b>
@@ -65,7 +65,7 @@
             </td>
           </tr>
           <tr>
-            <td class="compare-rowLead">View product details</td>
+            <th scope="row" class="compare-rowLead">View product details</th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'"><a href="#/product/{{ product.id }}">details</a></td>
           </tr>
         </tbody>

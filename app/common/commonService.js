@@ -82,6 +82,10 @@
                     return self.simpleApiCall('/data/search_options');
             };
 
+            self.getEducation = function () {
+                return self.simpleApiCall('/data/education_types');
+            };
+
             self.getAnnouncements = function (pending) {
             	return self.simpleApiCall('/announcements/?future=' + pending);
             };

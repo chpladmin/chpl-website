@@ -12,7 +12,12 @@
           </thead>
           <tbody>
 	        <tr ng-repeat="activity in vm.displayedCertifiedProducts">
-		      <td class=""><span ng-bind-html="activity.description"></span></td>
+		      <td class="">
+                <span ng-bind-html="activity.action"></span>
+                <ul ng-if="activity.details">
+                  <li ng-repeat="str in activity.details" ng-bind-html="str"></li>
+                </ul>
+              </td>
 		      <td class="">{{ activity.date | date : 'medium' }}</td>
             </tr>
           </tbody>

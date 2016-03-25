@@ -16,6 +16,7 @@
                 if (!vm.items) {
                     vm.items = [];
                 }
+                vm.localId = $scope.$id;
             }
 
             function addItem() {

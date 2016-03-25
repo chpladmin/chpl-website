@@ -160,14 +160,21 @@ footer .spaced-out {
 }
 
 .sort-ascent:after, .st-sort-ascent:after {
-                        content: "\f077";
+                        content: "\f0de";
                         font-family: FontAwesome;
                         padding: 0 6px;
                         font-size: large;
                     }
 
 .sort-descent:after, .st-sort-descent:after {
-                         content: "\f078";
+                         content: "\f0dd";
+                         font-family: FontAwesome;
+                         padding: 0 6px;
+                         font-size: large;
+                     }
+
+.sort-none:after, .st-sort-none:after {
+                         content: "\f0dc";
                          font-family: FontAwesome;
                          padding: 0 6px;
                          font-size: large;

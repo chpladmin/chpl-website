@@ -6,9 +6,9 @@
     </p>
     <div class="panel panel-ai">
       <div class="panel-heading">
-        <a href="" ng-click="vm.showPanel('cert')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
+        <a href="" ng-click="vm.showPanel('cert')" aria-expanded="{{ vm.panelShown === 'cert' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'" aria-expanded="{{ vm.panelShown === 'cert' ? 'true' : 'false' }}">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
         <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
           <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
                                      view-all="vm.viewAllCerts"
@@ -21,9 +21,9 @@
     </div>
     <div class="panel panel-ai">
       <div class="panel-heading">
-        <a href="" ng-click="vm.showPanel('cqm')"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
+        <a href="" ng-click="vm.showPanel('cqm')" aria-expanded="{{ vm.panelShown === 'cqm' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'" aria-expanded="{{ vm.panelShown === 'cqm' ? 'true' : 'false' }}">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'">
         <div ng-if="vm.viewAllCerts || n.success" ng-repeat="n in vm.cqms | orderBy:vm.sortCqms track by $index">
           <div class="row" ng-if="!vm.isEditing">
             <div class="col-sm-12">
@@ -52,9 +52,9 @@
     </div>
     <div class="panel panel-ai" ng-if="!vm.isEditing && !vm.isConfirming">
       <div class="panel-heading">
-        <a href="" ng-click="vm.showPanel('additional')"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
+        <a href="" ng-click="vm.showPanel('additional')" aria-expanded="{{ vm.panelShown === 'additional' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'" aria-expanded="{{ vm.panelShown === 'additional' ? 'true' : 'false' }}">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'">
         <span>
           <span ng-if="vm.product.certificationEdition.name === '2014'">
             <h4>Test Results Summary</h4>
