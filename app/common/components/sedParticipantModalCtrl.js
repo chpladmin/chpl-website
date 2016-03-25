@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('EditSedParticipantController', ['$modalInstance', 'participant', function ($modalInstance, participant) {
+        .controller('EditSedParticipantController', ['$modalInstance', 'participant', 'commonService', function ($modalInstance, participant, commonService) {
             var vm = this;
 
             vm.participant = participant.participant;
@@ -15,6 +15,10 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
+                commonService.getEducation()
+                    .then(function (result) {
+                        vm.education = result;
+                    });
             }
 
             function cancel () {
@@ -22,6 +26,8 @@
             }
 
             function save () {
+                vm.participant.educationTypeName = vm.participant.education.name;
+                vm.participant.educationTypeId = vm.participant.education.id;
                 $modalInstance.close(vm.participant);
             }
         }]);

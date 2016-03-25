@@ -30,6 +30,7 @@
                 vm.statuses = statuses;
                 vm.workType = workType;
                 vm.showFormErrors = false;
+                vm.message = '';
 
                 vm.handlers = [];
 
@@ -101,10 +102,10 @@
                             if (!response.status || response.status === 200) {
                                 $modalInstance.close(response);
                             } else {
-                                $modalInstance.dismiss('An error occurred');
+                                vm.message = response;
                             }
                         },function (error) {
-                            $modalInstance.dismiss(error.data.error);
+                            vm.message = response;
                         });
                 } else if (vm.workType === 'confirm') {
                     $modalInstance.close(vm.cp);

@@ -34,7 +34,8 @@
     <div class="form-group">
       <label class="control-label col-sm-6" for="data_participant_educationTypeName">Education Type <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <input type="text" class="form-control input-sm" id="data_participant_educationTypeName" name="data_participant_educationTypeName" ng-model="vm.participant.educationTypeName" required></input>
+        <select class="form-control input-sm" id="data_participant_educationTypeName" name="data_participant_educationTypeName" ng-model="vm.participant.education" required
+                ng-options="item as item.name for item in vm.education track by item.id"></select>
         <div class="text-danger" ng-if="vm.editForm.data_participant_educationTypeName.$touched && vm.editForm.data_participant_educationTypeName.$error.required">Field is required</div>
       </div>
     </div>
