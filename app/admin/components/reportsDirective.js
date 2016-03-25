@@ -29,7 +29,7 @@
             function activate () {
                 vm.visibleApiPage = 1;
                 vm.apiKeyPageSize = 100;
-                vm.refreshActivity();
+                vm.refreshCp();
                 vm.refreshVisitors();
             }
 
@@ -327,41 +327,41 @@
                     ];
                     var addlSw = compareArray(prev[i].additionalSoftware, curr[i].additionalSoftware, addlSwKeys, 'name');
                     for (var j = 0; j < addlSw.length; j++) {
-                        obj.changes.push('Additional software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul>');
+                        obj.changes.push('<li>Additional software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul></li>');
                     }
                     var testProceduresKeys = [];
                     var testProcedures = compareArray(prev[i].testProcedures, curr[i].testProcedures, testProceduresKeys, 'testProcedureVersion');
                     for (var j = 0; j < testProcedures.length; j++) {
-                        obj.changes.push('Test Procedure Version "' + testProcedures[j].name + '" changes<ul>' + testProcedures[j].changes.join('') + '</ul>');
+                        obj.changes.push('<li>Test Procedure Version "' + testProcedures[j].name + '" changes<ul>' + testProcedures[j].changes.join('') + '</ul></li>');
                     }
                     var testDataUsedKeys = [{key: 'alteration', display: 'Data Alteration'}];
                     var testDataUsed = compareArray(prev[i].testDataUsed, curr[i].testDataUsed, testDataUsedKeys, 'version');
                     for (var j = 0; j < testDataUsed.length; j++) {
-                        obj.changes.push('Test Data Version "' + testDataUsed[j].name + '" changes<ul>' + testDataUsed[j].changes.join('') + '</ul>');
+                        obj.changes.push('<li>Test Data Version "' + testDataUsed[j].name + '" changes<ul>' + testDataUsed[j].changes.join('') + '</ul></li>');
                     }
                     var testFunctionalityKeys = [];
                     var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'number');
                     for (var j = 0; j < testFunctionality.length; j++) {
-                        obj.changes.push('Test Functionality Number "' + testFunctionality[j].name + '" changes<ul>' + testFunctionality[j].changes.join('') + '</ul>');
+                        obj.changes.push('<li>Test Functionality Number "' + testFunctionality[j].name + '" changes<ul>' + testFunctionality[j].changes.join('') + '</ul></li>');
                     }
                     var testToolsUsedKeys = [{key: 'testToolVersion', display: 'Test Tool Version'}];
                     var testToolsUsed = compareArray(prev[i].testToolsUsed, curr[i].testToolsUsed, testToolsUsedKeys, 'testToolName');
                     for (var j = 0; j < testToolsUsed.length; j++) {
-                        obj.changes.push('Test Tool Name "' + testToolsUsed[j].name + '" changes<ul>' + testToolsUsed[j].changes.join('') + '</ul>');
+                        obj.changes.push('<li>Test Tool Name "' + testToolsUsed[j].name + '" changes<ul>' + testToolsUsed[j].changes.join('') + '</ul></li>');
                     }
                     var testStandardsKeys = [{key: 'testStandardName', display: 'Test Standard Name'}];
                     var testStandards = compareArray(prev[i].testStandards, curr[i].testStandards, testStandardsKeys, 'testStandardNumber');
                     for (var j = 0; j < testStandards.length; j++) {
-                        obj.changes.push('Test Standard Number "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul>');
+                        obj.changes.push('<li>Test Standard Number "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul></li>');
                     }
                     var ucdProcessesKeys = [{key: 'ucdProcessDetails', display: 'UCD Process Details'}];
                     var ucdProcesses = compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
                     for (var j = 0; j < ucdProcesses.length; j++) {
-                        obj.changes.push('UCD Process Name "' + ucdProcesses[j].name + '" changes<ul>' + ucdProcesses[j].changes.join('') + '</ul>');
+                        obj.changes.push('<li>UCD Process Name "' + ucdProcesses[j].name + '" changes<ul>' + ucdProcesses[j].changes.join('') + '</ul></li>');
                     }
                     var testTasks = compareSedTasks(prev[i].testTasks, curr[i].testTasks);
                     for (var j = 0; j < testTasks.length; j++) {
-                        obj.changes.push('SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul>');
+                        obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
                     }
                     if (obj.changes.length > 0)
                         ret.push(obj);
@@ -373,39 +373,53 @@
                 var ret = [];
                 var change;
                 var keys = [
-                    {key: 'taskPathDeviationObserved', display: 'taskPathDeviationObserved'},
-                    {key: 'taskPathDeviationOptimal', display: 'taskPathDeviationOptimal'},
-                    {key: 'taskRatingScale', display: 'taskRatingScale'},
-                    {key: 'taskTimeAvg', display: 'taskTimeAvg'},
-                    {key: 'taskTimeDeviationObservedAvg', display: 'taskTimeDeviationObservedAvg'},
-                    {key: 'taskTimeDeviationOptimalAvg', display: 'taskTimeDeviationOptimalAvg'},
-                    {key: 'taskTimeStddev', display: 'taskTimeStddev'}
+                    {key: 'taskPathDeviationObserved', display: 'Path Deviation Observed'},
+                    {key: 'taskPathDeviationOptimal', display: 'Path Deviation Optimal'},
+                    {key: 'taskRatingScale', display: 'Rating Scale'},
+                    {key: 'taskTimeAvg', display: 'Time Average'},
+                    {key: 'taskTimeDeviationObservedAvg', display: 'Time Deviation Observed Average'},
+                    {key: 'taskTimeDeviationOptimalAvg', display: 'Time Deviation Optimal Average'},
+                    {key: 'taskTimeStddev', display: 'Time Standard Deviation'}
                 ];
                 if (prev !== null) {
                     prev.sort(function(a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
                     curr.sort(function(a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
                     for (var i = 0; i < prev.length; i++) {
-                        var obj = { name: curr[i].description, changes: [] };
-                        for (var j = 0; j < keys.length; j++) {
-                            change = compareItem(prev[i], curr[i], keys[j].key, keys[j].display, keys[j].filter);
-                            if (change) obj.changes.push('<li>' + change + '</li>');
+                        for (var j = 0; j < curr.length; j++) {
+                            if (prev[i].description === curr[j].description) {
+                                var obj = { name: curr[j].description, changes: [] };
+                                for (var k = 0; k < keys.length; k++) {
+                                    change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display, keys[k].filter);
+                                    if (change) obj.changes.push('<li>' + change + '</li>');
+                                }
+                                var testParticipantKeys = [
+                                    {key: 'age', display: 'Age'},
+                                    {key: 'assistiveTechnologyNeeds', display: 'Assistive Technology Needs'},
+                                    {key: 'computerExperienceMonths', display: 'Computer Experience Months'},
+                                    {key: 'educationTypeName', display: 'Education Type'},
+                                    {key: 'gender', display: 'Gender'},
+                                    {key: 'occupation', display: 'Occupation'},
+                                    {key: 'productExperienceMonths', display: 'Product Experience (Months)'},
+                                    {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'}
+                                ];
+                                var testParticipants = compareArray(prev[i].testParticipants, curr[j].testParticipants, testParticipantKeys, 'testParticipantId');
+                                for (var k = 0; k < testParticipants.length; k++) {
+                                    obj.changes.push('<li>Test Participant "' + testParticipants[k].name + '" changes<ul>' + testParticipants[k].changes.join('') + '</ul></li>');
+                                }
+                                if (obj.changes.length > 0)
+                                    ret.push(obj);
+                                prev[i].evaluated = true;
+                                curr[j].evaluated = true;
+                            }
                         }
-                        var testParticipantKeys = [
-                            {key: 'age', display: 'age'},
-                            {key: 'assistiveTechnologyNeeds', display: 'assistiveTechnologyNeeds'},
-                            {key: 'computerExperienceMonths', display: 'computerExperienceMonths'},
-                            {key: 'educationTypeName', display: 'educationTypeName'},
-                            {key: 'gender', display: 'gender'},
-                            {key: 'occupation', display: 'occupation'},
-                            {key: 'productExperienceMonths', display: 'productExperienceMonths'},
-                            {key: 'professionalExperienceMonths', display: 'professionalExperienceMonths'}
-                        ];
-                        var testParticipants = compareArray(prev[i].testParticipants, curr[i].testParticipants, testParticipantKeys, 'uniqueId');
-                        for (var j = 0; j < testParticipants.length; j++) {
-                            obj.changes.push('Test Participant "' + testParticipants[j].name + '" changes<ul>' + testParticipants[j].changes.join('') + '</ul>');
+                        if (!prev[i].evaluated) {
+                            ret.push({ name: prev[i].description, changes: ['<li>Task removed</li>'] });
                         }
-                        if (obj.changes.length > 0)
-                            ret.push(obj);
+                    }
+                    for (var i = 0; i < curr.length; i++) {
+                        if (!curr[i].evaluated) {
+                            ret.push({ name: curr[i].description, changes: ['<li>Task added</li>'] });
+                        }
                     }
                 }
                 return ret;

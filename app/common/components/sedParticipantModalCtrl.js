@@ -19,6 +19,10 @@
                     .then(function (result) {
                         vm.education = result;
                     });
+                vm.participant.education = {
+                    name: vm.participant.educationTypeName,
+                    id: vm.participant.educationTypeId
+                };
             }
 
             function cancel () {

@@ -140,9 +140,6 @@
             }));
 
             it('should have loaded activity', function () {
-                expect(ctrl.searchedDevelopers.length).toBeGreaterThan(0);
-                expect(ctrl.searchedProducts.length).toBeGreaterThan(0);
-                expect(ctrl.searchedACBs.length).toBeGreaterThan(0);
                 expect(ctrl.searchedCertifiedProducts.length).toBeGreaterThan(0);
             });
 
