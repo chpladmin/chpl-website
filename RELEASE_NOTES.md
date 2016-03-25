@@ -1,13 +1,17 @@
 # Release Notes
 
-## Next Version
-_Date TBD_
+## Version 0.5.0
+_25 March 2016_
 
 ### New features
 * Improved 508 compliance
 * View/edit groupings of additional software works
 * Added 'show developer codes' to admin screen
 * Modal-ized certification criteria editing
+* SED Task/Participant editing / confirming
+* Added API Registration
+* Improved Certified Product 'changes' descriptions
+* Added sort by version
 
 ## Version 0.4.0
 _14 March 2016_
