@@ -9,6 +9,7 @@
 
             vm.addParticipant = addParticipant;
             vm.cancel = cancel;
+            vm.changed = changed;
             vm.editParticipant = editParticipant;
             vm.removeParticipant = removeParticipant
             vm.save = save;
@@ -44,7 +45,16 @@
             }
 
             function cancel () {
+                if (vm.task.changed) {
+                    delete (vm.task.changed);
+                }
                 $modalInstance.dismiss('cancelled');
+            }
+
+            function changed () {
+                if (vm.task.id) {
+                    vm.task.changed = true;
+                }
             }
 
             function editParticipant (participant, idx) {

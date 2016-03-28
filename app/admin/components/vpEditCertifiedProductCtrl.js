@@ -105,7 +105,7 @@
                                 vm.message = response;
                             }
                         },function (error) {
-                            vm.message = response;
+                            vm.message = error;
                         });
                 } else if (vm.workType === 'confirm') {
                     $modalInstance.close(vm.cp);
