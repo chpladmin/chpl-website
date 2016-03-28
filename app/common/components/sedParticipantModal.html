@@ -42,7 +42,11 @@
     <div class="form-group">
       <label class="control-label col-sm-6" for="data_participant_gender">Gender <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <input type="text" class="form-control input-sm" id="data_participant_gender" name="data_participant_gender" ng-model="vm.participant.gender" ng-maxlength="1" ng-change="vm.changed()" required></input>
+        <select class="form-control input-sm" id="data_participant_gender" name="data_participant_gender" ng-model="vm.participant.gender" ng-change="vm.changed()" required>
+          <option value="Female">Female</option>
+          <option value="Male">Male</option>
+          <option value="Unspecified">Unspecified</option>
+        </select>
         <div class="text-danger" ng-if="vm.editForm.data_participant_gender.$touched && vm.editForm.data_participant_gender.$error.required">Field is required</div>
         <div class="text-danger" ng-if="vm.editForm.data_participant_gender.$error.maxlength">Maximum length: 1</div>
       </div>

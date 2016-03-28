@@ -102,10 +102,18 @@
                             if (!response.status || response.status === 200) {
                                 $modalInstance.close(response);
                             } else {
-                                vm.message = response;
+                                vm.errors = [response.error];
                             }
                         },function (error) {
-                            vm.message = error;
+                            vm.errors = [];
+                            if (error.data) {
+                                if (error.data.error && error.data.error.length > 0)
+                                    vm.errors.push(error.data.error);
+                                if (error.data.errorMessages && error.data.errorMessages.length > 0)
+                                    vm.errors = vm.errors.concat(error.data.errorMessages);
+                                if (error.data.warningMessage && error.data.warningMessage.length > 0)
+                                    vm.errors = vm.errors.concat(error.data.warningMessage);
+                            }
                         });
                 } else if (vm.workType === 'confirm') {
                     $modalInstance.close(vm.cp);

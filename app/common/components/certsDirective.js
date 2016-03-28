@@ -82,8 +82,6 @@
                     }
                 }
 
-                $log.debug(changedTasks, changedParticipants);
-
                 for (var i = 0; i < vm.certs.length; i++) {
                     if (vm.certs[i].sed) {
                         for (var j = 0; j < vm.certs[i].testTasks.length; j++) {
