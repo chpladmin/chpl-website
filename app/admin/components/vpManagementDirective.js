@@ -380,10 +380,20 @@
                     size: 'lg'
                 });
                 self.modalInstance.result.then(function (result) {
-                    self.refreshPending();
+                    for (var i = 0; i < self.uploadingCps.length; i++) {
+                        if (cpId === self.uploadingCps[i].id) {
+                            self.uploadingCps.splice(i,1)
+                            self.pendingProducts = self.uploadingCps.length;
+                        }
+                    }
                 }, function (result) {
                     if (result !== 'cancelled') {
-                        self.refreshPending();
+                        for (var i = 0; i < self.uploadingCps.length; i++) {
+                            if (cpId === self.uploadingCps[i].id) {
+                                self.uploadingCps.splice(i,1)
+                                self.pendingProducts = self.uploadingCps.length;
+                            }
+                        }
                     }
                 });
             }
