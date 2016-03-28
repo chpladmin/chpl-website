@@ -20,6 +20,7 @@
             vm.refreshUser = refreshUser;
             vm.refreshApi = refreshApi;
             vm.refreshVisitors = refreshVisitors;
+            vm.singleCp = singleCp;
 
             activate();
 
@@ -29,12 +30,16 @@
             function activate () {
                 vm.visibleApiPage = 1;
                 vm.apiKeyPageSize = 100;
-                vm.refreshCp();
+                vm.refreshActivity();
                 vm.refreshVisitors();
             }
 
             function refreshActivity () {
-                vm.refreshCp();
+                if (vm.productId) {
+                    vm.singleCp();
+                } else {
+                    vm.refreshCp();
+                }
                 vm.refreshDeveloper();
                 vm.refreshProduct();
                 vm.refreshAcb();
@@ -148,6 +153,14 @@
                                                            date.substring(6,8));
                         }
                         vm.traffic.data = data;
+                    });
+            }
+
+            function singleCp () {
+                commonService.getSingleCertifiedProductActivity(vm.productId)
+                    .then(function (data) {
+                        vm.searchedCertifiedProducts = interpretCps(data);
+                        vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
             }
 
@@ -555,7 +568,8 @@
             };
 
             vm.interpretUserActivities = function (data) {
-                return data;
+                var ret = data;
+                return ret;
             };
 
             vm.interpretNonUpdate = function (activity, data, text) {
@@ -655,7 +669,8 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/reports.html',
-                bindToController: { workType: '='},
+                bindToController: { workType: '=',
+                                    productId: '='},
                 scope: {triggerRefresh: '&'},
                 controllerAs: 'vm',
                 controller: 'ReportController',
