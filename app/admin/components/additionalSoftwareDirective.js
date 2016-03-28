@@ -5,7 +5,6 @@
         .controller('AdditionalSoftwareController', ['$log', '$scope', '$modal', function ($log, $scope, $modal) {
             var vm = this;
 
-            vm.format = format;
             vm.addItem = addItem;
             vm.editItem = editItem;
             vm.removeItem = removeItem;
@@ -15,27 +14,20 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                vm.format();
-            }
-
-            function format () {
-                var ret = '';
-                if (!vm.additionalSoftware || vm.additionalSoftware.length === 0) {
-                    ret = 'None';
-                } else {
-                    for (var i = 0; i < vm.additionalSoftware.length; i++) {
-                        ret += vm.additionalSoftware[i].name;
-                        if (vm.additionalSoftware[i].version !== '-1') {
-                            ret += " (Version: " + vm.additionalSoftware[i].version + ")";
+                vm.displaySw = {};
+                vm.groupCount = 0;
+                for (var i = 0; i < vm.additionalSoftware.length; i++) {
+                    if (vm.additionalSoftware[i].grouping === null) {
+                        vm.displaySw['defaultGroup' + i] = [vm.additionalSoftware[i]];
+                        vm.groupCount += 1;
+                    } else {
+                        if (!vm.displaySw[vm.additionalSoftware[i].grouping]) {
+                            vm.displaySw[vm.additionalSoftware[i].grouping] = [];
+                            vm.groupCount += 1;
                         }
-                        if (vm.additionalSoftware[i].chplId) {
-                            ret += " (CHPL Id: " + vm.additionalSoftware[i].certifiedProductCHPLId + ")";
-                        }
-                        ret += "; ";
+                        vm.displaySw[vm.additionalSoftware[i].grouping].push(vm.additionalSoftware[i]);
                     }
-                    ret = ret.substring(0, ret.length - 2);
                 }
-                return ret;
             }
 
             function addItem () {

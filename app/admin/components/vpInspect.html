@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="inspectLabel">Inspect Certified Product</h4>
+    <h4 class="modal-title" id="inspectLabel">Inspect Certified Product ({{ vm.cp.chplProductNumber }})</h4>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -292,7 +292,6 @@
                 <span ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">: {{ qms.qmsModification }}</span><br /></span>
                 <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation ? vm.cp.reportFileLocation : 'N/A' }} <br />
                 <strong>SED Report File Location:</strong> {{ vm.cp.sedReportFileLocation ? vm.cp.sedReportFileLocation : 'N/A' }} <br />
-                <strong>API Documentation:</strong> {{ vm.cp.apiDocumentation ? vm.cp.apiDocumentation : 'N/A' }} <br />
                 <strong>Terms of Use:</strong> {{ vm.cp.termsOfUse ? vm.cp.termsOfUse : 'N/A' }} <br />
                 <strong>Testing Lab:</strong> {{ vm.cp.testingLab.name }} <br />
                 <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.cp.visibleOnChpl) }} <br />

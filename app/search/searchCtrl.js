@@ -89,9 +89,15 @@
                 switch (vm.refineType) {
                 case 'developer':
                     vm.query.developerObject = vm.refine.developer;
+                    if (vm.query.orderBy === 'developer') {
+                        vm.query.orderBy = 'product';
+                    }
                     break;
                 case 'product':
                     vm.query.productObject = vm.refine.product;
+                    if (vm.query.orderBy === 'developer' || vm.query.orderBy === 'product') {
+                        vm.query.orderBy = 'version';
+                    }
                     break;
                 case 'certificationCriteria':
                     if (!vm.query.certificationCriteria) {
@@ -220,7 +226,7 @@
                 if (str.length > 20) {
                     ret = ret.substring(0,20) + '&#8230;';
                 }
-                ret +='<span class="pull-right"><i class="fa fa-close"></i></span>';
+                ret +='<span class="pull-right"><i class="fa fa-close"></i></span><span class="sr-only">Remove ' + str + ' from compare</span>';
                 return ret;
             }
 
@@ -235,6 +241,9 @@
                     delete(vm.query.product);
                     delete(vm.query.productObject);
                     delete(vm.refine.product);
+                    if (vm.query.orderBy === 'version') {
+                        vm.query.orderBy = 'product';
+                    }
                     break;
                 case 'visibleOnCHPL':
                     vm.query.visibleOnCHPL = 'yes';

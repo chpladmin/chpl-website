@@ -24,6 +24,10 @@
       <input class="input-sm form-control" type="text" ng-required="!vm.sw.name && !vm.sw.version" ng-disabled="vm.sw.name || vm.sw.version" ng-model="vm.sw.certifiedProductNumber" id="swChplId" name="swNumber"></input>
       <div class="text-danger" ng-if="vm.editForm.swNumber.$touched && vm.editForm.swNumber.$error.required">CHPL Product ID is required</div>
     </div>
+    <div class="form-group">
+      <label for="swGroup">Group</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.sw.grouping" id="swGroup" name="swGroup"></input>
+    </div>
   </div>
   <div class="modal-footer">
     <button ng-disabled="vm.editForm.$invalid" class="btn btn-ai-success btn-block" ng-click="vm.save()">Save Additional Software</button>

@@ -6,11 +6,11 @@
     text-align: center;
 }
 
-.compare-rowLead {
+.compare-table th.compare-rowLead {
     text-align: left;
-    font-weight: bold;
 }
 
-.compare-rowLead {
+.compare-table th.compare-rowCert {
     text-align: left;
+    font-weight: 400;
 }
