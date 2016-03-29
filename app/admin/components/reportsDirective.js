@@ -8,7 +8,7 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.tab = 'cp';
             vm.activityRange = 7;
-            vm.questionableRange = 14;
+            vm.questionableRange = 0;
 
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
@@ -322,9 +322,9 @@
                 var change;
                 var certKeys = [
                     {key: 'apiDocumentation', display: 'API Documentation'},
-                    {key: 'g1Success', display: 'Certified to G1'},
-                    {key: 'g2Success', display: 'Certified to G2'},
-                    {key: 'gap', display: 'GAP Tested'},
+                    {key: 'g1Success', display: 'Certified to G1', questionable: true},
+                    {key: 'g2Success', display: 'Certified to G2', questionable: true},
+                    {key: 'gap', display: 'GAP Tested', questionable: true},
                     {key: 'privacySecurityFramework', display: 'Privacy &amp; Security Framework'},
                     {key: 'sed', display: 'SED tested'},
                     {key: 'success', display: 'Successful', questionable: true}
