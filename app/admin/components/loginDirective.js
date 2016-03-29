@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('LoginController', ['$scope', 'commonService', 'authService', '$log', '$location', 'Idle', 'Keepalive', function ($scope, commonService, authService, $log, $location, Idle, Keepalive) {
+        .controller('LoginController', ['$scope', 'commonService', 'authService', '$log', 'Idle', 'Keepalive', function ($scope, commonService, authService, $log, Idle, Keepalive) {
             var vm = this;
 
             vm.activate = activate;
@@ -97,7 +97,6 @@
                     .then(function (response) {
                         Idle.watch();
                         Keepalive.ping();
-                        $location.path('/admin');
                         vm.clear();
                     }, function (error) {
                         vm.message = error.data.error;
@@ -121,7 +120,6 @@
             function sendReset () {
                 commonService.resetPassword({userName: vm.userName, email: vm.email})
                     .then(function (response) {
-                        $location.path('/admin');
                         vm.clear();
                         vm.message = 'Password email sent; please check your email';
                     }, function (error) {

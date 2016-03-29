@@ -2,13 +2,14 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AdminController', ['$log', '$filter', '$routeParams', 'authService', 'commonService', function ($log, $filter, $routeParams, authService, commonService) {
+        .controller('AdminController', ['$log', '$filter', '$routeParams', '$location', 'authService', 'commonService', function ($log, $filter, $routeParams, $location, authService, commonService) {
             var vm = this;
 
             vm.changeAcb = changeAcb
             vm.changeAtl = changeAtl
             vm.changeScreen = changeScreen;
             vm.changeSubNav = changeSubNav;
+            vm.clearProductId = clearProductId;
             vm.getUsername = getUsername;
             vm.isAcbAdmin = isAcbAdmin;
             vm.isAtlAdmin = isAtlAdmin;
@@ -44,6 +45,7 @@
                     vm.navState.screen = $routeParams.section;
                 }
                 if ($routeParams.productId)  {
+                    vm.navState.reports = '';
                     vm.navState.dpManagement = 'manage';
                     vm.productId = $routeParams.productId;
                 }
@@ -76,27 +78,37 @@
             }
 
             function changeScreen (screen) {
+                vm.clearProductId();
                 if (screen === 'acbManagement') {
-                commonService.getAcbs(true, vm.isChplAdmin())
-                    .then (function (data) {
-                        vm.acbs = $filter('orderBy')(data.acbs,'name');
-                        vm.activeAcb = vm.acbs[0];
-                        vm.navState.acbManagement = vm.activeAcb;
-                    });
+                    commonService.getAcbs(true, vm.isChplAdmin())
+                        .then (function (data) {
+                            vm.acbs = $filter('orderBy')(data.acbs,'name');
+                            vm.activeAcb = vm.acbs[0];
+                            vm.navState.acbManagement = vm.activeAcb;
+                        });
                 }
                 if (screen === 'atlManagement') {
-                commonService.getAtls(true, vm.isChplAdmin())
-                    .then (function (data) {
-                        vm.atls = $filter('orderBy')(data.atls,'name');
-                        vm.activeAtl = vm.atls[0];
-                        vm.navState.atlManagement = vm.activeAtl;
-                    });
+                    commonService.getAtls(true, vm.isChplAdmin())
+                        .then (function (data) {
+                            vm.atls = $filter('orderBy')(data.atls,'name');
+                            vm.activeAtl = vm.atls[0];
+                            vm.navState.atlManagement = vm.activeAtl;
+                        });
                 }
                 vm.navState.screen = screen;
             }
 
             function changeSubNav (subScreen) {
+                vm.clearProductId();
                 vm.navState[vm.navState.screen] = subScreen;
+            }
+
+            function clearProductId () {
+                var path = $location.path();
+                if ($routeParams.productId)  {
+                    path = path.substring(0,path.lastIndexOf('/'));
+                    $location.path(path);
+                }
             }
 
             function getUsername () {

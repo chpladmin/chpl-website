@@ -1,5 +1,12 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### New features
+* Added direct link to CP activity by CP id
+* Added visible indicator to 'questionable' modification activities
+
 ## Version 0.5.0
 _25 March 2016_
 

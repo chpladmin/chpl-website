@@ -132,8 +132,10 @@
         <li ng-if="vm.editForm.cpTouLoc.$error.url">Terms of Use URL is an invalid format (http://www.example.com)</li>
       </ul>
     </div>
-    <div class="text-danger text-left" ng-if="vm.message">
-      {{ vm.message }}
+    <div class="text-danger text-left" ng-if="vm.errors">
+      <ul>
+        <li ng-repeat="msg in vm.errors track by $index">{{ msg }}</li>
+      </ul>
     </div>
     <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors"
             class="btn btn-ai-success btn-block"

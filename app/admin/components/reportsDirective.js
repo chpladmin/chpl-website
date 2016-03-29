@@ -8,6 +8,7 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.tab = 'cp';
             vm.activityRange = 7;
+            vm.questionableRange = 0;
 
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
@@ -20,6 +21,7 @@
             vm.refreshUser = refreshUser;
             vm.refreshApi = refreshApi;
             vm.refreshVisitors = refreshVisitors;
+            vm.singleCp = singleCp;
 
             activate();
 
@@ -29,12 +31,16 @@
             function activate () {
                 vm.visibleApiPage = 1;
                 vm.apiKeyPageSize = 100;
-                vm.refreshCp();
+                vm.refreshActivity();
                 vm.refreshVisitors();
             }
 
             function refreshActivity () {
-                vm.refreshCp();
+                if (vm.productId) {
+                    vm.singleCp();
+                } else {
+                    vm.refreshCp();
+                }
                 vm.refreshDeveloper();
                 vm.refreshProduct();
                 vm.refreshAcb();
@@ -151,6 +157,14 @@
                     });
             }
 
+            function singleCp () {
+                commonService.getSingleCertifiedProductActivity(vm.productId)
+                    .then(function (data) {
+                        vm.searchedCertifiedProducts = interpretCps(data);
+                        vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
+                    });
+            }
+
             function changeTab(newTab) {
                 switch (newTab) {
                 case 'cp':
@@ -253,6 +267,7 @@
                 ];
                 var ret = [];
                 var change;
+                var questionable;
 
                 for (var i = 0; i < data.length; i++) {
                     var activity = {
@@ -262,7 +277,10 @@
                     if (data[i].description === 'Created a certified product') {
                         activity.action = 'Created certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
                     } else if (data[i].description.substring(0,7) === 'Updated') {
+                        questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
                         activity.action = 'Updated certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
+                        if (data[i].newData.certificationEdition.name === '2011')
+                            activity.action = '<span class="bg-danger">' + activity.action + '</span>';
                         activity.details = [];
                         for (var j = 0; j < simpleCpFields.length; j++) {
                             change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
@@ -272,11 +290,11 @@
                             change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
                             if (change) activity.details.push(change);
                         }
-                        var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
+                        var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
                         for (var j = 0; j < certChanges.length; j++) {
                             activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                         }
-                        var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults);
+                        var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
                         for (var j = 0; j < cqmChanges.length; j++) {
                             activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                         }
@@ -299,17 +317,17 @@
                 return ret;
             }
 
-            function compareCerts (prev, curr) {
+            function compareCerts (prev, curr, questionable) {
                 var ret = [];
                 var change;
                 var certKeys = [
                     {key: 'apiDocumentation', display: 'API Documentation'},
-                    {key: 'g1Success', display: 'Certified to G1'},
-                    {key: 'g2Success', display: 'Certified to G2'},
-                    {key: 'gap', display: 'GAP Tested'},
+                    {key: 'g1Success', display: 'Certified to G1', questionable: true},
+                    {key: 'g2Success', display: 'Certified to G2', questionable: true},
+                    {key: 'gap', display: 'GAP Tested', questionable: true},
                     {key: 'privacySecurityFramework', display: 'Privacy &amp; Security Framework'},
                     {key: 'sed', display: 'SED tested'},
-                    {key: 'success', display: 'Successful'}
+                    {key: 'success', display: 'Successful', questionable: true}
                 ];
                 prev.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
                 curr.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
@@ -317,7 +335,12 @@
                     var obj = { number: curr[i].number, changes: [] };
                     for (var j = 0; j < certKeys.length; j++) {
                         change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
-                        if (change) obj.changes.push('<li>' + change + '</li>');
+                        if (change)
+                            if (certKeys[j].questionable && questionable) {
+                                obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
+                            } else {
+                                obj.changes.push('<li>' + change + '</li>');
+                            }
                     }
                     var addlSwKeys = [
                         {key: 'version', display: 'Version'},
@@ -425,7 +448,7 @@
                 return ret;
             }
 
-            function compareCqms (prev, curr) {
+            function compareCqms (prev, curr, questionable) {
                 var ret = [];
                 var change;
                 prev.sort(function(a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
@@ -433,7 +456,12 @@
                 for (var i = 0; i < prev.length; i++) {
                     var obj = { cmsId: curr[i].cmsId, changes: [] };
                     change = compareItem(prev[i], curr[i], 'success', 'Success');
-                    if (change) obj.changes.push('<li>' + change + '</li>');
+                    if (change)
+                        if (questionable) {
+                            obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
+                        } else {
+                            obj.changes.push('<li>' + change + '</li>');
+                        }
                     for (var j = 0; j < prev[i].allVersions.length; j++) {
                         if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) < 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0)
                             obj.changes.push('<li>' + prev[i].allVersions[j] + ' added</li>');
@@ -555,7 +583,8 @@
             };
 
             vm.interpretUserActivities = function (data) {
-                return data;
+                var ret = data;
+                return ret;
             };
 
             vm.interpretNonUpdate = function (activity, data, text) {
@@ -655,7 +684,8 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/reports.html',
-                bindToController: { workType: '='},
+                bindToController: { workType: '=',
+                                    productId: '='},
                 scope: {triggerRefresh: '&'},
                 controllerAs: 'vm',
                 controller: 'ReportController',

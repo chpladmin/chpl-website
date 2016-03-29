@@ -142,6 +142,10 @@
                 return self.simpleApiCall('/activity/certified_products?lastNDays=' + nDays);
             };
 
+            self.getSingleCertifiedProductActivity = function (productId) {
+                return self.simpleApiCall('/activity/certified_products/' + productId);
+            };
+
             self.getDeveloperActivity = function (nDays) {
                 return self.simpleApiCall('/activity/developers?lastNDays=' + nDays);
             };
