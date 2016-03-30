@@ -259,7 +259,7 @@
                     {key: 'visibleOnChpl', display: 'Visible on CHPL'}
                 ];
                 var nestedKeys = [
-                    {key: 'certificationStatus', subkey: 'name', display: 'Certification Status'},
+                    {key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
                     {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
                     {key: 'classificationType', subkey: 'name', display: 'Classification Type'},
                     {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
@@ -288,7 +288,12 @@
                         }
                         for (var j = 0; j < nestedKeys.length; j++) {
                             change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                            if (change) activity.details.push(change);
+                            if (change)
+                                if (nestedKeys[j].questionable && questionable) {
+                                    activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
+                                } else {
+                                    activity.details.push(change);
+                                }
                         }
                         var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
                         for (var j = 0; j < certChanges.length; j++) {
