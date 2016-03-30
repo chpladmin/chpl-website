@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 1.0.0
+_30 March 2016_
 
 ### New features
 * Added direct link to CP activity by CP id
