@@ -68,7 +68,7 @@
                     if (vm.certs[i].sed === 'null') {
                         delete (vm.certs[i].sed);
                     }
-                    if (vm.certs[i].sed) {
+                    if (vm.certs[i].sed && vm.certs[i].testTasks) {
                         for (var j = 0; j < vm.certs[i].testTasks.length; j++) {
                             if (vm.certs[i].testTasks[j].changed) {
                                 changedTasks.push(vm.certs[i].testTasks[j]);
@@ -83,7 +83,7 @@
                 }
 
                 for (var i = 0; i < vm.certs.length; i++) {
-                    if (vm.certs[i].sed) {
+                    if (vm.certs[i].sed && vm.certs[i].testTasks) {
                         for (var j = 0; j < vm.certs[i].testTasks.length; j++) {
                             for (var k = 0; i < changedTasks.length; i++) {
                                 if (vm.certs[i].testTasks[j].id === changedTasks[k].id && !vm.certs[i].testTasks[j].changed && vm.certs[i].testTasks[j].id) {
