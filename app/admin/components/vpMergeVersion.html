@@ -17,7 +17,7 @@
             <span>{{ version.version }}</span>
           </div>
           <div class="panel-body">
-            Last Modified Date: {{ version.lastModifiedDate | date }}
+            Last Modified Date: {{ version.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
           </div>
         </div>
       </div>

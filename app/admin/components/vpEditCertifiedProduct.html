@@ -35,7 +35,7 @@
     </div>
     <div class="form-group">
       <label for="cpCertDate">Certification Date</label>
-      <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" name="cpCertDate" required></input>
+      <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>

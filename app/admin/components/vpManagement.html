@@ -79,7 +79,7 @@
               <td>{{ cp.developer.name }}</td>
               <td>{{ cp.product.name }}</td>
               <td>{{ cp.product.version }}</td>
-              <td>{{ cp.certificationDate | date }}</td>
+              <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
                 <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>

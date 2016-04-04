@@ -1,5 +1,11 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### Bugs fixed
+* Display / edit all dates as UTC
+
 ## Version 1.0.0
 _30 March 2016_
 

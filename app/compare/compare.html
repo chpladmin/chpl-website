@@ -35,7 +35,7 @@
           </tr>
           <tr>
             <th scope="row" class="compare-rowLead">Certification Date</th>
-            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.certificationDate | date }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'chplProductNumber'">{{ product.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
           </tr>
           <tr>
             <th scope="row" class="compare-rowLead">CHPL Product Number</th>
