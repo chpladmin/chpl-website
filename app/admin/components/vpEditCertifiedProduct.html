@@ -9,7 +9,32 @@
     <h4 class="modal-title" id="editCertifiedProductLabel">Edit Certified Product</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
-    <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
+    <div ng-if="vm.idFields" class="form-inline">
+      <span class="form-control-static">
+        <strong>CHPL Product Number:</strong>{{ vm.idFields.prefix }}
+      </span>
+      <div class="form-group">
+        <label for="idProd" class="sr-only">Product Code:</label>
+        <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" required></input>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idProd.$touched) && vm.editForm.idProd.$error.required">Field is required</span>
+      </div>
+      <div class="form-group">
+        <label for="idVer" class="sr-only">Version Code:</label>
+        <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" required></input>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idVer.$touched) && vm.editForm.idVer.$error.required">Field is required</span>
+      </div>
+      <div class="form-group">
+        <label for="idIcs" class="sr-only">ICS Code:</label>
+        <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="1" required></input>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.editForm.idIcs.$error.required">Field is required</span>
+      </div>
+      <span class="form-control-static">
+        {{ vm.idFields.suffix }}
+      </span>
+    </div>
+    <div ng-if="!vm.idFields">
+      <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
+    </div>
     <div class="form-group">
       <label for="cpPractice">Practice Type</label>
       <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice" name="cpPractice"

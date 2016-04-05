@@ -3,6 +3,9 @@
 ## Next version
 _Date TBD_
 
+### New feature
+* Allow editing of new style CHPL Product Number
+
 ### Bugs fixed
 * Display / edit all dates as UTC
 * Display correct warning/success formating on login messages
