@@ -5,6 +5,7 @@ _Date TBD_
 
 ### Bugs fixed
 * Display / edit all dates as UTC
+* Display correct warning/success formating on login messages
 
 ## Version 1.0.0
 _30 March 2016_
