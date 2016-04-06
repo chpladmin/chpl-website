@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New feature
 * Allow editing of new style CHPL Product Number
+* Show attestation status for each developer/acb in 'developer codes' table
 
 ### Bugs fixed
 * Display / edit all dates as UTC
