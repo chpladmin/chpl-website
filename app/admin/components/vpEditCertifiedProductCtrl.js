@@ -100,6 +100,7 @@
                         vm.idFields.ics + '.' +
                         vm.idFields.suffix;
                 }
+                vm.cp.certificationDate = vm.cp.certDate.getTime();
                 if (vm.workType === 'manage') {
                     commonService.updateCP(vm.cp)
                         .then(function (response) {
@@ -122,7 +123,6 @@
                 } else if (vm.workType === 'confirm') {
                     $modalInstance.close(vm.cp);
                 }
-
             }
         }]);
 })();

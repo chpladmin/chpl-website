@@ -10,6 +10,7 @@ _Date TBD_
 * Display / edit all dates as UTC
 * Display correct warning/success formating on login messages
 * Correctly save changes to SED Test Participants
+* Allow admins to change certification date of CP
 
 ## Version 1.0.0
 _30 March 2016_
