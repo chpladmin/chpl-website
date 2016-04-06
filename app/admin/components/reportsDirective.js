@@ -378,9 +378,9 @@
                         obj.changes.push('<li>Test Tool Name "' + testToolsUsed[j].name + '" changes<ul>' + testToolsUsed[j].changes.join('') + '</ul></li>');
                     }
                     var testStandardsKeys = [{key: 'testStandardName', display: 'Test Standard Name'}];
-                    var testStandards = compareArray(prev[i].testStandards, curr[i].testStandards, testStandardsKeys, 'testStandardNumber');
+                    var testStandards = compareArray(prev[i].testStandards, curr[i].testStandards, testStandardsKeys, 'testStandardName');
                     for (var j = 0; j < testStandards.length; j++) {
-                        obj.changes.push('<li>Test Standard Number "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul></li>');
+                        obj.changes.push('<li>Test Standard Description "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul></li>');
                     }
                     var ucdProcessesKeys = [{key: 'ucdProcessDetails', display: 'UCD Process Details'}];
                     var ucdProcesses = compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
