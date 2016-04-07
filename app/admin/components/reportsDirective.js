@@ -564,7 +564,7 @@
                             if (change) activity.action += '<li>' + change + '</li>';
                             change = compareAddress(data[i].originalData.address, data[i].newData.address);
                             if (change && change.length > 0) {
-                                activity.action += '<li>Address changes<ul>' + addressChanges.join('') + '</ul></li>';
+                                activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
                             }
                             activity.action += '</ul>';
                         }

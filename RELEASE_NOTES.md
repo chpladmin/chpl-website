@@ -8,6 +8,7 @@ _Date TBD_
 * Show attestation status for each developer/acb in 'developer codes' table
 * Shows Developer editing errors on mouseover of 'confirm' button
 * Improved display of Reports
+* Allow ACB/ATL admins to edit their name
 
 ### Bugs fixed
 * Display / edit all dates as UTC
