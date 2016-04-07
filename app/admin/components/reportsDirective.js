@@ -61,7 +61,7 @@
             function refreshDeveloper () {
                 commonService.getDeveloperActivity(vm.activityRange)
                     .then(function (data) {
-                        vm.searchedDevelopers = vm.interpretDevelopers(data);
+                        vm.searchedDevelopers = interpretDevelopers(data);
                         vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
                     });
             }
@@ -479,28 +479,51 @@
                 return ret;
             }
 
-            vm.interpretDevelopers = function (data) {
+            function interpretDevelopers (data) {
+                var simpleFields = [
+                    {key: 'deleted', display: 'Deleted'},
+                    {key: 'developerCode', display: 'Developer Code'},
+                    {key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
+                    {key: 'name', display: 'Name'},
+                    {key: 'website', display: 'Website'}
+                ];
                 var ret = [];
                 var change;
+                var questionable = true;
 
                 for (var i = 0; i < data.length; i++) {
-                    var activity = {date: data[i].activityDate};
+                    var activity = {
+                        date: data[i].activityDate,
+                        newId: data[i].id
+                    };
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                        activity.name = data[i].newData.name;
-                        activity.action = 'Update:<ul>';
-                        change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        vm.analyzeAddress(activity, data[i]);
-                        activity.action += '</ul>';
+                        activity.action = 'Updated developer "' + data[i].newData.name + '"';
+                        activity.details = [];
+                        for (var j = 0; j < simpleFields.length; j++) {
+                            change = compareItem(data[i].originalData, data[i].newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
+                            if (change) activity.details.push(change);
+                        }
+                        var addressChanges = compareAddress(data[i].originalData.address, data[i].newData.address);
+                        if (addressChanges && addressChanges.length > 0) {
+                            activity.details.push('Address changes<ul>' + addressChanges.join('') + '</ul>');
+                        }
+                        var contactChanges = compareContact(data[i].originalData.contact, data[i].newData.contact);
+                        if (contactChanges && contactChanges.length > 0) {
+                            activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
+                        }
+                        var transKeys = [{key: 'transparencyAttestation', display: 'Transparency Attestation'}];
+                        var trans = compareArray(data[i].originalData.transparencyAttestationMappings, data[i].newData.transparencyAttestationMappings, transKeys, 'acbName');
+                        for (var j = 0; j < trans.length; j++) {
+                            activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
+                        }
+                        if (activity.details.length === 0) delete activity.details;
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'developer');
                     }
                     ret.push(activity);
                 }
                 return ret;
-            };
+            }
 
             vm.interpretProducts = function (data) {
                 var ret = [];
@@ -539,7 +562,10 @@
                             if (change) activity.action += '<li>' + change + '</li>';
                             change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                             if (change) activity.action += '<li>' + change + '</li>';
-                            vm.analyzeAddress(activity, data[i]);
+                            change = compareAddress(data[i].originalData.address, data[i].newData.address);
+                            if (change && change.length > 0) {
+                                activity.action += '<li>Address changes<ul>' + addressChanges.join('') + '</ul></li>';
+                            }
                             activity.action += '</ul>';
                         }
                     } else {
@@ -566,7 +592,10 @@
                             if (change) activity.action += '<li>' + change + '</li>';
                             change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                             if (change) activity.action += '<li>' + change + '</li>';
-                            vm.analyzeAddress(activity, data[i]);
+                             change = compareAddress(data[i].originalData.address, data[i].newData.address);
+                            if (change && change.length > 0) {
+                                activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
+                            }
                             activity.action += '</ul>';
                         }
                     } else {
@@ -607,22 +636,48 @@
                 }
             };
 
+            function compareAddress (prev, curr) {
+                var simpleFields = [
+                    {key: 'streetLineOne', display: 'Street Line 1'},
+                    {key: 'streetLineTwo', display: 'Street Line 2'},
+                    {key: 'city', display: 'City'},
+                    {key: 'state', display: 'State'},
+                    {key: 'zipcode', display: 'Zipcode'},
+                    {key: 'country', display: 'Country'}
+                ];
+                return compareObject(prev, curr, simpleFields);
+            }
+
+            function compareContact (prev, curr) {
+                var simpleFields = [
+                    {key: 'firstName', display: 'First Name'},
+                    {key: 'lastName', display: 'Last Name'},
+                    {key: 'phoneNumber', display: 'Phone Number'},
+                    {key: 'title', display: 'Title'},
+                    {key: 'email', display: 'Email'}
+                ];
+                return compareObject(prev, curr, simpleFields);
+            }
+
+            function compareObject (prev, curr, fields) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < fields.length; i++) {
+                    change = compareItem(prev, curr, fields[i].key, fields[i].display, fields[i].filter);
+                    if (change) ret.push('<li>' + change + '</li>');
+                }
+                return ret;
+            }
+
             vm.analyzeAddress = function (activity, data) {
                 if (data.originalData.address !== data.newData.address) {
                     var change;
-                    activity.action += '<li>Address changed:<ul>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'streetLineOne', 'Street Line 1');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'streetLineTwo', 'Street Line 2');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'city', 'City');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'state', 'State');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'zipcode', 'Zipcode');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'country', 'Country');
-                    if (change) activity.action += '<li>' + change + '</li>';
+                    activity.action += '<li>Address changes<ul>';
+                    change = compareAddress(data.originalData.address, data.newData.address);
+                    if (change && change.length > 0) {
+                        activity.action += change.join('');
+                    }
                     activity.action += '</ul></li>';
                 }
             };

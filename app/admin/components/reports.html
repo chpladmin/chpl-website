@@ -34,18 +34,21 @@
         <table st-table="vm.displayedDevelopers" st-safe-src="vm.searchedDevelopers" class="table table-striped">
           <thead>
             <tr>
-              <th class="search-header" st-sort="name" st-skip-natural="true">Developer</th>
               <th class="">Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-if="vm.displayedDevelopers.length === 0">
-              <td colspan="3">No activity found</td>
+              <td colspan="2">No activity found</td>
             </tr>
 	        <tr ng-repeat="activity in vm.displayedDevelopers" ng-if="vm.displayedDevelopers.length > 0">
-		      <td class="">{{ activity.name }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
+		      <td class="">
+                <span ng-bind-html="activity.action"></span>
+                <ul ng-if="activity.details">
+                  <li ng-repeat="str in activity.details" ng-bind-html="str"></li>
+                </ul>
+              </td>
 		      <td class="">{{ activity.date | date : 'medium' : 'UTC' }}</td>
             </tr>
           </tbody>

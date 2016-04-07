@@ -3,10 +3,11 @@
 ## Next version
 _Date TBD_
 
-### New feature
+### New features
 * Allow editing of new style CHPL Product Number
 * Show attestation status for each developer/acb in 'developer codes' table
 * Shows Developer editing errors on mouseover of 'confirm' button
+* Improved display of Reports
 
 ### Bugs fixed
 * Display / edit all dates as UTC
