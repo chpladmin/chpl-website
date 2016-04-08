@@ -19,6 +19,7 @@
             inject(function($q) {
                 mockCommonService.developerActivity = [{description: 'string', name: 'Developer 1', date: 123123123}];
                 mockCommonService.productActivity = ['Product 1', 'Product 2'];
+                mockCommonService.versionActivity = ['Version 1', 'Version 2'];
                 mockCommonService.certBodyActivity  = ['CB 1', 'CB 2'];
                 mockCommonService.cpActivity = [{newData: {developer: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}, description: 'something happened'}];
                 mockCommonService.userActivity = [];
@@ -54,6 +55,12 @@
                 mockCommonService.getProductActivity = function () {
                     var defer = $q.defer();
                     defer.resolve(this.productActivity);
+                    return defer.promise;
+                };
+
+                mockCommonService.getVersionActivity = function () {
+                    var defer = $q.defer();
+                    defer.resolve(this.versionActivity);
                     return defer.promise;
                 };
 

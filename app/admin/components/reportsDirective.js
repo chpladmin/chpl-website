@@ -72,6 +72,11 @@
                         vm.searchedProducts = vm.interpretProducts(data);
                         vm.displayedProducts = [].concat(vm.searchedProducts);
                     });
+                commonService.getVersionActivity(vm.activityRange)
+                    .then(function (data) {
+                        vm.searchedVersions = vm.interpretVersions(data);
+                        vm.displayedVersions = [].concat(vm.searchedVersions);
+                    });
             }
 
             function refreshAcb () {
@@ -540,6 +545,26 @@
                         activity.action += '</ul>';
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'product');
+                    }
+                    ret.push(activity);
+                }
+                return ret;
+            };
+
+            vm.interpretVersions = function (data) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < data.length; i++) {
+                    var activity = {date: data[i].activityDate};
+                    if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
+                        activity.name = data[i].newData.productName;
+                        activity.action = 'Update:<ul>';
+                        change = compareItem(data[i].originalData, data[i].newData, 'version', 'Version');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        activity.action += '</ul>';
+                    } else {
+                        vm.interpretNonUpdate(activity, data[i], 'version');
                     }
                     ret.push(activity);
                 }
