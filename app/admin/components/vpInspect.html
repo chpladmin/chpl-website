@@ -89,7 +89,7 @@
               Email: {{ vm.developer.contact.email }}<br />
               Phone: {{ vm.developer.contact.phoneNumber }}<br />
               <br />
-              Last Modified Date: {{ vm.developer.lastModifiedDate | date }}
+              Last Modified Date: {{ vm.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </div>
           </div>
         </div>
@@ -174,7 +174,7 @@
             </div>
             <div class="panel-body">
               <br />
-              Last Modified Date: {{ vm.product.lastModifiedDate | date }}
+              Last Modified Date: {{ vm.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </div>
           </div>
         </div>
@@ -242,7 +242,7 @@
             </div>
             <div class="panel-body">
               <br />
-              Last Modified Date: {{ vm.version.lastModifiedDate | date }}
+              Last Modified Date: {{ vm.version.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </div>
           </div>
         </div>
@@ -281,7 +281,7 @@
                 <strong>Classification Type:</strong> {{ vm.cp.classificationType.name }} <br />
                 <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
                 <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
-                <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date }} <br />
+                <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
                 <span ng-if="vm.cp.productAdditionalSoftware"><strong>Additional Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br /></span>
                 <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
                 <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />

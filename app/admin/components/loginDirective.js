@@ -60,8 +60,10 @@
                     commonService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
                         .then(function (response) {
                             vm.clear();
+                            vm.messageClass = vm.pClass;
                             vm.message = 'Password successfully changed';
                         }, function (error) {
+                            vm.messageClass = vm.pClassFail;
                             vm.message = 'Error. Please check your credentials or contact the administrator';
                         });
                 } else {
@@ -99,6 +101,7 @@
                         Keepalive.ping();
                         vm.clear();
                     }, function (error) {
+                        vm.messageClass = vm.pClassFail;
                         vm.message = error.data.error;
                     });
             }
@@ -121,8 +124,10 @@
                 commonService.resetPassword({userName: vm.userName, email: vm.email})
                     .then(function (response) {
                         vm.clear();
+                        vm.messageClass = vm.pClass;
                         vm.message = 'Password email sent; please check your email';
                     }, function (error) {
+                        vm.messageClass = vm.pClassFail;
                         vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
                     });
             }
@@ -138,7 +143,8 @@
                 },
                 bindToController: {
                     formClass: '@',
-                    pClass: '@'
+                    pClass: '@',
+                    pClassFail: '@'
                 },
                 controllerAs: 'vm',
                 controller: 'LoginController'

@@ -17,6 +17,7 @@
 
             function activate () {
                 vm.isAcbAdmin = authService.isAcbAdmin();
+                vm.showFormErrors = false;
             }
 
             function addressRequired () {

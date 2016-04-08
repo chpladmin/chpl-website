@@ -1,5 +1,21 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### New features
+* Allow editing of new style CHPL Product Number
+* Show attestation status for each developer/acb in 'developer codes' table
+* Shows Developer editing errors on mouseover of 'confirm' button
+* Improved display of Reports
+* Allow ACB/ATL admins to edit their name
+
+### Bugs fixed
+* Display / edit all dates as UTC
+* Display correct warning/success formating on login messages
+* Correctly save changes to SED Test Participants
+* Allow admins to change certification date of CP
+
 ## Version 1.0.0
 _30 March 2016_
 
