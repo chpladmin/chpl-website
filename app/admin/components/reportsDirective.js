@@ -72,6 +72,11 @@
                         vm.searchedProducts = vm.interpretProducts(data);
                         vm.displayedProducts = [].concat(vm.searchedProducts);
                     });
+                commonService.getVersionActivity(vm.activityRange)
+                    .then(function (data) {
+                        vm.searchedVersions = vm.interpretVersions(data);
+                        vm.displayedVersions = [].concat(vm.searchedVersions);
+                    });
             }
 
             function refreshAcb () {
@@ -546,6 +551,26 @@
                 return ret;
             };
 
+            vm.interpretVersions = function (data) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < data.length; i++) {
+                    var activity = {date: data[i].activityDate};
+                    if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
+                        activity.name = data[i].newData.productName;
+                        activity.action = 'Update:<ul>';
+                        change = compareItem(data[i].originalData, data[i].newData, 'version', 'Version');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        activity.action += '</ul>';
+                    } else {
+                        vm.interpretNonUpdate(activity, data[i], 'version', 'version');
+                    }
+                    ret.push(activity);
+                }
+                return ret;
+            };
+
             vm.interpretAcbs = function (data) {
                 var ret = [];
                 var change;
@@ -621,17 +646,18 @@
                 return ret;
             };
 
-            vm.interpretNonUpdate = function (activity, data, text) {
+            vm.interpretNonUpdate = function (activity, data, text, key) {
+                if (!key) key = 'name';
                 if (data.originalData && !data.newData) { // no new data: deleted
-                    activity.name = data.originalData.name;
+                    activity.name = data.originalData[key];
                     activity.action = [activity.name + ' has been deleted'];
                 }
                 if (!data.originalData && data.newData) { // no old data: created
-                    activity.name = data.newData.name;
+                    activity.name = data.newData[key];
                     activity.action = [activity.name + ' has been created'];
                 }
                 if (data.originalData && data.originalData.length > 1 && data.newData) { // both exist, more than one originalData: merge
-                    activity.name = data.newData.name;
+                    activity.name = data.newData[key];
                     activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': ' + activity.name];
                 }
             };
@@ -716,19 +742,19 @@
             function compareItem (oldData, newData, key, display, filter) {
                 if (oldData && oldData[key] && newData && newData[key] && oldData[key] !== newData[key]) {
                     if (filter)
-                        return display + ' changed from ' + $filter(filter)(oldData[key]) + ' to ' + $filter(filter)(newData[key]);
+                        return display + ' changed from ' + $filter(filter)(oldData[key],'mediumDate','UTC') + ' to ' + $filter(filter)(newData[key],'mediumDate','UTC');
                     else
                         return display + ' changed from ' + oldData[key] + ' to ' + newData[key];
                 }
                 if ((!oldData || !oldData[key]) && newData && newData[key]) {
                     if (filter)
-                        return display + ' added: ' + $filter(filter)(newData[key]);
+                        return display + ' added: ' + $filter(filter)(newData[key],'mediumDate','UTC');
                     else
                         return display + ' added: ' + newData[key];
                 }
                 if (oldData && oldData[key] && (!newData || !newData[key])) {
                     if (filter)
-                        return display + ' removed. Was: ' + $filter(filter)(oldData[key]);
+                        return display + ' removed. Was: ' + $filter(filter)(oldData[key],'mediumDate','UTC');
                     else
                         return display + ' removed. Was: ' + oldData[key];
                 }

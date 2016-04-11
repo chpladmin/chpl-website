@@ -9,6 +9,7 @@ _Date TBD_
 * Shows Developer editing errors on mouseover of 'confirm' button
 * Improved display of Reports
 * Allow ACB/ATL admins to edit their name
+* Show 'Version' activity
 
 ### Bugs fixed
 * Display / edit all dates as UTC
