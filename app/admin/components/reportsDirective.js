@@ -564,7 +564,7 @@
                         if (change) activity.action += '<li>' + change + '</li>';
                         activity.action += '</ul>';
                     } else {
-                        vm.interpretNonUpdate(activity, data[i], 'version');
+                        vm.interpretNonUpdate(activity, data[i], 'version', 'version');
                     }
                     ret.push(activity);
                 }
@@ -646,17 +646,18 @@
                 return ret;
             };
 
-            vm.interpretNonUpdate = function (activity, data, text) {
+            vm.interpretNonUpdate = function (activity, data, text, key) {
+                if (!key) key = 'name';
                 if (data.originalData && !data.newData) { // no new data: deleted
-                    activity.name = data.originalData.name;
+                    activity.name = data.originalData[key];
                     activity.action = [activity.name + ' has been deleted'];
                 }
                 if (!data.originalData && data.newData) { // no old data: created
-                    activity.name = data.newData.name;
+                    activity.name = data.newData[key];
                     activity.action = [activity.name + ' has been created'];
                 }
                 if (data.originalData && data.originalData.length > 1 && data.newData) { // both exist, more than one originalData: merge
-                    activity.name = data.newData.name;
+                    activity.name = data.newData[key];
                     activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': ' + activity.name];
                 }
             };
