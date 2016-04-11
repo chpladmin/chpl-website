@@ -742,19 +742,19 @@
             function compareItem (oldData, newData, key, display, filter) {
                 if (oldData && oldData[key] && newData && newData[key] && oldData[key] !== newData[key]) {
                     if (filter)
-                        return display + ' changed from ' + $filter(filter)(oldData[key]) + ' to ' + $filter(filter)(newData[key]);
+                        return display + ' changed from ' + $filter(filter)(oldData[key],'mediumDate','UTC') + ' to ' + $filter(filter)(newData[key],'mediumDate','UTC');
                     else
                         return display + ' changed from ' + oldData[key] + ' to ' + newData[key];
                 }
                 if ((!oldData || !oldData[key]) && newData && newData[key]) {
                     if (filter)
-                        return display + ' added: ' + $filter(filter)(newData[key]);
+                        return display + ' added: ' + $filter(filter)(newData[key],'mediumDate','UTC');
                     else
                         return display + ' added: ' + newData[key];
                 }
                 if (oldData && oldData[key] && (!newData || !newData[key])) {
                     if (filter)
-                        return display + ' removed. Was: ' + $filter(filter)(oldData[key]);
+                        return display + ' removed. Was: ' + $filter(filter)(oldData[key],'mediumDate','UTC');
                     else
                         return display + ' removed. Was: ' + oldData[key];
                 }
