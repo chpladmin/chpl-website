@@ -213,10 +213,10 @@
             }
 
 			function toggleCart (row) {
-				if (isProductInCart(row.product.id)) {
-					removeProductFromCart(row.product.id);
+				if (isProductInCart(row.id)) {
+					removeProductFromCart(row.id);
 				} else {
-					addProductToCart(row.product.id);
+					addProductToCart(row.id);
                 }
 				vm.boxes.certificationId = true;
             }
