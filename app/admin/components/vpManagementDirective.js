@@ -380,6 +380,9 @@
                     size: 'lg'
                 });
                 self.modalInstance.result.then(function (result) {
+                    if (result.developerCreated) {
+                        self.developers.push(result.developer);
+                    }
                     for (var i = 0; i < self.uploadingCps.length; i++) {
                         if (cpId === self.uploadingCps[i].id) {
                             self.uploadingCps.splice(i,1)
@@ -388,6 +391,9 @@
                     }
                 }, function (result) {
                     if (result !== 'cancelled') {
+                        if (result.developerCreated) {
+                            self.developers.push(result.developer);
+                        }
                         for (var i = 0; i < self.uploadingCps.length; i++) {
                             if (cpId === self.uploadingCps[i].id) {
                                 self.uploadingCps.splice(i,1)

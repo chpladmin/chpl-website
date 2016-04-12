@@ -178,8 +178,8 @@
 
             function confirm () {
                 commonService.confirmPendingCp(vm.cp)
-                    .then(function () {
-                        $modalInstance.close('confirmed');
+                    .then(function (result) {
+                        $modalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
                     }, function (error) {
                         vm.errorMessages = error.data.errorMessages;
                     });
