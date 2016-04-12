@@ -31,22 +31,18 @@
                 vm.workType = workType;
                 vm.showFormErrors = false;
                 vm.message = '';
+                if (vm.cp.chplProductNumber.length > 12) {
+                    var idFields = vm.cp.chplProductNumber.split('.');
+                    vm.idFields = {
+                        prefix: idFields[0] + '.' + idFields[1] + '.' + idFields[2] + '.' + idFields[3],
+                        prod: idFields[4],
+                        ver: idFields[5],
+                        ics: idFields[6],
+                        suffix: idFields[7] + '.' + idFields[8]
+                    };
+                }
 
                 vm.handlers = [];
-
-                if (vm.cp.certificationEdition.name === '2015') {
-                    var idFields = vm.cp.chplProductNumber.split('.');
-                    vm.cp.chplId = {
-                        acb: idFields[0],
-                        atl: idFields[1],
-                        dev: idFields[2],
-                        prod: idFields[3],
-                        ver: idFields[4],
-                        ics: idFields[5],
-                        adds: idFields[6],
-                        date: idFields[7]
-                    }
-                }
                 vm.attachModel();
             }
 
@@ -96,6 +92,15 @@
             }
 
             function save () {
+                if (vm.cp.chplProductNumber.length > 12) {
+                    vm.cp.chplProductNumber =
+                        vm.idFields.prefix + '.' +
+                        vm.idFields.prod + '.' +
+                        vm.idFields.ver + '.' +
+                        vm.idFields.ics + '.' +
+                        vm.idFields.suffix;
+                }
+                vm.cp.certificationDate = vm.cp.certDate.getTime();
                 if (vm.workType === 'manage') {
                     commonService.updateCP(vm.cp)
                         .then(function (response) {
@@ -118,7 +123,6 @@
                 } else if (vm.workType === 'confirm') {
                     $modalInstance.close(vm.cp);
                 }
-
             }
         }]);
 })();

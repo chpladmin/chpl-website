@@ -73,9 +73,11 @@
                             if (vm.certs[i].testTasks[j].changed) {
                                 changedTasks.push(vm.certs[i].testTasks[j]);
                             }
-                            for (var k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
-                                if (vm.certs[i].testTasks[j].testParticipants[k].changed) {
-                                    changedParticipants.push(vm.certs[i].testTasks[j].testParticipants[k]);
+                            if (vm.certs[i].testTasks[j].testParticipants) {
+                                for (var k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
+                                    if (vm.certs[i].testTasks[j].testParticipants[k].changed) {
+                                        changedParticipants.push(vm.certs[i].testTasks[j].testParticipants[k]);
+                                    }
                                 }
                             }
                         }
@@ -102,20 +104,22 @@
                                     vm.certs[i].testTasks[j].taskTimeStddev = changedTasks[k].taskTimeStddev;
                                     vm.certs[i].testTasks[j].testTaskId = changedTasks[k].testTaskId;
                                 }
-                            }
-                            for (var k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
-                                for (var l = 0; l < changedParticipants.length; l++) {
-                                    if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId && !vm.certs[i].testTasks[j].testParticipants[k].changed && vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {
-                                        vm.certs[i].testTasks[j].testParticipants[k].age = changedParticipants[l].age;
-                                        vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;
-                                        vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;
-                                        vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;
-                                        vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;
-                                        vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;
-                                        vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;
-                                        vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;
-                                        vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;
-                                        vm.certs[i].testTasks[j].testParticipants[k].testParticipantId = changedParticipants[l].testParticipantId;
+                                if (vm.certs[i].testTasks[j].testParticipants) {
+                                    for (var k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
+                                        for (var l = 0; l < changedParticipants.length; l++) {
+                                            if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId && !vm.certs[i].testTasks[j].testParticipants[k].changed && vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {
+                                                vm.certs[i].testTasks[j].testParticipants[k].age = changedParticipants[l].age;
+                                                vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;
+                                                vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;
+                                                vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;
+                                                vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;
+                                                vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;
+                                                vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;
+                                                vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;
+                                                vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;
+                                                vm.certs[i].testTasks[j].testParticipants[k].testParticipantId = changedParticipants[l].testParticipantId;
+                                            }
+                                        }
                                     }
                                 }
                             }

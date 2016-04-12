@@ -20,14 +20,14 @@
     <tbody>
       <tr ng-repeat-start="cap in vm.correctiveActionPlan | orderBy: 'id'">
         <td>{{ cap.surveillanceEndDate ? 'No' : 'Yes' }}</td>
-        <td>{{ cap.surveillanceStartDate | date }}</td>
-        <td>{{ cap.noncomplianceDate | date }}</td>
+        <td>{{ cap.surveillanceStartDate | date : 'mediumDate' : 'UTC' }}</td>
+        <td>{{ cap.noncomplianceDate | date : 'mediumDate' : 'UTC' }}</td>
         <td>{{ cap.randomizedSurveillance ? 'True' : 'False' }}</td>
-        <td>{{ cap.approvalDate | date }}</td>
-        <td>{{ cap.effectiveDate | date }}</td>
-        <td>{{ cap.estimatedCompletionDate | date }}</td>
-        <td>{{ cap.actualCompletionDate | date }}</td>
-        <td>{{ cap.surveillanceEndDate | date }}</td>
+        <td>{{ cap.approvalDate | date : 'mediumDate' : 'UTC' }}</td>
+        <td>{{ cap.effectiveDate | date : 'mediumDate' : 'UTC' }}</td>
+        <td>{{ cap.estimatedCompletionDate | date : 'mediumDate' : 'UTC' }}</td>
+        <td>{{ cap.actualCompletionDate | date : 'mediumDate' : 'UTC' }}</td>
+        <td>{{ cap.surveillanceEndDate | date : 'mediumDate' : 'UTC' }}</td>
         <td ng-if="vm.isAdmin">
           <button class="btn btn-ai-success" ng-click="vm.editCap(cap)">Edit</button>
         </td>

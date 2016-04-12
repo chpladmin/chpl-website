@@ -26,7 +26,7 @@
             Website: {{ developer.website }}<br />
             Transparency Attestation: {{ developer.transparencyAttestation }}<br />
             <br />
-            Last Modified Date: {{ developer.lastModifiedDate | date }}
+            Last Modified Date: {{ developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             <br />
           </div>
         </div>

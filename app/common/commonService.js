@@ -154,6 +154,10 @@
                 return self.simpleApiCall('/activity/products?lastNDays=' + nDays);
             };
 
+            self.getVersionActivity = function (nDays) {
+                return self.simpleApiCall('/activity/versions?lastNDays=' + nDays);
+            };
+
             self.getAcbActivity = function (nDays) {
                 return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays);
             };

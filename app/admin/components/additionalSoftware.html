@@ -4,18 +4,23 @@
     <ul ng-if="vm.additionalSoftware && vm.additionalSoftware.length > 0">
       <li ng-repeat="grp in vm.displaySw track by $index">
         <span ng-if="grp.length > 1">One of<ul><li ng-repeat="sw in grp track by $index">
-              {{ sw.name}}
-              <span ng-if="sw.version !== '-1'">(Version {{ sw.version }})</span>
-              <span ng-if="sw.certifiedProductId">(CHPL Id: {{ sw.certifiedProductId }})</span>
+              <span ng-if="sw.certifiedProductId"><a href="#/product/{{ sw.certifiedProductId }}">{{ sw.certifiedProductNumber }}</a></span>
+              <span ng-if="!sw.certifiedProductId">
+                {{ sw.name}}
+                <span ng-if="sw.version !== '-1'">(Version {{ sw.version }})</span>
+              </span>
               {{ $index < grp.length - 1 ? 'OR' : $parent.$index < vm.groupCount - 1 ? 'AND' : '' }}
             </li>
           </ul>
         </span>
         <span ng-if="grp.length === 1">
-              {{ grp[0].name}}
-              <span ng-if="grp[0].version !== '-1'">(Version {{ grp[0].version }})</span>
-              <span ng-if="grp[0].certifiedProductId">(CHPL Id: {{ grp[0].certifiedProductId }})</span>
-              {{ $index === vm.groupCount - 1 ? '' : 'AND' }}
+          <span ng-if="grp[0].certifiedProductId"><a href="#/product/{{ grp[0].certifiedProductId }}">{{ grp[0].certifiedProductNumber }}</a></span>
+          <span ng-if="!grp[0].certifiedProductId">
+            {{ grp[0].name}}
+            <span ng-if="grp[0].version !== '-1'">(Version {{ grp[0].version }})</span>
+            <span ng-if="grp[0].certifiedProductId">(CHPL Id: {{ grp[0].certifiedProductId }})</span>
+          </span>
+          {{ $index === vm.groupCount - 1 ? '' : 'AND' }}
         </span>
       </li>
     </ul>
