@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
 
-    angular.module('app', ['ngRoute', 'angular-loading-bar', 'ngAnimate', 'angulartics', 'angulartics.google.analytics',
+    angular.module('app', ['ngRoute', 'angular-loading-bar', 'ngAnimate', 'angulartics', 'angulartics.google.analytics', 'angulartics.google.tagmanager',// 'angulartics.debug',
                            'googlechart', 'angularFileUpload', 'angular-confirm', 'ngSanitize', 'swaggerUi',
                            'app.resources', 'app.nav', 'app.compare', 'app.product', 'app.search', 'app.admin', 'app.overview', 'app.registration'])
         .config(['$routeProvider', function($routeProvider) {
