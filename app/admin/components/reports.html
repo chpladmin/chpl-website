@@ -21,7 +21,7 @@
                   <li ng-repeat="str in activity.details" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td class="">{{ activity.date | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -49,7 +49,7 @@
                   <li ng-repeat="str in activity.details" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td class="">{{ activity.date | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -74,7 +74,7 @@
 	        <tr ng-repeat="activity in vm.displayedProducts" ng-if="vm.displayedProducts.length > 0">
 		      <td class="">{{ activity.name }}</td>
 		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -94,7 +94,7 @@
 	        <tr ng-repeat="activity in vm.displayedVersions" ng-if="vm.displayedVersions.length > 0">
 		      <td class="">{{ activity.name }}</td>
 		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -119,7 +119,7 @@
 	        <tr ng-repeat="activity in vm.displayedACBs" ng-if="vm.displayedACBs.length > 0">
 		      <td class="">{{ activity.name }}</td>
 		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -144,7 +144,7 @@
 	        <tr ng-repeat="activity in vm.displayedATLs" ng-if="vm.displayedATLs.length > 0">
 		      <td class="">{{ activity.name }}</td>
 		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -167,7 +167,7 @@
             </tr>
 	        <tr ng-repeat="activity in vm.displayedAnnouncements" ng-if="vm.displayedAnnouncements.length > 0">
 		      <td class="">{{ activity.description }}</td>
-		      <td class="">{{ activity.activityDate | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -190,7 +190,7 @@
             </tr>
 	        <tr ng-repeat="activity in vm.displayedUsers" ng-if="vm.displayedUsers.length > 0">
 		      <td class=""><span ng-bind-html="activity.description"></span></td>
-		      <td class="">{{ activity.activityDate | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -210,11 +210,11 @@
 	        <tr ng-repeat-start="activity in vm.displayedUserActivities" ng-if="vm.displayedUserActivities.length > 0">
 		      <td class="" rowspan="{{ activity.events.length }}">{{ activity.user.firstName }}&nbsp;{{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
               <td>{{ activity.events[0].description }}</td>
-              <td><span ng-bind-html="activity.events[0].activityDate | date : 'MMM&nbsp;d,&nbsp;y&nbsp;h:mm:ss&nbsp;a' : 'UTC'"></span></td>
+              <td>{{ activity.events[0].activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
             <tr ng-repeat="action in activity.events" ng-if="!$first && vm.displayedUserActivities.length > 0" ng-repeat-end>
               <td>{{ action.description }}</td>
-              <td><span ng-bind-html="action.activityDate | date : 'MMM&nbsp;d,&nbsp;y&nbsp;h:mm:ss&nbsp;a' : 'UTC'"></span></td>
+              <td>{{ action.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -237,7 +237,7 @@
             </tr>
 	        <tr ng-repeat="activity in vm.displayedApiActivity" ng-if="vm.displayedApiActivity.length > 0">
 		      <td class=""><span ng-bind-html="activity.description"></span></td>
-		      <td class="">{{ activity.activityDate | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -266,7 +266,7 @@
 		      <td class="">{{ activity.email }}</td>
 		      <td class="">{{ activity.name }}</td>
 		      <td class="">{{ activity.apiCallPath }}</td>
-		      <td class="">{{ activity.creationDate | date : 'medium' : 'UTC' }}</td>
+		      <td class="">{{ activity.creationDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
