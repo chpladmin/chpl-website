@@ -8,7 +8,7 @@
       <div class="modal-body">
         <ul>
           <li ng-repeat="item in modalVm.items | orderBy: 'date': true">
-            Actor: {{ item.actor }}, did: {{ item.action }}, on {{ item.date | date }}
+            Actor: {{ item.actor }}, did: {{ item.action }}, on {{ item.date | date : 'mediumDate' : 'UTC' }}
           </li>
         </ul>
       </div>
@@ -31,7 +31,7 @@
         <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
       </div>
       <div class="col-sm-8 text-right">
-        <p>Certification Date: {{ vm.product.certificationDate | date }} | Last modified Date: {{ vm.product.lastModifiedDate | date }}</p>
+        <p>Certification Date: {{ vm.product.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ vm.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</p>
         <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
       </div>
     </div>

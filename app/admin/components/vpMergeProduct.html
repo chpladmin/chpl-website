@@ -17,7 +17,7 @@
             <span>{{ product.name }}</span>
           </div>
           <div class="panel-body">
-            Last Modified Date: {{ product.lastModifiedDate | date }}
+            Last Modified Date: {{ product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
           </div>
         </div>
       </div>

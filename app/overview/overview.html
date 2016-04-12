@@ -12,7 +12,7 @@
         <h2>Announcement<span ng-if="vm.announcements.length > 1">s</span></h2>
         <div ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
           <strong>{{ announcement.title }}</strong><span ng-if="announcement.text">: {{ announcement.text }}</span><br />
-          Start date: {{ announcement.startDate | date }}, End date: {{ announcement.endDate | date}}
+          Start date: {{ announcement.startDate | date : 'mediumDate' : 'UTC' }}, End date: {{ announcement.endDate | date : 'mediumDate' : 'UTC' }}
         </div>
       </span>
       <h2>What is the CHPL?</h2>

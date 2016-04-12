@@ -88,7 +88,7 @@
                         name: vm.cp.developer.name,
                         website: vm.cp.developer.website,
                         address: vm.cp.developerAddress,
-                        transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, attestation: vm.cp.transparencyAttestation}],
+                        transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, acbName: vm.cp.certifyingBody.name, attestation: vm.cp.transparencyAttestation}],
                         contact: vm.cp.developer.contact,
                         developerId: vm.cp.developer.id
                     },
