@@ -22,7 +22,7 @@ module.exports = function(config){
             'app/bower_components/angulartics/dist/angulartics.min.js',
             'app/bower_components/angulartics/dist/angulartics-debug.min.js',
             'app/bower_components/angulartics-ga/dist/angulartics-ga.min.js',
-            'app/bower_components/angulartics-google-tag-manager/dist/angulartics-google-tag-manager.min.js',
+            'app/bower_components/angulartics-gtm/dist/angulartics-gtm.min.js',
             'app/bower_components/angular-google-chart/ng-google-chart.js',
             'app/bower_components/angular-file-upload/dist/angular-file-upload.min.js',
             'app/bower_components/ng-idle/angular-idle.min.js',
