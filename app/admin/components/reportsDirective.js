@@ -8,6 +8,7 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.tab = 'cp';
             vm.activityRange = 7;
+            vm.questionableRange = 0;
 
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
@@ -20,6 +21,7 @@
             vm.refreshUser = refreshUser;
             vm.refreshApi = refreshApi;
             vm.refreshVisitors = refreshVisitors;
+            vm.singleCp = singleCp;
 
             activate();
 
@@ -29,12 +31,16 @@
             function activate () {
                 vm.visibleApiPage = 1;
                 vm.apiKeyPageSize = 100;
-                vm.refreshCp();
+                vm.refreshActivity();
                 vm.refreshVisitors();
             }
 
             function refreshActivity () {
-                vm.refreshCp();
+                if (vm.productId) {
+                    vm.singleCp();
+                } else {
+                    vm.refreshCp();
+                }
                 vm.refreshDeveloper();
                 vm.refreshProduct();
                 vm.refreshAcb();
@@ -55,7 +61,7 @@
             function refreshDeveloper () {
                 commonService.getDeveloperActivity(vm.activityRange)
                     .then(function (data) {
-                        vm.searchedDevelopers = vm.interpretDevelopers(data);
+                        vm.searchedDevelopers = interpretDevelopers(data);
                         vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
                     });
             }
@@ -65,6 +71,11 @@
                     .then(function (data) {
                         vm.searchedProducts = vm.interpretProducts(data);
                         vm.displayedProducts = [].concat(vm.searchedProducts);
+                    });
+                commonService.getVersionActivity(vm.activityRange)
+                    .then(function (data) {
+                        vm.searchedVersions = vm.interpretVersions(data);
+                        vm.displayedVersions = [].concat(vm.searchedVersions);
                     });
             }
 
@@ -148,6 +159,14 @@
                                                            date.substring(6,8));
                         }
                         vm.traffic.data = data;
+                    });
+            }
+
+            function singleCp () {
+                commonService.getSingleCertifiedProductActivity(vm.productId)
+                    .then(function (data) {
+                        vm.searchedCertifiedProducts = interpretCps(data);
+                        vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
             }
 
@@ -245,7 +264,7 @@
                     {key: 'visibleOnChpl', display: 'Visible on CHPL'}
                 ];
                 var nestedKeys = [
-                    {key: 'certificationStatus', subkey: 'name', display: 'Certification Status'},
+                    {key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
                     {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
                     {key: 'classificationType', subkey: 'name', display: 'Classification Type'},
                     {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
@@ -253,6 +272,7 @@
                 ];
                 var ret = [];
                 var change;
+                var questionable;
 
                 for (var i = 0; i < data.length; i++) {
                     var activity = {
@@ -262,7 +282,10 @@
                     if (data[i].description === 'Created a certified product') {
                         activity.action = 'Created certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
                     } else if (data[i].description.substring(0,7) === 'Updated') {
+                        questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
                         activity.action = 'Updated certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
+                        if (data[i].newData.certificationEdition.name === '2011')
+                            activity.action = '<span class="bg-danger">' + activity.action + '</span>';
                         activity.details = [];
                         for (var j = 0; j < simpleCpFields.length; j++) {
                             change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
@@ -270,13 +293,18 @@
                         }
                         for (var j = 0; j < nestedKeys.length; j++) {
                             change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                            if (change) activity.details.push(change);
+                            if (change)
+                                if (nestedKeys[j].questionable && questionable) {
+                                    activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
+                                } else {
+                                    activity.details.push(change);
+                                }
                         }
-                        var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
+                        var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
                         for (var j = 0; j < certChanges.length; j++) {
                             activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                         }
-                        var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults);
+                        var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
                         for (var j = 0; j < cqmChanges.length; j++) {
                             activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                         }
@@ -299,17 +327,17 @@
                 return ret;
             }
 
-            function compareCerts (prev, curr) {
+            function compareCerts (prev, curr, questionable) {
                 var ret = [];
                 var change;
                 var certKeys = [
                     {key: 'apiDocumentation', display: 'API Documentation'},
-                    {key: 'g1Success', display: 'Certified to G1'},
-                    {key: 'g2Success', display: 'Certified to G2'},
-                    {key: 'gap', display: 'GAP Tested'},
+                    {key: 'g1Success', display: 'Certified to G1', questionable: true},
+                    {key: 'g2Success', display: 'Certified to G2', questionable: true},
+                    {key: 'gap', display: 'GAP Tested', questionable: true},
                     {key: 'privacySecurityFramework', display: 'Privacy &amp; Security Framework'},
                     {key: 'sed', display: 'SED tested'},
-                    {key: 'success', display: 'Successful'}
+                    {key: 'success', display: 'Successful', questionable: true}
                 ];
                 prev.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
                 curr.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
@@ -317,7 +345,12 @@
                     var obj = { number: curr[i].number, changes: [] };
                     for (var j = 0; j < certKeys.length; j++) {
                         change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
-                        if (change) obj.changes.push('<li>' + change + '</li>');
+                        if (change)
+                            if (certKeys[j].questionable && questionable) {
+                                obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
+                            } else {
+                                obj.changes.push('<li>' + change + '</li>');
+                            }
                     }
                     var addlSwKeys = [
                         {key: 'version', display: 'Version'},
@@ -350,9 +383,9 @@
                         obj.changes.push('<li>Test Tool Name "' + testToolsUsed[j].name + '" changes<ul>' + testToolsUsed[j].changes.join('') + '</ul></li>');
                     }
                     var testStandardsKeys = [{key: 'testStandardName', display: 'Test Standard Name'}];
-                    var testStandards = compareArray(prev[i].testStandards, curr[i].testStandards, testStandardsKeys, 'testStandardNumber');
+                    var testStandards = compareArray(prev[i].testStandards, curr[i].testStandards, testStandardsKeys, 'testStandardName');
                     for (var j = 0; j < testStandards.length; j++) {
-                        obj.changes.push('<li>Test Standard Number "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul></li>');
+                        obj.changes.push('<li>Test Standard Description "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul></li>');
                     }
                     var ucdProcessesKeys = [{key: 'ucdProcessDetails', display: 'UCD Process Details'}];
                     var ucdProcesses = compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
@@ -425,7 +458,7 @@
                 return ret;
             }
 
-            function compareCqms (prev, curr) {
+            function compareCqms (prev, curr, questionable) {
                 var ret = [];
                 var change;
                 prev.sort(function(a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
@@ -433,7 +466,12 @@
                 for (var i = 0; i < prev.length; i++) {
                     var obj = { cmsId: curr[i].cmsId, changes: [] };
                     change = compareItem(prev[i], curr[i], 'success', 'Success');
-                    if (change) obj.changes.push('<li>' + change + '</li>');
+                    if (change)
+                        if (questionable) {
+                            obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
+                        } else {
+                            obj.changes.push('<li>' + change + '</li>');
+                        }
                     for (var j = 0; j < prev[i].allVersions.length; j++) {
                         if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) < 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0)
                             obj.changes.push('<li>' + prev[i].allVersions[j] + ' added</li>');
@@ -446,28 +484,51 @@
                 return ret;
             }
 
-            vm.interpretDevelopers = function (data) {
+            function interpretDevelopers (data) {
+                var simpleFields = [
+                    {key: 'deleted', display: 'Deleted'},
+                    {key: 'developerCode', display: 'Developer Code'},
+                    {key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
+                    {key: 'name', display: 'Name'},
+                    {key: 'website', display: 'Website'}
+                ];
                 var ret = [];
                 var change;
+                var questionable = true;
 
                 for (var i = 0; i < data.length; i++) {
-                    var activity = {date: data[i].activityDate};
+                    var activity = {
+                        date: data[i].activityDate,
+                        newId: data[i].id
+                    };
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                        activity.name = data[i].newData.name;
-                        activity.action = 'Update:<ul>';
-                        change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action += '<li>' + change + '</li>';
-                        vm.analyzeAddress(activity, data[i]);
-                        activity.action += '</ul>';
+                        activity.action = 'Updated developer "' + data[i].newData.name + '"';
+                        activity.details = [];
+                        for (var j = 0; j < simpleFields.length; j++) {
+                            change = compareItem(data[i].originalData, data[i].newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
+                            if (change) activity.details.push(change);
+                        }
+                        var addressChanges = compareAddress(data[i].originalData.address, data[i].newData.address);
+                        if (addressChanges && addressChanges.length > 0) {
+                            activity.details.push('Address changes<ul>' + addressChanges.join('') + '</ul>');
+                        }
+                        var contactChanges = compareContact(data[i].originalData.contact, data[i].newData.contact);
+                        if (contactChanges && contactChanges.length > 0) {
+                            activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
+                        }
+                        var transKeys = [{key: 'transparencyAttestation', display: 'Transparency Attestation'}];
+                        var trans = compareArray(data[i].originalData.transparencyAttestationMappings, data[i].newData.transparencyAttestationMappings, transKeys, 'acbName');
+                        for (var j = 0; j < trans.length; j++) {
+                            activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
+                        }
+                        if (activity.details.length === 0) delete activity.details;
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'developer');
                     }
                     ret.push(activity);
                 }
                 return ret;
-            };
+            }
 
             vm.interpretProducts = function (data) {
                 var ret = [];
@@ -490,6 +551,26 @@
                 return ret;
             };
 
+            vm.interpretVersions = function (data) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < data.length; i++) {
+                    var activity = {date: data[i].activityDate};
+                    if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
+                        activity.name = data[i].newData.productName;
+                        activity.action = 'Update:<ul>';
+                        change = compareItem(data[i].originalData, data[i].newData, 'version', 'Version');
+                        if (change) activity.action += '<li>' + change + '</li>';
+                        activity.action += '</ul>';
+                    } else {
+                        vm.interpretNonUpdate(activity, data[i], 'version', 'version');
+                    }
+                    ret.push(activity);
+                }
+                return ret;
+            };
+
             vm.interpretAcbs = function (data) {
                 var ret = [];
                 var change;
@@ -506,7 +587,10 @@
                             if (change) activity.action += '<li>' + change + '</li>';
                             change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                             if (change) activity.action += '<li>' + change + '</li>';
-                            vm.analyzeAddress(activity, data[i]);
+                            change = compareAddress(data[i].originalData.address, data[i].newData.address);
+                            if (change && change.length > 0) {
+                                activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
+                            }
                             activity.action += '</ul>';
                         }
                     } else {
@@ -533,7 +617,10 @@
                             if (change) activity.action += '<li>' + change + '</li>';
                             change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                             if (change) activity.action += '<li>' + change + '</li>';
-                            vm.analyzeAddress(activity, data[i]);
+                             change = compareAddress(data[i].originalData.address, data[i].newData.address);
+                            if (change && change.length > 0) {
+                                activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
+                            }
                             activity.action += '</ul>';
                         }
                     } else {
@@ -555,40 +642,68 @@
             };
 
             vm.interpretUserActivities = function (data) {
-                return data;
+                var ret = data;
+                return ret;
             };
 
-            vm.interpretNonUpdate = function (activity, data, text) {
+            vm.interpretNonUpdate = function (activity, data, text, key) {
+                if (!key) key = 'name';
                 if (data.originalData && !data.newData) { // no new data: deleted
-                    activity.name = data.originalData.name;
+                    activity.name = data.originalData[key];
                     activity.action = [activity.name + ' has been deleted'];
                 }
                 if (!data.originalData && data.newData) { // no old data: created
-                    activity.name = data.newData.name;
+                    activity.name = data.newData[key];
                     activity.action = [activity.name + ' has been created'];
                 }
                 if (data.originalData && data.originalData.length > 1 && data.newData) { // both exist, more than one originalData: merge
-                    activity.name = data.newData.name;
+                    activity.name = data.newData[key];
                     activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': ' + activity.name];
                 }
             };
 
+            function compareAddress (prev, curr) {
+                var simpleFields = [
+                    {key: 'streetLineOne', display: 'Street Line 1'},
+                    {key: 'streetLineTwo', display: 'Street Line 2'},
+                    {key: 'city', display: 'City'},
+                    {key: 'state', display: 'State'},
+                    {key: 'zipcode', display: 'Zipcode'},
+                    {key: 'country', display: 'Country'}
+                ];
+                return compareObject(prev, curr, simpleFields);
+            }
+
+            function compareContact (prev, curr) {
+                var simpleFields = [
+                    {key: 'firstName', display: 'First Name'},
+                    {key: 'lastName', display: 'Last Name'},
+                    {key: 'phoneNumber', display: 'Phone Number'},
+                    {key: 'title', display: 'Title'},
+                    {key: 'email', display: 'Email'}
+                ];
+                return compareObject(prev, curr, simpleFields);
+            }
+
+            function compareObject (prev, curr, fields) {
+                var ret = [];
+                var change;
+
+                for (var i = 0; i < fields.length; i++) {
+                    change = compareItem(prev, curr, fields[i].key, fields[i].display, fields[i].filter);
+                    if (change) ret.push('<li>' + change + '</li>');
+                }
+                return ret;
+            }
+
             vm.analyzeAddress = function (activity, data) {
                 if (data.originalData.address !== data.newData.address) {
                     var change;
-                    activity.action += '<li>Address changed:<ul>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'streetLineOne', 'Street Line 1');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'streetLineTwo', 'Street Line 2');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'city', 'City');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'state', 'State');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'zipcode', 'Zipcode');
-                    if (change) activity.action += '<li>' + change + '</li>';
-                    change = compareItem(data.originalData.address, data.newData.address, 'country', 'Country');
-                    if (change) activity.action += '<li>' + change + '</li>';
+                    activity.action += '<li>Address changes<ul>';
+                    change = compareAddress(data.originalData.address, data.newData.address);
+                    if (change && change.length > 0) {
+                        activity.action += change.join('');
+                    }
                     activity.action += '</ul></li>';
                 }
             };
@@ -627,19 +742,19 @@
             function compareItem (oldData, newData, key, display, filter) {
                 if (oldData && oldData[key] && newData && newData[key] && oldData[key] !== newData[key]) {
                     if (filter)
-                        return display + ' changed from ' + $filter(filter)(oldData[key]) + ' to ' + $filter(filter)(newData[key]);
+                        return display + ' changed from ' + $filter(filter)(oldData[key],'mediumDate','UTC') + ' to ' + $filter(filter)(newData[key],'mediumDate','UTC');
                     else
                         return display + ' changed from ' + oldData[key] + ' to ' + newData[key];
                 }
                 if ((!oldData || !oldData[key]) && newData && newData[key]) {
                     if (filter)
-                        return display + ' added: ' + $filter(filter)(newData[key]);
+                        return display + ' added: ' + $filter(filter)(newData[key],'mediumDate','UTC');
                     else
                         return display + ' added: ' + newData[key];
                 }
                 if (oldData && oldData[key] && (!newData || !newData[key])) {
                     if (filter)
-                        return display + ' removed. Was: ' + $filter(filter)(oldData[key]);
+                        return display + ' removed. Was: ' + $filter(filter)(oldData[key],'mediumDate','UTC');
                     else
                         return display + ' removed. Was: ' + oldData[key];
                 }
@@ -655,7 +770,8 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'admin/components/reports.html',
-                bindToController: { workType: '='},
+                bindToController: { workType: '=',
+                                    productId: '='},
                 scope: {triggerRefresh: '&'},
                 controllerAs: 'vm',
                 controller: 'ReportController',

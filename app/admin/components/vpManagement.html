@@ -74,12 +74,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate'">
+            <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate' track by cp.id">
               <td>{{ cp.chplProductNumber }}</td>
               <td>{{ cp.developer.name }}</td>
               <td>{{ cp.product.name }}</td>
               <td>{{ cp.product.version }}</td>
-              <td>{{ cp.certificationDate | date }}</td>
+              <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
                 <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
@@ -155,6 +155,7 @@
               <tr>
                 <th scope="cols">Code</th>
                 <th scope="cols">Name</th>
+                <th scope="cols" ng-repeat="att in vm.developers[0].transparencyAttestations | orderBy:'acbName'">{{ att.acbName }}</th>
                 <th scope="cols">Last modified date</th>
               </tr>
             </thead>
@@ -162,7 +163,8 @@
               <tr ng-repeat="dev in vm.developers | orderBy: 'name'">
                 <td>{{ dev.developerCode }}</td>
                 <td>{{ dev.name }}</td>
-                <td>{{ dev.lastModifiedDate | date }}</td>
+                <td ng-repeat="att in dev.transparencyAttestations | orderBy:'acbName'">{{ att.attestation ? att.attestation : 'None' }}</td>
+                <td>{{ dev.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
               </tr>
             </tbody>
           </table>
@@ -181,7 +183,7 @@
               </span>
             </div>
             <div class="panel-body">
-              <div>{{ vm.activeDeveloper.name }} (Developer Code: {{ vm.activeDeveloper.developerCode }}) <em class="pull-right">Last modified date: {{ vm.activeDeveloper.lastModifiedDate | date }}</em></div>
+              <div>{{ vm.activeDeveloper.name }} (Developer Code: {{ vm.activeDeveloper.developerCode }}) <em class="pull-right">Last modified date: {{ vm.activeDeveloper.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
               <div>
                 Line 1: {{ vm.activeDeveloper.address.line1 }}<br />
                 Line 2: {{ vm.activeDeveloper.address.line2 }}<br />
@@ -190,7 +192,10 @@
                 Zip: {{ vm.activeDeveloper.address.zipcode }}<br />
                 Country: {{ vm.activeDeveloper.address.country }}<br />
                 Website: <span ng-if="vm.activeDeveloper.website"><ai-a href="{{vm.activeDeveloper.website}}" text="{{ vm.activeDeveloper.website }}"></ai-a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
-                <span ng-if="vm.activeDeveloper.transparencyAttestation !== null">Transparency Attestation: {{ vm.activeDeveloper.transparencyAttestation }}<br /></span>
+                Transparency Attestation:<br />
+                <ul>
+                  <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
+                </ul>
                 <strong>Contact information</strong><br />
                 First name: {{ vm.activeDeveloper.contact.firstName }}<br />
                 Last name: {{ vm.activeDeveloper.contact.lastName }}<br />
@@ -258,7 +263,7 @@
               </span>
             </div>
             <div class="panel-body">
-              <div>{{ vm.activeProduct.name }} <em class="pull-right">Last modified date: {{ vm.activeProduct.lastModifiedDate | date }}</em></div>
+              <div>{{ vm.activeProduct.name }} <em class="pull-right">Last modified date: {{ vm.activeProduct.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
               <p ng-if="vm.productMessage !== undefined" class="bg-danger">{{ vm.productMessage }}</p>
             </div>
           </div>
@@ -318,7 +323,7 @@
               </span>
             </div>
             <div class="panel-body">
-              <div>{{ vm.activeVersion.version }} <em class="pull-right">Last modified date: {{ vm.activeVersion.lastModifiedDate | date }}</em></div>
+              <div>{{ vm.activeVersion.version }} <em class="pull-right">Last modified date: {{ vm.activeVersion.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
               <p ng-if="vm.versionMessage !== undefined" class="bg-danger">{{ vm.versionMessage }}</p>
             </div>
           </div>
@@ -336,7 +341,7 @@
                 <div class="col-sm-7">
                   <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
                     <option value="" selected disabled>Select a Certified Product</option>
-                    <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date }})</option>
+                    <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</option>
                   </select>
                 </div>
                 <div class="col-sm-2">
@@ -360,12 +365,12 @@
               </div>
               <div class="panel-body">
                 <span>
-                  <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date }}</em><br />
+                  <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em><br />
                   <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
                   <strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br />
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
-                  <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date }} <br />
+                  <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
                   <strong>Product wide Additional Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
                   <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />

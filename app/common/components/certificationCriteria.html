@@ -74,14 +74,14 @@
           </tr>
           <tr ng-if="vm.showSed && vm.cert.testTasks && vm.cert.testTasks.length > 0">
             <td colspan="2">
-              <table class="table">
+              <table class="table table-condensed">
                 <thead>
                   <tr>
                     <th scope="col">Task Description</th>
                     <th scope="col">Path Deviation Observed</th>
                     <th scope="col">Path Deviation Optimal</th>
                     <th scope="col">Rating Scale</th>
-                    <th scope="col">Time Averageg</th>
+                    <th scope="col">Time Average</th>
                     <th scope="col">Time Deviation Observed Average</th>
                     <th scope="col">Time Deviation Optimal Average</th>
                     <th scope="col">Time Standard Deviation</th>
@@ -102,7 +102,7 @@
                   </tr>
                   <tr ng-repeat-end ng-if="task.showParticipants">
                     <td colspan="9">
-                      <table>
+                      <table class="table table-condensed">
                         <thead>
                           <tr>
                             <th scope="col">Age</th>

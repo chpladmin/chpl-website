@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('LoginController', ['$scope', 'commonService', 'authService', '$log', '$location', 'Idle', 'Keepalive', function ($scope, commonService, authService, $log, $location, Idle, Keepalive) {
+        .controller('LoginController', ['$scope', 'commonService', 'authService', '$log', 'Idle', 'Keepalive', function ($scope, commonService, authService, $log, Idle, Keepalive) {
             var vm = this;
 
             vm.activate = activate;
@@ -60,8 +60,10 @@
                     commonService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
                         .then(function (response) {
                             vm.clear();
+                            vm.messageClass = vm.pClass;
                             vm.message = 'Password successfully changed';
                         }, function (error) {
+                            vm.messageClass = vm.pClassFail;
                             vm.message = 'Error. Please check your credentials or contact the administrator';
                         });
                 } else {
@@ -97,9 +99,9 @@
                     .then(function (response) {
                         Idle.watch();
                         Keepalive.ping();
-                        $location.path('/admin');
                         vm.clear();
                     }, function (error) {
+                        vm.messageClass = vm.pClassFail;
                         vm.message = error.data.error;
                     });
             }
@@ -121,10 +123,11 @@
             function sendReset () {
                 commonService.resetPassword({userName: vm.userName, email: vm.email})
                     .then(function (response) {
-                        $location.path('/admin');
                         vm.clear();
+                        vm.messageClass = vm.pClass;
                         vm.message = 'Password email sent; please check your email';
                     }, function (error) {
+                        vm.messageClass = vm.pClassFail;
                         vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
                     });
             }
@@ -140,7 +143,8 @@
                 },
                 bindToController: {
                     formClass: '@',
-                    pClass: '@'
+                    pClass: '@',
+                    pClassFail: '@'
                 },
                 controllerAs: 'vm',
                 controller: 'LoginController'

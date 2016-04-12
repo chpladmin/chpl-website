@@ -30,7 +30,7 @@
         </tr>
         <tr>
           <td>Standard</td>
-          <td><ai-array item-type="Standard" items="vm.cert.testStandards" key="testStandardNumber"></ai-array></td>
+          <td><ai-array item-type="Standard" items="vm.cert.testStandards" key="testStandardName"></ai-array></td>
         </tr>
         <tr>
           <td><label class="control-label" for="data_g1Success{{ vm.cert.number }}">Measure Successfully Tested for G1</label></td>
@@ -60,7 +60,7 @@
           <td><label class="control-label" for="data_api{{ vm.cert.number }}">API Documentation</label></td>
           <td><input class="form-control input-sm" type="url" id="data_api{{ vm.cert.number }}" name="data_apiDocumentation" ng-model="vm.cert.apiDocumentation"></input></td>
         </tr>
-        <tr ng-if="vm.cert.privacySecurityFramework !== null">
+        <tr>
           <td><label class="control-label" for="data_psFramework{{ vm.cert.number }}">Privacy &amp; Security Framework</label></td>
           <td><select class="form-control input-sm" id="data_psFramework{{ vm.cert.number }}" name="data_psFramework" ng_model="vm.cert.privacySecurityFramework">
               <option value="Approach 1">Approach 1</option>
@@ -77,7 +77,7 @@
         </tr>
         <tr ng-if="vm.cert.sed">
           <td colspan="2">
-            <table class="table">
+            <table class="table table-condensed">
               <thead>
                 <tr>
                   <th scope="col">Task Description</th>
@@ -115,7 +115,7 @@
                 </tr>
                 <tr ng-repeat-end ng-if="task.showParticipants">
                   <td colspan="10">
-                    <table>
+                    <table class="table table-condensed">
                       <thead>
                         <tr>
                           <th scope="col">Age</th>

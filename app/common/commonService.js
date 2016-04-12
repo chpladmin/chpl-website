@@ -142,12 +142,20 @@
                 return self.simpleApiCall('/activity/certified_products?lastNDays=' + nDays);
             };
 
+            self.getSingleCertifiedProductActivity = function (productId) {
+                return self.simpleApiCall('/activity/certified_products/' + productId);
+            };
+
             self.getDeveloperActivity = function (nDays) {
                 return self.simpleApiCall('/activity/developers?lastNDays=' + nDays);
             };
 
             self.getProductActivity = function (nDays) {
                 return self.simpleApiCall('/activity/products?lastNDays=' + nDays);
+            };
+
+            self.getVersionActivity = function (nDays) {
+                return self.simpleApiCall('/activity/versions?lastNDays=' + nDays);
             };
 
             self.getAcbActivity = function (nDays) {

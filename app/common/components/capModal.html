@@ -13,7 +13,7 @@
       <div class="form-group">
         <label class="col-sm-8" for="surveillanceStart">Date surveillance began <span class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.surveillanceStartDate" id="surveillanceStart" name="surveillanceStart" placeholder="yyyy-MM-dd" required></input>
+          <input class="form-control" type="date" ng-model="vm.cap.surveillanceStartDate" id="surveillanceStart" name="surveillanceStart" placeholder="yyyy-MM-dd" ng-model-options="{ timezone: 'UTC' }" required></input>
           <div class="text-danger" ng-if="vm.capForm.surveillanceStart.$touched && vm.capForm.surveillanceStart.$error.required">Field is required</div>
           <div class="text-danger" ng-if="vm.capForm.surveillanceStart.$touched && vm.capForm.surveillanceStart.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
@@ -21,7 +21,7 @@
       <div class="form-group">
         <label class="col-sm-8" for="noncomplianceDate">Date of determination of non-conformity <span class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.noncomplianceDate" id="noncomplianceDate" name="noncomplianceDate" placeholder="yyyy-MM-dd" required></input>
+          <input class="form-control" type="date" ng-model="vm.cap.noncomplianceDate" id="noncomplianceDate" name="noncomplianceDate" placeholder="yyyy-MM-dd" ng-model-options="{ timezone: 'UTC' }" required></input>
           <div class="text-danger" ng-if="vm.capForm.noncomplianceDate.$touched && vm.capForm.noncomplianceDate.$error.required">Field is required</div>
           <div class="text-danger" ng-if="vm.capForm.noncomplianceDate.$touched && vm.capForm.noncomplianceDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
@@ -35,7 +35,7 @@
       <div class="form-group">
         <label class="col-sm-8" for="approvalDate">Date of ONC-ACB approval of Corrective Action Plan <span ng-if="vm.cap.surveillanceEndDate" class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.approvalDate" id="approvalDate" name="approvalDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate"></input>
+          <input class="form-control" type="date" ng-model="vm.cap.approvalDate" id="approvalDate" name="approvalDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate" ng-model-options="{ timezone: 'UTC' }"></input>
           <div class="text-danger" ng-if="vm.capForm.approvalDate.$touched && vm.capForm.approvalDate.$error.required">Field is required</div>
           <div class="text-danger" ng-if="vm.capForm.approvalDate.$touched && vm.capForm.approvalDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
@@ -43,7 +43,7 @@
       <div class="form-group">
         <label class="col-sm-8" for="beginDate">Date corrective action began <span ng-if="vm.cap.surveillanceEndDate" class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.effectiveDate" id="beginDate" name="beginDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate"></input>
+          <input class="form-control" type="date" ng-model="vm.cap.effectiveDate" id="beginDate" name="beginDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate" ng-model-options="{ timezone: 'UTC' }"></input>
           <div class="text-danger" ng-if="vm.capForm.beginDate.$touched && vm.capForm.beginDate.$error.required">Field is required</div>
           <div class="text-danger" ng-if="vm.capForm.beginDate.$touched && vm.capForm.beginDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
@@ -51,7 +51,7 @@
       <div class="form-group">
         <label class="col-sm-8" for="requiredEndDate">Date corrective action must be completed <span ng-if="vm.cap.surveillanceEndDate" class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.estimatedCompletionDate" id="requiredEndDate" name="requiredEndDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate"></input>
+          <input class="form-control" type="date" ng-model="vm.cap.estimatedCompletionDate" id="requiredEndDate" name="requiredEndDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate" ng-model-options="{ timezone: 'UTC' }"></input>
           <div class="text-danger" ng-if="vm.capForm.requiredEndDate.$touched && vm.capForm.requiredEndDate.$error.required">Field is required</div>
           <div class="text-danger" ng-if="vm.capForm.requiredEndDate.$touched && vm.capForm.requiredEndDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
@@ -59,7 +59,7 @@
       <div class="form-group">
         <label class="col-sm-8" for="actualEndDate">Date corrective action was completed <span ng-if="vm.cap.surveillanceEndDate" class="text-danger">*</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.actualCompletionDate" id="actualEndDate" name="actualEndDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate"></input>
+          <input class="form-control" type="date" ng-model="vm.cap.actualCompletionDate" id="actualEndDate" name="actualEndDate" placeholder="yyyy-MM-dd" ng-required="vm.cap.surveillanceEndDate" ng-model-options="{ timezone: 'UTC' }"></input>
           <div class="text-danger" ng-if="vm.capForm.actualEndDate.$touched && vm.capForm.actualEndDate.$error.required">Field is required</div>
           <div class="text-danger" ng-if="vm.capForm.actualEndDate.$touched && vm.capForm.actualEndDate.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
@@ -67,7 +67,7 @@
       <div class="form-group">
         <label class="col-sm-8" for="surveillanceEnd">Date surveillance ended</span></label>
         <div class="col-sm-4">
-          <input class="form-control" type="date" ng-model="vm.cap.surveillanceEndDate" id="surveillanceEnd" name="surveillanceEnd" placeholder="yyyy-MM-dd"></input>
+          <input class="form-control" type="date" ng-model="vm.cap.surveillanceEndDate" id="surveillanceEnd" name="surveillanceEnd" placeholder="yyyy-MM-dd" ng-model-options="{ timezone: 'UTC' }"></input>
           <div class="text-danger" ng-if="vm.capForm.surveillanceEnd.$touched && vm.capForm.surveillanceEnd.$error.date">Date is not of the form "yyyy-MM-dd"</div>
         </div>
       </div>

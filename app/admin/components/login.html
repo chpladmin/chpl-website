@@ -45,5 +45,5 @@
     <button class="btn btn-default btn-block" ng-click="vm.setActivity(vm.activityEnum.CHANGE); $event.stopPropagation()" ng-if="vm.activity !== vm.activityEnum.CHANGE && vm.isAuthed()">Change Password</button>
     <button class="btn btn-default btn-block" ng-click="vm.activate(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.RESET">Cancel</button>
   </form>
-  <p ng-class="vm.pClass" ng-if="vm.message.length > 0">{{ vm.message }}</p>
+  <p ng-class="vm.messageClass" ng-if="vm.message.length > 0">{{ vm.message }}</p>
 </div>

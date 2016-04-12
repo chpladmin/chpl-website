@@ -8,6 +8,7 @@
             vm.participant = participant.participant;
 
             vm.cancel = cancel;
+            vm.changed = changed;
             vm.save = save;
 
             activate();
@@ -26,7 +27,16 @@
             }
 
             function cancel () {
+                if (vm.participant.changed) {
+                    delete (vm.participant.changed);
+                }
                 $modalInstance.dismiss('cancelled');
+            }
+
+            function changed () {
+                if (vm.participant.testParticipantId) {
+                    vm.participant.changed = true;
+                }
             }
 
             function save () {

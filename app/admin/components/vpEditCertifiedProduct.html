@@ -9,7 +9,32 @@
     <h4 class="modal-title" id="editCertifiedProductLabel">Edit Certified Product</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
-    <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
+    <div ng-if="vm.idFields" class="form-inline">
+      <span class="form-control-static">
+        <strong>CHPL Product Number:</strong>{{ vm.idFields.prefix }}
+      </span>
+      <div class="form-group">
+        <label for="idProd" class="sr-only">Product Code:</label>
+        <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" required></input>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idProd.$touched) && vm.editForm.idProd.$error.required">Field is required</span>
+      </div>
+      <div class="form-group">
+        <label for="idVer" class="sr-only">Version Code:</label>
+        <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" required></input>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idVer.$touched) && vm.editForm.idVer.$error.required">Field is required</span>
+      </div>
+      <div class="form-group">
+        <label for="idIcs" class="sr-only">ICS Code:</label>
+        <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="1" required></input>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.editForm.idIcs.$error.required">Field is required</span>
+      </div>
+      <span class="form-control-static">
+        {{ vm.idFields.suffix }}
+      </span>
+    </div>
+    <div ng-if="!vm.idFields">
+      <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
+    </div>
     <div class="form-group">
       <label for="cpPractice">Practice Type</label>
       <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice" name="cpPractice"
@@ -35,7 +60,7 @@
     </div>
     <div class="form-group">
       <label for="cpCertDate">Certification Date</label>
-      <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" name="cpCertDate" required></input>
+      <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
@@ -132,8 +157,10 @@
         <li ng-if="vm.editForm.cpTouLoc.$error.url">Terms of Use URL is an invalid format (http://www.example.com)</li>
       </ul>
     </div>
-    <div class="text-danger text-left" ng-if="vm.message">
-      {{ vm.message }}
+    <div class="text-danger text-left" ng-if="vm.errors">
+      <ul>
+        <li ng-repeat="msg in vm.errors track by $index">{{ msg }}</li>
+      </ul>
     </div>
     <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors"
             class="btn btn-ai-success btn-block"
