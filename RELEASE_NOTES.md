@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 1.1.0
+_12 April 2016_
 
 ### New features
 * Allow editing of new style CHPL Product Number
