@@ -77,7 +77,6 @@ function displayCertificationIdResults(certificationIdRequestedByUser) {
 			$(".widgetcertidbar").hide();
 		}
 		
-		$("#baseCriteriaPercentage").text(data.metPercentages["criteria"] + "%");
 		$("#inpatientCqmsPercentage").text(data.metPercentages["cqmsInpatient"] + "%");
 		$("#ambulatoryCqmsPercentage").text(data.metPercentages["cqmsAmbulatory"] + "%");
 		$("#domainsPercentage").text(data.metPercentages["cqmDomains"] + "%");
