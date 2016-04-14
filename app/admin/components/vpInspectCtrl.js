@@ -63,8 +63,8 @@
                         break;
                     }
                 }
-                if (!vm.cp.developerAddress.country) {
-                    vm.cp.developerAddress.country = 'USA';
+                if (!vm.cp.developer.country) {
+                    vm.cp.developer.country = 'USA';
                 }
             }
 
@@ -87,7 +87,7 @@
                     developer: {
                         name: vm.cp.developer.name,
                         website: vm.cp.developer.website,
-                        address: vm.cp.developerAddress,
+                        address: vm.cp.developer.address,
                         transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, acbName: vm.cp.certifyingBody.name, attestation: vm.cp.transparencyAttestation}],
                         contact: vm.cp.developer.contact,
                         developerId: vm.cp.developer.id
