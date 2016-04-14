@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6" ng-if="!vm.cp.developer.id">
+        <div class="col-sm-6" ng-if="!vm.cp.developer.developerId">
           <h3>System developer information</h3>
           <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
           <div class="panel panel-ai">
@@ -65,7 +65,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6" ng-if="vm.cp.developer.id">
+        <div class="col-sm-6" ng-if="vm.cp.developer.developerId">
           <h3>System developer information</h3>
           <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
           <div class="panel panel-ai">
@@ -95,7 +95,7 @@
         </div>
         <div class="col-sm-6">
           <h3>Uploaded developer information</h3>
-          <p>This is the developer information from your Upload File.<span ng-if="vm.cp.developer.id"> A matching developer has been found in the Open Data CHPL database. To update this developer's information in the Open Data CHPL, click the Save as Developer Information button.</span></p>
+          <p>This is the developer information from your Upload File.<span ng-if="vm.cp.developer.developerId"> A matching developer has been found in the Open Data CHPL database. To update this developer's information in the Open Data CHPL, click the Save as Developer Information button.</span></p>
           <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.cp.developer.name }}
@@ -116,7 +116,7 @@
               Email: {{ vm.cp.developer.contact.email }}<br />
               Phone: {{ vm.cp.developer.contact.phoneNumber }}<br />
             </div>
-            <div class="panel-footer" ng-if="vm.cp.developer.id">
+            <div class="panel-footer" ng-if="vm.cp.developer.developerId">
               <button class="btn btn-default btn-block" ng-click="vm.saveInspectingDeveloper()">Save as Developer Information</button>
             </div>
           </div>
