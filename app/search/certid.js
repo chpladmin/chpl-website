@@ -12,6 +12,7 @@ $(document).ready(function() {
 //
 ////////////////////////////////////////////////////////////////
 function invokeGetCertificationId(addIds,removeIds) {
+	updateButtonAndId(false);
 
 	// Get products currently in cart
 	var productIds = [];
@@ -66,27 +67,64 @@ function displayCertificationIdResults(certificationIdRequestedByUser) {
 	if (!data || "undefined" == data) {
 		return;
 	} else {
-
-		// If requested show the EHR Certification ID if one applies
-		if ((certificationIdRequestedByUser) &&
-		 (data.ehrCertificationId || "undefined" != data.ehrCertificationId || 
-		 "" != data.ehrCertificationId.trim())) {
-			$(".widgetcertidbar").show();
-			$("#certId").text(data.ehrCertificationId);
-		} else {
-			$(".widgetcertidbar").hide();
+		
+		// Update the ID text and hide it until the button is clicked
+		$("#certId").text(data.ehrCertificationId);
+		updateButtonAndId(false);
+		
+		var crit = 0;
+		var inp = 0;
+		var amb = 0;
+		var dom = 0;
+		
+		if ((null != data) && (null != data.metPercentages)) {
+			crit = data.metPercentages["criteriaMet"];
+			inp = data.metPercentages["cqmsInpatient"];
+			amb = data.metPercentages["cqmsAmbulatory"];
+			dom = data.metPercentages["cqmDomains"];
 		}
 		
-		$("#inpatientCqmsPercentage").text(data.metPercentages["cqmsInpatient"] + "%");
-		$("#ambulatoryCqmsPercentage").text(data.metPercentages["cqmsAmbulatory"] + "%");
-		$("#domainsPercentage").text(data.metPercentages["cqmDomains"] + "%");
-
-		// TODO Enable button only when 100% is achieved.
-		$("#btnEhrGetCertificationId").removeAttr("disabled");
+		$("#baseCriteriaPercentage").text( crit + "%");
+		$("#inpatientCqmsPercentage").text( inp + "%");
+		$("#ambulatoryCqmsPercentage").text( amb + "%");
+		$("#domainsPercentage").text( dom + "%");
 	}
 
 	displayProducts();
 }
+
+function updateButtonAndId(showIdRequested) {
+	var data = JSON.parse(getCookie(cookieCertificationIdData));
+	if (null != data) {
+		isValid = data.isValid;
+	} else {
+		isValid = false;
+	}
+	
+	// Check whether to show ID or the button
+	if (showIdRequested) {
+		if (isValid) {
+			$("#btnEhrGetCertificationId").prop('disabled', false);
+			$("#btnEhrGetCertificationId").hide();
+			$(".widgetcertidbar").show();
+		} else {
+			$("#btnEhrGetCertificationId").prop('disabled', true);
+			$("#btnEhrGetCertificationId").show();
+			$(".widgetcertidbar").hide();
+		}
+	} else {
+		if (isValid) {
+			$("#btnEhrGetCertificationId").prop('disabled', false);
+			$("#btnEhrGetCertificationId").show();
+			$(".widgetcertidbar").hide();
+		} else {
+			$("#btnEhrGetCertificationId").prop('disabled', true);
+			$("#btnEhrGetCertificationId").show();
+			$(".widgetcertidbar").hide();
+		}
+	}
+
+	}
 
 ////////////////////////////////////////////////////////////////
 // Retrieves the value of a specified cookie

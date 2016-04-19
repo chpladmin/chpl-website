@@ -7,7 +7,7 @@
 			<section>
 			
 				<div class="selectedProducts">
-					<div id="txtNoProductsSelected">No products selected.</div>
+					<div id="txtNoProductsSelected" style="text-align: center;">No products selected.</div>
 					<ul id="selectedProductsList">
 						<li id="productListItemTemplate" style="display: none;"><button href class="btn btn-ai-grey btn-sm btn-block" title="ProductNameHere">ProductNameHere</button></li>
 					</ul>
@@ -42,7 +42,7 @@
 					<span style="font-weight: 600;">Your CMS EHR Certification ID</span><br/>
 					<span id="certId"></span>
 				</div>
-				<button id="btnEhrGetCertificationId" href class="btn btn-ai-success btn-sm btn-block" disabled>Get EHR Certification ID</button>
+				<button onClick="updateButtonAndId(true);" id="btnEhrGetCertificationId" href class="btn btn-ai-success btn-sm btn-block" disabled>Get EHR Certification ID</button>
 			</section>
 		</div>
 	</div>
