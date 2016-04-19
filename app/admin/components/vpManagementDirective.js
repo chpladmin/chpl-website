@@ -445,7 +445,7 @@
                 commonService.getProduct(self.productId)
                     .then(function (result) {
                         for (var i = 0; i < self.developers.length; i++) {
-                            if (result.developer.id === self.developers[i].developerId) {
+                            if (result.developer.developerId === self.developers[i].developerId) {
                                 self.developerSelect = self.developers[i];
                                 break;
                             }
