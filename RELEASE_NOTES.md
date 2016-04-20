@@ -1,5 +1,12 @@
 # Release Notes
 
+## Version 1.2.0
+_20 April 2016_
+
+### Bugs fixed
+* Display developer name on product ownership activity change
+* Display activity with Timezone offsets
+
 ## Version 1.1.0
 _12 April 2016_
 

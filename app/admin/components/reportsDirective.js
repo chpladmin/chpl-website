@@ -541,7 +541,8 @@
                         activity.action = 'Update:<ul>';
                         change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                         if (change) activity.action += '<li>' + change + '</li>';
-                        // check on developerId change
+                        change = compareItem(data[i].originalData, data[i].newData, 'developerName', 'Developer');
+                        if (change) activity.action += '<li>' + change + '</li>';
                         activity.action += '</ul>';
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'product');

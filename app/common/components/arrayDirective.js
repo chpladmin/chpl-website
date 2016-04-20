@@ -22,6 +22,7 @@
             function addItem() {
                 var val = {};
                 val[vm.key] = vm.newItem;
+
                 if (vm.keySecond) {
                     val[vm.keySecond] = vm.newSecond;
                 }

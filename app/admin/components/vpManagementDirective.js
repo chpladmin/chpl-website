@@ -380,6 +380,9 @@
                     size: 'lg'
                 });
                 self.modalInstance.result.then(function (result) {
+                    if (result.developerCreated) {
+                        self.developers.push(result.developer);
+                    }
                     for (var i = 0; i < self.uploadingCps.length; i++) {
                         if (cpId === self.uploadingCps[i].id) {
                             self.uploadingCps.splice(i,1)
@@ -388,6 +391,9 @@
                     }
                 }, function (result) {
                     if (result !== 'cancelled') {
+                        if (result.developerCreated) {
+                            self.developers.push(result.developer);
+                        }
                         for (var i = 0; i < self.uploadingCps.length; i++) {
                             if (cpId === self.uploadingCps[i].id) {
                                 self.uploadingCps.splice(i,1)
@@ -439,7 +445,7 @@
                 commonService.getProduct(self.productId)
                     .then(function (result) {
                         for (var i = 0; i < self.developers.length; i++) {
-                            if (result.developer.id === self.developers[i].developerId) {
+                            if (result.developer.developerId === self.developers[i].developerId) {
                                 self.developerSelect = self.developers[i];
                                 break;
                             }
