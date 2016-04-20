@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 1.2.0
+_20 April 2016_
 
 ### Bugs fixed
 * Display developer name on product ownership activity change
