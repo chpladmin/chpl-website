@@ -100,6 +100,7 @@
                         vm.idFields.ics + '.' +
                         vm.idFields.suffix;
                 }
+                vm.cp.visibleOnChpl = vm.cp.certificationStatus.name === 'Active';
                 vm.cp.certificationDate = vm.cp.certDate.getTime();
                 if (vm.workType === 'manage') {
                     commonService.updateCP(vm.cp)
