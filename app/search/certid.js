@@ -5,14 +5,18 @@ var cookieCertificationIdData = "certiddata";
 var cookieProducts = "products";
 
 $(document).ready(function() {
-	invokeGetCertificationId();
+	invokeGetCertificationId(null, null, false);
 });
 
 ////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////
-function invokeGetCertificationId(addIds,removeIds) {
+function invokeGetCertificationId(addIds,removeIds,create) {
 	updateButtonAndId(false);
+	
+	if ((null == create) || ("undefined" == create)) {
+		create = false;
+	}
 
 	// Get products currently in cart
 	var productIds = [];
@@ -36,22 +40,19 @@ function invokeGetCertificationId(addIds,removeIds) {
 		}
 	});
 
-	// TODO Only show if it is explicitly requested by the user.
-	var certificationIdRequestedByUser = true;
-
 	// Call API to attempt to get an EHR Certification ID
 	$.ajax({
 		url: urlCertId,
 		type: "GET",
 		cache: false,
 		headers: {"API-KEY": apiKey},
-		data: "products=" + productIdsString,
+		data: "products=" + productIdsString + "&create=" + create,
 		success: function(data, status, xhr) {
 			setCookie(cookieCertificationIdData, JSON.stringify(data), 365);
-			displayCertificationIdResults(certificationIdRequestedByUser);
+			displayCertificationIdResults();
 		},
 		error: function(xhr, status, error) {
-			displayCertificationIdResults(certificationIdRequestedByUser);
+			displayCertificationIdResults();
 			alert(status + ": " + error);
 		}
 	});
@@ -61,7 +62,7 @@ function invokeGetCertificationId(addIds,removeIds) {
 // displayCertificationIdResults
 //
 ////////////////////////////////////////////////////////////////
-function displayCertificationIdResults(certificationIdRequestedByUser) {
+function displayCertificationIdResults() {
 
 	var data = JSON.parse(getCookie(cookieCertificationIdData));
 	if (!data || "undefined" == data) {
@@ -91,6 +92,10 @@ function displayCertificationIdResults(certificationIdRequestedByUser) {
 	}
 
 	displayProducts();
+}
+function revealId() {
+	invokeGetCertificationId(null, null, true);
+	updateButtonAndId(true);
 }
 
 function updateButtonAndId(showIdRequested) {
@@ -210,14 +215,14 @@ function getProductCount() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 function removeProductFromCart(id) {
-	invokeGetCertificationId(null, [id]);
+	invokeGetCertificationId(null, [id], false);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 function addProductToCart(id) {
-	invokeGetCertificationId([id], null);
+	invokeGetCertificationId([id], null, false);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
