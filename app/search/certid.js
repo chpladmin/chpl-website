@@ -95,10 +95,20 @@ function displayCertificationIdResults(certificationIdRequestedByUser) {
 
 function updateButtonAndId(showIdRequested) {
 	var data = JSON.parse(getCookie(cookieCertificationIdData));
+	var isValid = false;
+	var year = null;
 	if (null != data) {
 		isValid = data.isValid;
+		year = data.year;
 	} else {
 		isValid = false;
+		year = null;
+	}
+
+	if (null != year) {
+		$("#btnEhrGetCertificationId").text("Get " + data.year + " EHR Certification ID");
+	} else {
+		$("#btnEhrGetCertificationId").text("Get EHR Certification ID");
 	}
 	
 	// Check whether to show ID or the button
@@ -123,8 +133,7 @@ function updateButtonAndId(showIdRequested) {
 			$(".widgetcertidbar").hide();
 		}
 	}
-
-	}
+}
 
 ////////////////////////////////////////////////////////////////
 // Retrieves the value of a specified cookie
