@@ -49,10 +49,10 @@ function invokeGetCertificationId(addIds,removeIds,create) {
 		data: "products=" + productIdsString + "&create=" + create,
 		success: function(data, status, xhr) {
 			setCookie(cookieCertificationIdData, JSON.stringify(data), 365);
-			displayCertificationIdResults();
+			displayCertificationIdResults(create);
 		},
 		error: function(xhr, status, error) {
-			displayCertificationIdResults();
+			displayCertificationIdResults(false);
 			alert(status + ": " + error);
 		}
 	});
@@ -62,7 +62,7 @@ function invokeGetCertificationId(addIds,removeIds,create) {
 // displayCertificationIdResults
 //
 ////////////////////////////////////////////////////////////////
-function displayCertificationIdResults() {
+function displayCertificationIdResults(create) {
 
 	var data = JSON.parse(getCookie(cookieCertificationIdData));
 	if (!data || "undefined" == data) {
@@ -71,7 +71,7 @@ function displayCertificationIdResults() {
 		
 		// Update the ID text and hide it until the button is clicked
 		$("#certId").text(data.ehrCertificationId);
-		updateButtonAndId(false);
+		updateButtonAndId(create);
 		
 		var crit = 0;
 		var inp = 0;
