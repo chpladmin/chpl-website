@@ -14,6 +14,9 @@
         <th scope="col">Must be Completed</th>
         <th scope="col">Was Completed</th>
         <th scope="col">Surveillance Ended</th>
+        <th scope="col">Summary of Non-conformity</th>
+        <th scope="col">Developer Explanation</th>
+        <th scope="col">Description of Resolution</th>
         <th ng-if="vm.isAdmin">Action</th>
       </tr>
     </thead>
@@ -28,12 +31,15 @@
         <td>{{ cap.estimatedCompletionDate | date : 'mediumDate' : 'UTC' }}</td>
         <td>{{ cap.actualCompletionDate | date : 'mediumDate' : 'UTC' }}</td>
         <td>{{ cap.surveillanceEndDate | date : 'mediumDate' : 'UTC' }}</td>
+        <td>{{ cap.acbSummary }}</td>
+        <td>{{ cap.developerSummary }}</td>
+        <td>{{ cap.resolution }}</td>
         <td ng-if="vm.isAdmin">
           <button class="btn btn-ai-success" ng-click="vm.editCap(cap)">Edit</button>
         </td>
       </tr>
       <tr ng-if="cap.certifications.length > 0">
-        <td colspan="{{ vm.isAdmin ? '10' : '9'}}">
+        <td colspan="{{ vm.isAdmin ? '13' : '12'}}">
           <table class="table table-striped" width="100%">
             <thead>
               <tr>
@@ -57,13 +63,13 @@
         </td>
       </tr>
       <tr ng-repeat-end>
-        <td colspan="{{ vm.isAdmin ? '10' : '9'}}" ng-if="cap.documentation.length > 0">
+        <td colspan="{{ vm.isAdmin ? '13' : '12'}}" ng-if="cap.documentation.length > 0">
           <table class="table table-striped">
             <thead>
               <tr>
                 <th scope="col">File Name</th>
                 <th scope="col">File Type</th>
-                <th class="text-center">Download</th>
+                <th scope="col" class="text-center">Download</th>
               </tr>
             </thead>
             <tbody>
