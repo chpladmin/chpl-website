@@ -1,11 +1,23 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### New features
+* Added 'generic' CAP fields
+* Surveillance Transparency -> Nonconformity in filter
+* Modified Nonconformity values
+
+---
+
 ## Version 1.2.0
 _20 April 2016_
 
 ### Bugs fixed
 * Display developer name on product ownership activity change
 * Display activity with Timezone offsets
+
+---
 
 ## Version 1.1.0
 _12 April 2016_
@@ -24,6 +36,8 @@ _12 April 2016_
 * Correctly save changes to SED Test Participants
 * Allow admins to change certification date of CP
 
+---
+
 ## Version 1.0.0
 _30 March 2016_
 
@@ -31,6 +45,8 @@ _30 March 2016_
 * Added direct link to CP activity by CP id
 * Added visible indicator to 'questionable' modification activities
 * Updated pages to use new array of transparency attestations
+
+---
 
 ## Version 0.5.0
 _25 March 2016_
@@ -44,6 +60,8 @@ _25 March 2016_
 * Added API Registration
 * Improved Certified Product 'changes' descriptions
 * Added sort by version
+
+---
 
 ## Version 0.4.0
 _14 March 2016_
@@ -59,6 +77,8 @@ _14 March 2016_
 * Clarification of Additional Software
 * Expanded page titles
 
+---
+
 ## Version 0.3.3
 _29 February 2016_
 
@@ -71,6 +91,8 @@ _29 February 2016_
 * Improved UI of Announcements in Overview
 * Made Developer website an 'external link'
 
+---
+
 ## Version 0.3.2
 _23 February 2016_
 
@@ -80,12 +102,16 @@ _23 February 2016_
 * Updated color contrast on search results compare/clear buttons
 * Changed headers in product summary details to grey
 
+---
+
 ## Version 0.3.1
 _22 February 2016_
 
 ### Bugs fixed
 * Rearranged product listing information
 * Added 'N/A' instead of blanks
+
+---
 
 ## Version 0.3.0
 _18 February 2016_
@@ -108,6 +134,8 @@ _18 February 2016_
 * Allowed editing of ATL for certified products
 * Truncated too-long compare button titles
 
+---
+
 ## Version 0.2.0
 _3 February 2016_
 
@@ -123,6 +151,8 @@ _3 February 2016_
 * Enter submits login/change password action
 * Login form stays open on un/pw or email error
 
+---
+
 ## Version 0.1.1
 _12 January 2016_
 
@@ -133,6 +163,8 @@ _12 January 2016_
 ### Bugs fixed
 * 'Results per page' display fixed
 * Fixed bug with 'cancel' login directive
+
+---
 
 ## Version 0.1.0
 _5 January 2016_
@@ -154,6 +186,8 @@ Bugs fixed
 * Logging in shows appropriately visible options
 * Logging out clears away admin screen info
 
+---
+
 ## Version 0.0.2
 _7 December 2015_
 
@@ -169,6 +203,8 @@ Bugs fixed
 * Logging in from /admin reflects in log-in dropdown
 * Fixed issue with user potentially having previously logged in user's permissions
 * Developer edits correctly show without required page refresh
+
+---
 
 ## Version 0.0.1
 _13 November 2015_

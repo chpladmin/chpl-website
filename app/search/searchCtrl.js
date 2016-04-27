@@ -24,7 +24,6 @@
                 vm.activeSearch = false;
                 vm.resultCount = 0;
                 vm.defaultRefine = { visibleOnCHPL: 'yes',
-                                     hasCAP: 'all',
                                      certificationCriteria: [],
                                      cqms: []};
                 if ($localStorage.refine) {
@@ -56,8 +55,7 @@
                     sortDescending: false,
                     pageNumber: 0,
                     pageSize: '50',
-                    visibleOnCHPL: 'yes',
-                    hasCAP: 'all'
+                    visibleOnCHPL: 'yes'
                 };
                 vm.query = angular.copy(vm.defaultQuery);
 
@@ -238,10 +236,6 @@
                 case 'visibleOnCHPL':
                     vm.query.visibleOnCHPL = 'yes';
                     vm.refine.visibleOnCHPL = 'yes';
-                    break;
-                case 'hasCAP':
-                    vm.query.hasCAP = 'all';
-                    vm.refine.hasCAP = 'all';
                     break;
                 case 'certificationCriteria':
                     for (var i = 0; i < vm.query.certificationCriteria.length; i++) {
