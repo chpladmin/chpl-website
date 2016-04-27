@@ -2,6 +2,10 @@
 	width: 100%;
 	padding: 5px;
 	text-align: center;
+}
+
+.widgetcertidbar span {
+	text-align: center;
 	font-weight: 600;
 }
 
@@ -40,6 +44,10 @@
 	margin-right: 20px;
 }
 
+.selectedProducts {
+	text-align: center;
+}
+
 .selectedProducts ul {
 	padding: 0;
 }
@@ -47,10 +55,6 @@
 .selectedProducts li {
     list-style-type: none;
 	padding: 2px;
-}
-
-txtNoProductsSelected {
-	text-align: center;
 }
 
 .pull-right {
