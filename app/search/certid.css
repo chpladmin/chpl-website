@@ -1,7 +1,8 @@
 .widgetcertidbar {
 	width: 100%;
-	text-align: center;
 	padding: 5px;
+	text-align: center;
+	font-weight: 600;
 }
 
 .criteriaMetList ul {
@@ -20,6 +21,25 @@
     list-style-type: none;
 }
 
+.criteriaMetListColumn {
+	display: inline-block;
+	width: 50%;
+	text-align: left;
+}
+
+.criteriaMetListColumn li {
+	width: 100%;
+}
+
+.criteriaMetListColumn:first-child {
+	float: left;
+}
+
+.criteriaPercentage {
+	float: right;
+	margin-right: 20px;
+}
+
 .selectedProducts ul {
 	padding: 0;
 }
@@ -27,4 +47,23 @@
 .selectedProducts li {
     list-style-type: none;
 	padding: 2px;
+}
+
+txtNoProductsSelected {
+	text-align: center;
+}
+
+.pull-right {
+	float: right!important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
 }
