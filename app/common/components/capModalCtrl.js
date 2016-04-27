@@ -108,6 +108,7 @@
                 for (var i = 0; i < vm.cap.certifications.length; i++) {
                     ret = ret || vm.cap.certifications[i].error;
                 }
+                ret = ret || (vm.cap.acbSummary && vm.cap.acbSummary.length > 0);
                 ret = ret && !vm.capForm.$invalid;
                 return ret;
             }

@@ -281,7 +281,7 @@
                     };
                     if (data[i].description === 'Created a certified product') {
                         activity.action = 'Created certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
-                    } else if (data[i].description.substring(0,7) === 'Updated') {
+                    } else if (data[i].description.substring(0,17) === 'Updated certified') {
                         questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
                         activity.action = 'Updated certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
                         if (data[i].newData.certificationEdition.name === '2011')
