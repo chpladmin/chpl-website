@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 1.3.0
+_27 April 2016_
 
 ### New features
 * Added 'generic' CAP fields
