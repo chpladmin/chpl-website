@@ -269,10 +269,9 @@
           </div>
           <div class="col-md-3">
             <accordion close-others="false">
-              <accordion-group class="panel-ai" is-open="vm.boxes.certificationId">
-                <accordion-heading>
-					<span>CMS EHR Certification ID</span>
-					<i class="fa fa-lg pull-right" ng-class="vm.boxes.certificationId ? 'fa-caret-down' : 'fa-caret-right'"></i>
+              <accordion-group class="panel-ai" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="common/templates/accordion.html">
+                <accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
+					CMS EHR Certification ID
                 </accordion-heading>
 				<div ng-include="'search/certid.html'"></div>
               </accordion-group>
