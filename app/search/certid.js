@@ -14,7 +14,7 @@ $(document).ready(function() {
 function invokeGetCertificationId(addIds,removeIds,create) {
 	updateButtonAndId(false);
 	
-	if ((null == create) || ("undefined" == create)) {
+	if ((null === create) || ("undefined" === create)) {
 		create = false;
 	}
 
@@ -26,14 +26,14 @@ function invokeGetCertificationId(addIds,removeIds,create) {
 	});
 
 	// Add products to the list
-	if ((null != addIds) && ("undefined" != addIds)) {
+	if ((null !== addIds) && ("undefined" !== addIds)) {
 		productIds = productIds.concat(addIds);
 	}
 
 	// Create formatted string if product Ids
 	var productIdsString = "";
 	productIds.forEach(function (item, index) {
-		if (("undefined" != item) && ((null == removeIds) || ("undefined" == removeIds) || (-1 == removeIds.indexOf(item)))) {
+		if (("undefined" !== item) && ((null === removeIds) || ("undefined" === removeIds) || (-1 === removeIds.indexOf(item)))) {
 			if (productIdsString.length > 0)
 				productIdsString += "|";
 			productIdsString += item;
@@ -65,7 +65,7 @@ function invokeGetCertificationId(addIds,removeIds,create) {
 function displayCertificationIdResults(create) {
 
 	var data = JSON.parse(getCookie(cookieCertificationIdData));
-	if (!data || "undefined" == data) {
+	if (!data || "undefined" === data) {
 		return;
 	} else {
 		
@@ -78,7 +78,7 @@ function displayCertificationIdResults(create) {
 		var amb = 0;
 		var dom = 0;
 		
-		if ((null != data) && (null != data.metPercentages)) {
+		if ((null !== data) && (null !== data.metPercentages)) {
 			crit = data.metPercentages["criteriaMet"];
 			inp = data.metPercentages["cqmsInpatient"];
 			amb = data.metPercentages["cqmsAmbulatory"];
@@ -102,7 +102,7 @@ function updateButtonAndId(showIdRequested) {
 	var data = JSON.parse(getCookie(cookieCertificationIdData));
 	var isValid = false;
 	var year = null;
-	if (null != data) {
+	if (null !== data) {
 		isValid = data.isValid;
 		year = data.year;
 	} else {
@@ -110,7 +110,7 @@ function updateButtonAndId(showIdRequested) {
 		year = null;
 	}
 
-	if (null != year) {
+	if (null !== year) {
 		$("#btnEhrGetCertificationId").text("Get " + data.year + " EHR Certification ID");
 	} else {
 		$("#btnEhrGetCertificationId").text("Get EHR Certification ID");
@@ -147,7 +147,7 @@ function updateButtonAndId(showIdRequested) {
 function getCookie(name) {
 	var cookies = document.cookie.split(";");
 	for (var i=0; i < cookies.length; ++i) {
-		if (name == ( (cookies[i].split("=")[0]).trim() )) {
+		if (name === ( (cookies[i].split("=")[0]).trim() )) {
 			var value = (cookies[i].split("=")[1]).trim();
 			return value;
 		} 
@@ -161,12 +161,12 @@ function getCookie(name) {
 ////////////////////////////////////////////////////////////////
 function setCookie(cname, cvalue, exdays) {
 	var expires = null;
-	if (-1 != exdays) {
+	if (-1 !== exdays) {
 		var d = new Date();
 		d.setTime(d.getTime() + (exdays*24*60*60*1000));
 		expires = "expires="+d.toUTCString();
 	}
-	var cookieString = cname + "=" + cvalue + ((-1 != exdays) ? ("; " + expires) : ("")); 
+	var cookieString = cname + "=" + cvalue + ((-1 !== exdays) ? ("; " + expires) : ("")); 
 	document.cookie = cookieString + "; path=" + cookiePath;
 }
 
@@ -176,7 +176,7 @@ function setCookie(cname, cvalue, exdays) {
 function getProductsInCart() {
 	var prods = [];
 	var data = getCookie(cookieCertificationIdData);
-	if (null == data || "undefined" == data || "" == data) {
+	if (null === data || "undefined" === data || "" === data) {
 		console.log("getProductsInCart: No certification id data to retrieve.");
 	} else {
 		prods = JSON.parse(data)["products"];
@@ -189,7 +189,7 @@ function getProductsInCart() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 function setProductsInCart(products) {
 	var data = getCookie(cookieCertificationIdData);
-	if (null == data || "undefined" == data || "" == data) {
+	if (null === data || "undefined" === data || "" === data) {
 		console.log("setProductsInCart: No certification id data to retrieve.");
 	} else {
 		data["products"] = products;
@@ -231,7 +231,7 @@ function addProductToCart(id) {
 function isProductInCart(id) {
 	var prods = getProductsInCart();
 	for (var index = 0; index < prods.length; ++index) {
-		if (id == prods[index].productId) {
+		if (id === prods[index].productId) {
 			return true;
 		}
 	}
@@ -245,10 +245,10 @@ function displayProducts() {
 	var data = getCookie(cookieCertificationIdData);
 
 	// Add products listing
-	if (null != data && "undefined" != data) {
+	if (null !== data && "undefined" !== data) {
 		
 		var products = JSON.parse(data)["products"];
-		if ("undefined" != products && products.length > 0) {
+		if ("undefined" !== products && products.length > 0) {
 		
 			// Empty the product list except for the template
 			$("#selectedProductsList li:not([id=productListItemTemplate])").remove();
@@ -257,7 +257,7 @@ function displayProducts() {
 				var listItem = $("#productListItemTemplate").clone(true);
 				listItem.removeAttr("id");
 				listItem.find("button").attr("title", item.name);
-				listItem.find("button").text(item.name);
+				listItem.find("[name='title']").text(item.name);
 				var btnId = "btnChplProduct_" + item.productId;
 				listItem.find("button").attr("id", btnId);
 				listItem.show();
