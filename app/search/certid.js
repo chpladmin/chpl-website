@@ -12,7 +12,7 @@
 
 var chplCertIdWidget = (function(){
 	
-	var urlCertId = "http:\/\/localhost:8080\/chpl-service\/certificationIds\/";
+	var urlCertId = "http:\/\/localhost:8080\/chpl-service\/certification_ids\/";
 	var apiKey = "myapikey";
 	var cookiePath = "/";
 	var cookieCertificationIdData = "certiddata";
