@@ -3,6 +3,13 @@
 ## Next version
 _Date TBD_
 
+### New Features
+* Added EHR Certification ID widget to fold out on Search page
+* Added 'Cert ID' button to product search result rows
+
+## Next version
+_Date TBD_
+
 ### New features
 * Allow editing of new style CHPL Product Number
 * Show attestation status for each developer/acb in 'developer codes' table
