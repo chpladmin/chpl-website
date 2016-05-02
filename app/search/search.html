@@ -257,6 +257,9 @@
                       <td>
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
+                      <td>
+                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCart(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Cert ID</button>
+                      </td>
 	                </tr>
                   </tbody>
                 </table>
@@ -265,6 +268,12 @@
           </div>
           <div class="col-md-3">
             <accordion close-others="false">
+              <accordion-group class="panel-ai" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="common/templates/accordion.html">
+                <accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
+					CMS EHR Certification ID
+                </accordion-heading>
+				<div ng-include="'search/certid.html'"></div>
+              </accordion-group>
               <accordion-group class="panel-ai" is-open="vm.boxes.compare" aria-expanded="{{ vm.boxes.compare }}" template-url="common/templates/accordion.html">
                 <accordion-heading aria-expanded="{{ vm.boxes.compare }}">
                   Compare <span ng-if="vm.compareCps.length >= 2">{{ vm.compareCps.length }}</span> products <span ng-if="vm.compareCps.length < 2">(minimum 2)</span>

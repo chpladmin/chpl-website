@@ -15,9 +15,10 @@
             vm.truncButton = truncButton;
             vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
+			vm.toggleCart = toggleCart;
 
             activate();
-
+	
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
@@ -207,6 +208,15 @@
                     vm.compareCps.push(row);
                 }
                 vm.boxes.compare = true;
+            }
+
+			function toggleCart (row) {
+				if (chplCertIdWidget.isProductInCart(row.id)) {
+					chplCertIdWidget.removeProductFromCart(row.id);
+				} else {
+					chplCertIdWidget.addProductToCart(row.id);
+                }
+				vm.boxes.certificationId = true;
             }
 
             function truncButton (str) {
