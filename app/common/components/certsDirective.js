@@ -198,7 +198,8 @@
                     isEditing: '=',
                     isConfirming: '=',
                     save: '&',
-                    product: '='
+                    product: '=',
+                    cap: '='
                 },
                 scope: {},
                 controllerAs: 'vm',

@@ -78,14 +78,6 @@
             <p ng-if="!vm.product.transparencyAttestationUrl">No report on file</p>
           </div>
         </span>
-        <div class="product-element" ng-if="vm.correctiveActionPlan.length === 0">
-          <h2 class="product-heading">Surveillance Transparency</h2>
-          <ai-corrective-action-plan
-             corrective-action-plan="vm.correctiveActionPlan"
-             certified-product-id="vm.product.id"
-             certification-results="vm.product.certificationResults"
-             is-admin="false"></ai-corrective-action-plan>
-        </div>
       </div>
       <div class="col-sm-8">
         <ai-certs certs="vm.product.certificationResults"
@@ -93,20 +85,9 @@
                   count-certs="vm.product.countCerts"
                   count-cqms="vm.product.countCqms"
                   report-file-location="{{ vm.product.reportFileLocation }}"
-                  product="vm.product">
+                  product="vm.product"
+                  cap="vm.correctiveActionPlan">
         </ai-certs>
-      </div>
-    </div>
-    <div class="row" ng-if="vm.correctiveActionPlan.length > 0">
-      <div class="col-sm-12">
-        <div class="product-element">
-          <h2 class="product-heading">Surveillance Transparency</h2>
-          <ai-corrective-action-plan
-             corrective-action-plan="vm.correctiveActionPlan"
-             certified-product-id="vm.product.id"
-             certification-results="vm.product.certificationResults"
-             is-admin="false"></ai-corrective-action-plan>
-        </div>
       </div>
     </div>
   </div>
