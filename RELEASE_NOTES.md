@@ -9,6 +9,7 @@ _Date TBD_
   * Exploded "updated CAP" activity
   * Added ACB column and sorting
 * Templated commonModule file
+* Updated front facing UI for CAP
 
 ---
 
