@@ -323,6 +323,7 @@
                         }
                         if (activity.details.length === 0) delete activity.details;
                     } else if (data[i].description.startsWith('Corrective action plan for')) {
+                        var cpNum = data[i].description.split(' ')[4];
                         if (data[i].description.endsWith('created.')) {
                             activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                         } else if (data[i].description.endsWith('deleted.')) {
@@ -346,11 +347,10 @@
                             for (var j = 0; j < capFields.length; j++) {
                                 change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
                                 if (change) activity.details.push(change);
-                            } else {
-                                activity.action = data[i].description;
                             }
+                        } else {
+                            activity.action = data[i].description;
                         }
-                        var cpNum = data[i].description.split(' ')[4];
                     } else if (data[i].description.startsWith('Updated information for certification')) {
                         activity.action = data[i].description;
                         var capFields = [
