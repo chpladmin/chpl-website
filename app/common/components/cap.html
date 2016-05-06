@@ -61,7 +61,7 @@
         </tbody>
       </table>
       <div ng-if="cap.documentation && cap.documentation.length > 0">
-        <strong>Supporting Documentation:</strong> <span ng-repeat="doc in cap.documentation">{{ doc.fileName }} ({{ doc.fileType }}) <span ng-if="doc.id"><a type="button" class="btn btn-block btn-ai-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download {{ doc.fileName</span></a></span><span ng-if="!doc.id">File is pending</span></span>
+        <strong>Supporting Documentation:</strong> <span ng-repeat="doc in cap.documentation">{{ doc.fileName }} ({{ doc.fileType }}) <span ng-if="doc.id"><a type="button" class="btn btn-sm btn-ai-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download {{ doc.fileName</span></a></span><span ng-if="!doc.id">File is pending</span></span>
       </div>
     </div>
     <hr />
