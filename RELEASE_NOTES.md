@@ -1,5 +1,17 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### New features
+* Expanded CAP Activity reporting
+  * Linked IDs where possible
+  * Exploded "updated CAP" activity
+  * Added ACB column and sorting
+* Templated commonModule file
+
+---
+
 ## Version 1.3.0
 _27 April 2016_
 
