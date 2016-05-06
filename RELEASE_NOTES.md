@@ -10,6 +10,7 @@ _Date TBD_
   * Added ACB column and sorting
 * Templated commonModule file
 * Updated front facing UI for CAP
+* Display warning message if Test Tool or Functionality Tested isn't found
 
 ---
 
