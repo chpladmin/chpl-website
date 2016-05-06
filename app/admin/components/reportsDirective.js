@@ -324,9 +324,11 @@
                         if (activity.details.length === 0) delete activity.details;
                     } else if (data[i].description.startsWith('Corrective action plan for')) {
                         if (data[i].description.endsWith('created.')) {
-                            activity.action = 'Created';
-                        } else {
-                            activity.action = 'Updated';
+                            activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                        } else if (data[i].description.endsWith('deleted.')) {
+                            activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
+                        } else if (data[i].description.endsWith('updated.')) {
+                            activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                             var capFields = [
                                 {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
                                 {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
@@ -344,10 +346,11 @@
                             for (var j = 0; j < capFields.length; j++) {
                                 change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
                                 if (change) activity.details.push(change);
+                            } else {
+                                activity.action = data[i].description;
                             }
                         }
                         var cpNum = data[i].description.split(' ')[4];
-                        activity.action += ' corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                     } else if (data[i].description.startsWith('Updated information for certification')) {
                         activity.action = data[i].description;
                         var capFields = [
