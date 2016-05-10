@@ -38,7 +38,7 @@
               <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
               <span class="cert-bloc" ng-if="n.cmsId">
                 <select ng-model="n.successVersions" multiple data-ng-attr-size="{{ n.allVersions.length + 1 }}" id="data_{{n.id}}"
-                        ng-options="version for version in n.allVersions">
+                        ng-options="version for version in n.allVersions | orderBy : 'toString()'">
                   <option value=""></option>
                 </select>
               </span>
