@@ -322,14 +322,18 @@
                             activity.details.push('Targeted User "' + targetedUsers[j].name + '" changes<ul>' + targetedUsers[j].changes.join('') + '</ul>');
                         }
                         if (activity.details.length === 0) delete activity.details;
-                    } else if (data[i].description.startsWith('Corrective action plan for')) {
-                        var cpNum = data[i].description.split(' ')[4];
+                    } else if (data[i].description.startsWith('A corrective action plan for')) {
+                        var cpNum = data[i].description.split(' ')[7];
                         if (data[i].description.endsWith('created.')) {
+                            cpNum = data[i].description.split(' ')[5];
                             activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                            activity.acb = data[i].newData.acbName;
                         } else if (data[i].description.endsWith('deleted.')) {
                             activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
+                            activity.acb = data[i].originalData.acbName;
                         } else if (data[i].description.endsWith('updated.')) {
                             activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                            activity.acb = data[i].newData.acbName;
                             var capFields = [
                                 {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
                                 {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
@@ -348,9 +352,23 @@
                                 change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
                                 if (change) activity.details.push(change);
                             }
+                            var certChanges = compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
+                            for (var j = 0; j < certChanges.length; j++) {
+                                activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                            }
                         } else {
                             activity.action = data[i].description;
                         }
+                    } else if (data[i].description.startsWith('Documentation was added to ')) {
+                        var cpNum = data[i].description.split(' ');
+                        cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
+                        activity.action = cpNum.join(' ');
+                        activity.acb = data[i].newData.acbName;
+                    } else if (data[i].description.startsWith('Documentation was removed from ')) {
+                        var cpNum = data[i].description.split(' ');
+                        cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
+                        activity.action = cpNum.join(' ');
+                        activity.acb = data[i].newData.acbName;
                     } else if (data[i].description.startsWith('Updated information for certification')) {
                         activity.action = data[i].description;
                         var capFields = [
@@ -441,6 +459,32 @@
                     var testTasks = compareSedTasks(prev[i].testTasks, curr[i].testTasks);
                     for (var j = 0; j < testTasks.length; j++) {
                         obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
+                    }
+                    if (obj.changes.length > 0)
+                        ret.push(obj);
+                }
+                return ret;
+            }
+
+            function compareCapCerts (prev, curr) {
+                var ret = [];
+                var change;
+                var certKeys = [
+                    {key: 'acbSummary', display: 'ONC-ACB Summary'},
+                    {key: 'developerSummary', display: 'Developer Summary'},
+                    {key: 'resolution', display: 'Resolution'},
+                    {key: 'surveillancePassRate', display: 'Pass Rate'},
+                    {key: 'surveillanceSitesSurveilled', display: 'Sites Surveilled'}
+                ];
+                prev.sort(function(a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
+                curr.sort(function(a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
+                for (var i = 0; i < prev.length; i++) {
+                    var obj = { number: curr[i].certificationCriterionNumber, changes: [] };
+                    for (var j = 0; j < certKeys.length; j++) {
+                        change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
+                        if (change) {
+                            obj.changes.push('<li>' + change + '</li>');
+                        }
                     }
                     if (obj.changes.length > 0)
                         ret.push(obj);

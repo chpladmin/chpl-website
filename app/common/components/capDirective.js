@@ -27,7 +27,7 @@
                                 vm.correctiveActionPlan[i].type += vm.correctiveActionPlan[i].certifications[j].certificationCriterionNumber + ', ';
                             }
                         }
-                    vm.correctiveActionPlan[i].type = vm.correctiveActionPlan[i].type.substring(0, vm.correctiveActionPlan[i].type.length - 2);
+                        vm.correctiveActionPlan[i].type = vm.correctiveActionPlan[i].type.substring(0, vm.correctiveActionPlan[i].type.length - 2);
                     }
                 }
             }
