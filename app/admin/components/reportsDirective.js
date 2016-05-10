@@ -7,7 +7,7 @@
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.tab = 'cp';
-            vm.activityRange = 7;
+            vm.activityRange = 60;
             vm.questionableRange = 0;
 
             vm.refreshActivity = refreshActivity;
