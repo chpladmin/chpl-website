@@ -379,9 +379,11 @@
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
-                  <span ng-repeat="qms in vm.activeCP.qmsStandards">Standard: {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">Modification: {{ qms.qmsModification }}</span><br /></span>
+                  <span ng-repeat="qms in vm.activeCP.qmsStandards">Standard: {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">Modification: {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria"> Applicable Criteria: {{ qms.applicableCriteria }}</span><br /></span>
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'None' }} <br />
                   <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
+                  <strong>SED Intended Users:</strong> {{ vm.activeCP.sedIntendedUserDescription ? vm.activeCP.sedIntendedUserDescription : 'None' }} <br />
+                  <strong>SED End Date of Testing:</strong> {{ vm.activeCP.sedTestingEnd | date : 'mediumDate' : 'UTC' }} <br />
                   <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'None' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />

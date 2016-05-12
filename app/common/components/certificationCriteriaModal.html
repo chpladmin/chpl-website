@@ -77,75 +77,70 @@
         </tr>
         <tr ng-if="vm.cert.sed">
           <td colspan="2">
-            <table class="table table-condensed">
+            <table class="table table-condensed" ng-repeat-start="task in vm.cert.testTasks track by $index">
               <thead>
                 <tr>
-                  <th scope="col">Task Description</th>
-                  <th scope="col">Path Deviation Observed</th>
-                  <th scope="col">Path Deviation Optimal</th>
-                  <th scope="col">Rating Scale</th>
-                  <th scope="col">Time Average</th>
-                  <th scope="col">Time Deviation Observed Average</th>
-                  <th scope="col">Time Deviation Optimal Average</th>
-                  <th scope="col">Time Standard Deviation</th>
-                  <th scope="col">Number of Participants</th>
+                  <th scope="col">Quality</th>
+                  <th scope="col">Measurement</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
-              <tfoot>
-                <tr>
-                  <td colspan="10"><button class="btn btn-ai-success btn-sm pull-right" ng-click="vm.addTask()"><i class="fa fa-plus"></i> Add Task</button></td>
-                </tr>
-              </tfoot>
               <tbody>
-                <tr ng-repeat-start="task in vm.cert.testTasks track by $index">
-                  <td>{{ task.description }}</td>
-                  <td>{{ task.taskPathDeviationObserved }}</td>
-                  <td>{{ task.taskPathDeviationOptimal }}</td>
-                  <td>{{ task.taskRatingScale }}</td>
-                  <td>{{ task.taskTimeAvg }}</td>
-                  <td>{{ task.taskTimeDeviationObservedAvg }}</td>
-                  <td>{{ task.taskTimeDeviationOptimalAvg }}</td>
-                  <td>{{ task.taskTimeStddev }}</td>
-                  <td>{{ task.testParticipants ? task.testParticipants.length : 0 }} <a href aria-expanded="task.showParticipants" ng-click="task.showParticipants = !task.showParticipants">({{ task.showParticipants ? 'Hide' : 'View' }} Participant Details)</a></td>
+                <tr>
+                  <td>Task Description</td><td>{{ task.description }}</td>
                   <td>
                     <button class="btn btn-ai-success btn-sm" ng-click="vm.editTask(task, $index)"><i class="fa fa-pencil-square-o"></i> Edit</button>
                     <button class="btn btn-danger btn-sm" ng-click="vm.removeTask($index)"><i class="fa fa-trash"></i> Remove</button>
                   </td>
                 </tr>
-                <tr ng-repeat-end ng-if="task.showParticipants">
-                  <td colspan="10">
-                    <table class="table table-condensed">
-                      <thead>
-                        <tr>
-                          <th scope="col">Age</th>
-                          <th scope="col">Assistive Technology Needs</th>
-                          <th scope="col">Computer Experience (Months)</th>
-                          <th scope="col">Education Type</th>
-                          <th scope="col">Gender</th>
-                          <th scope="col">Occupation</th>
-                          <th scope="col">Product Experience (Months)</th>
-                          <th scope="col">Professional Experience (Months)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr ng-repeat="pers in task.testParticipants track by $index">
-                          <td>{{ pers.age }}</td>
-                          <td>{{ pers.assistiveTechnologyNeeds }}</td>
-                          <td>{{ pers.computerExperienceMonths }}</td>
-                          <td>{{ pers.educationTypeName }}</td>
-                          <td>{{ pers.gender }}</td>
-                          <td>{{ pers.occupation }}</td>
-                          <td>{{ pers.productExperienceMonths }}</td>
-                          <td>{{ pers.professionalExperienceMonths }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
+                <tr><td>Task Errors</td><td colspan="2">{{ task.taskErrors }}</td></tr>
+                <tr><td>Task Errors Standard Deviation</td><td colspan="2">{{ task.taskErrorsStddev }}</td></tr>
+                <tr><td>Path Deviation Observed</td><td colspan="2">{{ task.taskPathDeviationObserved }}</td></tr>
+                <tr><td>Path Deviation Optimal</td><td colspan="2">{{ task.taskPathDeviationOptimal }}</td></tr>
+                <tr><td>Task Rating</td><td colspan="2">{{ task.taskRating }}</td></tr>
+                <tr><td>Task Rating Scale</td><td colspan="2">{{ task.taskRatingScale }}</td></tr>
+                <tr><td>Task Success Average</td><td colspan="2">{{ task.taskSuccessAverage }}</td></tr>
+                <tr><td>Task Success Standard Deviation</td><td colspan="2">{{ task.taskSuccessStddev }}</td></tr>
+                <tr><td>Task Time Average</td><td colspan="2">{{ task.taskTimeAvg }}</td></tr>
+                <tr><td>Task Time Deviation Observed Average</td><td colspan="2">{{ task.taskTimeDeviationObservedAvg }}</td></tr>
+                <tr><td>Task Time Deviation Optimal Average</td><td colspan="2">{{ task.taskTimeDeviationOptimalAvg }}</td></tr>
+                <tr><td>Task Time Standard Deviation</td><td colspan="2">{{ task.taskTimeStddev }}</td></tr>
+                <tr>
+                  <td>Number of test participants</td>
+                  <td colspan="2">{{ task.testParticipants.length }} <a href class="pull-right" aria-expanded="task.showParticipants" ng-click="task.showParticipants = !task.showParticipants">({{ task.showParticipants ? 'Hide': 'View' }} Participant Details)</a></td>
+                </tr>
+              </tbody>
+            </table>
+            <table ng-repeat-end ng-if="task.showParticipants" class="table table-condensed">
+              <thead>
+                <tr>
+                  <th scope="col">Age</th>
+                  <th scope="col">Assistive Technology Needs</th>
+                  <th scope="col">Computer Experience (Months)</th>
+                  <th scope="col">Education Type</th>
+                  <th scope="col">Gender</th>
+                  <th scope="col">Occupation</th>
+                  <th scope="col">Product Experience (Months)</th>
+                  <th scope="col">Professional Experience (Months)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="pers in task.testParticipants track by $index">
+                  <td>{{ pers.age }}</td>
+                  <td>{{ pers.assistiveTechnologyNeeds }}</td>
+                  <td>{{ pers.computerExperienceMonths }}</td>
+                  <td>{{ pers.educationTypeName }}</td>
+                  <td>{{ pers.gender }}</td>
+                  <td>{{ pers.occupation }}</td>
+                  <td>{{ pers.productExperienceMonths }}</td>
+                  <td>{{ pers.professionalExperienceMonths }}</td>
                 </tr>
               </tbody>
             </table>
           </td>
+        </tr>
+        <tr ng-if="vm.cert.sed">
+          <td colspan="2"><button class="btn btn-ai-success btn-sm pull-right" ng-click="vm.addTask()"><i class="fa fa-plus"></i> Add Task</button></td>
         </tr>
       </tbody>
     </table>

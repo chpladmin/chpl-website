@@ -11,6 +11,7 @@ _Date TBD_
 * Templated commonModule file
 * Updated front facing UI for CAP
 * Display warning message if Test Tool or Functionality Tested isn't found
+* Updated display of SED Test Tasks
 
 ---
 

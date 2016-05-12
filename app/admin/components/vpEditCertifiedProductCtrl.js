@@ -20,6 +20,7 @@
             function activate () {
                 vm.cp = angular.copy(activeCP);
                 vm.cp.certDate = new Date(vm.cp.certificationDate);
+                vm.cp.sedTestingEndDate = new Date(vm.cp.sedTestingEnd);
                 vm.practices = practices;
                 vm.classifications = classifications;
                 vm.isAcbAdmin = isAcbAdmin;
@@ -102,6 +103,7 @@
                 }
                 vm.cp.visibleOnChpl = vm.cp.certificationStatus.name === 'Active';
                 vm.cp.certificationDate = vm.cp.certDate.getTime();
+                vm.cp.sedTestingEnd = vm.cp.sedTestingEndDate.getTime();
                 if (vm.workType === 'manage') {
                     commonService.updateCP(vm.cp)
                         .then(function (response) {

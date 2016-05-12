@@ -93,7 +93,7 @@
     </div>
     <div class="form-group">
       QMS Testing
-      <ai-array item-type="QMS Standard & Details" items="vm.cp.qmsStandards" key="qmsStandardName" key-second="qmsModification"></ai-array>
+      <ai-array item-type="QMS Standard, Details & Applicable Criteria" items="vm.cp.qmsStandards" key="qmsStandardName" key-second="qmsModification" key-third="applicableCriteria"></ai-array>
     </div>
     <div class="form-group">
       <label for="cpReportFileLoc">Report File Location</label>
@@ -104,6 +104,15 @@
       <label for="cpSedReportFileLoc">SED Report File Location</label>
       <input class="input-sm form-control" type="url" ng-model="vm.cp.sedReportFileLocation" id="cpSedReportFileLoc" name="cpSedReportFileLoc"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedReportFileLoc.$touched) && vm.editForm.cpSedReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
+    </div>
+    <div class="form-group">
+      <label for="cpSedIntendedUserDescription">SED Intended User Description</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.sedIntendedUserDescription" id="cpSedIntendedUserDescription" name="cpSedIntendedUserDescription"></input>
+    </div>
+    <div class="form-group">
+      <label for="cpSedTestingEnd">SED End Date of Testing</label>
+      <input class="input-sm form-control" type="date" ng-model="vm.cp.sedTestingEndDate" id="cpSedTestingEnd" name="cpSedTestingEnd"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedTestingEnd.$touched) && vm.editForm.cpSedTestingEnd.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
     <div class="form-group">
       <label for="cpTouLoc">Terms of Use</label>
