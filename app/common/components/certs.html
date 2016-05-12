@@ -66,6 +66,15 @@
             <ai-a ng-if="vm.product.sedReportFileLocation" href="{{ vm.product.sedReportFileLocation }}" text="{{ vm.product.sedReportFileLocation }}"></ai-a>
             <p ng-if="!vm.product.sedReportFileLocation">No report on file</p>
           </span>
+          <span ng-if="vm.product.sedIntendedUserDescription">
+            <h4>SED Intended User Description</h4>
+            <p>{{ vm.product.sedIntendedUserDescription ? vm.product.sedIntendedUserDescription : 'N/A' }}</p>
+          </span>
+            <span ng-if="vm.product.sedTestingEnd">
+            <h4>SED Testing Completion Date</h4>
+            <p ng-if="vm.product.sedTestingEnd">{{ vm.product.sedTestingEnd | date : 'mediumDate' : 'UTC' }}</p>
+            <p ng-if="!vm.product.sedTestingEnd">N/A</p>
+          </span>
           <span ng-if="vm.product.qmsStandards.length > 0 || vm.product.chplProductNumber.substring(0,3) !== 'CHP'">
             <h4>Quality Management System</h4>
             <table ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" class="table">
@@ -94,13 +103,6 @@
           <span ng-if="vm.product.otherAcb">
             <h4>Other ACB</h4>
             <p>{{ vm.product.otherAcb }}</p>
-          </span>
-          <span ng-if="vm.product.sedIntendedUserDescription || vm.product.sedTestingEnd">
-            <h4>SED Intended User Description</h4>
-            <p>{{ vm.product.sedIntendedUserDescription ? vm.product.sedIntendedUserDescription : 'N/A' }}</p>
-            <h4>SED Testing CompletionDate</h4>
-            <p ng-if="vm.product.sedTestingEnd">{{ vm.product.sedTestingEnd | date : 'mediumDate' : 'UTC' }}</p>
-            <p ng-if="!vm.product.sedTestingEnd">N/A</p>
           </span>
           <span ng-if="vm.product.certificationEdition.name === '2015'">
             <h4>API Documentation</h4>
