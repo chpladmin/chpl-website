@@ -17,6 +17,20 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="control-label col-sm-4" for="data_taskErrors">Task Errors <span class="text-danger">*</span></label>
+      <div class="col-sm-8">
+        <input type="number" class="form-control input-sm" id="data_taskErrors" name="data_taskErrors" ng-model="vm.task.taskErrors" ng-change="vm.changed()" required></input>
+        <div class="text-danger" ng-if="vm.editForm.data_taskErrors.$touched && vm.editForm.data_taskErrors.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4" for="data_taskErrorsStddev">Task Errors Standard Deviation <span class="text-danger">*</span></label>
+      <div class="col-sm-8">
+        <input type="number" class="form-control input-sm" id="data_taskErrorsStddev" name="data_taskErrorsStddev" ng-model="vm.task.taskErrorsStddev" ng-change="vm.changed()" required></input>
+        <div class="text-danger" ng-if="vm.editForm.data_taskErrorsStddev.$touched && vm.editForm.data_taskErrorsStddev.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="control-label col-sm-4" for="data_taskPathDeviationObserved">Path Deviation Observed <span class="text-danger">*</span></label>
       <div class="col-sm-8">
         <input type="number" class="form-control input-sm" id="data_taskPathDeviationObserved" name="data_taskPathDeviationObserved" ng-model="vm.task.taskPathDeviationObserved" ng-change="vm.changed()" required></input>
@@ -31,10 +45,31 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="control-label col-sm-4" for="data_taskRating">Task Rating <span class="text-danger">*</span></label>
+      <div class="col-sm-8">
+        <input type="number" class="form-control input-sm" id="data_taskRating" name="data_taskRating" ng-model="vm.task.taskRating" ng-change="vm.changed()" required></input>
+        <div class="text-danger" ng-if="vm.editForm.data_taskRating.$touched && vm.editForm.data_taskRating.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="control-label col-sm-4" for="data_taskRatingScale">Rating Scale <span class="text-danger">*</span></label>
       <div class="col-sm-8">
         <input type="text" class="form-control input-sm" id="data_taskRatingScale" name="data_taskRatingScale" ng-model="vm.task.taskRatingScale" ng-change="vm.changed()" required></input>
         <div class="text-danger" ng-if="vm.editForm.data_taskRatingScale.$touched && vm.editForm.data_taskRatingScale.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4" for="data_taskSuccessAverage">Task Success Average <span class="text-danger">*</span></label>
+      <div class="col-sm-8">
+        <input type="number" class="form-control input-sm" id="data_taskSuccessAverage" name="data_taskSuccessAverage" ng-model="vm.task.taskSuccessAverage" ng-change="vm.changed()" required></input>
+        <div class="text-danger" ng-if="vm.editForm.data_taskSuccessAverage.$touched && vm.editForm.data_taskSuccessAverage.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-4" for="data_taskSuccessStddev">Task Success Standard Deviation <span class="text-danger">*</span></label>
+      <div class="col-sm-8">
+        <input type="number" class="form-control input-sm" id="data_taskSuccessStddev" name="data_taskSuccessStddev" ng-model="vm.task.taskSuccessStddev" ng-change="vm.changed()" required></input>
+        <div class="text-danger" ng-if="vm.editForm.data_taskSuccessStddev.$touched && vm.editForm.data_taskSuccessStddev.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">

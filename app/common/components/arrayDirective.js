@@ -26,9 +26,13 @@
                 if (vm.keySecond) {
                     val[vm.keySecond] = vm.newSecond;
                 }
+                if (vm.keyThird) {
+                    val[vm.keyThird] = vm.newThird
+                }
                 vm.items.push(val);
                 vm.newItem = '';
                 vm.newSecond = '';
+                vm.newThird = '';
             }
 
             function removeItem(index) {
@@ -46,7 +50,8 @@
                     itemType: '@',
                     items: '=',
                     key: '@',
-                    keySecond: '@'
+                    keySecond: '@',
+                    keyThird: '@'
                 },
                 scope: {},
                 controllerAs: 'vm',

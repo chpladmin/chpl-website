@@ -4,11 +4,13 @@
     <div class="col-sm-6">
       <div class="input-group">
         <input type="text" class="form-control" ng-model="item[vm.key]" id="item{{ vm.localId }}"></input>
-        <div ng-if="!vm.keySecond" class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.removeItem($index)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
         <span ng-if="vm.keySecond">
           <input type="text" class="form-control" ng-model="item[vm.keySecond]" id="itemSecond{{ vm.localId }}"></input>
-          <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.removeItem($index)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
         </span>
+        <span ng-if="vm.keyThird">
+          <input type="text" class="form-control" ng-model="item[vm.keyThird]" id="itemThird{{ vm.localId }}"></input>
+        </span>
+        <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.removeItem($index)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
       </div>
     </div>
   </div>
@@ -18,6 +20,7 @@
       <div class="input-group">
         <input type="text" class="form-control" ng-model="vm.newItem" id="newItem{{ vm.localId }}"></input>
         <input type="text" class="form-control" ng-model="vm.newSecond" id="newSecond{{ vm.localId }}" ng-if="vm.keySecond"></input>
+        <input type="text" class="form-control" ng-model="vm.newThird" id="newThird{{ vm.localId }}" ng-if="vm.keyThird"></input>
         <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addItem()"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
       </div>
     </div>

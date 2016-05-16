@@ -16,9 +16,20 @@
             function activate () {
                 vm.API = API;
                 vm.API_KEY = authService.getApiKey();
-/*                if (!vm.correctiveActionPlan) {
-                    vm.correctiveActionPlan = [];
-                }*/
+                if (vm.correctiveActionPlan) {
+                    for (var i = 0; i < vm.correctiveActionPlan.length; i++) {
+                        if (vm.correctiveActionPlan[i].acbSummary)
+                            vm.correctiveActionPlan[i].type = 'General, ';
+                        else
+                            vm.correctiveActionPlan[i].type = '';
+                        if (vm.correctiveActionPlan[i].certifications && vm.correctiveActionPlan[i].certifications.length > 0) {
+                            for (var j = 0; j < vm.correctiveActionPlan[i].certifications.length; j++) {
+                                vm.correctiveActionPlan[i].type += vm.correctiveActionPlan[i].certifications[j].certificationCriterionNumber + ', ';
+                            }
+                        }
+                        vm.correctiveActionPlan[i].type = vm.correctiveActionPlan[i].type.substring(0, vm.correctiveActionPlan[i].type.length - 2);
+                    }
+                }
             }
 
             function editCap (cap) {

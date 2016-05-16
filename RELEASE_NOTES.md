@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 1.4.0
+_16 May 2016_
+
+### New features
+* Expanded CAP Activity reporting
+  * Linked IDs where possible
+  * Exploded "updated CAP" activity
+  * Added ACB column and sorting
+* Templated commonModule file
+* Updated front facing UI for CAP
+* Display warning message if Test Tool or Functionality Tested isn't found
+* Updated display of SED Test Tasks
+
+---
+
 ## Version 1.3.0
 _27 April 2016_
 

@@ -8,3 +8,4 @@ tmp
 /coverage/
 /test_reports/
 app/login/loginModule.js
+/app/common/commonModule.js
