@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 1.4.0
+_16 May 2016_
 
 ### New features
 * Expanded CAP Activity reporting
