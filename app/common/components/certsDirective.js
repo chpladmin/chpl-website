@@ -83,12 +83,14 @@
                         }
                     }
                 }
+                //$log.debug('cd', changedTasks, changedParticipants);
 
                 for (var i = 0; i < vm.certs.length; i++) {
                     if (vm.certs[i].sed && vm.certs[i].testTasks) {
                         for (var j = 0; j < vm.certs[i].testTasks.length; j++) {
                             for (var k = 0; i < changedTasks.length; i++) {
-                                if (vm.certs[i].testTasks[j].id === changedTasks[k].id && !vm.certs[i].testTasks[j].changed && vm.certs[i].testTasks[j].id) {
+                                if (vm.certs[i].testTasks[j].testTaskId === changedTasks[k].testTaskId && !vm.certs[i].testTasks[j].changed && vm.certs[i].testTasks[j].testTaskId) {
+                                    //$log.debug('equal task', vm.certs[i].testTasks[j], changedTasks[k]);
                                     vm.certs[i].testTasks[j].description = changedTasks[k].description;
                                     vm.certs[i].testTasks[j].taskErrors = changedTasks[k].taskErrors;
                                     vm.certs[i].testTasks[j].taskErrorsStddev = changedTasks[k].taskErrorsStddev;
@@ -104,21 +106,23 @@
                                     vm.certs[i].testTasks[j].taskTimeStddev = changedTasks[k].taskTimeStddev;
                                     vm.certs[i].testTasks[j].testTaskId = changedTasks[k].testTaskId;
                                 }
-                                if (vm.certs[i].testTasks[j].testParticipants) {
-                                    for (var k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
-                                        for (var l = 0; l < changedParticipants.length; l++) {
-                                            if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId && !vm.certs[i].testTasks[j].testParticipants[k].changed && vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {
-                                                vm.certs[i].testTasks[j].testParticipants[k].age = changedParticipants[l].age;
-                                                vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;
-                                                vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;
-                                                vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;
-                                                vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;
-                                                vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;
-                                                vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;
-                                                vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;
-                                                vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;
-                                                vm.certs[i].testTasks[j].testParticipants[k].testParticipantId = changedParticipants[l].testParticipantId;
-                                            }
+                            }
+                            if (vm.certs[i].testTasks[j].testParticipants) {
+                                for (var k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
+                                    for (var l = 0; l < changedParticipants.length; l++) {
+                                        if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId && !vm.certs[i].testTasks[j].testParticipants[k].changed && vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {
+                                            //$log.debug('equal participant', vm.certs[i].testTasks[j].testParticipants[k], changedParticipants[l]);
+
+                                            vm.certs[i].testTasks[j].testParticipants[k].ageRange = changedParticipants[l].ageRange;
+                                            vm.certs[i].testTasks[j].testParticipants[k].ageRangeId = changedParticipants[l].ageRangeId;
+                                            vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;
+                                            vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;
+                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;
+                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;
+                                            vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;
+                                            vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;
+                                            vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;
+                                            vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;
                                         }
                                     }
                                 }
