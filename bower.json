@@ -26,8 +26,9 @@
     "html5-boilerplate": "~5.2.0",
     "jquery": "~2.1.4",
     "ng-idle": "~1.1.0",
-    "ngstorage": "~0.3.7"
-  },
+    "ngstorage": "~0.3.7",
+	"jspdf-autotable": "~2.0.16"
+	},
   "resolutions": {
     "angular": "~1.4.7"
   }

@@ -57,6 +57,10 @@
 	padding: 2px;
 }
 
+btnGeneratePdfCertificationId {
+	display: none;
+}
+
 .pull-right {
 	float: right!important;
 }
