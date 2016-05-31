@@ -315,11 +315,20 @@ var chplCertIdWidget = (function(){
 			}
 		
 			// Setup the product listing
-			var columns = ["Certifying Body","Practice Type","Product Certification #","Developer","Product Name","Version","Classification","Certification Edition","Additional Software Required"];
+			var columns = ["", "Certifying Body", "Practice Type", "Product Certification #", "Developer",
+				"Product Name", "Version", "Classification", "Certification Edition", 
+				"Additional Software Required"];
 			var rows = [];
 			var prods = chplCertIdWidget.getProductsInCart();
 			prods.forEach(function(item,index) {
-				rows.push([item.acb, item.practiceType, item.chplProductNumber, item.vendor, item.name, item.version, item.classification, item.year, item.additionalSoftware]);
+				// Decode additional software
+				var software = decodeURIComponent(item.additionalSoftware);
+				if (null !== software) {
+					software = software.replace(/\+/g, " ");
+				}
+				// Add product details row
+				rows.push([index + 1, item.acb, item.practiceType, item.chplProductNumber, item.vendor, 
+				item.name, item.version, item.classification, item.year, software]);
 			});
 			
 			// Start the PDF document
