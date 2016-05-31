@@ -24,7 +24,6 @@ var chplCertIdWidget = (function(){
 	var apiKey = "myapikey";
 	var cookiePath = "/";
 	var cookieCertificationIdData = "certiddata";
-	var cookieProducts = "products";
 
 	return {
 		////////////////////////////////////////////////////////////////
@@ -83,7 +82,7 @@ var chplCertIdWidget = (function(){
 		////////////////////////////////////////////////////////////////
 		displayCertificationIdResults: function (create) {
 
-			var data = JSON.parse(chplCertIdWidget.getCookie(cookieCertificationIdData));
+			var data = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
 			if (!data || "undefined" === data) {
 				return;
 			} else {
@@ -119,7 +118,7 @@ var chplCertIdWidget = (function(){
 		},
 
 		updateButtonAndId: function (showIdRequested) {
-			var data = JSON.parse(chplCertIdWidget.getCookie(cookieCertificationIdData));
+			var data = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
 			var isValid = false;
 			var year = null;
 			if (null !== data) {
@@ -169,6 +168,13 @@ var chplCertIdWidget = (function(){
 		},
 
 		////////////////////////////////////////////////////////////////
+		//
+		////////////////////////////////////////////////////////////////
+		getCertificationIdCookie: function () {
+			return chplCertIdWidget.getCookie(cookieCertificationIdData);
+		},
+		
+		////////////////////////////////////////////////////////////////
 		// Retrieves the value of a specified cookie
 		//
 		////////////////////////////////////////////////////////////////
@@ -203,11 +209,15 @@ var chplCertIdWidget = (function(){
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		getProductsInCart: function () {
 			var prods = [];
-			var data = chplCertIdWidget.getCookie(cookieCertificationIdData);
-			if (null === data || "undefined" === data || "" === data) {
-				console.log("getProductsInCart: No certification id data to retrieve.");
-			} else {
-				prods = JSON.parse(data)["products"];
+			try {
+				var data = chplCertIdWidget.getCertificationIdCookie();
+				if (null === data || "undefined" === data || "" === data) {
+					console.log("getProductsInCart: No certification id data to retrieve.");
+				} else {
+					prods = JSON.parse(data)["products"];
+				}
+			} catch (err) {
+				prods = [];
 			}
 			return prods;
 		},
@@ -216,7 +226,7 @@ var chplCertIdWidget = (function(){
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		setProductsInCart: function (products) {
-			var data = chplCertIdWidget.getCookie(cookieCertificationIdData);
+			var data = chplCertIdWidget.getCertificationIdCookie();
 			if (null === data || "undefined" === data || "" === data) {
 				console.log("setProductsInCart: No certification id data to retrieve.");
 			} else {
@@ -270,7 +280,7 @@ var chplCertIdWidget = (function(){
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		displayProducts: function () {
-			var data = chplCertIdWidget.getCookie(cookieCertificationIdData);
+			var data = chplCertIdWidget.getCertificationIdCookie()
 
 			// Add products listing
 			if (null !== data && "undefined" !== data) {
@@ -309,7 +319,7 @@ var chplCertIdWidget = (function(){
 		generatePdf: function () {
 
 			// Get the Certification data
-			var data = JSON.parse(chplCertIdWidget.getCookie(cookieCertificationIdData));
+			var data = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
 			if (!data || "undefined" === data) {
 				return;
 			}
