@@ -103,10 +103,18 @@ var chplCertIdWidget = (function(){
 					dom = data.metPercentages["cqmDomains"];
 				}
 				
-				$("#baseCriteriaPercentage").text( crit + "%");
-				$("#inpatientCqmsPercentage").text( inp + "%");
-				$("#ambulatoryCqmsPercentage").text( amb + "%");
-				$("#domainsPercentage").text( dom + "%");
+				$("[id^='baseCriteriaPercentage']").text( crit + "%");
+				$("[id^='inpatientCqmsPercentage']").text( inp + "%");
+				$("[id^='ambulatoryCqmsPercentage']").text( amb + "%");
+				$("[id^='domainsPercentage']").text( dom + "%");
+			}
+			
+			if (data.year !== "2014") {
+				$('#certificationsMet').show();
+				$('#certificationsMet2014').hide();
+			} else {
+				$('#certificationsMet').hide();
+				$('#certificationsMet2014').show();
 			}
 
 			chplCertIdWidget.displayProducts();

@@ -27,8 +27,18 @@
 
 .criteriaMetListColumn {
 	display: inline-block;
+	width: 100%;
+	text-align: center;
+}
+
+.criteriaMetListColumn2014 {
+	display: inline-block;
 	width: 50%;
 	text-align: left;
+}
+
+.criteriaMetListColumn ul {
+	display: inline-block;
 }
 
 .criteriaMetListColumn li {
