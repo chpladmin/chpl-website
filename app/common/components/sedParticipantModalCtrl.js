@@ -2,13 +2,14 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('EditSedParticipantController', ['$modalInstance', 'participant', 'commonService', function ($modalInstance, participant, commonService) {
+        .controller('EditSedParticipantController', ['$modalInstance', 'participant', 'commonService', '$log', function ($modalInstance, participant, commonService, $log) {
             var vm = this;
 
             vm.participant = participant.participant;
 
             vm.cancel = cancel;
             vm.changed = changed;
+            vm.orderAges = orderAges;
             vm.save = save;
 
             activate();
@@ -23,6 +24,14 @@
                 vm.participant.education = {
                     name: vm.participant.educationTypeName,
                     id: vm.participant.educationTypeId
+                };
+                commonService.getAgeRanges()
+                    .then(function (result) {
+                        vm.ageRanges = result;
+                    });
+                vm.participant.ageRangeObj = {
+                    name: vm.participant.ageRange,
+                    id: vm.participant.ageRangeId
                 };
             }
 
@@ -39,9 +48,19 @@
                 }
             }
 
+            function orderAges (ageRange) {
+                if (ageRange.name.length === 3)
+                    return 0;
+                else if (ageRange.name.length === 4)
+                    return 10;
+                else return parseInt(ageRange.name.charAt(0));
+            }
+
             function save () {
                 vm.participant.educationTypeName = vm.participant.education.name;
                 vm.participant.educationTypeId = vm.participant.education.id;
+                vm.participant.ageRange = vm.participant.ageRangeObj.name;
+                vm.participant.ageRangeId = vm.participant.ageRangeObj.id;
                 $modalInstance.close(vm.participant);
             }
         }]);

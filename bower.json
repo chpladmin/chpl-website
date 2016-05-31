@@ -1,7 +1,7 @@
 {
   "name": "chpl-website",
   "description": "Website for viewing Open Data CHPL",
-  "version": "0.5.0",
+  "version": "1.4.0",
   "homepage": "https://chpl.healthit.gov",
   "license": "https://github.com/chpladmin/chpl-api/blob/staging/LICENSE",
   "private": true,
@@ -19,7 +19,7 @@
     "angular-sanitize": "~1.4.7",
     "angular-smart-table": "~2.1.0",
     "angular-swagger-ui": "~0.2.7",
-    "angulartics": "~0.20.0",
+    "angulartics": "~1.0.3",
     "angulartics-ga": "angulartics-google-analytics#~0.1.1",
     "bootstrap": "~3.3.5",
     "fontawesome": "~4.3.0",
@@ -27,9 +27,11 @@
     "jquery": "~2.1.4",
     "ng-idle": "~1.1.0",
     "ngstorage": "~0.3.7",
+    "angulartics-gtm": "angulartics-google-tag-manager#~0.0.1",
 	"jspdf-autotable": "~2.0.16"
-	},
+  },
   "resolutions": {
-    "angular": "~1.4.7"
+    "angular": "~1.4.7",
+    "angulartics": "^1.0.0"
   }
 }

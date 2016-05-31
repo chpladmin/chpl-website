@@ -7,6 +7,7 @@
 
             vm.activate = activate;
             vm.editCap = editCap;
+            vm.getCapType = getCapType;
             vm.initiateCap = initiateCap;
 
             vm.activate();
@@ -16,9 +17,6 @@
             function activate () {
                 vm.API = API;
                 vm.API_KEY = authService.getApiKey();
-/*                if (!vm.correctiveActionPlan) {
-                    vm.correctiveActionPlan = [];
-                }*/
             }
 
             function editCap (cap) {
@@ -75,6 +73,21 @@
                         $log.debug(result);
                     }
                 });
+            }
+
+            function getCapType (cap) {
+                var ret = '';
+                if (cap.acbSummary)
+                    ret = 'General, ';
+                else
+                    ret = '';
+                if (cap.certifications && cap.certifications.length > 0) {
+                    for (var j = 0; j < cap.certifications.length; j++) {
+                        ret += cap.certifications[j].certificationCriterionNumber + ', ';
+                    }
+                }
+                ret = ret.substring(0, ret.length - 2);
+                return ret;
             }
         }])
         .directive('aiCorrectiveActionPlan', [function () {

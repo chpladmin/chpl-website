@@ -25,7 +25,6 @@
                 vm.activeSearch = false;
                 vm.resultCount = 0;
                 vm.defaultRefine = { visibleOnCHPL: 'yes',
-                                     hasCAP: 'all',
                                      certificationCriteria: [],
                                      cqms: []};
                 if ($localStorage.refine) {
@@ -57,8 +56,7 @@
                     sortDescending: false,
                     pageNumber: 0,
                     pageSize: '50',
-                    visibleOnCHPL: 'yes',
-                    hasCAP: 'all'
+                    visibleOnCHPL: 'yes'
                 };
                 vm.query = angular.copy(vm.defaultQuery);
 
@@ -249,10 +247,6 @@
                     vm.query.visibleOnCHPL = 'yes';
                     vm.refine.visibleOnCHPL = 'yes';
                     break;
-                case 'hasCAP':
-                    vm.query.hasCAP = 'all';
-                    vm.refine.hasCAP = 'all';
-                    break;
                 case 'certificationCriteria':
                     for (var i = 0; i < vm.query.certificationCriteria.length; i++) {
                         if (vm.query.certificationCriteria[i] === cert) {
@@ -295,7 +289,7 @@
             }
 
             vm.populateSearchOptions = function () {
-                commonService.getSearchOptions(false) // use 'true' in production, to hide retired CQMs & Certs
+                commonService.getSearchOptions(true) // use 'true' in production, to hide retired CQMs & Certs
                     .then(function (options) {
                         vm.certs = options.certificationCriterionNumbers;
                         vm.cqms = options.cqmCriterionNumbers;

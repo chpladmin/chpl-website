@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6" ng-if="!vm.cp.developer.id">
+        <div class="col-sm-6" ng-if="!vm.cp.developer.developerId">
           <h3>System developer information</h3>
           <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
           <div class="panel panel-ai">
@@ -65,7 +65,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6" ng-if="vm.cp.developer.id">
+        <div class="col-sm-6" ng-if="vm.cp.developer.developerId">
           <h3>System developer information</h3>
           <p>This is the developer information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
           <div class="panel panel-ai">
@@ -95,18 +95,18 @@
         </div>
         <div class="col-sm-6">
           <h3>Uploaded developer information</h3>
-          <p>This is the developer information from your Upload File.<span ng-if="vm.cp.developer.id"> A matching developer has been found in the Open Data CHPL database. To update this developer's information in the Open Data CHPL, click the Save as Developer Information button.</span></p>
+          <p>This is the developer information from your Upload File.<span ng-if="vm.cp.developer.developerId"> A matching developer has been found in the Open Data CHPL database. To update this developer's information in the Open Data CHPL, click the Save as Developer Information button.</span></p>
           <div class="panel panel-ai">
             <div class="panel-heading">
               {{ vm.cp.developer.name }}
             </div>
             <div class="panel-body">
-              Line 1: {{ vm.cp.developerAddress.line1 }}<br />
-              Line 2: {{ vm.cp.developerAddress.line2 }}<br />
-              City: {{ vm.cp.developerAddress.city }}<br />
-              State: {{ vm.cp.developerAddress.state }}<br />
-              Zip: {{ vm.cp.developerAddress.zipcode }}<br />
-              Country: {{ vm.cp.developerAddress.country }}<br />
+              Line 1: {{ vm.cp.developer.address.line1 }}<br />
+              Line 2: {{ vm.cp.developer.address.line2 }}<br />
+              City: {{ vm.cp.developer.address.city }}<br />
+              State: {{ vm.cp.developer.address.state }}<br />
+              Zip: {{ vm.cp.developer.address.zipcode }}<br />
+              Country: {{ vm.cp.developer.address.country }}<br />
               Website: {{ vm.cp.developer.website }}<br />
               Transparency Attestation: {{ vm.cp.transparencyAttestation }}<br />
               <strong>Contact information</strong><br />
@@ -116,7 +116,7 @@
               Email: {{ vm.cp.developer.contact.email }}<br />
               Phone: {{ vm.cp.developer.contact.phoneNumber }}<br />
             </div>
-            <div class="panel-footer" ng-if="vm.cp.developer.id">
+            <div class="panel-footer" ng-if="vm.cp.developer.developerId">
               <button class="btn btn-default btn-block" ng-click="vm.saveInspectingDeveloper()">Save as Developer Information</button>
             </div>
           </div>
@@ -292,6 +292,8 @@
                 <span ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">: {{ qms.qmsModification }}</span><br /></span>
                 <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation ? vm.cp.reportFileLocation : 'N/A' }} <br />
                 <strong>SED Report File Location:</strong> {{ vm.cp.sedReportFileLocation ? vm.cp.sedReportFileLocation : 'N/A' }} <br />
+                <strong>SED Intended Users:</strong> {{ vm.cp.sedIntendedUserDescription ? vm.cp.sedIntendedUserDescription : 'None' }} <br />
+                <strong>SED End Date of Testing:</strong> {{ vm.cp.sedTestingEnd | date : 'mediumDate' : 'UTC' }} <br />
                 <strong>Terms of Use:</strong> {{ vm.cp.termsOfUse ? vm.cp.termsOfUse : 'N/A' }} <br />
                 <strong>Testing Lab:</strong> {{ vm.cp.testingLab.name }} <br />
                 <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.cp.visibleOnChpl) }} <br />
@@ -325,7 +327,7 @@
       <div class="col-sm-12 text-left bg-danger">
         Error in product confirmation
         <ul>
-          <li ng-repeat="error in vm.cp.errorMessages">{{ error }}</li>
+          <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
         </ul>
       </div>
     </div>

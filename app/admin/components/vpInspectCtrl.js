@@ -63,14 +63,14 @@
                         break;
                     }
                 }
-                if (!vm.cp.developerAddress.country) {
-                    vm.cp.developerAddress.country = 'USA';
+                if (!vm.cp.developer.country) {
+                    vm.cp.developer.country = 'USA';
                 }
             }
 
             function loadDev () {
-                if (vm.cp.developer.id) {
-                    commonService.getDeveloper(vm.cp.developer.id)
+                if (vm.cp.developer.developerId) {
+                    commonService.getDeveloper(vm.cp.developer.developerId)
                         .then(function (result) {
                             vm.developer = result;
                         });
@@ -78,7 +78,7 @@
             }
 
             function selectInspectingDeveloper() {
-                vm.cp.developer.id = vm.developerSelect.developerId;
+                vm.cp.developer.developerId = vm.developerSelect.developerId;
                 vm.loadDev();
             }
 
@@ -87,12 +87,12 @@
                     developer: {
                         name: vm.cp.developer.name,
                         website: vm.cp.developer.website,
-                        address: vm.cp.developerAddress,
+                        address: vm.cp.developer.address,
                         transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, acbName: vm.cp.certifyingBody.name, attestation: vm.cp.transparencyAttestation}],
                         contact: vm.cp.developer.contact,
-                        developerId: vm.cp.developer.id
+                        developerId: vm.cp.developer.developerId
                     },
-                    developerIds: [vm.cp.developer.id]
+                    developerIds: [vm.cp.developer.developerId]
                 };
                 if (!dev.developer.address.country) {
                     dev.developer.address.country = 'USA';
@@ -132,7 +132,7 @@
                         productId: vm.cp.product.id
                     },
                     productIds: [vm.cp.product.id],
-                    newDeveloperId: vm.cp.developer.id
+                    newDeveloperId: vm.cp.developer.developerId
                 };
                 commonService.updateProduct(prd)
                     .then(function () {
@@ -178,8 +178,8 @@
 
             function confirm () {
                 commonService.confirmPendingCp(vm.cp)
-                    .then(function () {
-                        $modalInstance.close('confirmed');
+                    .then(function (result) {
+                        $modalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
                     }, function (error) {
                         vm.errorMessages = error.data.errorMessages;
                     });
@@ -257,7 +257,7 @@
             function isDisabled () {
                 switch (vm.stage) {
                 case 'dev':
-                    if (vm.developerChoice === 'choose' && !vm.cp.developer.id)
+                    if (vm.developerChoice === 'choose' && !vm.cp.developer.developerId)
                         return true;
                     return false;
                     break;
