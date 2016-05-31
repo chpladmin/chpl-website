@@ -6,6 +6,8 @@ _Date TBD_
 ### New Features
 * Added EHR Certification ID widget to fold out on Search page
 * Added 'Cert ID' button to product search result rows
+* Added Download PDF button to widget
+* Changed CQM percentages to show only for 2014 certification in widget
 
 ## Next version
 _Date TBD_
