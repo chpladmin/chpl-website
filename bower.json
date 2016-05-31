@@ -28,6 +28,7 @@
     "ng-idle": "~1.1.0",
     "ngstorage": "~0.3.7",
     "angulartics-gtm": "angulartics-google-tag-manager#~0.0.1",
+	"jspdf": "~1.2.61",
 	"jspdf-autotable": "~2.0.16"
   },
   "resolutions": {
