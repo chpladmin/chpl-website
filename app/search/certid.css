@@ -27,8 +27,18 @@
 
 .criteriaMetListColumn {
 	display: inline-block;
+	width: 100%;
+	text-align: center;
+}
+
+.criteriaMetListColumn2014 {
+	display: inline-block;
 	width: 50%;
 	text-align: left;
+}
+
+.criteriaMetListColumn ul {
+	display: inline-block;
 }
 
 .criteriaMetListColumn li {
@@ -55,6 +65,10 @@
 .selectedProducts li {
     list-style-type: none;
 	padding: 2px;
+}
+
+btnGeneratePdfCertificationId {
+	display: none;
 }
 
 .pull-right {
