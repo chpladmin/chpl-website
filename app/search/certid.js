@@ -2,30 +2,26 @@
 // This is the javascript controller module for the CHPL Widget.
 // The widget requires cookies to function.
 //
-// To configure set the following:
-// 		urlCertId - This is the URL to the Certification IDs service.
-//					http://hostname:port/rest/certification_ids/
-//
-// 		apiKey - This is the API key from the Open CHPL website.
-//
-////////////////////////////////////////////////////////////////////////////////
-//
-// To initialized the CHPL Widget, make a call similar to the following:
-//
-// $(document).ready(function() {
-// 	chplCertIdWidget.invokeGetCertificationId(null, null, false);
-// });
+// To configure web service see certidLogin.js.
 //
 ////////////////////////////////////////////////////////////////////////////////
 
 var chplCertIdWidget = (function(){
 	
-	var urlCertId = "http:\/\/localhost:8080\/chpl-service\/certification_ids\/";
-	var apiKey = "myapikey";
+	var urlCertId = "See certidLogin.js";
+	var apiKey = "See certidLogin.js";
 	var cookiePath = "/";
 	var cookieCertificationIdData = "certiddata";
 
 	return {
+		setUrl: function (val) {
+			urlCertId = val;
+		},
+		
+		setApiKey: function (val) {
+			apiKey = val;
+		},
+		
 		////////////////////////////////////////////////////////////////
 		//
 		////////////////////////////////////////////////////////////////
@@ -401,6 +397,5 @@ var chplCertIdWidget = (function(){
 	}
 }());
 
-$(document).ready(function() {
-	chplCertIdWidget.invokeGetCertificationId(null, null, false);
-});
+chplCertIdWidgetLogin.setup();
+chplCertIdWidget.invokeGetCertificationId(null, null, false);
