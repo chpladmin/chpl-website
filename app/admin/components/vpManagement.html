@@ -101,7 +101,7 @@
     <div ng-if="vm.workType === 'manage'" class="row">
       <div class="col-sm-12">
           <p>In the 'Manage Developers and Products' module, you can manage existing health IT developers and certified products. To edit developer or product information, begin by selecting the desired developer below. To edit information about that developer, click the 'Edit Developer' button, and make any desired changes. Once you are satisfied with your changes, click the 'Save Developer' button, or click 'Cancel Edits' to discard your changes.</p>
-          <p>To make changes to a certified product or a version of a product, continue by selecting the desired product and version, and clicking the corresponding 'Edit Product' or 'Edit Version' button.</p>
+          <p>To make changes to a certified product or a version of a product, continue by selecting the desired product and version, and click the corresponding 'Edit Product' or 'Edit Version' button.</p>
       </div>
     </div>
 
@@ -379,9 +379,11 @@
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
-                  <span ng-repeat="qms in vm.activeCP.qmsStandards">Standard: {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">Modification: {{ qms.qmsModification }}</span><br /></span>
+                  <span ng-repeat="qms in vm.activeCP.qmsStandards">Standard: {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">Modification: {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria"> Applicable Criteria: {{ qms.applicableCriteria }}</span><br /></span>
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'None' }} <br />
                   <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
+                  <strong>SED Intended Users:</strong> {{ vm.activeCP.sedIntendedUserDescription ? vm.activeCP.sedIntendedUserDescription : 'None' }} <br />
+                  <strong>SED End Date of Testing:</strong> {{ vm.activeCP.sedTestingEnd | date : 'mediumDate' : 'UTC' }} <br />
                   <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'None' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
                   <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />
