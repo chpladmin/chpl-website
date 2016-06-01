@@ -3,7 +3,11 @@
 ## Next version
 _Date TBD_
 
-### New features
+### New Features
+* Added EHR Certification ID widget to fold out on Search page
+* Added 'Cert ID' button to product search result rows
+* Added Download PDF button to widget
+* Changed CQM percentages to show only for 2014 certification in widget
 * Changed SED Participant ages to an age range
 
 ---
