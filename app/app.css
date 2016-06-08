@@ -37,6 +37,10 @@ a.btn {
     box-shadow: none;
 }
 
+.no-br {
+    white-space: nowrap
+}
+
 @media (max-width: 767px) {
     .navbar-nav > li > a {
         line-height: 20px;
