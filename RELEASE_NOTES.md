@@ -5,6 +5,9 @@ _Date TBD_
 
 ### New features
 * Changed SED Participant ages to an age range
+* Added missing CP details
+* Added Developer contact information
+* Added c1/c2 to CQM display for 2015 products
 
 ---
 
