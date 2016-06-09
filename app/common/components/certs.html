@@ -59,8 +59,14 @@
               <td>
                 <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
               </td>
-              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><i class="fa fa-lg" ng-class="vm.hasC1(n) ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
-              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><i class="fa fa-lg" ng-class="vm.hasC2(n) ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center">
+                <input type="checkbox" ng-model="n.hasC1" id="data_c1_{{n.id}}" ng-disabled="n.successVersions.length < 1"></input>
+                <i class="fa fa-lg" ng-class="vm.hasC1(n) ? 'fa-check-square-o' : 'fa-square-o'"></i>
+              </td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center">
+                <input type="checkbox" ng-model="n.hasC2" id="data_c2_{{n.id}}" ng-disabled="n.successVersions.length < 1"></input>
+                <i class="fa fa-lg" ng-class="vm.hasC2(n) ? 'fa-check-square-o' : 'fa-square-o'"></i>
+              </td>
             </tr>
           </tbody>
         </table>
