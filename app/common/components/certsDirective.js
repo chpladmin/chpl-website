@@ -6,6 +6,8 @@
             var vm = this;
 
             vm.addIds = addIds;
+            vm.hasC1 = hasC1;
+            vm.hasC2 = hasC2;
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
@@ -43,6 +45,24 @@
                         vm.cqms[i].id = i;
                     }
                 }
+            }
+
+            function hasC1 (cqm) {
+                for (var i = 0; i < cqm.criteria.length; i++) {
+                    if (cqm.criteria[i].certificationNumber === '170.315 (c)(1)') {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function hasC2 (cqm) {
+                for (var i = 0; i < cqm.criteria.length; i++) {
+                    if (cqm.criteria[i].certificationNumber === '170.315 (c)(2)') {
+                        return true;
+                    }
+                }
+                return false;
             }
 
             function saveEdits () {
