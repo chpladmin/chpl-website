@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 1.5.0
+_24 May 2016_
 
 ### New Features
 * Added EHR Certification ID widget to fold out on Search page
