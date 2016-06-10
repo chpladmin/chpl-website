@@ -98,6 +98,10 @@ h2 {
     color: #0070c9;
 }
 
+h4 {
+    font-weight: 700;
+}
+
 .splash-row {
     margin-top: 40px;
     border: 1px solid #e1e1e1;
