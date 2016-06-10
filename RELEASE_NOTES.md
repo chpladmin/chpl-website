@@ -9,6 +9,9 @@ _Date TBD_
 * Added Download PDF button to widget
 * Changed CQM percentages to show only for 2014 certification in widget
 * Changed SED Participant ages to an age range
+* Added missing CP details
+* Added Developer contact information
+* Added c1/c2 to CQM display for 2015 products
 
 ---
 
