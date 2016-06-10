@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 1.5.0
+_24 May 2016_
 
 ### New features
 * Changed SED Participant ages to an age range
