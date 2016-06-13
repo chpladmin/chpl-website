@@ -1,10 +1,21 @@
 # Release Notes
 
+## Verion 1.5.1
+_13 June 2016
+
+### New features
+* Allow edit of 2015 CQM c1/c2 certs
+* Added address and contact information of developers to product details page
+* Display 2015 c1/c2 values
+
 ## Version 1.5.0
 _24 May 2016_
 
 ### New features
 * Changed SED Participant ages to an age range
+* Added missing CP details
+* Added Developer contact information
+* Added c1/c2 to CQM display for 2015 products
 
 ---
 

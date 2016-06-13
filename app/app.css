@@ -37,6 +37,10 @@ a.btn {
     box-shadow: none;
 }
 
+.no-br {
+    white-space: nowrap
+}
+
 @media (max-width: 767px) {
     .navbar-nav > li > a {
         line-height: 20px;
@@ -92,6 +96,10 @@ h2 {
     font-family: 'Oswald', sans-serif;
     font-weight: 300;
     color: #0070c9;
+}
+
+h4 {
+    font-weight: 700;
 }
 
 .splash-row {

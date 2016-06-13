@@ -6,6 +6,8 @@
             var vm = this;
 
             vm.addIds = addIds;
+            vm.hasC1 = hasC1;
+            vm.hasC2 = hasC2;
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
@@ -23,12 +25,13 @@
                 if (vm.viewAllCerts === undefined) {
                     vm.viewAllCerts = false;
                 }
-                vm.editCqms = {};
                 vm.addIds();
                 vm.panelShown = 'cert';
+                /*
                 if (vm.isEditing) {
                     attachBooleans();
                 }
+                */
             }
 
             $scope.$watch('cqms', function (newCqms) {
@@ -43,6 +46,30 @@
                         vm.cqms[i].id = i;
                     }
                 }
+            }
+
+            function hasC1 (cqm) {
+                if (angular.isUndefined(cqm.hasC1)) {
+                    cqm.hasC1 = false;
+                    for (var i = 0; i < cqm.criteria.length; i++) {
+                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(1)') {
+                            cqm.hasC1 = true;
+                        }
+                    }
+                }
+                return cqm.hasC1;
+            }
+
+            function hasC2 (cqm) {
+                if (angular.isUndefined(cqm.hasC2)) {
+                    cqm.hasC2 = false;
+                    for (var i = 0; i < cqm.criteria.length; i++) {
+                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(2)') {
+                            cqm.hasC2 = true;
+                        }
+                    }
+                }
+                return cqm.hasC2;
             }
 
             function saveEdits () {
@@ -134,6 +161,13 @@
                 for (var i = 0; i < vm.cqms.length; i++) {
                     if (vm.cqms[i].success || vm.cqms[i].successVersions.length > 0) {
                         vm.countCqms += 1;
+                        vm.cqms[i].criteria = [];
+                        if (vm.cqms[i].hasC1) {
+                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(1)'});
+                        }
+                        if (vm.cqms[i].hasC2) {
+                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(2)'});
+                        }
                     }
                 }
             }
@@ -178,11 +212,13 @@
 
             ////////////////////////////////////////////////////////////////////
 
+            /*
             function attachBooleans () {
                 for (var i = 0; i < vm.certs.length; i++) {
 //                    vm.editForm['data_' + vm.certs[i].number + '_gap'] = vm.certs[i].gap;
                 }
             }
+            */
         }]);
 
     angular.module('app.common')
