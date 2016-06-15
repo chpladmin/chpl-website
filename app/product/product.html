@@ -70,6 +70,10 @@
           <h2 class="product-heading">Certification Edition</h2>
           <p>{{ vm.product.certificationEdition.name }}</p>
         </div>
+        <div class="product-element">
+          <h2 class="product-heading">Certification Status</h2>
+          <p>{{ vm.product.certificationStatus.name }}</p>
+        </div>
         <div class="product-element" ng-if="vm.product.certificationEdition.name === '2014'">
           <h2 class="product-heading">Practice Type</h2>
           <p>{{ vm.product.practiceType.name }}</p>
