@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### New features
+* Allow filter by certification status
+* Restrict editing of certification status to valid values
+
+---
+
+## Verion 1.5.1
+_13 June 2016_
+
+### New features
+* Allow edit of 2015 CQM c1/c2 certs
+* Added address and contact information of developers to product details page
+* Display 2015 c1/c2 values
+
+---
+
 ## Version 1.5.0
 _24 May 2016_
 
