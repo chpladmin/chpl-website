@@ -341,8 +341,17 @@ var chplCertIdWidget = (function(){
 					software = software.replace(/\+/g, " ");
 				}
 				// Add product details row
-				rows.push([index + 1, item.acb, item.practiceType, item.chplProductNumber, item.vendor, 
-				item.name, item.version, item.classification, item.year, software]);
+				rows.push(
+					[index + 1, 
+					item.acb, 
+					(null !== item.practiceType ? item.practiceType : "N/A"), 
+					item.chplProductNumber, 
+					item.vendor, 
+					item.name, 
+					item.version, 
+					(null !== item.classification ? item.classification : "N/A"), 
+					item.year, 
+					software]);
 			});
 			
 			// Start the PDF document
@@ -392,7 +401,7 @@ var chplCertIdWidget = (function(){
 			});
 			
 			// Output the PDF
-			doc.save("CertificationId" + new Date().getTime() + ".pdf");
+			doc.save("" + new Date().getTime() + ".pdf");
 		}
 	}
 }());
