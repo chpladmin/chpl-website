@@ -42,6 +42,25 @@
           <h2 class="product-heading">Developer</h2>
           <p>{{ vm.product.developer.name }}</p>
           <p ng-if="vm.product.developer.website"><ai-a href="{{ vm.product.developer.website }}" text="{{ vm.product.developer.website }}"></ai-a></p>
+          <span ng-if="vm.product.developer.address">
+            <h3>Address</h3>
+            <address>
+              Line 1: {{ vm.product.developer.address.line1 }}<br />
+              Line 2: {{ vm.product.developer.address.line2 }}<br />
+              City: {{ vm.product.developer.address.city }}<br />
+              State: {{ vm.product.developer.address.state }}<br />
+              Zip: {{ vm.product.developer.address.zipcode }}<br />
+              Country: {{ vm.product.developer.address.country }}<br />
+            </address>
+          </span>
+          <span ng-if="vm.product.developer.contact">
+            <h3>Contact information</h3>
+            First name: {{ vm.product.developer.contact.firstName }}<br />
+            Last name: {{ vm.product.developer.contact.lastName }}<br />
+            Title: {{ vm.product.developer.contact.title }}<br />
+            Email: {{ vm.product.developer.contact.email }}<br />
+            Phone: {{ vm.product.developer.contact.phoneNumber }}<br />
+          </span>
         </div>
         <div class="product-element">
           <h2 class="product-heading">Version</h2>
@@ -50,6 +69,10 @@
         <div class="product-element">
           <h2 class="product-heading">Certification Edition</h2>
           <p>{{ vm.product.certificationEdition.name }}</p>
+        </div>
+        <div class="product-element">
+          <h2 class="product-heading">Certification Status</h2>
+          <p>{{ vm.product.certificationStatus.name }}</p>
         </div>
         <div class="product-element" ng-if="vm.product.certificationEdition.name === '2014'">
           <h2 class="product-heading">Practice Type</h2>
@@ -60,7 +83,7 @@
           <p>{{ vm.product.classificationType.name }}</p>
         </div>
         <div class="product-element">
-          <h2 class="product-heading">ONC-Accredited Certification Body</h2>
+          <h2 class="product-heading">ONC-Authorized Certification Body</h2>
           <p>{{ vm.product.certifyingBody.name }}</p>
         </div>
         <div class="product-element" ng-if="vm.product.productAdditionalSoftware">
