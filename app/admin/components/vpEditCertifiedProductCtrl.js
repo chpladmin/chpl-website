@@ -8,6 +8,7 @@
             vm.attachModel = attachModel;
             vm.cancel = cancel;
             vm.directCertsDirective = directCertsDirective;
+            vm.disabledStatus = disabledStatus;
             vm.findModel = findModel;
             vm.prep = prep;
             vm.registerCerts = registerCerts;
@@ -65,6 +66,10 @@
                 angular.forEach(vm.handlers, function (handler) {
                     handler();
                 });
+            }
+
+            function disabledStatus (name) {
+                return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
             }
 
             function findModel (id, array) {

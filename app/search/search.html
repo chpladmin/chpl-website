@@ -29,6 +29,7 @@
               <option value="product">Product</option>
               <option value="version">Version</option>
               <option value="certificationBody">Certification Body</option>
+              <option value="certificationStatus">Certification Status</option>
               <option value="visibleOnCHPL">Visible on CHPL</option>
               <option value="certificationCriteria">Certification Criteria</option>
               <option value="cqms">Clinical Quality Measure</option>
@@ -80,6 +81,18 @@
             <select id="acbRefine" ng-model="vm.refine.certificationBody" class="input-sm form-control"
                     ng-required="vm.refineType === 'certificationBody'"
                     ng-options="acb.name as acb.name for acb in vm.certBodies | orderBy:'name'">
+            </select>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai" ng-click="vm.addRefine()">Add Filter</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-sm-4" ng-if="vm.refineType === 'certificationStatus'">
+          <div class="input-group input-group-lg">
+            <label for="statusRefine" class="control-label sr-only">Certification Status</label>
+            <select id="statusRefine" ng-model="vm.refine.certificationStatus" class="input-sm form-control"
+                    ng-required="vm.refineType === 'certificationStatus'"
+                    ng-options="status.name as status.name for status in vm.certificationStatuses | orderBy:'name'">
             </select>
             <span class="input-group-btn">
               <button type="button" class="btn btn-ai" ng-click="vm.addRefine()">Add Filter</button>
@@ -170,6 +183,7 @@
             <li class="animate-if" ng-if="vm.query.product"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('product')"><span class="ai-lead">Product:</span> {{ vm.query.product }} <i class="fa fa-close"></i><span class="sr-only">Remove product filter</span></button></li>
             <li class="animate-if" ng-if="vm.query.version"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('version')"><span class="ai-lead">Version:</span> {{ vm.query.version }} <i class="fa fa-close"></i><span class="sr-only">Remove version filter</span></button></li>
             <li class="animate-if" ng-if="vm.query.certificationBody"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationBody')"><span class="ai-lead">Certification Body:</span> {{ vm.query.certificationBody }} <i class="fa fa-close"></i><span class="sr-only">Remove certification body filter</span></button></li>
+            <li class="animate-if" ng-if="vm.query.certificationStatus"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationStatus')"><span class="ai-lead">Certification Status:</span> {{ vm.query.certificationStatus }} <i class="fa fa-close"></i><span class="sr-only">Remove certification status filter</span></button></li>
             <li class="animate-if" ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationEdition')"><span class="ai-lead">Certification Edition:</span> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i><span class="sr-only">Remove certification edition filter</span></button></li>
             <li class="animate-if" ng-if="vm.query.practiceType"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('practiceType')"><span class="ai-lead">Practice Type:</span> {{ vm.query.practiceType }} <i class="fa fa-close"></i><span class="sr-only">Remove practice type filter</span></button></li>
             <li class="animate-if" ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i><span class="sr-only">Remove certification criteria filter</span></button></li>

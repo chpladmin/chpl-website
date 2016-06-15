@@ -67,6 +67,12 @@
 	padding: 2px;
 }
 
+span[name="title"] {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 btnGeneratePdfCertificationId {
 	display: none;
 }

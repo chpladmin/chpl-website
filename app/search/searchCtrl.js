@@ -296,6 +296,13 @@
                         vm.editions = options.editions;
                         vm.practices = options.practiceTypeNames;
                         vm.certBodies = options.certBodyNames;
+                        vm.certificationStatuses = options.certificationStatuses;
+                        for (var i = 0; i < vm.certificationStatuses.length; i++) {
+                            if (vm.certificationStatuses[i].name === 'Pending') {
+                                vm.certificationStatuses.splice(i,1);
+                                break;
+                            }
+                        }
                         vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
 /*                        if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.all.length > 0) {
                             $log.info('Restoring lookahead from localstorage');

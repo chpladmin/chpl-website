@@ -15,6 +15,67 @@
       </div>
     </div>
     <div class="row">
+	  <div class="col-sm-12">
+		<div ng-form="vm.lookupForm" ng-submit="vm.lookupCertIds()" aria-live="polite">
+		  <div class="form-group">
+			<h2>Lookup CMS EHR Certification IDs</h2>
+			<p>Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter one or more CMS EHR Certification IDs to display the products which were used to create the associated CMS EHR Certification ID.<p>
+			  <label for="certIdsField" class="control-label sr-only">CMS EHR Certification IDs to lookup</label>
+			  <div class="input-group">
+				<input type="text" class="form-control" id="certIdsField" placeholder="Enter one or more CMS EHR Certification IDs separated by a space, comma, or semi-colon" ng-model="vm.lookup.certIds"
+					   ng-keyup="$event.keyCode === 13 && vm.lookupCertIds()"/>
+
+				<span class="input-group-btn">
+				  <button type="button" class="btn btn-ai" ng-click="vm.lookupCertIds()"><i class="fa fa-search"></i><span class="sr-only">Lookup Certification ID</span></button>
+				</span>
+			  </div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+    <div class="row" ng-show="vm.lookupProducts !== null" >
+	  <div class="col-sm-12">
+
+		<table id="lookupCertIdResults" class="table search-table table-striped">
+		  <thead>
+			<tr>
+			  <th scope="col" class="search-header"><span>CMS EHR Certification ID</span> <a class="sr-only sr-only-focusable" href><br />Sort by certification ID</a></th>
+			  <th scope="col" class="search-header"><span>Certification ID Edition</span> <a class="sr-only sr-only-focusable" href><br />Sort by certification ID edition</a></th>
+			  <th scope="col" class="search-header"><span>Product Name</span> <a class="sr-only sr-only-focusable" href><br />Sort by product name</a></th>
+			  <th scope="col" class="search-header"><span>Version</span> <a class="sr-only sr-only-focusable" href><br />Sort by version</a></th>
+			  <th scope="col" class="search-header"><span>Vendor</span> <a class="sr-only sr-only-focusable" href><br />Sort by vendor</a></th>
+			  <th scope="col" class="search-header"><span>CHPL Product Number</span> <a class="sr-only sr-only-focusable" href><br />Sort by CHPL product number</a></th>
+			  <th scope="col" class="search-header"><span>Product Edition</span> <a class="sr-only sr-only-focusable" href><br />Sort by product edition</a></th>
+			  <th scope="col" class="search-header"><span>Classification</span> <a class="sr-only sr-only-focusable" href><br />Sort by classification</a></th>
+			  <th scope="col" class="search-header"><span>Practice Type</span> <a class="sr-only sr-only-focusable" href><br />Sort by practice type</a></th>
+			</tr>
+		  </thead>
+		  <tbody>
+			<tr ng-repeat="row in vm.lookupProducts" class="search-row">
+			  <td class="productHeader">{{ row.certificationId }}</td>
+			  <td class="productHeader">{{ row.certificationIdEdition }}</td>
+			  <td class="productHeader">{{ row.name }}</td>
+			  <td class="productHeader">{{ row.version }}</td>
+			  <td class="productHeader">{{ row.vendor }}</td>
+			  <td class="productHeader">{{ row.chplProductNumber }}</td>
+			  <td class="productHeader">{{ row.year }}</td>
+			  <td class="productHeader">{{ (row.classification === null ? "N/A" : row.classification)  }}</td>
+			  <td class="productHeader">{{ (row.practiceType === null ? "N/A" : row.practiceType)  }}</td>
+			</tr>
+		  </tbody>
+		</table>
+
+		<div class="col-md-6" ng-show="vm.lookupProducts.length == 0">
+		  <p ng-if="!hasResults()">No results found</p>
+		</div>
+        <!--
+			<div class="pull-right" ng-show="vm.lookupProducts.length > 0">
+			  <a type="button" class="btn btn-lg btn-ai-success" href=""><i class="fa"></i> Download Results</a>
+			</div>
+            -->
+	  </div>
+    </div>
+    <div class="row">
       <div class="col-sm-12">
         <h2>Access API Documentation</h2>
         <div class="pull-right">

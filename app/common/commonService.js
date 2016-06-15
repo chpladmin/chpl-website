@@ -327,6 +327,10 @@
             self.rejectPendingCp = function (cpId) {
                 return self.postApiCall('/certified_products/pending/' + cpId + '/reject', {});
             };
+			
+			self.lookupCertificationId = function (certId) {
+				return self.simpleApiCall('/certification_ids/' + certId);
+			}
 
             self.initiateCap = function (cap) {
                 return self.postApiCall('/corrective_action_plan/create', cap);

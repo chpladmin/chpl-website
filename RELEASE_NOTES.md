@@ -1,13 +1,37 @@
 # Release Notes
 
-## Version 1.5.0
-_24 May 2016_
+## Version TBD
+_Date TBD_
 
 ### New Features
+* Allow filter by certification status
+* Restrict editing of certification status to valid values
+* Added EHR Certification ID Lookup to resources page
 * Added EHR Certification ID widget to fold out on Search page
 * Added 'Cert ID' button to product search result rows
 * Added Download PDF button to widget
 * Changed CQM percentages to show only for 2014 certification in widget
+
+### Bugs Fixed
+* Fixed long product names in cert ID widget
+* Fixed missing "N/A" in Cert ID PDF
+
+---
+
+## Verion 1.5.1
+_13 June 2016_
+
+### New features
+* Allow edit of 2015 CQM c1/c2 certs
+* Added address and contact information of developers to product details page
+* Display 2015 c1/c2 values
+
+---
+
+## Version 1.5.0
+_24 May 2016_
+
+### New features
 * Changed SED Participant ages to an age range
 * Added missing CP details
 * Added Developer contact information

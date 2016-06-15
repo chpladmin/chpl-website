@@ -455,3 +455,7 @@ fieldset[disabled] .btn-ai-success.active {
 .swagger-ui .api-version {
     color: #333;
 }
+
+option[disabled] {
+    font-style: italic;
+}
