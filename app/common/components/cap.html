@@ -3,13 +3,13 @@
     No non-conformities
   </div>
   <div ng-repeat="cap in vm.correctiveActionPlan | orderBy: '-noncomplianceDate'">
-    <strong>{{ cap.surveillanceEndDate ? 'Closed' : 'Current'}} {{ cap.type}} Non-Conformity. Date of Determination: {{ cap.surveillanceStartDate | date : 'mediumDate' : 'UTC' }}</strong>
+    <strong>{{ cap.surveillanceEndDate ? 'Closed' : 'Current'}} {{ vm.getCapType(cap) }} Non-Conformity. Date of Determination: {{ cap.noncomplianceDate | date : 'mediumDate' : 'UTC' }}</strong>
     <span class="pull-right">
-      <a href ng-click="cap.showDetails = !cap.showDetails" aria-expanded="{{ cap.showDetails }}">{{ cap.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ cap.surveillanceStartDate | date : 'mediumDate' : 'UTC' }}</span></a><br />
+      <a href ng-click="cap.showDetails = !cap.showDetails" aria-expanded="{{ cap.showDetails }}">{{ cap.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ cap.noncomplianceDate | date : 'mediumDate' : 'UTC' }}</span></a><br />
       <a href ng-click="vm.editCap(cap)" ng-if="vm.isAdmin">Edit</a>
     </span>
     <div ng-if="cap.showDetails">
-      <strong>Type of Non-Conformity</strong> {{ cap.type }}<br />
+      <strong>Type of Non-Conformity</strong> {{ vm.getCapType(cap) }}<br />
       <strong>Result of Randomized Surveillance</strong> {{ cap.randomizedSurveillance ? 'True' : 'False' }}<br />
       <table class="table">
         <thead>

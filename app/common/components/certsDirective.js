@@ -6,6 +6,8 @@
             var vm = this;
 
             vm.addIds = addIds;
+            vm.hasC1 = hasC1;
+            vm.hasC2 = hasC2;
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
@@ -23,12 +25,13 @@
                 if (vm.viewAllCerts === undefined) {
                     vm.viewAllCerts = false;
                 }
-                vm.editCqms = {};
                 vm.addIds();
                 vm.panelShown = 'cert';
+                /*
                 if (vm.isEditing) {
                     attachBooleans();
                 }
+                */
             }
 
             $scope.$watch('cqms', function (newCqms) {
@@ -43,6 +46,30 @@
                         vm.cqms[i].id = i;
                     }
                 }
+            }
+
+            function hasC1 (cqm) {
+                if (angular.isUndefined(cqm.hasC1)) {
+                    cqm.hasC1 = false;
+                    for (var i = 0; i < cqm.criteria.length; i++) {
+                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(1)') {
+                            cqm.hasC1 = true;
+                        }
+                    }
+                }
+                return cqm.hasC1;
+            }
+
+            function hasC2 (cqm) {
+                if (angular.isUndefined(cqm.hasC2)) {
+                    cqm.hasC2 = false;
+                    for (var i = 0; i < cqm.criteria.length; i++) {
+                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(2)') {
+                            cqm.hasC2 = true;
+                        }
+                    }
+                }
+                return cqm.hasC2;
             }
 
             function saveEdits () {
@@ -83,12 +110,14 @@
                         }
                     }
                 }
+                //$log.debug('cd', changedTasks, changedParticipants);
 
                 for (var i = 0; i < vm.certs.length; i++) {
                     if (vm.certs[i].sed && vm.certs[i].testTasks) {
                         for (var j = 0; j < vm.certs[i].testTasks.length; j++) {
                             for (var k = 0; i < changedTasks.length; i++) {
-                                if (vm.certs[i].testTasks[j].id === changedTasks[k].id && !vm.certs[i].testTasks[j].changed && vm.certs[i].testTasks[j].id) {
+                                if (vm.certs[i].testTasks[j].testTaskId === changedTasks[k].testTaskId && !vm.certs[i].testTasks[j].changed && vm.certs[i].testTasks[j].testTaskId) {
+                                    //$log.debug('equal task', vm.certs[i].testTasks[j], changedTasks[k]);
                                     vm.certs[i].testTasks[j].description = changedTasks[k].description;
                                     vm.certs[i].testTasks[j].taskErrors = changedTasks[k].taskErrors;
                                     vm.certs[i].testTasks[j].taskErrorsStddev = changedTasks[k].taskErrorsStddev;
@@ -104,21 +133,23 @@
                                     vm.certs[i].testTasks[j].taskTimeStddev = changedTasks[k].taskTimeStddev;
                                     vm.certs[i].testTasks[j].testTaskId = changedTasks[k].testTaskId;
                                 }
-                                if (vm.certs[i].testTasks[j].testParticipants) {
-                                    for (var k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
-                                        for (var l = 0; l < changedParticipants.length; l++) {
-                                            if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId && !vm.certs[i].testTasks[j].testParticipants[k].changed && vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {
-                                                vm.certs[i].testTasks[j].testParticipants[k].age = changedParticipants[l].age;
-                                                vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;
-                                                vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;
-                                                vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;
-                                                vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;
-                                                vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;
-                                                vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;
-                                                vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;
-                                                vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;
-                                                vm.certs[i].testTasks[j].testParticipants[k].testParticipantId = changedParticipants[l].testParticipantId;
-                                            }
+                            }
+                            if (vm.certs[i].testTasks[j].testParticipants) {
+                                for (var k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
+                                    for (var l = 0; l < changedParticipants.length; l++) {
+                                        if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId && !vm.certs[i].testTasks[j].testParticipants[k].changed && vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {
+                                            //$log.debug('equal participant', vm.certs[i].testTasks[j].testParticipants[k], changedParticipants[l]);
+
+                                            vm.certs[i].testTasks[j].testParticipants[k].ageRange = changedParticipants[l].ageRange;
+                                            vm.certs[i].testTasks[j].testParticipants[k].ageRangeId = changedParticipants[l].ageRangeId;
+                                            vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;
+                                            vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;
+                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;
+                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;
+                                            vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;
+                                            vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;
+                                            vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;
+                                            vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;
                                         }
                                     }
                                 }
@@ -130,6 +161,13 @@
                 for (var i = 0; i < vm.cqms.length; i++) {
                     if (vm.cqms[i].success || vm.cqms[i].successVersions.length > 0) {
                         vm.countCqms += 1;
+                        vm.cqms[i].criteria = [];
+                        if (vm.cqms[i].hasC1) {
+                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(1)'});
+                        }
+                        if (vm.cqms[i].hasC2) {
+                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(2)'});
+                        }
                     }
                 }
             }
@@ -174,11 +212,13 @@
 
             ////////////////////////////////////////////////////////////////////
 
+            /*
             function attachBooleans () {
                 for (var i = 0; i < vm.certs.length; i++) {
 //                    vm.editForm['data_' + vm.certs[i].number + '_gap'] = vm.certs[i].gap;
                 }
             }
+            */
         }]);
 
     angular.module('app.common')

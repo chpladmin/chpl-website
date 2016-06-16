@@ -24,58 +24,58 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr ng-if="vm.cert.gap !== null">
           <td><label class="control-label" for="data_gap{{ vm.cert.number }}">GAP</label></td>
           <td><select class="form-control input-sm" id="data_gap{{ vm.cert.number }}" name="data_gap" ng_model="vm.cert.gap" ng-options="b.value as b.name for b in vm.options"></select></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.testStandards !== null">
           <td>Standard</td>
           <td><ai-array item-type="Standard" items="vm.cert.testStandards" key="testStandardName"></ai-array></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.g1Success !== null">
           <td><label class="control-label" for="data_g1Success{{ vm.cert.number }}">Measure Successfully Tested for G1</label></td>
           <td><select class="form-control input-sm" id="data_g1Success{{ vm.cert.number }}" name="data_g1Success" ng_model="vm.cert.g1Success" ng-options="b.value as b.name for b in vm.options"></select></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.g2Success !== null">
           <td><label class="control-label" for="data_g2Success{{ vm.cert.number }}">Measure Successfully Tested for G2</label></td>
           <td><select class="form-control input-sm" id="data_g2Success{{ vm.cert.number }}" name="data_g2Success" ng_model="vm.cert.g2Success" ng-options="b.value as b.name for b in vm.options"></select></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.testFunctionality !== null">
           <td>Functionality Tested</td>
           <td><ai-array item-type="Functionality Tested" items="vm.cert.testFunctionality" key="name"></ai-array></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.testProcedures !== null">
           <td>Test procedure version</td>
           <td><ai-array item-type="Test Procedure Version" items="vm.cert.testProcedures" key="testProcedureVersion"></ai-array></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.testToolsUsed !== null">
           <td>Test tool</td>
           <td><ai-array item-type="Test Tool & Version" items="vm.cert.testToolsUsed" key="testToolName" key-second="testToolVersion"></ai-array></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.testDataUsed !== null">
           <td>Test data</td>
           <td><ai-array item-type="Test Data Version & Alteration" items="vm.cert.testDataUsed" key="version" key-second="alteration"></ai-array></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.apiDocumentation !== null">
           <td><label class="control-label" for="data_api{{ vm.cert.number }}">API Documentation</label></td>
           <td><input class="form-control input-sm" type="url" id="data_api{{ vm.cert.number }}" name="data_apiDocumentation" ng-model="vm.cert.apiDocumentation"></input></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.privacySecurityFramework !== null">
           <td><label class="control-label" for="data_psFramework{{ vm.cert.number }}">Privacy &amp; Security Framework</label></td>
           <td><select class="form-control input-sm" id="data_psFramework{{ vm.cert.number }}" name="data_psFramework" ng_model="vm.cert.privacySecurityFramework">
               <option value="Approach 1">Approach 1</option>
               <option value="Approach 2">Approach 2</option>
           </select></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.sed !== null">
           <td><label class="control-label" for="data_sed{{ vm.cert.number }}">SED</label></td>
           <td><select class="form-control input-sm" id="data_sed{{ vm.cert.number }}" name="data_sed" ng_model="vm.cert.sed" ng-options="b.value as b.name for b in vm.options" ng-disabled="vm.cert.certificationEdition.name === '2015'"></select></td>
         </tr>
-        <tr>
+        <tr ng-if="vm.cert.ucdProcesses !== null">
           <td>UCD Process</td>
           <td><ai-array item-type="UCD Process & Details" items="vm.cert.ucdProcesses" key="ucdProcessName" key-second="ucdProcessDetails"></ai-array></td>
         </tr>
-        <tr ng-if="vm.cert.sed">
+        <tr ng-if="vm.cert.sed !== null">
           <td colspan="2">
             <table class="table table-condensed" ng-repeat-start="task in vm.cert.testTasks track by $index">
               <thead>
@@ -126,7 +126,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="pers in task.testParticipants track by $index">
-                  <td>{{ pers.age }}</td>
+                  <td>{{ pers.ageRange }}</td>
                   <td>{{ pers.assistiveTechnologyNeeds }}</td>
                   <td>{{ pers.computerExperienceMonths }}</td>
                   <td>{{ pers.educationTypeName }}</td>
