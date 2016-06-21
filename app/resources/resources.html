@@ -33,41 +33,42 @@
 		</div>
 	  </div>
 	</div>
-    <div class="row" ng-show="vm.lookupProducts !== null" >
+    <div class="row">
 	  <div class="col-sm-12">
 
-		<table id="lookupCertIdResults" class="table search-table table-striped">
+		<table id="lookupCertIdResults" class="table table-striped" ng-if="vm.lookupProducts && vm.lookupProducts.length > 0">
 		  <thead>
 			<tr>
-			  <th scope="col" class="search-header"><span>CMS EHR Certification ID</span> <a class="sr-only sr-only-focusable" href><br />Sort by certification ID</a></th>
-			  <th scope="col" class="search-header"><span>Certification ID Edition</span> <a class="sr-only sr-only-focusable" href><br />Sort by certification ID edition</a></th>
-			  <th scope="col" class="search-header"><span>Product Name</span> <a class="sr-only sr-only-focusable" href><br />Sort by product name</a></th>
-			  <th scope="col" class="search-header"><span>Version</span> <a class="sr-only sr-only-focusable" href><br />Sort by version</a></th>
-			  <th scope="col" class="search-header"><span>Vendor</span> <a class="sr-only sr-only-focusable" href><br />Sort by vendor</a></th>
-			  <th scope="col" class="search-header"><span>CHPL Product Number</span> <a class="sr-only sr-only-focusable" href><br />Sort by CHPL product number</a></th>
-			  <th scope="col" class="search-header"><span>Product Edition</span> <a class="sr-only sr-only-focusable" href><br />Sort by product edition</a></th>
-			  <th scope="col" class="search-header"><span>Classification</span> <a class="sr-only sr-only-focusable" href><br />Sort by classification</a></th>
-			  <th scope="col" class="search-header"><span>Practice Type</span> <a class="sr-only sr-only-focusable" href><br />Sort by practice type</a></th>
+			  <th scope="col"><span>CMS EHR Certification ID</span></th>
+			  <th scope="col"><span>Certification ID Edition</span></th>
+			  <th scope="col"><span>Product Name</span></th>
+			  <th scope="col"><span>Version</span></th>
+			  <th scope="col"><span>Vendor</span></th>
+			  <th scope="col"><span>CHPL Product Number</span></th>
+			  <th scope="col"><span>Product Edition</span></th>
+			  <th scope="col"><span>Classification</span></th>
+			  <th scope="col"><span>Practice Type</span></th>
 			</tr>
 		  </thead>
 		  <tbody>
-			<tr ng-repeat="row in vm.lookupProducts" class="search-row">
-			  <td class="productHeader">{{ row.certificationId }}</td>
-			  <td class="productHeader">{{ row.certificationIdEdition }}</td>
-			  <td class="productHeader">{{ row.name }}</td>
-			  <td class="productHeader">{{ row.version }}</td>
-			  <td class="productHeader">{{ row.vendor }}</td>
-			  <td class="productHeader">{{ row.chplProductNumber }}</td>
-			  <td class="productHeader">{{ row.year }}</td>
-			  <td class="productHeader">{{ (row.classification === null ? "N/A" : row.classification)  }}</td>
-			  <td class="productHeader">{{ (row.practiceType === null ? "N/A" : row.practiceType)  }}</td>
+			<tr ng-repeat="row in vm.lookupProducts" >
+			  <td>{{ row.certificationId }}</td>
+			  <td>{{ row.certificationIdEdition }}</td>
+			  <td>{{ row.name }}</td>
+			  <td>{{ row.version }}</td>
+			  <td>{{ row.vendor }}</td>
+			  <td>{{ row.chplProductNumber }}</td>
+			  <td>{{ row.year }}</td>
+			  <td>{{ (row.classification === null ? "N/A" : row.classification)  }}</td>
+			  <td>{{ (row.practiceType === null ? "N/A" : row.practiceType)  }}</td>
 			</tr>
 		  </tbody>
 		</table>
 
-		<div class="col-md-6" ng-show="vm.lookupProducts.length == 0">
-		  <p ng-if="!hasResults()">No results found</p>
+		<div class="col-md-6" ng-show="vm.lookupProducts && vm.lookupProducts.length === 0" >
+		  <p>No results found</p>
 		</div>
+		
         <!--
 			<div class="pull-right" ng-show="vm.lookupProducts.length > 0">
 			  <a type="button" class="btn btn-lg btn-ai-success" href=""><i class="fa"></i> Download Results</a>
