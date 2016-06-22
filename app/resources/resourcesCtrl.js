@@ -33,10 +33,10 @@
 				columnDelimiter = args.columnDelimiter || ',';
 				lineDelimiter = args.lineDelimiter || '\n';
 
-				// Collection columns and remove the "$$hashKey" column
+				// Collect columns
 				keys = Object.keys(data[0]);
-				keys.pop();
-
+				keys = keys.filter(function(item) { return (item !== "id" && item !== "$$hashKey") });
+				
 				result = '';
 				result += keys.join(columnDelimiter);
 				result += lineDelimiter;
@@ -46,7 +46,7 @@
 					keys.forEach(function(key) {
 						if (ctr > 0) result += columnDelimiter;
 
-						result += "\"" + item[key] + "\"";
+						result += "\"" + (item[key] || "") + "\"";
 						ctr++;
 					});
 					result += lineDelimiter;
