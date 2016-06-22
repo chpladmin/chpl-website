@@ -69,11 +69,10 @@
 		  <p>No results found</p>
 		</div>
 		
-        <!--
-			<div class="pull-right" ng-show="vm.lookupProducts.length > 0">
-			  <a type="button" class="btn btn-lg btn-ai-success" href=""><i class="fa"></i> Download Results</a>
-			</div>
-            -->
+		<div class="pull-right" ng-show="vm.lookupProducts && vm.lookupProducts.length > 0">
+			<a type="button" class="btn btn-lg btn-ai-success" href="" ng-click="vm.download()"><i class="fa"></i> Download Results</a>
+		</div>
+
 	  </div>
     </div>
     <div class="row">
