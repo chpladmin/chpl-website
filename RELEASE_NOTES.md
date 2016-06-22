@@ -11,10 +11,14 @@ _Date TBD_
 * Added 'Cert ID' button to product search result rows
 * Added Download PDF button to widget
 * Changed CQM percentages to show only for 2014 certification in widget
+* Simplified Cert ID Lookup results table formatting 
+* Added button for CSV download of Cert ID Lookup results 
 
 ### Bugs Fixed
 * Fixed long product names in cert ID widget
 * Fixed missing "N/A" in Cert ID PDF
+* Fixed Cert ID Lookup results header always showing
+* Fixed widget product list buttons size 
 
 ---
 
