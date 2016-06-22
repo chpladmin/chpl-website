@@ -260,7 +260,7 @@
                     {key: 'sedTesting', display: 'SED Tested'},
                     {key: 'sedTestingEnd', display: 'SED Testing End Date', filter: 'date'},
                     {key: 'termsOfUse', display: 'Terms Of Use'},
-                    {key: 'transparencyAttestationUrl', display: 'Transparency Attestation URL'},
+                    {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
                     {key: 'visibleOnChpl', display: 'Visible on CHPL'}
                 ];
                 var nestedKeys = [

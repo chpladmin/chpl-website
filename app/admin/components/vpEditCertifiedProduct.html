@@ -83,7 +83,7 @@
       <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cpOtherAcb"></input>
     </div>
     <div class="form-group">
-      <label for="cpTransparencyUrl">Transparency Attestation Url</label>
+      <label for="cpTransparencyUrl">Mandatory Disclosures URL</label>
       <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cpTransparencyAttUrl" name="cpTransparencyAttUrl"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
     </div>
@@ -160,7 +160,7 @@
         <li ng-if="vm.editForm.cpBody.$error.required">Certification Body is required</li>
         <li ng-if="vm.editForm.cpCertDate.$error.required">Certification Date is required</li>
         <li ng-if="vm.editForm.cpCertDate.$error.date">Certification Date is an invalid format (mm/dd/yyyy)</li>
-        <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.url">Transparency Attestation URL is an invalid format (http://www.example.com)</li>
+        <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.url">Mandatory Disclosures URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpReportFileLoc.$error.url">Report File Location URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpSedReportFileLoc.$error.url">SED Report File Location URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpTouLoc.$error.url">Terms of Use URL is an invalid format (http://www.example.com)</li>
