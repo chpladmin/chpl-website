@@ -6,6 +6,7 @@
             var vm = this;
 			vm.lookupCertIds = lookupCertIds;
 			vm.download = download;
+			vm.lookupProductsFormatInvalid = false;
 
             activate();
 
@@ -77,13 +78,14 @@
 			
 			function lookupCertIds () {
 				vm.lookupProducts = null;
+				vm.lookupProductsFormatInvalid = false;
 
 				if ((vm.lookup !== "undefined") && (vm.lookup.certIds !== "undefined")) {
 					vm.lookup.certIds = vm.lookup.certIds.replace(/[;,\s]+/g, " ");
 					vm.lookup.certIds = vm.lookup.certIds.trim().toUpperCase();
 
 					// Check format of input
-					if (null !== vm.lookup.certIds.match(/([0-9A-Z]{15}([;][0-9A-Z]{15})*)/i)) {
+					if (null !== vm.lookup.certIds.match(/^([0-9A-Z]{15}([ ][0-9A-Z]{15})*)$/i)) {
 
 						// Split IDs
 						var idArray = vm.lookup.certIds.split(/ /);
@@ -108,6 +110,7 @@
 						});
 
 					} else {
+						vm.lookupProductsFormatInvalid = true;
 						vm.lookupProducts = null;
 					}
 

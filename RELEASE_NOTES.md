@@ -19,6 +19,7 @@ _Date TBD_
 * Fixed missing "N/A" in Cert ID PDF
 * Fixed Cert ID Lookup results header always showing
 * Fixed widget product list buttons size 
+* Fixed Cert ID format checking for Cert ID Lookup input field
 
 ---
 
