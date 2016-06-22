@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 1.6.0
+_16 June 2016_
 
 ### New Features
 * Allow filter by certification status
