@@ -70,10 +70,6 @@
             expect(ctrl).toBeDefined();
         });
 
-        it('should initialize with no search results', function () {
-            expect(scope.hasResults()).toBe(false);
-        });
-
         it('should know if it has results', function () {
             expect(ctrl.hasResults).toBeDefined;
         });
