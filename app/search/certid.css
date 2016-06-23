@@ -37,12 +37,17 @@
 	text-align: left;
 }
 
+.criteriaMetListColumn2014 ul {
+	width: 100%;
+}
+
 .criteriaMetListColumn ul {
 	display: inline-block;
 }
 
 .criteriaMetListColumn li {
 	width: 100%;
+	float: left;
 }
 
 .criteriaMetListColumn:first-child {
