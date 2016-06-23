@@ -27,7 +27,8 @@
     "jquery": "~2.1.4",
     "ng-idle": "~1.1.0",
     "ngstorage": "~0.3.7",
-    "angulartics-gtm": "angulartics-google-tag-manager#~0.0.1"
+    "angulartics-gtm": "angulartics-google-tag-manager#~0.0.1",
+    "string.startsWith": "*"
   },
   "resolutions": {
     "angular": "~1.4.7",

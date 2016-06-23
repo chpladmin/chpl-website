@@ -24,6 +24,7 @@
                 mockCommonService.options.editions = ['Edition 1', 'Edition 2'];
                 mockCommonService.options.practiceTypeNames  = ['Practice 1', 'Practice 2'];
                 mockCommonService.options.certBodyNames  = ['CB 1', 'CB 2'];
+                mockCommonService.options.certificationStatuses = ['Active', 'Retired'];
                 mockCommonService.options.certsNcqms = mockCommonService.options.certificationCriterionNumbers.concat(mockCommonService.options.cqmCriterionNumbers);
 
                 mockCommonService.search = function (query,pageNum,pageSize) {
