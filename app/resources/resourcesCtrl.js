@@ -6,6 +6,7 @@
             var vm = this;
 			vm.lookupCertIds = lookupCertIds;
 			vm.download = download;
+			vm.lookupProductsFormatInvalid = false;
 
             activate();
 
@@ -32,10 +33,10 @@
 				columnDelimiter = args.columnDelimiter || ',';
 				lineDelimiter = args.lineDelimiter || '\n';
 
-				// Collection columns and remove the "$$hashKey" column
+				// Collect columns
 				keys = Object.keys(data[0]);
-				keys.pop();
-
+				keys = keys.filter(function(item) { return (item !== "id" && item !== "$$hashKey") });
+				
 				result = '';
 				result += keys.join(columnDelimiter);
 				result += lineDelimiter;
@@ -45,7 +46,7 @@
 					keys.forEach(function(key) {
 						if (ctr > 0) result += columnDelimiter;
 
-						result += "\"" + item[key] + "\"";
+						result += "\"" + (item[key] || "") + "\"";
 						ctr++;
 					});
 					result += lineDelimiter;
@@ -77,13 +78,14 @@
 			
 			function lookupCertIds () {
 				vm.lookupProducts = null;
+				vm.lookupProductsFormatInvalid = false;
 
 				if ((vm.lookup !== "undefined") && (vm.lookup.certIds !== "undefined")) {
 					vm.lookup.certIds = vm.lookup.certIds.replace(/[;,\s]+/g, " ");
 					vm.lookup.certIds = vm.lookup.certIds.trim().toUpperCase();
 
 					// Check format of input
-					if (null !== vm.lookup.certIds.match(/([0-9A-Z]{15}([;][0-9A-Z]{15})*)/i)) {
+					if (null !== vm.lookup.certIds.match(/^([0-9A-Z]{15}([ ][0-9A-Z]{15})*)$/i)) {
 
 						// Split IDs
 						var idArray = vm.lookup.certIds.split(/ /);
@@ -108,6 +110,7 @@
 						});
 
 					} else {
+						vm.lookupProductsFormatInvalid = true;
 						vm.lookupProducts = null;
 					}
 
