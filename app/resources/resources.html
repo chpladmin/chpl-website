@@ -48,19 +48,23 @@
 			  <th scope="col"><span>Product Edition</span></th>
 			  <th scope="col"><span>Classification</span></th>
 			  <th scope="col"><span>Practice Type</span></th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
 			</tr>
 		  </thead>
 		  <tbody>
-			<tr ng-repeat="row in vm.lookupProducts" >
-			  <td>{{ row.certificationId }}</td>
-			  <td>{{ row.certificationIdEdition }}</td>
-			  <td>{{ row.name }}</td>
-			  <td>{{ row.version }}</td>
-			  <td>{{ row.vendor }}</td>
-			  <td>{{ row.chplProductNumber }}</td>
-			  <td>{{ row.year }}</td>
-			  <td>{{ (row.classification === null ? "N/A" : row.classification)  }}</td>
-			  <td>{{ (row.practiceType === null ? "N/A" : row.practiceType)  }}</td>
+            <tr ng-repeat="row in vm.lookupProducts" >
+				<td>{{ row.certificationId }}</td>
+				<td>{{ row.certificationIdEdition }}</td>
+				<td>{{ row.name }}</td>
+				<td>{{ row.version }}</td>
+				<td>{{ row.vendor }}</td>
+				<td>{{ row.chplProductNumber }}</td>
+				<td>{{ row.year }}</td>
+				<td>{{ (row.classification === null ? "N/A" : row.classification)  }}</td>
+				<td>{{ (row.practiceType === null ? "N/A" : row.practiceType)  }}</td>
+				<td>
+					<button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
+				</td>
 			</tr>
 		  </tbody>
 		</table>
