@@ -9,6 +9,10 @@
 	font-weight: 600;
 }
 
+.widgetcertidbar p {
+	font-size: smaller;
+}
+
 .criteriaMetList ul {
 	padding: 0;
 }
