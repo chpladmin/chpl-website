@@ -9,6 +9,10 @@
 	font-weight: 600;
 }
 
+.widgetcertidbar p {
+	font-size: smaller;
+}
+
 .criteriaMetList ul {
 	padding: 0;
 }
@@ -37,12 +41,17 @@
 	text-align: left;
 }
 
+.criteriaMetListColumn2014 ul {
+	width: 100%;
+}
+
 .criteriaMetListColumn ul {
 	display: inline-block;
 }
 
 .criteriaMetListColumn li {
 	width: 100%;
+	float: left;
 }
 
 .criteriaMetListColumn:first-child {

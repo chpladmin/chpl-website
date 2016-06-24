@@ -124,13 +124,13 @@ var chplCertIdWidget = (function(){
 		updateButtonAndId: function (showIdRequested) {
 			var data = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
 			var isValid = false;
-			var year = null;
+			var year = "2015";
 			if (null !== data) {
 				isValid = data.isValid;
 				year = data.year;
 			} else {
 				isValid = false;
-				year = null;
+				year = "2015";
 			}
 
 			if (null !== year) {
@@ -405,6 +405,3 @@ var chplCertIdWidget = (function(){
 		}
 	}
 }());
-
-chplCertIdWidgetLogin.setup();
-chplCertIdWidget.invokeGetCertificationId(null, null, false);

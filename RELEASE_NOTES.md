@@ -13,6 +13,8 @@ _16 June 2016_
 * Changed CQM percentages to show only for 2014 certification in widget
 * Simplified Cert ID Lookup results table formatting 
 * Added button for CSV download of Cert ID Lookup results 
+* Added notice text that additional certification criteria may be required with Cert ID.
+* Added Details button to Cert ID Lookup results
 
 ### Bugs Fixed
 * Fixed long product names in cert ID widget
@@ -20,6 +22,8 @@ _16 June 2016_
 * Fixed Cert ID Lookup results header always showing
 * Fixed widget product list buttons size 
 * Fixed Cert ID format checking for Cert ID Lookup input field
+* Fixed column alignments in widget for IE
+* Fixed issue where jQuery wasn't able to initialize widget elements by using a workaround within the angular controller
 
 ---
 

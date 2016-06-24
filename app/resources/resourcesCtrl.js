@@ -7,6 +7,7 @@
 			vm.lookupCertIds = lookupCertIds;
 			vm.download = download;
 			vm.lookupProductsFormatInvalid = false;
+			vm.viewProduct = viewProduct;
 
             activate();
 
@@ -116,6 +117,10 @@
 
 				}
 			}
+			
+            function viewProduct (cp) {
+                $location.url('/product/' + cp.id);
+            }
 
         }]);
 })();
