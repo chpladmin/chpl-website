@@ -18,7 +18,13 @@
 			vm.toggleCart = toggleCart;
 
             activate();
-	
+
+			// Execute after page is loaded so jquery can find elements
+			angular.element(document).ready(function() {
+				chplCertIdWidgetLogin.setup();
+				chplCertIdWidget.invokeGetCertificationId(null, null, false);
+			});
+			
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
