@@ -4,6 +4,7 @@
     angular.module('app.resources')
         .controller('ResourcesController', ['$scope', '$log', '$location', 'API', 'authService', 'commonService', function($scope, $log, $location, API, authService, commonService) {
             var vm = this;
+
 			vm.lookupCertIds = lookupCertIds;
 			vm.download = download;
 			vm.lookupProductsFormatInvalid = false;
@@ -22,8 +23,8 @@
                     vm.swaggerUrl = vm.API + '/api-docs';
                 }
             }
-			
-			function convertArrayOfObjectsToCSV(args) {  
+
+			function convertArrayOfObjectsToCSV(args) {
 				var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
 				data = args.data || null;
@@ -37,7 +38,7 @@
 				// Collect columns
 				keys = Object.keys(data[0]);
 				keys = keys.filter(function(item) { return (item !== "id" && item !== "$$hashKey") });
-				
+
 				result = '';
 				result += keys.join(columnDelimiter);
 				result += lineDelimiter;
@@ -54,9 +55,9 @@
 				});
 
 				return result;
-			}			
+			}
 
-			function download(args) {  
+			function download(args) {
 				var filename = "lookupResults" + new Date().getTime() + ".csv";
 				var data, link;
 				var csv = convertArrayOfObjectsToCSV({
@@ -76,7 +77,7 @@
 				link.setAttribute('download', filename);
 				link.click();
 			}
-			
+
 			function lookupCertIds () {
 				vm.lookupProducts = null;
 				vm.lookupProductsFormatInvalid = false;
@@ -109,18 +110,15 @@
 									vm.lookupProducts = null;
 								});
 						});
-
 					} else {
 						vm.lookupProductsFormatInvalid = true;
 						vm.lookupProducts = null;
 					}
-
 				}
 			}
-			
+
             function viewProduct (cp) {
                 $location.url('/product/' + cp.id);
             }
-
         }]);
 })();

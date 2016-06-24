@@ -21,10 +21,12 @@
 
 			// Execute after page is loaded so jquery can find elements
 			angular.element(document).ready(function() {
-				chplCertIdWidgetLogin.setup();
-				chplCertIdWidget.invokeGetCertificationId(null, null, false);
+                if (typeof chplCertIdWidgetLogin !== 'undefined') {
+				    chplCertIdWidgetLogin.setup();
+				    chplCertIdWidget.invokeGetCertificationId(null, null, false);
+                }
 			});
-			
+
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
