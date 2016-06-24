@@ -405,6 +405,3 @@ var chplCertIdWidget = (function(){
 		}
 	}
 }());
-
-chplCertIdWidgetLogin.setup();
-chplCertIdWidget.invokeGetCertificationId(null, null, false);
