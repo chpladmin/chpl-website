@@ -28,7 +28,7 @@
 				var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
 				data = args.data || null;
-				if (data == null || !data.length) {
+				if (data === null || !data.length) {
 					return null;
 				}
 
@@ -39,18 +39,20 @@
 				keys = Object.keys(data[0]);
 				keys = keys.filter(function(item) { return (item !== "id" && item !== "$$hashKey") });
 
-				result = '';
-				result += keys.join(columnDelimiter);
+				result = "";
+				result = "CMS_EHR_CERTIFICATION_ID,CMS_EHR_CERTIFICATION_ID_YEAR,PRODUCT_NAME,PRODUCT_VERSION,DEVELOPER,CHPL_PRODUCT_NUMBER,PRODUCT_CERTIFICATION_EDITION,CLASSIFICATION_TYPE,PRACTICE_TYPE";
 				result += lineDelimiter;
 
 				data.forEach(function(item) {
-					ctr = 0;
-					keys.forEach(function(key) {
-						if (ctr > 0) result += columnDelimiter;
-
-						result += "\"" + (item[key] || "") + "\"";
-						ctr++;
-					});
+					result += "\"" + (item["certificationId"] || "") + "\"" + columnDelimiter;
+					result += "\"" + (item["certificationIdEdition"] || "") + "\"" + columnDelimiter;
+					result += "\"" + (item["name"] || "") + "\"" + columnDelimiter;
+					result += "\"" + (item["version"] || "") + "\"" + columnDelimiter;
+					result += "\"" + (item["vendor"] || "") + "\"" + columnDelimiter;
+					result += "\"" + (item["chplProductNumber"] || "") + "\"" + columnDelimiter;
+					result += "\"" + (item["year"] || "") + "\"" + columnDelimiter;
+					result += "\"" + (item["classification"] || "") + "\"" + columnDelimiter;
+					result += "\"" + (item["practiceType"] || "") + "\"";
 					result += lineDelimiter;
 				});
 
@@ -59,24 +61,36 @@
 
 			function download(args) {
 				var filename = "lookupResults" + new Date().getTime() + ".csv";
-				var data, link;
 				var csv = convertArrayOfObjectsToCSV({
 					data: vm.lookupProducts
 				});
+
 				if (csv == null) return;
 
-				//filename = args.filename || 'export.csv';
-
-				if (!csv.match(/^data:text\/csv/i)) {
-					csv = 'data:text/csv;charset=utf-8,' + csv;
+				if (msieversion()) {
+					navigator.msSaveBlob(new Blob([csv],{type: "text/csv;charset=utf-8;"}), filename);
+				} else {
+					if (!csv.match(/^data:text\/csv/i)) {
+						csv = 'data:text/csv;charset=utf-8,' + csv;
+					}
+					var link = document.createElement('a');
+					link.setAttribute('href', encodeURI(csv));
+					link.setAttribute('download', filename);
+					link.click();
 				}
-				data = encodeURI(csv);
-
-				link = document.createElement('a');
-				link.setAttribute('href', data);
-				link.setAttribute('download', filename);
-				link.click();
 			}
+
+			function msieversion() {
+				var ua = window.navigator.userAgent;
+				var msie = ua.indexOf("MSIE ");
+				// If Internet Explorer, return true
+				if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+					return true;
+				} else { // If another browser,
+					return false;
+				}
+				return false;
+			}            
 
 			function lookupCertIds () {
 				vm.lookupProducts = null;
