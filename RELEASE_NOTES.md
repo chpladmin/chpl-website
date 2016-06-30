@@ -1,9 +1,36 @@
 # Release Notes
 
+## Version 1.6.0.CMS
+_30 June 2016_
+
+### New Features
+* Added EHR Certification ID Lookup to resources page
+* Added EHR Certification ID widget to fold out on Search page
+* Added 'Cert ID' button to product search result rows
+* Added Download PDF button to widget
+* Changed CQM percentages to show only for 2014 certification in widget
+* Simplified Cert ID Lookup results table formatting
+* Added button for CSV download of Cert ID Lookup results
+* Added notice text that additional certification criteria may be required with Cert ID.
+* Added Details button to Cert ID Lookup results
+
+### Bugs Fixed
+* Changed Lookup CSV column header names
+* Fixed issue where IE could not download the Lookup CSV
+* Fixed long product names in cert ID widget
+* Fixed missing "N/A" in Cert ID PDF
+* Fixed Cert ID Lookup results header always showing
+* Fixed widget product list buttons size
+* Fixed Cert ID format checking for Cert ID Lookup input field
+* Fixed column alignments in widget for IE
+* Fixed issue where jQuery wasn't able to initialize widget elements by using a workaround within the angular controller
+
+---
+
 ## Version 1.6.0
 _16 June 2016_
 
-### New features
+### New Features
 * Allow filter by certification status
 * Restrict editing of certification status to valid values
 
@@ -66,6 +93,13 @@ _20 April 2016_
 
 ## Version 1.1.0
 _12 April 2016_
+
+### New Features
+* Added EHR Certification ID widget to fold out on Search page
+* Added 'Cert ID' button to product search result rows
+
+## Next version
+_Date TBD_
 
 ### New features
 * Allow editing of new style CHPL Product Number

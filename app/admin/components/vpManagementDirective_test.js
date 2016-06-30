@@ -3,14 +3,16 @@
 
     describe('app.admin.vpManagement.directive', function () {
 
-        var element, scope, $log, commonService, mockCommonService, mockFileUploader, ctrl, FileUploader;
+        var element, scope, $log, commonService, mockCommonService, authService, mockAuthService, mockFileUploader, ctrl, FileUploader;
 
         beforeEach(function () {
             mockCommonService = {};
+            mockAuthService = {};
             mockFileUploader = function(){};
 
             module('app.admin', function($provide) {
                 $provide.value('commonService', mockCommonService);
+                $provide.value('authService', mockAuthService);
                 $provide.value('FileUploader', mockFileUploader);
             });
 
@@ -96,6 +98,12 @@
                 };
 
                 mockCommonService.getAtls = function () { return $q.when(mockCommonService.testingLabs); };
+
+                mockAuthService.isChplAdmin = function () { return $q.when(true); };
+                mockAuthService.isAcbAdmin = function () { return $q.when(true); };
+                mockAuthService.isAcbStaff = function () { return $q.when(true); };
+                mockAuthService.getToken = function () { return $q.when('fake token'); };
+                mockAuthService.getApiKey = function () { return $q.when('fake api key'); };
             });
         });
 
@@ -131,8 +139,9 @@
 
             var fileUploader;
 
-            beforeEach(inject(function ($controller, _commonService_, $q, _FileUploader_) {
+            beforeEach(inject(function ($controller, _commonService_, _authService_, $q, _FileUploader_) {
                 commonService = _commonService_;
+                authService = _authService_;
                 FileUploader = _FileUploader_;
 
                 spyOn(commonService, 'getProduct').and.callFake(function () {
@@ -157,6 +166,7 @@
                     $scope: scope,
                     $element: null,
                     commonService: commonService,
+                    authService: authService,
                     FileUploader: FileUploader});
                 scope.$digest();
             }));

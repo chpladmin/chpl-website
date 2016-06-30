@@ -54,6 +54,9 @@
                             'API-Key': authService.getApiKey()
                         }
                     });
+                    if (angular.isUndefined(self.uploader.filters)) {
+                        self.uploader.filters = [];
+                    }
                     self.uploader.filters.push({
                         name: 'csvFilter',
                         fn: function(item, options) {

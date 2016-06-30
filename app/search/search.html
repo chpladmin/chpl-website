@@ -213,7 +213,7 @@
                 <table class="table search-table table-striped">
                   <thead>
                     <tr>
-                      <td colspan="6" class="text-center">
+                      <td colspan="7" class="text-center">
                         <p class="pull-right">
                           <label for="pageSizeTop" class="sr-only">Show how many results</label>
                           Showing up to
@@ -238,12 +238,12 @@
                       <th scope="col" class="search-header" ng-click="sort('version')" ng-if="vm.refine.product"
                           <span ng-class="{'sort-ascent': vm.query.orderBy==='version' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='version' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'version'}">Version</span> <a class="sr-only sr-only-focusable" href ng-click="sort('version')"><br />Sort by version</a></th>
                       <th scope="col" class="" ng-if="!vm.refine.product">Version</th>
-                      <th scope="col" colspan="2"><span class="sr-only">Actions</span></th>
+                      <th scope="col" colspan="3"><span class="sr-only">Actions</span></th>
 	                </tr>
 	              </thead>
                   <tfoot>
                     <tr>
-                      <td colspan="6" class="text-center">
+                      <td colspan="7" class="text-center">
                         <p class="pull-right">
                           <label for="pageSizeBottom" class="sr-only">Show how many results</label>
                           Showing up to
@@ -271,6 +271,9 @@
                       <td>
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
+                      <td>
+                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCart(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Cert ID</button>
+                      </td>
 	                </tr>
                   </tbody>
                 </table>
@@ -279,6 +282,12 @@
           </div>
           <div class="col-md-3">
             <accordion close-others="false">
+              <accordion-group class="panel-ai" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="common/templates/accordion.html">
+                <accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
+					CMS EHR Certification ID
+                </accordion-heading>
+				<div ng-include="'search/certid.html'"></div>
+              </accordion-group>
               <accordion-group class="panel-ai" is-open="vm.boxes.compare" aria-expanded="{{ vm.boxes.compare }}" template-url="common/templates/accordion.html">
                 <accordion-heading aria-expanded="{{ vm.boxes.compare }}">
                   Compare <span ng-if="vm.compareCps.length >= 2">{{ vm.compareCps.length }}</span> products <span ng-if="vm.compareCps.length < 2">(minimum 2)</span>

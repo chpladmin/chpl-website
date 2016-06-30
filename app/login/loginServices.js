@@ -6,8 +6,10 @@
             var self = this;
 
             self.parseJwt = function (token) {
-                var base64 = token.split('.')[1].replace('-','+').replace('_','/');
-                return JSON.parse($window.atob(base64));
+                if (angular.isString(token)) {
+                    var base64 = token.split('.')[1].replace('-','+').replace('_','/');
+                    return JSON.parse($window.atob(base64));
+                }
             };
 
             self.saveToken = function (token) {

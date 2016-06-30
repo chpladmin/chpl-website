@@ -260,7 +260,7 @@
                     {key: 'sedTesting', display: 'SED Tested'},
                     {key: 'sedTestingEnd', display: 'SED Testing End Date', filter: 'date'},
                     {key: 'termsOfUse', display: 'Terms Of Use'},
-                    {key: 'transparencyAttestationUrl', display: 'Transparency Attestation URL'},
+                    {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
                     {key: 'visibleOnChpl', display: 'Visible on CHPL'}
                 ];
                 var nestedKeys = [
@@ -274,6 +274,12 @@
                 var change;
                 var questionable;
 
+                if (!String.prototype.startsWith) {
+                    String.prototype.startsWith = function(searchString, position){
+                        position = position || 0;
+                        return this.substr(position, searchString.length) === searchString;
+                    };
+                }
                 for (var i = 0; i < data.length; i++) {
                     var activity = {
                         date: data[i].activityDate,

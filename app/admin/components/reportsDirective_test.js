@@ -21,7 +21,10 @@
                 mockCommonService.productActivity = ['Product 1', 'Product 2'];
                 mockCommonService.versionActivity = ['Version 1', 'Version 2'];
                 mockCommonService.certBodyActivity  = ['CB 1', 'CB 2'];
-                mockCommonService.cpActivity = [{newData: {developer: {name:'Vend'}, product: {name:'Prod', version: 'version'}, certifyingBody: {name: 'test'}}, description: 'something happened'}];
+                mockCommonService.cpActivity = [
+                    {"id":116,"description":"Corrective action plan for CHP-028100 was created.","originalData":null,"newData":{"id":1,"certifiedProductId":7085,"surveillanceStartDate":1459900800000,"surveillanceEndDate":null,"surveillanceResult":false,"nonComplianceDeterminationDate":1460678400000,"approvalDate":null,"startDate":null,"requiredCompletionDate":null,"actualCompletionDate":null,"summary":"Summary","developerExplanation":null,"resolution":null},"activityDate":1461612293311,"activityObjectId":1,"concept":"ACTIVITY_CONCEPT_CERTIFIED_PRODUCT"},
+                    {"id":117,"description":"Corrective action plan for CHP-028100 was created.","originalData":null,"newData":{"id":2,"certifiedProductId":7085,"surveillanceStartDate":1459382400000,"surveillanceEndDate":null,"surveillanceResult":false,"nonComplianceDeterminationDate":1460505600000,"approvalDate":null,"startDate":null,"requiredCompletionDate":null,"actualCompletionDate":null,"summary":null,"developerExplanation":null,"resolution":null},"activityDate":1461612309431,"activityObjectId":2,"concept":"ACTIVITY_CONCEPT_CERTIFIED_PRODUCT"}
+                ];
                 mockCommonService.userActivity = [];
                 mockCommonService.userActivities = [];
                 mockCommonService.apiActivity = [];
