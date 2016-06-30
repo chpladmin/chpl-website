@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_TBD_
+## Version 1.6.0.CMS
+_30 June 2016_
 
 ### New Features
 * Added EHR Certification ID Lookup to resources page
