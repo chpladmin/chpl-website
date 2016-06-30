@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version TBD
+_TBD_
+
+### Bugs Fixed
+* Changed Lookup CSV column header names
+* Fixed issue where IE could not download the Lookup CSV
+
+---
+
 ## Version 1.6.0
 _16 June 2016_
 
