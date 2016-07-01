@@ -134,7 +134,7 @@ var chplCertIdWidget = (function(){
 			}
 
 			if (null !== year) {
-				$("#btnEhrGetCertificationId").text("Get " + data.year + " EHR Certification ID");
+				$("#btnEhrGetCertificationId").text("Get " + year + " EHR Certification ID");
 			} else {
 				$("#btnEhrGetCertificationId").text("Get EHR Certification ID");
 			}
