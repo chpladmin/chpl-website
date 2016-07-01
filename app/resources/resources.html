@@ -22,7 +22,7 @@
 			<p>Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter one or more CMS EHR Certification IDs to display the products which were used to create the associated CMS EHR Certification ID.<p>
 			  <label for="certIdsField" class="control-label sr-only">CMS EHR Certification IDs to lookup</label>
 			  <div class="input-group">
-				<input type="text" class="form-control" id="certIdsField" placeholder="Enter one or more CMS EHR Certification IDs separated by a space, comma, or semi-colon" ng-model="vm.lookup.certIds"
+				<input type="text" class="form-control" id="certIdsField" placeholder="Enter one or more CMS EHR Certification IDs separated by a space, comma, or semi-colon" ng-model="vm.certIds"
 					   ng-keyup="$event.keyCode === 13 && vm.lookupCertIds()"/>
 				<span class="input-group-btn">
 				  <button type="button" class="btn btn-ai" ng-click="vm.lookupCertIds()"><i class="fa fa-search"></i><span class="sr-only">Lookup Certification ID</span></button>
