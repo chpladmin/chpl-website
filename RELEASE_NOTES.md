@@ -1,5 +1,14 @@
 # Release Notes
 
+## TBD
+_TBD_
+
+### Bugs Fixed
+* Fixed Cert ID Widget not intializing
+* Fixed Cert ID Lookup to persist lookup information when leaving page
+
+---
+
 ## Version 1.6.0.CMS
 _30 June 2016_
 
