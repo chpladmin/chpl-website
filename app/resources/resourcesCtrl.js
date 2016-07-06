@@ -13,14 +13,12 @@
             activate();
 
 			// Restore lookup IDs and results
-			if (!$localStorage.lookupCertIds) {
-				$localStorage.lookupCertIds = "";
-			}
-			if (!$localStorage.lookupProducts) {
-				$localStorage.lookupProducts = [];
-			}
 			vm.certIds = $localStorage.lookupCertIds;
 			vm.lookupProducts = $localStorage.lookupProducts;
+			
+			if ($localStorage.lookupCertIds && !$localStorage.lookupProducts) {
+				lookupCertIds();
+			}
 			
             ////////////////////////////////////////////////////////////////////
 
@@ -109,11 +107,11 @@
 				if ((vm.lookup !== "undefined") && (vm.certIds !== "undefined")) {
 					vm.certIds = vm.certIds.replace(/[;,\s]+/g, " ");
 					vm.certIds = vm.certIds.trim().toUpperCase();
-
+					
 					// Check format of input
 					if ("" === vm.certIds.trim()) {
 						vm.lookupProductsFormatInvalid = false;
-						clearLookupResults();
+						clearLookup();
 					} else if (null !== vm.certIds.match(/^([0-9A-Z]{15}([ ][0-9A-Z]{15})*)$/i)) {
 
 						// Split IDs
@@ -121,8 +119,6 @@
 						vm.lookupProducts = null;
 
 						$localStorage.lookupCertIds = vm.certIds;
-						console.log('looku=' + vm.certIds);
-						console.log('local=' + $localStorage.lookupCertIds);
 						
 						// Call LookupAPI
 						idArray.forEach(function (id) {
@@ -144,6 +140,7 @@
 								});
 						});
 					} else {
+						$localStorage.lookupCertIds = vm.certIds;
 						vm.lookupProductsFormatInvalid = true;
 						clearLookupResults();
 					}
@@ -151,13 +148,13 @@
 			}
 
 			function clearLookup() {
-				$localStorage.lookupCertIds = "";
-				vm.certIds = "";
+				delete $localStorage.lookupCertIds;
+				vm.certIds = null;
 				clearLookupResults();
 			}
 			
 			function clearLookupResults() {
-				$localStorage.lookupProducts = [];
+				delete $localStorage.lookupProducts;
 				vm.lookupProducts = null;
 			}
 
