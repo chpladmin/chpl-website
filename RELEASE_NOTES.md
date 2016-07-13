@@ -6,6 +6,7 @@ _TBD_
 ### Bugs Fixed
 * Fixed Cert ID Widget not intializing
 * Fixed Cert ID Lookup to persist lookup information when leaving page
+* Added Criteria Met to generated Certification ID PDF
 
 ---
 
