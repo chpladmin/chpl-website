@@ -12,6 +12,7 @@ var chplCertIdWidget = (function(){
 	var apiKey = "See certidLogin.js";
 	var cookiePath = "/";
 	var cookieCertificationIdData = "certiddata";
+	var collectionChangeCallback = null;
 
 	return {
 		setUrl: function (val) {
@@ -64,10 +65,14 @@ var chplCertIdWidget = (function(){
 				success: function(data, status, xhr) {
 					chplCertIdWidget.setCookie(cookieCertificationIdData, JSON.stringify(data), 365);
 					chplCertIdWidget.displayCertificationIdResults(create);
+					if (("undefined" !== collectionChangeCallback) && (null !== collectionChangeCallback))
+						collectionChangeCallback();
 				},
 				error: function(xhr, status, error) {
 					chplCertIdWidget.displayCertificationIdResults(false);
 					alert(status + ": " + error);
+					if (("undefined" !== collectionChangeCallback) && (null !== collectionChangeCallback))
+						collectionChangeCallback();
 				}
 			});
 		},
@@ -317,6 +322,13 @@ var chplCertIdWidget = (function(){
 			$("#txtNoProductsSelected").show();
 		},
 
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		setCollectionChangeCallback: function (callback) {
+			collectionChangeCallback = callback;
+		},
+		
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
