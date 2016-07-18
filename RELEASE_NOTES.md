@@ -3,6 +3,10 @@
 ## TBD
 _TBD_
 
+### New features
+* Clear filters replaces clear results
+* "Enter" in developer/product/version filter submits filter
+
 ### Bugs Fixed
 * Fixed Cert ID Widget not intializing
 * Fixed Cert ID Lookup to persist lookup information when leaving page

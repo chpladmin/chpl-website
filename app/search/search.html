@@ -44,6 +44,7 @@
             <label for="developerRefine" class="control-label sr-only">Developer</label>
             <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.developer"
                    ng-required="vm.refineType === 'developer'"
+                   ng-keyup="$event.keyCode == 13 && vm.search()"
                    typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"
                    typeahead-input-formatter="$model.value" />
@@ -57,6 +58,7 @@
             <label for="productRefine" class="control-label sr-only">Product</label>
             <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.refine.product"
                    ng-required="vm.refineType === 'product'"
+                   ng-keyup="$event.keyCode == 13 && vm.search()"
                    typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"
                    typeahead-input-formatter="$model.value" />
@@ -69,6 +71,7 @@
           <div class="input-group input-group-lg">
             <label for="versionRefine" class="control-label sr-only">Version</label>
             <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refine.version"
+                   ng-keyup="$event.keyCode == 13 && vm.search()"
                    ng-required="vm.refineType === 'version'"/>
             <span class="input-group-btn">
               <button type="button" class="btn btn-ai" ng-click="vm.addRefine()">Add Filter</button>
