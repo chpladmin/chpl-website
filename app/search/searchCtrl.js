@@ -124,6 +124,7 @@
                     vm.query[vm.refineType] = vm.refine[vm.refineType];
                     break;
                 }
+                vm.refineType = '';
                 vm.search();
             }
 

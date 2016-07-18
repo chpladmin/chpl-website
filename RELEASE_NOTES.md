@@ -6,6 +6,7 @@ _TBD_
 ### New features
 * Clear filters replaces clear results
 * "Enter" in developer/product/version filter submits filter
+* Adding filter resets filter select
 
 ### Bugs Fixed
 * Fixed Cert ID Widget not intializing
