@@ -205,7 +205,7 @@
                 <p ng-if="hasResults()">{{ vm.resultCount }} results found</p>
               </div>
               <div class="col-md-6 text-right">
-                <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="clear()">Clear results</a>
+                <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="vm.clearFilters()">Clear filters</a>
               </div>
             </div>
             <div ng-if="hasResults()" class="row">

@@ -7,6 +7,7 @@
 
             vm.addRefine = addRefine;
             vm.clear = clear;
+            vm.clearFilters = clearFilters;
             vm.clearPreviouslyCompared = clearPreviouslyCompared;
             vm.clearPreviouslyViewed = clearPreviouslyViewed;
             vm.compare = compare;
@@ -122,6 +123,28 @@
                 default:
                     vm.query[vm.refineType] = vm.refine[vm.refineType];
                     break;
+                }
+                vm.search();
+            }
+
+            function clearFilters () {
+                delete $localStorage.refine;
+                delete $localStorage.query;
+
+                var searchTerm, searchTermObject;
+                if (vm.query.searchTerm) {
+                    searchTerm = vm.query.searchTerm;
+                }
+                if (vm.query.searchTermObject) {
+                    searchTermObject = vm.query.searchTermObject;
+                }
+                vm.refine = angular.copy(vm.defaultRefine);
+                vm.query = angular.copy(vm.defaultQuery);
+                if (searchTerm) {
+                    vm.query.searchTerm = searchTerm;
+                }
+                if (searchTermObject) {
+                    vm.query.searchTermObject = searchTermObject;
                 }
                 vm.search();
             }
