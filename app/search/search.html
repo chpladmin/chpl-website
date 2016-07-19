@@ -272,7 +272,7 @@
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
                       <td>
-                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCart(row)">
+                        <button href ng-class="['btn btn-ai-certid btn-sm', {'btn-ai-certid-toggleon': vm.widget.isProductInCart(row.id)}]" ng-click="vm.toggleCart(row)">
 							<i ng-class="{'fa fa-plus': !vm.widget.isProductInCart(row.id), 'fa fa-minus': vm.widget.isProductInCart(row.id)}"></i> <span class="sr-only">{{vm.widget.isProductInCart(row.id) ? 'Remove' : 'Add'}} {{ row.product.name}} to </span>Cert ID
 						</button>
                       </td>

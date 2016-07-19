@@ -413,6 +413,25 @@ fieldset[disabled] .btn-ai-success.active {
     background-color: #333;
 }
 
+.btn-ai-certid {
+    color: #fff;
+    background: -webkit-linear-gradient(#008b00, #006800); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#008b00, #006800); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#008b00, #006800); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#008b00, #006800); /* Standard syntax */
+}
+.btn-ai-certid-toggleon {
+    color: #fff;
+    background: #00a800;
+}
+.btn-ai-certid:focus,
+.btn-ai-certid.focus,
+.btn-ai-certid:hover,
+.btn-ai-certid:active {
+    color: #fff;
+    background: #004800;
+}
+
 :focus {
     outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;
