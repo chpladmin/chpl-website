@@ -124,6 +124,7 @@
                                     vm.certs[i].testTasks[j].taskPathDeviationObserved = changedTasks[k].taskPathDeviationObserved;
                                     vm.certs[i].testTasks[j].taskPathDeviationOptimal = changedTasks[k].taskPathDeviationOptimal;
                                     vm.certs[i].testTasks[j].taskRating = changedTasks[k].taskRating;
+                                    vm.certs[i].testTasks[j].taskRatingStddev = changedTasks[k].taskRatingStddev;
                                     vm.certs[i].testTasks[j].taskRatingScale = changedTasks[k].taskRatingScale;
                                     vm.certs[i].testTasks[j].taskSuccessAverage = changedTasks[k].taskSuccessAverage;
                                     vm.certs[i].testTasks[j].taskSuccessStddev = changedTasks[k].taskSuccessStddev;

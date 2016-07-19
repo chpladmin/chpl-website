@@ -52,6 +52,13 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="control-label col-sm-4" for="data_taskRatingStdDev">Task Rating Standard Deviation <span class="text-danger">*</span></label>
+      <div class="col-sm-8">
+        <input type="number" class="form-control input-sm" id="data_taskRatingStdDev" name="data_taskRatingStdDev" ng-model="vm.task.taskRatingStdDev" ng-change="vm.changed()" required></input>
+        <div class="text-danger" ng-if="vm.editForm.data_taskRatingStdDev.$touched && vm.editForm.data_taskRatingStdDev.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="control-label col-sm-4" for="data_taskRatingScale">Rating Scale <span class="text-danger">*</span></label>
       <div class="col-sm-8">
         <input type="text" class="form-control input-sm" id="data_taskRatingScale" name="data_taskRatingScale" ng-model="vm.task.taskRatingScale" ng-change="vm.changed()" required></input>

@@ -504,6 +504,8 @@
                 var keys = [
                     {key: 'taskPathDeviationObserved', display: 'Path Deviation Observed'},
                     {key: 'taskPathDeviationOptimal', display: 'Path Deviation Optimal'},
+                    {key: 'taskRating', display: 'Task Rating'},
+                    {key: 'taskRatingStddev', display: 'Task Rating Standard Deviation'},
                     {key: 'taskRatingScale', display: 'Rating Scale'},
                     {key: 'taskTimeAvg', display: 'Time Average'},
                     {key: 'taskTimeDeviationObservedAvg', display: 'Time Deviation Observed Average'},

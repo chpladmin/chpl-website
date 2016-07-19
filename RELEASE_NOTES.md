@@ -7,6 +7,7 @@ _TBD_
 * Clear filters replaces clear results
 * "Enter" in developer/product/version filter submits filter
 * Adding filter resets filter select
+* Added SED Task Rating Standard Deviation
 
 ### Bugs Fixed
 * Fixed Cert ID Widget not intializing
