@@ -59,6 +59,17 @@ ul.pagination li {
     transform: translateY(800%);
 }
 
+.restore-previous-search {
+    position: absolute;
+    bottom: -20px;
+    color: #fff;
+}
+.restore-previous-search:hover,
+.restore-previous-search:active,
+.restore-previous-search:focus {
+    color: #ccc;
+}
+
 .search-table th {
     color: #0070c9;
 }

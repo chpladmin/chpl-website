@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', function ($scope, $log, $location, $localStorage, commonService) {
+        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, commonService, CACHE_TIMEOUT) {
             var vm = this;
 
             vm.addRefine = addRefine;
@@ -11,6 +11,9 @@
             vm.clearPreviouslyCompared = clearPreviouslyCompared;
             vm.clearPreviouslyViewed = clearPreviouslyViewed;
             vm.compare = compare;
+            vm.populateSearchOptions = populateSearchOptions;
+            vm.reloadResults = reloadResults;
+            vm.restoreResults = restoreResults
             vm.search = search;
             vm.toggleCompare = toggleCompare;
             vm.truncButton = truncButton;
@@ -33,9 +36,11 @@
             function activate () {
                 vm.activeSearch = false;
                 vm.resultCount = 0;
-                vm.defaultRefine = { visibleOnCHPL: 'yes',
-                                     certificationCriteria: [],
-                                     cqms: []};
+                vm.defaultRefine = {
+                    visibleOnCHPL: 'yes',
+                    certificationCriteria: [],
+                    cqms: []
+                };
                 if ($localStorage.refine) {
                     vm.refine = $localStorage.refine;
                 } else {
@@ -69,23 +74,14 @@
                 };
                 vm.query = angular.copy(vm.defaultQuery);
 
-                if ($localStorage.searchResults) {
-                    $scope.searchResults = $localStorage.searchResults.results;
-                    $scope.displayedResults = [].concat($scope.searchResults);
-                    vm.hasDoneASearch = true;
-                    vm.activeSearch = true;
-                    vm.resultCount = $localStorage.searchResults.recordCount;
-                }
-
-                if ($localStorage.query) {
-                    vm.query = $localStorage.query;
-                    $scope.visiblePage = vm.query.pageNumber + 1;
-                }
+                vm.restoreResults();
+                vm.populateSearchOptions();
 
                 if ($localStorage.clearResults) {
                     clear();
                     delete $localStorage.clearResults;
                 }
+
                 $scope.$on('ClearResults', function (event, args) {
                     clear();
                     delete $localStorage.clearResults;
@@ -188,6 +184,65 @@
                 }
             }
 
+            function populateSearchOptions () {
+                commonService.getSearchOptions(true) // use 'true' in production, to hide retired CQMs & Certs
+                    .then(function (options) {
+                        vm.certs = options.certificationCriterionNumbers;
+                        vm.cqms = options.cqmCriterionNumbers;
+                        vm.editions = options.editions;
+                        vm.practices = options.practiceTypeNames;
+                        vm.certBodies = options.certBodyNames;
+                        vm.certificationStatuses = options.certificationStatuses;
+                        for (var i = 0; i < vm.certificationStatuses.length; i++) {
+                            if (vm.certificationStatuses[i].name === 'Pending') {
+                                vm.certificationStatuses.splice(i,1);
+                                break;
+                            }
+                        }
+                        vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
+                        for (var i = 0; i < options.developerNames.length; i++) {
+                            vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name});
+                            vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name});
+                        }
+                        for (var i = 0; i < options.productNames.length; i++) {
+                            vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name});
+                            vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name});
+                        }
+                        $localStorage.lookaheadSource = $scope.lookaheadSource;
+                    });
+            }
+
+            function reloadResults () {
+                $log.debug('reloading results');
+                $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
+                vm.restoreResults();
+            }
+
+            function restoreResults () {
+                if ($localStorage.searchResults) {
+                    var nowStamp = Math.floor((new Date()).getTime() / 1000 / 60);
+                    var difference = nowStamp - $localStorage.searchTimestamp;
+                    vm.pastTimeout = (difference > CACHE_TIMEOUT)
+
+                    vm.hasDoneASearch = true;
+
+                    $log.debug('Now:           ', nowStamp, '\nSearch time:   ', $localStorage.searchTimestamp, '\nCACHE_TIMEOUT: ', CACHE_TIMEOUT, '\nDifference:    ', difference);
+                    if (!vm.pastTimeout) {
+                        $scope.searchResults = $localStorage.searchResults.results;
+                        $scope.displayedResults = [].concat($scope.searchResults);
+                        vm.activeSearch = true;
+                        vm.resultCount = $localStorage.searchResults.recordCount;
+
+                        if ($localStorage.query) {
+                            vm.query = $localStorage.query;
+                            $scope.visiblePage = vm.query.pageNumber + 1;
+                        }
+                    } else {
+                        //vm.reloadResults();
+                    }
+                }
+            }
+
             function search () {
                 if (vm.query.searchTermObject !== undefined) {
                     if (typeof(vm.query.searchTermObject) === 'string' && vm.query.searchTermObject.length > 0) {
@@ -218,6 +273,7 @@
                         vm.activeSearch = true;
 
                         $localStorage.searchResults = data;
+                        $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
                         $scope.searchResults = data.results;
                         $scope.displayedResults = [].concat($scope.searchResults);
                         vm.resultCount = data.recordCount;
@@ -320,40 +376,6 @@
                 $location.url('/product/' + cp.id);
             }
 
-            vm.populateSearchOptions = function () {
-                commonService.getSearchOptions(true) // use 'true' in production, to hide retired CQMs & Certs
-                    .then(function (options) {
-                        vm.certs = options.certificationCriterionNumbers;
-                        vm.cqms = options.cqmCriterionNumbers;
-                        vm.editions = options.editions;
-                        vm.practices = options.practiceTypeNames;
-                        vm.certBodies = options.certBodyNames;
-                        vm.certificationStatuses = options.certificationStatuses;
-                        for (var i = 0; i < vm.certificationStatuses.length; i++) {
-                            if (vm.certificationStatuses[i].name === 'Pending') {
-                                vm.certificationStatuses.splice(i,1);
-                                break;
-                            }
-                        }
-                        vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
-/*                        if ($localStorage.lookaheadSource && $localStorage.lookaheadSource.all.length > 0) {
-                            $log.info('Restoring lookahead from localstorage');
-                            vm.lookaheadSource = $localStorage.lookaheadSource;
-                        } else {
-*/
-                            for (var i = 0; i < options.developerNames.length; i++) {
-                                vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name});
-                                vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name});
-                            }
-                            for (var i = 0; i < options.productNames.length; i++) {
-                                vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name});
-                                vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name});
-                            }
-                            $localStorage.lookaheadSource = $scope.lookaheadSource;
-//                        }
-                    });
-            };
-            vm.populateSearchOptions();
 
             $scope.prepend = function (name) {
                 if (name.substring(0,3) !== 'CMS') {
@@ -368,7 +390,7 @@
             };
 
             $scope.hasSearched = function () {
-                return vm.hasDoneASearch;
+                return vm.hasDoneASearch && vm.activeSearch;
             };
 
             $scope.browseAll = function () {

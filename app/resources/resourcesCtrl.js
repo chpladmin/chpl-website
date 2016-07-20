@@ -15,11 +15,11 @@
 			// Restore lookup IDs and results
 			vm.certIds = $localStorage.lookupCertIds;
 			vm.lookupProducts = $localStorage.lookupProducts;
-			
+
 			if ($localStorage.lookupCertIds && !$localStorage.lookupProducts) {
 				lookupCertIds();
 			}
-			
+
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
@@ -98,7 +98,7 @@
 					return false;
 				}
 				return false;
-			}            
+			}
 
 			function lookupCertIds () {
 				vm.lookupProducts = null;
@@ -107,7 +107,7 @@
 				if ((vm.lookup !== "undefined") && (vm.certIds !== "undefined")) {
 					vm.certIds = vm.certIds.replace(/[;,\s]+/g, " ");
 					vm.certIds = vm.certIds.trim().toUpperCase();
-					
+
 					// Check format of input
 					if ("" === vm.certIds.trim()) {
 						vm.lookupProductsFormatInvalid = false;
@@ -119,7 +119,7 @@
 						vm.lookupProducts = null;
 
 						$localStorage.lookupCertIds = vm.certIds;
-						
+
 						// Call LookupAPI
 						idArray.forEach(function (id) {
 							commonService.lookupCertificationId(id)
@@ -133,7 +133,7 @@
 									});
 
 									$localStorage.lookupProducts = vm.lookupProducts;
-									
+
 								}, function (error) {
 									console.debug("Error: " + error);
 									clearLookupResults();
@@ -152,7 +152,7 @@
 				vm.certIds = null;
 				clearLookupResults();
 			}
-			
+
 			function clearLookupResults() {
 				delete $localStorage.lookupProducts;
 				vm.lookupProducts = null;

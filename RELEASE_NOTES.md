@@ -8,6 +8,7 @@ _TBD_
 * "Enter" in developer/product/version filter submits filter
 * Adding filter resets filter select
 * Added SED Task Rating Standard Deviation
+* Cached search results time out after config time
 
 ### Bugs Fixed
 * Fixed Cert ID Widget not intializing

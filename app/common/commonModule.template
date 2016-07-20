@@ -2,5 +2,6 @@
     'use strict';
 
     angular.module('app.common', [])
+        .constant('CACHE_TIMEOUT', 60) // cache clearing timeout in minutes
         .constant('API', '/rest');
 })();
