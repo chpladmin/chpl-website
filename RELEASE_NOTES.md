@@ -12,6 +12,7 @@ _TBD_
 ### Bugs Fixed
 * Fixed Cert ID Widget not intializing
 * Fixed Cert ID Lookup to persist lookup information when leaving page
+* Added 'Accessibility Standards' to CP managmement screens
 
 ---
 
