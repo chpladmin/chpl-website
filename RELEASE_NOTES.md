@@ -1,6 +1,23 @@
 # Release Notes
 
-## Version 1.6.0.CMS
+## Version 1.7.0
+_25 July 2016_
+
+### New features
+* Clear filters replaces clear results
+* "Enter" in developer/product/version filter submits filter
+* Adding filter resets filter select
+* Added SED Task Rating Standard Deviation
+* Cached search results time out after config time
+
+### Bugs Fixed
+* Fixed Cert ID Widget not intializing
+* Fixed Cert ID Lookup to persist lookup information when leaving page
+* Added 'Accessibility Standards' to CP managmement screens
+
+---
+
+## Version 1.6.1
 _30 June 2016_
 
 ### New Features

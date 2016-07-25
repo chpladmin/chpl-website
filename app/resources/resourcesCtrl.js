@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.resources')
-        .controller('ResourcesController', ['$scope', '$log', '$location', 'API', 'authService', 'commonService', function($scope, $log, $location, API, authService, commonService) {
+        .controller('ResourcesController', ['$scope', '$log', '$location', '$localStorage', 'API', 'authService', 'commonService', function($scope, $log, $location, $localStorage, API, authService, commonService) {
             var vm = this;
 
 			vm.lookupCertIds = lookupCertIds;
@@ -11,6 +11,14 @@
 			vm.viewProduct = viewProduct;
 
             activate();
+
+			// Restore lookup IDs and results
+			vm.certIds = $localStorage.lookupCertIds;
+			vm.lookupProducts = $localStorage.lookupProducts;
+
+			if ($localStorage.lookupCertIds && !$localStorage.lookupProducts) {
+				lookupCertIds();
+			}
 
             ////////////////////////////////////////////////////////////////////
 
@@ -90,22 +98,27 @@
 					return false;
 				}
 				return false;
-			}            
+			}
 
 			function lookupCertIds () {
 				vm.lookupProducts = null;
 				vm.lookupProductsFormatInvalid = false;
 
-				if ((vm.lookup !== "undefined") && (vm.lookup.certIds !== "undefined")) {
-					vm.lookup.certIds = vm.lookup.certIds.replace(/[;,\s]+/g, " ");
-					vm.lookup.certIds = vm.lookup.certIds.trim().toUpperCase();
+				if ((vm.lookup !== "undefined") && (vm.certIds !== "undefined")) {
+					vm.certIds = vm.certIds.replace(/[;,\s]+/g, " ");
+					vm.certIds = vm.certIds.trim().toUpperCase();
 
 					// Check format of input
-					if (null !== vm.lookup.certIds.match(/^([0-9A-Z]{15}([ ][0-9A-Z]{15})*)$/i)) {
+					if ("" === vm.certIds.trim()) {
+						vm.lookupProductsFormatInvalid = false;
+						clearLookup();
+					} else if (null !== vm.certIds.match(/^([0-9A-Z]{15}([ ][0-9A-Z]{15})*)$/i)) {
 
 						// Split IDs
-						var idArray = vm.lookup.certIds.split(/ /);
+						var idArray = vm.certIds.split(/ /);
 						vm.lookupProducts = null;
+
+						$localStorage.lookupCertIds = vm.certIds;
 
 						// Call LookupAPI
 						idArray.forEach(function (id) {
@@ -119,16 +132,30 @@
 										vm.lookupProducts.push(product);
 									});
 
+									$localStorage.lookupProducts = vm.lookupProducts;
+
 								}, function (error) {
 									console.debug("Error: " + error);
-									vm.lookupProducts = null;
+									clearLookupResults();
 								});
 						});
 					} else {
+						$localStorage.lookupCertIds = vm.certIds;
 						vm.lookupProductsFormatInvalid = true;
-						vm.lookupProducts = null;
+						clearLookupResults();
 					}
 				}
+			}
+
+			function clearLookup() {
+				delete $localStorage.lookupCertIds;
+				vm.certIds = null;
+				clearLookupResults();
+			}
+
+			function clearLookupResults() {
+				delete $localStorage.lookupProducts;
+				vm.lookupProducts = null;
 			}
 
             function viewProduct (cp) {

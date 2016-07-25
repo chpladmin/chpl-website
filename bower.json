@@ -1,7 +1,7 @@
 {
     "name": "chpl-website",
     "description": "Website for viewing Open Data CHPL",
-    "version": "1.6.0.CMS",
+    "version": "1.7.0",
     "homepage": "https://chpl.healthit.gov",
     "license": "https://github.com/chpladmin/chpl-api/blob/staging/LICENSE",
     "private": true,
