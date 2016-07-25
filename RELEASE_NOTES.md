@@ -1,7 +1,7 @@
 # Release Notes
 
-## TBD
-_TBD_
+## Version 1.7.0
+_25 July 2016_
 
 ### New features
 * Clear filters replaces clear results
@@ -17,7 +17,7 @@ _TBD_
 
 ---
 
-## Version 1.6.0.CMS
+## Version 1.6.1
 _30 June 2016_
 
 ### New Features
