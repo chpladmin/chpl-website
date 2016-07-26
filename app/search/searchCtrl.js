@@ -226,7 +226,6 @@
 
                     vm.hasDoneASearch = true;
 
-                    $log.debug('Now:           ', nowStamp, '\nSearch time:   ', $localStorage.searchTimestamp, '\nCACHE_TIMEOUT: ', CACHE_TIMEOUT, '\nDifference:    ', difference);
                     if (!vm.pastTimeout) {
                         $scope.searchResults = $localStorage.searchResults.results;
                         $scope.displayedResults = [].concat($scope.searchResults);

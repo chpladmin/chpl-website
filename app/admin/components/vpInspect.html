@@ -289,7 +289,9 @@
                 <strong>Transparency URL:</strong> {{ vm.cp.transparencyAttestationUrl ? vm.cp.transparencyAttestationUrl : 'None' }} <br />
                 <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics) }} <br />
                 <strong>QMS:</strong> {{ vm.cp.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
-                <span ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }} <span ng-if="qms.qmsModification">: {{ qms.qmsModification }}</span><br /></span>
+                <ul>
+                  <li ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }}<span ng-if="qms.qmsModification">, {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria">, {{ qms.applicableCriteria }}</span></li>
+                </ul>
                 <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation ? vm.cp.reportFileLocation : 'N/A' }} <br />
                 <strong>SED Report File Location:</strong> {{ vm.cp.sedReportFileLocation ? vm.cp.sedReportFileLocation : 'N/A' }} <br />
                 <strong>SED Intended Users:</strong> {{ vm.cp.sedIntendedUserDescription ? vm.cp.sedIntendedUserDescription : 'None' }} <br />
@@ -298,13 +300,13 @@
                 <strong>Testing Lab:</strong> {{ vm.cp.testingLab.name }} <br />
                 <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.cp.visibleOnChpl) }} <br />
                 <strong>Accessibility Standards:</strong> {{ vm.cp.accessibilityStandards.length > 0 ? 'True' : 'None' }} <br />
-                  <ul>
-                    <li ng-repeat="std in vm.cp.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
-                  </ul>
+                <ul>
+                  <li ng-repeat="std in vm.cp.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
+                </ul>
                 <strong>Targeted Users:</strong> {{ vm.cp.targetedUsers.length > 0 ? 'True' : 'None' }} <br />
-                  <ul>
-                    <li ng-repeat="user in vm.cp.targetedUsers">{{ user.targetedUserName }}</li>
-                  </ul>
+                <ul>
+                  <li ng-repeat="user in vm.cp.targetedUsers">{{ user.targetedUserName }}</li>
+                </ul>
               </span>
               <br />
               <ai-certs ng-if="vm.cp !== ''"

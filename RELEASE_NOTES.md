@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Bugs fixed
+* Change Version activity table column name
+* Show all "criteria affected" on QMS during CP Inspect
+
+---
+
 ## Version 1.7.0
 _25 July 2016_
 
