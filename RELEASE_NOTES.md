@@ -3,6 +3,9 @@
 ## Version TBD
 _Date TBD_
 
+### New features
+* Added directive to allow select/optional addition of objects
+
 ### Bugs fixed
 * Change Version activity table column name
 * Show all "criteria affected" on QMS during CP Inspect
