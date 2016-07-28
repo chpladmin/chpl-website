@@ -4,11 +4,15 @@
 _Date TBD_
 
 ### New features
-* Added directive to allow select/optional addition of objects
+* Updated editing of CP to use select boxes in place of free text where appropriate
+  * Also added ability to add new values to select boxes where required
+* Updated README to indicate naming changes for analytics files
+* Changed 'contact' email
 
 ### Bugs fixed
 * Change Version activity table column name
 * Show all "criteria affected" on QMS during CP Inspect
+* Display SED Participant age changes in reports
 
 ---
 

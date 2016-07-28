@@ -2,11 +2,12 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('EditCertificationCriteriaController', ['$modalInstance', '$modal', 'cert', function ($modalInstance, $modal, cert) {
+        .controller('EditCertificationCriteriaController', ['$modalInstance', '$modal', 'cert', 'resources', function ($modalInstance, $modal, cert, resources) {
             var vm = this;
 
             vm.cert = cert;
 
+            vm.addNewValue = addNewValue;
             vm.addTask = addTask;
             vm.cancel = cancel;
             vm.editTask = editTask;
@@ -22,6 +23,16 @@
                               {name: 'False', value: false},
                               {name: 'N/A', value: null}];
                 vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length  > 0;
+                vm.resources = resources;
+            }
+
+            function addNewValue (array, object) {
+                if (!array) {
+                    array = [];
+                }
+                if (object && object !== {}) {
+                    array.push(angular.copy(object));
+                }
             }
 
             function addTask () {

@@ -6,23 +6,23 @@
             var self = this;
 
             self.activate = activate;
-            self.refreshPending = refreshPending;
-            self.selectDeveloper = selectDeveloper;
-            self.editDeveloper = editDeveloper;
-            self.mergeDevelopers = mergeDevelopers;
-            self.selectProduct = selectProduct;
-            self.editProduct = editProduct;
-            self.mergeProducts = mergeProducts;
-            self.selectVersion = selectVersion;
-            self.editVersion = editVersion;
-            self.mergeVersions = mergeVersions;
-            self.selectCp = selectCp;
-            self.editCertifiedProduct = editCertifiedProduct;
-            self.inspectCp = inspectCp;
-            self.rejectCp = rejectCp;
-            self.parseUploadError = parseUploadError;
             self.doWork = doWork;
+            self.editCertifiedProduct = editCertifiedProduct;
+            self.editDeveloper = editDeveloper;
+            self.editProduct = editProduct;
+            self.editVersion = editVersion;
+            self.inspectCp = inspectCp;
             self.loadCp = loadCp;
+            self.mergeDevelopers = mergeDevelopers;
+            self.mergeProducts = mergeProducts;
+            self.mergeVersions = mergeVersions;
+            self.parseUploadError = parseUploadError;
+            self.refreshPending = refreshPending;
+            self.rejectCp = rejectCp;
+            self.selectCp = selectCp;
+            self.selectDeveloper = selectDeveloper;
+            self.selectProduct = selectProduct;
+            self.selectVersion = selectVersion;
             self.ternaryFilter = ternaryFilter;
 
             self.activate();
@@ -43,6 +43,7 @@
                 self.uploadMessage = '';
                 self.uploadErrors = [];
                 self.uploadSuccess = true;
+                self.resources = {};
 
                 if (self.isAcbAdmin || self.isAcbStaff) {
                     self.refreshPending();
@@ -83,20 +84,6 @@
                     };
                 }
 
-                commonService.getSearchOptions()
-                    .then(function (options) {
-                        self.editions = options.editions;
-                        self.practices = options.practiceTypeNames;
-                        self.classifications = options.productClassifications;
-                        self.bodies = options.certBodyNames;
-                        self.statuses = options.certificationStatuses;
-                    });
-
-                commonService.getAtls(false)
-                    .then(function (data) {
-                        self.testingLabs = data.atls;
-                    });
-
                 commonService.getDevelopers()
                     .then(function (developers) {
                         self.developers = developers.developers;
@@ -105,6 +92,8 @@
                             self.loadCp();
                         }
                     });
+
+                getResources();
             }
 
             function refreshPending () {
@@ -332,14 +321,10 @@
                     size: 'lg',
                     resolve: {
                         activeCP: function () { return self.activeCP; },
-                        practices: function () { return self.practices; },
-                        classifications: function () { return self.classifications; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isAcbStaff: function () { return self.isChplStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
-                        bodies: function () { return self.bodies; },
-                        testingLabs: function () { return self.testingLabs; },
-                        statuses: function () { return self.statuses; },
+                        resources: function () { return self.resources; },
                         workType: function () { return self.workType; }
                     }
                 });
@@ -368,16 +353,12 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        inspectingCp: function () { return cp; },
                         developers: function () { return self.developers; },
-                        practices: function () { return self.practices; },
-                        classifications: function () { return self.classifications; },
+                        inspectingCp: function () { return cp; },
                         isAcbAdmin: function () { return self.isAcbAdmin; },
                         isAcbStaff: function () { return self.isAcbStaff; },
                         isChplAdmin: function () { return self.isChplAdmin; },
-                        bodies: function () { return self.bodies; },
-                        testingLabs: function () { return self.testingLabs; },
-                        statuses: function () { return self.statuses; },
+                        resources: function () { return self.resources; },
                         workType: function () { return self.workType; }
                     },
                     size: 'lg'
@@ -493,6 +474,54 @@
                 } else {
                     return field ? 'True' : 'False';
                 }
+            }
+
+            ////////////////////////////////////////////////////////////////////
+
+            function getResources () {
+                commonService.getSearchOptions()
+                    .then(function (options) {
+                        self.resources.bodies = options.certBodyNames;
+                        self.resources.classifications = options.productClassifications;
+                        self.resources.editions = options.editions;
+                        self.resources.practices = options.practiceTypeNames;
+                        self.resources.statuses = options.certificationStatuses;
+                    });
+
+                commonService.getAtls(false)
+                    .then(function (data) {
+                        self.resources.testingLabs = data.atls;
+                    });
+
+                commonService.getQmsStandards()
+                    .then(function (response) {
+                        self.resources.qmsStandards = response;
+                    });
+
+                commonService.getAccessibilityStandards()
+                    .then(function (response) {
+                        self.resources.accessibilityStandards = response;
+                    });
+
+                commonService.getTestStandards()
+                    .then(function (response) {
+                        self.resources.testStandards = response;
+                    });
+
+                commonService.getUcdProcesses()
+                    .then(function (response) {
+                        self.resources.ucdProcesses = response;
+                    });
+
+                commonService.getTestFunctionality()
+                    .then(function (response) {
+                        self.resources.testFunctionalities = response;
+                    });
+
+                commonService.getTestTools()
+                    .then(function (response) {
+                        self.resources.testTools = response;
+                    });
             }
         }]);
 

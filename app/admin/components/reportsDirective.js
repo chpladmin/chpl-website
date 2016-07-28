@@ -524,7 +524,7 @@
                                     if (change) obj.changes.push('<li>' + change + '</li>');
                                 }
                                 var testParticipantKeys = [
-                                    {key: 'age', display: 'Age'},
+                                    {key: 'ageRange', display: 'Age'},
                                     {key: 'assistiveTechnologyNeeds', display: 'Assistive Technology Needs'},
                                     {key: 'computerExperienceMonths', display: 'Computer Experience Months'},
                                     {key: 'educationTypeName', display: 'Education Type'},

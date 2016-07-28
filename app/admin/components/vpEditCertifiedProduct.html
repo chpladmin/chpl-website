@@ -91,9 +91,53 @@
       <label for="cpIcs">Inherited Certification Status</label>
       <input class="" type="checkbox" ng-model="vm.cp.ics" id="cpIcs"></input>
     </div>
-    <div class="form-group">
+    <div>
       QMS Testing
-      <ai-array item-type="QMS Standard, Details & Applicable Criteria" items="vm.cp.qmsStandards" key="qmsStandardName" key-second="qmsModification" key-third="applicableCriteria"></ai-array>
+      <div class="form-horizontal">
+        <div class="form-group form-group-sm" ng-repeat="qms in vm.cp.qmsStandards track by $index">
+          <label class="col-sm-6 control-label" for="qmsStandard{{ qms.id }}">QMS Standard</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="qms.qmsStandardName" id="qmsStandard{{ qms.id }}"
+                      ng-options="option.name as option.name for option in vm.qmsStandards.data | orderBy:'name'"
+                      ng-change="qms.qmsStandardId = option.id">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cp.qmsStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+            </div>
+          </div>
+          <label class="col-sm-6 control-label" for="newQmsStandardOption{{ qms.id }}">Add new QMS Standard to available options</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="qms.newOption" id="newQmsStandardOption{{ qms.id }}" ng-change="vm.extendSelect(vm.qmsStandards.data, qms.newOption); qms.qmsStandardName = qms.newOption"></input>
+          </div>
+          <label class="col-sm-6 control-label" for="qmsModification{{ qms.id }}">QMS Modification</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="qms.qmsModification" id="qmsModification{{ qms.id }}"></input>
+          </div>
+          <label class="col-sm-6 control-label" for="qmsApplicableCriteria{{ qms.id }}">QMS Applicable Criteria</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="qms.applicableCriteria" id="qmsApplicableCriteria{{ qms.id }}"></input>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-6 control-label" for="newQmsStandardItem">New QMS Standard</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="vm.newQmsStandard.qmsStandardName" id="newQmsStandardItem"
+                      ng-options="option.name as option.name for option in vm.qmsStandards.data">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.qmsStandards, vm.newQmsStandard); vm.newQmsStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+            </div>
+          </div>
+          <label class="col-sm-6 control-label" for="newQmsStandardModification">QMS Modification</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="vm.newQmsStandard.qmsModification" id="newQmsStandardModification"></input>
+          </div>
+          <label class="col-sm-6 control-label" for="newQmsStandardApplicableCriteria">QMS Applicable Criteria</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="vm.newQmsStandard.applicableCriteria" id="newQmsStandardApplicableCriteria"></input>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="form-group">
       <label for="cpReportFileLoc">Report File Location</label>
@@ -133,9 +177,37 @@
     <div ng-if="vm.worktype === 'confirm'">
       <strong>Visible on CHPL: </strong> No
     </div>
-    <div class="form-group">
+    <div>
       Accessibility Standards
-      <ai-array item-type="Accessibility Standard" items="vm.cp.accessibilityStandards" key="accessibilityStandardName"></ai-array>
+      <div class="form-horizontal">
+        <div class="form-group form-group-sm" ng-repeat="item in vm.cp.accessibilityStandards track by $index">
+          <label class="col-sm-6 control-label" for="accessibilityStandard{{ item.id }}">Accessibility Standard</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="item.accessibilityStandardName" id="accessibilityStandard{{ item.id }}"
+                      ng-options="option.name as option.name for option in vm.accessibilityStandards.data | orderBy:'name'"
+                      ng-change="item.accessibilityStandardId = option.id">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cp.accessibilityStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+            </div>
+          </div>
+          <label class="col-sm-6 control-label" for="newAccessibilityStandardOption{{ item.id }}">Add new Accessibility Standard to available options</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="item.newOption" id="newAccessibilityStandardOption{{ item.id }}" ng-change="vm.extendSelect(vm.accessibilityStandards.data, item.newOption); item.accessibilityStandardId = item.newOption"></input>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-6 control-label" for="newAccessibilityStandardItem">New Accessibility Standard</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="vm.newAccessibilityStandard.accessibilityStandardName" id="newAccessibilityStandardItem"
+                      ng-options="option.name as option.name for option in vm.accessibilityStandards.data">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.accessibilityStandards, vm.newAccessibilityStandard); vm.newAccessibilityStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="form-group">
       Targeted Users
@@ -152,7 +224,8 @@
               is-confirming="vm.workType === 'confirm'"
               report-file-location="{{ vm.cp.reportFileLocation }}"
               save="vm.registerCerts(handler)"
-              product="vm.cp">
+              product="vm.cp"
+              resources="vm.resources">
     </ai-certs>
   </div>
   <div class="modal-footer">
