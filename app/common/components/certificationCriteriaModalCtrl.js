@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('EditCertificationCriteriaController', ['$modalInstance', '$modal', 'cert', 'resources', function ($modalInstance, $modal, cert, resources) {
+        .controller('EditCertificationCriteriaController', ['$modalInstance', '$modal', 'cert', 'resources', 'utilService', function ($modalInstance, $modal, cert, resources, utilService) {
             var vm = this;
 
             vm.cert = cert;
@@ -11,6 +11,7 @@
             vm.addTask = addTask;
             vm.cancel = cancel;
             vm.editTask = editTask;
+            vm.extendSelect = extendSelect;
             vm.save = save;
             vm.removeTask = removeTask;
 
@@ -83,6 +84,10 @@
                         console.debug('dismissed', result);
                     }
                 });
+            }
+
+            function extendSelect (options, value) {
+                options = utilService.extendSelect(options, value);
             }
 
             function removeTask (idx) {
