@@ -330,6 +330,7 @@
                 });
                 self.modalInstance.result.then(function (result) {
                     self.activeCP = result;
+                    getResources();
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.cpMessage = result;
