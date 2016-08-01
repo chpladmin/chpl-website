@@ -523,6 +523,11 @@
                     .then(function (response) {
                         self.resources.testTools = response;
                     });
+
+                commonService.getTargetedUsers()
+                    .then(function (response) {
+                        self.resources.targetedUsers = response;
+                    });
             }
         }]);
 

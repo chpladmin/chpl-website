@@ -114,6 +114,10 @@
                 return self.simpleApiCall('/data/test_tools');
             };
 
+            self.getTargetedUsers = function () {
+                return self.simpleApiCall('/data/targeted_users');
+            };
+
             self.getAnnouncements = function (pending) {
             	return self.simpleApiCall('/announcements/?future=' + pending);
             };

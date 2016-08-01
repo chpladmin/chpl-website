@@ -32,6 +32,7 @@
                 vm.practices = resources.practices;
                 vm.qmsStandards = resources.qmsStandards;
                 vm.accessibilityStandards = resources.accessibilityStandards;
+                vm.targetedUsers = resources.targetedUsers;
                 vm.statuses = resources.statuses;
                 vm.testingLabs = resources.testingLabs;
                 vm.resources = resources;

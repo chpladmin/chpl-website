@@ -211,7 +211,35 @@
     </div>
     <div class="form-group">
       Targeted Users
-      <ai-array item-type="Targeted User" items="vm.cp.targetedUsers" key="targetedUserName"></ai-array>
+      <div class="form-horizontal">
+        <div class="form-group form-group-sm" ng-repeat="item in vm.cp.targetedUsers track by $index">
+          <label class="col-sm-6 control-label" for="targetedUser{{ item.id }}">Targeted User</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="item.targetedUserName" id="targetedUser{{ item.id }}"
+                      ng-options="option.name as option.name for option in vm.targetedUsers.data | orderBy:'name'"
+                      ng-change="item.targetedUserId = option.id">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cp.targetedUsers.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-6 control-label" for="newTargetedUserItem">New Targeted User</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="vm.newTargetedUser.targetedUserName" id="newTargetedUserItem"
+                      ng-options="option.name as option.name for option in vm.targetedUsers.data">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.targetedUsers, vm.newTargetedUser); vm.newTargetedUser = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+            </div>
+          </div>
+          <label class="col-sm-6 control-label" for="newTargetedUserExpandableName">Add new Targeted User to available options</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" ng-model="vm.newTargetedUser.expandableName" id="newTargetedUserExpandableName" ng-change="vm.extendSelect(vm.targetedUsers.data, vm.newTargetedUser.expandableName); vm.newTargetedUser.targetedUserName = vm.newTargetedUser.expandableName"></input>
+          </div>
+        </div>
+      </div>
     </div>
     <br />
     <ai-certs certs="vm.cp.certificationResults"
