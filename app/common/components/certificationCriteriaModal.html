@@ -43,10 +43,6 @@
                     <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cert.testStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
                   </div>
                 </div>
-                <label class="col-sm-6 control-label" for="newTestStandardOption{{ item.id }}">Add new Test Standard to available options</label>
-                <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="item.newOption" id="newTestStandardOption{{ item.id }}" ng-change="vm.extendSelect(vm.resources.testStandards.data, item.newOption); item.testStandardName = item.newOption; item.testStandardId = null"></input>
-                </div>
               </div>
               <div class="form-group form-group-sm">
                 <label class="col-sm-6 control-label" for="newTestStandardItem">New Test Standard</label>
@@ -57,6 +53,10 @@
                     </select>
                     <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cert.testStandards, vm.newTestStandard); vm.newTestStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
                   </div>
+                </div>
+                <label class="col-sm-6 control-label" for="newTestStandardExpandableName">Add new Test Standard to available options</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" ng-model="vm.newTestStandard.expandableName" id="newTestStandardExpandableName" ng-change="vm.extendSelect(vm.resources.testStandards.data, vm.newTestStandard.expandableName); vm.newTestStandard.testStandardName = vm.newTestStandard.expandableName"></input>
                 </div>
               </div>
             </div>
@@ -170,15 +170,10 @@
                 <div class="col-sm-6">
                   <div class="input-group">
                     <select class="form-control" ng-model="item.ucdProcessName" id="ucdProcess{{ item.id }}"
-                            ng-options="option.name as option.name for option in vm.resources.ucdProcesses.data | orderBy:'name'"
-                            ng-change="item.ucdProcessId = option.id">
+                            ng-options="option.name as option.name for option in vm.resources.ucdProcesses.data | orderBy:'name'">
                     </select>
                     <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cert.ucdProcesses.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
                   </div>
-                </div>
-                <label class="col-sm-6 control-label" for="newUcdProcessOption{{ item.id }}">Add new UCD Process to available options</label>
-                <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="item.newOption" id="newUcdProcessOption{{ item.id }}" ng-change="vm.extendSelect(vm.resources.ucdProcesses.data, item.newOption); item.ucdProcessName = item.newOption; item.ucdProcessId = null"></input>
                 </div>
                 <label class="col-sm-6 control-label" for="ucdProcessDetails{{ item.id }}">UCD Process Details</label>
                 <div class="col-sm-6">
@@ -194,6 +189,10 @@
                     </select>
                     <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cert.ucdProcesses, vm.newUcdProcess); vm.newUcdProcess = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
                   </div>
+                </div>
+                <label class="col-sm-6 control-label" for="newUcdProcessExpandableName">Add new UCD Process to available options</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" ng-model="vm.newUcdProcess.expandableName" id="newUcdProcessExpandableName" ng-change="vm.extendSelect(vm.resources.ucdProcesses.data, vm.newUcdProcess.expandableName); vm.newUcdProcess.ucdProcessName = vm.newUcdProcess.expandableName"></input>
                 </div>
                 <label class="col-sm-6 control-label" for="newUcdProcessDetails">UCD Process Details</label>
                 <div class="col-sm-6">
