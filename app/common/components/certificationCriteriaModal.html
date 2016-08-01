@@ -45,7 +45,7 @@
                 </div>
                 <label class="col-sm-6 control-label" for="newTestStandardOption{{ item.id }}">Add new Test Standard to available options</label>
                 <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="item.newOption" id="newTestStandardOption{{ item.id }}" ng-change="vm.extendSelect(vm.resources.testStandards.data, item.newOption); item.testStandardName = item.newOption"></input>
+                  <input type="text" class="form-control" ng-model="item.newOption" id="newTestStandardOption{{ item.id }}" ng-change="vm.extendSelect(vm.resources.testStandards.data, item.newOption); item.testStandardName = item.newOption; item.testStandardId = null"></input>
                 </div>
               </div>
               <div class="form-group form-group-sm">
@@ -178,7 +178,7 @@
                 </div>
                 <label class="col-sm-6 control-label" for="newUcdProcessOption{{ item.id }}">Add new UCD Process to available options</label>
                 <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="item.newOption" id="newUcdProcessOption{{ item.id }}" ng-change="vm.extendSelect(vm.resources.ucdProcesses.data, item.newOption); item.ucdProcessName = item.newOption"></input>
+                  <input type="text" class="form-control" ng-model="item.newOption" id="newUcdProcessOption{{ item.id }}" ng-change="vm.extendSelect(vm.resources.ucdProcesses.data, item.newOption); item.ucdProcessName = item.newOption; item.ucdProcessId = null"></input>
                 </div>
                 <label class="col-sm-6 control-label" for="ucdProcessDetails{{ item.id }}">UCD Process Details</label>
                 <div class="col-sm-6">
