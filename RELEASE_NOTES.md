@@ -8,6 +8,7 @@ _Date TBD_
   * Also added ability to add new values to select boxes where required
 * Updated README to indicate naming changes for analytics files
 * Changed 'contact' email
+* Updated 'merge developers' to include Contact information
 
 ### Bugs fixed
 * Change Version activity table column name

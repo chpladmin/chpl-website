@@ -150,6 +150,7 @@
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'lg',
                     resolve: {
                         developers: function () { return self.mergingDevelopers; }
                     }
