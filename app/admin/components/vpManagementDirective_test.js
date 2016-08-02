@@ -98,6 +98,13 @@
                 };
 
                 mockCommonService.getAtls = function () { return $q.when(mockCommonService.testingLabs); };
+                mockCommonService.getAccessibilityStandards = function () { return $q.when([]); };
+                mockCommonService.getQmsStandards = function () { return $q.when([]); };
+                mockCommonService.getTargetedUsers = function () { return $q.when([]); };
+                mockCommonService.getTestFunctionality = function () { return $q.when([]); };
+                mockCommonService.getTestStandards = function () { return $q.when([]); };
+                mockCommonService.getTestTools = function () { return $q.when([]); };
+                mockCommonService.getUcdProcesses = function () { return $q.when([]); };
 
                 mockAuthService.isChplAdmin = function () { return $q.when(true); };
                 mockAuthService.isAcbAdmin = function () { return $q.when(true); };

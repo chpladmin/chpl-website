@@ -23,6 +23,15 @@ Clone the repository using [git][git]:
 npm install
 ```
 
+#### Change the Angulartics-GA file name
+
+```
+cd app/bower_components/angulartics-ga/dist
+mv angulartics-google-analytics.min.js angulartics-ga.min.js
+cd ../../angulartics-gtm/dist
+mv angulartics-google-tag-manager.min.js angulartics-gtm.min.js
+```
+
 ### Run the Application
 
 ```

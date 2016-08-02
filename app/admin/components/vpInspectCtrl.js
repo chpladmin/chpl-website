@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'developers', 'practices', 'classifications', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'testingLabs', 'statuses', 'commonService', function ($modalInstance, $modal, inspectingCp, developers, practices, classifications, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, testingLabs, statuses, commonService) {
+        .controller('InspectController', ['$modalInstance', '$modal', 'inspectingCp', 'developers', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'resources', 'commonService', function ($modalInstance, $modal, inspectingCp, developers, isAcbAdmin, isAcbStaff, isChplAdmin, resources, commonService) {
             var vm = this;
 
             vm.activate = activate;
@@ -49,14 +49,11 @@
                 vm.versionChoice = 'choose';
 
                 vm.errorMessages = [];
-                vm.practices = practices;
-                vm.classifications = classifications;
                 vm.isAcbAdmin = isAcbAdmin;
                 vm.isAcbStaff = isAcbStaff;
                 vm.isChplAdmin = isChplAdmin;
-                vm.bodies = bodies;
-                vm.testingLabs = testingLabs;
-                vm.statuses = statuses;
+                vm.resources = resources;
+                vm.statuses = resources.statuses;
                 for (var i = 0; i < vm.statuses.length; i++) {
                     if (vm.statuses[i].name === 'Pending') {
                         vm.cp.certificationStatus = vm.statuses[i];
@@ -203,14 +200,10 @@
                     size: 'lg',
                     resolve: {
                         activeCP: function () { return vm.cp; },
-                        practices: function () { return vm.practices; },
-                        classifications: function () { return vm.classifications; },
                         isAcbAdmin: function () { return vm.isAcbAdmin; },
                         isAcbStaff: function () { return vm.isAcbStaff; },
                         isChplAdmin: function () { return vm.isChplAdmin; },
-                        bodies: function () { return vm.bodies; },
-                        testingLabs: function () { return vm.testingLabs; },
-                        statuses: function () { return vm.statuses; },
+                        resources: function () { return vm.resources; },
                         workType: function () { return 'confirm'; }
                     }
                 });

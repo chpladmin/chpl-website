@@ -2,13 +2,15 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'practices', 'classifications', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'bodies', 'testingLabs', 'statuses', 'workType', '$log', function ($modalInstance, $timeout, activeCP, commonService, practices, classifications, isAcbAdmin, isAcbStaff, isChplAdmin, bodies, testingLabs, statuses, workType, $log) {
+        .controller('EditCertifiedProductController', ['$modalInstance', '$timeout', 'activeCP', 'commonService', 'utilService', 'isAcbAdmin', 'isAcbStaff', 'isChplAdmin', 'resources', 'workType', '$log', function ($modalInstance, $timeout, activeCP, commonService, utilService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, workType, $log) {
 
             var vm = this;
+            vm.addNewValue = addNewValue;
             vm.attachModel = attachModel;
             vm.cancel = cancel;
             vm.directCertsDirective = directCertsDirective;
             vm.disabledStatus = disabledStatus;
+            vm.extendSelect = extendSelect;
             vm.findModel = findModel;
             vm.prep = prep;
             vm.registerCerts = registerCerts;
@@ -22,14 +24,18 @@
                 vm.cp = angular.copy(activeCP);
                 vm.cp.certDate = new Date(vm.cp.certificationDate);
                 vm.cp.sedTestingEndDate = new Date(vm.cp.sedTestingEnd);
-                vm.practices = practices;
-                vm.classifications = classifications;
                 vm.isAcbAdmin = isAcbAdmin;
                 vm.isAcbStaff = isAcbStaff;
                 vm.isChplAdmin = isChplAdmin;
-                vm.bodies = bodies;
-                vm.testingLabs = testingLabs;
-                vm.statuses = statuses;
+                vm.bodies = resources.bodies;
+                vm.classifications = resources.classifications;
+                vm.practices = resources.practices;
+                vm.qmsStandards = resources.qmsStandards;
+                vm.accessibilityStandards = resources.accessibilityStandards;
+                vm.targetedUsers = resources.targetedUsers;
+                vm.statuses = resources.statuses;
+                vm.testingLabs = resources.testingLabs;
+                vm.resources = resources;
                 vm.workType = workType;
                 vm.showFormErrors = false;
                 vm.message = '';
@@ -46,6 +52,15 @@
 
                 vm.handlers = [];
                 vm.attachModel();
+            }
+
+            function addNewValue (array, object) {
+                if (!array) {
+                    array = [];
+                }
+                if (object && object !== {}) {
+                    array.push(angular.copy(object));
+                }
             }
 
             function attachModel () {
@@ -72,15 +87,18 @@
                 return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
             }
 
+            function extendSelect (options, value) {
+                options = utilService.extendSelect(options, value);
+            }
+
             function findModel (id, array) {
-                var i;
-                for (i = 0; i < array.length; i++) {
+                for (var i = 0; i < array.length; i++) {
                     if (id.id === array[i].id) {
                         id = array[i];
                     }
                 };
                 return id;
-            };
+            }
 
             function prep () {
                 vm.directCertsDirective();

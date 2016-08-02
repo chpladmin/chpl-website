@@ -240,7 +240,8 @@
                     isConfirming: '=',
                     save: '&',
                     product: '=',
-                    cap: '='
+                    cap: '=',
+                    resources: '='
                 },
                 scope: {},
                 controllerAs: 'vm',

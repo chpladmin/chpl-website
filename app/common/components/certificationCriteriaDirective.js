@@ -25,7 +25,8 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
-                        cert: function () { return vm.cert; }
+                        cert: function () { return vm.cert; },
+                        resources: function () { return vm.resources; }
                     }
                 });
                 vm.editModalInstance.result.then(function (result) {
@@ -66,6 +67,7 @@
                     cert: '=',
                     viewAll: '=',
                     isEditing: '=',
+                    resources: '=',
                     save: '&'
                 },
                 scope: {},

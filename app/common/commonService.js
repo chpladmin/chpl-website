@@ -90,6 +90,34 @@
                 return self.simpleApiCall('/data/age_ranges');
             };
 
+            self.getTestStandards = function () {
+                return self.simpleApiCall('/data/test_standards');
+            };
+
+            self.getQmsStandards = function () {
+                return self.simpleApiCall('/data/qms_standards');
+            };
+
+            self.getUcdProcesses = function () {
+                return self.simpleApiCall('/data/ucd_processes');
+            };
+
+            self.getAccessibilityStandards = function () {
+                return self.simpleApiCall('/data/accessibility_standards');
+            };
+
+            self.getTestFunctionality = function () {
+                return self.simpleApiCall('/data/test_functionality');
+            };
+
+            self.getTestTools = function () {
+                return self.simpleApiCall('/data/test_tools');
+            };
+
+            self.getTargetedUsers = function () {
+                return self.simpleApiCall('/data/targeted_users');
+            };
+
             self.getAnnouncements = function (pending) {
             	return self.simpleApiCall('/announcements/?future=' + pending);
             };

@@ -9,12 +9,11 @@
     <h4 class="modal-title" id="modalLabel">SED Participant</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
-
     <div class="form-group">
       <label class="control-label col-sm-6" for="data_participant_age">Age <span class="text-danger">*</span></label>
       <div class="col-sm-6">
         <select class="form-control input-sm" id="data_participant_ageRange" name="data_participant_ageRange" ng-model="vm.participant.ageRangeObj" ng-change="vm.changed()" required
-                ng-options="item as item.name for item in vm.ageRanges | orderBy : vm.orderAges track by item.id"></select>
+                ng-options="item as item.name for item in vm.ageRanges.data | orderBy : vm.orderAges track by item.id"></select>
         <div class="text-danger" ng-if="vm.editForm.data_participant_ageRange.$touched && vm.editForm.data_participant_ageRange.$error.required">Field is required</div>
       </div>
     </div>
@@ -36,7 +35,7 @@
       <label class="control-label col-sm-6" for="data_participant_educationTypeName">Education Type <span class="text-danger">*</span></label>
       <div class="col-sm-6">
         <select class="form-control input-sm" id="data_participant_educationTypeName" name="data_participant_educationTypeName" ng-model="vm.participant.education" ng-change="vm.changed()" required
-                ng-options="item as item.name for item in vm.education track by item.id"></select>
+                ng-options="item as item.name for item in vm.education.data track by item.id"></select>
         <div class="text-danger" ng-if="vm.editForm.data_participant_educationTypeName.$touched && vm.editForm.data_participant_educationTypeName.$error.required">Field is required</div>
       </div>
     </div>
