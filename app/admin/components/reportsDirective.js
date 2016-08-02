@@ -309,6 +309,11 @@
                                     activity.details.push(change);
                                 }
                         }
+                        var accessibilityStandardsKeys = [];
+                        var accessibilityStandards = compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
+                        for (var j = 0; j < accessibilityStandards.length; j++) {
+                            activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
+                        }
                         var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
                         for (var j = 0; j < certChanges.length; j++) {
                             activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
@@ -504,6 +509,8 @@
                 var keys = [
                     {key: 'taskPathDeviationObserved', display: 'Path Deviation Observed'},
                     {key: 'taskPathDeviationOptimal', display: 'Path Deviation Optimal'},
+                    {key: 'taskRating', display: 'Task Rating'},
+                    {key: 'taskRatingStddev', display: 'Task Rating Standard Deviation'},
                     {key: 'taskRatingScale', display: 'Rating Scale'},
                     {key: 'taskTimeAvg', display: 'Time Average'},
                     {key: 'taskTimeDeviationObservedAvg', display: 'Time Deviation Observed Average'},
@@ -522,7 +529,7 @@
                                     if (change) obj.changes.push('<li>' + change + '</li>');
                                 }
                                 var testParticipantKeys = [
-                                    {key: 'age', display: 'Age'},
+                                    {key: 'ageRange', display: 'Age'},
                                     {key: 'assistiveTechnologyNeeds', display: 'Assistive Technology Needs'},
                                     {key: 'computerExperienceMonths', display: 'Computer Experience Months'},
                                     {key: 'educationTypeName', display: 'Education Type'},

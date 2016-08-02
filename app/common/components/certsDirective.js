@@ -115,7 +115,7 @@
                 for (var i = 0; i < vm.certs.length; i++) {
                     if (vm.certs[i].sed && vm.certs[i].testTasks) {
                         for (var j = 0; j < vm.certs[i].testTasks.length; j++) {
-                            for (var k = 0; i < changedTasks.length; i++) {
+                            for (var k = 0; k < changedTasks.length; k++) {
                                 if (vm.certs[i].testTasks[j].testTaskId === changedTasks[k].testTaskId && !vm.certs[i].testTasks[j].changed && vm.certs[i].testTasks[j].testTaskId) {
                                     //$log.debug('equal task', vm.certs[i].testTasks[j], changedTasks[k]);
                                     vm.certs[i].testTasks[j].description = changedTasks[k].description;
@@ -124,6 +124,7 @@
                                     vm.certs[i].testTasks[j].taskPathDeviationObserved = changedTasks[k].taskPathDeviationObserved;
                                     vm.certs[i].testTasks[j].taskPathDeviationOptimal = changedTasks[k].taskPathDeviationOptimal;
                                     vm.certs[i].testTasks[j].taskRating = changedTasks[k].taskRating;
+                                    vm.certs[i].testTasks[j].taskRatingStddev = changedTasks[k].taskRatingStddev;
                                     vm.certs[i].testTasks[j].taskRatingScale = changedTasks[k].taskRatingScale;
                                     vm.certs[i].testTasks[j].taskSuccessAverage = changedTasks[k].taskSuccessAverage;
                                     vm.certs[i].testTasks[j].taskSuccessStddev = changedTasks[k].taskSuccessStddev;
@@ -239,7 +240,8 @@
                     isConfirming: '=',
                     save: '&',
                     product: '=',
-                    cap: '='
+                    cap: '=',
+                    resources: '='
                 },
                 scope: {},
                 controllerAs: 'vm',

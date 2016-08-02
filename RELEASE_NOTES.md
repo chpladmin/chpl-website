@@ -1,16 +1,41 @@
 # Release Notes
 
-## TBD
-_TBD_
+## Version TBD
+_Date TBD_
+
+### New features
+* Updated editing of CP to use select boxes in place of free text where appropriate
+  * Also added ability to add new values to select boxes where required
+* Updated README to indicate naming changes for analytics files
+* Changed 'contact' email
+* Updated 'merge developers' to include Contact information
+* Added Criteria Met to generated Certification ID PDF
+
+### Bugs fixed
+* Change Version activity table column name
+* Show all "criteria affected" on QMS during CP Inspect
+* Display SED Participant age changes in reports
+
+---
+
+## Version 1.7.0
+_25 July 2016_
+
+### New features
+* Clear filters replaces clear results
+* "Enter" in developer/product/version filter submits filter
+* Adding filter resets filter select
+* Added SED Task Rating Standard Deviation
+* Cached search results time out after config time
 
 ### Bugs Fixed
 * Fixed Cert ID Widget not intializing
 * Fixed Cert ID Lookup to persist lookup information when leaving page
-* Added Criteria Met to generated Certification ID PDF
+* Added 'Accessibility Standards' to CP managmement screens
 
 ---
 
-## Version 1.6.0.CMS
+## Version 1.6.1
 _30 June 2016_
 
 ### New Features
