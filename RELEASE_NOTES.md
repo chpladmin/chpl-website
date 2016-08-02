@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 2.0.0
+_2 August 2016_
 
 ### New features
 * Updated editing of CP to use select boxes in place of free text where appropriate
