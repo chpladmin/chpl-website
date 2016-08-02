@@ -309,6 +309,11 @@
                                     activity.details.push(change);
                                 }
                         }
+                        var accessibilityStandardsKeys = [];
+                        var accessibilityStandards = compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
+                        for (var j = 0; j < accessibilityStandards.length; j++) {
+                            activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
+                        }
                         var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
                         for (var j = 0; j < certChanges.length; j++) {
                             activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
