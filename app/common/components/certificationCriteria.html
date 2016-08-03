@@ -23,7 +23,7 @@
           </tr>
           <tr ng-if="vm.cert.testStandards !== null">
             <td>Standard</td>
-            <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0"><div ng-repeat="m in vm.cert.testStandards">{{ m.testStandardName }}</div></td>
+            <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0"><div ng-repeat="m in vm.cert.testStandards"><a href tooltip="{{ m.testStandardDescription }}" tooltip-trigger="mouseenter focus click">{{ m.testStandardName }}</a></div></td>
             <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.g1Success">
@@ -36,7 +36,7 @@
           </tr>
           <tr ng-if="vm.cert.testFunctionality !== null">
             <td>Functionality Tested</td>
-            <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0"><div ng-repeat="m in vm.cert.testFunctionality"><span ng-class="{'bg-danger': m.testFunctionalityId === null}">{{ m.name }}<span ng-if="m.testFunctionalityId === null"> Warning: Functionality tested not found in system, it will not be saved</span></span></div></td>
+            <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0"><div ng-repeat="m in vm.cert.testFunctionality"><a href tooltip="{{ m.description }}" tooltip-trigger="mouseenter focus click"><span ng-class="{'bg-danger': m.testFunctionalityId === null}">{{ m.name }}<span ng-if="m.testFunctionalityId === null"> Warning: Functionality tested not found in system, it will not be saved</span></span></div></td>
             <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.testProcedures !== null">
