@@ -1,5 +1,13 @@
 # Release Notes
 
+## TBD
+_TBD_
+
+### New features
+* Added Criteria Met to generated Certification ID PDF
+
+---
+
 ## Version 2.0.0
 _2 August 2016_
 
@@ -9,7 +17,6 @@ _2 August 2016_
 * Updated README to indicate naming changes for analytics files
 * Changed 'contact' email
 * Updated 'merge developers' to include Contact information
-* Added Criteria Met to generated Certification ID PDF
 
 ### Bugs fixed
 * Change Version activity table column name
