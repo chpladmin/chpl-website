@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### New features
+* Added tooltips to Test Standards, Test Functionality, Clinical Quality Measures
+
+---
+
 ## Version 2.0.0
 _2 August 2016_
 

@@ -41,7 +41,7 @@
                 <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
                 <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b>
               </td>
-              <td><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</td>
+              <td><a href tooltip="{{ n.description }}" tooltip-trigger="mouseenter focus click"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</a></td>
               <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ vm.hasC1(n) ? 'meets' : 'does not meet'}} 170.317 (c)(1)</span><i class="fa fa-lg" ng-class="vm.hasC1(n) ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
               <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ vm.hasC2(n) ? 'meets' : 'does not meet'}} 170.317 (c)(2)</span><i class="fa fa-lg" ng-class="vm.hasC2(n) ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
             </tr>
