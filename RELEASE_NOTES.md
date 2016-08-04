@@ -10,6 +10,9 @@ _Date TBD_
 * Added Criteria Met to generated Certification ID PDF
 * Re-colored widget header and buttons to a blue-on-gold scheme
 
+### Bugs fixed
+* Fixed widget initialization by adding missing controller reference
+
 ---
 
 ## Version 2.0.0
