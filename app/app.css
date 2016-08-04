@@ -414,23 +414,40 @@ fieldset[disabled] .btn-ai-success.active {
 }
 
 .btn-ai-certid {
-    color: #fff;
-    background: -webkit-linear-gradient(#008b00, #006800); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#008b00, #006800); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#008b00, #006800); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#008b00, #006800); /* Standard syntax */
+    color: #2525b6;
+    background: -webkit-linear-gradient(#f5d43c, #c0a000); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#f5d43c, #c0a000); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#f5d43c, #c0a000); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#f5d43c, #c0a000);  /* Standard syntax */
 }
 .btn-ai-certid-toggleon {
-    color: #fff;
-    background: #00a800;
+    color: #2525b6;
+	background: #f5d43c;
 }
 .btn-ai-certid:focus,
 .btn-ai-certid.focus,
 .btn-ai-certid:hover,
 .btn-ai-certid:active {
-    color: #fff;
-    background: #004800;
+    color: #2525b6;
+	background: #f5d43c;
 }
+
+.panel-widget-certid > .panel-heading {
+    color: #2525b6;
+    background: -webkit-linear-gradient(#f5d43c, #c0a000);
+    background: -o-linear-gradient(#f5d43c, #c0a000);
+    background: -moz-linear-gradient(#f5d43c, #c0a000);
+	background: linear-gradient(#f5d43c, #c0a000);
+}
+.panel-widget-certid > .panel-heading a {
+    color: #2525b6;
+}
+.panel-widget-certid > .panel-collapse .panel-body {
+	background: #fde190;
+	background: #fff;
+	color: #000;
+}
+
 
 :focus {
     outline: thin dotted;
