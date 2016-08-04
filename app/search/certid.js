@@ -12,6 +12,7 @@ var chplCertIdWidget = (function(){
 	var apiKey = "See certidLogin.js";
 	var cookiePath = "/";
 	var cookieCertificationIdData = "certiddata";
+	var collectionChangeCallback = null;
 
 	return {
 		setUrl: function (val) {
@@ -64,10 +65,14 @@ var chplCertIdWidget = (function(){
 				success: function(data, status, xhr) {
 					chplCertIdWidget.setCookie(cookieCertificationIdData, JSON.stringify(data), 365);
 					chplCertIdWidget.displayCertificationIdResults(create);
+					if (("undefined" !== collectionChangeCallback) && (null !== collectionChangeCallback))
+						collectionChangeCallback();
 				},
 				error: function(xhr, status, error) {
 					chplCertIdWidget.displayCertificationIdResults(false);
 					alert(status + ": " + error);
+					if (("undefined" !== collectionChangeCallback) && (null !== collectionChangeCallback))
+						collectionChangeCallback();
 				}
 			});
 		},
@@ -320,14 +325,38 @@ var chplCertIdWidget = (function(){
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		setCollectionChangeCallback: function (callback) {
+			collectionChangeCallback = callback;
+		},
+		
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		generatePdf: function () {
+			var certificationIdData = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
 
-			// Get the Certification data
-			var data = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
+			// Call API to attempt to get an EHR Certification ID
+			$.ajax({
+				url: urlCertId + certificationIdData.ehrCertificationId,
+				type: "GET",
+				cache: false,
+				headers: {"API-KEY": apiKey},
+				data: "includeCriteria=true",
+				success: function(data, status, xhr) {
+					chplCertIdWidget.generatePdf2(data);
+				},
+				error: function(xhr, status, error) {
+					alert("Error: " + error);
+				}
+			});
+		},
+
+		generatePdf2: function(data) {
+		
 			if (!data || "undefined" === data) {
 				return;
 			}
-
+			
 			// Setup the product listing
 			var columns = ["", "Certifying Body", "Practice Type", "Product Certification #", "Developer",
 				"Product Name", "Version", "Classification", "Certification Edition",
@@ -354,6 +383,19 @@ var chplCertIdWidget = (function(){
 					software]);
 			});
 
+			// Setup the criteria listing
+			var certificationIdData = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
+			var checkImageData = [
+				"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAoCAYAAABOzvzpAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AcHETQihsku3wAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAABNElEQVRo3u2avWoCURCFP6xsgiCCJL6Ajb2NjW+QPs3WafI0aWztrG1sbKxsbARJs91aBsI2gRBIcTcwgjbq3bnoGRj2Nsud892fXTgDiqvFGJgBn8BvpNwCE+AhJeEjoIwo+lQuUhCfOQi3ufEU3we+TTEl8Aa0gUakHFYrbyHMvQDYQpYOx87Cf6lb/KOZvHBagFdTw9Tz7L87HsP80rugceZ7T2ZcOAL4OlJPLQBSi865/wa3AoB73wECIAACIAACIAACIAACIAACIAACIAACIAACIAB3BuCnytoA7M245yi8VT13BKeotrDO0IeTeGvOuPiDC8cCBgRD5n/+zAPAkEODMieYlE3iucNdgg9o5115Xj7e/QE5CXSLPOPTIbJO7VOUEXp4YoouCX1IAxSKq8Qfo/7m4Y2Lh9YAAAAASUVORK5CYII=",
+				"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAoCAYAAABOzvzpAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AcHETQT1xcu5QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAB/UlEQVRo3u2av0sDMRTHPxQFlyII4i9w7lKhi3Rx0NlFZ5curnYvjv4LujiKi7NLF0GcBCmIIC7d6qbLLYVy4HARYmnvcnd5SdQ+CD249JLv5+4l7yWBmVmzPeAG+ARiofICnIUmfAeIBEVPKm+hiG85Fh4DQ+BwQl+O1L0IaLoQX1MNfncsAtrAElARKjX1/KwXMVRfpqh1tQbvAvwKRSGsaQ0NAnbBoZQ76A2fBz7+XKU9pFKw8XXteuBJ/KVh3Q8JAL5nHlPx98DJXwKQV/xuVqXKfxb/mwCIiHcBoA70VZC0H5r4MtbRpplOiviBQQhrK9R2GoxlARgXXwRCsOKzAGxOEZ8HgjPxEmPAKbCacn8euE6B4NTnJQCMDOpMgxDkgFdkDOgVyO29+PycEKCGgrBl+CU85cjarL55yTigATwbukNZ8cchAsgDoYz4HnABVEMEYAvCNPFdAzcLIhcoAyHN55dDHgNsQBCf6lxng3kgOJnnfaTDJhCcBTm+1gPSIDiN8HwuiEyC4Dy89b0i1FBRYFnxI8McxFoo/K5db5SEsF3iv4vq91XlFc5M3xnytVOrJ0+3PjrQ9diB8RWnlg8ATX7uDvdJtqgXkNsdXiHZ6tLbffA5iPk4HxCPQa/i2Q5wf0IkBh4JzFokZ3gkRUck55DqzGxmVuwLQQ57jmeUx2AAAAAASUVORK5CYII="
+			];
+			var checkImages = [];
+			var critCols = [
+				{title: certificationIdData.year + " CMS EHR Base Criteria Met", dataKey: "description"}
+			];
+			
+			var critRows = chplCertIdWidget.getPdfCriteria(certificationIdData.year);
+
 			// Start the PDF document
 			var doc = new jsPDF("l","pt");
 			doc.setDrawColor(0, 26, 70);
@@ -376,7 +418,7 @@ var chplCertIdWidget = (function(){
 			doc.setFontType("bold");
 			doc.text(300, bodyStartY+70, data.ehrCertificationId);
 
-			// Add productss table to PDF
+			// Add products table to PDF
 			doc.setFontSize(10);
 			doc.setFontType("normal");
 			doc.autoTable(columns, rows, {
@@ -392,7 +434,7 @@ var chplCertIdWidget = (function(){
 					valign: "middle",
 					halign: "left",
 					overflow: "linebreak",
-					columnWidth: "auto"
+					columnWidth: "auto"					
 				},
 				startY: bodyStartY+90,
 				margin: 20,
@@ -400,8 +442,233 @@ var chplCertIdWidget = (function(){
 				tableWidth: "auto"
 			});
 
+			// Add criteria table to PDF
+			if (null !== critRows) {
+				var fontSize = 10;
+				doc.addPage();
+				doc.setFontSize(fontSize);
+				doc.setFontType("normal");
+				doc.autoTable(critCols, critRows, {
+					headerStyles: {
+						valign: "middle",
+						halign: "center",
+						overflow: "linebreak",
+						columnWidth: "auto",
+						fillColor: [0, 112, 201]
+					},
+					bodyStyles: {
+						valign: "middle",
+						halign: "left",
+						overflow: "linebreak",
+						columnWidth: "auto"
+					},
+					margin: 20,
+					pageBreak: "avoid",
+					tableWidth: "auto",
+					drawCell: function (cell, cellData) {
+						if (cellData.column.dataKey === "description") {
+							if (cellData.row.raw.key) {
+								var met = chplCertIdWidget.checkCriterionIsMet(cellData.row.raw.key, data.criteria);
+								cell.textPos.x += 32;
+								var descriptionParts = cellData.row.raw.description.split("#");
+								for (var partIndex=0; partIndex < descriptionParts.length; ++partIndex) {
+									doc.text(descriptionParts[partIndex], cell.textPos.x, cell.textPos.y);
+									cell.textPos.x += doc.getStringUnitWidth(descriptionParts[partIndex]) * fontSize;
+									if (partIndex < met.length) {
+										if (met[partIndex]) {
+											checkImages.push({ elem: checkImageData[1], x: cell.textPos.x, y: cell.textPos.y - 8});
+										} else {
+											checkImages.push({ elem: checkImageData[0], x: cell.textPos.x, y: cell.textPos.y - 8});
+										}
+										cell.textPos.x += 18;
+									}
+								}
+								return false;
+							} else {
+								checkImages.push(null);
+							}
+							
+							return true;
+						}
+						return true;
+					},
+					afterPageContent: function() {
+						var total = checkImages.length;
+						for (var index=0; index < total; index++) {
+							var img = checkImages.shift();
+							if (null !== img) {
+								doc.addImage(img.elem, 'png', img.x, img.y, 16, 10);
+							}
+						}
+					}
+				});
+			} else {
+				console.error("No PDF criteria layout for " + certificationIdData.year + "!");
+			}
+
 			// Output the PDF
 			doc.save("" + new Date().getTime() + ".pdf");
-		}
+		},
+		
+		checkCriterionIsMet: function(key, criteriaMet) {
+			var keys = key.split(",");
+			
+			// Check for logic key values
+			// 		| = (any criterion in list will do)
+			// 		& = (all criteria in list must be met)
+			if ("|" === keys[0]) {
+				keys.shift();
+				var result = [];
+				for (var index=0; index < keys.length; ++index) {
+					if (-1 !== criteriaMet.indexOf(keys[index])) {
+						result.push(true);
+					} else {
+						result.push(false);
+					}
+				}
+				return result;
+			} else if ("&" === keys[0]) {
+				keys.shift();
+				var result = true;
+				for (var index=0; index < keys.length; ++index) {
+					if (-1 === criteriaMet.indexOf(keys[index]))
+						result = false;
+				}
+				return [result];
+			}
+			if (keys.length > 1) {
+				console.error("Multiple keys without a logic key value! (" + keys[0] + ") " + key + " -> " + keys);
+			}
+			return [(-1 !== criteriaMet.indexOf(keys[0]))];
+		},
+		
+		getPdfCriteria: function(year) {
+			if ("2014/2015" === year) {
+				return [
+					{"key" : null, "description" : "(A) Certification to the following certification criteria—"},
+					{"key" : null, "description" : "(1) CPOE at—"},
+					{"key" : "|,170.314 (a)(1),170.314 (a)(18),170.314 (a)(19),170.314 (a)(20)", "description" : "(i) #170.314(a)(1), #170.314(18), #170.314(19) or #170.314(20); or"},
+					{"key" : "|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)", "description" : "(ii) #170.315(a)(1), #170.315(2) or #170.315(3)"},
+					{"key" : null, "description" : "(2) Record demographics at—"},
+					{"key" : "170.314 (a)(3)", "description" : "(i) #170.314(a)(3); or"},
+					{"key" : "170.315 (a)(5)", "description" : "(ii) #170.315(a)(5)"},
+					{"key" : null, "description" : "(3) Problem list at—"},
+					{"key" : "170.314 (a)(5)", "description" : "(i) #170.314(a)(5); or"},
+					{"key" : "170.315 (a)(6)", "description" : "(ii) #170.315(a)(6)"},
+					{"key" : null, "description" : "(4) Medication list at—"},
+					{"key" : "170.314 (a)(6)", "description" : "(i) #170.314(a)(6); or"},
+					{"key" : "170.315 (a)(7)", "description" : "(ii) #170.315(a)(7)"},
+					{"key" : null, "description" : "(5) Medication allergy list at—"},
+					{"key" : "170.314 (a)(7)", "description" : "(i) #170.314(a)(7); or"},
+					{"key" : "170.315 (a)(8)", "description" : "(ii) #170.315(a)(8)"},
+					{"key" : null, "description" : "(6) Clinical decision support at—"},
+					{"key" : "170.314 (a)(8)", "description" : "(i) #170.314(a)(8); or"},
+					{"key" : "170.315 (a)(9)", "description" : "(ii) #170.315(a)(9)"},
+					{"key" : null, "description" : "(7) Health information exchange at transitions of care at one of the following—"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2)", "description" : "#(i) 170.314(b)(1) and 170.314(2)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (h)(1)", "description" : "#(ii) 170.314(b)(1), 170.314(b)(2), and 170.314(h)(1)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8)", "description" : "#(iii) 170.314(b)(1), 170.314(b)(2), and 170.314(b)(8)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1)", "description" : "#(iv) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), and 170.314(h)(1)"},
+					{"key" : "&,170.314 (b)(8),170.314 (h)(1)", "description" : "#(v) 170.314(b)(8) and 170.314(h)(1)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.315 (h)(2)", "description" : "#(vi) 170.314(b)(1), 170.314(b)(2), and 170.315(h)(2)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (h)(1),170.315 (h)(2)", "description" : "#(vii) 170.314(b)(1), 170.314(b)(2), 170.314(h)(1), and 170.315(h)(2)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.315 (h)(2)", "description" : "#(viii) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), and 170.315(h)(2)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1),170.314 (h)(2)", "description" : "#(ix) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), 170.314(h)(1), and 170.315(h)(2)"},
+					{"key" : "&,170.314 (b)(8),170.314 (h)(1),170.315 (h)(2)", "description" : "#(x) 170.314(b)(8), 170.314(h)(1), and 170.315(h)(2)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.315 (b)(1)", "description" : "#(xi) 170.314(b)(1), 170.314(b)(2), and 170.315(b)(1)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (h)(1),170.315 (b)(1)", "description" : "#(xii) 170.314(b)(1), 170.314(b)(2), 170.314(h)(1), and 170.315(b)(1)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.315 (b)(1)", "description" : "#(xiii) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), and 170.315(b)(1)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1),170.315 (b)(1)", "description" : "#(xiv) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), 170.314(h)(1), and 170.315(b)(1)"},
+					{"key" : "&,170.314 (b)(8),170.314 (h)(1),170.315 (b)(1)", "description" : "#(xv) 170.314(b)(8), 170.314(h)(1), and 170.315(b)(1)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1),170.315 (b)(1),170.315 (h)(1)", "description" : "#(xvi) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), 170.314(h)(1), 170.315(b)(1), and 170.315(h)(1)"},
+					{"key" : "&,170.314 (b)(1),170.314 (b)(2),170.314 (b)(8),170.314 (h)(1),170.315 (b)(1),170.315 (h)(2)", "description" : "#(xvii) 170.314(b)(1), 170.314(b)(2), 170.314(b)(8), 170.314(h)(1), 170.315(b)(1), and 170.315(h)(2)"},
+					{"key" : "&,170.314 (h)(1),170.315 (b)(1)", "description" : "#(xviii) 170.314(h)(1) and 170.315(b)(1)"},
+					{"key" : "&,170.315 (b)(1),170.315 (h)(1)", "description" : "#(xix) 170.315(b)(1) and 170.315(h)(1)"},
+					{"key" : "&,170.315 (b)(1),170.315 (h)(2)", "description" : "#(xx) 170.315(b)(1) and 170.315(h)(2)"},
+					{"key" : "&,170.315 (b)(1),170.315 (h)(1),170.315 (h)(2)", "description" : "#(xxi) 170.315(b)(1), 170.314(h)(1), and 170.314(h)(2)"},
+					{"key" : null, "description" : "(B) Clinical quality measures at—"},
+					{"key" : "|,170.314 (c)(1),170.315 (c)(1)", "description" : "(1) #170.314(c)(1) or #170.315(c)(1); and"},
+					{"key" : "|,170.314 (c)(2),170.315 (c)(2)", "description" : "(2) #170.314(c)(2) or #170.315(c)(2); and"},
+					{"key" : "|,170.314 (c)(3),170.315 (c)(3)", "description" : "(3) #170.314(c)(3) or #170.315(c)(3)"},
+					{"key" : null, "description" : "(C) Privacy and security at—"},
+					{"key" : "|,170.314 (d)(1),170.315 (d)(1)", "description" : "(1) #170.314(d)(1) or #170.315(d)(1); and"},
+					{"key" : "|,170.314 (d)(2),170.315 (d)(2)", "description" : "(2) #170.314(d)(2) or #170.315(d)(2); and"},
+					{"key" : "|,170.314 (d)(3),170.315 (d)(3)", "description" : "(3) #170.314(d)(3) or #170.315(d)(3); and"},
+					{"key" : "|,170.314 (d)(4),170.315 (d)(4)", "description" : "(4) #170.314(d)(4) or #170.315(d)(4); and"},
+					{"key" : "|,170.314 (d)(5),170.315 (d)(5)", "description" : "(5) #170.314(d)(5) or #170.315(d)(5); and"},
+					{"key" : "|,170.314 (d)(6),170.315 (d)(6)", "description" : "(6) #170.314(d)(6) or #170.315(d)(6); and"},
+					{"key" : "|,170.314 (d)(7),170.315 (d)(7)", "description" : "(7) #170.314(d)(7) or #170.315(d)(7); and"},
+					{"key" : "|,170.314 (d)(8),170.315 (d)(8)", "description" : "(8) #170.314(d)(8) or #170.315(d)(8)"}
+				];
+			} else if ("2015" === year) {
+				return [
+					{"key" : null, "description" : "Demographics"},
+					{"key" : "170.315 (a)(5)", "description" : "#170.315(a)(5)"},
+					{"key" : null, "description" : "Problem List"},
+					{"key" : "170.315 (a)(6)", "description" : "#170.315(a)(6)"},
+					{"key" : null, "description" : "Medication List"},
+					{"key" : "170.315 (a)(7)", "description" : "#170.315(a)(7)"},
+					{"key" : null, "description" : "Medication Allergy List"},
+					{"key" : "170.315 (a)(8)", "description" : "#170.315(a)(8)"},
+					{"key" : null, "description" : "Smoking Status"},
+					{"key" : "170.315 (a)(11)", "description" : "#170.315(a)(11)"},
+					{"key" : null, "description" : "Implantable Device List"},
+					{"key" : "170.315 (a)(14)", "description" : "#170.315(a)(14)"},
+					{"key" : null, "description" : "Clinical Decision Support"},
+					{"key" : "170.315 (a)(9)", "description" : "#170.315(a)(9)"},
+					{"key" : null, "description" : "Computerized Provider Order Entry"},
+					{"key" : "|,170.315 (a)(1),170.315 (a)(2),170.315 (a)(3)", "description" : "#170.315(a)(1), #170.315(a)(2), or #170.315(a)(3)"},
+					{"key" : null, "description" : "Clinical Quality Measures—Record and Export"},
+					{"key" : "170.315 (c)(1)", "description" : "#170.315(c)(1)"},
+					{"key" : null, "description" : "Transitions of Care"},
+					{"key" : "170.315 (b)(1)", "description" : "#170.315(b)(1)"},
+					{"key" : null, "description" : "Data Export"},
+					{"key" : "170.315 (b)(6)", "description" : "#170.315(b)(6)"},
+					{"key" : null, "description" : "Application Access—Patient Selection"},
+					{"key" : "170.315 (g)(7)", "description" : "#170.315(g)(7)"},
+					{"key" : null, "description" : "Application Access—Data Category Request"},
+					{"key" : "170.315 (g)(8)", "description" : "#170.315(g)(8)"},
+					{"key" : null, "description" : "Application Access—All Data Request"},
+					{"key" : "170.315 (g)(9)", "description" : "#170.315(g)(9)"},
+					{"key" : null, "description" : "Direct Project or Direct Project, Edge Protocol, and XDR/XDM"},
+					{"key" : "|,170.315 (h)(1),170.315 (h)(2)", "description" : "#170.315(h)(1) or #170.315(h)(2)"}
+				];
+			} else if ("2014" === year) {
+				return [
+					{"key" : null, "description" : "CPOE at—"},
+					{"key" : "170.314 (a)(1)", "description" : "#170.314(a)(1)"},
+					{"key" : null, "description" : "Record demographics at—"},
+					{"key" : "170.314 (a)(3)", "description" : "#170.314(a)(3)"},
+					{"key" : null, "description" : "Problem list at—"},
+					{"key" : "170.314 (a)(5)", "description" : "#170.314(a)(5)"},
+					{"key" : null, "description" : "Medication list at—"},
+					{"key" : "170.314 (a)(6)", "description" : "#170.314(a)(6)"},
+					{"key" : null, "description" : "Medication allergy list at—"},
+					{"key" : "170.314 (a)(7)", "description" : "#170.314(a)(7)"},
+					{"key" : null, "description" : "Clinical decision support at—"},
+					{"key" : "170.314 (a)(8)", "description" : "#170.314(a)(8)"},
+					{"key" : null, "description" : "Transitions of Care - receive, display, and incorporate transition of care/referral summaries—"},
+					{"key" : "170.314 (b)(1)", "description" : "#170.314(b)(1)"},
+					{"key" : null, "description" : "Transitions of Care - create and transmit transition of care/referral summaries—"},
+					{"key" : "170.314 (b)(2)", "description" : "#170.314(b)(2)"},
+					{"key" : null, "description" : "Data Portability at—"},
+					{"key" : "170.314 (b)(7)", "description" : "#170.314(b)(7)"},
+					{"key" : null, "description" : "Clinical quality measures at—"},
+					{"key" : "170.314 (c)(1)", "description" : "#170.314(c)(1)"},
+					{"key" : "170.314 (c)(2)", "description" : "#170.314(c)(2)"},
+					{"key" : "170.314 (c)(3)", "description" : "#170.314(c)(3)"},
+					{"key" : null, "description" : "Privacy and security at—"},
+					{"key" : "170.314 (d)(1)", "description" : "#170.314(d)(1)"},
+					{"key" : "170.314 (d)(2)", "description" : "#170.314(d)(2)"},
+					{"key" : "170.314 (d)(3)", "description" : "#170.314(d)(3)"},
+					{"key" : "170.314 (d)(4)", "description" : "#170.314(d)(4)"},
+					{"key" : "170.314 (d)(5)", "description" : "#170.314(d)(5)"},
+					{"key" : "170.314 (d)(6)", "description" : "#170.314(d)(6)"},
+					{"key" : "170.314 (d)(7)", "description" : "#170.314(d)(7)"},
+					{"key" : "170.314 (d)(8)", "description" : "#170.314(d)(8)"}
+				];
+			}
+			return null;
+		},
 	}
 }());

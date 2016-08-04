@@ -28,6 +28,8 @@
                 if (typeof chplCertIdWidgetLogin !== 'undefined') {
 				    chplCertIdWidgetLogin.setup();
 				    chplCertIdWidget.invokeGetCertificationId(null, null, false);
+					vm.widget = chplCertIdWidget;
+					chplCertIdWidget.setCollectionChangeCallback(function() { $scope.$applyAsync(); });
                 }
 			});
 
