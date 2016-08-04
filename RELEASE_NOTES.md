@@ -8,6 +8,7 @@ _Date TBD_
 * Removed 'visibleOnChpl'
 * Display error message on failed Developer Merge
 * Added Criteria Met to generated Certification ID PDF
+* Re-colored widget header and buttons to a blue-on-gold scheme
 
 ---
 
