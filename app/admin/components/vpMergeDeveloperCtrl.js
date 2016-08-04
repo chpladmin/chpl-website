@@ -23,6 +23,7 @@
                 for (var i = 0; i < vm.developers.length; i++) {
                     vm.updateDeveloper.developerIds.push(vm.developers[i].developerId);
                 }
+                vm.errorMessage = '';
             }
 
             function addressRequired () {
@@ -36,10 +37,10 @@
                         if (!response.status || response.status === 200) {
                             $modalInstance.close(response);
                         } else {
-                            $modalInstance.dismiss('An error occurred');
+                            vm.errorMessage = response.error;
                         }
                     },function (error) {
-                        $modalInstance.dismiss(error.data.error);
+                        vm.errorMessage = error.data.error;
                     });
             }
 

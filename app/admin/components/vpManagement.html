@@ -388,7 +388,6 @@
                   <strong>SED End Date of Testing:</strong> {{ vm.activeCP.sedTestingEnd | date : 'mediumDate' : 'UTC' }} <br />
                   <strong>Terms of Use:</strong> {{ vm.activeCP.termsOfUse ? vm.activeCP.termsOfUse : 'None' }} <br />
                   <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
-                  <strong>Visible on CHPL:</strong> {{ vm.ternaryFilter(vm.activeCP.visibleOnChpl) }} <br />
                   <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />
                   <ul>
                     <li ng-repeat="std in vm.activeCP.accessibilityStandards">{{ std.accessibilityStandardName }}</li>

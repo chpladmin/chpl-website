@@ -1,9 +1,12 @@
 # Release Notes
 
-## TBD
-_TBD_
+## Version TBD
+_Date TBD_
 
 ### New features
+* Added tooltips to Test Standards, Test Functionality, Clinical Quality Measures
+* Removed 'visibleOnChpl'
+* Display error message on failed Developer Merge
 * Added Criteria Met to generated Certification ID PDF
 
 ---

@@ -300,8 +300,6 @@
                     commonService.getProduct(self.cpSelect)
                         .then(function (cp) {
                             self.activeCP = cp;
-                            if (self.activeCP.visibleOnChpl === undefined)
-                                self.activeCP.visibleOnChpl = true;
                             self.activeCP.certDate = new Date(self.activeCP.certificationDate);
                             commonService.getCap(self.cpSelect)
                                 .then(function (cap) {
