@@ -9,6 +9,7 @@ _Date TBD_
 * Display error message on failed Developer Merge
 * Added Criteria Met to generated Certification ID PDF
 * Re-colored widget header and buttons to a blue-on-gold scheme
+* Added new controller for CertId widget being used on the Search page
 
 ### Bugs fixed
 * Fixed widget initialization by adding missing controller reference
