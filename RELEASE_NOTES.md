@@ -7,6 +7,7 @@ _Date TBD_
 * Added tooltips to Test Standards, Test Functionality, Clinical Quality Measures
 * Removed 'visibleOnChpl'
 * Display error message on failed Developer Merge
+* Added Criteria Met to generated Certification ID PDF
 
 ---
 
