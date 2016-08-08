@@ -20,18 +20,9 @@
             vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
 			vm.toggleCart = toggleCart;
+			vm.widget = chplCertIdWidget;
 
             activate();
-
-			// Execute after page is loaded so jquery can find elements
-			angular.element(document).ready(function() {
-                if (typeof chplCertIdWidgetLogin !== 'undefined') {
-				    chplCertIdWidgetLogin.setup();
-				    chplCertIdWidget.invokeGetCertificationId(null, null, false);
-					vm.widget = chplCertIdWidget;
-					chplCertIdWidget.setCollectionChangeCallback(function() { $scope.$applyAsync(); });
-                }
-			});
 
             ////////////////////////////////////////////////////////////////////
 

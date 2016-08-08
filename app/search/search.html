@@ -273,11 +273,11 @@
           </div>
           <div class="col-md-3">
             <accordion close-others="false">
-              <accordion-group class="panel-ai" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="common/templates/accordion.html">
+              <accordion-group class="panel-ai panel-widget-certid" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="common/templates/accordion.html">
                 <accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
 					CMS EHR Certification ID
                 </accordion-heading>
-				<div ng-include="'search/certid.html'" ></div>
+                <div ng-include="'search/certid.html'" ng-controller="CertIdController" ></div>
               </accordion-group>
               <accordion-group class="panel-ai" is-open="vm.boxes.compare" aria-expanded="{{ vm.boxes.compare }}" template-url="common/templates/accordion.html">
                 <accordion-heading aria-expanded="{{ vm.boxes.compare }}">
