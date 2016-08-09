@@ -23,7 +23,10 @@
           </tr>
           <tr ng-if="vm.cert.testStandards !== null">
             <td>Standard</td>
-            <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0"><div ng-repeat="m in vm.cert.testStandards"><a href tooltip="{{ m.testStandardDescription }}" tooltip-trigger="mouseenter focus click">{{ m.testStandardName }}</a></div></td>
+            <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0"><div ng-repeat="m in vm.cert.testStandards">
+                <a href ng-if="m.testStandardDescription" tooltip="{{ m.testStandardDescription }}" tooltip-trigger="mouseenter focus click">{{ m.testStandardName }}</a>
+                <span ng-if="!m.testStandardDescription">{{ m.testStandardName }}</span>
+            </div></td>
             <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.g1Success">
