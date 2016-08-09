@@ -38,7 +38,7 @@ module.exports = function(config){
             'app/nav/**/*.js',
             'app/product/**/*.js',
             'app/resources/**/*.js',
-            'app/search/**/!(cert*).js',
+            'app/search/**/*.js',
             'app/overview/**/*.js',
             'app/registration/**/*.js',
             'app/**/components/*.html'
