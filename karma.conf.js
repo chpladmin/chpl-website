@@ -52,7 +52,7 @@ module.exports = function(config){
             'app/admin/**/!(*test).js': ['coverage'],
             'app/product/**/!(*test).js': ['coverage'],
             'app/resources/**/!(*test).js': ['coverage'],
-            'app/search/**/!(*test).js': ['coverage'],
+            'app/search/**/!(*test|*cert*).js': ['coverage'],
             'app/overview/**/!(*test).js': ['coverage'],
             'app/registration/**/!(*test).js': ['coverage'],
             'app/app.js': ['coverage'],
