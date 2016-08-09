@@ -10,6 +10,7 @@ _Date TBD_
 * Added Criteria Met to generated Certification ID PDF
 * Re-colored widget header and buttons to a blue-on-gold scheme
 * Added new controller for CertId widget being used on the Search page
+* Added CertId javascript files to karma config
 
 ### Bugs fixed
 * Fixed widget initialization by adding missing controller reference
