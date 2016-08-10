@@ -170,13 +170,6 @@
       </select>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTestingLab.$touched) && vm.editForm.cpTestingLab.$error.required">Field is required</div>
     </div>
-    <div class="form-group" ng-if="vm.worktype === 'manage'">
-      <label for="cpVisibleOnChpl">Visible On CHPL</label>
-      <input class="" type="checkbox" ng-model="vm.cp.visibleOnChpl" id="cpVisibleOnChpl"></input>
-    </div>
-    <div ng-if="vm.worktype === 'confirm'">
-      <strong>Visible on CHPL: </strong> No
-    </div>
     <div>
       Accessibility Standards
       <div class="form-horizontal">

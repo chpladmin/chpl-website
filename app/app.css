@@ -413,6 +413,51 @@ fieldset[disabled] .btn-ai-success.active {
     background-color: #333;
 }
 
+.btn-ai-certid {
+    color: #000;
+    background: -webkit-linear-gradient(#f5d43c, #c0a000); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#f5d43c, #c0a000); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#f5d43c, #c0a000); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#f5d43c, #c0a000);  /* Standard syntax */
+}
+.btn-ai-certid-toggleon {
+    color: #000;
+	background: #f5d43c;
+}
+
+.btn-ai-certid-toggleon:focus,
+.btn-ai-certid-toggleon.focus,
+.btn-ai-certid-toggleon:hover,
+.btn-ai-certid-toggleon:active {
+    color: #000;
+    background: #ffe25e !important;
+}
+
+.btn-ai-certid:focus,
+.btn-ai-certid.focus,
+.btn-ai-certid:hover,
+.btn-ai-certid:active {
+    color: #000;
+	background: #f5d43c;
+}
+
+.panel-widget-certid > .panel-heading {
+    color: #000;
+    background: -webkit-linear-gradient(#f5d43c, #c0a000);
+    background: -o-linear-gradient(#f5d43c, #c0a000);
+    background: -moz-linear-gradient(#f5d43c, #c0a000);
+	background: linear-gradient(#f5d43c, #c0a000);
+}
+.panel-widget-certid > .panel-heading a {
+    color: #000;
+}
+.panel-widget-certid > .panel-collapse .panel-body {
+	background: #fde190;
+	background: #fff;
+	color: #000;
+}
+
+
 :focus {
     outline: thin dotted;
     outline: 5px auto -webkit-focus-ring-color;

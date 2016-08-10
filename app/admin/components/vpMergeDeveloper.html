@@ -10,7 +10,7 @@
   </div>
   <div class="modal-body" ng-form="vm.mergeForm">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-4">
         <h4>Merge selected developers</h4>
         <div class="panel panel-ai" ng-repeat="developer in vm.developers">
           <div class="panel-heading">
@@ -24,62 +24,95 @@
             Zip: {{ developer.address.zipcode }}<br />
             Country: {{ developer.address.country }}<br />
             Website: {{ developer.website }}<br />
-            Transparency Attestation: {{ developer.transparencyAttestation }}<br />
+            <strong>Contact information</strong><br />
+            First name: {{ developer.contact.firstName }}<br />
+            Last name: {{ developer.contact.lastName }}<br />
+            Title: {{ developer.contact.title }}<br />
+            Email: {{ developer.contact.email }}<br />
+            Phone: {{ developer.contact.phoneNumber }}<br />
             <br />
             Last Modified Date: {{ developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             <br />
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <h4>To form this one</h4>
         <div class="form-group">
           <label for="developerName">Developer Name <span class="text-danger">*</span></label>
           <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName" name="developerName"></input>
           <div class="text-danger" ng-if="vm.mergeForm.developerName.$touched && vm.mergeForm.developerName.$error.required">Developer name is required</div>
         </div>
-        <div class="form-group">
-          <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" name="addressLine1"></input>
-          <div class="text-danger" ng-if="vm.mergeForm.addressLine1.$touched && vm.mergeForm.addressLine1.$error.required">Field is required</div>
-        </div>
-        <div class="form-group">
-          <label for="addressLine2">Address Line 2</label>
-          <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="addressLine2"></input>
-        </div>
-        <div class="form-group">
-          <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity"></input>
-          <div class="text-danger" ng-if="vm.mergeForm.addressCity.$touched && vm.mergeForm.addressCity.$error.required">Field is required</div>
-        </div>
-        <div class="form-group">
-          <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState"></input>
-          <div class="text-danger" ng-if="vm.mergeForm.addressState.$touched && vm.mergeForm.addressState.$error.required">Field is required</div>
-        </div>
-        <div class="form-group">
-          <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode"></input>
-          <div class="text-danger" ng-if="vm.mergeForm.addressZipcode.$touched && vm.mergeForm.addressZipcode.$error.required">Field is required</div>
-        </div>
-        <div class="form-group">
-          <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.country" id="addressCountry" name="addressCountry"></input>
-          <div class="text-danger" ng-if="vm.mergeForm.addressCountry.$touched && vm.mergeForm.addressCountry.$error.required">Field is required</div>
-        </div>
-        <div class="form-group">
-          <label for="developerWebsite">Website</label>
-          <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite"></input>
-          <div class="text-danger" ng-if="vm.mergeForm.developerWebsite.$touched && vm.mergeForm.developerWebsite.$error.url">Website is invalid</div>
-        </div>
-        <div class="form-group">
-          <label for="developerTransparency">Transparency Attestation</label>
-          <input class="input-sm" type="checkbox" ng-model="vm.developer.transparencyAttestation" id="developerTransparency"></input>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" name="addressLine1"></input>
+              <div class="text-danger" ng-if="vm.mergeForm.addressLine1.$touched && vm.mergeForm.addressLine1.$error.required">Field is required</div>
+            </div>
+            <div class="form-group">
+              <label for="addressLine2">Address Line 2</label>
+              <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="addressLine2"></input>
+            </div>
+            <div class="form-group">
+              <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity"></input>
+              <div class="text-danger" ng-if="vm.mergeForm.addressCity.$touched && vm.mergeForm.addressCity.$error.required">Field is required</div>
+            </div>
+            <div class="form-group">
+              <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState"></input>
+              <div class="text-danger" ng-if="vm.mergeForm.addressState.$touched && vm.mergeForm.addressState.$error.required">Field is required</div>
+            </div>
+            <div class="form-group">
+              <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode"></input>
+              <div class="text-danger" ng-if="vm.mergeForm.addressZipcode.$touched && vm.mergeForm.addressZipcode.$error.required">Field is required</div>
+            </div>
+            <div class="form-group">
+              <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.country" id="addressCountry" name="addressCountry"></input>
+              <div class="text-danger" ng-if="vm.mergeForm.addressCountry.$touched && vm.mergeForm.addressCountry.$error.required">Field is required</div>
+            </div>
+            <div class="form-group">
+              <label for="developerWebsite">Website</label>
+              <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite"></input>
+              <div class="text-danger" ng-if="vm.mergeForm.developerWebsite.$touched && vm.mergeForm.developerWebsite.$error.url">Website is invalid</div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="developerFirstName">First Name</label>
+              <input class="input-sm form-control" type="text" ng-model="vm.developer.contact.firstName" id="developerFirstName" name="developerFirstName"></input>
+            </div>
+            <div class="form-group">
+              <label for="developerLastName">Last Name</label>
+              <input class="input-sm form-control" type="text" ng-model="vm.developer.contact.lastName" id="developerLastName" name="developerLastName"></input>
+            </div>
+            <div class="form-group">
+              <label for="developerTitle">Title</label>
+              <input class="input-sm form-control" type="text" ng-model="vm.developer.contact.title" id="developerTitle" name="developerTitle"></input>
+            </div>
+            <div class="form-group">
+              <label for="developerPhone">Phone</label>
+              <input class="input-sm form-control" type="text" ng-model="vm.developer.contact.phoneNumber" id="developerPhone" name="developerPhone"></input>
+            </div>
+            <div class="form-group">
+              <label for="developerEmail">Email</label>
+              <input class="input-sm form-control" type="email" ng-model="vm.developer.contact.email" id="developerEmail" name="developerEmail"></input>
+              <div class="text-danger" ng-if="vm.mergeForm.developerEmail.$touched && vm.mergeForm.developerEmail.$error.email">Email is invalid</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
+    <div ng-if="vm.errorMessage && vm.errorMessage.length !== 0" class="row">
+      <div class="col-sm-12 text-left bg-danger">
+        Error in developer merge: {{ vm.errorMessage }}
+      </div>
+    </div>
     <button ng-disabled="vm.mergeForm.$invalid" class="btn btn-ai-success btn-block"
             confirm="Are you sure you wish to merge these developers? This action may not be undone."
             confirm-ok="Yes"

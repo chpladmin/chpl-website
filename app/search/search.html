@@ -8,9 +8,9 @@
     <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.search()" aria-live="polite">
       <div class="form-group form-group-lg">
         <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-5': vm.activeSearch || vm.searchForm.$dirty}">
-          <label for="searchField" class="control-label sr-only">Search</label>
+          <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ACB/CHPL ID</label>
           <div class="input-group input-group-lg">
-            <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="vm.query.searchTermObject"
+            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
                    ng-keyup="$event.keyCode === 13 && vm.search()"
                    typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"
@@ -31,11 +31,10 @@
               <option value="version">Version</option>
               <option value="certificationBody">Certification Body</option>
               <option value="certificationStatus">Certification Status</option>
-              <option value="visibleOnCHPL">Visible on CHPL</option>
-              <option value="certificationCriteria">Certification Criteria</option>
-              <option value="cqms">Clinical Quality Measure</option>
               <option value="certificationEdition">Certification Edition</option>
               <option value="practiceType">Practice Type</option>
+              <option value="certificationCriteria">Certification Criteria</option>
+              <option value="cqms">Clinical Quality Measure</option>
               <option value="hasCAP">Nonconformity</option>
             </select>
           </div>
@@ -97,19 +96,6 @@
             <select id="statusRefine" ng-model="vm.refine.certificationStatus" class="input-sm form-control"
                     ng-required="vm.refineType === 'certificationStatus'"
                     ng-options="status.name as status.name for status in vm.certificationStatuses | orderBy:'name'">
-            </select>
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-ai" ng-click="vm.addRefine()">Add Filter</button>
-            </span>
-          </div>
-        </div>
-        <div class="col-sm-4" ng-if="vm.refineType === 'visibleOnCHPL'">
-          <div class="input-group input-group-lg">
-            <label for="visibleRefine" class="control-label sr-only">Visible on CHPL</label>
-            <select id="visibleRefine" ng-model="vm.refine.visibleOnCHPL" class="input-sm form-control">
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-              <option value="both">Both</option>
             </select>
             <span class="input-group-btn">
               <button type="button" class="btn btn-ai" ng-click="vm.addRefine()">Add Filter</button>
@@ -192,7 +178,6 @@
             <li class="animate-if" ng-if="vm.query.practiceType"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('practiceType')"><span class="ai-lead">Practice Type:</span> {{ vm.query.practiceType }} <i class="fa fa-close"></i><span class="sr-only">Remove practice type filter</span></button></li>
             <li class="animate-if" ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i><span class="sr-only">Remove certification criteria filter</span></button></li>
             <li class="animate-if" ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('cqms',cqm)"><span class="ai-lead">Clinical Quality Measure:</span> {{ prepend(cqm) }} <i class="fa fa-close"></i><span class="sr-only">Remove cqm filter</span></button></li>
-            <li class="animate-if" ng-if="vm.query.visibleOnCHPL !== 'yes'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('visibleOnCHPL')"><span class="ai-lead">Visible on CHPL:</span> {{ vm.query.visibleOnCHPL }} <i class="fa fa-close"></i><span class="sr-only">Remove visible on CHPL filter</span></button></li>
             <li class="animate-if" ng-if="vm.query.hasCAP"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('hasCAP')"><span class="ai-lead">Nonconformity:</span> {{ vm.query.hasCAP }} <i class="fa fa-close"></i><span class="sr-only">Remove corrective action plan filter</span></button></li>
           </ul>
         </div>
@@ -276,7 +261,9 @@
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
                       <td>
-                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCart(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Cert ID</button>
+                        <button href ng-class="['btn btn-ai-certid btn-sm', {'btn-ai-certid-toggleon': vm.widget.isProductInCart(row.id)}]" ng-click="vm.toggleCart(row)">
+							<i ng-class="{'fa fa-plus': !vm.widget.isProductInCart(row.id), 'fa fa-minus': vm.widget.isProductInCart(row.id)}"></i> <span class="sr-only">{{vm.widget.isProductInCart(row.id) ? 'Remove' : 'Add'}} {{ row.product.name}} to </span>Cert ID
+						</button>
                       </td>
 	                </tr>
                   </tbody>
@@ -286,11 +273,11 @@
           </div>
           <div class="col-md-3">
             <accordion close-others="false">
-              <accordion-group class="panel-ai" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="common/templates/accordion.html">
+              <accordion-group class="panel-ai panel-widget-certid" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="common/templates/accordion.html">
                 <accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
 					CMS EHR Certification ID
                 </accordion-heading>
-				<div ng-include="'search/certid.html'" ></div>
+                <div ng-include="'search/certid.html'" ng-controller="CertIdController" ></div>
               </accordion-group>
               <accordion-group class="panel-ai" is-open="vm.boxes.compare" aria-expanded="{{ vm.boxes.compare }}" template-url="common/templates/accordion.html">
                 <accordion-heading aria-expanded="{{ vm.boxes.compare }}">

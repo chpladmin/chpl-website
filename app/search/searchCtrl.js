@@ -20,16 +20,9 @@
             vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
 			vm.toggleCart = toggleCart;
+			vm.widget = chplCertIdWidget;
 
             activate();
-
-			// Execute after page is loaded so jquery can find elements
-			angular.element(document).ready(function() {
-                if (typeof chplCertIdWidgetLogin !== 'undefined') {
-				    chplCertIdWidgetLogin.setup();
-				    chplCertIdWidget.invokeGetCertificationId(null, null, false);
-                }
-			});
 
             ////////////////////////////////////////////////////////////////////
 
@@ -37,7 +30,6 @@
                 vm.activeSearch = false;
                 vm.resultCount = 0;
                 vm.defaultRefine = {
-                    visibleOnCHPL: 'yes',
                     certificationCriteria: [],
                     cqms: []
                 };
@@ -69,8 +61,7 @@
                     orderBy: 'developer',
                     sortDescending: false,
                     pageNumber: 0,
-                    pageSize: '50',
-                    visibleOnCHPL: 'yes'
+                    pageSize: '50'
                 };
                 vm.query = angular.copy(vm.defaultQuery);
 
@@ -329,10 +320,6 @@
                     if (vm.query.orderBy === 'version') {
                         vm.query.orderBy = 'product';
                     }
-                    break;
-                case 'visibleOnCHPL':
-                    vm.query.visibleOnCHPL = 'yes';
-                    vm.refine.visibleOnCHPL = 'yes';
                     break;
                 case 'certificationCriteria':
                     for (var i = 0; i < vm.query.certificationCriteria.length; i++) {

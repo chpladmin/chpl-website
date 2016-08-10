@@ -124,7 +124,6 @@
                         vm.idFields.ics + '.' +
                         vm.idFields.suffix;
                 }
-                vm.cp.visibleOnChpl = vm.cp.certificationStatus.name === 'Active';
                 vm.cp.certificationDate = vm.cp.certDate.getTime();
                 vm.cp.sedTestingEnd = vm.cp.sedTestingEndDate.getTime();
                 if (vm.workType === 'manage') {

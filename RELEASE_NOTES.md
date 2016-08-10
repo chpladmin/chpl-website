@@ -1,5 +1,22 @@
 # Release Notes
 
+## Version 3.0.0
+_8 August 2016_
+
+### New features
+* Added tooltips to Test Standards, Test Functionality, Clinical Quality Measures
+* Removed 'visibleOnChpl'
+* Display error message on failed Developer Merge
+* Added Criteria Met to generated Certification ID PDF
+* Re-colored widget header and buttons to a blue-on-gold scheme
+* Added new controller for CertId widget being used on the Search page
+* Added CertId javascript files to karma config
+
+### Bugs fixed
+* Fixed widget initialization by adding missing controller reference
+
+---
+
 ## Version 2.0.0
 _2 August 2016_
 
@@ -8,6 +25,7 @@ _2 August 2016_
   * Also added ability to add new values to select boxes where required
 * Updated README to indicate naming changes for analytics files
 * Changed 'contact' email
+* Updated 'merge developers' to include Contact information
 
 ### Bugs fixed
 * Change Version activity table column name
