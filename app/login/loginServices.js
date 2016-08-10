@@ -45,6 +45,17 @@
                 return false;
             };
 
+            self.isCmsStaff = function () {
+                var token = self.getToken();
+                if (token) {
+                    var authorities = self.parseJwt(token).Authorities;
+                    if (authorities) {
+                        return authorities.indexOf('CMS_STAFF') > -1
+                    }
+                }
+                return false;
+            };
+
             self.isAcbAdmin = function () {
                 var token = self.getToken();
                 if (token) {

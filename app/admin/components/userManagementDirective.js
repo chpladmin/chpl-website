@@ -16,6 +16,7 @@
                 vm.roles = [];
                 if (!vm.acbId && !vm.atlId) { // not managing acb or atl, managing entire CHPL
                     vm.roles.push('ROLE_ADMIN');
+                    vm.roles.push('CMS_STAFF');
                 }
                 if (!vm.atlId) { // not managing ATL; either managing entire CHPL or single ACB
                     vm.roles.push('ROLE_ACB_ADMIN');

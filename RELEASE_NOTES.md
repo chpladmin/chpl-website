@@ -11,6 +11,7 @@ _Date TBD_
 * Re-colored widget header and buttons to a blue-on-gold scheme
 * Added new controller for CertId widget being used on the Search page
 * Added CertId javascript files to karma config
+* Add CMS_STAFF as a ROLE
 
 ### Bugs fixed
 * Fixed widget initialization by adding missing controller reference
