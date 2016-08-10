@@ -50,7 +50,7 @@
                 if (token) {
                     var authorities = self.parseJwt(token).Authorities;
                     if (authorities) {
-                        return authorities.indexOf('CMS_STAFF') > -1
+                        return authorities.indexOf('ROLE_CMS_STAFF') > -1
                     }
                 }
                 return false;
