@@ -3,6 +3,9 @@
 ## Next Version
 _DATE TBD_
 
+### New features
+* Added CMS ID download for CMS_STAFF members
+
 ---
 
 ## Version 3.0.0

@@ -118,6 +118,10 @@
                 return self.simpleApiCall('/data/targeted_users');
             };
 
+            self.getCmsDownload = function () {
+                return self.simpleApiCall('/certification_ids/all');
+            };
+
             self.getAnnouncements = function (pending) {
             	return self.simpleApiCall('/announcements/?future=' + pending);
             };
@@ -355,7 +359,7 @@
             self.rejectPendingCp = function (cpId) {
                 return self.postApiCall('/certified_products/pending/' + cpId + '/reject', {});
             };
-			
+
 			self.lookupCertificationId = function (certId) {
 				return self.simpleApiCall('/certification_ids/' + certId);
 			}

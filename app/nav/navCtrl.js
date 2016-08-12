@@ -58,7 +58,7 @@
             }
 
             function isCmsStaff () {
-                return authService.isCmsAdmin();
+                return authService.isCmsStaff();
             }
 
             function loadAnnouncements () {
