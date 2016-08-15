@@ -21,7 +21,9 @@
             response: function (response) {
                 if (response.config.url.indexOf(API) === 0) {
                     try {
-                        response.data = JSON.parse(response.data);
+                        if (typeof response.data === 'string') {
+                            response.data = JSON.parse(response.data);
+                        }
                         if (response.data.token) {
                             authService.saveToken(response.data.token);
                         }
