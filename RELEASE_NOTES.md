@@ -5,6 +5,7 @@ _DATE TBD_
 
 ### New features
 * Added CMS ID download for CMS_STAFF members
+* Added API Key filter to UI
 
 ---
 

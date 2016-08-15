@@ -110,6 +110,7 @@
                 };
 
                 mockCommonService.getAnnouncementActivity = function () { return $q.when(mockCommonService.announcementActivity); };
+                mockCommonService.getApiUsers = function () { return $q.when([]) };
 
                 mockAuthService.isAcbAdmin = function () {
                     return true;

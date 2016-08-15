@@ -244,6 +244,32 @@
           </tbody>
         </table>
         <h3>API Use</h3>
+        <div ng-form class="form-horizontal">
+          <div class="formGroup">
+            <label for="apiKeyStartDate" class="col-sm-2 control-label">Start Date</label>
+            <div class="col-sm-4">
+              <input type="date" class="form-control" ng-model="vm.apiKey.startDate" name="apiKeyStartDate" id="apiKeyStartDate" ng-change="vm.refreshApi()">
+            </div>
+            <label for="apiKeyEndDate" class="col-sm-2 control-label">End Date</label>
+            <div class="col-sm-4">
+              <input type="date" class="form-control" ng-model="vm.apiKey.endDate" name="apiKeyEndDate" id="apiKeyEndDate" ng-change="vm.refreshApi()">
+            </div>
+          </div>
+          <div class="formGroup">
+            <label for="apiKeyDateAscending" class="col-sm-2 control-label">Oldest first</label>
+            <div class="col-sm-2">
+              <input type="checkbox" class="" ng-model="vm.apiKey.dateAscending" name="apiKeyDateAscending" id="apiKeyDateAscending" ng-change="vm.refreshApi()">
+            </div>
+            <label for="apiKeyFilter" class="col-sm-3 control-label">Show <a ng-click="vm.apiKey.showOnly = !vm.apiKey.showOnly; vm.refreshApi()">{{ vm.apiKey.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
+            <div class="col-sm-5">
+              <select class="form-control" ng-model="vm.apiKey.filter" name="apiKeyFilter" id="apiKeyFilter" ng-change="vm.refreshApi()"
+                      ng-options="key.key as (key.name + ' (' + key.email + ')') for key in vm.apiKeys | orderBy:'name' track by key.key">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12"><a href ng-click="vm.clearApiKeyFilter(); vm.refreshApi();">Clear all filters</a></div>
+        </div>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -256,7 +282,7 @@
           </thead>
           <tfoot>
             <td colspan="5" class="text-center">
-              <pager ng-model="vm.visibleApiPage" ng-change="vm.refreshApi()" class="pagination-sm" total-items="20000"></pager>
+              <pager ng-model="vm.apiKey.visiblePage" ng-change="vm.refreshApi()" class="pagination-sm" total-items="20000"></pager>
             </td>
           </tfoot>
           <tbody>

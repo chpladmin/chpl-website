@@ -416,8 +416,22 @@
                 return self.simpleApiCall('/activity/api_keys?lastNDays=' + nDays);
             };
 
-            self.getApiActivity = function (pageNum, pageSize) {
-                return self.postApiCall('/key/activity/?pageNumber=' + pageNum + '&pageSize=' + pageSize, {});
+            self.getApiActivity = function (options) {
+                var params = [];
+                var queryParams = '';
+                if (options.pageNum !== undefined) { params.push('pageNum=' + options.pageNum); }
+                if (options.pageSize) { params.push('pageSize=' + options.pageSize); }
+                if (options.startDate) { params.push('startDate=' + options.startDate.getTime()); }
+                if (options.endDate) { params.push('endDate=' + options.endDate.getTime()); }
+                if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
+                if (options.filter) {
+                    var tmp = 'filter=';
+                    if (!options.showOnly) { tmp += '!' };
+                    tmp += options.filter
+                    params.push(tmp);
+                }
+                if (params.length > 0) { var queryParams = '?' + params.join('&'); }
+                return self.postApiCall('/key/activity/' + queryParams, {});
             };
         });
 })();

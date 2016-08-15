@@ -12,6 +12,8 @@
 
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
+            vm.clearApiKeyFilter = clearApiKeyFilter;
+            vm.loadApiKeys = loadApiKeys;
             vm.refreshCp = refreshCp;
             vm.refreshDeveloper = refreshDeveloper;
             vm.refreshProduct = refreshProduct;
@@ -29,10 +31,13 @@
             // Functions
 
             function activate () {
-                vm.visibleApiPage = 1;
-                vm.apiKeyPageSize = 100;
+                vm.apiKey = {
+                    visiblePage: 1,
+                    pageSize: 100
+                };
                 vm.refreshActivity();
                 vm.refreshVisitors();
+                vm.loadApiKeys();
             }
 
             function refreshActivity () {
@@ -125,12 +130,28 @@
                             vm.searchedApiActivity = data;
                             vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
                         });
-                    vm.apiKeyPageNum = vm.visibleApiPage - 1;
-                    commonService.getApiActivity(vm.apiKeyPageNum,vm.apiKeyPageSize)
+                    vm.apiKey.pageNum = vm.apiKey.visiblePage - 1;
+                    commonService.getApiActivity(vm.apiKey)
                         .then(function (data) {
                             vm.searchedApi = data;
                         });
                 }
+            }
+
+            function clearApiKeyFilter () {
+                vm.apiKey = {
+                    visiblePage: 1,
+                    pageSize: 100
+                };
+            }
+
+            function loadApiKeys () {
+                commonService.getApiUsers()
+                    .then (function (result) {
+                        vm.apiKeys = result;
+                    }, function (error) {
+                        $log.debug('error in app.admin.report.controller.loadApiKeys', error);
+                    });
             }
 
             function refreshVisitors () {
