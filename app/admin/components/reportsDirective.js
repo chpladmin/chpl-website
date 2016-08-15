@@ -7,7 +7,7 @@
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.tab = 'cp';
-            vm.activityRange = 60;
+            vm.activityRange = { range: 60};
             vm.questionableRange = 0;
 
             vm.refreshActivity = refreshActivity;
@@ -22,6 +22,7 @@
             vm.refreshAnnouncement = refreshAnnouncement;
             vm.refreshUser = refreshUser;
             vm.refreshApi = refreshApi;
+            vm.refreshApiKeyUsage = refreshApiKeyUsage;
             vm.refreshVisitors = refreshVisitors;
             vm.singleCp = singleCp;
 
@@ -31,9 +32,14 @@
             // Functions
 
             function activate () {
+                vm.activityRange.endDate = new Date();
+                vm.activityRange.startDate = new Date();
+                vm.activityRange.startDate.setDate(vm.activityRange.startDate.getDate() - vm.activityRange.range);
                 vm.apiKey = {
                     visiblePage: 1,
-                    pageSize: 100
+                    pageSize: 100,
+                    startDate: angular.copy(vm.activityRange.startDate),
+                    endDate: angular.copy(vm.activityRange.endDate)
                 };
                 vm.refreshActivity();
                 vm.refreshVisitors();
@@ -53,6 +59,7 @@
                 vm.refreshAnnouncement();
                 vm.refreshUser();
                 vm.refreshApi();
+                vm.refreshApiKeyUsage();
             }
 
             function refreshCp () {
@@ -130,6 +137,10 @@
                             vm.searchedApiActivity = data;
                             vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
                         });
+                }
+            }
+            function refreshApiKeyUsage () {
+                if (vm.isChplAdmin) {
                     vm.apiKey.pageNum = vm.apiKey.visiblePage - 1;
                     commonService.getApiActivity(vm.apiKey)
                         .then(function (data) {
@@ -141,7 +152,9 @@
             function clearApiKeyFilter () {
                 vm.apiKey = {
                     visiblePage: 1,
-                    pageSize: 100
+                    pageSize: 100,
+                    startDate: angular.copy(vm.activityRange.startDate),
+                    endDate: angular.copy(vm.activityRange.endDate)
                 };
             }
 

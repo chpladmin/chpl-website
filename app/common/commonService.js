@@ -174,44 +174,44 @@
                 return self.simpleApiCall('/data/certification_bodies');
             };
 
-            self.getCertifiedProductActivity = function (nDays) {
-                return self.simpleApiCall('/activity/certified_products?lastNDays=' + nDays);
+            self.getCertifiedProductActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/certified_products?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
             self.getSingleCertifiedProductActivity = function (productId) {
                 return self.simpleApiCall('/activity/certified_products/' + productId);
             };
 
-            self.getDeveloperActivity = function (nDays) {
-                return self.simpleApiCall('/activity/developers?lastNDays=' + nDays);
+            self.getDeveloperActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/developers?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
-            self.getProductActivity = function (nDays) {
-                return self.simpleApiCall('/activity/products?lastNDays=' + nDays);
+            self.getProductActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/products?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
-            self.getVersionActivity = function (nDays) {
-                return self.simpleApiCall('/activity/versions?lastNDays=' + nDays);
+            self.getVersionActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/versions?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
-            self.getAcbActivity = function (nDays) {
-                return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays);
+            self.getAcbActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/acbs?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
-            self.getAtlActivity = function (nDays) {
-                return self.simpleApiCall('/activity/atls?lastNDays=' + nDays);
+            self.getAtlActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/atls?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
-            self.getUserActivity = function (nDays) {
-                return self.simpleApiCall('/activity/users?lastNDays=' + nDays);
+            self.getUserActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/users?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
-            self.getUserActivities = function (nDays) {
-                return self.simpleApiCall('/activity/user_activities?lastNDays=' + nDays);
+            self.getUserActivities = function (activityRange) {
+                return self.simpleApiCall('/activity/user_activities?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
-            self.getAnnouncementActivity = function (nDays) {
-                return self.simpleApiCall('/activity/announcements?lastNDays=' + nDays);
+            self.getAnnouncementActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/announcements?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
             self.getUploadingCps = function () {
@@ -412,8 +412,8 @@
                 return self.postApiCall('/key/revoke', user);
             };
 
-            self.getApiUserActivity = function (nDays) {
-                return self.simpleApiCall('/activity/api_keys?lastNDays=' + nDays);
+            self.getApiUserActivity = function (activityRange) {
+                return self.simpleApiCall('/activity/api_keys?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
             };
 
             self.getApiActivity = function (options) {

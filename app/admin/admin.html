@@ -40,7 +40,8 @@
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'atl'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('atl')">ATLs</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'announcement'}" ng-if="vm.navState.screen === 'reports' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('announcement')">Announcements</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'users'}" ng-if="vm.navState.screen === 'reports' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('users')">Users</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" ng-if="vm.navState.screen === 'reports' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('api_key')">API Key Usage</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" ng-if="vm.navState.screen === 'reports' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('api_key_management')">API Key Management Activity</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key_usage'}" ng-if="vm.navState.screen === 'reports' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('api_key_usage')">API Key Usage Activity</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'visitors'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('visitors')">Visitors</a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
