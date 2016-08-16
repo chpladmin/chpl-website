@@ -15,6 +15,56 @@
             <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
           </div>
         </div>
+        <h4>Certified Product Upload</h3>
+        <table st-table="vm.displayedCertifiedProductsUpload" st-safe-src="vm.searchedCertifiedProductsUpload" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="acb" st-skip-natural="true">ACB</th>
+              <th class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+              <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
+              <th class="search-header" st-sort="certificationEdition" st-skip-natural="true">Certification Edition</th>
+              <th class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+              <th class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+            </tr>
+            <tr>
+              <th><input st-search="acb" placeholder="Filter ACB" class="input-sm form-control" type="search"></th>
+              <th><input st-search="developer" placeholder="Filter Developer" class="input-sm form-control" type="search"></th>
+              <th><input st-search="product" placeholder="Filter Product" class="input-sm form-control" type="search"></th>
+              <th><input st-search="certificationEdition" placeholder="Filter Certification Edition" class="input-sm form-control" type="search"></th>
+              <th><input st-search="chplProductNumber" placeholder="Filter CHPL Product Number" class="input-sm form-control" type="search"></th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="7">
+                <a type="button" class="btn btn-lg btn-ai-success"
+                   ng-csv="vm.displayedCertifiedProductsUpload" filename="CP_Upload_{{ vm.filename }}"
+                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity Date']"
+                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'friendlyActivityDate']">
+                  <i class="fa fa-cloud-download"></i> Download
+                </a>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr ng-if="vm.displayedCertifiedProductsUpload.length === 0">
+              <td colspan="7">No activity found</td>
+            </tr>
+	        <tr ng-repeat="activity in vm.displayedCertifiedProductsUpload" ng-if="vm.displayedCertifiedProductsUpload.length > 0">
+              <td>{{ activity.acb }}</td>
+              <td>{{ activity.developer }}</td>
+              <td>{{ activity.product }}</td>
+              <td>{{ activity.certificationEdition }}</td>
+              <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h4>Other Certified Product Activity</h4>
         <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
           <thead>
             <tr>

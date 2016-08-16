@@ -8,6 +8,7 @@ _DATE TBD_
 * Added API Key filter to UI
 * Activity uses start/end dates for date range
 * Split API Key into two sections
+* Enhanced "Uploaded Certified Product" activity report
 
 ---
 
