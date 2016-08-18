@@ -7,6 +7,9 @@ _DATE TBD_
 * Added CMS ID download for CMS_STAFF members
 * Added API Key filter to UI
 
+### Bugs fixed
+* Fixed widget overrunning cookie 4K limit by switching to using local storage instead
+
 ---
 
 ## Version 3.0.0
