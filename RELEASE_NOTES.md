@@ -1,7 +1,16 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Next Version
+_DATE TBD_
+
+### New features
+* Added CMS ID download for CMS_STAFF members
+* Added API Key filter to UI
+
+---
+
+## Version 3.0.0
+_10 August 2016_
 
 ### New features
 * Added tooltips to Test Standards, Test Functionality, Clinical Quality Measures
@@ -11,6 +20,7 @@ _Date TBD_
 * Re-colored widget header and buttons to a blue-on-gold scheme
 * Added new controller for CertId widget being used on the Search page
 * Added CertId javascript files to karma config
+* Add ROLE_CMS_STAFF as a ROLE
 
 ### Bugs fixed
 * Fixed widget initialization by adding missing controller reference

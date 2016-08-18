@@ -20,11 +20,15 @@
             // If a token was sent back, save it
             response: function (response) {
                 if (response.config.url.indexOf(API) === 0) {
-                    if (typeof response.data === 'string') {
-                        response.data = JSON.parse(response.data);
-                    }
-                    if (response.data.token) {
-                        authService.saveToken(response.data.token);
+                    try {
+                        if (typeof response.data === 'string') {
+                            response.data = JSON.parse(response.data);
+                        }
+                        if (response.data.token) {
+                            authService.saveToken(response.data.token);
+                        }
+                    } catch (e) {
+                        //console.log('data is not json', response.config.url, response.data, e);
                     }
                 }
                 return response;

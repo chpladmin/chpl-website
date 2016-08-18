@@ -8,9 +8,9 @@
     <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.search()" aria-live="polite">
       <div class="form-group form-group-lg">
         <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-5': vm.activeSearch || vm.searchForm.$dirty}">
-          <label for="searchField" class="control-label sr-only">Search</label>
+          <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ACB/CHPL ID</label>
           <div class="input-group input-group-lg">
-            <input type="text" class="form-control" id="searchField" placeholder="Search Certified Products and Developers" ng-model="vm.query.searchTermObject"
+            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
                    ng-keyup="$event.keyCode === 13 && vm.search()"
                    typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"

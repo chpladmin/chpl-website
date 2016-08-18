@@ -81,7 +81,7 @@
             });
 
             it('should set the token if one is found, from the correct URL', function () {
-                var headers = {config: {url: trueApiUrl}, data: {token: token}};
+                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}"};
                 spyOn(mockAuthService, 'saveToken');
                 authInterceptor.response(headers);
                 expect(mockAuthService.saveToken).toHaveBeenCalled();

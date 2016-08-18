@@ -29,6 +29,7 @@
               <li ng-if="vm.isAuthed()"><a href="#/admin/reports">Reports</a></li>
               <li ng-if="vm.isChplAdmin()"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
               <li ng-if="vm.isChplAdmin()"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
+              <li ng-if="vm.isChplAdmin() || vm.isCmsStaff()"><a href="#/admin/cmsManagement">CMS Management</a></li>
               <li>
                 <ai-login form-class="navbar-form"
                           p-class="navbar-text"
