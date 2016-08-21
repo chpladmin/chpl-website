@@ -1,8 +1,70 @@
 <section class="row">
-  <div class="col-sm-12 admin-inner-tab main-content">
+  <div class="col-sm-12 admin-inner-tab main-content form-horizontal" ng-form="vm.activityForm">
     <div class="row" ng-if="vm.workType === 'cp' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
         <h3>Certified Product Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
+        <h4>Certified Product Upload</h3>
+        <table st-table="vm.displayedCertifiedProductsUpload" st-safe-src="vm.searchedCertifiedProductsUpload" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="acb" st-skip-natural="true">ACB</th>
+              <th class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+              <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
+              <th class="search-header" st-sort="certificationEdition" st-skip-natural="true">Certification Edition</th>
+              <th class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+              <th class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+            </tr>
+            <tr>
+              <th><input st-search="acb" placeholder="Filter ACB" class="input-sm form-control" type="search"></th>
+              <th><input st-search="developer" placeholder="Filter Developer" class="input-sm form-control" type="search"></th>
+              <th><input st-search="product" placeholder="Filter Product" class="input-sm form-control" type="search"></th>
+              <th><input st-search="certificationEdition" placeholder="Filter Certification Edition" class="input-sm form-control" type="search"></th>
+              <th><input st-search="chplProductNumber" placeholder="Filter CHPL Product Number" class="input-sm form-control" type="search"></th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="7">
+                <a type="button" class="btn btn-lg btn-ai-success"
+                   ng-csv="vm.displayedCertifiedProductsUpload" filename="CP_Upload_{{ vm.filename }}"
+                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity Date']"
+                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'friendlyActivityDate']">
+                  <i class="fa fa-cloud-download"></i> Download
+                </a>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr ng-if="vm.displayedCertifiedProductsUpload.length === 0">
+              <td colspan="7">No activity found</td>
+            </tr>
+	        <tr ng-repeat="activity in vm.displayedCertifiedProductsUpload" ng-if="vm.displayedCertifiedProductsUpload.length > 0">
+              <td>{{ activity.acb }}</td>
+              <td>{{ activity.developer }}</td>
+              <td>{{ activity.product }}</td>
+              <td>{{ activity.certificationEdition }}</td>
+              <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h4>Other Certified Product Activity</h4>
         <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
           <thead>
             <tr>
@@ -33,6 +95,18 @@
     <div class="row" ng-if="vm.workType === 'dev'">
       <div class="col-sm-12">
         <h3>Developer Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
         <table st-table="vm.displayedDevelopers" st-safe-src="vm.searchedDevelopers" class="table table-striped">
           <thead>
             <tr>
@@ -61,6 +135,18 @@
     <div class="row" ng-if="vm.workType === 'prod'">
       <div class="col-sm-12">
         <h3>Product Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
         <table st-table="vm.displayedProducts" st-safe-src="vm.searchedProducts" class="table table-striped">
           <thead>
             <tr>
@@ -106,6 +192,18 @@
     <div class="row" ng-if="vm.workType === 'acb'">
       <div class="col-sm-12">
         <h3>ACB Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
         <table st-table="vm.displayedACBs" st-safe-src="vm.searchedACBs" class="table table-striped">
           <thead>
             <tr>
@@ -131,6 +229,18 @@
     <div class="row" ng-if="vm.workType === 'atl'">
       <div class="col-sm-12">
         <h3>ATL Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
         <table st-table="vm.displayedATLs" st-safe-src="vm.searchedATLs" class="table table-striped">
           <thead>
             <tr>
@@ -156,6 +266,18 @@
     <div class="row" ng-if="vm.workType === 'announcement'">
       <div class="col-sm-12">
         <h3>Announcement Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
         <table st-table="vm.displayedAnnouncements" st-safe-src="vm.searchedAnnouncements" class="table table-striped">
           <thead>
             <tr>
@@ -179,6 +301,18 @@
     <div class="row" ng-if="vm.workType === 'users' && vm.isChplAdmin">
       <div class="col-sm-12">
         <h3>User Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
         <table st-table="vm.displayedUsers" st-safe-src="vm.searchedUsers" class="table table-striped">
           <thead>
             <tr>
@@ -223,9 +357,21 @@
       </div>
     </div>
 
-    <div class="row" ng-if="vm.workType === 'api_key'">
+    <div class="row" ng-if="vm.workType === 'api_key_management'">
       <div class="col-sm-12">
-        <h3>API User Activity</h3>
+        <h3>API Key Management Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
         <table st-table="vm.displayedApiActivity" st-safe-src="vm.searchedApiActivity" class="table table-striped">
           <thead>
             <tr>
@@ -243,7 +389,38 @@
             </tr>
           </tbody>
         </table>
-        <h3>API Use</h3>
+      </div>
+    </div>
+
+    <div class="row" ng-if="vm.workType === 'api_key_usage'">
+      <div class="col-sm-12">
+        <h3>API Key Usage</h3>
+        <div ng-form class="form-horizontal">
+          <div class="formGroup">
+            <label for="apiKeyStartDate" class="col-sm-2 control-label">Start Date</label>
+            <div class="col-sm-4">
+              <input type="date" class="form-control" ng-model="vm.apiKey.startDate" name="apiKeyStartDate" id="apiKeyStartDate" ng-change="vm.refreshApiKeyUsage()">
+            </div>
+            <label for="apiKeyEndDate" class="col-sm-2 control-label">End Date</label>
+            <div class="col-sm-4">
+              <input type="date" class="form-control" ng-model="vm.apiKey.endDate" name="apiKeyEndDate" id="apiKeyEndDate" ng-change="vm.refreshApiKeyUsage()">
+            </div>
+          </div>
+          <div class="formGroup">
+            <label for="apiKeyDateAscending" class="col-sm-2 control-label">Oldest first</label>
+            <div class="col-sm-2">
+              <input type="checkbox" class="" ng-model="vm.apiKey.dateAscending" name="apiKeyDateAscending" id="apiKeyDateAscending" ng-change="vm.refreshApi()">
+            </div>
+            <label for="apiKeyFilter" class="col-sm-3 control-label">Show <a ng-click="vm.apiKey.showOnly = !vm.apiKey.showOnly; vm.refreshApi()">{{ vm.apiKey.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
+            <div class="col-sm-5">
+              <select class="form-control" ng-model="vm.apiKey.filter" name="apiKeyFilter" id="apiKeyFilter" ng-change="vm.refreshApi()"
+                      ng-options="key.key as (key.name + ' (' + key.email + ')') for key in vm.apiKeys | orderBy:'name' track by key.key">
+                <option value=""></option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12"><a href ng-click="vm.clearApiKeyFilter(); vm.refreshApi();">Clear all filters</a></div>
+        </div>
         <table class="table table-striped">
           <thead>
             <tr>
@@ -256,7 +433,7 @@
           </thead>
           <tfoot>
             <td colspan="5" class="text-center">
-              <pager ng-model="vm.visibleApiPage" ng-change="vm.refreshApi()" class="pagination-sm" total-items="20000"></pager>
+              <pager ng-model="vm.apiKey.visiblePage" ng-change="vm.refreshApi()" class="pagination-sm" total-items="20000"></pager>
             </td>
           </tfoot>
           <tbody>

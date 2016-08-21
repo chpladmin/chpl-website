@@ -7,11 +7,13 @@
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.tab = 'cp';
-            vm.activityRange = 60;
+            vm.activityRange = { range: 60};
             vm.questionableRange = 0;
 
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
+            vm.clearApiKeyFilter = clearApiKeyFilter;
+            vm.loadApiKeys = loadApiKeys;
             vm.refreshCp = refreshCp;
             vm.refreshDeveloper = refreshDeveloper;
             vm.refreshProduct = refreshProduct;
@@ -20,6 +22,7 @@
             vm.refreshAnnouncement = refreshAnnouncement;
             vm.refreshUser = refreshUser;
             vm.refreshApi = refreshApi;
+            vm.refreshApiKeyUsage = refreshApiKeyUsage;
             vm.refreshVisitors = refreshVisitors;
             vm.singleCp = singleCp;
 
@@ -29,10 +32,20 @@
             // Functions
 
             function activate () {
-                vm.visibleApiPage = 1;
-                vm.apiKeyPageSize = 100;
+                vm.activityRange.endDate = new Date();
+                vm.activityRange.startDate = new Date();
+                vm.activityRange.startDate.setDate(vm.activityRange.startDate.getDate() - vm.activityRange.range);
+                vm.apiKey = {
+                    visiblePage: 1,
+                    pageSize: 100,
+                    startDate: angular.copy(vm.activityRange.startDate),
+                    endDate: angular.copy(vm.activityRange.endDate)
+                };
                 vm.refreshActivity();
                 vm.refreshVisitors();
+                vm.loadApiKeys();
+                vm.filename = 'Reports_' + new Date().getTime() + '.csv';
+
             }
 
             function refreshActivity () {
@@ -48,12 +61,14 @@
                 vm.refreshAnnouncement();
                 vm.refreshUser();
                 vm.refreshApi();
+                vm.refreshApiKeyUsage();
             }
 
             function refreshCp () {
                 commonService.getCertifiedProductActivity(vm.activityRange)
                     .then(function (data) {
-                        vm.searchedCertifiedProducts = interpretCps(data);
+                        interpretCps(data);
+                        vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                         vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
             }
@@ -125,12 +140,34 @@
                             vm.searchedApiActivity = data;
                             vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
                         });
-                    vm.apiKeyPageNum = vm.visibleApiPage - 1;
-                    commonService.getApiActivity(vm.apiKeyPageNum,vm.apiKeyPageSize)
+                }
+            }
+            function refreshApiKeyUsage () {
+                if (vm.isChplAdmin) {
+                    vm.apiKey.pageNum = vm.apiKey.visiblePage - 1;
+                    commonService.getApiActivity(vm.apiKey)
                         .then(function (data) {
                             vm.searchedApi = data;
                         });
                 }
+            }
+
+            function clearApiKeyFilter () {
+                vm.apiKey = {
+                    visiblePage: 1,
+                    pageSize: 100,
+                    startDate: angular.copy(vm.activityRange.startDate),
+                    endDate: angular.copy(vm.activityRange.endDate)
+                };
+            }
+
+            function loadApiKeys () {
+                commonService.getApiUsers()
+                    .then (function (result) {
+                        vm.apiKeys = result;
+                    }, function (error) {
+                        $log.debug('error in app.admin.report.controller.loadApiKeys', error);
+                    });
             }
 
             function refreshVisitors () {
@@ -165,7 +202,8 @@
             function singleCp () {
                 commonService.getSingleCertifiedProductActivity(vm.productId)
                     .then(function (data) {
-                        vm.searchedCertifiedProducts = interpretCps(data);
+                        interpretCps(data);
+                        vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                         vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
             }
@@ -269,7 +307,10 @@
                     {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
                     {key: 'testingLab', subkey: 'name', display: 'Testing Lab'}
                 ];
-                var ret = [];
+                var output = {
+                    upload: [],
+                    other: []
+                };
                 var change;
                 var questionable;
 
@@ -286,8 +327,16 @@
                         acb: ''
                     };
                     if (data[i].description === 'Created a certified product') {
-                        activity.action = 'Created certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
+                        activity.id = data[i].newData.id;
+                        activity.chplProductNumber = data[i].newData.chplProductNumber;
                         activity.acb = data[i].newData.certifyingBody.name;
+                        activity.developer = data[i].newData.developer.name;
+                        activity.product = data[i].newData.product.name;
+                        activity.certificationEdition = data[i].newData.certificationEdition.name;
+                        activity.certificationDate = data[i].newData.certificationDate;
+                        activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
+                        activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
+                        output.upload.push(activity);
                     } else if (data[i].description.startsWith('Updated certified')) {
                         questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
                         activity.action = 'Updated certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
@@ -332,6 +381,7 @@
                             activity.details.push('Targeted User "' + targetedUsers[j].name + '" changes<ul>' + targetedUsers[j].changes.join('') + '</ul>');
                         }
                         if (activity.details.length === 0) delete activity.details;
+                        output.other.push(activity);
                     } else if (data[i].description.startsWith('A corrective action plan for')) {
                         var cpNum = data[i].description.split(' ')[7];
                         if (data[i].description.endsWith('created.')) {
@@ -369,16 +419,19 @@
                         } else {
                             activity.action = data[i].description;
                         }
+                        output.other.push(activity);
                     } else if (data[i].description.startsWith('Documentation was added to ')) {
                         var cpNum = data[i].description.split(' ');
                         cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
                         activity.action = cpNum.join(' ');
                         activity.acb = data[i].newData.acbName;
+                        output.other.push(activity);
                     } else if (data[i].description.startsWith('Documentation was removed from ')) {
                         var cpNum = data[i].description.split(' ');
                         cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
                         activity.action = cpNum.join(' ');
                         activity.acb = data[i].newData.acbName;
+                        output.other.push(activity);
                     } else if (data[i].description.startsWith('Updated information for certification')) {
                         activity.action = data[i].description;
                         var capFields = [
@@ -393,12 +446,14 @@
                             change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
                             if (change) activity.details.push(change);
                         }
+                        output.other.push(activity);
                     } else {
                         activity.action = data[i].description;
+                        output.other.push(activity);
                     }
-                    ret.push(activity);
                 }
-                return ret;
+                vm.searchedCertifiedProductsUpload = output.upload;
+                vm.searchedCertifiedProducts = output.other;
             }
 
             function compareCerts (prev, curr, questionable) {

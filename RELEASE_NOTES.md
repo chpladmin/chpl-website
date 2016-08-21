@@ -5,6 +5,10 @@ _DATE TBD_
 
 ### New features
 * Added CMS ID download for CMS_STAFF members
+* Added API Key filter to UI
+* Activity uses start/end dates for date range
+* Split API Key into two sections
+* Enhanced "Uploaded Certified Product" activity report
 
 ---
 
