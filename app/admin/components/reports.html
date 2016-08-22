@@ -409,17 +409,17 @@
           <div class="formGroup">
             <label for="apiKeyDateAscending" class="col-sm-2 control-label">Oldest first</label>
             <div class="col-sm-2">
-              <input type="checkbox" class="" ng-model="vm.apiKey.dateAscending" name="apiKeyDateAscending" id="apiKeyDateAscending" ng-change="vm.refreshApi()">
+              <input type="checkbox" class="" ng-model="vm.apiKey.dateAscending" name="apiKeyDateAscending" id="apiKeyDateAscending" ng-change="vm.refreshApiKeyUsage()">
             </div>
-            <label for="apiKeyFilter" class="col-sm-3 control-label">Show <a ng-click="vm.apiKey.showOnly = !vm.apiKey.showOnly; vm.refreshApi()">{{ vm.apiKey.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
+            <label for="apiKeyFilter" class="col-sm-3 control-label">Show <a ng-click="vm.apiKey.showOnly = !vm.apiKey.showOnly; vm.refreshApiKeyUsage()">{{ vm.apiKey.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
             <div class="col-sm-5">
-              <select class="form-control" ng-model="vm.apiKey.filter" name="apiKeyFilter" id="apiKeyFilter" ng-change="vm.refreshApi()"
+              <select class="form-control" ng-model="vm.apiKey.filter" name="apiKeyFilter" id="apiKeyFilter" ng-change="vm.refreshApiKeyUsage()"
                       ng-options="key.key as (key.name + ' (' + key.email + ')') for key in vm.apiKeys | orderBy:'name' track by key.key">
                 <option value=""></option>
               </select>
             </div>
           </div>
-          <div class="col-sm-12"><a href ng-click="vm.clearApiKeyFilter(); vm.refreshApi();">Clear all filters</a></div>
+          <div class="col-sm-12"><a href ng-click="vm.clearApiKeyFilter(); vm.refreshApiKeyUsage();">Clear all filters</a></div>
         </div>
         <table class="table table-striped">
           <thead>
