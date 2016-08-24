@@ -175,7 +175,18 @@
             };
 
             self.getCertifiedProductActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/certified_products?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/certified_products';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getSingleCertifiedProductActivity = function (productId) {
@@ -183,35 +194,123 @@
             };
 
             self.getDeveloperActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/developers?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/developers';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getProductActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/products?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/products';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getVersionActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/versions?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/versions';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getAcbActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/acbs?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/acbs';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getAtlActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/atls?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/atls';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getUserActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/users?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/users';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getUserActivities = function (activityRange) {
-                return self.simpleApiCall('/activity/user_activities?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/user_activities';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getAnnouncementActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/announcements?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/announcements';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getUploadingCps = function () {
@@ -413,7 +512,18 @@
             };
 
             self.getApiUserActivity = function (activityRange) {
-                return self.simpleApiCall('/activity/api_keys?start=' + activityRange.startDate.getTime() + '&end=' + activityRange.endDate.getTime());
+                var call = '/activity/api_keys';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getApiActivity = function (options) {
