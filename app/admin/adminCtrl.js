@@ -26,7 +26,7 @@
             function activate () {
                 vm.handlers = [];
                 vm.navState = {
-                    reports: 'cp'
+                    reports: 'cp-upload'
                 };
 
                 // base case

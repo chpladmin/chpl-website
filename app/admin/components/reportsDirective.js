@@ -70,6 +70,8 @@
                     .then(function (data) {
                         interpretCps(data);
                         vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
+                        vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
+                        vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                         vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
             }
@@ -298,7 +300,7 @@
                     {key: 'certificationDate', display: 'Certification Date', filter: 'date'},
                     {key: 'chplProductNumber', display: 'CHPL Product Number'},
                     {key: 'ics', display: 'ICS Status'},
-                    {key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
+                    ///{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                     {key: 'otherAcb', display: 'Other ONC-ACB'},
                     {key: 'productAdditionalSoftware', display: 'Product-wide Additional Software'},
                     {key: 'reportFileLocation', display: 'ATL Test Report File Location'},
@@ -310,7 +312,7 @@
                     {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'}
                 ];
                 var nestedKeys = [
-                    {key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
+                    //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
                     {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
                     {key: 'classificationType', subkey: 'name', display: 'Classification Type'},
                     {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
@@ -318,6 +320,8 @@
                 ];
                 var output = {
                     upload: [],
+                    status: [],
+                    cap: [],
                     other: []
                 };
                 var change;
@@ -347,62 +351,84 @@
                         activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                         output.upload.push(activity);
                     } else if (data[i].description.startsWith('Updated certified')) {
-                        questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
-                        activity.action = 'Updated certified product <a href="#/product/' + data[i].newData.id + '">' + data[i].newData.chplProductNumber + '</a>';
+                        activity.id = data[i].newData.id;
+                        activity.chplProductNumber = data[i].newData.chplProductNumber;
                         activity.acb = data[i].newData.certifyingBody.name;
-                        if (data[i].newData.certificationEdition.name === '2011')
-                            activity.action = '<span class="bg-danger">' + activity.action + '</span>';
-                        activity.details = [];
-                        for (var j = 0; j < simpleCpFields.length; j++) {
-                            change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
-                            if (change) activity.details.push(change);
+                        activity.developer = data[i].newData.developer.name;
+                        activity.product = data[i].newData.product.name;
+                        activity.certificationEdition = data[i].newData.certificationEdition.name;
+                        activity.certificationDate = data[i].newData.certificationDate;
+                        activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
+                        activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
+                        questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
+                        var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
+                        if (statusChange) {
+                            activity.details = statusChange;
+                            output.status.push(activity);
+                        } else {
+                            if (data[i].newData.certificationEdition.name === '2011')
+                                activity.action = '<span class="bg-danger">' + activity.action + '</span>';
+                            activity.details = [];
+                            for (var j = 0; j < simpleCpFields.length; j++) {
+                                change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
+                                if (change) activity.details.push(change);
+                            }
+                            for (var j = 0; j < nestedKeys.length; j++) {
+                                change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
+                                if (change)
+                                    if (nestedKeys[j].questionable && questionable) {
+                                        activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
+                                    } else {
+                                        activity.details.push(change);
+                                    }
+                            }
+                            var accessibilityStandardsKeys = [];
+                            var accessibilityStandards = compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
+                            for (var j = 0; j < accessibilityStandards.length; j++) {
+                                activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
+                            }
+                            var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
+                            for (var j = 0; j < certChanges.length; j++) {
+                                activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                            }
+                            var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
+                            for (var j = 0; j < cqmChanges.length; j++) {
+                                activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
+                            }
+                            var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
+                            var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
+                            for (var j = 0; j < qmsStandards.length; j++) {
+                                activity.details.push('QMS Standard "' + qmsStandards[j].name + '" changes<ul>' + qmsStandards[j].changes.join('') + '</ul>');
+                            }
+                            var targetedUsersKeys = [];
+                            var targetedUsers = compareArray(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, targetedUsersKeys, 'targetedUserName');
+                            for (var j = 0; j < targetedUsers.length; j++) {
+                                activity.details.push('Targeted User "' + targetedUsers[j].name + '" changes<ul>' + targetedUsers[j].changes.join('') + '</ul>');
+                            }
+                            if (activity.details.length === 0) {
+                                delete activity.details;
+                            } else {
+                                output.other.push(activity);
+                            }
                         }
-                        for (var j = 0; j < nestedKeys.length; j++) {
-                            change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                            if (change)
-                                if (nestedKeys[j].questionable && questionable) {
-                                    activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
-                                } else {
-                                    activity.details.push(change);
-                                }
-                        }
-                        var accessibilityStandardsKeys = [];
-                        var accessibilityStandards = compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
-                        for (var j = 0; j < accessibilityStandards.length; j++) {
-                            activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
-                        }
-                        var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
-                        for (var j = 0; j < certChanges.length; j++) {
-                            activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
-                        }
-                        var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
-                        for (var j = 0; j < cqmChanges.length; j++) {
-                            activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
-                        }
-                        var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
-                        var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
-                        for (var j = 0; j < qmsStandards.length; j++) {
-                            activity.details.push('QMS Standard "' + qmsStandards[j].name + '" changes<ul>' + qmsStandards[j].changes.join('') + '</ul>');
-                        }
-                        var targetedUsersKeys = [];
-                        var targetedUsers = compareArray(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, targetedUsersKeys, 'targetedUserName');
-                        for (var j = 0; j < targetedUsers.length; j++) {
-                            activity.details.push('Targeted User "' + targetedUsers[j].name + '" changes<ul>' + targetedUsers[j].changes.join('') + '</ul>');
-                        }
-                        if (activity.details.length === 0) delete activity.details;
-                        output.other.push(activity);
                     } else if (data[i].description.startsWith('A corrective action plan for')) {
                         var cpNum = data[i].description.split(' ')[7];
                         if (data[i].description.endsWith('created.')) {
                             cpNum = data[i].description.split(' ')[5];
                             activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                            activity.id = data[i].newData.id;
                             activity.acb = data[i].newData.acbName;
+                            activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                         } else if (data[i].description.endsWith('deleted.')) {
                             activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
+                            activity.id = data[i].newData.id;
                             activity.acb = data[i].originalData.acbName;
+                            activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                         } else if (data[i].description.endsWith('updated.')) {
                             activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                            activity.id = data[i].newData.id;
                             activity.acb = data[i].newData.acbName;
+                            activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                             var capFields = [
                                 {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
                                 {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
@@ -428,19 +454,19 @@
                         } else {
                             activity.action = data[i].description;
                         }
-                        output.other.push(activity);
+                        output.cap.push(activity);
                     } else if (data[i].description.startsWith('Documentation was added to ')) {
                         var cpNum = data[i].description.split(' ');
                         cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
                         activity.action = cpNum.join(' ');
                         activity.acb = data[i].newData.acbName;
-                        output.other.push(activity);
+                        output.cap.push(activity);
                     } else if (data[i].description.startsWith('Documentation was removed from ')) {
                         var cpNum = data[i].description.split(' ');
                         cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
                         activity.action = cpNum.join(' ');
                         activity.acb = data[i].newData.acbName;
-                        output.other.push(activity);
+                        output.cap.push(activity);
                     } else if (data[i].description.startsWith('Updated information for certification')) {
                         activity.action = data[i].description;
                         var capFields = [
@@ -455,13 +481,15 @@
                             change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
                             if (change) activity.details.push(change);
                         }
-                        output.other.push(activity);
+                        output.cap.push(activity);
                     } else {
                         activity.action = data[i].description;
                         output.other.push(activity);
                     }
                 }
                 vm.searchedCertifiedProductsUpload = output.upload;
+                vm.searchedCertifiedProductsStatus = output.status;
+                vm.searchedCertifiedProductsCAP = output.cap;
                 vm.searchedCertifiedProducts = output.other;
             }
 

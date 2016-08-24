@@ -8,7 +8,9 @@ _DATE TBD_
 * Added API Key filter to UI
 * Activity uses start/end dates for date range
 * Split API Key into two sections
-* Enhanced "Uploaded Certified Product" activity report
+* Enhanced "Certified Product" activity reports
+  * Split into four groups: uploads, status changes, corrective action plans, other
+  * Needs additional API calls to get better status on CAP stuff
 
 ---
 

@@ -1,8 +1,8 @@
 <section class="row">
   <div class="col-sm-12 admin-inner-tab main-content form-horizontal" ng-form="vm.activityForm">
-    <div class="row" ng-if="vm.workType === 'cp' || (vm.workType === '' && vm.productId)">
+    <div class="row" ng-if="vm.workType === 'cp-upload' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
-        <h3>Certified Product Activity</h3>
+        <h3>Certified Product - Uploads</h3>
         <div class="formGroup">
           <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-4">
@@ -15,7 +15,6 @@
             <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
           </div>
         </div>
-        <h4>Certified Product Upload</h3>
         <table st-table="vm.displayedCertifiedProductsUpload" st-safe-src="vm.searchedCertifiedProductsUpload" class="table table-striped">
           <thead>
             <tr>
@@ -64,28 +63,207 @@
             </tr>
           </tbody>
         </table>
-        <h4>Other Certified Product Activity</h4>
+      </div>
+    </div>
+
+    <div class="row" ng-if="vm.workType === 'cp-status' || (vm.workType === '' && vm.productId)">
+      <div class="col-sm-12">
+        <h3>Certification Status Changes</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
+        <table st-table="vm.displayedCertifiedProductsStatus" st-safe-src="vm.searchedCertifiedProductsStatus" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="acb" st-skip-natural="true">ACB</th>
+              <th class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+              <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
+              <th class="search-header" st-sort="certificationEdition" st-skip-natural="true">Certification Edition</th>
+              <th class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+              <th class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+              <th>Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+            </tr>
+            <tr>
+              <th><input st-search="acb" placeholder="Filter ACB" class="input-sm form-control" type="search"></th>
+              <th><input st-search="developer" placeholder="Filter Developer" class="input-sm form-control" type="search"></th>
+              <th><input st-search="product" placeholder="Filter Product" class="input-sm form-control" type="search"></th>
+              <th><input st-search="certificationEdition" placeholder="Filter Certification Edition" class="input-sm form-control" type="search"></th>
+              <th><input st-search="chplProductNumber" placeholder="Filter CHPL Product Number" class="input-sm form-control" type="search"></th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="7">
+                <a type="button" class="btn btn-lg btn-ai-success"
+                   ng-csv="vm.displayedCertifiedProductsStatus" filename="CP_Status_{{ vm.filename }}"
+                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity Date']"
+                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'friendlyActivityDate']">
+                  <i class="fa fa-cloud-download"></i> Download
+                </a>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr ng-if="vm.displayedCertifiedProductsStatus.length === 0">
+              <td colspan="8">No activity found</td>
+            </tr>
+	        <tr ng-repeat="activity in vm.displayedCertifiedProductsStatus" ng-if="vm.displayedCertifiedProductsStatus.length > 0">
+              <td>{{ activity.acb }}</td>
+              <td>{{ activity.developer }}</td>
+              <td>{{ activity.product }}</td>
+              <td>{{ activity.certificationEdition }}</td>
+              <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+              <td>{{ activity.details }}</td>
+		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" ng-if="vm.workType === 'cp-cap' || (vm.workType === '' && vm.productId)">
+      <div class="col-sm-12">
+        <h3>Corrective Action Plans</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
+        <table st-table="vm.displayedCertifiedProductsCAP" st-safe-src="vm.searchedCertifiedProductsCAP" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="acb" st-skip-natural="true">ACB</th>
+              <th>Action</th>
+              <th>Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+            </tr>
+            <tr>
+              <th><input st-search="acb" placeholder="Filter ACB" class="input-sm form-control" type="search"></th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <a type="button" class="btn btn-lg btn-ai-success"
+                   ng-csv="vm.displayedCertifiedProductsCAP" filename="CP_CAP_{{ vm.filename }}"
+                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity Date']"
+                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'friendlyActivityDate']">
+                  <i class="fa fa-cloud-download"></i> Download
+                </a>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr ng-if="vm.displayedCertifiedProductsCAP.length === 0">
+              <td colspan="8">No activity found</td>
+            </tr>
+	        <tr ng-repeat="activity in vm.displayedCertifiedProductsCAP" ng-if="vm.displayedCertifiedProductsCAP.length > 0">
+              <td>{{ activity.acb }}</td>
+              <td ng-bind-html="activity.action"></td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+              <td>
+                <ul class="list-unstyled" ng-if="activity.details">
+                  <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
+                </ul>
+              </td>
+		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row" ng-if="vm.workType === 'cp-other' || (vm.workType === '' && vm.productId)">
+      <div class="col-sm-12">
+        <h3>Other Certified Product Actvities</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
         <table st-table="vm.displayedCertifiedProducts" st-safe-src="vm.searchedCertifiedProducts" class="table table-striped">
           <thead>
             <tr>
-              <th class="">Activity</th>
               <th class="search-header" st-sort="acb" st-skip-natural="true">ACB</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+              <th class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+              <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
+              <th class="search-header" st-sort="certificationEdition" st-skip-natural="true">Certification Edition</th>
+              <th class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+              <th class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+              <th>Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+            </tr>
+            <tr>
+              <th><input st-search="acb" placeholder="Filter ACB" class="input-sm form-control" type="search"></th>
+              <th><input st-search="developer" placeholder="Filter Developer" class="input-sm form-control" type="search"></th>
+              <th><input st-search="product" placeholder="Filter Product" class="input-sm form-control" type="search"></th>
+              <th><input st-search="certificationEdition" placeholder="Filter Certification Edition" class="input-sm form-control" type="search"></th>
+              <th><input st-search="chplProductNumber" placeholder="Filter CHPL Product Number" class="input-sm form-control" type="search"></th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
             </tr>
           </thead>
+          <tfoot>
+            <tr>
+              <td colspan="7">
+                <a type="button" class="btn btn-lg btn-ai-success"
+                   ng-csv="vm.displayedCertifiedProducts" filename="CP_Other_{{ vm.filename }}"
+                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity Date']"
+                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'friendlyActivityDate']">
+                  <i class="fa fa-cloud-download"></i> Download
+                </a>
+              </td>
+            </tr>
+          </tfoot>
           <tbody>
             <tr ng-if="vm.displayedCertifiedProducts.length === 0">
-              <td colspan="3">No activity found</td>
+              <td colspan="8">No activity found</td>
             </tr>
 	        <tr ng-repeat="activity in vm.displayedCertifiedProducts" ng-if="vm.displayedCertifiedProducts.length > 0">
-		      <td class="">
-                <span ng-bind-html="activity.action"></span>
-                <ul ng-if="activity.details">
-                  <li ng-repeat="str in activity.details | orderBy : 'toString()'" ng-bind-html="str"></li>
+              <td>{{ activity.acb }}</td>
+              <td>{{ activity.developer }}</td>
+              <td>{{ activity.product }}</td>
+              <td>{{ activity.certificationEdition }}</td>
+              <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+              <td>
+                <ul class="list-unstyled" ng-if="activity.details">
+                  <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </td>
-              <td>{{ activity.acb }}</td>
-		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
