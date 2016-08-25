@@ -89,7 +89,7 @@
                 vm.activityRange = dateAdjust(vm.activityRange);
                 commonService.getProductActivity(vm.activityRange)
                     .then(function (data) {
-                        vm.searchedProducts = vm.interpretProducts(data);
+                        vm.searchedProducts = interpretProducts(data);
                         vm.displayedProducts = [].concat(vm.searchedProducts);
                     });
                 commonService.getVersionActivity(vm.activityRange)
@@ -743,12 +743,19 @@
                 return ret;
             }
 
-            vm.interpretProducts = function (data) {
+            function interpretProducts (data) {
                 var ret = [];
                 var change;
 
                 for (var i = 0; i < data.length; i++) {
-                    var activity = {date: data[i].activityDate};
+                    var activity = {
+                        id: data[i].id,
+                        developer: data[i].newData.developerName,
+                        product: data[i].newData.name,
+                        responsibleUser: getResponsibleUser(data[i].responsibleUser),
+                        date: data[i].activityDate
+                    };
+                    activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
                         activity.action = 'Update:<ul>';
@@ -763,7 +770,7 @@
                     ret.push(activity);
                 }
                 return ret;
-            };
+            }
 
             vm.interpretVersions = function (data) {
                 var ret = [];

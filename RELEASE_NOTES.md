@@ -14,6 +14,7 @@ _DATE TBD_
 * Moved ACB Certification ID
 * Added navigation to Overview page
 * Enhanced Developer activity report
+* Enhanced Product activity report
 
 ---
 
