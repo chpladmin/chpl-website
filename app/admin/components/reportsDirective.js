@@ -756,18 +756,27 @@
                         date: data[i].activityDate
                     };
                     activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
+                    var wasChanged = false;
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.name = data[i].newData.name;
                         activity.action = 'Update:<ul>';
                         change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
+                        if (change) {
+                            activity.action += '<li>' + change + '</li>';
+                            wasChanged = true;
+                        }
                         change = compareItem(data[i].originalData, data[i].newData, 'developerName', 'Developer');
-                        if (change) activity.action += '<li>' + change + '</li>';
+                        if (change) {
+                            activity.action += '<li>' + change + '</li>';
+                            wasChanged = true;
+                        }
                         activity.action += '</ul>';
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'product');
+                        wasChanged = true;
                     }
-                    ret.push(activity);
+                    if (wasChanged)
+                        ret.push(activity);
                 }
                 return ret;
             }
