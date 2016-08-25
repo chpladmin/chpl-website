@@ -58,7 +58,7 @@
               <td>{{ activity.product }}</td>
               <td>{{ activity.certificationEdition }}</td>
               <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
-              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
 		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
@@ -126,7 +126,7 @@
               <td>{{ activity.product }}</td>
               <td>{{ activity.certificationEdition }}</td>
               <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
-              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>{{ activity.details }}</td>
 		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
@@ -184,7 +184,7 @@
 	        <tr ng-repeat="activity in vm.displayedCertifiedProductsCAP" ng-if="vm.displayedCertifiedProductsCAP.length > 0">
               <td>{{ activity.acb }}</td>
               <td ng-bind-html="activity.action"></td>
-              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>
                 <ul class="list-unstyled" ng-if="activity.details">
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
@@ -257,7 +257,7 @@
               <td>{{ activity.product }}</td>
               <td>{{ activity.certificationEdition }}</td>
               <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
-              <td>{{ activity.certificationDate | date : 'mediumDate' }}</td>
+              <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>
                 <ul class="list-unstyled" ng-if="activity.details">
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>

@@ -16,6 +16,9 @@ _DATE TBD_
 * Enhanced Developer activity report
 * Enhanced Product activity report
 
+### Bugs fixed
+* Certification Date in activity report was reported at wrong time zone
+
 ---
 
 ## Version 3.0.0
