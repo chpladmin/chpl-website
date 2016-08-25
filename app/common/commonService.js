@@ -71,7 +71,7 @@
                 return self.postApiCall('/auth/reset_password', userObj);
             };
 
-            self.search = function (queryObj, pageNum, pageSize) {
+            self.search = function (queryObj) {
                 return self.postApiCall('/search', queryObj);
             };
 
@@ -529,7 +529,7 @@
             self.getApiActivity = function (options) {
                 var params = [];
                 var queryParams = '';
-                if (options.pageNum !== undefined) { params.push('pageNum=' + options.pageNum); }
+                if (options.pageNumber !== undefined) { params.push('pageNumber=' + options.pageNumber); }
                 if (options.pageSize) { params.push('pageSize=' + options.pageSize); }
                 if (options.startDate) { params.push('startDate=' + options.startDate.getTime()); }
                 if (options.endDate) { params.push('endDate=' + options.endDate.getTime()); }

@@ -155,7 +155,7 @@
             function refreshApiKeyUsage () {
                 vm.apiKey = dateAdjust(vm.apiKey);
                 if (vm.isChplAdmin) {
-                    vm.apiKey.pageNum = vm.apiKey.visiblePage - 1;
+                    vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
                     commonService.getApiActivity(vm.apiKey)
                         .then(function (data) {
                             vm.searchedApi = data;
