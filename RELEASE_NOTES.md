@@ -19,6 +19,9 @@ _DATE TBD_
 ### Bugs fixed
 * Certification Date in activity report was reported at wrong time zone
 
+### Bugs fixed
+* Fixed widget overrunning cookie 4K limit by switching to using local storage instead
+
 ---
 
 ## Version 3.0.0

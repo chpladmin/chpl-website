@@ -188,14 +188,7 @@ var chplCertIdWidget = (function(){
 		//
 		////////////////////////////////////////////////////////////////
 		getCookie: function (name) {
-			var cookies = document.cookie.split(";");
-			for (var i=0; i < cookies.length; ++i) {
-				if (name === ( (cookies[i].split("=")[0]).trim() )) {
-					var value = (cookies[i].split("=")[1]).trim();
-					return value;
-				}
-			}
-			return null;
+			return localStorage.getItem(name);
 		},
 
 		////////////////////////////////////////////////////////////////
@@ -203,14 +196,7 @@ var chplCertIdWidget = (function(){
 		//
 		////////////////////////////////////////////////////////////////
 		setCookie: function (cname, cvalue, exdays) {
-			var expires = null;
-			if (-1 !== exdays) {
-				var d = new Date();
-				d.setTime(d.getTime() + (exdays*24*60*60*1000));
-				expires = "expires="+d.toUTCString();
-			}
-			var cookieString = cname + "=" + cvalue + ((-1 !== exdays) ? ("; " + expires) : (""));
-			document.cookie = cookieString + "; path=" + cookiePath;
+			localStorage.setItem(cname, cvalue);
 		},
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
