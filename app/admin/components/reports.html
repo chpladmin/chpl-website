@@ -288,22 +288,47 @@
         <table st-table="vm.displayedDevelopers" st-safe-src="vm.searchedDevelopers" class="table table-striped">
           <thead>
             <tr>
-              <th class="">Activity</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
+              <th class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+              <th class="search-header" st-sort="developerCode" st-skip-natural="true">Developer Code</th>
+              <th class="search-header" st-sort="responsibleUser" st-skip-natural="true">Responsible User</th>
+              <th>Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+            </tr>
+            <tr>
+              <th><input st-search="developer" placeholder="Filter Developer" class="input-sm form-control" type="search"></th>
+              <th><input st-search="developerCode" placeholder="Filter Developer Code" class="input-sm form-control" type="search"></th>
+              <th><input st-search="responsibleUser" placeholder="Filter Responsible User" class="input-sm form-control" type="search"></th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
             </tr>
           </thead>
+          <tfoot>
+            <tr>
+              <td colspan="5">
+                <a type="button" class="btn btn-lg btn-ai-success"
+                   ng-csv="vm.displayedDevelopers" filename="Developers_{{ vm.filename }}"
+                   csv-header="['Developer', 'Developer Code', 'Resonsible User', 'Activity', 'Activity Date']"
+                   csv-column-order="['developer', 'developerCode', 'responsibleUser', 'activity', 'friendlyActivityDate']">
+                  <i class="fa fa-cloud-download"></i> Download
+                </a>
+              </td>
+            </tr>
+          </tfoot>
           <tbody>
-            <tr ng-if="vm.displayedDevelopers.length === 0">
-              <td colspan="2">No activity found</td>
+            <tr ng-if="vm.displayedCertifiedDevelopers.length === 0">
+              <td colspan="5">No activity found</td>
             </tr>
 	        <tr ng-repeat="activity in vm.displayedDevelopers" ng-if="vm.displayedDevelopers.length > 0">
-		      <td class="">
+              <td>{{ activity.developer }}</td>
+              <td>{{ activity.developerCode }}</td>
+              <td>{{ activity.responsibleUser }}</td>
+              <td>
                 <span ng-bind-html="activity.action"></span>
-                <ul ng-if="activity.details">
-                  <li ng-repeat="str in activity.details" ng-bind-html="str"></li>
+                <ul class="list-unstyled" ng-if="activity.details">
+                  <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>

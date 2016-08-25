@@ -293,6 +293,20 @@
             ////////////////////////////////////////////////////////////////////
             // Helper functions
 
+            if (!String.prototype.startsWith) {
+                String.prototype.startsWith = function(searchString, position){
+                    position = position || 0;
+                    return this.substr(position, searchString.length) === searchString;
+                };
+            }
+
+            if (!String.prototype.endsWith) {
+                String.prototype.endsWith = function(searchString, position){
+                    position = position || 0;
+                    return this.substr(position) === searchString;
+                };
+            }
+
             function interpretCps (data) {
                 var simpleCpFields = [
                     {key: 'acbCertificationId', display: 'ACB Certification ID'},
@@ -327,12 +341,6 @@
                 var change;
                 var questionable;
 
-                if (!String.prototype.startsWith) {
-                    String.prototype.startsWith = function(searchString, position){
-                        position = position || 0;
-                        return this.substr(position, searchString.length) === searchString;
-                    };
-                }
                 for (var i = 0; i < data.length; i++) {
                     var activity = {
                         date: data[i].activityDate,
@@ -682,7 +690,7 @@
                 var simpleFields = [
                     {key: 'deleted', display: 'Deleted'},
                     {key: 'developerCode', display: 'Developer Code'},
-                    {key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
+                    //{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                     {key: 'name', display: 'Name'},
                     {key: 'website', display: 'Website'}
                 ];
@@ -692,9 +700,20 @@
 
                 for (var i = 0; i < data.length; i++) {
                     var activity = {
-                        date: data[i].activityDate,
-                        newId: data[i].id
+                        id: data[i].id,
+                        developer: data[i].newData.name,
+                        developerCode: data[i].newData.developerCode,
+                        responsibleUser: getResponsibleUser(data[i].responsibleUser),
+                        date: data[i].activityDate
                     };
+                    if (data[i].description.startsWith('Merged')) {
+                        activity.developerCode = data[i].originalData.map(function(elem){
+                            return elem.developerCode;
+                        }).join(',');
+                    } else if (!activity.developerCode) {
+                        activity.developerCode = 'N/A';
+                    }
+                    activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.action = 'Updated developer "' + data[i].newData.name + '"';
                         activity.details = [];
@@ -973,6 +992,10 @@
                     }
                     return date;
                 }
+            }
+
+            function getResponsibleUser (user) {
+                return user.firstName + ' ' + user.lastName;
             }
         }])
         .directive('aiReports', function () {

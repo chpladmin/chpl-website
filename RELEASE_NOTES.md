@@ -13,6 +13,7 @@ _DATE TBD_
   * Needs additional API calls to get better status on CAP stuff
 * Moved ACB Certification ID
 * Added navigation to Overview page
+* Enhanced Developer activity report
 
 ---
 
