@@ -109,8 +109,8 @@
               <td colspan="7">
                 <a type="button" class="btn btn-lg btn-ai-success"
                    ng-csv="vm.displayedCertifiedProductsStatus" filename="CP_Status_{{ vm.filename }}"
-                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity Date']"
-                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'friendlyActivityDate']">
+                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity', 'Activity Date']"
+                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'details', 'friendlyActivityDate']">
                   <i class="fa fa-cloud-download"></i> Download
                 </a>
               </td>
@@ -170,8 +170,8 @@
               <td colspan="4">
                 <a type="button" class="btn btn-lg btn-ai-success"
                    ng-csv="vm.displayedCertifiedProductsCAP" filename="CP_CAP_{{ vm.filename }}"
-                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity Date']"
-                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'friendlyActivityDate']">
+                   csv-header="['ACB', 'Action', 'Activity', 'Activity Date']"
+                   csv-column-order="['acb', 'action', 'csvDetails', 'friendlyActivityDate']">
                   <i class="fa fa-cloud-download"></i> Download
                 </a>
               </td>
@@ -240,8 +240,8 @@
               <td colspan="7">
                 <a type="button" class="btn btn-lg btn-ai-success"
                    ng-csv="vm.displayedCertifiedProducts" filename="CP_Other_{{ vm.filename }}"
-                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity Date']"
-                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'friendlyActivityDate']">
+                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity', 'Activity Date']"
+                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'csvDetails', 'friendlyActivityDate']">
                   <i class="fa fa-cloud-download"></i> Download
                 </a>
               </td>
@@ -307,8 +307,8 @@
               <td colspan="5">
                 <a type="button" class="btn btn-lg btn-ai-success"
                    ng-csv="vm.displayedDevelopers" filename="Developers_{{ vm.filename }}"
-                   csv-header="['Developer', 'Developer Code', 'Resonsible User', 'Activity', 'Activity Date']"
-                   csv-column-order="['developer', 'developerCode', 'responsibleUser', 'activity', 'friendlyActivityDate']">
+                   csv-header="['Developer', 'Developer Code', 'Resonsible User', 'Activity', 'Details', 'Activity Date']"
+                   csv-column-order="['developer', 'developerCode', 'responsibleUser', 'csvAction', 'csvDetails', 'friendlyActivityDate']">
                   <i class="fa fa-cloud-download"></i> Download
                 </a>
               </td>
@@ -373,7 +373,7 @@
                 <a type="button" class="btn btn-lg btn-ai-success"
                    ng-csv="vm.displayedProducts" filename="Products_{{ vm.filename }}"
                    csv-header="['Developer', 'Product', 'Resonsible User', 'Activity', 'Activity Date']"
-                   csv-column-order="['developer', 'product', 'responsibleUser', 'activity', 'friendlyActivityDate']">
+                   csv-column-order="['developer', 'product', 'responsibleUser', 'action', 'friendlyActivityDate']">
                   <i class="fa fa-cloud-download"></i> Download
                 </a>
               </td>
@@ -389,9 +389,6 @@
               <td>{{ activity.responsibleUser }}</td>
               <td>
                 <span ng-bind-html="activity.action"></span>
-                <ul class="list-unstyled" ng-if="activity.details">
-                  <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
-                </ul>
               </td>
 		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>

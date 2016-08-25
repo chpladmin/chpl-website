@@ -347,6 +347,7 @@
                         newId: data[i].id,
                         acb: ''
                     };
+                    activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                     if (data[i].description === 'Created a certified product') {
                         activity.id = data[i].newData.id;
                         activity.chplProductNumber = data[i].newData.chplProductNumber;
@@ -356,7 +357,6 @@
                         activity.certificationEdition = data[i].newData.certificationEdition.name;
                         activity.certificationDate = data[i].newData.certificationDate;
                         activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
-                        activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                         output.upload.push(activity);
                     } else if (data[i].description.startsWith('Updated certified')) {
                         activity.id = data[i].newData.id;
@@ -367,7 +367,6 @@
                         activity.certificationEdition = data[i].newData.certificationEdition.name;
                         activity.certificationDate = data[i].newData.certificationDate;
                         activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
-                        activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                         questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
                         var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
                         if (statusChange) {
@@ -416,6 +415,7 @@
                             if (activity.details.length === 0) {
                                 delete activity.details;
                             } else {
+                                activity.csvDetails = activity.details.join('\n');
                                 output.other.push(activity);
                             }
                         }
@@ -426,17 +426,14 @@
                             activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                             activity.id = data[i].newData.id;
                             activity.acb = data[i].newData.acbName;
-                            activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                         } else if (data[i].description.endsWith('deleted.')) {
                             activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
                             activity.id = data[i].newData.id;
                             activity.acb = data[i].originalData.acbName;
-                            activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                         } else if (data[i].description.endsWith('updated.')) {
                             activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                             activity.id = data[i].newData.id;
                             activity.acb = data[i].newData.acbName;
-                            activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                             var capFields = [
                                 {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
                                 {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
@@ -459,6 +456,7 @@
                             for (var j = 0; j < certChanges.length; j++) {
                                 activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                             }
+                            activity.csvDetails = activity.details.join('\n');
                         } else {
                             activity.action = data[i].description;
                         }
@@ -489,6 +487,7 @@
                             change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
                             if (change) activity.details.push(change);
                         }
+                        activity.csvDetails = activity.details.join('\n');
                         output.cap.push(activity);
                     } else {
                         activity.action = data[i].description;
@@ -706,6 +705,7 @@
                         responsibleUser: getResponsibleUser(data[i].responsibleUser),
                         date: data[i].activityDate
                     };
+                    activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
                     if (data[i].description.startsWith('Merged')) {
                         activity.developerCode = data[i].originalData.map(function(elem){
                             return elem.developerCode;
@@ -713,7 +713,6 @@
                     } else if (!activity.developerCode) {
                         activity.developerCode = 'N/A';
                     }
-                    activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
                     if (data[i].originalData && !Array.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                         activity.action = 'Updated developer "' + data[i].newData.name + '"';
                         activity.details = [];
@@ -734,9 +733,15 @@
                         for (var j = 0; j < trans.length; j++) {
                             activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
                         }
-                        if (activity.details.length === 0) delete activity.details;
+                        if (activity.details.length === 0) {
+                            delete activity.details;
+                        } else {
+                            activity.csvDetails = activity.details.join('\n');
+                        }
+                        activity.csvAction = activity.action;
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'developer');
+                        activity.csvAction = activity.action[0].replace(',','","');
                     }
                     ret.push(activity);
                 }
@@ -880,15 +885,15 @@
                 if (!key) key = 'name';
                 if (data.originalData && !data.newData) { // no new data: deleted
                     activity.name = data.originalData[key];
-                    activity.action = [activity.name + ' has been deleted'];
+                    activity.action = ['"' + activity.name + '" has been deleted'];
                 }
                 if (!data.originalData && data.newData) { // no old data: created
                     activity.name = data.newData[key];
-                    activity.action = [activity.name + ' has been created'];
+                    activity.action = ['"' + activity.name + '" has been created'];
                 }
                 if (data.originalData && data.originalData.length > 1 && data.newData) { // both exist, more than one originalData: merge
                     activity.name = data.newData[key];
-                    activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': ' + activity.name];
+                    activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': "' + activity.name + '"'];
                 }
             };
 
