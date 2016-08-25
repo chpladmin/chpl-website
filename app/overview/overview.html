@@ -7,13 +7,24 @@
   </div>
 
   <div class="row main-content" id="mainContent" tabindex="-1">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-2" role="navigation">
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#{{ currentPage }}#whatIsTheChpl">What is the CHPL</a></li>
+        <li><a href="#{{ currentPage }}#usingTheChplWebsite">Using the CHPL Website</a></li>
+        <li><a href="#{{ currentPage }}#forEhrVendors">For EHR Vendors</a></li>
+        <li><a href="#{{ currentPage }}#oncacbAndAtlInformation">ONC-ACB and ATL information</a></li>
+      </ul>
+    </div>
+    <div class="col-md-8">
       <span ng-if="vm.announcements.length > 0">
         <h2>Announcement<span ng-if="vm.announcements.length > 1">s</span></h2>
         <div ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
           <strong>{{ announcement.title }}</strong><span ng-if="announcement.text">: {{ announcement.text }}</span><br />
           Start date: {{ announcement.startDate | date : 'mediumDate' : 'UTC' }}, End date: {{ announcement.endDate | date : 'mediumDate' : 'UTC' }}
         </div>
+      </span>
+      <span class="anchor-element">
+        <a id="whatIsTheChpl" class="page-anchor"></a>
       </span>
       <h2>What is the CHPL?</h2>
       <p>The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified Health Information Technology which has been successfully tested and certified in the ONC Health IT Certification program. All products listed on the CHPL have been tested by an Accredited Testing Laboratory (ATL) and certified by an ONC-Authorized Certification Body (ONC-ACB) to meet criteria adopted by the Secretary of the Department of  Health and Human Services (HHS).</p>
@@ -26,6 +37,10 @@
       <h3>What are clinical quality measures (CQMs)?</h3>
       <p>Clinical Quality Measures (CQMs) are used to measure and track the quality of healthcare services delivered by eligible providers, eligible hospitals, and critical access hospitals.</p>
       <p>For more information, please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/clinicalqualitymeasures.html">Centers for Medicare and Medicaid Services CQM Basics page</a>.</p>
+      <a href="#{{ currentPage }}">Back to the top</a>
+      <span class="anchor-element">
+        <a id="usingTheChplWebsite" class="page-anchor"></a>
+      </span>
       <h2>USING THE CHPL WEBSITE</h2>
       <h3>How do I use the CHPL to view Certified Health Information Technology?</h3>
       <p>To search for Certified Health Information Technology, type a keyword, such as a developer name or product name, into the main search area. Alternatively, you may choose to browse all certified products by clicking the 'View All Products' option, or use the 'Advanced Search' option to search for products matching specific criteria (e.g. certification criteria, clinical quality measurements, etc.). The CHPL will display your search results.</p>
@@ -40,6 +55,10 @@
           <li>Mozilla Firefox (version 17+)</li>
         </ul>
       </p>
+      <a href="#{{ currentPage }}">Back to the top</a>
+      <span class="anchor-element">
+        <a id="forEhrVendors" class="page-anchor"></a>
+      </span>
       <h2>FOR EHR VENDORS</h2>
       <h3>How can a product be added to the CHPL?</h3>
       <p>To be listed on the CHPL, Health Information Technology must first be successfully tested by an ATL, and then certified by an ONC-ACB against at least one <a href="http://www.healthit.gov/policy-researchers-implementers/standards-and-certification-regulations">certification criterion adopted by HHS</a>. For more information on the ONC Certification Program, ATLs, and ONC-ACBs, please see the <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health It Certification Program page</a>.</p>
@@ -72,6 +91,10 @@
         </tbody>
       </table>
       <p>If the ONC-ACB cannot or does not address your issue, please <a href="http://www.healthit.gov/newsroom/contacting-onc-office-certification">contact ONC's Office of Certification.</a></p>
+      <a href="#{{ currentPage }}">Back to the top</a>
+      <span class="anchor-element">
+        <a id="oncacbAndAtlInformation" class="page-anchor"></a>
+      </span>
       <h2>ONC-ACB and ATL information</h2>
       <table class="table table-striped">
         <thead>
@@ -97,6 +120,7 @@
           </tr>
         </tbody>
       </table>
+      <a href="#{{ currentPage }}">Back to the top</a>
     </div>
-  </div> <!-- end of other infographic -->
+  </div>
 </div> <!-- end controller -->
