@@ -755,7 +755,7 @@
                 for (var i = 0; i < data.length; i++) {
                     var activity = {
                         id: data[i].id,
-                        developer: data[i].newData.developerName,
+                        developer: data[i].developer.name,
                         product: data[i].newData.name,
                         responsibleUser: getResponsibleUser(data[i].responsibleUser),
                         date: data[i].activityDate
