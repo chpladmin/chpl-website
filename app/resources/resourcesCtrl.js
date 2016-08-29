@@ -25,6 +25,7 @@
             function activate () {
                 vm.API = API;
                 vm.API_KEY = authService.getApiKey();
+                vm.downloadOption= vm.API + '/download?api_key=' + vm.API_KEY;
                 if (vm.API === '/rest') {
                     vm.swaggerUrl = $location.absUrl().split('#')[0] + 'rest/api-docs';
                 } else {
