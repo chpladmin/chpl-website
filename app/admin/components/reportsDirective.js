@@ -418,7 +418,7 @@
                             activity.acb = data[i].newData.acbName;
                         } else if (data[i].description.endsWith('deleted.')) {
                             activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
-                            activity.id = data[i].newData.id;
+                            activity.id = data[i].originalData.id;
                             activity.acb = data[i].originalData.acbName;
                         } else if (data[i].description.endsWith('updated.')) {
                             activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
