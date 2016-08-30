@@ -184,7 +184,6 @@
 	        <tr ng-repeat="activity in vm.displayedCertifiedProductsCAP" ng-if="vm.displayedCertifiedProductsCAP.length > 0">
               <td>{{ activity.acb }}</td>
               <td ng-bind-html="activity.action"></td>
-              <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>
                 <ul class="list-unstyled" ng-if="activity.details">
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
