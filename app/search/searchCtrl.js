@@ -5,6 +5,8 @@
         .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, commonService, CACHE_TIMEOUT) {
             var vm = this;
 
+			vm.toggleCart = toggleCart;
+			vm.widget = chplCertIdWidget;
             vm.addRefine = addRefine;
             vm.clear = clear;
             vm.clearFilters = clearFilters;
@@ -19,8 +21,6 @@
             vm.truncButton = truncButton;
             vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
-			vm.toggleCart = toggleCart;
-			vm.widget = chplCertIdWidget;
 
             activate();
 
@@ -192,7 +192,7 @@
                         }
                         vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
                         for (var i = 0; i < options.developerNames.length; i++) {
-                            vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name});
+                            vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: {retired: 3, active: 1}});
                             vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name});
                         }
                         for (var i = 0; i < options.productNames.length; i++) {

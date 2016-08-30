@@ -12,7 +12,7 @@
           <div class="input-group input-group-lg">
             <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
                    ng-keyup="$event.keyCode === 13 && vm.search()"
-                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
+                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:impossibleFilter | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"
                    typeahead-input-formatter="$model.value" />
             <span class="input-group-btn">
