@@ -41,6 +41,14 @@ a.btn {
     white-space: nowrap
 }
 
+.anchor-element {
+    position: relative;
+}
+.page-anchor {
+    position: absolute;
+    top: -125px;
+}
+
 @media (max-width: 767px) {
     .navbar-nav > li > a {
         line-height: 20px;

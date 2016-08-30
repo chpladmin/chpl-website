@@ -19,6 +19,7 @@ module.exports = function(config){
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
             'app/common/swagger-ui.min.js',
             'app/bower_components/angular-sanitize/angular-sanitize.min.js',
+            'app/bower_components/ng-csv/build/ng-csv.min.js',
             'app/bower_components/angulartics/dist/angulartics.min.js',
             'app/bower_components/angulartics/dist/angulartics-debug.min.js',
             'app/bower_components/angulartics-ga/dist/angulartics-ga.min.js',

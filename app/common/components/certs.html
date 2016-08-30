@@ -133,10 +133,6 @@
             <p ng-if="vm.product.termsOfUse"><ai-a href="{{ vm.product.termsOfUse }}" text="{{ vm.product.termsOfUse }}"></ai-a></p>
             <p ng-if="!vm.product.termsOfUse">N/A</p>
           </span>
-          <span ng-if="vm.product.acbCertificationId">
-            <h4>ONC-ACB Certification ID</h4>
-            <p>{{ vm.product.acbCertificationId }}</p>
-          </span>
           <span ng-if="vm.product.targetedUsers && vm.product.targetedUsers.length > 0">
             <h4>Developer Identified Targeted User<span ng-if="vm.product.targetedUsers.length > 1">s</span></h4>
             <ul>

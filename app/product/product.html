@@ -29,6 +29,9 @@
     <div class="row">
       <div class="col-sm-4">
         <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
+        <p ng-if="vm.product.acbCertificationId">
+          ONC-ACB Certification ID: {{ vm.product.acbCertificationId }}
+        </p>
       </div>
       <div class="col-sm-8 text-right">
         <p>Certification Date: {{ vm.product.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ vm.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</p>

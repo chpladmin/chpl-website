@@ -188,14 +188,7 @@ var chplCertIdWidget = (function(){
 		//
 		////////////////////////////////////////////////////////////////
 		getCookie: function (name) {
-			var cookies = document.cookie.split(";");
-			for (var i=0; i < cookies.length; ++i) {
-				if (name === ( (cookies[i].split("=")[0]).trim() )) {
-					var value = (cookies[i].split("=")[1]).trim();
-					return value;
-				}
-			}
-			return null;
+			return localStorage.getItem(name);
 		},
 
 		////////////////////////////////////////////////////////////////
@@ -203,14 +196,7 @@ var chplCertIdWidget = (function(){
 		//
 		////////////////////////////////////////////////////////////////
 		setCookie: function (cname, cvalue, exdays) {
-			var expires = null;
-			if (-1 !== exdays) {
-				var d = new Date();
-				d.setTime(d.getTime() + (exdays*24*60*60*1000));
-				expires = "expires="+d.toUTCString();
-			}
-			var cookieString = cname + "=" + cvalue + ((-1 !== exdays) ? ("; " + expires) : (""));
-			document.cookie = cookieString + "; path=" + cookiePath;
+			localStorage.setItem(cname, cvalue);
 		},
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,7 +314,7 @@ var chplCertIdWidget = (function(){
 		setCollectionChangeCallback: function (callback) {
 			collectionChangeCallback = callback;
 		},
-		
+
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -352,11 +338,11 @@ var chplCertIdWidget = (function(){
 		},
 
 		generatePdf2: function(data) {
-		
+
 			if (!data || "undefined" === data) {
 				return;
 			}
-			
+
 			// Setup the product listing
 			var columns = ["", "Certifying Body", "Practice Type", "Product Certification #", "Developer",
 				"Product Name", "Version", "Classification", "Certification Edition",
@@ -393,7 +379,7 @@ var chplCertIdWidget = (function(){
 			var critCols = [
 				{title: certificationIdData.year + " CMS EHR Base Criteria Met", dataKey: "description"}
 			];
-			
+
 			var critRows = chplCertIdWidget.getPdfCriteria(certificationIdData.year);
 
 			// Start the PDF document
@@ -434,7 +420,7 @@ var chplCertIdWidget = (function(){
 					valign: "middle",
 					halign: "left",
 					overflow: "linebreak",
-					columnWidth: "auto"					
+					columnWidth: "auto"
 				},
 				startY: bodyStartY+90,
 				margin: 20,
@@ -487,7 +473,7 @@ var chplCertIdWidget = (function(){
 							} else {
 								checkImages.push(null);
 							}
-							
+
 							return true;
 						}
 						return true;
@@ -509,10 +495,10 @@ var chplCertIdWidget = (function(){
 			// Output the PDF
 			doc.save("" + new Date().getTime() + ".pdf");
 		},
-		
+
 		checkCriterionIsMet: function(key, criteriaMet) {
 			var keys = key.split(",");
-			
+
 			// Check for logic key values
 			// 		| = (any criterion in list will do)
 			// 		& = (all criteria in list must be met)
@@ -541,7 +527,7 @@ var chplCertIdWidget = (function(){
 			}
 			return [(-1 !== criteriaMet.indexOf(keys[0]))];
 		},
-		
+
 		getPdfCriteria: function(year) {
 			if ("2014/2015" === year) {
 				return [

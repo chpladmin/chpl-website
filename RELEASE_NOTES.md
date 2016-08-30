@@ -1,7 +1,29 @@
 # Release Notes
 
+## Version 4.0.0
+_30 August 2016_
+
+### New features
+* Added CMS ID download for CMS_STAFF members
+* Added API Key filter to UI
+* Activity uses start/end dates for date range
+* Split API Key into two sections
+* Enhanced "Certified Product" activity reports
+  * Split into four groups: uploads, status changes, corrective action plans, other
+  * Needs additional API calls to get better status on CAP stuff
+* Moved ACB Certification ID
+* Added navigation to Overview page
+* Enhanced Developer activity report
+* Enhanced Product activity report
+
+### Bugs fixed
+* Certification Date in activity report was reported at wrong time zone
+* Fixed widget overrunning cookie 4K limit by switching to using local storage instead
+
+---
+
 ## Version 3.0.0
-_8 August 2016_
+_10 August 2016_
 
 ### New features
 * Added tooltips to Test Standards, Test Functionality, Clinical Quality Measures
@@ -11,6 +33,7 @@ _8 August 2016_
 * Re-colored widget header and buttons to a blue-on-gold scheme
 * Added new controller for CertId widget being used on the Search page
 * Added CertId javascript files to karma config
+* Add ROLE_CMS_STAFF as a ROLE
 
 ### Bugs fixed
 * Fixed widget initialization by adding missing controller reference

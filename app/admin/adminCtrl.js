@@ -15,6 +15,7 @@
             vm.isAtlAdmin = isAtlAdmin;
             vm.isAuthed = isAuthed;
             vm.isChplAdmin = isChplAdmin;
+            vm.isCmsStaff = isCmsStaff;
             vm.refresh = refresh;
             vm.triggerRefresh = triggerRefresh;
 
@@ -25,7 +26,7 @@
             function activate () {
                 vm.handlers = [];
                 vm.navState = {
-                    reports: 'cp'
+                    reports: 'cp-upload'
                 };
 
                 // base case
@@ -129,6 +130,10 @@
 
             function isChplAdmin () {
                 return authService.isChplAdmin();
+            }
+
+            function isCmsStaff () {
+                return authService.isCmsStaff();
             }
 
             function refresh () {

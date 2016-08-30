@@ -71,7 +71,7 @@
                 return self.postApiCall('/auth/reset_password', userObj);
             };
 
-            self.search = function (queryObj, pageNum, pageSize) {
+            self.search = function (queryObj) {
                 return self.postApiCall('/search', queryObj);
             };
 
@@ -116,6 +116,10 @@
 
             self.getTargetedUsers = function () {
                 return self.simpleApiCall('/data/targeted_users');
+            };
+
+            self.getCmsDownload = function () {
+                return self.simpleApiCall('/certification_ids/all');
             };
 
             self.getAnnouncements = function (pending) {
@@ -170,44 +174,143 @@
                 return self.simpleApiCall('/data/certification_bodies');
             };
 
-            self.getCertifiedProductActivity = function (nDays) {
-                return self.simpleApiCall('/activity/certified_products?lastNDays=' + nDays);
+            self.getCertifiedProductActivity = function (activityRange) {
+                var call = '/activity/certified_products';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getSingleCertifiedProductActivity = function (productId) {
                 return self.simpleApiCall('/activity/certified_products/' + productId);
             };
 
-            self.getDeveloperActivity = function (nDays) {
-                return self.simpleApiCall('/activity/developers?lastNDays=' + nDays);
+            self.getDeveloperActivity = function (activityRange) {
+                var call = '/activity/developers';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
-            self.getProductActivity = function (nDays) {
-                return self.simpleApiCall('/activity/products?lastNDays=' + nDays);
+            self.getProductActivity = function (activityRange) {
+                var call = '/activity/products';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
-            self.getVersionActivity = function (nDays) {
-                return self.simpleApiCall('/activity/versions?lastNDays=' + nDays);
+            self.getVersionActivity = function (activityRange) {
+                var call = '/activity/versions';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
-            self.getAcbActivity = function (nDays) {
-                return self.simpleApiCall('/activity/acbs?lastNDays=' + nDays);
+            self.getAcbActivity = function (activityRange) {
+                var call = '/activity/acbs';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
-            self.getAtlActivity = function (nDays) {
-                return self.simpleApiCall('/activity/atls?lastNDays=' + nDays);
+            self.getAtlActivity = function (activityRange) {
+                var call = '/activity/atls';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
-            self.getUserActivity = function (nDays) {
-                return self.simpleApiCall('/activity/users?lastNDays=' + nDays);
+            self.getUserActivity = function (activityRange) {
+                var call = '/activity/users';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
-            self.getUserActivities = function (nDays) {
-                return self.simpleApiCall('/activity/user_activities?lastNDays=' + nDays);
+            self.getUserActivities = function (activityRange) {
+                var call = '/activity/user_activities';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
-            self.getAnnouncementActivity = function (nDays) {
-                return self.simpleApiCall('/activity/announcements?lastNDays=' + nDays);
+            self.getAnnouncementActivity = function (activityRange) {
+                var call = '/activity/announcements';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
             self.getUploadingCps = function () {
@@ -355,7 +458,7 @@
             self.rejectPendingCp = function (cpId) {
                 return self.postApiCall('/certified_products/pending/' + cpId + '/reject', {});
             };
-			
+
 			self.lookupCertificationId = function (certId) {
 				return self.simpleApiCall('/certification_ids/' + certId);
 			}
@@ -408,12 +511,37 @@
                 return self.postApiCall('/key/revoke', user);
             };
 
-            self.getApiUserActivity = function (nDays) {
-                return self.simpleApiCall('/activity/api_keys?lastNDays=' + nDays);
+            self.getApiUserActivity = function (activityRange) {
+                var call = '/activity/api_keys';
+                var params = [];
+                if (activityRange.startDate) {
+                    params.push('start=' + activityRange.startDate.getTime());
+                }
+                if (activityRange.endDate) {
+                    params.push('end=' + activityRange.endDate.getTime());
+                }
+                if (params.length > 0) {
+                    call += '?' + params.join('&');
+                }
+                return self.simpleApiCall(call);
             };
 
-            self.getApiActivity = function (pageNum, pageSize) {
-                return self.postApiCall('/key/activity/?pageNumber=' + pageNum + '&pageSize=' + pageSize, {});
+            self.getApiActivity = function (options) {
+                var params = [];
+                var queryParams = '';
+                if (options.pageNumber !== undefined) { params.push('pageNumber=' + options.pageNumber); }
+                if (options.pageSize) { params.push('pageSize=' + options.pageSize); }
+                if (options.startDate) { params.push('startDate=' + options.startDate.getTime()); }
+                if (options.endDate) { params.push('endDate=' + options.endDate.getTime()); }
+                if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
+                if (options.filter) {
+                    var tmp = 'filter=';
+                    if (!options.showOnly) { tmp += '!' };
+                    tmp += options.filter
+                    params.push(tmp);
+                }
+                if (params.length > 0) { var queryParams = '?' + params.join('&'); }
+                return self.postApiCall('/key/activity/' + queryParams, {});
             };
         });
 })();
