@@ -45,7 +45,6 @@
                 vm.refreshVisitors();
                 vm.loadApiKeys();
                 vm.filename = 'Reports_' + new Date().getTime() + '.csv';
-
             }
 
             function refreshActivity () {
@@ -65,8 +64,7 @@
             }
 
             function refreshCp () {
-                vm.activityRange = dateAdjust(vm.activityRange);
-                commonService.getCertifiedProductActivity(vm.activityRange)
+                commonService.getCertifiedProductActivity(dateAdjust(vm.activityRange))
                     .then(function (data) {
                         interpretCps(data);
                         vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
@@ -77,8 +75,7 @@
             }
 
             function refreshDeveloper () {
-                vm.activityRange = dateAdjust(vm.activityRange);
-                commonService.getDeveloperActivity(vm.activityRange)
+                commonService.getDeveloperActivity(dateAdjust(vm.activityRange))
                     .then(function (data) {
                         vm.searchedDevelopers = interpretDevelopers(data);
                         vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
@@ -86,13 +83,12 @@
             }
 
             function refreshProduct () {
-                vm.activityRange = dateAdjust(vm.activityRange);
-                commonService.getProductActivity(vm.activityRange)
+                commonService.getProductActivity(dateAdjust(vm.activityRange))
                     .then(function (data) {
                         vm.searchedProducts = interpretProducts(data);
                         vm.displayedProducts = [].concat(vm.searchedProducts);
                     });
-                commonService.getVersionActivity(vm.activityRange)
+                commonService.getVersionActivity(dateAdjust(vm.activityRange))
                     .then(function (data) {
                         vm.searchedVersions = vm.interpretVersions(data);
                         vm.displayedVersions = [].concat(vm.searchedVersions);
@@ -100,8 +96,7 @@
             }
 
             function refreshAcb () {
-                vm.activityRange = dateAdjust(vm.activityRange);
-                commonService.getAcbActivity(vm.activityRange)
+                commonService.getAcbActivity(dateAdjust(vm.activityRange))
                     .then(function (data) {
                         vm.searchedACBs = vm.interpretAcbs(data);
                         vm.displayedACBs = [].concat(vm.searchedACBs);
@@ -109,8 +104,7 @@
             }
 
             function refreshAtl () {
-                vm.activityRange = dateAdjust(vm.activityRange);
-                commonService.getAtlActivity(vm.activityRange)
+                commonService.getAtlActivity(dateAdjust(vm.activityRange))
                     .then(function (data) {
                         vm.searchedATLs = vm.interpretAtls(data);
                         vm.displayedATLs = [].concat(vm.searchedATLs);
@@ -118,8 +112,7 @@
             }
 
             function refreshAnnouncement () {
-                vm.activityRange = dateAdjust(vm.activityRange);
-                commonService.getAnnouncementActivity(vm.activityRange)
+                commonService.getAnnouncementActivity(dateAdjust(vm.activityRange))
                     .then(function (data) {
                         vm.searchedAnnouncements = vm.interpretAnnouncements(data);
                         vm.displayedAnnouncements = [].concat(vm.searchedAnnouncements);
@@ -127,14 +120,13 @@
             }
 
             function refreshUser () {
-                vm.activityRange = dateAdjust(vm.activityRange);
                 if (vm.isChplAdmin) {
-                    commonService.getUserActivity(vm.activityRange)
+                    commonService.getUserActivity(dateAdjust(vm.activityRange))
                         .then(function (data) {
                             vm.searchedUsers = vm.interpretUsers(data);
                             vm.displayedUsers = [].concat(vm.searchedUsers);
                         });
-                    commonService.getUserActivities(vm.activityRange)
+                    commonService.getUserActivities(dateAdjust(vm.activityRange))
                         .then(function (data) {
                             vm.searchedUserActivities = vm.interpretUserActivities(data);
                             vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
@@ -143,9 +135,8 @@
             }
 
             function refreshApi () {
-                vm.activityRange = dateAdjust(vm.activityRange);
                 if (vm.isChplAdmin) {
-                    commonService.getApiUserActivity(vm.activityRange)
+                    commonService.getApiUserActivity(dateAdjust(vm.activityRange))
                         .then(function (data) {
                             vm.searchedApiActivity = data;
                             vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
@@ -153,10 +144,9 @@
                 }
             }
             function refreshApiKeyUsage () {
-                vm.apiKey = dateAdjust(vm.apiKey);
                 if (vm.isChplAdmin) {
                     vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
-                    commonService.getApiActivity(vm.apiKey)
+                    commonService.getApiActivity(dateAdjust(vm.apiKey))
                         .then(function (data) {
                             vm.searchedApi = data;
                         });
@@ -1000,9 +990,10 @@
             }
 
             function dateAdjust (obj) {
-                obj.startDate = coerceToMidnight(obj.startDate);
-                obj.endDate = coerceToMidnight(obj.endDate, true);
-                return obj;
+                var ret = angular.copy(obj);
+                ret.startDate = coerceToMidnight(ret.startDate);
+                ret.endDate = coerceToMidnight(ret.endDate, true);
+                return ret;
             }
 
             function coerceToMidnight (date, roundUp) {
