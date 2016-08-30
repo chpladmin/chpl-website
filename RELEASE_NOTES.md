@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next Version
-_DATE TBD_
+## Version 4.0.0
+_30 August 2016_
 
 ### New features
 * Added CMS ID download for CMS_STAFF members
