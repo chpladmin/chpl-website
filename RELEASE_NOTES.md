@@ -15,6 +15,7 @@ _30 August 2016_
 * Added navigation to Overview page
 * Enhanced Developer activity report
 * Enhanced Product activity report
+* Add option to download Edition specific product listing
 
 ### Bugs fixed
 * Certification Date in activity report was reported at wrong time zone

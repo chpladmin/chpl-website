@@ -9,9 +9,16 @@
       <div class="col-sm-12">
         <h2>Download the latest Certified Health IT Product List</h2>
         <div class="pull-right">
-          <a type="button" class="btn btn-lg btn-ai-success" href="{{ vm.API }}/download?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a>
+          <a type="button" class="btn btn-block btn-ai-success" href="{{ vm.downloadOption }}"><i class="fa fa-cloud-download"></i> Download</a>
+          <label class="sr-only" for="downloadOption">Select which set of products to download</label>
+          <select id="downloadOption" ng-model="vm.downloadOption" class="form-control">
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}">Complete listing</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2015">2015 edition products</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2014">2014 edition products</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2011">2011 edition products</option>
+          </select>
         </div>
-        <p>To access the complete listing of Certified Health Information Technology Products, including the 2011 edition products, 2014 edition products, and 2015 edition products, click the download button.</p>
+        <p>To access listings of Certified Health Information Technology Products, select which Certification Edition products you would like, then click the download button, or select "Complete listing" for the entire collection of 2011, 2014, and 2015 Certified Products.</p>
       </div>
     </div>
     <div class="row">
