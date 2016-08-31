@@ -2,14 +2,17 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, commonService, CACHE_TIMEOUT) {
+        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', '$filter', 'commonService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, $filter, commonService, CACHE_TIMEOUT) {
             var vm = this;
 
+			vm.toggleCart = toggleCart;
+			vm.widget = chplCertIdWidget;
             vm.addRefine = addRefine;
             vm.clear = clear;
             vm.clearFilters = clearFilters;
             vm.clearPreviouslyCompared = clearPreviouslyCompared;
             vm.clearPreviouslyViewed = clearPreviouslyViewed;
+            vm.certificationStatusFilter = certificationStatusFilter;
             vm.compare = compare;
             vm.populateSearchOptions = populateSearchOptions;
             vm.reloadResults = reloadResults;
@@ -19,8 +22,6 @@
             vm.truncButton = truncButton;
             vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
-			vm.toggleCart = toggleCart;
-			vm.widget = chplCertIdWidget;
 
             activate();
 
@@ -145,6 +146,19 @@
             function clearPreviouslyViewed () {
                 vm.previouslyViewed = [];
                 $localStorage.previouslyViewed = [];
+            }
+
+            function certificationStatusFilter (obj) {
+                if (!obj.statuses) {
+                    return true;
+                } else if (angular.isUndefined(vm.refine.certificationStatus) || vm.refine.certificationStatus === null) {
+                    return ((obj.statuses['active'] > 0) ||
+                            (obj.statuses['withdrawn'] > 0) ||
+                            (obj.statuses['terminated'] > 0) ||
+                            (obj.statuses['suspended'] > 0));
+                } else {
+                    return (obj.statuses[$filter('lowercase')(vm.refine.certificationStatus)] > 0);
+                }
             }
 
             function compare () {

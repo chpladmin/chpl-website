@@ -155,5 +155,42 @@
             expect(ctrl.query.practiceType).toBeUndefined();
             expect(ctrl.compareCps).toEqual([]);
         });
+
+        describe('certificationStatus filters', function () {
+
+            var objToFilter;
+            beforeEach(function () {
+                objToFilter = {id: 1, statuses: {active: 1, withdrawn: 0, retired: 1}};
+            });
+
+            it('should have a filter to filter out certificationStatuses', function () {
+                expect(ctrl.certificationStatusFilter).toBeDefined();
+            });
+
+            it('should return true if there are no certificationStatuses selected for refinement', function () {
+                delete ctrl.refine.certificationStatus;
+                expect(ctrl.certificationStatusFilter(objToFilter)).toBe(true);
+            });
+
+            it('should return false if there are no statuses selected, and the object has only retired statuses', function () {
+                objToFilter.statuses.active = 0;
+                expect(ctrl.certificationStatusFilter(objToFilter)).toBe(false);
+            });
+
+            it('should return false if the selected status has 0 objects', function () {
+                ctrl.refine.certificationStatus = 'withdrawn';
+                expect(ctrl.certificationStatusFilter(objToFilter)).toBe(false);
+            });
+
+            it('should return true if the selected status has 1 or more objects', function () {
+                ctrl.refine.certificationStatus = 'active';
+                expect(ctrl.certificationStatusFilter(objToFilter)).toBe(true);
+            });
+
+            it('should return true if the object has no statuses', function () {
+                delete objToFilter.statuses;
+                expect(ctrl.certificationStatusFilter(objToFilter)).toBe(true);
+            });
+        });
     });
 })();
