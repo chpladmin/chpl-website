@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', 'commonService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, commonService, CACHE_TIMEOUT) {
+        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', '$filter', 'commonService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, $filter, commonService, CACHE_TIMEOUT) {
             var vm = this;
 
 			vm.toggleCart = toggleCart;
@@ -12,6 +12,7 @@
             vm.clearFilters = clearFilters;
             vm.clearPreviouslyCompared = clearPreviouslyCompared;
             vm.clearPreviouslyViewed = clearPreviouslyViewed;
+            vm.certificationStatusFilter = certificationStatusFilter;
             vm.compare = compare;
             vm.populateSearchOptions = populateSearchOptions;
             vm.reloadResults = reloadResults;
@@ -147,6 +148,19 @@
                 $localStorage.previouslyViewed = [];
             }
 
+            function certificationStatusFilter (obj) {
+                if (!obj.statuses) {
+                    return true;
+                } else if (angular.isUndefined(vm.refine.certificationStatus) || vm.refine.certificationStatus === null) {
+                    return ((obj.statuses['active'] > 0) ||
+                            (obj.statuses['withdrawn'] > 0) ||
+                            (obj.statuses['terminated'] > 0) ||
+                            (obj.statuses['suspended'] > 0));
+                } else {
+                    return (obj.statuses[$filter('lowercase')(vm.refine.certificationStatus)] > 0);
+                }
+            }
+
             function compare () {
                 var comparePath = '/compare/';
                 for (var i = 0; i < vm.compareCps.length; i++) {
@@ -192,7 +206,7 @@
                         }
                         vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
                         for (var i = 0; i < options.developerNames.length; i++) {
-                            vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: {retired: 3, active: 1}});
+                            vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name});
                             vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name});
                         }
                         for (var i = 0; i < options.productNames.length; i++) {
