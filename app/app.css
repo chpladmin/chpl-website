@@ -455,6 +455,7 @@ fieldset[disabled] .btn-ai-success.active {
     background: -o-linear-gradient(#f5d43c, #c0a000);
     background: -moz-linear-gradient(#f5d43c, #c0a000);
 	background: linear-gradient(#f5d43c, #c0a000);
+	border-color: #f5d43c;
 }
 .panel-widget-certid > .panel-heading a {
     color: #000;
