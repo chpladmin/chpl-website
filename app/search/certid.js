@@ -63,7 +63,7 @@ var chplCertIdWidget = (function(){
 				headers: {"API-KEY": apiKey},
 				data: "products=" + productIdsString + "&create=" + create,
 				success: function(data, status, xhr) {
-					chplCertIdWidget.setCookie(cookieCertificationIdData, JSON.stringify(data), 365);
+					chplCertIdWidget.setCookie(cookieCertificationIdData, JSON.stringify(data));
 					chplCertIdWidget.displayCertificationIdResults(create);
 					if (("undefined" !== collectionChangeCallback) && (null !== collectionChangeCallback))
 						collectionChangeCallback();
@@ -199,7 +199,7 @@ var chplCertIdWidget = (function(){
 		// Stores the value of a specified cookie
 		//
 		////////////////////////////////////////////////////////////////
-		setCookie: function (cname, cvalue, exdays) {
+		setCookie: function (cname, cvalue) {
 			localStorage.setItem(cname, cvalue);
 		},
 
@@ -231,7 +231,7 @@ var chplCertIdWidget = (function(){
 			} else {
 				data["products"] = products;
 			}
-			chplCertIdWidget.setCookie(cookieCertificationIdData, data, 365);
+			chplCertIdWidget.setCookie(cookieCertificationIdData, data);
 		},
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,7 +252,7 @@ var chplCertIdWidget = (function(){
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		removeAllProductsFromCart: function (id) {
-			chplCertIdWidget.setCookie(cookieCertificationIdData, null, 365);
+			chplCertIdWidget.setCookie(cookieCertificationIdData, null);
 			chplCertIdWidget.invokeGetCertificationId(null, null, false);
 		},
 		
