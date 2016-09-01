@@ -76,8 +76,10 @@
 		<div class="col-md-6" ng-show="vm.lookupProducts && vm.lookupProducts.length === 0" >
 		  <p>No results found</p>
 		</div>
-		<div class="col-md-6" ng-show="vm.lookupProductsFormatInvalid" >
-		  <p>Invalid CMS EHR Certification format</p>
+		<div class="col-md-12" ng-show="vm.lookupProductsFormatInvalidIds.length > 0" >
+			<div ng-repeat="invalidId in vm.lookupProductsFormatInvalidIds">
+				{{ invalidId }} is not a valid CMS EHR Certification ID format.<br/>
+			</div>
 		</div>
 		<div class="pull-right" ng-show="vm.lookupProducts && vm.lookupProducts.length > 0">
 		  <a type="button" class="btn btn-lg btn-ai-success" href="" ng-click="vm.download()"><i class="fa"></i> Download Results</a>
