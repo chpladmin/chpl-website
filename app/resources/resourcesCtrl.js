@@ -8,6 +8,7 @@
 			vm.lookupCertIds = lookupCertIds;
 			vm.download = download;
 			vm.lookupProductsFormatInvalidIds = [];
+			vm.lookupProductsCertIdNotFound = [];
 			vm.viewProduct = viewProduct;
 
             activate();
@@ -16,6 +17,7 @@
 			vm.certIds = $localStorage.lookupCertIds;
 			vm.lookupProducts = $localStorage.lookupProducts;
 			vm.lookupProductsFormatInvalidIds = $localStorage.lookupProductsFormatInvalidIds;
+			vm.lookupProductsCertIdNotFound = $localStorage.lookupProductsCertIdNotFound;
 
 			if ($localStorage.lookupCertIds && !$localStorage.lookupProducts) {
 				lookupCertIds();
@@ -105,6 +107,7 @@
 			function lookupCertIds () {
 				vm.lookupProducts = null;
 				vm.lookupProductsFormatInvalidIds = [];
+				vm.lookupProductsCertIdNotFound = [];
 
 				if ((vm.lookup !== "undefined") && (vm.certIds !== "undefined")) {
 					vm.certIds = vm.certIds.replace(/[;,\s]+/g, " ");
@@ -138,16 +141,25 @@
 									// Valid ID format
 									commonService.lookupCertificationId(id)
 										.then(function (data) {
+
 											if (vm.lookupProducts === null)
 												vm.lookupProducts = [];
-											data.products.forEach(function (product) {
-												product.certificationId = data.ehrCertificationId;
-												product.certificationIdEdition = data.year;
-												vm.lookupProducts.push(product);
-											});
 
+											// If the ID was found, then I have data...
+											if (data.products.length > 0) {
+												data.products.forEach(function (product) {
+													product.certificationId = data.ehrCertificationId;
+													product.certificationIdEdition = data.year;
+													vm.lookupProducts.push(product);
+												});
+											} else {
+												// ...otherwise, if the ID was not found, tell the user.
+												vm.lookupProductsCertIdNotFound.push(id);
+											}
+											
 											$localStorage.lookupProducts = vm.lookupProducts;
 											$localStorage.lookupProductsFormatInvalidIds = vm.lookupProductsFormatInvalidIds;
+											$localStorage.lookupProductsCertIdNotFound = vm.lookupProductsCertIdNotFound;
 											
 										}, function (error) {
 											console.debug("Error: " + error);
@@ -169,6 +181,7 @@
 			function clearLookupResults() {
 				delete $localStorage.lookupProducts;
 				delete $localStorage.lookupProductsFormatInvalidIds
+				delete $localStorage.lookupProductsCertIdNotFound;
 				vm.lookupProducts = null;
 			}
 
