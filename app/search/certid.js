@@ -127,7 +127,11 @@ var chplCertIdWidget = (function(){
 		},
 
 		updateButtonAndId: function (showIdRequested) {
-			var data = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
+			var data = null;
+			var dataText = chplCertIdWidget.getCertificationIdCookie();
+			if ((null !== dataText) && (dataText.length > 0)) {
+				data = JSON.parse(dataText);
+			}
 			var isValid = false;
 			var year = "2015";
 			if (null !== data) {
@@ -226,8 +230,8 @@ var chplCertIdWidget = (function(){
 				console.log("setProductsInCart: No certification id data to retrieve.");
 			} else {
 				data["products"] = products;
-				chplCertIdWidget.setCookie(cookieCertificationIdData, data, 365);
 			}
+			chplCertIdWidget.setCookie(cookieCertificationIdData, data, 365);
 		},
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,6 +248,14 @@ var chplCertIdWidget = (function(){
 			return count;
 		},
 
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		removeAllProductsFromCart: function (id) {
+			chplCertIdWidget.setCookie(cookieCertificationIdData, null, 365);
+			chplCertIdWidget.invokeGetCertificationId(null, null, false);
+		},
+		
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -299,11 +311,15 @@ var chplCertIdWidget = (function(){
 							chplCertIdWidget.removeProductFromCart(item.productId);
 						});
 					});
+					// hide and show UI elements
 					$("#txtNoProductsSelected").hide();
+					$("#widgetLinkRemoveAllProducts").show();
 					$("#selectedProductsList").show();
 					return;
 				}
 			}
+			// hide and show UI elements
+			$("#widgetLinkRemoveAllProducts").hide();
 			$("#selectedProductsList").hide();
 			$("#txtNoProductsSelected").show();
 		},
