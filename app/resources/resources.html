@@ -41,6 +41,16 @@
 	</div>
     <div class="row">
 	  <div class="col-sm-12">
+		<div class="col-md-12" ng-show="vm.lookupProductsCertIdNotFound.length > 0">
+			<ul class="cert-id-lookup-error" ng-repeat="notFoundId in vm.lookupProductsCertIdNotFound">
+				<li>CMS EHR Certification ID "{{ notFoundId }}" was not found.</li>
+			</ul>
+		</div>
+		<div class="col-md-12" ng-show="vm.lookupProductsFormatInvalidIds.length > 0">
+			<ul class="cert-id-lookup-error" ng-repeat="invalidId in vm.lookupProductsFormatInvalidIds">
+				<li>"{{ invalidId }}" is not a valid CMS EHR Certification ID format.</li>
+			</ul>
+		</div>
 		<table id="lookupCertIdResults" class="table table-striped" ng-if="vm.lookupProducts && vm.lookupProducts.length > 0">
 		  <thead>
 			<tr>
@@ -73,12 +83,6 @@
 			</tr>
 		  </tbody>
 		</table>
-		<div class="col-md-6" ng-show="vm.lookupProducts && vm.lookupProducts.length === 0" >
-		  <p>No results found</p>
-		</div>
-		<div class="col-md-6" ng-show="vm.lookupProductsFormatInvalid" >
-		  <p>Invalid CMS EHR Certification format</p>
-		</div>
 		<div class="pull-right" ng-show="vm.lookupProducts && vm.lookupProducts.length > 0">
 		  <a type="button" class="btn btn-lg btn-ai-success" href="" ng-click="vm.download()"><i class="fa"></i> Download Results</a>
 		</div>

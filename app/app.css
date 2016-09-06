@@ -449,6 +449,15 @@ fieldset[disabled] .btn-ai-success.active {
 	background: #f5d43c;
 }
 
+.cert-id-lookup-error li {
+	font-weight: 700;
+	list-style: none;
+}
+
+.panel-widget-certid  {
+	border-color: #f5d43c;
+}
+
 .panel-widget-certid > .panel-heading {
     color: #000;
     background: -webkit-linear-gradient(#f5d43c, #c0a000);

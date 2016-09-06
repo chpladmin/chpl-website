@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version _TBD_
+_TBD_
+
+### New features
+* Changed Cert ID lookup not found error message to include the ID
+* Changed Cert ID lookup invalid format error message to include the ID
+* Added link to remove all selected products from widget
+* Changed widget border color to match widget header color
+
+---
+
 ## Version 4.0.0
 _30 August 2016_
 
