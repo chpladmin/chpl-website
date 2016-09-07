@@ -8,6 +8,8 @@
             vm.addIds = addIds;
             vm.hasC1 = hasC1;
             vm.hasC2 = hasC2;
+            vm.hasC3 = hasC3;
+            vm.hasC4 = hasC4;
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
@@ -70,6 +72,30 @@
                     }
                 }
                 return cqm.hasC2;
+            }
+
+            function hasC3 (cqm) {
+                if (angular.isUndefined(cqm.hasC3)) {
+                    cqm.hasC3 = false;
+                    for (var i = 0; i < cqm.criteria.length; i++) {
+                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(3)') {
+                            cqm.hasC3 = true;
+                        }
+                    }
+                }
+                return cqm.hasC3;
+            }
+
+            function hasC4 (cqm) {
+                if (angular.isUndefined(cqm.hasC4)) {
+                    cqm.hasC4 = false;
+                    for (var i = 0; i < cqm.criteria.length; i++) {
+                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(4)') {
+                            cqm.hasC4 = true;
+                        }
+                    }
+                }
+                return cqm.hasC4;
             }
 
             function saveEdits () {
@@ -168,6 +194,12 @@
                         }
                         if (vm.cqms[i].hasC2) {
                             vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(2)'});
+                        }
+                        if (vm.cqms[i].hasC3) {
+                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(3)'});
+                        }
+                        if (vm.cqms[i].hasC4) {
+                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(4)'});
                         }
                     }
                 }

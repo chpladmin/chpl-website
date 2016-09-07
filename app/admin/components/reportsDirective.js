@@ -669,6 +669,11 @@
                         if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) < 0)
                             obj.changes.push('<li>' + prev[i].allVersions[j] + ' removed</li>');
                     }
+                    var criteriaKeys = [];
+                    var criteria = compareArray(prev[i].criteria, curr[i].criteria, criteriaKeys, 'certificationNumber');
+                    for (var j = 0; j < criteria.length; j++) {
+                        obj.changes.push('<li>Certification Criteria "' + criteria[j].name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
+                    }
                     if (obj.changes.length > 0)
                         ret.push(obj);
                 }

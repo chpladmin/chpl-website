@@ -8,6 +8,9 @@ _TBD_
 * Changed Cert ID lookup invalid format error message to include the ID
 * Added link to remove all selected products from widget
 * Changed widget border color to match widget header color
+* Integrated CQM c3/c4 access
+  * Updated reports to display changes
+  * Display / allow edit of c3/c4 for 2015 product CQMS
 
 ---
 
