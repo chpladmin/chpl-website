@@ -5,11 +5,7 @@
         .controller('CertsController', ['$scope', '$log', function ($scope, $log) {
             var vm = this;
 
-            vm.addIds = addIds;
-            vm.hasC1 = hasC1;
-            vm.hasC2 = hasC2;
-            vm.hasC3 = hasC3;
-            vm.hasC4 = hasC4;
+            vm.prepCqms = prepCqms
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
@@ -27,75 +23,25 @@
                 if (vm.viewAllCerts === undefined) {
                     vm.viewAllCerts = false;
                 }
-                vm.addIds();
+                vm.prepCqms();
                 vm.panelShown = 'cert';
-                /*
-                if (vm.isEditing) {
-                    attachBooleans();
-                }
-                */
+                $scope.$watch('cqms', function (newCqms) {
+                    if (newCqms) {
+                        vm.cqms = newCqms;
+                        vm.prepCqms();
+                    }}, true);
+
             }
 
-            $scope.$watch('cqms', function (newCqms) {
-                if (newCqms) {
-                    vm.cqms = newCqms;
-                    vm.addIds();
-                }}, true);
-
-            function addIds () {
+            function prepCqms () {
                 if (vm.cqms) {
                     for (var i = 0; i < vm.cqms.length; i++) {
                         vm.cqms[i].id = i;
-                    }
-                }
-            }
-
-            function hasC1 (cqm) {
-                if (angular.isUndefined(cqm.hasC1)) {
-                    cqm.hasC1 = false;
-                    for (var i = 0; i < cqm.criteria.length; i++) {
-                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(1)') {
-                            cqm.hasC1 = true;
+                        for (var j = 1; j < 5; j++) {
+                            vm.cqms[i]['hasC' + j] = checkC(vm.cqms[i], j);
                         }
                     }
                 }
-                return cqm.hasC1;
-            }
-
-            function hasC2 (cqm) {
-                if (angular.isUndefined(cqm.hasC2)) {
-                    cqm.hasC2 = false;
-                    for (var i = 0; i < cqm.criteria.length; i++) {
-                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(2)') {
-                            cqm.hasC2 = true;
-                        }
-                    }
-                }
-                return cqm.hasC2;
-            }
-
-            function hasC3 (cqm) {
-                if (angular.isUndefined(cqm.hasC3)) {
-                    cqm.hasC3 = false;
-                    for (var i = 0; i < cqm.criteria.length; i++) {
-                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(3)') {
-                            cqm.hasC3 = true;
-                        }
-                    }
-                }
-                return cqm.hasC3;
-            }
-
-            function hasC4 (cqm) {
-                if (angular.isUndefined(cqm.hasC4)) {
-                    cqm.hasC4 = false;
-                    for (var i = 0; i < cqm.criteria.length; i++) {
-                        if (cqm.criteria[i].certificationNumber === '170.315 (c)(4)') {
-                            cqm.hasC4 = true;
-                        }
-                    }
-                }
-                return cqm.hasC4;
             }
 
             function saveEdits () {
@@ -186,20 +132,13 @@
                 }
 
                 for (var i = 0; i < vm.cqms.length; i++) {
+                    vm.cqms[i].criteria = [];
                     if (vm.cqms[i].success || vm.cqms[i].successVersions.length > 0) {
                         vm.countCqms += 1;
-                        vm.cqms[i].criteria = [];
-                        if (vm.cqms[i].hasC1) {
-                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(1)'});
-                        }
-                        if (vm.cqms[i].hasC2) {
-                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(2)'});
-                        }
-                        if (vm.cqms[i].hasC3) {
-                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(3)'});
-                        }
-                        if (vm.cqms[i].hasC4) {
-                            vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(4)'});
+                        for (var j = 1; j < 5; j++) {
+                            if (vm.cqms[i]['hasC' + j]) {
+                                vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(' + j + ')'});
+                            }
                         }
                     }
                 }
@@ -245,13 +184,20 @@
 
             ////////////////////////////////////////////////////////////////////
 
-            /*
-            function attachBooleans () {
-                for (var i = 0; i < vm.certs.length; i++) {
-//                    vm.editForm['data_' + vm.certs[i].number + '_gap'] = vm.certs[i].gap;
+            function checkC (cqm, num) {
+                var ret;
+                if (angular.isUndefined(cqm['hasC' + num])) {
+                    ret = false;
+                    if (cqm.criteria) {
+                        for (var i = 0; i < cqm.criteria.length; i++) {
+                            ret = ret || (cqm.criteria[i].certificationNumber === '170.315 (c)(' + num + ')')
+                        }
+                    }
+                } else {
+                    ret = cqm['hasC' + num];
                 }
+                return ret
             }
-            */
         }]);
 
     angular.module('app.common')
