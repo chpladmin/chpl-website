@@ -93,6 +93,11 @@
                         }
                     });
 
+                commonService.getDeveloperTransparencies()
+                    .then(function (developers) {
+                        self.developerMap = developers;
+                    });
+
                 getResources();
             }
 

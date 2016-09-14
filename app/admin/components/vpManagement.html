@@ -149,6 +149,7 @@
 
       <div class="row" ng-if="vm.activeDeveloper === '' && vm.developers.length > 0">
         <div class="col-sm-12">
+          <pre>{{ vm.developerMap | json }}</pre>
           <button class="btn btn-ai-success" ng-click="vm.viewDeveloperCodes = !vm.viewDeveloperCodes">{{ vm.viewDeveloperCodes ? 'Hide' : 'Show' }} Developer Codes</button>
           <table class="table table-striped table-condensed" ng-if="vm.viewDeveloperCodes">
             <thead>
