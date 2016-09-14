@@ -155,7 +155,7 @@
               <tr>
                 <th scope="cols">Code</th>
                 <th scope="cols">Name</th>
-                <th scope="cols" ng-repeat="att in vm.developers[0].transparencyAttestations | orderBy:'acbName'">{{ att.acbName }}</th>
+                <th scope="cols" ng-repeat="att in vm.activeAcbs | orderBy:'toString()'">{{ att }}</th>
                 <th scope="cols">Last modified date</th>
               </tr>
             </thead>
@@ -163,7 +163,7 @@
               <tr ng-repeat="dev in vm.developers | orderBy: 'name'">
                 <td>{{ dev.developerCode }}</td>
                 <td>{{ dev.name }}</td>
-                <td ng-repeat="att in dev.transparencyAttestations | orderBy:'acbName'">{{ att.attestation ? att.attestation : 'None' }}</td>
+                <td ng-repeat="att in vm.activeAcbs | orderBy:'toString()'">{{ dev.transMap[att] ? dev.transMap[att] : 'None' }}</td>
                 <td>{{ dev.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
               </tr>
             </tbody>
