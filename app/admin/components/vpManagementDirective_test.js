@@ -105,7 +105,6 @@
                 mockCommonService.getTestStandards = function () { return $q.when([]); };
                 mockCommonService.getTestTools = function () { return $q.when([]); };
                 mockCommonService.getUcdProcesses = function () { return $q.when([]); };
-                mockCommonService.getDeveloperTransparencies = function () { return $q.when({}); };
 
                 mockAuthService.isChplAdmin = function () { return $q.when(true); };
                 mockAuthService.isAcbAdmin = function () { return $q.when(true); };

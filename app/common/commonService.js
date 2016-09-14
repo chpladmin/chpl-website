@@ -142,10 +142,6 @@
                 return self.simpleApiCall('/developers/');
             };
 
-            self.getDeveloperTransparencies = function () {
-                return self.simpleApiCall('/developers/transparencies');
-            };
-
             self.getDeveloper = function (developerId) {
                 return self.simpleApiCall('/developers/' + developerId);
             };
