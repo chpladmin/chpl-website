@@ -51,9 +51,9 @@
       <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite" placeholder="http://www.example.com"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerWebsite.$touched) && vm.editForm.developerWebsite.$error.url">Website is invalid</div>
     </div>
-    <div class="form-group" ng-if="vm.isAcbAdmin" ng-repeat="trans in vm.developer.transparencyAttestations track by $index">
-      <label for="developerTransparency{{$index}}">{{ trans.acbName }} Transparency Attestation</label>
-      <select class="input-sm form-control" ng-model="trans.attestation" id="developerTransparency{{$index}}" name="developerTransparency{{$index}}">
+    <div class="form-group" ng-if="vm.isAcbAdmin" ng-repeat="acb in vm.activeAcbs | orderBy:'toString()'">
+      <label for="developerTransparency{{acb}}">{{ acb }} Transparency Attestation</label>
+      <select class="input-sm form-control" ng-model="vm.developer.transMap[acb]" id="developerTransparency{{acb}}" name="developerTransparency{{acb}}">
         <option value="Negative">Negative</option>
         <option value="Affirmative">Affirmative</option>
         <option value="N/A">N/A</option>

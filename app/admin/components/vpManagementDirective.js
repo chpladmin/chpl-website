@@ -127,12 +127,13 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeDeveloper: function () { return self.activeDeveloper; }
+                        activeDeveloper: function () { return self.activeDeveloper; },
+                        activeAcbs: function () { return self.activeAcbs; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
                     self.activeDeveloper = result;
-                    commonService.getDeveloperTransparencies()
+                    commonService.getDevelopers()
                         .then(function (developers) {
                             self.developers = developers.developers;
                             prepCodes();
@@ -159,7 +160,7 @@
                 });
                 self.modalInstance.result.then(function (result) {
                     self.developerMessage = null;
-                    commonService.getDeveloperTransparencies()
+                    commonService.getDevelopers()
                         .then(function (developers) {
                             self.developers = developers.developers;
                             prepCodes();
