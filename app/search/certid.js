@@ -210,7 +210,7 @@ var chplCertIdWidget = (function(){
 			try {
 				var data = chplCertIdWidget.getCertificationIdData();
 				if (null === data || "undefined" === data || "" === data) {
-					console.log("getProductsInCart: No certification id data to retrieve.");
+					//console.debug("getProductsInCart: No certification id data to retrieve.");
 				} else {
 					prods = JSON.parse(data)["products"];
 				}
