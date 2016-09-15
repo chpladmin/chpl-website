@@ -49,18 +49,27 @@ var chplCertIdWidget = (function(){
 			productIds.forEach(function (item, index) {
 				if (("undefined" !== item) && ((null === removeIds) || ("undefined" === removeIds) || (-1 === removeIds.indexOf(item)))) {
 					if (productIdsString.length > 0)
-						productIdsString += "|";
+						productIdsString += ",";
 					productIdsString += item;
 				}
 			});
 
+			// Decide whether or not we're just searching and calculating,
+			// or if we're attempting to create a Cert ID
+			var ajaxPath = "search";
+			var ajaxType = "GET";
+			if (create) {
+				ajaxPath = "create";
+				ajaxType = "POST";
+			}
+			
 			// Call API to attempt to get an EHR Certification ID
 			$.ajax({
-				url: urlCertId,
-				type: "GET",
+				url: urlCertId + ajaxPath + "?ids=" + productIdsString,
+				type: ajaxType,
 				cache: false,
 				headers: {"API-KEY": apiKey},
-				data: "products=" + productIdsString + "&create=" + create,
+				contentType: "application/json",
 				success: function(data, status, xhr) {
 					chplCertIdWidget.setLocalStorage(storageKeyCertificationIdData, JSON.stringify(data));
 					chplCertIdWidget.displayCertificationIdResults(create);

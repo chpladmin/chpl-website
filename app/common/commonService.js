@@ -119,7 +119,7 @@
             };
 
             self.getCmsDownload = function () {
-                return self.simpleApiCall('/certification_ids/all');
+                return self.simpleApiCall('/certification_ids/');
             };
 
             self.getAnnouncements = function (pending) {
