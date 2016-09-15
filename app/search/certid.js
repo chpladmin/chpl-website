@@ -363,7 +363,7 @@ var chplCertIdWidget = (function(){
 				"Product Name", "Version", "Classification", "Certification Edition",
 				"Additional Software Required"];
 			var rows = [];
-			var prods = chplCertIdWidget.getProductsInCart();
+			var prods = data["products"];
 			prods.forEach(function(item,index) {
 				// Decode additional software
 				var software = decodeURIComponent(item.additionalSoftware);
