@@ -12,6 +12,7 @@ _TBD_
   * Updated reports to display changes
   * Display / allow edit of c3/c4 for 2015 product CQMS
 * Updated links in /overview
+* Integrated view/edit developers with changes to /developers call
 
 ---
 

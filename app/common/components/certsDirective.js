@@ -25,7 +25,7 @@
                 }
                 vm.prepCqms();
                 vm.panelShown = 'cert';
-                $scope.$watch('cqms', function (newCqms) {
+                $scope.$watch('vm.cqms', function (newCqms) {
                     if (newCqms) {
                         vm.cqms = newCqms;
                         vm.prepCqms();

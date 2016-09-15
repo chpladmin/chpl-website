@@ -206,12 +206,12 @@
                         }
                         vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
                         for (var i = 0; i < options.developerNames.length; i++) {
-                            vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name});
-                            vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name});
+                            vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
+                            vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
                         }
                         for (var i = 0; i < options.productNames.length; i++) {
-                            vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name});
-                            vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name});
+                            vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
+                            vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
                         }
                         $localStorage.lookaheadSource = $scope.lookaheadSource;
                     });

@@ -87,6 +87,7 @@
                 commonService.getDevelopers()
                     .then(function (developers) {
                         self.developers = developers.developers;
+                        prepCodes();
 
                         if (self.productId) {
                             self.loadCp();
@@ -126,7 +127,8 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeDeveloper: function () { return self.activeDeveloper; }
+                        activeDeveloper: function () { return self.activeDeveloper; },
+                        activeAcbs: function () { return self.activeAcbs; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
@@ -134,6 +136,7 @@
                     commonService.getDevelopers()
                         .then(function (developers) {
                             self.developers = developers.developers;
+                            prepCodes();
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
@@ -160,6 +163,7 @@
                     commonService.getDevelopers()
                         .then(function (developers) {
                             self.developers = developers.developers;
+                            prepCodes();
                         });
                 }, function (result) {
                     if (result !== 'cancelled') {
@@ -527,6 +531,21 @@
                     .then(function (response) {
                         self.resources.targetedUsers = response;
                     });
+            }
+
+            function prepCodes () {
+                var values = {};
+                for (var i = 0; i < self.developers.length; i++) {
+                    self.developers[i].transMap = {};
+                    for (var j = 0; j < self.developers[i].transparencyAttestations.length; j++) {
+                        self.developers[i].transMap[self.developers[i].transparencyAttestations[j].acbName] = self.developers[i].transparencyAttestations[j].attestation;
+                        values[self.developers[i].transparencyAttestations[j].acbName] = true;
+                    }
+                }
+                self.activeAcbs = [];
+                angular.forEach(values, function (value, key) {
+                    self.activeAcbs.push(key);
+                });
             }
         }]);
 
