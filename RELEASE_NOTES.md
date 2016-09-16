@@ -14,6 +14,9 @@ _TBD_
 * Updated links in /overview
 * Integrated view/edit developers with changes to /developers call
 
+### Bugs fixed
+* Allowed editing of "Product Wide Additional Software"
+
 ---
 
 ## Version 4.0.0
