@@ -13,6 +13,9 @@ _TBD_
   * Display / allow edit of c3/c4 for 2015 product CQMS
 * Updated links in /overview
 * Integrated view/edit developers with changes to /developers call
+* Changed calls to Certification ID API to use new operations search and create
+* Changed CommonService CmsDownload function call to Certification IDs API (call /certification_ids/ instead of /certification_ids/all)
+* Optimized CertID add/remove button in product listing so that isProductInCart() calls are reduced from three to one
 
 ### Bugs fixed
 * Allowed editing of "Product Wide Additional Software"

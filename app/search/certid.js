@@ -49,18 +49,27 @@ var chplCertIdWidget = (function(){
 			productIds.forEach(function (item, index) {
 				if (("undefined" !== item) && ((null === removeIds) || ("undefined" === removeIds) || (-1 === removeIds.indexOf(item)))) {
 					if (productIdsString.length > 0)
-						productIdsString += "|";
+						productIdsString += ",";
 					productIdsString += item;
 				}
 			});
 
+			// Decide whether or not we're just searching and calculating,
+			// or if we're attempting to create a Cert ID
+			var ajaxPath = "search";
+			var ajaxType = "GET";
+			if (create) {
+				ajaxPath = "create";
+				ajaxType = "POST";
+			}
+			
 			// Call API to attempt to get an EHR Certification ID
 			$.ajax({
-				url: urlCertId,
-				type: "GET",
+				url: urlCertId + ajaxPath + "?ids=" + productIdsString,
+				type: ajaxType,
 				cache: false,
 				headers: {"API-KEY": apiKey},
-				data: "products=" + productIdsString + "&create=" + create,
+				contentType: "application/json",
 				success: function(data, status, xhr) {
 					chplCertIdWidget.setLocalStorage(storageKeyCertificationIdData, JSON.stringify(data));
 					chplCertIdWidget.displayCertificationIdResults(create);
@@ -210,7 +219,7 @@ var chplCertIdWidget = (function(){
 			try {
 				var data = chplCertIdWidget.getCertificationIdData();
 				if (null === data || "undefined" === data || "" === data) {
-					console.log("getProductsInCart: No certification id data to retrieve.");
+					//console.debug("getProductsInCart: No certification id data to retrieve.");
 				} else {
 					prods = JSON.parse(data)["products"];
 				}
@@ -363,7 +372,7 @@ var chplCertIdWidget = (function(){
 				"Product Name", "Version", "Classification", "Certification Edition",
 				"Additional Software Required"];
 			var rows = [];
-			var prods = chplCertIdWidget.getProductsInCart();
+			var prods = data["products"];
 			prods.forEach(function(item,index) {
 				// Decode additional software
 				var software = decodeURIComponent(item.additionalSoftware);
