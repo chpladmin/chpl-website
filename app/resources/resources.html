@@ -9,9 +9,16 @@
       <div class="col-sm-12">
         <h2>Download the latest Certified Health IT Product List</h2>
         <div class="pull-right">
-          <a type="button" class="btn btn-lg btn-ai-success" href="{{ vm.API }}/download?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> Download</a>
+          <a type="button" class="btn btn-block btn-ai-success" href="{{ vm.downloadOption }}"><i class="fa fa-cloud-download"></i> Download</a>
+          <label class="sr-only" for="downloadOption">Select which set of products to download</label>
+          <select id="downloadOption" ng-model="vm.downloadOption" class="form-control">
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}">Complete listing</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2015">2015 edition products</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2014">2014 edition products</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2011">2011 edition products</option>
+          </select>
         </div>
-        <p>To access the complete listing of Certified Health Information Technology Products, including the 2011 edition products, 2014 edition products, and 2015 edition products, click the download button.</p>
+        <p>To access listings of Certified Health Information Technology Products, select which Certification Edition products you would like, then click the download button, or select "Complete listing" for the entire collection of 2011, 2014, and 2015 Certified Products.</p>
       </div>
     </div>
     <div class="row">
@@ -34,6 +41,16 @@
 	</div>
     <div class="row">
 	  <div class="col-sm-12">
+		<div class="col-md-12" ng-show="vm.lookupProductsCertIdNotFound.length > 0">
+			<ul class="cert-id-lookup-error" ng-repeat="notFoundId in vm.lookupProductsCertIdNotFound">
+				<li>CMS EHR Certification ID "{{ notFoundId }}" was not found.</li>
+			</ul>
+		</div>
+		<div class="col-md-12" ng-show="vm.lookupProductsFormatInvalidIds.length > 0">
+			<ul class="cert-id-lookup-error" ng-repeat="invalidId in vm.lookupProductsFormatInvalidIds">
+				<li>"{{ invalidId }}" is not a valid CMS EHR Certification ID format.</li>
+			</ul>
+		</div>
 		<table id="lookupCertIdResults" class="table table-striped" ng-if="vm.lookupProducts && vm.lookupProducts.length > 0">
 		  <thead>
 			<tr>
@@ -66,12 +83,6 @@
 			</tr>
 		  </tbody>
 		</table>
-		<div class="col-md-6" ng-show="vm.lookupProducts && vm.lookupProducts.length === 0" >
-		  <p>No results found</p>
-		</div>
-		<div class="col-md-6" ng-show="vm.lookupProductsFormatInvalid" >
-		  <p>Invalid CMS EHR Certification format</p>
-		</div>
 		<div class="pull-right" ng-show="vm.lookupProducts && vm.lookupProducts.length > 0">
 		  <a type="button" class="btn btn-lg btn-ai-success" href="" ng-click="vm.download()"><i class="fa"></i> Download Results</a>
 		</div>

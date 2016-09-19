@@ -20,7 +20,7 @@
             module('app/common/components/a.html');
 
             inject(function($q) {
-                mockCommonService.developers = {developers: ['Developer 1', 'Developer 2']};
+                mockCommonService.developers = {developers: [{name: 'Developer 1', transparencyAttestations: []}, {name: 'Developer 2', transparencyAttestations: []}]};
                 mockCommonService.products = [{name: 'Prod', lastModifiedDate: '2014-05-02'}, 'Product 2'];
                 mockCommonService.certs = ['Cert 1', 'Cert 2'];
                 mockCommonService.cqms = ['CQM 1', 'CQM 2'];

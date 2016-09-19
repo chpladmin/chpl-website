@@ -1,5 +1,27 @@
 # Release Notes
 
+## Version 5.0.0
+_19 September 2016_
+
+### New features
+* Changed Cert ID lookup not found error message to include the ID
+* Changed Cert ID lookup invalid format error message to include the ID
+* Added link to remove all selected products from widget
+* Changed widget border color to match widget header color
+* Integrated CQM c3/c4 access
+  * Updated reports to display changes
+  * Display / allow edit of c3/c4 for 2015 product CQMS
+* Updated links in /overview
+* Integrated view/edit developers with changes to /developers call
+* Changed calls to Certification ID API to use new operations search and create
+* Changed CommonService CmsDownload function call to Certification IDs API (call /certification_ids/ instead of /certification_ids/all)
+* Optimized CertID add/remove button in product listing so that isProductInCart() calls are reduced from three to one
+
+### Bugs fixed
+* Allowed editing of "Product Wide Additional Software"
+
+---
+
 ## Version 4.0.0
 _30 August 2016_
 
@@ -15,6 +37,7 @@ _30 August 2016_
 * Added navigation to Overview page
 * Enhanced Developer activity report
 * Enhanced Product activity report
+* Add option to download Edition specific product listing
 
 ### Bugs fixed
 * Certification Date in activity report was reported at wrong time zone

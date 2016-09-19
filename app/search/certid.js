@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // This is the javascript controller module for the CHPL Widget.
-// The widget requires cookies to function.
+// The widget uses localstorage.
 //
 // To configure web service see certidLogin.js.
 //
@@ -10,8 +10,7 @@ var chplCertIdWidget = (function(){
 
 	var urlCertId = "See certidLogin.js";
 	var apiKey = "See certidLogin.js";
-	var cookiePath = "/";
-	var cookieCertificationIdData = "certiddata";
+	var storageKeyCertificationIdData = "certiddata";
 	var collectionChangeCallback = null;
 
 	return {
@@ -50,20 +49,29 @@ var chplCertIdWidget = (function(){
 			productIds.forEach(function (item, index) {
 				if (("undefined" !== item) && ((null === removeIds) || ("undefined" === removeIds) || (-1 === removeIds.indexOf(item)))) {
 					if (productIdsString.length > 0)
-						productIdsString += "|";
+						productIdsString += ",";
 					productIdsString += item;
 				}
 			});
 
+			// Decide whether or not we're just searching and calculating,
+			// or if we're attempting to create a Cert ID
+			var ajaxPath = "search";
+			var ajaxType = "GET";
+			if (create) {
+				ajaxPath = "create";
+				ajaxType = "POST";
+			}
+			
 			// Call API to attempt to get an EHR Certification ID
 			$.ajax({
-				url: urlCertId,
-				type: "GET",
+				url: urlCertId + ajaxPath + "?ids=" + productIdsString,
+				type: ajaxType,
 				cache: false,
 				headers: {"API-KEY": apiKey},
-				data: "products=" + productIdsString + "&create=" + create,
+				contentType: "application/json",
 				success: function(data, status, xhr) {
-					chplCertIdWidget.setCookie(cookieCertificationIdData, JSON.stringify(data), 365);
+					chplCertIdWidget.setLocalStorage(storageKeyCertificationIdData, JSON.stringify(data));
 					chplCertIdWidget.displayCertificationIdResults(create);
 					if (("undefined" !== collectionChangeCallback) && (null !== collectionChangeCallback))
 						collectionChangeCallback();
@@ -83,7 +91,7 @@ var chplCertIdWidget = (function(){
 		////////////////////////////////////////////////////////////////
 		displayCertificationIdResults: function (create) {
 
-			var data = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
+			var data = JSON.parse(chplCertIdWidget.getCertificationIdData());
 			if (!data || "undefined" === data) {
 				return;
 			} else {
@@ -127,7 +135,11 @@ var chplCertIdWidget = (function(){
 		},
 
 		updateButtonAndId: function (showIdRequested) {
-			var data = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
+			var data = null;
+			var dataText = chplCertIdWidget.getCertificationIdData();
+			if ((null !== dataText) && (dataText.length > 0)) {
+				data = JSON.parse(dataText);
+			}
 			var isValid = false;
 			var year = "2015";
 			if (null !== data) {
@@ -179,23 +191,23 @@ var chplCertIdWidget = (function(){
 		////////////////////////////////////////////////////////////////
 		//
 		////////////////////////////////////////////////////////////////
-		getCertificationIdCookie: function () {
-			return chplCertIdWidget.getCookie(cookieCertificationIdData);
+		getCertificationIdData: function () {
+			return chplCertIdWidget.getLocalStorage(storageKeyCertificationIdData);
 		},
 
 		////////////////////////////////////////////////////////////////
-		// Retrieves the value of a specified cookie
+		// Retrieves the value of a specified localstorage key
 		//
 		////////////////////////////////////////////////////////////////
-		getCookie: function (name) {
+		getLocalStorage: function (name) {
 			return localStorage.getItem(name);
 		},
 
 		////////////////////////////////////////////////////////////////
-		// Stores the value of a specified cookie
+		// Stores the value of a specified localstorage key
 		//
 		////////////////////////////////////////////////////////////////
-		setCookie: function (cname, cvalue, exdays) {
+		setLocalStorage: function (cname, cvalue) {
 			localStorage.setItem(cname, cvalue);
 		},
 
@@ -205,9 +217,9 @@ var chplCertIdWidget = (function(){
 		getProductsInCart: function () {
 			var prods = [];
 			try {
-				var data = chplCertIdWidget.getCertificationIdCookie();
+				var data = chplCertIdWidget.getCertificationIdData();
 				if (null === data || "undefined" === data || "" === data) {
-					console.log("getProductsInCart: No certification id data to retrieve.");
+					//console.debug("getProductsInCart: No certification id data to retrieve.");
 				} else {
 					prods = JSON.parse(data)["products"];
 				}
@@ -221,13 +233,13 @@ var chplCertIdWidget = (function(){
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		setProductsInCart: function (products) {
-			var data = chplCertIdWidget.getCertificationIdCookie();
+			var data = chplCertIdWidget.getCertificationIdData();
 			if (null === data || "undefined" === data || "" === data) {
 				console.log("setProductsInCart: No certification id data to retrieve.");
 			} else {
 				data["products"] = products;
-				chplCertIdWidget.setCookie(cookieCertificationIdData, data, 365);
 			}
+			chplCertIdWidget.setLocalStorage(storageKeyCertificationIdData, data);
 		},
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,6 +256,14 @@ var chplCertIdWidget = (function(){
 			return count;
 		},
 
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		removeAllProductsFromCart: function (id) {
+			chplCertIdWidget.setLocalStorage(storageKeyCertificationIdData, null);
+			chplCertIdWidget.invokeGetCertificationId(null, null, false);
+		},
+		
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,7 +295,7 @@ var chplCertIdWidget = (function(){
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		displayProducts: function () {
-			var data = chplCertIdWidget.getCertificationIdCookie()
+			var data = chplCertIdWidget.getCertificationIdData()
 
 			// Add products listing
 			if (null !== data && "undefined" !== data) {
@@ -299,11 +319,15 @@ var chplCertIdWidget = (function(){
 							chplCertIdWidget.removeProductFromCart(item.productId);
 						});
 					});
+					// hide and show UI elements
 					$("#txtNoProductsSelected").hide();
+					$("#widgetLinkRemoveAllProducts").show();
 					$("#selectedProductsList").show();
 					return;
 				}
 			}
+			// hide and show UI elements
+			$("#widgetLinkRemoveAllProducts").hide();
 			$("#selectedProductsList").hide();
 			$("#txtNoProductsSelected").show();
 		},
@@ -319,7 +343,7 @@ var chplCertIdWidget = (function(){
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		generatePdf: function () {
-			var certificationIdData = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
+			var certificationIdData = JSON.parse(chplCertIdWidget.getCertificationIdData());
 
 			// Call API to attempt to get an EHR Certification ID
 			$.ajax({
@@ -348,7 +372,7 @@ var chplCertIdWidget = (function(){
 				"Product Name", "Version", "Classification", "Certification Edition",
 				"Additional Software Required"];
 			var rows = [];
-			var prods = chplCertIdWidget.getProductsInCart();
+			var prods = data["products"];
 			prods.forEach(function(item,index) {
 				// Decode additional software
 				var software = decodeURIComponent(item.additionalSoftware);
@@ -370,7 +394,7 @@ var chplCertIdWidget = (function(){
 			});
 
 			// Setup the criteria listing
-			var certificationIdData = JSON.parse(chplCertIdWidget.getCertificationIdCookie());
+			var certificationIdData = JSON.parse(chplCertIdWidget.getCertificationIdData());
 			var checkImageData = [
 				"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAoCAYAAABOzvzpAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AcHETQihsku3wAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAABNElEQVRo3u2avWoCURCFP6xsgiCCJL6Ajb2NjW+QPs3WafI0aWztrG1sbKxsbARJs91aBsI2gRBIcTcwgjbq3bnoGRj2Nsud892fXTgDiqvFGJgBn8BvpNwCE+AhJeEjoIwo+lQuUhCfOQi3ufEU3we+TTEl8Aa0gUakHFYrbyHMvQDYQpYOx87Cf6lb/KOZvHBagFdTw9Tz7L87HsP80rugceZ7T2ZcOAL4OlJPLQBSi865/wa3AoB73wECIAACIAACIAACIAACIAACIAACIAACIAACIAB3BuCnytoA7M245yi8VT13BKeotrDO0IeTeGvOuPiDC8cCBgRD5n/+zAPAkEODMieYlE3iucNdgg9o5115Xj7e/QE5CXSLPOPTIbJO7VOUEXp4YoouCX1IAxSKq8Qfo/7m4Y2Lh9YAAAAASUVORK5CYII=",
 				"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAoCAYAAABOzvzpAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AcHETQT1xcu5QAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAB/UlEQVRo3u2av0sDMRTHPxQFlyII4i9w7lKhi3Rx0NlFZ5curnYvjv4LujiKi7NLF0GcBCmIIC7d6qbLLYVy4HARYmnvcnd5SdQ+CD249JLv5+4l7yWBmVmzPeAG+ARiofICnIUmfAeIBEVPKm+hiG85Fh4DQ+BwQl+O1L0IaLoQX1MNfncsAtrAElARKjX1/KwXMVRfpqh1tQbvAvwKRSGsaQ0NAnbBoZQ76A2fBz7+XKU9pFKw8XXteuBJ/KVh3Q8JAL5nHlPx98DJXwKQV/xuVqXKfxb/mwCIiHcBoA70VZC0H5r4MtbRpplOiviBQQhrK9R2GoxlARgXXwRCsOKzAGxOEZ8HgjPxEmPAKbCacn8euE6B4NTnJQCMDOpMgxDkgFdkDOgVyO29+PycEKCGgrBl+CU85cjarL55yTigATwbukNZ8cchAsgDoYz4HnABVEMEYAvCNPFdAzcLIhcoAyHN55dDHgNsQBCf6lxng3kgOJnnfaTDJhCcBTm+1gPSIDiN8HwuiEyC4Dy89b0i1FBRYFnxI8McxFoo/K5db5SEsF3iv4vq91XlFc5M3xnytVOrJ0+3PjrQ9diB8RWnlg8ATX7uDvdJtqgXkNsdXiHZ6tLbffA5iPk4HxCPQa/i2Q5wf0IkBh4JzFokZ3gkRUck55DqzGxmVuwLQQ57jmeUx2AAAAAASUVORK5CYII="

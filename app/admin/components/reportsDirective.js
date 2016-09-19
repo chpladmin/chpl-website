@@ -412,29 +412,28 @@
                     } else if (data[i].description.startsWith('A corrective action plan for')) {
                         var cpNum = data[i].description.split(' ')[7];
                         if (data[i].description.endsWith('created.')) {
-                            cpNum = data[i].description.split(' ')[5];
                             activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                             activity.id = data[i].newData.id;
                             activity.acb = data[i].newData.acbName;
                         } else if (data[i].description.endsWith('deleted.')) {
                             activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
-                            activity.id = data[i].newData.id;
+                            activity.id = data[i].originalData.id;
                             activity.acb = data[i].originalData.acbName;
                         } else if (data[i].description.endsWith('updated.')) {
                             activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                             activity.id = data[i].newData.id;
                             activity.acb = data[i].newData.acbName;
                             var capFields = [
+                                {key: 'acbSummary', display: 'ONC/ACB Summary'},
                                 {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
                                 {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
-                                {key: 'developerExplanation', display: 'Developer Explanation'},
-                                {key: 'nonComplianceDeterminationDate', display: 'Date of Determination', filter: 'date'},
-                                {key: 'requiredCompletionDate', display: 'Must Be Completed', filter: 'date'},
+                                {key: 'developerSummary', display: 'Developer Explanation'},
+                                {key: 'effectiveDate', display: 'Effective Date', filter: 'date'},
+                                {key: 'estimatedCompleteionDate', display: 'Estimated Complete Date', filter: 'date'},
+                                {key: 'noncomplianceDate', display: 'Date of Determination', filter: 'date'},
+                                {key: 'randomizedSurveillance', display: 'Result of Randomized Surveillance'},
                                 {key: 'resolution', display: 'Description of Resolution'},
-                                {key: 'startDate', display: 'Action Began', filter: 'date'},
-                                {key: 'summary', display: 'Summary of Non-conformity'},
                                 {key: 'surveillanceEndDate', display: 'Surveillance Ended', filter: 'date'},
-                                {key: 'surveillanceResult', display: 'Result of Randomized Surveillance'},
                                 {key: 'surveillanceStartDate', display: 'Surveillance Began', filter: 'date'}
                             ];
                             activity.details = [];
@@ -462,22 +461,6 @@
                         cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
                         activity.action = cpNum.join(' ');
                         activity.acb = data[i].newData.acbName;
-                        output.cap.push(activity);
-                    } else if (data[i].description.startsWith('Updated information for certification')) {
-                        activity.action = data[i].description;
-                        var capFields = [
-                            {key: 'developerExplanation', display: 'Developer Explanation'},
-                            {key: 'numSitesPassed', display: 'Number of sites passed'},
-                            {key: 'numSitesTotal', display: 'Total number of sites'},
-                            {key: 'resolution', display: 'Description of Resolution'},
-                            {key: 'summary', display: 'Summary of Non-conformity'}
-                        ];
-                        activity.details = [];
-                        for (var j = 0; j < capFields.length; j++) {
-                            change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
-                            if (change) activity.details.push(change);
-                        }
-                        activity.csvDetails = activity.details.join('\n');
                         output.cap.push(activity);
                     } else {
                         activity.action = data[i].description;
@@ -668,6 +651,11 @@
                             obj.changes.push('<li>' + prev[i].allVersions[j] + ' added</li>');
                         if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) < 0)
                             obj.changes.push('<li>' + prev[i].allVersions[j] + ' removed</li>');
+                    }
+                    var criteriaKeys = [];
+                    var criteria = compareArray(prev[i].criteria, curr[i].criteria, criteriaKeys, 'certificationNumber');
+                    for (var j = 0; j < criteria.length; j++) {
+                        obj.changes.push('<li>Certification Criteria "' + criteria[j].name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
                     }
                     if (obj.changes.length > 0)
                         ret.push(obj);

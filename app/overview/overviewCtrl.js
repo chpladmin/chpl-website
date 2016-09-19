@@ -2,12 +2,13 @@
     'use strict';
 
     angular.module('app.overview')
-        .controller('OverviewController', ['$log', 'commonService', function ($log, commonService) {
+        .controller('OverviewController', ['$log', '$anchorScroll', '$location', 'commonService', function ($log, $anchorScroll, $location, commonService) {
             var vm = this;
 
             vm.loadAcbs = loadAcbs;
             vm.loadAtls = loadAtls;
             vm.loadAnnouncements = loadAnnouncements;
+            vm.toTop = toTop;
 
             activate();
 
@@ -44,6 +45,11 @@
                     }, function (error) {
                         $log.debug('error in app.overview.controller.loadAtls', error);
                     });
+            }
+
+            function toTop () {
+                $location.hash('');
+                $anchorScroll();
             }
         }]);
 })();

@@ -12,7 +12,7 @@
           <div class="input-group input-group-lg">
             <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
                    ng-keyup="$event.keyCode === 13 && vm.search()"
-                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:{value:$viewValue} | limitTo:16"
+                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"
                    typeahead-input-formatter="$model.value" />
             <span class="input-group-btn">
@@ -45,7 +45,7 @@
             <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.developer"
                    ng-required="vm.refineType === 'developer'"
                    ng-keyup="$event.keyCode == 13 && vm.addRefine()"
-                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:{value:$viewValue} | limitTo:16"
+                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"
                    typeahead-input-formatter="$model.value" />
             <span class="input-group-btn">
@@ -59,7 +59,7 @@
             <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.refine.product"
                    ng-required="vm.refineType === 'product'"
                    ng-keyup="$event.keyCode == 13 && vm.addRefine()"
-                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:{value:$viewValue} | limitTo:16"
+                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"
                    typeahead-input-formatter="$model.value" />
             <span class="input-group-btn">
@@ -261,9 +261,18 @@
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
                       <td>
-                        <button href ng-class="['btn btn-ai-certid btn-sm', {'btn-ai-certid-toggleon': vm.widget.isProductInCart(row.id)}]" ng-click="vm.toggleCart(row)">
-							<i ng-class="{'fa fa-plus': !vm.widget.isProductInCart(row.id), 'fa fa-minus': vm.widget.isProductInCart(row.id)}"></i> <span class="sr-only">{{vm.widget.isProductInCart(row.id) ? 'Remove' : 'Add'}} {{ row.product.name}} to </span>Cert ID
-						</button>
+						<div ng-switch on="vm.widget.isProductInCart(row.id)">
+							<div ng-switch-when="true">
+								<button href class="btn btn-ai-certid btn-sm btn-ai-certid-toggleon" ng-click="vm.toggleCart(row)">
+									<i class="fa fa-minus"></i> <span class="sr-only">Remove {{row.product.name}} from </span>Cert ID
+								</button>
+							</div>
+							<div ng-switch-default>
+								<button href class="btn btn-ai-certid btn-sm" ng-click="vm.toggleCart(row)">
+									<i class="fa fa-plus"></i> <span class="sr-only">Add {{row.product.name}} to </span>Cert ID
+								</button>
+							</div>
+						</div>
                       </td>
 	                </tr>
                   </tbody>
