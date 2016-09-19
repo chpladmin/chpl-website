@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version _TBD_
-_TBD_
+## Version 5.0.0
+_19 September 2016_
 
 ### New features
 * Changed Cert ID lookup not found error message to include the ID
