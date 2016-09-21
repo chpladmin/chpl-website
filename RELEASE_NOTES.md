@@ -7,6 +7,7 @@ _Date TBD_
 * Added certification status icon to search results
 * Changed randomized surveillance text:
   Was randomized surveillance conducted? = yes/no
+* Updated certification statuses
 
 ---
 
