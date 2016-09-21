@@ -18,6 +18,7 @@
             vm.reloadResults = reloadResults;
             vm.restoreResults = restoreResults
             vm.search = search;
+            vm.statusFont = statusFont;
             vm.toggleCompare = toggleCompare;
             vm.truncButton = truncButton;
             vm.unrefine = unrefine;
@@ -286,6 +287,28 @@
                     });
 
                 $localStorage.query = vm.query;
+            }
+
+            function statusFont (status) {
+                var ret;
+                switch (status) {
+                case 'Active':
+                    ret = 'fa-check-circle status-good';
+                    break;
+                case 'Suspended':
+                    ret = 'fa-check-circle status-good';
+                    break;
+                case 'Retired':
+                    ret = 'fa-close status-bad';
+                    break;
+                case 'Terminated':
+                    ret = 'fa-close status-bad';
+                    break;
+                case 'Withdrawn':
+                    ret = 'fa-close status-bad';
+                    break;
+                }
+                return ret;
             }
 
             function toggleCompare (row) {

@@ -1,5 +1,13 @@
 # Release Notes
 
+## Next version
+_Date TBD_
+
+### New features
+* Added certification status icon to search results
+
+---
+
 ## Version 5.0.0
 _19 September 2016_
 
