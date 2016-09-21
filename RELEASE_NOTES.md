@@ -5,6 +5,8 @@ _Date TBD_
 
 ### New features
 * Added certification status icon to search results
+* Changed randomized surveillance text:
+  Was randomized surveillance conducted? = yes/no
 
 ---
 
