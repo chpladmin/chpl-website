@@ -15,18 +15,21 @@
       </span>
       <div class="form-group">
         <label for="idProd" class="sr-only">Product Code:</label>
-        <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" required></input>
+        <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]*$/" required></input>
         <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idProd.$touched) && vm.editForm.idProd.$error.required">Field is required</span>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idProd.$touched) && !vm.editForm.idProd.$error.required && !vm.editForm.idProd.$valid">Must consist of letters, numbers and/or "_"</span>
       </div>
       <div class="form-group">
         <label for="idVer" class="sr-only">Version Code:</label>
-        <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" required></input>
+        <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]*$/" required></input>
         <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idVer.$touched) && vm.editForm.idVer.$error.required">Field is required</span>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idVer.$touched) && !vm.editForm.idVer.$error.required && !vm.editForm.idVer.$valid">Must consist of letters, numbers and/or "_"</span>
       </div>
       <div class="form-group">
         <label for="idIcs" class="sr-only">ICS Code:</label>
-        <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="1" required></input>
+        <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="1" ng-pattern="/^[0-9]*$/" required></input>
         <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.editForm.idIcs.$error.required">Field is required</span>
+        <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">Must consist of numbers only</span>
       </div>
       <span class="form-control-static">
         {{ vm.idFields.suffix }}
@@ -253,6 +256,12 @@
     <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
+        <li ng-if="!vm.editForm.idProd.$error.required && !vm.editForm.idProd.$valid">CHPL Product Number Product Code must consist of letters, numbers and/or "_"</span>
+        <li ng-if="vm.editForm.idProd.$error.required">CHPL Product Number Product Code is required</span>
+        <li ng-if="!vm.editForm.idVer.$error.required && !vm.editForm.idVer.$valid">CHPL Product Number Version Code must consist of letters, numbers and/or "_"</span>
+        <li ng-if="vm.editForm.idVer.$error.required">CHPL Product Number Version Code is required</span>
+        <li ng-if="!vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">CHPL Product Number ICS Code must consist of numbers only</span>
+        <li ng-if="vm.editForm.idIcs.$error.required">CHPL Product Number ICS Code is required</span>
         <li ng-if="vm.editForm.cpPractice.$error.required">Practice Type is required</li>
         <li ng-if="vm.editForm.cpClassification.$error.required">Classification Type is required</li>
         <li ng-if="vm.editForm.cpBody.$error.required">Certification Body is required</li>

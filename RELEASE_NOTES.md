@@ -8,6 +8,7 @@ _Date TBD_
 * Changed randomized surveillance text:
   Was randomized surveillance conducted? = yes/no
 * Updated certification statuses
+* Added pattern requirements to CHPL Product Number editing
 
 ---
 
