@@ -160,7 +160,7 @@
 
             var objToFilter;
             beforeEach(function () {
-                objToFilter = {id: 1, statuses: {active: 1, withdrawn: 0, retired: 1}};
+                objToFilter = {id: 1, statuses: {active: 1, withdrawnByDeveloper: 0, retired: 1}};
             });
 
             it('should have a filter to filter out certificationStatuses', function () {
@@ -178,7 +178,7 @@
             });
 
             it('should return false if the selected status has 0 objects', function () {
-                ctrl.refine.certificationStatus = 'withdrawn';
+                ctrl.refine.certificationStatus = 'withdrawnByDeveloper';
                 expect(ctrl.certificationStatusFilter(objToFilter)).toBe(false);
             });
 
@@ -198,10 +198,10 @@
 
             it('should get the right icon for various statuses', function () {
                 expect(ctrl.statusFont('Active')).toBe('fa-check-circle status-good');
-                expect(ctrl.statusFont('Suspended')).toBe('fa-check-circle status-good');
+                expect(ctrl.statusFont('Suspended by ONC-ACB')).toBe('fa-check-circle status-good');
                 expect(ctrl.statusFont('Retired')).toBe('fa-close status-bad');
-                expect(ctrl.statusFont('Terminated')).toBe('fa-close status-bad');
-                expect(ctrl.statusFont('Withdrawn')).toBe('fa-close status-bad');
+                expect(ctrl.statusFont('Withdrawn by Developer')).toBe('fa-close status-bad');
+                expect(ctrl.statusFont('Withdrawn by ONC-ACB')).toBe('fa-close status-bad');
             });
         });
     });

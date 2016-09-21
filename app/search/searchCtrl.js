@@ -154,9 +154,9 @@
                     return true;
                 } else if (angular.isUndefined(vm.refine.certificationStatus) || vm.refine.certificationStatus === null) {
                     return ((obj.statuses['active'] > 0) ||
-                            (obj.statuses['withdrawn'] > 0) ||
-                            (obj.statuses['terminated'] > 0) ||
-                            (obj.statuses['suspended'] > 0));
+                            (obj.statuses['withdrawnbyAcb'] > 0) ||
+                            (obj.statuses['withdrawnbyDeveloper'] > 0) ||
+                            (obj.statuses['suspendedbyAcb'] > 0));
                 } else {
                     return (obj.statuses[$filter('lowercase')(vm.refine.certificationStatus)] > 0);
                 }
@@ -295,16 +295,16 @@
                 case 'Active':
                     ret = 'fa-check-circle status-good';
                     break;
-                case 'Suspended':
+                case 'Suspended by ONC-ACB':
                     ret = 'fa-check-circle status-good';
                     break;
                 case 'Retired':
                     ret = 'fa-close status-bad';
                     break;
-                case 'Terminated':
+                case 'Withdrawn by Developer':
                     ret = 'fa-close status-bad';
                     break;
-                case 'Withdrawn':
+                case 'Withdrawn by ONC-ACB':
                     ret = 'fa-close status-bad';
                     break;
                 }
