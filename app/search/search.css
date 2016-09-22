@@ -96,6 +96,10 @@ ul.pagination li {
     color: green;
 }
 
+.status-warning {
+    color: #f5d43c;
+}
+
 .status-bad {
     color: red;
 }

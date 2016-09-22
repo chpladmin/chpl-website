@@ -296,7 +296,7 @@
                     ret = 'fa-check-circle status-good';
                     break;
                 case 'Suspended by ONC-ACB':
-                    ret = 'fa-check-circle status-good';
+                    ret = 'fa-warning status-warning';
                     break;
                 case 'Retired':
                     ret = 'fa-close status-bad';
