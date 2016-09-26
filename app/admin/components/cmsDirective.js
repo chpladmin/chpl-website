@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('CmsController', ['$log', 'commonService', function ($log, commonService) {
+        .controller('CmsController', ['$log', 'commonService', 'authService', function ($log, commonService, authService) {
             var vm = this;
 
             vm.getDownload = getDownload;
@@ -12,9 +12,16 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                vm.filename = 'CMS_Ids_' + new Date().getTime() + '.csv';
-                vm.csvHeader = ['CMS ID', 'Creation Date'];
-                vm.csvColumnOrder = ['certificationId', 'created'];
+                self.isAcbAdmin = authService.isAcbAdmin();
+
+                vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
+                if (authService.isChplAdmin()) {
+                    vm.csvHeader = ['CMS ID', 'Creation Date', 'CHPL Product(s)'];
+                    vm.csvColumnOrder = ['certificationId', 'created', 'products'];
+                } else {
+                    vm.csvHeader = ['CMS ID', 'Creation Date'];
+                    vm.csvColumnOrder = ['certificationId', 'created'];
+                }
                 vm.isReady = false;
                 vm.getDownload();
             }

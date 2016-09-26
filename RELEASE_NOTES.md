@@ -9,6 +9,7 @@ _Date TBD_
   Was randomized surveillance conducted? = yes/no
 * Updated certification statuses
 * Removed OBE API Documentation / Terms Of Use fields
+* Added 'CHPL Product(s)' column to CMS Download file
 
 ---
 
