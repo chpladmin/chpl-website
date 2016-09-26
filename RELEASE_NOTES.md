@@ -8,6 +8,7 @@ _Date TBD_
 * Changed randomized surveillance text:
   Was randomized surveillance conducted? = yes/no
 * Updated certification statuses
+* Removed OBE API Documentation / Terms Of Use fields
 
 ---
 

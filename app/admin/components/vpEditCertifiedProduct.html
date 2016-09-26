@@ -159,11 +159,6 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedTestingEnd.$touched) && vm.editForm.cpSedTestingEnd.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
     <div class="form-group">
-      <label for="cpTouLoc">Terms of Use</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.termsOfUse" id="cpTouLoc" name="cpTouLoc"></input>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTouLoc.$touched) && vm.editForm.cpTouLoc.$error.url">Improper format (http://www.example.com)</div>
-    </div>
-    <div class="form-group">
       <label for="cpTestingLab">Testing Lab</label>
       <select class="input-sm form-control" ng-model="vm.cp.testingLab" id="cpTestingLab" name="cpTestingLab"
               ng-options="body as body.name for body in vm.testingLabs" required>

@@ -135,14 +135,6 @@
             <h4>Other ACB</h4>
             <p>{{ vm.product.otherAcb }}</p>
           </span>
-          <span ng-if="vm.product.certificationEdition.name === '2015'">
-            <h4>API Documentation</h4>
-            <p ng-if="vm.product.apiDocumentation"><ai-a href="{{ vm.product.apiDocumentation }}" text="{{ vm.product.apiDocumentation }}"></ai-a></p>
-            <p ng-if="!vm.product.apiDocumentation">N/A</p>
-            <h4>Terms of Use</h4>
-            <p ng-if="vm.product.termsOfUse"><ai-a href="{{ vm.product.termsOfUse }}" text="{{ vm.product.termsOfUse }}"></ai-a></p>
-            <p ng-if="!vm.product.termsOfUse">N/A</p>
-          </span>
           <span ng-if="vm.product.targetedUsers && vm.product.targetedUsers.length > 0">
             <h4>Developer Identified Targeted User<span ng-if="vm.product.targetedUsers.length > 1">s</span></h4>
             <ul>

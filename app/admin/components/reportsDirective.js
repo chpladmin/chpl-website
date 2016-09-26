@@ -312,7 +312,6 @@
                     {key: 'sedReportFileLocation', display: 'SED Report File Location'},
                     {key: 'sedTesting', display: 'SED Tested'},
                     {key: 'sedTestingEnd', display: 'SED Testing End Date', filter: 'date'},
-                    {key: 'termsOfUse', display: 'Terms Of Use'},
                     {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'}
                 ];
                 var nestedKeys = [
