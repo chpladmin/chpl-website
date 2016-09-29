@@ -10,6 +10,7 @@ _Date TBD_
 * Updated certification statuses
 * Removed OBE API Documentation / Terms Of Use fields
 * Added 'CHPL Product(s)' column to CMS Download file
+* Added pattern requirements to CHPL Product Number editing
 
 ---
 
