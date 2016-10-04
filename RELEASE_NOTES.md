@@ -1,7 +1,7 @@
 # Release Notes
 
-## Next version
-_Date TBD_
+## Version 5.1.0
+_4 October 2016_
 
 ### New features
 * Added certification status icon to search results
