@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 5.1.0
+_4 October 2016_
+
+### New features
+* Added certification status icon to search results
+* Changed randomized surveillance text:
+  Was randomized surveillance conducted? = yes/no
+* Updated certification statuses
+* Removed OBE API Documentation / Terms Of Use fields
+* Added 'CHPL Product(s)' column to CMS Download file
+* Added pattern requirements to CHPL Product Number editing
+* Implemented 'retirement' of Test Tools
+
+---
+
 ## Version 5.0.0
 _19 September 2016_
 

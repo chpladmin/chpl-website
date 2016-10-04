@@ -18,6 +18,7 @@
             vm.reloadResults = reloadResults;
             vm.restoreResults = restoreResults
             vm.search = search;
+            vm.statusFont = statusFont;
             vm.toggleCompare = toggleCompare;
             vm.truncButton = truncButton;
             vm.unrefine = unrefine;
@@ -153,9 +154,9 @@
                     return true;
                 } else if (angular.isUndefined(vm.refine.certificationStatus) || vm.refine.certificationStatus === null) {
                     return ((obj.statuses['active'] > 0) ||
-                            (obj.statuses['withdrawn'] > 0) ||
-                            (obj.statuses['terminated'] > 0) ||
-                            (obj.statuses['suspended'] > 0));
+                            (obj.statuses['withdrawnbyAcb'] > 0) ||
+                            (obj.statuses['withdrawnbyDeveloper'] > 0) ||
+                            (obj.statuses['suspendedbyAcb'] > 0));
                 } else {
                     return (obj.statuses[$filter('lowercase')(vm.refine.certificationStatus)] > 0);
                 }
@@ -286,6 +287,28 @@
                     });
 
                 $localStorage.query = vm.query;
+            }
+
+            function statusFont (status) {
+                var ret;
+                switch (status) {
+                case 'Active':
+                    ret = 'fa-check-circle status-good';
+                    break;
+                case 'Suspended by ONC-ACB':
+                    ret = 'fa-warning status-warning';
+                    break;
+                case 'Retired':
+                    ret = 'fa-close status-bad';
+                    break;
+                case 'Withdrawn by Developer':
+                    ret = 'fa-close status-bad';
+                    break;
+                case 'Withdrawn by ONC-ACB':
+                    ret = 'fa-close status-bad';
+                    break;
+                }
+                return ret;
             }
 
             function toggleCompare (row) {
