@@ -18,6 +18,7 @@
 
             function activate () {
                 vm.isAcbAdmin = authService.isAcbAdmin();
+                vm.isChplAdmin = authService.isChplAdmin();
                 vm.showFormErrors = false;
             }
 

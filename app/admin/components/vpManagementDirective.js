@@ -12,6 +12,8 @@
             self.editProduct = editProduct;
             self.editVersion = editVersion;
             self.inspectCp = inspectCp;
+            self.isDeveloperEditable = isDeveloperEditable;
+            self.isDeveloperMergeable = isDeveloperMergeable;
             self.loadCp = loadCp;
             self.mergeDevelopers = mergeDevelopers;
             self.mergeProducts = mergeProducts;
@@ -390,6 +392,14 @@
                         }
                     }
                 });
+            }
+
+            function isDeveloperEditable (dev) {
+                return self.isChplAdmin || dev.status.status === 'Active';
+            }
+
+            function isDeveloperMergeable (dev) {
+                return dev.status.status === 'Active';
             }
 
             function rejectCp  (cpId) {

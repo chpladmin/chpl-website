@@ -141,7 +141,7 @@
           <label for="developerMergeSelect" class="control-label admin-label-spaced">Select developers to merge</label>
           <select ng-model="vm.mergingDevelopers" multiple="true"
                   id="developerMergeSelect" class="input-sm form-control"
-                  size="12" ng-options="v.name for v in vm.developers | orderBy: 'name'">
+                  size="12" ng-options="v.name disable when !vm.isDeveloperMergeable(v) for v in vm.developers | orderBy: 'name'">
           </select>
           <p><button ng-disabled="vm.mergingDevelopers.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
         </div>
@@ -155,6 +155,7 @@
               <tr>
                 <th scope="cols">Code</th>
                 <th scope="cols">Name</th>
+                <th scope="cols">Status</th>
                 <th scope="cols" ng-repeat="att in vm.activeAcbs | orderBy:'toString()'">{{ att }}</th>
                 <th scope="cols">Last modified date</th>
               </tr>
@@ -163,6 +164,7 @@
               <tr ng-repeat="dev in vm.developers | orderBy: 'name'">
                 <td>{{ dev.developerCode }}</td>
                 <td>{{ dev.name }}</td>
+                <td>{{ dev.status.status }}</td>
                 <td ng-repeat="att in vm.activeAcbs | orderBy:'toString()'">{{ dev.transMap[att] ? dev.transMap[att] : 'None' }}</td>
                 <td>{{ dev.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</td>
               </tr>
@@ -178,12 +180,13 @@
             <div class="panel-heading">
               <span>Select a developer</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge'"><a href="" ng-click="vm.editDeveloper()"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |</span>
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editDeveloper()"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |</span>
                 <a href="" ng-click="vm.activeDeveloper = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>
             <div class="panel-body">
               <div>{{ vm.activeDeveloper.name }} (Developer Code: {{ vm.activeDeveloper.developerCode }}) <em class="pull-right">Last modified date: {{ vm.activeDeveloper.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
+              <div>{{ vm.activeDeveloper.status.status }}</div>
               <div>
                 Line 1: {{ vm.activeDeveloper.address.line1 }}<br />
                 Line 2: {{ vm.activeDeveloper.address.line2 }}<br />
@@ -258,7 +261,7 @@
             <div class="panel-heading">
               <span>Select a product</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge'"><a href="" ng-click="vm.editProduct()"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |</span>
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editProduct()"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |</span>
                 <a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>
@@ -318,7 +321,7 @@
             <div class="panel-heading">
               <span>Select a version</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge'"><a href="" ng-click="vm.editVersion()"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editVersion()"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |
                 <a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>
@@ -359,7 +362,7 @@
                 <span>Select a Certified Product</span>
                 <span class="pull-right">
                   <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Product Listing</a> |
-                  <a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |
+                  <span ng-if="vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
                 </span>
               </div>
@@ -399,7 +402,7 @@
                                                               corrective-action-plan="vm.activeCP.cap"
                                                               certified-product-id="vm.activeCP.id"
                                                               certification-results="vm.activeCP.certificationResults"
-                                                              is-admin="true"></ai-corrective-action-plan><br />
+                                                              is-admin="vm.isDeveloperEditable(vm.activeDeveloper)"></ai-corrective-action-plan><br />
                 </span>
                 <br />
                 <ai-certs ng-if="vm.activeCP !== ''"

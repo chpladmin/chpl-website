@@ -17,6 +17,15 @@
     <div>
       <strong>Developer Code: </strong>{{ vm.developer.developerCode }}
     </div>
+    <div class="form-group" ng-if="vm.isChplAdmin">
+      <label for="developerStatus">Developer Status <span class="text-danger">*</span></label>
+      <select class="input-sm form-control" ng-model="vm.developer.status.status" id="developerStatus" name="developerStatus" required>
+        <option value="Active">Active</option>
+        <option value="Suspended by ONC">Suspended by ONC</option>
+        <option value="Under Certification Ban by ONC">Under Certification Ban by ONC</option>
+      </select>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerStatus.$touched) && vm.editForm.developerStatus.$error.required">Developer status is required</div>
+    </div>
     <div class="form-group">
       <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" name="addressLine1"></input>
@@ -91,6 +100,7 @@
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.developerName.$error.required">Developer name is required</li>
+        <li ng-if="vm.editForm.developerStatus.$error.required">Developer status is required</li>
         <li ng-if="vm.editForm.addressLine1.$error.required">Address Line 1 is required</li>
         <li ng-if="vm.editForm.addressCity.$error.required">City is required</li>
         <li ng-if="vm.editForm.addressState.$error.required">State is required</li>

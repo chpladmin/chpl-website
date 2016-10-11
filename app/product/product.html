@@ -44,6 +44,7 @@
         <div class="product-element">
           <h2 class="product-heading">Developer</h2>
           <p>{{ vm.product.developer.name }}</p>
+          <p class="bg-danger" ng-if="vm.product.developer.status.status !== 'Active'">{{ vm.product.developer.status.status }}</p>
           <p ng-if="vm.product.developer.website"><ai-a href="{{ vm.product.developer.website }}" text="{{ vm.product.developer.website }}"></ai-a></p>
           <span ng-if="vm.product.developer.address">
             <h3>Address</h3>
