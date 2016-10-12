@@ -261,7 +261,7 @@
             <div class="panel-heading">
               <span>Select a product</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editProduct()"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |</span>
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)"><a href="" ng-click="vm.editProduct()"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |</span>
                 <a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>
@@ -321,7 +321,7 @@
             <div class="panel-heading">
               <span>Select a version</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editVersion()"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)"><a href="" ng-click="vm.editVersion()"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |</span>
                 <a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>
@@ -362,7 +362,7 @@
                 <span>Select a Certified Product</span>
                 <span class="pull-right">
                   <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Product Listing</a> |
-                  <span ng-if="vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
+                  <span ng-if="vm.isDeveloperMergeable(vm.activeDeveloper)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
                 </span>
               </div>
@@ -402,7 +402,7 @@
                                                               corrective-action-plan="vm.activeCP.cap"
                                                               certified-product-id="vm.activeCP.id"
                                                               certification-results="vm.activeCP.certificationResults"
-                                                              is-admin="vm.isDeveloperEditable(vm.activeDeveloper)"></ai-corrective-action-plan><br />
+                                                              is-admin="vm.isDeveloperMergeable(vm.activeDeveloper)"></ai-corrective-action-plan><br />
                 </span>
                 <br />
                 <ai-certs ng-if="vm.activeCP !== ''"

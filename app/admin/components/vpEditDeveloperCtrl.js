@@ -42,7 +42,7 @@
                 });
                 commonService.updateDeveloper(vm.updateDeveloper)
                     .then(function (response) {
-                        if (!response.status || response.status === 200) {
+                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                             $modalInstance.close(response);
                         } else {
                             $modalInstance.dismiss('An error occurred');
