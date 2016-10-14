@@ -99,6 +99,17 @@
                 }
                 return false;
             };
+            
+            self.isOncStaff = function () {
+                var token = self.getToken();
+                if (token) {
+                    var authorities = self.parseJwt(token).Authorities;
+                    if (authorities) {
+                        return authorities.indexOf('ROLE_ONC_STAFF') > -1
+                    }
+                }
+                return false;
+            };
 
             self.getUsername = function () {
                 if (self.isAuthed()) {

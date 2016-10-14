@@ -6,6 +6,7 @@ _Date TBD_
 ### New features
 * Added option to download csv summaries of 2014/2015 products to resources page
 * Added Developer status display / edit
+* Added role 'ROLE_ONC_STAFF'
 
 ---
 
