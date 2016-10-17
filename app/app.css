@@ -521,3 +521,15 @@ fieldset[disabled] .btn-ai-success.active {
 option[disabled] {
     font-style: italic;
 }
+
+.status-good {
+    color: green;
+}
+
+.status-warning {
+    color: #f5d43c;
+}
+
+.status-bad {
+    color: red;
+}
