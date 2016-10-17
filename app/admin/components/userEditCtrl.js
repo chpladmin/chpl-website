@@ -31,12 +31,10 @@
                 if (!vm.atlId) {
                     vm.roles.push('ROLE_ACB_ADMIN');
                     vm.roles.push('ROLE_ACB_STAFF');
-                    vm.roles.push('ROLE_ONC_STAFF');
                 }
                 if (!vm.acbId) {
                     vm.roles.push('ROLE_ATL_ADMIN');
                     vm.roles.push('ROLE_ATL_STAFF');
-                    vm.roles.push('ROLE_ONC_STAFF');
                 }
             }
 

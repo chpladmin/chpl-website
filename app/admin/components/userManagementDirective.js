@@ -22,12 +22,10 @@
                 if (!vm.atlId) { // not managing ATL; either managing entire CHPL or single ACB
                     vm.roles.push('ROLE_ACB_ADMIN');
                     vm.roles.push('ROLE_ACB_STAFF');
-                    vm.roles.push('ROLE_ONC_STAFF');
                 }
                 if (!vm.acbId) { // not managing ACB; either managing entire CHPL or single ATL
                     vm.roles.push('ROLE_ATL_ADMIN');
                     vm.roles.push('ROLE_ATL_STAFF');
-                    vm.roles.push('ROLE_ONC_STAFF');
                 }
             }
 
