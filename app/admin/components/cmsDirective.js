@@ -15,7 +15,7 @@
                 self.isAcbAdmin = authService.isAcbAdmin();
 
                 vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
-                if (authService.isChplAdmin()) {
+                if (authService.isChplAdmin() || authService.isOncStaff()) {
                     vm.csvHeader = ['CMS ID', 'Creation Date', 'CHPL Product(s)'];
                     vm.csvColumnOrder = ['certificationId', 'created', 'products'];
                 } else {
