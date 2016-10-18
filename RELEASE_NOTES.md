@@ -7,6 +7,9 @@ _Date TBD_
 * Added option to download csv summaries of 2014/2015 products to resources page
 * Added Developer status display / edit
 
+### Bugs fixed
+* Don't show errors about new style CHPL Product Numbers on old style products
+
 ---
 
 ## Version 5.1.0
