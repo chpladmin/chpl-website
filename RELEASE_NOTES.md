@@ -6,6 +6,8 @@ _Date TBD_
 ### New features
 * Added option to download csv summaries of 2014/2015 products to resources page
 * Added Developer status display / edit
+* Added role 'ROLE_ONC_STAFF'
+* Allowed ROLE_ONC_STAFF access to all reports areas, including those previously restricted to ROLE_ADMIN only
 * Update search results display to not suggest row is clickable
 
 ### Bugs fixed
