@@ -8,6 +8,10 @@ _Date TBD_
 * Added Developer status display / edit
 * Added role 'ROLE_ONC_STAFF'
 * Allowed ROLE_ONC_STAFF access to all reports areas, including those previously restricted to ROLE_ADMIN only
+* Update search results display to not suggest row is clickable
+
+### Bugs fixed
+* Don't show errors about new style CHPL Product Numbers on old style products
 
 ---
 

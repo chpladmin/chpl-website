@@ -14,10 +14,6 @@ ul.pagination li {
     color: #0070c9;
 }
 
-.productHeader {
-    cursor: pointer;
-}
-
 .search-row:hover>td {
     font-weight: 700;
 }
