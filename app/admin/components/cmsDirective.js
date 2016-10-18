@@ -13,6 +13,7 @@
 
             function activate () {
                 self.isAcbAdmin = authService.isAcbAdmin();
+                self.isOncStaff = authService.isOncStaff();
 
                 vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
                 if (authService.isChplAdmin() || authService.isOncStaff()) {
