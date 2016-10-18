@@ -6,6 +6,7 @@ _Date TBD_
 ### New features
 * Added option to download csv summaries of 2014/2015 products to resources page
 * Added Developer status display / edit
+* Update search results display to not suggest row is clickable
 
 ### Bugs fixed
 * Don't show errors about new style CHPL Product Numbers on old style products
