@@ -9,6 +9,9 @@
   </div>
   <div class="row main-content" id="mainContent" tabindex="-1">
     <div class="col-sm-12">
+      <div class="pull-right">
+        <input type="checkbox" name="showAllPossible" id="showAllPossible" ng-model="vm.showAllPossibles"></input> <label for="showAllPossible" class="control-label">See all Certification Criteria / Clinical Quality Measures</label>
+      </div>
       <table class="table table-striped compare-table" aria-live="polite">
         <thead>
           <tr>
@@ -78,7 +81,6 @@
           </tr>
         </tbody>
       </table>
-      <a href ng-click="vm.showAllPossibles = !vm.showAllPossibles">{{ vm.showAllPossibles ? 'Hide' : 'Show' }} unmet certification criteria and Clinical Quality Measures</a>
     </div>
   </div>
 </div>
