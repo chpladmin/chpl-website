@@ -1,7 +1,7 @@
 # Release Notes
 
-# Version TBD
-_Date TBD_
+# Version 5.2.0
+_21 October 2016_
 
 ### New features
 * Added option to download csv summaries of 2014/2015 products to resources page
