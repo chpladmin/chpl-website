@@ -13,9 +13,10 @@
 
             function activate () {
                 self.isAcbAdmin = authService.isAcbAdmin();
+                self.isOncStaff = authService.isOncStaff();
 
                 vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
-                if (authService.isChplAdmin()) {
+                if (authService.isChplAdmin() || authService.isOncStaff()) {
                     vm.csvHeader = ['CMS ID', 'Creation Date', 'CHPL Product(s)'];
                     vm.csvColumnOrder = ['certificationId', 'created', 'products'];
                 } else {

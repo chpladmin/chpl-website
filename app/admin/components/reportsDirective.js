@@ -670,6 +670,9 @@
                     {key: 'name', display: 'Name'},
                     {key: 'website', display: 'Website'}
                 ];
+                var nestedKeys = [
+                    {key: 'status', subkey: 'statusName', display: 'Developer Status'}
+                ];
                 var ret = [];
                 var change;
                 var questionable = true;
@@ -696,6 +699,11 @@
                         for (var j = 0; j < simpleFields.length; j++) {
                             change = compareItem(data[i].originalData, data[i].newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
                             if (change) activity.details.push(change);
+                        }
+                        for (var j = 0; j < nestedKeys.length; j++) {
+                            change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
+                            if (change)
+                                activity.details.push(change);
                         }
                         var addressChanges = compareAddress(data[i].originalData.address, data[i].newData.address);
                         if (addressChanges && addressChanges.length > 0) {

@@ -26,6 +26,7 @@
                 if (!vm.acbId && !vm.atlId) {
                     vm.roles.push('ROLE_ADMIN');
                     vm.roles.push('ROLE_CMS_STAFF');
+                    vm.roles.push('ROLE_ONC_STAFF');
                 }
                 if (!vm.atlId) {
                     vm.roles.push('ROLE_ACB_ADMIN');

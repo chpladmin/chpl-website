@@ -1,5 +1,22 @@
 # Release Notes
 
+# Version 5.2.0
+_21 October 2016_
+
+### New features
+* Added option to download csv summaries of 2014/2015 products to resources page
+* Added Developer status display / edit
+* Added role 'ROLE_ONC_STAFF'
+* Allowed ROLE_ONC_STAFF access to all reports areas, including those previously restricted to ROLE_ADMIN only
+* Update search results display to not suggest row is clickable
+* Added better error message display to forms where forms could be invalid
+* Improved Compare page functionality
+
+### Bugs fixed
+* Don't show errors about new style CHPL Product Numbers on old style products
+
+---
+
 ## Version 5.1.0
 _4 October 2016_
 

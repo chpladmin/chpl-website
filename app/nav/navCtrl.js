@@ -14,6 +14,7 @@
             vm.isAuthed = isAuthed;
             vm.isChplAdmin = isChplAdmin;
             vm.isCmsStaff = isCmsStaff;
+            vm.isOncStaff = isOncStaff;
             vm.loadAnnouncements = loadAnnouncements;
 
             activate();
@@ -59,6 +60,10 @@
 
             function isCmsStaff () {
                 return authService.isCmsStaff();
+            }
+            
+            function isOncStaff () {
+                return authService.isOncStaff();
             }
 
             function loadAnnouncements () {

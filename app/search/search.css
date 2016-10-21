@@ -14,10 +14,6 @@ ul.pagination li {
     color: #0070c9;
 }
 
-.productHeader {
-    cursor: pointer;
-}
-
 .search-row:hover>td {
     font-weight: 700;
 }
@@ -90,16 +86,4 @@ ul.pagination li {
 .animate-if.ng-leave,
 .animate-if.ng-enter.ng-enter-active {
   opacity:1;
-}
-
-.status-good {
-    color: green;
-}
-
-.status-warning {
-    color: #f5d43c;
-}
-
-.status-bad {
-    color: red;
 }

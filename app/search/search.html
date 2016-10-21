@@ -222,6 +222,7 @@
                       <th scope="col" class="search-header" ng-click="sort('developer')"><span ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'developer'}">Developer</span> <a class="sr-only sr-only-focusable" href ng-click="sort('developer')"><br />Sort by developer</a></th>
                       <th scope="col" class="search-header" ng-click="sort('certificationEdition')"><span ng-class="{'sort-ascent': vm.query.orderBy==='certificationEdition' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationEdition' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'certificationEdition'}">Edition</span> <a class="sr-only sr-only-focusable" href ng-click="sort('certificationEdition')"><br />Sort by certification edition</a></th>
                       <th scope="col" class="search-header" ng-click="sort('version')" ng-if="vm.refine.product"><span ng-class="{'sort-ascent': vm.query.orderBy==='version' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='version' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'version'}">Version</span> <a class="sr-only sr-only-focusable" href ng-click="sort('version')"><br />Sort by version</a></th>
+                      <th scope="col" class="" ng-if="!vm.refine.product">Version</th>
                       <th scope="col" class=""><span class="sr-only">Certification Status</span></th>
                       <th scope="col" colspan="3"><span class="sr-only">Actions</span></th>
 	                </tr>
@@ -246,11 +247,11 @@
                   </tfoot>
 	              <tbody>
 	                <tr ng-repeat="row in displayedResults" class="search-row">
-		              <td class="productHeader">{{ row.product.name }}</td>
-		              <td class="productHeader">{{ row.developer.name }}</td>
-                      <td class="productHeader">{{ row.certificationEdition.name }}</td>
-		              <td class="productHeader">{{ row.product.version }}</td>
-		              <td class="productHeader"><a href tooltip="{{ row.certificationStatus.name }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ row.certificationStatus.name }}</span><i class="fa" ng-class="vm.statusFont(row.certificationStatus.name)"></i></a></td>
+                      <td>{{ row.product.name }}</td>
+                      <td>{{ row.developer.name }}</td>
+                      <td>{{ row.certificationEdition.name }}</td>
+                      <td>{{ row.product.version }}</td>
+                      <td><a href tooltip="{{ row.certificationStatus.name }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ row.certificationStatus.name }}</span><i class="fa" ng-class="vm.statusFont(row.certificationStatus.name)"></i></a></td>
                       <td>
                         <button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
                       </td>
@@ -258,20 +259,20 @@
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
                       <td>
-						<div ng-switch on="vm.widget.isProductInCart(row.id)">
-							<div ng-switch-when="true">
-								<button href class="btn btn-ai-certid btn-sm btn-ai-certid-toggleon" ng-click="vm.toggleCart(row)">
-									<i class="fa fa-minus"></i> <span class="sr-only">Remove {{row.product.name}} from </span>Cert ID
-								</button>
-							</div>
-							<div ng-switch-default>
-								<button href class="btn btn-ai-certid btn-sm" ng-click="vm.toggleCart(row)">
-									<i class="fa fa-plus"></i> <span class="sr-only">Add {{row.product.name}} to </span>Cert ID
-								</button>
-							</div>
-						</div>
+                        <div ng-switch on="vm.widget.isProductInCart(row.id)">
+                          <div ng-switch-when="true">
+                            <button href class="btn btn-ai-certid btn-sm btn-ai-certid-toggleon" ng-click="vm.toggleCart(row)">
+                              <i class="fa fa-minus"></i> <span class="sr-only">Remove {{row.product.name}} from </span>Cert ID
+                            </button>
+                          </div>
+                          <div ng-switch-default>
+                            <button href class="btn btn-ai-certid btn-sm" ng-click="vm.toggleCart(row)">
+                              <i class="fa fa-plus"></i> <span class="sr-only">Add {{row.product.name}} to </span>Cert ID
+                            </button>
+                          </div>
+                        </div>
                       </td>
-	                </tr>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -281,7 +282,7 @@
             <accordion close-others="false">
               <accordion-group class="panel-ai panel-widget-certid" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="common/templates/accordion.html">
                 <accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
-					CMS EHR Certification ID
+                  CMS EHR Certification ID
                 </accordion-heading>
                 <div ng-include="'search/certid.html'" ng-controller="CertIdController" ></div>
               </accordion-group>

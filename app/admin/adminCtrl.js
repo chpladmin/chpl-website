@@ -16,6 +16,7 @@
             vm.isAuthed = isAuthed;
             vm.isChplAdmin = isChplAdmin;
             vm.isCmsStaff = isCmsStaff;
+            vm.isOncStaff = isOncStaff;
             vm.refresh = refresh;
             vm.triggerRefresh = triggerRefresh;
 
@@ -134,6 +135,10 @@
 
             function isCmsStaff () {
                 return authService.isCmsStaff();
+            }
+            
+            function isOncStaff() {
+            	return authService.isOncStaff();
             }
 
             function refresh () {
