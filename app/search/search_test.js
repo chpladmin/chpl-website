@@ -200,8 +200,8 @@
                 expect(ctrl.statusFont('Active')).toBe('fa-check-circle status-good');
                 expect(ctrl.statusFont('Suspended by ONC-ACB')).toBe('fa-warning status-warning');
                 expect(ctrl.statusFont('Retired')).toBe('fa-close status-bad');
-                expect(ctrl.statusFont('Withdrawn by Developer')).toBe('fa-close status-bad');
-                expect(ctrl.statusFont('Withdrawn by ONC-ACB')).toBe('fa-close status-bad');
+                expect(ctrl.statusFont('Withdrawn by Developer')).toBe('fa-times-circle status-bad');
+                expect(ctrl.statusFont('Withdrawn by ONC-ACB')).toBe('fa-minus-circle status-bad');
             });
         });
     });

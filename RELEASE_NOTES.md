@@ -1,6 +1,14 @@
 # Release Notes
 
-# Version 5.2.0
+## Version TBD
+_Date TBD_
+
+### New features
+* Changed certification status icons
+
+---
+
+## Version 5.2.0
 _21 October 2016_
 
 ### New features
