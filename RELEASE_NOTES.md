@@ -6,6 +6,9 @@ _Date TBD_
 ### New features
 * Changed certification status icons
 
+### Bugs fixed
+* Merge dialog closes on submit
+
 ---
 
 ## Version 5.2.0
