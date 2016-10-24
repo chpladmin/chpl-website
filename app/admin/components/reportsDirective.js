@@ -6,6 +6,7 @@
             var vm = this;
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
+            vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
             vm.activityRange = { range: 60};
             vm.questionableRange = 0;
@@ -120,7 +121,7 @@
             }
 
             function refreshUser () {
-                if (vm.isChplAdmin) {
+                if (vm.isChplAdmin || vm.isOncStaff) {
                     commonService.getUserActivity(dateAdjust(vm.activityRange))
                         .then(function (data) {
                             vm.searchedUsers = vm.interpretUsers(data);
@@ -135,7 +136,7 @@
             }
 
             function refreshApi () {
-                if (vm.isChplAdmin) {
+                if (vm.isChplAdmin || vm.isOncStaff) {
                     commonService.getApiUserActivity(dateAdjust(vm.activityRange))
                         .then(function (data) {
                             vm.searchedApiActivity = data;
@@ -144,7 +145,7 @@
                 }
             }
             function refreshApiKeyUsage () {
-                if (vm.isChplAdmin) {
+                if (vm.isChplAdmin || vm.isOncStaff) {
                     vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
                     commonService.getApiActivity(dateAdjust(vm.apiKey))
                         .then(function (data) {

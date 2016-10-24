@@ -109,6 +109,7 @@
                 mockAuthService.isChplAdmin = function () { return $q.when(true); };
                 mockAuthService.isAcbAdmin = function () { return $q.when(true); };
                 mockAuthService.isAcbStaff = function () { return $q.when(true); };
+                mockAuthService.isOncStaff = function () { return $q.when(true); };
                 mockAuthService.getToken = function () { return $q.when('fake token'); };
                 mockAuthService.getApiKey = function () { return $q.when('fake api key'); };
             });
