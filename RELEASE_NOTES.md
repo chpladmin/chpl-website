@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Changed certification status icons
+* Better sort of CQMs on Compare page
 
 ### Bugs fixed
 * Merge dialog closes on submit

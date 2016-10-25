@@ -8,7 +8,9 @@
             vm.fillInBlanks = fillInBlanks;
             vm.isShowing = isShowing;
             vm.sortAllCerts = sortAllCerts;
+            vm.sortAllCqms = sortAllCqms;
             vm.sortCerts = sortCerts;
+            vm.sortCqms = sortCqms;
             vm.toggle = toggle;
             vm.updateCerts = updateCerts;
             vm.updateCqms = updateCqms;
@@ -35,6 +37,7 @@
                                 vm.updateCqms(product);
                                 vm.fillInBlanks();
                                 vm.sortAllCerts();
+                                vm.sortAllCqms();
                                 vm.products.push(product);
                             }, function (error) { $log.error(error); });
                     }
@@ -90,14 +93,28 @@
                 vm.sortedCerts = $filter('orderBy')(vm.sortedCerts,vm.sortCerts);
             }
 
+            function sortAllCqms () {
+                vm.sortedCqms = [];
+                for (var cqm in vm.allCqms) {
+                    vm.sortedCqms.push(cqm);
+                }
+                vm.sortedCqms = $filter('orderBy')(vm.sortedCqms,vm.sortCqms);
+            }
+
             function sortCerts (cert) {
-                var ret = 0;
                 var edition = parseInt(cert.substring(4,7));
                 var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
                 var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
-                ret = edition * 10000 +
+                var ret = edition * 10000 +
                     letter * 100 +
                     number;
+                return ret;
+            }
+
+            function sortCqms (cqm) {
+                var edition = -1000 * cqm.indexOf('-');
+                var num = parseInt(edition < 0 ? cqm.substring(4) : cqm.substring(3));
+                var ret = edition + num;
                 return ret;
             }
 
