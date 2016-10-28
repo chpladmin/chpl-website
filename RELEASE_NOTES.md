@@ -9,6 +9,7 @@ _Date TBD_
 
 ### Bugs fixed
 * Merge dialog closes on submit
+* Changing status & other of a CP now results in two separate reports, on different pages
 
 ---
 
