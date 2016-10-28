@@ -55,11 +55,26 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="vm.editForm.$invalid" class="btn btn-ai-success btn-block"
+    <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
+      The following error(s) must be fixed:
+      <ul>
+        <li ng-if="vm.editForm.atlName.$error.required">ATL Name is required</li>
+        <li ng-if="vm.editForm.addressLine1.$error.required">Address Line 1 is required</li>
+        <li ng-if="vm.editForm.addressCity.$error.required">City is required</li>
+        <li ng-if="vm.editForm.addressState.$error.required">State is required</li>
+        <li ng-if="vm.editForm.addressZipcode.$error.required">Zip code is required</li>
+        <li ng-if="vm.editForm.addressCountry.$error.required">Country is required</li>
+        <li ng-if="vm.editForm.atlWebsite.$error.required">Website address is required</li>
+        <li ng-if="vm.editForm.atlWebsite.$error.url">Website is invalid</li>
+      </ul>
+    </div>
+    <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors" class="btn btn-ai-success btn-block"
+            ng-mouseover="vm.showFormErrors = true"
             ng-if="vm.action === 'create'"
             ng-click="vm.create()"><i class="fa fa-save"></i> Create ATL</button>
     <span ng-if="!vm.atl.isDeleted">
-      <button ng-disabled="vm.editForm.$invalid" class="btn btn-ai-success btn-block"
+      <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors" class="btn btn-ai-success btn-block"
+              ng-mouseover="vm.showFormErrors = true"
               ng-if="vm.action === 'edit'"
               ng-click="vm.save()"><i class="fa fa-save"></i> Save ATL</button>
       <button class="btn btn-warning btn-block"

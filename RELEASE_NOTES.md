@@ -1,7 +1,20 @@
 # Release Notes
 
-# Version TBD
+## Version TBD
 _Date TBD_
+
+### New features
+* Changed certification status icons
+* Better sort of CQMs on Compare page
+
+### Bugs fixed
+* Merge dialog closes on submit
+* Changing status & other of a CP now results in two separate reports, on different pages
+
+---
+
+## Version 5.2.0
+_21 October 2016_
 
 ### New features
 * Added option to download csv summaries of 2014/2015 products to resources page
@@ -9,6 +22,8 @@ _Date TBD_
 * Added role 'ROLE_ONC_STAFF'
 * Allowed ROLE_ONC_STAFF access to all reports areas, including those previously restricted to ROLE_ADMIN only
 * Update search results display to not suggest row is clickable
+* Added better error message display to forms where forms could be invalid
+* Improved Compare page functionality
 
 ### Bugs fixed
 * Don't show errors about new style CHPL Product Numbers on old style products

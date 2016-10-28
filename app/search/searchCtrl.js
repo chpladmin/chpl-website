@@ -302,10 +302,10 @@
                     ret = 'fa-close status-bad';
                     break;
                 case 'Withdrawn by Developer':
-                    ret = 'fa-close status-bad';
+                    ret = 'fa-times-circle status-bad';
                     break;
                 case 'Withdrawn by ONC-ACB':
-                    ret = 'fa-close status-bad';
+                    ret = 'fa-minus-circle status-bad';
                     break;
                 }
                 return ret;

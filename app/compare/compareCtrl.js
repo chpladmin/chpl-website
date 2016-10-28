@@ -2,51 +2,145 @@
     'use strict';
 
     angular.module('app.compare')
-        .controller('CompareController', ['$scope', '$log', '$routeParams', 'commonService', function($scope, $log, $routeParams, commonService) {
-            var self = this;
-            var compareString = $routeParams.compareIds;
-            self.products = [];
-            self.productList = [];
-            self.allCerts = {};
-            self.allCqms = {};
-            if (compareString && compareString.length > 0) {
-                self.compareIds = compareString.split('&');
+        .controller('CompareController', ['$scope', '$log', '$routeParams', '$filter', 'commonService', function($scope, $log, $routeParams, $filter, commonService) {
+            var vm = this;
 
-                var successResult = function (product) {
-                    self.updateProductList(product);
-                    self.updateCerts(product);
-                    self.updateCqms(product);
-                    self.fillInBlanks();
-                    self.products.push(product);
-                };
-                var failResult = function (error) { $log.error(error); };
+            vm.fillInBlanks = fillInBlanks;
+            vm.isShowing = isShowing;
+            vm.sortAllCerts = sortAllCerts;
+            vm.sortAllCqms = sortAllCqms;
+            vm.sortCerts = sortCerts;
+            vm.sortCqms = sortCqms;
+            vm.toggle = toggle;
+            vm.updateCerts = updateCerts;
+            vm.updateCqms = updateCqms;
+            vm.updateProductList = updateProductList;
 
-                for (var i = 0; i < self.compareIds.length; i++) {
-                    commonService.getProduct(self.compareIds[i])
-                        .then(successResult, failResult);
+            activate();
+
+            ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                var compareString = $routeParams.compareIds;
+                vm.products = [];
+                vm.productList = [];
+                vm.allCerts = {};
+                vm.allCqms = {};
+                if (compareString && compareString.length > 0) {
+                    vm.compareIds = compareString.split('&');
+
+                    for (var i = 0; i < vm.compareIds.length; i++) {
+                        commonService.getProduct(vm.compareIds[i])
+                            .then(function (product) {
+                                vm.updateProductList(product);
+                                vm.updateCerts(product);
+                                vm.updateCqms(product);
+                                vm.fillInBlanks();
+                                vm.sortAllCerts();
+                                vm.sortAllCqms();
+                                vm.products.push(product);
+                            }, function (error) { $log.error(error); });
+                    }
                 }
-            };
+            }
 
-            self.updateProductList = function (product) {
-                self.productList.push({id: product.id, chplProductNumber: product.chplProductNumber});
-            };
+            function fillInBlanks () {
+                var needToAddBlank, product;
+                for (var i = 0; i < vm.productList.length; i++) {
+                    product = vm.productList[i];
+                    for (var cert in vm.allCerts) {
+                        needToAddBlank = true;
+                        for (var k = 0; k < vm.allCerts[cert].values.length; k++) {
+                            if (vm.allCerts[cert].values[k].productId === product.id) {
+                                needToAddBlank = false;
+                            }
+                        }
+                        if (needToAddBlank) {
+                            vm.allCerts[cert].values.push({
+                                productId: product.id,
+                                allowed: false,
+                                certificationDate: product.certificationDate
+                            });
+                        }
+                    }
+                    for (var cqm in vm.allCqms) {
+                        needToAddBlank = true;
+                        for (var k = 0; k < vm.allCqms[cqm].values.length; k++) {
+                            if (vm.allCqms[cqm].values[k].productId === product.id) {
+                                needToAddBlank = false;
+                            }
+                        }
+                        if (needToAddBlank) {
+                            vm.allCqms[cqm].values.push({
+                                productId: product.id,
+                                allowed: false,
+                                certificationDate: product.certificationDate
+                            });
+                        }
+                    }
+                }
+            }
 
-            self.updateCerts = function (product) {
+            function isShowing (elem) {
+                return vm.openCert === elem;
+            }
+
+            function sortAllCerts () {
+                vm.sortedCerts = [];
+                for (var cert in vm.allCerts) {
+                    vm.sortedCerts.push(cert);
+                }
+                vm.sortedCerts = $filter('orderBy')(vm.sortedCerts,vm.sortCerts);
+            }
+
+            function sortAllCqms () {
+                vm.sortedCqms = [];
+                for (var cqm in vm.allCqms) {
+                    vm.sortedCqms.push(cqm);
+                }
+                vm.sortedCqms = $filter('orderBy')(vm.sortedCqms,vm.sortCqms);
+            }
+
+            function sortCerts (cert) {
+                var edition = parseInt(cert.substring(4,7));
+                var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
+                var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
+                var ret = edition * 10000 +
+                    letter * 100 +
+                    number;
+                return ret;
+            }
+
+            function sortCqms (cqm) {
+                var edition = -1000 * cqm.indexOf('-');
+                var num = parseInt(edition < 0 ? cqm.substring(4) : cqm.substring(3));
+                var ret = edition + num;
+                return ret;
+            }
+
+            function toggle (elem) {
+                vm.openCert = vm.openCert === elem ? '' : elem;
+            }
+
+            function updateCerts (product) {
                 var cert;
                 for (var i = 0; i < product.certificationResults.length; i++) {
                     cert = product.certificationResults[i];
-                    if (self.allCerts[cert.number] === undefined)
-                        self.allCerts[cert.number] = {number: cert.number, title: cert.title, values: []};
-                    self.allCerts[cert.number].values.push({
+                    if (vm.allCerts[cert.number] === undefined)
+                        vm.allCerts[cert.number] = {number: cert.number, title: cert.title, values: []};
+                    if (cert.success) {
+                        vm.allCerts[cert.number].atLeastOne = true;
+                    }
+                    vm.allCerts[cert.number].values.push({
                         productId: product.id,
                         allowed: true,
                         success: cert.success,
-                        chplProductNumber: product.chplProductNumber
+                        certificationDate: product.certificationDate
                     });
                 }
-            };
+            }
 
-            self.updateCqms = function (product) {
+            function updateCqms (product) {
                 var cqm;
                 for (var i = 0; i < product.cqmResults.length; i++) {
                     cqm = product.cqmResults[i];
@@ -55,53 +149,27 @@
                     } else {
                         cqm.displayId = 'NQF-' + cqm.nqfNumber;
                     }
-                    if (self.allCqms[cqm.displayId] === undefined)
-                        self.allCqms[cqm.displayId] = {displayId: cqm.displayId, title: cqm.title, values: []};
-                    self.allCqms[cqm.displayId].values.push({
+                    if (vm.allCqms[cqm.displayId] === undefined)
+                        vm.allCqms[cqm.displayId] = {displayId: cqm.displayId, title: cqm.title, values: []};
+                    if (cqm.success) {
+                        vm.allCqms[cqm.displayId].atLeastOne = true;
+                    }
+                    vm.allCqms[cqm.displayId].values.push({
                         productId: product.id,
                         allowed: true,
                         success: cqm.success,
-                        chplProductNumber: product.chplProductNumber,
+                        certificationDate: product.certificationDate,
                         successVersions: cqm.successVersions
                     });
                 }
-            };
+            }
 
-            self.fillInBlanks = function () {
-                var needToAddBlank, product;
-                for (var i = 0; i < self.productList.length; i++) {
-                    product = self.productList[i];
-                    for (var cert in self.allCerts) {
-                        needToAddBlank = true;
-                        for (var k = 0; k < self.allCerts[cert].values.length; k++) {
-                            if (self.allCerts[cert].values[k].productId === product.id) {
-                                needToAddBlank = false;
-                            }
-                        }
-                        if (needToAddBlank) {
-                            self.allCerts[cert].values.push({productId: product.id, allowed: false, chplProductNumber: product.chplProductNumber});
-                        }
-                    }
-                    for (var cqm in self.allCqms) {
-                        needToAddBlank = true;
-                        for (var k = 0; k < self.allCqms[cqm].values.length; k++) {
-                            if (self.allCqms[cqm].values[k].productId === product.id) {
-                                needToAddBlank = false;
-                            }
-                        }
-                        if (needToAddBlank) {
-                            self.allCqms[cqm].values.push({productId: product.id, allowed: false, chplProductNumber: product.chplProductNumber});
-                        }
-                    }
-                }
-            };
-
-            self.toggle = function (elem) {
-                self.openCert = self.openCert === elem ? '' : elem;
-            };
-
-            self.isShowing = function (elem) {
-                return self.openCert === elem;
-            };
+            function updateProductList (product) {
+                vm.hasNon2015 = vm.hasNon2015 || product.certificationEdition.name !== '2015';
+                vm.productList.push({
+                    id: product.id,
+                    certificationDate: product.certificationDate
+                });
+            }
         }]);
 })();
