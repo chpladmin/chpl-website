@@ -119,6 +119,10 @@
                 mockAuthService.isChplAdmin = function () {
                     return true;
                 };
+                
+                mockAuthService.isOncStaff = function () {
+                	return true;
+                };
             });
         });
 

@@ -6,7 +6,7 @@
   "license": "https://github.com/chpladmin/chpl-api/blob/staging/LICENSE",
   "private": true,
   "dependencies": {
-    "angular": "~1.4.7",
+    "angular": "1.4.7",
     "angular-animate": "~1.4.7",
     "angular-bootstrap": "~0.13.4",
     "angular-confirm-modal": "~1.1.0",
