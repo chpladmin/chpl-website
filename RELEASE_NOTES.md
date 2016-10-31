@@ -11,6 +11,10 @@ _Date TBD_
 ### Bugs fixed
 * Merge dialog closes on submit
 * Changing status & other of a CP now results in two separate reports, on different pages
+* ROLE_ONC_STAFF can now see data in the following reports sections:
+	* Users
+	* API Key Management Activity
+	* API Key Usage Activity
 
 ---
 
