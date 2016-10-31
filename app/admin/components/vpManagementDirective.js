@@ -453,7 +453,7 @@
                             .then(function (products) {
                                 self.products = products.products;
                                 for (var i = 0; i < self.products.length; i++) {
-                                    if (result.product.id === self.products[i].productId) {
+                                    if (result.product.productId === self.products[i].productId) {
                                         self.productSelect = self.products[i];
                                         break;
                                     }
@@ -464,7 +464,7 @@
                                     .then(function (versions) {
                                         self.versions = versions;
                                         for (var i = 0; i < self.versions.length; i++) {
-                                            if (result.product.versionId === self.versions[i].versionId) {
+                                            if (result.version.versionId === self.versions[i].versionId) {
                                                 self.versionSelect = self.versions[i];
                                                 break;
                                             }
