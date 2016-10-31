@@ -8,10 +8,30 @@
             vm.developers = developers;
             vm.updateProduct = {productIds: [vm.product.productId]};
 
+            vm.addPreviousOwner = addPreviousOwner;
+            vm.removePreviousOwner = removePreviousOwner;
+            vm.required = required;
             vm.save = save;
             vm.cancel = cancel;
 
             ////////////////////////////////////////////////////////////////////
+
+            function addPreviousOwner () {
+                vm.product.ownerHistory.push({});
+            }
+
+            function removePreviousOwner (idx) {
+                vm.product.ownerHistory.splice(idx, 1);
+            }
+
+            function required (name, idx) {
+                if (idx) {
+                    name = name + idx;
+                }
+                console.log(name, idx, name + idx);
+                return vm.editForm[name][$error][required];// &&
+//                    vm.editForm[name].$touched;
+            }
 
             function save () {
                 vm.updateProduct.product = vm.product;

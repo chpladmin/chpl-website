@@ -6,6 +6,7 @@ _Date TBD_
 ### New features
 * Changed certification status icons
 * Better sort of CQMs on Compare page
+* Addition of Previous Product Owner capability
 
 ### Bugs fixed
 * Merge dialog closes on submit
