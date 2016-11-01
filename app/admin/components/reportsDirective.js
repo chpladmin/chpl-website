@@ -765,6 +765,27 @@
                             activity.action += '<li>' + change + '</li>';
                             wasChanged = true;
                         }
+                        if (!angular.equals(data[i].originalData.ownerHistory, data[i].newData.ownerHistory)) {
+                            var action = '<li>Owner history changed. Was:<ul>';
+                            if (data[i].originalData.ownerHistory.length === 0) {
+                                action += '<li>No previous history</li>';
+                            } else {
+                                for (var j = 0; j < data[i].originalData.ownerHistory.length; j++) {
+                                    action += '<li><strong>' + data[i].originalData.ownerHistory[j].developer.name + '</strong> on ' + $filter('date')(data[i].originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                                }
+                            }
+                            action += '</ul>Now:<ul>';
+                            if (data[i].newData.ownerHistory.length === 0) {
+                                action += '<li>No new history</li>';
+                            } else {
+                                for (var j = 0; j < data[i].newData.ownerHistory.length; j++) {
+                                    action += '<li><strong>' + data[i].newData.ownerHistory[j].developer.name + '</strong> on ' + $filter('date')(data[i].newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                                }
+                            }
+                            action += '</ul></li>';
+                            activity.action += action;
+                            wasChanged = true;
+                        }
                         activity.action += '</ul>';
                     } else {
                         vm.interpretNonUpdate(activity, data[i], 'product');

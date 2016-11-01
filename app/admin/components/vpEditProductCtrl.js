@@ -14,7 +14,15 @@
             vm.save = save;
             vm.cancel = cancel;
 
+            activate();
+
             ////////////////////////////////////////////////////////////////////
+
+            function activate () {
+                for (var i = 0; i < vm.product.ownerHistory.length; i++) {
+                    vm.product.ownerHistory[i].transferDate = new Date(vm.product.ownerHistory[i].transferDate);
+                }
+            }
 
             function addPreviousOwner () {
                 vm.product.ownerHistory.push({});
@@ -22,7 +30,9 @@
 
             function changeCurrent (prevId) {
                 vm.product.ownerHistory.push({
-                    id: prevId,
+                    developer: {
+                        developerId: prevId
+                    },
                     transferDate: new Date()
                 });
             }
