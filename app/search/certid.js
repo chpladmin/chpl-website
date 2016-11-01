@@ -223,20 +223,10 @@ var chplCertIdWidget = (function(){
 			var prods = [];
 				var data = chplCertIdWidget.getCertificationIdData();
 				
-				//if(typeof(prods) != "undefined"){
-				//if(data.hasOwnProperty("products")){
 				if(data != "null"){
 					prods = JSON.parse(data)["products"];
 				}
 					
-				//}
-					
-				//}
-//				if (null === data || "undefined" === data || "" === data) {
-//					//console.debug("getProductsInCart: No certification id data to retrieve.");
-//				} else {
-//					prods = JSON.parse(data)["products"];
-//				}
 			return prods;
 		},
 
