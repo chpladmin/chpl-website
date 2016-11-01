@@ -35,9 +35,14 @@ var chplCertIdWidget = (function(){
 			// Get products currently in cart
 			var productIds = [];
 			var prods = chplCertIdWidget.getProductsInCart()
-			prods.forEach(function(item,index) {
-				productIds.push(item.productId);
-			});
+			try{
+				prods.forEach(function(item,index) {
+					productIds.push(item.productId);
+				});
+			}
+			catch(e) {
+				// do nothing
+			}
 
 			// Add products to the list
 			if ((null !== addIds) && ("undefined" !== addIds)) {
@@ -105,7 +110,7 @@ var chplCertIdWidget = (function(){
 				var amb = 0;
 				var dom = 0;
 
-				if ((null !== data) && (null !== data.metPercentages)) {
+				if (data.hasOwnProperty('metPercentages')) {
 					crit = data.metPercentages["criteriaMet"];
 					inp = data.metPercentages["cqmsInpatient"];
 					amb = data.metPercentages["cqmsAmbulatory"];
@@ -137,7 +142,7 @@ var chplCertIdWidget = (function(){
 		updateButtonAndId: function (showIdRequested) {
 			var data = null;
 			var dataText = chplCertIdWidget.getCertificationIdData();
-			if ((null !== dataText) && (dataText.length > 0)) {
+			if ((dataText != "null") && (dataText.length > 0)) {
 				data = JSON.parse(dataText);
 			}
 			var isValid = false;
@@ -216,16 +221,22 @@ var chplCertIdWidget = (function(){
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		getProductsInCart: function () {
 			var prods = [];
-			try {
 				var data = chplCertIdWidget.getCertificationIdData();
-				if (null === data || "undefined" === data || "" === data) {
-					//console.debug("getProductsInCart: No certification id data to retrieve.");
-				} else {
+				
+				//if(typeof(prods) != "undefined"){
+				//if(data.hasOwnProperty("products")){
+				if(data != "null"){
 					prods = JSON.parse(data)["products"];
 				}
-			} catch (err) {
-				prods = [];
-			}
+					
+				//}
+					
+				//}
+//				if (null === data || "undefined" === data || "" === data) {
+//					//console.debug("getProductsInCart: No certification id data to retrieve.");
+//				} else {
+//					prods = JSON.parse(data)["products"];
+//				}
 			return prods;
 		},
 
@@ -283,11 +294,17 @@ var chplCertIdWidget = (function(){
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		isProductInCart: function (id) {
 			var prods = chplCertIdWidget.getProductsInCart();
-			for (var index = 0; index < prods.length; ++index) {
-				if (id === prods[index].productId) {
-					return true;
+			try{
+				for (var index = 0; index < prods.length; ++index) {
+					if (id === prods[index].productId) {
+						return true;
+					}
 				}
 			}
+			catch(e){
+				return false;
+			}
+			
 			return false;
 		},
 
@@ -301,7 +318,8 @@ var chplCertIdWidget = (function(){
 			if (null !== data && "undefined" !== data) {
 
 				var products = JSON.parse(data)["products"];
-				if ("undefined" !== products && products.length > 0) {
+				// continue if not undefined && products length > 0. Old code: || products.length > 0
+				if (typeof(products) !== 'undefined' && products.length > 0) {
 
 					// Empty the product list except for the template
 					$("#selectedProductsList li:not([id=productListItemTemplate])").remove();
