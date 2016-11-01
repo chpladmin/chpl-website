@@ -218,7 +218,9 @@
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'lg',
                     resolve: {
+                        developers: function () { return self.developers; },
                         products: function () { return self.mergingProducts; },
                         developerId: function () { return self.activeDeveloper.developerId; }
                     }

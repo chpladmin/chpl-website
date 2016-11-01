@@ -66,10 +66,12 @@
           </span>
           <span ng-if="vm.product.product.ownerHistory && vm.product.product.ownerHistory.length > 0">
             <h3>Previous Developer<span ng-if="vm.product.product.ownerHistory.length > 1">s</span></h3>
-            <div ng-repeat="prev in vm.product.product.ownerHistory | orderBy:'transferDate'">
-              Developer: {{ prev.name }}<br />
-              Transfer Date: {{ prev.transferDate | date }}
-            </div>
+            <ul>
+              <li ng-repeat="prev in vm.product.product.ownerHistory | orderBy:'transferDate'">
+                <strong>{{ prev.developer.name }}</strong><br />
+                Transfer Date: {{ prev.transferDate | date }}
+              </li>
+            </ul>
           </span>
         </div>
         <div class="product-element">
