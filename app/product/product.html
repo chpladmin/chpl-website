@@ -69,7 +69,7 @@
             <ul>
               <li ng-repeat="prev in vm.product.product.ownerHistory | orderBy:'transferDate'">
                 <strong>{{ prev.developer.name }}</strong><br />
-                Transfer Date: {{ prev.transferDate | date }}
+                Transfer Date: {{ prev.transferDate | date : 'mediumDate' : 'UTC' }}
               </li>
             </ul>
           </span>

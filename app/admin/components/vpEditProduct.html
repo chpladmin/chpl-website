@@ -20,6 +20,7 @@
       <label class="col-md-4" for="productOwner">Current Product owner</label>
       <div class="col-md-8">
         <select ng-model="vm.product.developerId" required
+                ng-change="vm.changeCurrent({{ vm.product.developerId }})"
                 id="productOwner" name="productOwner" class="input-sm form-control"
                 ng-options="v.developerId as v.name for v in vm.developers | orderBy: 'name'">
         </select>
