@@ -15,6 +15,10 @@ _Date TBD_
 	* Users
 	* API Key Management Activity
 	* API Key Usage Activity
+* Javascript errors fixed:
+	* favicon.ico not found
+	* CMS widget errors (i.e. property of length 'undefined')
+	* Angular compatibility issues resolved. Latest version now works
 
 ---
 

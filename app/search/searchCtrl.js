@@ -193,28 +193,30 @@
             function populateSearchOptions () {
                 commonService.getSearchOptions(true) // use 'true' in production, to hide retired CQMs & Certs
                     .then(function (options) {
-                        vm.certs = options.certificationCriterionNumbers;
-                        vm.cqms = options.cqmCriterionNumbers;
-                        vm.editions = options.editions;
-                        vm.practices = options.practiceTypeNames;
-                        vm.certBodies = options.certBodyNames;
-                        vm.certificationStatuses = options.certificationStatuses;
-                        for (var i = 0; i < vm.certificationStatuses.length; i++) {
-                            if (vm.certificationStatuses[i].name === 'Pending') {
-                                vm.certificationStatuses.splice(i,1);
-                                break;
+                    	if(!options.hasOwnProperty('error')){
+                    		vm.certs = options.certificationCriterionNumbers;
+                            vm.cqms = options.cqmCriterionNumbers;
+                            vm.editions = options.editions;
+                            vm.practices = options.practiceTypeNames;
+                            vm.certBodies = options.certBodyNames;
+                            vm.certificationStatuses = options.certificationStatuses;
+                            for (var i = 0; i < vm.certificationStatuses.length; i++) {
+                                if (vm.certificationStatuses[i].name === 'Pending') {
+                                    vm.certificationStatuses.splice(i,1);
+                                    break;
+                                }
                             }
-                        }
-                        vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
-                        for (var i = 0; i < options.developerNames.length; i++) {
-                            vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
-                            vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
-                        }
-                        for (var i = 0; i < options.productNames.length; i++) {
-                            vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
-                            vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
-                        }
-                        $localStorage.lookaheadSource = $scope.lookaheadSource;
+                            vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
+                            for (var i = 0; i < options.developerNames.length; i++) {
+                                vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
+                                vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
+                            }
+                            for (var i = 0; i < options.productNames.length; i++) {
+                                vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
+                                vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
+                            }
+                            $localStorage.lookaheadSource = $scope.lookaheadSource;
+                    	}
                     });
             }
 
