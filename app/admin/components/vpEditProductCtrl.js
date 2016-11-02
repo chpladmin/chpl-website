@@ -2,10 +2,9 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditProductController', ['$modalInstance', 'activeProduct', 'developers', 'commonService', function ($modalInstance, activeProduct, developers, commonService) {
+        .controller('EditProductController', ['$modalInstance', 'activeProduct', 'commonService', function ($modalInstance, activeProduct, commonService) {
             var vm = this;
             vm.product = angular.copy(activeProduct);
-            vm.developers = developers;
             vm.updateProduct = {productIds: [vm.product.productId]};
 
             vm.addPreviousOwner = addPreviousOwner;
@@ -19,6 +18,9 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
+                commonService.getDevelopers(true).then(function (developers) {
+                    vm.developers = developers.developers;
+                });
                 for (var i = 0; i < vm.product.ownerHistory.length; i++) {
                     vm.product.ownerHistory[i].transferDate = new Date(vm.product.ownerHistory[i].transferDate);
                 }

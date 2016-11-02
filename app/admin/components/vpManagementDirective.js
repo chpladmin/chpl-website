@@ -197,8 +197,7 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeProduct: function () { return self.activeProduct; },
-                        developers: function () { return self.developers; }
+                        activeProduct: function () { return self.activeProduct; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
@@ -220,7 +219,6 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
-                        developers: function () { return self.developers; },
                         products: function () { return self.mergingProducts; },
                         developerId: function () { return self.activeDeveloper.developerId; }
                     }

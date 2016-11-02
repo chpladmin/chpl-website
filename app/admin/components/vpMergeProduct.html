@@ -41,7 +41,7 @@
             <label for="productOwner{{ $index }}">Previous Product owner <span class="text-danger">*</span></label>
             <select ng-model="prevOwner.id" required
                     id="productOwner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
-                    ng-options="v.developerId as v.name for v in vm.developers | orderBy: 'name'">
+                    ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
             </select>
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm['productOwner' + $index].$touched) && vm.mergeForm['productOwner' + $index].$error.required">Product owner is required</div>
           </div>

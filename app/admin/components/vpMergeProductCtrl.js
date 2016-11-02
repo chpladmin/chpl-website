@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('MergeProductController', ['$modalInstance', 'developers', 'products', 'developerId', 'commonService', function ($modalInstance, developers, products, developerId, commonService) {
+        .controller('MergeProductController', ['$modalInstance', 'products', 'developerId', 'commonService', function ($modalInstance, products, developerId, commonService) {
             var vm = this;
 
             vm.addPreviousOwner = addPreviousOwner;
@@ -15,7 +15,9 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                vm.developers = angular.copy(developers);
+                commonService.getDevelopers(true).then(function (developers) {
+                    vm.developers = developers.developers;
+                });
                 vm.products = angular.copy(products);
                 vm.product = angular.copy(vm.products[0]);
                 delete vm.product.lastModifiedDate;
