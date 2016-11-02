@@ -22,7 +22,7 @@
         <tbody>
           <tr>
             <th scope="row" class="compare-rowLead">Version</th>
-            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.product.version }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.version.version }}</td>
           </tr>
           <tr>
             <th scope="row" class="compare-rowLead">Certification Edition</th>

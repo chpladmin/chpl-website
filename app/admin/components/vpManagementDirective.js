@@ -197,8 +197,7 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        activeProduct: function () { return self.activeProduct; },
-                        developers: function () { return self.developers; }
+                        activeProduct: function () { return self.activeProduct; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
@@ -218,6 +217,7 @@
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'lg',
                     resolve: {
                         products: function () { return self.mergingProducts; },
                         developerId: function () { return self.activeDeveloper.developerId; }
@@ -453,7 +453,7 @@
                             .then(function (products) {
                                 self.products = products.products;
                                 for (var i = 0; i < self.products.length; i++) {
-                                    if (result.product.id === self.products[i].productId) {
+                                    if (result.product.productId === self.products[i].productId) {
                                         self.productSelect = self.products[i];
                                         break;
                                     }
@@ -464,7 +464,7 @@
                                     .then(function (versions) {
                                         self.versions = versions;
                                         for (var i = 0; i < self.versions.length; i++) {
-                                            if (result.product.versionId === self.versions[i].versionId) {
+                                            if (result.version.versionId === self.versions[i].versionId) {
                                                 self.versionSelect = self.versions[i];
                                                 break;
                                             }

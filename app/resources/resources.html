@@ -8,19 +8,35 @@
     <div class="row">
       <div class="col-sm-12">
         <h2>Download the latest Certified Health IT Product List</h2>
-        <div class="pull-right">
-          <a type="button" class="btn btn-block btn-ai-success" href="{{ vm.downloadOption }}"><i class="fa fa-cloud-download"></i> Download</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9">
+        <p>
+          To download a list of certified health IT products listed on the CHPL, please select one of the following, and then click the download button:
+          <ul>
+            <li>Complete Listing: Entire collection of 2011, 2014, and 2016 Certified Products. Available as an XML file.</li>
+            <li>2011/2014/2015 Edition Products: Entire collection of a specified certification edition's certified products, including all data elements. Available as an XML file.</li>
+            <li>2014/2015 Edition Summary: Entire collection of a specified certification edition's certified products, with only a subset of data elements* included. Available as a CSV file.</li>
+          </ul>
+          *Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, Certification Criteria to which that Certified Product attests
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <div class="input-group">
           <label class="sr-only" for="downloadOption">Select which set of products to download</label>
           <select id="downloadOption" ng-model="vm.downloadOption" class="form-control">
-            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}">Complete listing</option>
-            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2015">2015 edition products</option>
-            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2014">2014 edition products</option>
-            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2011">2011 edition products</option>
-            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2015&format=csv">2015 edition summary</option>
-            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2014&format=csv">2014 edition summary</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}">Complete listing (xml)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2015">2015 edition products (xml)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2014">2014 edition products (xml)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2011">2011 edition products (xml)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2015&format=csv">2015 edition summary (csv)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2014&format=csv">2014 edition summary (csv)</option>
           </select>
+          <span class="input-group-btn">
+            <a type="button" class="btn btn-ai-success" href="{{ vm.downloadOption }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
+          </span>
         </div>
-        <p>To access listings of Certified Health Information Technology Products, select which Certification Edition products you would like, then click the download button, or select "Complete listing" for the entire collection of 2011, 2014, and 2015 Certified Products.</p>
       </div>
     </div>
     <div class="row">

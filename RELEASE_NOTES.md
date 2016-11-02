@@ -7,14 +7,15 @@ _Date TBD_
 * Changed certification status icons
 * Better sort of CQMs on Compare page
 * Addition of Previous Product Owner capability
+* Improved text on Resources page
 
 ### Bugs fixed
 * Merge dialog closes on submit
-* Changing status & other of a CP now results in two separate reports, on different pages
+* Changing status & other activity of a CP now results in two separate reports, on different pages
 * ROLE_ONC_STAFF can now see data in the following reports sections:
-	* Users
-	* API Key Management Activity
-	* API Key Usage Activity
+  * Users
+  * API Key Management Activity
+  * API Key Usage Activity
 
 ---
 

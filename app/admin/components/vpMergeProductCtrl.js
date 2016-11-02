@@ -5,24 +5,39 @@
         .controller('MergeProductController', ['$modalInstance', 'products', 'developerId', 'commonService', function ($modalInstance, products, developerId, commonService) {
             var vm = this;
 
-            vm.activate = activate;
+            vm.addPreviousOwner = addPreviousOwner;
+            vm.removePreviousOwner = removePreviousOwner;
             vm.save = save;
             vm.cancel = cancel;
 
-            vm.activate();
+            activate();
 
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
+                commonService.getDevelopers(true).then(function (developers) {
+                    vm.developers = developers.developers;
+                });
                 vm.products = angular.copy(products);
                 vm.product = angular.copy(vm.products[0]);
                 delete vm.product.lastModifiedDate;
                 delete vm.product.productId;
-                vm.updateProduct = {productIds: [],
-                                    newDeveloperId: developerId};
+                vm.product.ownerHistory = [];
+                vm.updateProduct = {
+                    productIds: [],
+                    newDeveloperId: developerId
+                };
                 for (var i = 0; i < vm.products.length; i++) {
                     vm.updateProduct.productIds.push(vm.products[i].productId);
                 }
+            }
+
+            function addPreviousOwner () {
+                vm.product.ownerHistory.push({});
+            }
+
+            function removePreviousOwner (idx) {
+                vm.product.ownerHistory.splice(idx, 1);
             }
 
             function save () {

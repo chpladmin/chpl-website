@@ -20,8 +20,9 @@
       <label class="col-md-4" for="productOwner">Current Product owner</label>
       <div class="col-md-8">
         <select ng-model="vm.product.developerId" required
+                ng-change="vm.changeCurrent({{ vm.product.developerId }})"
                 id="productOwner" name="productOwner" class="input-sm form-control"
-                ng-options="v.developerId as v.name for v in vm.developers | orderBy: 'name'">
+                ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.productOwner.$touched) && vm.editForm.productOwner.$error.required">Product owner is required</div>
       </div>
@@ -30,9 +31,9 @@
       <div class="form-group">
         <label class="col-md-4" for="productOwner{{ $index }}">Previous Product owner</label>
         <div class="col-md-8">
-          <select ng-model="prevOwner.id" required
+          <select ng-model="prevOwner.developer.developerId" required
                   id="productOwner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
-                  ng-options="v.developerId as v.name for v in vm.developers | orderBy: 'name'">
+                  ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
           </select>
           <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['productOwner' + $index].$touched) && vm.editForm['productOwner' + $index].$error.required">Product owner is required</div>
         </div>
