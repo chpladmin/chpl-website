@@ -22,6 +22,34 @@
           <a href ng-if="vm.hasDoneASearch && !vm.activeSearch" class="restore-previous-search" ng-click="vm.reloadResults()">Restore previous search</a>
         </div>
         <div class="col-sm-3" ng-if="vm.activeSearch">
+          <div class=".btn-group.btn-group-justified">
+            <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
+              <button class="btn btn-ai dropdown-toggle" type="button" id="filter-status-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+                Certification Status <i class="fa fa-filter"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labeledby="filter-status-button">
+                <li ng-repeat="status in vm.certificationStatuses | orderBy:'name'">
+                  <a href ng-click="vm.filter.certificationStatus[status.name] = ! vm.filter.certificationStatus[status.name]">
+                    <input type="checkbox" ng-model="vm.filter.certificationStatus[status.name]" id="filter-status-{{ status.name }}">
+                    <label for="filter-status-{{ status.name }}">{{ status.name }}</label>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
+              <button class="btn btn-ai dropdown-toggle" type="button" id="filter-edition-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+                Certification Edition <i class="fa fa-filter"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labeledby="filter-edition-button">
+                <li ng-repeat="edition in vm.editions | orderBy:'name'">
+                  <a href ng-click="vm.filter.certificationEdition[edition.name] = ! vm.filter.certificationEdition[edition.name]">
+                    <input type="checkbox" ng-model="vm.filter.certificationEdition[edition.name]" id="filter-edition-{{ edition.name }}">
+                    <label for="filter-edition-{{ edition.name }}">{{ edition.name }}</label>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
           <div class="input-group">
             <label for="refine" class="sr-only">Select the what category to refine your search by</label>
             <select id="refine" class="form-control" ng-change="vm.refineSearch()" ng-model="vm.refineType">
