@@ -7,7 +7,7 @@
 
 			vm.toggleCart = toggleCart;
 			vm.widget = chplCertIdWidget;
-            vm.addRefine = addRefine;
+            //vm.addRefine = addRefine;
             vm.clear = clear;
             vm.clearFilters = clearFilters;
             vm.clearPreviouslyCompared = clearPreviouslyCompared;
@@ -18,10 +18,11 @@
             vm.reloadResults = reloadResults;
             vm.restoreResults = restoreResults
             vm.search = search;
+            vm.setRefine = setRefine;
             vm.statusFont = statusFont;
             vm.toggleCompare = toggleCompare;
             vm.truncButton = truncButton;
-            vm.unrefine = unrefine;
+            //vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
 
             activate();
@@ -31,14 +32,29 @@
             function activate () {
                 vm.activeSearch = false;
                 vm.resultCount = 0;
-                vm.defaultRefine = {
-                    certificationCriteria: [],
-                    cqms: []
+                vm.defaultRefineModel = {
+                    certificationStatus: {
+                        'Active': true,
+                        'Suspended by ONC-ACB': true,
+                        'Withdrawn by Developer': true,
+                        'Withdrawn by ONC-ACB': true
+                    },
+                    certificationEdition: {
+                        '2014': true,
+                        '2015': true
+                    },
+                    certificationBody: {
+                        'Drummond Group': true,
+                        'ICSA Labs': true,
+                        'InfoGard': true
+                    }
                 };
-                if ($localStorage.refine) {
-                    vm.refine = $localStorage.refine;
+                vm.show2014 = true;
+                vm.show2015 = true;
+                if ($localStorage.refineModel) {
+                    vm.refineModel = $localStorage.refineModel;
                 } else {
-                    vm.refine = angular.copy(vm.defaultRefine);
+                    vm.refineModel = angular.copy(vm.defaultRefineModel);
                 }
                 vm.compareCps = [];
                 if (!$localStorage.previouslyCompared) {
@@ -81,6 +97,7 @@
                 });
             }
 
+            /*
             function addRefine () {
                 switch (vm.refineType) {
                 case 'developer':
@@ -116,9 +133,10 @@
                 vm.refineType = '';
                 vm.search();
             }
+            */
 
             function clearFilters () {
-                delete $localStorage.refine;
+                delete $localStorage.refineModel;
                 delete $localStorage.query;
 
                 var searchTerm, searchTermObject;
@@ -128,7 +146,7 @@
                 if (vm.query.searchTermObject) {
                     searchTermObject = vm.query.searchTermObject;
                 }
-                vm.refine = angular.copy(vm.defaultRefine);
+                vm.refineModel = angular.copy(vm.defaultRefineModel);
                 vm.query = angular.copy(vm.defaultQuery);
                 if (searchTerm) {
                     vm.query.searchTerm = searchTerm;
@@ -152,13 +170,12 @@
             function certificationStatusFilter (obj) {
                 if (!obj.statuses) {
                     return true;
-                } else if (angular.isUndefined(vm.refine.certificationStatus) || vm.refine.certificationStatus === null) {
-                    return ((obj.statuses['active'] > 0) ||
-                            (obj.statuses['withdrawnbyAcb'] > 0) ||
-                            (obj.statuses['withdrawnbyDeveloper'] > 0) ||
-                            (obj.statuses['suspendedbyAcb'] > 0));
                 } else {
-                    return (obj.statuses[$filter('lowercase')(vm.refine.certificationStatus)] > 0);
+                    return ((obj.statuses['active'] > 0 && vm.refineModel.certificationStatus['Active']) ||
+                            (obj.statuses['withdrawnByAcb'] > 0 && vm.refineModel.certificationStatus['Withdrawn by ONC-ACB']) ||
+                            (obj.statuses['withdrawnByDeveloper'] > 0 && vm.refineModel.certificationStatus['Withdrawn by Developer']) ||
+                            (obj.statuses['suspendedByAcb'] > 0 && vm.refineModel.certificationStatus['Suspended by ONC-ACB']) ||
+                            (obj.statuses['retired'] > 0 && vm.refineModel.certificationStatus['Retired']));
                 }
             }
 
@@ -191,7 +208,7 @@
             }
 
             function populateSearchOptions () {
-                commonService.getSearchOptions(true) // use 'true' in production, to hide retired CQMs & Certs
+                commonService.getSearchOptions() // use 'true' in production, to hide retired CQMs & Certs
                     .then(function (options) {
                         vm.certs = options.certificationCriterionNumbers;
                         vm.cqms = options.cqmCriterionNumbers;
@@ -271,7 +288,8 @@
                     vm.query.product = vm.query.productObject.value;
                 }
                 $localStorage.lookaheadSource = vm.lookaheadSource;
-                $localStorage.refine = vm.refine;
+                $localStorage.refineModel = vm.refineModel;
+                vm.setRefine();
                 commonService.search(vm.query)
                     .then(function (data) {
                         vm.hasDoneASearch = true;
@@ -287,6 +305,38 @@
                     });
 
                 $localStorage.query = vm.query;
+            }
+
+            function setRefine () {
+                vm.query.certificationBodies = [];
+                vm.query.certificationCriteria = [];
+                vm.query.certificationEditions = [];
+                vm.query.certificationStatuses = [];
+                vm.query.correctiveActionPlans = [];
+                vm.query.cqms = [];
+                if (vm.refineModel.developer) { vm.query.developerObject = vm.refineModel.developer; }
+                vm.query.practiceType = vm.refineModel.practiceType;
+                if (vm.refineModel.product) { vm.query.productObject = vm.refineModel.product; }
+                vm.query.version = vm.refineModel.version;
+
+                angular.forEach(vm.refineModel.acb, function (value, key) {
+                    if (value) { this.push(key); }
+                }, vm.query.certificationBodies);
+                angular.forEach(vm.refineModel.certificationCriteria, function (value, key) {
+                    if (value) { this.push(key); }
+                }, vm.query.certificationCriteria);
+                angular.forEach(vm.refineModel.certificationEdition, function (value, key) {
+                    if (value) { this.push(key); }
+                }, vm.query.certificationEditions);
+                angular.forEach(vm.refineModel.certificationStatus, function (value, key) {
+                    if (value) { this.push(key); }
+                }, vm.query.certificationStatuses);
+                angular.forEach(vm.refineModel.hasCap, function (value, key) {
+                    if (value) { this.push(key); }
+                }, vm.query.correctiveActionPlans);
+                angular.forEach(vm.refineModel.cqms, function (value, key) {
+                    if (value) { this.push(key); }
+                }, vm.query.cqms);
             }
 
             function statusFont (status) {
@@ -343,6 +393,7 @@
                 return ret;
             }
 
+            /*
             function unrefine (key, cert) {
                 switch (key) {
                 case 'developer':
@@ -381,7 +432,7 @@
                 }
                 vm.search();
             }
-
+            */
             function viewProduct (cp) {
                 var toAdd = true;
                 for (var i = 0; i < vm.previouslyViewed.length; i++) {
@@ -446,7 +497,7 @@
                 vm.activeSearch = false;
                 vm.query = angular.copy(vm.defaultQuery);
                 vm.refineType = '';
-                vm.refine = angular.copy(vm.defaultRefine);
+                vm.refineModel = angular.copy(vm.defaultRefineModel);
                 if (vm.searchForm) {
                     vm.searchForm.$setPristine();
                 }

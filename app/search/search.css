@@ -90,6 +90,12 @@ ul.pagination li {
 
 .dropdown-menu {
     width: 150%;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.dropdown-menu-large {
+    min-width: 400px;
 }
 
 .dropdown-menu>li>a {
