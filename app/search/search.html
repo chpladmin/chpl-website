@@ -21,10 +21,10 @@
           </div>
           <a href ng-if="vm.hasDoneASearch && !vm.activeSearch" class="restore-previous-search" ng-click="vm.reloadResults()">Restore previous search</a>
         </div>
-        <div class="col-sm-8" ng-if="vm.activeSearch">
+        <div class="col-sm-8" ng-if="vm.activeSearch || vm.searchForm.$dirty">
           <div class=".btn-group.btn-group-justified">
             <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
-              <button class="btn btn-ai dropdown-toggle" type="button" id="filter-status-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 Certification Status <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu" aria-labeledby="filter-status-button">
@@ -37,7 +37,7 @@
               </ul>
             </div>
             <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
-              <button class="btn btn-ai dropdown-toggle" type="button" id="filter-edition-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-edition-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 Certification Edition <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu" aria-labeledby="filter-edition-button">
@@ -50,7 +50,7 @@
               </ul>
             </div>
             <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
-              <button class="btn btn-ai dropdown-toggle" type="button" id="filter-criteria-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-criteria-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 Certification Criteria <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-criteria-button">
@@ -90,7 +90,7 @@
               </ul>
             </div>
             <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
-              <button class="btn btn-ai dropdown-toggle" type="button" id="filter-more-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-more-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 More <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button">
@@ -100,8 +100,8 @@
                   </a>
                 </li>
                 <li ng-repeat="cqm in vm.cqms | orderBy:'name'" ng-if="vm.showCqms">
-                  <a href ng-click="vm.refineModel.cqm[cqm.name] = !vm.refineModel.cqm[cqm.name]">
-                    <input type="checkbox" ng-model="vm.refineModel.cqm[cqm.name]" id="filter-cqm-{{ cqm.name }}">
+                  <a href ng-click="vm.refineModel.cqms[cqm.name] = !vm.refineModel.cqms[cqm.name]">
+                    <input type="checkbox" ng-model="vm.refineModel.cqms[cqm.name]" id="filter-cqm-{{ cqm.name }}">
                     <label for="filter-cqm-{{ cqm.name }}">{{ prepend(cqm.name) + ': ' + cqm.title }}</label>
                   </a>
                 </li>
@@ -171,67 +171,10 @@
                 </li>
               </ul>
             </div>
-            <button class="btn btn-ai" type="button" ng-click="vm.search()">
+            <button class="btn btn-lg btn-ai" type="button" ng-click="vm.search()">
               Apply filters
             </button>
           </div>
-        </div>
-        <div class="col-sm-4" ng-if="vm.refineType === 'developer'">
-          <div class="input-group input-group-lg">
-            <label for="developerRefine" class="control-label sr-only">Developer</label>
-            <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refine.developer"
-                   ng-required="vm.refineType === 'developer'"
-                   ng-keyup="$event.keyCode == 13 && vm.addRefine()"
-                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
-                   typeahead-focus-first="false"
-                   typeahead-input-formatter="$model.value" />
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-ai" ng-click="vm.addRefine()">Add Filter</button>
-            </span>
-          </div>
-        </div>
-        <div class="col-sm-4" ng-if="vm.refineType === 'product'">
-          <div class="input-group input-group-lg">
-            <label for="productRefine" class="control-label sr-only">Product</label>
-            <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.refine.product"
-                   ng-required="vm.refineType === 'product'"
-                   ng-keyup="$event.keyCode == 13 && vm.addRefine()"
-                   typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
-                   typeahead-focus-first="false"
-                   typeahead-input-formatter="$model.value" />
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-ai" ng-click="vm.addRefine()">Add Filter</button>
-            </span>
-          </div>
-        </div>
-        <div class="col-sm-4" ng-if="vm.refineType === 'version'">
-          <div class="input-group input-group-lg">
-            <label for="versionRefine" class="control-label sr-only">Version</label>
-            <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refine.version"
-                   ng-keyup="$event.keyCode == 13 && vm.addRefine()"
-                   ng-required="vm.refineType === 'version'"/>
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-ai" ng-click="vm.addRefine()">Add Filter</button>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div aria-live="polite">
-      <div class="row" ng-if="vm.activeSearch">
-        <div class="col-sm-12">
-          <ul class="list-inline">
-            <li class="animate-if" ng-if="vm.query.developer"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('developer')"><span class="ai-lead">Developer:</span> {{ vm.query.developer }} <i class="fa fa-close"></i><span class="sr-only">Remove developer filter</span></button></li>
-            <li class="animate-if" ng-if="vm.query.product"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('product')"><span class="ai-lead">Product:</span> {{ vm.query.product }} <i class="fa fa-close"></i><span class="sr-only">Remove product filter</span></button></li>
-            <li class="animate-if" ng-if="vm.query.version"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('version')"><span class="ai-lead">Version:</span> {{ vm.query.version }} <i class="fa fa-close"></i><span class="sr-only">Remove version filter</span></button></li>
-            <li class="animate-if" ng-if="vm.query.certificationBody"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationBody')"><span class="ai-lead">Certification Body:</span> {{ vm.query.certificationBody }} <i class="fa fa-close"></i><span class="sr-only">Remove certification body filter</span></button></li>
-            <li class="animate-if" ng-if="vm.query.certificationStatus"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationStatus')"><span class="ai-lead">Certification Status:</span> {{ vm.query.certificationStatus }} <i class="fa fa-close"></i><span class="sr-only">Remove certification status filter</span></button></li>
-            <li class="animate-if" ng-if="vm.query.certificationEdition"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationEdition')"><span class="ai-lead">Certification Edition:</span> {{ vm.query.certificationEdition }} <i class="fa fa-close"></i><span class="sr-only">Remove certification edition filter</span></button></li>
-            <li class="animate-if" ng-if="vm.query.practiceType"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('practiceType')"><span class="ai-lead">Practice Type:</span> {{ vm.query.practiceType }} <i class="fa fa-close"></i><span class="sr-only">Remove practice type filter</span></button></li>
-            <li class="animate-if" ng-repeat="cert in vm.query.certificationCriteria | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('certificationCriteria',cert)"><span class="ai-lead">Certification Criteria:</span> {{ cert }} <i class="fa fa-close"></i><span class="sr-only">Remove certification criteria filter</span></button></li>
-            <li class="animate-if" ng-repeat="cqm in vm.query.cqms | orderBy:'toString()'"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('cqms',cqm)"><span class="ai-lead">Clinical Quality Measure:</span> {{ prepend(cqm) }} <i class="fa fa-close"></i><span class="sr-only">Remove cqm filter</span></button></li>
-            <li class="animate-if" ng-if="vm.query.hasCAP"><button type="button" class="btn btn-ai-grey btn-sm" ng-click="vm.unrefine('hasCAP')"><span class="ai-lead">Nonconformity:</span> {{ vm.query.hasCAP }} <i class="fa fa-close"></i><span class="sr-only">Remove corrective action plan filter</span></button></li>
-          </ul>
         </div>
       </div>
     </div>
