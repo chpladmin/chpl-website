@@ -23,33 +23,33 @@
         </div>
         <div class="col-sm-8" ng-if="vm.activeSearch || vm.searchForm.$dirty">
           <div class=".btn-group.btn-group-justified">
-            <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
+            <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 Certification Status <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu" aria-labeledby="filter-status-button">
                 <li ng-repeat="status in vm.certificationStatuses | orderBy:'name'">
-                  <a href ng-click="vm.refineModel.certificationStatus[status.name] = !vm.refineModel.certificationStatus[status.name]">
+                  <label for="filter-status-{{ status.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationStatus[status.name]" id="filter-status-{{ status.name }}">
-                    <label for="filter-status-{{ status.name }}">{{ status.name }}</label>
-                  </a>
+                    {{ status.name }}
+                  </label>
                 </li>
               </ul>
             </div>
-            <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
+            <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-edition-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 Certification Edition <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu" aria-labeledby="filter-edition-button">
                 <li ng-repeat="edition in vm.editions | orderBy:'name'">
-                  <a href ng-click="vm.refineModel.certificationEdition[edition.name] = !vm.refineModel.certificationEdition[edition.name]">
+                  <label for="filter-edition-{{ edition.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationEdition[edition.name]" id="filter-edition-{{ edition.name }}">
-                    <label for="filter-edition-{{ edition.name }}">{{ edition.name }}</label>
-                  </a>
+                    {{ edition.name }}
+                  </label>
                 </li>
               </ul>
             </div>
-            <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
+            <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-criteria-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 Certification Criteria <i class="fa fa-filter"></i>
               </button>
@@ -60,10 +60,10 @@
                   </a>
                 </li>
                 <li ng-repeat="criteria in vm.certs | orderBy:'name'" ng-if="vm.show2011 && criteria.name.substring(4,7) !== '314' && criteria.name.substring(4,7) !== '315'">
-                  <a href ng-click="vm.refineModel.certificationCriteria[criteria.name] = !vm.refineModel.certificationCriteria[criteria.name]">
+                  <label for="filter-criteria-{{ criteria.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    <label for="filter-criteria-{{ criteria.name }}">{{ criteria.name + ': ' + criteria.title }}</label>
-                  </a>
+                    {{ criteria.name + ': ' + criteria.title }}
+                  </label>
                 </li>
                 <li>
                   <a href ng-click="vm.show2014 = !vm.show2014">
@@ -71,10 +71,10 @@
                   </a>
                 </li>
                 <li ng-repeat="criteria in vm.certs | orderBy:'name'" ng-if="vm.show2014 && criteria.name.substring(4,7) === '314'">
-                  <a href ng-click="vm.refineModel.certificationCriteria[criteria.name] = !vm.refineModel.certificationCriteria[criteria.name]">
+                  <label for="filter-criteria-{{ criteria.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    <label for="filter-criteria-{{ criteria.name }}">{{ criteria.name + ': ' + criteria.title }}</label>
-                  </a>
+                    {{ criteria.name + ': ' + criteria.title }}
+                  </label>
                 </li>
                 <li>
                   <a href ng-click="vm.show2015 = !vm.show2015">
@@ -82,14 +82,14 @@
                   </a>
                 </li>
                 <li ng-repeat="criteria in vm.certs | orderBy:'name'" ng-if="vm.show2015 && criteria.name.substring(4,7) === '315'">
-                  <a href ng-click="vm.refineModel.certificationCriteria[criteria.name] = !vm.refineModel.certificationCriteria[criteria.name]">
+                  <label for="filter-criteria-{{ criteria.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    <label for="filter-criteria-{{ criteria.name }}">{{ criteria.name + ': ' + criteria.title }}</label>
-                  </a>
+                    {{ criteria.name + ': ' + criteria.title }}
+                  </label>
                 </li>
               </ul>
             </div>
-            <div dropdown keyboard-nav auto-close="outsideClick" class="btn-group">
+            <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-more-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 More <i class="fa fa-filter"></i>
               </button>
@@ -100,50 +100,50 @@
                   </a>
                 </li>
                 <li ng-repeat="cqm in vm.cqms | orderBy:'name'" ng-if="vm.showCqms">
-                  <a href ng-click="vm.refineModel.cqms[cqm.name] = !vm.refineModel.cqms[cqm.name]">
+                  <label for="filter-cqm-{{ cqm.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.cqms[cqm.name]" id="filter-cqm-{{ cqm.name }}">
-                    <label for="filter-cqm-{{ cqm.name }}">{{ prepend(cqm.name) + ': ' + cqm.title }}</label>
-                  </a>
+                    {{ prepend(cqm.name) + ': ' + cqm.title }}
+                  </label>
                 </li>
                 <li class="divider"></li>
                 <li>ONC-ACB</li>
                 <li ng-repeat="acb in vm.certBodies | orderBy:'name'">
-                  <a href ng-click="vm.refineModel.acb[acb.name] = !vm.refineModel.acb[acb.name]">
+                  <label for="filter-acb-{{ acb.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.acb[acb.name]" id="filter-acb-{{ acb.name }}">
-                    <label for="filter-acb-{{ acb.name }}">{{ acb.name }}</label>
-                  </a>
+                    {{ acb.name }}
+                  </label>
                 </li>
                 <li>Non-Conformities</li>
                 <li>
-                  <a href ng-click="vm.refineModel.hasCap.open = !vm.refineModel.hasCap.open">
+                  <label for="filter-cap-open">
                     <input type="checkbox" ng-model="vm.refineModel.hasCap.open" id="filter-cap-open">
-                    <label for="filter-cap-open">Open</label>
-                  </a>
+                    Open
+                  </label>
                 </li>
                 <li>
-                  <a href ng-click="vm.refineModel.hasCap.closed = !vm.refineModel.hasCap.closed">
+                  <label for="filter-cap-closed">
                     <input type="checkbox" ng-model="vm.refineModel.hasCap.closed" id="filter-cap-closed">
-                    <label for="filter-cap-closed">Closed</label>
-                  </a>
+                    Closed
+                  </label>
                 </li>
                 <li>
-                  <a href ng-click="vm.refineModel.hasCap.never = !vm.refineModel.hasCap.never">
+                  <label for="filter-cap-never">
                     <input type="checkbox" ng-model="vm.refineModel.hasCap.never" id="filter-cap-never">
-                    <label for="filter-cap-never">Never had a Non-Conformity</label>
-                  </a>
+                    Never had a Non-Conformity
+                  </label>
                 </li>
                 <li>Practice Type</li>
                 <li>
-                  <a href ng-click="vm.refineModel.practiceType = 'Ambulatory'">
+                  <label for="filter-practiceType-ambulatory">
                     <input type="radio" ng-model="vm.refineModel.practiceType" id="filter-practiceType-ambulatory" value="Ambulatory">
-                    <label for="filter-practiceType-ambulatory">Ambulatory</label>
-                  </a>
+                    Ambulatory
+                  </label>
                 </li>
                 <li>
-                  <a href ng-click="vm.refineModel.practiceType = 'Inpatient'">
+                  <label for="filter-practiceType-inpatient">
                     <input type="radio" ng-model="vm.refineModel.practiceType" id="filter-practiceType-inpatient" value="Inpatient">
-                    <label for="filter-practiceType-inpatient">Inpatient</label>
-                  </a>
+                    Inpatient
+                  </label>
                 </li>
                 <li class="form-horizontal">
                   <label for="developerRefine" class="col-sm-4 control-label">Developer</label>
