@@ -184,12 +184,15 @@
         <div class="row">
           <div class="col-md-9">
             <div class="row">
-              <div class="col-md-6">
-                <p ng-if="!hasResults()">No results found</p>
-                <p ng-if="hasResults()">{{ vm.resultCount }} results found</p>
-              </div>
-              <div class="col-md-6 text-right">
-                <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="vm.clearFilters()">Clear filters</a>
+              <div class="col-md-12">
+                <span class="pull-right">
+                  <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="vm.clearFilters()">Clear filters</a>
+                </span>
+                <p ng-if="!hasResults()">No results found.</p>
+                <p ng-if="hasResults()">
+                  {{ vm.resultCount }} results found.
+                </p>
+                Please note that Retired listings are not shown by default. Use the Certification Status filter above to display retired listings.
               </div>
             </div>
             <div ng-if="hasResults()" class="row">
@@ -218,7 +221,7 @@
                       <th scope="col" class="search-header" ng-click="sort('certificationEdition')"><span ng-class="{'sort-ascent': vm.query.orderBy==='certificationEdition' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationEdition' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'certificationEdition'}">Edition</span> <a class="sr-only sr-only-focusable" href ng-click="sort('certificationEdition')"><br />Sort by certification edition</a></th>
                       <th scope="col" class="search-header" ng-click="sort('version')" ng-if="vm.refine.product"><span ng-class="{'sort-ascent': vm.query.orderBy==='version' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='version' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'version'}">Version</span> <a class="sr-only sr-only-focusable" href ng-click="sort('version')"><br />Sort by version</a></th>
                       <th scope="col" class="" ng-if="!vm.refine.product">Version</th>
-                      <th scope="col" class=""><span class="sr-only">Certification Status</span></th>
+                      <th scope="col" class="">Status</th>
                       <th scope="col" colspan="3"><span class="sr-only">Actions</span></th>
 	                </tr>
 	              </thead>
