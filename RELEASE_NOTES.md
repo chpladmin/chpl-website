@@ -8,6 +8,7 @@ _Date TBD_
 * Better sort of CQMs on Compare page
 * Addition of Previous Product Owner capability
 * Improved text on Resources page
+* Updated filter UI
 
 ### Bugs fixed
 * Merge dialog closes on submit

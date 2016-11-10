@@ -98,6 +98,9 @@ ul.pagination li {
     min-width: 400px;
 }
 
-.dropdown-menu>li>a {
-    text-decoration: none;
+.dropdown-menu>li>label {
+    cursor: pointer;
+    display: block;
+    padding: 3px 20px;
+    clear: both;
 }
