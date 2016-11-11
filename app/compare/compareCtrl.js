@@ -2,15 +2,15 @@
     'use strict';
 
     angular.module('app.compare')
-        .controller('CompareController', ['$scope', '$log', '$routeParams', '$filter', 'commonService', function($scope, $log, $routeParams, $filter, commonService) {
+        .controller('CompareController', ['$scope', '$log', '$routeParams', '$filter', 'commonService', 'utilService', function($scope, $log, $routeParams, $filter, commonService, utilService) {
             var vm = this;
 
             vm.fillInBlanks = fillInBlanks;
             vm.isShowing = isShowing;
             vm.sortAllCerts = sortAllCerts;
             vm.sortAllCqms = sortAllCqms;
-            vm.sortCerts = sortCerts;
-            vm.sortCqms = sortCqms;
+            vm.sortCerts = utilService.sortCert;
+            vm.sortCqms = utilService.sortCqm;
             vm.toggle = toggle;
             vm.updateCerts = updateCerts;
             vm.updateCqms = updateCqms;
@@ -99,23 +99,6 @@
                     vm.sortedCqms.push(cqm);
                 }
                 vm.sortedCqms = $filter('orderBy')(vm.sortedCqms,vm.sortCqms);
-            }
-
-            function sortCerts (cert) {
-                var edition = parseInt(cert.substring(4,7));
-                var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
-                var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
-                var ret = edition * 10000 +
-                    letter * 100 +
-                    number;
-                return ret;
-            }
-
-            function sortCqms (cqm) {
-                var edition = -1000 * cqm.indexOf('-');
-                var num = parseInt(edition < 0 ? cqm.substring(4) : cqm.substring(3));
-                var ret = edition + num;
-                return ret;
             }
 
             function toggle (elem) {

@@ -6,6 +6,8 @@
             var self = this;
 
             self.extendSelect = extendSelect;
+            self.sortCert = sortCert;
+            self.sortCqm = sortCqm;
 
             ////////////////////////////////////////////////////////////////////
 
@@ -22,6 +24,32 @@
                     options.push(newValue);
                 }
                 return options;
+            }
+
+            function sortCert (cert) {
+                if (angular.isObject(cert)) {
+                    cert = cert.name;
+                }
+                var edition = parseInt(cert.substring(4,7));
+                var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
+                var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
+                var ret = edition * 10000 +
+                    letter * 100 +
+                    number;
+                return ret;
+            }
+
+            function sortCqm (cqm) {
+                if (angular.isObject(cqm)) {
+                    cqm = cqm.name;
+                    if (cqm.length === 4) {
+                        cqm = 'NQF-' + cqm;
+                    }
+                }
+                var edition = -1000 * cqm.indexOf('-');
+                var num = parseInt(edition < 0 ? cqm.substring(4) : cqm.substring(3));
+                var ret = edition + num;
+                return ret;
             }
         });
 })();

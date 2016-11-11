@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', '$filter', 'commonService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, $filter, commonService, CACHE_TIMEOUT) {
+        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', '$filter', 'commonService', 'utilService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, $filter, commonService, utilService, CACHE_TIMEOUT) {
             var vm = this;
 
 			vm.toggleCart = toggleCart;
@@ -19,6 +19,8 @@
             vm.restoreResults = restoreResults
             vm.search = search;
             vm.setRefine = setRefine;
+            vm.sortCert = utilService.sortCert;
+            vm.sortCqm = utilService.sortCqm;
             vm.statusFont = statusFont;
             vm.toggleCompare = toggleCompare;
             vm.truncButton = truncButton;

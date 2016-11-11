@@ -1,3 +1,7 @@
+.pagination {
+    margin: 0;
+}
+
 ul.pagination li {
     cursor: pointer;
 }
@@ -103,4 +107,8 @@ ul.pagination li {
     display: block;
     padding: 3px 20px;
     clear: both;
+}
+
+.dropdown-menu>li>a {
+    font-weight: 700;
 }
