@@ -39,7 +39,7 @@
         <div ng-repeat="prevOwner in vm.product.ownerHistory | orderBy:'transferDate' track by $index">
           <div class="form-group">
             <label for="productOwner{{ $index }}">Previous Product owner <span class="text-danger">*</span></label>
-            <select ng-model="prevOwner.id" required
+            <select ng-model="prevOwner.developer.developerId" required
                     id="productOwner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
                     ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
             </select>
