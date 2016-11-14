@@ -166,7 +166,7 @@
               <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td><span ng-bind-html="vm.parseSurveillanceUploadError(surv)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
               </td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
                 <button class="btn btn-warning btn-block"

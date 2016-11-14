@@ -12,6 +12,7 @@
             self.editProduct = editProduct;
             self.editVersion = editVersion;
             self.inspectCp = inspectCp;
+            self.inspectSurveillance = inspectSurveillance;
             self.isDeveloperEditable = isDeveloperEditable;
             self.isDeveloperMergeable = isDeveloperMergeable;
             self.loadCp = loadCp;
@@ -437,6 +438,28 @@
                                 self.pendingProducts = self.uploadingCps.length;
                             }
                         }
+                    }
+                });
+            }
+
+            function inspectSurveillance (surv) {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/surveillance/surveillanceInspect.html',
+                    controller: 'SurveillanceInspectController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        surveillance: function () { return surv; }
+                    },
+                    size: 'lg'
+                });
+                self.modalInstance.result.then(function () {
+                    self.refreshPending();
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.refreshPending();
                     }
                 });
             }

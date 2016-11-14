@@ -1035,7 +1035,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'admin/components/reports.html',
+                templateUrl: 'admin/components/reports/reports.html',
                 bindToController: { workType: '=',
                                     productId: '='},
                 scope: {triggerRefresh: '&'},

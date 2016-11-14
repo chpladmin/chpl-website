@@ -463,6 +463,10 @@
                 return self.postApiCall('/certified_products/pending/confirm', pendingCp);
             };
 
+            self.confirmPendingSurveillance = function (surveillance) {
+                return self.postApiCall('/surveillance/pending/confirm', surveillance);
+            };
+
             self.rejectPendingCp = function (cpId) {
                 return self.postApiCall('/certified_products/pending/' + cpId + '/reject', {});
             };
