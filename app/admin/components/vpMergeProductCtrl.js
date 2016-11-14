@@ -42,6 +42,9 @@
 
             function save () {
                 vm.updateProduct.product = vm.product;
+                for (var i = 0; i < vm.product.ownerHistory.length; i++) {
+                    vm.product.ownerHistory[i].transferDate = vm.product.ownerHistory[i].transferDate.getTime();
+                }
                 commonService.updateProduct(vm.updateProduct)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {

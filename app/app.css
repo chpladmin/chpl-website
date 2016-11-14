@@ -334,7 +334,7 @@ footer .spaced-out {
 .btn-ai:active,
 .btn-ai.active,
 .open > .dropdown-toggle.btn-ai {
-    background-image: none;
+    /*background-image: none;*/
 }
 .btn-ai.disabled,
 .btn-ai[disabled],

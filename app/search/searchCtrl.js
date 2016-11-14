@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.search')
-        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', '$filter', 'commonService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, $filter, commonService, CACHE_TIMEOUT) {
+        .controller('SearchController', ['$scope', '$log', '$location', '$localStorage', '$filter', 'commonService', 'utilService', 'CACHE_TIMEOUT', function ($scope, $log, $location, $localStorage, $filter, commonService, utilService, CACHE_TIMEOUT) {
             var vm = this;
 
 			vm.toggleCart = toggleCart;
@@ -14,11 +14,14 @@
             vm.clearPreviouslyViewed = clearPreviouslyViewed;
             vm.certificationStatusFilter = certificationStatusFilter;
             vm.compare = compare;
+            vm.isChangedFromDefault = isChangedFromDefault;
             vm.populateSearchOptions = populateSearchOptions;
             vm.reloadResults = reloadResults;
             vm.restoreResults = restoreResults
             vm.search = search;
             vm.setRefine = setRefine;
+            vm.sortCert = utilService.sortCert;
+            vm.sortCqm = utilService.sortCqm;
             vm.statusFont = statusFont;
             vm.toggleCompare = toggleCompare;
             vm.truncButton = truncButton;
@@ -35,15 +38,17 @@
                 vm.defaultRefineModel = {
                     certificationStatus: {
                         'Active': true,
+                        'Retired': false,
                         'Suspended by ONC-ACB': true,
                         'Withdrawn by Developer': true,
                         'Withdrawn by ONC-ACB': true
                     },
                     certificationEdition: {
+                        '2011': false,
                         '2014': true,
                         '2015': true
                     },
-                    certificationBody: {
+                    acb: {
                         'Drummond Group': true,
                         'ICSA Labs': true,
                         'InfoGard': true
@@ -204,6 +209,14 @@
                     }
                     $localStorage.previouslyCompared = prev;
                     $location.url(comparePath);
+                }
+            }
+
+            function isChangedFromDefault (index, data) {
+                if (!vm.defaultRefineModel[index]) {
+                    return vm.refineModel[index] && vm.refineModel[index][data];
+                } else {
+                    return (vm.defaultRefineModel[index][data] !== vm.refineModel[index][data]);
                 }
             }
 

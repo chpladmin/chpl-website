@@ -24,15 +24,17 @@
         mock.refineModel = {
             certificationStatus: {
                 'Active': true,
+                'Retired': false,
                 'Suspended by ONC-ACB': true,
                 'Withdrawn by Developer': true,
                 'Withdrawn by ONC-ACB': true
             },
             certificationEdition: {
+                '2011': false,
                 '2014': true,
                 '2015': true
             },
-            certificationBody: {
+            acb: {
                 'Drummond Group': true,
                 'ICSA Labs': true,
                 'InfoGard': true
@@ -184,6 +186,23 @@
             expect(vm.query.certificationEdition).toEqual(mock.refine.certificationEdition);
         });
 
+        it('should have a way to tell if a filter has changed from the default', function () {
+            expect(vm.isChangedFromDefault('certificationStatus', 'Active')).toBe(false);
+            expect(vm.isChangedFromDefault('certificationEdition', '2014')).toBe(false);
+            expect(vm.isChangedFromDefault('acb', 'ICSA Labs')).toBe(false);
+            expect(vm.isChangedFromDefault('hasCap', 'never')).toBe(undefined);
+
+            vm.refineModel.certificationStatus['Active'] = false;
+            vm.refineModel.certificationEdition['2014'] = false;
+            vm.refineModel.acb['ICSA Labs'] = false;
+            vm.refineModel.hasCap = { never: true };
+
+            expect(vm.isChangedFromDefault('certificationStatus', 'Active')).toBe(true);
+            expect(vm.isChangedFromDefault('certificationEdition', '2014')).toBe(true);
+            expect(vm.isChangedFromDefault('acb', 'ICSA Labs')).toBe(true);
+            expect(vm.isChangedFromDefault('hasCap', 'never')).toBe(true);
+        });
+
         describe('certificationStatus filters', function () {
 
             var objToFilter;
@@ -204,12 +223,12 @@
                 expect(vm.certificationStatusFilter(objToFilter)).toBe(false);
             });
 
-            xit('should return true if the selected status has 1 or more objects', function () {
+            it('should return true if the selected status has 1 or more objects', function () {
                 vm.refineModel.certificationStatus['Active'] = true;
                 expect(vm.certificationStatusFilter(objToFilter)).toBe(true);
             });
 
-            xit('should return true if the object has no statuses', function () {
+            it('should return true if the object has no statuses', function () {
                 delete objToFilter.statuses;
                 expect(vm.certificationStatusFilter(objToFilter)).toBe(true);
             });

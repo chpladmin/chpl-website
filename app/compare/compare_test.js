@@ -3,12 +3,14 @@
 
     describe('app.compare.compare', function () {
 
-        var commonService, scope, ctrl, $log;
+        var commonService, utilService, scope, ctrl, $log;
 
         beforeEach(function () {
             var mockCommonService = {};
+            var mockUtilService = {};
             module('app.compare', function($provide) {
                 $provide.value('commonService', mockCommonService);
+                $provide.value('utilService', mockUtilService);
             });
 
             inject(function($q) {
@@ -27,17 +29,22 @@
                     defer.resolve(this.products[0]);
                     return defer.promise;
                 };
+
+                mockUtilService.sortCert = function () { return 0; };
+                mockUtilService.sortCqm = function () { return 0; };
             });
         });
 
-        beforeEach(inject(function (_$log_, $rootScope, $controller, _commonService_) {
+        beforeEach(inject(function (_$log_, $rootScope, $controller, _commonService_, _utilService_) {
             $log = _$log_;
             scope = $rootScope.$new();
             commonService = _commonService_;
+            utilService = _utilService_;
             ctrl = $controller('CompareController', {
                 $scope: scope,
                 $routeParams: {compareIds: '123&234'},
-                commonService: commonService
+                commonService: commonService,
+                utilService: utilService
             });
             scope.$digest();
         }));

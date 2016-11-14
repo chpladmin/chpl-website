@@ -1,3 +1,7 @@
+.pagination {
+    margin: 0;
+}
+
 ul.pagination li {
     cursor: pointer;
 }
@@ -88,19 +92,31 @@ ul.pagination li {
   opacity:1;
 }
 
-.dropdown-menu {
+#search-page .dropdown-menu {
     width: 150%;
     max-height: 300px;
     overflow: auto;
 }
 
-.dropdown-menu-large {
+#search-page .dropdown-menu-large {
     min-width: 400px;
 }
 
-.dropdown-menu>li>label {
+#search-page .dropdown-menu>li>label {
     cursor: pointer;
     display: block;
     padding: 3px 20px;
     clear: both;
+}
+
+#search-page .dropdown-menu>li>a {
+    font-weight: 700;
+}
+
+#filters .emphasis {
+    font-style: italic;
+}
+
+#filters .pointer {
+    cursor: pointer;
 }
