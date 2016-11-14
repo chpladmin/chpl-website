@@ -321,6 +321,10 @@
                 return self.simpleApiCall('/certified_products/pending');
             };
 
+            self.getUploadingSurveillances = function () {
+                return self.simpleApiCall('/surveillance/pending');
+            };
+
             self.keepalive = function () {
                 return self.simpleApiCall('/auth/keep_alive');
             };
@@ -461,6 +465,10 @@
 
             self.rejectPendingCp = function (cpId) {
                 return self.postApiCall('/certified_products/pending/' + cpId + '/reject', {});
+            };
+
+            self.rejectPendingSurveillance = function (survId) {
+                return self.postApiCall('/surveillance/pending/' + survId + '/reject', {});
             };
 
 			self.lookupCertificationId = function (certId) {

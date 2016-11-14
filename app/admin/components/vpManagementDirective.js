@@ -19,8 +19,10 @@
             self.mergeProducts = mergeProducts;
             self.mergeVersions = mergeVersions;
             self.parseUploadError = parseUploadError;
+            self.parseSurveillanceUploadError = parseSurveillanceUploadError;
             self.refreshPending = refreshPending;
             self.rejectCp = rejectCp;
+            self.rejectSurveillance = rejectSurveillance;
             self.selectCp = selectCp;
             self.selectDeveloper = selectDeveloper;
             self.selectProduct = selectProduct;
@@ -40,11 +42,15 @@
                 self.isAcbAdmin = authService.isAcbAdmin();
                 self.isAcbStaff = authService.isAcbStaff();
                 self.uploadingCps = [];
+                self.uploadingSurveillances = [];
                 self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
                 self.uploadErrors = [];
                 self.uploadSuccess = true;
+                self.surveillanceUploadMessage = '';
+                self.surveillanceUploadErrors = [];
+                self.surveillanceUploadSuccess = true;
                 self.resources = {};
 
                 if (self.isAcbAdmin || self.isAcbStaff) {
@@ -84,6 +90,42 @@
                     self.uploader.onCancelItem = function(fileItem, response, status, headers) {
                         //$log.info('onCancelItem', fileItem, response, status, headers);
                     };
+
+                    self.surveillanceUploader = new FileUploader({
+                        url: API + '/surveillance/upload',
+                        removeAfterUpload: true,
+                        headers: {
+                            Authorization: 'Bearer ' + authService.getToken(),
+                            'API-Key': authService.getApiKey()
+                        }
+                    });
+                    if (angular.isUndefined(self.surveillanceUploader.filters)) {
+                        self.surveillanceUploader.filters = [];
+                    }
+                    self.surveillanceUploader.filters.push({
+                        name: 'csvFilter',
+                        fn: function(item, options) {
+                            var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
+                            return '|csv|'.indexOf(extension) !== -1;
+                        }
+                    });
+                    self.surveillanceUploader.onSuccessItem = function(fileItem, response, status, headers) {
+                        //$log.info('onSuccessItem', fileItem, response, status, headers);
+                        self.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
+                        self.surveillanceUploadErrors = [];
+                        self.surveillanceUploadSuccess = true;
+                    };
+                    self.surveillanceUploader.onCompleteItem = function(fileItem, response, status, headers) {
+                        self.refreshPending();
+                    };
+                    self.surveillanceUploader.onErrorItem = function(fileItem, response, status, headers) {
+                        self.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
+                        self.surveillanceUploadErrors = response.errorMessages;
+                        self.surveillanceUploadSuccess = false;
+                    };
+                    self.surveillanceUploader.onCancelItem = function(fileItem, response, status, headers) {
+                        //$log.info('onCancelItem', fileItem, response, status, headers);
+                    };
                 }
 
                 commonService.getDevelopers()
@@ -100,10 +142,15 @@
             }
 
             function refreshPending () {
-                commonService.getUploadingCps()
+                commonService.getUploadingCps ()
                     .then(function (cps) {
                         self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
                         self.pendingProducts = self.uploadingCps.length;
+                    })
+                commonService.getUploadingSurveillances ()
+                    .then(function (surveillances) {
+                        self.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
+                        self.pendingSurveillances = self.uploadingSurveillances.length;
                     })
             }
 
@@ -402,8 +449,13 @@
                 return dev.status.status === 'Active';
             }
 
-            function rejectCp  (cpId) {
+            function rejectCp (cpId) {
                 commonService.rejectPendingCp(cpId)
+                    .then(self.refreshPending);
+            }
+
+            function rejectSurveillance (survId) {
+                commonService.rejectPendingSurveillance(survId)
                     .then(self.refreshPending);
             }
 
@@ -424,6 +476,22 @@
                         ret = 'OK';
 
                     }
+                }
+                return ret;
+            }
+
+            function parseSurveillanceUploadError (surv) {
+                var ret = '';
+                if (surv.errorMessages.length > 0) {
+                    ret += 'Errors:&nbsp;' + surv.errorMessages.length;
+                }
+                if (surv.warningMessages.length > 0) {
+                    if (ret.length > 0)
+                        ret += '<br />';
+                    ret += 'Warnings:&nbsp;' + surv.warningMessages.length;
+                }
+                if (ret.length === 0) {
+                    ret = 'OK';
                 }
                 return ret;
             }

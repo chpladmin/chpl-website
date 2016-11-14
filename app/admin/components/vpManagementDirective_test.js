@@ -30,6 +30,7 @@
                 mockCommonService.testingLabs = ['TL 1', 'TL 2'];
                 mockCommonService.certificationStatuses = ['Active', 'Retired'];
                 mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
+                mockCommonService.uploadingSurveillances = {surveillances: []};
 
                 mockCommonService.getDevelopers = function () {
                     var defer = $q.defer();
@@ -105,6 +106,7 @@
                 mockCommonService.getTestStandards = function () { return $q.when([]); };
                 mockCommonService.getTestTools = function () { return $q.when([]); };
                 mockCommonService.getUcdProcesses = function () { return $q.when([]); };
+                mockCommonService.getUploadingSurveillances = function () { return $q.when(this.uploadingSurveillances); };
 
                 mockAuthService.isChplAdmin = function () { return $q.when(true); };
                 mockAuthService.isAcbAdmin = function () { return $q.when(true); };
