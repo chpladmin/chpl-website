@@ -48,7 +48,7 @@
 
         it('should be able to sort cqms', function () {
             expect(util.sortCqm('NQF-0031')).toBeLessThan(util.sortCqm('NQF-0100'));
-            expect(util.sortCqm('NQF-0031')).toBeLessThan(util.sortCqm('CMS107'));
+            expect(util.sortCqm('NQF-0031')).toBeGreaterThan(util.sortCqm('CMS107'));
             expect(util.sortCqm('CMS26')).toBeLessThan(util.sortCqm('CMS107'));
         });
     });

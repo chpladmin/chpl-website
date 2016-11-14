@@ -46,8 +46,8 @@
                         cqm = 'NQF-' + cqm;
                     }
                 }
-                var edition = -1000 * cqm.indexOf('-');
-                var num = parseInt(edition < 0 ? cqm.substring(4) : cqm.substring(3));
+                var edition = 1000 * cqm.indexOf('-');
+                var num = parseInt(edition > 0 ? cqm.substring(4) : cqm.substring(3));
                 var ret = edition + num;
                 return ret;
             }
