@@ -1,4 +1,4 @@
-<div ng-controller="SearchController as vm" ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }">
+<div ng-controller="SearchController as vm" ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
   <div class="container-fluid">
     <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.search()" aria-live="polite">
-      <div class="form-group">
+      <div class="form-group" id="filters">
         <div class="form-group-lg">
           <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
             <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ACB/CHPL ID</label>
@@ -33,7 +33,7 @@
                 <li ng-repeat="status in vm.certificationStatuses | orderBy:'name'">
                   <label for="filter-status-{{ status.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationStatus[status.name]" id="filter-status-{{ status.name }}">
-                    {{ status.name }}
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationStatus',status.name) }">{{ status.name }}</span>
                   </label>
                 </li>
               </ul>
@@ -46,7 +46,7 @@
                 <li ng-repeat="edition in vm.editions | orderBy:'name'">
                   <label for="filter-edition-{{ edition.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationEdition[edition.name]" id="filter-edition-{{ edition.name }}">
-                    {{ edition.name }}
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationEdition',edition.name) }">{{ edition.name }}</span>
                   </label>
                 </li>
               </ul>
@@ -64,7 +64,7 @@
                 <li ng-repeat="criteria in vm.certs | orderBy:vm.sortCert" ng-if="vm.show2011 && criteria.name.substring(4,7) !== '314' && criteria.name.substring(4,7) !== '315'">
                   <label for="filter-criteria-{{ criteria.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    {{ criteria.name + ': ' + criteria.title }}
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationCriteria',criteria.name) }">{{ criteria.name + ': ' + criteria.title }}</span>
                   </label>
                 </li>
                 <li>
@@ -75,7 +75,7 @@
                 <li ng-repeat="criteria in vm.certs | orderBy:vm.sortCert" ng-if="vm.show2014 && criteria.name.substring(4,7) === '314'">
                   <label for="filter-criteria-{{ criteria.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    {{ criteria.name + ': ' + criteria.title }}
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationCriteria',criteria.name) }">{{ criteria.name + ': ' + criteria.title }}</span>
                   </label>
                 </li>
                 <li>
@@ -86,7 +86,7 @@
                 <li ng-repeat="criteria in vm.certs | orderBy:vm.sortCert" ng-if="vm.show2015 && criteria.name.substring(4,7) === '315'">
                   <label for="filter-criteria-{{ criteria.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    {{ criteria.name + ': ' + criteria.title }}
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationCriteria',criteria.name) }">{{ criteria.name + ': ' + criteria.title }}</span>
                   </label>
                 </li>
               </ul>
@@ -104,7 +104,7 @@
                 <li ng-repeat="cqm in vm.cqms | orderBy:vm.sortCqm" ng-if="vm.showCqms">
                   <label for="filter-cqm-{{ cqm.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.cqms[cqm.name]" id="filter-cqm-{{ cqm.name }}">
-                    {{ prepend(cqm.name) + ': ' + cqm.title }}
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('cqms',cqm.name) }">{{ prepend(cqm.name) + ': ' + cqm.title }}</span>
                   </label>
                 </li>
                 <li>
@@ -115,7 +115,7 @@
                 <li ng-repeat="acb in vm.certBodies | orderBy:'name'" ng-if="vm.showAcbs">
                   <label for="filter-acb-{{ acb.name }}">
                     <input type="checkbox" ng-model="vm.refineModel.acb[acb.name]" id="filter-acb-{{ acb.name }}">
-                    {{ acb.name }}
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('acb',acb.name) }">{{ acb.name }}</span>
                   </label>
                 </li>
                 <li>
@@ -126,19 +126,19 @@
                 <li ng-if="vm.showConformities">
                   <label for="filter-cap-open">
                     <input type="checkbox" ng-model="vm.refineModel.hasCap.open" id="filter-cap-open">
-                    Open
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('hasCap','open') }">Open</span>
                   </label>
                 </li>
                 <li ng-if="vm.showConformities">
                   <label for="filter-cap-closed">
                     <input type="checkbox" ng-model="vm.refineModel.hasCap.closed" id="filter-cap-closed">
-                    Closed
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('hasCap','closed') }">Closed</span>
                   </label>
                 </li>
                 <li ng-if="vm.showConformities">
                   <label for="filter-cap-never">
                     <input type="checkbox" ng-model="vm.refineModel.hasCap.never" id="filter-cap-never">
-                    Never had a Non-Conformity
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('hasCap','never') }">Never had a Non-Conformity</span>
                   </label>
                 </li>
                 <li>
@@ -157,6 +157,13 @@
                     <input type="radio" ng-model="vm.refineModel.practiceType" id="filter-practiceType-inpatient" value="Inpatient">
                     Inpatient
                   </label>
+                </li>
+                <li ng-if="vm.showPracticeType && vm.refineModel.practiceType" class="text-center">
+                  <span>
+                    <a href ng-click="vm.refineModel.practiceType = undefined; $event.stopPropagation();">
+                      Clear Practice Type Filter
+                    </a>
+                  </span>
                 </li>
                 <li class="form-horizontal">
                   <div class="form-group form-group-sm">
