@@ -31,7 +31,7 @@
 
             function updateUser (user) {
                 vm.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/userEdit.html',
+                    templateUrl: 'admin/components/user/userEdit.html',
                     controller: 'EditUserController',
                     controllerAs: 'vm',
                     animation: false,
@@ -55,7 +55,7 @@
 
             function inviteUser () {
                 vm.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/userEdit.html',
+                    templateUrl: 'admin/components/user/userEdit.html',
                     controller: 'EditUserController',
                     controllerAs: 'vm',
                     animation: false,
@@ -107,7 +107,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'admin/components/userManagement.html',
+                templateUrl: 'admin/components/user/userManagement.html',
                 scope: {},
                 bindToController: {
                     acbId: '@',

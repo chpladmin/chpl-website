@@ -170,7 +170,7 @@
 
             function editDeveloper () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditDeveloper.html',
+                    templateUrl: 'admin/components/cp/vpEditDeveloper.html',
                     controller: 'EditDeveloperController',
                     controllerAs: 'vm',
                     animation: false,
@@ -197,7 +197,7 @@
 
             function mergeDevelopers () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpMergeDeveloper.html',
+                    templateUrl: 'admin/components/cp/vpMergeDeveloper.html',
                     controller: 'MergeDeveloperController',
                     controllerAs: 'vm',
                     animation: false,
@@ -238,7 +238,7 @@
 
             function editProduct () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditProduct.html',
+                    templateUrl: 'admin/components/cp/vpEditProduct.html',
                     controller: 'EditProductController',
                     controllerAs: 'vm',
                     animation: false,
@@ -259,7 +259,7 @@
 
             function mergeProducts () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpMergeProduct.html',
+                    templateUrl: 'admin/components/cp/vpMergeProduct.html',
                     controller: 'MergeProductController',
                     controllerAs: 'vm',
                     animation: false,
@@ -286,7 +286,7 @@
 
             function mergeVersions () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpMergeVersion.html',
+                    templateUrl: 'admin/components/cp/vpMergeVersion.html',
                     controller: 'MergeVersionController',
                     controllerAs: 'vm',
                     animation: false,
@@ -326,7 +326,7 @@
 
             function editVersion () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditVersion.html',
+                    templateUrl: 'admin/components/cp/vpEditVersion.html',
                     controller: 'EditVersionController',
                     controllerAs: 'vm',
                     animation: false,
@@ -365,7 +365,7 @@
 
             function editCertifiedProduct () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditCertifiedProduct.html',
+                    templateUrl: 'admin/components/cp/vpEditCertifiedProduct.html',
                     controller: 'EditCertifiedProductController',
                     controllerAs: 'vm',
                     animation: false,
@@ -400,7 +400,7 @@
                 }
 
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpInspect.html',
+                    templateUrl: 'admin/components/cp/vpInspect.html',
                     controller: 'InspectController',
                     controllerAs: 'vm',
                     animation: false,
@@ -655,7 +655,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'admin/components/vpManagement.html',
+                templateUrl: 'admin/components/cp/vpManagement.html',
                 bindToController: {
                     workType: '=',
                     pendingProducts: '=',

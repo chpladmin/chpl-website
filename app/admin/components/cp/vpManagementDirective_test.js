@@ -16,7 +16,7 @@
                 $provide.value('FileUploader', mockFileUploader);
             });
 
-            module('app/admin/components/vpManagement.html');
+            module('app/admin/components/cp/vpManagement.html');
             module('app/common/components/a.html');
 
             inject(function($q) {
@@ -121,14 +121,14 @@
             $log = _$log_;
             scope = $rootScope.$new();
 
-            var template = $templateCache.get('app/admin/components/vpManagement.html');
-            $templateCache.put('admin/components/vpManagement.html', template);
+            var template = $templateCache.get('app/admin/components/cp/vpManagement.html');
+            $templateCache.put('admin/components/cp/vpManagement.html', template);
             template = $templateCache.get('app/common/components/a.html');
             $templateCache.put('common/components/a.html', template);
 
             $httpBackend.whenGET('common/components/certs.html')
                 .respond(200, '<div></div>');
-            $httpBackend.whenGET('admin/components/additionalSoftware.html')
+            $httpBackend.whenGET('admin/components/additionalSoftware/additionalSoftware.html')
                 .respond(200, '<div></div>');
             $httpBackend.whenGET('common/components/cap.html')
                 .respond(200, '<div></div>');

@@ -14,7 +14,7 @@
                 $provide.value('authService', mockAuthService);
             });
 
-            module('app/admin/components/login.html');
+            module('app/admin/components/login/login.html');
 
             inject(function($q) {
                 mockAuthService.logout = function () {};
@@ -27,8 +27,8 @@
             $log = _$log_;
             scope = $rootScope.$new();
 
-            var template = $templateCache.get('app/admin/components/login.html');
-            $templateCache.put('admin/components/login.html', template);
+            var template = $templateCache.get('app/admin/components/login/login.html');
+            $templateCache.put('admin/components/login/login.html', template);
 
             element = angular.element('<ai-login></ai-login');
             $compile(element)(scope);

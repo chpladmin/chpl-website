@@ -58,7 +58,17 @@ module.exports = function(config){
             'app/overview/**/!(*test).js': ['coverage'],
             'app/registration/**/!(*test).js': ['coverage'],
             'app/app.js': ['coverage'],
-            'app/**/components/*.html': ['ng-html2js']
+            'app/**/components/*.html': ['ng-html2js'],
+            'app/admin/components/acb/*.html': ['ng-html2js'],
+            'app/admin/components/additionalSoftware/*.html': ['ng-html2js'],
+            'app/admin/components/announcement/*.html': ['ng-html2js'],
+            'app/admin/components/atl/*.html': ['ng-html2js'],
+            'app/admin/components/cms/*.html': ['ng-html2js'],
+            'app/admin/components/cp/*.html': ['ng-html2js'],
+            'app/admin/components/login/*.html': ['ng-html2js'],
+            'app/admin/components/reports/*.html': ['ng-html2js'],
+            'app/admin/components/surveillance/*.html': ['ng-html2js'],
+            'app/admin/components/user/*.html': ['ng-html2js']
         },
 
         autoWatch: true,
