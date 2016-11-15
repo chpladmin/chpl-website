@@ -2,10 +2,13 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditSurveillanceController', ['$modalInstance', '$log', 'surveillance', 'surveillanceTypes', 'workType', 'commonService', 'utilService', function ($modalInstance, $log, surveillance, surveillanceTypes, workType, commonService, utilService) {
+        .controller('EditSurveillanceController', ['$modal', '$modalInstance', '$log', 'surveillance', 'surveillanceTypes', 'workType', 'commonService', 'utilService', function ($modal, $modalInstance, $log, surveillance, surveillanceTypes, workType, commonService, utilService) {
             var vm = this;
 
+            vm.addRequirement = addRequirement;
             vm.cancel = cancel;
+            vm.editRequirement = editRequirement;
+            vm.inspectNonconformities = inspectNonconformities;
             vm.save = save;
             vm.sortRequirement = utilService.sortRequirement;
 
@@ -25,8 +28,54 @@
                 vm.surveillance.type = findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
             }
 
+            function addRequirement () {
+                vm.surveillance.requirements.push({});
+                vm.editRequirement(vm.surveillance.requirements[vm.surveillance.requirements.length - 1]);
+            }
+
             function cancel () {
                 $modalInstance.dismiss('cancelled');
+            }
+
+            function editRequirement (req) {
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/surveillance/editRequirement.html',
+                    controller: 'EditRequirementController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        requirement: function () { return req; },
+                        surveillanceTypes: function () { return vm.data; }
+                    },
+                    size: 'lg'
+                });
+                vm.modalInstance.result.then(function (response) {
+                    req = response;
+                }, function (result) {
+                    $log.info(result);
+                });
+            }
+
+            function inspectNonconformities (noncons) {
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/surveillance/nonconformityInspect.html',
+                    controller: 'NonconformityInspectController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        nonconformities: function () { return noncons; }
+                    },
+                    size: 'lg'
+                });
+                vm.modalInstance.result.then(function (response) {
+                    noncons = response;
+                }, function (result) {
+                    $log.info(result);
+                });
             }
 
             function save () {
