@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 6.0.0
+_15 November 2016_
 
 ### New features
 * Changed certification status icons
