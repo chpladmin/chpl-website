@@ -203,6 +203,15 @@
             expect(vm.isChangedFromDefault('hasCap', 'never')).toBe(true);
         });
 
+        it('should have a way to tell if a filter category has any change from the default', function () {
+            expect(vm.isCategoryChanged(['certificationStatus','acb'])).toBe(false);
+            vm.refineModel.certificationStatus['Active'] = false;
+            expect(vm.isCategoryChanged(['certificationStatus','acb'])).toBe(true);
+            vm.refineModel.certificationStatus['Active'] = true;
+            vm.refineModel.acb['ICSA Labs'] = false;
+            expect(vm.isCategoryChanged(['certificationStatus','acb'])).toBe(true);
+        });
+
         describe('certificationStatus filters', function () {
 
             var objToFilter;

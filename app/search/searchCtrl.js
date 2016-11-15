@@ -7,13 +7,13 @@
 
 			vm.toggleCart = toggleCart;
 			vm.widget = chplCertIdWidget;
-            //vm.addRefine = addRefine;
             vm.clear = clear;
             vm.clearFilters = clearFilters;
             vm.clearPreviouslyCompared = clearPreviouslyCompared;
             vm.clearPreviouslyViewed = clearPreviouslyViewed;
             vm.certificationStatusFilter = certificationStatusFilter;
             vm.compare = compare;
+            vm.isCategoryChanged = isCategoryChanged;
             vm.isChangedFromDefault = isChangedFromDefault;
             vm.populateSearchOptions = populateSearchOptions;
             vm.reloadResults = reloadResults;
@@ -25,7 +25,6 @@
             vm.statusFont = statusFont;
             vm.toggleCompare = toggleCompare;
             vm.truncButton = truncButton;
-            //vm.unrefine = unrefine;
             vm.viewProduct = viewProduct;
 
             activate();
@@ -102,44 +101,6 @@
                 });
             }
 
-            /*
-            function addRefine () {
-                switch (vm.refineType) {
-                case 'developer':
-                    vm.query.developerObject = vm.refine.developer;
-                    if (vm.query.orderBy === 'developer') {
-                        vm.query.orderBy = 'product';
-                    }
-                    break;
-                case 'product':
-                    vm.query.productObject = vm.refine.product;
-                    if (vm.query.orderBy === 'developer' || vm.query.orderBy === 'product') {
-                        vm.query.orderBy = 'version';
-                    }
-                    break;
-                case 'certificationCriteria':
-                    if (!vm.query.certificationCriteria) {
-                        vm.query.certificationCriteria = [vm.refine.certificationCriteria];
-                    } else if (vm.query.certificationCriteria.indexOf(vm.refine.certificationCriteria) === -1) {
-                        vm.query.certificationCriteria.push(vm.refine.certificationCriteria)
-                    }
-                    break;
-                case 'cqms':
-                    if (!vm.query.cqms) {
-                        vm.query.cqms = [vm.refine.cqms];
-                    } else if (vm.query.cqms.indexOf(vm.refine.cqms) === -1) {
-                        vm.query.cqms.push(vm.refine.cqms)
-                    }
-                    break;
-                default:
-                    vm.query[vm.refineType] = vm.refine[vm.refineType];
-                    break;
-                }
-                vm.refineType = '';
-                vm.search();
-            }
-            */
-
             function clearFilters () {
                 delete $localStorage.refineModel;
                 delete $localStorage.query;
@@ -212,6 +173,16 @@
                 }
             }
 
+            function isCategoryChanged (categories) {
+                var ret = false;
+                for (var i = 0; i < categories.length; i++) {
+                    angular.forEach(vm.refineModel[categories[i]], function (value, key) {
+                        ret = ret || vm.isChangedFromDefault (categories[i], key);
+                    });
+                }
+                return ret;
+            }
+
             function isChangedFromDefault (index, data) {
                 if (!vm.defaultRefineModel[index]) {
                     return vm.refineModel[index] && vm.refineModel[index][data];
@@ -279,12 +250,15 @@
             }
 
             function search () {
+                vm.setRefine();
                 if (vm.query.searchTermObject !== undefined) {
                     if (typeof(vm.query.searchTermObject) === 'string' && vm.query.searchTermObject.length > 0) {
                         vm.query.searchTermObject = {type: 'previous search', value: vm.query.searchTermObject};
                         vm.lookaheadSource.all.push(vm.query.searchTermObject);
                     }
                     vm.query.searchTerm = angular.copy(vm.query.searchTermObject.value);
+                } else {
+                    vm.query.searchTerm = undefined;
                 }
                 if (vm.query.developerObject !== undefined) {
                     if (typeof(vm.query.developerObject) === 'string' && vm.query.developerObject.length > 0) {
@@ -292,6 +266,8 @@
                         vm.lookaheadSource.developers.push(vm.query.developerObject);
                     }
                     vm.query.developer = vm.query.developerObject.value;
+                } else {
+                    vm.query.developer = undefined;
                 }
                 if (vm.query.productObject !== undefined) {
                     if (typeof(vm.query.productObject) === 'string' && vm.query.productObject.length > 0) {
@@ -299,10 +275,11 @@
                         vm.lookaheadSource.products.push(vm.query.productObject);
                     }
                     vm.query.product = vm.query.productObject.value;
+                } else {
+                    vm.query.product = undefined;
                 }
                 $localStorage.lookaheadSource = vm.lookaheadSource;
                 $localStorage.refineModel = vm.refineModel;
-                vm.setRefine();
                 commonService.search(vm.query)
                     .then(function (data) {
                         vm.hasDoneASearch = true;
@@ -327,9 +304,17 @@
                 vm.query.certificationStatuses = [];
                 vm.query.correctiveActionPlans = [];
                 vm.query.cqms = [];
-                if (vm.refineModel.developer) { vm.query.developerObject = vm.refineModel.developer; }
                 vm.query.practiceType = vm.refineModel.practiceType;
-                if (vm.refineModel.product) { vm.query.productObject = vm.refineModel.product; }
+                if (vm.refineModel.developer) {
+                    vm.query.developerObject = vm.refineModel.developer;
+                } else {
+                    vm.query.developerObject = undefined;
+                }
+                if (vm.refineModel.product) {
+                    vm.query.productObject = vm.refineModel.product;
+                } else {
+                    vm.query.productObject = undefined;
+                }
                 vm.query.version = vm.refineModel.version;
 
                 angular.forEach(vm.refineModel.acb, function (value, key) {
@@ -406,46 +391,6 @@
                 return ret;
             }
 
-            /*
-            function unrefine (key, cert) {
-                switch (key) {
-                case 'developer':
-                    delete(vm.query.developer);
-                    delete(vm.query.developerObject);
-                    delete(vm.refine.developer);
-                    break;
-                case 'product':
-                    delete(vm.query.product);
-                    delete(vm.query.productObject);
-                    delete(vm.refine.product);
-                    if (vm.query.orderBy === 'version') {
-                        vm.query.orderBy = 'product';
-                    }
-                    break;
-                case 'certificationCriteria':
-                    for (var i = 0; i < vm.query.certificationCriteria.length; i++) {
-                        if (vm.query.certificationCriteria[i] === cert) {
-                            vm.query.certificationCriteria.splice(i,1);
-                            break;
-                        }
-                    }
-                    break;
-                case 'cqms':
-                    for (var i = 0; i < vm.query.cqms.length; i++) {
-                        if (vm.query.cqms[i] === cert) {
-                            vm.query.cqms.splice(i,1);
-                            break;
-                        }
-                    }
-                    break;
-                default:
-                    delete(vm.query[key]);
-                    delete(vm.refine[key]);
-                    break;
-                }
-                vm.search();
-            }
-            */
             function viewProduct (cp) {
                 var toAdd = true;
                 for (var i = 0; i < vm.previouslyViewed.length; i++) {

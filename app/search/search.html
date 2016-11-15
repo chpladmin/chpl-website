@@ -27,7 +27,7 @@
           <div class=".btn-group.btn-group-justified">
             <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                Certification Status <i class="fa fa-filter"></i>
+                <a ng-if="vm.isCategoryChanged(['certificationStatus'])" href tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu" aria-labeledby="filter-status-button">
                 <li ng-repeat="status in vm.certificationStatuses | orderBy:'name'">
@@ -40,7 +40,7 @@
             </div>
             <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-edition-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                Certification Edition <i class="fa fa-filter"></i>
+                <a ng-if="vm.isCategoryChanged(['certificationEdition'])" href tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Edition <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu" aria-labeledby="filter-edition-button">
                 <li ng-repeat="edition in vm.editions | orderBy:'name'">
@@ -53,7 +53,7 @@
             </div>
             <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-criteria-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                Certification Criteria <i class="fa fa-filter"></i>
+                <a ng-if="vm.isCategoryChanged(['certificationCriteria'])" href tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Criteria <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-criteria-button">
                 <li>
@@ -93,7 +93,7 @@
             </div>
             <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-more-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                More <i class="fa fa-filter"></i>
+                <a ng-if="vm.isCategoryChanged(['cqms','acb','hasCap','practiceType','product','developer','version'])" href tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button">
                 <li>
