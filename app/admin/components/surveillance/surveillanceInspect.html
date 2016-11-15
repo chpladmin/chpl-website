@@ -30,6 +30,8 @@
 
     <div class="row">
       <div class="col-sm-12">
+        <button class="btn btn-ai pull-right"
+                ng-click="vm.editSurveillance()"><i class="fa fa-pencil-square-o"></i> Edit</button>
         <strong>CHPL Product Number:</strong>{{ vm.surveillance.certifiedProduct.chplProductNumber }}<br />
         <strong>Start Date:</strong>{{ vm.surveillance.startDate | date : 'mediumDate' : 'UTC' }}<br />
         <strong>End Date:</strong>{{ vm.surveillance.endDate | date : 'mediumDate' : 'UTC' }}<br />

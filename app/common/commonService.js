@@ -118,6 +118,27 @@
                 return self.simpleApiCall('/data/targeted_users');
             };
 
+            self.getSurveillanceLookups = function () {
+                var data = {};
+                self.simpleApiCall('/data/surveillance_types')
+                    .then(function (response) {
+                        data.surveillanceTypes = response;
+                        self.simpleApiCall('/data/surveillance_requirement_types')
+                            .then(function (response) {
+                                data.surveillanceRequirementTypes = response;
+                                self.simpleApiCall('/data/surveillance_result_types')
+                                    .then(function (response) {
+                                        data.surveillanceResultTypes = response;
+                                        self.simpleApiCall('/data/nonconformity_status_types')
+                                            .then(function (response) {
+                                                data.nonconformityStatusTypes = response;
+                                            })
+                                    })
+                            })
+                    })
+                return data;
+            };
+
             self.getCmsDownload = function () {
                 return self.simpleApiCall('/certification_ids/');
             };

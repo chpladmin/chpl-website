@@ -151,19 +151,24 @@
               <th scope="col">CHPL ID</th>
               <th scope="col">Start Date</th>
               <th scope="col">End Date</th>
-              <th scope="col">Type</th>
+              <th scope="col">Surveillance Type</th>
               <th scope="col">Number of Requirements Surveilled</th>
+              <th scope="col">Record Type</th>
               <th scope="col">Status</th>
               <th class="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="surv in vm.uploadingSurveillances | orderBy: 'certificationDate' track by surv.id">
+            <tr ng-repeat="surv in vm.uploadingSurveillances | orderBy: 'certifiedProduct.chplProductNumber' track by surv.id">
               <td><a href="#/product/{{ surv.certifiedProduct.id}}">{{ surv.certifiedProduct.chplProductNumber }}</a></td>
               <td>{{ surv.startDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>{{ surv.endDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>{{ surv.type.name }}</td>
               <td>{{ surv.requirements.length }}</td>
+              <td>
+                <span ng-if="surv.surveillanceIdToReplace">Replacement</span>
+                <span ng-if="!surv.surveillanceIdToReplace">New</span>
+              </td>
               <td><span ng-bind-html="vm.parseSurveillanceUploadError(surv)"></span></td>
               <td class="text-center">
                 <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)"><i class="fa fa-pencil-square-o"></i> Inspect</button>

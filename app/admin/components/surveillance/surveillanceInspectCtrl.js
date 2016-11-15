@@ -19,6 +19,7 @@
             function activate () {
                 vm.surveillance = angular.copy(surveillance);
                 vm.errorMessages = [];
+                vm.surveillanceTypes = commonService.getSurveillanceLookups();
             }
 
             function cancel () {
@@ -49,6 +50,7 @@
                     size: 'lg',
                     resolve: {
                         surveillance: function () { return vm.surveillance; },
+                        surveillanceTypes: function () { return vm.surveillanceTypes; },
                         workType: function () { return 'confirm'; }
                     }
                 });
