@@ -138,8 +138,12 @@
                 return self.simpleApiCall('/certified_products/' + productId + '/details');
             };
 
-            self.getDevelopers = function () {
-                return self.simpleApiCall('/developers/');
+            self.getDevelopers = function (showDeleted) {
+                if (showDeleted) {
+                    return self.simpleApiCall('/developers/?showDeleted=true');
+                } else {
+                    return self.simpleApiCall('/developers/');
+                }
             };
 
             self.getDeveloper = function (developerId) {

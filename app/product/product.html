@@ -38,7 +38,6 @@
         <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
       </div>
     </div>
-
     <div class="row">
       <div class="col-sm-4">
         <div class="product-element">
@@ -65,10 +64,19 @@
             Email: {{ vm.product.developer.contact.email }}<br />
             Phone: {{ vm.product.developer.contact.phoneNumber }}<br />
           </span>
+          <span ng-if="vm.product.product.ownerHistory && vm.product.product.ownerHistory.length > 0">
+            <h3>Previous Developer<span ng-if="vm.product.product.ownerHistory.length > 1">s</span></h3>
+            <ul>
+              <li ng-repeat="prev in vm.product.product.ownerHistory | orderBy:'transferDate'">
+                <strong>{{ prev.developer.name }}</strong><br />
+                Transfer Date: {{ prev.transferDate | date : 'mediumDate' : 'UTC' }}
+              </li>
+            </ul>
+          </span>
         </div>
         <div class="product-element">
           <h2 class="product-heading">Version</h2>
-          <p>{{ vm.product.product.version }}</p>
+          <p>{{ vm.product.version.version }}</p>
         </div>
         <div class="product-element">
           <h2 class="product-heading">Certification Edition</h2>

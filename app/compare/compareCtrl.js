@@ -2,13 +2,15 @@
     'use strict';
 
     angular.module('app.compare')
-        .controller('CompareController', ['$scope', '$log', '$routeParams', '$filter', 'commonService', function($scope, $log, $routeParams, $filter, commonService) {
+        .controller('CompareController', ['$scope', '$log', '$routeParams', '$filter', 'commonService', 'utilService', function($scope, $log, $routeParams, $filter, commonService, utilService) {
             var vm = this;
 
             vm.fillInBlanks = fillInBlanks;
             vm.isShowing = isShowing;
             vm.sortAllCerts = sortAllCerts;
-            vm.sortCerts = sortCerts;
+            vm.sortAllCqms = sortAllCqms;
+            vm.sortCerts = utilService.sortCert;
+            vm.sortCqms = utilService.sortCqm;
             vm.toggle = toggle;
             vm.updateCerts = updateCerts;
             vm.updateCqms = updateCqms;
@@ -35,6 +37,7 @@
                                 vm.updateCqms(product);
                                 vm.fillInBlanks();
                                 vm.sortAllCerts();
+                                vm.sortAllCqms();
                                 vm.products.push(product);
                             }, function (error) { $log.error(error); });
                     }
@@ -90,15 +93,12 @@
                 vm.sortedCerts = $filter('orderBy')(vm.sortedCerts,vm.sortCerts);
             }
 
-            function sortCerts (cert) {
-                var ret = 0;
-                var edition = parseInt(cert.substring(4,7));
-                var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
-                var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
-                ret = edition * 10000 +
-                    letter * 100 +
-                    number;
-                return ret;
+            function sortAllCqms () {
+                vm.sortedCqms = [];
+                for (var cqm in vm.allCqms) {
+                    vm.sortedCqms.push(cqm);
+                }
+                vm.sortedCqms = $filter('orderBy')(vm.sortedCqms,vm.sortCqms);
             }
 
             function toggle (elem) {

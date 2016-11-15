@@ -22,7 +22,7 @@
         <tbody>
           <tr>
             <th scope="row" class="compare-rowLead">Version</th>
-            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.product.version }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.version.version }}</td>
           </tr>
           <tr>
             <th scope="row" class="compare-rowLead">Certification Edition</th>
@@ -67,9 +67,9 @@
             <th scope="row" class="compare-rowLead"><a href ng-click="vm.toggle('CQMs')" aria-expanded="{{ vm.isShowing('CQMs') }}" class=""><i class="fa fa-lg" ng-class="vm.isShowing('CQMs') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ vm.isShowing('CQMs') ? 'Collapse' : 'Expand' }}</span> Clinical Quality Measures</a></th>
             <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.countCqms }} met</td>
           </tr>
-          <tr ng-repeat="cqm in vm.allCqms | orderBy:'title'" ng-if="vm.isShowing('CQMs') && (vm.allCqms[cqm.displayId].atLeastOne || vm.showAllPossibles)">
-            <th scope="row" class="compare-rowCert">{{cqm.displayId + ": " + cqm.title}}</th>
-            <td class="compare-element" ng-repeat="item in cqm.values | orderBy:'certificationDate'">
+          <tr ng-repeat="cqm in vm.sortedCqms" ng-if="vm.isShowing('CQMs') && (vm.allCqms[vm.allCqms[cqm].displayId].atLeastOne || vm.showAllPossibles)">
+            <th scope="row" class="compare-rowCert">{{vm.allCqms[cqm].displayId + ": " + vm.allCqms[cqm].title}}</th>
+            <td class="compare-element" ng-repeat="item in vm.allCqms[cqm].values | orderBy:'certificationDate'">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success && item.successVersions.length === 0, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
               <b ng-if="item.successVersions.length > 0">{{ item.successVersions.join(', ') }}</b>
               <span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span>

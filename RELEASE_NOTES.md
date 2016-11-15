@@ -1,6 +1,26 @@
 # Release Notes
 
-# Version 5.2.0
+## Version 6.0.0
+_15 November 2016_
+
+### New features
+* Changed certification status icons
+* Better sort of CQMs on Compare page
+* Addition of Previous Product Owner capability
+* Improved text on Resources page
+* Updated filter UI
+
+### Bugs fixed
+* Merge dialog closes on submit
+* Changing status & other activity of a CP now results in two separate reports, on different pages
+* ROLE_ONC_STAFF can now see data in the following reports sections:
+  * Users
+  * API Key Management Activity
+  * API Key Usage Activity
+
+---
+
+## Version 5.2.0
 _21 October 2016_
 
 ### New features

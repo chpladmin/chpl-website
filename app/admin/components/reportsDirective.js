@@ -6,6 +6,7 @@
             var vm = this;
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
+            vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
             vm.activityRange = { range: 60};
             vm.questionableRange = 0;
@@ -120,7 +121,7 @@
             }
 
             function refreshUser () {
-                if (vm.isChplAdmin) {
+                if (vm.isChplAdmin || vm.isOncStaff) {
                     commonService.getUserActivity(dateAdjust(vm.activityRange))
                         .then(function (data) {
                             vm.searchedUsers = vm.interpretUsers(data);
@@ -135,7 +136,7 @@
             }
 
             function refreshApi () {
-                if (vm.isChplAdmin) {
+                if (vm.isChplAdmin || vm.isOncStaff) {
                     commonService.getApiUserActivity(dateAdjust(vm.activityRange))
                         .then(function (data) {
                             vm.searchedApiActivity = data;
@@ -144,7 +145,7 @@
                 }
             }
             function refreshApiKeyUsage () {
-                if (vm.isChplAdmin) {
+                if (vm.isChplAdmin || vm.isOncStaff) {
                     vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
                     commonService.getApiActivity(dateAdjust(vm.apiKey))
                         .then(function (data) {
@@ -359,54 +360,54 @@
                         questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
                         var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
                         if (statusChange) {
-                            activity.details = statusChange;
-                            output.status.push(activity);
+                            var statusActivity = angular.copy(activity);
+                            statusActivity.details = statusChange;
+                            output.status.push(statusActivity);
+                        }
+                        if (data[i].newData.certificationEdition.name === '2011')
+                            activity.action = '<span class="bg-danger">' + activity.action + '</span>';
+                        activity.details = [];
+                        for (var j = 0; j < simpleCpFields.length; j++) {
+                            change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
+                            if (change) activity.details.push(change);
+                        }
+                        for (var j = 0; j < nestedKeys.length; j++) {
+                            change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
+                            if (change)
+                                if (nestedKeys[j].questionable && questionable) {
+                                    activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
+                                } else {
+                                    activity.details.push(change);
+                                }
+                        }
+                        var accessibilityStandardsKeys = [];
+                        var accessibilityStandards = compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
+                        for (var j = 0; j < accessibilityStandards.length; j++) {
+                            activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
+                        }
+                        var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
+                        for (var j = 0; j < certChanges.length; j++) {
+                            activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                        }
+                        var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
+                        for (var j = 0; j < cqmChanges.length; j++) {
+                            activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
+                        }
+                        var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
+                        var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
+                        for (var j = 0; j < qmsStandards.length; j++) {
+                            activity.details.push('QMS Standard "' + qmsStandards[j].name + '" changes<ul>' + qmsStandards[j].changes.join('') + '</ul>');
+                        }
+                        var targetedUsersKeys = [];
+                        var targetedUsers = compareArray(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, targetedUsersKeys, 'targetedUserName');
+                        for (var j = 0; j < targetedUsers.length; j++) {
+                            activity.details.push('Targeted User "' + targetedUsers[j].name + '" changes<ul>' + targetedUsers[j].changes.join('') + '</ul>');
+                        }
+                        if (activity.details.length === 0) {
+                            delete activity.details;
                         } else {
-                            if (data[i].newData.certificationEdition.name === '2011')
-                                activity.action = '<span class="bg-danger">' + activity.action + '</span>';
-                            activity.details = [];
-                            for (var j = 0; j < simpleCpFields.length; j++) {
-                                change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
-                                if (change) activity.details.push(change);
-                            }
-                            for (var j = 0; j < nestedKeys.length; j++) {
-                                change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                                if (change)
-                                    if (nestedKeys[j].questionable && questionable) {
-                                        activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
-                                    } else {
-                                        activity.details.push(change);
-                                    }
-                            }
-                            var accessibilityStandardsKeys = [];
-                            var accessibilityStandards = compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
-                            for (var j = 0; j < accessibilityStandards.length; j++) {
-                                activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
-                            }
-                            var certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
-                            for (var j = 0; j < certChanges.length; j++) {
-                                activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
-                            }
-                            var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
-                            for (var j = 0; j < cqmChanges.length; j++) {
-                                activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
-                            }
-                            var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
-                            var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
-                            for (var j = 0; j < qmsStandards.length; j++) {
-                                activity.details.push('QMS Standard "' + qmsStandards[j].name + '" changes<ul>' + qmsStandards[j].changes.join('') + '</ul>');
-                            }
-                            var targetedUsersKeys = [];
-                            var targetedUsers = compareArray(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, targetedUsersKeys, 'targetedUserName');
-                            for (var j = 0; j < targetedUsers.length; j++) {
-                                activity.details.push('Targeted User "' + targetedUsers[j].name + '" changes<ul>' + targetedUsers[j].changes.join('') + '</ul>');
-                            }
-                            if (activity.details.length === 0) {
-                                delete activity.details;
-                            } else {
-                                activity.csvDetails = activity.details.join('\n');
-                                output.other.push(activity);
-                            }
+                            activity.csvDetails = activity.details.join('\n');
+                            output.other.push(activity);
                         }
                     } else if (data[i].description.startsWith('A corrective action plan for')) {
                         var cpNum = data[i].description.split(' ')[7];
@@ -762,6 +763,27 @@
                         change = compareItem(data[i].originalData, data[i].newData, 'developerName', 'Developer');
                         if (change) {
                             activity.action += '<li>' + change + '</li>';
+                            wasChanged = true;
+                        }
+                        if (!angular.equals(data[i].originalData.ownerHistory, data[i].newData.ownerHistory)) {
+                            var action = '<li>Owner history changed. Was:<ul>';
+                            if (data[i].originalData.ownerHistory.length === 0) {
+                                action += '<li>No previous history</li>';
+                            } else {
+                                for (var j = 0; j < data[i].originalData.ownerHistory.length; j++) {
+                                    action += '<li><strong>' + data[i].originalData.ownerHistory[j].developer.name + '</strong> on ' + $filter('date')(data[i].originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                                }
+                            }
+                            action += '</ul>Now:<ul>';
+                            if (data[i].newData.ownerHistory.length === 0) {
+                                action += '<li>No new history</li>';
+                            } else {
+                                for (var j = 0; j < data[i].newData.ownerHistory.length; j++) {
+                                    action += '<li><strong>' + data[i].newData.ownerHistory[j].developer.name + '</strong> on ' + $filter('date')(data[i].newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                                }
+                            }
+                            action += '</ul></li>';
+                            activity.action += action;
                             wasChanged = true;
                         }
                         activity.action += '</ul>';
