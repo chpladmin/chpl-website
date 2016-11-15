@@ -1,7 +1,7 @@
 <div role="modal" aria-labeled-by="inspectLabel">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
-            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm="Are you sure you wish to cancel? Any changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
@@ -30,7 +30,32 @@
 
     <div class="row">
       <div class="col-sm-12">
-        <pre>{{ vm.surveillance | json }}</pre>
+        <strong>CHPL Product Number:</strong>{{ vm.surveillance.certifiedProduct.chplProductNumber }}<br />
+        <strong>Start Date:</strong>{{ vm.surveillance.startDate | date : 'mediumDate' : 'UTC' }}<br />
+        <strong>End Date:</strong>{{ vm.surveillance.endDate | date : 'mediumDate' : 'UTC' }}<br />
+        <strong>Surveillance Type:</strong>{{ vm.surveillance.type.name }}<br />
+        <strong>Number of sites surveilled:</strong>{{ vm.surveillance.randomizedSitesUsed ? vm.surveillance.randomizedSitesUsed : 'N/A' }}<br />
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th scope="col">Type</th>
+              <th scope="col">Requirement</th>
+              <th scope="col">Result</th>
+              <th scope="col">Non-conformities</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="req in vm.surveillance.requirements | orderBy:vm.sortRequirement">
+              <td>{{ req.type.name }}</td>
+              <td>{{ req.requirement }}</td>
+              <td>{{ req.result.name }}</td>
+              <td>
+                <span ng-if="req.nonconformities.length === 0">N/A</span>
+                <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success btn-block" ng-click="vm.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i> Inspect</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -38,7 +63,7 @@
   <div class="modal-footer">
     <div ng-if="vm.errorMessages && vm.errorMessages.length !== 0" class="row">
       <div class="col-sm-12 text-left bg-danger">
-        Error in activityconfirmation
+        Error in activity confirmation
         <ul>
           <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
         </ul>

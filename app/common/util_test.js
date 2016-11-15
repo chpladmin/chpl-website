@@ -51,5 +51,12 @@
             expect(util.sortCqm('NQF-0031')).toBeGreaterThan(util.sortCqm('CMS107'));
             expect(util.sortCqm('CMS26')).toBeLessThan(util.sortCqm('CMS107'));
         });
+
+        it('should be able to sort requirements', function () {
+            expect(util.sortRequirement({requirement: '170.314(a)(8)'})).toBeLessThan(util.sortRequirement({requirement: '170.315(a)(2)'}));
+            expect(util.sortRequirement({requirement: '170.315(d)(2)'})).toBeLessThan(util.sortRequirement({requirement: '170.315(d)(10)'}));
+            expect(util.sortRequirement({requirement: '170.315(h)(1)'})).toBeLessThan(util.sortRequirement({requirement: '170.523(k)(1)'}));
+            expect(util.sortRequirement({requirement: '170.523(k)(1)'})).toBeLessThan(util.sortRequirement({requirement: '170.523(l)'}));
+        });
     });
 })();

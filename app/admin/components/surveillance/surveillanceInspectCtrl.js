@@ -2,13 +2,15 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('SurveillanceInspectController', ['$modalInstance', '$modal', 'surveillance', 'commonService', function ($modalInstance, $modal, surveillance, commonService) {
+        .controller('SurveillanceInspectController', ['$modalInstance', '$modal', '$log', 'surveillance', 'commonService', 'utilService', function ($modalInstance, $modal, $log, surveillance, commonService, utilService) {
             var vm = this;
 
             vm.cancel = cancel;
             vm.confirm = confirm;
             vm.editSurveillance = editSurveillance;
+            vm.inspectNonconformities = inspectNonconformities;
             vm.reject = reject;
+            vm.sortRequirement = utilService.sortRequirement;
 
             activate();
 
@@ -28,7 +30,11 @@
                     .then(function (result) {
                         $modalInstance.close({status: 'confirmed'});
                     }, function (error) {
-                        vm.errorMessages = error.data.errorMessages;
+                        if (error.data.messages) {
+                            vm.errorMessages = error.data.errorMessages;
+                        } else {
+                            vm.errorMessages = [error.statusText];
+                        }
                     });
             }
 
@@ -55,10 +61,32 @@
                 });
             }
 
+            function inspectNonconformities (noncons) {
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/surveillance/nonconformityInspect.html',
+                    controller: 'NonconformityInspectController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        nonconformities: function () { return noncons; }
+                    },
+                    size: 'lg'
+                });
+                vm.modalInstance.result.then(function (response) {
+                    noncons = response;
+                }, function (result) {
+                    $log.info(result);
+                });
+            }
+
             function reject () {
                 commonService.rejectPendingSurveillance(vm.surveillance.id)
                     .then(function () {
                         $modalInstance.dismiss('rejected');
+                    },function (error) {
+                        vm.errorMessages = [error.statusText]
                     });
             }
         }]);

@@ -8,6 +8,7 @@
             self.extendSelect = extendSelect;
             self.sortCert = sortCert;
             self.sortCqm = sortCqm;
+            self.sortRequirement = sortRequirement;
 
             ////////////////////////////////////////////////////////////////////
 
@@ -49,6 +50,19 @@
                 var edition = 1000 * cqm.indexOf('-');
                 var num = parseInt(edition > 0 ? cqm.substring(4) : cqm.substring(3));
                 var ret = edition + num;
+                return ret;
+            }
+
+            function sortRequirement (req) {
+                if (angular.isObject(req)) {
+                    req = req.requirement;
+                }
+                var edition = parseInt(req.substring(4,7));
+                var letter = parseInt(req.substring(8,9).charCodeAt(0)) - 96;
+                var number = req.length > 11 ? parseInt(req.split(')')[1].substring(1)) : 0;
+                var ret = edition * 10000 +
+                    letter * 100 +
+                    number;
                 return ret;
             }
         });

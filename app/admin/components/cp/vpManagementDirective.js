@@ -508,7 +508,7 @@
                 if (surv.errorMessages.length > 0) {
                     ret += 'Errors:&nbsp;' + surv.errorMessages.length;
                 }
-                if (surv.warningMessages.length > 0) {
+                if (surv.warningMessages && surv.warningMessages.length > 0) {
                     if (ret.length > 0)
                         ret += '<br />';
                     ret += 'Warnings:&nbsp;' + surv.warningMessages.length;
@@ -659,6 +659,7 @@
                 bindToController: {
                     workType: '=',
                     pendingProducts: '=',
+                    pendingSurveillances: '=',
                     productId: '='
                 },
                 scope: {},
