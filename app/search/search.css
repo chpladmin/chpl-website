@@ -134,3 +134,8 @@ ul.pagination li {
 #filters .emphasis {
     font-style: italic;
 }
+
+#filters button a {
+    color: #f5d43c;
+    text-decoration: none;
+}
