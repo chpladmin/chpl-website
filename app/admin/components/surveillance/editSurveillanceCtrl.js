@@ -22,6 +22,7 @@
                 if (vm.surveillance.endDate) {
                     vm.surveillance.endDateObject = new Date(vm.surveillance.endDate);
                 }
+                vm.disableValidation =  vm.surveillance.errorMessages.length > 0;
                 vm.workType = workType;
                 vm.showFormErrors = false;
                 vm.data = surveillanceTypes;
@@ -29,8 +30,29 @@
             }
 
             function addRequirement () {
-                vm.surveillance.requirements.push({});
-                vm.editRequirement(vm.surveillance.requirements[vm.surveillance.requirements.length - 1]);
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/surveillance/editRequirement.html',
+                    controller: 'EditRequirementController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        disableValidation: function () { return false; },
+                        randomized: function () { return vm.surveillance.type.name === 'Randomized'; },
+                        requirement: function () { return {}; },
+                        surveillanceTypes: function () { return vm.data; }
+                    },
+                    size: 'lg'
+                });
+                vm.modalInstance.result.then(function (response) {
+                    if (!vm.surveillance.requirements) {
+                        vm.surveillance.requirements = [];
+                    }
+                    vm.surveillance.requirements.push(response);
+                }, function (result) {
+                    $log.info(result);
+                });
             }
 
             function cancel () {
@@ -46,13 +68,26 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
+                        disableValidation: function () { return vm.disableValidation; },
+                        randomized: function () { return vm.surveillance.type.name === 'Randomized'; },
                         requirement: function () { return req; },
                         surveillanceTypes: function () { return vm.data; }
                     },
                     size: 'lg'
                 });
                 vm.modalInstance.result.then(function (response) {
-                    req = response;
+                    var found = false;
+                    if (response.id) {
+                        for (var i = 0; i < vm.surveillance.requirements.length; i++) {
+                            if (vm.surveillance.requirements[i].id == response.id) {
+                                vm.surveillance.requirements[i] = response;
+                                found = true;
+                            }
+                        }
+                    }
+                    if (!found) {
+                        vm.surveillance.requirements.push(response);
+                    }
                 }, function (result) {
                     $log.info(result);
                 });
@@ -82,6 +117,8 @@
                 vm.surveillance.startDate = vm.surveillance.startDateObject.getTime();
                 if (vm.surveillance.endDateObject) {
                     vm.surveillance.endDate = vm.surveillance.endDateObject.getTime();
+                } else {
+                    vm.surveillance.endDate = null;
                 }
                 if (vm.workType === 'confirm') {
                     $modalInstance.close(vm.surveillance);

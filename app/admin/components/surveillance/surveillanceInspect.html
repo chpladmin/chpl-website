@@ -30,8 +30,8 @@
 
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-ai pull-right"
-                ng-click="vm.editSurveillance()"><i class="fa fa-pencil-square-o"></i> Edit</button>
+        <button class="btn btn-success pull-right"
+                ng-click="vm.editSurveillance()"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
         <strong>CHPL Product Number:</strong>{{ vm.surveillance.certifiedProduct.chplProductNumber }}<br />
         <strong>Start Date:</strong>{{ vm.surveillance.startDate | date : 'mediumDate' : 'UTC' }}<br />
         <strong>End Date:</strong>{{ vm.surveillance.endDate | date : 'mediumDate' : 'UTC' }}<br />
@@ -53,7 +53,7 @@
               <td>{{ req.result.name }}</td>
               <td>
                 <span ng-if="req.nonconformities.length === 0">N/A</span>
-                <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success btn-block" ng-click="vm.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i> Inspect</button>
+                <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success" ng-click="vm.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i><span class="sr-only">Inspect</span></button>
               </td>
             </tr>
           </tbody>
