@@ -132,6 +132,14 @@
                                         self.simpleApiCall('/data/nonconformity_status_types')
                                             .then(function (response) {
                                                 data.nonconformityStatusTypes = response;
+                                                self.simpleApiCall('/data/surveillance_requirements')
+                                                    .then(function (response) {
+                                                        data.surveillanceRequirements = response;
+    	                                                self.simpleApiCall('/data/nonconformity_types')
+                                                            .then(function (response) {
+                                                                data.nonconformityTypes = response;
+                                                            })
+                                                    })
                                             })
                                     })
                             })
@@ -526,10 +534,6 @@
 
             self.updateSurveillance = function (surveillance) {
                 return self.postApiCall('/surveillance/update', surveillance);
-            };
-
-            self.getSurveillance = function (certifiedProductId) {
-                return self.simpleApiCall('/surveillance/?certifiedProductId=' + certifiedProductId);
             };
 
             self.deleteSurveillance = function (surveillanceId) {

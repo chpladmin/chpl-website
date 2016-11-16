@@ -580,14 +580,6 @@
                 commonService.getProduct(self.productId)
                     .then(function (result) {
                         self.surveillanceProduct = result;
-                        self.newSurveillanceBase = {
-                            id: result.id,
-                            chplProductNumber: result.chplProductNumber
-                        }
-                    });
-                commonService.getSurveillance(self.productId)
-                    .then(function (result) {
-                        self.surveillance = result;
                     });
             }
 

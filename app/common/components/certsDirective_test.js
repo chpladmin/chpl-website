@@ -16,7 +16,7 @@
                           'app/common/components/cap.html',
                           'app/common/components/array.html'));
 
-        beforeEach(inject(function ($compile, $rootScope, _$log_, $templateCache) {
+        beforeEach(inject(function ($compile, $rootScope, _$log_, $templateCache, $httpBackend) {
             $log = _$log_;
             scope = $rootScope.$new();
 
@@ -30,6 +30,8 @@
             $templateCache.put('common/components/cap.html', template);
             template = $templateCache.get('app/common/components/array.html');
             $templateCache.put('common/components/array.html', template);
+            $httpBackend.whenGET('common/components/surveillance/surveillance.html')
+                .respond(200, '<div></div>');
 
             element = angular.element('<ai-certs edit-mode="true" certs=\'' + certs + '\' cqms=\'' + certs + '\'></ai-certs');
             $compile(element)(scope);

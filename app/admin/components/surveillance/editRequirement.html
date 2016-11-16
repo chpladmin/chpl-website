@@ -18,25 +18,25 @@
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.requirementType.$touched) && vm.editForm.requirementType.$error.required">Field is required</div>
       </div>
     </div>
-    <div class="form-group" ng-if="false && vm.requirement.type.name === 'Certified Capability'">
+    <div class="form-group" ng-if="vm.requirement.type.name === 'Certified Capability'">
       <label for="requirement" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="vm.requirement.requirement" id="requirement" name="requirement"
-                ng-options="type as type.name for type in vm.data.requirements.criteria | orderBy:'name'" required>
+                ng-options="type as type.name for type in vm.data.surveillanceRequirements.criteriaOptions | orderBy:'name'" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.requirement.$touched) && vm.editForm.requirement.$error.required">Field is required</div>
       </div>
     </div>
-    <div class="form-group" ng-if="false && vm.requirement.type.name === 'Transparency or Disclosure Requirement'">
+    <div class="form-group" ng-if="vm.requirement.type.name === 'Transparency or Disclosure Requirement'">
       <label for="requirement" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="vm.requirement.requirement" id="requirement" name="requirement"
-                ng-options="type as type.name for type in vm.data.requirements.transparency | orderBy:'name'" required>
+                ng-options="type as type for type in vm.data.surveillanceRequirements.transparencyOptions" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.requirement.$touched) && vm.editForm.requirement.$error.required">Field is required</div>
       </div>
     </div>
-    <div class="form-group" ng-if="true || vm.requirement.type.name === 'Other Requirement'">
+    <div class="form-group" ng-if="vm.requirement.type.name === 'Other Requirement'">
       <label for="requirement" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <input class="input-sm form-control" type="text" ng-model="vm.requirement.requirement" id="requirement" name="requirement" required>
