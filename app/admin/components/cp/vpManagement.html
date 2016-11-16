@@ -179,6 +179,54 @@
       </div>
     </div> <!-- end of upload process table -->
 
+    <div class="row" ng-if="vm.workType === 'manageSurveillance'">
+      <div class="col-sm-12">
+        <h3>Manage Surveillance Activity</h3>
+        <span class="pull-right">
+          <a href="#/product/{{ vm.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
+        </span>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row">CHPL Product Number</th>
+              <td>{{ vm.surveillanceProduct.chplProductNumber }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Status</th>
+              <td>{{ vm.surveillanceProduct.certificationStatus.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Developer</th>
+              <td>{{ vm.surveillanceProduct.developer.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Product</th>
+              <td>{{ vm.surveillanceProduct.product.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Version</th>
+              <td>{{ vm.surveillanceProduct.version.version }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Edition</th>
+              <td>{{ vm.surveillanceProduct.certificationEdition.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certifying Body</th>
+              <td>{{ vm.surveillanceProduct.certifyingBody.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Date</th>
+              <td>{{ vm.surveillanceProduct.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <ai-surveillance surveillances="vm.surveillance"
+                         allow-editing="true"
+                         certified-product="vm.newSurveillanceBase"></ai-surveillance>
+      </div>
+    </div> <!-- end of surveillance management -->
+
     <div ng-if="vm.workType === 'manage'" class="row">
       <div class="col-sm-12">
           <p>In the 'Manage Developers and Products' module, you can manage existing health IT developers and certified products. To edit developer or product information, begin by selecting the desired developer below. To edit information about that developer, click the 'Edit Developer' button, and make any desired changes. Once you are satisfied with your changes, click the 'Save Developer' button, or click 'Cancel Edits' to discard your changes.</p>

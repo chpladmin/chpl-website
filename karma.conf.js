@@ -68,7 +68,8 @@ module.exports = function(config){
             'app/admin/components/login/*.html': ['ng-html2js'],
             'app/admin/components/reports/*.html': ['ng-html2js'],
             'app/admin/components/surveillance/*.html': ['ng-html2js'],
-            'app/admin/components/user/*.html': ['ng-html2js']
+            'app/admin/components/user/*.html': ['ng-html2js'],
+            'app/common/components/surveillance/*.html': ['ng-html2js']
         },
 
         autoWatch: true,

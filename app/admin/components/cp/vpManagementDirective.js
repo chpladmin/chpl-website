@@ -16,6 +16,7 @@
             self.isDeveloperEditable = isDeveloperEditable;
             self.isDeveloperMergeable = isDeveloperMergeable;
             self.loadCp = loadCp;
+            self.loadSurveillance = loadSurveillance;
             self.mergeDevelopers = mergeDevelopers;
             self.mergeProducts = mergeProducts;
             self.mergeVersions = mergeVersions;
@@ -44,7 +45,7 @@
                 self.isAcbStaff = authService.isAcbStaff();
                 self.uploadingCps = [];
                 self.uploadingSurveillances = [];
-                self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
+                if (angular.isUndefined(self.workType)) self.workType = 'manage';//self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
                 self.uploadErrors = [];
@@ -134,8 +135,10 @@
                         self.developers = developers.developers;
                         prepCodes();
 
-                        if (self.productId) {
+                        if (self.productId && self.workType === 'manage') {
                             self.loadCp();
+                        } else if (self.productId && self.workType === 'manageSurveillance') {
+                            self.loadSurveillance();
                         }
                     });
 
@@ -570,6 +573,21 @@
                                             });
                                     });
                             });
+                    });
+            }
+
+            function loadSurveillance () {
+                commonService.getProduct(self.productId)
+                    .then(function (result) {
+                        self.surveillanceProduct = result;
+                        self.newSurveillanceBase = {
+                            id: result.id,
+                            chplProductNumber: result.chplProductNumber
+                        }
+                    });
+                commonService.getSurveillance(self.productId)
+                    .then(function (result) {
+                        self.surveillance = result;
                     });
             }
 

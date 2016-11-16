@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editSurveillanceLabel">Edit Surveillance Activity</h4>
+    <h4 class="modal-title" id="editSurveillanceLabel"><span ng-if="vm.workType === 'edit'">Edit</span><span ng-if="vm.workType === 'initiate'">Initiate</span> Surveillance Activity</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="row">
@@ -48,9 +48,10 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-success pull-right" ng-click="vm.addRequirement()"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</button>
+        <button class="btn btn-success pull-right" ng-click="vm.addRequirement()" ng-disabled="!vm.surveillance.type"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</button>
         <h5>Requirements</h5>
-        <table class="table table-condensed">
+        <span ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">No Surveilled Requirements Found</span>
+        <table class="table table-condensed" ng-if="vm.surveillance.requirements && vm.surveillance.requirements.length > 0">
           <thead>
             <tr>
               <th scope="col">Type</th>
@@ -83,7 +84,12 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
+    <div class="text-danger text-left" ng-if="vm.errorMessages && vm.errorMessages.length > 0">
+      <ul>
+        <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
+      </ul>
+    </div>
+    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length ===0) && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.startDate.$error.required">Start Date is required</li>
@@ -93,9 +99,10 @@
         <li ng-if="vm.editForm.surveillanceType.$error.required">Surveillance Type is required</li>
         <li ng-if="vm.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
         <li ng-if="vm.editForm.sitesSurveilled.$error.number">Sites Surveilled must be a number</li>
+        <li ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">At least one Requirement must be surveilled</li>
       </ul>
     </div>
-    <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors && !vm.disableValidation"
+    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length ===0) && vm.showFormErrors && !vm.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>

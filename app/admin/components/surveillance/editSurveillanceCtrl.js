@@ -22,11 +22,13 @@
                 if (vm.surveillance.endDate) {
                     vm.surveillance.endDateObject = new Date(vm.surveillance.endDate);
                 }
-                vm.disableValidation =  vm.surveillance.errorMessages.length > 0;
+                vm.disableValidation = vm.surveillance.errorMessages && vm.surveillance.errorMessages.length > 0;
                 vm.workType = workType;
                 vm.showFormErrors = false;
                 vm.data = surveillanceTypes;
-                vm.surveillance.type = findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
+                if (vm.surveillance.type) {
+                    vm.surveillance.type = findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
+                }
             }
 
             function addRequirement () {
@@ -122,16 +124,27 @@
                 }
                 if (vm.workType === 'confirm') {
                     $modalInstance.close(vm.surveillance);
-                } else {
+                } else if (vm.workType === 'initiate') {
+                    commonService.initiateSurveillance(vm.surveillance)
+                        .then(function (response) {
+                            if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                                $modalInstance.close(response);
+                            } else {
+                                vm.errorMessages = [response];
+                            }
+                        },function (error) {
+                            vm.errorMessages = [error.statusText];
+                        });
+                } else if (vm.workType === 'edit') {
                     commonService.updateSurveillance(vm.surveillance)
                         .then(function (response) {
                             if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                                 $modalInstance.close(response);
                             } else {
-                                $modalInstance.dismiss('An error occurred');
+                                vm.errorMessages = [response];
                             }
                         },function (error) {
-                            $modalInstance.dismiss(error.data.error);
+                            vm.errorMessages = [error.statusText];
                         });
                 }
             }

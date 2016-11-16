@@ -1,0 +1,17 @@
+<div style="background: white">
+  <div ng-if="!vm.surveillances || vm.surveillances.length === 0">
+    No Surveillance Activity
+  </div>
+  <div ng-repeat="surv in vm.surveillances | orderBy: '-startDate'">
+    <span class="pull-right">
+      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a><br />
+      <a href ng-click="vm.editSurveillance(surv)" ng-if="vm.allowEditing">Edit</a>
+    </span>
+    <div ng-if="surv.showDetails">
+      <pre>{{ surv | json }}</pre>
+    </div>
+  </div>
+  <div ng-if="vm.allowEditing">
+    <button class="btn btn-ai-success" ng-click="vm.initiateSurveillance()">Initiate Surveillance Reporting</button>
+  </div>
+</div>
