@@ -40,6 +40,7 @@
             }
 
             function editSurveillance () {
+                fixRequirementOptions();
                 vm.editModalInstance = $modal.open({
                     templateUrl: 'admin/components/surveillance/editSurveillance.html',
                     controller: 'EditSurveillanceController',
@@ -90,6 +91,16 @@
                     },function (error) {
                         vm.errorMessages = [error.statusText]
                     });
+            }
+
+            ////////////////////////////////////////////////////////////////////
+
+            function fixRequirementOptions () {
+                if (vm.surveillance.certifiedProduct.edition === '2015') {
+                    vm.surveillanceTypes.surveillanceRequirements.criteriaOptions = vm.surveillanceTypes.surveillanceRequirements.criteriaOptions2015;
+                } else if (vm.surveillance.certifiedProduct.edition === '2014') {
+                    vm.surveillanceTypes.surveillanceRequirements.criteriaOptions = vm.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
+                }
             }
         }]);
 })();

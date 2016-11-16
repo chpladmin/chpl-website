@@ -12,7 +12,8 @@
     <div class="form-group">
       <label for="nonconformityType" class="col-sm-3">Non-Conformity Type <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="text" ng-model="vm.nonconformity.nonconformityType" id="nonconformityType" name="nonconformityType" required>
+        <select class="input-sm form-control" ng-model="vm.nonconformity.nonconformityType" id="nonconformityType" name="nonconformityType"
+                ng-options="type as type.name for type in vm.data.nonconformityTypes.data | orderBy:'name'" required>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.nonconformityType.$touched) && vm.editForm.nonconformityType.$error.required">Field is required</div>
       </div>
     </div>

@@ -25,6 +25,9 @@
                 if (vm.requirement.type) {
                     vm.requirement.type = findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data);
                 }
+                if (vm.requirement.requirement && vm.requirement.type.name === 'Certified Capability') {
+                    vm.requirement.requirement = findModelByValue(vm.requirement.requirement, vm.data.surveillanceRequirements.criteriaOptions);
+                }
                 if (vm.requirement.result) {
                     vm.requirement.result = findModel(vm.requirement.result, vm.data.surveillanceResultTypes.data);
                 }
@@ -112,6 +115,15 @@
                     }
                 };
                 return id;
+            }
+
+            function findModelByValue (value, array) {
+                for (var i = 0; i < array.length; i++) {
+                    if (value === array[i].name) {
+                        value = array[i];
+                    }
+                };
+                return value;
             }
         }]);
 })();
