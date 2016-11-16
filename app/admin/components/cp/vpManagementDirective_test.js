@@ -132,7 +132,7 @@
                 .respond(200, '<div></div>');
             $httpBackend.whenGET('common/components/cap.html')
                 .respond(200, '<div></div>');
-            $httpBackend.whenGET('common/components/surveillance.html')
+            $httpBackend.whenGET('common/components/surveillance/surveillance.html')
                 .respond(200, '<div></div>');
             element = angular.element('<ai-vp-management></ai-vp-management');
             $compile(element)(scope);

@@ -27,7 +27,7 @@
 
         it('should map /admin routes to /admin', function () {
             inject(function($route) {
-                expect($route.routes['/admin/:section?/:productId?'].templateUrl).toEqual('admin/admin.html');
+                expect($route.routes['/admin/:section?/:subSection?/:productId?'].templateUrl).toEqual('admin/admin.html');
             });
         });
 

@@ -46,9 +46,11 @@
                 if ($routeParams.section) {
                     vm.navState.screen = $routeParams.section;
                 }
+                if ($routeParams.subSection) {
+                    vm.navState[vm.navState.screen] = $routeParams.subSection;
+                }
                 if ($routeParams.productId)  {
                     vm.navState.reports = '';
-                    vm.navState.dpManagement = 'manage';
                     vm.productId = $routeParams.productId;
                 }
 
@@ -106,6 +108,15 @@
             }
 
             function clearProductId () {
+                var path = $location.path();
+                if ($routeParams.productId)  {
+                    path = path.substring(0,path.lastIndexOf('/'));
+                    $location.path(path);
+                }
+                clearSubsection();
+            }
+
+            function clearSubsection () {
                 var path = $location.path();
                 if ($routeParams.productId)  {
                     path = path.substring(0,path.lastIndexOf('/'));

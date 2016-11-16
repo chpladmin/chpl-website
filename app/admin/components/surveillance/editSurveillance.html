@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editSurveillanceLabel">Edit Surveillance Activity</h4>
+    <h4 class="modal-title" id="editSurveillanceLabel"><span ng-if="vm.workType === 'edit'">Edit</span><span ng-if="vm.workType === 'initiate'">Initiate</span> Surveillance Activity</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="row">
@@ -16,7 +16,7 @@
     <div class="form-group">
       <label for="startDate" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.surveillance.startDateObject" id="startDate" name="startDate" ng-model-options="{ timezone: 'UTC' }" required></input>
+        <input class="input-sm form-control" type="date" ng-model="vm.surveillance.startDateObject" id="startDate" name="startDate" ng-model-options="{ timezone: 'UTC' }" required>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.startDate.$touched) && vm.editForm.startDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.startDate.$touched) && vm.editForm.startDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
@@ -24,7 +24,7 @@
     <div class="form-group">
       <label for="endDate" class="col-sm-3">End Date</label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.surveillance.endDateObject" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }"></input>
+        <input class="input-sm form-control" type="date" ng-model="vm.surveillance.endDateObject" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }">
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
@@ -41,16 +41,17 @@
     <div class="form-group">
       <label for="sitesSurveilled" class="col-sm-3">Number of sites surveilled <span class="text-danger" ng-if="vm.surveillance.type.name === 'Randomized'">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="number" ng-model="vm.surveillance.randomizedSitesUsed" id="sitesSurveilled" name="sitesSurveilled" ng-required="vm.surveillance.type.name === 'Randomized'" ng-disabled="vm.surveillance.type.name === 'Reactive'"></input>
+        <input class="input-sm form-control" type="number" ng-model="vm.surveillance.randomizedSitesUsed" id="sitesSurveilled" name="sitesSurveilled" ng-required="vm.surveillance.type.name === 'Randomized'" ng-disabled="vm.surveillance.type.name === 'Reactive' && !vm.disableValidation"></input>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.sitesSurveilled.$touched) && vm.editForm.sitesSurveilled.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.sitesSurveilled.$touched) && vm.editForm.sitesSurveilled.$error.number">Must be a number</div>
       </div>
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-success pull-right" ng-click="vm.addRequirement()"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</button>
+        <button class="btn btn-success pull-right" ng-click="vm.addRequirement()" ng-disabled="!vm.surveillance.type"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</button>
         <h5>Requirements</h5>
-        <table class="table table-condensed">
+        <span ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">No Surveilled Requirements Found</span>
+        <table class="table table-condensed" ng-if="vm.surveillance.requirements && vm.surveillance.requirements.length > 0">
           <thead>
             <tr>
               <th scope="col">Type</th>
@@ -68,7 +69,7 @@
               <td>{{ req.result.name }}</td>
               <td>
                 <span ng-if="req.nonconformities.length === 0">N/A</span>
-                <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success btn-block" ng-click="vm.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i> Inspect</button>
+                <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success" ng-click="vm.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i><span class="sr-only">Inspect</span></button>
               </td>
               <td>
                 <button class="btn btn-danger" ng-click="vm.surveillance.requirements.splice($index,1)"><i class="fa fa-trash"></i><span class="sr-only">Remove this requirement</button>
@@ -83,7 +84,12 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
+    <div class="text-danger text-left" ng-if="vm.errorMessages && vm.errorMessages.length > 0">
+      <ul>
+        <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
+      </ul>
+    </div>
+    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length ===0) && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.startDate.$error.required">Start Date is required</li>
@@ -93,17 +99,24 @@
         <li ng-if="vm.editForm.surveillanceType.$error.required">Surveillance Type is required</li>
         <li ng-if="vm.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
         <li ng-if="vm.editForm.sitesSurveilled.$error.number">Sites Surveilled must be a number</li>
+        <li ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">At least one Requirement must be surveilled</li>
       </ul>
     </div>
-    <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors"
+    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length ===0) && vm.showFormErrors && !vm.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>
+    <button class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
+            confirm="Are you sure you wish to delete this surveillance?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.delete()"><i class="fa fa-trash-o"></i> Delete</button>
     <button class="btn btn-warning pull-left"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()"><i class="fa fa-trash-o"></i> Cancel</button>
+            ng-click="vm.cancel()"><i class="fa fa-close"></i> Cancel</button>
   </div>
 </div>
