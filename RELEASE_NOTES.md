@@ -9,6 +9,7 @@ _15 November 2016_
 * Addition of Previous Product Owner capability
 * Improved text on Resources page
 * Updated filter UI
+* Added text to Resources page under API Section
 
 ### Bugs fixed
 * Merge dialog closes on submit
