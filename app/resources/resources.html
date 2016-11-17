@@ -113,7 +113,17 @@
     </div>
     <div class="row">
       <div class="col-sm-7">
-        <p>The ONC CHPL API provides programmatic access to ONC published data on Certified Health IT Products. ONC CHPL's API includes methods for retrieving a subset of our statistical data and the metadata that describes it.</p>
+        <p>The ONC CHPL API provides programmatic access to ONC published data on Certified Health IT Products. ONC CHPL's API includes methods for retrieving a subset of our statistical data and the metadata that describes it. Users must complete the CHPL API registration. After completing the CHPL API registration, the user will be given a unique 32-character API key. This API key will also be emailed to the user.
+      	</p>
+      	<p>
+      	This API key must be used when making a call to the CHPL API. For example, if you wanted to implement the /search API with the &#39;searchTerm&#39; parameter set as &#39;Epic&#39;, you would make the following call (switching out the key in the URL for your key):
+		<br>
+      	https://chpl.healthit.gov/rest/search/?api_key=YOURKEYHERE&searchTerm=Epic
+      	</p>
+      	<p>A sample Java application using the CHPL API can be found here:
+      	<br>
+      	https://github.com/chpladmin/sample-application
+      	</p>
       </div>
       <div class="col-sm-4 col-sm-offset-1">
         <div>
