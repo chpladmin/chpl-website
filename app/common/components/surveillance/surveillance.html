@@ -31,15 +31,15 @@
           </tr>
           <tr>
             <th scope="row">Surveillance Result</th>
-            <td><span ng-repeat="res in vm.surveillanceResults(surv)">{{ res }}<br /></span></td>
+            <td><span ng-repeat="res in vm.surveillanceResults(surv) track by $index">{{ res }}<br /></span></td>
           </tr>
         </tbody>
       </table>
       <div ng-repeat="req in surv.requirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
         <div ng-repeat="noncon in req.nonconformities">
-          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ req.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.requirement }}</span></a>
+          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.requirement }}</span></a>
           <p>Non-Conformity related to {{ req.requirement }} Details</p>
-          <div ng-if="req.showDetails">
+          <div ng-if="noncon.showDetails">
             <p>Non-Conformity related to {{ req.requirement }} Dates</p>
             <table class="table table-condensed">
               <thead>
@@ -53,7 +53,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td ng-if="noncon.dateOfDetermination">{{ noncon.dateOfDetermination.endDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td ng-if="noncon.dateOfDetermination">{{ noncon.dateOfDetermination | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.dateOfDetermination">N/A</td>
                   <td ng-if="noncon.capApprovalDate">{{ noncon.capApprovalDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.capApprovalDate">N/A</td>
@@ -99,7 +99,6 @@
                 </tr>
               </tbody>
             </table>
-            <pre>{{ surv | json }}</pre>
           </div>
         </div>
       </div>

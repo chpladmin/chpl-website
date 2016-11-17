@@ -50,11 +50,15 @@
 
             function getTitle (surv) {
                 var closed = surv.endDate ? true : false;
-                var title = closed ?
+                var title = '';
+                if (surv.friendlyId) {
+                    title += surv.friendlyId + ': ';
+                }
+                title += closed ?
                     'Closed Surveillance, Ended ' + $filter('date')(surv.endDate, 'mediumDate', 'UTC') + ': ' :
                     'Open Surveillance, Began ' + $filter('date')(surv.startDate, 'mediumDate', 'UTC') + ': ';
                 var nonconformityCount = 0;
-                for (var i = 0; i < surv.requirements.length[i]; i++) {
+                for (var i = 0; i < surv.requirements.length; i++) {
                     for (var j = 0; j < surv.requirements[i].nonconformities.length; j++) {
                         if (surv.requirements[i].nonconformities[j].status.name === 'Open') {
                             nonconformityCount += 1;
@@ -63,9 +67,9 @@
                 }
                 title += nonconformityCount;
                 if (nonconformityCount !== 1) {
-                    title += ' Non-Conformities Found';
+                    title += ' Open Non-Conformities Found';
                 } else {
-                    title += ' Non-Conformity Found';
+                    title += ' Open Non-Conformity Found';
                 }
                 return title;
             }
@@ -100,7 +104,7 @@
 
             function surveillanceResults (surv) {
                 var results = [];
-                for (var i = 0; i < surv.requirements.length[i]; i++) {
+                for (var i = 0; i < surv.requirements.length; i++) {
                     for (var j = 0; j < surv.requirements[i].nonconformities.length; j++) {
                         results.push(surv.requirements[i].nonconformities[j].status.name + ' Non-Conformity Found for ' + surv.requirements[i].requirement);
                     }

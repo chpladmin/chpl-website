@@ -13,6 +13,10 @@
       <div class="col-sm-3"><strong>CHPL Product Number:</strong></div>
       <div class="col-sm-9">{{ vm.surveillance.certifiedProduct.chplProductNumber }}</div>
     </div>
+    <div class="row" ng-if="vm.surveillance.friendlyId">
+      <div class="col-sm-3"><strong>Surveillance ID:</strong></div>
+      <div class="col-sm-9">{{ vm.surveillance.friendlyId }}</div>
+    </div>
     <div class="form-group">
       <label for="startDate" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
       <div class="col-sm-9">
@@ -72,8 +76,7 @@
                 <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success" ng-click="vm.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i><span class="sr-only">Inspect</span></button>
               </td>
               <td>
-                <button class="btn btn-danger" ng-click="vm.surveillance.requirements.splice($index,1)"><i class="fa fa-trash"></i><span class="sr-only">Remove this requirement</button>
-                <button class="btn btn-danger" ng-click="delete(req)"><i class="fa fa-trash fa-spin"></i><span class="sr-only">Remove this requirement</button>
+                <button class="btn btn-danger" ng-click="vm.deleteRequirement(req)"><i class="fa fa-trash"></i><span class="sr-only">Remove this requirement</button>
               </td>
               <td>
                 <button class="btn btn-success" ng-click="vm.editRequirement(req)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this requirement</button>
@@ -112,7 +115,7 @@
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.delete()"><i class="fa fa-trash-o"></i> Delete</button>
+            ng-click="vm.deleteSurveillance()"><i class="fa fa-trash-o"></i> Delete</button>
     <button class="btn btn-warning pull-left"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
