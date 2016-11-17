@@ -77,7 +77,7 @@
                   <th scope="row">Non-Conformity Status</th>
                   <td>{{ noncon.status.name }}</td>
                 </tr>
-                <tr>
+                <tr ng-if="surv.type.name === 'Randomized'">
                   <th scope="row">Pass Rate</th>
                   <td>{{ noncon.sitesPassed }} / {{ noncon.totalSites }}</td>
                 </tr>
