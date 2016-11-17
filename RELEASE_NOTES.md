@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Features Added
+* Added text to Resources page under API Section
+
+### Bugs Fixed
+
+--- 
+
 ## Version 6.0.0
 _15 November 2016_
 
@@ -9,7 +19,6 @@ _15 November 2016_
 * Addition of Previous Product Owner capability
 * Improved text on Resources page
 * Updated filter UI
-* Added text to Resources page under API Section
 
 ### Bugs fixed
 * Merge dialog closes on submit
