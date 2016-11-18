@@ -3,10 +3,10 @@
     No Surveillance Activity
   </div>
   <div ng-repeat="surv in vm.certifiedProduct.surveillance | orderBy: '-startDate'">
-    <span class="pull-right">
-      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a><br />
-      <a href ng-click="vm.editSurveillance(surv)" ng-if="vm.allowEditing">Edit</a>
-    </span>
+    <div class="pull-right">
+      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a>
+      <button class="btn btn-sm btn-ai-success" ng-click="vm.editSurveillance(surv)" ng-if="vm.allowEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
+    </div>
     <p>{{ vm.getTitle(surv) }}</p>
     <div ng-if="surv.showDetails">
       Surveillance Description
@@ -27,19 +27,19 @@
           </tr>
           <tr>
             <th scope="row">Certification Criteria and Program Requirements Surveilled</th>
-            <td><span ng-repeat="req in surv.requirements">{{ req.type.name }}: {{ req.requirement }}<br /></span></td>
+            <td><span ng-repeat="req in surv.requirements | orderBy:['type.name',vm.sortRequirements]">{{ req.type.name }}: {{ req.requirement }}<br /></span></td>
           </tr>
           <tr>
             <th scope="row">Surveillance Result</th>
-            <td><span ng-repeat="res in vm.surveillanceResults(surv)">{{ res }}<br /></span></td>
+            <td><span ng-repeat="res in vm.surveillanceResults(surv) track by $index">{{ res }}<br /></span></td>
           </tr>
         </tbody>
       </table>
       <div ng-repeat="req in surv.requirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
         <div ng-repeat="noncon in req.nonconformities">
-          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ req.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.requirement }}</span></a>
+          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.requirement }}</span></a>
           <p>Non-Conformity related to {{ req.requirement }} Details</p>
-          <div ng-if="req.showDetails">
+          <div ng-if="noncon.showDetails">
             <p>Non-Conformity related to {{ req.requirement }} Dates</p>
             <table class="table table-condensed">
               <thead>
@@ -53,7 +53,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td ng-if="noncon.dateOfDetermination">{{ noncon.dateOfDetermination.endDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td ng-if="noncon.dateOfDetermination">{{ noncon.dateOfDetermination | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.dateOfDetermination">N/A</td>
                   <td ng-if="noncon.capApprovalDate">{{ noncon.capApprovalDate | date : 'mediumDate' : 'UTC' }}</td>
                   <td ng-if="!noncon.capApprovalDate">N/A</td>
@@ -77,7 +77,7 @@
                   <th scope="row">Non-Conformity Status</th>
                   <td>{{ noncon.status.name }}</td>
                 </tr>
-                <tr>
+                <tr ng-if="surv.type.name === 'Randomized'">
                   <th scope="row">Pass Rate</th>
                   <td>{{ noncon.sitesPassed }} / {{ noncon.totalSites }}</td>
                 </tr>
@@ -99,7 +99,6 @@
                 </tr>
               </tbody>
             </table>
-            <pre>{{ surv | json }}</pre>
           </div>
         </div>
       </div>

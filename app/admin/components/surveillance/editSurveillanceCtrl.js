@@ -7,10 +7,12 @@
 
             vm.addRequirement = addRequirement;
             vm.cancel = cancel;
+            vm.deleteSurveillance = deleteSurveillance;
+            vm.deleteRequirement = deleteRequirement;
             vm.editRequirement = editRequirement;
             vm.inspectNonconformities = inspectNonconformities;
             vm.save = save;
-            vm.sortRequirement = utilService.sortRequirement;
+            vm.sortRequirements = utilService.sortRequirements;
 
             activate();
 
@@ -61,6 +63,19 @@
                 $modalInstance.dismiss('cancelled');
             }
 
+            function deleteSurveillance () {
+                commonService.deleteSurveillance(vm.surveillance.id)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                            $modalInstance.close(response);
+                        } else {
+                            vm.errorMessages = [response];
+                        }
+                    },function (error) {
+                        vm.errorMessages = [error.statusText];
+                    });
+            }
+
             function editRequirement (req) {
                 vm.modalInstance = $modal.open({
                     templateUrl: 'admin/components/surveillance/editRequirement.html',
@@ -81,7 +96,7 @@
                     var found = false;
                     if (response.id) {
                         for (var i = 0; i < vm.surveillance.requirements.length; i++) {
-                            if (vm.surveillance.requirements[i].id == response.id) {
+                            if (vm.surveillance.requirements[i].id === response.id) {
                                 vm.surveillance.requirements[i] = response;
                                 found = true;
                             }
@@ -93,6 +108,14 @@
                 }, function (result) {
                     $log.info(result);
                 });
+            }
+
+            function deleteRequirement (req) {
+                for (var i = 0; i < vm.surveillance.requirements.length; i++) {
+                    if (angular.equals(vm.surveillance.requirements[i],req)) {
+                        vm.surveillance.requirements.splice(i,1);
+                    }
+                }
             }
 
             function inspectNonconformities (noncons) {

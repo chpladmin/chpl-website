@@ -7,10 +7,11 @@
 
             vm.addNonconformity = addNonconformity;
             vm.cancel = cancel;
+            vm.deleteNonconformity = deleteNonconformity;
             vm.editNonconformity = editNonconformity;
             vm.isNonconformityRequired = isNonconformityRequired;
             vm.save = save;
-            vm.sortRequirement = utilService.sortRequirement;
+            vm.sortCriteria = utilService.sortCert;
 
             activate();
 
@@ -24,9 +25,6 @@
                 vm.data = surveillanceTypes;
                 if (vm.requirement.type) {
                     vm.requirement.type = findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data);
-                }
-                if (vm.requirement.requirement && vm.requirement.type.name === 'Certified Capability') {
-                    vm.requirement.requirement = findModelByValue(vm.requirement.requirement, vm.data.surveillanceRequirements.criteriaOptions);
                 }
                 if (vm.requirement.result) {
                     vm.requirement.result = findModel(vm.requirement.result, vm.data.surveillanceResultTypes.data);
@@ -61,6 +59,14 @@
 
             function cancel () {
                 $modalInstance.dismiss('cancelled');
+            }
+
+            function deleteNonconformity (noncon) {
+                for (var i = 0; i < vm.requirement.nonconformities.length; i++) {
+                    if (angular.equals(vm.requirement.nonconformities[i], noncon)) {
+                        vm.requirement.nonconformities.splice(i,1);
+                    }
+                }
             }
 
             function editNonconformity (noncon) {

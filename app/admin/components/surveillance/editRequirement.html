@@ -22,7 +22,7 @@
       <label for="requirement" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="vm.requirement.requirement" id="requirement" name="requirement"
-                ng-options="type as type.name for type in vm.data.surveillanceRequirements.criteriaOptions | orderBy:'name'" required>
+                ng-options="type.name as type.name for type in vm.data.surveillanceRequirements.criteriaOptions | orderBy:vm.sortCriteria" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.requirement.$touched) && vm.editForm.requirement.$error.required">Field is required</div>
       </div>
@@ -73,7 +73,7 @@
               <td>{{ noncon.status.name }}</td>
               <td>{{ noncon.summary }}</td>
               <td>
-                <button class="btn btn-danger" ng-click="vm.requirement.nonconformities.splice($index,1)"><i class="fa fa-trash"></i><span class="sr-only">Remove this non-conformity</button>
+                <button class="btn btn-danger" ng-click="vm.deleteNonconformity(noncon)"><i class="fa fa-trash"></i><span class="sr-only">Remove this non-conformity</button>
               </td>
               <td>
                 <button class="btn btn-success" ng-click="vm.editNonconformity(noncon)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this non-conformity</button>

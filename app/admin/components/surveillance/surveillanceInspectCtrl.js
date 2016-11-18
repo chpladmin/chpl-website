@@ -10,7 +10,7 @@
             vm.editSurveillance = editSurveillance;
             vm.inspectNonconformities = inspectNonconformities;
             vm.reject = reject;
-            vm.sortRequirement = utilService.sortRequirement;
+            vm.sortRequirements = utilService.sortRequirements;
 
             activate();
 

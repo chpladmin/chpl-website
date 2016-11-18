@@ -53,10 +53,53 @@
         });
 
         it('should be able to sort requirements', function () {
-            expect(util.sortRequirement({requirement: '170.314(a)(8)'})).toBeLessThan(util.sortRequirement({requirement: '170.315(a)(2)'}));
-            expect(util.sortRequirement({requirement: '170.315(d)(2)'})).toBeLessThan(util.sortRequirement({requirement: '170.315(d)(10)'}));
-            expect(util.sortRequirement({requirement: '170.315(h)(1)'})).toBeLessThan(util.sortRequirement({requirement: '170.523(k)(1)'}));
-            expect(util.sortRequirement({requirement: '170.523(k)(1)'})).toBeLessThan(util.sortRequirement({requirement: '170.523(l)'}));
+            var criteria2014 = {
+                requirement: '170.314 (g)(4)',
+                type: {id: 1, name: 'Certified Capability'}
+            };
+            var criteria2014_2 = {
+                requirement: '170.314 (g)(10)',
+                type: {id: 1, name: 'Certified Capability'}
+            };
+            var criteria2015_d_1 = {
+                requirement: '170.315 (d)(1)',
+                type: {id: 1, name: 'Certified Capability'}
+            };
+            var criteria2015_e_1 = {
+                requirement: '170.315 (e)(1)',
+                type: {id: 1, name: 'Certified Capability'}
+            };
+            var criteria2015_g_4 = {
+                requirement: '170.315 (g)(4)',
+                type: {id: 1, name: 'Certified Capability'}
+            };
+            var criteria2015_g_10 = {
+                requirement: '170.315 (g)(10)',
+                type: {id: 1, name: 'Certified Capability'}
+            };
+            expect(util.sortRequirements(criteria2014)).toBeLessThan(util.sortRequirements(criteria2014_2));
+            expect(util.sortRequirements(criteria2014_2)).toBeLessThan(util.sortRequirements(criteria2015_d_1));
+            expect(util.sortRequirements(criteria2015_d_1)).toBeLessThan(util.sortRequirements(criteria2015_e_1));
+            expect(util.sortRequirements(criteria2015_e_1)).toBeLessThan(util.sortRequirements(criteria2015_g_4));
+            expect(util.sortRequirements(criteria2015_g_4)).toBeLessThan(util.sortRequirements(criteria2015_g_10));
+        });
+
+        it('should be able to sort nonconformity types', function () {
+            var criteria2014_g_4 = { name: '170.314 (g)(4)' };
+            var criteria2014_g_10 = { name: '170.314 (g)(10)' };
+            var criteria2015_d_1 = { name: '170.315 (d)(1)' };
+            var criteria2015_e_1 = { name: '170.315 (e)(1)' };
+            var criteria2015_g_4 = { name: '170.315 (g)(4)' };
+            var criteria2015_g_10 = { name: '170.315 (g)(10)' };
+            var transparency_k_2 = { name: '170.523 (k)(2)' };
+            var other = { name: 'Other Non-Conformity' };
+            expect(util.sortNonconformityTypes(criteria2014_g_4)).toBeLessThan(util.sortNonconformityTypes(criteria2014_g_10));
+            expect(util.sortNonconformityTypes(criteria2014_g_10)).toBeLessThan(util.sortNonconformityTypes(criteria2015_d_1));
+            expect(util.sortNonconformityTypes(criteria2015_d_1)).toBeLessThan(util.sortNonconformityTypes(criteria2015_e_1));
+            expect(util.sortNonconformityTypes(criteria2015_e_1)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_4));
+            expect(util.sortNonconformityTypes(criteria2015_g_4)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_10));
+            expect(util.sortNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortNonconformityTypes(transparency_k_2));
+            expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
         });
     });
 })();

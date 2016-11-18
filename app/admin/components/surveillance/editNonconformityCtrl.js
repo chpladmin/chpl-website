@@ -2,11 +2,12 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'surveillanceTypes', function ($modalInstance, $log, disableValidation, nonconformity, randomized, surveillanceTypes) {
+        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'surveillanceTypes', 'utilService', function ($modalInstance, $log, disableValidation, nonconformity, randomized, surveillanceTypes, utilService) {
             var vm = this;
 
             vm.cancel = cancel;
             vm.save = save;
+            vm.sortNonconformityTypes = utilService.sortNonconformityTypes;
 
             activate();
 
@@ -18,11 +19,11 @@
                 vm.randomized = randomized;
                 vm.showFormErrors = false;
                 vm.data = surveillanceTypes;
-                if (vm.nonconformity.status) {
-                    vm.nonconformity.status = findModel(vm.nonconformity.status, vm.data.nonconformityStatusTypes.data);
-                }
                 if (vm.nonconformity.nonconformityType) {
                     vm.nonconformity.nonconformityType = findModel(vm.nonconformity.nonconformityType, vm.data.nonconformityTypes.data);
+                }
+                if (vm.nonconformity.status) {
+                    vm.nonconformity.status = findModel(vm.nonconformity.status, vm.data.nonconformityStatusTypes.data);
                 }
                 if (vm.nonconformity.dateOfDetermination) {
                     vm.nonconformity.dateOfDeterminationObject = new Date(vm.nonconformity.dateOfDetermination);
