@@ -32,7 +32,7 @@
 
             function addItem () {
                 vm.editModalInstance = $modal.open({
-                    templateUrl: 'admin/components/accitionalSoftware/additionalSoftwareModal.html',
+                    templateUrl: 'admin/components/additionalSoftware/additionalSoftwareModal.html',
                     controller: 'EditAdditionalSoftwareController',
                     controllerAs: 'vm',
                     animation: false,
