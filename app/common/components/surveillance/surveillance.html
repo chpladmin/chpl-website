@@ -3,10 +3,10 @@
     No Surveillance Activity
   </div>
   <div ng-repeat="surv in vm.certifiedProduct.surveillance | orderBy: '-startDate'">
-    <span class="pull-right">
-      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a><br />
-      <a href ng-click="vm.editSurveillance(surv)" ng-if="vm.allowEditing">Edit</a>
-    </span>
+    <div class="pull-right">
+      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a>
+      <button class="btn btn-sm btn-ai-success" ng-click="vm.editSurveillance(surv)" ng-if="vm.allowEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
+    </div>
     <p>{{ vm.getTitle(surv) }}</p>
     <div ng-if="surv.showDetails">
       Surveillance Description
