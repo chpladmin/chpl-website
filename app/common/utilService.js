@@ -8,7 +8,8 @@
             self.extendSelect = extendSelect;
             self.sortCert = sortCert;
             self.sortCqm = sortCqm;
-            self.sortRequirement = sortRequirement;
+            self.sortNonconformityTypes = sortNonconformityTypes;
+            self.sortRequirements = sortRequirements;
 
             ////////////////////////////////////////////////////////////////////
 
@@ -53,12 +54,19 @@
                 return ret;
             }
 
-            function sortRequirement (req) {
+            function sortNonconformityTypes (type) {
+                if (type.name === 'Other Non-Conformity') {
+                    return Number.MAX_VALUE;
+                }
+                return self.sortCert(type);
+            }
+
+            function sortRequirements (req) {
                 if (angular.isObject(req)) {
                     req = req.requirement;
                 }
                 var edition = parseInt(req.substring(4,7));
-                var letter = parseInt(req.substring(8,9).charCodeAt(0)) - 96;
+                var letter = parseInt(req.split('(')[1].charCodeAt(0)) - 96;
                 var number = req.length > 11 ? parseInt(req.split(')')[1].substring(1)) : 0;
                 var ret = edition * 10000 +
                     letter * 100 +

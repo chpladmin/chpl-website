@@ -70,6 +70,7 @@
                         interpretCps(data);
                         vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                         vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
+                        vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
                         vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                         vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
@@ -325,6 +326,7 @@
                 var output = {
                     upload: [],
                     status: [],
+                    surveillance: [],
                     cap: [],
                     other: []
                 };
@@ -462,6 +464,49 @@
                         activity.action = cpNum.join(' ');
                         activity.acb = data[i].newData.acbName;
                         output.cap.push(activity);
+                    } else if (data[i].description.startsWith('Surveillance')) {
+                        var cpId = data[i].newData.id;
+                        var chplNum = data[i].newData.chplProductNumber;
+                        var link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                        activity.acb = data[i].newData.certifyingBody.name;
+                        activity.details = ['N/A'];
+                        if (data[i].description.startsWith('Surveillance was delete')) {
+                            activity.action = 'Surveillance was deleted from CHPL Product ' + link;
+                        } else if (data[i].description.startsWith('Surveillance upload')) {
+                            activity.action = 'Surveillance was uploaded for CHPL Product ' + link;
+                        } else if (data[i].description.startsWith('Surveillance was updated')) {
+                            activity.action = 'Surveillance was updated for CHPL Product ' + link;
+                            activity.details = [];
+                            var simpleFields = [
+                                {key: 'endDate', display: 'End Date', filter: 'date'},
+                                {key: 'friendlyId', display: 'Surveillance ID'},
+                                {key: 'randomizedSitesUsed', display: 'Number of sites surveilled'},
+                                {key: 'startDate', display: 'Start Date', filter: 'date'}
+                            ];
+                            var nestedKeys = [
+                                //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
+                                {key: 'type', subkey: 'name', display: 'Certification Type'}
+                            ];
+                            for (var j = 0; j < simpleFields.length; j++) {
+                                change = compareItem(data[i].originalData.surveillance, data[i].newData.surveillance, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
+                                if (change) activity.details.push(change);
+                            }
+                            for (var j = 0; j < nestedKeys.length; j++) {
+                                change = nestedCompare(data[i].originalData.surveillance, data[i].newData.surveillance, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
+                                if (change) {
+                                    activity.details.push(change);
+                                }
+                            }
+                            if (!angular.equals(data[i].originalData.surveillance.requirements, data[i].newData.surveillance.requirements)) {
+                                activity.details.push('Requirements changed');
+                            }
+                            if (activity.details.length === 0) {
+                                activity.details.push('Specifics unclear');
+                            }
+                        } else {
+                            activity.action = data[i].description + '<br />' + link;
+                        }
+                        output.surveillance.push(activity);
                     } else {
                         activity.action = data[i].description;
                         output.other.push(activity);
@@ -469,6 +514,7 @@
                 }
                 vm.searchedCertifiedProductsUpload = output.upload;
                 vm.searchedCertifiedProductsStatus = output.status;
+                vm.searchedCertifiedProductsSurveillance = output.surveillance;
                 vm.searchedCertifiedProductsCAP = output.cap;
                 vm.searchedCertifiedProducts = output.other;
             }

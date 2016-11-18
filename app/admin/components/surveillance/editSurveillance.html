@@ -67,7 +67,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="req in vm.surveillance.requirements | orderBy:vm.sortRequirement track by $index">
+            <tr ng-repeat="req in vm.surveillance.requirements | orderBy:['type.name',vm.sortRequirements] track by $index">
               <td>{{ req.type.name }}</td>
               <td>{{ req.requirement }}</td>
               <td>{{ req.result.name }}</td>

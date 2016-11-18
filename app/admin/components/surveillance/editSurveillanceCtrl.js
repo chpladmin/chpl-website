@@ -12,7 +12,7 @@
             vm.editRequirement = editRequirement;
             vm.inspectNonconformities = inspectNonconformities;
             vm.save = save;
-            vm.sortRequirement = utilService.sortRequirement;
+            vm.sortRequirements = utilService.sortRequirements;
 
             activate();
 

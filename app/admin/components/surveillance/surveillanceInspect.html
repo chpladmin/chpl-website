@@ -47,7 +47,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="req in vm.surveillance.requirements | orderBy:vm.sortRequirement">
+            <tr ng-repeat="req in vm.surveillance.requirements | orderBy:vm.sortRequirements">
               <td>{{ req.type.name }}</td>
               <td>{{ req.requirement }}</td>
               <td>{{ req.result.name }}</td>

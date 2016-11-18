@@ -2,12 +2,13 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('SurveillanceController', ['$log', '$scope', '$modal', '$filter', 'commonService', 'authService', 'API', function ($log, $scope, $modal, $filter, commonService, authService, API) {
+        .controller('SurveillanceController', ['$log', '$scope', '$modal', '$filter', 'commonService', 'authService', 'utilService', 'API', function ($log, $scope, $modal, $filter, commonService, authService, utilService, API) {
             var vm = this;
 
             vm.editSurveillance = editSurveillance;
             vm.getTitle = getTitle;
             vm.initiateSurveillance = initiateSurveillance;
+            vm.sortRequirements = utilService.sortRequirements;
             vm.surveillanceResults = surveillanceResults;
 
             activate();

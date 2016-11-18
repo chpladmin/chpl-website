@@ -11,7 +11,7 @@
             vm.editNonconformity = editNonconformity;
             vm.isNonconformityRequired = isNonconformityRequired;
             vm.save = save;
-            vm.sortRequirement = utilService.sortRequirement;
+            vm.sortCriteria = utilService.sortCert;
 
             activate();
 

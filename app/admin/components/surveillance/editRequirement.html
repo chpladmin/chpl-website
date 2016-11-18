@@ -22,7 +22,7 @@
       <label for="requirement" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="vm.requirement.requirement" id="requirement" name="requirement"
-                ng-options="type.name as type.name for type in vm.data.surveillanceRequirements.criteriaOptions | orderBy:'name'" required>
+                ng-options="type.name as type.name for type in vm.data.surveillanceRequirements.criteriaOptions | orderBy:vm.sortCriteria" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.requirement.$touched) && vm.editForm.requirement.$error.required">Field is required</div>
       </div>

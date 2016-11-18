@@ -2,11 +2,12 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'surveillanceTypes', function ($modalInstance, $log, disableValidation, nonconformity, randomized, surveillanceTypes) {
+        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'surveillanceTypes', 'utilService', function ($modalInstance, $log, disableValidation, nonconformity, randomized, surveillanceTypes, utilService) {
             var vm = this;
 
             vm.cancel = cancel;
             vm.save = save;
+            vm.sortNonconformityTypes = utilService.sortNonconformityTypes;
 
             activate();
 

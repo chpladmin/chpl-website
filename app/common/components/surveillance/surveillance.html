@@ -27,7 +27,7 @@
           </tr>
           <tr>
             <th scope="row">Certification Criteria and Program Requirements Surveilled</th>
-            <td><span ng-repeat="req in surv.requirements">{{ req.type.name }}: {{ req.requirement }}<br /></span></td>
+            <td><span ng-repeat="req in surv.requirements | orderBy:['type.name',vm.sortRequirements]">{{ req.type.name }}: {{ req.requirement }}<br /></span></td>
           </tr>
           <tr>
             <th scope="row">Surveillance Result</th>
