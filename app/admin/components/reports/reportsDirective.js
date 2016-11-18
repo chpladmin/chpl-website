@@ -474,6 +474,8 @@
                             activity.action = 'Surveillance was deleted from CHPL Product ' + link;
                         } else if (data[i].description.startsWith('Surveillance upload')) {
                             activity.action = 'Surveillance was uploaded for CHPL Product ' + link;
+                        } else if (data[i].description.startsWith('Surveillance was added')) {
+                            activity.action = 'Surveillance was added for CHPL Product ' + link;
                         } else if (data[i].description.startsWith('Surveillance was updated')) {
                             activity.action = 'Surveillance was updated for CHPL Product ' + link;
                             activity.details = [];
