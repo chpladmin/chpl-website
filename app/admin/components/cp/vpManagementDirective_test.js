@@ -16,7 +16,7 @@
                 $provide.value('FileUploader', mockFileUploader);
             });
 
-            module('app/admin/components/vpManagement.html');
+            module('app/admin/components/cp/vpManagement.html');
             module('app/common/components/a.html');
 
             inject(function($q) {
@@ -30,6 +30,7 @@
                 mockCommonService.testingLabs = ['TL 1', 'TL 2'];
                 mockCommonService.certificationStatuses = ['Active', 'Retired'];
                 mockCommonService.uploadingCps = {pendingCertifiedProducts: []};
+                mockCommonService.uploadingSurveillances = {surveillances: []};
 
                 mockCommonService.getDevelopers = function () {
                     var defer = $q.defer();
@@ -105,6 +106,7 @@
                 mockCommonService.getTestStandards = function () { return $q.when([]); };
                 mockCommonService.getTestTools = function () { return $q.when([]); };
                 mockCommonService.getUcdProcesses = function () { return $q.when([]); };
+                mockCommonService.getUploadingSurveillances = function () { return $q.when(this.uploadingSurveillances); };
 
                 mockAuthService.isChplAdmin = function () { return $q.when(true); };
                 mockAuthService.isAcbAdmin = function () { return $q.when(true); };
@@ -119,18 +121,18 @@
             $log = _$log_;
             scope = $rootScope.$new();
 
-            var template = $templateCache.get('app/admin/components/vpManagement.html');
-            $templateCache.put('admin/components/vpManagement.html', template);
+            var template = $templateCache.get('app/admin/components/cp/vpManagement.html');
+            $templateCache.put('admin/components/cp/vpManagement.html', template);
             template = $templateCache.get('app/common/components/a.html');
             $templateCache.put('common/components/a.html', template);
 
             $httpBackend.whenGET('common/components/certs.html')
                 .respond(200, '<div></div>');
-            $httpBackend.whenGET('admin/components/additionalSoftware.html')
+            $httpBackend.whenGET('admin/components/additionalSoftware/additionalSoftware.html')
                 .respond(200, '<div></div>');
             $httpBackend.whenGET('common/components/cap.html')
                 .respond(200, '<div></div>');
-            $httpBackend.whenGET('common/components/surveillance.html')
+            $httpBackend.whenGET('common/components/surveillance/surveillance.html')
                 .respond(200, '<div></div>');
             element = angular.element('<ai-vp-management></ai-vp-management');
             $compile(element)(scope);

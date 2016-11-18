@@ -138,7 +138,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'admin/components/login.html',
+                templateUrl: 'admin/components/login/login.html',
                 scope: {
                 },
                 bindToController: {

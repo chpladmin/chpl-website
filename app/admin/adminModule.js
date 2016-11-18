@@ -3,7 +3,7 @@
 
     angular.module('app.admin', ['ngRoute', 'smart-table', 'app.common', 'app.loginServices', 'ngIdle', 'ngSanitize', 'ui.bootstrap'])
         .config(['$routeProvider', function($routeProvider) {
-            $routeProvider.when('/admin/:section?/:productId?', {
+            $routeProvider.when('/admin/:section?/:subSection?/:productId?', {
                 templateUrl: 'admin/admin.html',
                 title: 'CHPL Administration'
             });

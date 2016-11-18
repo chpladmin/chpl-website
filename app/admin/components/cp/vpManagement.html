@@ -12,7 +12,7 @@
       &nbsp;
     </div>
     <div class="row" ng-if="vm.workType === 'upload'">
-      <div class="col-sm-12" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
+      <div class="col-sm-6" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
         <h3>Upload Certified Products</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
@@ -55,7 +55,50 @@
           </tbody>
         </table>
       </div>
-    </div> <!-- end upload certified products -->
+      <div class="col-sm-6" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
+        <h3>Upload Surveillance Activities</h3>
+        <p ng-if="vm.surveillanceUploader.queue.length === 0">CSV files only</p>
+        <input type="file" nv-file-select="" uploader="vm.surveillanceUploader" />
+        <div ng-if="vm.surveillanceUploadMessage.length > 0" ng-class="vm.surveillanceUploadSuccess ? 'bg-success' : 'bg-danger'">
+          {{ vm.surveillanceUploadMessage }}
+          <ul ng-if="vm.surveillanceUploadErrors.length > 0">
+            <li ng-repeat="error in vm.surveillanceUploadErrors">{{ error }}</li>
+          </ul>
+        </div>
+        <table class="table" ng-if="vm.surveillanceUploader.queue.length > 0">
+          <thead>
+            <tr>
+              <th scope="col" width="50%">Name</th>
+              <th scope="col" ng-show="vm.surveillanceUploader.isHTML5">Size</th>
+              <th scope="col" ng-show="vm.surveillanceUploader.isHTML5">Progress</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in vm.surveillanceUploader.queue">
+              <td><strong>{{ item.file.name }}</strong></td>
+              <td ng-show="vm.surveillanceUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+              <td ng-show="vm.surveillanceUploader.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+              </td>
+              <td nowrap>
+                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                  <i class="fa fa-cloud-upload"></i> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                  <i class="fa fa-ban"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                  <i class="fa fa-trash-o"></i> Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> <!-- end upload certified products &amp; surveillance activities -->
 
     <div class="row" ng-if="(vm.isAcbAdmin || vm.isAcbStaff) && vm.workType === 'confirm'">
       <div class="col-sm-12">
@@ -78,11 +121,11 @@
               <td>{{ cp.chplProductNumber }}</td>
               <td>{{ cp.developer.name }}</td>
               <td>{{ cp.product.name }}</td>
-              <td>{{ cp.product.version }}</td>
+              <td>{{ cp.version.version }}</td>
               <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-pencil-square-o"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-eye"></i> Inspect</button>
               </td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
                 <button class="btn btn-warning btn-block"
@@ -97,6 +140,91 @@
         </table>
       </div>
     </div> <!-- end of upload process table -->
+
+    <div class="row" ng-if="(vm.isAcbAdmin || vm.isAcbStaff) && vm.workType === 'confirmSurveillance'">
+      <div class="col-sm-12">
+        <h3>View Surveillance Activity in the process of upload</h3>
+        <p ng-if="vm.uploadingSurveillances.length === 0">No activities currently in queue</p>
+        <table class="table table-striped" ng-if="vm.uploadingSurveillances.length > 0">
+          <thead>
+            <tr>
+              <th scope="col">CHPL ID</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Surveillance Type</th>
+              <th scope="col">Number of Requirements Surveilled</th>
+              <th scope="col">Record Type</th>
+              <th scope="col">Status</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="surv in vm.uploadingSurveillances | orderBy: 'certifiedProduct.chplProductNumber' track by surv.id">
+              <td><a href="#/product/{{ surv.certifiedProduct.id}}">{{ surv.certifiedProduct.chplProductNumber }}</a></td>
+              <td>{{ surv.startDate | date : 'mediumDate' : 'UTC' }}</td>
+              <td>{{ surv.endDate | date : 'mediumDate' : 'UTC' }}</td>
+              <td>{{ surv.type.name }}</td>
+              <td>{{ surv.requirements.length }}</td>
+              <td>
+                <span ng-if="surv.surveillanceIdToReplace">Replacement</span>
+                <span ng-if="!surv.surveillanceIdToReplace">New</span>
+              </td>
+              <td><span ng-bind-html="vm.parseSurveillanceUploadError(surv)"></span></td>
+              <td class="text-center">
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)"><i class="fa fa-eye"></i> Inspect</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div> <!-- end of upload process table -->
+
+    <div class="row" ng-if="vm.workType === 'manageSurveillance'">
+      <div class="col-sm-12">
+        <h3>Manage Surveillance Activity</h3>
+        <span class="pull-right">
+          <a href="#/product/{{ vm.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
+        </span>
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row">CHPL Product Number</th>
+              <td>{{ vm.surveillanceProduct.chplProductNumber }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Status</th>
+              <td>{{ vm.surveillanceProduct.certificationStatus.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Developer</th>
+              <td>{{ vm.surveillanceProduct.developer.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Product</th>
+              <td>{{ vm.surveillanceProduct.product.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Version</th>
+              <td>{{ vm.surveillanceProduct.version.version }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Edition</th>
+              <td>{{ vm.surveillanceProduct.certificationEdition.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certifying Body</th>
+              <td>{{ vm.surveillanceProduct.certifyingBody.name }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Certification Date</th>
+              <td>{{ vm.surveillanceProduct.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <ai-surveillance allow-editing="true"
+                         certified-product="vm.surveillanceProduct"></ai-surveillance>
+      </div>
+    </div> <!-- end of surveillance management -->
 
     <div ng-if="vm.workType === 'manage'" class="row">
       <div class="col-sm-12">

@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Features Added
+* Added text to Resources page under API Section
+* Added new Surveillance Reporting UI
+
+---
+
 ## Version 6.0.0
 _15 November 2016_
 

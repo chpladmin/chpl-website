@@ -14,40 +14,20 @@
                 $provide.value('commonService', mockCommonService);
             });
 
-            module('app/admin/components/acbManagement.html');
-            module('app/admin/components/userManagement.html');
+            module('app/admin/components/acb/acbManagement.html');
+            module('app/admin/components/user/userManagement.html');
             module('app/common/components/a.html');
 
             mockCommonService.acbs = {acbs: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
 
             inject(function($q) {
-                mockAuthService.isAcbAdmin = function () {
-                    return true;
-                };
-
-                mockAuthService.isChplAdmin = function () {
-                    return true;
-                };
-
-                mockCommonService.addressRequired = function () {
-                    return false;
-                };
-
-                mockCommonService.getAcbs = function () {
-                    return $q.when(mockCommonService.acbs);
-                };
-
-                mockCommonService.getUsersAtAcb = function (acbId) {
-                    return $q.when({});
-                };
-
-                mockCommonService.simpleApiCall = function (endpoint) {
-                    return $q.when({});
-                };
-
-                mockCommonService.getUsers = function (endpoint) {
-                    return $q.when({});
-                };
+                mockAuthService.isAcbAdmin = function () { return true; };
+                mockAuthService.isChplAdmin = function () { return true; };
+                mockCommonService.addressRequired = function () { return false; };
+                mockCommonService.getAcbs = function () { return $q.when(mockCommonService.acbs); };
+                mockCommonService.getUsers = function (endpoint) { return $q.when({}); };
+                mockCommonService.getUsersAtAcb = function (acbId) { return $q.when({}); };
+                mockCommonService.simpleApiCall = function (endpoint) { return $q.when({}); };
             });
         });
 
@@ -57,10 +37,10 @@
 
             scope.fakeFunction = function () {};
 
-            var template = $templateCache.get('app/admin/components/acbManagement.html');
-            $templateCache.put('admin/components/acbManagement.html', template);
-            template = $templateCache.get('app/admin/components/userManagement.html');
-            $templateCache.put('admin/components/userManagement.html', template);
+            var template = $templateCache.get('app/admin/components/acb/acbManagement.html');
+            $templateCache.put('admin/components/acb/acbManagement.html', template);
+            template = $templateCache.get('app/admin/components/user/userManagement.html');
+            $templateCache.put('admin/components/user/userManagement.html', template);
             template = $templateCache.get('app/common/components/a.html');
             $templateCache.put('common/components/a.html', template);
 

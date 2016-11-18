@@ -2,56 +2,56 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('AcbManagementController', ['commonService', 'authService', '$log', '$modal', function (commonService, authService, $log, $modal) {
+        .controller('AtlManagementController', ['commonService', 'authService', '$log', '$modal', function (commonService, authService, $log, $modal) {
             var self = this;
 
             self.doWork = doWork;
             self.activate = activate;
-            self.activateAcb = activateAcb;
+            self.activateAtl = activateAtl;
             self.loadData = loadData;
-            self.createAcb = createAcb;
-            self.editAcb = editAcb;
+            self.createAtl = createAtl;
+            self.editAtl = editAtl;
 
             self.activate();
 
             ////////////////////////////////////////////////////////////////////
 
             function doWork (workType) {
-                if (workType === 'newAcb') {
-                    self.activeAcb = null;
+                if (workType === 'newAtl') {
+                    self.activeAtl = null;
                 }
                 self.workType = workType;
             }
 
             function activate () {
                 self.isChplAdmin = authService.isChplAdmin();
-                self.isAcbAdmin = authService.isAcbAdmin();
-                self.acbs = [];
-                self.workType = 'acb';
+                self.isAtlAdmin = authService.isAtlAdmin();
+                self.atls = [];
+                self.workType = 'atl';
             }
 
-            function activateAcb (acb) {
-                self.workType = 'acb';
-                self.activeAcb = acb;
+            function activateAtl (atl) {
+                self.workType = 'atl';
+                self.activeAtl = atl;
             }
 
             function loadData () {
-                return commonService.getAcbs()
+                return commonService.getAtls()
                     .then (function (data) {
-                        self.acbs = data.acbs;
+                        self.atls = data.atls;
                     });
             }
 
-            function createAcb () {
+            function createAtl () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/acbEdit.html',
-                    controller: 'EditAcbController',
+                    templateUrl: 'admin/components/atlEdit.html',
+                    controller: 'EditAtlController',
                     controllerAs: 'vm',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        acb: function () { return {}; },
+                        atl: function () { return {}; },
                         action: function () { return 'create'; },
                         isChplAdmin: function () { return self.isChplAdmin; }
                     }
@@ -65,23 +65,23 @@
                 });
             }
 
-            function editAcb (acb) {
+            function editAtl (atl) {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/acbEdit.html',
-                    controller: 'EditAcbController',
+                    templateUrl: 'admin/components/atlEdit.html',
+                    controller: 'EditAtlController',
                     controllerAs: 'vm',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
-                        acb: function () { return acb; },
+                        atl: function () { return atl; },
                         action: function () { return 'edit'; },
                         isChplAdmin: function () { return self.isChplAdmin; }
                     }
                 });
                 self.modalInstance.result.then(function (result) {
                     if (result !== 'deleted') {
-                        self.activeAcb = result;
+                        self.activeAtl = result;
                     } else {
                         self.activate();
                     }
@@ -92,34 +92,34 @@
                 });
             }
 
-            self.cancelACB = function() {
+            self.cancelATL = function() {
                 self.loadData();
             };
 
-            self.deleteACB = function (acb) {
-                commonService.deleteACB(acb.id)
+            self.deleteATL = function (atl) {
+                commonService.deleteATL(atl.id)
                     .then(function (response) {
                         self.activate();
                     });
             };
 
-            self.addressRequired = function (acb) {
-                if (acb)
-                    return commonService.addressRequired(acb.address);
+            self.addressRequired = function (atl) {
+                if (atl)
+                    return commonService.addressRequired(atl.address);
             };
         }])
-        .directive('aiAcbManagement', ['commonService', 'authService', '$log', function (commonService, authService, $log) {
+        .directive('aiAtlManagement', ['commonService', 'authService', '$log', function (commonService, authService, $log) {
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'admin/components/acbManagement.html',
+                templateUrl: 'admin/components/atl/atlManagement.html',
                 bindToController: {
                     workType: '=',
-                    activeAcb: '='
+                    activeAtl: '='
                 },
                 scope: {},
                 controllerAs: 'vm',
-                controller: 'AcbManagementController'
+                controller: 'AtlManagementController'
             };
         }]);
 })();

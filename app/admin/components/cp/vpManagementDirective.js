@@ -12,15 +12,19 @@
             self.editProduct = editProduct;
             self.editVersion = editVersion;
             self.inspectCp = inspectCp;
+            self.inspectSurveillance = inspectSurveillance;
             self.isDeveloperEditable = isDeveloperEditable;
             self.isDeveloperMergeable = isDeveloperMergeable;
             self.loadCp = loadCp;
+            self.loadSurveillance = loadSurveillance;
             self.mergeDevelopers = mergeDevelopers;
             self.mergeProducts = mergeProducts;
             self.mergeVersions = mergeVersions;
             self.parseUploadError = parseUploadError;
+            self.parseSurveillanceUploadError = parseSurveillanceUploadError;
             self.refreshPending = refreshPending;
             self.rejectCp = rejectCp;
+            self.rejectSurveillance = rejectSurveillance;
             self.selectCp = selectCp;
             self.selectDeveloper = selectDeveloper;
             self.selectProduct = selectProduct;
@@ -40,11 +44,15 @@
                 self.isAcbAdmin = authService.isAcbAdmin();
                 self.isAcbStaff = authService.isAcbStaff();
                 self.uploadingCps = [];
-                self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
+                self.uploadingSurveillances = [];
+                if (angular.isUndefined(self.workType)) self.workType = 'manage';//self.workType = self.productId ? 'manage' : self.isChplAdmin ? 'manage' : 'upload';
                 self.mergeType = 'developer';
                 self.uploadMessage = '';
                 self.uploadErrors = [];
                 self.uploadSuccess = true;
+                self.surveillanceUploadMessage = '';
+                self.surveillanceUploadErrors = [];
+                self.surveillanceUploadSuccess = true;
                 self.resources = {};
 
                 if (self.isAcbAdmin || self.isAcbStaff) {
@@ -84,6 +92,42 @@
                     self.uploader.onCancelItem = function(fileItem, response, status, headers) {
                         //$log.info('onCancelItem', fileItem, response, status, headers);
                     };
+
+                    self.surveillanceUploader = new FileUploader({
+                        url: API + '/surveillance/upload',
+                        removeAfterUpload: true,
+                        headers: {
+                            Authorization: 'Bearer ' + authService.getToken(),
+                            'API-Key': authService.getApiKey()
+                        }
+                    });
+                    if (angular.isUndefined(self.surveillanceUploader.filters)) {
+                        self.surveillanceUploader.filters = [];
+                    }
+                    self.surveillanceUploader.filters.push({
+                        name: 'csvFilter',
+                        fn: function(item, options) {
+                            var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
+                            return '|csv|'.indexOf(extension) !== -1;
+                        }
+                    });
+                    self.surveillanceUploader.onSuccessItem = function(fileItem, response, status, headers) {
+                        //$log.info('onSuccessItem', fileItem, response, status, headers);
+                        self.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
+                        self.surveillanceUploadErrors = [];
+                        self.surveillanceUploadSuccess = true;
+                    };
+                    self.surveillanceUploader.onCompleteItem = function(fileItem, response, status, headers) {
+                        self.refreshPending();
+                    };
+                    self.surveillanceUploader.onErrorItem = function(fileItem, response, status, headers) {
+                        self.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
+                        self.surveillanceUploadErrors = response.errorMessages;
+                        self.surveillanceUploadSuccess = false;
+                    };
+                    self.surveillanceUploader.onCancelItem = function(fileItem, response, status, headers) {
+                        //$log.info('onCancelItem', fileItem, response, status, headers);
+                    };
                 }
 
                 commonService.getDevelopers()
@@ -91,8 +135,10 @@
                         self.developers = developers.developers;
                         prepCodes();
 
-                        if (self.productId) {
+                        if (self.productId && self.workType === 'manage') {
                             self.loadCp();
+                        } else if (self.productId && self.workType === 'manageSurveillance') {
+                            self.loadSurveillance();
                         }
                     });
 
@@ -100,10 +146,15 @@
             }
 
             function refreshPending () {
-                commonService.getUploadingCps()
+                commonService.getUploadingCps ()
                     .then(function (cps) {
                         self.uploadingCps = [].concat(cps.pendingCertifiedProducts);
                         self.pendingProducts = self.uploadingCps.length;
+                    })
+                commonService.getUploadingSurveillances ()
+                    .then(function (surveillances) {
+                        self.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
+                        self.pendingSurveillances = self.uploadingSurveillances.length;
                     })
             }
 
@@ -122,7 +173,7 @@
 
             function editDeveloper () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditDeveloper.html',
+                    templateUrl: 'admin/components/cp/vpEditDeveloper.html',
                     controller: 'EditDeveloperController',
                     controllerAs: 'vm',
                     animation: false,
@@ -149,7 +200,7 @@
 
             function mergeDevelopers () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpMergeDeveloper.html',
+                    templateUrl: 'admin/components/cp/vpMergeDeveloper.html',
                     controller: 'MergeDeveloperController',
                     controllerAs: 'vm',
                     animation: false,
@@ -190,7 +241,7 @@
 
             function editProduct () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditProduct.html',
+                    templateUrl: 'admin/components/cp/vpEditProduct.html',
                     controller: 'EditProductController',
                     controllerAs: 'vm',
                     animation: false,
@@ -211,7 +262,7 @@
 
             function mergeProducts () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpMergeProduct.html',
+                    templateUrl: 'admin/components/cp/vpMergeProduct.html',
                     controller: 'MergeProductController',
                     controllerAs: 'vm',
                     animation: false,
@@ -238,7 +289,7 @@
 
             function mergeVersions () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpMergeVersion.html',
+                    templateUrl: 'admin/components/cp/vpMergeVersion.html',
                     controller: 'MergeVersionController',
                     controllerAs: 'vm',
                     animation: false,
@@ -278,7 +329,7 @@
 
             function editVersion () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditVersion.html',
+                    templateUrl: 'admin/components/cp/vpEditVersion.html',
                     controller: 'EditVersionController',
                     controllerAs: 'vm',
                     animation: false,
@@ -317,7 +368,7 @@
 
             function editCertifiedProduct () {
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditCertifiedProduct.html',
+                    templateUrl: 'admin/components/cp/vpEditCertifiedProduct.html',
                     controller: 'EditCertifiedProductController',
                     controllerAs: 'vm',
                     animation: false,
@@ -352,7 +403,7 @@
                 }
 
                 self.modalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpInspect.html',
+                    templateUrl: 'admin/components/cp/vpInspect.html',
                     controller: 'InspectController',
                     controllerAs: 'vm',
                     animation: false,
@@ -394,6 +445,28 @@
                 });
             }
 
+            function inspectSurveillance (surv) {
+                self.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/surveillance/surveillanceInspect.html',
+                    controller: 'SurveillanceInspectController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        surveillance: function () { return surv; }
+                    },
+                    size: 'lg'
+                });
+                self.modalInstance.result.then(function () {
+                    self.refreshPending();
+                }, function (result) {
+                    if (result !== 'cancelled') {
+                        self.refreshPending();
+                    }
+                });
+            }
+
             function isDeveloperEditable (dev) {
                 return self.isChplAdmin || dev.status.status === 'Active';
             }
@@ -402,8 +475,13 @@
                 return dev.status.status === 'Active';
             }
 
-            function rejectCp  (cpId) {
+            function rejectCp (cpId) {
                 commonService.rejectPendingCp(cpId)
+                    .then(self.refreshPending);
+            }
+
+            function rejectSurveillance (survId) {
+                commonService.rejectPendingSurveillance(survId)
                     .then(self.refreshPending);
             }
 
@@ -424,6 +502,22 @@
                         ret = 'OK';
 
                     }
+                }
+                return ret;
+            }
+
+            function parseSurveillanceUploadError (surv) {
+                var ret = '';
+                if (surv.errorMessages.length > 0) {
+                    ret += 'Errors:&nbsp;' + surv.errorMessages.length;
+                }
+                if (surv.warningMessages && surv.warningMessages.length > 0) {
+                    if (ret.length > 0)
+                        ret += '<br />';
+                    ret += 'Warnings:&nbsp;' + surv.warningMessages.length;
+                }
+                if (ret.length === 0) {
+                    ret = 'OK';
                 }
                 return ret;
             }
@@ -479,6 +573,13 @@
                                             });
                                     });
                             });
+                    });
+            }
+
+            function loadSurveillance () {
+                commonService.getProduct(self.productId)
+                    .then(function (result) {
+                        self.surveillanceProduct = result;
                     });
             }
 
@@ -564,10 +665,11 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'admin/components/vpManagement.html',
+                templateUrl: 'admin/components/cp/vpManagement.html',
                 bindToController: {
                     workType: '=',
                     pendingProducts: '=',
+                    pendingSurveillances: '=',
                     productId: '='
                 },
                 scope: {},

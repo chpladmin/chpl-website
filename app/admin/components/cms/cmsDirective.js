@@ -44,7 +44,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'admin/components/cms.html',
+                templateUrl: 'admin/components/cms/cms.html',
                 scope: {},
                 bindToController: {
                     //admin: '='

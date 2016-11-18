@@ -35,7 +35,8 @@
       </div>
       <div class="col-sm-8 text-right">
         <p>Certification Date: {{ vm.product.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ vm.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</p>
-        <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
+        <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/manage/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
+        <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/manageSurveillance/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
       </div>
     </div>
     <div class="row">
