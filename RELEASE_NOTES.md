@@ -3,6 +3,16 @@
 ## Version TBD
 _Date TBD_
 
+### Features Added
+* Added text to Resources page under API Section
+
+### Bugs Fixed
+
+--- 
+
+## Version 6.0.0
+_15 November 2016_
+
 ### New features
 * Changed certification status icons
 * Better sort of CQMs on Compare page
