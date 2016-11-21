@@ -44,7 +44,7 @@
                     resolve: {
                         disableValidation: function () { return false; },
                         randomized: function () { return vm.surveillance.type.name === 'Randomized'; },
-                        requirement: function () { return {}; },
+                        requirement: function () { return { nonconformities: [] }; },
                         surveillanceTypes: function () { return vm.data; }
                     },
                     size: 'lg'
