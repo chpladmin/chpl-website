@@ -2,10 +2,11 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'surveillanceTypes', 'utilService', function ($modalInstance, $log, disableValidation, nonconformity, randomized, surveillanceTypes, utilService) {
+        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'requirementId', 'surveillanceId', 'surveillanceTypes', 'worktype', 'utilService', function ($modalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, worktype, utilService) {
             var vm = this;
 
             vm.cancel = cancel;
+            vm.deleteDoc = deleteDoc;
             vm.save = save;
             vm.sortNonconformityTypes = utilService.sortNonconformityTypes;
 
@@ -14,11 +15,14 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                vm.nonconformity = angular.copy(nonconformity);
-                vm.disableValidation = disableValidation;
-                vm.randomized = randomized;
-                vm.showFormErrors = false;
                 vm.data = surveillanceTypes;
+                vm.disableValidation = disableValidation;
+                vm.nonconformity = angular.copy(nonconformity);
+                vm.randomized = randomized;
+                vm.requirementId = requirementId;
+                vm.showFormErrors = false;
+                vm.surveillanceId = surveillancId;
+                vm.worktype = worktype;
                 if (vm.nonconformity.nonconformityType) {
                     vm.nonconformity.nonconformityType = findModel(vm.nonconformity.nonconformityType, vm.data.nonconformityTypes.data);
                 }
@@ -40,10 +44,26 @@
                 if (vm.nonconformity.capMustCompleteDate) {
                     vm.nonconformity.capMustCompleteDateObject = new Date(vm.nonconformity.capMustCompleteDate);
                 }
+                if (vm.worktype === 'edit') {
+                    buildFileUploader();
+                }
             }
 
             function cancel () {
                 $modalInstance.dismiss('cancelled');
+            }
+
+            function deleteDoc (docId) {
+                commonService.deleteSurveillanceDocument(vm.surveillanceId, vm.nonconformity.id, docId)
+                    .then(function (result) {
+                        for (var i = 0; i < vm.nonconformity.documents.length; i++) {
+                            if (vm.nonconformity.documents[i].id === docId) {
+                                vm.nonconformity.documents.splice(i,1);
+                            }
+                        }
+                    }), function (error) {
+                        console.log (error);
+                    };
             }
 
             function save () {
@@ -76,6 +96,31 @@
             }
 
             ////////////////////////////////////////////////////////////////////
+
+            function buildFileUploader () {
+                vm.cap = correctiveActionPlan;
+                vm.uploader = new FileUploader({
+                    url: API + '/surveillance/' + vm.surveillanceId + '/nonconformity/' + vm.nonconformity.id + '/document/create',
+                    removeAfterUpload: true,
+                    headers: {
+                        Authorization: 'Bearer ' + authService.getToken(),
+                        'API-Key': authService.getApiKey()
+                    }
+                });
+                vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                    //$log.info('onSuccessItem', fileItem, response, status, headers);
+                    vm.nonconformity.documents.push({fileName: fileItem.file.name + ' is pending'});
+                };
+                vm.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                    //vm.refreshPending();
+                };
+                vm.uploader.onErrorItem = function(fileItem, response, status, headers) {
+                    //$log.info('onErrorItem', fileItem, response, status, headers);
+                };
+                vm.uploader.onCancelItem = function(fileItem, response, status, headers) {
+                    //$log.info('onCancelItem', fileItem, response, status, headers);
+                };
+            }
 
             function findModel (id, array) {
                 for (var i = 0; i < array.length; i++) {

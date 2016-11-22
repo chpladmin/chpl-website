@@ -99,6 +99,18 @@
                 </tr>
               </tbody>
             </table>
+            <div ng-if="noncon.documents && noncon.documents.length > 0">
+              <p>Non-Conformity related to {{ req.requirement }} Supporting Documentation</p>
+              <ul>
+                <li ng-repeat="doc in noncon.documents">
+                  {{ doc.fileName }}
+                  <span ng-if="doc.id">
+                    <a type="button" class="btn btn-sm btn-ai-success" href="{{ vm.API }}/surveillance/document/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download {{ doc.fileName</span></a>
+                  </span>
+                  <span ng-if="!doc.id">File is pending</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

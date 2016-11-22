@@ -17,7 +17,7 @@ _22 November 2016_
 ### Bugs Fixed
 * "Save as Developer Information" bug fixed
 
---- 
+---
 
 ## Version 6.0.0
 _15 November 2016_

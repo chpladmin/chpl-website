@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditRequirementController', ['$modal', '$modalInstance', '$log', 'disableValidation', 'randomized', 'requirement', 'surveillanceTypes', 'utilService', function ($modal, $modalInstance, $log, disableValidation, randomized, requirement, surveillanceTypes, utilService) {
+        .controller('EditRequirementController', ['$modal', '$modalInstance', '$log', 'disableValidation', 'randomized', 'requirement', 'surveillanceId', 'surveillanceTypes', 'worktype', 'utilService', function ($modal, $modalInstance, $log, disableValidation, randomized, requirement, surveillanceId, surveillanceTypes, worktype, utilService) {
             var vm = this;
 
             vm.addNonconformity = addNonconformity;
@@ -18,11 +18,13 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
+                vm.data = surveillanceTypes;
                 vm.disableValidation = disableValidation;
                 vm.randomized = randomized;
                 vm.requirement = angular.copy(requirement);
                 vm.showFormErrors = false;
-                vm.data = surveillanceTypes;
+                vm.surveillanceId = surveillanceId;
+                vm.worktype = worktype;
                 if (vm.requirement.type) {
                     vm.requirement.type = findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data);
                 }
@@ -43,7 +45,10 @@
                         disableValidation: function () { return false; },
                         nonconformity: function () { return {}; },
                         randomized: function () { return vm.randomized; },
-                        surveillanceTypes: function () { return vm.data; }
+                        requirementId: function () { return vm.requirement.id; },
+                        surveillanceId: function () { return { vm.surveillanceId; },
+                        surveillanceTypes: function () { return vm.data; },
+                        worktype: function () { return 'add'; }
                     },
                     size: 'lg'
                 });
@@ -81,7 +86,10 @@
                         disableValidation: function () { return vm.disableValidation; },
                         nonconformity: function () { return noncon; },
                         randomized: function () { return vm.randomized; },
-                        surveillanceTypes: function () { return vm.data; }
+                        requirementId: function () { return vm.requirement.id; },
+                        surveillanceId: function () { return { vm.surveillanceId; },
+                        surveillanceTypes: function () { return vm.data; },
+                        worktype: function () { return vm.worktype; }
                     },
                     size: 'lg'
                 });

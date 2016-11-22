@@ -45,7 +45,9 @@
                         disableValidation: function () { return false; },
                         randomized: function () { return vm.surveillance.type.name === 'Randomized'; },
                         requirement: function () { return { nonconformities: [] }; },
-                        surveillanceTypes: function () { return vm.data; }
+                        surveillanceId: function () { return { vm.surveillance.id; },
+                        surveillanceTypes: function () { return vm.data; },
+                        worktype: function () { return 'add'; }
                     },
                     size: 'lg'
                 });
@@ -88,7 +90,9 @@
                         disableValidation: function () { return vm.disableValidation; },
                         randomized: function () { return vm.surveillance.type.name === 'Randomized'; },
                         requirement: function () { return req; },
-                        surveillanceTypes: function () { return vm.data; }
+                        surveillanceId: function () { return { vm.surveillance.id; },
+                        surveillanceTypes: function () { return vm.data; },
+                        worktype: function () { return 'edit'; }
                     },
                     size: 'lg'
                 });
