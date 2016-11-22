@@ -518,6 +518,22 @@
                             activity.action = data[i].description + '<br />' + link;
                         }
                         output.surveillance.push(activity);
+                    } else if (data[i].description.startsWith('Documentation')) {
+                        var cpId = data[i].newData.id;
+                        var chplNum = data[i].newData.chplProductNumber;
+                        var link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                        activity.acb = data[i].newData.certifyingBody.name;
+                        activity.details = ['N/A'];
+                        activity.action = 'Documentation was added to a nonconformity for ' + link;
+                        output.surveillance.push(activity);
+                    } else if (data[i].description.startsWith('A document was removed')) {
+                        var cpId = data[i].newData.id;
+                        var chplNum = data[i].newData.chplProductNumber;
+                        var link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                        activity.acb = data[i].newData.certifyingBody.name;
+                        activity.details = ['N/A'];
+                        activity.action = 'Documentation was removed from a nonconformity for ' + link;
+                        output.surveillance.push(activity);
                     } else {
                         activity.action = data[i].description;
                         output.other.push(activity);

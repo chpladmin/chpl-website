@@ -83,6 +83,7 @@
                 var dev = {
                     developer: {
                         name: vm.cp.developer.name,
+                        status: vm.developer.status,
                         website: vm.cp.developer.website,
                         address: vm.cp.developer.address,
                         transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, acbName: vm.cp.certifyingBody.name, attestation: vm.cp.transparencyAttestation}],

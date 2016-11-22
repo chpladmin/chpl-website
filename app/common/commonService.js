@@ -528,6 +528,10 @@
                 return self.postApiCall('/corrective_action_plan/documentation/' + docId + '/delete', {});
             };
 
+            self.deleteSurveillanceDocument = function (survId, nonconId, docId) {
+                return self.postApiCall('/surveillance/' + survId + '/nonconformity/' + nonconId + '/document/' + docId + '/delete', {});
+            };
+
             self.initiateSurveillance = function (surveillance) {
                 return self.postApiCall('/surveillance/create', surveillance);
             };
