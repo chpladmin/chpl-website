@@ -22,7 +22,7 @@
       <label for="nonconformityStatus" class="col-sm-3">Non-Conformity Status <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="vm.nonconformity.status" id="nonconformityStatus" name="nonconformityStatus"
-                ng-options="type as type.name for type in vm.data.nonconformityStatusTypes.data | orderBy:'name'" required />
+                ng-options="type as type.name for type in vm.data.nonconformityStatusTypes.data | orderBy:'name'" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.nonconformityStatus.$touched) && vm.editForm.nonconformityStatus.$error.required">Field is required</div>
       </div>
@@ -109,6 +109,74 @@
       <div class="col-sm-9">
         <textarea class="input-sm form-control" ng-model="vm.nonconformity.resolution" id="resolution" name="resolution" ng-required="vm.nonconformity.status.name === 'Closed'" ng-disabled="vm.nonconformity.status.name === 'Open'"></textarea>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.resolution.$touched) && vm.editForm.resolution.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="row" ng-if="vm.worktype === 'edit' && vm.nonconformity.documents.length > 0">
+      <div class="col-sm-12">
+        <h3>Supporting documentation</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">File Name</th>
+              <th scope="col">File Type</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="doc in vm.nonconformity.documents">
+              <td>{{ doc.fileName }}</td>
+              <td>{{ doc.fileType }}</td>
+              <td>
+                <button class="btn btn-danger btn-block pull-left"
+                        ng-if="doc.id"
+                        confirm="Are you sure you wish to remove this documentation?"
+                        confirm-ok="Yes"
+                        confirm-cancel="No"
+                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                        ng-click="vm.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row" ng-if="vm.worktype === 'edit'">
+      <div class="col-sm-12">
+        <h3>Upload supporting document(s)</h3>
+        <input type="file" nv-file-select="" uploader="vm.uploader" />
+        <p ng-if="vm.uploadMessage.length > 0">{{ vm.uploadMessage }}</p>
+        <table class="table" ng-if="vm.uploader.queue.length > 0">
+          <thead>
+            <tr>
+              <th width="50%">Name</th>
+              <th ng-show="vm.uploader.isHTML5">Size</th>
+              <th ng-show="vm.uploader.isHTML5">Progress</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in vm.uploader.queue">
+              <td><strong>{{ item.file.name }}</strong></td>
+              <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+              <td ng-show="vm.uploader.isHTML5">
+                <div class="progress" style="margin-bottom: 0;">
+                  <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+              </td>
+              <td nowrap>
+                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                  <i class="fa fa-cloud-upload"></i> Upload
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                  <i class="fa fa-ban"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                  <i class="fa fa-trash-o"></i> Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

@@ -57,6 +57,8 @@
             function sortNonconformityTypes (type) {
                 if (type.name === 'Other Non-Conformity') {
                     return Number.MAX_VALUE;
+                } else if (type.name === 'Other Requirement') {
+                    return 0;
                 }
                 return self.sortCert(type);
             }
@@ -64,6 +66,9 @@
             function sortRequirements (req) {
                 if (angular.isObject(req)) {
                     req = req.requirement;
+                }
+                if (req.indexOf('(') < 0) {
+                    return Number.MAX_VALUE;
                 }
                 var edition = parseInt(req.substring(4,7));
                 var letter = parseInt(req.split('(')[1].charCodeAt(0)) - 96;

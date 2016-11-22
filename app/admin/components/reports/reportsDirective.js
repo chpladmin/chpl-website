@@ -479,31 +479,40 @@
                         } else if (data[i].description.startsWith('Surveillance was updated')) {
                             activity.action = 'Surveillance was updated for CHPL Product ' + link;
                             activity.details = [];
-                            var simpleFields = [
-                                {key: 'endDate', display: 'End Date', filter: 'date'},
-                                {key: 'friendlyId', display: 'Surveillance ID'},
-                                {key: 'randomizedSitesUsed', display: 'Number of sites surveilled'},
-                                {key: 'startDate', display: 'Start Date', filter: 'date'}
-                            ];
-                            var nestedKeys = [
-                                //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
-                                {key: 'type', subkey: 'name', display: 'Certification Type'}
-                            ];
-                            for (var j = 0; j < simpleFields.length; j++) {
-                                change = compareItem(data[i].originalData.surveillance, data[i].newData.surveillance, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
-                                if (change) activity.details.push(change);
-                            }
-                            for (var j = 0; j < nestedKeys.length; j++) {
-                                change = nestedCompare(data[i].originalData.surveillance, data[i].newData.surveillance, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                                if (change) {
-                                    activity.details.push(change);
+                            for (var j = 0; j < data[i].originalData.surveillance.length; j++) {
+                                var action = [data[i].originalData.surveillance[j].friendlyId + '<ul><li>'];
+                                var actions = [];
+                                var simpleFields = [
+                                    {key: 'endDate', display: 'End Date', filter: 'date'},
+                                    {key: 'friendlyId', display: 'Surveillance ID'},
+                                    {key: 'randomizedSitesUsed', display: 'Number of sites surveilled'},
+                                    {key: 'startDate', display: 'Start Date', filter: 'date'}
+                                ];
+                                var nestedKeys = [
+                                    //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
+                                    {key: 'type', subkey: 'name', display: 'Certification Type'}
+                                ];
+                                for (var k = 0; k < simpleFields.length; k++) {
+                                    change = compareItem(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
+                                    if (change) actions.push(change);
                                 }
-                            }
-                            if (!angular.equals(data[i].originalData.surveillance.requirements, data[i].newData.surveillance.requirements)) {
-                                activity.details.push('Requirements changed');
-                            }
-                            if (activity.details.length === 0) {
-                                activity.details.push('Specifics unclear');
+                                for (var k = 0; k < nestedKeys.length; k++) {
+                                    change = nestedCompare(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], nestedKeys[k].key, nestedKeys[k].subkey, nestedKeys[k].display, nestedKeys[k].filter);
+                                    if (change) {
+                                        actions.push(change);
+                                    }
+                                }
+                                /*
+                                if (!angular.equals(data[i].originalData.surveillance[j].requirements, data[i].newData.surveillance[j].requirements)) {
+                                    actions.push('Requirements changed');
+                                }
+                                */
+                                if (actions.length === 0) {
+                                    actions.push('Specifics unclear');
+                                }
+                                action += actions.join('</li><li>');
+                                action += '</li></ul>';
+                                activity.details.push(action);
                             }
                         } else {
                             activity.action = data[i].description + '<br />' + link;

@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Features Added
+* Added new Surveillance Reporting UI
+
+---
+
+## Version 6.1.0
+_22 November 2016_
+
+### Features Added
+* Added text to Resources page under API Section
+
+### Bugs Fixed
+* "Save as Developer Information" bug fixed
+
+---
+
 ## Version 6.0.0
 _15 November 2016_
 
