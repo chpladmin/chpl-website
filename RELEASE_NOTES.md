@@ -1,12 +1,13 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 6.1.0
+_22 November 2016_
 
 ### Features Added
 * Added text to Resources page under API Section
 
 ### Bugs Fixed
+* "Save as Developer Information" bug fixed
 
 --- 
 
