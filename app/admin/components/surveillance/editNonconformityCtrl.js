@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'requirementId', 'surveillanceId', 'surveillanceTypes', 'worktype', 'utilService', function ($modalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, worktype, utilService) {
+        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'requirementId', 'surveillanceId', 'surveillanceTypes', 'worktype', 'utilService', 'authService', 'FileUploader', 'API', function ($modalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, worktype, utilService, authService, FileUploader, API) {
             var vm = this;
 
             vm.cancel = cancel;
@@ -21,7 +21,7 @@
                 vm.randomized = randomized;
                 vm.requirementId = requirementId;
                 vm.showFormErrors = false;
-                vm.surveillanceId = surveillancId;
+                vm.surveillanceId = surveillanceId;
                 vm.worktype = worktype;
                 if (vm.nonconformity.nonconformityType) {
                     vm.nonconformity.nonconformityType = findModel(vm.nonconformity.nonconformityType, vm.data.nonconformityTypes.data);
@@ -98,7 +98,6 @@
             ////////////////////////////////////////////////////////////////////
 
             function buildFileUploader () {
-                vm.cap = correctiveActionPlan;
                 vm.uploader = new FileUploader({
                     url: API + '/surveillance/' + vm.surveillanceId + '/nonconformity/' + vm.nonconformity.id + '/document/create',
                     removeAfterUpload: true,

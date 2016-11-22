@@ -52,7 +52,6 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <pre>{{ vm.surveillance.requirements | json }}</pre>
         <button class="btn btn-success pull-right" ng-click="vm.addRequirement()" ng-disabled="!vm.surveillance.type"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</button>
         <h5>Requirements</h5>
         <span ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">No Surveilled Requirements Found</span>
