@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'requirementId', 'surveillanceId', 'surveillanceTypes', 'worktype', 'utilService', 'authService', 'FileUploader', 'API', function ($modalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, worktype, utilService, authService, FileUploader, API) {
+        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'requirementId', 'surveillanceId', 'surveillanceTypes', 'worktype', 'commonService', 'utilService', 'authService', 'FileUploader', 'API', function ($modalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, worktype, commonService, utilService, authService, FileUploader, API) {
             var vm = this;
 
             vm.cancel = cancel;
