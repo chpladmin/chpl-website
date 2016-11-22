@@ -46,7 +46,7 @@
                         nonconformity: function () { return {}; },
                         randomized: function () { return vm.randomized; },
                         requirementId: function () { return vm.requirement.id; },
-                        surveillanceId: function () { return { vm.surveillanceId; },
+                        surveillanceId: function () { return vm.surveillanceId; },
                         surveillanceTypes: function () { return vm.data; },
                         worktype: function () { return 'add'; }
                     },
@@ -87,7 +87,7 @@
                         nonconformity: function () { return noncon; },
                         randomized: function () { return vm.randomized; },
                         requirementId: function () { return vm.requirement.id; },
-                        surveillanceId: function () { return { vm.surveillanceId; },
+                        surveillanceId: function () { return vm.surveillanceId; },
                         surveillanceTypes: function () { return vm.data; },
                         worktype: function () { return vm.worktype; }
                     },
