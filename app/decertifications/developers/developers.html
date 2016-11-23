@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Decertified Developers on CHPL</h1>
+    </div>
+  </div>
+  <div class="main-content" id="mainContent" tabindex="-1">
+    <div class="row">
+      <div class="col-sm-12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+        <table st-table="vm.displayedDevelopers" st-safe-src="vm.decertifiedDevelopers" class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col" class="search-header" st-sort="acb.name" st-skip-natural="true">ONC-ACB</th>
+              <th scope="col" class="search-header" st-sort="developer.name" st-skip-natural="true" st-sort-default="true">Developer Name</th>
+              <th scope="col" class="search-header" st-sort="status.name" st-skip-natural="true">Developer Status</th>
+              <th scope="col" class="search-header" st-sort="estimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
+            </tr>
+            <tr>
+              <th>
+                <select st-search="acb.name" class="input-sm form-control" type="search" ng-model="vm.filter.acb"
+                        ng-options="acb.name as acb.name for acb in vm.acbs | orderBy:'name'">
+                  <option value="">All</option>
+                </select>
+              </th>
+              <th><input st-search="developer.name" placeholder="Filter Developer" class="input-sm form-control" type="search" ng-model="vm.filter.developer"></th>
+              <th>
+                <select st-search="status.name" class="input-sm form-control" type="search" ng-model="vm.filter.status">
+                  <option value="">All</option>
+                  <option value="Decertified by ONC">Decertified by ONC</option>
+                  <option value="Terminated by ONC">Terminated by ONC</option>
+                </select>
+              </th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="vm.displayedDevelopers.length === 0">
+              <td colspan="4">No Decertified Developers found</td>
+            </tr>
+            <tr ng-repeat="dev in vm.displayedDevelopers">
+              <td>{{ dev.acb.name }}</td>
+              <td>{{ dev.developer.name }}</td>
+              <td>{{ dev.status.name }}</td>
+              <td>{{ dev.estimatedUsers }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

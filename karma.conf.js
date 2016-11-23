@@ -35,6 +35,7 @@ module.exports = function(config){
             'app/common/**/*.js',
             'app/admin/**/*.js',
             'app/compare/**/*.js',
+            'app/decertifications/**/*.js',
             'app/login/**/*.js',
             'app/nav/**/*.js',
             'app/product/**/*.js',
@@ -49,6 +50,7 @@ module.exports = function(config){
         preprocessors: {
             'app/common/**/!(*test|swagger*).js': ['coverage'],
             'app/compare/**/!(*test).js': ['coverage'],
+            'app/decertifications/**/!(*test).js': ['coverage'],
             'app/login/**/!(*test).js': ['coverage'],
             'app/nav/**/!(*test).js': ['coverage'],
             'app/admin/**/!(*test).js': ['coverage'],
@@ -69,6 +71,7 @@ module.exports = function(config){
             'app/admin/components/reports/*.html': ['ng-html2js'],
             'app/admin/components/surveillance/*.html': ['ng-html2js'],
             'app/admin/components/user/*.html': ['ng-html2js'],
+            'app/decertifications/developers/*.html': ['ng-html2js'],
             'app/common/components/surveillance/*.html': ['ng-html2js']
         },
 
