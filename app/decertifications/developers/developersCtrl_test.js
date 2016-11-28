@@ -5,11 +5,12 @@
         var vm, scope, ctrl, $log, $timeout, $q, commonService, mock;
 
         mock = {
-            decertifiedDevelopers: ['dev 1', 'dev 2]'],
+            decertifiedDevelopers: [{developer: {name: 'dev 1'}}, {developer: {name: 'dev 2'}}],
+            developers: [{name: 'dev 1'}, {name: 'dev 2'}],
             filter: { acb: 'Drummond', developer: 'epic', status: 'broke'},
             searchOptions: {
                 certBodyNames: [{name: 'ICSA Labs'}, {name: 'Drummond Group'}, {name: 'Infogard'}],
-                developerStatuses: [{name: 'Under certification by by ONC'}, {name: 'Terminated by ONC'}]
+                developerStatuses: [{name: 'Under certification ban by ONC'}, {name: 'Terminated by ONC'}]
             }
         };
 
@@ -76,6 +77,11 @@
             vm.filter = mock.filter;
             vm.clearFilters();
             expect(vm.filter).toEqual({ acb: '', developer: '', status: ''});
+        });
+
+        it('should get a list of strings of developer names', function () {
+            expect(vm.developers).toBeDefined();
+            expect(vm.developers).toEqual(mock.developers);
         });
     });
 })();

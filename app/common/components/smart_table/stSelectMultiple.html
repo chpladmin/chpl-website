@@ -1,0 +1,9 @@
+<ng-transclude></ng-transclude>
+<ul>
+  <li ng-repeat="item in distinctItems | orderBy:'value'">
+    <label class="control-label">
+      <input type="checkbox" ng-model="item.selected" ng-click="filterChanged()">
+      {{ item.value }}
+    </label>
+  </li>
+</ul>

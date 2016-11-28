@@ -1,0 +1,13 @@
+<div class="dropdown">
+  <button class="btn btn-block btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    {{ dropdownLabel }}<i class="fa fa-filter pull-right"></i>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li ng-repeat="item in distinctItems | orderBy:'value'">
+      <label class="control-label">
+        <input type="checkbox" ng-model="item.selected" ng-click="filterChanged()">
+        {{ item.value }}
+      </label>
+    </li>
+  </ul>
+</div>

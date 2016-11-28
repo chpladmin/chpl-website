@@ -533,3 +533,57 @@ option[disabled] {
 .status-bad {
     color: red;
 }
+
+#filters .emphasis {
+    font-style: italic;
+}
+
+#filters button a {
+    color: #f5d43c;
+    text-decoration: none;
+}
+
+#search-page .dropdown-menu {
+    width: 150%;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#search-page .dropdown-menu-large,
+#decertifications-page .dropdown-menu-large {
+    min-width: 400px;
+}
+
+#search-page .dropdown-menu>li>label,
+#decertifications-page .dropdown-menu>li>label {
+    cursor: pointer;
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+}
+
+#search-page .dropdown-menu>li>span>a,
+#decertifications-page .dropdown-menu>li>span>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+}
+
+#search-page .dropdown-menu>li.form-horizontal>div.form-group,
+#decertifications-page .dropdown-menu>li.form-horizontal>div.form-group {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#search-page .dropdown-menu>li>div>label.control-label,
+#decertifications-page .dropdown-menu>li>div>label.control-label {
+    display: block;
+    padding-left: 20px;
+    clear: both;
+    text-align: left;
+}
+
+#search-page .dropdown-menu>li>a,
+#decertifications-page .dropdown-menu>li>a {
+    font-weight: 700;
+}
