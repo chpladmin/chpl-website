@@ -320,6 +320,10 @@
             self.getUploadingCps = function () {
                 return self.simpleApiCall('/certified_products/pending');
             };
+            
+            self.getUploadingMeaningfulUseUsers = function () {
+            	return self.simpleApiCall('/meaningful_use_users/upload');
+            }
 
             self.keepalive = function () {
                 return self.simpleApiCall('/auth/keep_alive');
