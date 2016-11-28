@@ -1,22 +1,21 @@
 <section class="row">
-  <div class="col-md-12 main-content">
+  <div class="col-md-6 main-content">
     <h2>Download the latest CMS listing</h2>
     <div>
       <a type="button" class="btn btn-lg btn-ai-success" ng-disabled="!vm.isReady"
          ng-csv="vm.cmsArray" filename="{{ vm.filename }}"
          csv-header="vm.csvHeader" csv-column-order="vm.csvColumnOrder"><i class="fa fa-cloud-download"></i> Download</a>
     </div>
-  </div>
+     </div>
   
-  <div class="row" ng-if="vm.workType === 'muu-upload'">
-      <div class="col-sm-12" ng-if="vm.isChplAdmin || vm.isOncStaff">
+      <div class="col-md-6" ng-if="vm.isChplAdmin || vm.isOncStaff">
         <h3>Upload Meaningful Use Users</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
         <div ng-if="vm.uploadMessage.length > 0" ng-class="vm.uploadSuccess ? 'bg-success' : 'bg-danger'">
           {{ vm.uploadMessage }}
-          <ul ng-if="vm.uploadErrors.length > 0">
-            <li ng-repeat="error in vm.uploadErrors">{{ error }}</li>
+          <ul ng-if="vm.uploadErrors.length > 0" ng-class="'bg-danger'">
+            <li ng-repeat="error in vm.uploadErrors">{{ error.error }}</li>
           </ul>
         </div>
         <table class="table" ng-if="vm.uploader.queue.length > 0">
@@ -51,6 +50,5 @@
             </tr>
           </tbody>
         </table>
-      </div>
-    </div> <!-- end upload meaningful use users -->
+      </div> <!-- end upload meaningful use users -->
 </section>
