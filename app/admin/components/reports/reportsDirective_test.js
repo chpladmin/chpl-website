@@ -14,7 +14,7 @@
                 $provide.value('authService', mockAuthService);
             });
 
-            module('app/admin/components/reports.html');
+            module('app/admin/components/reports/reports.html');
 
             inject(function($q) {
                 mockCommonService.developerActivity = [{"id":16,"description":"Developer Epic Systems Corporation was updated.","originalData":{"developerCode":"1448","id":449,"address":null,"contact":null,"creationDate":1459774929469,"deleted":false,"lastModifiedDate":1459774929469,"lastModifiedUser":-1,"name":"Epic Systems Corporation","website":null,"transparencyAttestationMappings":[{"id":null,"developerId":449,"acbId":1,"acbName":"InfoGard","transparencyAttestation":null},{"id":null,"developerId":449,"acbId":3,"acbName":"Drummond Group Inc.","transparencyAttestation":null},{"id":null,"developerId":449,"acbId":6,"acbName":"ICSA Labs","transparencyAttestation":null}]},"newData":{"developerCode":"1448","id":449,"address":{"id":1,"streetLineOne":"1979 Milky Way","streetLineTwo":null,"city":"Verona","state":"WI","zipcode":"53593","country":"USA","creationDate":1459887759394,"deleted":false,"lastModifiedDate":1459887759394,"lastModifiedUser":-2},"contact":{"id":4,"firstName":"","lastName":"Sasha TerMaat","email":"epic@epic.com","phoneNumber":"1233211234","title":null,"signatureDate":null},"creationDate":1459774929469,"deleted":false,"lastModifiedDate":1459887759472,"lastModifiedUser":-2,"name":"Epic Systems Corporation","website":"www.epic.com","transparencyAttestationMappings":[{"id":null,"developerId":449,"acbId":1,"acbName":"InfoGard","transparencyAttestation":null},{"id":null,"developerId":449,"acbId":3,"acbName":"Drummond Group Inc.","transparencyAttestation":null},{"id":null,"developerId":449,"acbId":6,"acbName":"ICSA Labs","transparencyAttestation":null}]},"activityDate":1459887759535,"activityObjectId":449,"concept":"ACTIVITY_CONCEPT_DEVELOPER","responsibleUser":{"userId":-2,"subjectName":"admin","firstName":"Administrator","lastName":"Administrator","email":"info@ainq.com","phoneNumber":"(301) 560-6999","title":null,"complianceTermsAccepted":true,"accountLocked":false,"accountEnabled":true,"hash":null}}]
@@ -119,7 +119,7 @@
                 mockAuthService.isChplAdmin = function () {
                     return true;
                 };
-                
+
                 mockAuthService.isOncStaff = function () {
                 	return true;
                 };
@@ -130,8 +130,8 @@
             $log = _$log_;
             scope = $rootScope.$new();
 
-            var template = $templateCache.get('app/admin/components/reports.html');
-            $templateCache.put('admin/components/reports.html', template);
+            var template = $templateCache.get('app/admin/components/reports/reports.html');
+            $templateCache.put('admin/components/reports/reports.html', template);
 
             element = angular.element('<ai-reports></ai-reports');
             $compile(element)(scope);

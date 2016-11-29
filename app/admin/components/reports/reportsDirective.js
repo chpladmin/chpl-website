@@ -70,6 +70,7 @@
                         interpretCps(data);
                         vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                         vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
+                        vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
                         vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                         vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                     });
@@ -325,6 +326,7 @@
                 var output = {
                     upload: [],
                     status: [],
+                    surveillance: [],
                     cap: [],
                     other: []
                 };
@@ -462,6 +464,76 @@
                         activity.action = cpNum.join(' ');
                         activity.acb = data[i].newData.acbName;
                         output.cap.push(activity);
+                    } else if (data[i].description.startsWith('Surveillance')) {
+                        var cpId = data[i].newData.id;
+                        var chplNum = data[i].newData.chplProductNumber;
+                        var link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                        activity.acb = data[i].newData.certifyingBody.name;
+                        activity.details = ['N/A'];
+                        if (data[i].description.startsWith('Surveillance was delete')) {
+                            activity.action = 'Surveillance was deleted from CHPL Product ' + link;
+                        } else if (data[i].description.startsWith('Surveillance upload')) {
+                            activity.action = 'Surveillance was uploaded for CHPL Product ' + link;
+                        } else if (data[i].description.startsWith('Surveillance was added')) {
+                            activity.action = 'Surveillance was added for CHPL Product ' + link;
+                        } else if (data[i].description.startsWith('Surveillance was updated')) {
+                            activity.action = 'Surveillance was updated for CHPL Product ' + link;
+                            activity.details = [];
+                            for (var j = 0; j < data[i].originalData.surveillance.length; j++) {
+                                var action = [data[i].originalData.surveillance[j].friendlyId + '<ul><li>'];
+                                var actions = [];
+                                var simpleFields = [
+                                    {key: 'endDate', display: 'End Date', filter: 'date'},
+                                    {key: 'friendlyId', display: 'Surveillance ID'},
+                                    {key: 'randomizedSitesUsed', display: 'Number of sites surveilled'},
+                                    {key: 'startDate', display: 'Start Date', filter: 'date'}
+                                ];
+                                var nestedKeys = [
+                                    //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
+                                    {key: 'type', subkey: 'name', display: 'Certification Type'}
+                                ];
+                                for (var k = 0; k < simpleFields.length; k++) {
+                                    change = compareItem(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
+                                    if (change) actions.push(change);
+                                }
+                                for (var k = 0; k < nestedKeys.length; k++) {
+                                    change = nestedCompare(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], nestedKeys[k].key, nestedKeys[k].subkey, nestedKeys[k].display, nestedKeys[k].filter);
+                                    if (change) {
+                                        actions.push(change);
+                                    }
+                                }
+                                /*
+                                if (!angular.equals(data[i].originalData.surveillance[j].requirements, data[i].newData.surveillance[j].requirements)) {
+                                    actions.push('Requirements changed');
+                                }
+                                */
+                                if (actions.length === 0) {
+                                    actions.push('Specifics unclear');
+                                }
+                                action += actions.join('</li><li>');
+                                action += '</li></ul>';
+                                activity.details.push(action);
+                            }
+                        } else {
+                            activity.action = data[i].description + '<br />' + link;
+                        }
+                        output.surveillance.push(activity);
+                    } else if (data[i].description.startsWith('Documentation')) {
+                        var cpId = data[i].newData.id;
+                        var chplNum = data[i].newData.chplProductNumber;
+                        var link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                        activity.acb = data[i].newData.certifyingBody.name;
+                        activity.details = ['N/A'];
+                        activity.action = 'Documentation was added to a nonconformity for ' + link;
+                        output.surveillance.push(activity);
+                    } else if (data[i].description.startsWith('A document was removed')) {
+                        var cpId = data[i].newData.id;
+                        var chplNum = data[i].newData.chplProductNumber;
+                        var link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                        activity.acb = data[i].newData.certifyingBody.name;
+                        activity.details = ['N/A'];
+                        activity.action = 'Documentation was removed from a nonconformity for ' + link;
+                        output.surveillance.push(activity);
                     } else {
                         activity.action = data[i].description;
                         output.other.push(activity);
@@ -469,6 +541,7 @@
                 }
                 vm.searchedCertifiedProductsUpload = output.upload;
                 vm.searchedCertifiedProductsStatus = output.status;
+                vm.searchedCertifiedProductsSurveillance = output.surveillance;
                 vm.searchedCertifiedProductsCAP = output.cap;
                 vm.searchedCertifiedProducts = output.other;
             }
@@ -1035,7 +1108,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'admin/components/reports.html',
+                templateUrl: 'admin/components/reports/reports.html',
                 bindToController: { workType: '=',
                                     productId: '='},
                 scope: {triggerRefresh: '&'},

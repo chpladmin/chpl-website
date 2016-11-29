@@ -9,7 +9,7 @@
             mockCommonService = {};
             module('app.admin', function($provide) {
                 $provide.value('commonService', mockCommonService);
-            },'app/admin/components/userManagement.html');
+            },'app/admin/components/user/userManagement.html');
 
             inject(function($q) {
                 mockCommonService.users = {"data": {"users":[{"subjectName":"admin","firstName":"Administrator","lastName":"Administrator","email":"info@ainq.com","phoneNumber":"(301) 560-6999","title":null,"accountLocked":false,"accountEnabled":true}]}};
@@ -32,8 +32,8 @@
             scope.userManagementInviteUser = {$setPristine: function () {},
                                               $setUntouched: function () {}};
 
-            var template = $templateCache.get('app/admin/components/userManagement.html');
-            $templateCache.put('admin/components/userManagement.html', template);
+            var template = $templateCache.get('app/admin/components/user/userManagement.html');
+            $templateCache.put('admin/components/user/userManagement.html', template);
 
             element = angular.element('<ai-user-management create-user="fakeFunction" modify-user="fakeFunction" delete-user="fakeFunction" cancel-user="fakeFunction"></ai-user-management');
             $compile(element)(scope);

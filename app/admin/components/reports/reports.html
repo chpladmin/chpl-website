@@ -135,6 +135,67 @@
       </div>
     </div>
 
+    <div class="row" ng-if="vm.workType === 'cp-surveillance' || (vm.workType === '' && vm.productId)">
+      <div class="col-sm-12">
+        <h3>Surveillance Activity</h3>
+        <div class="formGroup">
+          <label for="activityStart" class="col-sm-2 control-label">Start Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.startDate" name="activityStart" id="activityStart" ng-change="vm.refreshActivity()" ng-max="vm.activityRange.endDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityStart.$error.max">Date must be before end date</span>
+          </div>
+          <label for="activityEnd" class="col-sm-2 control-label">End Date</label>
+          <div class="col-sm-4">
+            <input type="date" class="form-control" ng-model="vm.activityRange.endDate" name="activityEnd" id="activityEnd" ng-change="vm.refreshActivity()" ng-min="vm.activityRange.startDate" placeholder="yyyy-MM-dd">
+            <span class="text-danger" ng-if="vm.activityForm.activityEnd.$error.min">Date must be after start date</span>
+          </div>
+        </div>
+        <table st-table="vm.displayedCertifiedProductsSurveillance" st-safe-src="vm.searchedCertifiedProductsSurveillance" class="table table-striped">
+          <thead>
+            <tr>
+              <th class="search-header" st-sort="acb" st-skip-natural="true">ACB</th>
+              <th>Action</th>
+              <th>Activity</th>
+              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
+            </tr>
+            <tr>
+              <th><input st-search="acb" placeholder="Filter ACB" class="input-sm form-control" type="search"></th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <a type="button" class="btn btn-lg btn-ai-success"
+                   ng-csv="vm.displayedCertifiedProductsSurveillance" filename="CP_Surveillance_{{ vm.filename }}"
+                   csv-header="['ACB', 'Action', 'Activity', 'Activity Date']"
+                   csv-column-order="['acb', 'action', 'csvDetails', 'friendlyActivityDate']">
+                  <i class="fa fa-cloud-download"></i> Download
+                </a>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr ng-if="vm.displayedCertifiedProductsSurveillance.length === 0">
+              <td colspan="8">No activity found</td>
+            </tr>
+	        <tr ng-repeat="activity in vm.displayedCertifiedProductsSurveillance" ng-if="vm.displayedCertifiedProductsSurveillance.length > 0">
+              <td>{{ activity.acb }}</td>
+              <td ng-bind-html="activity.action"></td>
+              <td>
+                <ul class="list-unstyled" ng-if="activity.details">
+                  <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
+                </ul>
+              </td>
+		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="row" ng-if="vm.workType === 'cp-cap' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
         <h3>Corrective Action Plans</h3>

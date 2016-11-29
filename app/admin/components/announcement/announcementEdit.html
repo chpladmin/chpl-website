@@ -1,0 +1,76 @@
+<div role="modal" aria-labeled-by="editLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit announcement</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create announcement</h4>
+  </div>
+  <div class="modal-body" ng-form="vm.editForm">
+    <div class="form-group">
+      <label for="title">Title <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.announcement.title" id="title" name="title" ng-disabled="vm.announcement.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.title.$touched && vm.editForm.title.$error.required">Title is required</div>
+    </div>
+    <div class="form-group">
+      <label for="announcement_text">Announcement Text </label>
+      <input class="input-sm form-control" type="text" ng-model="vm.announcement.text" id="announcement_text" name="announcement_text" ng-disabled="vm.announcement.isDeleted"></input>
+    </div>
+    <div class="form-group">
+      <label for="startDate">Start Date <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="date" required ng-model="vm.announcement.startDate" id="startDate" name="startDate" ng-model-options="{ timezone: 'UTC' }" ng-disabled="vm.announcement.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.startDate.$touched && vm.editForm.startDate.$error.required">Start Date is required</div>
+      <div class="text-danger" ng-if="vm.editForm.startDate.$touched && vm.editForm.startDate.$error.date">Start Date is invalid</div>
+    </div>
+    <div class="form-group">
+      <label for="endDate">End Date <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="date" required ng-model="vm.announcement.endDate" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }" ng-disabled="vm.announcement.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.endDate.$touched && vm.editForm.endDate.$error.required">End Date is required</div>
+      <div class="text-danger" ng-if="vm.editForm.endDate.$touched && vm.editForm.endDate.$error.date">End Date is invalid</div>
+    </div>
+    <div class="text-danger" ng-if="vm.editForm.startDate.$touched && vm.editForm.endDate.$touched && vm.datesInvalid()">Start Date must be before End Date</div>
+    <div class="form-group">
+      <label for="isPublic">Is this public </label>
+      <input class="input-sm" type="checkbox" ng-model="vm.announcement.isPublic" id="isPublic" name="isPublic" ng-disabled="vm.announcement.isDeleted"></input>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || vm.datesInvalid()) && vm.showFormErrors">
+      The following error(s) must be fixed:
+      <ul>
+        <li ng-if="vm.editForm.title.$error.required">Title is required</li>
+        <li ng-if="vm.editForm.startDate.$error.required">Start Date is required</li>
+        <li ng-if="vm.editForm.startDate.$error.date">Start Date is invalid</li>
+        <li ng-if="vm.editForm.endDate.$error.required">End Date is required</li>
+        <li ng-if="vm.editForm.endDate.$error.date">End Date is invalid</li>
+        <li ng-if="vm.editForm.startDate.$touched && vm.editForm.endDate.$touched && vm.datesInvalid()">Start Date must be before End Date</li>
+      </ul>
+    </div>
+    <button ng-disabled="(vm.editForm.$invalid || vm.datesInvalid()) && vm.showFormErrors" class="btn btn-ai-success btn-block"
+            ng-mouseover="vm.showFormErrors = true"
+            ng-if="vm.action === 'create'"
+            ng-click="vm.create()"><i class="fa fa-save"></i> Create announcement</button>
+    <span ng-if="!vm.announcement.isDeleted">
+      <button ng-disabled="(vm.editForm.$invalid || vm.datesInvalid()) && vm.showFormErrors" class="btn btn-ai-success btn-block"
+              ng-mouseover="vm.showFormErrors = true"
+              ng-if="vm.action === 'edit'"
+              ng-click="vm.save()"><i class="fa fa-save"></i> Save announcement</button>
+      <button class="btn btn-warning btn-block"
+              confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
+      <button class="btn btn-danger btn-block"
+              ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.announcement.isDeleted"
+              confirm="Are you sure you wish to delete this announcement?"
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.deleteAnnouncement()"><i class="fa fa-trash-o"></i> Delete announcement</button>
+    </span>
+  </div>
+</div>

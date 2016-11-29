@@ -192,7 +192,7 @@
 
             function editCertifiedProduct () {
                 vm.editModalInstance = $modal.open({
-                    templateUrl: 'admin/components/vpEditCertifiedProduct.html',
+                    templateUrl: 'admin/components/cp/vpEditCertifiedProduct.html',
                     controller: 'EditCertifiedProductController',
                     controllerAs: 'vm',
                     animation: false,

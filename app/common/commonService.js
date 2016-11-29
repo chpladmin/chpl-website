@@ -118,6 +118,35 @@
                 return self.simpleApiCall('/data/targeted_users');
             };
 
+            self.getSurveillanceLookups = function () {
+                var data = {};
+                self.simpleApiCall('/data/surveillance_types')
+                    .then(function (response) {
+                        data.surveillanceTypes = response;
+                        self.simpleApiCall('/data/surveillance_requirement_types')
+                            .then(function (response) {
+                                data.surveillanceRequirementTypes = response;
+                                self.simpleApiCall('/data/surveillance_result_types')
+                                    .then(function (response) {
+                                        data.surveillanceResultTypes = response;
+                                        self.simpleApiCall('/data/nonconformity_status_types')
+                                            .then(function (response) {
+                                                data.nonconformityStatusTypes = response;
+                                                self.simpleApiCall('/data/surveillance_requirements')
+                                                    .then(function (response) {
+                                                        data.surveillanceRequirements = response;
+    	                                                self.simpleApiCall('/data/nonconformity_types')
+                                                            .then(function (response) {
+                                                                data.nonconformityTypes = response;
+                                                            })
+                                                    })
+                                            })
+                                    })
+                            })
+                    })
+                return data;
+            };
+
             self.getCmsDownload = function () {
                 return self.simpleApiCall('/certification_ids/');
             };
@@ -321,6 +350,10 @@
                 return self.simpleApiCall('/certified_products/pending');
             };
 
+            self.getUploadingSurveillances = function () {
+                return self.simpleApiCall('/surveillance/pending');
+            };
+
             self.keepalive = function () {
                 return self.simpleApiCall('/auth/keep_alive');
             };
@@ -459,8 +492,16 @@
                 return self.postApiCall('/certified_products/pending/confirm', pendingCp);
             };
 
+            self.confirmPendingSurveillance = function (surveillance) {
+                return self.postApiCall('/surveillance/pending/confirm', surveillance);
+            };
+
             self.rejectPendingCp = function (cpId) {
                 return self.postApiCall('/certified_products/pending/' + cpId + '/reject', {});
+            };
+
+            self.rejectPendingSurveillance = function (survId) {
+                return self.postApiCall('/surveillance/pending/' + survId + '/reject', {});
             };
 
 			self.lookupCertificationId = function (certId) {
@@ -487,16 +528,16 @@
                 return self.postApiCall('/corrective_action_plan/documentation/' + docId + '/delete', {});
             };
 
+            self.deleteSurveillanceDocument = function (survId, nonconId, docId) {
+                return self.postApiCall('/surveillance/' + survId + '/nonconformity/' + nonconId + '/document/' + docId + '/delete', {});
+            };
+
             self.initiateSurveillance = function (surveillance) {
                 return self.postApiCall('/surveillance/create', surveillance);
             };
 
             self.updateSurveillance = function (surveillance) {
                 return self.postApiCall('/surveillance/update', surveillance);
-            };
-
-            self.getSurveillance = function (certifiedProductId) {
-                return self.simpleApiCall('/surveillance/?certifiedProductId=' + certifiedProductId);
             };
 
             self.deleteSurveillance = function (surveillanceId) {

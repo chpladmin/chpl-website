@@ -5,6 +5,7 @@ _Date TBD_
 
 ### Features Added
 * Add meaningfulUseUser upload functionality under CMS Management
+* Added new Surveillance Reporting UI
 
 ### Bugs Fixed
 
@@ -19,7 +20,7 @@ _22 November 2016_
 ### Bugs Fixed
 * "Save as Developer Information" bug fixed
 
---- 
+---
 
 ## Version 6.0.0
 _15 November 2016_
