@@ -3,7 +3,7 @@
 
     describe('app.nav', function () {
 
-        var httpProvider, authInterceptor, authService, mockAuthService;
+        var httpProvider, authInterceptor, authService, mockAuthService, $log;
         var username = 'user name';
         var token = 'example token';
         var trueApiUrl = 'http://localhost:8080/chpl-service';
@@ -17,32 +17,22 @@
                 httpProvider = $httpProvider;
             });
 
-            inject(function($q) {
-                mockAuthService.getToken = function () {
-                    return token;
-                };
-
-                mockAuthService.getApiKey = function () {
-                    return 'key';
-                };
-
-                mockAuthService.saveToken = function (token) {
-                };
-
-                mockAuthService.getUsername = function () {
-                    return username;
-                };
-
-                mockAuthService.logout = function () {
-                };
-
-                mockAuthService.isAuthed = function () {
-                };
-            });
-
-            inject(function (_authInterceptor_) {
+            inject(function(_authInterceptor_, _$log_) {
+                mockAuthService.getToken = function () { return token; };
+                mockAuthService.getApiKey = function () { return 'key'; };
+                mockAuthService.saveToken = function (token) { };
+                mockAuthService.getUsername = function () { return username; };
+                mockAuthService.logout = function () { };
+                mockAuthService.isAuthed = function () { };
                 authInterceptor = _authInterceptor_;
+                $log = _$log_;
             });
+        });
+
+        afterEach(function () {
+            if ($log.debug.logs.length > 0) {
+                console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+            }
         });
 
         describe('authInterceptor', function () {
@@ -102,7 +92,7 @@
                 scope = $rootScope.$new();
 
                 ctrl = $controller('NavigationController', {
-                        '$scope': scope
+                    '$scope': scope
                 });
             }));
 
@@ -118,6 +108,12 @@
                 spyOn(mockAuthService, 'isAuthed');
                 ctrl.isAuthed();
                 expect(mockAuthService.isAuthed).toHaveBeenCalled();
+            });
+
+            it('should know what page is active', function () {
+                spyOn($location,'path').and.returnValue('/admin/userManagement');
+                expect(ctrl.isActive('admin')).toBe(true);
+                expect(ctrl.isActive('resources')).toBe(false);
             });
         });
     });

@@ -1,0 +1,50 @@
+<div class="container-fluid" id="decertifications-page">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Decertified Developers on CHPL</h1>
+    </div>
+  </div>
+  <div class="main-content" id="mainContent" tabindex="-1">
+    <div class="row">
+      <div class="col-sm-12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+        <table st-set-filter="customFilter" st-table="vm.displayedDevelopers" st-safe-src="vm.modifiedDecertifiedDevelopers" class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col" class="search-header" st-sort="stAcb" st-skip-natural="true">ONC-ACB</th>
+              <th scope="col" class="search-header" st-sort="stDeveloper" st-skip-natural="true" st-sort-default="true">Developer Name</th>
+              <th scope="col" class="search-header" st-sort="stStatus" st-skip-natural="true">Developer Status</th>
+              <th scope="col" class="search-header" st-sort="stEstimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
+            </tr>
+            <tr id="filters">
+              <th>
+                <st-select-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stAcb"></st-select-multiple>
+              </th>
+              <th>
+                <st-select-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stDeveloper"></st-select-multiple>
+              </th>
+              <th>
+                <st-select-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stStatus"></st-select-multiple>
+              </th>
+              <th>
+                <st-number-range predicate="stEstimatedUsers" lower="query.lower" higher="query.higher"></st-number-range>
+		        <!--<st-date-range predicate="birthDate" before="query.before" after="query.after"></st-date-range>-->
+	          </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="vm.displayedDevelopers.length === 0">
+              <td colspan="4">No Decertified Developers found</td>
+            </tr>
+            <tr ng-repeat="dev in vm.displayedDevelopers">
+              <td>{{ dev.stAcb }}</td>
+              <td>{{ dev.stDeveloper }}</td>
+              <td>{{ dev.stStatus }}</td>
+              <td>{{ dev.stEstimatedUsers }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

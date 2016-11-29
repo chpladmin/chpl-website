@@ -588,5 +588,13 @@
                 if (params.length > 0) { var queryParams = '?' + params.join('&'); }
                 return self.postApiCall('/key/activity/' + queryParams, {});
             };
+
+            self.getDecertifiedDevelopers = function () {
+                return self.simpleApiCall('/decertifications/developers');
+            };
+
+            self.getDecertifiedProducts = function () {
+                return self.simpleApiCall('/decertifications/products');
+            };
         });
 })();

@@ -3,7 +3,7 @@
 
     angular.module('app', ['ngRoute', 'angular-loading-bar', 'ngAnimate', 'angulartics', 'angulartics.google.analytics', 'angulartics.google.tagmanager',// 'angulartics.debug',
                            'googlechart', 'angularFileUpload', 'angular-confirm', 'ngSanitize', 'swaggerUi', 'ngCsv',
-                           'app.resources', 'app.nav', 'app.compare', 'app.product', 'app.search', 'app.admin', 'app.overview', 'app.registration'])
+                           'app.resources', 'app.nav', 'app.compare', 'app.product', 'app.search', 'app.admin', 'app.overview', 'app.registration', 'app.decertifications'])
         .config(['$routeProvider', function($routeProvider) {
             $routeProvider
                 .otherwise({redirectTo: '/search'});

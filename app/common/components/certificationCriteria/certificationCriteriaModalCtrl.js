@@ -38,7 +38,7 @@
 
             function addTask () {
                 vm.editModalInstance = $modal.open({
-                    templateUrl: 'common/components/sedTaskModal.html',
+                    templateUrl: 'common/components/certificationCriteria/sedTaskModal.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -66,7 +66,7 @@
 
             function editTask (task, idx) {
                 vm.editModalInstance = $modal.open({
-                    templateUrl: 'common/components/sedTaskModal.html',
+                    templateUrl: 'common/components/certificationCriteria/sedTaskModal.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,

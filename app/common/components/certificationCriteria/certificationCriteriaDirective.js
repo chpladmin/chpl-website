@@ -17,7 +17,7 @@
 
             function editCert () {
                 vm.editModalInstance = $modal.open({
-                    templateUrl: 'common/components/certificationCriteriaModal.html',
+                    templateUrl: 'common/components/certificationCriteria/certificationCriteriaModal.html',
                     controller: 'EditCertificationCriteriaController',
                     controllerAs: 'vm',
                     animation: false,
@@ -62,7 +62,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'common/components/certificationCriteria.html',
+                templateUrl: 'common/components/certificationCriteria/certificationCriteria.html',
                 bindToController: {
                     cert: '=',
                     viewAll: '=',

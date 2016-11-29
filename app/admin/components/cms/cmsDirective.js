@@ -24,7 +24,7 @@
                         'API-Key': authService.getApiKey()
                     }
             	});
-            	
+
             	if (angular.isUndefined(vm.uploader.filters)) {
                     vm.uploader.filters = [];
                 }
@@ -37,8 +37,8 @@
                 });
                 vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
                     //$log.info('onSuccessItem', fileItem, response, status, headers);
-                	vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.meaningfulUseUsers.length + ' certified products out of ' 
-                	+ (response.errors.length + response.meaningfulUseUsers.length) + ' were updated with meaningful use user counts.';
+                	vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.meaningfulUseUsers.length + ' certified products out of '
+                	    + (response.errors.length + response.meaningfulUseUsers.length) + ' were updated with meaningful use user counts.';
                     vm.uploadErrors = response.errors;
                     vm.uploadSuccess = true;
                 };
@@ -64,7 +64,7 @@
                 vm.isReady = false;
                 vm.getDownload();
             }
-            
+
             function getDownload () {
                 commonService.getCmsDownload()
                     .then(function (result) {
@@ -77,7 +77,9 @@
                         $log.debug('error in app.admin.cmsController.getDownload', error);
                     });
             }
-            //////////////////////////////////////////////////////////////////// 
+
+            ////////////////////////////////////////////////////////////////////
+
         }])
         .directive('aiCmsManagement', [function () {
             return {

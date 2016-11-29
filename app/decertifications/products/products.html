@@ -1,0 +1,56 @@
+<div class="container-fluid" id="decertifications-page">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Decertified Products on CHPL</h1>
+    </div>
+  </div>
+  <div class="main-content" id="mainContent" tabindex="-1">
+    <div class="row">
+      <div class="col-sm-12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+        <table st-set-filter="customFilter" st-table="vm.displayedProducts" st-safe-src="vm.modifiedDecertifiedProducts" class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col" class="search-header" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
+              <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+              <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+              <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+              <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
+              <th scope="col" class="search-header" st-sort="estimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
+              <th scope="col" class="search-header" st-sort="product" st-skip-natural="true">Product</th>
+              <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Certification Status</th>
+              <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
+            </tr>
+            <tr id="filters">
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="acb"></st-select-multiple></th>
+		      <th><st-date-range predicate="certificationDate" before="query.before" after="query.after"></st-date-range></th>
+              <th><input placeholder="search CHPL Product Number" st-search="chplProductNumber"></th>
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="developer"></st-select-multiple></th>
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="edition"></st-select-multiple></th>
+              <th><st-number-range predicate="estimatedUsers" lower="query.lower" higher="query.higher"></st-number-range></th>
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="product"></st-select-multiple></th>
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="status"></st-select-multiple></th>
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="version"></st-select-multiple></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="vm.displayedProducts.length === 0">
+              <td colspan="9">No Decertified Products found</td>
+            </tr>
+            <tr ng-repeat="prod in vm.displayedProducts">
+              <td>{{ prod.acb }}</td>
+              <td>{{ prod.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+              <td>{{ prod.chplProductNumber }}</td>
+              <td>{{ prod.developer }}</td>
+              <td>{{ prod.edition }}</td>
+              <td>{{ prod.estimatedUsers }}</td>
+              <td>{{ prod.product }}</td>
+              <td>{{ prod.status }}</td>
+              <td>{{ prod.version }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

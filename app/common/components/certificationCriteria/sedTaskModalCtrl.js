@@ -23,7 +23,7 @@
 
             function addParticipant () {
                 vm.editModalInstance = $modal.open({
-                    templateUrl: 'common/components/sedParticipantModal.html',
+                    templateUrl: 'common/components/certificationCriteria/sedParticipantModal.html',
                     controller: 'EditSedParticipantController',
                     controllerAs: 'vm',
                     animation: false,
@@ -59,7 +59,7 @@
 
             function editParticipant (participant, idx) {
                 vm.editModalInstance = $modal.open({
-                    templateUrl: 'common/components/sedParticipantModal.html',
+                    templateUrl: 'common/components/certificationCriteria/sedParticipantModal.html',
                     controller: 'EditSedParticipantController',
                     controllerAs: 'vm',
                     animation: false,
