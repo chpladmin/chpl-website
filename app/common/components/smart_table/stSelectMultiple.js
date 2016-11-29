@@ -1,18 +1,17 @@
 ;(function () {
     'use strict';
     angular.module('app.common')
+
         .directive('stSelectMultiple', [function() {
             return {
                 restrict: 'E',
                 require: '^stTable',
                 scope: {
                     collection: '=',
-                    filterChanged: '&',
                     predicate: '@',
                     predicateExpression: '='
                 },
                 templateUrl: 'common/components/smart_table/stSelectMultiple.html',
-                transclude: true,
                 link: function(scope, element, attr, table) {
                     scope.dropdownLabel = '';
                     scope.filterChanged = filterChanged;
@@ -20,10 +19,9 @@
                     initialize();
 
                     function initialize() {
-                        console.log('initialize', scope.collection);
-                        bindCollection();
-                        scope.$watchCollection('collection', function (newCollection, oldCollection) {
-                            bindCollection();
+                        bindCollection(scope.collection);
+                        scope.$watch('collection', function (newCollection, oldCollection) {
+                            bindCollection(newCollection)
                         });
                     }
 
@@ -63,11 +61,11 @@
                         return selectedOptions;
                     }
 
-                    function bindCollection() {
+                    function bindCollection(collection) {
                         var predicate = getPredicate();
                         var distinctItems = [];
-                        console.log('bindCollection', predicate, scope.collection);
-                        angular.forEach(scope.collection, function(item) {
+
+                        angular.forEach(collection, function(item) {
                             var value = item[predicate];
                             fillDistinctItems(value, distinctItems);
                         });
@@ -87,7 +85,6 @@
                     }
 
                     function filterChanged() {
-                        console.log('filterChanged');
                         scope.dropdownLabel = getDropdownLabel();
 
                         var predicate = getPredicate();
@@ -108,8 +105,7 @@
                     }
 
                     function fillDistinctItems(value, distinctItems) {
-                        console.log('value',value);
-                        if (value && typeof(value) === 'string' && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
+                        if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
                             distinctItems.push({
                                 value: value,
                                 selected: true
@@ -118,14 +114,13 @@
                     }
 
                     function findItemWithValue(collection, value) {
-                        angular.forEach(collection, function (item) {
-                            if (item.value === value)
+                        for (var i = 0; i < collection.length; i++) {
+                            if (collection[i].value === value)
                                 return true;
-                            return false;
-                        });
+                        }
                         return false;
                     }
                 }
             }
-        }]);
+        }])
 })();

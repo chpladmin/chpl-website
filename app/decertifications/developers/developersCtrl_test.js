@@ -5,8 +5,12 @@
         var vm, scope, ctrl, $log, $timeout, $q, commonService, mock;
 
         mock = {
-            decertifiedDevelopers: [{developer: {name: 'dev 1'}}, {developer: {name: 'dev 2'}}],
-            developers: [{name: 'dev 1'}, {name: 'dev 2'}],
+            decertifiedDevelopers: [
+                {developer: {name: 'dev 1'}, acb: {name: 'acb1'}, status: {name: 'status 1'}, estimatedUsers: 4},
+                {developer: {name: 'dev 2'}, acb: {name: 'acb2'}, status: {name: 'status 2'}, estimatedUsers: 6}],
+            modifiedDecertifiedDevelopers: [
+                {stDeveloper: 'dev 1', stAcb: 'acb1', stStatus: 'status 1', stEstimatedUsers: 4},
+                {stDeveloper: 'dev 2', stAcb: 'acb2', stStatus: 'status 2', stEstimatedUsers: 6}],
             filter: { acb: 'Drummond', developer: 'epic', status: 'broke'},
             searchOptions: {
                 certBodyNames: [{name: 'ICSA Labs'}, {name: 'Drummond Group'}, {name: 'Infogard'}],
@@ -79,9 +83,8 @@
             expect(vm.filter).toEqual({ acb: '', developer: '', status: ''});
         });
 
-        it('should get a list of strings of developer names', function () {
-            expect(vm.developers).toBeDefined();
-            expect(vm.developers).toEqual(mock.developers);
+        it('should generate the smart-table fields', function () {
+            expect(vm.modifiedDecertifiedDevelopers).toEqual(mock.modifiedDecertifiedDevelopers);
         });
     });
 })();

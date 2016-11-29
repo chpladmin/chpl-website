@@ -1,7 +1,7 @@
 ;(function () {
     'use strict';
     angular.module('app.common')
-        .filter('customFilter', ['$filter', '$log', function($filter, $log) {
+        .filter('customFilter', ['$filter', function($filter) {
             var filterFilter = $filter('filter');
             var standardComparator = function standardComparator(obj, text) {
                 text = ('' + text).toLowerCase();
@@ -9,8 +9,6 @@
             };
 
             return function customFilter(array, expression) {
-                $log.debug('array', array);
-                $log.debug('expression', expression);
                 function customComparator(actual, expected) {
 
                     var isBeforeActivated = expected.before;
