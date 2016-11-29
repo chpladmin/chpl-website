@@ -147,7 +147,7 @@
                 } else {
                     vm.versionChoice = 'create';
                 }
-                if (vm.cp.product.versionId) {
+                if (vm.cp.version.versionId) {
                     commonService.getVersion(vm.cp.version.versionId)
                         .then(function (result) {
                             vm.version = result;

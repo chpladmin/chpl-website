@@ -7,6 +7,9 @@ _Date TBD_
 * Added new Surveillance Reporting UI
 * Add meaningfulUseUser upload functionality under CMS Management
 
+### Bugs Fixed
+* Fixed viewing of Version during product confirm workflow
+
 ---
 
 ## Version 6.1.0
