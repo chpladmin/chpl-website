@@ -72,6 +72,7 @@ module.exports = function(config){
             'app/admin/components/surveillance/*.html': ['ng-html2js'],
             'app/admin/components/user/*.html': ['ng-html2js'],
             'app/decertifications/developers/*.html': ['ng-html2js'],
+            'app/decertifications/products/*.html': ['ng-html2js'],
             'app/common/components/certificationCriteria/*.html': ['ng-html2js'],
             'app/common/components/smart_table/*.html': ['ng-html2js'],
             'app/common/components/surveillance/*.html': ['ng-html2js'],

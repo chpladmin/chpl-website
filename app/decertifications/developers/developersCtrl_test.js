@@ -72,17 +72,6 @@
             expect(vm.statuses).toEqual(mock.searchOptions.developerStatuses);
         });
 
-        it('should have a function to clear the filters', function () {
-            expect(vm.clearFilters).toBeDefined();
-        });
-
-        it('should clear the filters when called', function () {
-            expect(vm.filter).toBeUndefined();
-            vm.filter = mock.filter;
-            vm.clearFilters();
-            expect(vm.filter).toEqual({ acb: '', developer: '', status: ''});
-        });
-
         it('should generate the smart-table fields', function () {
             expect(vm.modifiedDecertifiedDevelopers).toEqual(mock.modifiedDecertifiedDevelopers);
         });

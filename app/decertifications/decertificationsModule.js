@@ -9,5 +9,11 @@
                 templateUrl: 'decertifications/developers/developers.html',
                 title: 'Decertified Developers'
             });
+            $routeProvider.when('/decertifications/products', {
+                controller: 'DecertifiedProductsController',
+                controllerAs: 'vm',
+                templateUrl: 'decertifications/products/products.html',
+                title: 'Decertified Products'
+            });
         }]);
 })();

@@ -592,5 +592,9 @@
             self.getDecertifiedDevelopers = function () {
                 return self.simpleApiCall('/decertifications/developers');
             };
+
+            self.getDecertifiedProducts = function () {
+                return self.simpleApiCall('/decertifications/products');
+            };
         });
 })();

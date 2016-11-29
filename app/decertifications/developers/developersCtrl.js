@@ -5,7 +5,6 @@
         .controller('DecertifiedDevelopersController', ['$log', 'commonService', function ($log, commonService) {
             var vm = this;
 
-            vm.clearFilters = clearFilters;
             vm.loadDevelopers = loadDevelopers;
 
             activate();
@@ -15,8 +14,6 @@
             function activate () {
                 vm.decertifiedDevelopers = [];
                 vm.displayedDevelopers = [];
-                vm.developers = [];
-                vm.acbs = [{name: 'ICSA Labs'}, {name: 'Drummond Group'}, {name: 'Infogard'}];
                 commonService.getDecertifiedDevelopers()
                     .then(function (result) {
                         vm.decertifiedDevelopers = result.data;
@@ -49,10 +46,6 @@
                         stEstimatedUsers: vm.decertifiedDevelopers[i].estimatedUsers
                     });
                 }
-            }
-
-            function clearFilters () {
-                vm.filter = { acb: '', developer: '', status: '' };
             }
         }]);
 })();
