@@ -5,6 +5,7 @@ _Date TBD_
 
 ### Features Added
 * Added new Surveillance Reporting UI
+* Add meaningfulUseUser upload functionality under CMS Management
 
 ---
 
