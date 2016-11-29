@@ -12,27 +12,26 @@
                 },
                 templateUrl: 'common/components/smart_table/stDateRange.html',
                 link: function (scope, element, attr, table) {
-
                     var inputs = element.find('input');
                     var inputBefore = angular.element(inputs[0]);
                     var inputAfter = angular.element(inputs[1]);
                     var predicateName = attr.predicate;
 
-
+                    console.log('pred', predicateName);
                     [inputBefore, inputAfter].forEach(function (input) {
 
                         input.bind('blur', function () {
                             var query = {};
-
                             if (!scope.isBeforeOpen && !scope.isAfterOpen) {
 
                                 if (scope.before) {
-                                    query.before = scope.before;
+                                    query.before = scope.before.getTime();
                                 }
 
                                 if (scope.after) {
                                     query.after = scope.after;
                                 }
+                                console.log(angular.toJson(query), predicateName);
 
                                 scope.$apply(function () {
                                     table.search(query, predicateName);

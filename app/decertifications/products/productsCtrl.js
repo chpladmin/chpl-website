@@ -34,7 +34,7 @@
                                 version: {name: 'ver 1'}
                             },{
                                 acb: {name: 'acb2'},
-                                certificationDate: new Date('03/29/2015'),
+                                certificationDate: new Date('03/29/2017'),
                                 chplProductNumber: '15.01.02.PROD.VER.1.2.1',
                                 developer: {name: 'dev 2'},
                                 edition: {name: '2015'},
