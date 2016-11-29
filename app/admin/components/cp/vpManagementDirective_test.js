@@ -17,7 +17,7 @@
             });
 
             module('app/admin/components/cp/vpManagement.html');
-            module('app/common/components/a.html');
+            module('app/common/components/util/a.html');
 
             inject(function($q) {
                 mockCommonService.developers = {developers: [{name: 'Developer 1', transparencyAttestations: []}, {name: 'Developer 2', transparencyAttestations: []}]};
@@ -123,10 +123,10 @@
 
             var template = $templateCache.get('app/admin/components/cp/vpManagement.html');
             $templateCache.put('admin/components/cp/vpManagement.html', template);
-            template = $templateCache.get('app/common/components/a.html');
-            $templateCache.put('common/components/a.html', template);
+            template = $templateCache.get('app/common/components/util/a.html');
+            $templateCache.put('common/components/util/a.html', template);
 
-            $httpBackend.whenGET('common/components/certs.html')
+            $httpBackend.whenGET('common/components/certificationCriteria/certs.html')
                 .respond(200, '<div></div>');
             $httpBackend.whenGET('admin/components/additionalSoftware/additionalSoftware.html')
                 .respond(200, '<div></div>');

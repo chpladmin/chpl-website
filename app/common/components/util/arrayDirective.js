@@ -45,7 +45,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'common/components/array.html',
+                templateUrl: 'common/components/util/array.html',
                 bindToController: {
                     itemType: '@',
                     items: '=',

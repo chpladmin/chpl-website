@@ -205,7 +205,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'common/components/certs.html',
+                templateUrl: 'common/components/certificationCriteria/certs.html',
                 bindToController: {
                     certs: '=',
                     cqms: '=',

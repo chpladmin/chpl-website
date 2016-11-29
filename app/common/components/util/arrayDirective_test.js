@@ -10,15 +10,15 @@
         var ctrl;
 
         beforeEach(module('app.common',
-                          'app/common/components/array.html'));
+                          'app/common/components/util/array.html'));
 
         beforeEach(inject(function (_$compile_, $rootScope, _$log_, $templateCache) {
             $compile = _$compile_;
             $log = _$log_;
             scope = $rootScope.$new();
 
-            var template = $templateCache.get('app/common/components/array.html');
-            $templateCache.put('common/components/array.html', template);
+            var template = $templateCache.get('app/common/components/util/array.html');
+            $templateCache.put('common/components/util/array.html', template);
 
             element = angular.element('<ai-array key="aKey" items="items" key-second="{{ keySecond }}"></ai-array>');
             $compile(element)(scope);

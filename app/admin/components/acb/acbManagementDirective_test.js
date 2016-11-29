@@ -16,7 +16,7 @@
 
             module('app/admin/components/acb/acbManagement.html');
             module('app/admin/components/user/userManagement.html');
-            module('app/common/components/a.html');
+            module('app/common/components/util/a.html');
 
             mockCommonService.acbs = {acbs: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
 
@@ -41,8 +41,8 @@
             $templateCache.put('admin/components/acb/acbManagement.html', template);
             template = $templateCache.get('app/admin/components/user/userManagement.html');
             $templateCache.put('admin/components/user/userManagement.html', template);
-            template = $templateCache.get('app/common/components/a.html');
-            $templateCache.put('common/components/a.html', template);
+            template = $templateCache.get('app/common/components/util/a.html');
+            $templateCache.put('common/components/util/a.html', template);
 
             element = angular.element('<ai-acb-management create-acb="fakeFunction"></ai-acb-management');
             $compile(element)(scope);

@@ -10,15 +10,15 @@
         var ctrl;
 
         beforeEach(module('app.common',
-                          'app/common/components/a.html'));
+                          'app/common/components/util/a.html'));
 
         beforeEach(inject(function (_$compile_, $rootScope, _$log_, $templateCache) {
             $compile = _$compile_;
             $log = _$log_;
             scope = $rootScope.$new();
 
-            var template = $templateCache.get('app/common/components/a.html');
-            $templateCache.put('common/components/a.html', template);
+            var template = $templateCache.get('app/common/components/util/a.html');
+            $templateCache.put('common/components/util/a.html', template);
 
             element = angular.element('<ai-a href="fakeUrl" text="fakeText"></ai-a>');
             $compile(element)(scope);

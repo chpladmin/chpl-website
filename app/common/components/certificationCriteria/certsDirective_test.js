@@ -10,26 +10,26 @@
         var certs = '[{"title": "2011 Certifications","certs": [{"hasVersion": false,"number": "170.302(a)","title": "Dr","isActive": true},{"hasVersion": false,"number": "170.302(c)","title": "Main","isActive": false},],"numActive": 1},{"title": "2014 Certifications","certs": [{"hasVersion": false,"number": "170.314(a)(1)","title": "Compu","isActive": false},{"hasVersion": false,"number": "170.314(a)(2)","title": "Drug","isActive": true},],"numActive": 1},{"title": "Clinical Quality Measures","certs": [{"hasVersion": false,"number": "NQF 0001(A)","title": "Ast","isActive": true},{"hasVersion": false,"number": "NQF 0002(A)","title": "Ph","isActive": false},{"hasVersion": true,"number": "CMS100","title": "AM","isActive": false},{"hasVersion": true,"number": "CMS102","title": "St","isActive": true,"version": "v0"},],"numActive": 2}]';
 
         beforeEach(module('app.common',
-                          'app/common/components/certs.html',
-                          'app/common/components/certificationCriteria.html',
-                          'app/common/components/a.html',
+                          'app/common/components/certificationCriteria/certs.html',
+                          'app/common/components/certificationCriteria/certificationCriteria.html',
+                          'app/common/components/util/a.html',
                           'app/common/components/cap.html',
-                          'app/common/components/array.html'));
+                          'app/common/components/util/array.html'));
 
         beforeEach(inject(function ($compile, $rootScope, _$log_, $templateCache, $httpBackend) {
             $log = _$log_;
             scope = $rootScope.$new();
 
-            var template = $templateCache.get('app/common/components/certs.html');
-            $templateCache.put('common/components/certs.html', template);
-            template = $templateCache.get('app/common/components/certificationCriteria.html');
-            $templateCache.put('common/components/certificationCriteria.html', template);
-            template = $templateCache.get('app/common/components/a.html');
-            $templateCache.put('common/components/a.html', template);
+            var template = $templateCache.get('app/common/components/certificationCriteria/certs.html');
+            $templateCache.put('common/components/certificationCriteria/certs.html', template);
+            template = $templateCache.get('app/common/components/certificationCriteria/certificationCriteria.html');
+            $templateCache.put('common/components/certificationCriteria/certificationCriteria.html', template);
+            template = $templateCache.get('app/common/components/util/a.html');
+            $templateCache.put('common/components/util/a.html', template);
             template = $templateCache.get('app/common/components/cap.html');
             $templateCache.put('common/components/cap.html', template);
-            template = $templateCache.get('app/common/components/array.html');
-            $templateCache.put('common/components/array.html', template);
+            template = $templateCache.get('app/common/components/util/array.html');
+            $templateCache.put('common/components/util/array.html', template);
             $httpBackend.whenGET('common/components/surveillance/surveillance.html')
                 .respond(200, '<div></div>');
 

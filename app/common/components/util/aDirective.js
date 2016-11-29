@@ -22,7 +22,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'common/components/a.html',
+                templateUrl: 'common/components/util/a.html',
                 bindToController: {
                     href: '@',
                     text: '@'
