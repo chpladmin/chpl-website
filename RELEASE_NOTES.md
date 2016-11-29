@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Features Added
+* Add meaningfulUseUser upload functionality under CMS Management
+
+### Bugs Fixed
+
+--- 
+
 ## Version 6.1.0
 _22 November 2016_
 
