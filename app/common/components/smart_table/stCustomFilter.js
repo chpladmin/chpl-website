@@ -9,9 +9,7 @@
             };
 
             return function customFilter(array, expression) {
-                console.log(angular.toJson(expression));
                 function customComparator(actual, expected) {
-                    console.log(actual, expected);
                     var isBeforeActivated = expected.before;
                     var isAfterActivated = expected.after;
                     var isLower = expected.lower;
@@ -52,14 +50,12 @@
 
                         //date range
                         if (expected.before || expected.after) {
-                            console.log(actual, angular.toJson(expected));
                             try {
                                 if (isBeforeActivated) {
                                     higherLimit = expected.before;
 
                                     itemDate = new Date(actual);
                                     queryDate = new Date(higherLimit);
-                                    console.log(itemDate,queryDate,itemDate > queryDate);
                                     if (itemDate > queryDate) {
                                         return false;
                                     }
@@ -79,7 +75,6 @@
 
                                 return true;
                             } catch (e) {
-                                console.log('error', e);
                                 return false;
                             }
 

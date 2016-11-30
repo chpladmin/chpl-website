@@ -2,7 +2,7 @@
     'use strict';
     angular.module('app.common')
 
-        .directive('stDateRange', ['$timeout', function ($timeout) {
+        .directive('stDateRange', function () {
             return {
                 restrict: 'E',
                 require: '^stTable',
@@ -17,7 +17,6 @@
                     var inputAfter = angular.element(inputs[1]);
                     var predicateName = attr.predicate;
 
-                    console.log('pred', predicateName);
                     [inputBefore, inputAfter].forEach(function (input) {
 
                         input.bind('blur', function () {
@@ -31,7 +30,6 @@
                                 if (scope.after) {
                                     query.after = scope.after;
                                 }
-                                console.log(angular.toJson(query), predicateName);
 
                                 scope.$apply(function () {
                                     table.search(query, predicateName);
@@ -57,5 +55,5 @@
                     scope.openAfter = open();
                 }
             }
-        }])
+        })
 })();

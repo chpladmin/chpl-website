@@ -543,6 +543,10 @@ option[disabled] {
     text-decoration: none;
 }
 
+.table>thead>tr#filters>th {
+    vertical-align: top;
+}
+
 #search-page .dropdown-menu {
     width: 150%;
     max-height: 300px;

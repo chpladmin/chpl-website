@@ -59,6 +59,7 @@
                     vm.modifiedDecertifiedProducts.push({
                         acb: vm.decertifiedProducts[i].acb.name,
                         certificationDate: vm.decertifiedProducts[i].certificationDate,
+                        certificationDateValue: vm.decertifiedProducts[i].certificationDate.getTime(),
                         chplProductNumber: vm.decertifiedProducts[i].chplProductNumber,
                         developer: vm.decertifiedProducts[i].developer.name,
                         edition: vm.decertifiedProducts[i].edition.name,

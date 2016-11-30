@@ -57,6 +57,9 @@
                 certificationStatuses: [{name: 'Active'},{name: 'Withdrawn by Developer'},{name: 'Retired'},{name: 'Withdrawn by ONC-ACB'},{name: 'Suspended by ONC-ACB'},{name: 'Pending'}]
             }
         };
+        for (var i = 0; i < mock.modifiedDecertifiedProducts.length; i++) {
+            mock.modifiedDecertifiedProducts[i].certificationDateValue = mock.modifiedDecertifiedProducts[i].certificationDate.getTime();
+        };
 
         beforeEach(function () {
             module('app.decertifications', function ($provide) {
