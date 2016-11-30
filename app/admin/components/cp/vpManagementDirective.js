@@ -492,6 +492,8 @@
                     pageSize: '50',
                     searchTerm: self.surveillanceSearch.query
                 };
+                self.surveillanceProduct = null;
+                self.surveillanceSearch.results = null;
                 commonService.search(query)
                     .then(function (response) {
                         self.surveillanceSearch.results = response.results;

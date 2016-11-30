@@ -190,35 +190,40 @@
             <button type="button" class="btn btn-ai" ng-click="vm.searchForSurveillance()"><i class="fa fa-search"></i><span class="sr-only">Search</span></button>
           </span>
         </div>
-        <div ng-if="vm.surveillanceSearch.results.length > 1">
-          <a href ng-click="vm.surveillanceSearch.results = []" class="pull-right">Clear results</a>
-          {{ vm.surveillanceSearch.results.length }} results found. Select the product you want:
-          <table class="table table-condensed">
-            <thead>
-              <tr>
-                <th scope="col">CHPL Product Number</th>
-                <th scope="col">Developer</th>
-                <th scope="col">Product</th>
-                <th scope="col">Version</th>
-                <th scope="col">ONC-ACB</th>
-                <th scope="col">Certification Edition</th>
-                <th scope="col">Certification Date</th>
-                <th scope="col">Certification Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="res in vm.surveillanceSearch.results">
-                <td><a href ng-click="vm.productId = res.id; vm.surveillanceSearch.results = []; vm.loadSurveillance()">{{ res.chplProductNumber }}</a></td>
-                <td>{{ res.developer.name }}</td>
-                <td>{{ res.product.name }}</td>
-                <td>{{ res.product.version }}</td>
-                <td>{{ res.certifyingBody.name }}</td>
-                <td>{{ res.certificationEdition.name }}</td>
-                <td>{{ res.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                <td>{{ res.certificationStatus.name }}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div ng-if="vm.surveillanceSearch.results">
+          <div ng-if="vm.surveillanceSearch.results.length === 0">
+            No results found
+          </div>
+          <div ng-if="vm.surveillanceSearch.results.length > 1">
+            <a href ng-click="vm.surveillanceSearch.results = null" class="pull-right">Clear results</a>
+            {{ vm.surveillanceSearch.results.length }} results found. Select the product you want:
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th scope="col">CHPL Product Number</th>
+                  <th scope="col">Developer</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Version</th>
+                  <th scope="col">ONC-ACB</th>
+                  <th scope="col">Certification Edition</th>
+                  <th scope="col">Certification Date</th>
+                  <th scope="col">Certification Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="res in vm.surveillanceSearch.results">
+                  <td><a href ng-click="vm.productId = res.id; vm.surveillanceSearch.results = null; vm.loadSurveillance()">{{ res.chplProductNumber }}</a></td>
+                  <td>{{ res.developer.name }}</td>
+                  <td>{{ res.product.name }}</td>
+                  <td>{{ res.product.version }}</td>
+                  <td>{{ res.certifyingBody.name }}</td>
+                  <td>{{ res.certificationEdition.name }}</td>
+                  <td>{{ res.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td>{{ res.certificationStatus.name }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div ng-if="vm.surveillanceProduct">
           <span class="pull-right">
