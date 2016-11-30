@@ -21,9 +21,9 @@
               <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Certification Status</th>
               <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
             </tr>
-            <tr id="filters" valign="top">
+            <tr id="filters">
               <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="acb"></st-select-multiple></th>
-		      <th><st-date-range predicate="certificationDate" before="query.before" after="query.after"></st-date-range></th>
+		      <th><st-date-range predicate="certificationDateValue" before="query.before" after="query.after"></st-date-range></th>
               <th><input placeholder="search CHPL Product Number" st-search="chplProductNumber"></th>
               <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="developer"></st-select-multiple></th>
               <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="edition"></st-select-multiple></th>

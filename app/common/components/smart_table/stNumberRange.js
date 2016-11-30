@@ -2,7 +2,7 @@
     'use strict';
     angular.module('app.common')
 
-        .directive('stNumberRange', ['$timeout', function ($timeout) {
+        .directive('stNumberRange', function () {
             return {
                 restrict: 'E',
                 require: '^stTable',
@@ -37,5 +37,5 @@
                     });
                 }
             };
-        }])
+        })
 })();
