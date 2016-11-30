@@ -25,6 +25,7 @@
             self.refreshPending = refreshPending;
             self.rejectCp = rejectCp;
             self.rejectSurveillance = rejectSurveillance;
+            self.searchForSurveillance = searchForSurveillance;
             self.selectCp = selectCp;
             self.selectDeveloper = selectDeveloper;
             self.selectProduct = selectProduct;
@@ -483,6 +484,22 @@
             function rejectSurveillance (survId) {
                 commonService.rejectPendingSurveillance(survId)
                     .then(self.refreshPending);
+            }
+
+            function searchForSurveillance () {
+                var query = {
+                    pageNumber: 0,
+                    pageSize: '50',
+                    searchTerm: self.surveillanceSearch.query
+                };
+                commonService.search(query)
+                    .then(function (response) {
+                        self.surveillanceSearch.results = response.results;
+                        if (self.surveillanceSearch.results.length === 1) {
+                            self.productId = self.surveillanceSearch.results[0].id;
+                            self.loadSurveillance();
+                        }
+                    });
             }
 
             function parseUploadError (cp) {
