@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.common')
-        .controller('CorrectiveActionPlanController', ['$log', '$scope', '$modal', 'commonService', 'authService', 'API', function ($log, $scope, $modal, commonService, authService, API) {
+        .controller('CorrectiveActionPlanController', ['$log', '$scope', '$modal', 'commonService', 'authService', 'API', 'ACTIVE_CAP', function ($log, $scope, $modal, commonService, authService, API, ACTIVE_CAP) {
             var vm = this;
 
             vm.activate = activate;
@@ -17,6 +17,7 @@
             function activate () {
                 vm.API = API;
                 vm.API_KEY = authService.getApiKey();
+                vm.ACTIVE_CAP = ACTIVE_CAP;
             }
 
             function editCap (cap) {
