@@ -7,6 +7,7 @@ _Date TBD_
 * Added new Surveillance Reporting UI
 * Add meaningfulUseUser upload functionality under CMS Management
 * Added parameter to commonModule.js for allowing CAP management
+* Added icons for new "... by ONC" certification statuses
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow
