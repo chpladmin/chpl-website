@@ -15,6 +15,7 @@
             self.inspectSurveillance = inspectSurveillance;
             self.isDeveloperEditable = isDeveloperEditable;
             self.isDeveloperMergeable = isDeveloperMergeable;
+            self.isProductEditable = isProductEditable;
             self.loadCp = loadCp;
             self.loadSurveillance = loadSurveillance;
             self.mergeDevelopers = mergeDevelopers;
@@ -474,6 +475,11 @@
 
             function isDeveloperMergeable (dev) {
                 return dev.status.status === 'Active';
+            }
+
+            function isProductEditable (cp) {
+                return (self.isChplAdmin || (cp.status.status !== 'Suspended by ONC' && cp.status.status !== 'Terminated by ONC')) &&
+                    self.isDeveloperMergeable(self.activeDeveloper);
             }
 
             function rejectCp (cpId) {

@@ -8,6 +8,7 @@ _Date TBD_
 * Add meaningfulUseUser upload functionality under CMS Management
 * Added parameter to commonModule.js for allowing CAP management
 * Added icons for new "... by ONC" certification statuses
+* Only ONC Admins can edit Products in "...by ONC" status
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow
