@@ -6,6 +6,7 @@ _Date TBD_
 ### Features Added
 * Added new Surveillance Reporting UI
 * Add meaningfulUseUser upload functionality under CMS Management
+* Added parameter to commonModule.js for allowing CAP management
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow
