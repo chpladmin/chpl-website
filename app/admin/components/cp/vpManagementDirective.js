@@ -23,6 +23,7 @@
             self.mergeVersions = mergeVersions;
             self.parseUploadError = parseUploadError;
             self.parseSurveillanceUploadError = parseSurveillanceUploadError;
+            self.refreshDevelopers = refreshDevelopers;
             self.refreshPending = refreshPending;
             self.rejectCp = rejectCp;
             self.rejectSurveillance = rejectSurveillance;
@@ -56,6 +57,7 @@
                 self.surveillanceUploadErrors = [];
                 self.surveillanceUploadSuccess = true;
                 self.resources = {};
+                self.refreshDevelopers();
 
                 if (self.isAcbAdmin || self.isAcbStaff) {
                     self.refreshPending();
@@ -132,6 +134,10 @@
                     };
                 }
 
+                getResources();
+            }
+
+            function refreshDevelopers () {
                 commonService.getDevelopers()
                     .then(function (developers) {
                         self.developers = developers.developers;
@@ -143,8 +149,6 @@
                             self.loadSurveillance();
                         }
                     });
-
-                getResources();
             }
 
             function refreshPending () {
@@ -389,6 +393,9 @@
                 self.modalInstance.result.then(function (result) {
                     self.activeCP = result;
                     getResources();
+                    self.productId = result.id;
+                    self.refreshDevelopers();
+                    self.loadCp();
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.cpMessage = result;
@@ -478,8 +485,12 @@
             }
 
             function isProductEditable (cp) {
-                return (self.isChplAdmin || (cp.status.status !== 'Suspended by ONC' && cp.status.status !== 'Terminated by ONC')) &&
-                    self.isDeveloperMergeable(self.activeDeveloper);
+                if (cp.certificationStatus) {
+                    return (self.isChplAdmin || (cp.certificationStatus.name !== 'Suspended by ONC' && cp.certificationStatus.name !== 'Terminated by ONC')) &&
+                        self.isDeveloperMergeable(self.activeDeveloper);
+                } else {
+                    return self.isDeveloperMergeable(self.activeDeveloper);
+                }
             }
 
             function rejectCp (cpId) {

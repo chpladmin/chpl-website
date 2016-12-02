@@ -20,7 +20,9 @@
 
             function activate () {
                 vm.surveillance = angular.copy(surveillance);
-                vm.surveillance.startDateObject = new Date(vm.surveillance.startDate);
+                if (vm.surveillance.startDate) {
+                    vm.surveillance.startDateObject = new Date(vm.surveillance.startDate);
+                }
                 if (vm.surveillance.endDate) {
                     vm.surveillance.endDateObject = new Date(vm.surveillance.endDate);
                 }
@@ -47,7 +49,7 @@
                         requirement: function () { return { nonconformities: [] }; },
                         surveillanceId: function () { return vm.surveillance.id; },
                         surveillanceTypes: function () { return vm.data; },
-                        worktype: function () { return 'add'; }
+                        workType: function () { return 'add'; }
                     },
                     size: 'lg'
                 });
@@ -79,6 +81,7 @@
             }
 
             function editRequirement (req) {
+                req.guiId = req.id ? req.id : (new Date()).getTime();
                 vm.modalInstance = $modal.open({
                     templateUrl: 'admin/components/surveillance/editRequirement.html',
                     controller: 'EditRequirementController',
@@ -92,18 +95,16 @@
                         requirement: function () { return req; },
                         surveillanceId: function () { return vm.surveillance.id; },
                         surveillanceTypes: function () { return vm.data; },
-                        worktype: function () { return 'edit'; }
+                        workType: function () { return 'edit'; }
                     },
                     size: 'lg'
                 });
                 vm.modalInstance.result.then(function (response) {
                     var found = false;
-                    if (response.id) {
-                        for (var i = 0; i < vm.surveillance.requirements.length; i++) {
-                            if (vm.surveillance.requirements[i].id === response.id) {
-                                vm.surveillance.requirements[i] = response;
-                                found = true;
-                            }
+                    for (var i = 0; i < vm.surveillance.requirements.length; i++) {
+                        if (vm.surveillance.requirements[i].guiId === response.guiId) {
+                            vm.surveillance.requirements[i] = response;
+                            found = true;
                         }
                     }
                     if (!found) {

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditRequirementController', ['$modal', '$modalInstance', '$log', 'disableValidation', 'randomized', 'requirement', 'surveillanceId', 'surveillanceTypes', 'worktype', 'utilService', function ($modal, $modalInstance, $log, disableValidation, randomized, requirement, surveillanceId, surveillanceTypes, worktype, utilService) {
+        .controller('EditRequirementController', ['$modal', '$modalInstance', '$log', 'disableValidation', 'randomized', 'requirement', 'surveillanceId', 'surveillanceTypes', 'workType', 'utilService', function ($modal, $modalInstance, $log, disableValidation, randomized, requirement, surveillanceId, surveillanceTypes, workType, utilService) {
             var vm = this;
 
             vm.addNonconformity = addNonconformity;
@@ -24,7 +24,8 @@
                 vm.requirement = angular.copy(requirement);
                 vm.showFormErrors = false;
                 vm.surveillanceId = surveillanceId;
-                vm.worktype = worktype;
+                vm.workType = workType;
+                $log.debug(vm.workType);
                 if (vm.requirement.type) {
                     vm.requirement.type = findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data);
                 }
@@ -48,7 +49,7 @@
                         requirementId: function () { return vm.requirement.id; },
                         surveillanceId: function () { return vm.surveillanceId; },
                         surveillanceTypes: function () { return vm.data; },
-                        worktype: function () { return 'add'; }
+                        workType: function () { return 'add'; }
                     },
                     size: 'lg'
                 });
@@ -75,6 +76,7 @@
             }
 
             function editNonconformity (noncon) {
+                noncon.guiId = noncon.id ? noncon.id : (new Date()).getTime();
                 vm.modalInstance = $modal.open({
                     templateUrl: 'admin/components/surveillance/editNonconformity.html',
                     controller: 'EditNonconformityController',
@@ -89,18 +91,16 @@
                         requirementId: function () { return vm.requirement.id; },
                         surveillanceId: function () { return vm.surveillanceId; },
                         surveillanceTypes: function () { return vm.data; },
-                        worktype: function () { return vm.worktype; }
+                        workType: function () { return vm.workType; }
                     },
                     size: 'lg'
                 });
                 vm.modalInstance.result.then(function (response) {
                     var found = false;
-                    if (response.id) {
-                        for (var i = 0; i < vm.requirement.nonconformities.length; i++) {
-                            if (vm.requirement.nonconformities[i].id == response.id) {
-                                vm.requirement.nonconformities[i] = response;
-                                found = true;
-                            }
+                    for (var i = 0; i < vm.requirement.nonconformities.length; i++) {
+                        if (vm.requirement.nonconformities[i].guiId === response.guiId) {
+                            vm.requirement.nonconformities[i] = response;
+                            found = true;
                         }
                     }
                     if (!found) {
