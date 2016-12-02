@@ -23,6 +23,7 @@
             self.mergeVersions = mergeVersions;
             self.parseUploadError = parseUploadError;
             self.parseSurveillanceUploadError = parseSurveillanceUploadError;
+            self.refreshDevelopers = refreshDevelopers;
             self.refreshPending = refreshPending;
             self.rejectCp = rejectCp;
             self.rejectSurveillance = rejectSurveillance;
@@ -56,6 +57,7 @@
                 self.surveillanceUploadErrors = [];
                 self.surveillanceUploadSuccess = true;
                 self.resources = {};
+                self.refreshDevelopers();
 
                 if (self.isAcbAdmin || self.isAcbStaff) {
                     self.refreshPending();
@@ -132,6 +134,10 @@
                     };
                 }
 
+                getResources();
+            }
+
+            function refreshDevelopers () {
                 commonService.getDevelopers()
                     .then(function (developers) {
                         self.developers = developers.developers;
@@ -143,8 +149,6 @@
                             self.loadSurveillance();
                         }
                     });
-
-                getResources();
             }
 
             function refreshPending () {
@@ -389,6 +393,9 @@
                 self.modalInstance.result.then(function (result) {
                     self.activeCP = result;
                     getResources();
+                    self.productId = result.id;
+                    self.refreshDevelopers();
+                    self.loadCp();
                 }, function (result) {
                     if (result !== 'cancelled') {
                         self.cpMessage = result;
