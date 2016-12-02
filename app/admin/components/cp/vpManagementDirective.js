@@ -478,8 +478,12 @@
             }
 
             function isProductEditable (cp) {
-                return (self.isChplAdmin || (cp.status.status !== 'Suspended by ONC' && cp.status.status !== 'Terminated by ONC')) &&
-                    self.isDeveloperMergeable(self.activeDeveloper);
+                if (cp.certificationStatus) {
+                    return (self.isChplAdmin || (cp.certificationStatus.name !== 'Suspended by ONC' && cp.certificationStatus.name !== 'Terminated by ONC')) &&
+                        self.isDeveloperMergeable(self.activeDeveloper);
+                } else {
+                    return self.isDeveloperMergeable(self.activeDeveloper);
+                }
             }
 
             function rejectCp (cpId) {
