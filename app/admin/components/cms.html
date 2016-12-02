@@ -1,5 +1,5 @@
 <section class="row">
-  <div class="col-md-8 main-content">
+  <div class="col-md-8 main-content" id="downloadCmsListing">
     <h2>Download the latest CMS listing</h2>
     <div>
       <a type="button" class="btn btn-lg btn-ai-success" ng-disabled="!vm.isReady"
@@ -7,9 +7,7 @@
          csv-header="vm.csvHeader" csv-column-order="vm.csvColumnOrder"><i class="fa fa-cloud-download"></i> Download</a>
     </div>
      </div>
-     <div class="row">&nbsp;</div>
-     <div class="row">&nbsp;</div>
-      <div class="col-md-8 main-content" ng-if="vm.isChplAdmin || vm.isOncStaff">
+      <div class="col-md-8 main-content" ng-if="vm.isChplAdmin || vm.isOncStaff" id="uploadMeaningfulUse">
         <h3>Upload Meaningful Use Users</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
