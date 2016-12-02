@@ -27,7 +27,9 @@
                 'Retired': false,
                 'Suspended by ONC-ACB': true,
                 'Withdrawn by Developer': true,
-                'Withdrawn by ONC-ACB': true
+                'Withdrawn by ONC-ACB': true,
+                'Suspended by ONC': true,
+                'Terminated by ONC': true
             },
             certificationEdition: {
                 '2011': false,
@@ -42,7 +44,7 @@
         }
         mock.refine = {
             certificationStatuses: [
-                'Active', 'Suspended by ONC-ACB', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB'
+                'Active', 'Suspended by ONC-ACB', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB', 'Suspended by ONC', 'Terminated by ONC'
             ],
             certificationEditions: [
                 '2014', '2015'
@@ -252,6 +254,8 @@
                 expect(vm.statusFont('Retired')).toBe('fa-close status-bad');
                 expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-times-circle status-bad');
                 expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-minus-circle status-bad');
+                expect(vm.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
+                expect(vm.statusFont('Terminated by ONC')).toBe('fa-window-close status-bad');
             });
         });
     });

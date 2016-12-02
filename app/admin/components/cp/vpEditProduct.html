@@ -1,0 +1,74 @@
+<div role="modal" aria-labeled-by="editProductLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="editProductLabel">Edit Product</h4>
+  </div>
+  <div class="modal-body form-horizontal" ng-form="vm.editForm">
+    <div class="form-group">
+      <label class="col-md-4" for="productName">Product Name</label>
+      <div class="col-md-8">
+        <input class="input-sm form-control" type="text" ng-model="vm.product.name" id="productName" name="productName" required></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.productName.$touched) && vm.editForm.productName.$error.required">Product name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-4" for="productOwner">Current Product owner</label>
+      <div class="col-md-8">
+        <select ng-model="vm.product.developerId" required
+                ng-change="vm.changeCurrent({{ vm.product.developerId }})"
+                id="productOwner" name="productOwner" class="input-sm form-control"
+                ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
+        </select>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.productOwner.$touched) && vm.editForm.productOwner.$error.required">Product owner is required</div>
+      </div>
+    </div>
+    <div ng-repeat="prevOwner in vm.product.ownerHistory | orderBy:'transferDate' track by $index">
+      <div class="form-group">
+        <label class="col-md-4" for="productOwner{{ $index }}">Previous Product owner</label>
+        <div class="col-md-8">
+          <select ng-model="prevOwner.developer.developerId" required
+                  id="productOwner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
+                  ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
+          </select>
+          <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['productOwner' + $index].$touched) && vm.editForm['productOwner' + $index].$error.required">Product owner is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-4" for="transferDate{{ $index }}">Transfer Date</label>
+        <div class="col-md-4">
+          <div class="input-group">
+            <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transferDate{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-ai btn-sm" ng-click="prevOwner.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
+            </span>
+          </div>
+          <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['transferDate' + $index].$touched) && vm.editForm['transferDate' + $index].$error.required">Transfer date is required</div>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-block btn-danger" ng-click="vm.removePreviousOwner($index)"><i class="fa fa-trash"></i> Remove owner</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <button class="btn btn-block btn-success" ng-click="vm.addPreviousOwner()"><i class="fa fa-plus"></i> Add Product owner</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors"
+            ng-mouseover="vm.showFormErrors = true"
+            class="btn btn-ai-success btn-block" ng-click="vm.save()">Save Product</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()">Cancel Edits</button>
+  </div>
+</div>

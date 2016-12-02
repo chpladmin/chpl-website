@@ -22,7 +22,7 @@
     "angulartics": "~1.0.3",
     "angulartics-ga": "angulartics-google-analytics#~0.1.1",
     "bootstrap": "~3.3.5",
-    "fontawesome": "~4.3.0",
+    "fontawesome": "~4.7.0",
     "html5-boilerplate": "~5.2.0",
     "jquery": "~2.1.4",
     "ng-idle": "~1.1.0",

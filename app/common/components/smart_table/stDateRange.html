@@ -1,0 +1,20 @@
+<div class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-4" for="before">before</label>
+    <div class="input-group">
+      <input type="text" class="form-control input-sm" datepicker-popup="yyyy/MM/dd" ng-model="before" is-open="isBeforeOpen" close-text="Close" id="before">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-ai btn-sm" ng-click="openBefore($event)"><i class="fa fa-calendar"></i></button>
+      </span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4" for="after">after</label>
+    <div class="input-group">
+      <input type="text" class="form-control input-sm" datepicker-popup="yyyy/MM/dd" ng-model="after" is-open="isAfterOpen" close-text="Close" id="after">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-ai btn-sm" ng-click="openAfter($event)"><i class="fa fa-calendar"></i></button>
+      </span>
+    </div>
+  </div>
+</div>

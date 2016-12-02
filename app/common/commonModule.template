@@ -3,5 +3,6 @@
 
     angular.module('app.common', [])
         .constant('CACHE_TIMEOUT', 60) // cache clearing timeout in minutes
+        .constant('ACTIVE_CAP', false) // allow new/edit of CAP
         .constant('API', '/rest');
 })();

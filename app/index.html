@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="bower_components/angular-swagger-ui/dist/css/swagger-ui.min.css">
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="admin/admin.css">
-    <link rel="stylesheet" href="admin/components/userManagement.css">
-    <link rel="stylesheet" href="common/components/certs.css">
+    <link rel="stylesheet" href="admin/components/user/userManagement.css">
+    <link rel="stylesheet" href="common/components/certificationCriteria/certs.css">
     <link rel="stylesheet" href="compare/compare.css">
     <link rel="stylesheet" href="product/product.css">
     <link rel="stylesheet" href="search/search.css">
@@ -75,45 +75,59 @@
     <script src="common/commonModule.js"></script>
     <script src="common/commonService.js"></script>
     <script src="common/utilService.js"></script>
-    <script src="common/components/aDirective.js"></script>
-    <script src="common/components/arrayDirective.js"></script>
     <script src="common/components/capDirective.js"></script>
     <script src="common/components/capModalCtrl.js"></script>
-    <script src="common/components/certsDirective.js"></script>
-    <script src="common/components/certificationCriteriaDirective.js"></script>
-    <script src="common/components/certificationCriteriaModalCtrl.js"></script>
-    <script src="common/components/sedParticipantModalCtrl.js"></script>
-    <script src="common/components/sedTaskModalCtrl.js"></script>
+    <script src="common/components/certificationCriteria/certsDirective.js"></script>
+    <script src="common/components/certificationCriteria/certificationCriteriaDirective.js"></script>
+    <script src="common/components/certificationCriteria/certificationCriteriaModalCtrl.js"></script>
+    <script src="common/components/certificationCriteria/sedParticipantModalCtrl.js"></script>
+    <script src="common/components/certificationCriteria/sedTaskModalCtrl.js"></script>
+    <script src="common/components/smart_table/stCustomFilter.js"></script>
+    <script src="common/components/smart_table/stDateRange.js"></script>
+    <script src="common/components/smart_table/stNumberRange.js"></script>
+    <script src="common/components/smart_table/stSelectDistinct.js"></script>
+    <script src="common/components/smart_table/stSelectMultiple.js"></script>
+    <script src="common/components/surveillance/surveillanceDirective.js"></script>
+    <script src="common/components/util/aDirective.js"></script>
+    <script src="common/components/util/arrayDirective.js"></script>
     <script src="compare/compareModule.js"></script>
     <script src="compare/compareCtrl.js"></script>
+    <script src="decertifications/decertificationsModule.js"></script>
+    <script src="decertifications/developers/developersCtrl.js"></script>
+    <script src="decertifications/products/productsCtrl.js"></script>
     <script src="login/loginModule.js"></script>
     <script src="login/loginServices.js"></script>
     <script src="nav/navModule.js"></script>
     <script src="nav/navCtrl.js"></script>
     <script src="admin/adminModule.js"></script>
     <script src="admin/adminCtrl.js"></script>
-    <script src="admin/components/acbManagementDirective.js"></script>
-    <script src="admin/components/acbEditCtrl.js"></script>
-    <script src="admin/components/additionalSoftwareDirective.js"></script>
-    <script src="admin/components/additionalSoftwareModalCtrl.js"></script>
-    <script src="admin/components/atlManagementDirective.js"></script>
-    <script src="admin/components/atlEditCtrl.js"></script>
-    <script src="admin/components/announcementsDirective.js"></script>
-    <script src="admin/components/announcementEditCtrl.js"></script>
-    <script src="admin/components/cmsDirective.js"></script>
-    <script src="admin/components/vpEditDeveloperCtrl.js"></script>
-    <script src="admin/components/vpEditProductCtrl.js"></script>
-    <script src="admin/components/vpEditVersionCtrl.js"></script>
-    <script src="admin/components/vpEditCertifiedProductCtrl.js"></script>
-    <script src="admin/components/vpMergeDeveloperCtrl.js"></script>
-    <script src="admin/components/vpMergeProductCtrl.js"></script>
-    <script src="admin/components/vpMergeVersionCtrl.js"></script>
-    <script src="admin/components/vpInspectCtrl.js"></script>
-    <script src="admin/components/loginDirective.js"></script>
-    <script src="admin/components/reportsDirective.js"></script>
-    <script src="admin/components/userEditCtrl.js"></script>
-    <script src="admin/components/userManagementDirective.js"></script>
-    <script src="admin/components/vpManagementDirective.js"></script>
+    <script src="admin/components/acb/acbEditCtrl.js"></script>
+    <script src="admin/components/acb/acbManagementDirective.js"></script>
+    <script src="admin/components/additionalSoftware/additionalSoftwareDirective.js"></script>
+    <script src="admin/components/additionalSoftware/additionalSoftwareModalCtrl.js"></script>
+    <script src="admin/components/announcement/announcementEditCtrl.js"></script>
+    <script src="admin/components/announcement/announcementsDirective.js"></script>
+    <script src="admin/components/atl/atlEditCtrl.js"></script>
+    <script src="admin/components/atl/atlManagementDirective.js"></script>
+    <script src="admin/components/cms/cmsDirective.js"></script>
+    <script src="admin/components/cp/vpEditCertifiedProductCtrl.js"></script>
+    <script src="admin/components/cp/vpEditDeveloperCtrl.js"></script>
+    <script src="admin/components/cp/vpEditProductCtrl.js"></script>
+    <script src="admin/components/cp/vpEditVersionCtrl.js"></script>
+    <script src="admin/components/cp/vpInspectCtrl.js"></script>
+    <script src="admin/components/cp/vpManagementDirective.js"></script>
+    <script src="admin/components/cp/vpMergeDeveloperCtrl.js"></script>
+    <script src="admin/components/cp/vpMergeProductCtrl.js"></script>
+    <script src="admin/components/cp/vpMergeVersionCtrl.js"></script>
+    <script src="admin/components/login/loginDirective.js"></script>
+    <script src="admin/components/reports/reportsDirective.js"></script>
+    <script src="admin/components/surveillance/editNonconformityCtrl.js"></script>
+    <script src="admin/components/surveillance/editRequirementCtrl.js"></script>
+    <script src="admin/components/surveillance/editSurveillanceCtrl.js"></script>
+    <script src="admin/components/surveillance/nonconformityInspectCtrl.js"></script>
+    <script src="admin/components/surveillance/surveillanceInspectCtrl.js"></script>
+    <script src="admin/components/user/userEditCtrl.js"></script>
+    <script src="admin/components/user/userManagementDirective.js"></script>
     <script src="product/productModule.js"></script>
     <script src="product/productCtrl.js"></script>
     <script src="resources/resourcesModule.js"></script>

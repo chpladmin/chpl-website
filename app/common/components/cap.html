@@ -6,7 +6,7 @@
     <strong>{{ cap.surveillanceEndDate ? 'Closed' : 'Current'}} {{ vm.getCapType(cap) }} Non-Conformity. Date of Determination: {{ cap.noncomplianceDate | date : 'mediumDate' : 'UTC' }}</strong>
     <span class="pull-right">
       <a href ng-click="cap.showDetails = !cap.showDetails" aria-expanded="{{ cap.showDetails }}">{{ cap.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ cap.noncomplianceDate | date : 'mediumDate' : 'UTC' }}</span></a><br />
-      <a href ng-click="vm.editCap(cap)" ng-if="vm.isAdmin">Edit</a>
+      <a href ng-click="vm.editCap(cap)" ng-if="vm.isAdmin && vm.ACTIVE_CAP">Edit</a>
     </span>
     <div ng-if="cap.showDetails">
       <strong>Type of Non-Conformity</strong> {{ vm.getCapType(cap) }}<br />
@@ -75,7 +75,7 @@
     </div>
     <hr />
   </div>
-  <div ng-if="vm.isAdmin">
+  <div ng-if="vm.isAdmin && vm.ACTIVE_CAP">
     <button class="btn btn-ai-success" ng-click="vm.initiateCap()">Initiate Surveillance Reporting</button>
   </div>
 </div>
