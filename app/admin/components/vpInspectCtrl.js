@@ -147,8 +147,8 @@
                 } else {
                     vm.versionChoice = 'create';
                 }
-                if (vm.cp.product.versionId) {
-                    commonService.getVersion(vm.cp.product.versionId)
+                if (vm.cp.version.versionId) {
+                    commonService.getVersion(vm.cp.version.versionId)
                         .then(function (result) {
                             vm.version = result;
                         });
@@ -156,17 +156,17 @@
             }
 
             function selectInspectingVersion() {
-                vm.cp.product.versionId = vm.versionSelect.versionId;
+                vm.cp.version.versionId = vm.versionSelect.versionId;
                 vm.loadVer();
             }
 
             function saveInspectingVersion() {
                 var ver = {
                     version: {
-                        version: vm.cp.product.version,
-                        productId: vm.cp.product.versionId
+                        version: vm.cp.version.version,
+                        productId: vm.cp.version.versionId
                     },
-                    versionIds: [vm.cp.product.versionId]
+                    versionIds: [vm.cp.version.versionId]
                 };
                 commonService.updateVersion(ver)
                     .then(function () {
@@ -261,7 +261,7 @@
                     return false;
                     break;
                 case 'ver':
-                    if (vm.versionChoice === 'choose' && !vm.cp.product.versionId)
+                    if (vm.versionChoice === 'choose' && !vm.cp.version.versionId)
                         return true;
                     return false;
                     break;
