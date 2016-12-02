@@ -17,7 +17,9 @@
             <li ng-repeat="error in vm.uploadErrors">{{ error.error }}</li>
           </ul>
         </div>
-        <table class="table" ng-if="vm.uploader.queue.length > 0">
+        
+       <div style="overflow-x:auto;">
+        <table class="table" ng-if="vm.uploader.queue.length > 0" id="meaningfulUseUploadTable">
           <thead>
             <tr>
               <th scope="col" width="50%">Name</th>
@@ -49,6 +51,8 @@
             </tr>
           </tbody>
         </table>
+       </div> 
+        
       </div> <!-- end upload meaningful use users -->
       
       
