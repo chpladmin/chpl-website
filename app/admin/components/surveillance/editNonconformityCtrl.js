@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'requirementId', 'surveillanceId', 'surveillanceTypes', 'worktype', 'commonService', 'utilService', 'authService', 'FileUploader', 'API', function ($modalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, worktype, commonService, utilService, authService, FileUploader, API) {
+        .controller('EditNonconformityController', ['$modalInstance', '$log', 'disableValidation', 'nonconformity', 'randomized', 'requirementId', 'surveillanceId', 'surveillanceTypes', 'workType', 'commonService', 'utilService', 'authService', 'FileUploader', 'API', function ($modalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, workType, commonService, utilService, authService, FileUploader, API) {
             var vm = this;
 
             vm.cancel = cancel;
@@ -22,7 +22,7 @@
                 vm.requirementId = requirementId;
                 vm.showFormErrors = false;
                 vm.surveillanceId = surveillanceId;
-                vm.worktype = worktype;
+                vm.workType = workType;
                 if (vm.nonconformity.nonconformityType) {
                     vm.nonconformity.nonconformityType = findModel(vm.nonconformity.nonconformityType, vm.data.nonconformityTypes.data);
                 }
@@ -44,7 +44,7 @@
                 if (vm.nonconformity.capMustCompleteDate) {
                     vm.nonconformity.capMustCompleteDateObject = new Date(vm.nonconformity.capMustCompleteDate);
                 }
-                if (vm.worktype === 'edit') {
+                if (vm.workType === 'edit') {
                     buildFileUploader();
                 }
             }

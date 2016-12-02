@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editSurveillanceLabel">Edit Non-Conformity</h4>
+    <h4 class="modal-title" id="editNonconformityLabel"><span ng-if="vm.workType === 'edit'">Edit</span><span ng-if="vm.workType === 'add'">Create</span> Non-Conformity</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
@@ -30,7 +30,12 @@
     <div class="form-group">
       <label for="dateOfDetermination" class="col-sm-3">Date Of Determination <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.nonconformity.dateOfDeterminationObject" id="dateOfDetermination" name="dateOfDetermination" ng-model-options="{ timezone: 'UTC' }" required>
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.dateOfDeterminationObject" is-open="vm.nonconformity.dateOfDeterminationPicker" close-text="Close" id="dateOfDetermination" name="dateOfDetermination" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.dateOfDetermination.$touched) && vm.editForm.dateOfDetermination.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.dateOfDetermination.$touched) && vm.editForm.dateOfDetermination.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
@@ -38,7 +43,12 @@
     <div class="form-group">
       <label for="capApprovalDate" class="col-sm-3">Corrective Action Plan Approval Date</label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.nonconformity.capApprovalDateObject" id="capApprovalDate" name="capApprovalDate" ng-model-options="{ timezone: 'UTC' }"></input>
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capApprovalDateObject" is-open="vm.nonconformity.capApprovalDatePicker" close-text="Close" id="capApprovalDate" name="capApprovalDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capApprovalDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capApprovalDate.$touched) && vm.editForm.capApprovalDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capApprovalDate.$touched) && vm.editForm.capApprovalDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
@@ -46,7 +56,12 @@
     <div class="form-group">
       <label for="capStartDate" class="col-sm-3">Corrective Action Plan Start Date</label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.nonconformity.capStartDateObject" id="capStartDate" name="capStartDate" ng-model-options="{ timezone: 'UTC' }"></input>
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capStartDateObject" is-open="vm.nonconformity.capStartDatePicker" close-text="Close" id="capStartDate" name="capStartDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capStartDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capStartDate.$touched) && vm.editForm.capStartDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capStartDate.$touched) && vm.editForm.capStartDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
@@ -54,7 +69,12 @@
     <div class="form-group">
       <label for="capEndDate" class="col-sm-3">Corrective Action Plan End Date</label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.nonconformity.capEndDateObject" id="capEndDate" name="capEndDate" ng-model-options="{ timezone: 'UTC' }"></input>
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capEndDateObject" is-open="vm.nonconformity.capEndDatePicker" close-text="Close" id="capEndDate" name="capEndDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capEndDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capEndDate.$touched) && vm.editForm.capEndDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capEndDate.$touched) && vm.editForm.capEndDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
@@ -62,7 +82,12 @@
     <div class="form-group">
       <label for="capMustCompleteDate" class="col-sm-3">Corrective Action Plan Must Complete Date</label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.nonconformity.capMustCompleteDateObject" id="capMustCompleteDate" name="capMustCompleteDate" ng-model-options="{ timezone: 'UTC' }"></input>
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capMustCompleteDateObject" is-open="vm.nonconformity.capMustCompleteDatePicker" close-text="Close" id="capMustCompleteDate" name="capMustCompleteDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capMustCompleteDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capMustCompleteDate.$touched) && vm.editForm.capMustCompleteDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capMustCompleteDate.$touched) && vm.editForm.capMustCompleteDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
@@ -111,7 +136,7 @@
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.resolution.$touched) && vm.editForm.resolution.$error.required">Field is required</div>
       </div>
     </div>
-    <div class="row" ng-if="vm.worktype === 'edit' && vm.nonconformity.documents.length > 0">
+    <div class="row" ng-if="vm.workType === 'edit' && vm.nonconformity.documents.length > 0">
       <div class="col-sm-12">
         <h3>Supporting documentation</h3>
         <table class="table">
@@ -140,7 +165,7 @@
         </table>
       </div>
     </div>
-    <div class="row" ng-if="vm.worktype === 'edit'">
+    <div class="row" ng-if="vm.workType === 'edit'">
       <div class="col-sm-12">
         <h3>Upload supporting document(s)</h3>
         <input type="file" nv-file-select="" uploader="vm.uploader" />

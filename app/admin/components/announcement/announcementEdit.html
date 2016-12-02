@@ -21,13 +21,23 @@
     </div>
     <div class="form-group">
       <label for="startDate">Start Date <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="date" required ng-model="vm.announcement.startDate" id="startDate" name="startDate" ng-model-options="{ timezone: 'UTC' }" ng-disabled="vm.announcement.isDeleted"></input>
+      <div class="input-group">
+        <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.announcement.startDate" is-open="vm.announcement.startDatePicker" close-text="Close" id="startDate" name="startDate" ng-model-options="{ timezone: 'UTC' }"  ng-disabled="vm.announcement.isDeleted" required>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-ai btn-sm" ng-click="vm.announcement.startDatePicker = true"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
       <div class="text-danger" ng-if="vm.editForm.startDate.$touched && vm.editForm.startDate.$error.required">Start Date is required</div>
       <div class="text-danger" ng-if="vm.editForm.startDate.$touched && vm.editForm.startDate.$error.date">Start Date is invalid</div>
     </div>
     <div class="form-group">
       <label for="endDate">End Date <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="date" required ng-model="vm.announcement.endDate" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }" ng-disabled="vm.announcement.isDeleted"></input>
+      <div class="input-group">
+        <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.announcement.endDate" is-open="vm.announcement.endDatePicker" close-text="Close" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }"  ng-disabled="vm.announcement.isDeleted" required>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-ai btn-sm" ng-click="vm.announcement.endDatePicker = true"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
       <div class="text-danger" ng-if="vm.editForm.endDate.$touched && vm.editForm.endDate.$error.required">End Date is required</div>
       <div class="text-danger" ng-if="vm.editForm.endDate.$touched && vm.editForm.endDate.$error.date">End Date is invalid</div>
     </div>

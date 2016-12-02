@@ -63,7 +63,12 @@
     </div>
     <div class="form-group">
       <label for="cpCertDate">Certification Date</label>
-      <input class="input-sm form-control" type="date" ng-model="vm.cp.certDate" id="cpCertDate" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required></input>
+      <div class="input-group">
+        <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.certDate" is-open="vm.cp.certDatePicker" close-text="Close" id="cpCertDate" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
@@ -158,7 +163,12 @@
     </div>
     <div class="form-group">
       <label for="cpSedTestingEnd">SED End Date of Testing</label>
-      <input class="input-sm form-control" type="date" ng-model="vm.cp.sedTestingEndDate" id="cpSedTestingEnd" name="cpSedTestingEnd"></input>
+      <div class="input-group">
+        <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.setTestingEndDate" is-open="vm.cp.sedTestingEndDatePicker" close-text="Close" id="cpSedTestingEnd" name="cpSedTestingEnd" ng-model-options="{ timezone: 'UTC' }" required>
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
+        </span>
+      </div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedTestingEnd.$touched) && vm.editForm.cpSedTestingEnd.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
     <div class="form-group">

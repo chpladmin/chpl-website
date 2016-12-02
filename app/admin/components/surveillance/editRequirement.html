@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editSurveillanceLabel">Edit Requirement</h4>
+    <h4 class="modal-title" id="editRequirementLabel"><span ng-if="vm.workType === 'edit'">Edit</span><span ng-if="vm.workType === 'add'">Create</span> Requirement</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">

@@ -47,7 +47,12 @@
           </div>
           <div class="form-group">
             <label for="transferDate{{ $index }}">Transfer Date <span class="text-danger">*</span></label>
-            <input class="input-sm form-control" type="date" ng-model="prevOwner.transferDate" id="transferDate{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required></input>
+            <div class="input-group">
+              <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transferDate{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-ai btn-sm" ng-click="prevOwner.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
+              </span>
+            </div>
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm['transferDate' + $index].$touched) && vm.mergeForm['transferDate' + $index].$error.required">Transfer date is required</div>
             <button class="btn btn-block btn-danger" ng-click="vm.removePreviousOwner($index)"><i class="fa fa-trash"></i> Remove owner</button>
           </div>

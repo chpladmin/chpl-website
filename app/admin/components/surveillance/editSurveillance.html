@@ -20,7 +20,12 @@
     <div class="form-group">
       <label for="startDate" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.surveillance.startDateObject" id="startDate" name="startDate" ng-model-options="{ timezone: 'UTC' }" required>
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.surveillance.startDateObject" is-open="vm.surveillance.startDatePicker" close-text="Close" id="startDate" name="startDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.startDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.startDate.$touched) && vm.editForm.startDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.startDate.$touched) && vm.editForm.startDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
@@ -28,7 +33,12 @@
     <div class="form-group">
       <label for="endDate" class="col-sm-3">End Date</label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="date" ng-model="vm.surveillance.endDateObject" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }">
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.surveillance.endDateObject" is-open="vm.surveillance.endDatePicker" close-text="Close" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.endDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
