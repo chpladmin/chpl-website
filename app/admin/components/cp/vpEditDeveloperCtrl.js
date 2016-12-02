@@ -9,6 +9,7 @@
             vm.activeAcbs = angular.copy(activeAcbs);
 
             vm.addressRequired = addressRequired;
+            vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
             vm.save = save;
             vm.cancel = cancel;
 
@@ -20,10 +21,15 @@
                 vm.isAcbAdmin = authService.isAcbAdmin();
                 vm.isChplAdmin = authService.isChplAdmin();
                 vm.showFormErrors = false;
+                vm.loadedAsInactiveByOnc = (vm.developer.status.status === 'Suspended by ONC' || vm.developer.status.status === 'Under certification ban by ONC');
             }
 
             function addressRequired () {
                 return commonService.addressRequired(vm.developer.address);
+            }
+
+            function isBeingActivatedFromOncInactiveStatus () {
+                return vm.loadedAsInactiveByOnc && vm.developer.status.status !== 'Suspended by ONC' && vm.developer.status.status !== 'Under certification ban by ONC';
             }
 
             function save () {
