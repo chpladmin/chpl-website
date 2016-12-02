@@ -104,12 +104,19 @@
                         table.search(query, predicate);
                     }
 
-                    function fillDistinctItems(value, distinctItems) {
-                        if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
-                            distinctItems.push({
-                                value: value,
-                                selected: true
-                            });
+                    function fillDistinctItems(values, distinctItems) {
+                        if (!angular.isObject(values)) {
+                            values = [values];
+                        }
+                        var value;
+                        for (var i = 0; i < values.length; i++) {
+                            value = values[i];
+                            if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
+                                distinctItems.push({
+                                    value: value,
+                                    selected: true
+                                });
+                            }
                         }
                     }
 

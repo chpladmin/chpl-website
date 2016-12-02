@@ -6,11 +6,11 @@
 
         mock = {
             decertifiedDevelopers: [
-                {developer: {name: 'dev 1'}, acb: {name: 'acb1'}, status: {name: 'status 1'}, estimatedUsers: 4},
-                {developer: {name: 'dev 2'}, acb: {name: 'acb2'}, status: {name: 'status 2'}, estimatedUsers: 6}],
+                {developer: {name: 'dev 1', status: {name: 'Terminated by ONC'}}, certifyingBody: [{name: 'acb1'},{name: 'acb2'}], estimatedUsers: 4},
+                {developer: {name: 'dev 2', status: {name: 'Under certification ban by ONC'}}, certifyingBody: [{name: 'acb2'}], estimatedUsers: 6}],
             modifiedDecertifiedDevelopers: [
-                {stDeveloper: 'dev 1', stAcb: 'acb1', stStatus: 'status 1', stEstimatedUsers: 4},
-                {stDeveloper: 'dev 2', stAcb: 'acb2', stStatus: 'status 2', stEstimatedUsers: 6}],
+                {stDeveloper: 'dev 1', stAcb: ['acb1','acb2'], stStatus: 'Terminated by ONC', stEstimatedUsers: 4},
+                {stDeveloper: 'dev 2', stAcb: ['acb2'], stStatus: 'Under certification ban by ONC', stEstimatedUsers: 6}],
             filter: { acb: 'Drummond', developer: 'epic', status: 'broke'},
             searchOptions: {
                 certBodyNames: [{name: 'ICSA Labs'}, {name: 'Drummond Group'}, {name: 'Infogard'}],
@@ -31,7 +31,7 @@
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;
-                commonService.getDecertifiedDevelopers.and.returnValue($q.when({data: mock.decertifiedDevelopers}));
+                commonService.getDecertifiedDevelopers.and.returnValue($q.when({developerDecertificationResult: mock.decertifiedDevelopers}));
                 commonService.getSearchOptions.and.returnValue($q.when(mock.searchOptions));
 
                 scope = $rootScope.$new();

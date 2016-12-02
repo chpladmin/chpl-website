@@ -16,14 +16,15 @@
                 vm.displayedDevelopers = [];
                 commonService.getDecertifiedDevelopers()
                     .then(function (result) {
-                        vm.decertifiedDevelopers = result.data;
+                        vm.decertifiedDevelopers = result.developerDecertificationResult;
+                        //debug
+                        vm.decertifiedDevelopers = [{developer: {name: 'dev 1', status: {name: 'Terminated by ONC'}}, certifyingBody: [{name: 'acb1'},{name: 'acb2'}], estimatedUsers: 4},
+                                                    {developer: {name: 'dev 2', status: {name: 'Under certification ban by ONC'}}, certifyingBody: [{name: 'acb2'}], estimatedUsers: 6}];
+
                         vm.displayedDevelopers = [].concat(vm.decertifiedDevelopers);
                         vm.loadDevelopers();
                     }, function (error) {
-                        // debug
-                        vm.decertifiedDevelopers = [{acb: {name: 'ICSA Labs'}, developer: {name: 'dev 1'}, status: {name: 'Under certification ban by ONC'}, estimatedUsers: 5},
-                                                    {acb: {name: 'Drummond Group'}, developer: {name: 'dev 2'}, status: {name: 'Under certification ban by ONC'}, estimatedUsers: 3},
-                                                    {acb: {name: 'Infogard'}, developer: {name: 'dev 3'}, status: {name: 'Terminated by ONC'}, estimatedUsers: 10}];
+                        vm.decertifiedDevelopers = [];
                         vm.loadDevelopers();
                     });
                 commonService.getSearchOptions(true)
@@ -40,11 +41,14 @@
                 vm.modifiedDecertifiedDevelopers = [];
                 for (var i = 0; i < vm.decertifiedDevelopers.length; i++) {
                     vm.modifiedDecertifiedDevelopers.push({
-                        stAcb: vm.decertifiedDevelopers[i].acb.name,
+                        stAcb: [],
                         stDeveloper: vm.decertifiedDevelopers[i].developer.name,
-                        stStatus: vm.decertifiedDevelopers[i].status.name,
+                        stStatus: vm.decertifiedDevelopers[i].developer.status.name,
                         stEstimatedUsers: vm.decertifiedDevelopers[i].estimatedUsers
                     });
+                    for (var j = 0; j < vm.decertifiedDevelopers[i].certifyingBody.length; j++) {
+                        vm.modifiedDecertifiedDevelopers[i].stAcb.push(vm.decertifiedDevelopers[i].certifyingBody[j].name)
+                    };
                 }
             }
         }]);

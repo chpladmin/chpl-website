@@ -37,7 +37,7 @@
               <td colspan="4">No Decertified Developers found</td>
             </tr>
             <tr ng-repeat="dev in vm.displayedDevelopers">
-              <td>{{ dev.stAcb }}</td>
+              <td ng-bind-html="dev.stAcb.join('<br>')"></td>
               <td>{{ dev.stDeveloper }}</td>
               <td>{{ dev.stStatus }}</td>
               <td>{{ dev.stEstimatedUsers }}</td>
