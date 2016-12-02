@@ -11,26 +11,26 @@
         <table st-set-filter="customFilter" st-table="vm.displayedProducts" st-safe-src="vm.modifiedDecertifiedProducts" class="table table-striped">
           <thead>
             <tr>
-              <th scope="col" class="search-header" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
-              <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
-              <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
+              <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
+              <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL ID</th>
               <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
-              <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Certification Edition</th>
-              <th scope="col" class="search-header" st-sort="estimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
               <th scope="col" class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Certification Status</th>
               <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
+              <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Status</th>
+              <th scope="col" class="search-header" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
+              <th scope="col" class="search-header" st-sort="estimatedUsers" st-skip-natural="true">Estimated # of MU Users</th>
+              <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
             </tr>
             <tr id="filters">
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="acb"></st-select-multiple></th>
-		      <th><st-date-range predicate="certificationDateValue" before="query.before" after="query.after"></st-date-range></th>
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="edition"></st-select-multiple></th>
               <th><input placeholder="search CHPL Product Number" st-search="chplProductNumber"></th>
               <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="developer"></st-select-multiple></th>
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="edition"></st-select-multiple></th>
-              <th><st-number-range predicate="estimatedUsers" lower="query.lower" higher="query.higher"></st-number-range></th>
               <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="product"></st-select-multiple></th>
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="status"></st-select-multiple></th>
               <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="version"></st-select-multiple></th>
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="status"></st-select-multiple></th>
+              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="acb"></st-select-multiple></th>
+              <th>&nbsp;</st-number-range></th>
+		      <th><st-date-range predicate="certificationDateValue" before="query.before" after="query.after"></st-date-range></th>
             </tr>
           </thead>
           <tbody>
@@ -38,15 +38,15 @@
               <td colspan="9">No Decertified Products found</td>
             </tr>
             <tr ng-repeat="prod in vm.displayedProducts">
-              <td>{{ prod.acb }}</td>
-              <td>{{ prod.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+              <td>{{ prod.edition }}</td>
               <td>{{ prod.chplProductNumber }}</td>
               <td>{{ prod.developer }}</td>
-              <td>{{ prod.edition }}</td>
-              <td>{{ prod.estimatedUsers }}</td>
               <td>{{ prod.product }}</td>
-              <td>{{ prod.status }}</td>
               <td>{{ prod.version }}</td>
+              <td>{{ prod.status }}</td>
+              <td>{{ prod.acb }}</td>
+              <td>{{ prod.estimatedUsers }}</td>
+              <td>{{ prod.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
