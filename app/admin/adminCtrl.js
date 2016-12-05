@@ -46,10 +46,19 @@
                 if ($routeParams.section) {
                     vm.navState.screen = $routeParams.section;
                 }
-                if ($routeParams.productId)  {
+                if (vm.navState.screen === 'reports') {
+                    if ($routeParams.subSection) {
+                        vm.productId = $routeParams.subSection;
+                        vm.navState.reports = '';
+                    }
+                } else {
+                    if ($routeParams.subSection) {
+                        vm.navState[vm.navState.screen] = $routeParams.subSection;
+                    }
+                    if ($routeParams.productId)  {
                     vm.navState.reports = '';
-                    vm.navState.dpManagement = 'manage';
-                    vm.productId = $routeParams.productId;
+                        vm.productId = $routeParams.productId;
+                    }
                 }
 
                 // load editable acbs & atls
@@ -111,6 +120,15 @@
                     path = path.substring(0,path.lastIndexOf('/'));
                     $location.path(path);
                 }
+                clearSubsection();
+            }
+
+            function clearSubsection () {
+                var path = $location.path();
+                if ($routeParams.productId)  {
+                    path = path.substring(0,path.lastIndexOf('/'));
+                    $location.path(path);
+                }
             }
 
             function getUsername () {
@@ -136,7 +154,7 @@
             function isCmsStaff () {
                 return authService.isCmsStaff();
             }
-            
+
             function isOncStaff() {
             	return authService.isOncStaff();
             }

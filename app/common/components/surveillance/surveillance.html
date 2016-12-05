@@ -1,0 +1,122 @@
+<div style="background: white">
+  <div ng-if="!vm.certifiedProduct.surveillance || vm.certifiedProduct.surveillance.length === 0">
+    No Surveillance Activity
+  </div>
+  <div ng-repeat="surv in vm.certifiedProduct.surveillance | orderBy: 'friendlyId'">
+    <div class="pull-right">
+      <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a>
+      <button class="btn btn-sm btn-ai-success" ng-click="vm.editSurveillance(surv)" ng-if="vm.allowEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
+    </div>
+    <p>{{ vm.getTitle(surv) }}</p>
+    <div ng-if="surv.showDetails">
+      Surveillance Description
+      <table class="table">
+        <tbody>
+          <tr>
+            <th scope="row">Date Surveillance Began</th>
+            <td>{{ surv.startDate | date : 'mediumDate' : 'UTC' }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Date Surveillance Ended</th>
+            <td ng-if="surv.endDate">{{ surv.endDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td ng-if="!surv.endDate">N/A</td>
+          </tr>
+          <tr>
+            <th scope="row">Surveillance Type</th>
+            <td>{{ surv.type.name }}<span ng-if="surv.type.name === 'Randomized'"> ({{ surv.randomizedSitesUsed }} site<span ng-if="surv.randomizedSitesUsed !== 1">s</span> used in surveillance)</span></td>
+          </tr>
+          <tr>
+            <th scope="row">Certification Criteria and Program Requirements Surveilled</th>
+            <td><span ng-repeat="req in surv.requirements | orderBy:['type.name',vm.sortRequirements]">{{ req.type.name }}: {{ req.requirement }}<br /></span></td>
+          </tr>
+          <tr>
+            <th scope="row">Surveillance Result</th>
+            <td><span ng-repeat="res in vm.surveillanceResults(surv) track by $index">{{ res }}<br /></span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div ng-repeat="req in surv.requirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
+        <div ng-repeat="noncon in req.nonconformities">
+          <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.requirement }}</span></a>
+          <p>Non-Conformity related to {{ req.requirement }} Details</p>
+          <div ng-if="noncon.showDetails">
+            <p>Non-Conformity related to {{ req.requirement }} Dates</p>
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th scope="col">Date of Determination of Non-Conformity</th>
+                  <th scope="col">Corrective Action Plan Approval Date</th>
+                  <th scope="col">Date Corrective Action Began</th>
+                  <th scope="col">Date Corrective Action Must Be Completed</th>
+                  <th scope="col">Date Corrective Action Was Completed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td ng-if="noncon.dateOfDetermination">{{ noncon.dateOfDetermination | date : 'mediumDate' : 'UTC' }}</td>
+                  <td ng-if="!noncon.dateOfDetermination">N/A</td>
+                  <td ng-if="noncon.capApprovalDate">{{ noncon.capApprovalDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td ng-if="!noncon.capApprovalDate">N/A</td>
+                  <td ng-if="noncon.capStartDate">{{ noncon.capStartDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td ng-if="!noncon.capStartDate">N/A</td>
+                  <td ng-if="noncon.capMustCompleteDate">{{ noncon.capMustCompleteDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td ng-if="!noncon.capMustCompleteDate">N/A</td>
+                  <td ng-if="noncon.capEndDate">{{ noncon.capEndDate | date : 'mediumDate' : 'UTC' }}</td>
+                  <td ng-if="!noncon.capEndDate">N/A</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Non-Conformity related to {{ req.requirement }} Description</p>
+            <table class="table table-condensed">
+              <tbody>
+                <tr>
+                  <th scope="row">Non-Conformity Type</th>
+                  <td>{{ noncon.nonconformityType }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Non-Conformity Status</th>
+                  <td>{{ noncon.status.name }}</td>
+                </tr>
+                <tr ng-if="surv.type.name === 'Randomized'">
+                  <th scope="row">Pass Rate</th>
+                  <td>{{ noncon.sitesPassed }} / {{ noncon.totalSites }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Non-Conformity Summary</th>
+                  <td>{{ noncon.summary }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Findings</th>
+                  <td>{{ noncon.findings }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Developer Explanation</th>
+                  <td>{{ noncon.developerExplanation }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Resolution</th>
+                  <td>{{ noncon.resolution }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div ng-if="noncon.documents && noncon.documents.length > 0">
+              <p>Non-Conformity related to {{ req.requirement }} Supporting Documentation</p>
+              <ul>
+                <li ng-repeat="doc in noncon.documents">
+                  {{ doc.fileName }}
+                  <span ng-if="doc.id">
+                    <a type="button" class="btn btn-sm btn-ai-success" href="{{ vm.API }}/surveillance/document/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download {{ doc.fileName</span></a>
+                  </span>
+                  <span ng-if="!doc.id">File is pending</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-if="vm.allowEditing">
+    <button class="btn btn-ai-success" ng-click="vm.initiateSurveillance()">Initiate Surveillance Reporting</button>
+  </div>
+</div>

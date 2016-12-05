@@ -43,7 +43,7 @@
             }
 
             function isActive (route) {
-                return route === $location.path();
+                return route === $location.path().split('/')[1];
             }
 
             function isAtlAdmin () {
@@ -61,7 +61,7 @@
             function isCmsStaff () {
                 return authService.isCmsStaff();
             }
-            
+
             function isOncStaff () {
                 return authService.isOncStaff();
             }

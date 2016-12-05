@@ -8,6 +8,7 @@
             $httpBackend.whenGET(/^search\/.*/).passThrough();
             $httpBackend.whenGET(/^compare\/.*/).passThrough();
             $httpBackend.whenGET(/^common\/.*/).passThrough();
+            $httpBackend.whenGET(/^decertifications\/.*/).passThrough();
             $httpBackend.whenGET(/^product\/.*/).passThrough();
             $httpBackend.whenGET(/^resources\/.*/).passThrough();
             $httpBackend.whenGET(/^overview\/.*/).passThrough();

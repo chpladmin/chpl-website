@@ -14,12 +14,18 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="odc-navbar">
         <ul class="nav navbar-nav navbar-right">
-          <li ng-class="{'active': vm.isActive('/search') }"><a href="#/search">Search</a></li>
-          <li ng-class="{'active': vm.isActive('/overview') }"><a href="#/overview">Overview</a></li>
+          <li ng-class="{'active': vm.isActive('search') }"><a href="#/search">Search</a></li>
+          <li ng-class="{'active': vm.isActive('overview') }"><a href="#/overview">Overview</a></li>
           <li><a href="mailto:ONC_CHPL@hhs.gov">Contact</a></li>
-          <li ng-class="{'active': vm.isActive('/resources') }"><a href="#/resources">Resources</a></li>
-
-          <li ng-class="{'active': vm.isActive('/admin') }" class="dropdown">
+          <li ng-class="{'active': vm.isActive('resources') }"><a href="#/resources">Resources</a></li>
+          <li ng-class="{'active': vm.isActive('decertifications') }" class="dropdown">
+            <a href class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Decertifications <span class="fa fa-caret-down"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#/decertifications/products">Decertified Products</a></li>
+              <li><a href="#/decertifications/developers">Decertified Developers</a></li>
+            </ul>
+          </li>
+          <li ng-class="{'active': vm.isActive('admin') }" class="dropdown">
             <a href class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span ng-if="!vm.getUsername()" class="sr-only">Log in</span>{{ vm.getUsername() }} <span class="fa fa-caret-down"></span></a>
             <ul class="dropdown-menu">
               <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isAcbStaff()"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>

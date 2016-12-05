@@ -40,7 +40,9 @@
                         'Retired': false,
                         'Suspended by ONC-ACB': true,
                         'Withdrawn by Developer': true,
-                        'Withdrawn by ONC-ACB': true
+                        'Withdrawn by ONC-ACB': true,
+                        'Suspended by ONC': true,
+                        'Terminated by ONC': true
                     },
                     certificationEdition: {
                         '2011': false,
@@ -141,6 +143,8 @@
                             (obj.statuses['withdrawnByAcb'] > 0 && vm.refineModel.certificationStatus['Withdrawn by ONC-ACB']) ||
                             (obj.statuses['withdrawnByDeveloper'] > 0 && vm.refineModel.certificationStatus['Withdrawn by Developer']) ||
                             (obj.statuses['suspendedByAcb'] > 0 && vm.refineModel.certificationStatus['Suspended by ONC-ACB']) ||
+                            (obj.statuses['suspendedByOnc'] > 0 && vm.refineModel.certificationStatus['Suspended by ONC']) ||
+                            (obj.statuses['terminatedByOnc'] > 0 && vm.refineModel.certificationStatus['Terminated by ONC']) ||
                             (obj.statuses['retired'] > 0 && vm.refineModel.certificationStatus['Retired']));
                 }
             }
@@ -354,6 +358,12 @@
                     break;
                 case 'Withdrawn by ONC-ACB':
                     ret = 'fa-minus-circle status-bad';
+                    break;
+                case 'Suspended by ONC':
+                    ret = 'fa-minus-square status-warning';
+                    break;
+                case 'Terminated by ONC':
+                    ret = 'fa-window-close status-bad';
                     break;
                 }
                 return ret;
