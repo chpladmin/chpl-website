@@ -66,7 +66,7 @@
       <div class="input-group">
         <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.certDate" is-open="vm.cp.certDatePicker" close-text="Close" id="cpCertDate" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required>
         <span class="input-group-btn">
-          <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
+          <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.certDatePicker = true"><i class="fa fa-calendar"></i></button>
         </span>
       </div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.required">Field is required</div>
@@ -164,7 +164,7 @@
     <div class="form-group">
       <label for="cpSedTestingEnd">SED End Date of Testing</label>
       <div class="input-group">
-        <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.setTestingEndDate" is-open="vm.cp.sedTestingEndDatePicker" close-text="Close" id="cpSedTestingEnd" name="cpSedTestingEnd" ng-model-options="{ timezone: 'UTC' }" required>
+        <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.setTestingEndDate" is-open="vm.cp.sedTestingEndDatePicker" close-text="Close" id="cpSedTestingEnd" name="cpSedTestingEnd" ng-model-options="{ timezone: 'UTC' }">
         <span class="input-group-btn">
           <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
         </span>
