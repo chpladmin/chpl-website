@@ -34,12 +34,11 @@
       <label for="endDate" class="col-sm-3">End Date</label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.surveillance.endDateObject" is-open="vm.surveillance.endDatePicker" close-text="Close" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="vm.surveillance.endDateObject" is-open="vm.surveillance.endDatePicker" close-text="Close" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.endDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
     </div>
