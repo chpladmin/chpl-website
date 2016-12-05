@@ -46,12 +46,19 @@
                 if ($routeParams.section) {
                     vm.navState.screen = $routeParams.section;
                 }
-                if ($routeParams.subSection) {
-                    vm.navState[vm.navState.screen] = $routeParams.subSection;
-                }
-                if ($routeParams.productId)  {
+                if (vm.navState.screen === 'reports') {
+                    if ($routeParams.subSection) {
+                        vm.productId = $routeParams.subSection;
+                        vm.navState.reports = '';
+                    }
+                } else {
+                    if ($routeParams.subSection) {
+                        vm.navState[vm.navState.screen] = $routeParams.subSection;
+                    }
+                    if ($routeParams.productId)  {
                     vm.navState.reports = '';
-                    vm.productId = $routeParams.productId;
+                        vm.productId = $routeParams.productId;
+                    }
                 }
 
                 // load editable acbs & atls
