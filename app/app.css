@@ -591,3 +591,13 @@ option[disabled] {
 #decertifications-page .dropdown-menu>li>a {
     font-weight: 700;
 }
+
+#decertifiedProductFilter,
+#decertifiedDeveloperFilter {
+    min-width: 500px;
+}
+
+#decertifiedProductFilter .dropdown-menu,
+#decertifiedDeveloperFilter .dropdown-menu {
+    width: 100%;
+}
