@@ -153,6 +153,7 @@
                 if (vm.workType === 'confirm') {
                     $modalInstance.close(vm.surveillance);
                 } else if (vm.workType === 'initiate') {
+                    vm.surveillance.edition = vm.surveillance.certifiedProduct.certificationEdition.name;
                     commonService.initiateSurveillance(vm.surveillance)
                         .then(function (response) {
                             if (!response.status || response.status === 200 || angular.isObject(response.status)) {
