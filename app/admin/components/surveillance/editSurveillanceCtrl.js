@@ -161,7 +161,11 @@
                                 vm.errorMessages = [response];
                             }
                         },function (error) {
-                            vm.errorMessages = [error.statusText];
+                            if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+                                vm.errorMessages = error.data.errorMessages;
+                            } else {
+                                vm.errorMessages = [error.statusText];
+                            }
                         });
                 } else if (vm.workType === 'edit') {
                     commonService.updateSurveillance(vm.surveillance)
@@ -172,7 +176,11 @@
                                 vm.errorMessages = [response];
                             }
                         },function (error) {
-                            vm.errorMessages = [error.statusText];
+                            if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+                                vm.errorMessages = error.data.errorMessages;
+                            } else {
+                                vm.errorMessages = [error.statusText];
+                            }
                         });
                 }
             }
