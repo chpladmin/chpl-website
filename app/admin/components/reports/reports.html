@@ -185,9 +185,10 @@
               <td>{{ activity.acb }}</td>
               <td ng-bind-html="activity.action"></td>
               <td>
-                <ul class="list-unstyled" ng-if="activity.details">
+                <ul class="list-unstyled" ng-if="activity.details && activity.details.length > 0">
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
+                <button class="btn btn-sm btn-ai-success" ng-click="vm.compareSurveillances(activity.source.oldS,activity.source.newS)" ng-if="activity.source"><i class="fa fa-search"></i>View Details</button>
               </td>
 		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>

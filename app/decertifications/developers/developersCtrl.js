@@ -16,11 +16,7 @@
                 vm.displayedDevelopers = [];
                 commonService.getDecertifiedDevelopers()
                     .then(function (result) {
-                        vm.decertifiedDevelopers = result.developerDecertificationResult;
-                        //debug
-                        vm.decertifiedDevelopers = [{developer: {name: 'dev 1', status: {name: 'Terminated by ONC'}}, certifyingBody: [{name: 'acb1'},{name: 'acb2'}], estimatedUsers: 4},
-                                                    {developer: {name: 'dev 2', status: {name: 'Under certification ban by ONC'}}, certifyingBody: [{name: 'acb2'}], estimatedUsers: 6}];
-
+                        vm.decertifiedDevelopers = result.decertifiedDeveloperResults;
                         vm.displayedDevelopers = [].concat(vm.decertifiedDevelopers);
                         vm.loadDevelopers();
                     }, function (error) {
@@ -43,7 +39,7 @@
                     vm.modifiedDecertifiedDevelopers.push({
                         stAcb: [],
                         stDeveloper: vm.decertifiedDevelopers[i].developer.name,
-                        stStatus: vm.decertifiedDevelopers[i].developer.status.name,
+                        stStatus: vm.decertifiedDevelopers[i].developer.status.status,
                         stEstimatedUsers: vm.decertifiedDevelopers[i].estimatedUsers
                     });
                     for (var j = 0; j < vm.decertifiedDevelopers[i].certifyingBody.length; j++) {

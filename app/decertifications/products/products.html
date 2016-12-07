@@ -8,48 +8,75 @@
     <div class="row">
       <div class="col-sm-12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
-        <table st-set-filter="customFilter" st-table="vm.displayedProducts" st-safe-src="vm.modifiedDecertifiedProducts" class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
-              <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL ID</th>
-              <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
-              <th scope="col" class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
-              <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Status</th>
-              <th scope="col" class="search-header" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
-              <th scope="col" class="search-header" st-sort="estimatedUsers" st-skip-natural="true">Estimated # of MU Users</th>
-              <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
-            </tr>
-            <tr id="filters">
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="edition"></st-select-multiple></th>
-              <th><input placeholder="search CHPL Product Number" st-search="chplProductNumber"></th>
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="developer"></st-select-multiple></th>
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="product"></st-select-multiple></th>
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="version"></st-select-multiple></th>
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="status"></st-select-multiple></th>
-              <th><st-select-multiple collection="vm.modifiedDecertifiedProducts" predicate="acb"></st-select-multiple></th>
-              <th>&nbsp;</st-number-range></th>
-		      <th><st-date-range predicate="certificationDateValue" before="query.before" after="query.after"></st-date-range></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-if="vm.displayedProducts.length === 0">
-              <td colspan="9">No Decertified Products found</td>
-            </tr>
-            <tr ng-repeat="prod in vm.displayedProducts">
-              <td>{{ prod.edition }}</td>
-              <td>{{ prod.chplProductNumber }}</td>
-              <td>{{ prod.developer }}</td>
-              <td>{{ prod.product }}</td>
-              <td>{{ prod.version }}</td>
-              <td>{{ prod.status }}</td>
-              <td>{{ prod.acb }}</td>
-              <td>{{ prod.estimatedUsers }}</td>
-              <td>{{ prod.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
+      </div>
+    </div>
+    <div st-set-filter="customFilter" st-table="vm.displayedProducts" st-safe-src="vm.modifiedDecertifiedProducts">
+      <div class="row form-horizontal">
+        <div class="col-sm-4">
+          <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+            <input type="text" class="form-control input-sm" id="generalFilter" placeholder="search by Developer, Product, or CHPL ID" st-search>
+            <label for="generalFilter"><span class="sr-only">Search by Developer, Product, or CHPL ID</span></label>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div dropdown auto-close="outsideClick" class="btn-group" id="decertifiedProductFilter">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              Filter <i class="fa fa-filter"></i>
+            </button>
+            <div class="dropdown-menu row" aria-labeledby="filter-button">
+              <div class="col-sm-4">
+                ONC-ACB
+                <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="acb"></st-list-multiple>
+                Certification Editiion
+                <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="edition"></st-list-multiple>
+              </div>
+              <div class="col-sm-4">
+                Certification Status
+                <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="status"></st-list-multiple>
+              </div>
+              <div class="col-sm-4">
+                Certification Date
+		        <st-date-range predicate="certificationDateValue" before="query.before" after="query.after"></st-date-range>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
+                <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default="true">CHPL ID</th>
+                <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+                <th scope="col" class="search-header" st-sort="product" st-skip-natural="true">Product</th>
+                <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
+                <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Status</th>
+                <th scope="col" class="search-header" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
+                <th scope="col" class="search-header" st-sort="estimatedUsers" st-skip-natural="true">Estimated # of MU Users</th>
+                <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-if="vm.displayedProducts.length === 0">
+                <td colspan="9">No Decertified Products found</td>
+              </tr>
+              <tr ng-repeat="prod in vm.displayedProducts">
+                <td>{{ prod.edition }}</td>
+                <td>{{ prod.chplProductNumber }}</td>
+                <td>{{ prod.developer }}</td>
+                <td>{{ prod.product }}</td>
+                <td>{{ prod.version }}</td>
+                <td>{{ prod.status }}</td>
+                <td>{{ prod.acb }}</td>
+                <td>{{ prod.estimatedUsers }}</td>
+                <td>{{ prod.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

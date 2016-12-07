@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.admin')
-        .controller('ReportController', ['$log', '$filter', 'commonService', 'authService', function($log, $filter, commonService, authService) {
+        .controller('ReportController', ['$log', '$filter', '$modal', 'commonService', 'authService', function($log, $filter, $modal, commonService, authService) {
             var vm = this;
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
@@ -14,6 +14,7 @@
             vm.refreshActivity = refreshActivity;
             vm.changeTab = changeTab;
             vm.clearApiKeyFilter = clearApiKeyFilter;
+            vm.compareSurveillances = compareSurveillances;
             vm.loadApiKeys = loadApiKeys;
             vm.refreshCp = refreshCp;
             vm.refreshDeveloper = refreshDeveloper;
@@ -164,6 +165,22 @@
                 };
             }
 
+            function compareSurveillances (oldS, newS) {
+                vm.modalInstance = $modal.open({
+                    templateUrl: 'admin/components/reports/compareSurveillanceRequirements.html',
+                    controller: 'CompareSurveillanceRequirementsController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        newSurveillance: function () { return newS; },
+                        oldSurveillance: function () { return oldS; }
+                    },
+                    size: 'lg'
+                });
+            }
+
             function loadApiKeys () {
                 commonService.getApiUsers()
                     .then (function (result) {
@@ -300,6 +317,7 @@
             }
 
             function interpretCps (data) {
+                vm.loadedCpActivity = data;
                 var simpleCpFields = [
                     {key: 'acbCertificationId', display: 'ACB Certification ID'},
                     {key: 'accessibilityCertified', display: 'Accessibility Certified'},
@@ -508,11 +526,15 @@
                                 }
                                 */
                                 if (actions.length === 0) {
-                                    actions.push('Specifics unclear');
+                                    activity.source = {
+                                        oldS: data[i].originalData,
+                                        newS: data[i].newData
+                                    }
+                                } else {
+                                    action += actions.join('</li><li>');
+                                    action += '</li></ul>';
+                                    activity.details.push(action);
                                 }
-                                action += actions.join('</li><li>');
-                                action += '</li></ul>';
-                                activity.details.push(action);
                             }
                         } else {
                             activity.action = data[i].description + '<br />' + link;

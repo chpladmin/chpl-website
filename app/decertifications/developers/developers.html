@@ -8,41 +8,59 @@
     <div class="row">
       <div class="col-sm-12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
-        <table st-set-filter="customFilter" st-table="vm.displayedDevelopers" st-safe-src="vm.modifiedDecertifiedDevelopers" class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col" class="search-header" st-sort="stAcb" st-skip-natural="true">ONC-ACB</th>
-              <th scope="col" class="search-header" st-sort="stDeveloper" st-skip-natural="true" st-sort-default="true">Developer Name</th>
-              <th scope="col" class="search-header" st-sort="stStatus" st-skip-natural="true">Developer Status</th>
-              <th scope="col" class="search-header" st-sort="stEstimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
-            </tr>
-            <tr id="filters">
-              <th>
-                <st-select-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stAcb"></st-select-multiple>
-              </th>
-              <th>
-                <st-select-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stDeveloper"></st-select-multiple>
-              </th>
-              <th>
-                <st-select-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stStatus"></st-select-multiple>
-              </th>
-              <th>
-                &nbsp;
-	          </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-if="vm.displayedDevelopers.length === 0">
-              <td colspan="4">No Decertified Developers found</td>
-            </tr>
-            <tr ng-repeat="dev in vm.displayedDevelopers">
-              <td ng-bind-html="dev.stAcb.join('<br>')"></td>
-              <td>{{ dev.stDeveloper }}</td>
-              <td>{{ dev.stStatus }}</td>
-              <td>{{ dev.stEstimatedUsers }}</td>
-            </tr>
-          </tbody>
-        </table>
+      </div>
+    </div>
+    <div st-set-filter="customFilter" st-table="vm.displayedDevelopers" st-safe-src="vm.modifiedDecertifiedDevelopers">
+      <div class="row form-horizontal">
+        <div class="col-sm-4">
+          <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+            <input type="text" class="form-control input-sm" id="generalFilter" placeholder="search by Developer" st-search="stDeveloper">
+            <label for="generalFilter"><span class="sr-only">Search by Developer</span></label>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div dropdown auto-close="outsideClick" class="btn-group" id="decertifiedDeveloperFilter">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              Filter <i class="fa fa-filter"></i>
+            </button>
+            <div class="dropdown-menu row" aria-labeledby="filter-button">
+              <div class="col-sm-6">
+                ONC-ACB
+                <st-list-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stAcb"></st-list-multiple>
+              </div>
+              <div class="col-sm-6">
+                Certification Status
+                <st-list-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stStatus"></st-list-multiple>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col" class="search-header" st-sort="stAcb" st-skip-natural="true">ONC-ACB</th>
+                <th scope="col" class="search-header" st-sort="stDeveloper" st-skip-natural="true" st-sort-default="true">Developer Name</th>
+                <th scope="col" class="search-header" st-sort="stStatus" st-skip-natural="true">Developer Status</th>
+                <th scope="col" class="search-header" st-sort="stEstimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-if="vm.displayedDevelopers.length === 0">
+                <td colspan="4">No Decertified Developers found</td>
+              </tr>
+              <tr ng-repeat="dev in vm.displayedDevelopers">
+                <td ng-bind-html="dev.stAcb.join('<br>')"></td>
+                <td>{{ dev.stDeveloper }}</td>
+                <td>{{ dev.stStatus }}</td>
+                <td>{{ dev.stEstimatedUsers ? dev.stEstimatedUsers : 'N/A' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
