@@ -594,7 +594,7 @@
             };
 
             self.getDecertifiedProducts = function () {
-                return self.simpleApiCall('/decertifications/products');
+                return self.simpleApiCall('/decertifications/certified_products');
             };
         });
 })();
