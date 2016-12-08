@@ -147,6 +147,10 @@
               <li ng-repeat="std in vm.product.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
             </ul>
           </span>
+          <span ng-if="vm.product.numMeaningfulUse">
+            <h4>Estimated Number of Meaningful Use Users</h4>
+            <p>{{ vm.product.numMeaningfulUse ? vm.product.numMeaningfulUse : 'N/A' }}</p>
+          </span>
         </span>
       </div>
     </div>
