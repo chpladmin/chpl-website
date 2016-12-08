@@ -9,6 +9,7 @@
             vm.getTitle = getTitle;
             vm.initiateSurveillance = initiateSurveillance;
             vm.sortRequirements = utilService.sortRequirements;
+            vm.sortResults = sortResults;
             vm.surveillanceResults = surveillanceResults;
 
             activate();
@@ -101,6 +102,11 @@
                         $log.debug(result);
                     }
                 });
+            }
+
+            function sortResults (result) {
+                var req = result.substring(result.indexOf(' for ') + 5);
+                return vm.sortRequirements(req);
             }
 
             function surveillanceResults (surv) {

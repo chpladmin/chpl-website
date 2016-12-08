@@ -31,11 +31,11 @@
           </tr>
           <tr>
             <th scope="row">Surveillance Result</th>
-            <td><span ng-repeat="res in vm.surveillanceResults(surv) track by $index">{{ res }}<br /></span></td>
+            <td><span ng-repeat="res in vm.surveillanceResults(surv) track by $index | orderBy:vm.sortResults">{{ res }}<br /></span></td>
           </tr>
         </tbody>
       </table>
-      <div ng-repeat="req in surv.requirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
+      <div ng-repeat="req in surv.requirements | orderBy:vm.sortRequirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
         <div ng-repeat="noncon in req.nonconformities">
           <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.requirement }}</span></a>
           <p>Non-Conformity related to {{ req.requirement }} Details</p>
