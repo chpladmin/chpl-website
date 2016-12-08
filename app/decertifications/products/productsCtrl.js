@@ -16,35 +16,11 @@
                 vm.displayedProducts = [];
                 commonService.getDecertifiedProducts()
                     .then(function (result) {
-                        vm.decertifiedProducts = result.data;
+                        vm.decertifiedProducts = result.results;
                         vm.displayedProducts = [].concat(vm.decertifiedProducts);
                         vm.loadProducts();
                     }, function (error) {
-                        // debug
-                        vm.decertifiedProducts = [
-                            {
-                                acb: {name: 'acb1'},
-                                certificationDate: new Date('03/19/2013'),
-                                chplProductNumber: 'CHP-123123',
-                                developer: {name: 'dev 1'},
-                                edition: {name: '2014'},
-                                estimatedUsers: 4,
-                                product: {name: 'prod 1'},
-                                status: {name: 'status 1'},
-                                version: {name: 'ver 1'}
-                            },{
-                                acb: {name: 'acb2'},
-                                certificationDate: new Date('03/29/2017'),
-                                chplProductNumber: '15.01.02.PROD.VER.1.2.1',
-                                developer: {name: 'dev 2'},
-                                edition: {name: '2015'},
-                                estimatedUsers: 8,
-                                product: {name: 'prod 2'},
-                                status: {name: 'status 2'},
-                                version: {name: 'ver 2'}
-                            }
-                        ];
-                        vm.loadProducts();
+                        $log.debug(error);
                     });
                 commonService.getSearchOptions(true)
                     .then(function (result) {
@@ -57,16 +33,16 @@
                 vm.modifiedDecertifiedProducts = [];
                 for (var i = 0; i < vm.decertifiedProducts.length; i++) {
                     vm.modifiedDecertifiedProducts.push({
-                        acb: vm.decertifiedProducts[i].acb.name,
+                        acb: vm.decertifiedProducts[i].certifyingBody.name,
                         certificationDate: vm.decertifiedProducts[i].certificationDate,
-                        certificationDateValue: vm.decertifiedProducts[i].certificationDate.getTime(),
+                        //certificationDateValue: vm.decertifiedProducts[i].certificationDate.getTime(),
                         chplProductNumber: vm.decertifiedProducts[i].chplProductNumber,
                         developer: vm.decertifiedProducts[i].developer.name,
-                        edition: vm.decertifiedProducts[i].edition.name,
-                        estimatedUsers: vm.decertifiedProducts[i].estimatedUsers,
+                        edition: vm.decertifiedProducts[i].certificationEdition.name,
+                        estimatedUsers: vm.decertifiedProducts[i].numMeaningfulUse,
                         product: vm.decertifiedProducts[i].product.name,
-                        status: vm.decertifiedProducts[i].status.name,
-                        version: vm.decertifiedProducts[i].version.name
+                        status: vm.decertifiedProducts[i].certificationStatus.name,
+                        version: vm.decertifiedProducts[i].product.version
                     });
                 }
             }
