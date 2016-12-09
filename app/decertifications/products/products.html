@@ -11,7 +11,7 @@
       </div>
     </div>
     <div st-set-filter="customFilter" st-table="vm.displayedProducts" st-safe-src="vm.modifiedDecertifiedProducts">
-      <div class="row form-horizontal">
+      <div class="row form-horizontal" ng-if="vm.modifiedDecertifiedProducts && vm.modifiedDecertifiedProducts.length > 0" id="filters">
         <div class="col-sm-4">
           <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-search"></i></div>
@@ -25,38 +25,39 @@
               Filter <i class="fa fa-filter"></i>
             </button>
             <div class="dropdown-menu row" aria-labeledby="filter-button">
-              <div class="col-sm-4">
-                ONC-ACB
+              <div class="col-sm-6">
+                <strong>ONC-ACB</strong>
                 <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="acb"></st-list-multiple>
-                Certification Editiion
+                <strong>Certification Editiion</strong>
                 <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="edition"></st-list-multiple>
               </div>
-              <div class="col-sm-4">
-                Certification Status
+              <div class="col-sm-6">
+                <strong>Certification Status</strong>
                 <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="status"></st-list-multiple>
               </div>
-              <div class="col-sm-4">
-                Certification Date
-		        <st-date-range predicate="certificationDateValue" before="query.before" after="query.after"></st-date-range>
+              <div class="col-sm-12">
+                <strong>Certification Date</strong>
+		        <st-date-range predicate="certificationDate" before="query.before" after="query.after"></st-date-range>
               </div>
             </div>
           </div>
+          <div class="pull-right">{{ vm.displayedProducts.length }} Decertified Product<span ng-if="vm.displayedProducts.length > 1">s</span> shown out of {{ vm.decertifiedProducts.length }} total Decertified Product<span ng-if="vm.decertifiedProducts.length > 1">s</span></div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <table class="table table-striped">
+          <table class="table table-striped table-condensed">
             <thead>
               <tr>
-                <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
-                <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default="true">CHPL ID</th>
-                <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
-                <th scope="col" class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-                <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
-                <th scope="col" class="search-header" st-sort="status" st-skip-natural="true">Status</th>
-                <th scope="col" class="search-header" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
-                <th scope="col" class="search-header" st-sort="estimatedUsers" st-skip-natural="true">Estimated # of MU Users</th>
-                <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+                <th scope="col" class="search-header sort-none" st-sort="edition" st-skip-natural="true">Edition</th>
+                <th scope="col" class="search-header sort-none" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default="true">CHPL ID</th>
+                <th scope="col" class="search-header sort-none" st-sort="developer" st-skip-natural="true">Developer</th>
+                <th scope="col" class="search-header sort-none" st-sort="product" st-skip-natural="true">Product</th>
+                <th scope="col" class="search-header sort-none" st-sort="version" st-skip-natural="true">Version</th>
+                <th scope="col" class="search-header sort-none" st-sort="status" st-skip-natural="true">Status</th>
+                <th scope="col" class="search-header sort-none" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
+                <th scope="col" class="search-header sort-none" st-sort="estimatedUsers" st-skip-natural="true">Estimated # of MU Users</th>
+                <th scope="col" class="search-header sort-none" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
               </tr>
             </thead>
             <tbody>
@@ -65,13 +66,13 @@
               </tr>
               <tr ng-repeat="prod in vm.displayedProducts">
                 <td>{{ prod.edition }}</td>
-                <td>{{ prod.chplProductNumber }}</td>
+                <td><a href="#/product/{{ prod.id }}">{{ prod.chplProductNumber }}</a></td>
                 <td>{{ prod.developer }}</td>
                 <td>{{ prod.product }}</td>
                 <td>{{ prod.version }}</td>
                 <td>{{ prod.status }}</td>
                 <td>{{ prod.acb }}</td>
-                <td>{{ prod.estimatedUsers }}</td>
+                <td>{{ prod.estimatedUsers ? prod.estimatedUsers : 'N/A' }}</td>
                 <td>{{ prod.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               </tr>
             </tbody>
