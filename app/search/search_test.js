@@ -192,17 +192,20 @@
             expect(vm.isChangedFromDefault('certificationStatus', 'Active')).toBe(false);
             expect(vm.isChangedFromDefault('certificationEdition', '2014')).toBe(false);
             expect(vm.isChangedFromDefault('acb', 'ICSA Labs')).toBe(false);
-            expect(vm.isChangedFromDefault('hasCap', 'never')).toBe(undefined);
+            expect(vm.isChangedFromDefault('cqms', 'CMS05')).toBe(undefined);
+            expect(vm.isChangedFromDefault('hasHadSurveillance', 'never')).toBe(undefined);
 
             vm.refineModel.certificationStatus['Active'] = false;
             vm.refineModel.certificationEdition['2014'] = false;
             vm.refineModel.acb['ICSA Labs'] = false;
-            vm.refineModel.hasCap = { never: true };
+            vm.refineModel.cqms = {CMS05: true};
+            vm.refineModel.hasHadSurveillance = 'never';
 
             expect(vm.isChangedFromDefault('certificationStatus', 'Active')).toBe(true);
             expect(vm.isChangedFromDefault('certificationEdition', '2014')).toBe(true);
             expect(vm.isChangedFromDefault('acb', 'ICSA Labs')).toBe(true);
-            expect(vm.isChangedFromDefault('hasCap', 'never')).toBe(true);
+            expect(vm.isChangedFromDefault('cqms', 'CMS05')).toBe(true);
+            expect(vm.isChangedFromDefault('hasHadSurveillance', 'never')).toBe(true);
         });
 
         it('should have a way to tell if a filter category has any change from the default', function () {

@@ -64,10 +64,8 @@
                                 if (isAfterActivated) {
                                     lowerLimit = expected.after;
 
-
                                     itemDate = new Date(actual);
                                     queryDate = new Date(lowerLimit);
-
                                     if (itemDate < queryDate) {
                                         return false;
                                     }

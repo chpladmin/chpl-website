@@ -175,6 +175,13 @@ footer .spaced-out {
     border: 1px solid #e1e1e1;
 }
 
+.sort-none:after, .st-sort-none:after {
+                         content: "\f0dc";
+                         font-family: FontAwesome;
+                         padding: 0 6px;
+                         font-size: large;
+                     }
+
 .sort-ascent:after, .st-sort-ascent:after {
                         content: "\f0de";
                         font-family: FontAwesome;
@@ -184,13 +191,6 @@ footer .spaced-out {
 
 .sort-descent:after, .st-sort-descent:after {
                          content: "\f0dd";
-                         font-family: FontAwesome;
-                         padding: 0 6px;
-                         font-size: large;
-                     }
-
-.sort-none:after, .st-sort-none:after {
-                         content: "\f0dc";
                          font-family: FontAwesome;
                          padding: 0 6px;
                          font-size: large;
@@ -559,6 +559,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>label,
+#decertifications-page .dropdown-menu>divli>label,
 #decertifications-page .dropdown-menu>li>label {
     cursor: pointer;
     display: block;
@@ -567,6 +568,7 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li>span>a,
+#decertifications-page .dropdown-menu>div>li>span>a,
 #decertifications-page .dropdown-menu>li>span>a {
     display: block;
     padding: 3px 20px;
@@ -574,12 +576,14 @@ option[disabled] {
 }
 
 #search-page .dropdown-menu>li.form-horizontal>div.form-group,
+#decertifications-page .dropdown-menu>div>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>li.form-horizontal>div.form-group {
     margin-left: 0px;
     margin-right: 0px;
 }
 
 #search-page .dropdown-menu>li>div>label.control-label,
+#decertifications-page .dropdown-menu>div>li>div>label.control-label,
 #decertifications-page .dropdown-menu>li>div>label.control-label {
     display: block;
     padding-left: 20px;

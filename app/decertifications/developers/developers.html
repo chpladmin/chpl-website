@@ -11,7 +11,7 @@
       </div>
     </div>
     <div st-set-filter="customFilter" st-table="vm.displayedDevelopers" st-safe-src="vm.modifiedDecertifiedDevelopers">
-      <div class="row form-horizontal">
+      <div class="row form-horizontal" ng-if="vm.modifiedDecertifiedDevelopers && vm.modifiedDecertifiedDevelopers.length > 0">
         <div class="col-sm-4">
           <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-search"></i></div>
@@ -26,11 +26,11 @@
             </button>
             <div class="dropdown-menu row" aria-labeledby="filter-button">
               <div class="col-sm-6">
-                ONC-ACB
+                <strong>ONC-ACB</strong>
                 <st-list-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stAcb"></st-list-multiple>
               </div>
               <div class="col-sm-6">
-                Certification Status
+                <strong>Certification Status</strong>
                 <st-list-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stStatus"></st-list-multiple>
               </div>
             </div>
@@ -42,10 +42,10 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col" class="search-header" st-sort="stAcb" st-skip-natural="true">ONC-ACB</th>
-                <th scope="col" class="search-header" st-sort="stDeveloper" st-skip-natural="true" st-sort-default="true">Developer Name</th>
-                <th scope="col" class="search-header" st-sort="stStatus" st-skip-natural="true">Developer Status</th>
-                <th scope="col" class="search-header" st-sort="stEstimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
+                <th scope="col" class="search-header sort-none" st-sort="stAcb" st-skip-natural="true">ONC-ACB</th>
+                <th scope="col" class="search-header sort-none" st-sort="stDeveloper" st-skip-natural="true" st-sort-default="true">Developer Name</th>
+                <th scope="col" class="search-header sort-none" st-sort="stStatus" st-skip-natural="true">Developer Status</th>
+                <th scope="col" class="search-header sort-none" st-sort="stEstimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
               </tr>
             </thead>
             <tbody>

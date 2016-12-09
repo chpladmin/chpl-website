@@ -15,6 +15,7 @@
                     developer: 'Nemo Capital Partners',
                     edition: '2014',
                     estimatedUsers: null,
+                    id: 6571,
                     product: '1 Connect BuildYourEMR',
                     status: 'Withdrawn by Developer',
                     version: '5.0'
@@ -25,6 +26,7 @@
                     developer: '4medica, Inc.',
                     edition: '2014',
                     estimatedUsers: 50,
+                    id: 6993,
                     product: '4medica iEHR Cloud Ambulatory Suite',
                     status: 'Suspended by ONC',
                     version: '15.10'
