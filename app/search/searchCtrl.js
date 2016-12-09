@@ -11,6 +11,7 @@
             vm.clearFilters = clearFilters;
             vm.clearPreviouslyCompared = clearPreviouslyCompared;
             vm.clearPreviouslyViewed = clearPreviouslyViewed;
+            vm.clearSurveillanceActivityFilter = clearSurveillanceActivityFilter;
             vm.certificationStatusFilter = certificationStatusFilter;
             vm.compare = compare;
             vm.isCategoryChanged = isCategoryChanged;
@@ -135,6 +136,11 @@
                 $localStorage.previouslyViewed = [];
             }
 
+            function clearSurveillanceActivityFilter () {
+                vm.refineModel.hasHadSurveillance = undefined;
+                vm.refineModel.surveillance = {};
+            }
+
             function certificationStatusFilter (obj) {
                 if (!obj.statuses) {
                     return true;
@@ -189,7 +195,13 @@
 
             function isChangedFromDefault (index, data) {
                 if (!vm.defaultRefineModel[index]) {
-                    return vm.refineModel[index] && vm.refineModel[index][data];
+                    if (vm.refineModel[index]) {
+                        if (angular.isObject(vm.refineModel[index])) {
+                            return vm.refineModel[index][data];
+                        } else {
+                            return true;
+                        }
+                    }
                 } else {
                     return (vm.defaultRefineModel[index][data] !== vm.refineModel[index][data]);
                 }
@@ -306,8 +318,8 @@
                 vm.query.certificationCriteria = [];
                 vm.query.certificationEditions = [];
                 vm.query.certificationStatuses = [];
-                vm.query.correctiveActionPlans = [];
                 vm.query.cqms = [];
+                vm.query.surveillance = [];
                 vm.query.practiceType = vm.refineModel.practiceType;
                 if (vm.refineModel.developer) {
                     vm.query.developerObject = vm.refineModel.developer;
@@ -333,12 +345,17 @@
                 angular.forEach(vm.refineModel.certificationStatus, function (value, key) {
                     if (value) { this.push(key); }
                 }, vm.query.certificationStatuses);
-                angular.forEach(vm.refineModel.hasCap, function (value, key) {
-                    if (value) { this.push(key); }
-                }, vm.query.correctiveActionPlans);
                 angular.forEach(vm.refineModel.cqms, function (value, key) {
                     if (value) { this.push(key); }
                 }, vm.query.cqms);
+                if (vm.refineModel.hasHadSurveillance === 'has-had') {
+                    vm.query.hasHadSurveillance = true;
+                    angular.forEach(vm.refineModel.surveillance, function (value, key) {
+                        if (value) { this.push(key); }
+                    }, vm.query.surveillance);
+                } else if (vm.refineModel.hasHadSurveillance === 'never') {
+                    vm.query.hasHadSurveillance = false;
+                }
             }
 
             function statusFont (status) {

@@ -93,7 +93,7 @@
             </div>
             <div dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-more-button" dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                <a ng-if="vm.isCategoryChanged(['cqms','acb','hasCap','practiceType','product','developer','version'])" href tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
+                <a ng-if="vm.isCategoryChanged(['cqms','acb','hasHadSurveillance','practiceType','product','developer','version'])" href tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button">
                 <li>
@@ -120,26 +120,51 @@
                 </li>
                 <li>
                   <a href ng-click="vm.showConformities = !vm.showConformities">
-                    <i class="fa" ng-class="vm.showConformities ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showConformities ? 'Hide' : 'View' }} Non-Conformities
+                    <i class="fa" ng-class="vm.showConformities ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showConformities ? 'Hide' : 'View' }} Surveillance Activity
                   </a>
                 </li>
                 <li ng-if="vm.showConformities">
-                  <label for="filter-cap-open">
-                    <input type="checkbox" ng-model="vm.refineModel.hasCap.open" id="filter-cap-open">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('hasCap','open') }">Open</span>
+                  <label for="filter-has-had-surveillance">
+                    <input type="radio" ng-model="vm.refineModel.hasHadSurveillance" id="filter-has-had-surveillance" name="hasHadSurveillance" value="has-had">
+                    Has had surveillance activity
                   </label>
                 </li>
                 <li ng-if="vm.showConformities">
-                  <label for="filter-cap-closed">
-                    <input type="checkbox" ng-model="vm.refineModel.hasCap.closed" id="filter-cap-closed">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('hasCap','closed') }">Closed</span>
+                  <label for="filter-open-surveillance">
+                    <input type="checkbox" ng-model="vm.refineModel.surveillance.OPEN_SURVEILLANCE" id="filter-open-surveillance" ng-disabled="vm.refineModel.hasHadSurveillance !== 'has-had'">
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('surveillance','OPEN_SURVEILLANCE') }">Open Surveillance</span>
                   </label>
                 </li>
                 <li ng-if="vm.showConformities">
-                  <label for="filter-cap-never">
-                    <input type="checkbox" ng-model="vm.refineModel.hasCap.never" id="filter-cap-never">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('hasCap','never') }">Never had a Non-Conformity</span>
+                  <label for="filter-closed-surveillance">
+                    <input type="checkbox" ng-model="vm.refineModel.surveillance.CLOSED_SURVEILLANCE" id="filter-closed-surveillance" ng-disabled="vm.refineModel.hasHadSurveillance !== 'has-had'">
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('surveillance','CLOSED_SURVEILLANCE') }">Closed Surveillance</span>
                   </label>
+                </li>
+                <li ng-if="vm.showConformities">
+                  <label for="filter-open-nonconformity">
+                    <input type="checkbox" ng-model="vm.refineModel.surveillance.OPEN_NONCONFORMITY" id="filter-open-nonconformity" ng-disabled="vm.refineModel.hasHadSurveillance !== 'has-had'">
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('surveillance','OPEN_NONCONFORMITY') }">Open Nonconformity</span>
+                  </label>
+                </li>
+                <li ng-if="vm.showConformities">
+                  <label for="filter-closed-nonconformity">
+                    <input type="checkbox" ng-model="vm.refineModel.surveillance.CLOSED_NONCONFORMITY" id="filter-closed-nonconformity" ng-disabled="vm.refineModel.hasHadSurveillance !== 'has-had'">
+                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('surveillance','CLOSED_NONCONFORMITY') }">Closed Nonconformity</span>
+                  </label>
+                </li>
+                <li ng-if="vm.showConformities">
+                  <label for="filter-has-never-had-surveillance">
+                    <input type="radio" ng-model="vm.refineModel.hasHadSurveillance" id="filter-has-never-had-surveillance" name="hasHadSurveillance" value="never">
+                    Has never had surveillance activity
+                  </label>
+                </li>
+                <li ng-if="vm.showConformities && vm.refineModel.hasHadSurveillance">
+                  <span>
+                    <a href ng-click="vm.clearSurveillanceActivityFilter(); $event.stopPropagation();">
+                      Clear Surveillance Activity Filter
+                    </a>
+                  </span>
                 </li>
                 <li>
                   <a href ng-click="vm.showPracticeType = !vm.showPracticeType">
