@@ -1,0 +1,57 @@
+<div class="widgetcontainer" >
+  <div>
+	<div id="slidableProductsList" >
+	  <section>
+		<div id="widgetLinkRemoveAllProducts">
+			<a href onClick="chplCertIdWidget.removeAllProductsFromCart()">
+				Remove all products
+			</a>
+		</div>
+		<div class="selectedProducts">
+		  <div id="txtNoProductsSelected" >No products selected.</div>
+		  <ul id="selectedProductsList">
+			<li id="productListItemTemplate" style="display: none;">
+			  <button href class="btn btn-ai-grey btn-sm btn-block" title="ProductNameHere">
+				<span class="pull-right"><i class="fa fa-close"></i></span>
+				<span name="title">ProductNameHere</span>
+				<span class="sr-only">Remove <span name="title">ProductNameHere</span> from EHR Certification ID</span>
+			  </button>
+			</li>
+		  </ul>
+		</div>
+	  </section>
+	  <section>
+		<div class="criteriaMetList" id="certificationsMet2014" >
+		  <div class="criteriaMetListColumn criteriaMetListColumn2014" >
+			<ul>
+			  <li>Base Criteria <span id="baseCriteriaPercentage2014" class="pull-right criteriaPercentage" ></span></li>
+			  <li>CQM Domains <span id="domainsPercentage2014" class="pull-right criteriaPercentage" ></span></li>
+			</ul>
+		  </div>
+		  <div class="criteriaMetListColumn criteriaMetListColumn2014" >
+			<ul>
+			  <li>Inpatient CQMs <span id="inpatientCqmsPercentage2014" class="pull-right criteriaPercentage" ></span></li>
+			  <li>Ambulatory CQMs <span id="ambulatoryCqmsPercentage2014" class="pull-right criteriaPercentage" ></span></li>
+			</ul>
+		  </div>
+		</div>
+		<div class="criteriaMetList" id="certificationsMet" >
+		  <div class="criteriaMetListColumn" >
+			<ul>
+			  <li>Base Criteria <span id="baseCriteriaPercentage" class="pull-right criteriaPercentage" ></span></li>
+			</ul>
+		  </div>
+		</div>
+		<div class="widgetcertidbar">
+		  <span>Your CMS EHR Certification ID</span><br/>
+		  <span id="certId"></span>
+		  <p>
+			<br/>* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
+		  </p>
+		</div>
+		<button onClick="chplCertIdWidget.revealId();" id="btnEhrGetCertificationId" href class="btn btn-ai-certid btn-sm btn-block" disabled>Get EHR Certification ID</button>
+		<button onClick="chplCertIdWidget.generatePdf();" id="btnGeneratePdfCertificationId" href class="btn btn-ai-certid btn-sm btn-block" disabled>Download PDF</button>
+	  </section>
+	</div>
+  </div>
+</div>

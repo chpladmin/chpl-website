@@ -1,0 +1,49 @@
+.admin-label-spaced {
+    padding: 10px;
+}
+
+.google-chart {
+    border: 3px solid #000;
+    margin: 2px;
+}
+
+.nav-pills>.subnav>a {
+    color: #214e75;
+    border-radius: 0px;
+    background-color: #ccc;
+}
+
+.nav-pills>.subnav>a:before {
+    content: "\00a0";
+    font-family: FontAwesome;
+    padding: 0 6px;
+    font-size: large;
+}
+
+.nav-pills>.subnav.active>a:before {
+    color: #000;
+    font-family: FontAwesome;
+    background: #666;
+    content: "\f0da";
+}
+.nav-pills>.subnav.active>a, .nav-pills>.subnav.active>a:focus, .nav-pills>.subnav.active>a:hover {
+    background-color: #666;
+}
+
+.animate-if.ng-enter/*, .animate-if.ng-leave*/ {
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
+.animate-if.ng-enter,
+.animate-if.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+.animate-if.ng-leave,
+.animate-if.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+.spaced-out {
+    margin-top: 10px;
+}
