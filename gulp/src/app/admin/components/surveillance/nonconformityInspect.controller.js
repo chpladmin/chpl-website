@@ -5,7 +5,7 @@
         .controller('NonconformityInspectController', NonconformityInspectController);
 
     /** @ngInject */
-    function NonconformityInspectController ($modalInstance, $modal, nonconformities) {
+    function NonconformityInspectController ($uibModalInstance, $uibModal, nonconformities) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -19,7 +19,7 @@
         }
 
         function cancel () {
-            $modalInstance.dismiss('cancelled');
+            $uibModalInstance.dismiss('cancelled');
         }
     }
 })();

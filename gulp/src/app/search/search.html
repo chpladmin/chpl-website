@@ -13,7 +13,7 @@
             <div class="input-group input-group-lg">
               <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
                      ng-keyup="$event.keyCode === 13 && vm.search()"
-                     typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
+                     uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
                      typeahead-focus-first="false"
                      typeahead-input-formatter="$model.value" />
               <span class="input-group-btn">
@@ -195,7 +195,7 @@
                     <label for="developerRefine" class="col-sm-4 control-label">Developer</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refineModel.developer"
-                             typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
+                             uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
                              typeahead-focus-first="false"
                              typeahead-input-formatter="$model.value" />
                     </div>
@@ -206,7 +206,7 @@
                     <label for="productRefine" class="col-sm-4 control-label">Product</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.refineModel.product"
-                             typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
+                             uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
                              typeahead-focus-first="false"
                              typeahead-input-formatter="$model.value" />
                     </div>

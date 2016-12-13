@@ -5,7 +5,7 @@
         .controller('EditDeveloperController', EditDeveloperController);
 
     /** @ngInject */
-    function EditDeveloperController ($modalInstance, activeDeveloper, activeAcbs, commonService, authService) {
+    function EditDeveloperController ($uibModalInstance, activeDeveloper, activeAcbs, commonService, authService) {
         var vm = this;
         vm.developer = angular.copy(activeDeveloper);
         vm.updateDeveloper = {developerIds: [vm.developer.developerId]};
@@ -52,17 +52,17 @@
             commonService.updateDeveloper(vm.updateDeveloper)
                 .then(function (response) {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                        $modalInstance.close(response);
+                        $uibModalInstance.close(response);
                     } else {
-                        $modalInstance.dismiss('An error occurred');
+                        $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $modalInstance.dismiss(error.data.error);
+                    $uibModalInstance.dismiss(error.data.error);
                 });
         }
 
         function cancel () {
-            $modalInstance.dismiss('cancelled');
+            $uibModalInstance.dismiss('cancelled');
         }
     }
 })();

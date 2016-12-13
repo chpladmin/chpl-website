@@ -48,7 +48,7 @@
           <div class="form-group">
             <label for="transferDate{{ $index }}">Transfer Date <span class="text-danger">*</span></label>
             <div class="input-group">
-              <input class="input-sm form-control" type="text" datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transferDate{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transferDate{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-ai btn-sm" ng-click="prevOwner.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
               </span>

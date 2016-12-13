@@ -5,7 +5,7 @@
         .controller('EditAtlController', EditAtlController);
 
     /** @ngInject */
-    function EditAtlController ($modalInstance, atl, action, isChplAdmin, commonService) {
+    function EditAtlController ($uibModalInstance, atl, action, isChplAdmin, commonService) {
         var vm = this;
         vm.atl = angular.copy(atl);
         vm.action = action;
@@ -31,29 +31,29 @@
             commonService.modifyATL(vm.atl)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
-                        $modalInstance.close(response);
+                        $uibModalInstance.close(response);
                     } else {
-                        $modalInstance.dismiss('An error occurred');
+                        $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $modalInstance.dismiss(error.data.error);
+                    $uibModalInstance.dismiss(error.data.error);
                 });
         }
 
         function cancel () {
-            $modalInstance.dismiss('cancelled');
+            $uibModalInstance.dismiss('cancelled');
         }
 
         function create () {
             commonService.createATL(vm.atl)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
-                        $modalInstance.close(response);
+                        $uibModalInstance.close(response);
                     } else {
-                        $modalInstance.dismiss('An error occurred');
+                        $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $modalInstance.dismiss(error.data.error);
+                    $uibModalInstance.dismiss(error.data.error);
                 });
         }
 
@@ -61,12 +61,12 @@
             commonService.deleteATL(vm.atl.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
-                        $modalInstance.close('deleted');
+                        $uibModalInstance.close('deleted');
                     } else {
-                        $modalInstance.dismiss('An error occurred');
+                        $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $modalInstance.dismiss(error.data.error);
+                    $uibModalInstance.dismiss(error.data.error);
                 });
         }
 
@@ -74,12 +74,12 @@
             commonService.undeleteATL(vm.atl.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
-                        $modalInstance.close(response);
+                        $uibModalInstance.close(response);
                     } else {
-                        $modalInstance.dismiss('An error occurred');
+                        $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $modalInstance.dismiss(error.data.error);
+                    $uibModalInstance.dismiss(error.data.error);
                 });
         }
     }

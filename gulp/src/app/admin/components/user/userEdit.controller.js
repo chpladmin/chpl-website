@@ -61,11 +61,11 @@
                         $uibModalInstance.close(response);
                     } else {
                         errorMessage(response);
-                        //                            $modalInstance.dismiss('An error occurred');
+                        //                            $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
                     errorMessage(error.data.error);
-                    //                        $modalInstance.dismiss(error.data.error);
+                    //                        $uibModalInstance.dismiss(error.data.error);
                 });
         }
 
@@ -84,11 +84,11 @@
                             $uibModalInstance.close('deleted');
                         } else {
                             errorMessage(response);
-                            //                                $modalInstance.dismiss('An error occurred');
+                            //                                $uibModalInstance.dismiss('An error occurred');
                         }
                     },function (error) {
                         errorMessage(error.data.error);
-                        //                            $modalInstance.dismiss(error.data.error);
+                        //                            $uibModalInstance.dismiss(error.data.error);
                     });
             } else if (vm.atlId) {
                 userObject = {atlId: vm.atlId,
@@ -99,11 +99,11 @@
                             $uibModalInstance.close('deleted');
                         } else {
                             errorMessage(response);
-                            //                                $modalInstance.dismiss('An error occurred');
+                            //                                $uibModalInstance.dismiss('An error occurred');
                         }
                     },function (error) {
                         errorMessage(error.data.error);
-                        //                            $modalInstance.dismiss(error.data.error);
+                        //                            $uibModalInstance.dismiss(error.data.error);
                     });
             } else {
                 commonService.deleteUser(vm.user.user.userId)
@@ -112,11 +112,11 @@
                             $uibModalInstance.close('deleted');
                         } else {
                             errorMessage(response);
-                            //                              $modalInstance.dismiss('An error occurred');
+                            //                              $uibModalInstance.dismiss('An error occurred');
                         }
                     },function (error) {
                         errorMessage(error.data.error);
-                        //                            $modalInstance.dismiss(error.data.error);
+                        //                            $uibModalInstance.dismiss(error.data.error);
                     });
             }
         }
@@ -135,11 +135,11 @@
                             $uibModalInstance.close('invited');
                         } else {
                             errorMessage(response);
-                            //                                $modalInstance.dismiss('An error occurred');
+                            //                                $uibModalInstance.dismiss('An error occurred');
                         }
                     },function (error) {
                         errorMessage(error.data.error);
-                        //                            $modalInstance.dismiss(error.data.error);
+                        //                            $uibModalInstance.dismiss(error.data.error);
                     });
             }
         }

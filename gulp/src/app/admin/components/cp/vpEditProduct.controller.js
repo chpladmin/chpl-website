@@ -5,7 +5,7 @@
         .controller('EditProductController', EditProductController);
 
     /** @ngInject */
-    function EditProductController ($modalInstance, activeProduct, commonService) {
+    function EditProductController ($uibModalInstance, activeProduct, commonService) {
         var vm = this;
         vm.product = angular.copy(activeProduct);
         vm.updateProduct = {productIds: [vm.product.productId]};
@@ -56,17 +56,17 @@
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         response.developerId = vm.product.developerId;
-                        $modalInstance.close(response);
+                        $uibModalInstance.close(response);
                     } else {
-                        $modalInstance.dismiss('An error occurred');
+                        $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $modalInstance.dismiss(error.data.error);
+                    $uibModalInstance.dismiss(error.data.error);
                 });
         }
 
         function cancel () {
-            $modalInstance.dismiss('cancelled');
+            $uibModalInstance.dismiss('cancelled');
         }
     }
 })();

@@ -5,7 +5,7 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($modalInstance, $timeout, activeCP, commonService, utilService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, workType) {
+    function EditCertifiedProductController ($uibModalInstance, $timeout, activeCP, commonService, utilService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, workType) {
 
         var vm = this;
         vm.addNewValue = addNewValue;
@@ -77,7 +77,7 @@
         }
 
         function cancel () {
-            $modalInstance.dismiss('cancelled');
+            $uibModalInstance.dismiss('cancelled');
         }
 
         function directCertsDirective () {
@@ -133,7 +133,7 @@
                 commonService.updateCP(vm.cp)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
-                            $modalInstance.close(response);
+                            $uibModalInstance.close(response);
                         } else {
                             vm.errors = [response.error];
                         }
@@ -149,7 +149,7 @@
                         }
                     });
             } else if (vm.workType === 'confirm') {
-                $modalInstance.close(vm.cp);
+                $uibModalInstance.close(vm.cp);
             }
         }
     }

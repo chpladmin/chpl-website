@@ -13,7 +13,7 @@ angular
 		return {
 			restrict: 'A',
 			controller: 'swaggerUiController',
-			templateUrl: 'app/templates/swagger-ui.html',
+			templateUrl: 'templates/swagger-ui.html',
 			scope: {
 				// Swagger descriptor URL (string, required)
 				url: '=',

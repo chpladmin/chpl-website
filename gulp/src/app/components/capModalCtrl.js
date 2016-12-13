@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('chpl.common')
-        .controller('EditCorrectiveActionPlanController', ['$modalInstance', 'action', 'certifiedProductId', 'certificationResults', 'correctiveActionPlan', 'commonService', 'authService', 'API', 'FileUploader', function ($modalInstance, action, certifiedProductId, certificationResults, correctiveActionPlan, commonService, authService, API, FileUploader) {
+        .controller('EditCorrectiveActionPlanController', ['$uibModalInstance', 'action', 'certifiedProductId', 'certificationResults', 'correctiveActionPlan', 'commonService', 'authService', 'API', 'FileUploader', function ($uibModalInstance, action, certifiedProductId, certificationResults, correctiveActionPlan, commonService, authService, API, FileUploader) {
             var vm = this;
 
             vm.cancel = cancel;
@@ -78,15 +78,15 @@
             }
 
             function cancel () {
-                $modalInstance.dismiss('cancelled');
+                $uibModalInstance.dismiss('cancelled');
             }
 
             function deleteCap () {
                 commonService.deleteCap(vm.cap.id)
                     .then(function (result) {
-                        $modalInstance.close(result);
+                        $uibModalInstance.close(result);
                     }), function (error) {
-                        $modalInstance.dismss(error);
+                        $uibModalInstance.dismss(error);
                     };
             }
 
@@ -125,16 +125,16 @@
                 if (vm.action === 'initiate') {
                     commonService.initiateCap(vm.cap)
                         .then(function (result) {
-                            $modalInstance.close(result);
+                            $uibModalInstance.close(result);
                         }), function (error) {
-                            $modalInstance.dismss(error);
+                            $uibModalInstance.dismss(error);
                         };
                 } else if (vm.action === 'edit') {
                     commonService.updateCap(vm.cap)
                         .then(function (result) {
-                            $modalInstance.close(result);
+                            $uibModalInstance.close(result);
                         }), function (error) {
-                            $modalInstance.dismss(error);
+                            $uibModalInstance.dismss(error);
                         };
                 }
             }

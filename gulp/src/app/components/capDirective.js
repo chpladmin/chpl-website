@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('chpl.common')
-        .controller('CorrectiveActionPlanController', ['$log', '$scope', '$modal', 'commonService', 'authService', 'API', 'ACTIVE_CAP', function ($log, $scope, $modal, commonService, authService, API, ACTIVE_CAP) {
+        .controller('CorrectiveActionPlanController', ['$log', '$scope', '$uibModal', 'commonService', 'authService', 'API', 'ACTIVE_CAP', function ($log, $scope, $uibModal, commonService, authService, API, ACTIVE_CAP) {
             var vm = this;
 
             vm.activate = activate;
@@ -21,7 +21,7 @@
             }
 
             function editCap (cap) {
-                vm.modalInstance = $modal.open({
+                vm.modalInstance = $uibModal.open({
                     templateUrl: 'app/components/capModal.html',
                     controller: 'EditCorrectiveActionPlanController',
                     controllerAs: 'vm',
@@ -49,7 +49,7 @@
             }
 
             function initiateCap () {
-                vm.modalInstance = $modal.open({
+                vm.modalInstance = $uibModal.open({
                     templateUrl: 'app/components/capModal.html',
                     controller: 'EditCorrectiveActionPlanController',
                     controllerAs: 'vm',

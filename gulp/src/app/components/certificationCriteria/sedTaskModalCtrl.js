@@ -5,7 +5,7 @@
         .controller('EditSedTaskController', EditSedTaskController);
 
     /** @ngInject */
-    function EditSedTaskController ($modalInstance, $modal, $log, task) {
+    function EditSedTaskController ($uibModalInstance, $uibModal, $log, task) {
         var vm = this;
 
         vm.task = task.task;
@@ -25,7 +25,7 @@
         }
 
         function addParticipant () {
-            vm.editModalInstance = $modal.open({
+            vm.editModalInstance = $uibModal.open({
                 templateUrl: 'app/components/certificationCriteria/sedParticipantModal.html',
                 controller: 'EditSedParticipantController',
                 controllerAs: 'vm',
@@ -51,7 +51,7 @@
             if (vm.task.changed) {
                 delete (vm.task.changed);
             }
-            $modalInstance.dismiss('cancelled');
+            $uibModalInstance.dismiss('cancelled');
         }
 
         function changed () {
@@ -61,7 +61,7 @@
         }
 
         function editParticipant (participant, idx) {
-            vm.editModalInstance = $modal.open({
+            vm.editModalInstance = $uibModal.open({
                 templateUrl: 'app/components/certificationCriteria/sedParticipantModal.html',
                 controller: 'EditSedParticipantController',
                 controllerAs: 'vm',
@@ -86,7 +86,7 @@
         }
 
         function save () {
-            $modalInstance.close(vm.task);
+            $uibModalInstance.close(vm.task);
         }
     }
 })();

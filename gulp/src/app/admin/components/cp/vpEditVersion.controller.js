@@ -5,7 +5,7 @@
         .controller('EditVersionController', EditVersionController);
 
     /** @ngInject */
-    function EditVersionController ($modalInstance, activeVersion, commonService) {
+    function EditVersionController ($uibModalInstance, activeVersion, commonService) {
         var vm = this;
         vm.version = angular.copy(activeVersion);
         vm.updateVersion = {versionIds: [vm.version.versionId]};
@@ -21,17 +21,17 @@
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         response.Id = vm.version.productId;
-                        $modalInstance.close(response);
+                        $uibModalInstance.close(response);
                     } else {
-                        $modalInstance.dismiss('An error occurred');
+                        $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $modalInstance.dismiss(error.data.error);
+                    $uibModalInstance.dismiss(error.data.error);
                 });
         }
 
         function cancel () {
-            $modalInstance.dismiss('cancelled');
+            $uibModalInstance.dismiss('cancelled');
         }
     }
 })();

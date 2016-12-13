@@ -528,10 +528,12 @@ fieldset[disabled] .btn-ai-success.active {
     opacity: 1;
 }
 
+.swagger-ui .endpoint h4 a,
 .swagger-ui .endpoint a {
     color: #337ab7;
 }
 
+.swagger-ui .endpoint .endpoint-actions a,
 .swagger-ui .endpoint .endpoint-heading span {
     color: #333;
 }

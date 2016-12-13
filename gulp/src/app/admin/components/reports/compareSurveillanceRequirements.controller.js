@@ -5,7 +5,7 @@
         .controller('CompareSurveillanceRequirementsController', CompareSurveillanceRequirementsController);
 
     /** @ngInject */
-    function CompareSurveillanceRequirementsController ($modalInstance, oldSurveillance, newSurveillance) {
+    function CompareSurveillanceRequirementsController ($uibModalInstance, oldSurveillance, newSurveillance) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -20,7 +20,7 @@
         }
 
         function cancel () {
-            $modalInstance.dismiss('cancelled');
+            $uibModalInstance.dismiss('cancelled');
         }
     }
 })();
