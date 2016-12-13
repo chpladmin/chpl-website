@@ -1,0 +1,57 @@
+<div>
+  <section class="row">
+    <div class="col-md-12 main-content">
+      <h2>Download the latest CMS listing</h2>
+      <div>
+        <a type="button" class="btn btn-lg btn-ai-success" ng-disabled="!vm.isReady"
+           ng-csv="vm.cmsArray" filename="{{ vm.filename }}"
+           csv-header="vm.csvHeader" csv-column-order="vm.csvColumnOrder"><i class="fa fa-cloud-download"></i> Download</a>
+      </div>
+    </div>
+  </section> <!-- end download cms listing -->
+  <section class="row">
+    <div class="col-md-12 main-content spaced-out" ng-if="vm.isChplAdmin || vm.isOncStaff">
+      <h3>Upload Meaningful Use Users</h3>
+      <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
+      <input type="file" nv-file-select="" uploader="vm.uploader" />
+      <div ng-if="vm.uploadMessage.length > 0" ng-class="vm.uploadSuccess ? 'bg-success' : 'bg-danger'">
+        {{ vm.uploadMessage }}
+        <ul ng-if="vm.uploadErrors.length > 0" ng-class="'bg-danger'">
+          <li ng-repeat="error in vm.uploadErrors">{{ error.error }}</li>
+        </ul>
+      </div>
+      <table class="table table-responsive" ng-if="vm.uploader.queue.length > 0" id="meaningfulUseUploadTable">
+        <thead>
+          <tr>
+            <th scope="col" width="50%">Name</th>
+            <th scope="col" ng-show="vm.uploader.isHTML5">Size</th>
+            <th scope="col" ng-show="vm.uploader.isHTML5">Progress</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in vm.uploader.queue">
+            <td><strong>{{ item.file.name }}</strong></td>
+            <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="vm.uploader.isHTML5">
+              <div class="progress" style="margin-bottom: 0;">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+              </div>
+            </td>
+            <td nowrap>
+              <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                <i class="fa fa-cloud-upload"></i> Upload
+              </button>
+              <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                <i class="fa fa-ban"></i> Cancel
+              </button>
+              <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                <i class="fa fa-trash-o"></i> Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section> <!-- end upload meaningful use users -->
+</div>

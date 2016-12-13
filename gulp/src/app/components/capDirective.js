@@ -22,7 +22,7 @@
 
             function editCap (cap) {
                 vm.modalInstance = $modal.open({
-                    templateUrl: 'common/components/capModal.html',
+                    templateUrl: 'app/components/capModal.html',
                     controller: 'EditCorrectiveActionPlanController',
                     controllerAs: 'vm',
                     animation: false,
@@ -50,7 +50,7 @@
 
             function initiateCap () {
                 vm.modalInstance = $modal.open({
-                    templateUrl: 'common/components/capModal.html',
+                    templateUrl: 'app/components/capModal.html',
                     controller: 'EditCorrectiveActionPlanController',
                     controllerAs: 'vm',
                     animation: false,
@@ -95,7 +95,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'common/components/cap.html',
+                templateUrl: 'app/components/cap.html',
                 scope: {},
                 bindToController: {
                     correctiveActionPlan: '=',

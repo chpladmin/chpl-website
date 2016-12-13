@@ -9,7 +9,7 @@
         var vm = this;
 
 		vm.toggleCart = toggleCart;
-		vm.widget = chplCertIdWidget;
+        vm.widget = chplCertIdWidget;
         vm.clear = clear;
         vm.clearFilters = clearFilters;
         vm.clearPreviouslyCompared = clearPreviouslyCompared;
@@ -83,7 +83,7 @@
             vm.boxes = {
                 compare: true,
                 prevComp: false,
-                prevView: false,
+                prevView: false
             };
             vm.defaultQuery = {
                 orderBy: 'developer',
@@ -101,7 +101,7 @@
                 delete $localStorage.clearResults;
             }
 
-            $scope.$on('ClearResults', function (event, args) {
+            $scope.$on('ClearResults', function () {
                 clear();
                 delete $localStorage.clearResults;
             });
@@ -160,14 +160,15 @@
 
         function compare () {
             var comparePath = '/compare/';
-            for (var i = 0; i < vm.compareCps.length; i++) {
+            var i;
+            for (i = 0; i < vm.compareCps.length; i++) {
                 comparePath += vm.compareCps[i].id + '&';
             }
             comparePath = comparePath.substring(0, comparePath.length - 1);
             if (comparePath.indexOf('&') > 0) {
                 var prev = $localStorage.previouslyCompared;
                 var toAdd;
-                for (var i = 0; i < vm.compareCps.length; i++) {
+                for (i = 0; i < vm.compareCps.length; i++) {
                     toAdd = true;
                     for (var j = 0; j < prev.length; j++) {
                         if (prev[j].id === vm.compareCps[i].id) {
@@ -213,24 +214,25 @@
         function populateSearchOptions () {
             commonService.getSearchOptions() // use 'true' in production, to hide retired CQMs & Certs
                 .then(function (options) {
+                    var i;
                     vm.certs = options.certificationCriterionNumbers;
                     vm.cqms = options.cqmCriterionNumbers;
                     vm.editions = options.editions;
                     vm.practices = options.practiceTypeNames;
                     vm.certBodies = options.certBodyNames;
                     vm.certificationStatuses = options.certificationStatuses;
-                    for (var i = 0; i < vm.certificationStatuses.length; i++) {
+                    for (i = 0; i < vm.certificationStatuses.length; i++) {
                         if (vm.certificationStatuses[i].name === 'Pending') {
                             vm.certificationStatuses.splice(i,1);
                             break;
                         }
                     }
                     vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
-                    for (var i = 0; i < options.developerNames.length; i++) {
+                    for (i = 0; i < options.developerNames.length; i++) {
                         vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
                         vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
                     }
-                    for (var i = 0; i < options.productNames.length; i++) {
+                    for (i = 0; i < options.productNames.length; i++) {
                         vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
                         vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
                     }
@@ -270,8 +272,8 @@
 
         function search () {
             vm.setRefine();
-            if (vm.query.searchTermObject !== undefined) {
-                if (typeof(vm.query.searchTermObject) === 'string' && vm.query.searchTermObject.length > 0) {
+            if (angular.isDefined(vm.query.searchTermObject)) {
+                if (angular.isString(vm.query.searchTermObject) && vm.query.searchTermObject.length > 0) {
                     vm.query.searchTermObject = {type: 'previous search', value: vm.query.searchTermObject};
                     vm.lookaheadSource.all.push(vm.query.searchTermObject);
                 }
@@ -279,8 +281,8 @@
             } else {
                 vm.query.searchTerm = undefined;
             }
-            if (vm.query.developerObject !== undefined) {
-                if (typeof(vm.query.developerObject) === 'string' && vm.query.developerObject.length > 0) {
+            if (angular.isDefined(vm.query.developerObject)) {
+                if (angular.isString(vm.query.developerObject) && vm.query.developerObject.length > 0) {
                     vm.query.developerObject = {type: 'previous search', value: vm.query.developerObject};
                     vm.lookaheadSource.developers.push(vm.query.developerObject);
                 }
@@ -288,8 +290,8 @@
             } else {
                 vm.query.developer = undefined;
             }
-            if (vm.query.productObject !== undefined) {
-                if (typeof(vm.query.productObject) === 'string' && vm.query.productObject.length > 0) {
+            if (angular.isDefined(vm.query.productObject)) {
+                if (angular.isString(vm.query.productObject) && vm.query.productObject.length > 0) {
                     vm.query.productObject = {type: 'previous search', value: vm.query.productObject};
                     vm.lookaheadSource.products.push(vm.query.productObject);
                 }
@@ -309,7 +311,7 @@
                     $scope.searchResults = data.results;
                     $scope.displayedResults = [].concat($scope.searchResults);
                     vm.resultCount = data.recordCount;
-                }, function (error) {
+                }, function () {
                     vm.errorResult();
                 });
 
@@ -404,10 +406,10 @@
         }
 
 		function toggleCart (row) {
-			if (chplCertIdWidget.isProductInCart(row.id)) {
-				chplCertIdWidget.removeProductFromCart(row.id);
+			if (vm.widget.isProductInCart(row.id)) {
+				vm.widget.removeProductFromCart(row.id);
 			} else {
-				chplCertIdWidget.addProductToCart(row.id);
+				vm.widget.addProductToCart(row.id);
             }
 			vm.boxes.certificationId = true;
         }
@@ -448,7 +450,7 @@
         };
 
         $scope.hasResults = function () {
-            return $scope.searchResults !== undefined && $scope.searchResults.length > 0;
+            return angular.isDefined($scope.searchResults) && $scope.searchResults.length > 0;
         };
 
         $scope.hasSearched = function () {
@@ -480,7 +482,7 @@
             $scope.displayedResults = [];
             $scope.visiblePage = 1;
             vm.resultCount = 0;
-            vm.compareCps = [];;
+            vm.compareCps = [];
             vm.hasDoneASearch = false;
             vm.activeSearch = false;
             vm.query = angular.copy(vm.defaultQuery);

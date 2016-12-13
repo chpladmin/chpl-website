@@ -9,7 +9,7 @@
         $routeProvider
             .when('/admin/:section?/:subSection?/:productId?', {
                 templateUrl: 'app/admin/admin.html',
-                contoller: 'AdminController',
+                controller: 'AdminController',
                 controllerAs: 'vm',
                 title: 'CHPL Administration'
             })

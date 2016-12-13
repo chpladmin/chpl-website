@@ -1,0 +1,37 @@
+<section class="row">
+  <div class="col-sm-12 admin-inner-tab main-content">
+    <div class="row admin-label-spaced lead text-center" ng-if="vm.workType !== 'newAtl'">
+      <div class="col-sm-12">
+        <ul class="list-inline">
+          <li><strong>What would you like to manage?</strong></li>
+          <li><input type="radio" ng-model="vm.workType" value="atl" id="rdAtl"></input><label for="rdAtl">ATL</label></li>
+          <li><input type="radio" ng-model="vm.workType" value="user" id="rdUsr"></input><label for="rdUsr">Users</label></li>
+        </ul>
+        <span ng-if="vm.isChplAdmin">Or <a href="" class="" ng-click="vm.createAtl()">Create a new ATL</a></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" ng-if="vm.workType === 'atl'">
+        <h2>ATL Information</h2>
+        <span>Name: {{ vm.activeAtl.name }}</span><br />
+        <span>Website: <ai-a href="{{ vm.activeAtl.website }}" text="{{ vm.activeAtl.website }}" ng-if="vm.activeAtl.website"></ai-a><span ng-if="!vm.activeAtl.website">None</span></span><br />
+        <span>ATL Code: {{ vm.activeAtl.atlCode }}</span><br />
+        <h3>Address</h3>
+        <span>Line 1: {{ vm.activeAtl.address.line1 }}</span><br />
+        <span>Line 2: {{ vm.activeAtl.address.line2 }}</span><br />
+        <span>City: {{ vm.activeAtl.address.city }}</span><br />
+        <span>State: {{ vm.activeAtl.address.state }}</span><br />
+        <span>Zip Code: {{ vm.activeAtl.address.zipcode }}</span><br />
+        <span>Country: {{ vm.activeAtl.address.country }}</span><br />
+        <button class="btn btn-default btn-block" ng-click="vm.editAtl(vm.activeAtl)">Edit this ATL</button>
+      </div>
+    </div>
+    <div class="row" ng-if="vm.workType === 'user'">
+      <div class="col-md-10 col-md-offset-1">
+        <ai-user-management
+           atl-id="{{ vm.activeAtl.id }}">
+        </ai-user-management>
+      </div>
+    </div>
+  </div>
+</section>

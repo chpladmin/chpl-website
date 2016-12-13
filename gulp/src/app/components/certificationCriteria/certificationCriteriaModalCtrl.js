@@ -68,7 +68,7 @@
 
         function editTask (task, idx) {
             vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'common/components/certificationCriteria/sedTaskUibModal.html',
+                templateUrl: 'app/components/certificationCriteria/sedTaskUibModal.html',
                 controller: 'EditSedTaskController',
                 controllerAs: 'vm',
                 animation: false,

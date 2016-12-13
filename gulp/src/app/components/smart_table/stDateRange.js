@@ -22,11 +22,11 @@
                         input.bind('blur', function () {
                             var query = {};
                             if (scope.before) {
-                                query.before = scope.before.getTime();
+                                query.before = (scope.before.setUTCDate(scope.before.getUTCDate() + 1));
                             }
 
                             if (scope.after) {
-                                query.after = scope.after;
+                                query.after = scope.after.getTime();
                             }
 
                             scope.$apply(function () {

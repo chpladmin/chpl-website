@@ -48,7 +48,7 @@
 
         function editCert () {
             vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'common/components/certificationCriteria/certificationCriteriaUibModal.html',
+                templateUrl: 'app/components/certificationCriteria/certificationCriteriaUibModal.html',
                 controller: 'EditCertificationCriteriaController',
                 controllerAs: 'vm',
                 animation: false,

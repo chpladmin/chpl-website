@@ -62,7 +62,7 @@
 
         function editParticipant (participant, idx) {
             vm.editModalInstance = $modal.open({
-                templateUrl: 'common/components/certificationCriteria/sedParticipantModal.html',
+                templateUrl: 'app/components/certificationCriteria/sedParticipantModal.html',
                 controller: 'EditSedParticipantController',
                 controllerAs: 'vm',
                 animation: false,

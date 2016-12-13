@@ -78,7 +78,7 @@ var chplCertIdWidget = (function(){
 				},
 				error: function(xhr, status, error) {
 					chplCertIdWidget.displayCertificationIdResults(false);
-					alert(status + ": " + error);
+					//alert(status + ": " + error);
 					if (("undefined" !== collectionChangeCallback) && (null !== collectionChangeCallback))
 						collectionChangeCallback();
 				}
@@ -356,7 +356,7 @@ var chplCertIdWidget = (function(){
 					chplCertIdWidget.generatePdf2(data);
 				},
 				error: function(xhr, status, error) {
-					alert("Error: " + error);
+					//alert("Error: " + error);
 				}
 			});
 		},
