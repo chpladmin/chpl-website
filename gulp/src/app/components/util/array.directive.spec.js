@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.common.array.directive', function () {
+    describe('chpl.array.directive', function () {
 
         var element;
         var scope;
@@ -11,7 +11,7 @@
 
         beforeEach(function () {
             module('chpl.templates');
-            module('chpl.common')
+            module('chpl')
         });
 
         beforeEach(inject(function (_$compile_, $rootScope, _$log_) {

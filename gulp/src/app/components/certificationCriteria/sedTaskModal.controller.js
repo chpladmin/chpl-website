@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.common')
+    angular.module('chpl')
         .controller('EditSedTaskController', EditSedTaskController);
 
     /** @ngInject */

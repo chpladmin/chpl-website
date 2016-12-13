@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.common')
+    angular.module('chpl')
         .controller('ArrayController', ArrayController);
 
     /** @ngInject */
@@ -43,7 +43,7 @@
         }
     }
 
-    angular.module('chpl.common')
+    angular.module('chpl')
         .directive('aiArray', function () {
             return {
                 restrict: 'E',

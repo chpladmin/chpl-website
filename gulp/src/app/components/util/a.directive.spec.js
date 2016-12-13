@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.common.a.directive', function () {
+    describe('chpl.a.directive', function () {
 
         var element;
         var scope;
@@ -11,7 +11,7 @@
 
         beforeEach(function () {
             module('chpl.templates');
-            module('chpl.common')
+            module('chpl')
         });
 //                          'app/common/components/util/a.html'));
 

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.admin', ['ngRoute', 'smart-table', 'angularFileUpload', 'chpl.common', 'chpl.loginServices', 'ngIdle', 'ngSanitize', 'ui.bootstrap'])
+    angular.module('chpl.admin', ['ngRoute', 'smart-table', 'angular-confirm', 'googlechart', 'ngCsv', 'angularFileUpload', 'chpl.common', 'chpl.loginServices', 'ngIdle', 'ngSanitize', 'ui.bootstrap'])
         .config(function(IdleProvider, KeepaliveProvider) {
             // configure Idle settings
             IdleProvider.idle(60 * 20); // in seconds

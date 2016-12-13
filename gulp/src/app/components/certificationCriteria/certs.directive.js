@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('chpl.common')
+        .module('chpl')
         .directive('aiCerts', aiCerts);
 
     /** @ngInject */

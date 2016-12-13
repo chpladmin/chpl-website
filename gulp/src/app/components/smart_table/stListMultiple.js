@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl.common')
+    angular.module('chpl')
 
         .directive('stListMultiple', function() {
             return {

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.common')
+    angular.module('chpl')
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
     /** @ngInject */
     function EditCertificationCriteriaController ($uibModalInstance, $uibModal, $log, cert, resources, utilService) {

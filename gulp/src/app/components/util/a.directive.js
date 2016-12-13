@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.common')
+    angular.module('chpl')
         .controller('AController', function () {
             var vm = this;
 
@@ -17,7 +17,7 @@
             }
         });
 
-    angular.module('chpl.common')
+    angular.module('chpl')
         .directive('aiA', function () {
             return {
                 restrict: 'E',

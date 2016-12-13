@@ -9,8 +9,8 @@
                 replace: true,
                 templateUrl: 'app/admin/components/additionalSoftware/additionalSoftware.html',
                 bindToController: {
-                    additionalSoftware: '=',
-                    isEditing: '='
+                    additionalSoftware: '=?',
+                    isEditing: '=?'
                 },
                 scope: {},
                 controllerAs: 'vm',
@@ -24,6 +24,7 @@
 
         vm.addItem = addItem;
         vm.editItem = editItem;
+        vm.isAndOrOr = isAndOrOr;
         vm.removeItem = removeItem;
 
         activate();
@@ -33,16 +34,18 @@
         function activate () {
             vm.displaySw = {};
             vm.groupCount = 0;
-            for (var i = 0; i < vm.additionalSoftware.length; i++) {
-                if (vm.additionalSoftware[i].grouping === null) {
-                    vm.displaySw['defaultGroup' + i] = [vm.additionalSoftware[i]];
-                    vm.groupCount += 1;
-                } else {
-                    if (!vm.displaySw[vm.additionalSoftware[i].grouping]) {
-                        vm.displaySw[vm.additionalSoftware[i].grouping] = [];
+            if (vm.additionalSoftware) {
+                for (var i = 0; i < vm.additionalSoftware.length; i++) {
+                    if (vm.additionalSoftware[i].grouping === null) {
+                        vm.displaySw['defaultGroup' + i] = [vm.additionalSoftware[i]];
                         vm.groupCount += 1;
+                    } else {
+                        if (!vm.displaySw[vm.additionalSoftware[i].grouping]) {
+                            vm.displaySw[vm.additionalSoftware[i].grouping] = [];
+                            vm.groupCount += 1;
+                        }
+                        vm.displaySw[vm.additionalSoftware[i].grouping].push(vm.additionalSoftware[i]);
                     }
-                    vm.displaySw[vm.additionalSoftware[i].grouping].push(vm.additionalSoftware[i]);
                 }
             }
         }
@@ -90,6 +93,15 @@
                     $log.debug('dismissed', result);
                 }
             });
+        }
+
+        function isAndOrOr (index, groupLength, parentIndex, groupCount) {
+            if (index < (groupLength - 1)) {
+                return 'OR';
+            } else if (parentIndex < (groupCount - 1)) {
+                return 'AND';
+            }
+            return '';
         }
 
         function removeItem (index) {

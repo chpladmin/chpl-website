@@ -2,128 +2,131 @@
     'use strict';
 
     angular.module('chpl.loginServices')
-        .service('authService', function ($window, $localStorage, API_KEY) {
-            var self = this;
+        .service('authService', authService);
 
-            self.parseJwt = function (token) {
-                if (angular.isString(token)) {
-                    var base64 = token.split('.')[1].replace('-','+').replace('_','/');
-                    return angular.fromJson($window.atob(base64));
-                }
-            };
+    /** @ngInclude */
+    function authService ($window, $localStorage, API_KEY) {
+        var self = this;
 
-            self.saveToken = function (token) {
-                $localStorage.jwtToken = token;
-            };
+        self.parseJwt = function (token) {
+            if (angular.isString(token)) {
+                var base64 = token.split('.')[1].replace('-','+').replace('_','/');
+                return angular.fromJson($window.atob(base64));
+            }
+        };
 
-            self.getToken = function () {
-                return $localStorage.jwtToken;
-            };
+        self.saveToken = function (token) {
+            $localStorage.jwtToken = token;
+        };
 
-            self.getApiKey = function () {
-                return API_KEY;
-            };
+        self.getToken = function () {
+            return $localStorage.jwtToken;
+        };
 
-            self.isAuthed = function () {
-                var token = self.getToken();
-                if (token) {
-                    var params = self.parseJwt(token);
-                    return Math.round(new Date().getTime() / 1000) <= params.exp;
-                } else {
-                    return false;
-                }
-            };
+        self.getApiKey = function () {
+            return API_KEY;
+        };
 
-            self.isChplAdmin = function () {
-                var token = self.getToken();
-                if (token) {
-                    var authorities = self.parseJwt(token).Authorities;
-                    if (authorities) {
-                        return authorities.indexOf('ROLE_ADMIN') > -1
-                    }
-                }
+        self.isAuthed = function () {
+            var token = self.getToken();
+            if (token) {
+                var params = self.parseJwt(token);
+                return Math.round(new Date().getTime() / 1000) <= params.exp;
+            } else {
                 return false;
-            };
+            }
+        };
 
-            self.isCmsStaff = function () {
+        self.isChplAdmin = function () {
+            var token = self.getToken();
+            if (token) {
+                var authorities = self.parseJwt(token).Authorities;
+                if (authorities) {
+                    return authorities.indexOf('ROLE_ADMIN') > -1
+                }
+            }
+            return false;
+        };
+
+        self.isCmsStaff = function () {
+            var token = self.getToken();
+            if (token) {
+                var authorities = self.parseJwt(token).Authorities;
+                if (authorities) {
+                    return authorities.indexOf('ROLE_CMS_STAFF') > -1
+                }
+            }
+            return false;
+        };
+
+        self.isAcbAdmin = function () {
+            var token = self.getToken();
+            if (token) {
+                var authorities = self.parseJwt(token).Authorities;
+                if (authorities) {
+                    return authorities.indexOf('ROLE_ACB_ADMIN') > -1
+                }
+            }
+            return false;
+        };
+
+        self.isAtlAdmin = function () {
+            var token = self.getToken();
+            if (token) {
+                var authorities = self.parseJwt(token).Authorities;
+                if (authorities) {
+                    return authorities.indexOf('ROLE_ATL_ADMIN') > -1
+                }
+            }
+            return false;
+        };
+
+        self.isAcbStaff = function () {
+            var token = self.getToken();
+            if (token) {
+                var authorities = self.parseJwt(token).Authorities;
+                if (authorities) {
+                    return authorities.indexOf('ROLE_ACB_STAFF') > -1
+                }
+            }
+            return false;
+        };
+
+        self.isAtlStaff = function () {
+            var token = self.getToken();
+            if (token) {
+                var authorities = self.parseJwt(token).Authorities;
+                if (authorities) {
+                    return authorities.indexOf('ROLE_ATL_STAFF') > -1
+                }
+            }
+            return false;
+        };
+
+        self.isOncStaff = function () {
+            var token = self.getToken();
+            if (token) {
+                var authorities = self.parseJwt(token).Authorities;
+                if (authorities) {
+                    return authorities.indexOf('ROLE_ONC_STAFF') > -1
+                }
+            }
+            return false;
+        };
+
+        self.getUsername = function () {
+            if (self.isAuthed()) {
                 var token = self.getToken();
-                if (token) {
-                    var authorities = self.parseJwt(token).Authorities;
-                    if (authorities) {
-                        return authorities.indexOf('ROLE_CMS_STAFF') > -1
-                    }
-                }
-                return false;
-            };
+                var identity = self.parseJwt(token).Identity;
+                return identity[2] + " " + identity[3];
+            } else {
+                self.logout();
+                return '';
+            }
+        };
 
-            self.isAcbAdmin = function () {
-                var token = self.getToken();
-                if (token) {
-                    var authorities = self.parseJwt(token).Authorities;
-                    if (authorities) {
-                        return authorities.indexOf('ROLE_ACB_ADMIN') > -1
-                    }
-                }
-                return false;
-            };
-
-            self.isAtlAdmin = function () {
-                var token = self.getToken();
-                if (token) {
-                    var authorities = self.parseJwt(token).Authorities;
-                    if (authorities) {
-                        return authorities.indexOf('ROLE_ATL_ADMIN') > -1
-                    }
-                }
-                return false;
-            };
-
-            self.isAcbStaff = function () {
-                var token = self.getToken();
-                if (token) {
-                    var authorities = self.parseJwt(token).Authorities;
-                    if (authorities) {
-                        return authorities.indexOf('ROLE_ACB_STAFF') > -1
-                    }
-                }
-                return false;
-            };
-
-            self.isAtlStaff = function () {
-                var token = self.getToken();
-                if (token) {
-                    var authorities = self.parseJwt(token).Authorities;
-                    if (authorities) {
-                        return authorities.indexOf('ROLE_ATL_STAFF') > -1
-                    }
-                }
-                return false;
-            };
-
-            self.isOncStaff = function () {
-                var token = self.getToken();
-                if (token) {
-                    var authorities = self.parseJwt(token).Authorities;
-                    if (authorities) {
-                        return authorities.indexOf('ROLE_ONC_STAFF') > -1
-                    }
-                }
-                return false;
-            };
-
-            self.getUsername = function () {
-                if (self.isAuthed()) {
-                    var token = self.getToken();
-                    var identity = self.parseJwt(token).Identity;
-                    return identity[2] + " " + identity[3];
-                } else {
-                    self.logout();
-                    return '';
-                }
-            };
-
-            self.logout = function () {
-                delete $localStorage.jwtToken;
-            };
-        });
+        self.logout = function () {
+            delete $localStorage.jwtToken;
+        };
+    }
 })();

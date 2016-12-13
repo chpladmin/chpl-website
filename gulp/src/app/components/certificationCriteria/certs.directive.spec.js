@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.common.certs.directive', function () {
+    describe('chpl.certs.directive', function () {
 
         var vm, el, $log;
 
@@ -9,7 +9,7 @@
 
         beforeEach(function () {
             module('chpl.templates');
-            module('chpl.common');
+            module('chpl');
 
             inject(function ($compile, $rootScope, _$log_) {
                 $log = _$log_;
