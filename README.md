@@ -27,9 +27,9 @@ See installation instructions here: [nodejs][nodejs]
 
 ```
 sudo npm install npm -g
+npm install gulp
+npm install bower
 npm install
-npm install -g bower
-npm install -g gulp
 bower install
 ```
 
