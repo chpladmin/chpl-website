@@ -9,6 +9,7 @@ _Date TBD_
 * Added parameter to commonModule.js for allowing CAP management
 * Added icons for new "... by ONC" certification statuses
 * Only ONC Admins can edit Products in "...by ONC" status
+* Updated framework/angular/modules
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow

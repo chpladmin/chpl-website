@@ -1,7 +1,0 @@
-<ul class="list-unstyled">
-  <li ng-repeat="item in distinctItems | orderBy:toString">
-    <label ng-class="{ 'emphasis' : !item.selected }">
-      <input type="checkbox" ng-model="item.selected" ng-click="filterChanged()">{{ item.value }}
-    </label>
-  </li>
-</ul>

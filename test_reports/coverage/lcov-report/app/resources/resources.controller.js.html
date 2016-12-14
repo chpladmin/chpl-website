@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app\resources\resources.controller.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">app/resources/</a> resources.controller.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">25.23% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>28/111</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">5% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>3/60</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">18.75% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">25.69% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>28/109</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+    'use strict';
+&nbsp;
+    angular.module('chpl.resources')
+        .controller('ResourcesController', ResourcesController);
+&nbsp;
+    /** @ngInject */
+    function ResourcesController ($scope, $log, $location, $localStorage, $document, $window, API, authService, commonService) {
+        var vm = this;
+&nbsp;
+		vm.lookupCertIds = lookupCertIds;
+		vm.download = download;
+		vm.lookupProductsFormatInvalidIds = [];
+		vm.lookupProductsCertIdNotFound = [];
+		vm.viewProduct = viewProduct;
+&nbsp;
+        activate();
+&nbsp;
+        ////////////////////////////////////////////////////////////////////
+&nbsp;
+        function activate () {
+            // Restore lookup IDs and results
+            vm.certIds = $localStorage.lookupCertIds;
+            vm.lookupProducts = $localStorage.lookupProducts;
+            vm.lookupProductsFormatInvalidIds = $localStorage.lookupProductsFormatInvalidIds;
+            vm.lookupProductsCertIdNotFound = $localStorage.lookupProductsCertIdNotFound;
+&nbsp;
+            <span class="missing-if-branch" title="if path not taken" >I</span>if ($localStorage.lookupCertIds &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!$localStorage.lookupProducts)</span> {
+<span class="cstat-no" title="statement not covered" >                lookupCertIds();</span>
+            }
+            vm.API = API;
+            vm.API_KEY = authService.getApiKey();
+            vm.downloadOption= vm.API + '/download?api_key=' + vm.API_KEY;
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (vm.API === '/rest') {
+                vm.swaggerUrl = $location.absUrl().split('#')[0] + 'rest/api-docs';
+            } else {
+<span class="cstat-no" title="statement not covered" >                vm.swaggerUrl = vm.API + '/api-docs';</span>
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function convertArrayOfObjectsToCSV(args) {</span>
+<span class="cstat-no" title="statement not covered" >            var result, keys, columnDelimiter, lineDelimiter, data;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            data = args.data || null;</span>
+<span class="cstat-no" title="statement not covered" >            if (data === null || !data.length) {</span>
+<span class="cstat-no" title="statement not covered" >                return null;</span>
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            columnDelimiter = args.columnDelimiter || ',';</span>
+<span class="cstat-no" title="statement not covered" >            lineDelimiter = args.lineDelimiter || '\n';</span>
+&nbsp;
+            // Collect columns
+<span class="cstat-no" title="statement not covered" >            keys = Object.keys(data[0]);</span>
+<span class="cstat-no" title="statement not covered" >            keys = keys.filter(<span class="fstat-no" title="function not covered" >function(item) {</span> <span class="cstat-no" title="statement not covered" >return (item !== "id" &amp;&amp; item !== "$$hashKey") }</span>);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            result = "";</span>
+<span class="cstat-no" title="statement not covered" >            result = "CMS_EHR_CERTIFICATION_ID,CMS_EHR_CERTIFICATION_ID_EDITION,PRODUCT_NAME,PRODUCT_VERSION,DEVELOPER,CHPL_PRODUCT_NUMBER,PRODUCT_CERTIFICATION_EDITION,CLASSIFICATION_TYPE,PRACTICE_TYPE";</span>
+<span class="cstat-no" title="statement not covered" >            result += lineDelimiter;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            data.forEach(<span class="fstat-no" title="function not covered" >function(item) {</span></span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["certificationId"] || "") + "\"" + columnDelimiter;</span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["certificationIdEdition"] || "") + "\"" + columnDelimiter;</span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["name"] || "") + "\"" + columnDelimiter;</span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["version"] || "") + "\"" + columnDelimiter;</span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["vendor"] || "") + "\"" + columnDelimiter;</span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["chplProductNumber"] || "") + "\"" + columnDelimiter;</span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["year"] || "") + "\"" + columnDelimiter;</span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["classification"] || "") + "\"" + columnDelimiter;</span>
+<span class="cstat-no" title="statement not covered" >                result += "\"" + (item["practiceType"] || "") + "\"";</span>
+<span class="cstat-no" title="statement not covered" >                result += lineDelimiter;</span>
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            return result;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function download() {</span>
+<span class="cstat-no" title="statement not covered" >            var filename = "lookupResults" + new Date().getTime() + ".csv";</span>
+<span class="cstat-no" title="statement not covered" >            var csv = convertArrayOfObjectsToCSV({</span>
+                data: vm.lookupProducts
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if (csv == null) <span class="cstat-no" title="statement not covered" >return;</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if (msieversion()) {</span>
+<span class="cstat-no" title="statement not covered" >                navigator.msSaveBlob(new Blob([csv],{type: "text/csv;charset=utf-8;"}), filename);</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                if (!csv.match(/^data:text\/csv/i)) {</span>
+<span class="cstat-no" title="statement not covered" >                    csv = 'data:text/csv;charset=utf-8,' + csv;</span>
+                }
+<span class="cstat-no" title="statement not covered" >                var link = $document.createElement('a');</span>
+<span class="cstat-no" title="statement not covered" >                link.setAttribute('href', encodeURI(csv));</span>
+<span class="cstat-no" title="statement not covered" >                link.setAttribute('download', filename);</span>
+<span class="cstat-no" title="statement not covered" >                link.click();</span>
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function msieversion() {</span>
+<span class="cstat-no" title="statement not covered" >            var ua = $window.navigator.userAgent;</span>
+<span class="cstat-no" title="statement not covered" >            var msie = ua.indexOf("MSIE ");</span>
+            // If Internet Explorer, return true
+<span class="cstat-no" title="statement not covered" >            if (msie &gt; 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {</span>
+<span class="cstat-no" title="statement not covered" >                return true;</span>
+            } else { // If another browser,
+<span class="cstat-no" title="statement not covered" >                return false;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            return false;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function lookupCertIds () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.lookupProducts = null;</span>
+<span class="cstat-no" title="statement not covered" >            vm.lookupProductsFormatInvalidIds = [];</span>
+<span class="cstat-no" title="statement not covered" >            vm.lookupProductsCertIdNotFound = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if ((vm.lookup !== "undefined") &amp;&amp; (vm.certIds !== "undefined")) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.certIds = vm.certIds.replace(/[;,\s]+/g, " ");</span>
+<span class="cstat-no" title="statement not covered" >                vm.certIds = vm.certIds.trim().toUpperCase();</span>
+&nbsp;
+                // Check format of input
+<span class="cstat-no" title="statement not covered" >                if ("" === vm.certIds.trim()) {</span>
+<span class="cstat-no" title="statement not covered" >                    clearLookup();</span>
+                } else {
+&nbsp;
+                    // Split IDs
+<span class="cstat-no" title="statement not covered" >                    var idArray = vm.certIds.split(/ /);</span>
+<span class="cstat-no" title="statement not covered" >                    vm.lookupProducts = null;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    $localStorage.lookupCertIds = vm.certIds;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                    var preventDuplicationIds = {};</span>
+&nbsp;
+                    // Call LookupAPI
+<span class="cstat-no" title="statement not covered" >                    idArray.forEach(<span class="fstat-no" title="function not covered" >function (id) {</span></span>
+&nbsp;
+                        // Check if we've already checked this ID in case the user entered duplicates
+<span class="cstat-no" title="statement not covered" >                        if (typeof preventDuplicationIds[id] === "undefined") {</span>
+<span class="cstat-no" title="statement not covered" >                            preventDuplicationIds[id] = true;</span>
+                            
+                            // Check if ID format is valid
+<span class="cstat-no" title="statement not covered" >                            if (!id.match(/^[0-9A-Z]{15}$/i)) {</span>
+                                // Invalid ID format
+<span class="cstat-no" title="statement not covered" >                                vm.lookupProductsFormatInvalidIds.push(id);</span>
+                            } else {
+                                // Valid ID format
+<span class="cstat-no" title="statement not covered" >                                commonService.lookupCertificationId(id)</span>
+                                    .then(<span class="fstat-no" title="function not covered" >function (data) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                                        if (vm.lookupProducts === null)</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.lookupProducts = [];</span>
+&nbsp;
+                                        // If the ID was found, then I have data...
+<span class="cstat-no" title="statement not covered" >                                        if (data.products.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                                            data.products.forEach(<span class="fstat-no" title="function not covered" >function (product) {</span></span>
+<span class="cstat-no" title="statement not covered" >                                                product.certificationId = data.ehrCertificationId;</span>
+<span class="cstat-no" title="statement not covered" >                                                product.certificationIdEdition = data.year;</span>
+<span class="cstat-no" title="statement not covered" >                                                vm.lookupProducts.push(product);</span>
+                                            });
+                                        } else {
+                                            // ...otherwise, if the ID was not found, tell the user.
+<span class="cstat-no" title="statement not covered" >                                            vm.lookupProductsCertIdNotFound.push(id);</span>
+                                        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                                        $localStorage.lookupProducts = vm.lookupProducts;</span>
+<span class="cstat-no" title="statement not covered" >                                        $localStorage.lookupProductsFormatInvalidIds = vm.lookupProductsFormatInvalidIds;</span>
+<span class="cstat-no" title="statement not covered" >                                        $localStorage.lookupProductsCertIdNotFound = vm.lookupProductsCertIdNotFound;</span>
+&nbsp;
+                                    }, <span class="fstat-no" title="function not covered" >function (error) {</span>
+<span class="cstat-no" title="statement not covered" >                                        $log.debug("Error: " + error);</span>
+<span class="cstat-no" title="statement not covered" >                                        clearLookupResults();</span>
+                                    });
+                            }
+                        }
+                    });
+                }
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function clearLookup() {</span>
+<span class="cstat-no" title="statement not covered" >            delete $localStorage.lookupCertIds;</span>
+<span class="cstat-no" title="statement not covered" >            vm.certIds = null;</span>
+<span class="cstat-no" title="statement not covered" >            clearLookupResults();</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function clearLookupResults() {</span>
+<span class="cstat-no" title="statement not covered" >            delete $localStorage.lookupProducts;</span>
+<span class="cstat-no" title="statement not covered" >            delete $localStorage.lookupProductsFormatInvalidIds</span>
+<span class="cstat-no" title="statement not covered" >            delete $localStorage.lookupProductsCertIdNotFound;</span>
+<span class="cstat-no" title="statement not covered" >            vm.lookupProducts = null;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function viewProduct (cp) {</span>
+<span class="cstat-no" title="statement not covered" >            $location.url('/product/' + cp.id);</span>
+        }
+    }
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Dec 14 2016 09:30:29 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

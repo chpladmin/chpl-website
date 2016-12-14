@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app\admin\components\surveillance\editNonconformity.controller.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../../index.html">all files</a> / <a href="index.html">app/admin/components/surveillance/</a> editNonconformity.controller.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">12% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>9/75</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/30</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">7.14% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">12% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>9/75</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+    'use strict';
+&nbsp;
+    angular.module('chpl.admin')
+        .controller('EditNonconformityController', EditNonconformityController);
+&nbsp;
+    /** @ngInject */
+<span class="fstat-no" title="function not covered" >    function EditNonconformityController ($uibModalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, workType, commonService, utilService, authService, FileUploader, API) {</span>
+<span class="cstat-no" title="statement not covered" >        var vm = this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        vm.cancel = cancel;</span>
+<span class="cstat-no" title="statement not covered" >        vm.deleteDoc = deleteDoc;</span>
+<span class="cstat-no" title="statement not covered" >        vm.save = save;</span>
+<span class="cstat-no" title="statement not covered" >        vm.sortNonconformityTypes = utilService.sortNonconformityTypes;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        activate();</span>
+&nbsp;
+        ////////////////////////////////////////////////////////////////////
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function activate () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.data = surveillanceTypes;</span>
+<span class="cstat-no" title="statement not covered" >            vm.disableValidation = disableValidation;</span>
+<span class="cstat-no" title="statement not covered" >            vm.nonconformity = angular.copy(nonconformity);</span>
+<span class="cstat-no" title="statement not covered" >            vm.randomized = randomized;</span>
+<span class="cstat-no" title="statement not covered" >            vm.requirementId = requirementId;</span>
+<span class="cstat-no" title="statement not covered" >            vm.showFormErrors = false;</span>
+<span class="cstat-no" title="statement not covered" >            vm.surveillanceId = surveillanceId;</span>
+<span class="cstat-no" title="statement not covered" >            vm.workType = workType;</span>
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.nonconformityType) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.nonconformityType = findModel(vm.nonconformity.nonconformityType, vm.data.nonconformityTypes.data);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.status) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.status = findModel(vm.nonconformity.status, vm.data.nonconformityStatusTypes.data);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.dateOfDetermination) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.dateOfDeterminationObject = new Date(vm.nonconformity.dateOfDetermination);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.capApprovalDate) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capApprovalDateObject = new Date(vm.nonconformity.capApprovalDate);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.capStartDate) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capStartDateObject = new Date(vm.nonconformity.capStartDate);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.capEndDate) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capEndDateObject = new Date(vm.nonconformity.capEndDate);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.capMustCompleteDate) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capMustCompleteDateObject = new Date(vm.nonconformity.capMustCompleteDate);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.workType === 'edit') {</span>
+<span class="cstat-no" title="statement not covered" >                buildFileUploader();</span>
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function cancel () {</span>
+<span class="cstat-no" title="statement not covered" >            $uibModalInstance.dismiss('cancelled');</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function deleteDoc (docId) {</span>
+<span class="cstat-no" title="statement not covered" >            commonService.deleteSurveillanceDocument(vm.surveillanceId, vm.nonconformity.id, docId)</span>
+                .then(<span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >                    for (var i = 0; i &lt; vm.nonconformity.documents.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                        if (vm.nonconformity.documents[i].id === docId) {</span>
+<span class="cstat-no" title="statement not covered" >                            vm.nonconformity.documents.splice(i,1);</span>
+                        }
+                    }
+                }), <span class="fstat-no" title="function not covered" >function (error) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.debug(error);</span>
+                };
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function save () {</span>
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.dateOfDeterminationObject) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.dateOfDetermination = vm.nonconformity.dateOfDeterminationObject.getTime();</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.dateOfDetermination = null;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.capApprovalDateObject) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capApprovalDate = vm.nonconformity.capApprovalDateObject.getTime();</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capApprovalDate = null;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.capStartDateObject) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capStartDate = vm.nonconformity.capStartDateObject.getTime();</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capStartDate = null;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.capEndDateObject) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capEndDate = vm.nonconformity.capEndDateObject.getTime();</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capEndDate = null;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (vm.nonconformity.capMustCompleteDateObject) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capMustCompleteDate = vm.nonconformity.capMustCompleteDateObject.getTime();</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.capMustCompleteDate = null;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            $uibModalInstance.close(vm.nonconformity);</span>
+        }
+&nbsp;
+        ////////////////////////////////////////////////////////////////////
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function buildFileUploader () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.uploader = new FileUploader({</span>
+                url: API + '/surveillance/' + vm.surveillanceId + '/nonconformity/' + vm.nonconformity.id + '/document/create',
+                removeAfterUpload: true,
+                headers: {
+                    Authorization: 'Bearer ' + authService.getToken(),
+                    'API-Key': authService.getApiKey()
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.uploader.onSuccessItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $log.info('onSuccessItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                vm.nonconformity.documents.push({fileName: fileItem.file.name + ' is pending'});</span>
+            };
+<span class="cstat-no" title="statement not covered" >            vm.uploader.onCompleteItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $log.info('onCompleteItem', fileItem, response, status, headers);</span>
+            };
+<span class="cstat-no" title="statement not covered" >            vm.uploader.onErrorItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $log.info('onErrorItem', fileItem, response, status, headers);</span>
+            };
+<span class="cstat-no" title="statement not covered" >            vm.uploader.onCancelItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $log.info('onCancelItem', fileItem, response, status, headers);</span>
+            };
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function findModel (id, array) {</span>
+<span class="cstat-no" title="statement not covered" >            for (var i = 0; i &lt; array.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                if (id.id === array[i].id) {</span>
+<span class="cstat-no" title="statement not covered" >                    id = array[i];</span>
+                }
+            }
+<span class="cstat-no" title="statement not covered" >            return id;</span>
+        }
+    }
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Dec 14 2016 09:30:29 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="../../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../../sorter.js"></script>
+</body>
+</html>

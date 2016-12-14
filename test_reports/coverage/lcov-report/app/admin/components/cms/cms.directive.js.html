@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app\admin\components\cms\cms.directive.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../../index.html">all files</a> / <a href="index.html">app/admin/components/cms/</a> cms.directive.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">10.87% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>5/46</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/6</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">8.33% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>1/12</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">10.87% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>5/46</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+    'use strict';
+&nbsp;
+    angular.module('chpl.admin')
+        .controller('CmsController', CmsController)
+        .directive('aiCmsManagement', <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >            return {</span>
+                restrict: 'E',
+                replace: true,
+                templateUrl: 'app/admin/components/cms/cms.html',
+                scope: {},
+                bindToController: {
+                    //admin: '='
+                },
+                controllerAs: 'vm',
+                controller: 'CmsController'
+            };
+        });
+&nbsp;
+    /** @ngInject */
+<span class="fstat-no" title="function not covered" >    function CmsController ($log, commonService, authService, FileUploader, API) {</span>
+<span class="cstat-no" title="statement not covered" >        var vm = this;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        vm.getDownload = getDownload;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        activate();</span>
+&nbsp;
+        ////////////////////////////////////////////////////////////////////
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function activate () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.isAcbAdmin = authService.isAcbAdmin();</span>
+<span class="cstat-no" title="statement not covered" >            vm.isOncStaff = authService.isOncStaff();</span>
+<span class="cstat-no" title="statement not covered" >            vm.isChplAdmin = authService.isChplAdmin();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            vm.uploader = new FileUploader({</span>
+                url: API + '/certified_products/meaningful_use_users/upload',
+                removeAfterUpload: true,
+                headers: {
+                    Authorization: 'Bearer ' + authService.getToken(),
+                    'API-Key': authService.getApiKey()
+                }
+            });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            if (angular.isUndefined(vm.uploader.filters)) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.uploader.filters = [];</span>
+            }
+<span class="cstat-no" title="statement not covered" >            vm.uploader.filters.push({</span>
+                name: 'csvFilter',
+                fn: <span class="fstat-no" title="function not covered" >function(item) {</span>
+<span class="cstat-no" title="statement not covered" >                    var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';</span>
+<span class="cstat-no" title="statement not covered" >                    return '|csv|'.indexOf(extension) !== -1;</span>
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.uploader.onSuccessItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $log.info('onSuccessItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.meaningfulUseUsers.length + ' certified products out of ' + (response.errors.length + response.meaningfulUseUsers.length) + ' were updated with meaningful use user counts.';</span>
+<span class="cstat-no" title="statement not covered" >                vm.uploadErrors = response.errors;</span>
+<span class="cstat-no" title="statement not covered" >                vm.uploadSuccess = true;</span>
+            };
+<span class="cstat-no" title="statement not covered" >            vm.uploader.onCompleteItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $log.info('onCompleteItem', fileItem, response, status, headers);</span>
+            };
+<span class="cstat-no" title="statement not covered" >            vm.uploader.onErrorItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $log.info('onErrorItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                vm.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';</span>
+<span class="cstat-no" title="statement not covered" >                vm.uploadErrors = response.errorMessages;</span>
+<span class="cstat-no" title="statement not covered" >                vm.uploadSuccess = false;</span>
+            };
+<span class="cstat-no" title="statement not covered" >            vm.uploader.onCancelItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span></span>
+<span class="cstat-no" title="statement not covered" >                $log.info('onCancelItem', fileItem, response, status, headers);</span>
+            };
+<span class="cstat-no" title="statement not covered" >            vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';</span>
+<span class="cstat-no" title="statement not covered" >            if (authService.isChplAdmin() || authService.isOncStaff()) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.csvHeader = ['CMS ID', 'Creation Date', 'CHPL Product(s)'];</span>
+<span class="cstat-no" title="statement not covered" >                vm.csvColumnOrder = ['certificationId', 'created', 'products'];</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                vm.csvHeader = ['CMS ID', 'Creation Date'];</span>
+<span class="cstat-no" title="statement not covered" >                vm.csvColumnOrder = ['certificationId', 'created'];</span>
+            }
+<span class="cstat-no" title="statement not covered" >            vm.isReady = false;</span>
+<span class="cstat-no" title="statement not covered" >            vm.getDownload();</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function getDownload () {</span>
+<span class="cstat-no" title="statement not covered" >            commonService.getCmsDownload()</span>
+                .then(<span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                    for (var i = 0; i &lt; result.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                        result[i].created = new Date(result[i].created).toISOString().substring(0, 10);</span>
+                    }
+<span class="cstat-no" title="statement not covered" >                    vm.cmsArray = result</span>
+<span class="cstat-no" title="statement not covered" >                    vm.isReady = true;</span>
+                }, <span class="fstat-no" title="function not covered" >function (error) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.debug('error in app.admin.cmsController.getDownload', error);</span>
+                });
+        }
+    }
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Dec 14 2016 09:30:29 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="../../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,2225 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app\admin\components\cp\vpManagement.directive.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../../index.html">all files</a> / <a href="index.html">app/admin/components/cp/</a> vpManagement.directive.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">40.96% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>154/376</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">13.54% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>13/96</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">19.64% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>22/112</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">40.8% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>153/375</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-yes">32×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-yes">16×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+    'use strict';
+&nbsp;
+    angular.module('chpl.admin')
+        .controller('VpManagementController', VpManagementController)
+        .directive('aiVpManagement', function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                templateUrl: 'app/admin/components/cp/vpManagement.html',
+                bindToController: {
+                    workType: '=?',
+                    pendingProducts: '=?',
+                    pendingSurveillances: '=?',
+                    productId: '='
+                },
+                scope: {},
+                controllerAs: 'vm',
+                controller: 'VpManagementController'
+            };
+        });
+&nbsp;
+    /** @ngInject */
+    function VpManagementController (commonService, authService, $log, FileUploader, API, $uibModal) {
+        var vm = this;
+&nbsp;
+        vm.doWork = doWork;
+        vm.editCertifiedProduct = editCertifiedProduct;
+        vm.editDeveloper = editDeveloper;
+        vm.editProduct = editProduct;
+        vm.editVersion = editVersion;
+        vm.inspectCp = inspectCp;
+        vm.inspectSurveillance = inspectSurveillance;
+        vm.isDeveloperEditable = isDeveloperEditable;
+        vm.isDeveloperMergeable = isDeveloperMergeable;
+        vm.isProductEditable = isProductEditable;
+        vm.loadCp = loadCp;
+        vm.loadSurveillance = loadSurveillance;
+        vm.mergeDevelopers = mergeDevelopers;
+        vm.mergeProducts = mergeProducts;
+        vm.mergeVersions = mergeVersions;
+        vm.parseUploadError = parseUploadError;
+        vm.parseSurveillanceUploadError = parseSurveillanceUploadError;
+        vm.refreshDevelopers = refreshDevelopers;
+        vm.refreshPending = refreshPending;
+        vm.rejectCp = rejectCp;
+        vm.rejectSurveillance = rejectSurveillance;
+        vm.searchForSurveillance = searchForSurveillance;
+        vm.selectCp = selectCp;
+        vm.selectDeveloper = selectDeveloper;
+        vm.selectProduct = selectProduct;
+        vm.selectVersion = selectVersion;
+        vm.ternaryFilter = ternaryFilter;
+&nbsp;
+        activate();
+&nbsp;
+        ////////////////////////////////////////////////////////////////////
+&nbsp;
+        function activate () {
+            vm.activeDeveloper = '';
+            vm.activeProduct = '';
+            vm.activeVersion = '';
+            vm.activeCP = '';
+            vm.isChplAdmin = authService.isChplAdmin();
+            vm.isAcbAdmin = authService.isAcbAdmin();
+            vm.isAcbStaff = authService.isAcbStaff();
+            vm.uploadingCps = [];
+            vm.uploadingSurveillances = [];
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (angular.isUndefined(vm.workType)) vm.workType = 'manage';//vm.workType = vm.productId ? 'manage' : vm.isChplAdmin ? 'manage' : 'upload';
+            vm.mergeType = 'developer';
+            vm.uploadMessage = '';
+            vm.uploadErrors = [];
+            vm.uploadSuccess = true;
+            vm.surveillanceUploadMessage = '';
+            vm.surveillanceUploadErrors = [];
+            vm.surveillanceUploadSuccess = true;
+            vm.resources = {};
+            vm.refreshDevelopers();
+&nbsp;
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (vm.isAcbAdmin || <span class="branch-1 cbranch-no" title="branch not covered" >vm.isAcbStaff)</span> {
+                vm.refreshPending();
+                vm.uploader = new FileUploader({
+                    url: API + '/certified_products/upload',
+                    removeAfterUpload: true,
+                    headers: {
+                        Authorization: 'Bearer ' + authService.getToken(),
+                        'API-Key': authService.getApiKey()
+                    }
+                });
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (angular.isUndefined(vm.uploader.filters)) {
+                    vm.uploader.filters = [];
+                }
+                vm.uploader.filters.push({
+                    name: 'csvFilter',
+                    fn: <span class="fstat-no" title="function not covered" >function(item) {</span>
+<span class="cstat-no" title="statement not covered" >                        var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';</span>
+<span class="cstat-no" title="statement not covered" >                        return '|csv|'.indexOf(extension) !== -1;</span>
+                    }
+                });
+                vm.uploader.onSuccessItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.info('onSuccessItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                    vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';</span>
+<span class="cstat-no" title="statement not covered" >                    vm.uploadErrors = [];</span>
+<span class="cstat-no" title="statement not covered" >                    vm.uploadSuccess = true;</span>
+                };
+                vm.uploader.onCompleteItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.info('onCompleteItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                    vm.refreshPending();</span>
+                };
+                vm.uploader.onErrorItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.info('onErrorItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                    vm.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';</span>
+<span class="cstat-no" title="statement not covered" >                    vm.uploadErrors = response.errorMessages;</span>
+<span class="cstat-no" title="statement not covered" >                    vm.uploadSuccess = false;</span>
+                };
+                vm.uploader.onCancelItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.info('onCancelItem', fileItem, response, status, headers);</span>
+                };
+&nbsp;
+                vm.surveillanceUploader = new FileUploader({
+                    url: API + '/surveillance/upload',
+                    removeAfterUpload: true,
+                    headers: {
+                        Authorization: 'Bearer ' + authService.getToken(),
+                        'API-Key': authService.getApiKey()
+                    }
+                });
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (angular.isUndefined(vm.surveillanceUploader.filters)) {
+                    vm.surveillanceUploader.filters = [];
+                }
+                vm.surveillanceUploader.filters.push({
+                    name: 'csvFilter',
+                    fn: <span class="fstat-no" title="function not covered" >function(item) {</span> //, options) {
+<span class="cstat-no" title="statement not covered" >                        var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';</span>
+<span class="cstat-no" title="statement not covered" >                        return '|csv|'.indexOf(extension) !== -1;</span>
+                    }
+                });
+                vm.surveillanceUploader.onSuccessItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.info('onSuccessItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                    vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';</span>
+<span class="cstat-no" title="statement not covered" >                    vm.surveillanceUploadErrors = [];</span>
+<span class="cstat-no" title="statement not covered" >                    vm.surveillanceUploadSuccess = true;</span>
+                };
+                vm.surveillanceUploader.onCompleteItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.info('onCompleteItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                    vm.refreshPending();</span>
+                };
+                vm.surveillanceUploader.onErrorItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.info('onErrorItem', fileItem, response, status, headers);</span>
+<span class="cstat-no" title="statement not covered" >                    vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';</span>
+<span class="cstat-no" title="statement not covered" >                    vm.surveillanceUploadErrors = response.errorMessages;</span>
+<span class="cstat-no" title="statement not covered" >                    vm.surveillanceUploadSuccess = false;</span>
+                };
+                vm.surveillanceUploader.onCancelItem = <span class="fstat-no" title="function not covered" >function(fileItem, response, status, headers) {</span>
+<span class="cstat-no" title="statement not covered" >                    $log.info('onCancelItem', fileItem, response, status, headers);</span>
+                };
+            }
+&nbsp;
+            getResources();
+        }
+&nbsp;
+        function refreshDevelopers () {
+            commonService.getDevelopers()
+                .then(function (developers) {
+                    vm.developers = developers.developers;
+                    prepCodes();
+&nbsp;
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (vm.productId &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >vm.workType === 'manage')</span> {
+<span class="cstat-no" title="statement not covered" >                        vm.loadCp();</span>
+                    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (vm.productId &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >vm.workType === 'manageSurveillance')</span> {
+<span class="cstat-no" title="statement not covered" >                        vm.loadSurveillance();</span>
+                    }
+                });
+        }
+&nbsp;
+        function refreshPending () {
+            commonService.getUploadingCps ()
+                .then(function (cps) {
+                    vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
+                    vm.pendingProducts = vm.uploadingCps.length;
+                })
+            commonService.getUploadingSurveillances ()
+                .then(function (surveillances) {
+                    vm.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
+                    vm.pendingSurveillances = vm.uploadingSurveillances.length;
+                })
+        }
+&nbsp;
+        function selectDeveloper () {
+            if (vm.developerSelect) {
+                vm.activeDeveloper = vm.developerSelect;
+                commonService.getProductsByDeveloper(vm.activeDeveloper.developerId)
+                    .then(<span class="fstat-no" title="function not covered" >function (products) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.products = products.products;</span>
+                    });
+                vm.mergeDeveloper = angular.copy(vm.activeDeveloper);
+                delete vm.mergeDeveloper.developerId;
+                delete vm.mergeDeveloper.lastModifiedDate;
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function editDeveloper () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/cp/vpEditDeveloper.html',
+                controller: 'EditDeveloperController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    activeDeveloper: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.activeDeveloper; </span>},
+                    activeAcbs: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.activeAcbs; </span>}
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                vm.activeDeveloper = result;</span>
+<span class="cstat-no" title="statement not covered" >                commonService.getDevelopers()</span>
+                    .then(<span class="fstat-no" title="function not covered" >function (developers) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.developers = developers.developers;</span>
+<span class="cstat-no" title="statement not covered" >                        prepCodes();</span>
+                    });
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.developerMessage = result;</span>
+                }
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function mergeDevelopers () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/cp/vpMergeDeveloper.html',
+                controller: 'MergeDeveloperController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    developers: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.mergingDevelopers; </span>}
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function () {</span></span>
+<span class="cstat-no" title="statement not covered" >                vm.developerMessage = null;</span>
+<span class="cstat-no" title="statement not covered" >                commonService.getDevelopers()</span>
+                    .then(<span class="fstat-no" title="function not covered" >function (developers) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.developers = developers.developers;</span>
+<span class="cstat-no" title="statement not covered" >                        prepCodes();</span>
+                    });
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.developerMessage = result;</span>
+                }
+            });
+        }
+&nbsp;
+        function selectProduct () {
+            if (vm.productSelect) {
+                vm.activeProduct = vm.productSelect;
+                vm.activeProduct.developerId = vm.activeDeveloper.developerId;
+                commonService.getVersionsByProduct(vm.activeProduct.productId)
+                    .then(<span class="fstat-no" title="function not covered" >function (versions) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.versions = versions;</span>
+                    });
+                vm.mergeProduct = angular.copy(vm.activeProduct);
+                delete vm.mergeProduct.productId;
+                delete vm.mergeProduct.lastModifiedDate;
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function editProduct () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/cp/vpEditProduct.html',
+                controller: 'EditProductController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    activeProduct: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.activeProduct; </span>}
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                vm.activeProduct = result;</span>
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.productMessage = result;</span>
+                }
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function mergeProducts () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/cp/vpMergeProduct.html',
+                controller: 'MergeProductController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    products: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.mergingProducts; </span>},
+                    developerId: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.activeDeveloper.developerId; </span>}
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function () {</span></span>
+<span class="cstat-no" title="statement not covered" >                vm.productMessage = null;</span>
+<span class="cstat-no" title="statement not covered" >                commonService.getProductsByDeveloper(vm.activeDeveloper.developerId)</span>
+                    .then(<span class="fstat-no" title="function not covered" >function (products) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.products = products.products;</span>
+                    });
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.productMessage = result;</span>
+                }
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function mergeVersions () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/cp/vpMergeVersion.html',
+                controller: 'MergeVersionController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    versions: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.mergingVersions; </span>},
+                    productId: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.activeProduct.productId; </span>}
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function () {</span></span>
+<span class="cstat-no" title="statement not covered" >                vm.productMessage = null;</span>
+<span class="cstat-no" title="statement not covered" >                commonService.getVersionsByProduct(vm.activeProduct.productId)</span>
+                    .then(<span class="fstat-no" title="function not covered" >function (versions) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.versions = versions;</span>
+                    });
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.productMessage = result;</span>
+                }
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function selectVersion () {</span>
+<span class="cstat-no" title="statement not covered" >            if (vm.versionSelect) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeVersion = vm.versionSelect;</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeVersion.productId = vm.activeProduct.productId;</span>
+<span class="cstat-no" title="statement not covered" >                commonService.getProductsByVersion(vm.activeVersion.versionId, true)</span>
+                    .then(<span class="fstat-no" title="function not covered" >function (cps) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.cps = cps;</span>
+                    });
+<span class="cstat-no" title="statement not covered" >                vm.mergeVersion = angular.copy(vm.activeVersion);</span>
+<span class="cstat-no" title="statement not covered" >                delete vm.mergeVersion.versionId;</span>
+<span class="cstat-no" title="statement not covered" >                delete vm.mergeVersion.lastModifiedDate;</span>
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function editVersion () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/cp/vpEditVersion.html',
+                controller: 'EditVersionController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    activeVersion: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.activeVersion; </span>}
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                vm.activeVersion = result;</span>
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.versionMessage = result;</span>
+                }
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function selectCp () {</span>
+<span class="cstat-no" title="statement not covered" >            if (vm.cpSelect) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeCP = {};</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeCP.certifyingBody = {};</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeCP.practiceType = {};</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeCP.classificationType = {};</span>
+<span class="cstat-no" title="statement not covered" >                commonService.getProduct(vm.cpSelect)</span>
+                    .then(<span class="fstat-no" title="function not covered" >function (cp) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.activeCP = cp;</span>
+<span class="cstat-no" title="statement not covered" >                        vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);</span>
+<span class="cstat-no" title="statement not covered" >                        commonService.getCap(vm.cpSelect)</span>
+                            .then(<span class="fstat-no" title="function not covered" >function (cap) {</span>
+<span class="cstat-no" title="statement not covered" >                                vm.activeCP.cap = cap.plans;</span>
+                            });
+                    })
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function editCertifiedProduct () {</span>
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/cp/vpEditCertifiedProduct.html',
+                controller: 'EditCertifiedProductController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    activeCP: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.activeCP; </span>},
+                    isAcbAdmin: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.isAcbAdmin; </span>},
+                    isAcbStaff: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.isChplStaff; </span>},
+                    isChplAdmin: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.isChplAdmin; </span>},
+                    resources: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.resources; </span>},
+                    workType: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.workType; </span>}
+                }
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                vm.activeCP = result;</span>
+<span class="cstat-no" title="statement not covered" >                getResources();</span>
+<span class="cstat-no" title="statement not covered" >                vm.productId = result.id;</span>
+<span class="cstat-no" title="statement not covered" >                vm.refreshDevelopers();</span>
+<span class="cstat-no" title="statement not covered" >                vm.loadCp();</span>
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.cpMessage = result;</span>
+                }
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function inspectCp (cpId) {</span>
+<span class="cstat-no" title="statement not covered" >            var cp;</span>
+<span class="cstat-no" title="statement not covered" >            for (var i = 0; i &lt; vm.uploadingCps.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                if (cpId === vm.uploadingCps[i].id) {</span>
+<span class="cstat-no" title="statement not covered" >                    cp = vm.uploadingCps[i];</span>
+                }
+            }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/cp/vpInspect.html',
+                controller: 'InspectController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    developers: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.developers; </span>},
+                    inspectingCp: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return cp; </span>},
+                    isAcbAdmin: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.isAcbAdmin; </span>},
+                    isAcbStaff: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.isAcbStaff; </span>},
+                    isChplAdmin: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.isChplAdmin; </span>},
+                    resources: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.resources; </span>},
+                    workType: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return vm.workType; </span>}
+                },
+                size: 'lg'
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >                if (result.developerCreated) {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.developers.push(result.developer);</span>
+                }
+<span class="cstat-no" title="statement not covered" >                for (var i = 0; i &lt; vm.uploadingCps.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                    if (cpId === vm.uploadingCps[i].id) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.uploadingCps.splice(i,1)</span>
+<span class="cstat-no" title="statement not covered" >                        vm.pendingProducts = vm.uploadingCps.length;</span>
+                    }
+                }
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    if (result.developerCreated) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.developers.push(result.developer);</span>
+                    }
+<span class="cstat-no" title="statement not covered" >                    for (var i = 0; i &lt; vm.uploadingCps.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                        if (cpId === vm.uploadingCps[i].id) {</span>
+<span class="cstat-no" title="statement not covered" >                            vm.uploadingCps.splice(i,1)</span>
+<span class="cstat-no" title="statement not covered" >                            vm.pendingProducts = vm.uploadingCps.length;</span>
+                        }
+                    }
+                }
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function inspectSurveillance (surv) {</span>
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance = $uibModal.open({</span>
+                templateUrl: 'app/admin/components/surveillance/surveillanceInspect.html',
+                controller: 'SurveillanceInspectController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    surveillance: <span class="fstat-no" title="function not covered" >function () {</span> <span class="cstat-no" title="statement not covered" >return surv; </span>}
+                },
+                size: 'lg'
+            });
+<span class="cstat-no" title="statement not covered" >            vm.modalInstance.result.then(<span class="fstat-no" title="function not covered" >function () {</span></span>
+<span class="cstat-no" title="statement not covered" >                vm.refreshPending();</span>
+            }, <span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                if (result !== 'cancelled') {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.refreshPending();</span>
+                }
+            });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function isDeveloperEditable (dev) {</span>
+<span class="cstat-no" title="statement not covered" >            return vm.isChplAdmin || dev.status.status === 'Active';</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function isDeveloperMergeable (dev) {</span>
+<span class="cstat-no" title="statement not covered" >            return dev.status.status === 'Active';</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function isProductEditable (cp) {</span>
+<span class="cstat-no" title="statement not covered" >            if (cp.certificationStatus) {</span>
+<span class="cstat-no" title="statement not covered" >                return (vm.isChplAdmin || (cp.certificationStatus.name !== 'Suspended by ONC' &amp;&amp; cp.certificationStatus.name !== 'Terminated by ONC')) &amp;&amp;</span>
+                    vm.isDeveloperMergeable(vm.activeDeveloper);
+            } else {
+<span class="cstat-no" title="statement not covered" >                return vm.isDeveloperMergeable(vm.activeDeveloper);</span>
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function rejectCp (cpId) {</span>
+<span class="cstat-no" title="statement not covered" >            commonService.rejectPendingCp(cpId)</span>
+                .then(vm.refreshPending);
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function rejectSurveillance (survId) {</span>
+<span class="cstat-no" title="statement not covered" >            commonService.rejectPendingSurveillance(survId)</span>
+                .then(vm.refreshPending);
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function searchForSurveillance () {</span>
+<span class="cstat-no" title="statement not covered" >            var query = {</span>
+                pageNumber: 0,
+                pageSize: '50',
+                searchTerm: vm.surveillanceSearch.query
+            };
+<span class="cstat-no" title="statement not covered" >            vm.surveillanceProduct = null;</span>
+<span class="cstat-no" title="statement not covered" >            vm.surveillanceSearch.results = null;</span>
+<span class="cstat-no" title="statement not covered" >            commonService.search(query)</span>
+                .then(<span class="fstat-no" title="function not covered" >function (response) {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.surveillanceSearch.results = response.results;</span>
+<span class="cstat-no" title="statement not covered" >                    if (vm.surveillanceSearch.results.length === 1) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.productId = vm.surveillanceSearch.results[0].id;</span>
+<span class="cstat-no" title="statement not covered" >                        vm.loadSurveillance();</span>
+                    }
+                });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function parseUploadError (cp) {</span>
+<span class="cstat-no" title="statement not covered" >            var ret = '';</span>
+<span class="cstat-no" title="statement not covered" >            if (cp.recordStatus.toLowerCase() !== 'new') {</span>
+<span class="cstat-no" title="statement not covered" >                ret = 'Existing Certified Product found';</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                if (cp.errorMessages.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                    ret += 'Errors:&amp;nbsp;' + cp.errorMessages.length;</span>
+                }
+<span class="cstat-no" title="statement not covered" >                if (cp.warningMessages.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                    if (ret.length &gt; 0)</span>
+<span class="cstat-no" title="statement not covered" >                        ret += '&lt;br /&gt;';</span>
+<span class="cstat-no" title="statement not covered" >                    ret += 'Warnings:&amp;nbsp;' + cp.warningMessages.length;</span>
+                }
+<span class="cstat-no" title="statement not covered" >                if (ret.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >                    ret = 'OK';</span>
+&nbsp;
+                }
+            }
+<span class="cstat-no" title="statement not covered" >            return ret;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function parseSurveillanceUploadError (surv) {</span>
+<span class="cstat-no" title="statement not covered" >            var ret = '';</span>
+<span class="cstat-no" title="statement not covered" >            if (surv.errorMessages.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                ret += 'Errors:&amp;nbsp;' + surv.errorMessages.length;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (surv.warningMessages &amp;&amp; surv.warningMessages.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                if (ret.length &gt; 0)</span>
+<span class="cstat-no" title="statement not covered" >                    ret += '&lt;br /&gt;';</span>
+<span class="cstat-no" title="statement not covered" >                ret += 'Warnings:&amp;nbsp;' + surv.warningMessages.length;</span>
+            }
+<span class="cstat-no" title="statement not covered" >            if (ret.length === 0) {</span>
+<span class="cstat-no" title="statement not covered" >                ret = 'OK';</span>
+            }
+<span class="cstat-no" title="statement not covered" >            return ret;</span>
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function doWork (workType) {</span>
+<span class="cstat-no" title="statement not covered" >            if (vm.workType !== workType) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeDeveloper = '';</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeProduct = '';</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeVersion = '';</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeCP = '';</span>
+<span class="cstat-no" title="statement not covered" >                vm.mergeType = 'developer';</span>
+<span class="cstat-no" title="statement not covered" >                vm.workType = workType;</span>
+            }
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function loadCp () {</span>
+<span class="cstat-no" title="statement not covered" >            commonService.getProduct(vm.productId)</span>
+                .then(<span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                    for (var i = 0; i &lt; vm.developers.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                        if (result.developer.developerId === vm.developers[i].developerId) {</span>
+<span class="cstat-no" title="statement not covered" >                            vm.developerSelect = vm.developers[i];</span>
+<span class="cstat-no" title="statement not covered" >                            break;</span>
+                        }
+                    }
+<span class="cstat-no" title="statement not covered" >                    vm.activeDeveloper = vm.developerSelect;</span>
+<span class="cstat-no" title="statement not covered" >                    commonService.getProductsByDeveloper(vm.activeDeveloper.developerId)</span>
+                        .then(<span class="fstat-no" title="function not covered" >function (products) {</span>
+<span class="cstat-no" title="statement not covered" >                            vm.products = products.products;</span>
+<span class="cstat-no" title="statement not covered" >                            for (var i = 0; i &lt; vm.products.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                                if (result.product.productId === vm.products[i].productId) {</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.productSelect = vm.products[i];</span>
+<span class="cstat-no" title="statement not covered" >                                    break;</span>
+                                }
+                            }
+<span class="cstat-no" title="statement not covered" >                            vm.activeProduct = vm.productSelect;</span>
+<span class="cstat-no" title="statement not covered" >                            vm.activeProduct.developerId = vm.activeDeveloper.developerId;</span>
+<span class="cstat-no" title="statement not covered" >                            commonService.getVersionsByProduct(vm.activeProduct.productId)</span>
+                                .then(<span class="fstat-no" title="function not covered" >function (versions) {</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.versions = versions;</span>
+<span class="cstat-no" title="statement not covered" >                                    for (var i = 0; i &lt; vm.versions.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                                        if (result.version.versionId === vm.versions[i].versionId) {</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.versionSelect = vm.versions[i];</span>
+<span class="cstat-no" title="statement not covered" >                                            break;</span>
+                                        }
+                                    }
+<span class="cstat-no" title="statement not covered" >                                    vm.activeVersion = vm.versionSelect;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.activeVersion.productId = vm.activeProduct.productId;</span>
+<span class="cstat-no" title="statement not covered" >                                    commonService.getProductsByVersion(vm.activeVersion.versionId, true)</span>
+                                        .then(<span class="fstat-no" title="function not covered" >function (cps) {</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.cps = cps;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.cpSelect = result.id;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.selectCp();</span>
+                                        });
+                                });
+                        });
+                });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function loadSurveillance () {</span>
+<span class="cstat-no" title="statement not covered" >            commonService.getProduct(vm.productId)</span>
+                .then(<span class="fstat-no" title="function not covered" >function (result) {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.surveillanceProduct = result;</span>
+                });
+        }
+&nbsp;
+<span class="fstat-no" title="function not covered" >        function ternaryFilter (field) {</span>
+<span class="cstat-no" title="statement not covered" >            if (field == null) {</span>
+<span class="cstat-no" title="statement not covered" >                return 'N/A';</span>
+            } else {
+<span class="cstat-no" title="statement not covered" >                return field ? 'True' : 'False';</span>
+            }
+        }
+&nbsp;
+        ////////////////////////////////////////////////////////////////////
+&nbsp;
+        function getResources () {
+            commonService.getSearchOptions()
+                .then(function (options) {
+                    vm.resources.bodies = options.certBodyNames;
+                    vm.resources.classifications = options.productClassifications;
+                    vm.resources.editions = options.editions;
+                    vm.resources.practices = options.practiceTypeNames;
+                    vm.resources.statuses = options.certificationStatuses;
+                });
+&nbsp;
+            commonService.getAtls(false)
+                .then(function (data) {
+                    vm.resources.testingLabs = data.atls;
+                });
+&nbsp;
+            commonService.getQmsStandards()
+                .then(function (response) {
+                    vm.resources.qmsStandards = response;
+                });
+&nbsp;
+            commonService.getAccessibilityStandards()
+                .then(function (response) {
+                    vm.resources.accessibilityStandards = response;
+                });
+&nbsp;
+            commonService.getTestStandards()
+                .then(function (response) {
+                    vm.resources.testStandards = response;
+                });
+&nbsp;
+            commonService.getUcdProcesses()
+                .then(function (response) {
+                    vm.resources.ucdProcesses = response;
+                });
+&nbsp;
+            commonService.getTestFunctionality()
+                .then(function (response) {
+                    vm.resources.testFunctionalities = response;
+                });
+&nbsp;
+            commonService.getTestTools()
+                .then(function (response) {
+                    vm.resources.testTools = response;
+                });
+&nbsp;
+            commonService.getTargetedUsers()
+                .then(function (response) {
+                    vm.resources.targetedUsers = response;
+                });
+        }
+&nbsp;
+        function prepCodes () {
+            var values = {};
+            for (var i = 0; i &lt; vm.developers.length; i++) {
+                vm.developers[i].transMap = {};
+                for (var j = 0; j &lt; vm.developers[i].transparencyAttestations.length; j++) {
+<span class="cstat-no" title="statement not covered" >                    vm.developers[i].transMap[vm.developers[i].transparencyAttestations[j].acbName] = vm.developers[i].transparencyAttestations[j].attestation;</span>
+<span class="cstat-no" title="statement not covered" >                    values[vm.developers[i].transparencyAttestations[j].acbName] = true;</span>
+                }
+            }
+            vm.activeAcbs = [];
+            angular.forEach(values, <span class="fstat-no" title="function not covered" >function (value, key) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.activeAcbs.push(key);</span>
+            });
+        }
+    }
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Dec 14 2016 09:30:29 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="../../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../../sorter.js"></script>
+</body>
+</html>
