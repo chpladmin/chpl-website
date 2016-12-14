@@ -1,118 +1,109 @@
-module.exports = function(config){
-    config.set({
+'use strict';
 
-        basePath: './',
+var path = require('path');
+var conf = require('./gulp/conf');
 
-        files: [
-            'app/bower_components/angular/angular.js',
-            'app/bower_components/angular-route/angular-route.js',
-            'app/bower_components/angular-animate/angular-animate.min.js',
-            'app/bower_components/ngstorage/ngStorage.min.js',
-            'app/bower_components/jquery/dist/jquery.min.js',
-            'app/bower_components/bootstrap/dist/js/bootstrap.min.js',
-            'app/bower_components/angular-smart-table/dist/smart-table.min.js',
-            'app/bower_components/angular-loading-bar/build/loading-bar.min.js',
-            'app/bower_components/angular-mocks/angular-mocks.js',
-            'app/bower_components/ngstorage/ngStorage.js',
-            'app/bower_components/jquery/dist/jquery.min.js',
-            'app/bower_components/angular-smart-table/dist/smart-table.min.js',
-            'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-            'app/common/swagger-ui.min.js',
-            'app/bower_components/angular-sanitize/angular-sanitize.min.js',
-            'app/bower_components/ng-csv/build/ng-csv.min.js',
-            'app/bower_components/angulartics/dist/angulartics.min.js',
-            'app/bower_components/angulartics/dist/angulartics-debug.min.js',
-            'app/bower_components/angulartics-ga/dist/angulartics-ga.min.js',
-            'app/bower_components/angulartics-gtm/dist/angulartics-gtm.min.js',
-            'app/bower_components/angular-google-chart/ng-google-chart.js',
-            'app/bower_components/angular-file-upload/dist/angular-file-upload.min.js',
-            'app/bower_components/ng-idle/angular-idle.min.js',
-            'app/bower_components/angular-confirm-modal/angular-confirm.js',
-            'app/app.js',
-            'app/app_test.js',
-            'app/appDev.js',
-            'app/**/*Module.js',
-            'app/common/**/*.js',
-            'app/admin/**/*.js',
-            'app/compare/**/*.js',
-            'app/decertifications/**/*.js',
-            'app/login/**/*.js',
-            'app/nav/**/*.js',
-            'app/product/**/*.js',
-            'app/resources/**/*.js',
-            'app/search/**/*.js',
-            'app/overview/**/*.js',
-            'app/registration/**/*.js',
-            'app/**/components/*.html',
-            'app/**/components/**/*.html'
-        ],
+var _ = require('lodash');
+var wiredep = require('wiredep');
 
-        preprocessors: {
-            'app/common/**/!(*test|swagger*).js': ['coverage'],
-            'app/compare/**/!(*test).js': ['coverage'],
-            'app/decertifications/**/!(*test).js': ['coverage'],
-            'app/login/**/!(*test).js': ['coverage'],
-            'app/nav/**/!(*test).js': ['coverage'],
-            'app/admin/**/!(*test).js': ['coverage'],
-            'app/product/**/!(*test).js': ['coverage'],
-            'app/resources/**/!(*test).js': ['coverage'],
-            'app/search/**/!(*test|*cert*).js': ['coverage'],
-            'app/overview/**/!(*test).js': ['coverage'],
-            'app/registration/**/!(*test).js': ['coverage'],
-            'app/app.js': ['coverage'],
-            'app/**/components/*.html': ['ng-html2js'],
-            'app/admin/components/acb/*.html': ['ng-html2js'],
-            'app/admin/components/additionalSoftware/*.html': ['ng-html2js'],
-            'app/admin/components/announcement/*.html': ['ng-html2js'],
-            'app/admin/components/atl/*.html': ['ng-html2js'],
-            'app/admin/components/cms/*.html': ['ng-html2js'],
-            'app/admin/components/cp/*.html': ['ng-html2js'],
-            'app/admin/components/login/*.html': ['ng-html2js'],
-            'app/admin/components/reports/*.html': ['ng-html2js'],
-            'app/admin/components/surveillance/*.html': ['ng-html2js'],
-            'app/admin/components/user/*.html': ['ng-html2js'],
-            'app/decertifications/developers/*.html': ['ng-html2js'],
-            'app/decertifications/products/*.html': ['ng-html2js'],
-            'app/common/components/certificationCriteria/*.html': ['ng-html2js'],
-            'app/common/components/smart_table/*.html': ['ng-html2js'],
-            'app/common/components/surveillance/*.html': ['ng-html2js'],
-            'app/common/components/util/*.html': ['ng-html2js']
+var pathSrcHtml = [
+    path.join(conf.paths.src, '/**/*.html')
+];
+
+function listFiles() {
+    var wiredepOptions = _.extend({}, conf.wiredep, {
+        dependencies: true,
+        devDependencies: true
+    });
+
+    var patterns = wiredep(wiredepOptions).js
+        .concat([
+            path.join(conf.paths.src, '/app/**/*.module.js'),
+            path.join(conf.paths.src, '/app/**/*.js'),
+            path.join(conf.paths.src, '/**/*.spec.js'),
+            path.join(conf.paths.src, '/**/*.mock.js'),
+        ])
+        .concat(pathSrcHtml);
+
+    var files = patterns.map(function(pattern) {
+        return {
+            pattern: pattern
+        };
+    });
+    files.push({
+        pattern: path.join(conf.paths.src, '/assets/**/*'),
+        included: false,
+        served: true,
+        watched: false
+    });
+    return files;
+}
+
+module.exports = function(config) {
+
+    var configuration = {
+        files: listFiles(),
+
+        singleRun: true,
+
+        autoWatch: false,
+
+        ngHtml2JsPreprocessor: {
+            stripPrefix: conf.paths.src + '/',
+            moduleName: 'chpl.templates'
         },
 
-        autoWatch: true,
+        logLevel: 'WARN',
 
-        frameworks: ['jasmine'],
+        frameworks: ['phantomjs-shim', 'jasmine', 'angular-filesort'],
 
-        browsers: ['PhantomJS'],
+        angularFilesort: {
+            whitelist: [path.join(conf.paths.src, '/**/!(*.html|*.spec|*.mock).js')]
+        },
 
-        plugins: [
-            'karma-jasmine',
-            'karma-chrome-launcher',
-            'karma-firefox-launcher',
+        browsers : ['PhantomJS'],
+
+        plugins : [
             'karma-phantomjs-launcher',
+            'karma-angular-filesort',
+            'karma-phantomjs-shim',
+            'karma-coverage',
+            'karma-jasmine',
             'karma-junit-reporter',
             'karma-growl-reporter',
-            'karma-coverage',
-            'karma-ng-html2js-preprocessor',
-            'karma-htmlfile-reporter'
+            'karma-htmlfile-reporter',
+            'karma-ng-html2js-preprocessor'
         ],
 
-        reporters: ['dots', 'junit', 'coverage', 'growl', 'html'],
+        reporters: ['progress'],
 
-        coverageReporter: {
-            type: 'lcov',
-            dir: 'coverage/',
-            subdir: '.',
-            file: 'coverage.lcov'
-        },
-
-        htmlReporter: {
-            outputFile: 'test_reports/units.html'
-        },
-
-        junitReporter: {
-            outputDir: 'test_reports',
-            suite: 'unit'
+        proxies: {
+            '/assets/': path.join('/base/', conf.paths.src, '/assets/')
         }
+    };
+
+    // This is the default preprocessors configuration for a usage with Karma cli
+    // The coverage preprocessor is added in gulp/unit-test.js only for single tests
+    // It was not possible to do it there because karma doesn't let us now if we are
+    // running a single test or not
+    configuration.preprocessors = {};
+    pathSrcHtml.forEach(function(path) {
+        configuration.preprocessors[path] = ['ng-html2js'];
     });
+
+    // This block is needed to execute Chrome on Travis
+    // If you ever plan to use Chrome and Travis, you can keep it
+    // If not, you can safely remove it
+    // https://github.com/karma-runner/karma/issues/1144#issuecomment-53633076
+    if(configuration.browsers[0] === 'Chrome' && process.env.TRAVIS) {
+        configuration.customLaunchers = {
+            'chrome-travis-ci': {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        };
+        configuration.browsers = ['chrome-travis-ci'];
+    }
+
+    config.set(configuration);
 };

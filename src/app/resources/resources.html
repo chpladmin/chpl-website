@@ -1,0 +1,147 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Resources</h1>
+    </div>
+  </div>
+  <div class="main-content" id="mainContent" tabindex="-1">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2>Download the latest Certified Health IT Product List</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-9">
+        <p>
+          To download a list of certified health IT products listed on the CHPL, please select one of the following, and then click the download button:
+          <ul>
+            <li>Complete Listing: Entire collection of 2011, 2014, and 2016 Certified Products. Available as an XML file.</li>
+            <li>2011/2014/2015 Edition Products: Entire collection of a specified certification edition's certified products, including all data elements. Available as an XML file.</li>
+            <li>2014/2015 Edition Summary: Entire collection of a specified certification edition's certified products, with only a subset of data elements* included. Available as a CSV file.</li>
+          </ul>
+          *Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, Certification Criteria to which that Certified Product attests
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <label class="sr-only" for="downloadOption">Select which set of products to download</label>
+          <select id="downloadOption" ng-model="vm.downloadOption" class="form-control">
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}">Complete listing (xml)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2015">2015 edition products (xml)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2014">2014 edition products (xml)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2011">2011 edition products (xml)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2015&format=csv">2015 edition summary (csv)</option>
+            <option value="{{ vm.API }}/download?api_key={{ vm.API_KEY }}&edition=2014&format=csv">2014 edition summary (csv)</option>
+          </select>
+          <span class="input-group-btn">
+            <a type="button" class="btn btn-ai-success" href="{{ vm.downloadOption }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+	  <div class="col-sm-12">
+		<div ng-form="vm.lookupForm" ng-submit="vm.lookupCertIds()" aria-live="polite">
+		  <div class="form-group">
+			<h2>Lookup CMS EHR Certification IDs</h2>
+			<p>Use the box below to determine which products were used to create a specific CMS EHR Certification ID. Enter one or more CMS EHR Certification IDs to display the products which were used to create the associated CMS EHR Certification ID.<p>
+			  <label for="certIdsField" class="control-label sr-only">CMS EHR Certification IDs to lookup</label>
+			  <div class="input-group">
+				<input type="text" class="form-control" id="certIdsField" placeholder="Enter one or more CMS EHR Certification IDs separated by a space, comma, or semi-colon" ng-model="vm.certIds"
+					   ng-keyup="$event.keyCode === 13 && vm.lookupCertIds()"/>
+				<span class="input-group-btn">
+				  <button type="button" class="btn btn-ai" ng-click="vm.lookupCertIds()"><i class="fa fa-search"></i><span class="sr-only">Lookup Certification ID</span></button>
+				</span>
+			  </div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+    <div class="row">
+	  <div class="col-sm-12">
+		<div class="col-md-12" ng-show="vm.lookupProductsCertIdNotFound.length > 0">
+			<ul class="cert-id-lookup-error" ng-repeat="notFoundId in vm.lookupProductsCertIdNotFound">
+				<li>CMS EHR Certification ID "{{ notFoundId }}" was not found.</li>
+			</ul>
+		</div>
+		<div class="col-md-12" ng-show="vm.lookupProductsFormatInvalidIds.length > 0">
+			<ul class="cert-id-lookup-error" ng-repeat="invalidId in vm.lookupProductsFormatInvalidIds">
+				<li>"{{ invalidId }}" is not a valid CMS EHR Certification ID format.</li>
+			</ul>
+		</div>
+		<table id="lookupCertIdResults" class="table table-striped" ng-if="vm.lookupProducts && vm.lookupProducts.length > 0">
+		  <thead>
+			<tr>
+			  <th scope="col"><span>CMS EHR Certification ID</span></th>
+			  <th scope="col"><span>CMS EHR Certification ID Edition</span></th>
+			  <th scope="col"><span>Product Name</span></th>
+			  <th scope="col"><span>Version</span></th>
+			  <th scope="col"><span>Developer</span></th>
+			  <th scope="col"><span>CHPL Product Number</span></th>
+			  <th scope="col"><span>Product Certification Edition</span></th>
+			  <th scope="col"><span>Classification Type</span></th>
+			  <th scope="col"><span>Practice Type</span></th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
+			</tr>
+		  </thead>
+		  <tbody>
+            <tr ng-repeat="row in vm.lookupProducts" >
+			  <td>{{ row.certificationId }}</td>
+			  <td>{{ row.certificationIdEdition }}</td>
+			  <td>{{ row.name }}</td>
+			  <td>{{ row.version }}</td>
+			  <td>{{ row.vendor }}</td>
+			  <td>{{ row.chplProductNumber }}</td>
+			  <td>{{ row.year }}</td>
+			  <td>{{ (row.classification === null ? "N/A" : row.classification)  }}</td>
+			  <td>{{ (row.practiceType === null ? "N/A" : row.practiceType)  }}</td>
+			  <td>
+				<button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
+			  </td>
+			</tr>
+		  </tbody>
+		</table>
+		<div class="pull-right" ng-show="vm.lookupProducts && vm.lookupProducts.length > 0">
+		  <a type="button" class="btn btn-lg btn-ai-success" href="" ng-click="vm.download()"><i class="fa"></i> Download Results</a>
+		</div>
+	  </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h2>Access API Documentation</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7">
+        <p>
+        The ONC CHPL API provides programmatic access to ONC published data on Certified Health IT Products. ONC CHPL's API includes methods for retrieving a subset of our statistical data and the metadata that describes it. Users must complete the CHPL API registration. After completing the CHPL API registration, the user will be given a unique 32-character API key. This API key will also be emailed to the user.
+      	</p>
+      	<p>
+      	This API key must be used when making a call to the CHPL API. For example, if you wanted to implement the /search API with the searchTerm parameter set as Epic, you would make the following call (switching out the key in the URL for your key):
+		<br />
+      	<pre>https://chpl.healthit.gov/rest/search/?api_key=YOURKEYHERE&searchTerm=Epic</pre>
+      	</p>
+      	<p>
+      	A sample Java application using the CHPL API can be found here:
+      	<br />
+      	<a href="https://github.com/chpladmin/sample-application">https://github.com/chpladmin/sample-application</a>
+      	</p>
+      </div>
+      <div class="col-sm-4 col-sm-offset-1">
+        <div>
+          <ai-api-key></ai-api-key>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div ng-show="vm.swaggerLoading">API loading ...</div>
+        <div swagger-ui
+             url="vm.swaggerUrl"
+             loading="vm.swaggerLoading"
+             validator-url="false">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
