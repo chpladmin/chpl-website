@@ -4,4 +4,4 @@ test_results/
 .sass-cache/
 .idea/
 .tmp/
-dist/
+src/app/index.constants.js
