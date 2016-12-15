@@ -10,6 +10,7 @@ _Date TBD_
 * Added icons for new "... by ONC" certification statuses
 * Only ONC Admins can edit Products in "...by ONC" status
 * Updated framework/angular/modules
+* Allowed download of surveillance activity on Resources page
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow
