@@ -562,6 +562,11 @@ option[disabled] {
     font-style: italic;
 }
 
+#filters .btn-group button {
+    margin-right: 1px;
+    margin-left: 1px;
+}
+
 #filters button a {
     color: #f5d43c;
     text-decoration: none;

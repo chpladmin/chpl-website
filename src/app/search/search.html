@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="col-sm-8" ng-if="vm.activeSearch || vm.searchForm.$dirty">
-          <div class=".btn-group.btn-group-justified">
+          <div class="">
             <div uib-dropdown auto-close="outsideClick" class="btn-group">
               <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
                 <a ng-if="vm.isCategoryChanged(['certificationStatus'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
@@ -307,17 +307,15 @@
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
                       <td>
-                        <div ng-switch on="vm.widget.isProductInCart(row.id)">
-                          <div ng-switch-when="true">
-                            <button href class="btn btn-ai-certid btn-sm btn-ai-certid-toggleon" ng-click="vm.toggleCart(row)">
-                              <i class="fa fa-minus"></i> <span class="sr-only">Remove {{row.product.name}} from </span>Cert ID
-                            </button>
-                          </div>
-                          <div ng-switch-default>
-                            <button href class="btn btn-ai-certid btn-sm" ng-click="vm.toggleCart(row)">
-                              <i class="fa fa-plus"></i> <span class="sr-only">Add {{row.product.name}} to </span>Cert ID
-                            </button>
-                          </div>
+                        <div ng-if="vm.widget.isProductInCart(row.id)">
+                          <button href class="btn btn-ai-certid btn-sm btn-ai-certid-toggleon" ng-click="vm.toggleCart(row)">
+                            <i class="fa fa-minus"></i> <span class="sr-only">Remove {{row.product.name}} from </span>Cert ID
+                          </button>
+                        </div>
+                        <div ng-if="!vm.widget.isProductInCart(row.id)">
+                          <button href class="btn btn-ai-certid btn-sm" ng-click="vm.toggleCart(row)">
+                            <i class="fa fa-plus"></i> <span class="sr-only">Add {{row.product.name}} to </span>Cert ID
+                          </button>
                         </div>
                       </td>
                     </tr>
