@@ -31,7 +31,7 @@
           </tr>
           <tr>
             <th scope="row">Surveillance Result</th>
-            <td><span ng-repeat="res in vm.surveillanceResults(surv) track by $index | orderBy:vm.sortResults">{{ res }}<br /></span></td>
+            <td><span ng-repeat="res in vm.surveillanceResults(surv) | orderBy:vm.sortResults track by $index">{{ res }}<br /></span></td>
           </tr>
         </tbody>
       </table>
