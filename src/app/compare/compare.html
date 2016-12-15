@@ -50,7 +50,7 @@
           </tr>
           <tr>
             <th scope="row" class="compare-rowLead">Number of Open Non-Conformities</th>
-            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.countCurrentCorrectiveActionPlans }}</td>
+            <td class="compare-element" ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.countOpenNonconformities }}</td>
           </tr>
           <tr>
             <th scope="row" class="compare-rowLead"><a href ng-click="vm.toggle('certifications')" aria-expanded="{{ vm.isShowing('certifications') }}" class=""><i class="fa fa-lg" ng-class="vm.isShowing('certifications') ? 'fa-caret-down' : 'fa-caret-right'"></i><span class="sr-only">{{ vm.isShowing('certifications') ? 'Collapse' : 'Expand' }}</span> Certification Criteria</a></th>

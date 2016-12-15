@@ -41,9 +41,10 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($scope) {
+        function CertsController ($scope, ACTIVE_CAP) {
             var vm = this;
 
+            vm.ACTIVE_CAP = ACTIVE_CAP;
             vm.prepCqms = prepCqms
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
