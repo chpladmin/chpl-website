@@ -1,7 +1,7 @@
 <div class="container-fluid" id="decertifications-page">
   <div class="row">
     <div class="col-sm-12">
-      <h1>Decertified Products on CHPL</h1>
+      <h1>Decertified Products</h1>
     </div>
   </div>
   <div class="main-content" id="mainContent" tabindex="-1">
@@ -36,8 +36,8 @@
                 <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="status"></st-list-multiple>
               </div>
               <div class="col-sm-12">
-                <strong>Certification Date</strong>
-		        <st-date-range predicate="certificationDate" before="query.before" after="query.after"></st-date-range>
+                <strong>Decertification Date</strong>
+		        <st-date-range predicate="decertificationDate" before="query.before" after="query.after"></st-date-range>
               </div>
             </div>
           </div>
@@ -50,30 +50,35 @@
             <thead>
               <tr>
                 <th scope="col" class="search-header sort-none" st-sort="edition" st-skip-natural="true">Edition</th>
-                <th scope="col" class="search-header sort-none" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default="true">CHPL ID</th>
                 <th scope="col" class="search-header sort-none" st-sort="developer" st-skip-natural="true">Developer</th>
                 <th scope="col" class="search-header sort-none" st-sort="product" st-skip-natural="true">Product</th>
                 <th scope="col" class="search-header sort-none" st-sort="version" st-skip-natural="true">Version</th>
-                <th scope="col" class="search-header sort-none" st-sort="status" st-skip-natural="true">Status</th>
+                <th scope="col" class="search-header sort-none" st-sort="decertificationDate" st-skip-natural="true">Decertification Date</th>
+                <th scope="col" class="search-header sort-none" st-sort="estimatedUsers" st-skip-natural="true"># of Known Users</th>
                 <th scope="col" class="search-header sort-none" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
-                <th scope="col" class="search-header sort-none" st-sort="estimatedUsers" st-skip-natural="true">Estimated # of MU Users</th>
-                <th scope="col" class="search-header sort-none" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+                <th scope="col" class="search-header sort-none" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default="true">CHPL ID</th>
+                <th scope="col" class="search-header sort-none" st-sort="status" st-skip-natural="true">Status</th>
               </tr>
             </thead>
+            <tfoot>
+              <tr>
+                <td colspan="8">Regarding data sources: Nulla facilisis, risus a rhoncus fermentum, tellus tellus lacinia purus, et dictum nunc justo sit amet elit.</td>
+              </tr>
+            </tfoot>
             <tbody>
               <tr ng-if="vm.displayedProducts.length === 0">
                 <td colspan="9">No Decertified Products found</td>
               </tr>
               <tr ng-repeat="prod in vm.displayedProducts">
                 <td>{{ prod.edition }}</td>
-                <td><a href="#/product/{{ prod.id }}">{{ prod.chplProductNumber }}</a></td>
                 <td>{{ prod.developer }}</td>
                 <td>{{ prod.product }}</td>
                 <td>{{ prod.version }}</td>
-                <td>{{ prod.status }}</td>
+                <td>{{ prod.decertificationDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td>{{ prod.estimatedUsers ? prod.estimatedUsers : 'Unk' }}</td>
                 <td>{{ prod.acb }}</td>
-                <td>{{ prod.estimatedUsers ? prod.estimatedUsers : 'N/A' }}</td>
-                <td>{{ prod.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
+                <td><a href="#/product/{{ prod.id }}">{{ prod.chplProductNumber }}</a></td>
+                <td>{{ prod.status }}</td>
               </tr>
             </tbody>
           </table>

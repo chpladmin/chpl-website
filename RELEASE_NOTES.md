@@ -6,13 +6,14 @@ _Date TBD_
 ### Features Added
 * Added new Surveillance Reporting UI
 * Add meaningfulUseUser upload functionality under CMS Management
-* Added parameter to commonModule.js for allowing CAP management
+* Added parameter to configuration for allowing CAP management
 * Added icons for new "... by ONC" certification statuses
 * Only ONC Admins can edit Products in "...by ONC" status
 * Updated framework/angular/modules
 * Allowed download of surveillance activity on Resources page
 * Extracted CMS Widget to be more standalone / based on Angular
   * Removed jQuery as a dependency in the process
+* Added "Decertification" section to navigation
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow
