@@ -11,6 +11,8 @@ _Date TBD_
 * Only ONC Admins can edit Products in "...by ONC" status
 * Updated framework/angular/modules
 * Allowed download of surveillance activity on Resources page
+* Extracted CMS Widget to be more standalone / based on Angular
+  * Removed jQuery as a dependency in the process
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow

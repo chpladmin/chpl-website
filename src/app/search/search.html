@@ -230,7 +230,7 @@
       </div>
     </div>
 
-    <div aria-live="polite" id="mainContent" tabindex="-1">
+    <div aria-live="polite" id="mainContent" tabindex="-1" ai-cms-widget widget="vm.widget">
       <div id="resultsSection" ng-if="hasSearched()" class="main-content">
         <div class="row">
           <div class="col-md-9">
@@ -307,16 +307,7 @@
                         <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
                       </td>
                       <td>
-                        <div ng-if="vm.widget.isProductInCart(row.id)">
-                          <button href class="btn btn-ai-certid btn-sm btn-ai-certid-toggleon" ng-click="vm.toggleCart(row)">
-                            <i class="fa fa-minus"></i> <span class="sr-only">Remove {{row.product.name}} from </span>Cert ID
-                          </button>
-                        </div>
-                        <div ng-if="!vm.widget.isProductInCart(row.id)">
-                          <button href class="btn btn-ai-certid btn-sm" ng-click="vm.toggleCart(row)">
-                            <i class="fa fa-plus"></i> <span class="sr-only">Add {{row.product.name}} to </span>Cert ID
-                          </button>
-                        </div>
+                        <ai-cms-widget-button product-id="{{ row.id }}" product-name="{{ row.product.name }}" ng-click="vm.boxes.certificationId = true"></ai-cms-widget-button>
                       </td>
                     </tr>
                   </tbody>
@@ -330,7 +321,7 @@
                 <uib-accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
                   CMS EHR Certification ID
                 </uib-accordion-heading>
-                <div ng-include="'app/search/certid.html'" ng-controller="CertIdController" ></div>
+                <ai-cms-widget-display widget="vm.widget"></ai-cms-widget-display>
               </uib-accordion-group>
               <uib-accordion-group class="panel-ai" is-open="vm.boxes.compare" aria-expanded="{{ vm.boxes.compare }}" template-url="app/common/templates/accordion.html">
                 <uib-accordion-heading aria-expanded="{{ vm.boxes.compare }}">
