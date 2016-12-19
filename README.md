@@ -41,7 +41,9 @@ OR
 gulp seve:dist //to serve distribution ready files (minified, uglified, etc.)
 ```
 
-The website is running at: [http://localhost:3000/](http://localhost:3000/)
+The website will be running at: [http://localhost:3000/](http://localhost:3000/)
+
+If you run into errors that say something like `gulp-concat` was not found, it's likely you're hitting an issue where npm didn't install all of the dependencies of the projects in `packages.json`. That can be checked by looking in `node_modules/`. There should be ~900 directories there; if there are closer to 50, then that's the issue. Try running `npm install gulp-concat`, and `gulp serve` again. It should give you the next package that's missing. Repeat.
 
 ## Testing
 
