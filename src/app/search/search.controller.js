@@ -84,7 +84,7 @@
                 prevComp: false,
                 prevView: false
             };
-            if ($localStorage.widget.productIds && $localStorage.widget.productIds.length > 0) {
+            if ($localStorage.widget && $localStorage.widget.productIds && $localStorage.widget.productIds.length > 0) {
 			    vm.boxes.certificationId = true;
             }
             vm.defaultQuery = {
