@@ -1,6 +1,6 @@
 <div style="background: white">
   <div ng-if="!vm.certifiedProduct.surveillance || vm.certifiedProduct.surveillance.length === 0">
-    No Surveillance Activity
+    No surveillance activity has been conducted for this listing
   </div>
   <div ng-repeat="surv in vm.certifiedProduct.surveillance | orderBy: 'friendlyId'">
     <div class="pull-right">

@@ -1,3 +1,4 @@
+/* eslint-disable */
 (function () {
     'use strict';
 
@@ -8,8 +9,6 @@
     function SearchController ($scope, $log, $location, $localStorage, $filter, commonService, utilService, CACHE_TIMEOUT) {
         var vm = this;
 
-		vm.toggleCart = toggleCart;
-        vm.widget = chplCertIdWidget;
         vm.clear = clear;
         vm.clearFilters = clearFilters;
         vm.clearPreviouslyCompared = clearPreviouslyCompared;
@@ -85,6 +84,9 @@
                 prevComp: false,
                 prevView: false
             };
+            if ($localStorage.widget && $localStorage.widget.productIds && $localStorage.widget.productIds.length > 0) {
+			    vm.boxes.certificationId = true;
+            }
             vm.defaultQuery = {
                 orderBy: 'developer',
                 sortDescending: false,
@@ -403,15 +405,6 @@
                 vm.compareCps.push(row);
             }
             vm.boxes.compare = true;
-        }
-
-		function toggleCart (row) {
-			if (vm.widget.isProductInCart(row.id)) {
-				vm.widget.removeProductFromCart(row.id);
-			} else {
-				vm.widget.addProductToCart(row.id);
-            }
-			vm.boxes.certificationId = true;
         }
 
         function truncButton (str) {

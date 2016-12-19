@@ -1,5 +1,6 @@
 {
     'CACHE_TIMEOUT': 60,
     'ACTIVE_CAP': true,
-    'API': '/rest'
+    'API': '/rest',
+    'ENVIRONMENT': 'dev'
 }
