@@ -10,10 +10,11 @@ _Date TBD_
 * Added icons for new "... by ONC" certification statuses
 * Only ONC Admins can edit Products in "...by ONC" status
 * Updated framework/angular/modules
-* Allowed download of surveillance activity on Resources page
+* Provided download of surveillance activity on Resources page
 * Extracted CMS Widget to be more standalone / based on Angular
   * Removed jQuery as a dependency in the process
 * Added "Decertification" section to navigation
+* Added Certified Product history popup on /details page
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow
