@@ -1,0 +1,23 @@
+<div class="product-history" role="modal" aria-labeled-by="titleLabel">
+  <div class="modal-header">
+    <button type="btn btn-default" class="pull-right" aria-label="Cancel history"
+            ng-click="vm.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close modal</span></button>
+    <h2 class="modal-title" id="titleLabel">Product History</h2>
+  </div>
+  <div class="modal-body">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Activity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="activity in vm.activity | orderBy:'activityDate':true">
+          <td>{{ activity.activityDate | date : 'mediumDate' : 'UTC' }}</td>
+          <td>{{ activity.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

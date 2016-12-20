@@ -1,22 +1,4 @@
 <div class="container">
-  <script type="text/ng-template" id="myModalContent.html">
-    <div role="modal" aria-labeled-by="modificationSummaryLabel">
-      <div class="modal-header">
-        <button type="button" class="close pull-right" aria-label="Close" ng-click="modalVm.ok()"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="modificationSummaryLabel">Last Modification Summary</h4>
-      </div>
-      <div class="modal-body">
-        <ul>
-          <li ng-repeat="item in modalVm.items | orderBy: 'date': true">
-            Actor: {{ item.actor }}, did: {{ item.action }}, on {{ item.date | date : 'mediumDate' : 'UTC' }}
-          </li>
-        </ul>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="modalVm.ok()">OK</button>
-      </div>
-    </div>
-  </script>
   <div class="row text-bottom">
     <div class="col-sm-8">
       <h1>{{ vm.product.product.name }}</h1>
@@ -34,7 +16,7 @@
         </p>
       </div>
       <div class="col-sm-8 text-right">
-        <p>Certification Date: {{ vm.product.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ vm.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</p>
+        <p>Certification Date: {{ vm.product.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ vm.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }} <button ng-if="vm.activity && vm.activity.length > 0" class="btn btn-default btn-sm" ng-click="vm.viewProductHistory(vm.product.id)"><i class="fa fa-eye"></i><span class="sr-only">View Details</span></button></p>
         <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/manage/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
         <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/manageSurveillance/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
       </div>
