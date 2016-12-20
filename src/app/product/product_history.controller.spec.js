@@ -5,7 +5,6 @@
 
         var vm, scope, $log, mock;
         mock = {};
-        mock.activity = {};
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
             dismiss: jasmine.createSpy('dismiss')
@@ -13,8 +12,10 @@
 
         beforeEach(function () {
             module('chpl.product');
-            inject(function ($controller, $rootScope, _$log_) {
+            module('chpl.mocks');
+            inject(function ($controller, $rootScope, _$log_, product_activity) {
                 $log = _$log_;
+                mock.activity = product_activity;
 
                 scope = $rootScope.$new();
                 vm = $controller('ProductHistoryController', {
@@ -47,6 +48,20 @@
                 expect(vm.cancel).toBeDefined();
                 vm.cancel();
                 expect(mock.modalInstance.dismiss).toHaveBeenCalled();
+            });
+        });
+
+        describe('interpreting the report', function () {
+            it('should have an item for certification status changing', function () {
+                expect(vm.activity[7].change).toEqual(['Certification Status changed from "Active" to "Suspended by ONC"']);
+            });
+
+            it('should have an item for surveillance being added', function () {
+                expect(vm.activity[16].change).toEqual(['Surveillance activity was added']);
+            });
+
+            it('should have an item for surveillance being updated', function () {
+                expect(vm.activity[19].change).toEqual(['Surveillance activity was updated']);
             });
         });
     });

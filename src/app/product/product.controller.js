@@ -50,7 +50,7 @@
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
-                size: 'md',
+                size: 'lg',
                 resolve: {
                     activity: function () { return vm.activity; }
                 }
