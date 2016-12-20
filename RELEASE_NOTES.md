@@ -14,6 +14,7 @@ _Date TBD_
 * Extracted CMS Widget to be more standalone / based on Angular
   * Removed jQuery as a dependency in the process
 * Added "Decertification" section to navigation
+* Added Certified Product history popup on /details page
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow
