@@ -1,13 +1,22 @@
 <div class="container-fluid" id="decertifications-page">
   <div class="row">
     <div class="col-sm-12">
-      <h1>Developers Not In Good Standing</h1>
+      <h1>Developers Precluded From Certifying Health IT Products</h1>
     </div>
   </div>
   <div class="main-content" id="mainContent" tabindex="-1">
     <div class="row">
       <div class="col-sm-12">
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.</p>
+        <p>
+          This is a list of health IT developers currently precluded from certifying any health IT products under the ONC Health IT Certification Program - including new products as well as upgraded versions of current products. ONC may lift these statuses if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence. A developer may be precluded from certifying products for two reasons:
+          <ol>
+            <li><strong>Developer Ban</strong> A developer may be precluded from the Program if the developer or one of its products fails to comply with any requirements of certification and the developer fails to take appropriate actions to correct the non-compliance.</li>
+            <li><strong>Product Withdrawn While Under Surveillance</strong> A developer may also be precluded if it fails to cooperate with the surveillance or other oversight of its certified products. ONC may lift the ban if it determines that the developer has taken appropriate steps to remedy problems or issues for all affected products and users and prevent their recurrence.</li>
+          </ol>
+        </p>
+        <p>
+          Health IT products currently listed on the CHPL will maintain their listed certification status regardless of whether their developer is precluded from the program. Please consult your health IT product’s details page to confirm its certification status by <a href="https://chpl.healthit.gov/#/search">searching for the product</a>
+        </p>
       </div>
     </div>
     <div st-set-filter="customFilter" st-table="vm.displayedDevelopers" st-safe-src="vm.modifiedDecertifiedDevelopers">
@@ -45,9 +54,14 @@
                 <th scope="col" class="search-header sort-none" st-sort="stAcb" st-skip-natural="true">ONC-ACB</th>
                 <th scope="col" class="search-header sort-none" st-sort="stDeveloper" st-skip-natural="true" st-sort-default="true">Developer Name</th>
                 <th scope="col" class="search-header sort-none" st-sort="stStatus" st-skip-natural="true">Developer Status</th>
-                <th scope="col" class="search-header sort-none" st-sort="stEstimatedUsers" st-skip-natural="true">Estimated Number of Meaningful Use Users</th>
+                <th scope="col" class="search-header sort-none" st-sort="stEstimatedUsers" st-skip-natural="true"># of Known Users</th>
               </tr>
             </thead>
+            <tfoot>
+              <tr>
+                <td colspan="4">Estimated Number of Meaningful Use Users is determined from attestations from the CMS Medicare EHR Incentive Program. This is not a complete representation of all Meaningful User users because it excludes those who participated in the CMS Medicaid EHR Incentive Program.</td>
+              </tr>
+            </tfoot>
             <tbody>
               <tr ng-if="vm.displayedDevelopers.length === 0">
                 <td colspan="4">No Decertified Developers found</td>
