@@ -75,7 +75,7 @@
                 <td>{{ prod.product }}</td>
                 <td>{{ prod.version }}</td>
                 <td>{{ prod.decertificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                <td>{{ prod.estimatedUsers ? prod.estimatedUsers : 'Unk' }}</td>
+                <td>{{ prod.estimatedUsers ? prod.estimatedUsers : 'Unknown' }}</td>
                 <td>{{ prod.acb }}</td>
                 <td><a href="#/product/{{ prod.id }}">{{ prod.chplProductNumber }}</a></td>
                 <td>{{ prod.status }}</td>

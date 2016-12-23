@@ -11,11 +11,10 @@
         };
 
         beforeEach(function () {
-            module('chpl.product');
-            module('chpl.mocks');
+            module('chpl.product','chpl.mocks');
             inject(function ($controller, $rootScope, _$log_, product_activity) {
                 $log = _$log_;
-                mock.activity = product_activity;
+                mock.activity = product_activity();
 
                 scope = $rootScope.$new();
                 vm = $controller('ProductHistoryController', {
@@ -62,6 +61,10 @@
 
             it('should have an item for surveillance being updated', function () {
                 expect(vm.activity[19].change).toEqual(['Surveillance activity was updated']);
+            });
+
+            it('should have an item for when the product was certified', function () {
+                expect(vm.activity[23].change).toEqual(['Product was certified']);
             });
         });
     });

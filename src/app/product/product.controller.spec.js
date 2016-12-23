@@ -3,7 +3,7 @@
 
     describe('chpl.product.controller', function () {
 
-        var $uibModal, scope, vm, $log, $q, commonService, authService, mock;
+        var $uibModal, scope, vm, $log, $q, commonService, authService, mock, actualOptions;
         mock = {};
         mock.activity = {};
         mock.productId = 123123;
@@ -18,6 +18,19 @@
             close: function(item) { this.result.confirmCallBack(item); },
             dismiss: function(type) { this.result.cancelCallback(type); }
         };
+        mock.fakeModalOptions = {
+            templateUrl: 'app/product/product_history.html',
+            controller: 'ProductHistoryController',
+            controllerAs: 'vm',
+            animation: false,
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg',
+            resolve: {
+                activity: jasmine.any(Function)
+            }
+        };
+
         beforeEach(function () {
             module('chpl.product', function($provide) {
                 $provide.decorator('commonService', function ($delegate) {
@@ -34,7 +47,10 @@
             inject(function($controller, $rootScope, _$log_, _$uibModal_, _$q_, _commonService_, _authService_) {
                 $log = _$log_;
                 $uibModal = _$uibModal_;
-                spyOn($uibModal, 'open').and.returnValue(mock.fakeModal);
+                spyOn($uibModal, 'open').and.callFake(function (options) {
+                    actualOptions = options;
+                    return mock.fakeModal;
+                });
                 $q = _$q_;
                 commonService = _commonService_;
                 commonService.getCap.and.returnValue($q.when(mock.caps));
@@ -105,6 +121,8 @@
                 expect(vm.viewProductHistoryInstance).toBeUndefined();
                 vm.viewProductHistory();
                 expect(vm.viewProductHistoryInstance).toBeDefined();
+                expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
+                expect(actualOptions.resolve.activity()).toEqual(mock.activity);
             });
 
             it('should log that the history was closed', function () {

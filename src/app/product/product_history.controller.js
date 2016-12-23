@@ -33,8 +33,10 @@
                 activity.change = [];
                 prev = activity.originalData;
                 curr = activity.newData;
-                if (prev.certificationStatus.name !== curr.certificationStatus.name) {
-                    activity.change.push('Certification Status changed from "' + prev.certificationStatus.name + '" to "' + curr.certificationStatus.name + '"');
+                if (prev && curr) {
+                    if (prev.certificationStatus.name !== curr.certificationStatus.name) {
+                        activity.change.push('Certification Status changed from "' + prev.certificationStatus.name + '" to "' + curr.certificationStatus.name + '"');
+                    }
                 }
 
                 if (activity.description.startsWith('Surveillance was added')) {
@@ -43,6 +45,10 @@
 
                 if (activity.description.startsWith('Surveillance was updated')) {
                     activity.change.push('Surveillance activity was updated');
+                }
+
+                if (activity.description === 'Created a certified product') {
+                    activity.change.push('Product was certified');
                 }
             }
         }

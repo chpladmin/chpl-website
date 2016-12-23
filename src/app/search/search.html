@@ -261,8 +261,8 @@
                             </select>
                             results per page
                           </span>
-                          <pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
-                                      max-size="10" class="pagination-sm" boundary-links="true"></pagination>
+                          <uib-pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
+                                          max-size="10" class="pagination-sm" boundary-link-numbers="true"></uib-pagination>
                         </p>
                       </td>
                     </tr>
@@ -288,8 +288,8 @@
                           </select>
                           results per page
                         </p>
-                        <pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
-                                    max-size="10" class="pagination-sm" boundary-links="true"></pagination>
+                        <uib-pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
+                                        max-size="10" class="pagination-sm" boundary-link-numbers="true"></uib-pagination>
                       </td>
                     </tr>
                   </tfoot>
