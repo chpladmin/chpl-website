@@ -66,6 +66,10 @@
             it('should have an item for when the product was certified', function () {
                 expect(vm.activity[23].change).toEqual(['Product was certified']);
             });
+
+            it('should have an item for surveillance being deleted', function () {
+                expect(vm.activity[24].change).toEqual(['Surveillance activity was deleted']);
+            });
         });
     });
 })();

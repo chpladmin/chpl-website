@@ -47,6 +47,10 @@
                     activity.change.push('Surveillance activity was updated');
                 }
 
+                if (activity.description.startsWith('Surveillance was delete')) {
+                    activity.change.push('Surveillance activity was deleted');
+                }
+
                 if (activity.description === 'Created a certified product') {
                     activity.change.push('Product was certified');
                 }
