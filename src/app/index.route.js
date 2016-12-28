@@ -44,7 +44,7 @@
                 title: 'CHPL Product Details'
             })
             .when('/registration/create-user/:hash', {
-                templateUrl: 'aps/registration/create-user.html',
+                templateUrl: 'app/registration/create-user.html',
                 controller: 'CreateController',
                 controllerAs: 'vm',
                 title: 'CHPL Registration'

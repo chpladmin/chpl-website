@@ -130,12 +130,14 @@
             vm.cp.certificationDate = vm.cp.certDate.getTime();
             vm.cp.sedTestingEnd = vm.cp.sedTestingEndDate.getTime();
             if (vm.workType === 'manage') {
+                vm.isSaving = true;
                 commonService.updateCP(vm.cp)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close(response);
                         } else {
                             vm.errors = [response.error];
+                            vm.isSaving = false;
                         }
                     },function (error) {
                         vm.errors = [];
@@ -147,6 +149,7 @@
                             if (error.data.warningMessage && error.data.warningMessage.length > 0)
                                 vm.errors = vm.errors.concat(error.data.warningMessage);
                         }
+                        vm.isSaving = false;
                     });
             } else if (vm.workType === 'confirm') {
                 $uibModalInstance.close(vm.cp);

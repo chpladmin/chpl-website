@@ -283,7 +283,7 @@
         <li ng-repeat="msg in vm.errors track by $index">{{ msg }}</li>
       </ul>
     </div>
-    <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors"
+    <button ng-disabled="(vm.editForm.$invalid && vm.showFormErrors) || vm.isSaving"
             class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.prep()">Save Certified Product</button>
