@@ -167,6 +167,8 @@
                     },function (error) {
                         if (error.data.errorMessages && error.data.errorMessages.length > 0) {
                             vm.errorMessages = error.data.errorMessages;
+                        } else if (error.data.error) {
+                            vm.errorMessages = [error.data.error];
                         } else {
                             vm.errorMessages = [error.statusText];
                         }
