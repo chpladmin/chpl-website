@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.resources', ['ngStorage', 'chpl.common', 'chpl.constants']);
+    angular.module('chpl.resources', ['ngStorage', 'ngCsv', 'chpl.common', 'chpl.constants']);
 })();
