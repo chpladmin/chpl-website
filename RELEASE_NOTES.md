@@ -15,6 +15,7 @@ _Date TBD_
   * Removed jQuery as a dependency in the process
 * Added "Decertification" section to navigation
 * Added Certified Product history popup on /details page
+* Gave site appropriate favicon
 
 ### Bugs Fixed
 * Fixed viewing of Version during product confirm workflow

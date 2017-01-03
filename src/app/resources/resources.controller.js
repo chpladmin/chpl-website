@@ -16,8 +16,8 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-		    vm.lookupProductsFormatInvalidIds = [];
-		    vm.lookupProductsCertIdNotFound = [];
+            vm.lookupProductsFormatInvalidIds = [];
+            vm.lookupProductsCertIdNotFound = [];
 
             // Restore lookup IDs and results
             vm.certIds = $localStorage.lookupCertIds;
