@@ -27,6 +27,7 @@
                 'Retired': false,
                 'Suspended by ONC-ACB': true,
                 'Withdrawn by Developer': true,
+                'Withdrawn by Developer Under Surveillance/Review': true,
                 'Withdrawn by ONC-ACB': true,
                 'Suspended by ONC': true,
                 'Terminated by ONC': true
@@ -44,7 +45,7 @@
         }
         mock.refine = {
             certificationStatuses: [
-                'Active', 'Suspended by ONC-ACB', 'Withdrawn by Developer', 'Withdrawn by ONC-ACB', 'Suspended by ONC', 'Terminated by ONC'
+                'Active', 'Suspended by ONC-ACB', 'Withdrawn by Developer', 'Withdrawn by Developer Under Surveillance/Review', 'Withdrawn by ONC-ACB', 'Suspended by ONC', 'Terminated by ONC'
             ],
             certificationEditions: [
                 '2014', '2015'
@@ -238,6 +239,7 @@
                     vm.refineModel.certificationStatus['Withdrawn by ONC-ACB'] = false;
                     vm.refineModel.certificationStatus['Suspended by ONC-ACB'] = false;
                     vm.refineModel.certificationStatus['Withdrawn By Developer'] = true;
+                    vm.refineModel.certificationStatus['Withdrawn By Developer Under Surveillance/Review'] = false;
                     vm.refineModel.certificationStatus['Retired'] = false;
                     expect(vm.certificationStatusFilter(objToFilter)).toBe(false);
                 });
@@ -260,7 +262,8 @@
                     expect(vm.statusFont('Active')).toBe('fa-check-circle status-good');
                     expect(vm.statusFont('Suspended by ONC-ACB')).toBe('fa-warning status-warning');
                     expect(vm.statusFont('Retired')).toBe('fa-close status-bad');
-                    expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-times-circle status-bad');
+                    expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-times-circle status-warning');
+                    expect(vm.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
                     expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-minus-circle status-bad');
                     expect(vm.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
                     expect(vm.statusFont('Terminated by ONC')).toBe('fa-window-close status-bad');

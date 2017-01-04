@@ -4,6 +4,14 @@
 _Date TBD_
 
 ### Features Added
+* Added status for Withdrawn by Developer Under Surveillance/Review
+
+---
+
+## Version TBD
+_Date TBD_
+
+### Features Added
 * Added new Surveillance Reporting UI
 * Add meaningfulUseUser upload functionality under CMS Management
 * Added parameter to configuration for allowing CAP management
