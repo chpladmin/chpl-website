@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 7.0.0
+_6 January 2017_
 
 ### Features Added
 * Added status for Withdrawn by Developer Under Surveillance/Review
