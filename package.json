@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "0.0.0",
+  "version": "7.0.0",
   "scripts": {
     "test": "gulp test"
   },
