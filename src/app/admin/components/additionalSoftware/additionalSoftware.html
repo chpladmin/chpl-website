@@ -1,0 +1,60 @@
+<span>
+  <span ng-if="!vm.isEditing"><strong>Additional Software: </strong>
+    <span ng-if="!vm.additionalSoftware || vm.additionalSoftware.length === 0">None</span>
+    <ul ng-if="vm.additionalSoftware && vm.additionalSoftware.length > 0">
+      <li ng-repeat="grp in vm.displaySw track by $index">
+        <span ng-if="grp.length > 1">One of<ul><li ng-repeat="sw in grp track by $index">
+              <span ng-if="sw.certifiedProductId"><a href="#/product/{{ sw.certifiedProductId }}">{{ sw.certifiedProductNumber }}</a></span>
+              <span ng-if="!sw.certifiedProductId">
+                {{ sw.name}}
+                <span ng-if="sw.version !== '-1'">(Version {{ sw.version }})</span>
+              </span>
+              {{ vm.isAndOrOr($index, grp.length, $parent.$index, vm.groupCount) }}
+            </li>
+          </ul>
+        </span>
+        <span ng-if="grp.length === 1">
+          <span ng-if="grp[0].certifiedProductId"><a href="#/product/{{ grp[0].certifiedProductId }}">{{ grp[0].certifiedProductNumber }}</a></span>
+          <span ng-if="!grp[0].certifiedProductId">
+            {{ grp[0].name}}
+            <span ng-if="grp[0].version !== '-1'">(Version {{ grp[0].version }})</span>
+            <span ng-if="grp[0].certifiedProductId">(CHPL Id: {{ grp[0].certifiedProductId }})</span>
+          </span>
+          {{ $index === vm.groupCount - 1 ? '' : 'AND' }}
+        </span>
+      </li>
+    </ul>
+  </span>
+  <div ng-if="vm.isEditing">
+    <table class="table table-striped table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Version</th>
+          <th scope="col">CHPL Id</th>
+          <th scope="col">Group</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <td colspan="5">
+            <button class="btn btn-block" ng-click="vm.addItem()">Add item</button>
+          </td>
+        </tr>
+      </tfoot>
+      <tbody>
+        <tr ng-repeat="item in vm.additionalSoftware track by $index">
+          <td>{{ item.name }}</td>
+          <td>{{ item.version }}</td>
+          <td>{{ item.certifiedProductNumber }}</td>
+          <td>{{ item.grouping }}</td>
+          <td width="0">
+            <button class="btn btn-ai-success btn-block" ng-click="vm.editItem(item, $index)"><i class="fa fa-pencil-square-o"></i> Edit</button>
+            <button class="btn btn-danger btn-block" ng-click="vm.removeItem($index)"><i class="fa fa-trash-o"></i> Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</span>

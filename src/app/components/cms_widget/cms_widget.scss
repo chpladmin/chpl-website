@@ -1,0 +1,102 @@
+.widgetcertidbar {
+	width: 100%;
+	padding: 5px;
+	text-align: center;
+}
+
+.widgetcertidbar span {
+	text-align: center;
+	font-weight: 600;
+}
+
+.widgetcertidbar p {
+	font-size: smaller;
+}
+
+.criteriaMetList ul {
+	padding: 0;
+}
+
+.criteriaMetList li {
+    font-size: 14px;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    list-style-type: none;
+}
+
+.criteriaMetListColumn {
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+}
+
+.criteriaMetListColumn2014 {
+	display: inline-block;
+	width: 50%;
+	text-align: left;
+}
+
+.criteriaMetListColumn2014 ul {
+	width: 100%;
+}
+
+.criteriaMetListColumn ul {
+	display: inline-block;
+}
+
+.criteriaMetListColumn li {
+	width: 100%;
+	float: left;
+}
+
+.criteriaMetListColumn:first-child {
+	float: left;
+}
+
+.criteriaPercentage {
+	float: right;
+	margin-right: 20px;
+}
+
+.selectedProducts {
+	text-align: center;
+}
+
+.selectedProducts ul {
+	padding: 0;
+}
+
+.selectedProducts li {
+    list-style-type: none;
+	padding: 2px;
+}
+/*
+span[name="title"] {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+btnGeneratePdfCertificationId {
+	display: none;
+}
+
+.pull-right {
+	float: right!important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}*/

@@ -1,0 +1,129 @@
+<div role="modal" aria-labeled-by="editDeveloperLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="editDeveloperLabel">Edit Developer</h4>
+  </div>
+  <div class="modal-body" ng-form="vm.editForm">
+    <div class="form-group">
+      <label for="developerName">Developer Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName" name="developerName"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerName.$touched) && vm.editForm.developerName.$error.required">Developer name is required</div>
+    </div>
+    <div>
+      <strong>Developer Code: </strong>{{ vm.developer.developerCode }}
+    </div>
+    <div class="form-group" ng-if="vm.isChplAdmin">
+      <label for="developerStatus">Developer Status <span class="text-danger">*</span></label>
+      <select class="input-sm form-control" ng-model="vm.developer.status.status" id="developerStatus" name="developerStatus" required>
+        <option value="Active">Active</option>
+        <option value="Suspended by ONC">Suspended by ONC</option>
+        <option value="Under certification ban by ONC">Under certification ban by ONC</option>
+      </select>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerStatus.$touched) && vm.editForm.developerStatus.$error.required">Developer status is required</div>
+      <div class="bg-info" ng-if="vm.isBeingActivatedFromOncInactiveStatus()">To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.</div>
+    </div>
+    <div class="form-group">
+      <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" name="addressLine1"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressLine1.$touched) && vm.editForm.addressLine1.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="addressLine2">Address Line 2</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="addressLine2"></input>
+    </div>
+    <div class="form-group">
+      <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressCity.$touched) && vm.editForm.addressCity.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressState.$touched) && vm.editForm.addressState.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressZipcode.$touched) && vm.editForm.addressZipcode.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.country" id="addressCountry" name="addressCountry"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressCountry.$touched) && vm.editForm.addressCountry.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="developerWebsite">Website</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite" placeholder="http://www.example.com"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerWebsite.$touched) && vm.editForm.developerWebsite.$error.url">Website is invalid</div>
+    </div>
+    <div class="form-group" ng-if="vm.isAcbAdmin" ng-repeat="acb in vm.activeAcbs | orderBy:'toString()'">
+      <label for="developerTransparency{{acb}}">{{ acb }} Transparency Attestation</label>
+      <select class="input-sm form-control" ng-model="vm.developer.transMap[acb]" id="developerTransparency{{acb}}" name="developerTransparency{{acb}}">
+        <option value="Negative">Negative</option>
+        <option value="Affirmative">Affirmative</option>
+        <option value="N/A">N/A</option>
+      </select>
+    </div>
+    Contact information:<br />
+    <div class="form-group">
+      <label for="contactFirst">First Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.firstName" id="contactFirst" name="contactFirst"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactFirst.$touched) && vm.editForm.contactFirst.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="contactLast">Last Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.lastName" id="contactLast" name="contactLast"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactLast.$touched) && vm.editForm.contactLast.$error.required">Field is required</div>
+    </div>
+    <div class="form-group">
+      <label for="contactTitle">Title</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.developer.contact.title" id="contactTitle" name="contactTitle"></input>
+    </div>
+    <div class="form-group">
+      <label for="contactEmail">Email <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="email" required ng-model="vm.developer.contact.email" id="contactEmail" name="contactEmail"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactEmail.$touched) && vm.editForm.contactEmail.$error.required">Field is required</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactEmail.$touched) && vm.editForm.contactEmail.$error.email">Invalid email</div>
+    </div>
+    <div class="form-group">
+      <label for="contactPhoneNumber">Phone <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.phoneNumber" id="contactPhoneNumber" name="contactPhoneNumber"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactPhoneNumber.$touched) && vm.editForm.contactPhoneNumber.$error.required">Field is required</div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
+      The following error(s) must be fixed:
+      <ul>
+        <li ng-if="vm.editForm.developerName.$error.required">Developer name is required</li>
+        <li ng-if="vm.editForm.developerStatus.$error.required">Developer status is required</li>
+        <li ng-if="vm.editForm.addressLine1.$error.required">Address Line 1 is required</li>
+        <li ng-if="vm.editForm.addressCity.$error.required">City is required</li>
+        <li ng-if="vm.editForm.addressState.$error.required">State is required</li>
+        <li ng-if="vm.editForm.addressZipcode.$error.required">Zipcode is required</li>
+        <li ng-if="vm.editForm.addressCountry.$error.required">Country is required</li>
+        <li ng-if="vm.editForm.developerWebsite.$error.url">Website is invalid (http://www.example.com)</li>
+        <li ng-if="vm.editForm.contactFirst.$error.required">First Name is required</li>
+        <li ng-if="vm.editForm.contactLast.$error.required">Last Name is required</li>
+        <li ng-if="vm.editForm.contactEmail.$error.required">Contact email is required</li>
+        <li ng-if="vm.editForm.contactEmail.$error.email">Invalid email (example@example.com)</li>
+        <li ng-if="vm.editForm.contactPhoneNumber.$error.required">Contact Phone Number is required</li>
+      </ul>
+    </div>
+    <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors"
+            class="btn btn-ai-success btn-block"
+            ng-mouseover="vm.showFormErrors = true"
+            ng-click="vm.save()">Save Developer</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()">Cancel Edits</button>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div style="background: white">
+  <div ng-if="!vm.correctiveActionPlan || vm.correctiveActionPlan.length === 0">
+    No non-conformities
+  </div>
+  <div ng-repeat="cap in vm.correctiveActionPlan | orderBy: '-noncomplianceDate'">
+    <strong>{{ cap.surveillanceEndDate ? 'Closed' : 'Current'}} {{ vm.getCapType(cap) }} Non-Conformity. Date of Determination: {{ cap.noncomplianceDate | date : 'mediumDate' : 'UTC' }}</strong>
+    <span class="pull-right">
+      <a href ng-click="cap.showDetails = !cap.showDetails" aria-expanded="{{ cap.showDetails }}">{{ cap.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ cap.noncomplianceDate | date : 'mediumDate' : 'UTC' }}</span></a><br />
+      <a href ng-click="vm.editCap(cap)" ng-if="vm.isAdmin && vm.ACTIVE_CAP">Edit</a>
+    </span>
+    <div ng-if="cap.showDetails">
+      <strong>Type of Non-Conformity</strong> {{ vm.getCapType(cap) }}<br />
+      <strong>Was randomized surveillance conducted?</strong> {{ cap.randomizedSurveillance ? 'Yes' : 'No' }}<br />
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Surveillance Began</th>
+            <th scope="col">Corrective Action Plan Approved</th>
+            <th scope="col">Action Began</th>
+            <th scope="col">Must be Completed</th>
+            <th scope="col">Was Completed</th>
+            <th scope="col">Surveillance Ended</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ cap.surveillanceStartDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ cap.approvalDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ cap.effectiveDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ cap.estimatedCompletionDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ cap.actualCompletionDate | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ cap.surveillanceEndDate | date : 'mediumDate' : 'UTC' }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Type of Non-Conformity</th>
+            <th scope="col">Summary of Non-conformity</th>
+            <th scope="col">Pass Rate</th>
+            <th scope="col">Developer Explanation</th>
+            <th scope="col">Description of Resolution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="cap.acbSummary">
+            <td>General</td>
+            <td>{{ cap.acbSummary }}</td>
+            <td>N/A</td>
+            <td>{{ cap.developerSummary }}</td>
+            <td>{{ cap.resolution }}</td>
+          </tr>
+          <tr ng-repeat="cert in cap.certifications">
+            <td>{{ cert.certificationCriterionNumber + ': ' + cert.certificationCriterionTitle }}</td>
+            <td>{{ cert.acbSummary }}</td>
+            <td>{{ cap.randomizedSurveillance && cert.surveillancePassRate && cert.surveillanceSitesSurveilled ? cert.surveillancePassRate + ' / ' + cert.surveillanceSitesSurveilled : 'N/A' }}</td>
+            <td>{{ cert.developerSummary }}</td>
+            <td>{{ cert.resolution }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div ng-if="cap.documentation && cap.documentation.length > 0">
+        <strong>Supporting Documentation:</strong>
+        <ul>
+          <li ng-repeat="doc in cap.documentation">
+            {{ doc.fileName }}
+            <span ng-if="doc.id">
+              <a type="button" class="btn btn-sm btn-ai-success" href="{{ vm.API }}/corrective_action_plan/documentation/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download {{ doc.fileName</span></a>
+            </span>
+            <span ng-if="!doc.id">File is pending</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr />
+  </div>
+  <div ng-if="vm.isAdmin && vm.ACTIVE_CAP">
+    <button class="btn btn-ai-success" ng-click="vm.initiateCap()">Initiate Surveillance Reporting</button>
+  </div>
+</div>

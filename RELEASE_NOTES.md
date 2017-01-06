@@ -1,5 +1,27 @@
 # Release Notes
 
+## Version 7.0.0
+_6 January 2017_
+
+### Features Added
+* Added new Surveillance Reporting UI
+* Add meaningfulUseUser upload functionality under CMS Management
+* Added parameter to configuration for allowing CAP management
+* Added icons for new "... by ONC" certification statuses
+* Only ONC Admins can edit Products in "...by ONC" status
+* Updated framework/angular/modules
+* Provided download of surveillance activity on Resources page
+* Extracted CMS Widget to be more standalone / based on Angular
+  * Removed jQuery as a dependency in the process
+* Added "Decertification" section to navigation
+* Added Certified Product history popup on /details page
+* Gave site appropriate favicon
+
+### Bugs Fixed
+* Fixed viewing of Version during product confirm workflow
+
+---
+
 ## Version 6.1.0
 _22 November 2016_
 
@@ -9,7 +31,7 @@ _22 November 2016_
 ### Bugs Fixed
 * "Save as Developer Information" bug fixed
 
---- 
+---
 
 ## Version 6.0.0
 _15 November 2016_
