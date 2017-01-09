@@ -5,6 +5,7 @@ _Date TBD_
 
 ### Features Added
 * Added status for Withdrawn by Developer Under Surveillance/Review
+* Allowed retired test tools to be used IFF `ICS===true`
 
 ---
 
