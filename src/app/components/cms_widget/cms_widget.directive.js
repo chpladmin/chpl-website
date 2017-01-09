@@ -278,7 +278,7 @@
                 }
 
                 // Output the PDF
-                doc.save("" + new Date().getTime() + ".pdf");
+                doc.save(data.ehrCertificationId + ".pdf");
             }
 
             function checkCriterionIsMet (key, criteriaMet) {

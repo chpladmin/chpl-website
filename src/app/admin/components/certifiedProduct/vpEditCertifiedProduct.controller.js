@@ -18,6 +18,7 @@
         vm.prep = prep;
         vm.registerCerts = registerCerts;
         vm.save = save;
+        vm.willCauseSuspension = willCauseSuspension;
 
         activate();
 
@@ -153,6 +154,21 @@
                     });
             } else if (vm.workType === 'confirm') {
                 $uibModalInstance.close(vm.cp);
+            }
+        }
+
+        function willCauseSuspension (name) {
+            switch (name) {
+                case('Active'):
+                case('Retired'):
+                case('Suspended by ONC-ACB'):
+                case('Withdrawn by Developer'):
+                case('Withdrawn by ONC-ACB'):
+                return false;
+                case('Suspended by ONC'):
+                case('Terminated by ONC'):
+                case('Withdrawn by Developer Under Surveillance/Review'):
+                return true;
             }
         }
     }
