@@ -5,7 +5,9 @@ _Date TBD_
 
 ### Features Added
 * Added status for Withdrawn by Developer Under Surveillance/Review
+  * Notify users when status change will cause Developer suspension
 * Allowed retired test tools to be used IFF `ICS===true`
+* Update download file name for CMS lookup
 
 ---
 
