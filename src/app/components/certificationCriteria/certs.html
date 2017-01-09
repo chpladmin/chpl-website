@@ -12,6 +12,7 @@
         <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
           <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
                                      view-all="vm.viewAllCerts"
+                                     has-ics="vm.product.ics"
                                      cert="n"
                                      is-editing="vm.isEditing"
                                      resources="vm.resources"

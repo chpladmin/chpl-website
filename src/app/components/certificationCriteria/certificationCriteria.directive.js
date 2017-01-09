@@ -13,6 +13,7 @@
             templateUrl: 'app/components/certificationCriteria/certificationCriteria.html',
             bindToController: {
                 cert: '=',
+                hasIcs: '=',
                 viewAll: '=',
                 isEditing: '=',
                 resources: '=',
@@ -57,6 +58,7 @@
                 size: 'lg',
                 resolve: {
                     cert: function () { return vm.cert; },
+                    hasIcs: function () { return vm.hasIcs; },
                     resources: function () { return vm.resources; }
                 }
             });

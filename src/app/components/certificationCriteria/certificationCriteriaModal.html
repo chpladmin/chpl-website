@@ -114,7 +114,7 @@
                   <div class="col-sm-6">
                     <div class="input-group">
                       <select class="form-control" ng-model="item.testToolName" id="testTool{{ item.id }}"
-                              ng-options="option.name as option.name disable when option.retired for option in vm.resources.testTools.data | orderBy:'name'"
+                              ng-options="option.name as option.name disable when !vm.isToolAvailable(option) for option in vm.resources.testTools.data | orderBy:'name'"
                               ng-change="item.testToolId = option.id">
                       </select>
                       <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cert.testToolsUsed.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
@@ -142,7 +142,7 @@
                 <div class="col-sm-6">
                   <div class="input-group">
                     <select class="form-control" ng-model="vm.newTestTool.testToolName" id="newTestToolItem"
-                            ng-options="option.name as option.name disable when option.retired for option in vm.resources.testTools.data | orderBy:'name'">
+                            ng-options="option.name as option.name disable when !vm.isToolAvailable(option) for option in vm.resources.testTools.data | orderBy:'name'">
                     </select>
                     <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cert.testToolsUsed, vm.newTestTool); vm.newTestTool = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
                   </div>
