@@ -72,9 +72,11 @@
         function getTitle (surv) {
             var closed = surv.endDate ? true : false;
             var title = '';
+            /*
             if (surv.friendlyId) {
                 title += surv.friendlyId + ': ';
             }
+            */
             title += closed ?
                 'Closed Surveillance, Ended ' + $filter('date')(surv.endDate, 'mediumDate', 'UTC') + ': ' :
                 'Open Surveillance, Began ' + $filter('date')(surv.startDate, 'mediumDate', 'UTC') + ': ';
@@ -86,11 +88,10 @@
                     }
                 }
             }
-            title += nonconformityCount;
-            if (nonconformityCount !== 1) {
-                title += ' Open Non-Conformities Found';
-            } else {
-                title += ' Open Non-Conformity Found';
+            switch (nonconformityCount) {
+            case 0: title += 'No Open Non-Conformities Found'; break;
+            case 1: title += '1 Open Non-Conformity Found'; break;
+            default: title += nonconformityCount + ' Open Non-Conformities Found';
             }
             return title;
         }
