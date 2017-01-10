@@ -81,7 +81,8 @@
       <select class="input-sm form-control" ng-model="vm.cp.certificationStatus" id="cpStatus"
               ng-options="status as status.name disable when vm.disabledStatus(status.name) for status in vm.statuses | orderBy:'name'" required>
       </select>
-      <div class="text-danger" ng-if="vm.willCauseSuspension(vm.cp.certificationStatus.name)">Setting this product to this status will cause the developer to be marked as Suspended by ONC</div>
+      <div class="text-danger" ng-if="vm.willCauseSuspension(vm.cp.certificationStatus.name)">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
+      <div class="text-danger" ng-if="vm.cp.certificationStatus.name ==='Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
       <div class="text-danger" ng-if="vm.cp.certificationStatus.name ==='Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
     </div>
     <div class="form-group">

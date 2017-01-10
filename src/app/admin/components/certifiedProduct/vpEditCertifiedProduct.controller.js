@@ -162,10 +162,10 @@
                 case('Active'):
                 case('Retired'):
                 case('Suspended by ONC-ACB'):
+                case('Suspended by ONC'):
                 case('Withdrawn by Developer'):
                 case('Withdrawn by ONC-ACB'):
                 return false;
-                case('Suspended by ONC'):
                 case('Terminated by ONC'):
                 case('Withdrawn by Developer Under Surveillance/Review'):
                 return true;
