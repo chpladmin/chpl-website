@@ -64,7 +64,7 @@
 
         function createAtl () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/atlEdit.html',
+                templateUrl: 'app/admin/components/atl/atlEdit.html',
                 controller: 'EditAtlController',
                 controllerAs: 'vm',
                 animation: false,
@@ -87,7 +87,7 @@
 
         function editAtl (atl) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/atlEdit.html',
+                templateUrl: 'app/admin/components/atl/atlEdit.html',
                 controller: 'EditAtlController',
                 controllerAs: 'vm',
                 animation: false,
