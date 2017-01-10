@@ -8,6 +8,8 @@ _Date TBD_
   * Notify users when status change will cause Developer suspension
 * Allowed retired test tools to be used IFF `ICS===true`
 * Update download file name for CMS lookup
+* Tweaks to surveillance display
+* Changed "ATL" to "ONC-ATL"
 
 ---
 
