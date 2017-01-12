@@ -59,8 +59,6 @@
                     'InfoGard': true
                 }
             };
-            vm.show2014 = true;
-            vm.show2015 = true;
             if ($localStorage.refineModel) {
                 vm.refineModel = $localStorage.refineModel;
             } else {

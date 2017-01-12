@@ -29,6 +29,7 @@
             'ngSanitize',
             'ngTouch',
             'swaggerUi',
-            'ui.bootstrap'
+            'ui.bootstrap',
+            'ui.bootstrap.fontawesome'
         ]);
 })();

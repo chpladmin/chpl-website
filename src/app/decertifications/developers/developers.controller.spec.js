@@ -6,6 +6,7 @@
 
         mock = {
             decertifiedDeveloperResults:[{"developer":{"developerId":4,"developerCode":"1003","name":"4medica, Inc.","website":null,"address":null,"contact":{"contactId":64,"firstName":"Barb","lastName":"Jones","email":"bjones@example.com","phoneNumber":"123-123-1234","title":null},"status":{"id":2,"status":"Suspended by ONC"},"lastModifiedDate":"1480695890024","deleted":false,"transparencyAttestations":[]},"certifyingBody":[{"id":6,"acbCode":"07","name":"ICSA Labs","website":"http://www.example.com","address":{"addressId":4,"line1":"Line 1","line2":null,"city":"City","state":"State","zipcode":"Zip","country":"US"},"isDeleted":false}],"estimatedUsers":null}],
+            muuAccurateAsOfDate: new Date('2017-01-13'),
             modifiedDecertifiedDevelopers: [
                 {stDeveloper: '4medica, Inc.', stAcb: ['ICSA Labs'], stStatus: 'Suspended by ONC', stEstimatedUsers: null}],
             filter: { acb: 'Drummond', developer: 'epic', status: 'broke'},
@@ -19,6 +20,7 @@
             module('chpl.decertifications', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getDecertifiedDevelopers = jasmine.createSpy('getDecertifiedDevelopers');
+                    $delegate.getMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('getMeaningfulUseUsersAccurateAsOfDate');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     return $delegate;
                 });
@@ -29,6 +31,7 @@
                 $q = _$q_;
                 commonService = _commonService_;
                 commonService.getDecertifiedDevelopers.and.returnValue($q.when({decertifiedDeveloperResults: mock.decertifiedDeveloperResults}));
+                commonService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({data: mock.muuAccurateAsOfDate}));
                 commonService.getSearchOptions.and.returnValue($q.when(mock.searchOptions));
 
                 scope = $rootScope.$new();
@@ -71,6 +74,10 @@
 
         it('should generate the smart-table fields', function () {
             expect(vm.modifiedDecertifiedDevelopers).toEqual(mock.modifiedDecertifiedDevelopers);
+        });
+
+        it('should know what the muu_accurate_as_of_date is', function () {
+            expect(vm.muuAccurateAsOf).toEqual(mock.muuAccurateAsOfDate);
         });
     });
 })();
