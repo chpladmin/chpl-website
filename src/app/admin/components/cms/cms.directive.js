@@ -22,6 +22,7 @@
         var vm = this;
 
         vm.getDownload = getDownload;
+        vm.setMeaningfulUseUsersAccurateAsOfDate = setMeaningfulUseUsersAccurateAsOfDate;
 
         activate();
 
@@ -31,6 +32,11 @@
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isOncStaff = authService.isOncStaff();
             vm.isChplAdmin = authService.isChplAdmin();
+            vm.muuAccurateAsOfDateObject = new Date();
+            commonService.getMeaningfulUseUsersAccurateAsOfDate()
+                .then(function (date) {
+                    vm.muuAccurateAsOf = date.data;
+                });
 
             vm.uploader = new FileUploader({
                 url: API + '/certified_products/meaningful_use_users/upload',
@@ -91,6 +97,13 @@
                     vm.isReady = true;
                 }, function (error) {
                     $log.debug('error in app.admin.cmsController.getDownload', error);
+                });
+        }
+
+        function setMeaningfulUseUsersAccurateAsOfDate () {
+            commonService.setMeaningfulUseUsersAccurateAsOfDate(vm.muuAccurateAsOfDateObject.getTime())
+                .then(function (date) {
+                    vm.muuAccurateAsOf = date.data;
                 });
         }
     }

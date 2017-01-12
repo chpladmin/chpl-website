@@ -599,5 +599,13 @@
         self.getDecertifiedProducts = function () {
             return self.simpleApiCall('/decertifications/certified_products');
         };
+
+        self.getMeaningfulUseUsersAccurateAsOfDate = function () {
+            return self.simpleApiCall('/meaningful_use/accurate_as_of');
+        };
+
+        self.setMeaningfulUseUsersAccurateAsOfDate = function (date) {
+            return self.postApiCall('/meaningful_use/accurate_as_of', date);
+        };
     }
 })();

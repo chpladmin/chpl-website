@@ -10,6 +10,13 @@ _Date TBD_
 * Update download file name for CMS lookup
 * Tweaks to surveillance display
 * Changed "ATL" to "ONC-ATL"
+* Added "Meaningful Use Users Accurate As Of Date value
+  * CMS Management allows editing
+  * Decertified Developers/Products displays
+* Update ui-bootstrap to use font-awesome icons
+* Fixed reports ACB -> ONC-ACB
+* Renamed decertified developers on nav bar
+* Defaulted criteria filter to folded shut
 
 ---
 
