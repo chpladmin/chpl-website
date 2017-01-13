@@ -18,6 +18,7 @@ _Date TBD_
 * Renamed decertified developers on nav bar
 * Defaulted criteria filter to folded shut
 * Fix decertified pages to show "0"
+* Modify PDF CMS ID file to work with Adobe Reader
 
 ---
 
