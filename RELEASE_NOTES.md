@@ -17,6 +17,7 @@ _Date TBD_
 * Fixed reports ACB -> ONC-ACB
 * Renamed decertified developers on nav bar
 * Defaulted criteria filter to folded shut
+* Fix decertified pages to show "0"
 
 ---
 
