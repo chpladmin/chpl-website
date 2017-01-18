@@ -147,8 +147,8 @@
                                 vm.errors.push(error.data.error);
                             if (error.data.errorMessages && error.data.errorMessages.length > 0)
                                 vm.errors = vm.errors.concat(error.data.errorMessages);
-                            if (error.data.warningMessage && error.data.warningMessage.length > 0)
-                                vm.errors = vm.errors.concat(error.data.warningMessage);
+                            if (error.data.warningMessages && error.data.warningMessages.length > 0)
+                                vm.errors = vm.errors.concat(error.data.warningMessages);
                         }
                         vm.isSaving = false;
                     });
