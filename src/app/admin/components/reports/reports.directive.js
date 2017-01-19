@@ -352,7 +352,7 @@
                 ///{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                 {key: 'otherAcb', display: 'Other ONC-ACB'},
                 {key: 'productAdditionalSoftware', display: 'Product-wide Additional Software'},
-                {key: 'reportFileLocation', display: 'ONC-ATL Test Report File Location'},
+                {key: 'reportFileLocation', display: 'ATL Test Report File Location'},
                 {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
                 {key: 'sedReportFileLocation', display: 'SED Report File Location'},
                 {key: 'sedTesting', display: 'SED Tested'},
@@ -981,7 +981,7 @@
                 if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                     activity.name = data[i].newData.name;
                     if (data[i].originalData.deleted !== data[i].newData.deleted) {
-                        activity.action = data[i].newData.deleted ? 'ONC-ATL was deleted' : 'ONC-ATL was restored';
+                        activity.action = data[i].newData.deleted ? 'ATL was deleted' : 'ATL was restored';
                     } else {
                         activity.action = 'Update:<ul>';
                         change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
@@ -995,7 +995,7 @@
                         activity.action += '</ul>';
                     }
                 } else {
-                    vm.interpretNonUpdate(activity, data[i], 'ONC-ATL');
+                    vm.interpretNonUpdate(activity, data[i], 'ATL');
                 }
                 ret.push(activity);
             }
