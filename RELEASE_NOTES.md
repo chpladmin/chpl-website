@@ -9,7 +9,6 @@ _Date TBD_
 * Allowed retired test tools to be used IFF `ICS===true`
 * Update download file name for CMS lookup
 * Tweaks to surveillance display
-* Changed "ATL" to "ONC-ATL"
 * Added "Meaningful Use Users Accurate As Of Date value
   * CMS Management allows editing
   * Decertified Developers/Products displays

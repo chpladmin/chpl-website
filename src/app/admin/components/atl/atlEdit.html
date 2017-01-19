@@ -6,17 +6,17 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit ONC-ATL</h4>
-    <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ONC-ATL</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit ATL</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ATL</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
-      <label for="atlName">ONC-ATL Name <span class="text-danger">*</span></label>
+      <label for="atlName">ATL Name <span class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" required ng-model="vm.atl.name" id="atlName" name="atlName" ng-disabled="vm.atl.isDeleted"></input>
-      <div class="text-danger" ng-if="vm.editForm.atlName.$touched && vm.editForm.atlName.$error.required">ONC-ATL Name is required</div>
+      <div class="text-danger" ng-if="vm.editForm.atlName.$touched && vm.editForm.atlName.$error.required">ATL Name is required</div>
     </div>
     <div>
-      <strong>ONC-ATL Code: </strong>{{ vm.atl.atlCode }}
+      <strong>ATL Code: </strong>{{ vm.atl.atlCode }}
     </div>
     <div class="form-group">
       <label for="addressLine1">Address Line 1 <span class="text-danger">*</span></label>
@@ -58,7 +58,7 @@
     <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
-        <li ng-if="vm.editForm.atlName.$error.required">ONC-ATL Name is required</li>
+        <li ng-if="vm.editForm.atlName.$error.required">ATL Name is required</li>
         <li ng-if="vm.editForm.addressLine1.$error.required">Address Line 1 is required</li>
         <li ng-if="vm.editForm.addressCity.$error.required">City is required</li>
         <li ng-if="vm.editForm.addressState.$error.required">State is required</li>
@@ -71,12 +71,12 @@
     <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors" class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-if="vm.action === 'create'"
-            ng-click="vm.create()"><i class="fa fa-save"></i> Create ONC-ATL</button>
+            ng-click="vm.create()"><i class="fa fa-save"></i> Create ATL</button>
     <span ng-if="!vm.atl.isDeleted">
       <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors" class="btn btn-ai-success btn-block"
               ng-mouseover="vm.showFormErrors = true"
               ng-if="vm.action === 'edit'"
-              ng-click="vm.save()"><i class="fa fa-save"></i> Save ONC-ATL</button>
+              ng-click="vm.save()"><i class="fa fa-save"></i> Save ATL</button>
       <button class="btn btn-warning btn-block"
               confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
               confirm-ok="Yes"
@@ -85,18 +85,18 @@
               ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
       <button class="btn btn-danger btn-block"
               ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.atl.isDeleted"
-              confirm="Are you sure you wish to delete this ONC-ATL?"
+              confirm="Are you sure you wish to delete this ATL?"
               confirm-ok="Yes"
               confirm-cancel="No"
               confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="vm.deleteAtl()"><i class="fa fa-trash-o"></i> Delete ONC-ATL</button>
+              ng-click="vm.deleteAtl()"><i class="fa fa-trash-o"></i> Delete ATL</button>
     </span>
     <button class="btn btn-ai-success btn-block"
             ng-if="vm.action === 'edit' && vm.isChplAdmin && vm.atl.isDeleted"
-            confirm="Are you sure you wish to restore this ONC-ATL?"
+            confirm="Are you sure you wish to restore this ATL?"
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.undeleteAtl()"><i class="fa fa-undo"></i> Restore ONC-ATL</button>
+            ng-click="vm.undeleteAtl()"><i class="fa fa-undo"></i> Restore ATL</button>
   </div>
 </div>
