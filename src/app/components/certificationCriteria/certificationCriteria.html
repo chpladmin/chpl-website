@@ -33,9 +33,27 @@
             <td>Measure Successfully Tested for G1</td>
             <td>True</td>
           </tr>
+          <tr ng-if="vm.cert.g1MacraMeasures">
+            <td>Measure<span ng-if="vm.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1</td>
+            <td ng-if="vm.cert.g1MacraMeasures.length > 0">
+              <ul>
+                <li ng-repeat="meas in vm.cert.g1MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.measure.description }}" tooltip-trigger="mouseenter focus click">{{ meas.measure.name }}</a></li>
+              </ul>
+              </td>
+            <td ng-if="vm.cert.g1MacraMeasures.length === 0">None</td>
+          </tr>
           <tr ng-if="vm.cert.g2Success">
             <td>Measure Successfully Tested for G2</td>
             <td>True</td>
+          </tr>
+          <tr ng-if="vm.cert.g2MacraMeasures">
+            <td>Measure<span ng-if="vm.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2</td>
+            <td ng-if="vm.cert.g2MacraMeasures.length > 0">
+              <ul>
+                <li ng-repeat="meas in vm.cert.g2MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.measure.description }}" tooltip-trigger="mouseenter focus click">{{ meas.measure.name }}</a></li>
+              </ul>
+              </td>
+            <td ng-if="vm.cert.g2MacraMeasures.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.testFunctionality !== null">
             <td>Functionality Tested</td>

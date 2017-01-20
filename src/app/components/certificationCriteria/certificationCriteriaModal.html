@@ -66,9 +66,17 @@
           <td><label class="control-label" for="data_g1Success{{ vm.cert.number }}">Measure Successfully Tested for G1</label></td>
           <td><select class="form-control input-sm" id="data_g1Success{{ vm.cert.number }}" name="data_g1Success" ng_model="vm.cert.g1Success" ng-options="b.value as b.name for b in vm.options"></select></td>
         </tr>
+        <tr ng-if="vm.cert.g1MacraMeasures">
+          <td><label class="control-label" for="data_g1MacraMeasures{{ vm.cert.number }}">Measure<span ng-if="vm.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1</label></td>
+          <td><select multiple data-ng-attr-size="{{ cert.allMeasures.length }}" class="form-control input-sm" id="data_g1MacraMeasures{{ vm.cert.number }}" name="data_g1MacraMeasures" ng_model="vm.cert.g1MacraMeasures" ng-options="m.measure as m.measure.abbreviation for m in cert.allMeasures"></select></td>
+        </tr>
         <tr ng-if="vm.cert.g2Success !== null">
           <td><label class="control-label" for="data_g2Success{{ vm.cert.number }}">Measure Successfully Tested for G2</label></td>
           <td><select class="form-control input-sm" id="data_g2Success{{ vm.cert.number }}" name="data_g2Success" ng_model="vm.cert.g2Success" ng-options="b.value as b.name for b in vm.options"></select></td>
+        </tr>
+        <tr ng-if="vm.cert.g2MacraMeasures">
+          <td><label class="control-label" for="data_g2MacraMeasures{{ vm.cert.number }}">Measure<span ng-if="vm.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2</label></td>
+          <td><select multiple data-ng-attr-size="{{ cert.allMeasures.length }}" class="form-control input-sm" id="data_g2MacraMeasures{{ vm.cert.number }}" name="data_g2MacraMeasures" ng_model="vm.cert.g2MacraMeasures" ng-options="m.measure as m.measure.abbreviation for m in cert.allMeasures"></select></td>
         </tr>
         <tr ng-if="vm.cert.testFunctionality !== null">
           <td>Functionality Tested</td>

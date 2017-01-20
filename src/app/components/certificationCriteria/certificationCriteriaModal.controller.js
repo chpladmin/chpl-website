@@ -27,6 +27,8 @@
             vm.options = [{name: 'True', value: true},
                           {name: 'False', value: false},
                           {name: 'N/A', value: null}];
+            vm.allMeasures = [{abbreviation: 'MD'},
+                           {abbreviation: 'LP'}];
             vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length  > 0;
             vm.hasIcs = hasIcs;
             vm.resources = resources;

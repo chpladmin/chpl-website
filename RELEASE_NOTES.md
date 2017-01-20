@@ -19,6 +19,11 @@ _Date TBD_
 * Defaulted criteria filter to folded shut
 * Fix decertified pages to show "0"
 * Modify PDF CMS ID file to work with Adobe Reader
+* Display/edit of G1/G2 MACRA measures
+* Default ROLE lists to ROLE lengths
+
+### Bugs fixed
+* Upload workflow doesn't find products
 
 ---
 
