@@ -8,6 +8,8 @@ _Date TBD_
   * CMS Management allows editing
   * Decertified Developers/Products displays
 * Removed OBE Google Analytics code
+* Display/edit of G1/G2 MACRA measures
+* Default ROLE lists to ROLE lengths
 
 ---
 
@@ -26,8 +28,6 @@ _23 January 2017_
 * Defaulted criteria filter to folded shut
 * Fix decertified pages to show "0"
 * Modify PDF CMS ID file to work with Adobe Reader
-* Display/edit of G1/G2 MACRA measures
-* Default ROLE lists to ROLE lengths
 
 ### Bugs fixed
 * Upload workflow doesn't find products
