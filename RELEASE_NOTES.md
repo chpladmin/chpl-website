@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 7.1.0
+_23 January 2017_
 
 ### Features Added
 * Added status for Withdrawn by Developer Under Surveillance/Review
@@ -9,9 +9,6 @@ _Date TBD_
 * Allowed retired test tools to be used IFF `ICS===true`
 * Update download file name for CMS lookup
 * Tweaks to surveillance display
-* Added "Meaningful Use Users Accurate As Of Date value
-  * CMS Management allows editing
-  * Decertified Developers/Products displays
 * Update ui-bootstrap to use font-awesome icons
 * Fixed reports ACB -> ONC-ACB
 * Renamed decertified developers on nav bar
