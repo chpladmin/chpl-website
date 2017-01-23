@@ -37,7 +37,7 @@
             <td>Measure<span ng-if="vm.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1</td>
             <td ng-if="vm.cert.g1MacraMeasures.length > 0">
               <ul>
-                <li ng-repeat="meas in vm.cert.g1MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.measure.description }}" tooltip-trigger="mouseenter focus click">{{ meas.measure.name }}</a></li>
+                <li ng-repeat="meas in vm.cert.g1MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="mouseenter focus click">{{ meas.name }}</a></li>
               </ul>
               </td>
             <td ng-if="vm.cert.g1MacraMeasures.length === 0">None</td>
@@ -50,7 +50,7 @@
             <td>Measure<span ng-if="vm.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2</td>
             <td ng-if="vm.cert.g2MacraMeasures.length > 0">
               <ul>
-                <li ng-repeat="meas in vm.cert.g2MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.measure.description }}" tooltip-trigger="mouseenter focus click">{{ meas.measure.name }}</a></li>
+                <li ng-repeat="meas in vm.cert.g2MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="mouseenter focus click">{{ meas.name }}</a></li>
               </ul>
               </td>
             <td ng-if="vm.cert.g2MacraMeasures.length === 0">None</td>
