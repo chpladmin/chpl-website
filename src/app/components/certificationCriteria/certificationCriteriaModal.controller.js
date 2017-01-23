@@ -3,8 +3,9 @@
 
     angular.module('chpl')
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
+
     /** @ngInject */
-    function EditCertificationCriteriaController ($uibModalInstance, $uibModal, $log, cert, resources, utilService) {
+    function EditCertificationCriteriaController ($uibModalInstance, $uibModal, $log, cert, resources, utilService, hasIcs) {
         var vm = this;
 
         vm.cert = cert;
@@ -14,6 +15,7 @@
         vm.cancel = cancel;
         vm.editTask = editTask;
         vm.extendSelect = extendSelect;
+        vm.isToolAvailable = isToolAvailable;
         vm.save = save;
         vm.removeTask = removeTask;
 
@@ -26,6 +28,7 @@
                           {name: 'False', value: false},
                           {name: 'N/A', value: null}];
             vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length  > 0;
+            vm.hasIcs = hasIcs;
             vm.resources = resources;
         }
 
@@ -90,6 +93,10 @@
 
         function extendSelect (options, value) {
             options = utilService.extendSelect(options, value);
+        }
+
+        function isToolAvailable (tool) {
+            return vm.hasIcs || !tool.retired;
         }
 
         function removeTask (idx) {

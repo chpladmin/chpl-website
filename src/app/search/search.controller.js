@@ -43,6 +43,7 @@
                     'Retired': false,
                     'Suspended by ONC-ACB': true,
                     'Withdrawn by Developer': true,
+                    'Withdrawn by Developer Under Surveillance/Review': true,
                     'Withdrawn by ONC-ACB': true,
                     'Suspended by ONC': true,
                     'Terminated by ONC': true
@@ -58,8 +59,6 @@
                     'InfoGard': true
                 }
             };
-            vm.show2014 = true;
-            vm.show2015 = true;
             if ($localStorage.refineModel) {
                 vm.refineModel = $localStorage.refineModel;
             } else {
@@ -153,6 +152,7 @@
                 return ((obj.statuses['active'] > 0 && vm.refineModel.certificationStatus['Active']) ||
                         (obj.statuses['withdrawnByAcb'] > 0 && vm.refineModel.certificationStatus['Withdrawn by ONC-ACB']) ||
                         (obj.statuses['withdrawnByDeveloper'] > 0 && vm.refineModel.certificationStatus['Withdrawn by Developer']) ||
+                        (obj.statuses['withdrawnByDeveloperUnderSurveillanceReview'] > 0 && vm.refineModel.certificationStatus['Withdrawn by Developer Under Surveillance/Review']) ||
                         (obj.statuses['suspendedByAcb'] > 0 && vm.refineModel.certificationStatus['Suspended by ONC-ACB']) ||
                         (obj.statuses['suspendedByOnc'] > 0 && vm.refineModel.certificationStatus['Suspended by ONC']) ||
                         (obj.statuses['terminatedByOnc'] > 0 && vm.refineModel.certificationStatus['Terminated by ONC']) ||
@@ -378,7 +378,10 @@
                 ret = 'fa-close status-bad';
                 break;
             case 'Withdrawn by Developer':
-                ret = 'fa-times-circle status-bad';
+                ret = 'fa-times-circle status-warning';
+                break;
+            case 'Withdrawn by Developer Under Surveillance/Review':
+                ret = 'fa-exclamation-circle status-bad';
                 break;
             case 'Withdrawn by ONC-ACB':
                 ret = 'fa-minus-circle status-bad';

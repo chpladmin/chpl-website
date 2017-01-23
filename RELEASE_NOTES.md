@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version 7.1.0
+_23 January 2017_
+
+### Features Added
+* Added status for Withdrawn by Developer Under Surveillance/Review
+  * Notify users when status change will cause Developer suspension
+* Allowed retired test tools to be used IFF `ICS===true`
+* Update download file name for CMS lookup
+* Tweaks to surveillance display
+* Update ui-bootstrap to use font-awesome icons
+* Fixed reports ACB -> ONC-ACB
+* Renamed decertified developers on nav bar
+* Defaulted criteria filter to folded shut
+* Fix decertified pages to show "0"
+* Modify PDF CMS ID file to work with Adobe Reader
+
+---
+
 ## Version 7.0.0
 _6 January 2017_
 

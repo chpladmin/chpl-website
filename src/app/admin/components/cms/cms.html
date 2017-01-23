@@ -52,6 +52,26 @@
           </tr>
         </tbody>
       </table>
+      <!--
+      <p>Meaningful Use Users information is accurate as of: {{ vm.muuAccurateAsOf | date : 'mediumDate' : 'UTC' }}</p>
+      <form class="form form-horizontal" name="vm.muuForm">
+        <div class="form-group">
+          <label for="newMuuDate" class="col-sm-4">Set new Meaningful Use Users Accurate As Of Date</label>
+          <div class="col-sm-4">
+            <div class="input-group">
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.muuAccurateAsOfDateObject" is-open="vm.muuAccurateAsOfPicker" close-text="Close" id="newMuuDate" name="newMuuDate" ng-model-options="{ timezone: 'UTC' }" required>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-ai btn-sm" ng-click="vm.muuAccurateAsOfPicker = true"><i class="fa fa-calendar"></i></button>
+              </span>
+            </div>
+            <div class="text-danger" ng-if="vm.muuForm.newMuuDate.$touched && vm.muuForm.newMuuDate.$error.date">Improper format (mm/dd/yyyy)</div>
+          </div>
+          <div class="col-sm-4">
+            <button class="btn btn-ai-success" ng-click="vm.setMeaningfulUseUsersAccurateAsOfDate()"><i class="fa fa-save"></i> Set Date</button>
+          </div>
+        </div>
+      </form>
+      -->
     </div>
   </section> <!-- end upload meaningful use users -->
 </div>

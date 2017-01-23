@@ -18,6 +18,7 @@
         vm.prep = prep;
         vm.registerCerts = registerCerts;
         vm.save = save;
+        vm.willCauseSuspension = willCauseSuspension;
 
         activate();
 
@@ -146,13 +147,28 @@
                                 vm.errors.push(error.data.error);
                             if (error.data.errorMessages && error.data.errorMessages.length > 0)
                                 vm.errors = vm.errors.concat(error.data.errorMessages);
-                            if (error.data.warningMessage && error.data.warningMessage.length > 0)
-                                vm.errors = vm.errors.concat(error.data.warningMessage);
+                            if (error.data.warningMessages && error.data.warningMessages.length > 0)
+                                vm.errors = vm.errors.concat(error.data.warningMessages);
                         }
                         vm.isSaving = false;
                     });
             } else if (vm.workType === 'confirm') {
                 $uibModalInstance.close(vm.cp);
+            }
+        }
+
+        function willCauseSuspension (name) {
+            switch (name) {
+                case('Active'):
+                case('Retired'):
+                case('Suspended by ONC-ACB'):
+                case('Suspended by ONC'):
+                case('Withdrawn by Developer'):
+                case('Withdrawn by ONC-ACB'):
+                return false;
+                case('Terminated by ONC'):
+                case('Withdrawn by Developer Under Surveillance/Review'):
+                return true;
             }
         }
     }

@@ -26,6 +26,10 @@
                     vm.decertifiedDevelopers = [];
                     vm.loadDevelopers();
                 });
+            commonService.getMeaningfulUseUsersAccurateAsOfDate()
+                .then(function (date) {
+                    vm.muuAccurateAsOf = date.data;
+                });
             commonService.getSearchOptions(true)
                 .then(function (result) {
                     vm.acbs = result.certBodyNames;
