@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Features Added
+* Added "Meaningful Use Users Accurate As Of Date value
+  * CMS Management allows editing
+  * Decertified Developers/Products displays
+* Removed OBE Google Analytics code
+
+---
+
 ## Version 7.1.0
 _23 January 2017_
 
