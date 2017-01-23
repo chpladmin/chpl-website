@@ -6,7 +6,6 @@
             'angular-confirm',
             'angular-loading-bar',
             'angulartics',
-            'angulartics.google.analytics',
             'angulartics.google.tagmanager',
             'chpl.admin',
             'chpl.common',

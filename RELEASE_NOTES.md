@@ -4,15 +4,22 @@
 _Date TBD_
 
 ### Features Added
+* Added "Meaningful Use Users Accurate As Of Date value
+  * CMS Management allows editing
+  * Decertified Developers/Products displays
+* Removed OBE Google Analytics code
+
+---
+
+## Version 7.1.0
+_23 January 2017_
+
+### Features Added
 * Added status for Withdrawn by Developer Under Surveillance/Review
   * Notify users when status change will cause Developer suspension
 * Allowed retired test tools to be used IFF `ICS===true`
 * Update download file name for CMS lookup
 * Tweaks to surveillance display
-* Changed "ATL" to "ONC-ATL"
-* Added "Meaningful Use Users Accurate As Of Date value
-  * CMS Management allows editing
-  * Decertified Developers/Products displays
 * Update ui-bootstrap to use font-awesome icons
 * Fixed reports ACB -> ONC-ACB
 * Renamed decertified developers on nav bar
