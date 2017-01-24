@@ -12,6 +12,7 @@ _Date TBD_
 * Default ROLE lists to ROLE lengths
 * Rearranged navigation
 * Changed default filters to "Active" or "Suspended by..." only
+* Changed Suspended Developer page text
 
 ---
 
