@@ -25,7 +25,7 @@
         });
 
     /** @ngInject */
-    function ReportController($log, $filter, $uibModal, commonService, authService) {
+    function ReportController($log, $filter, $uibModal, commonService, utilService, authService) {
         var vm = this;
         vm.isAcbAdmin = authService.isAcbAdmin();
         vm.isChplAdmin = authService.isChplAdmin();
@@ -619,6 +619,36 @@
                         } else {
                             obj.changes.push('<li>' + change + '</li>');
                         }
+                }
+                var measures = utilService.arrayCompare(prev[i].g1MacraMeasures,curr[i].g1MacraMeasures);
+                if (measures.added.length > 0) {
+                    obj.changes.push('<li>Added G1 MACRA Measure' + (measures.added.length > 1 ? 's' : '') + ':<ul>');
+                    for (j = 0; j < measures.added.length; j++) {
+                        obj.changes.push('<li>' + measures.added[j].abbreviation + '</li>');
+                    }
+                    obj.changes.push('</ul></li>');
+                }
+                if (measures.removed.length > 0) {
+                    obj.changes.push('<li>Removed G1 MACRA Measure' + (measures.removed.length > 1 ? 's' : '') + ':<ul>');
+                    for (j = 0; j < measures.removed.length; j++) {
+                        obj.changes.push('<li>' + measures.removed[j].abbreviation + '</li>');
+                    }
+                    obj.changes.push('</ul></li>');
+                }
+                measures = utilService.arrayCompare(prev[i].g2MacraMeasures,curr[i].g2MacraMeasures);
+                if (measures.added.length > 0) {
+                    obj.changes.push('<li>Added G2 MACRA Measure' + (measures.added.length > 1 ? 's' : '') + ':<ul>');
+                    for (j = 0; j < measures.added.length; j++) {
+                        obj.changes.push('<li>' + measures.added[j].abbreviation + '</li>');
+                    }
+                    obj.changes.push('</ul></li>');
+                }
+                if (measures.removed.length > 0) {
+                    obj.changes.push('<li>Removed G2 MACRA Measure' + (measures.removed.length > 1 ? 's' : '') + ':<ul>');
+                    for (j = 0; j < measures.removed.length; j++) {
+                        obj.changes.push('<li>' + measures.removed[j].abbreviation + '</li>');
+                    }
+                    obj.changes.push('</ul></li>');
                 }
                 var addlSwKeys = [
                     {key: 'version', display: 'Version'},
