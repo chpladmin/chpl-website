@@ -112,7 +112,7 @@
 
             it('should know what page is active', function () {
                 spyOn($location,'path').and.returnValue('/admin/userManagement');
-                expect(ctrl.isActive('admin')).toBe(true);
+                expect(ctrl.isActive('/admin')).toBe(true);
                 expect(ctrl.isActive('resources')).toBe(false);
             });
         });

@@ -10,6 +10,7 @@ _Date TBD_
 * Removed OBE Google Analytics code
 * Display/edit of G1/G2 MACRA measures
 * Default ROLE lists to ROLE lengths
+* Rearranged navigation
 
 ---
 
