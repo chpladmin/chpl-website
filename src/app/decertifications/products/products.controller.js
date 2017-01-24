@@ -26,13 +26,8 @@
                     $log.debug(error);
                 });
             commonService.getMeaningfulUseUsersAccurateAsOfDate()
-                .then(function (date) {
-                    vm.muuAccurateAsOf = date.data;
-                });
-            commonService.getSearchOptions(true)
-                .then(function (result) {
-                    vm.acbs = result.certBodyNames;
-                    vm.statuses = result.certificationStatuses;
+                .then(function (response) {
+                    vm.muuAccurateAsOf = response.accurateAsOfDate;
                 });
         }
 
