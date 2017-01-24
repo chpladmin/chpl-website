@@ -11,6 +11,7 @@ _Date TBD_
 * Display/edit of G1/G2 MACRA measures
 * Default ROLE lists to ROLE lengths
 * Rearranged navigation
+* Changed default filters to "Active" or "Suspended by..." only
 
 ---
 

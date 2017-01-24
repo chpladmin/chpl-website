@@ -26,11 +26,11 @@
                 'Active': true,
                 'Retired': false,
                 'Suspended by ONC-ACB': true,
-                'Withdrawn by Developer': true,
-                'Withdrawn by Developer Under Surveillance/Review': true,
-                'Withdrawn by ONC-ACB': true,
+                'Withdrawn by Developer': false,
+                'Withdrawn by Developer Under Surveillance/Review': false,
+                'Withdrawn by ONC-ACB': false,
                 'Suspended by ONC': true,
-                'Terminated by ONC': true
+                'Terminated by ONC': false
             },
             certificationEdition: {
                 '2011': false,
@@ -45,7 +45,7 @@
         }
         mock.refine = {
             certificationStatuses: [
-                'Active', 'Suspended by ONC-ACB', 'Withdrawn by Developer', 'Withdrawn by Developer Under Surveillance/Review', 'Withdrawn by ONC-ACB', 'Suspended by ONC', 'Terminated by ONC'
+                'Active', 'Suspended by ONC-ACB', 'Suspended by ONC'
             ],
             certificationEditions: [
                 '2014', '2015'
