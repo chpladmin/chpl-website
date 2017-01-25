@@ -33,7 +33,7 @@
 
         describe('controller', function () {
 
-            it('should exist', function() {
+            it('should exist', function () {
                 expect(ctrl).toBeDefined();
             });
 

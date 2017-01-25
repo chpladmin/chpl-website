@@ -25,7 +25,7 @@
 
         self.simpleApiCall = function (endpoint) {
             return $http.get(API + endpoint)
-                .then(function(response) {
+                .then(function (response) {
                     if (angular.isObject(response.data)) {
                         return response.data;
                     } else {
@@ -38,7 +38,7 @@
 
         self.externalApiCall = function (endpoint) {
             return $http.get(endpoint)
-                .then(function(response) {
+                .then(function (response) {
                     if (angular.isObject(response.data)) {
                         return response.data;
                     } else {

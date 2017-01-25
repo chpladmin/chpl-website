@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('admin.editCertifiedProduct.controller', function() {
+    describe('admin.editCertifiedProduct.controller', function () {
         var vm, scope, $log, $q, commonService, utilService, mock;
 
         mock = {};
@@ -41,7 +41,7 @@
                 });
             });
 
-            inject(function($controller, $rootScope, _$log_, _$q_, _commonService_, _utilService_) {
+            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_, _utilService_) {
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;

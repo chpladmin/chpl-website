@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('cms directive', function() {
+    describe('cms directive', function () {
         var vm, el, $q, $log, commonService, authService;
 
         var mock = {};
@@ -27,7 +27,7 @@
                 });
             });
 
-            inject(function($compile, $rootScope, _$q_, _$log_, _commonService_, _authService_) {
+            inject(function ($compile, $rootScope, _$q_, _$log_, _commonService_, _authService_) {
                 $q = _$q_;
                 $log = _$log_;
                 commonService = _commonService_;

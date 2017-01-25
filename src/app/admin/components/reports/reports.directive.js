@@ -326,7 +326,7 @@
         // Helper functions
 
         if (!String.prototype.startsWith) {
-            String.prototype.startsWith = function(searchString, position){
+            String.prototype.startsWith = function (searchString, position){
                 var vm = this;
                 position = position || 0;
                 return vm.substr(position, searchString.length) === searchString;
@@ -334,7 +334,7 @@
         }
 
         if (!String.prototype.endsWith) {
-            String.prototype.endsWith = function(searchString, position){
+            String.prototype.endsWith = function (searchString, position){
                 var vm = this;
                 position = position || 0;
                 return vm.substr(position) === searchString;
@@ -607,8 +607,8 @@
                 {key: 'success', display: 'Successful', questionable: true}
             ];
             var i, j;
-            prev.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
-            curr.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            curr.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
             for (i = 0; i < prev.length; i++) {
                 var obj = { number: curr[i].number, changes: [] };
                 for (j = 0; j < certKeys.length; j++) {
@@ -710,8 +710,8 @@
                 {key: 'surveillancePassRate', display: 'Pass Rate'},
                 {key: 'surveillanceSitesSurveilled', display: 'Sites Surveilled'}
             ];
-            prev.sort(function(a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
-            curr.sort(function(a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
+            prev.sort(function (a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
+            curr.sort(function (a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
             for (var i = 0; i < prev.length; i++) {
                 var obj = { number: curr[i].certificationCriterionNumber, changes: [] };
                 for (var j = 0; j < certKeys.length; j++) {
@@ -742,8 +742,8 @@
             ];
             var i, j, k;
             if (prev !== null) {
-                prev.sort(function(a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
-                curr.sort(function(a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
+                prev.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
+                curr.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
                 for (i = 0; i < prev.length; i++) {
                     for (j = 0; j < curr.length; j++) {
                         if (prev[i].description === curr[j].description) {
@@ -788,8 +788,8 @@
         function compareCqms (prev, curr, questionable) {
             var ret = [];
             var change;
-            prev.sort(function(a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
-            curr.sort(function(a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
+            prev.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
+            curr.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
             var i, j;
             for (i = 0; i < prev.length; i++) {
                 var obj = { cmsId: curr[i].cmsId, changes: [] };
@@ -842,7 +842,7 @@
                 };
                 activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
                 if (data[i].description.startsWith('Merged')) {
-                    activity.developerCode = data[i].originalData.map(function(elem){
+                    activity.developerCode = data[i].originalData.map(function (elem){
                         return elem.developerCode;
                     }).join(',');
                 } else if (!activity.developerCode) {

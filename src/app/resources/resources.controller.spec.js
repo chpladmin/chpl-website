@@ -7,11 +7,11 @@
 
         beforeEach(function () {
             var mockAuthService = {};
-            module('chpl.resources', function($provide) {
+            module('chpl.resources', function ($provide) {
                 $provide.value('authService', mockAuthService);
             });
 
-            inject(function($q) {
+            inject(function ($q) {
                 mockAuthService.getApiKey = function () {
                     return $q.when('api key');
                 };

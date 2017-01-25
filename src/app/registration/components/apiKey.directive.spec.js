@@ -9,7 +9,7 @@
             mockCommonService = {};
 
             module('chpl.templates');
-            module('chpl.registration', function($provide) {
+            module('chpl.registration', function ($provide) {
                 $provide.value('commonService', mockCommonService);
             });
 
@@ -17,7 +17,7 @@
             mockCommonService.fakeUser = {name: 'fake', email: 'fake@fake.com'};
             mockCommonService.registered = {keyRegistered: 'fake key'};
 
-            inject(function($q) {
+            inject(function ($q) {
                 mockCommonService.getApiUsers = function () { return $q.when(mockCommonService.apiUsers); };
                 mockCommonService.registerApi = function () { return $q.when(mockCommonService.registered); };
                 mockCommonService.revokeApi = function () { return $q.when({}); };

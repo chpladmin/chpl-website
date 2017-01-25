@@ -53,7 +53,7 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    announcement: function() {return {}; },
+                    announcement: function () {return {}; },
                     action: function () { return 'create'; },
                     authService: function () { return authService; }
                 }

@@ -1,14 +1,14 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('admin.additionalSoftware', function() {
+    describe('admin.additionalSoftware', function () {
         var vm, el, $log;
 
         beforeEach(function () {
             module('chpl.templates');
             module('chpl.admin');
 
-            inject(function($compile, $rootScope, _$log_) {
+            inject(function ($compile, $rootScope, _$log_) {
                 $log = _$log_;
 
                 el = angular.element('<ai-additional-software></ai-additional-software>');

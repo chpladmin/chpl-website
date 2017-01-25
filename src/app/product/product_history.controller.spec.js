@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('chpl.product.product_history', function() {
+    describe('chpl.product.product_history', function () {
 
         var vm, scope, $log, mock;
         mock = {};

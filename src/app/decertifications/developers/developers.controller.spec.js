@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('decertifications.developers.controller', function() {
+    describe('decertifications.developers.controller', function () {
         var vm, scope, $log, $q, commonService, mock;
 
         mock = {
@@ -21,7 +21,7 @@
                 });
             });
 
-            inject(function($controller, $rootScope, _$log_, _$q_, _commonService_) {
+            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;

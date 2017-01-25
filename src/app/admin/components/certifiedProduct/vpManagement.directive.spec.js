@@ -8,16 +8,16 @@
         beforeEach(function () {
             mockCommonService = {};
             mockAuthService = {};
-            mockFileUploader = function(){};
+            mockFileUploader = function (){};
 
             module('chpl.templates');
-            module('chpl.admin', function($provide) {
+            module('chpl.admin', function ($provide) {
                 $provide.value('commonService', mockCommonService);
                 $provide.value('authService', mockAuthService);
                 $provide.value('FileUploader', mockFileUploader);
             });
 
-            inject(function($q) {
+            inject(function ($q) {
                 mockCommonService.developers = {developers: [{name: 'Developer 1', transparencyAttestations: []}, {name: 'Developer 2', transparencyAttestations: []}]};
                 mockCommonService.products = [{name: 'Prod', lastModifiedDate: '2014-05-02'}, 'Product 2'];
                 mockCommonService.certs = ['Cert 1', 'Cert 2'];
@@ -164,7 +164,7 @@
                 scope.$digest();
             }));
 
-            it('should exist', function() {
+            it('should exist', function () {
                 expect(ctrl).toBeDefined();
             });
 

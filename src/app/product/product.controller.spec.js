@@ -11,12 +11,12 @@
         mock.caps = [];
         mock.fakeModal = {
             result: {
-                then: function(confirmCallback, cancelCallback) {
+                then: function (confirmCallback, cancelCallback) {
                     this.confirmCallBack = confirmCallback;
                     this.cancelCallback = cancelCallback;
                 }},
-            close: function(item) { this.result.confirmCallBack(item); },
-            dismiss: function(type) { this.result.cancelCallback(type); }
+            close: function (item) { this.result.confirmCallBack(item); },
+            dismiss: function (type) { this.result.cancelCallback(type); }
         };
         mock.fakeModalOptions = {
             templateUrl: 'app/product/product_history.html',
@@ -32,7 +32,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.product', function($provide) {
+            module('chpl.product', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getCap = jasmine.createSpy('getCap');
                     $delegate.getProduct = jasmine.createSpy('getProduct');
@@ -44,7 +44,7 @@
                     return $delegate;
                 });
             });
-            inject(function($controller, $rootScope, _$log_, _$uibModal_, _$q_, _commonService_, _authService_) {
+            inject(function ($controller, $rootScope, _$log_, _$uibModal_, _$q_, _commonService_, _authService_) {
                 $log = _$log_;
                 $uibModal = _$uibModal_;
                 spyOn($uibModal, 'open').and.callFake(function (options) {
@@ -112,7 +112,7 @@
             });
         });
 
-        describe('viewing product history', function() {
+        describe('viewing product history', function () {
             it('should have a function to view product history', function () {
                 expect(vm.viewProductHistory).toBeDefined();
             });

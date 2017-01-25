@@ -56,7 +56,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.search', function($provide) {
+            module('chpl.search', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.search = jasmine.createSpy('search');
                     $delegate.searchAdvanced = jasmine.createSpy('searchadvanced');
@@ -65,7 +65,7 @@
                 });
             });
 
-            inject(function(_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_) {
+            inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_) {
                 $log = _$log_;
                 $q = _$q_;
                 $location = _$location_;

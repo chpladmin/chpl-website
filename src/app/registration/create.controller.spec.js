@@ -15,12 +15,12 @@
             beforeEach(function () {
                 mockAuthService = {};
                 mockCommonService = {};
-                module('chpl.registration', function($provide) {
+                module('chpl.registration', function ($provide) {
                     $provide.value('commonService', mockCommonService);
                     $provide.value('authService', mockAuthService);
                 });
 
-                inject(function($q) {
+                inject(function ($q) {
                     mockCommonService.createInvitedUser = function () {
                         $log.debug('createInvitedUser');
                         var defer = $q.defer();

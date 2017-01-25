@@ -112,7 +112,7 @@
             });
         }
 
-        vm.cancelATL = function() {
+        vm.cancelATL = function () {
             vm.loadData();
         };
 

@@ -92,28 +92,28 @@
                 }
                 vm.uploader.filters.push({
                     name: 'csvFilter',
-                    fn: function(item) {
+                    fn: function (item) {
                         var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
                         return '|csv|'.indexOf(extension) !== -1;
                     }
                 });
-                vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+                vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                     $log.info('onSuccessItem', fileItem, response, status, headers);
                     vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
                     vm.uploadErrors = [];
                     vm.uploadSuccess = true;
                 };
-                vm.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
                     $log.info('onCompleteItem', fileItem, response, status, headers);
                     vm.refreshPending();
                 };
-                vm.uploader.onErrorItem = function(fileItem, response, status, headers) {
+                vm.uploader.onErrorItem = function (fileItem, response, status, headers) {
                     $log.info('onErrorItem', fileItem, response, status, headers);
                     vm.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
                     vm.uploadErrors = response.errorMessages;
                     vm.uploadSuccess = false;
                 };
-                vm.uploader.onCancelItem = function(fileItem, response, status, headers) {
+                vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
                     $log.info('onCancelItem', fileItem, response, status, headers);
                 };
 
@@ -130,28 +130,28 @@
                 }
                 vm.surveillanceUploader.filters.push({
                     name: 'csvFilter',
-                    fn: function(item) { //, options) {
+                    fn: function (item) { //, options) {
                         var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
                         return '|csv|'.indexOf(extension) !== -1;
                     }
                 });
-                vm.surveillanceUploader.onSuccessItem = function(fileItem, response, status, headers) {
+                vm.surveillanceUploader.onSuccessItem = function (fileItem, response, status, headers) {
                     $log.info('onSuccessItem', fileItem, response, status, headers);
                     vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
                     vm.surveillanceUploadErrors = [];
                     vm.surveillanceUploadSuccess = true;
                 };
-                vm.surveillanceUploader.onCompleteItem = function(fileItem, response, status, headers) {
+                vm.surveillanceUploader.onCompleteItem = function (fileItem, response, status, headers) {
                     $log.info('onCompleteItem', fileItem, response, status, headers);
                     vm.refreshPending();
                 };
-                vm.surveillanceUploader.onErrorItem = function(fileItem, response, status, headers) {
+                vm.surveillanceUploader.onErrorItem = function (fileItem, response, status, headers) {
                     $log.info('onErrorItem', fileItem, response, status, headers);
                     vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
                     vm.surveillanceUploadErrors = response.errorMessages;
                     vm.surveillanceUploadSuccess = false;
                 };
-                vm.surveillanceUploader.onCancelItem = function(fileItem, response, status, headers) {
+                vm.surveillanceUploader.onCancelItem = function (fileItem, response, status, headers) {
                     $log.info('onCancelItem', fileItem, response, status, headers);
                 };
             }

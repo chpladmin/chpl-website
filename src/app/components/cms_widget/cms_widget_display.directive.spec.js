@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('chpl.aiCmsWidgetButton', function() {
+    describe('chpl.aiCmsWidgetButton', function () {
         var $compile, $rootScope, vm, el, $log;
 
         beforeEach(function () {
             module('chpl.templates');
             module('chpl.cms-widget');
-            inject(function(_$compile_, _$rootScope_, _$log_) {
+            inject(function (_$compile_, _$rootScope_, _$log_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
                 $log = _$log_;
