@@ -39,7 +39,7 @@
               </div>
             </div>
           </div>
-          <div class="pull-right">{{ vm.displayedProducts.length }} Inactive Certification<span ng-if="vm.displayedProducts.length > 1">s</span> shown out of {{ vm.inactiveProducts.length }} total Inactive Certification<span ng-if="vm.decertifiedProducts.length > 1">s</span></div>
+          <div class="pull-right">{{ vm.displayedProducts.length }} Inactive Certificate<span ng-if="vm.displayedProducts.length > 1">s</span> shown out of {{ vm.inactiveProducts.length }} total Inactive Certificate<span ng-if="vm.inactiveProducts.length > 1">s</span></div>
         </div>
       </div>
       <div class="row">
@@ -55,17 +55,16 @@
                 <th scope="col" class="search-header sort-none" st-sort="estimatedUsers" st-skip-natural="true"># of Known Users</th>
                 <th scope="col" class="search-header sort-none" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
                 <th scope="col" class="search-header sort-none" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default="true">CHPL ID</th>
-                <th scope="col" class="search-header sort-none" st-sort="status" st-skip-natural="true">Status</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <td colspan="9">Estimated Number of Meaningful Use Users is determined from attestations from the CMS Medicare EHR Incentive Program. This is not a complete representation of all Meaningful Use Users because it excludes those who participated in the CMS Medicaid EHR Incentive Program. Data is accurate as of: {{ vm.muuAccurateAsOf | date : 'mediumDate' : 'UTC' }}</td>
+                <td colspan="8">Estimated Number of Meaningful Use Users is determined from attestations from the CMS Medicare EHR Incentive Program. This is not a complete representation of all Meaningful Use Users because it excludes those who participated in the CMS Medicaid EHR Incentive Program. Data is accurate as of: {{ vm.muuAccurateAsOf | date : 'mediumDate' : 'UTC' }}</td>
               </tr>
             </tfoot>
             <tbody>
               <tr ng-if="vm.displayedProducts.length === 0">
-                <td colspan="9">No Inactive Certificates found</td>
+                <td colspan="8">No Inactive Certificates found</td>
               </tr>
               <tr ng-repeat="prod in vm.displayedProducts">
                 <td>{{ prod.edition }}</td>
@@ -76,7 +75,6 @@
                 <td>{{ (prod.estimatedUsers || prod.estimatedUsers === 0) ? prod.estimatedUsers : 'Unknown' }}</td>
                 <td>{{ prod.acb }}</td>
                 <td><a href="#/product/{{ prod.id }}">{{ prod.chplProductNumber }}</a></td>
-                <td>{{ prod.status }}</td>
               </tr>
             </tbody>
           </table>
