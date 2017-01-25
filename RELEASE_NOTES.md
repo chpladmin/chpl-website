@@ -15,6 +15,7 @@ _Date TBD_
 * Changed Suspended Developer page text
 * Fix collapsing nav on small screen
 * Added pop-up notification if CHPL ID Changes
+* Added Inactive Certificates page
 
 ---
 

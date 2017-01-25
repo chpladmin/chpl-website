@@ -626,11 +626,13 @@ option[disabled] {
 }
 
 #decertifiedProductFilter,
+#inactiveProductFilter,
 #decertifiedDeveloperFilter {
     min-width: 500px;
 }
 
 #decertifiedProductFilter .dropdown-menu,
+#inactiveProductFilter .dropdown-menu,
 #decertifiedDeveloperFilter .dropdown-menu {
     width: 100%;
 }
