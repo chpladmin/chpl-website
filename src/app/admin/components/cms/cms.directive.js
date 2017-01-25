@@ -36,6 +36,7 @@
             commonService.getMeaningfulUseUsersAccurateAsOfDate()
                 .then(function (data) {
                     vm.muuAccurateAsOf = data.accurateAsOfDate;
+                    vm.muuAccurateAsOfDateObject = new Date(vm.muuAccurateAsOf);
                 });
 
             vm.uploader = new FileUploader({
@@ -104,6 +105,7 @@
             commonService.setMeaningfulUseUsersAccurateAsOfDate({accurateAsOfDate: vm.muuAccurateAsOfDateObject.getTime()})
                 .then(function (data) {
                     vm.muuAccurateAsOf = data.accurateAsOfDate;
+                    vm.muuAccurateAsOfDateObject = new Date(vm.muuAccurateAsOf);
                 });
         }
     }
