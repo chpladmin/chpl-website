@@ -13,6 +13,7 @@ _Date TBD_
 * Rearranged navigation
 * Changed default filters to "Active" or "Suspended by..." only
 * Changed Suspended Developer page text
+* Fix collapsing nav on small screen
 
 ---
 
