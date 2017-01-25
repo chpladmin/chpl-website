@@ -34,8 +34,8 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.muuAccurateAsOfDateObject = new Date();
             commonService.getMeaningfulUseUsersAccurateAsOfDate()
-                .then(function (date) {
-                    vm.muuAccurateAsOf = date.data;
+                .then(function (data) {
+                    vm.muuAccurateAsOf = data.accurateAsOfDate;
                 });
 
             vm.uploader = new FileUploader({
@@ -101,9 +101,9 @@
         }
 
         function setMeaningfulUseUsersAccurateAsOfDate () {
-            commonService.setMeaningfulUseUsersAccurateAsOfDate(vm.muuAccurateAsOfDateObject.getTime())
-                .then(function (date) {
-                    vm.muuAccurateAsOf = date.data;
+            commonService.setMeaningfulUseUsersAccurateAsOfDate({accurateAsOfDate: vm.muuAccurateAsOfDateObject.getTime()})
+                .then(function (data) {
+                    vm.muuAccurateAsOf = data.accurateAsOfDate;
                 });
         }
     }
