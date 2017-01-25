@@ -5,7 +5,7 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($uibModalInstance, $timeout, activeCP, commonService, utilService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, workType) {
+    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, commonService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, utilService, workType) {
 
         var vm = this;
         vm.addNewValue = addNewValue;

@@ -14,6 +14,7 @@ _Date TBD_
 * Changed default filters to "Active" or "Suspended by..." only
 * Changed Suspended Developer page text
 * Fix collapsing nav on small screen
+* Added pop-up notification if CHPL ID Changes
 
 ---
 

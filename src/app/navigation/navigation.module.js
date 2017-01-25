@@ -2,7 +2,7 @@
     'use strict';
 
     /** @ngInclude */
-    function authInterceptor (API, authService) {
+    function authInterceptor (API, authService, toaster) {
         return {
             // automatically attach Authorization header
             request: function (config) {
@@ -18,8 +18,16 @@
                 return config;
             },
 
-            // If a token was sent back, save it
             response: function (response) {
+                // Pop up a notification if the CHPL ID changed
+                if (response.headers && response.headers()['chpl-id-changed']) {
+                    toaster.pop({
+                        type: 'success',
+                        title: 'CHPL ID Changed',
+                        body: 'Your activity caused the CHPL Product Identifier to change. It used to be: "' + response.headers()['chpl-id-changed'] + '"'
+                    });
+                }
+                // If a token was sent back, save it
                 if (response.config.url.indexOf(API) === 0) {
                     try {
                         if (angular.isString(response.data)) {
@@ -37,7 +45,7 @@
         }
     }
 
-    angular.module('chpl.navigation', ['ngRoute', 'chpl.loginServices', 'chpl.common', 'chpl.constants'])
+    angular.module('chpl.navigation', ['chpl.loginServices', 'chpl.common', 'chpl.constants', 'ngRoute', 'toaster'])
         .factory('authInterceptor', authInterceptor)
         .config(function($httpProvider) {
             $httpProvider.interceptors.push('authInterceptor');

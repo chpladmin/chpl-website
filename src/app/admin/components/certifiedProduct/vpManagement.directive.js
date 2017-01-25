@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController (commonService, authService, $log, FileUploader, API, $uibModal) {
+    function VpManagementController ($log, $uibModal, API, FileUploader, authService, commonService) {
         var vm = this;
 
         vm.doWork = doWork;

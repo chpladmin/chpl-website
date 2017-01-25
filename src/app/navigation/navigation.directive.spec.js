@@ -64,14 +64,14 @@
                 expect(config.headers['Authorization']).toBe(undefined);
             });
 
-            it('should pass the response through unchanged if it\' not coming from the defined URL', function () {
-                var headers = {config: {url: falseApiUrl}};
+            it('should pass the response through unchanged if it\'s not coming from the defined URL', function () {
+                var headers = {config: {url: falseApiUrl}, headers: function () {return [];}};
                 var response = authInterceptor.response(headers);
                 expect(response).toBe(headers);
             });
 
             it('should set the token if one is found, from the correct URL', function () {
-                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}"};
+                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}", headers: function () {return [];}};
                 spyOn(mockAuthService, 'saveToken');
                 authInterceptor.response(headers);
                 expect(mockAuthService.saveToken).toHaveBeenCalled();
