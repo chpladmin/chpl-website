@@ -28,6 +28,7 @@
             'ngSanitize',
             'ngTouch',
             'swaggerUi',
+            'toaster',
             'ui.bootstrap',
             'ui.bootstrap.fontawesome'
         ]);
