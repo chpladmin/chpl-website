@@ -74,7 +74,9 @@
         }
 
         function isActive (route) {
-            return route === $location.path().split('/')[1];
+            var paths = $location.path().split('/')
+            var routes = route.split('/');
+            return (route === $location.path() || (paths[1] === routes[1] && routes.length === 2));
         }
 
         function isAtlAdmin () {

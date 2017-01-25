@@ -27,16 +27,8 @@
                     vm.loadDevelopers();
                 });
             commonService.getMeaningfulUseUsersAccurateAsOfDate()
-                .then(function (date) {
-                    vm.muuAccurateAsOf = date.data;
-                });
-            commonService.getSearchOptions(true)
-                .then(function (result) {
-                    vm.acbs = result.certBodyNames;
-                    vm.statuses = result.developerStatuses;
-
-                    //debug
-                    vm.statuses = [{name: 'Under certification ban by ONC'}, {name: 'Terminated by ONC'}]
+                .then(function (response) {
+                    vm.muuAccurateAsOf = response.accurateAsOfDate;
                 });
         }
 
