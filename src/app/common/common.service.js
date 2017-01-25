@@ -600,6 +600,10 @@
             return self.simpleApiCall('/decertifications/certified_products');
         };
 
+        self.getInactiveCertifications = function () {
+            return self.simpleApiCall('/decertifications/inactive_certificates');
+        };
+
         self.getMeaningfulUseUsersAccurateAsOfDate = function () {
             return self.simpleApiCall('/meaningful_use/accurate_as_of');
         };

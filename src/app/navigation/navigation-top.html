@@ -24,6 +24,7 @@
             </ul>
           </li>
           <li ng-class="{'active': vm.isActive('/decertifications/products') }"><a href="#/decertifications/products">Decertified<br/>Products</a></li>
+          <li ng-class="{'active': vm.isActive('/decertifications/inactive') }"><a href="#/decertifications/inactive">Inactive<br/>Certificates</a></li>
           <li ng-class="{'active': vm.isActive('/decertifications/developers') }"><a href="#/decertifications/developers">Banned<br/>Developers</a></li>
           <li ng-class="{'active': vm.isActive('/admin') }" class="dropdown" uib-dropdown auto-close="outsideClick">
             &nbsp;<br /><a href class="dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span ng-if="!vm.getUsername()" class="sr-only">Log in</span>{{ vm.getUsername() }} <span class="fa fa-caret-down"></span></a>
