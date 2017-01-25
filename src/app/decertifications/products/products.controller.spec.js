@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('decertifications.products.controller', function() {
+    describe('decertifications.products.controller', function () {
         var vm, scope, $log, $q, commonService, mock;
         mock = {
             decertifiedProducts: {"recordCount":2,"pageSize":2,"pageNumber":0,"results":[{"id":6571,"testingLabId":null,"testingLabName":null,"chplProductNumber":"CHP-023867","reportFileLocation":"https://www.icsalabs.com/sites/default/files/2014-EHRA314940-2014-0904-00.pdf","sedReportFileLocation":null,"sedIntendedUserDescription":null,"sedTestingEnd":null,"acbCertificationId":"140238R00","classificationType":{"name":"Complete EHR","id":2},"otherAcb":null,"certificationStatus":{"name":"Withdrawn by Developer","id":3},"developer":{"name":"Nemo Capital Partners","id":1036},"product":{"versionId":3981,"name":"1 Connect BuildYourEMR","id":1736,"version":"5.0"},"certificationEdition":{"name":"2014","id":2},"practiceType":{"name":"Ambulatory","id":1},"certifyingBody":{"name":"ICSA Labs","id":6},"certificationDate":1409803200000,"decertificationDate":1409803200000,"ics":null,"sedTesting":null,"qmsTesting":null,"accessibilityCertified":null,"productAdditionalSoftware":"Microsoft HealthVault, Windows Operating System","transparencyAttestation":null,"transparencyAttestationUrl":null,"countCerts":43,"countCqms":14,"countCorrectiveActionPlans":0,"countCurrentCorrectiveActionPlans":0,"countClosedCorrectiveActionPlans":0,"numMeaningfulUse":null},
@@ -47,7 +47,7 @@
                 });
             });
 
-            inject(function($controller, $rootScope, _$log_, _$q_, _commonService_) {
+            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;

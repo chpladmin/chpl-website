@@ -9,12 +9,12 @@
             mockAuthService = {};
             mockCommonService = {};
 
-            module('chpl.admin', function($provide) {
+            module('chpl.admin', function ($provide) {
                 $provide.value('authService', mockAuthService);
                 $provide.value('commonService', mockCommonService);
             });
 
-            inject(function($q) {
+            inject(function ($q) {
                 mockAuthService.getUsername = function () { return 'fake'; };
                 mockAuthService.isAuthed = function () { return true; };
                 mockAuthService.isChplAdmin = function () { return true; };

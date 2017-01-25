@@ -109,17 +109,17 @@
                     'API-Key': authService.getApiKey()
                 }
             });
-            vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                 $log.info('onSuccessItem', fileItem, response, status, headers);
                 vm.nonconformity.documents.push({fileName: fileItem.file.name + ' is pending'});
             };
-            vm.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
                 $log.info('onCompleteItem', fileItem, response, status, headers);
             };
-            vm.uploader.onErrorItem = function(fileItem, response, status, headers) {
+            vm.uploader.onErrorItem = function (fileItem, response, status, headers) {
                 $log.info('onErrorItem', fileItem, response, status, headers);
             };
-            vm.uploader.onCancelItem = function(fileItem, response, status, headers) {
+            vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
                 $log.info('onCancelItem', fileItem, response, status, headers);
             };
         }

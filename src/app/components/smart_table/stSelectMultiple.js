@@ -2,7 +2,7 @@
     'use strict';
     angular.module('chpl')
 
-        .directive('stSelectMultiple', function() {
+        .directive('stSelectMultiple', function () {
             return {
                 restrict: 'E',
                 require: '^stTable',
@@ -12,7 +12,7 @@
                     predicateExpression: '='
                 },
                 templateUrl: 'app/components/smart_table/stSelectMultiple.html',
-                link: function(scope, element, attr, table) {
+                link: function (scope, element, attr, table) {
                     scope.dropdownLabel = '';
                     scope.filterChanged = filterChanged;
 
@@ -52,7 +52,7 @@
                     function getSelectedOptions() {
                         var selectedOptions = [];
 
-                        angular.forEach(scope.distinctItems, function(item) {
+                        angular.forEach(scope.distinctItems, function (item) {
                             if (item.selected) {
                                 selectedOptions.push(item.value);
                             }
@@ -65,12 +65,12 @@
                         var predicate = getPredicate();
                         var distinctItems = [];
 
-                        angular.forEach(collection, function(item) {
+                        angular.forEach(collection, function (item) {
                             var value = item[predicate];
                             fillDistinctItems(value, distinctItems);
                         });
 
-                        distinctItems.sort(function(obj, other) {
+                        distinctItems.sort(function (obj, other) {
                             if (obj.value > other.value) {
                                 return 1;
                             } else if (obj.value < other.value) {

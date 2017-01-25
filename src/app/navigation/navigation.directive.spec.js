@@ -9,7 +9,7 @@
         var trueApiUrl = '/rest';
         var falseApiUrl = 'http://example.com';
 
-        beforeEach(function() {
+        beforeEach(function () {
             mockAuthService = {};
 
             module('chpl.navigation', function ($provide, $httpProvider) {
@@ -17,7 +17,7 @@
                 httpProvider = $httpProvider;
             });
 
-            inject(function(_authInterceptor_, _$log_) {
+            inject(function (_authInterceptor_, _$log_) {
                 mockAuthService.getToken = function () { return token; };
                 mockAuthService.getApiKey = function () { return 'key'; };
                 mockAuthService.saveToken = function () { };
@@ -45,7 +45,7 @@
             });
 
             it('should not put a token in the headers if there isn\'t one', function () {
-                inject(function() {
+                inject(function () {
                     mockAuthService.getToken = function () {
                         return '';
                     }

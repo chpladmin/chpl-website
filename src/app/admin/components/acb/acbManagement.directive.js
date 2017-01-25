@@ -111,7 +111,7 @@
             });
         }
 
-        vm.cancelACB = function() {
+        vm.cancelACB = function () {
             vm.loadData();
         };
 

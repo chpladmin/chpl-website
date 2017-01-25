@@ -13,11 +13,11 @@
 
             beforeEach(function () {
                 mockCommonService = {};
-                module('chpl.registration', function($provide) {
+                module('chpl.registration', function ($provide) {
                     $provide.value('commonService', mockCommonService);
                 });
 
-                inject(function($q) {
+                inject(function ($q) {
                     mockCommonService.confirmUser = function () {
                         var defer = $q.defer();
                         defer.resolve();

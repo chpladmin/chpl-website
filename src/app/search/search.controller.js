@@ -490,7 +490,7 @@
         }
         $scope.clear = clear;
 
-        $scope.sort = function(header) {
+        $scope.sort = function (header) {
             if (header === vm.query.orderBy) {
                 vm.query.sortDescending = !vm.query.sortDescending;
             } else {
