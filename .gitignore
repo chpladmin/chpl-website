@@ -1,7 +1,7 @@
 dist/
 node_modules/
 bower_components/
-test_results/
+test_reports/
 .sass-cache/
 .idea/
 .tmp/
