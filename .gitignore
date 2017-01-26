@@ -6,3 +6,5 @@ test_results/
 .idea/
 .tmp/
 src/app/index.constants.js
+.project
+.settings/
