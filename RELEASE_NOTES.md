@@ -19,6 +19,7 @@ _Date TBD_
 * Moved CMS Widget to nav bar
   * Added +/- CertID buttons to /compare & /details
 * Changed "ATL" to "ONC-ATL"
+* Update certification status icons
 
 ---
 

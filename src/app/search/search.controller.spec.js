@@ -260,14 +260,14 @@
 
                 it('should get the right icon for various statuses', function () {
                     expect(vm.statusFont('Active')).toBe('fa-check-circle status-good');
-                    expect(vm.statusFont('Suspended by ONC-ACB')).toBe('fa-warning status-warning');
-                    expect(vm.statusFont('Retired')).toBe('fa-close status-bad');
-                    expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-times-circle status-warning');
-                    expect(vm.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
-                    expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-minus-circle status-bad');
+                    expect(vm.statusFont('Retired')).toBe('fa-university status-neutral');
                     expect(vm.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
+                    expect(vm.statusFont('Suspended by ONC-ACB')).toBe('fa-minus-circle status-warning');
                     expect(vm.statusFont('Terminated by ONC')).toBe('fa-window-close status-bad');
-                });
+                    expect(vm.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
+                    expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-stop-circle status-neutral');
+                    expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
+                 });
             });
         });
     });
