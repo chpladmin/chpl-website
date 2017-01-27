@@ -19,13 +19,13 @@
     <!-- endinject -->
     <!-- endbuild -->
   </head>
-  <body>
+  <body ai-cms-widget widget="mainWidget">
     <!--[if lt IE 10]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
     <a href="#{{ currentPage }}#mainContent" class="sr-only sr-only-focusable">Skip to main content</a>
-    <ai-navigation-top></ai-navigation-top>
+    <ai-navigation-top widget="mainWidget"></ai-navigation-top>
     <toaster-container toaster-options="{'time-out': 0}"></toaster-container>
     <div ng-view></div>
     <ai-navigation-bottom></ai-navigation-bottom>

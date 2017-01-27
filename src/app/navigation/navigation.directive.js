@@ -12,8 +12,10 @@
             restrict: 'E',
             replace: true,
             templateUrl: 'app/navigation/navigation-top.html',
-            bindToController: { },
-            scope: {},
+            bindToController: {
+                widget: '=?'
+            },
+            scope: { },
             controllerAs: 'vm',
             controller: 'NavigationController'
         }

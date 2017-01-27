@@ -1,8 +1,6 @@
-<span>
-  <button class="btn btn-ai-certid btn-sm btn-ai-certid-toggleon" ng-if="isInList(productId)" ng-click="toggleProduct(productId)">
-    <i class="fa fa-minus"></i> <span class="sr-only">Remove {{ productName }} from </span>Cert ID
-  </button>
-  <button class="btn btn-ai-certid btn-sm" ng-if="!isInList(productId)" ng-click="toggleProduct(productId)">
-    <i class="fa fa-plus"></i> <span class="sr-only">Add {{ productName }} to </span>Cert ID
-  </button>
-</span>
+<button class="btn btn-ai-certid btn-sm" ng-class="{'btn-ai-certid-toggleon': isInList(productId)}" ng-click="toggleProduct(productId)">
+  <i class="fa" ng-class="isInList(productId) ? 'fa-minus' : 'fa-plus'"></i>
+  <span class="sr-only" ng-if="isInList(productId)">Remove {{ productName }} from </span>
+  <span class="sr-only" ng-if="!isInList(productId)">Add {{ productName }} to </span>
+  Cert ID
+</button>
