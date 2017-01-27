@@ -1,50 +1,34 @@
-<div class="widgetcontainer" >
-  <div id="slidableProductsList">
-    <div class="text-left" ng-if="widget.inProgress">Processing...</div>
-	<div ng-if="widget.searchResult.products && widget.searchResult.products.length > 0">
-	  <a href ng-click="clearProducts()">Remove all products</a>
-	</div>
-	<div class="selectedProducts">
-	  <div ng-if="!widget.productIds || widget.productIds.length === 0">No products selected.</div>
-	  <ul class="list-unstyled" ng-if="widget.searchResult.products.length > 0">
-        <li ng-repeat="item in widget.searchResult.products | orderBy:'name'">
-		  <button class="btn btn-ai-grey btn-sm btn-block" ng-click="removeProduct(item.productId)">
-			<i class="fa fa-close pull-right"></i> {{ item.name }} <span class="sr-only">Remove {{ item.name }} from EHR Certification ID</span>
-		  </button>
-		</li>
-	  </ul>
-	</div>
-	<div class="criteriaMetList" ng-if="widget.searchResult.year === '2014'">
-	  <div class="criteriaMetListColumn criteriaMetListColumn2014" >
-		<ul>
-		  <li>Base Criteria <span class="pull-right criteriaPercentage" >{{ widget.searchResult.metPercentages.criteriaMet }}%</span></li>
-		  <li>CQM Domains <span class="pull-right criteriaPercentage" >{{ widget.searchResult.metPercentages.cqmDomains }}%</span></li>
-		</ul>
-	  </div>
-	  <div class="criteriaMetListColumn criteriaMetListColumn2014" >
-		<ul>
-		  <li>Inpatient CQMs <span class="pull-right criteriaPercentage" >{{ widget.searchResult.metPercentages.cqmsInpatient }}%</span></li>
-		  <li>Ambulatory CQMs <span class="pull-right criteriaPercentage" >{{ widget.searchResult.metPercentages.cqmsAmbulatory }}%</span></li>
-		</ul>
-	  </div>
-	</div>
-	<div class="criteriaMetList" ng-if="widget.searchResult && widget.searchResult.year !== '2014' && widget.searchResult.products">
-	  <div class="criteriaMetListColumn">
-		<ul>
-		  <li>Base Criteria <span class="pull-right criteriaPercentage" >{{ widget.searchResult.metPercentages.criteriaMet }}%</span></li>
-		</ul>
-	  </div>
-	</div>
-	<div class="widgetcertidbar" ng-if="widget.createResponse">
-	  <div>
-        Your CMS EHR Certification ID<br />
-	    {{ widget.createResponse.ehrCertificationId }}
-		<br/>* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
-      </div>
-	</div>
-    <div ng-if="widget.searchResult.products">
-	  <button ng-click="create()" class="btn btn-ai-certid btn-sm btn-block" ng-if="!widget.createResponse" ng-disabled="!widget.searchResult.isValid">Get {{ widget.searchResult.year }} EHR Certification ID</button>
-	  <button ng-click="generatePdf()" class="btn btn-ai-certid btn-sm btn-block" ng-if="widget.createResponse">Download PDF</button>
-    </div>
+<div>
+  <div ng-if="widget.inProgress">Processing <i class="fa fa-spinner fa-spin"></i></div>
+  <div ng-if="!widget.productIds || widget.productIds.length === 0">No products selected.</div>
+  <ul class="list-unstyled selectedProducts" ng-if="widget.searchResult.products.length> 0">
+    <li ng-repeat="item in widget.searchResult.products | orderBy:'name'">
+	  <button class="btn btn-ai-grey btn-sm btn-block" ng-click="removeProduct(item.productId)">
+        <i class="fa fa-close pull-right"></i>
+		{{ item.name }} <span class="sr-only">Remove {{ item.name }} from EHR Certification ID</span>&nbsp;&nbsp;&nbsp;
+	  </button>
+	</li>
+  </ul>
+  <div ng-if="widget.searchResult.products">
+    <table class="table table-condensed">
+	  <tr><th scope="row">Base Criteria</th><td class="text-right">{{ widget.searchResult.metPercentages.criteriaMet }}%</td></tr>
+      <span ng-if="widget.searchResult.year === '2014'">
+        <tr><th scope="row">CQM Domains</th><td class="text-right">{{ widget.searchResult.metPercentages.cqmDomains }}%</td></tr>
+		<tr><th scope="row">Inpatient CQMs</th><td class="text-right">{{ widget.searchResult.metPercentages.cqmsInpatient }}%</td></tr>
+        <tr><th scope="row">Ambulatory CQMs</th><td class="text-right">{{ widget.searchResult.metPercentages.cqmsAmbulatory }}%</td></tr>
+      </span>
+	</table>
+  </div>
+  <p class="text-center" ng-if="widget.createResponse">
+    Your CMS EHR Certification ID<br />
+	<strong>{{ widget.createResponse.ehrCertificationId }}</strong>
+	<br/>* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
+  </p>
+  <div ng-if="widget.searchResult.products">
+	<button ng-click="create()" class="btn btn-ai-certid btn-sm btn-block" ng-if="!widget.createResponse" ng-disabled="!widget.searchResult.isValid">Get {{ widget.searchResult.year }} EHR Certification ID</button>
+	<button ng-click="generatePdf()" class="btn btn-ai-certid btn-sm btn-block" ng-if="widget.createResponse">Download PDF</button>
+  </div>
+  <div ng-if="widget.searchResult.products && widget.searchResult.products.length> 0" class="text-center">
+	<a href ng-click="clearProducts();">Remove all products</a>
   </div>
 </div>

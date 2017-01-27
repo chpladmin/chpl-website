@@ -16,6 +16,8 @@ _Date TBD_
 * Fix collapsing nav on small screen
 * Added pop-up notification if CHPL ID Changes
 * Added Inactive Certificates page
+* Moved CMS Widget to nav bar
+  * Added +/- CertID buttons to /compare & /details
 
 ---
 

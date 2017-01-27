@@ -2,5 +2,6 @@
     'CACHE_TIMEOUT': 60,
     'ACTIVE_CAP': false,
     'API': '/rest',
+    'ENABLE_LOGGING': false,
     'ENVIRONMENT': 'production'
 }
