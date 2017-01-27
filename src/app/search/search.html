@@ -230,7 +230,7 @@
       </div>
     </div>
 
-    <div aria-live="polite" id="mainContent" tabindex="-1" ai-cms-widget widget="vm.widget">
+    <div aria-live="polite" id="mainContent" tabindex="-1">
       <div id="resultsSection" ng-if="hasSearched()" class="main-content">
         <div class="row">
           <div class="col-md-9">
@@ -295,15 +295,23 @@
                   </tfoot>
 	              <tbody>
 	                <tr ng-repeat="row in displayedResults" class="search-row">
-                      <td width="25%">{{ row.product.name }}</td>
-                      <td width="25%">{{ row.developer.name }}</td>
-                      <td width="5%">{{ row.certificationEdition.name }}</td>
-                      <td width="5%">{{ row.product.version }}</td>
-                      <td width="5%"><a href uib-tooltip="{{ row.certificationStatus.name }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ row.certificationStatus.name }}</span><i class="fa" ng-class="vm.statusFont(row.certificationStatus.name)"></i></a></td>
-                      <td width="25%" class="text-right">
-                        <button href class="btn btn-sm btn-primary" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
-                        <button href class="btn btn-sm btn-ai-success" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
-                        <ai-cms-widget-button product-id="{{ row.id }}" product-name="{{ row.product.name }}" ng-click="vm.boxes.certificationId = true"></ai-cms-widget-button>
+                      <td>{{ row.product.name }}</td>
+                      <td>{{ row.developer.name }}</td>
+                      <td>{{ row.certificationEdition.name }}</td>
+                      <td>{{ row.product.version }}</td>
+                      <td class="text-center"><a href uib-tooltip="{{ row.certificationStatus.name }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ row.certificationStatus.name }}</span><i class="fa" ng-class="vm.statusFont(row.certificationStatus.name)"></i></a></td>
+                      <td>
+                        <div class="btn-group btn-group-justified">
+                          <div class="btn-group">
+                            <button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
+                          </div>
+                          <div class="btn-group">
+                            <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
+                          </div>
+                          <div class="btn-group">
+                            <ai-cms-widget-button product-id="{{ row.id }}" product-name="{{ row.product.name }}"></ai-cms-widget-button>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -313,12 +321,6 @@
           </div>
           <div class="col-md-3">
             <uib-accordion close-others="false">
-              <uib-accordion-group class="panel-ai panel-widget-certid" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="app/common/templates/accordion.html">
-                <uib-accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
-                  CMS EHR Certification ID
-                </uib-accordion-heading>
-                <ai-cms-widget-display widget="vm.widget"></ai-cms-widget-display>
-              </uib-accordion-group>
               <uib-accordion-group class="panel-ai" is-open="vm.boxes.compare" aria-expanded="{{ vm.boxes.compare }}" template-url="app/common/templates/accordion.html">
                 <uib-accordion-heading aria-expanded="{{ vm.boxes.compare }}">
                   Compare <span ng-if="vm.compareCps.length >= 2">{{ vm.compareCps.length }}</span> products <span ng-if="vm.compareCps.length < 2">(minimum 2)</span>
