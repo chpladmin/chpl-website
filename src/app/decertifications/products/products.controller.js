@@ -17,6 +17,9 @@
         function activate () {
             vm.decertifiedProducts = [];
             vm.displayedProducts = [];
+            vm.editionItems = [{ value: '2011', selected: false },
+                               { value: '2014', selected: true },
+                               { value: '2015', selected: false }];
             commonService.getDecertifiedProducts()
                 .then(function (result) {
                     vm.decertifiedProducts = result.results;

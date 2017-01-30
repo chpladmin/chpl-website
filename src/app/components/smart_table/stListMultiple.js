@@ -8,6 +8,7 @@
                 require: '^stTable',
                 scope: {
                     collection: '=',
+                    fixedItems: '=?',
                     predicate: '@',
                     predicateExpression: '='
                 },
@@ -15,53 +16,23 @@
                 link: function (scope, element, attr, table) {
                     scope.dropdownLabel = '';
                     scope.filterChanged = filterChanged;
+                    scope.isNotDefault = isNotDefault;
 
                     initialize();
 
-                    function initialize() {
-                        bindCollection(scope.collection);
-                        scope.$watch('collection', function (newCollection) {
-                            bindCollection(newCollection)
-                        });
-                    }
-
-                    function getPredicate() {
-                        var predicate = scope.predicate;
-                        if (!predicate && scope.predicateExpression) {
-                            predicate = scope.predicateExpression;
+                    function initialize () {
+                        if (angular.isUndefined(scope.fixedItems)) {
+                            bindCollection(scope.collection);
+                            scope.$watch('collection', function (newCollection) {
+                                bindCollection(newCollection)
+                            });
+                        } else {
+                            scope.distinctItems = angular.copy(scope.fixedItems);
+                            filterChanged();
                         }
-                        return predicate;
                     }
 
-                    function getDropdownLabel() {
-                        var allCount = scope.distinctItems.length;
-
-                        var selected = getSelectedOptions();
-
-                        if (allCount === selected.length || selected.length === 0) {
-                            return 'All';
-                        }
-
-                        if (selected.length === 1) {
-                            return selected[0];
-                        }
-
-                        return selected.length + ' items';
-                    }
-
-                    function getSelectedOptions() {
-                        var selectedOptions = [];
-
-                        angular.forEach(scope.distinctItems, function (item) {
-                            if (item.selected) {
-                                selectedOptions.push(item.value);
-                            }
-                        });
-
-                        return selectedOptions;
-                    }
-
-                    function bindCollection(collection) {
+                    function bindCollection (collection) {
                         var predicate = getPredicate();
                         var distinctItems = [];
 
@@ -84,7 +55,23 @@
                         filterChanged();
                     }
 
-                    function filterChanged() {
+                    function fillDistinctItems (values, distinctItems) {
+                        if (!angular.isObject(values)) {
+                            values = [values];
+                        }
+                        var value;
+                        for (var i = 0; i < values.length; i++) {
+                            value = values[i];
+                            if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
+                                distinctItems.push({
+                                    value: value,
+                                    selected: true
+                                });
+                            }
+                        }
+                    }
+
+                    function filterChanged () {
                         scope.dropdownLabel = getDropdownLabel();
 
                         var predicate = getPredicate();
@@ -104,28 +91,58 @@
                         table.search(query, predicate);
                     }
 
-                    function fillDistinctItems(values, distinctItems) {
-                        if (!angular.isObject(values)) {
-                            values = [values];
-                        }
-                        var value;
-                        for (var i = 0; i < values.length; i++) {
-                            value = values[i];
-                            if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
-                                distinctItems.push({
-                                    value: value,
-                                    selected: true
-                                });
-                            }
-                        }
-                    }
-
-                    function findItemWithValue(collection, value) {
+                    function findItemWithValue (collection, value) {
                         for (var i = 0; i < collection.length; i++) {
                             if (collection[i].value === value)
                                 return true;
                         }
                         return false;
+                    }
+
+                    function getDropdownLabel () {
+                        var allCount = scope.distinctItems.length;
+
+                        var selected = getSelectedOptions();
+
+                        if (allCount === selected.length || selected.length === 0) {
+                            return 'All';
+                        }
+
+                        if (selected.length === 1) {
+                            return selected[0];
+                        }
+
+                        return selected.length + ' items';
+                    }
+
+                    function getPredicate () {
+                        var predicate = scope.predicate;
+                        if (!predicate && scope.predicateExpression) {
+                            predicate = scope.predicateExpression;
+                        }
+                        return predicate;
+                    }
+
+                    function getSelectedOptions () {
+                        var selectedOptions = [];
+
+                        angular.forEach(scope.distinctItems, function (item) {
+                            if (item.selected) {
+                                selectedOptions.push(item.value);
+                            }
+                        });
+
+                        return selectedOptions;
+                    }
+
+                    function isNotDefault (checkedItem) {
+                        var ret = !checkedItem.selected;
+                        angular.forEach(scope.fixedItems, function (item) {
+                            if (item.value === checkedItem.value) {
+                                ret = (item.selected !== checkedItem.selected);
+                            }
+                        })
+                        return ret;
                     }
                 }
             }

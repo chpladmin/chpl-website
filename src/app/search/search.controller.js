@@ -106,6 +106,11 @@
                 clear();
                 delete $localStorage.clearResults;
             });
+            commonService.getAll().then(function (response) {
+                vm.allCps = response.results;
+            }, function (error) {
+                $log.debug(error);
+            });
         }
 
         function clearFilters () {
