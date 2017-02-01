@@ -4,6 +4,7 @@
 
         .directive('stSelectDistinct', function () {
             return {
+                replace: true,
                 restrict: 'E',
                 require: '^stTable',
                 scope: {

@@ -75,19 +75,24 @@
                         scope.dropdownLabel = getDropdownLabel();
 
                         var predicate = getPredicate();
+                        var items = getSelectedOptions();
+                        var query, numberOfItems = items.length;
 
-                        var query = {
-                            matchAny: {}
-                        };
-
-                        query.matchAny.items = getSelectedOptions();
-                        var numberOfItems = query.matchAny.items.length;
-                        if (numberOfItems === 0 || numberOfItems === scope.distinctItems.length) {
-                            query.matchAny.all = true;
+                        if (scope.matchAll) {
+                            query = {
+                                matchAll: {
+                                    items: items,
+                                    all: numberOfItems === 0
+                                }
+                            };
                         } else {
-                            query.matchAny.all = false;
+                            query = {
+                                matchAny: {
+                                    items: items,
+                                    all: (numberOfItems === 0 || numberOfItems === scope.distinctItems.length)
+                                }
+                            };
                         }
-
                         table.search(query, predicate);
                     }
 

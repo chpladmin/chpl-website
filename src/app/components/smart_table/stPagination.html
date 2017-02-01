@@ -1,0 +1,16 @@
+<div ng-if="totalItemCount && totalItemCount > 0">
+  <p class="text-center">{{ (currentPage - 1 ) * stItemsByPage + 1 }} - {{ (currentPage * stItemsByPage) > totalItemCount ? totalItemCount : (currentPage * stItemsByPage ) }} of {{ totalItemCount }} Result<span ng-if="totalItemCount !== 1">s</span></p>
+  <uib-pagination
+     boundary-link-numbers="true"
+     class="pagination-sm"
+     direction-links="false"
+     items-per-page="stItemsByPage"
+     max-size="stDisplayedPages"
+     ng-change="selectPage(currentPage)"
+     ng-model="currentPage"
+     total-items="totalItemCount">
+  </uib-pagination>
+</div>
+<div ng-if="!totalItemCount || totalItemCount === 0">
+  <p>No results found</p>
+</div>

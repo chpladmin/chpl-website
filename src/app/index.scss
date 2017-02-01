@@ -591,12 +591,19 @@ option[disabled] {
     min-width: 400px;
 }
 
-#search-page .dropdown-menu>li>label,
+#search-page .dropdown-menu li>label,
 #decertifications-page .dropdown-menu>divli>label,
 #decertifications-page .dropdown-menu>li>label {
     cursor: pointer;
     display: block;
     padding: 3px 20px;
+    clear: both;
+}
+
+#search-page .dropdown-menu li select {
+    display: block;
+    padding: 3px 20px;
+    margin: 3px 20px;
     clear: both;
 }
 

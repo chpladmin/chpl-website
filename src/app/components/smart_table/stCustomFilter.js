@@ -12,6 +12,7 @@
         };
 
         return function customFilter(array, expression) {
+
             function customComparator(actual, expected) {
                 var isBeforeActivated = expected.before;
                 var isAfterActivated = expected.after;
@@ -21,6 +22,7 @@
                 var lowerLimit;
                 var itemDate;
                 var queryDate;
+                var i,ret;
 
                 if (angular.isObject(expected)) {
                     //exact match
@@ -30,6 +32,34 @@
                         }
 
                         return true;
+                    }
+
+                    if (!expected.matchAny) {
+//                        $log.debug(expected);
+                    }
+                    //surveillance match
+                    if (expected.anySurveillance) {
+                        if (expected.anySurveillance.all) {
+                            return true;
+                        }
+
+                        if (!actual) {
+                            return false;
+                        }
+                        var surveillance = angular.fromJson(actual);
+                          if (expected.anySurveillance.matchAll) {
+                            ret = (expected.anySurveillance.hasOpenSurveillance === surveillance.hasOpenSurveillance) &&
+                                (expected.anySurveillance.hasClosedSurveillance === surveillance.hasClosedSurveillance) &&
+                                (expected.anySurveillance.hasOpenNonconformities === surveillance.hasOpenNonconformities) &&
+                                (expected.anySurveillance.hasClosedNonconformities === surveillance.hasClosedNonconformities);
+                        } else {
+                            ret = (expected.anySurveillance.hasOpenSurveillance && surveillance.hasOpenSurveillance) ||
+                                (expected.anySurveillance.hasClosedSurveillance && surveillance.hasClosedSurveillance) ||
+                                (expected.anySurveillance.hasOpenNonconformities && surveillance.hasOpenNonconformities) ||
+                                (expected.anySurveillance.hasClosedNonconformities && surveillance.hasClosedNonconformities);
+                        }
+//                        $log.debug(expected.anySurveillance, surveillance, ret);
+                        return ret;
                     }
 
                     //matchAny
@@ -42,13 +72,33 @@
                             return false;
                         }
 
-                        for (var i = 0; i < expected.matchAny.items.length; i++) {
-                            if (actual.toLowerCase() === expected.matchAny.items[i].toLowerCase()) {
+                        for (i = 0; i < expected.matchAny.items.length; i++) {
+                            if (actual.toLowerCase() === expected.matchAny.items[i].toLowerCase()
+                                || actual.toLowerCase().indexOf(expected.matchAny.items[i].toLowerCase()) > -1) {
                                 return true;
                             }
                         }
 
                         return false;
+                    }
+
+                    //matchAll
+                    if (expected.matchAll) {
+                        if (expected.matchAll.all) {
+                            return true;
+                        }
+
+                        if (!actual) {
+                            return false;
+                        }
+
+                        ret = true;
+                        for (i = 0; i < expected.matchAll.items.length; i++) {
+                            ret = ret && (actual.toLowerCase() === expected.matchAll.items[i].toLowerCase()
+                                          || actual.toLowerCase().indexOf(expected.matchAll.items[i].toLowerCase()) > -1);
+                        }
+
+                        return ret;
                     }
 
                     //date range
@@ -106,7 +156,8 @@
                 return standardComparator(actual, expected);
             }
 
-            var output = filterFilter(array, expression, customComparator);
+            var output;
+            output = filterFilter(array, expression, customComparator);
             return output;
         };
     }
