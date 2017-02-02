@@ -49,6 +49,7 @@
         vm.isCmsStaff = isCmsStaff;
         vm.isOncStaff = isOncStaff;
         vm.loadAnnouncements = loadAnnouncements;
+        vm.showCmsWidget = showCmsWidget;
 
         activate();
 
@@ -56,6 +57,10 @@
 
         function activate () {
             vm.loadAnnouncements();
+
+            $rootScope.$on('ShowWidget', function () {
+                vm.showCmsWidget();
+            });
         }
 
         function clear () {
@@ -108,6 +113,10 @@
                 }, function (error) {
                     $log.debug('error in chpl.overview.controller.loadAnnouncements', error);
                 });
+        }
+
+        function showCmsWidget () {
+            vm.widgetExpanded = true;
         }
     }
 })();

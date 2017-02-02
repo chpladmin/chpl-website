@@ -245,8 +245,16 @@
               </div>
             </div>
             <div ng-if="hasResults()" class="row">
-              <div class="col-md-12">
+              <div class="col-md-12 table-responsive">
                 <table class="table search-table table-striped">
+                  <colgroup>
+                    <col class="col-md-3 col-xs-1">
+                    <col class="col-md-3 col-xs-1">
+                    <col class="col-xs-1">
+                    <col class="col-xs-1">
+                    <col class="col-xs-1">
+                    <col class="col-md-3 col-xs-7">
+                  </colgroup>
                   <thead>
                     <tr>
                       <td colspan="6" class="text-center">
@@ -272,7 +280,7 @@
                       <th scope="col" class="search-header" ng-click="sort('certificationEdition')"><span ng-class="{'sort-ascent': vm.query.orderBy==='certificationEdition' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationEdition' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'certificationEdition'}">Edition</span> <a class="sr-only sr-only-focusable" href ng-click="sort('certificationEdition')"><br />Sort by certification edition</a></th>
                       <th scope="col" class="">Version</th>
                       <th scope="col" class="">Status</th>
-                      <th scope="col"><span class="sr-only">Actions</span></th>
+                      <th scope="col" class=""><span class="sr-only">Actions</span></th>
 	                </tr>
 	              </thead>
                   <tfoot>
@@ -295,12 +303,12 @@
                   </tfoot>
 	              <tbody>
 	                <tr ng-repeat="row in displayedResults" class="search-row">
-                      <td>{{ row.product.name }}</td>
-                      <td>{{ row.developer.name }}</td>
-                      <td>{{ row.certificationEdition.name }}</td>
-                      <td>{{ row.product.version }}</td>
+                      <td class="">{{ row.product.name }}</td>
+                      <td class="">{{ row.developer.name }}</td>
+                      <td class="">{{ row.certificationEdition.name }}</td>
+                      <td class="">{{ row.product.version }}</td>
                       <td class="text-center"><a href uib-tooltip="{{ row.certificationStatus.name }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ row.certificationStatus.name }}</span><i class="fa" ng-class="vm.statusFont(row.certificationStatus.name)"></i></a></td>
-                      <td>
+                      <td class="">
                         <div class="btn-group btn-group-justified">
                           <div class="btn-group">
                             <button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>

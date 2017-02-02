@@ -17,6 +17,7 @@
             link: function (scope, el, attrs, widgetController) {
                 scope.toggleProduct = function (id) {
                     widgetController.toggleProduct(id);
+                    scope.$emit('ShowWidget');
                 };
                 scope.isInList = function (id) {
                     return widgetController.isInList(id);
