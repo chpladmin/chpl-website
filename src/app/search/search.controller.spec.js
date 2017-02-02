@@ -3,7 +3,7 @@
 
     describe('chpl.search.controller', function () {
 
-        var commonService, scope, vm, $log, $location, $q;
+        var commonService, scope, vm, $log, $location, $q, Mock;
 
         var mock = {};
         mock.products = [
@@ -56,6 +56,7 @@
         };
 
         beforeEach(function () {
+            module('chpl.mock');
             module('chpl.search', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getAll = jasmine.createSpy('getAll');
@@ -66,13 +67,14 @@
                 });
             });
 
-            inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_) {
+            inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_, _Mock_) {
                 $log = _$log_;
                 $q = _$q_;
                 $location = _$location_;
+                Mock = _Mock_;
                 commonService = _commonService_;
                 commonService.getAll.and.returnValue($q.when(mock.searchResult.data));
-                commonService.getSearchOptions.and.returnValue($q.when(mock.options));
+                commonService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
                 commonService.search.and.returnValue($q.when(mock.searchResult.data));
                 commonService.searchAdvanced.and.returnValue($q.when(mock.searchResult.data));
 

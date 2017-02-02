@@ -9,6 +9,7 @@
                 scope: {
                     collection: '=',
                     fixedItems: '=?',
+                    hasChanges: '=?',
                     predicate: '@',
                     predicateExpression: '='
                 },
@@ -27,8 +28,14 @@
                                 bindCollection(newCollection)
                             });
                         } else {
-                            scope.distinctItems = angular.copy(scope.fixedItems);
+                            //scope.distinctItems = angular.copy(scope.fixedItems);
+                            scope.distinctItems = scope.fixedItems;
                             filterChanged();
+                            scope.$watch('fixedItems', function (newItems) {
+                                console.log(newItems);
+                                scope.distinctItems = newItems;
+                                filterChanged();
+                            });
                         }
                     }
 
@@ -51,7 +58,6 @@
                         });
 
                         scope.distinctItems = distinctItems;
-
                         filterChanged();
                     }
 
@@ -73,6 +79,7 @@
 
                     function filterChanged () {
                         scope.dropdownLabel = getDropdownLabel();
+                        scope.hasChanges = getChanged();
 
                         var predicate = getPredicate();
                         var items = getSelectedOptions();
@@ -102,6 +109,14 @@
                                 return true;
                         }
                         return false;
+                    }
+
+                    function getChanged () {
+                        var ret = false;
+                        angular.forEach(scope.distinctItems, function (item) {
+                            ret = ret || isNotDefault(item);
+                        })
+                        return ret;
                     }
 
                     function getDropdownLabel () {

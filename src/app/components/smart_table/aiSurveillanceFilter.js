@@ -6,7 +6,9 @@
             return {
                 restrict: 'E',
                 require: '^stTable',
-                scope: { },
+                scope: {
+                    hasChanges: '=?'
+                },
                 templateUrl: 'app/components/smart_table/aiSurveillanceFilter.html',
                 link: function (scope, element, attr, table) {
                     scope.clearSurveillanceActivityFilter = clearSurveillanceActivityFilter;
@@ -30,11 +32,13 @@
                     }
 
                     function filterChanged () {
+                        scope.hasChanges = false;
                         if (tableState.search.predicateObject.surveillance) {
                             delete tableState.search.predicateObject.surveillance;
                         }
 
                         if (scope.query.hasHadSurveillance) {
+                            scope.hasChanges = true;
                             var query = { anySurveillance: { } };
                             if (scope.query.hasHadSurveillance === 'never') {
                                 query.anySurveillance.all = false;

@@ -1,8 +1,13 @@
 <ul class="list-unstyled">
-  <li class="text-center">Match <a href ng-click="matchAll = !matchAll; filterChanged()">{{ matchAll ? 'all' : 'any' }}</a></li>
-  <li ng-repeat="item in distinctItems | orderBy:toString">
+  <li ng-repeat="item in distinctItems">
     <label ng-class="{ 'emphasis' : isNotDefault(item) }">
       <input type="checkbox" ng-model="item.selected" ng-click="filterChanged()">{{ item.display ? item.display : item.value }}
+    </label>
+  </li>
+  <li class="text-center">
+    <label>
+      <input type="checkbox" ng-model="matchAll" id="filter-match-all" ng-change="filterChanged()" ng-show="false">
+      Matching <u>{{ matchAll ? 'all' : 'any' }}</u>
     </label>
   </li>
 </ul>

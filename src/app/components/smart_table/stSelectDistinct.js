@@ -9,6 +9,7 @@
                 require: '^stTable',
                 scope: {
                     collection: '=',
+                    hasChanges: '=?',
                     predicate: '@',
                     predicateExpression: '='
                 },
@@ -53,6 +54,9 @@
 
                         if (query.distinct === 'All') {
                             query.distinct = '';
+                            scope.hasChanges = false;
+                        } else {
+                            scope.hasChanges = true;
                         }
 
                         table.search(query, predicate);

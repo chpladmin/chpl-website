@@ -6,12 +6,6 @@
 </li>
 <span ng-if="query.hasHadSurveillance === 'has-had'">
   <li>
-    <label>
-      <input type="checkbox" ng-model="query.surveillance.matchAll" id="filter-match-all" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()" ng-show="false">
-      Matching {{ query.surveillance.matchAll ? 'all' : 'any' }}
-    </label>
-  </li>
-  <li>
     <label for="filter-open-surveillance">
       <input type="checkbox" ng-model="query.surveillance.openSurveillance" id="filter-open-surveillance" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()">
       <span ng-class="{ 'emphasis' : query.surveillance.openSurveillance }">Open Surveillance</span>
@@ -33,6 +27,12 @@
     <label for="filter-closed-nonconformity">
       <input type="checkbox" ng-model="query.surveillance.closedNonconformities" id="filter-closed-nonconformity" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()">
       <span ng-class="{ 'emphasis' : query.surveillance.closedNonconformities }">Closed Nonconformity</span>
+    </label>
+  </li>
+  <li class="text-center">
+    <label>
+      <input type="checkbox" ng-model="query.surveillance.matchAll" id="filter-match-all" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()" ng-show="false">
+      Matching <u>{{ query.surveillance.matchAll ? 'all' : 'any' }}</u>
     </label>
   </li>
 </span>
