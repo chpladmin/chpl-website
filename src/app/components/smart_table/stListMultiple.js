@@ -22,21 +22,8 @@
                     initialize();
 
                     function initialize () {
-                        if (angular.isUndefined(scope.fixedItems)) {
-                            bindCollection(scope.collection);
-                            scope.$watch('collection', function (newCollection) {
-                                bindCollection(newCollection)
-                            });
-                        } else {
-                            //scope.distinctItems = angular.copy(scope.fixedItems);
-                            scope.distinctItems = scope.fixedItems;
-                            filterChanged();
-                            scope.$watch('fixedItems', function (newItems) {
-                                console.log(newItems);
-                                scope.distinctItems = newItems;
-                                filterChanged();
-                            });
-                        }
+                        setItems();
+                        scope.$on('clearAllFilters', setItems());
                     }
 
                     function bindCollection (collection) {
@@ -163,6 +150,19 @@
                             }
                         })
                         return ret;
+                    }
+
+                    function setItems () {
+                        if (angular.isUndefined(scope.fixedItems)) {
+                            bindCollection(scope.collection);
+                            scope.$watch('collection', function (newCollection) {
+                                bindCollection(newCollection)
+                            });
+                        } else {
+                            console.log('setItems',scope.fixedItems);
+                            scope.distinctItems = angular.copy(scope.fixedItems);
+                            filterChanged();
+                        }
                     }
                 }
             }

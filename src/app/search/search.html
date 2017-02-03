@@ -10,14 +10,9 @@
         <div class="form-group-lg">
           <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
             <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ACB/CHPL ID</label>
-            <div class="input-group input-group-lg">
-              <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID"
-                     ng-model="vm.query.term" ng-change="vm.activeSearch = true" st-search="mainSearch" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-ai" ng-click="vm.activeSearch = true"><i class="fa fa-search"></i><span class="sr-only">Search</span></button>
-              </span>
-            </div>
-            <a href ng-if="$localStorage.searchTableState && !vm.activeSearch" class="restore-previous-search" ng-click="vm.reloadResults()">Restore previous search</a>
+            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID"
+                   ng-model="vm.query.term" ng-change="vm.activeSearch = true" st-search="mainSearch" />
+            <a href ng-if="vm.hasTableState && !vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search" ng-click="vm.reloadResults()">Restore previous search</a>
           </div>
         </div>
 <!--
@@ -154,7 +149,7 @@
     </div>
 
     <div aria-live="polite" id="mainContent" tabindex="-1">
-      <div id="resultsSection" ng-if="vm.activeSearch || !vm.searchForm.$pristine" class="main-content">
+      <div id="resultsSection" ng-if="vm.activeSearch || vm.searchForm.$dirty" class="main-content">
         <div class="row">
           <div class="col-md-9"> <!-- search results -->
             <div class="row">

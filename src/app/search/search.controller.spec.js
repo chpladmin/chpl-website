@@ -9,7 +9,6 @@
         mock.products = [
             { developer: 'Developer', product: 'Product' }
         ];
-        mock.searchResult = {data: {recordCount: 2, results: [{}, {}]}};
         mock.options = {};
         mock.options.developerNames = ['Developer 1', 'Developer 2'];
         mock.options.productNames = ['Product 1', 'Product 2'];
@@ -19,7 +18,6 @@
         mock.options.practiceTypeNames  = ['Practice 1', 'Practice 2'];
         mock.options.certBodyNames  = ['CB 1', 'CB 2'];
         mock.options.certificationStatuses = ['Active', 'Retired'];
-        mock.options.certsNcqms = mock.options.certificationCriterionNumbers.concat(mock.options.cqmCriterionNumbers);
 
         mock.refineModel = {
             certificationStatus: {
@@ -61,8 +59,6 @@
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getAll = jasmine.createSpy('getAll');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
-                    $delegate.search = jasmine.createSpy('search');
-                    $delegate.searchAdvanced = jasmine.createSpy('searchadvanced');
                     return $delegate;
                 });
             });
@@ -73,10 +69,8 @@
                 $location = _$location_;
                 Mock = _Mock_;
                 commonService = _commonService_;
-                commonService.getAll.and.returnValue($q.when(mock.searchResult.data));
+                commonService.getAll.and.returnValue($q.when({'results': Mock.allCps}));
                 commonService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
-                commonService.search.and.returnValue($q.when(mock.searchResult.data));
-                commonService.searchAdvanced.and.returnValue($q.when(mock.searchResult.data));
 
                 scope = $rootScope.$new();
                 vm = $controller('SearchController', {
@@ -103,45 +97,11 @@
         });
 
         it('should know which elements are selected for comparison', function () {
-            expect(vm.compareCps).toEqual([]);
+            expect(vm.compareCps).toBeUndefined();
             vm.toggleCompare({id: 1});
             expect(vm.compareCps.length).toBe(1);
             vm.toggleCompare({id: 1});
             expect(vm.compareCps.length).toBe(0);
-        });
-
-        it('should know if it has results', function () {
-            scope.searchResults = ['one', 'two'];
-            expect(scope.hasResults()).toBe(true);
-        });
-
-        it('should perform a simple string search', function () {
-            scope.searchTerm = 'simpletext';
-            scope.isSimpleSearch = true;
-
-            vm.search();
-            scope.$digest();
-
-            expect(scope.hasResults()).toBe(true);
-        });
-
-        it('should perform a simple search on an object', function () {
-            scope.searchTerm = { value: 'object value' };
-            scope.isSimpleSearch = true;
-
-            vm.search();
-            scope.$digest();
-
-            expect(scope.hasResults()).toBe(true);
-        });
-
-        it('should perform an advanced search', function () {
-            scope.isSimpleSearch = false;
-
-            vm.search();
-            scope.$digest();
-
-            expect(scope.hasResults()).toBe(true);
         });
 
         it('should redirect to /compare when "compare" is clicked', function () {
@@ -170,108 +130,56 @@
         it('should have a way to clear search terms and results', function () {
             vm.searchForm = {};
             vm.searchForm.$setPristine = function () {};
-            scope.clear();
-            expect(scope.searchResults).toEqual([]);
-            expect(scope.displayedResults).toEqual([]);
+            vm.clear();
             expect(vm.query.searchTerm).toBeUndefined();
-            expect(vm.query.developer).toBeUndefined();
-            expect(vm.query.product).toBeUndefined();
-            expect(vm.query.version).toBeUndefined();
-            expect(vm.query.certificationCriteria).toBeUndefined();
-            expect(vm.query.cqms).toBeUndefined();
-            expect(vm.query.certificationEdition).toBeUndefined();
-            expect(vm.query.practiceType).toBeUndefined();
             expect(vm.compareCps).toEqual([]);
         });
 
-        describe('filters', function () {
+        describe('certificationStatus filters', function () {
+
+            var objToFilter;
+
             beforeEach(function () {
-                vm.clearFilters();
+                objToFilter = {id: 1, statuses: {active: 1, withdrawnByDeveloper: 0, retired: 1, withdrawnByAcb: 0, suspendedByAcb: 0}};
             });
 
-            it('should change the filter to be the correct filter object', function () {
-                expect(vm.refineModel).toEqual(mock.refineModel);
-
-                vm.setRefine();
-
-                expect(vm.query.certificationStatus).toEqual(mock.refine.certificationStatus);
-                expect(vm.query.certificationEdition).toEqual(mock.refine.certificationEdition);
+            it('should have a filter to filter out certificationStatuses', function () {
+                expect(vm.certificationStatusFilter).toBeDefined();
             });
 
-            it('should have a way to tell if a filter has changed from the default', function () {
-                expect(vm.isChangedFromDefault('certificationStatus', 'Active')).toBe(false);
-                expect(vm.isChangedFromDefault('certificationEdition', '2014')).toBe(false);
-                expect(vm.isChangedFromDefault('acb', 'ICSA Labs')).toBe(false);
-                expect(vm.isChangedFromDefault('cqms', 'CMS05')).toBe(undefined);
-                expect(vm.isChangedFromDefault('hasHadSurveillance', 'never')).toBe(undefined);
-
+            it('should return false if the selected status has 0 objects', function () {
                 vm.refineModel.certificationStatus['Active'] = false;
-                vm.refineModel.certificationEdition['2014'] = false;
-                vm.refineModel.acb['ICSA Labs'] = false;
-                vm.refineModel.cqms = {CMS05: true};
-                vm.refineModel.hasHadSurveillance = 'never';
-
-                expect(vm.isChangedFromDefault('certificationStatus', 'Active')).toBe(true);
-                expect(vm.isChangedFromDefault('certificationEdition', '2014')).toBe(true);
-                expect(vm.isChangedFromDefault('acb', 'ICSA Labs')).toBe(true);
-                expect(vm.isChangedFromDefault('cqms', 'CMS05')).toBe(true);
-                expect(vm.isChangedFromDefault('hasHadSurveillance', 'never')).toBe(true);
+                vm.refineModel.certificationStatus['Withdrawn by ONC-ACB'] = false;
+                vm.refineModel.certificationStatus['Suspended by ONC-ACB'] = false;
+                vm.refineModel.certificationStatus['Withdrawn By Developer'] = true;
+                vm.refineModel.certificationStatus['Withdrawn By Developer Under Surveillance/Review'] = false;
+                vm.refineModel.certificationStatus['Retired'] = false;
+                expect(vm.certificationStatusFilter(objToFilter)).toBe(false);
             });
 
-            it('should have a way to tell if a filter category has any change from the default', function () {
-                expect(vm.isCategoryChanged(['certificationStatus','acb'])).toBe(false);
-                vm.refineModel.certificationStatus['Active'] = false;
-                expect(vm.isCategoryChanged(['certificationStatus','acb'])).toBe(true);
+            it('should return true if the selected status has 1 or more objects', function () {
                 vm.refineModel.certificationStatus['Active'] = true;
-                vm.refineModel.acb['ICSA Labs'] = false;
-                expect(vm.isCategoryChanged(['certificationStatus','acb'])).toBe(true);
+                expect(vm.certificationStatusFilter(objToFilter)).toBe(true);
             });
 
-            describe('certificationStatus filters', function () {
+            it('should return true if the object has no statuses', function () {
+                delete objToFilter.statuses;
+                expect(vm.certificationStatusFilter(objToFilter)).toBe(true);
+            });
 
-                var objToFilter;
-                beforeEach(function () {
-                    objToFilter = {id: 1, statuses: {active: 1, withdrawnByDeveloper: 0, retired: 1, withdrawnByAcb: 0, suspendedByAcb: 0}};
-                });
+            it('should have a function to get the right icon for a status', function () {
+                expect(vm.statusFont).toBeDefined();
+            });
 
-                it('should have a filter to filter out certificationStatuses', function () {
-                    expect(vm.certificationStatusFilter).toBeDefined();
-                });
-
-                it('should return false if the selected status has 0 objects', function () {
-                    vm.refineModel.certificationStatus['Active'] = false;
-                    vm.refineModel.certificationStatus['Withdrawn by ONC-ACB'] = false;
-                    vm.refineModel.certificationStatus['Suspended by ONC-ACB'] = false;
-                    vm.refineModel.certificationStatus['Withdrawn By Developer'] = true;
-                    vm.refineModel.certificationStatus['Withdrawn By Developer Under Surveillance/Review'] = false;
-                    vm.refineModel.certificationStatus['Retired'] = false;
-                    expect(vm.certificationStatusFilter(objToFilter)).toBe(false);
-                });
-
-                it('should return true if the selected status has 1 or more objects', function () {
-                    vm.refineModel.certificationStatus['Active'] = true;
-                    expect(vm.certificationStatusFilter(objToFilter)).toBe(true);
-                });
-
-                it('should return true if the object has no statuses', function () {
-                    delete objToFilter.statuses;
-                    expect(vm.certificationStatusFilter(objToFilter)).toBe(true);
-                });
-
-                it('should have a function to get the right icon for a status', function () {
-                    expect(vm.statusFont).toBeDefined();
-                });
-
-                it('should get the right icon for various statuses', function () {
-                    expect(vm.statusFont('Active')).toBe('fa-check-circle status-good');
-                    expect(vm.statusFont('Retired')).toBe('fa-university status-neutral');
-                    expect(vm.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
-                    expect(vm.statusFont('Suspended by ONC-ACB')).toBe('fa-minus-circle status-warning');
-                    expect(vm.statusFont('Terminated by ONC')).toBe('fa-window-close status-bad');
-                    expect(vm.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
-                    expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-stop-circle status-neutral');
-                    expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
-                 });
+            it('should get the right icon for various statuses', function () {
+                expect(vm.statusFont('Active')).toBe('fa-check-circle status-good');
+                expect(vm.statusFont('Retired')).toBe('fa-university status-neutral');
+                expect(vm.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
+                expect(vm.statusFont('Suspended by ONC-ACB')).toBe('fa-minus-circle status-warning');
+                expect(vm.statusFont('Terminated by ONC')).toBe('fa-window-close status-bad');
+                expect(vm.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
+                expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-stop-circle status-neutral');
+                expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
             });
         });
     });

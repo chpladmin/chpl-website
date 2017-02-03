@@ -104,7 +104,7 @@
         function sortCqm (cqm) {
             if (angular.isObject(cqm)) {
                 cqm = cqm.name;
-                if (cqm.length === 4) {
+                if (cqm.substring(0,3) !== 'CMS') {
                     cqm = 'NQF-' + cqm;
                 }
             }

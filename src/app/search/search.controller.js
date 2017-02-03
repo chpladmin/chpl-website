@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($filter, $localStorage, $location, $log, $scope, commonService, utilService, CACHE_TIMEOUT) {
+    function SearchController ($filter, $localStorage, $location, $log, $rootScope, $scope, commonService, utilService, CACHE_TIMEOUT) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -38,6 +38,7 @@
                 delete $localStorage.clearResults;
             }
 
+            vm.boxes = {};
             vm.categoryChanged = {};
             vm.query = {
                 developer: undefined,
@@ -47,8 +48,8 @@
             }
 
             manageStorage();
-            populateSearchOptions();
             restoreResults();
+            populateSearchOptions();
             vm.loadResults();
         }
 
@@ -67,16 +68,17 @@
         }
 
         function clearFilters (removeSearchTerm) {
-            var searchTerm, searchTermObject;
+            var term;
             if (!removeSearchTerm) {
                 if (vm.query.term) {
-                    searchTerm = vm.query.term;
+                    term = vm.query.term;
                 }
             }
-            setFilterInfo();
+            vm.query = {};
+            $rootScope.$broadcast('clearAllFilters');
             if (!removeSearchTerm) {
-                if (searchTerm) {
-                    vm.query.term = searchTerm;
+                if (term) {
+                    vm.query.term = term;
                 }
             }
         }
@@ -174,6 +176,7 @@
 
         function reloadResults () {
             $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
+            vm.activeSearch = true;
             restoreResults();
         }
 
@@ -210,6 +213,9 @@
 
         function toggleCompare (row) {
             var toAdd = true;
+            if (angular.isUndefined(vm.compareCps)) {
+                vm.compareCps = [];
+            }
             for (var i = 0; i < vm.compareCps.length; i++) {
                 if (vm.compareCps[i].id === row.id) {
                     vm.compareCps.splice(i,1);
@@ -290,9 +296,9 @@
                 var difference = nowStamp - $localStorage.searchTimestamp;
 
                 if (difference > CACHE_TIMEOUT) {
-                    delete $localStorage.searchTableState;
+                    vm.hasTableState = false;
                 } else {
-                    vm.activeSearch = true;
+                    vm.hasTableState = true;
                 }
             }
         }
