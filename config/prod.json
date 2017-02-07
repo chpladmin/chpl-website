@@ -3,5 +3,5 @@
     'ACTIVE_CAP': false,
     'API': '/rest',
     'ENABLE_LOGGING': false,
-    'ENVIRONMENT': 'production'
+    'ENVIRONMENT': 'prod'
 }

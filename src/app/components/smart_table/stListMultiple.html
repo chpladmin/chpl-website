@@ -1,13 +1,17 @@
 <ul class="list-unstyled">
-  <li ng-repeat="item in distinctItems">
-    <label ng-class="{ 'emphasis' : isNotDefault(item) }">
-      <input type="checkbox" ng-model="item.selected" ng-click="filterChanged()">{{ item.display ? item.display : item.value }}
+  <li ng-repeat="item in vm.distinctItems">
+    <label ng-class="{ 'emphasis' : vm.isNotDefault(item) }">
+      <input type="checkbox"
+             value="{{ item.value }}"
+             ng-model="item.selected"
+             ng-change="vm.toggleSelection(item.value)">{{ item.display ? item.display : item.value }}
+<!--             ng-checked="selected.indexOf(item.value) > -1"-->
     </label>
   </li>
   <li class="text-center">
     <label>
-      <input type="checkbox" ng-model="matchAll" id="filter-match-all" ng-change="filterChanged()" ng-show="false">
-      Matching <u>{{ matchAll ? 'all' : 'any' }}</u>
+      <input type="checkbox" ng-model="vm.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
+      Matching <u>{{ vm.matchAll ? 'all' : 'any' }}</u>
     </label>
   </li>
 </ul>

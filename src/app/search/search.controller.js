@@ -75,7 +75,23 @@
                 }
             }
             vm.query = {};
-            $rootScope.$broadcast('clearAllFilters');
+            vm.searchState = {
+                predicateObject: {
+                    certificationStatus: {
+                        matchAny: {
+                            items: ['Active','Suspended by ONC','Suspended by ONC-ACB'],
+                            all: false
+                        }
+                    },
+                    edition: {
+                        matchAny: {
+                            items: ['2014','2015'],
+                            all: false
+                        }
+                    }
+                }
+            };
+            setFilterInfo();
             if (!removeSearchTerm) {
                 if (term) {
                     vm.query.term = term;
@@ -294,12 +310,15 @@
             if ($localStorage.searchTableState && $localStorage.searchTimestamp) {
                 var nowStamp = Math.floor((new Date()).getTime() / 1000 / 60);
                 var difference = nowStamp - $localStorage.searchTimestamp;
+                vm.hasTableState = true;
 
                 if (difference > CACHE_TIMEOUT) {
-                    vm.hasTableState = false;
+                    vm.activeSearch = false;
                 } else {
-                    vm.hasTableState = true;
+                    vm.activeSearch = true;
                 }
+            } else {
+                vm.hasTableState = false;
             }
         }
 
