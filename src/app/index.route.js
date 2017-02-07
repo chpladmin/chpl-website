@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -24,6 +24,12 @@
                 controllerAs: 'vm',
                 templateUrl: 'app/decertifications/developers/developers.html',
                 title: 'Decertified Developers'
+            })
+            .when('/decertifications/inactive', {
+                controller: 'InactiveCertificationsController',
+                controllerAs: 'vm',
+                templateUrl: 'app/decertifications/inactive/inactive.html',
+                title: 'Inactive Certificates'
             })
             .when('/decertifications/products', {
                 controller: 'DecertifiedProductsController',

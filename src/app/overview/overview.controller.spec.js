@@ -12,7 +12,7 @@
                 });
             });
 
-            inject(function(_commonService_, _$log_, $controller, $q, $rootScope) {
+            inject(function (_commonService_, _$log_, $controller, $q, $rootScope) {
                 commonService = _commonService_;
                 $log = _$log_;
                 commonService.getAcbs.and.returnValue($q.when({acbs: [{id:0, name:'test-acb'}]}));

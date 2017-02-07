@@ -12,8 +12,10 @@
             restrict: 'E',
             replace: true,
             templateUrl: 'app/navigation/navigation-top.html',
-            bindToController: { },
-            scope: {},
+            bindToController: {
+                widget: '=?'
+            },
+            scope: { },
             controllerAs: 'vm',
             controller: 'NavigationController'
         }
@@ -47,6 +49,7 @@
         vm.isCmsStaff = isCmsStaff;
         vm.isOncStaff = isOncStaff;
         vm.loadAnnouncements = loadAnnouncements;
+        vm.showCmsWidget = showCmsWidget;
 
         activate();
 
@@ -54,6 +57,10 @@
 
         function activate () {
             vm.loadAnnouncements();
+
+            $rootScope.$on('ShowWidget', function () {
+                vm.showCmsWidget();
+            });
         }
 
         function clear () {
@@ -74,7 +81,9 @@
         }
 
         function isActive (route) {
-            return route === $location.path().split('/')[1];
+            var paths = $location.path().split('/')
+            var routes = route.split('/');
+            return (route === $location.path() || (paths[1] === routes[1] && routes.length === 2));
         }
 
         function isAtlAdmin () {
@@ -104,6 +113,10 @@
                 }, function (error) {
                     $log.debug('error in chpl.overview.controller.loadAnnouncements', error);
                 });
+        }
+
+        function showCmsWidget () {
+            vm.widgetExpanded = true;
         }
     }
 })();

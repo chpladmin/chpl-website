@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('cms directive', function() {
+    describe('cms directive', function () {
         var vm, el, $q, $log, commonService, authService;
 
         var mock = {};
@@ -27,13 +27,13 @@
                 });
             });
 
-            inject(function($compile, $rootScope, _$q_, _$log_, _commonService_, _authService_) {
+            inject(function ($compile, $rootScope, _$q_, _$log_, _commonService_, _authService_) {
                 $q = _$q_;
                 $log = _$log_;
                 commonService = _commonService_;
                 commonService.getCmsDownload.and.returnValue($q.when({}));
-                commonService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({data: mock.muuAccurateAsOfDate}));
-                commonService.setMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({data: mock.newMuuAccurateDate}));
+                commonService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.muuAccurateAsOfDate}));
+                commonService.setMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.newMuuAccurateDate}));
                 authService = _authService_;
                 authService.isAcbAdmin.and.returnValue(true);
                 authService.isOncStaff.and.returnValue(true);
@@ -71,7 +71,7 @@
             vm.muuAccurateAsOfDateObject = mock.newMuuAccurateDate;
             vm.setMeaningfulUseUsersAccurateAsOfDate();
             el.isolateScope().$digest();
-            expect(commonService.setMeaningfulUseUsersAccurateAsOfDate).toHaveBeenCalledWith(mock.newMuuAccurateDate.getTime());
+            expect(commonService.setMeaningfulUseUsersAccurateAsOfDate).toHaveBeenCalledWith({accurateAsOfDate: mock.newMuuAccurateDate.getTime()});
             expect(vm.muuAccurateAsOf).toEqual(mock.newMuuAccurateDate);
         });
     });

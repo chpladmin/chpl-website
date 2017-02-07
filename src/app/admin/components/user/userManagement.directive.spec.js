@@ -9,11 +9,11 @@
             mockCommonService = {};
 
             module('chpl.templates');
-            module('chpl.admin', function($provide) {
+            module('chpl.admin', function ($provide) {
                 $provide.value('commonService', mockCommonService);
             });
 
-            inject(function($q) {
+            inject(function ($q) {
                 mockCommonService.users = {"data": {"users":[{"subjectName":"admin","firstName":"Administrator","lastName":"Administrator","email":"info@ainq.com","phoneNumber":"(301) 560-6999","title":null,"accountLocked":false,"accountEnabled":true}]}};
 
                 mockCommonService.getUsers = function () {
@@ -56,7 +56,7 @@
                 scope.$digest();
             }));
 
-            it('should exist', function() {
+            it('should exist', function () {
                 expect(ctrl).toBeDefined();
             });
 

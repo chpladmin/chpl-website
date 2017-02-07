@@ -10,12 +10,12 @@
             mockAuthService = {};
 
             module('chpl.templates');
-            module('chpl.admin', function($provide) {
+            module('chpl.admin', function ($provide) {
                 $provide.value('commonService', mockCommonService);
                 $provide.value('authService', mockAuthService);
             });
 
-            inject(function() {
+            inject(function () {
                 mockAuthService.logout = function () {};
                 mockCommonService.login = function () {};
                 mockAuthService.isAuthed = function () {return true};
@@ -51,7 +51,7 @@
                 scope.$digest();
             }));
 
-            it('should exist', function() {
+            it('should exist', function () {
                 expect(ctrl).toBeDefined();
             });
 

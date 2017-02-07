@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -6,7 +6,6 @@
             'angular-confirm',
             'angular-loading-bar',
             'angulartics',
-            'angulartics.google.analytics',
             'angulartics.google.tagmanager',
             'chpl.admin',
             'chpl.common',
@@ -29,6 +28,7 @@
             'ngSanitize',
             'ngTouch',
             'swaggerUi',
+            'toaster',
             'ui.bootstrap',
             'ui.bootstrap.fontawesome'
         ]);

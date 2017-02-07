@@ -25,7 +25,7 @@
 
         self.simpleApiCall = function (endpoint) {
             return $http.get(API + endpoint)
-                .then(function(response) {
+                .then(function (response) {
                     if (angular.isObject(response.data)) {
                         return response.data;
                     } else {
@@ -38,7 +38,7 @@
 
         self.externalApiCall = function (endpoint) {
             return $http.get(endpoint)
-                .then(function(response) {
+                .then(function (response) {
                     if (angular.isObject(response.data)) {
                         return response.data;
                     } else {
@@ -598,6 +598,10 @@
 
         self.getDecertifiedProducts = function () {
             return self.simpleApiCall('/decertifications/certified_products');
+        };
+
+        self.getInactiveCertifications = function () {
+            return self.simpleApiCall('/decertifications/inactive_certificates');
         };
 
         self.getMeaningfulUseUsersAccurateAsOfDate = function () {

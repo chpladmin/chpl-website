@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('chpl.aiCmsWidget', function() {
+    describe('chpl.aiCmsWidget', function () {
         var $compile, $rootScope, vm, el, $log, mock, $httpBackend;
         mock = {
             endpoint: '/rest/certification_ids',
@@ -11,7 +11,7 @@
 
         beforeEach(function () {
             module('chpl.cms-widget');
-            inject(function(_$compile_, _$rootScope_, _$log_, _$httpBackend_) {
+            inject(function (_$compile_, _$rootScope_, _$log_, _$httpBackend_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
                 $log = _$log_;

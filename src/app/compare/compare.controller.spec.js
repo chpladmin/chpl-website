@@ -8,12 +8,12 @@
         beforeEach(function () {
             var mockCommonService = {};
             var mockUtilService = {};
-            module('chpl.compare', function($provide) {
+            module('chpl.compare', function ($provide) {
                 $provide.value('commonService', mockCommonService);
                 $provide.value('utilService', mockUtilService);
             });
 
-            inject(function($q) {
+            inject(function ($q) {
                 mockCommonService.products = [
                     { developer: 'Developer',
                       product: 'Product',

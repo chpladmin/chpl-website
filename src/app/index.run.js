@@ -1,5 +1,5 @@
 /*eslint angular/no-private-call: [2,{"allow":["$$route"]}]*/
-(function() {
+(function () {
   'use strict';
 
   angular

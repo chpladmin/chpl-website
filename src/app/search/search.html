@@ -214,10 +214,10 @@
                 </li>
                 <li class="form-horizontal">
                   <div class="form-group">
-                  <label for="versionRefine" class="col-sm-4 control-label">Version</label>
-                  <div class="col-sm-8">
-                    <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refineModel.version" />
-                  </div>
+                    <label for="versionRefine" class="col-sm-4 control-label">Version</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refineModel.version" />
+                    </div>
                   </div>
                 </li>
               </ul>
@@ -230,7 +230,7 @@
       </div>
     </div>
 
-    <div aria-live="polite" id="mainContent" tabindex="-1" ai-cms-widget widget="vm.widget">
+    <div aria-live="polite" id="mainContent" tabindex="-1">
       <div id="resultsSection" ng-if="hasSearched()" class="main-content">
         <div class="row">
           <div class="col-md-9">
@@ -241,15 +241,23 @@
                 </span>
                 <p ng-if="!hasResults()"><strong>No results found.</strong></p>
                 <p ng-if="hasResults()"><strong>{{ vm.resultCount }} results found.</strong></p>
-                <p>Please note that Retired and 2011 listings are not shown by default. Use the Certification Status / Certification Edition filters above to display retired or 2011 listings.</p>
+                <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
               </div>
             </div>
             <div ng-if="hasResults()" class="row">
-              <div class="col-md-12">
+              <div class="col-md-12 table-responsive">
                 <table class="table search-table table-striped">
+                  <colgroup>
+                    <col class="col-md-3 col-xs-1">
+                    <col class="col-md-3 col-xs-1">
+                    <col class="col-xs-1">
+                    <col class="col-xs-1">
+                    <col class="col-xs-1">
+                    <col class="col-md-3 col-xs-7">
+                  </colgroup>
                   <thead>
                     <tr>
-                      <td colspan="8" class="text-center">
+                      <td colspan="6" class="text-center">
                         <p>
                           <span class="pull-right">
                             <label for="pageSizeTop" class="sr-only">Show how many results</label>
@@ -272,12 +280,12 @@
                       <th scope="col" class="search-header" ng-click="sort('certificationEdition')"><span ng-class="{'sort-ascent': vm.query.orderBy==='certificationEdition' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationEdition' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'certificationEdition'}">Edition</span> <a class="sr-only sr-only-focusable" href ng-click="sort('certificationEdition')"><br />Sort by certification edition</a></th>
                       <th scope="col" class="">Version</th>
                       <th scope="col" class="">Status</th>
-                      <th scope="col" colspan="3"><span class="sr-only">Actions</span></th>
+                      <th scope="col" class=""><span class="sr-only">Actions</span></th>
 	                </tr>
 	              </thead>
                   <tfoot>
                     <tr>
-                      <td colspan="8" class="text-center">
+                      <td colspan="6" class="text-center">
                         <p class="pull-right">
                           <label for="pageSizeBottom" class="sr-only">Show how many results</label>
                           Showing up to
@@ -295,19 +303,23 @@
                   </tfoot>
 	              <tbody>
 	                <tr ng-repeat="row in displayedResults" class="search-row">
-                      <td>{{ row.product.name }}</td>
-                      <td>{{ row.developer.name }}</td>
-                      <td>{{ row.certificationEdition.name }}</td>
-                      <td>{{ row.product.version }}</td>
-                      <td><a href uib-tooltip="{{ row.certificationStatus.name }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ row.certificationStatus.name }}</span><i class="fa" ng-class="vm.statusFont(row.certificationStatus.name)"></i></a></td>
-                      <td>
-                        <button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
-                      </td>
-                      <td>
-                        <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
-                      </td>
-                      <td>
-                        <ai-cms-widget-button product-id="{{ row.id }}" product-name="{{ row.product.name }}" ng-click="vm.boxes.certificationId = true"></ai-cms-widget-button>
+                      <td class="">{{ row.product.name }}</td>
+                      <td class="">{{ row.developer.name }}</td>
+                      <td class="">{{ row.certificationEdition.name }}</td>
+                      <td class="">{{ row.product.version }}</td>
+                      <td class="text-center"><a href uib-tooltip="{{ row.certificationStatus.name }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ row.certificationStatus.name }}</span><i class="fa" ng-class="vm.statusFont(row.certificationStatus.name)"></i></a></td>
+                      <td class="">
+                        <div class="btn-group btn-group-justified">
+                          <div class="btn-group">
+                            <button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
+                          </div>
+                          <div class="btn-group">
+                            <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
+                          </div>
+                          <div class="btn-group">
+                            <ai-cms-widget-button product-id="{{ row.id }}" product-name="{{ row.product.name }}"></ai-cms-widget-button>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -317,12 +329,6 @@
           </div>
           <div class="col-md-3">
             <uib-accordion close-others="false">
-              <uib-accordion-group class="panel-ai panel-widget-certid" is-open="vm.boxes.certificationId" aria-expanded="{{ vm.boxes.certificationId }}" template-url="app/common/templates/accordion.html">
-                <uib-accordion-heading aria-expanded="{{ vm.boxes.certificationId }}">
-                  CMS EHR Certification ID
-                </uib-accordion-heading>
-                <ai-cms-widget-display widget="vm.widget"></ai-cms-widget-display>
-              </uib-accordion-group>
               <uib-accordion-group class="panel-ai" is-open="vm.boxes.compare" aria-expanded="{{ vm.boxes.compare }}" template-url="app/common/templates/accordion.html">
                 <uib-accordion-heading aria-expanded="{{ vm.boxes.compare }}">
                   Compare <span ng-if="vm.compareCps.length >= 2">{{ vm.compareCps.length }}</span> products <span ng-if="vm.compareCps.length < 2">(minimum 2)</span>
@@ -331,14 +337,14 @@
                 <button href class="btn btn-ai-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
               </uib-accordion-group>
               <uib-accordion-group class="panel-ai" is-open="vm.boxes.prevComp" aria-expanded="{{ vm.boxes.prevComp }}" template-url="app/common/templates/accordion.html"
-                               heading="Previous {{ vm.previouslyCompared.length }} products compared">
+                                   heading="Previous {{ vm.previouslyCompared.length }} products compared">
                 <ul class="list-unstyled text-left">
                   <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }}</a></li>
                 </ul>
                 <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
               </uib-accordion-group>
               <uib-accordion-group class="panel-ai" is-open="vm.boxes.prevView" aria-expanded="{{ vm.boxes.prevView }}" template-url="app/common/templates/accordion.html"
-                               heading="Previous {{ vm.previouslyViewed.length }} products viewed">
+                                   heading="Previous {{ vm.previouslyViewed.length }} products viewed">
                 <ul class="list-unstyled text-left">
                   <li ng-repeat="cp in vm.previouslyViewed | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></li>
                 </ul>

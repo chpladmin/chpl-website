@@ -42,11 +42,11 @@
                     'Active': true,
                     'Retired': false,
                     'Suspended by ONC-ACB': true,
-                    'Withdrawn by Developer': true,
-                    'Withdrawn by Developer Under Surveillance/Review': true,
-                    'Withdrawn by ONC-ACB': true,
+                    'Withdrawn by Developer': false,
+                    'Withdrawn by Developer Under Surveillance/Review': false,
+                    'Withdrawn by ONC-ACB': false,
                     'Suspended by ONC': true,
-                    'Terminated by ONC': true
+                    'Terminated by ONC': false
                 },
                 certificationEdition: {
                     '2011': false,
@@ -371,26 +371,26 @@
             case 'Active':
                 ret = 'fa-check-circle status-good';
                 break;
-            case 'Suspended by ONC-ACB':
-                ret = 'fa-warning status-warning';
-                break;
             case 'Retired':
-                ret = 'fa-close status-bad';
-                break;
-            case 'Withdrawn by Developer':
-                ret = 'fa-times-circle status-warning';
-                break;
-            case 'Withdrawn by Developer Under Surveillance/Review':
-                ret = 'fa-exclamation-circle status-bad';
-                break;
-            case 'Withdrawn by ONC-ACB':
-                ret = 'fa-minus-circle status-bad';
+                ret = 'fa-university status-neutral';
                 break;
             case 'Suspended by ONC':
                 ret = 'fa-minus-square status-warning';
                 break;
+            case 'Suspended by ONC-ACB':
+                ret = 'fa-minus-circle status-warning';
+                break;
             case 'Terminated by ONC':
                 ret = 'fa-window-close status-bad';
+                break;
+            case 'Withdrawn by Developer Under Surveillance/Review':
+                ret = 'fa-exclamation-circle status-bad';
+                break;
+            case 'Withdrawn by Developer':
+                ret = 'fa-stop-circle status-neutral';
+                break;
+            case 'Withdrawn by ONC-ACB':
+                ret = 'fa-times-circle status-bad';
                 break;
             }
             return ret;
@@ -490,7 +490,7 @@
         }
         $scope.clear = clear;
 
-        $scope.sort = function(header) {
+        $scope.sort = function (header) {
             if (header === vm.query.orderBy) {
                 vm.query.sortDescending = !vm.query.sortDescending;
             } else {

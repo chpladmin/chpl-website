@@ -1,19 +1,19 @@
 <div class="container-fluid" id="decertifications-page">
   <div class="row">
     <div class="col-sm-12">
-      <h1>Decertified Products</h1>
+      <h1>Inactive Certificates</h1>
     </div>
   </div>
   <div class="main-content" id="mainContent" tabindex="-1">
     <div class="row">
       <div class="col-sm-12">
         <p>
-          This list includes all health IT products that have had their status changed to a "decertified" status on the Certified Health IT Products List (CHPL). A product may be decertified for the following reasons: certificate terminated by ONC, certificate withdrawn by an ONC-ACB, or certificate withdrawn by the product's developer while the product was under ONC-ACB surveillance or ONC direct review.  For further descriptions of the certification statuses, please consult the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>. For more information on how a decertified product may affect your attestation to the CMS EHR Incentive Programs, please consult the <a href="https://questions.cms.gov/faq.php?id=5005&faqId=12657">CMS FAQ</a><a href="https://questions.cms.gov/faq.php?id=5005&faqId=12657">CMS FAQ</a>. For additional information about how a decertified product may affect your participation in other CMS programs, please reach out to that program.
+          This list includes all health IT products that have had their status changed to an "inactive" status on the Certified Health IT Products List (CHPL). This may be simply because the developer no longer supports the product or for other reasons that are not in response to ONC-ACB surveillance, ONC direct review, or a finding of non-conformity. For further descriptions of the certification statuses, please consult the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide</a>. For more information on how an inactive certificate may affect your attestation to the CMS EHR Incentive Programs, please consult the <a href="https://questions.cms.gov/faq.php?id=5005&faqId=12657">CMS FAQ</a>. For additional information about how an inactive certificate may affect your participation in other CMS programs, please reach out to that program.
         </p>
       </div>
     </div>
-    <div st-set-filter="customFilter" st-table="vm.displayedProducts" st-safe-src="vm.modifiedDecertifiedProducts">
-      <div class="row form-horizontal" ng-if="vm.modifiedDecertifiedProducts && vm.modifiedDecertifiedProducts.length > 0" id="filters">
+    <div st-set-filter="customFilter" st-table="vm.displayedProducts" st-safe-src="vm.modifiedInactiveProducts">
+      <div class="row form-horizontal" ng-if="vm.modifiedInactiveProducts && vm.modifiedInactiveProducts.length > 0" id="filters">
         <div class="col-sm-4">
           <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-search"></i></div>
@@ -22,28 +22,24 @@
           </div>
         </div>
         <div class="col-sm-8">
-          <div uib-dropdown auto-close="outsideClick" class="btn-group" id="decertifiedProductFilter">
+          <div uib-dropdown auto-close="outsideClick" class="btn-group" id="inactiveProductFilter">
             <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               Filter <i class="fa fa-filter"></i>
             </button>
             <div class="dropdown-menu row" aria-labeledby="filter-button" uib-dropdown-menu>
               <div class="col-sm-6">
                 <strong>ONC-ACB</strong>
-                <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="acb"></st-list-multiple>
+                <st-list-multiple collection="vm.modifiedInactiveProducts" predicate="acb"></st-list-multiple>
                 <strong>Certification Editiion</strong>
-                <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="edition"></st-list-multiple>
+                <st-list-multiple collection="vm.modifiedInactiveProducts" predicate="edition"></st-list-multiple>
               </div>
               <div class="col-sm-6">
-                <strong>Certification Status</strong>
-                <st-list-multiple collection="vm.modifiedDecertifiedProducts" predicate="status"></st-list-multiple>
-              </div>
-              <div class="col-sm-12">
-                <strong>Decertification Date</strong>
+                <strong>Deactivation Date</strong>
 		        <st-date-range predicate="decertificationDate" before="query.before" after="query.after"></st-date-range>
               </div>
             </div>
           </div>
-          <div class="pull-right">{{ vm.displayedProducts.length }} Decertified Product<span ng-if="vm.displayedProducts.length > 1">s</span> shown out of {{ vm.decertifiedProducts.length }} total Decertified Product<span ng-if="vm.decertifiedProducts.length > 1">s</span></div>
+          <div class="pull-right">{{ vm.displayedProducts.length }} Inactive Certificate<span ng-if="vm.displayedProducts.length > 1">s</span> shown out of {{ vm.inactiveProducts.length }} total Inactive Certificate<span ng-if="vm.inactiveProducts.length > 1">s</span></div>
         </div>
       </div>
       <div class="row">
@@ -55,11 +51,10 @@
                 <th scope="col" class="search-header sort-none" st-sort="developer" st-skip-natural="true">Developer</th>
                 <th scope="col" class="search-header sort-none" st-sort="product" st-skip-natural="true">Product</th>
                 <th scope="col" class="search-header sort-none" st-sort="version" st-skip-natural="true">Version</th>
-                <th scope="col" class="search-header sort-none" st-sort="decertificationDate" st-skip-natural="true">Decertification Date</th>
+                <th scope="col" class="search-header sort-none" st-sort="decertificationDate" st-skip-natural="true">Inactive As Of</th>
                 <th scope="col" class="search-header sort-none" st-sort="estimatedUsers" st-skip-natural="true"># of Known Users</th>
                 <th scope="col" class="search-header sort-none" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
                 <th scope="col" class="search-header sort-none" st-sort="chplProductNumber" st-skip-natural="true" st-sort-default="true">CHPL ID</th>
-                <th scope="col" class="search-header sort-none" st-sort="status" st-skip-natural="true">Status</th>
               </tr>
             </thead>
             <tfoot>
@@ -69,7 +64,7 @@
             </tfoot>
             <tbody>
               <tr ng-if="vm.displayedProducts.length === 0">
-                <td colspan="9">No Decertified Products found</td>
+                <td colspan="8">No Inactive Certificates found</td>
               </tr>
               <tr ng-repeat="prod in vm.displayedProducts">
                 <td>{{ prod.edition }}</td>
@@ -80,7 +75,6 @@
                 <td>{{ (prod.estimatedUsers || prod.estimatedUsers === 0) ? prod.estimatedUsers : 'Unknown' }}</td>
                 <td>{{ prod.acb }}</td>
                 <td><a href="#/product/{{ prod.id }}">{{ prod.chplProductNumber }}</a></td>
-                <td>{{ prod.status }}</td>
               </tr>
             </tbody>
           </table>

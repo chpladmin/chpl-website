@@ -34,8 +34,9 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.muuAccurateAsOfDateObject = new Date();
             commonService.getMeaningfulUseUsersAccurateAsOfDate()
-                .then(function (date) {
-                    vm.muuAccurateAsOf = date.data;
+                .then(function (data) {
+                    vm.muuAccurateAsOf = data.accurateAsOfDate;
+                    vm.muuAccurateAsOfDateObject = new Date(vm.muuAccurateAsOf);
                 });
 
             vm.uploader = new FileUploader({
@@ -52,27 +53,27 @@
             }
             vm.uploader.filters.push({
                 name: 'csvFilter',
-                fn: function(item) {
+                fn: function (item) {
                     var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
                     return '|csv|'.indexOf(extension) !== -1;
                 }
             });
-            vm.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                 $log.info('onSuccessItem', fileItem, response, status, headers);
                 vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.meaningfulUseUsers.length + ' certified products out of ' + (response.errors.length + response.meaningfulUseUsers.length) + ' were updated with meaningful use user counts.';
                 vm.uploadErrors = response.errors;
                 vm.uploadSuccess = true;
             };
-            vm.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
                 $log.info('onCompleteItem', fileItem, response, status, headers);
             };
-            vm.uploader.onErrorItem = function(fileItem, response, status, headers) {
+            vm.uploader.onErrorItem = function (fileItem, response, status, headers) {
                 $log.info('onErrorItem', fileItem, response, status, headers);
                 vm.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
                 vm.uploadErrors = response.errorMessages;
                 vm.uploadSuccess = false;
             };
-            vm.uploader.onCancelItem = function(fileItem, response, status, headers) {
+            vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
                 $log.info('onCancelItem', fileItem, response, status, headers);
             };
             vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
@@ -101,9 +102,10 @@
         }
 
         function setMeaningfulUseUsersAccurateAsOfDate () {
-            commonService.setMeaningfulUseUsersAccurateAsOfDate(vm.muuAccurateAsOfDateObject.getTime())
-                .then(function (date) {
-                    vm.muuAccurateAsOf = date.data;
+            commonService.setMeaningfulUseUsersAccurateAsOfDate({accurateAsOfDate: vm.muuAccurateAsOfDateObject.getTime()})
+                .then(function (data) {
+                    vm.muuAccurateAsOf = data.accurateAsOfDate;
+                    vm.muuAccurateAsOfDateObject = new Date(vm.muuAccurateAsOf);
                 });
         }
     }

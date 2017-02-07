@@ -111,8 +111,8 @@
             } else {
                 vm.productChoice = 'create';
             }
-            if (vm.cp.product.id) {
-                commonService.getSimpleProduct(vm.cp.product.id)
+            if (vm.cp.product.productId) {
+                commonService.getSimpleProduct(vm.cp.product.productId)
                     .then(function (result) {
                         vm.product = result;
                     });
@@ -120,7 +120,7 @@
         }
 
         function selectInspectingProduct() {
-            vm.cp.product.id = vm.productSelect.productId;
+            vm.cp.product.productId = vm.productSelect.productId;
             vm.loadPrd();
         }
 
@@ -128,9 +128,9 @@
             var prd = {
                 product: {
                     name: vm.cp.product.name,
-                    productId: vm.cp.product.id
+                    productId: vm.cp.product.productId
                 },
-                productIds: [vm.cp.product.id],
+                productIds: [vm.cp.product.productId],
                 newDeveloperId: vm.cp.developer.developerId
             };
             commonService.updateProduct(prd)
@@ -256,7 +256,7 @@
                     return true;
                 return false;
             case 'prd':
-                if (vm.productChoice === 'choose' && !vm.cp.product.id)
+                if (vm.productChoice === 'choose' && !vm.cp.product.productId)
                     return true;
                 return false;
             case 'ver':

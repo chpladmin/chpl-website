@@ -9,7 +9,7 @@
         var trueApiUrl = '/rest';
         var falseApiUrl = 'http://example.com';
 
-        beforeEach(function() {
+        beforeEach(function () {
             mockAuthService = {};
 
             module('chpl.navigation', function ($provide, $httpProvider) {
@@ -17,7 +17,7 @@
                 httpProvider = $httpProvider;
             });
 
-            inject(function(_authInterceptor_, _$log_) {
+            inject(function (_authInterceptor_, _$log_) {
                 mockAuthService.getToken = function () { return token; };
                 mockAuthService.getApiKey = function () { return 'key'; };
                 mockAuthService.saveToken = function () { };
@@ -45,7 +45,7 @@
             });
 
             it('should not put a token in the headers if there isn\'t one', function () {
-                inject(function() {
+                inject(function () {
                     mockAuthService.getToken = function () {
                         return '';
                     }
@@ -64,14 +64,14 @@
                 expect(config.headers['Authorization']).toBe(undefined);
             });
 
-            it('should pass the response through unchanged if it\' not coming from the defined URL', function () {
-                var headers = {config: {url: falseApiUrl}};
+            it('should pass the response through unchanged if it\'s not coming from the defined URL', function () {
+                var headers = {config: {url: falseApiUrl}, headers: function () {return [];}};
                 var response = authInterceptor.response(headers);
                 expect(response).toBe(headers);
             });
 
             it('should set the token if one is found, from the correct URL', function () {
-                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}"};
+                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}", headers: function () {return [];}};
                 spyOn(mockAuthService, 'saveToken');
                 authInterceptor.response(headers);
                 expect(mockAuthService.saveToken).toHaveBeenCalled();
@@ -112,7 +112,7 @@
 
             it('should know what page is active', function () {
                 spyOn($location,'path').and.returnValue('/admin/userManagement');
-                expect(ctrl.isActive('admin')).toBe(true);
+                expect(ctrl.isActive('/admin')).toBe(true);
                 expect(ctrl.isActive('resources')).toBe(false);
             });
         });

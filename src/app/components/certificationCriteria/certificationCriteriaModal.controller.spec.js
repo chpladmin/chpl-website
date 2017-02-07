@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('components.EditCertificationCriteriaController.controller', function() {
+    describe('components.EditCertificationCriteriaController.controller', function () {
         var vm, scope, $log, utilService, mock;
 
         mock = {};
@@ -21,7 +21,7 @@
                 });
             });
 
-            inject(function($controller, $rootScope, _$log_, _utilService_) {
+            inject(function ($controller, $rootScope, _$log_, _utilService_) {
                 $log = _$log_;
                 utilService = _utilService_;
                 utilService.extendSelect.and.returnValue([]);

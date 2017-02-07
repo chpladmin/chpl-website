@@ -2,5 +2,6 @@
     'CACHE_TIMEOUT': 60,
     'ACTIVE_CAP': true,
     'API': '/rest',
+    'ENABLE_LOGGING': true,
     'ENVIRONMENT': 'dev'
 }

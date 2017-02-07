@@ -10,14 +10,14 @@
             var mockCommonService = {};
 
             module('chpl.templates');
-            module('chpl.admin', function($provide) {
+            module('chpl.admin', function ($provide) {
                 $provide.value('authService', mockAuthService);
                 $provide.value('commonService', mockCommonService);
             });
 
             mockCommonService.atls = {atls: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
 
-            inject(function($q) {
+            inject(function ($q) {
                 mockAuthService.isAtlAdmin = function () {
                     return true;
                 };
@@ -78,7 +78,7 @@
                 scope.$digest();
             }));
 
-            it('should exist', function() {
+            it('should exist', function () {
                 expect(ctrl).toBeDefined();
             });
 

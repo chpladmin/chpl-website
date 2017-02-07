@@ -53,7 +53,7 @@
                 vm.activity = vm.activityEnum.LOGIN;
             }
             vm.clear();
-            $scope.$on('Keepalive', function() {
+            $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
 
                 if (authService.isAuthed()) {

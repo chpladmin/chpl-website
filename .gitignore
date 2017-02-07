@@ -1,8 +1,10 @@
 dist/
 node_modules/
 bower_components/
-test_results/
+test_reports/
 .sass-cache/
 .idea/
 .tmp/
 src/app/index.constants.js
+.project
+.settings/

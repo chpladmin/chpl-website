@@ -1,7 +1,7 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('surviellance directive', function() {
+    describe('surviellance directive', function () {
         var vm, el, $q, $log, commonService;
 
         beforeEach(function () {
@@ -13,7 +13,7 @@
                 });
             });
 
-            inject(function($compile, $rootScope, _$q_, _$log_, _commonService_) {
+            inject(function ($compile, $rootScope, _$q_, _$log_, _commonService_) {
                 $q = _$q_;
                 $log = _$log_;
                 commonService = _commonService_;

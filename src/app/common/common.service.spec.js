@@ -51,28 +51,28 @@
         });
 
         it('should return editions', function () {
-            commonService.getEditions().then(function(response) {
+            commonService.getEditions().then(function (response) {
                 expect(response).toEqual(mock.editions);
             });
             $httpBackend.flush();
         });
 
         it('should return developers', function () {
-            commonService.getDevelopers().then(function(response) {
+            commonService.getDevelopers().then(function (response) {
                 expect(response).toEqual(mock.developers);
             });
             $httpBackend.flush();
         });
 
         it('should return practices', function () {
-            commonService.getPractices().then(function(response) {
+            commonService.getPractices().then(function (response) {
                 expect(response).toEqual(mock.practices);
             });
             $httpBackend.flush();
         });
 
         it('should return certification bodies', function () {
-            commonService.getCertBodies().then(function(response) {
+            commonService.getCertBodies().then(function (response) {
                 expect(response).toEqual(mock.certBodies);
             });
             $httpBackend.flush();

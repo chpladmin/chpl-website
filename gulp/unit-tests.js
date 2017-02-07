@@ -33,15 +33,15 @@ function runTests (singleRun, done) {
         reporters: reporters,
         preprocessors: preprocessors,
         htmlReporter: {
-            outputFile: 'test_results/units.html'
+            outputFile: 'test_reports/units.html'
         },
         junitReporter: {
-            outputDir: 'test_results',
+            outputDir: 'test_reports',
             suite: 'unit'
         },
         coverageReporter: {
             // specify a common output directory
-            dir: 'test_results/coverage',
+            dir: 'test_reports/coverage',
             reporters: [
                 { type: 'lcov', subdir: '.' },
                 // display summary to screen

@@ -1,5 +1,28 @@
 # Release Notes
 
+## Version 7.2.0
+_7 February 2017_
+
+### Features Added
+* Added "Meaningful Use Users Accurate As Of Date" value
+  * CMS Management allows editing
+  * Decertified Developers/Products displays
+* Removed OBE Google Analytics code
+* Display/edit of G1/G2 MACRA measures
+* Default ROLE lists to ROLE lengths
+* Rearranged navigation
+* Changed default filters to "Active" or "Suspended by..." only
+* Changed Suspended Developer page text
+* Fix collapsing nav on small screen
+* Added pop-up notification if CHPL ID Changes
+* Added Inactive Certificates page
+* Moved CMS Widget to nav bar
+  * Added +/- CertID buttons to /compare & /details
+* Changed "ATL" to "ONC-ATL"
+* Update certification status icons
+
+---
+
 ## Version 7.1.0
 _23 January 2017_
 
@@ -15,6 +38,9 @@ _23 January 2017_
 * Defaulted criteria filter to folded shut
 * Fix decertified pages to show "0"
 * Modify PDF CMS ID file to work with Adobe Reader
+
+### Bugs fixed
+* Upload workflow doesn't find products
 
 ---
 

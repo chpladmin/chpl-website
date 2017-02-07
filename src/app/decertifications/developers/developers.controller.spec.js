@@ -1,19 +1,15 @@
-(function() {
+(function () {
     'use strict';
 
-    describe('decertifications.developers.controller', function() {
+    describe('decertifications.developers.controller', function () {
         var vm, scope, $log, $q, commonService, mock;
 
         mock = {
             decertifiedDeveloperResults:[{"developer":{"developerId":4,"developerCode":"1003","name":"4medica, Inc.","website":null,"address":null,"contact":{"contactId":64,"firstName":"Barb","lastName":"Jones","email":"bjones@example.com","phoneNumber":"123-123-1234","title":null},"status":{"id":2,"status":"Suspended by ONC"},"lastModifiedDate":"1480695890024","deleted":false,"transparencyAttestations":[]},"certifyingBody":[{"id":6,"acbCode":"07","name":"ICSA Labs","website":"http://www.example.com","address":{"addressId":4,"line1":"Line 1","line2":null,"city":"City","state":"State","zipcode":"Zip","country":"US"},"isDeleted":false}],"estimatedUsers":null}],
-            muuAccurateAsOfDate: new Date('2017-01-13'),
+            muuAccurateAsOfDate: (new Date('2017-01-13')).getTime(),
             modifiedDecertifiedDevelopers: [
                 {stDeveloper: '4medica, Inc.', stAcb: ['ICSA Labs'], stStatus: 'Suspended by ONC', stEstimatedUsers: null}],
-            filter: { acb: 'Drummond', developer: 'epic', status: 'broke'},
-            searchOptions: {
-                certBodyNames: [{name: 'ICSA Labs'}, {name: 'Drummond Group'}, {name: 'Infogard'}],
-                developerStatuses: [{name: 'Under certification ban by ONC'}, {name: 'Terminated by ONC'}]
-            }
+            filter: { acb: 'Drummond', developer: 'epic', status: 'broke'}
         };
 
         beforeEach(function () {
@@ -21,18 +17,16 @@
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getDecertifiedDevelopers = jasmine.createSpy('getDecertifiedDevelopers');
                     $delegate.getMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('getMeaningfulUseUsersAccurateAsOfDate');
-                    $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     return $delegate;
                 });
             });
 
-            inject(function($controller, $rootScope, _$log_, _$q_, _commonService_) {
+            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;
                 commonService.getDecertifiedDevelopers.and.returnValue($q.when({decertifiedDeveloperResults: mock.decertifiedDeveloperResults}));
-                commonService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({data: mock.muuAccurateAsOfDate}));
-                commonService.getSearchOptions.and.returnValue($q.when(mock.searchOptions));
+                commonService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.muuAccurateAsOfDate}));
 
                 scope = $rootScope.$new();
                 vm = $controller('DecertifiedDevelopersController', {
@@ -62,14 +56,6 @@
 
         it('should set the displayed Developers to match the found ones', function () {
             expect(vm.displayedDevelopers).toEqual(mock.decertifiedDeveloperResults);
-        });
-
-        it('should load the ACBs at page load', function () {
-            expect(vm.acbs).toEqual(mock.searchOptions.certBodyNames);
-        });
-
-        it('should load the developer statuses at page load', function () {
-            expect(vm.statuses).toEqual(mock.searchOptions.developerStatuses);
         });
 
         it('should generate the smart-table fields', function () {

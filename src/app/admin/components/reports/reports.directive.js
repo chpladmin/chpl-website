@@ -25,7 +25,7 @@
         });
 
     /** @ngInject */
-    function ReportController($log, $filter, $uibModal, commonService, authService) {
+    function ReportController($log, $filter, $uibModal, commonService, utilService, authService) {
         var vm = this;
         vm.isAcbAdmin = authService.isAcbAdmin();
         vm.isChplAdmin = authService.isChplAdmin();
@@ -326,7 +326,7 @@
         // Helper functions
 
         if (!String.prototype.startsWith) {
-            String.prototype.startsWith = function(searchString, position){
+            String.prototype.startsWith = function (searchString, position){
                 var vm = this;
                 position = position || 0;
                 return vm.substr(position, searchString.length) === searchString;
@@ -334,7 +334,7 @@
         }
 
         if (!String.prototype.endsWith) {
-            String.prototype.endsWith = function(searchString, position){
+            String.prototype.endsWith = function (searchString, position){
                 var vm = this;
                 position = position || 0;
                 return vm.substr(position) === searchString;
@@ -352,7 +352,7 @@
                 ///{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                 {key: 'otherAcb', display: 'Other ONC-ACB'},
                 {key: 'productAdditionalSoftware', display: 'Product-wide Additional Software'},
-                {key: 'reportFileLocation', display: 'ATL Test Report File Location'},
+                {key: 'reportFileLocation', display: 'ONC-ATL Test Report File Location'},
                 {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
                 {key: 'sedReportFileLocation', display: 'SED Report File Location'},
                 {key: 'sedTesting', display: 'SED Tested'},
@@ -607,8 +607,8 @@
                 {key: 'success', display: 'Successful', questionable: true}
             ];
             var i, j;
-            prev.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
-            curr.sort(function(a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
+            curr.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
             for (i = 0; i < prev.length; i++) {
                 var obj = { number: curr[i].number, changes: [] };
                 for (j = 0; j < certKeys.length; j++) {
@@ -619,6 +619,36 @@
                         } else {
                             obj.changes.push('<li>' + change + '</li>');
                         }
+                }
+                var measures = utilService.arrayCompare(prev[i].g1MacraMeasures,curr[i].g1MacraMeasures);
+                if (measures.added.length > 0) {
+                    obj.changes.push('<li>Added G1 MACRA Measure' + (measures.added.length > 1 ? 's' : '') + ':<ul>');
+                    for (j = 0; j < measures.added.length; j++) {
+                        obj.changes.push('<li>' + measures.added[j].abbreviation + '</li>');
+                    }
+                    obj.changes.push('</ul></li>');
+                }
+                if (measures.removed.length > 0) {
+                    obj.changes.push('<li>Removed G1 MACRA Measure' + (measures.removed.length > 1 ? 's' : '') + ':<ul>');
+                    for (j = 0; j < measures.removed.length; j++) {
+                        obj.changes.push('<li>' + measures.removed[j].abbreviation + '</li>');
+                    }
+                    obj.changes.push('</ul></li>');
+                }
+                measures = utilService.arrayCompare(prev[i].g2MacraMeasures,curr[i].g2MacraMeasures);
+                if (measures.added.length > 0) {
+                    obj.changes.push('<li>Added G2 MACRA Measure' + (measures.added.length > 1 ? 's' : '') + ':<ul>');
+                    for (j = 0; j < measures.added.length; j++) {
+                        obj.changes.push('<li>' + measures.added[j].abbreviation + '</li>');
+                    }
+                    obj.changes.push('</ul></li>');
+                }
+                if (measures.removed.length > 0) {
+                    obj.changes.push('<li>Removed G2 MACRA Measure' + (measures.removed.length > 1 ? 's' : '') + ':<ul>');
+                    for (j = 0; j < measures.removed.length; j++) {
+                        obj.changes.push('<li>' + measures.removed[j].abbreviation + '</li>');
+                    }
+                    obj.changes.push('</ul></li>');
                 }
                 var addlSwKeys = [
                     {key: 'version', display: 'Version'},
@@ -680,8 +710,8 @@
                 {key: 'surveillancePassRate', display: 'Pass Rate'},
                 {key: 'surveillanceSitesSurveilled', display: 'Sites Surveilled'}
             ];
-            prev.sort(function(a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
-            curr.sort(function(a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
+            prev.sort(function (a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
+            curr.sort(function (a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
             for (var i = 0; i < prev.length; i++) {
                 var obj = { number: curr[i].certificationCriterionNumber, changes: [] };
                 for (var j = 0; j < certKeys.length; j++) {
@@ -712,8 +742,8 @@
             ];
             var i, j, k;
             if (prev !== null) {
-                prev.sort(function(a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
-                curr.sort(function(a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
+                prev.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
+                curr.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
                 for (i = 0; i < prev.length; i++) {
                     for (j = 0; j < curr.length; j++) {
                         if (prev[i].description === curr[j].description) {
@@ -758,8 +788,8 @@
         function compareCqms (prev, curr, questionable) {
             var ret = [];
             var change;
-            prev.sort(function(a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
-            curr.sort(function(a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
+            prev.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
+            curr.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
             var i, j;
             for (i = 0; i < prev.length; i++) {
                 var obj = { cmsId: curr[i].cmsId, changes: [] };
@@ -812,7 +842,7 @@
                 };
                 activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
                 if (data[i].description.startsWith('Merged')) {
-                    activity.developerCode = data[i].originalData.map(function(elem){
+                    activity.developerCode = data[i].originalData.map(function (elem){
                         return elem.developerCode;
                     }).join(',');
                 } else if (!activity.developerCode) {
@@ -981,7 +1011,7 @@
                 if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                     activity.name = data[i].newData.name;
                     if (data[i].originalData.deleted !== data[i].newData.deleted) {
-                        activity.action = data[i].newData.deleted ? 'ATL was deleted' : 'ATL was restored';
+                        activity.action = data[i].newData.deleted ? 'ONC-ATL was deleted' : 'ONC-ATL was restored';
                     } else {
                         activity.action = 'Update:<ul>';
                         change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
@@ -995,7 +1025,7 @@
                         activity.action += '</ul>';
                     }
                 } else {
-                    vm.interpretNonUpdate(activity, data[i], 'ATL');
+                    vm.interpretNonUpdate(activity, data[i], 'ONC-ATL');
                 }
                 ret.push(activity);
             }

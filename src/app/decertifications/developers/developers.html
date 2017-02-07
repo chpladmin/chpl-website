@@ -1,7 +1,7 @@
 <div class="container-fluid" id="decertifications-page">
   <div class="row">
     <div class="col-sm-12">
-      <h1>Developers Precluded From Certifying Health IT Products</h1>
+      <h1>Developers Under Certification Ban</h1>
     </div>
   </div>
   <div class="main-content" id="mainContent" tabindex="-1">
@@ -34,13 +34,9 @@
               Filter <i class="fa fa-filter"></i>
             </button>
             <div class="dropdown-menu row" aria-labeledby="filter-button" uib-dropdown-menu>
-              <div class="col-sm-6">
+              <div class="col-sm-12">
                 <strong>ONC-ACB</strong>
                 <st-list-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stAcb"></st-list-multiple>
-              </div>
-              <div class="col-sm-6">
-                <strong>Certification Status</strong>
-                <st-list-multiple collection="vm.modifiedDecertifiedDevelopers" predicate="stStatus"></st-list-multiple>
               </div>
             </div>
           </div>
@@ -53,23 +49,21 @@
               <tr>
                 <th scope="col" class="search-header sort-none" st-sort="stAcb" st-skip-natural="true">ONC-ACB</th>
                 <th scope="col" class="search-header sort-none" st-sort="stDeveloper" st-skip-natural="true" st-sort-default="true">Developer Name</th>
-                <th scope="col" class="search-header sort-none" st-sort="stStatus" st-skip-natural="true">Developer Status</th>
                 <th scope="col" class="search-header sort-none" st-sort="stEstimatedUsers" st-skip-natural="true"># of Known Users</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <td colspan="4">Estimated Number of Meaningful Use Users is determined from attestations from the CMS Medicare EHR Incentive Program. This is not a complete representation of all Meaningful Use Users because it excludes those who participated in the CMS Medicaid EHR Incentive Program.<!-- Data is accurate as of: {{ vm.muuAccurateAsOf | date : 'mediumDate' : 'UTC' }}--></td>
+                <td colspan="3">Estimated Number of Meaningful Use Users is determined from attestations from the CMS Medicare EHR Incentive Program. This is not a complete representation of all Meaningful Use Users because it excludes those who participated in the CMS Medicaid EHR Incentive Program. Data is accurate as of: {{ vm.muuAccurateAsOf | date : 'mediumDate' : 'UTC' }}</td>
               </tr>
             </tfoot>
             <tbody>
               <tr ng-if="vm.displayedDevelopers.length === 0">
-                <td colspan="4">No Decertified Developers found</td>
+                <td colspan="3">No Decertified Developers found</td>
               </tr>
               <tr ng-repeat="dev in vm.displayedDevelopers">
                 <td ng-bind-html="dev.stAcb.join('<br>')"></td>
                 <td>{{ dev.stDeveloper }}</td>
-                <td>{{ dev.stStatus }}</td>
                 <td>{{ (dev.stEstimatedUsers || dev.stEstimatedUsers === 0) ? dev.stEstimatedUsers : 'Unknown' }}</td>
               </tr>
             </tbody>

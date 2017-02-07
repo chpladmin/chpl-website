@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -6,9 +6,8 @@
         .config(config);
 
     /** @ngInject */
-    function config ($logProvider) {
+    function config ($logProvider, ENABLE_LOGGING) {
         // Enable log
-        $logProvider.debugEnabled(true);
+        $logProvider.debugEnabled(ENABLE_LOGGING);
     }
-
 })();

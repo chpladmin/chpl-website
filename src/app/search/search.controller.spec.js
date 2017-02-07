@@ -26,11 +26,11 @@
                 'Active': true,
                 'Retired': false,
                 'Suspended by ONC-ACB': true,
-                'Withdrawn by Developer': true,
-                'Withdrawn by Developer Under Surveillance/Review': true,
-                'Withdrawn by ONC-ACB': true,
+                'Withdrawn by Developer': false,
+                'Withdrawn by Developer Under Surveillance/Review': false,
+                'Withdrawn by ONC-ACB': false,
                 'Suspended by ONC': true,
-                'Terminated by ONC': true
+                'Terminated by ONC': false
             },
             certificationEdition: {
                 '2011': false,
@@ -45,7 +45,7 @@
         }
         mock.refine = {
             certificationStatuses: [
-                'Active', 'Suspended by ONC-ACB', 'Withdrawn by Developer', 'Withdrawn by Developer Under Surveillance/Review', 'Withdrawn by ONC-ACB', 'Suspended by ONC', 'Terminated by ONC'
+                'Active', 'Suspended by ONC-ACB', 'Suspended by ONC'
             ],
             certificationEditions: [
                 '2014', '2015'
@@ -56,7 +56,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.search', function($provide) {
+            module('chpl.search', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.search = jasmine.createSpy('search');
                     $delegate.searchAdvanced = jasmine.createSpy('searchadvanced');
@@ -65,7 +65,7 @@
                 });
             });
 
-            inject(function(_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_) {
+            inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_) {
                 $log = _$log_;
                 $q = _$q_;
                 $location = _$location_;
@@ -260,14 +260,14 @@
 
                 it('should get the right icon for various statuses', function () {
                     expect(vm.statusFont('Active')).toBe('fa-check-circle status-good');
-                    expect(vm.statusFont('Suspended by ONC-ACB')).toBe('fa-warning status-warning');
-                    expect(vm.statusFont('Retired')).toBe('fa-close status-bad');
-                    expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-times-circle status-warning');
-                    expect(vm.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
-                    expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-minus-circle status-bad');
+                    expect(vm.statusFont('Retired')).toBe('fa-university status-neutral');
                     expect(vm.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
+                    expect(vm.statusFont('Suspended by ONC-ACB')).toBe('fa-minus-circle status-warning');
                     expect(vm.statusFont('Terminated by ONC')).toBe('fa-window-close status-bad');
-                });
+                    expect(vm.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
+                    expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-stop-circle status-neutral');
+                    expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
+                 });
             });
         });
     });

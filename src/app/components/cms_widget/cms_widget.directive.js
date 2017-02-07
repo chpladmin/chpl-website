@@ -134,7 +134,7 @@
                                "Additional Software Required"];
                 var rows = [];
                 var prods = data["products"];
-                prods.forEach(function(item,index) {
+                prods.forEach(function (item,index) {
                     // Decode additional software
                     var software = decodeURIComponent(item.additionalSoftware);
                     if (null !== software) {
@@ -273,7 +273,7 @@
                             }
                             return true;
                         },
-                        afterPageContent: function() {
+                        afterPageContent: function () {
                             var total = checkImages.length;
                             for (var index=0; index < total; index++) {
                                 var img = checkImages.shift();
