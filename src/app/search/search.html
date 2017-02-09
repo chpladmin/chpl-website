@@ -29,7 +29,7 @@
               <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
-              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.statusItems" has-changes="vm.categoryChanged['certificationStatus']" predicate="certificationStatus"></st-list-multiple>
+              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.statusItems" has-changes="vm.categoryChanged['certificationStatus']" predicate="certificationStatus" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -37,7 +37,7 @@
               <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Edition <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-edition-button" uib-dropdown-menu>
-              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" predicate="edition"></st-list-multiple>
+              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" predicate="edition" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -51,7 +51,7 @@
                 </a>
               </li>
               <li ng-if="vm.show2011">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2014 = !vm.show2014">
@@ -59,7 +59,7 @@
                 </a>
               </li>
               <li ng-if="vm.show2014">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015 = !vm.show2015">
@@ -67,7 +67,7 @@
                 </a>
               </li>
               <li ng-if="vm.show2015">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
               </li>
             </ul>
           </div>
@@ -87,7 +87,7 @@
                 </a>
               </li>
               <li ng-if="vm.showCqms && vm.show2011Cqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
@@ -95,7 +95,7 @@
                 </a>
               </li>
               <li ng-if="vm.showCqms && vm.showOtherCqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
@@ -103,7 +103,7 @@
                 </a>
               </li>
               <li ng-if="vm.showAcbs">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" predicate="acb"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" predicate="acb" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showConformities = !vm.showConformities">
@@ -165,7 +165,7 @@
             <div class="row">
               <div class="col-md-12">
                 <span class="pull-right">
-                  <a href ng-click="vm.browseAll()">Browse all</a> | <a href ng-click="vm.clearFilters()">Clear filters</a>
+                  <a href ng-click="vm.browseAll()">Browse all</a> | <a href ng-click="vm.clearFilters()">Clear filters</a> | <a href ng-click="vm.triggerClearFilters()">Trigger Clear Filters</a>
                 </span>
                 <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
               </div>

@@ -9,18 +9,20 @@
         var vm = this;
 
         vm.browseAll = browseAll;
+        vm.certificationStatusFilter = certificationStatusFilter;
         vm.clear = clear;
         vm.clearFilters = clearFilters;
         vm.clearPreviouslyCompared = clearPreviouslyCompared;
         vm.clearPreviouslyViewed = clearPreviouslyViewed;
-        vm.certificationStatusFilter = certificationStatusFilter;
         vm.compare = compare;
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
         vm.loadResults = loadResults;
+        vm.registerClearFilter = registerClearFilter;
         vm.reloadResults = reloadResults;
         vm.statusFont = statusFont;
         vm.toggleCompare = toggleCompare;
+        vm.triggerClearFilters = triggerClearFilters;
         vm.truncButton = truncButton;
         vm.viewProduct = viewProduct;
 
@@ -38,8 +40,9 @@
                 delete $localStorage.clearResults;
             }
 
-            vm.boxes = {};
             vm.categoryChanged = {};
+            vm.boxes = {};
+            vm.handlers = [];
             vm.query = {
                 developer: undefined,
                 product: undefined,
@@ -190,6 +193,16 @@
             });
         }
 
+        function registerClearFilter (handler) {
+            vm.handlers.push(handler);
+            var removeHandler = function () {
+                vm.handlers = vm.handlers.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
         function reloadResults () {
             $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
             vm.activeSearch = true;
@@ -242,6 +255,13 @@
                 vm.compareCps.push(row);
             }
             vm.boxes.compare = true;
+        }
+
+        function triggerClearFilters () {
+            $log.debug('triggerClearFilters', vm.handlers);
+            angular.forEach(vm.handlers, function (handler) {
+                handler();
+            });
         }
 
         function truncButton (str) {

@@ -12,13 +12,13 @@
             },
             link: function (scope, element, attr, ctrl) {
                 var nameSpace = scope.storageKey;
-
+/*
                 //save the table state every time it changes
                 scope.$watch(function () {
                     return ctrl.tableState();
                 }, function (newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        $log.debug('persisiting', newValue, oldValue);
+                        $log.debug('persisiting', oldValue, newValue);
                         $localStorage[nameSpace] = angular.toJson(newValue);
                         $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
                     }
@@ -32,6 +32,7 @@
                     angular.extend(tableState, savedState);
                     ctrl.pipe();
                 }
+                */
             }
         };
     }

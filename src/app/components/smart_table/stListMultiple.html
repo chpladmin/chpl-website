@@ -3,9 +3,8 @@
     <label ng-class="{ 'emphasis' : vm.isNotDefault(item) }">
       <input type="checkbox"
              value="{{ item.value }}"
-             ng-model="item.selected"
+             ng-model="item.isSelected"
              ng-change="vm.toggleSelection(item.value)">{{ item.display ? item.display : item.value }}
-<!--             ng-checked="selected.indexOf(item.value) > -1"-->
     </label>
   </li>
   <li class="text-center">
