@@ -8,7 +8,8 @@
     function stListMultiple ($log) {
         return {
             bindToController: {
-                hasChanges: '=?'
+                hasChanges: '=?',
+                nameSpace: '@'
             },
             controller: 'ListMultipleController',
             controllerAs: 'vm',
@@ -20,7 +21,8 @@
                 fixedItems: '=?',
                 predicate: '@',
                 predicateExpression: '=',
-                registerClearFilter: '&'
+                registerClearFilter: '&',
+                registerRestoreState: '&'
             },
             templateUrl: 'app/components/smart_table/stListMultiple.html'
         }
@@ -34,12 +36,18 @@
             console.log('linking', scope);
             var table = ctrls[0];
             var ctrl = ctrls[1];
-            var handler = scope.registerClearFilter({
-                handler: function () {
+            var clearFilter = scope.registerClearFilter({
+                clearFilter: function () {
                     ctrl.clearFilter();
                 }
             });
-            scope.$on('$destroy', handler);
+            scope.$on('$destroy', clearFilter);
+            var restoreState = scope.registerRestoreState({
+                restoreState: function (state) {
+                    ctrl.restoreState(state);
+                }
+            });
+            scope.$on('$destroy', restoreState);
 
             setItems();
             setSelected();
@@ -135,13 +143,14 @@
     }
 
     /** @ngInclude */
-    function ListMultipleController ($log) {
+    function ListMultipleController ($localStorage, $log) {
         var vm = this;
 
         vm.activate = activate;
         vm.clearFilter = clearFilter;
         vm.filterChanged = filterChanged;
         vm.isNotDefault = isNotDefault;
+        vm.restoreState = restoreState;
         vm.toggleSelection = toggleSelection;
 
         ////////////////////////////////////////////////////////////////////
@@ -160,6 +169,8 @@
                     vm.toggleSelection(item.value);
                 }
             })
+            vm.matchAll = false;
+            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
             vm.filterChanged();
         }
 
@@ -189,6 +200,21 @@
             return (angular.isUndefined(item.selected) && item.isSelected) || (item.selected !== item.isSelected);
         }
 
+        function restoreState (state) {
+            $log.debug('restoreState ' + vm.predicate, state);
+            var predicateSearch = state.search.predicateObject[vm.predicate];
+            if (predicateSearch) {
+                if (predicateSearch.matchAny) {
+                    vm.matchAll = false;
+                    vm.selected = predicateSearch.matchAny.items;
+                } else if (predicateSearch.matchAll) {
+                    vm.matchAll = true;
+                    vm.selected = predicateSearch.matchAll.items;
+                }
+                setToTableState();
+            }
+        }
+
         function toggleSelection (value) {
             var index = vm.selected.indexOf(value);
             if(index > -1) {
@@ -196,17 +222,29 @@
             } else {
                 vm.selected.push(value);
             }
+            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
             vm.filterChanged();
         }
 
         ////////////////////////////////////////////////////////////////////
 
         function getChanged () {
-            var ret = false;
+            var ret = vm.matchAll;
             angular.forEach(vm.distinctItems, function (item) {
                 ret = ret || isNotDefault(item);
             })
             return ret;
+        }
+
+        function setToTableState () {
+            angular.forEach(vm.distinctItems, function (item) {
+                if (vm.selected.indexOf(item.value) > -1) {
+                    item.isSelected = true;
+                } else {
+                    item.isSelected = false;
+                }
+            })
+            vm.filterChanged();
         }
     }
 })();

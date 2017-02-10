@@ -34,9 +34,6 @@
                         return true;
                     }
 
-                    if (!expected.matchAny) {
-//                        $log.debug(expected);
-                    }
                     //surveillance match
                     if (expected.anySurveillance) {
                         if (expected.anySurveillance.all) {
@@ -58,7 +55,6 @@
                                 (expected.anySurveillance.hasOpenNonconformities && surveillance.hasOpenNonconformities) ||
                                 (expected.anySurveillance.hasClosedNonconformities && surveillance.hasClosedNonconformities);
                         }
-//                        $log.debug(expected.anySurveillance, surveillance, ret);
                         return ret;
                     }
 

@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($filter, $localStorage, $location, $log, $rootScope, $scope, commonService, utilService, CACHE_TIMEOUT) {
+    function SearchController ($filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -19,10 +19,14 @@
         vm.isCategoryChanged = isCategoryChanged;
         vm.loadResults = loadResults;
         vm.registerClearFilter = registerClearFilter;
+        vm.registerRestoreState = registerRestoreState;
+        vm.registerSearch = registerSearch;
         vm.reloadResults = reloadResults;
         vm.statusFont = statusFont;
         vm.toggleCompare = toggleCompare;
         vm.triggerClearFilters = triggerClearFilters;
+        vm.triggerRestoreState = triggerRestoreState;
+        vm.triggerSearch = triggerSearch;
         vm.truncButton = truncButton;
         vm.viewProduct = viewProduct;
 
@@ -42,7 +46,8 @@
 
             vm.categoryChanged = {};
             vm.boxes = {};
-            vm.handlers = [];
+            vm.clearFilterHs = [];
+            vm.restoreStateHs = [];
             vm.query = {
                 developer: undefined,
                 product: undefined,
@@ -194,9 +199,31 @@
         }
 
         function registerClearFilter (handler) {
-            vm.handlers.push(handler);
+            $log.debug('registerClearFilter', handler);
+            vm.clearFilterHs.push(handler);
             var removeHandler = function () {
-                vm.handlers = vm.handlers.filter(function (aHandler) {
+                vm.clearFilterHs = vm.clearFilterHs.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
+        function registerRestoreState (handler) {
+            $log.debug('registerRestoreState', handler);
+            vm.restoreStateHs.push(handler);
+            var removeHandler = function () {
+                vm.restoreStateHs = vm.restoreStateHs.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
+        function registerSearch (handler) {
+            vm.tableSearch = [handler];
+            var removeHandler = function () {
+                vm.tableSearch = vm.tableSearch.filter(function (aHandler) {
                     return aHandler !== handler;
                 });
             };
@@ -258,10 +285,35 @@
         }
 
         function triggerClearFilters () {
-            $log.debug('triggerClearFilters', vm.handlers);
-            angular.forEach(vm.handlers, function (handler) {
+            $log.debug('triggerClearFilter', vm.clearFilterHs);
+            vm.query.developer = '';
+            vm.query.product = '';
+            vm.query.version = '';
+            vm.triggerSearch();
+            angular.forEach(vm.clearFilterHs, function (handler) {
                 handler();
             });
+        }
+
+        function triggerRestoreState () {
+            if ($localStorage.searchTableState) {
+                var state = angular.fromJson($localStorage.searchTableState);
+                $log.debug('triggerRestoreState', state);
+                // save changes to text fields
+                vm.query.term = state.search.predicateObject.term;
+                vm.query.developer = state.search.predicateObject.developer;
+                vm.query.product = state.search.predicateObject.product;
+                vm.query.version = state.search.predicateObject.version
+                vm.triggerSearch();
+                // restore pagination/sort
+                angular.forEach(vm.restoreStateHs, function (handler) {
+                    handler(state);
+                });
+            }
+        }
+
+        function triggerSearch () {
+            vm.tableSearch[0]();
         }
 
         function truncButton (str) {
@@ -335,6 +387,14 @@
                 if (difference > CACHE_TIMEOUT) {
                     vm.activeSearch = false;
                 } else {
+                    cfpLoadingBar.start();
+                    $timeout(
+                        function () {
+                            vm.triggerRestoreState();
+                            cfpLoadingBar.complete();
+                        },
+                        RELOAD_TIMEOUT
+                    );
                     vm.activeSearch = true;
                 }
             } else {
@@ -368,7 +428,7 @@
             };
             vm.refineModel = angular.copy(vm.defaultRefineModel);
             vm.filterItems = {
-                pageSize: 50,
+                pageSize: '50',
                 acbItems: [],
                 cqms: { 2011: [], other: [] },
                 criteria: { 2011: [], 2014: [], 2015: []},

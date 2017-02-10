@@ -1,7 +1,8 @@
 {
-    'CACHE_TIMEOUT': 60,
     'ACTIVE_CAP': false,
     'API': '/rest',
+    'CACHE_TIMEOUT': 60,
     'ENABLE_LOGGING': true,
-    'ENVIRONMENT': 'local'
+    'ENVIRONMENT': 'local',
+    'RELOAD_TIMEOUT': 3000
 }

@@ -1,6 +1,6 @@
 <div ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
-    <st-manage search-state="vm.searchState" storage-key="searchTableState"/>
+    <st-manage register-search="vm.registerSearch(search)" />
     <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
         <h1>Search</h1>
@@ -23,13 +23,13 @@
                      typeahead-focus-first="false"
                      typeahead-input-formatter="$model.value" />
 -->
-        <div class="col-sm-8" ng-if="vm.activeSearch || vm.searchForm.$dirty">
+        <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
-              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.statusItems" has-changes="vm.categoryChanged['certificationStatus']" predicate="certificationStatus" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
+              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.statusItems" has-changes="vm.categoryChanged['certificationStatus']" predicate="certificationStatus" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -37,7 +37,7 @@
               <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Edition <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-edition-button" uib-dropdown-menu>
-              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" predicate="edition" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
+              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" predicate="edition" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -50,24 +50,24 @@
                   <i class="fa" ng-class="vm.show2011 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2011 ? 'Hide' : 'View' }} 2011 Certification Criteria <span ng-if="vm.categoryChanged['criteria'][2011]"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
-              <li ng-if="vm.show2011">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
+              <li ng-show="vm.show2011">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2014 = !vm.show2014">
                   <i class="fa" ng-class="vm.show2014 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2014 ? 'Hide' : 'View' }} 2014 Certification Criteria <span ng-if="vm.categoryChanged['criteria'][2014]"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
-              <li ng-if="vm.show2014">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
+              <li ng-show="vm.show2014">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015 = !vm.show2015">
                   <i class="fa" ng-class="vm.show2015 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2015 ? 'Hide' : 'View' }} 2015 Certification Criteria <span ng-if="vm.categoryChanged['criteria'][2015]"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
-              <li ng-if="vm.show2015">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
+              <li ng-show="vm.show2015">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
               </li>
             </ul>
           </div>
@@ -86,37 +86,37 @@
                   <i class="fa" ng-class="vm.show2011Cqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2011Cqms ? 'Hide' : 'View' }} 2011 Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-2011']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
-              <li ng-if="vm.showCqms && vm.show2011Cqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
+              <li ng-show="vm.showCqms && vm.show2011Cqms">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
                   <i class="fa" ng-class="vm.showOtherCqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showOtherCqms ? 'Hide' : 'View' }} 2014/2015 Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-other']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
-              <li ng-if="vm.showCqms && vm.showOtherCqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
+              <li ng-show="vm.showCqms && vm.showOtherCqms">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
                   <i class="fa" ng-class="vm.showAcbs ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showAcbs ? 'Hide' : 'View' }} ONC-ACBs <span ng-if="vm.categoryChanged['acb']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
-              <li ng-if="vm.showAcbs">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" predicate="acb" register-clear-filter="vm.registerClearFilter(handler)"></st-list-multiple>
+              <li ng-show="vm.showAcbs">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" predicate="acb" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showConformities = !vm.showConformities">
                   <i class="fa" ng-class="vm.showConformities ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showConformities ? 'Hide' : 'View' }} Surveillance Activity <span ng-if="vm.categoryChanged['surveillance']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
-              <ai-surveillance-filter ng-if="vm.showConformities" has-changes="vm.categoryChanged['surveillance']"></ai-surveillance-filter>
+              <ai-surveillance-filter ng-show="vm.showConformities" has-changes="vm.categoryChanged['surveillance']"></ai-surveillance-filter>
               <li>
                 <a href ng-click="vm.showPracticeType = !vm.showPracticeType">
                   <i class="fa" ng-class="vm.showPracticeType ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showPracticeType ? 'Hide' : 'View' }} Practice Type <span ng-if="vm.categoryChanged['practiceType']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
-              <li ng-if="vm.showPracticeType">
+              <li ng-show="vm.showPracticeType">
                 <st-select-distinct collection="vm.allCps" has-changes="vm.categoryChanged['practiceType']" predicate="practiceType"></st-select-distinct>
               </li>
               <li class="form-horizontal">
@@ -165,7 +165,7 @@
             <div class="row">
               <div class="col-md-12">
                 <span class="pull-right">
-                  <a href ng-click="vm.browseAll()">Browse all</a> | <a href ng-click="vm.clearFilters()">Clear filters</a> | <a href ng-click="vm.triggerClearFilters()">Trigger Clear Filters</a>
+                  <a href ng-click="vm.browseAll()">Browse all</a> | <a href ng-click="vm.clearFilters()">Clear filters</a> | <a href ng-click="vm.triggerClearFilters()">Trigger Clear Filters</a> | <a href ng-click="vm.triggerRestoreState()">Trigger Restore State</a>
                 </span>
                 <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
               </div>
@@ -228,7 +228,7 @@
 			        </tr>
                   </tfoot>
                   <tbody>
-                    <tr ng-repeat-start="cp in vm.displayedCps">
+                    <tr ng-repeat="cp in vm.displayedCps">
                       <td>{{ cp.product }}</td>
                       <td>{{ cp.developer }}</td>
                       <td>{{ cp.edition }}</td>
@@ -248,18 +248,6 @@
                         </div>
                       </td>
                     </tr>
-                    <tr ng-repeat-end>
-                      <td colspan="6">
-                        acbCertificationId {{ cp.acbCertificationId }} |
-                        atl {{ cp.atl }} |
-                        certificationDate {{ cp.certificationDate }} |
-                        chplProductNumber {{ cp.chplProductNumber }} |
-                        practiceType {{ cp.practiceType }} |
-                        previousDevelopers {{ cp.previousDevelopers }} |
-                        surveillance {{ cp.surveillance }} <br />
-                        criteriaMet {{ cp.criteriaMet.substring(0,30) }}<br />
-                        cqmsMet {{ cp.cqmsMet.substring(0,30) }}
-                      </td>
                   </tbody>
                 </table>
               </div>

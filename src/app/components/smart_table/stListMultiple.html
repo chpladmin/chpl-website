@@ -8,7 +8,7 @@
     </label>
   </li>
   <li class="text-center">
-    <label>
+    <label ng-class="{ 'emphasis' : vm.matchAll }">
       <input type="checkbox" ng-model="vm.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
       Matching <u>{{ vm.matchAll ? 'all' : 'any' }}</u>
     </label>
