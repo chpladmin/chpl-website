@@ -199,7 +199,6 @@
         }
 
         function registerClearFilter (handler) {
-            $log.debug('registerClearFilter', handler);
             vm.clearFilterHs.push(handler);
             var removeHandler = function () {
                 vm.clearFilterHs = vm.clearFilterHs.filter(function (aHandler) {
@@ -210,7 +209,6 @@
         }
 
         function registerRestoreState (handler) {
-            $log.debug('registerRestoreState', handler);
             vm.restoreStateHs.push(handler);
             var removeHandler = function () {
                 vm.restoreStateHs = vm.restoreStateHs.filter(function (aHandler) {
@@ -285,10 +283,9 @@
         }
 
         function triggerClearFilters () {
-            $log.debug('triggerClearFilter', vm.clearFilterHs);
-            vm.query.developer = '';
-            vm.query.product = '';
-            vm.query.version = '';
+            vm.query.developer = undefined;
+            vm.query.product = undefined;
+            vm.query.version = undefined;
             vm.triggerSearch();
             angular.forEach(vm.clearFilterHs, function (handler) {
                 handler();
@@ -297,6 +294,7 @@
 
         function triggerRestoreState () {
             if ($localStorage.searchTableState) {
+                vm.query = {};
                 var state = angular.fromJson($localStorage.searchTableState);
                 $log.debug('triggerRestoreState', state);
                 // save changes to text fields

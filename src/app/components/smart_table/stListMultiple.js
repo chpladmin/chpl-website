@@ -5,7 +5,7 @@
         .directive('stListMultiple', stListMultiple);
 
     /** @ngInclude */
-    function stListMultiple ($log) {
+    function stListMultiple () {
         return {
             bindToController: {
                 hasChanges: '=?',
@@ -33,7 +33,6 @@
         activate();
 
         function activate () {
-            console.log('linking', scope);
             var table = ctrls[0];
             var ctrl = ctrls[1];
             var clearFilter = scope.registerClearFilter({
@@ -130,10 +129,8 @@
 
         function setItems () {
             if (angular.isDefined(scope.fixedItems)) {
-                console.log('setItems fixed',scope.fixedItems);
                 scope.distinctItems = angular.copy(scope.fixedItems);
             } else if (angular.isDefined(scope.collection)) {
-                console.log('setItems collection', scope.collection);
                 bindCollection(scope.collection);
                 scope.$watch('collection', function (newCollection) {
                     bindCollection(newCollection)
@@ -143,7 +140,7 @@
     }
 
     /** @ngInclude */
-    function ListMultipleController ($localStorage, $log) {
+    function ListMultipleController ($localStorage) {
         var vm = this;
 
         vm.activate = activate;
@@ -157,7 +154,6 @@
 
         function activate () {
             if (vm.distinctItems && vm.distinctItems.length > 0 && vm.selected && vm.selected.length > 0) {
-                $log.debug('ctrl.activate ' + vm.predicate, vm, vm.distinctItems, vm.selected);
                 vm.filterChanged();
             }
         }
@@ -201,7 +197,6 @@
         }
 
         function restoreState (state) {
-            $log.debug('restoreState ' + vm.predicate, state);
             var predicateSearch = state.search.predicateObject[vm.predicate];
             if (predicateSearch) {
                 if (predicateSearch.matchAny) {

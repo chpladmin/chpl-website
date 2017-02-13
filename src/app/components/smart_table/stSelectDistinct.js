@@ -1,67 +1,130 @@
 (function () {
     'use strict';
     angular.module('chpl')
+        .controller('SelectDistinctController', SelectDistinctController)
+        .directive('stSelectDistinct', stSelectDistinct);
 
-        .directive('stSelectDistinct', function () {
-            return {
-                replace: true,
-                restrict: 'E',
-                require: '^stTable',
-                scope: {
-                    collection: '=',
-                    hasChanges: '=?',
-                    predicate: '@',
-                    predicateExpression: '='
-                },
-                template: '<select ng-model="selectedOption" ng-change="optionChanged(selectedOption)" ng-options="opt for opt in distinctItems"></select>',
-                link: function (scope, element, attr, table) {
-                    var getPredicate = function () {
-                        var predicate = scope.predicate;
-                        if (!predicate && scope.predicateExpression) {
-                            predicate = scope.predicateExpression;
-                        }
-                        return predicate;
-                    }
+    function stSelectDistinct () {
+        return {
+            bindToController: {
+                hasChanges: '=?',
+                nameSpace: '@'
+            },
+            controller: 'SelectDistinctController',
+            controllerAs: 'vm',
+            link: stSelectDistinctLink,
+            replace: true,
+            restrict: 'E',
+            require: ['^stTable', 'stSelectDistinct'],
+            scope: {
+                collection: '=',
+                predicate: '@',
+                predicateExpression: '=',
+                registerClearFilter: '&',
+                registerRestoreState: '&'
+            },
+            templateUrl: 'app/components/smart_table/stSelectDistinct.html'
+        }
+    }
 
-                    scope.$watch('collection', function (newValue) {
-                        var predicate = getPredicate();
+    function stSelectDistinctLink (scope, element, attr, ctrls) {
+        var table, ctrl, predicate;
 
-                        if (newValue) {
-                            var temp = [];
-                            scope.distinctItems = ['All'];
+        activate();
 
-                            angular.forEach(scope.collection, function (item) {
-                                var value = item[predicate];
-
-                                if (value && value.trim().length > 0 && temp.indexOf(value) === -1) {
-                                    temp.push(value);
-                                }
-                            });
-                            temp.sort();
-
-                            scope.distinctItems = scope.distinctItems.concat(temp);
-                            scope.selectedOption = scope.distinctItems[0];
-                            scope.optionChanged(scope.selectedOption);
-                        }
-                    }, true);
-
-                    scope.optionChanged = function (selectedOption) {
-                        var predicate = getPredicate();
-
-                        var query = {};
-
-                        query.distinct = selectedOption;
-
-                        if (query.distinct === 'All') {
-                            query.distinct = '';
-                            scope.hasChanges = false;
-                        } else {
-                            scope.hasChanges = true;
-                        }
-
-                        table.search(query, predicate);
-                    };
-                }
+        function activate () {
+            predicate = scope.predicate;
+            if (!predicate && scope.predicateExpression) {
+                predicate = scope.predicateExpression;
             }
-        })
+            table = ctrls[0];
+            ctrl = ctrls[1];
+            var clearFilter = scope.registerClearFilter({
+                clearFilter: function () {
+                    ctrl.clearFilter();
+                }
+            });
+            scope.$on('$destroy', clearFilter);
+            var restoreState = scope.registerRestoreState({
+                restoreState: function (state) {
+                    ctrl.restoreState(state);
+                }
+            });
+            scope.$on('$destroy', restoreState);
+
+            ctrl.tableCtrl = table;
+            ctrl.predicate = predicate;
+            ctrl.activate();
+        }
+
+        scope.$watch('collection', function (newValue) {
+
+            if (newValue) {
+                var temp = [];
+                ctrl.distinctItems = ['All'];
+
+                angular.forEach(scope.collection, function (item) {
+                    var value = item[predicate];
+
+                    if (value && value.trim().length > 0 && temp.indexOf(value) === -1) {
+                        temp.push(value);
+                    }
+                });
+                temp.sort();
+
+                ctrl.distinctItems = ctrl.distinctItems.concat(temp);
+                ctrl.selectedOption = ctrl.distinctItems[0];
+                ctrl.filterChanged();
+            }
+        }, true);
+    }
+
+    /** @ngInclude */
+    function SelectDistinctController ($localStorage, $log) {
+        var vm = this;
+
+        vm.activate = activate;
+        vm.clearFilter = clearFilter;
+        vm.filterChanged = filterChanged;
+        vm.restoreState = restoreState;
+
+        ////////////////////////////////////////////////////////////////////
+
+        function activate () {
+        }
+
+        function clearFilter () {
+            vm.selectedOption = 'All';
+            vm.filterChanged();
+        }
+
+        function filterChanged () {
+            $log.debug('filterChanged', vm.selectedOption);
+            var query = {};
+            query.distinct = vm.selectedOption;
+
+            if (query.distinct === 'All') {
+                query.distinct = '';
+                vm.hasChanges = false;
+            } else {
+                vm.hasChanges = true;
+            }
+
+            vm.tableCtrl.search(query, vm.predicate);
+            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+        }
+
+        function restoreState (state) {
+            $log.debug('restoreState ' + vm.predicate, state);
+            var predicateSearch = state.search.predicateObject[vm.predicate];
+            if (predicateSearch) {
+                if (predicateSearch.distinct && predicateSearch.distinct.length > 0) {
+                    vm.selectedOption = predicateSearch.distinct;
+                } else {
+                    vm.selectedOption = 'All';
+                }
+                vm.filterChanged();
+            }
+        }
+    }
 })();

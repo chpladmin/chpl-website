@@ -5,7 +5,7 @@
         .directive('aiSurveillanceFilter', aiSurveillanceFilter);
 
     /** @ngInclude */
-    function aiSurveillanceFilter ($log) {
+    function aiSurveillanceFilter () {
         return {
             bindToController: {
                 hasChanges: '=?',
@@ -17,10 +17,6 @@
             restrict: 'E',
             require: ['^stTable', 'aiSurveillanceFilter'],
             scope: {
-                collection: '=',
-                fixedItems: '=?',
-                predicate: '@',
-                predicateExpression: '=',
                 registerClearFilter: '&',
                 registerRestoreState: '&'
             },
@@ -29,48 +25,79 @@
     }
 
     function aiSurveillanceFilterLink (scope, element, attr, ctrls) {
-        scope.clearSurveillanceActivityFilter = clearSurveillanceActivityFilter;
-        scope.filterChanged = filterChanged;
-        var table, tableState;
 
         activate();
 
         ////////////////////////////////////////////////////////
 
         function activate () {
-            table = ctrls[0];
-            tableState = table.tableState();
-            clearSurveillanceActivityFilter();
+            var table = ctrls[0];
+            var ctrl = ctrls[1];
+            var clearFilter = scope.registerClearFilter({
+                clearFilter: function () {
+                    ctrl.clearSurveillanceActivityFilter();
+                }
+            });
+            scope.$on('$destroy', clearFilter);
+            var restoreState = scope.registerRestoreState({
+                restoreState: function (state) {
+                    ctrl.restoreState(state);
+                }
+            });
+            scope.$on('$destroy', restoreState);
+            ctrl.tableCtrl = table;
+            ctrl.activate();
+        }
+    }
+    /** @ngInclude */
+    function SurveillanceFilterController ($localStorage, $log) {
+        var vm = this;
+
+        vm.activate = activate;
+        vm.clearSurveillanceActivityFilter = clearSurveillanceActivityFilter;
+        vm.filterChanged = filterChanged;
+        vm.restoreState = restoreState;
+
+        ////////////////////////////////////////////////////////////////////
+
+        function activate () {
+            vm.query = {
+                surveillance: { }
+            };
         }
 
         function clearSurveillanceActivityFilter () {
-            scope.query = {
+            vm.query = {
                 surveillance: { }
             };
-            filterChanged();
+            vm.filterChanged();
         }
 
         function filterChanged () {
-            scope.hasChanges = false;
+            vm.hasChanges = false;
+            var tableState = vm.tableCtrl.tableState();
+            $log.debug(tableState.search.predicateObject);
             if (tableState.search.predicateObject.surveillance) {
                 delete tableState.search.predicateObject.surveillance;
             }
 
-            if (scope.query.hasHadSurveillance) {
-                scope.hasChanges = true;
+            if (vm.query.hasHadSurveillance) {
+                vm.hasChanges = true;
                 var query = { anySurveillance: { } };
-                if (scope.query.hasHadSurveillance === 'never') {
+                if (vm.query.hasHadSurveillance === 'never') {
+                    $log.debug('never',vm.query);
                     query.anySurveillance.all = false;
                     query.anySurveillance.matchAll = true;
                     query.anySurveillance.hasOpenSurveillance = false;
                     query.anySurveillance.hasClosedSurveillance = false;
                     query.anySurveillance.hasOpenNonconformities = false;
                     query.anySurveillance.hasClosedNonconformities = false;
-                } else if (scope.query.hasHadSurveillance === 'has-had') {
-                    if (angular.isUndefined(scope.query.surveillance.openSurveillance) &&
-                        angular.isUndefined(scope.query.surveillance.closedSurveillance) &&
-                        angular.isUndefined(scope.query.surveillance.openNonconformities) &&
-                        angular.isUndefined(scope.query.surveillance.closedNonconformities)) {
+                } else if (vm.query.hasHadSurveillance === 'has-had') {
+                    $log.debug('has-had',vm.query);
+                    if (angular.isUndefined(vm.query.surveillance.openSurveillance) &&
+                        angular.isUndefined(vm.query.surveillance.closedSurveillance) &&
+                        angular.isUndefined(vm.query.surveillance.openNonconformities) &&
+                        angular.isUndefined(vm.query.surveillance.closedNonconformities)) {
                         query.anySurveillance.all = false;
                         query.anySurveillance.matchAll = false;
                         query.anySurveillance.hasOpenSurveillance = true;
@@ -79,127 +106,47 @@
                         query.anySurveillance.hasClosedNonconformities = false;
                     } else {
                         query.anySurveillance.all =
-                            !scope.query.surveillance.openSurveillance &&
-                            !scope.query.surveillance.closedSurveillance &&
-                            !scope.query.surveillance.openNonconformities &&
-                            !scope.query.surveillance.closedNonconformities;
-                        query.anySurveillance.matchAll = angular.copy(scope.query.surveillance.matchAll);
-                        query.anySurveillance.hasOpenSurveillance = angular.isDefined(scope.query.surveillance.openSurveillance) ? scope.query.surveillance.openSurveillance : false;
-                        query.anySurveillance.hasClosedSurveillance = angular.isDefined(scope.query.surveillance.closedSurveillance) ? scope.query.surveillance.closedSurveillance : false;
-                        query.anySurveillance.hasOpenNonconformities = angular.isDefined(scope.query.surveillance.openNonconformities) ? scope.query.surveillance.openNonconformities : false;
-                        query.anySurveillance.hasClosedNonconformities = angular.isDefined(scope.query.surveillance.closedNonconformities) ? scope.query.surveillance.closedNonconformities : false;
+                            !vm.query.surveillance.openSurveillance &&
+                            !vm.query.surveillance.closedSurveillance &&
+                            !vm.query.surveillance.openNonconformities &&
+                            !vm.query.surveillance.closedNonconformities;
+                        query.anySurveillance.matchAll = angular.copy(vm.query.surveillance.matchAll);
+                        query.anySurveillance.hasOpenSurveillance = angular.isDefined(vm.query.surveillance.openSurveillance) ? vm.query.surveillance.openSurveillance : false;
+                        query.anySurveillance.hasClosedSurveillance = angular.isDefined(vm.query.surveillance.closedSurveillance) ? vm.query.surveillance.closedSurveillance : false;
+                        query.anySurveillance.hasOpenNonconformities = angular.isDefined(vm.query.surveillance.openNonconformities) ? vm.query.surveillance.openNonconformities : false;
+                        query.anySurveillance.hasClosedNonconformities = angular.isDefined(vm.query.surveillance.closedNonconformities) ? vm.query.surveillance.closedNonconformities : false;
                     }
                 }
-                table.search(query, 'surveillance');
+                vm.tableCtrl.search(query, 'surveillance');
             } else {
                 delete tableState.search.predicateObject.surveillance;
-                table.search();
+                vm.tableCtrl.search();
             }
-        }
-    }
-    /** @ngInclude */
-    function SurveillanceFilterController ($localStorage, $log) {
-        var vm = this;
-
-        vm.activate = activate;
-        vm.clearFilter = clearFilter;
-        vm.filterChanged = filterChanged;
-        vm.isNotDefault = isNotDefault;
-        vm.restoreState = restoreState;
-        vm.toggleSelection = toggleSelection;
-
-        ////////////////////////////////////////////////////////////////////
-
-        function activate () {
-            if (vm.distinctItems && vm.distinctItems.length > 0 && vm.selected && vm.selected.length > 0) {
-                $log.debug('ctrl.activate ' + vm.predicate, vm, vm.distinctItems, vm.selected);
-                vm.filterChanged();
-            }
-        }
-
-        function clearFilter () {
-            angular.forEach(vm.distinctItems, function (item) {
-                if (item.isSelected !== item.selected) {
-                    item.isSelected = item.selected;
-                    vm.toggleSelection(item.value);
-                }
-            })
-            vm.matchAll = false;
             $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
-            vm.filterChanged();
-        }
-
-        function filterChanged () {
-            vm.hasChanges = getChanged();
-            var query, numberOfItems = vm.selected.length;
-
-            if (vm.matchAll) {
-                query = {
-                    matchAll: {
-                        items: vm.selected,
-                        all: numberOfItems === 0
-                    }
-                };
-            } else {
-                query = {
-                    matchAny: {
-                        items: vm.selected,
-                        all: (numberOfItems === 0 || numberOfItems === vm.distinctItems.length)
-                    }
-                };
-            }
-            vm.tableCtrl.search(query, vm.predicate);
-        }
-
-        function isNotDefault (item) {
-            return (angular.isUndefined(item.selected) && item.isSelected) || (item.selected !== item.isSelected);
         }
 
         function restoreState (state) {
-            $log.debug('restoreState ' + vm.predicate, state);
-            var predicateSearch = state.search.predicateObject[vm.predicate];
-            if (predicateSearch) {
-                if (predicateSearch.matchAny) {
-                    vm.matchAll = false;
-                    vm.selected = predicateSearch.matchAny.items;
-                } else if (predicateSearch.matchAll) {
-                    vm.matchAll = true;
-                    vm.selected = predicateSearch.matchAll.items;
-                }
-                setToTableState();
-            }
-        }
-
-        function toggleSelection (value) {
-            var index = vm.selected.indexOf(value);
-            if(index > -1) {
-                vm.selected.splice(index, 1);
-            } else {
-                vm.selected.push(value);
-            }
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
-            vm.filterChanged();
-        }
-
-        ////////////////////////////////////////////////////////////////////
-
-        function getChanged () {
-            var ret = vm.matchAll;
-            angular.forEach(vm.distinctItems, function (item) {
-                ret = ret || isNotDefault(item);
-            })
-            return ret;
-        }
-
-        function setToTableState () {
-            angular.forEach(vm.distinctItems, function (item) {
-                if (vm.selected.indexOf(item.value) > -1) {
-                    item.isSelected = true;
+            $log.debug('restoreState _surveillance_', state);
+            var query = state.search.predicateObject.surveillance;
+            if (query) {
+                $log.debug('restore surveillance', query);
+                vm.query.surveillance.openSurveillance = query.anySurveillance.hasOpenSurveillance;
+                vm.query.surveillance.closedSurveillance = query.anySurveillance.hasClosedSurveillance;
+                vm.query.surveillance.openNonconformities = query.anySurveillance.hasOpenNonconformities;
+                vm.query.surveillance.closedNonconformities = query.anySurveillance.hasClosedNonconformities;
+                vm.query.surveillance.matchAll = query.anySurveillance.matchAll;
+                if (!query.anySurveillance.all &&
+                    query.anySurveillance.matchAll &&
+                    !query.anySurveillance.hasOpenSurveillance &&
+                    !query.anySurveillance.hasClosedSurveillance &&
+                    !query.anySurveillance.hasOpenNonconformities &&
+                    !query.anySurveillance.hasClosedNonconformities) {
+                    vm.query.hasHadSurveillance = 'never';
                 } else {
-                    item.isSelected = false;
+                    vm.query.hasHadSurveillance = 'has-had';
                 }
-            })
-            vm.filterChanged();
+                vm.filterChanged();
+            }
         }
     }
 })();

@@ -1,50 +1,50 @@
 <li>
   <label for="filter-has-had-surveillance">
-    <input type="radio" ng-model="query.hasHadSurveillance" id="filter-has-had-surveillance" name="hasHadSurveillance" value="has-had" ng-change="filterChanged()">
+    <input type="radio" ng-model="vm.query.hasHadSurveillance" id="filter-has-had-surveillance" name="hasHadSurveillance" value="has-had" ng-change="vm.filterChanged()">
     Has had surveillance activity
   </label>
 </li>
-<span ng-if="query.hasHadSurveillance === 'has-had'">
+<span ng-if="vm.query.hasHadSurveillance === 'has-had'">
   <li>
     <label for="filter-open-surveillance">
-      <input type="checkbox" ng-model="query.surveillance.openSurveillance" id="filter-open-surveillance" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()">
-      <span ng-class="{ 'emphasis' : query.surveillance.openSurveillance }">Open Surveillance</span>
+      <input type="checkbox" ng-model="vm.query.surveillance.openSurveillance" id="filter-open-surveillance" ng-disabled="vm.query.hasHadSurveillance !== 'has-had'" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.surveillance.openSurveillance }">Open Surveillance</span>
     </label>
   </li>
   <li>
     <label for="filter-closed-surveillance">
-      <input type="checkbox" ng-model="query.surveillance.closedSurveillance" id="filter-closed-surveillance" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()">
-      <span ng-class="{ 'emphasis' : query.surveillance.closedSurveillance }">Closed Surveillance</span>
+      <input type="checkbox" ng-model="vm.query.surveillance.closedSurveillance" id="filter-closed-surveillance" ng-disabled="vm.query.hasHadSurveillance !== 'has-had'" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.surveillance.closedSurveillance }">Closed Surveillance</span>
     </label>
   </li>
   <li>
     <label for="filter-open-nonconformity">
-      <input type="checkbox" ng-model="query.surveillance.openNonconformities" id="filter-open-nonconformity" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()">
-      <span ng-class="{ 'emphasis' : query.surveillance.openNonconformities }">Open Nonconformity</span>
+      <input type="checkbox" ng-model="vm.query.surveillance.openNonconformities" id="filter-open-nonconformity" ng-disabled="vm.query.hasHadSurveillance !== 'has-had'" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.surveillance.openNonconformities }">Open Nonconformity</span>
     </label>
   </li>
   <li>
     <label for="filter-closed-nonconformity">
-      <input type="checkbox" ng-model="query.surveillance.closedNonconformities" id="filter-closed-nonconformity" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()">
-      <span ng-class="{ 'emphasis' : query.surveillance.closedNonconformities }">Closed Nonconformity</span>
+      <input type="checkbox" ng-model="vm.query.surveillance.closedNonconformities" id="filter-closed-nonconformity" ng-disabled="vm.query.hasHadSurveillance !== 'has-had'" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.surveillance.closedNonconformities }">Closed Nonconformity</span>
     </label>
   </li>
   <li class="text-center">
     <label>
-      <input type="checkbox" ng-model="query.surveillance.matchAll" id="filter-match-all" ng-disabled="query.hasHadSurveillance !== 'has-had'" ng-change="filterChanged()" ng-show="false">
+      <input type="checkbox" ng-model="vm.query.surveillance.matchAll" id="filter-match-all" ng-disabled="vm.query.hasHadSurveillance !== 'has-had'" ng-change="vm.filterChanged()" ng-show="false">
       Matching <u>{{ query.surveillance.matchAll ? 'all' : 'any' }}</u>
     </label>
   </li>
 </span>
 <li>
   <label for="filter-has-never-had-surveillance">
-    <input type="radio" ng-model="query.hasHadSurveillance" id="filter-has-never-had-surveillance" name="hasHadSurveillance" value="never" ng-change="filterChanged()">
+    <input type="radio" ng-model="vm.query.hasHadSurveillance" id="filter-has-never-had-surveillance" name="hasHadSurveillance" value="never" ng-change="vm.filterChanged()">
     Has never had surveillance activity
   </label>
 </li>
-<li ng-if="query.hasHadSurveillance">
+<li ng-if="vm.query.hasHadSurveillance">
   <span>
-    <a href ng-click="clearSurveillanceActivityFilter(); $event.stopPropagation();">
+    <a href ng-click="vm.clearSurveillanceActivityFilter(); $event.stopPropagation();">
       Clear Surveillance Activity Filter
     </a>
   </span>
