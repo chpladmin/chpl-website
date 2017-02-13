@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Bugs fixed
+* Fixed typo on Decertified Products Page
+* Added "external link" indicator to sample application
+
+---
+
 ## Version 7.2.0
 _7 February 2017_
 
