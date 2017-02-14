@@ -6,6 +6,7 @@ _Date TBD_
 ### Bugs fixed
 * Fixed typo on Decertified Products Page
 * Added "external link" indicator to sample application
+* 2016 -> 2015 on Resources page
 
 ---
 
