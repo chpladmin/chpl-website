@@ -127,14 +127,6 @@
             expect($location.path).not.toHaveBeenCalled();
         });
 
-        it('should have a way to clear search terms and results', function () {
-            vm.searchForm = {};
-            vm.searchForm.$setPristine = function () {};
-            vm.clear();
-            expect(vm.query.searchTerm).toBeUndefined();
-            expect(vm.compareCps).toEqual([]);
-        });
-
         describe('certificationStatus filters', function () {
 
             var objToFilter;

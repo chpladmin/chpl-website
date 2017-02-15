@@ -50,7 +50,7 @@
         }
     }
     /** @ngInclude */
-    function SurveillanceFilterController ($localStorage, $log) {
+    function SurveillanceFilterController ($localStorage) {
         var vm = this;
 
         vm.activate = activate;
@@ -76,7 +76,6 @@
         function filterChanged () {
             vm.hasChanges = false;
             var tableState = vm.tableCtrl.tableState();
-            $log.debug(tableState.search.predicateObject);
             if (tableState.search.predicateObject.surveillance) {
                 delete tableState.search.predicateObject.surveillance;
             }
@@ -85,7 +84,6 @@
                 vm.hasChanges = true;
                 var query = { anySurveillance: { } };
                 if (vm.query.hasHadSurveillance === 'never') {
-                    $log.debug('never',vm.query);
                     query.anySurveillance.all = false;
                     query.anySurveillance.matchAll = true;
                     query.anySurveillance.hasOpenSurveillance = false;
@@ -93,7 +91,6 @@
                     query.anySurveillance.hasOpenNonconformities = false;
                     query.anySurveillance.hasClosedNonconformities = false;
                 } else if (vm.query.hasHadSurveillance === 'has-had') {
-                    $log.debug('has-had',vm.query);
                     if (angular.isUndefined(vm.query.surveillance.openSurveillance) &&
                         angular.isUndefined(vm.query.surveillance.closedSurveillance) &&
                         angular.isUndefined(vm.query.surveillance.openNonconformities) &&
@@ -126,10 +123,8 @@
         }
 
         function restoreState (state) {
-            $log.debug('restoreState _surveillance_', state);
             var query = state.search.predicateObject.surveillance;
             if (query) {
-                $log.debug('restore surveillance', query);
                 vm.query.surveillance.openSurveillance = query.anySurveillance.hasOpenSurveillance;
                 vm.query.surveillance.closedSurveillance = query.anySurveillance.hasClosedSurveillance;
                 vm.query.surveillance.openNonconformities = query.anySurveillance.hasOpenNonconformities;

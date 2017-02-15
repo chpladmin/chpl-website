@@ -1,6 +1,6 @@
 <div ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
-    <st-manage register-search="vm.registerSearch(search)" />
+    <st-manage register-search="vm.registerSearch(search)" register-restore-components="vm.registerRestoreComponents(restore)" name-space="searchTableState" />
     <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
         <h1>Search</h1>
@@ -12,7 +12,8 @@
           <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
             <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ACB/CHPL ID</label>
             <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID"
-                   ng-model="vm.query.term" ng-change="vm.activeSearch = true" st-search="mainSearch" />
+                   ng-model="vm.query" ng-change="vm.activeSearch = true"
+                   ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearTerm(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
             <a href ng-if="vm.hasTableState && !vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search" ng-click="vm.reloadResults()">Restore previous search</a>
           </div>
         </div>
@@ -123,10 +124,10 @@
                 <div class="form-group">
                   <label for="developerRefine" class="col-sm-4 control-label">
                     Developer
-                    <span ng-if="vm.query.developer && vm.query.developer.length > 0"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                    <span ng-if="vm.categoryChanged['developer']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                   </label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.query.developer" st-search="developer" />
+                    <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ai-enhanced-text has-changes="vm.categoryChanged['developer']" predicate="developer" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
                   </div>
                 </div>
               </li>
@@ -134,10 +135,10 @@
                 <div class="form-group">
                   <label for="productRefine" class="col-sm-4 control-label">
                     Product
-                    <span ng-if="vm.query.product && vm.query.product.length > 0"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                    <span ng-if="vm.categoryChanged['product']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                   </label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.query.product" st-search="product" />
+                    <input type="text" class="form-control" id="productRefine" placeholder="Product" ai-enhanced-text has-changes="vm.categoryChanged['product']" predicate="product" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
                   </div>
                 </div>
               </li>
@@ -145,10 +146,10 @@
                 <div class="form-group">
                   <label for="versionRefine" class="col-sm-4 control-label">
                     Version
-                    <span ng-if="vm.query.version && vm.query.version.length > 0"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                    <span ng-if="vm.categoryChanged['version']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                   </label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.query.version" st-search="version" />
+                    <input type="text" class="form-control" id="versionRefine" placeholder="Version" ai-enhanced-text has-changes="vm.categoryChanged['version']" predicate="version" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
                   </div>
                 </div>
               </li>
@@ -165,7 +166,7 @@
             <div class="row">
               <div class="col-md-12">
                 <span class="pull-right">
-                  <a href ng-click="vm.browseAll()">Browse all</a> | <a href ng-click="vm.clearFilters()">Clear filters</a> | <a href ng-click="vm.triggerClearFilters()">Trigger Clear Filters</a> | <a href ng-click="vm.triggerRestoreState()">Trigger Restore State</a>
+                  <a href ng-click="vm.browseAll()">Browse all</a> | <a href ng-click="vm.triggerClearFilters()">Clear Filters</a> | <a href ng-click="vm.triggerRestoreState()">Trigger Restore State</a>
                 </span>
                 <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
               </div>
@@ -188,10 +189,8 @@
                           <span class="pull-right" ng-if="vm.displayedCps && vm.displayedCps.length > 0">
                             <label for="pageSizeTop" class="sr-only">Show how many results</label>
                             Showing up to&nbsp;
-                            <select ng-model="vm.filterItems.pageSize" id="pageSizeTop">
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                              <option value="250">250</option>
+                            <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
+                                    ng-options="v as v for v in [50,100,250]">
                             </select>
                             &nbsp;results per page
                           </span>
@@ -215,10 +214,8 @@
                           <span class="pull-right">
                             <label for="pageSizeBottom" class="sr-only">Show how many results</label>
                             Showing up to&nbsp;
-                            <select ng-model="vm.filterItems.pageSize" id="pageSizeBottom">
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                              <option value="250">250</option>
+                            <select ng-model="vm.filterItems.pageSize" id="pageSizeBottom"
+                                    ng-options="v as v for v in [50,100,250]">
                             </select>
                             &nbsp;results per page
                           </span>

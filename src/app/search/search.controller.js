@@ -11,7 +11,6 @@
         vm.browseAll = browseAll;
         vm.certificationStatusFilter = certificationStatusFilter;
         vm.clear = clear;
-        vm.clearFilters = clearFilters;
         vm.clearPreviouslyCompared = clearPreviouslyCompared;
         vm.clearPreviouslyViewed = clearPreviouslyViewed;
         vm.compare = compare;
@@ -19,12 +18,15 @@
         vm.isCategoryChanged = isCategoryChanged;
         vm.loadResults = loadResults;
         vm.registerClearFilter = registerClearFilter;
+        vm.registerClearTerm = registerClearTerm;
+        vm.registerRestoreComponents = registerRestoreComponents;
         vm.registerRestoreState = registerRestoreState;
         vm.registerSearch = registerSearch;
         vm.reloadResults = reloadResults;
         vm.statusFont = statusFont;
         vm.toggleCompare = toggleCompare;
         vm.triggerClearFilters = triggerClearFilters;
+        vm.triggerClearTerm = triggerClearTerm;
         vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
         vm.truncButton = truncButton;
@@ -48,12 +50,6 @@
             vm.boxes = {};
             vm.clearFilterHs = [];
             vm.restoreStateHs = [];
-            vm.query = {
-                developer: undefined,
-                product: undefined,
-                version: undefined,
-                term: undefined
-            }
 
             manageStorage();
             restoreResults();
@@ -62,48 +58,18 @@
         }
 
         function browseAll () {
-            vm.clearFilters(true);
+            vm.triggerClearFilters();
+            vm.triggerClearTerm();
             vm.activeSearch = true;
         }
 
         function clear () {
             vm.compareCps = [];
-            vm.clearFilters(true);
+            vm.triggerClearFilters();
+            vm.triggerClearTerm();
             vm.activeSearch = false;
             if (vm.searchForm) {
                 vm.searchForm.$setPristine();
-            }
-        }
-
-        function clearFilters (removeSearchTerm) {
-            var term;
-            if (!removeSearchTerm) {
-                if (vm.query.term) {
-                    term = vm.query.term;
-                }
-            }
-            vm.query = {};
-            vm.searchState = {
-                predicateObject: {
-                    certificationStatus: {
-                        matchAny: {
-                            items: ['Active','Suspended by ONC','Suspended by ONC-ACB'],
-                            all: false
-                        }
-                    },
-                    edition: {
-                        matchAny: {
-                            items: ['2014','2015'],
-                            all: false
-                        }
-                    }
-                }
-            };
-            setFilterInfo();
-            if (!removeSearchTerm) {
-                if (term) {
-                    vm.query.term = term;
-                }
             }
         }
 
@@ -174,9 +140,6 @@
             for (var i = 0; i < categories.length; i++) {
                 ret = ret || vm.categoryChanged[categories[i]];
             }
-            ret = ret || (vm.query.developer && vm.query.developer.length > 0);
-            ret = ret || (vm.query.product && vm.query.product.length > 0);
-            ret = ret || (vm.query.version && vm.query.version.length > 0);
             return ret;
         }
 
@@ -202,6 +165,26 @@
             vm.clearFilterHs.push(handler);
             var removeHandler = function () {
                 vm.clearFilterHs = vm.clearFilterHs.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
+        function registerClearTerm (handler) {
+            vm.clearTerm = [handler]
+            var removeHandler = function () {
+                vm.clearTerm = vm.clearTerm.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
+        function registerRestoreComponents (handler) {
+            vm.restoreComponents = [handler];
+            var removeHandler = function () {
+                vm.restoreComponents = vm.restoreComponents.filter(function (aHandler) {
                     return aHandler !== handler;
                 });
             };
@@ -283,27 +266,23 @@
         }
 
         function triggerClearFilters () {
-            vm.query.developer = undefined;
-            vm.query.product = undefined;
-            vm.query.version = undefined;
-            vm.triggerSearch();
             angular.forEach(vm.clearFilterHs, function (handler) {
                 handler();
             });
+            vm.triggerSearch();
+        }
+
+        function triggerClearTerm () {
+            angular.forEach(vm.clearTerm, function (handler) {
+                handler();
+            });
+            vm.triggerSearch();
         }
 
         function triggerRestoreState () {
             if ($localStorage.searchTableState) {
-                vm.query = {};
                 var state = angular.fromJson($localStorage.searchTableState);
-                $log.debug('triggerRestoreState', state);
-                // save changes to text fields
-                vm.query.term = state.search.predicateObject.term;
-                vm.query.developer = state.search.predicateObject.developer;
-                vm.query.product = state.search.predicateObject.product;
-                vm.query.version = state.search.predicateObject.version
-                vm.triggerSearch();
-                // restore pagination/sort
+                //vm.restoreComponents[0](state);
                 angular.forEach(vm.restoreStateHs, function (handler) {
                     handler(state);
                 });

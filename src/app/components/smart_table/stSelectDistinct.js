@@ -54,6 +54,7 @@
 
             ctrl.tableCtrl = table;
             ctrl.predicate = predicate;
+            ctrl.element = element;
             ctrl.activate();
         }
 
@@ -74,13 +75,12 @@
 
                 ctrl.distinctItems = ctrl.distinctItems.concat(temp);
                 ctrl.selectedOption = ctrl.distinctItems[0];
-                ctrl.filterChanged();
             }
         }, true);
     }
 
     /** @ngInclude */
-    function SelectDistinctController ($localStorage, $log) {
+    function SelectDistinctController ($localStorage) {
         var vm = this;
 
         vm.activate = activate;
@@ -99,7 +99,6 @@
         }
 
         function filterChanged () {
-            $log.debug('filterChanged', vm.selectedOption);
             var query = {};
             query.distinct = vm.selectedOption;
 
@@ -115,9 +114,14 @@
         }
 
         function restoreState (state) {
-            $log.debug('restoreState ' + vm.predicate, state);
+            vm.element[0].selectedIndex = 0;
             var predicateSearch = state.search.predicateObject[vm.predicate];
             if (predicateSearch) {
+                for (var i = 0; i < vm.distinctItems.length; i++) {
+                    if (vm.distinctItems[i] === predicateSearch) {
+                        vm.element[0].selectedIndex = i;
+                    }
+                }
                 if (predicateSearch.distinct && predicateSearch.distinct.length > 0) {
                     vm.selectedOption = predicateSearch.distinct;
                 } else {

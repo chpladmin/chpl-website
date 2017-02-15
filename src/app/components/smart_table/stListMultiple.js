@@ -67,7 +67,6 @@
         function bindCollection (collection) {
             var predicate = getPredicate();
             var distinctItems = [];
-            var selected = [];
 
             angular.forEach(collection, function (item) {
                 var value = item[predicate];
