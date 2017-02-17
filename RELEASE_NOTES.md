@@ -3,6 +3,9 @@
 ## Version TBD
 _Date TBD_
 
+### New features
+* Added authorization parameter for specific surveillance download file
+
 ### Bugs fixed
 * Fixed typo on Decertified Products Page
 * Added "external link" indicator to sample application
