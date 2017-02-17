@@ -58,9 +58,10 @@
         function activate () {
             vm.loadAnnouncements();
 
-            $rootScope.$on('ShowWidget', function () {
+            var cmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget();
             });
+            $scope.$on('$destroy', cmsWidget);
         }
 
         function clear () {
