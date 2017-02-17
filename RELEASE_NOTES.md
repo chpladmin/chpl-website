@@ -3,8 +3,21 @@
 ## Version TBD
 _Date TBD_
 
+### New features
+* Added authorization parameter for specific surveillance download file
+
+### Bugs fixed
+* Fixed typo on Decertified Products Page
+* Added "external link" indicator to sample application
+* 2016 -> 2015 on Resources page
+
+---
+
+## Version 7.2.0
+_7 February 2017_
+
 ### Features Added
-* Added "Meaningful Use Users Accurate As Of Date value
+* Added "Meaningful Use Users Accurate As Of Date" value
   * CMS Management allows editing
   * Decertified Developers/Products displays
 * Removed OBE Google Analytics code

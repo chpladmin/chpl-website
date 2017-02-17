@@ -3,29 +3,35 @@
 
     describe('chpl.resources', function () {
 
-        var scope, ctrl, $log;
+        var $log, authService, mock, scope, vm;
+
+        mock = {};
+        mock.API_KEY = 'api key';
+        mock.token = 'a token here';
 
         beforeEach(function () {
-            var mockAuthService = {};
+            module('chpl.loginServices');
             module('chpl.resources', function ($provide) {
-                $provide.value('authService', mockAuthService);
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.getApiKey = jasmine.createSpy('getApiKey');
+                    $delegate.getToken = jasmine.createSpy('getToken');
+                    return $delegate;
+                });
             });
 
-            inject(function ($q) {
-                mockAuthService.getApiKey = function () {
-                    return $q.when('api key');
-                };
+            inject(function ($controller, $rootScope, _$log_, _authService_) {
+                $log = _$log_;
+                authService = _authService_;
+                authService.getApiKey.and.returnValue(mock.API_KEY);
+                authService.getToken.and.returnValue(mock.token);
+
+                scope = $rootScope.$new();
+                vm = $controller('ResourcesController', {
+                    $scope: scope
+                });
+                scope.$digest();
             });
         });
-
-        beforeEach(inject(function (_$log_, $rootScope, $controller) {
-            $log = _$log_;
-            scope = $rootScope.$new();
-            ctrl = $controller('ResourcesController', {
-                $scope: scope
-            });
-            scope.$digest();
-        }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
@@ -35,11 +41,19 @@
 
         describe('controller', function () {
             it('should exist', function () {
-                expect(ctrl).toBeDefined();
+                expect(vm).toBeDefined();
             });
 
             it('should load have a swaggerUI at start', function () {
-                expect(ctrl.swaggerUrl.length).toBeGreaterThan(0);
+                expect(vm.swaggerUrl.length).toBeGreaterThan(0);
+            });
+
+            it('should know what the API Key is', function () {
+                expect(vm.API_KEY).toBe(mock.API_KEY);
+            });
+
+            it('should know what the token is', function () {
+                expect(vm.token).toBe(mock.token);
             });
         });
     });
