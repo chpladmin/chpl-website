@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Added authorization parameter for specific surveillance download file
+* Restricted basic surveillance to ROLE_ADMIN & CMS_STAFF
 
 ### Bugs fixed
 * Fixed typo on Decertified Products Page
