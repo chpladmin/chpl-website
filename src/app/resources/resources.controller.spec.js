@@ -15,6 +15,8 @@
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
+                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
                     return $delegate;
                 });
             });
@@ -24,6 +26,8 @@
                 authService = _authService_;
                 authService.getApiKey.and.returnValue(mock.API_KEY);
                 authService.getToken.and.returnValue(mock.token);
+                authService.isChplAdmin.and.returnValue(false);
+                authService.isOncStaff.and.returnValue(false);
 
                 scope = $rootScope.$new();
                 vm = $controller('ResourcesController', {
@@ -53,7 +57,26 @@
             });
 
             it('should know what the token is', function () {
-                expect(vm.token).toBe(mock.token);
+                expect(vm.getToken).toBeDefined();
+                expect(vm.getToken()).toBe(mock.token);
+            });
+
+            it('should know if it should show restricted download files', function () {
+                authService.isChplAdmin.and.returnValue(false);
+                authService.isOncStaff.and.returnValue(false);
+                expect(vm.showRestricted()).toBe(false);
+
+                authService.isChplAdmin.and.returnValue(true);
+                authService.isOncStaff.and.returnValue(false);
+                expect(vm.showRestricted()).toBe(true);
+
+                authService.isChplAdmin.and.returnValue(false);
+                authService.isOncStaff.and.returnValue(true);
+                expect(vm.showRestricted()).toBe(true);
+
+                authService.isChplAdmin.and.returnValue(true);
+                authService.isOncStaff.and.returnValue(true);
+                expect(vm.showRestricted()).toBe(true);
             });
         });
     });

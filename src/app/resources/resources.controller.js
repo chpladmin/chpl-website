@@ -8,7 +8,9 @@
     function ResourcesController ($scope, $log, $location, $localStorage, API, authService, commonService) {
         var vm = this;
 
+        vm.getToken = authService.getToken;
 		vm.lookupCertIds = lookupCertIds;
+        vm.showRestricted = showRestricted;
 		vm.viewProduct = viewProduct;
 
         activate();
@@ -31,7 +33,6 @@
             }
             vm.API = API;
             vm.API_KEY = authService.getApiKey();
-            vm.token = authService.getToken();
             vm.downloadOption= vm.API + '/download?api_key=' + vm.API_KEY;
             if (vm.API === '/rest') {
                 vm.swaggerUrl = $location.absUrl().split('#')[0] + 'rest/api-docs';
@@ -112,6 +113,11 @@
                     });
                 }
             }
+        }
+
+        function showRestricted () {
+            return authService.isChplAdmin() ||
+                authService.isOncStaff();
         }
 
         function viewProduct (cp) {
