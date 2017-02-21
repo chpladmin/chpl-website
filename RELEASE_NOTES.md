@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 7.2.1
+_21 February 2017_
+
+### Bugs fixed
+* Fixed typo on Decertified Products Page
+* Added "external link" indicator to sample application
+* 2016 -> 2015 on Resources page
+
+---
+
 ## Version 7.2.0
 _7 February 2017_
 
