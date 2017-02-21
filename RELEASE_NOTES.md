@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 7.2.1
+_21 February 2017_
 
 ### New features
 * Added authorization parameter for specific surveillance download file
