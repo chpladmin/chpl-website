@@ -46,7 +46,7 @@
             });
             scope.$on('$destroy', restoreState);
 
-            element.bind('change', ctrl.filterChanged);
+            element.bind('input', ctrl.filterChanged);
 
             ctrl.tableCtrl = table;
             ctrl.predicate = predicate;

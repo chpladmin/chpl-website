@@ -61,12 +61,16 @@ ul.pagination li {
 
 .restore-previous-search {
     position: absolute;
-    bottom: -20px;
+    bottom: -40px;
+}
+
+.restore-previous-search a {
     color: #fff;
 }
-.restore-previous-search:hover,
-.restore-previous-search:active,
-.restore-previous-search:focus {
+
+.restore-previous-search a:hover,
+.restore-previous-search a:active,
+.restore-previous-search a:focus {
     color: #ccc;
 }
 

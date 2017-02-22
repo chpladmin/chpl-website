@@ -1,12 +1,12 @@
 <div ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
-    <st-manage register-search="vm.registerSearch(search)" register-restore-components="vm.registerRestoreComponents(restore)" name-space="searchTableState" />
+    <st-manage register-search="vm.registerSearch(search)" />
     <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
         <h1>Search</h1>
       </div>
     </div>
-    <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.activeSearch = true" aria-live="polite">
+    <div class="form-horizontal search-inputs" ng-form="vm.searchForm" aria-live="polite">
       <div class="form-group" id="filters">
         <div class="form-group-lg">
           <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
@@ -14,7 +14,10 @@
             <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID"
                    ng-model="vm.query" ng-change="vm.activeSearch = true"
                    ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearTerm(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
-            <a href ng-if="vm.hasTableState && !vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search" ng-click="vm.reloadResults()">Restore previous search</a>
+            <span ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
+              <a href ng-click="vm.browseAll()">Browse all</a><br />
+              <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()">Restore previous search</a>
+            </span>
           </div>
         </div>
 <!--
@@ -52,7 +55,7 @@
                 </a>
               </li>
               <li ng-show="vm.show2011">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2014 = !vm.show2014">
@@ -60,7 +63,7 @@
                 </a>
               </li>
               <li ng-show="vm.show2014">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015 = !vm.show2015">
@@ -68,7 +71,7 @@
                 </a>
               </li>
               <li ng-show="vm.show2015">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2015]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2015]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
               </li>
             </ul>
           </div>
@@ -88,7 +91,7 @@
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.show2011Cqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
@@ -96,7 +99,7 @@
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.showOtherCqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
@@ -118,7 +121,7 @@
                 </a>
               </li>
               <li ng-show="vm.showPracticeType">
-                <st-select-distinct collection="vm.allCps" has-changes="vm.categoryChanged['practiceType']" predicate="practiceType" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-select-distinct>
+                <st-select-distinct collection="vm.allCps" fixed-items="vm.searchOptions.practiceTypes" has-changes="vm.categoryChanged['practiceType']" predicate="practiceType" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-select-distinct>
               </li>
               <li class="form-horizontal">
                 <div class="form-group">
@@ -160,13 +163,13 @@
     </div>
 
     <div aria-live="polite" id="mainContent" tabindex="-1">
-      <div id="resultsSection" ng-if="vm.activeSearch || vm.searchForm.$dirty" class="main-content">
+      <div id="resultsSection" ng-show="vm.activeSearch || vm.searchForm.$dirty" class="main-content">
         <div class="row">
           <div class="col-md-9"> <!-- search results -->
             <div class="row">
               <div class="col-md-12">
                 <span class="pull-right">
-                  <a href ng-click="vm.browseAll()">Browse all</a> | <a href ng-click="vm.triggerClearFilters()">Clear Filters</a> | <a href ng-click="vm.triggerRestoreState()">Trigger Restore State</a>
+                  <a href ng-click="vm.browseAll()">Browse all</a> | <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
                 </span>
                 <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
               </div>
@@ -295,4 +298,4 @@
       </div> <!-- end of search results -->
     </div>
   </div>
-</div> <!-- end controller -->
+</div>

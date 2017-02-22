@@ -18,8 +18,8 @@
             require: ['^stTable', 'stSelectDistinct'],
             scope: {
                 collection: '=',
+                fixedItems: '=?',
                 predicate: '@',
-                predicateExpression: '=',
                 registerClearFilter: '&',
                 registerRestoreState: '&'
             },
@@ -52,31 +52,42 @@
             });
             scope.$on('$destroy', restoreState);
 
-            ctrl.tableCtrl = table;
-            ctrl.predicate = predicate;
+            setItems();
+            scope.$watch('fixedItems', function () {
+                setItems();
+            });
             ctrl.element = element;
+            ctrl.predicate = scope.predicate;
+            ctrl.tableCtrl = table;
             ctrl.activate();
         }
 
-        scope.$watch('collection', function (newValue) {
+        function bindCollection (collection) {
+            var predicate = scope.predicate;
+            var distinctItems = ['All'];
+            var temp = [];
 
-            if (newValue) {
-                var temp = [];
-                ctrl.distinctItems = ['All'];
+            angular.forEach(collection, function (item) {
+                var value = item[predicate];
+                if (value && value.trim().length > 0 && temp.indexOf(value) === -1) {
+                    temp.push(value);
+                }
+            });
+            temp.sort();
+            ctrl.distinctItems = distinctItems.concat(temp);
+            ctrl.selectedOption = ctrl.distinctItems[0];
+        }
 
-                angular.forEach(scope.collection, function (item) {
-                    var value = item[predicate];
-
-                    if (value && value.trim().length > 0 && temp.indexOf(value) === -1) {
-                        temp.push(value);
-                    }
+        function setItems () {
+            if (angular.isDefined(scope.fixedItems)) {
+                ctrl.distinctItems = ['All'].concat(angular.copy(scope.fixedItems));
+            } else if (angular.isDefined(scope.collection)) {
+                bindCollection(scope.collection);
+                scope.$watch('collection', function (newCollection) {
+                    bindCollection(newCollection)
                 });
-                temp.sort();
-
-                ctrl.distinctItems = ctrl.distinctItems.concat(temp);
-                ctrl.selectedOption = ctrl.distinctItems[0];
             }
-        }, true);
+        }
     }
 
     /** @ngInclude */
@@ -116,7 +127,7 @@
         function restoreState (state) {
             vm.element[0].selectedIndex = 0;
             var predicateSearch = state.search.predicateObject[vm.predicate];
-            if (predicateSearch) {
+            if (predicateSearch) {// && vm.distinctItems) {
                 for (var i = 0; i < vm.distinctItems.length; i++) {
                     if (vm.distinctItems[i] === predicateSearch) {
                         vm.element[0].selectedIndex = i;

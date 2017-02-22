@@ -52,14 +52,15 @@
             vm.restoreStateHs = [];
 
             manageStorage();
-            restoreResults();
             populateSearchOptions();
+            restoreResults();
             vm.loadResults();
         }
 
         function browseAll () {
             vm.triggerClearFilters();
             vm.triggerClearTerm();
+            $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
             vm.activeSearch = true;
         }
 
@@ -145,17 +146,19 @@
 
         function loadResults() {
             commonService.getAll().then(function (response) {
-                vm.allCps = response.results;
-                vm.displayedCps = [].concat(vm.allCps);
-                for (var i = 0; i < vm.displayedCps.length; i++) {
-                    vm.displayedCps[i].mainSearch = [vm.displayedCps[i].developer, vm.displayedCps[i].product, vm.displayedCps[i].acbCertificationId, vm.displayedCps[i].chplProductNumber, vm.displayedCps[i].previousDevelopers].join('|');
-                    vm.displayedCps[i].surveillance = angular.toJson({
-                        hasOpenSurveillance: vm.displayedCps[i].hasOpenSurveillance,
-                        hasClosedSurveillance: vm.displayedCps[i].hasClosedSurveillance,
-                        hasOpenNonconformities: vm.displayedCps[i].hasOpenNonconformities,
-                        hasClosedNonconformities: vm.displayedCps[i].hasClosedNonconformities
+                var results = response.results;
+                for (var i = 0; i < results.length; i++) {
+                    results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber, results[i].previousDevelopers].join('|');
+                    results[i].surveillance = angular.toJson({
+                        hasOpenSurveillance: results[i].hasOpenSurveillance,
+                        hasClosedSurveillance: results[i].hasClosedSurveillance,
+                        hasOpenNonconformities: results[i].hasOpenNonconformities,
+                        hasClosedNonconformities: results[i].hasClosedNonconformities
                     });
                 }
+                vm.allCps = [];
+                vm.displayedCps = [];
+                incrementTable(results);
             }, function (error) {
                 $log.debug(error);
             });
@@ -282,7 +285,6 @@
         function triggerRestoreState () {
             if ($localStorage.searchTableState) {
                 var state = angular.fromJson($localStorage.searchTableState);
-                //vm.restoreComponents[0](state);
                 angular.forEach(vm.restoreStateHs, function (handler) {
                     handler(state);
                 });
@@ -321,6 +323,16 @@
 
         ////////////////////////////////////////////////////////////////////
 
+        function incrementTable (results) {
+            var size = 500, delay = 100;
+            if (results.length > 0) {
+                vm.allCps = vm.allCps.concat(results.splice(0,size));
+                $timeout(function () {
+                    incrementTable(results);
+                }, delay);
+            }
+        }
+
         function manageStorage () {
             if (localStorage.previouslyCompared) {
                 vm.previouslyCompared = $localStorage.previouslyCompared;
@@ -336,6 +348,10 @@
                 .then(function (options) {
                     vm.searchOptions = options;
                     var i;
+                    options.practiceTypes = [];
+                    for (i = 0; i < options.practiceTypeNames.length; i++) {
+                        options.practiceTypes.push(options.practiceTypeNames[i].name);
+                    }
                     for (i = 0; i < options.certificationStatuses.length; i++) {
                         if (options.certificationStatuses[i].name === 'Pending') {
                             options.certificationStatuses.splice(i,1);

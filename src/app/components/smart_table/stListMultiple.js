@@ -8,6 +8,7 @@
     function stListMultiple () {
         return {
             bindToController: {
+                allowAnd: '@?',
                 hasChanges: '=?',
                 nameSpace: '@'
             },
