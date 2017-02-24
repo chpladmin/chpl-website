@@ -101,34 +101,28 @@
         }
 
         function compare () {
-            var comparePath = '/compare/';
-            var i;
-            if (angular.isUndefined(vm.compareCps)) {
-                vm.compareCps = [];
-            }
-            for (i = 0; i < vm.compareCps.length; i++) {
-                comparePath += vm.compareCps[i].id + '&';
-            }
-            comparePath = comparePath.substring(0, comparePath.length - 1);
-            if (comparePath.indexOf('&') > 0) {
-                var prev = $localStorage.previouslyCompared;
-                var toAdd;
-                for (i = 0; i < vm.compareCps.length; i++) {
-                    toAdd = true;
-                    for (var j = 0; j < prev.length; j++) {
-                        if (prev[j].id === vm.compareCps[i].id) {
-                            toAdd = false;
+            if (vm.compareCps) {
+                var comparePath = '/compare/' + vm.compareCps.map(function (elem) { return elem.id; }).join('&');
+
+                if (comparePath.indexOf('&') > 0) {
+                    var toAdd;
+                    for (var i = 0; i < vm.compareCps.length; i++) {
+                        toAdd = true;
+                        for (var j = 0; j < vm.previouslyCompared.length; j++) {
+                            if (vm.previouslyCompared[j].id === vm.compareCps[i].id) {
+                                toAdd = false;
+                            }
+                        }
+                        if (toAdd) {
+                            vm.previouslyCompared.push(vm.compareCps[i]);
                         }
                     }
-                    if (toAdd) {
-                        prev.push(vm.compareCps[i]);
+                    while (vm.previouslyCompared.length > 20) {
+                        vm.previouslyCompared.shift();
                     }
+                    $localStorage.previouslyCompared = vm.previouslyCompared;
+                    $location.url(comparePath);
                 }
-                while (prev.length > 20) {
-                    prev.shift();
-                }
-                $localStorage.previouslyCompared = prev;
-                $location.url(comparePath);
             }
         }
 
@@ -334,7 +328,7 @@
         }
 
         function manageStorage () {
-            if (localStorage.previouslyCompared) {
+            if ($localStorage.previouslyCompared) {
                 vm.previouslyCompared = $localStorage.previouslyCompared;
             } else {
                 vm.previouslyCompared = [];
@@ -342,7 +336,7 @@
             if ($localStorage.previouslyViewed) {
                 vm.previouslyViewed = $localStorage.previouslyViewed;
             } else {
-                vm.previouslyCompared = [];
+                vm.previouslyViewed = [];
             }
         }
 
