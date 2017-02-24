@@ -1,15 +1,16 @@
 <div ng-if="totalItemCount && totalItemCount > 0">
   <p class="text-center">{{ (currentPage - 1 ) * stItemsByPage + 1 }} - {{ (currentPage * stItemsByPage) > totalItemCount ? totalItemCount : (currentPage * stItemsByPage ) }} of {{ totalItemCount }} Result<span ng-if="totalItemCount !== 1">s</span></p>
-  <uib-pagination
-     boundary-link-numbers="true"
-     class="pagination-sm"
-     direction-links="false"
-     items-per-page="stItemsByPage"
-     max-size="stDisplayedPages"
-     ng-change="selectPage(currentPage)"
-     ng-model="currentPage"
-     total-items="totalItemCount">
-  </uib-pagination>
+  <ul class="pagination pagination-sm">
+    <li ng-class="{disabled: currentPage === 1}"><a href ng-click="selectPage(currentPage - 1)" ng-disabled="currentPage === 1">Previous</a></li>
+    <li ng-if="pages[0] > 1"><a href ng-click="selectPage(1)">1</a></li>
+    <li ng-if="pages[0] === 3"><a href ng-click="selectPage(2)">2</a></li>
+    <li ng-if="pages[0] > 3"><a href ng-click="selectPage(pages[0] - 1)">...</a></li>
+    <li ng-repeat="page in pages" ng-class="{active: page==currentPage}"><a href ng-click="selectPage(page)" ng-disabled="currentPage === page">{{ page }}</a></li>
+    <li ng-if="pages[pages.length - 1] < numPages - 2"><a href ng-click="selectPage(pages[pages.length - 1] + 1)">...</a></li>
+    <li ng-if="pages[pages.length - 1] === numPages - 2"><a href ng-click="selectPage(numPages - 1)">{{ numPages - 1 }}</a></li>
+    <li ng-if="numPages > pages[pages.length - 1]"><a href ng-click="selectPage(numPages)">{{ numPages }}</a></li>
+    <li ng-class="{disabled: currentPage === numPages}"><a href ng-click="selectPage(currentPage + 1)" ng-disabled="currentPage === numPages">Next</a></li>
+  </ul>
 </div>
 <div ng-if="!totalItemCount || totalItemCount === 0">
   <p>No results found</p>
