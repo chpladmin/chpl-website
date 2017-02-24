@@ -336,9 +336,13 @@
         function manageStorage () {
             if (localStorage.previouslyCompared) {
                 vm.previouslyCompared = $localStorage.previouslyCompared;
+            } else {
+                vm.previouslyCompared = [];
             }
             if ($localStorage.previouslyViewed) {
                 vm.previouslyViewed = $localStorage.previouslyViewed;
+            } else {
+                vm.previouslyCompared = [];
             }
         }
 
