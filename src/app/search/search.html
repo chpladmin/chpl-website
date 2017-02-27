@@ -107,7 +107,7 @@
                 </a>
               </li>
               <li ng-show="vm.showAcbs">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" predicate="acb" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" predicate="acb" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" hidden-options="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showConformities = !vm.showConformities">

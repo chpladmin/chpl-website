@@ -10,6 +10,7 @@
             bindToController: {
                 allowAnd: '@?',
                 hasChanges: '=?',
+                hiddenOptions: '@?',
                 nameSpace: '@'
             },
             controller: 'ListMultipleController',
@@ -185,7 +186,7 @@
                 query = {
                     matchAny: {
                         items: vm.selected,
-                        all: (numberOfItems === 0 || numberOfItems === vm.distinctItems.length)
+                        all: (numberOfItems === 0 || (!vm.hiddenOptions && numberOfItems === vm.distinctItems.length))
                     }
                 };
             }
