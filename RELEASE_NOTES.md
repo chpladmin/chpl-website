@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 7.3.0
+_27 February 2017_
+
+### New features
+* Added authorization parameter for specific surveillance download file
+* Restricted basic surveillance to ROLE_ADMIN & CMS_STAFF
+
+---
+
 ## Version 7.2.1
 _21 February 2017_
 

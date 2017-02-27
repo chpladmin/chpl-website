@@ -8,7 +8,9 @@
     function ResourcesController ($scope, $log, $location, $localStorage, API, authService, commonService) {
         var vm = this;
 
+        vm.getToken = authService.getToken;
 		vm.lookupCertIds = lookupCertIds;
+        vm.showRestricted = showRestricted;
 		vm.viewProduct = viewProduct;
 
         activate();
@@ -111,6 +113,11 @@
                     });
                 }
             }
+        }
+
+        function showRestricted () {
+            return authService.isChplAdmin() ||
+                authService.isOncStaff();
         }
 
         function viewProduct (cp) {

@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "7.2.1",
+  "version": "7.3.0",
   "dependencies": {
     "AngularJS-Toaster": "angularjs-toaster#^2.1.0",
     "angular": "~1.5.3",
