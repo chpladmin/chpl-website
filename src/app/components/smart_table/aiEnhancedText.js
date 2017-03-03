@@ -51,12 +51,13 @@
             ctrl.tableCtrl = table;
             ctrl.predicate = predicate;
             ctrl.element = element;
+            ctrl.attr = attr;
             ctrl.activate();
         }
     }
 
     /** @ngInclude */
-    function EnhancedTextController ($localStorage) {
+    function EnhancedTextController ($localStorage, $timeout, stConfig) {
         var vm = this;
 
         vm.activate = activate;
@@ -67,6 +68,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.throttle = vm.attr.stDelay || stConfig.search.delay;
         }
 
         function clearFilter () {
@@ -79,8 +81,15 @@
             var query = vm.element[0].value;
             vm.hasChanges = query.length > 0;
 
-            vm.tableCtrl.search(query, vm.predicate);
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            if (vm.promise !== null) {
+                $timeout.cancel(vm.promise);
+            }
+
+            vm.promise = $timeout(function () {
+                vm.tableCtrl.search(query, vm.predicate);
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+                vm.promise = null;
+            }, vm.throttle);
         }
 
         function restoreState (state) {
