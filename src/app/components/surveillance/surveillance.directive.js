@@ -39,8 +39,6 @@
             vm.API = API;
             vm.API_KEY = authService.getApiKey();
             vm.surveillanceTypes = commonService.getSurveillanceLookups();
-            vm.isChplAdmin = authService.isChplAdmin();
-            $log.debug(vm.isChplAdmin, authService.isChplAdmin());
         }
 
         function editSurveillance (surveillance) {
@@ -56,9 +54,7 @@
                 resolve: {
                     surveillance: function () { return surveillance; },
                     surveillanceTypes: function () { return vm.surveillanceTypes; },
-                    workType: function () { return 'edit'; },
-                    authorities: function () { return ['ONC', 'ONC-ACB']},
-                    isChplAdmin: function () { return vm.isChplAdmin; }
+                    workType: function () { return 'edit'; }
                 }
             });
             vm.uibModalInstance.result.then(function () {
@@ -113,9 +109,7 @@
                 resolve: {
                     surveillance: function () { return { certifiedProduct: vm.certifiedProduct }; },
                     surveillanceTypes: function () { return vm.surveillanceTypes; },
-                    workType: function () { return 'initiate'; },
-                    authorities: function () { return ['ONC', 'ONC-ACB']},
-                    isChplAdmin: function () { return vm.isChplAdmin; }
+                    workType: function () { return 'initiate'; }
                 }
             });
             vm.uibModalInstance.result.then(function () {
@@ -156,10 +150,6 @@
             } else if (vm.certifiedProduct.certificationEdition.name === '2014') {
                 vm.surveillanceTypes.surveillanceRequirements.criteriaOptions = vm.surveillanceTypes.surveillanceRequirements.criteriaOptions2014;
             }
-        }
-        
-        function isChplAdmin () {
-            return authService.isChplAdmin();
         }
     }
 })();

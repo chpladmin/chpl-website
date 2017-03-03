@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app\components\certificationCriteria\certs.directive.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">app/components/certificationCriteria/</a> certs.directive.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">36.3% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>49/135</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">11.76% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>8/68</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">64.29% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">36.3% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>49/135</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">6×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-yes">48×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">24×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">72×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function () {
+    'use strict';
+&nbsp;
+    angular
+        .module('chpl')
+        .directive('aiCerts', aiCerts);
+&nbsp;
+    /** @ngInject */
+    function aiCerts () {
+        var directive = {
+            restrict: 'E',
+            replace: true,
+            templateUrl: 'app/components/certificationCriteria/certs.html',
+            bindToController: {
+                certs: '=',
+                cqms: '=',
+                viewAllCerts: '=?defaultAll',
+                countCerts: '=',
+                countCqms: '=',
+                editMode: '=',
+                reportFileLocation: '@',
+                isEditing: '=?',
+                isConfirming: '=',
+                save: '&amp;',
+                product: '=',
+                cap: '=',
+                resources: '='
+            },
+            scope: {},
+            controllerAs: 'vm',
+            controller: CertsController,
+            link: function (scope, element, attr, ctrl) {
+                var handler = ctrl.save({
+                    handler: <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >                        ctrl.saveEdits();</span>
+                    }
+                });
+                scope.$on('$destroy', handler);
+            }
+        };
+        return directive;
+&nbsp;
+        /** @ngInject */
+        function CertsController ($scope, ACTIVE_CAP) {
+            var vm = this;
+&nbsp;
+            vm.ACTIVE_CAP = ACTIVE_CAP;
+            vm.prepCqms = prepCqms
+            vm.saveEdits = saveEdits;
+            vm.sortCerts = sortCerts;
+            vm.sortCqms = sortCqms;
+            vm.showDetails = showDetails;
+            vm.showPanel = showPanel;
+&nbsp;
+            activate();
+&nbsp;
+            ////////////////////////////////////////////////////////////////////
+&nbsp;
+            function activate () {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (angular.isUndefined(vm.isEditing)) {
+                    vm.isEditing = false;
+                }
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (angular.isUndefined(vm.viewAllCerts)) {
+                    vm.viewAllCerts = false;
+                }
+                vm.prepCqms();
+                vm.panelShown = 'cert';
+                $scope.$watch('vm.cqms', function (newCqms) {
+                    <span class="missing-if-branch" title="else path not taken" >E</span>if (newCqms) {
+                        vm.cqms = newCqms;
+                        vm.prepCqms();
+                    }}, true);
+&nbsp;
+            }
+&nbsp;
+            function prepCqms () {
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (vm.cqms) {
+                    for (var i = 0; i &lt; vm.cqms.length; i++) {
+                        vm.cqms[i].id = i;
+                        for (var j = 1; j &lt; 5; j++) {
+                            vm.cqms[i]['hasC' + j] = checkC(vm.cqms[i], j);
+                        }
+                    }
+                }
+            }
+&nbsp;
+<span class="fstat-no" title="function not covered" >            function saveEdits () {</span>
+<span class="cstat-no" title="statement not covered" >                vm.countCerts = 0;</span>
+<span class="cstat-no" title="statement not covered" >                vm.countCqms = 0;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                var changedTasks = [];</span>
+<span class="cstat-no" title="statement not covered" >                var changedParticipants = [];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                var i,j,k,l;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                for (i = 0; i &lt; vm.certs.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                    if (vm.certs[i].success) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.countCerts += 1;</span>
+                    }
+<span class="cstat-no" title="statement not covered" >                    if (vm.certs[i].gap === 'null') {</span>
+<span class="cstat-no" title="statement not covered" >                        delete (vm.certs[i].gap);</span>
+                    }
+<span class="cstat-no" title="statement not covered" >                    if (vm.certs[i].g1Success === 'null') {</span>
+<span class="cstat-no" title="statement not covered" >                        delete (vm.certs[i].g1Success);</span>
+                    }
+<span class="cstat-no" title="statement not covered" >                    if (vm.certs[i].g2Success === 'null') {</span>
+<span class="cstat-no" title="statement not covered" >                        delete (vm.certs[i].g2Success);</span>
+                    }
+<span class="cstat-no" title="statement not covered" >                    if (vm.certs[i].sed === 'null') {</span>
+<span class="cstat-no" title="statement not covered" >                        delete (vm.certs[i].sed);</span>
+                    }
+<span class="cstat-no" title="statement not covered" >                    if (vm.certs[i].sed &amp;&amp; vm.certs[i].testTasks) {</span>
+<span class="cstat-no" title="statement not covered" >                        for (j = 0; j &lt; vm.certs[i].testTasks.length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >                            if (vm.certs[i].testTasks[j].changed) {</span>
+<span class="cstat-no" title="statement not covered" >                                changedTasks.push(vm.certs[i].testTasks[j]);</span>
+                            }
+<span class="cstat-no" title="statement not covered" >                            if (vm.certs[i].testTasks[j].testParticipants) {</span>
+<span class="cstat-no" title="statement not covered" >                                for (k = 0; k &lt; vm.certs[i].testTasks[j].testParticipants.length; k++) {</span>
+<span class="cstat-no" title="statement not covered" >                                    if (vm.certs[i].testTasks[j].testParticipants[k].changed) {</span>
+<span class="cstat-no" title="statement not covered" >                                        changedParticipants.push(vm.certs[i].testTasks[j].testParticipants[k]);</span>
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                for (i = 0; i &lt; vm.certs.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                    if (vm.certs[i].sed &amp;&amp; vm.certs[i].testTasks) {</span>
+<span class="cstat-no" title="statement not covered" >                        for (j = 0; j &lt; vm.certs[i].testTasks.length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >                            for (k = 0; k &lt; changedTasks.length; k++) {</span>
+<span class="cstat-no" title="statement not covered" >                                if (vm.certs[i].testTasks[j].testTaskId === changedTasks[k].testTaskId &amp;&amp; !vm.certs[i].testTasks[j].changed &amp;&amp; vm.certs[i].testTasks[j].testTaskId) {</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].description = changedTasks[k].description;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskErrors = changedTasks[k].taskErrors;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskErrorsStddev = changedTasks[k].taskErrorsStddev;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskPathDeviationObserved = changedTasks[k].taskPathDeviationObserved;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskPathDeviationOptimal = changedTasks[k].taskPathDeviationOptimal;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskRating = changedTasks[k].taskRating;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskRatingStddev = changedTasks[k].taskRatingStddev;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskRatingScale = changedTasks[k].taskRatingScale;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskSuccessAverage = changedTasks[k].taskSuccessAverage;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskSuccessStddev = changedTasks[k].taskSuccessStddev;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskTimeAvg = changedTasks[k].taskTimeAvg;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskTimeDeviationObservedAvg = changedTasks[k].taskTimeDeviationObservedAvg;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskTimeDeviationOptimalAvg = changedTasks[k].taskTimeDeviationOptimalAvg;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].taskTimeStddev = changedTasks[k].taskTimeStddev;</span>
+<span class="cstat-no" title="statement not covered" >                                    vm.certs[i].testTasks[j].testTaskId = changedTasks[k].testTaskId;</span>
+                                }
+                            }
+<span class="cstat-no" title="statement not covered" >                            if (vm.certs[i].testTasks[j].testParticipants) {</span>
+<span class="cstat-no" title="statement not covered" >                                for (k = 0; k &lt; vm.certs[i].testTasks[j].testParticipants.length; k++) {</span>
+<span class="cstat-no" title="statement not covered" >                                    for (l = 0; l &lt; changedParticipants.length; l++) {</span>
+<span class="cstat-no" title="statement not covered" >                                        if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId &amp;&amp; !vm.certs[i].testTasks[j].testParticipants[k].changed &amp;&amp; vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].ageRange = changedParticipants[l].ageRange;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].ageRangeId = changedParticipants[l].ageRangeId;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;</span>
+<span class="cstat-no" title="statement not covered" >                                            vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;</span>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                for (i = 0; i &lt; vm.cqms.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                    vm.cqms[i].criteria = [];</span>
+<span class="cstat-no" title="statement not covered" >                    if (vm.cqms[i].success || vm.cqms[i].successVersions.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >                        vm.countCqms += 1;</span>
+<span class="cstat-no" title="statement not covered" >                        for (j = 1; j &lt; 5; j++) {</span>
+<span class="cstat-no" title="statement not covered" >                            if (vm.cqms[i]['hasC' + j]) {</span>
+<span class="cstat-no" title="statement not covered" >                                vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(' + j + ')'});</span>
+                            }
+                        }
+                    }
+                }
+            }
+&nbsp;
+            function sortCerts (cert) {
+                var ret = 0;
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (cert.number) {
+<span class="cstat-no" title="statement not covered" >                    var letter;</span>
+<span class="cstat-no" title="statement not covered" >                    var number;</span>
+<span class="cstat-no" title="statement not covered" >                    letter = cert.number.substring(9,10);</span>
+<span class="cstat-no" title="statement not covered" >                    if (cert.number.substring(0,6) === '170.30') {</span>
+<span class="cstat-no" title="statement not covered" >                        number = cert.number.substring(6,7);</span>
+<span class="cstat-no" title="statement not covered" >                        ret = parseInt(number) * 100 + letter.charCodeAt(0);</span>
+                    } else {
+<span class="cstat-no" title="statement not covered" >                        number = cert.number.substring(12,14);</span>
+<span class="cstat-no" title="statement not covered" >                        if (number.substring(1,2) === ')')</span>
+<span class="cstat-no" title="statement not covered" >                            number = number.substring(0,1);</span>
+<span class="cstat-no" title="statement not covered" >                        ret = letter.charCodeAt(0) * 100 + parseInt(number);</span>
+                    }
+                }
+                return ret;
+            }
+&nbsp;
+<span class="fstat-no" title="function not covered" >            function sortCqms (cqm) {</span>
+<span class="cstat-no" title="statement not covered" >                var ret = 0;</span>
+<span class="cstat-no" title="statement not covered" >                if (cqm.cmsId) {</span>
+<span class="cstat-no" title="statement not covered" >                    ret = parseInt(cqm.cmsId.substring(3));</span>
+                } else {
+<span class="cstat-no" title="statement not covered" >                    ret = parseInt(cqm.nqfNumber);</span>
+                }
+<span class="cstat-no" title="statement not covered" >                return ret;</span>
+            }
+&nbsp;
+<span class="fstat-no" title="function not covered" >            function showDetails (number) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.certDetails = vm.certDetails === number ? '' : number;</span>
+<span class="cstat-no" title="statement not covered" >                vm.showSed = false;</span>
+            }
+&nbsp;
+<span class="fstat-no" title="function not covered" >            function showPanel (panel) {</span>
+<span class="cstat-no" title="statement not covered" >                vm.panelShown = vm.panelShown === panel ? '' : panel;</span>
+            }
+&nbsp;
+            ////////////////////////////////////////////////////////////////////
+&nbsp;
+            function checkC (cqm, num) {
+                var ret;
+                if (angular.isUndefined(cqm['hasC' + num])) {
+                    ret = false;
+                    <span class="missing-if-branch" title="if path not taken" >I</span>if (cqm.criteria) {
+<span class="cstat-no" title="statement not covered" >                        for (var i = 0; i &lt; cqm.criteria.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                            ret = ret || (cqm.criteria[i].certificationNumber === '170.315 (c)(' + num + ')')</span>
+                        }
+                    }
+                } else {
+                    ret = cqm['hasC' + num];
+                }
+                return ret
+            }
+        }
+    }
+})();
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Jan 27 2017 08:57:46 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

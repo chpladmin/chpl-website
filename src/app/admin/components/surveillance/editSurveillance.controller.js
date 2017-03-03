@@ -5,7 +5,7 @@
         .controller('EditSurveillanceController', EditSurveillanceController);
 
     /** @ngInject */
-    function EditSurveillanceController ($uibModal, $uibModalInstance, $log, surveillance, surveillanceTypes, workType, commonService, utilService) {
+    function EditSurveillanceController ($uibModal, $uibModalInstance, $log, surveillance, surveillanceTypes, workType, commonService, utilService, authService) {
         var vm = this;
 
         vm.addRequirement = addRequirement;
@@ -16,12 +16,16 @@
         vm.inspectNonconformities = inspectNonconformities;
         vm.save = save;
         vm.sortRequirements = utilService.sortRequirements;
+        vm.isChplAdmin = authService.isChplAdmin;
+        vm.isAcbAdmin = authService.isAcbAdmin;
+        vm.isAcbStaff = authService.isAcbStaff;
 
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+        	vm.authorities = [{name:'ONC'}, {name:'ONC-ACB'}];
             vm.surveillance = angular.copy(surveillance);
             if (vm.surveillance.startDate) {
                 vm.surveillance.startDateObject = new Date(vm.surveillance.startDate);
