@@ -25,7 +25,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-        	vm.authorities = [{name:'ONC'}, {name:'ONC-ACB'}];
+        	vm.authorities = ['ONC', 'ONC-ACB'];
             vm.surveillance = angular.copy(surveillance);
             if (vm.surveillance.startDate) {
                 vm.surveillance.startDateObject = new Date(vm.surveillance.startDate);
@@ -161,6 +161,12 @@
                 $uibModalInstance.close(vm.surveillance);
             } else if (vm.workType === 'initiate') {
                 vm.surveillance.certifiedProduct.edition = vm.surveillance.certifiedProduct.certificationEdition.name;
+                if(vm.surveillance.authority === 'ONC'){
+                	vm.surveillance.authority = 'ROLE_ADMIN';
+                }
+                else if(vm.surveillance.authority === 'ONC-ACB'){
+                	vm.surveillance.authority = 'ROLE_ACB_STAFF';
+                }
                 commonService.initiateSurveillance(vm.surveillance)
                     .then(function (response) {
                         if (!response.status || response.status === 200 || angular.isObject(response.status)) {

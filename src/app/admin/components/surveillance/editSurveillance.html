@@ -62,7 +62,7 @@
       <label for="authority" class="col-sm-3">Initiated by <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="vm.surveillance.authority" id="authority" name="authority"
-                ng-options="authority.name for authority in vm.authorities" required> 
+                ng-options="authority for authority in vm.authorities" required> 
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.authority.$touched) && vm.editForm.authority.$error.required">Field is required</div>
       </div>
