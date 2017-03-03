@@ -17,6 +17,13 @@
       <div class="col-sm-3"><strong>Surveillance ID:</strong></div>
       <div class="col-sm-9">{{ vm.surveillance.friendlyId }}</div>
     </div>
+    <div class="row" ng-if="vm.workType !== 'initiate'">
+      <div class="col-sm-3""><strong>Surveillance initiatied by:</strong></div>
+      <div class="col-sm-9">
+      	<span>{{ vm.surveillance.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}</span>
+      </div>
+     </div>
+    </div>
     <div class="form-group">
       <label for="startDate" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
       <div class="col-sm-9">
@@ -47,6 +54,18 @@
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="vm.surveillance.type" id="surveillanceType" name="surveillanceType"
                 ng-options="type as type.name for type in vm.data.surveillanceTypes.data | orderBy:'name'" required>
+        </select>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.surveillanceType.$touched) && vm.editForm.surveillanceType.$error.required">Field is required</div>
+      </div>
+    </div> 
+    <div class="form-group">
+    <pre>{{ vm.workType | json }}</pre>
+    <pre>{{ vm.isChplAdmin | json }}</pre>
+    <pre>{{ vm.isChplAdmin() | json }}</pre>
+      <label for="authority" class="col-sm-3">Initiated by <span class="text-danger">*</span></label>
+      <div class="col-sm-9">
+        <select class="input-sm form-control" ng-model="vm.surveillance.authority" id="authority" name="authority"
+                ng-options="authority as authority.name for authority in vm.surveillance.authority | orderBy:'name'" required> 
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.surveillanceType.$touched) && vm.editForm.surveillanceType.$error.required">Field is required</div>
       </div>

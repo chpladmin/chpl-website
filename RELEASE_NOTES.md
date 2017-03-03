@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version TBD
+_13 March 2017_
+
+### Features Added
+* Add "Surveillance initiated by" to Surveillance Activity
+
+### Bugs Fixed
+
+---
+
 ## Version 7.3.0
 _27 February 2017_
 
