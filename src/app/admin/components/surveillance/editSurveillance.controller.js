@@ -155,7 +155,7 @@
         }
 
         function save () {
-        	if(!vm.surviellance.errorMessages.length > 0){
+        	if(!vm.surveillance.errorMessages.length > 0){
         		vm.surveillance.startDate = vm.surveillance.startDateObject.getTime();
                 if (vm.surveillance.endDateObject) {
                     vm.surveillance.endDate = vm.surveillance.endDateObject.getTime();
