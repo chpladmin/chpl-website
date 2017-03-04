@@ -135,11 +135,12 @@
         <li ng-if="vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()">User must have authority for ONC-Admin to edit surveillance created by ONC-Admin</li>
       </ul>
     </div>
-    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length ===0) && vm.showFormErrors && !vm.disableValidation"
+    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.surveillance.errorMessages.length > 0) && vm.showFormErrors && !vm.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>
-    <button class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
+    <button ng-disabled="vm.surveillance.errorMessages.length > 0"
+    		class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
             confirm="Are you sure you wish to delete this surveillance?"
             confirm-ok="Yes"
             confirm-cancel="No"

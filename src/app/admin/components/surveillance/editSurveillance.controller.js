@@ -36,6 +36,10 @@
             vm.disableValidation = vm.surveillance.errorMessages && vm.surveillance.errorMessages.length > 0;
             vm.workType = workType;
             vm.showFormErrors = false;
+            if(vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()){
+            	vm.disableValidation = false;
+            	vm.showFormErrors = true;
+            }
             vm.data = surveillanceTypes;
             if (vm.surveillance.type) {
                 vm.surveillance.type = findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
@@ -151,54 +155,56 @@
         }
 
         function save () {
-            vm.surveillance.startDate = vm.surveillance.startDateObject.getTime();
-            if (vm.surveillance.endDateObject) {
-                vm.surveillance.endDate = vm.surveillance.endDateObject.getTime();
-            } else {
-                vm.surveillance.endDate = null;
-            }
-            if (vm.workType === 'confirm') {
-                $uibModalInstance.close(vm.surveillance);
-            } else if (vm.workType === 'initiate') {
-                vm.surveillance.certifiedProduct.edition = vm.surveillance.certifiedProduct.certificationEdition.name;
-                if(vm.surveillance.authority === 'ONC'){
-                	vm.surveillance.authority = 'ROLE_ADMIN';
+        	if(!vm.surviellance.errorMessages.length > 0){
+        		vm.surveillance.startDate = vm.surveillance.startDateObject.getTime();
+                if (vm.surveillance.endDateObject) {
+                    vm.surveillance.endDate = vm.surveillance.endDateObject.getTime();
+                } else {
+                    vm.surveillance.endDate = null;
                 }
-                else if(vm.surveillance.authority === 'ONC-ACB'){
-                	vm.surveillance.authority = 'ROLE_ACB_STAFF';
+                if (vm.workType === 'confirm') {
+                    $uibModalInstance.close(vm.surveillance);
+                } else if (vm.workType === 'initiate') {
+                    vm.surveillance.certifiedProduct.edition = vm.surveillance.certifiedProduct.certificationEdition.name;
+                    if(vm.surveillance.authority === 'ONC'){
+                    	vm.surveillance.authority = 'ROLE_ADMIN';
+                    }
+                    else if(vm.surveillance.authority === 'ONC-ACB'){
+                    	vm.surveillance.authority = 'ROLE_ACB_STAFF';
+                    }
+                    commonService.initiateSurveillance(vm.surveillance)
+                        .then(function (response) {
+                            if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                                $uibModalInstance.close(response);
+                            } else {
+                                vm.errorMessages = [response];
+                            }
+                        },function (error) {
+                            if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+                                vm.errorMessages = error.data.errorMessages;
+                            } else if (error.data.error) {
+                                vm.errorMessages = [error.data.error];
+                            } else {
+                                vm.errorMessages = [error.statusText];
+                            }
+                        });
+                } else if (vm.workType === 'edit') {
+                    commonService.updateSurveillance(vm.surveillance)
+                        .then(function (response) {
+                            if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                                $uibModalInstance.close(response);
+                            } else {
+                                vm.errorMessages = [response];
+                            }
+                        },function (error) {
+                            if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+                                vm.errorMessages = error.data.errorMessages;
+                            } else {
+                                vm.errorMessages = [error.statusText];
+                            }
+                        });
                 }
-                commonService.initiateSurveillance(vm.surveillance)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                            $uibModalInstance.close(response);
-                        } else {
-                            vm.errorMessages = [response];
-                        }
-                    },function (error) {
-                        if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-                            vm.errorMessages = error.data.errorMessages;
-                        } else if (error.data.error) {
-                            vm.errorMessages = [error.data.error];
-                        } else {
-                            vm.errorMessages = [error.statusText];
-                        }
-                    });
-            } else if (vm.workType === 'edit') {
-                commonService.updateSurveillance(vm.surveillance)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                            $uibModalInstance.close(response);
-                        } else {
-                            vm.errorMessages = [response];
-                        }
-                    },function (error) {
-                        if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-                            vm.errorMessages = error.data.errorMessages;
-                        } else {
-                            vm.errorMessages = [error.statusText];
-                        }
-                    });
-            }
+        	} 
         }
 
         ////////////////////////////////////////////////////////////////////
