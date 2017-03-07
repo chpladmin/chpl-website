@@ -62,13 +62,13 @@
 
         function activate () {
             vm.query = {
-                surveillance: { }
+                NC: {}
             };
         }
 
         function clearSurveillanceActivityFilter () {
             vm.query = {
-                surveillance: { }
+                NC: {}
             };
             vm.filterChanged();
         }
@@ -79,42 +79,9 @@
             if (tableState.search.predicateObject.surveillance) {
                 delete tableState.search.predicateObject.surveillance;
             }
-
-            if (vm.query.hasHadSurveillance) {
+            if (vm.query.surveillance || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
                 vm.hasChanges = true;
-                var query = { anySurveillance: { } };
-                if (vm.query.hasHadSurveillance === 'never') {
-                    query.anySurveillance.all = false;
-                    query.anySurveillance.matchAll = true;
-                    query.anySurveillance.hasOpenSurveillance = false;
-                    query.anySurveillance.hasClosedSurveillance = false;
-                    query.anySurveillance.hasOpenNonconformities = false;
-                    query.anySurveillance.hasClosedNonconformities = false;
-                } else if (vm.query.hasHadSurveillance === 'has-had') {
-                    if (angular.isUndefined(vm.query.surveillance.openSurveillance) &&
-                        angular.isUndefined(vm.query.surveillance.closedSurveillance) &&
-                        angular.isUndefined(vm.query.surveillance.openNonconformities) &&
-                        angular.isUndefined(vm.query.surveillance.closedNonconformities)) {
-                        query.anySurveillance.all = false;
-                        query.anySurveillance.matchAll = false;
-                        query.anySurveillance.hasOpenSurveillance = true;
-                        query.anySurveillance.hasClosedSurveillance = true;
-                        query.anySurveillance.hasOpenNonconformities = false;
-                        query.anySurveillance.hasClosedNonconformities = false;
-                    } else {
-                        query.anySurveillance.all =
-                            !vm.query.surveillance.openSurveillance &&
-                            !vm.query.surveillance.closedSurveillance &&
-                            !vm.query.surveillance.openNonconformities &&
-                            !vm.query.surveillance.closedNonconformities;
-                        query.anySurveillance.matchAll = angular.copy(vm.query.surveillance.matchAll);
-                        query.anySurveillance.hasOpenSurveillance = angular.isDefined(vm.query.surveillance.openSurveillance) ? vm.query.surveillance.openSurveillance : false;
-                        query.anySurveillance.hasClosedSurveillance = angular.isDefined(vm.query.surveillance.closedSurveillance) ? vm.query.surveillance.closedSurveillance : false;
-                        query.anySurveillance.hasOpenNonconformities = angular.isDefined(vm.query.surveillance.openNonconformities) ? vm.query.surveillance.openNonconformities : false;
-                        query.anySurveillance.hasClosedNonconformities = angular.isDefined(vm.query.surveillance.closedNonconformities) ? vm.query.surveillance.closedNonconformities : false;
-                    }
-                }
-                vm.tableCtrl.search(query, 'surveillance');
+                vm.tableCtrl.search(vm.query, 'surveillance');
             } else {
                 delete tableState.search.predicateObject.surveillance;
                 vm.tableCtrl.search();
@@ -123,23 +90,8 @@
         }
 
         function restoreState (state) {
-            var query = state.search.predicateObject.surveillance;
-            if (query) {
-                vm.query.surveillance.openSurveillance = query.anySurveillance.hasOpenSurveillance;
-                vm.query.surveillance.closedSurveillance = query.anySurveillance.hasClosedSurveillance;
-                vm.query.surveillance.openNonconformities = query.anySurveillance.hasOpenNonconformities;
-                vm.query.surveillance.closedNonconformities = query.anySurveillance.hasClosedNonconformities;
-                vm.query.surveillance.matchAll = query.anySurveillance.matchAll;
-                if (!query.anySurveillance.all &&
-                    query.anySurveillance.matchAll &&
-                    !query.anySurveillance.hasOpenSurveillance &&
-                    !query.anySurveillance.hasClosedSurveillance &&
-                    !query.anySurveillance.hasOpenNonconformities &&
-                    !query.anySurveillance.hasClosedNonconformities) {
-                    vm.query.hasHadSurveillance = 'never';
-                } else {
-                    vm.query.hasHadSurveillance = 'has-had';
-                }
+            vm.query = state.search.predicateObject.surveillance;
+            if (vm.query) {
                 vm.filterChanged();
             }
         }

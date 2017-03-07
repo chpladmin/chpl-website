@@ -35,25 +35,53 @@
                     }
 
                     //surveillance match
-                    if (expected.anySurveillance) {
-                        if (expected.anySurveillance.all) {
-                            return true;
-                        }
-
+                    if (expected.surveillance) {
                         if (!actual) {
                             return false;
                         }
-                        var surveillance = angular.fromJson(actual);
-                          if (expected.anySurveillance.matchAll) {
-                            ret = (expected.anySurveillance.hasOpenSurveillance === surveillance.hasOpenSurveillance) &&
-                                (expected.anySurveillance.hasClosedSurveillance === surveillance.hasClosedSurveillance) &&
-                                (expected.anySurveillance.hasOpenNonconformities === surveillance.hasOpenNonconformities) &&
-                                (expected.anySurveillance.hasClosedNonconformities === surveillance.hasClosedNonconformities);
+                        var surv = angular.fromJson(actual);
+                        if (expected.surveillance === 'never') {
+                            ret = !surv.hasOpenSurveillance && !surv.hasClosedSurveillance;
                         } else {
-                            ret = (expected.anySurveillance.hasOpenSurveillance && surveillance.hasOpenSurveillance) ||
-                                (expected.anySurveillance.hasClosedSurveillance && surveillance.hasClosedSurveillance) ||
-                                (expected.anySurveillance.hasOpenNonconformities && surveillance.hasOpenNonconformities) ||
-                                (expected.anySurveillance.hasClosedNonconformities && surveillance.hasClosedNonconformities);
+                            ret = surv.hasOpenSurveillance || surv.hasClosedSurveillance;
+                            var never = expected.NC.never;
+                            var open = expected.NC.open;
+                            var closed = expected.NC.closed;
+                            var openNC = surv.hasOpenNonconformities;
+                            var closedNC = surv.hasClosedNonconformities;
+                            /*
+                             * matching one of the posibles
+                             */
+                            if (never && !open && !closed) {
+                                ret = ret && !openNC && !closedNC;
+                            } else if (!never && open && !closed) {
+                                ret = ret && openNC
+                            } else if (!never && !open && closed) {
+                                ret = ret && closedNC
+                                /*
+                                 * if matching more than one, need to know if matchAll is true or not
+                                 * if true, only valid "multiple" is !never && open && closed
+                                 */
+                            } else if (expected.matchAll && !never && open && closed) {
+                                ret = ret && openNC && closedNC;
+                            } else if (expected.matchAll) {
+                                ret = false;
+                                /*
+                                 * now matching "matchAny" with multiples
+                                 */
+                            } else if (never && open && !closed) {
+                                ret = ret && openNC && !closedNC;
+                            } else if (never && !open && closed) {
+                                ret = ret && !openNC && closedNC;
+                            } else if (!never && open && closed) {
+                                ret = ret && (openNC || closedNC);
+                            }
+                            /*
+                             * triple multiples on matchAny
+                             * never && open && closed
+                             * !never && !open && !closed
+                             * fall back to "all", and the original return value
+                             */
                         }
                         return ret;
                     }

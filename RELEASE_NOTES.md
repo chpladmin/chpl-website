@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### New features
+* Updated front end UI to do all search/filter on front end
+* Updated surveillance filters (Never NC, Open NC, Closed NC)
+
+---
+
 ## Version 7.2.1
 _21 February 2017_
 
