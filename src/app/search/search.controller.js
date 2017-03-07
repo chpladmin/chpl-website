@@ -38,18 +38,21 @@
 
         function activate () {
             $scope.$on('ClearResults', function () {
-                vm.clear();
                 delete $localStorage.clearResults;
+                vm.clear();
             });
             if ($localStorage.clearResults) {
-                vm.clear();
                 delete $localStorage.clearResults;
+                vm.clear();
             }
 
             vm.categoryChanged = {};
             vm.boxes = {};
             vm.clearFilterHs = [];
             vm.restoreStateHs = [];
+            vm.isLoading = true;
+            vm.isPreLoading = true;
+            cfpLoadingBar.start();
 
             manageStorage();
             populateSearchOptions();
@@ -140,6 +143,9 @@
 
         function loadResults() {
             commonService.getAll().then(function (response) {
+                if (vm.isPreLoading) {
+                    cfpLoadingBar.start();
+                }
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {
                     results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber, results[i].previousDevelopers].join('|');
@@ -286,7 +292,9 @@
         }
 
         function triggerSearch () {
-            vm.tableSearch[0]();
+            if (vm.tableSearch && vm.tableSearch[0]) {
+                vm.tableSearch[0]();
+            }
         }
 
         function truncButton (str) {
@@ -320,10 +328,13 @@
         function incrementTable (results) {
             var size = 500, delay = 100;
             if (results.length > 0) {
+                vm.isPreLoading = false;
                 vm.allCps = vm.allCps.concat(results.splice(0,size));
                 $timeout(function () {
                     incrementTable(results);
                 }, delay);
+            } else {
+                vm.isLoading = false;
             }
         }
 
@@ -344,6 +355,10 @@
             vm.lookaheadSource = {all: [], developers: [], products: []};
             commonService.getSearchOptions()
                 .then(function (options) {
+                    if (vm.isPreLoading) {
+                        cfpLoadingBar.start();
+                    }
+
                     vm.searchOptions = options;
                     var i;
                     options.practiceTypes = [];

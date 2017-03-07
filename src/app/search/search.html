@@ -1,7 +1,7 @@
-<div ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
+<div ng-class="{'search-unsearched': vm.isPreLoading || !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
     <st-manage register-search="vm.registerSearch(search)" />
-    <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
+    <div class="row" ng-if="!vm.isPreLoading && (vm.activeSearch || vm.searchForm.$dirty)">
       <div class="col-sm-12">
         <h1>Search</h1>
       </div>
@@ -9,10 +9,10 @@
     <div class="form-horizontal search-inputs" ng-form="vm.searchForm" aria-live="polite">
       <div class="form-group" id="filters">
         <div class="form-group-lg">
-          <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
+          <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': vm.isPreLoading || !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': !vm.isPreLoading && (vm.activeSearch || vm.searchForm.$dirty)}">
             <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ACB/CHPL ID</label>
             <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID"
-                   ng-model="vm.query" ng-change="vm.activeSearch = true"
+                   ng-model="vm.query" ng-change="vm.activeSearch = true" ng-disabled="vm.isPreLoading"
                    ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearTerm(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
             <span ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
               <a href ng-click="vm.browseAll()">Browse all</a><br />
@@ -20,14 +20,14 @@
             </span>
           </div>
         </div>
-<!--
-              <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
-                     ng-keyup="$event.keyCode === 13 && vm.search()"
-                     uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
-                     typeahead-focus-first="false"
-                     typeahead-input-formatter="$model.value" />
--->
-        <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
+        <!--
+            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
+                   ng-keyup="$event.keyCode === 13 && vm.search()"
+                   uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
+                   typeahead-focus-first="false"
+                   typeahead-input-formatter="$model.value" />
+            -->
+        <div class="col-sm-8" ng-show="!vm.isPreLoading && (vm.activeSearch || vm.searchForm.$dirty)">
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
@@ -163,7 +163,7 @@
     </div>
 
     <div aria-live="polite" id="mainContent" tabindex="-1">
-      <div id="resultsSection" ng-show="vm.activeSearch || vm.searchForm.$dirty" class="main-content">
+      <div id="resultsSection" ng-show="!vm.isPreLoading && (vm.activeSearch || vm.searchForm.$dirty)" class="main-content">
         <div class="row">
           <div class="col-md-9"> <!-- search results -->
             <div class="row">
