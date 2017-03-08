@@ -9,12 +9,27 @@ _Date TBD_
 
 ---
 
-## Version 7.2.1
-_21 February 2017_
+## Version 7.3.1 (TBD)
+_13 Mar 2017_ (TBD)
+
+### Textual changes
+* Added login warning text
+* Updated product details history text
+* Added tooltips to surveillance details headers
+
+---
+
+## Version 7.3.0
+_27 February 2017_
 
 ### New features
 * Added authorization parameter for specific surveillance download file
 * Restricted basic surveillance to ROLE_ADMIN & CMS_STAFF
+
+---
+
+## Version 7.2.1
+_21 February 2017_
 
 ### Bugs fixed
 * Fixed typo on Decertified Products Page
