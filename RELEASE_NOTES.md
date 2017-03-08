@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Added login warning text
+* Updated product details history text
 
 ---
 
