@@ -61,12 +61,16 @@ ul.pagination li {
 
 .restore-previous-search {
     position: absolute;
-    bottom: -20px;
+    bottom: -40px;
+}
+
+.restore-previous-search a {
     color: #fff;
 }
-.restore-previous-search:hover,
-.restore-previous-search:active,
-.restore-previous-search:focus {
+
+.restore-previous-search a:hover,
+.restore-previous-search a:active,
+.restore-previous-search a:focus {
     color: #ccc;
 }
 
@@ -90,4 +94,15 @@ ul.pagination li {
 .animate-if.ng-leave,
 .animate-if.ng-enter.ng-enter-active {
   opacity:1;
+}
+
+.pending {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: .5;
+    z-index: 3000;
 }

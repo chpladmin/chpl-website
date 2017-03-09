@@ -4,6 +4,15 @@
 _Date TBD_
 
 ### New features
+* Updated front end UI to do all search/filter on front end
+* Updated surveillance filters (Never NC, Open NC, Closed NC)
+
+---
+
+## Version 7.3.1 (TBD)
+_13 Mar 2017_ (TBD)
+
+### Textual changes
 * Added login warning text
 * Updated product details history text
 * Added tooltips to surveillance details headers

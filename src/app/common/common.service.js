@@ -78,6 +78,10 @@
             return self.postApiCall('/search', queryObj);
         };
 
+        self.getAll = function () {
+            return self.simpleApiCall('/certified_products');
+        };
+
         self.getSearchOptions = function (simple) {
             if (simple)
                 return self.simpleApiCall('/data/search_options?simple=true');
