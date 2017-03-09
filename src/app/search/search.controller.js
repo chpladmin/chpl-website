@@ -58,13 +58,14 @@
             populateSearchOptions();
             restoreResults();
             vm.loadResults();
+            setTimestamp();
         }
 
         function browseAll () {
             vm.triggerClearFilters();
             vm.triggerClearTerm();
-            $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
             vm.activeSearch = true;
+            setTimestamp();
         }
 
         function clear () {
@@ -215,8 +216,8 @@
         }
 
         function reloadResults () {
-            $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
             vm.activeSearch = true;
+            setTimestamp();
             restoreResults();
         }
 
@@ -402,6 +403,7 @@
                         RELOAD_TIMEOUT
                     );
                     vm.activeSearch = true;
+                    setTimestamp();
                 }
             } else {
                 vm.hasTableState = false;
@@ -476,6 +478,18 @@
                     vm.filterItems.cqms[2011].push({value: 'NQF-' + cqm.name, selected: false, display: 'NQF-' + cqm.name + ': ' + cqm.title});
                 }
             }
+        }
+
+        function setTimestamp () {
+            if (vm.activeSearch) {
+                $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
+            }
+            if (vm.timestampPromise !== null) {
+                $timeout.cancel(vm.timestampPromise);
+            }
+            vm.timestampPromise = $timeout(function () {
+                setTimestamp();
+            }, 60000); //set timestamp every minute while search is active
         }
     }
 })();
