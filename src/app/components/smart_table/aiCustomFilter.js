@@ -44,44 +44,46 @@
                             ret = !surv.hasOpenSurveillance && !surv.hasClosedSurveillance;
                         } else {
                             ret = surv.hasOpenSurveillance || surv.hasClosedSurveillance;
-                            var never = expected.NC.never;
-                            var open = expected.NC.open;
-                            var closed = expected.NC.closed;
-                            var openNC = surv.hasOpenNonconformities;
-                            var closedNC = surv.hasClosedNonconformities;
-                            /*
-                             * matching one of the posibles
-                             */
-                            if (never && !open && !closed) {
-                                ret = ret && !openNC && !closedNC;
-                            } else if (!never && open && !closed) {
-                                ret = ret && openNC
-                            } else if (!never && !open && closed) {
-                                ret = ret && closedNC
+                            if (expected.NC) {
+                                var never = expected.NC.never;
+                                var open = expected.NC.open;
+                                var closed = expected.NC.closed;
+                                var openNC = surv.hasOpenNonconformities;
+                                var closedNC = surv.hasClosedNonconformities;
                                 /*
-                                 * if matching more than one, need to know if matchAll is true or not
-                                 * if true, only valid "multiple" is !never && open && closed
+                                 * matching one of the posibles
                                  */
-                            } else if (expected.matchAll && !never && open && closed) {
-                                ret = ret && openNC && closedNC;
-                            } else if (expected.matchAll) {
-                                ret = false;
+                                if (never && !open && !closed) {
+                                    ret = ret && !openNC && !closedNC;
+                                } else if (!never && open && !closed) {
+                                    ret = ret && openNC
+                                } else if (!never && !open && closed) {
+                                    ret = ret && closedNC
+                                    /*
+                                     * if matching more than one, need to know if matchAll is true or not
+                                     * if true, only valid "multiple" is !never && open && closed
+                                     */
+                                } else if (expected.matchAll && !never && open && closed) {
+                                    ret = ret && openNC && closedNC;
+                                } else if (expected.matchAll) {
+                                    ret = false;
+                                    /*
+                                     * now matching "matchAny" with multiples
+                                     */
+                                } else if (never && open && !closed) {
+                                    ret = ret && openNC && !closedNC;
+                                } else if (never && !open && closed) {
+                                    ret = ret && !openNC && closedNC;
+                                } else if (!never && open && closed) {
+                                    ret = ret && (openNC || closedNC);
+                                }
                                 /*
-                                 * now matching "matchAny" with multiples
+                                 * triple multiples on matchAny
+                                 * never && open && closed
+                                 * !never && !open && !closed
+                                 * fall back to "all", and the original return value
                                  */
-                            } else if (never && open && !closed) {
-                                ret = ret && openNC && !closedNC;
-                            } else if (never && !open && closed) {
-                                ret = ret && !openNC && closedNC;
-                            } else if (!never && open && closed) {
-                                ret = ret && (openNC || closedNC);
                             }
-                            /*
-                             * triple multiples on matchAny
-                             * never && open && closed
-                             * !never && !open && !closed
-                             * fall back to "all", and the original return value
-                             */
                         }
                         return ret;
                     }
