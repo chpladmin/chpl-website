@@ -105,6 +105,7 @@
         }
 
         function compare () {
+            setTimestamp();
             if (vm.compareCps) {
                 var comparePath = '/compare/' + vm.compareCps.map(function (elem) { return elem.id; }).join('&');
 
@@ -253,6 +254,7 @@
         }
 
         function toggleCompare (row) {
+            setTimestamp();
             var toAdd = true;
             if (angular.isUndefined(vm.compareCps)) {
                 vm.compareCps = [];
@@ -308,6 +310,7 @@
         }
 
         function viewProduct (cp) {
+            setTimestamp();
             var toAdd = true;
             for (var i = 0; i < vm.previouslyViewed.length; i++) {
                 if (vm.previouslyViewed[i].id === cp.id) {
