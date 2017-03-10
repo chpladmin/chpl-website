@@ -64,7 +64,7 @@
             });
 
             it('should have an item for when the product was certified', function () {
-                expect(vm.activity[23].change).toEqual(['Product was certified']);
+                expect(vm.activity[23].change).toEqual(['Certified product was uploaded to the CHPL']);
             });
 
             it('should have an item for surveillance being deleted', function () {

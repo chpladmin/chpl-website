@@ -48,6 +48,10 @@ module.exports = function(config) {
 
         autoWatch: false,
 
+        browserDisconnectTimeout: 30000,
+        browserNoActivityTimeout: 30000,
+        browserDisconnectTolerance: 10,
+
         ngHtml2JsPreprocessor: {
             stripPrefix: conf.paths.src + '/',
             moduleName: 'chpl.templates'

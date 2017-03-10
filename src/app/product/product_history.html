@@ -15,7 +15,7 @@
       </thead>
       <tbody>
         <tr ng-repeat="activity in vm.activity | orderBy:'activityDate':true">
-          <td>{{ activity.activityDate | date : 'medium' : 'UTC' }}</td>
+          <td>{{ activity.activityDate | date : 'medium' : 'UTC' }} GMT</td>
           <td>
             <span ng-if="!activity.change || activity.change.length === 0">Certified Product details have changed</span>
             <ul class="list-unstyled" ng-if="activity.change && activity.change.length > 0">

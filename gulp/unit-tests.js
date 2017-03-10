@@ -31,6 +31,7 @@ function runTests (singleRun, done) {
         singleRun: singleRun,
         autoWatch: !singleRun,
         reporters: reporters,
+        growlReporter: { prefix: 'CHPL Unit Tests\n' },
         preprocessors: preprocessors,
         htmlReporter: {
             outputFile: 'test_reports/units.html'

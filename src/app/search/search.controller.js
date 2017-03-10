@@ -1,4 +1,3 @@
-/* eslint-disable */
 (function () {
     'use strict';
 
@@ -6,27 +5,30 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($scope, $log, $location, $localStorage, $filter, commonService, utilService, CACHE_TIMEOUT) {
+    function SearchController ($filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
         var vm = this;
 
+        vm.browseAll = browseAll;
+        vm.certificationStatusFilter = certificationStatusFilter;
         vm.clear = clear;
-        vm.clearFilters = clearFilters;
         vm.clearPreviouslyCompared = clearPreviouslyCompared;
         vm.clearPreviouslyViewed = clearPreviouslyViewed;
-        vm.clearSurveillanceActivityFilter = clearSurveillanceActivityFilter;
-        vm.certificationStatusFilter = certificationStatusFilter;
         vm.compare = compare;
+        vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
-        vm.isChangedFromDefault = isChangedFromDefault;
-        vm.populateSearchOptions = populateSearchOptions;
+        vm.loadResults = loadResults;
+        vm.registerClearFilter = registerClearFilter;
+        vm.registerClearTerm = registerClearTerm;
+        vm.registerRestoreComponents = registerRestoreComponents;
+        vm.registerRestoreState = registerRestoreState;
+        vm.registerSearch = registerSearch;
         vm.reloadResults = reloadResults;
-        vm.restoreResults = restoreResults
-        vm.search = search;
-        vm.setRefine = setRefine;
-        vm.sortCert = utilService.sortCert;
-        vm.sortCqm = utilService.sortCqm;
         vm.statusFont = statusFont;
         vm.toggleCompare = toggleCompare;
+        vm.triggerClearFilters = triggerClearFilters;
+        vm.triggerClearTerm = triggerClearTerm;
+        vm.triggerRestoreState = triggerRestoreState;
+        vm.triggerSearch = triggerSearch;
         vm.truncButton = truncButton;
         vm.viewProduct = viewProduct;
 
@@ -35,99 +37,45 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.activeSearch = false;
-            vm.resultCount = 0;
-            vm.defaultRefineModel = {
-                certificationStatus: {
-                    'Active': true,
-                    'Retired': false,
-                    'Suspended by ONC-ACB': true,
-                    'Withdrawn by Developer': false,
-                    'Withdrawn by Developer Under Surveillance/Review': false,
-                    'Withdrawn by ONC-ACB': false,
-                    'Suspended by ONC': true,
-                    'Terminated by ONC': false
-                },
-                certificationEdition: {
-                    '2011': false,
-                    '2014': true,
-                    '2015': true
-                },
-                acb: {
-                    'Drummond Group': true,
-                    'ICSA Labs': true,
-                    'InfoGard': true
-                }
-            };
-            if ($localStorage.refineModel) {
-                vm.refineModel = $localStorage.refineModel;
-            } else {
-                vm.refineModel = angular.copy(vm.defaultRefineModel);
-            }
-            vm.compareCps = [];
-            if (!$localStorage.previouslyCompared) {
-                $localStorage.previouslyCompared = [];
-            }
-            vm.previouslyCompared = $localStorage.previouslyCompared;
-            if (!$localStorage.previouslyViewed) {
-                $localStorage.previouslyViewed = [];
-            }
-            vm.previouslyViewed = $localStorage.previouslyViewed;
-            $scope.searchResults = [];
-            $scope.displayedResults = [];
-            vm.lookaheadSource = {all: [], developers: [], products: []};
-            vm.hasDoneASearch = false;
-            $scope.visiblePage = 1;
-            vm.boxes = {
-                compare: true,
-                prevComp: false,
-                prevView: false
-            };
-            if ($localStorage.widget && $localStorage.widget.productIds && $localStorage.widget.productIds.length > 0) {
-			    vm.boxes.certificationId = true;
-            }
-            vm.defaultQuery = {
-                orderBy: 'developer',
-                sortDescending: false,
-                pageNumber: 0,
-                pageSize: '50'
-            };
-            vm.query = angular.copy(vm.defaultQuery);
-
-            vm.restoreResults();
-            vm.populateSearchOptions();
-
-            if ($localStorage.clearResults) {
-                clear();
-                delete $localStorage.clearResults;
-            }
-
             $scope.$on('ClearResults', function () {
-                clear();
                 delete $localStorage.clearResults;
+                vm.clear();
             });
+            if ($localStorage.clearResults) {
+                delete $localStorage.clearResults;
+                vm.clear();
+            }
+
+            vm.categoryChanged = {};
+            vm.boxes = {};
+            vm.clearFilterHs = [];
+            vm.restoreStateHs = [];
+            vm.isLoading = true;
+            vm.isPreLoading = true;
+            cfpLoadingBar.start();
+
+            manageStorage();
+            populateSearchOptions();
+            restoreResults();
+            vm.loadResults();
+            setTimestamp();
         }
 
-        function clearFilters () {
-            delete $localStorage.refineModel;
-            delete $localStorage.query;
+        function browseAll () {
+            vm.triggerClearFilters();
+            vm.triggerClearTerm();
+            vm.activeSearch = true;
+            setTimestamp();
+        }
 
-            var searchTerm, searchTermObject;
-            if (vm.query.searchTerm) {
-                searchTerm = vm.query.searchTerm;
+        function clear () {
+            vm.compareCps = [];
+            vm.triggerClearFilters();
+            vm.triggerClearTerm();
+            vm.activeSearch = false;
+            if (vm.searchForm) {
+                vm.searchForm.$setPristine();
             }
-            if (vm.query.searchTermObject) {
-                searchTermObject = vm.query.searchTermObject;
-            }
-            vm.refineModel = angular.copy(vm.defaultRefineModel);
-            vm.query = angular.copy(vm.defaultQuery);
-            if (searchTerm) {
-                vm.query.searchTerm = searchTerm;
-            }
-            if (searchTermObject) {
-                vm.query.searchTermObject = searchTermObject;
-            }
-            vm.search();
         }
 
         function clearPreviouslyCompared () {
@@ -140,12 +88,8 @@
             $localStorage.previouslyViewed = [];
         }
 
-        function clearSurveillanceActivityFilter () {
-            vm.refineModel.hasHadSurveillance = undefined;
-            vm.refineModel.surveillance = {};
-        }
-
         function certificationStatusFilter (obj) {
+            // TODO: fix
             if (!obj.statuses) {
                 return true;
             } else {
@@ -161,208 +105,121 @@
         }
 
         function compare () {
-            var comparePath = '/compare/';
-            var i;
-            for (i = 0; i < vm.compareCps.length; i++) {
-                comparePath += vm.compareCps[i].id + '&';
-            }
-            comparePath = comparePath.substring(0, comparePath.length - 1);
-            if (comparePath.indexOf('&') > 0) {
-                var prev = $localStorage.previouslyCompared;
-                var toAdd;
-                for (i = 0; i < vm.compareCps.length; i++) {
-                    toAdd = true;
-                    for (var j = 0; j < prev.length; j++) {
-                        if (prev[j].id === vm.compareCps[i].id) {
-                            toAdd = false;
+            setTimestamp();
+            if (vm.compareCps) {
+                var comparePath = '/compare/' + vm.compareCps.map(function (elem) { return elem.id; }).join('&');
+
+                if (comparePath.indexOf('&') > 0) {
+                    var toAdd;
+                    for (var i = 0; i < vm.compareCps.length; i++) {
+                        toAdd = true;
+                        for (var j = 0; j < vm.previouslyCompared.length; j++) {
+                            if (vm.previouslyCompared[j].id === vm.compareCps[i].id) {
+                                toAdd = false;
+                            }
+                        }
+                        if (toAdd) {
+                            vm.previouslyCompared.push(vm.compareCps[i]);
                         }
                     }
-                    if (toAdd) {
-                        prev.push(vm.compareCps[i]);
+                    while (vm.previouslyCompared.length > 20) {
+                        vm.previouslyCompared.shift();
                     }
+                    $localStorage.previouslyCompared = vm.previouslyCompared;
+                    $location.url(comparePath);
                 }
-                while (prev.length > 20) {
-                    prev.shift();
-                }
-                $localStorage.previouslyCompared = prev;
-                $location.url(comparePath);
             }
+        }
+
+        function hasResults () {
+            return angular.isDefined(vm.allCps);
         }
 
         function isCategoryChanged (categories) {
             var ret = false;
             for (var i = 0; i < categories.length; i++) {
-                angular.forEach(vm.refineModel[categories[i]], function (value, key) {
-                    ret = ret || vm.isChangedFromDefault (categories[i], key);
-                });
+                ret = ret || vm.categoryChanged[categories[i]];
             }
             return ret;
         }
 
-        function isChangedFromDefault (index, data) {
-            if (!vm.defaultRefineModel[index]) {
-                if (vm.refineModel[index]) {
-                    if (angular.isObject(vm.refineModel[index])) {
-                        return vm.refineModel[index][data];
-                    } else {
-                        return true;
-                    }
+        function loadResults() {
+            commonService.getAll().then(function (response) {
+                if (vm.isPreLoading) {
+                    cfpLoadingBar.start();
                 }
-            } else {
-                return (vm.defaultRefineModel[index][data] !== vm.refineModel[index][data]);
-            }
+                var results = response.results;
+                for (var i = 0; i < results.length; i++) {
+                    results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber, results[i].previousDevelopers].join('|');
+                    results[i].surveillance = angular.toJson({
+                        hasOpenSurveillance: results[i].hasOpenSurveillance,
+                        hasClosedSurveillance: results[i].hasClosedSurveillance,
+                        hasOpenNonconformities: results[i].hasOpenNonconformities,
+                        hasClosedNonconformities: results[i].hasClosedNonconformities
+                    });
+                }
+                vm.allCps = [];
+                vm.displayedCps = [];
+                incrementTable(results);
+            }, function (error) {
+                $log.debug(error);
+            });
         }
 
-        function populateSearchOptions () {
-            commonService.getSearchOptions() // use 'true' in production, to hide retired CQMs & Certs
-                .then(function (options) {
-                    var i;
-                    vm.certs = options.certificationCriterionNumbers;
-                    vm.cqms = options.cqmCriterionNumbers;
-                    vm.editions = options.editions;
-                    vm.practices = options.practiceTypeNames;
-                    vm.certBodies = options.certBodyNames;
-                    vm.certificationStatuses = options.certificationStatuses;
-                    for (i = 0; i < vm.certificationStatuses.length; i++) {
-                        if (vm.certificationStatuses[i].name === 'Pending') {
-                            vm.certificationStatuses.splice(i,1);
-                            break;
-                        }
-                    }
-                    vm.certsNcqms = options.certificationCriterionNumbers.concat(options.cqmCriterionNumbers);
-                    for (i = 0; i < options.developerNames.length; i++) {
-                        vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
-                        vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
-                    }
-                    for (i = 0; i < options.productNames.length; i++) {
-                        vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
-                        vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
-                    }
-                    $localStorage.lookaheadSource = $scope.lookaheadSource;
+        function registerClearFilter (handler) {
+            vm.clearFilterHs.push(handler);
+            var removeHandler = function () {
+                vm.clearFilterHs = vm.clearFilterHs.filter(function (aHandler) {
+                    return aHandler !== handler;
                 });
+            };
+            return removeHandler;
+        }
+
+        function registerClearTerm (handler) {
+            vm.clearTerm = [handler]
+            var removeHandler = function () {
+                vm.clearTerm = vm.clearTerm.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
+        function registerRestoreComponents (handler) {
+            vm.restoreComponents = [handler];
+            var removeHandler = function () {
+                vm.restoreComponents = vm.restoreComponents.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
+        function registerRestoreState (handler) {
+            vm.restoreStateHs.push(handler);
+            var removeHandler = function () {
+                vm.restoreStateHs = vm.restoreStateHs.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
+        function registerSearch (handler) {
+            vm.tableSearch = [handler];
+            var removeHandler = function () {
+                vm.tableSearch = vm.tableSearch.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
         }
 
         function reloadResults () {
-            $log.debug('reloading results');
-            $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
-            vm.restoreResults();
-        }
-
-        function restoreResults () {
-            if ($localStorage.searchResults) {
-                var nowStamp = Math.floor((new Date()).getTime() / 1000 / 60);
-                var difference = nowStamp - $localStorage.searchTimestamp;
-                vm.pastTimeout = (difference > CACHE_TIMEOUT)
-
-                vm.hasDoneASearch = true;
-
-                if (!vm.pastTimeout) {
-                    $scope.searchResults = $localStorage.searchResults.results;
-                    $scope.displayedResults = [].concat($scope.searchResults);
-                    vm.activeSearch = true;
-                    vm.resultCount = $localStorage.searchResults.recordCount;
-
-                    if ($localStorage.query) {
-                        vm.query = $localStorage.query;
-                        $scope.visiblePage = vm.query.pageNumber + 1;
-                    }
-                } else {
-                    //vm.reloadResults();
-                }
-            }
-        }
-
-        function search () {
-            vm.setRefine();
-            if (angular.isDefined(vm.query.searchTermObject)) {
-                if (angular.isString(vm.query.searchTermObject) && vm.query.searchTermObject.length > 0) {
-                    vm.query.searchTermObject = {type: 'previous search', value: vm.query.searchTermObject};
-                    vm.lookaheadSource.all.push(vm.query.searchTermObject);
-                }
-                vm.query.searchTerm = angular.copy(vm.query.searchTermObject.value);
-            } else {
-                vm.query.searchTerm = undefined;
-            }
-            if (angular.isDefined(vm.query.developerObject)) {
-                if (angular.isString(vm.query.developerObject) && vm.query.developerObject.length > 0) {
-                    vm.query.developerObject = {type: 'previous search', value: vm.query.developerObject};
-                    vm.lookaheadSource.developers.push(vm.query.developerObject);
-                }
-                vm.query.developer = vm.query.developerObject.value;
-            } else {
-                vm.query.developer = undefined;
-            }
-            if (angular.isDefined(vm.query.productObject)) {
-                if (angular.isString(vm.query.productObject) && vm.query.productObject.length > 0) {
-                    vm.query.productObject = {type: 'previous search', value: vm.query.productObject};
-                    vm.lookaheadSource.products.push(vm.query.productObject);
-                }
-                vm.query.product = vm.query.productObject.value;
-            } else {
-                vm.query.product = undefined;
-            }
-            $localStorage.lookaheadSource = vm.lookaheadSource;
-            $localStorage.refineModel = vm.refineModel;
-            commonService.search(vm.query)
-                .then(function (data) {
-                    vm.hasDoneASearch = true;
-                    vm.activeSearch = true;
-
-                    $localStorage.searchResults = data;
-                    $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
-                    $scope.searchResults = data.results;
-                    $scope.displayedResults = [].concat($scope.searchResults);
-                    vm.resultCount = data.recordCount;
-                }, function () {
-                    vm.errorResult();
-                });
-
-            $localStorage.query = vm.query;
-        }
-
-        function setRefine () {
-            vm.query.certificationBodies = [];
-            vm.query.certificationCriteria = [];
-            vm.query.certificationEditions = [];
-            vm.query.certificationStatuses = [];
-            vm.query.cqms = [];
-            vm.query.surveillance = [];
-            vm.query.practiceType = vm.refineModel.practiceType;
-            if (vm.refineModel.developer) {
-                vm.query.developerObject = vm.refineModel.developer;
-            } else {
-                vm.query.developerObject = undefined;
-            }
-            if (vm.refineModel.product) {
-                vm.query.productObject = vm.refineModel.product;
-            } else {
-                vm.query.productObject = undefined;
-            }
-            vm.query.version = vm.refineModel.version;
-
-            angular.forEach(vm.refineModel.acb, function (value, key) {
-                if (value) { this.push(key); }
-            }, vm.query.certificationBodies);
-            angular.forEach(vm.refineModel.certificationCriteria, function (value, key) {
-                if (value) { this.push(key); }
-            }, vm.query.certificationCriteria);
-            angular.forEach(vm.refineModel.certificationEdition, function (value, key) {
-                if (value) { this.push(key); }
-            }, vm.query.certificationEditions);
-            angular.forEach(vm.refineModel.certificationStatus, function (value, key) {
-                if (value) { this.push(key); }
-            }, vm.query.certificationStatuses);
-            angular.forEach(vm.refineModel.cqms, function (value, key) {
-                if (value) { this.push(key); }
-            }, vm.query.cqms);
-            if (vm.refineModel.hasHadSurveillance === 'has-had') {
-                vm.query.hasHadSurveillance = true;
-                angular.forEach(vm.refineModel.surveillance, function (value, key) {
-                    if (value) { this.push(key); }
-                }, vm.query.surveillance);
-            } else if (vm.refineModel.hasHadSurveillance === 'never') {
-                vm.query.hasHadSurveillance = false;
-            }
+            vm.activeSearch = true;
+            setTimestamp();
+            restoreResults();
         }
 
         function statusFont (status) {
@@ -397,7 +254,11 @@
         }
 
         function toggleCompare (row) {
+            setTimestamp();
             var toAdd = true;
+            if (angular.isUndefined(vm.compareCps)) {
+                vm.compareCps = [];
+            }
             for (var i = 0; i < vm.compareCps.length; i++) {
                 if (vm.compareCps[i].id === row.id) {
                     vm.compareCps.splice(i,1);
@@ -410,6 +271,35 @@
             vm.boxes.compare = true;
         }
 
+        function triggerClearFilters () {
+            angular.forEach(vm.clearFilterHs, function (handler) {
+                handler();
+            });
+            vm.triggerSearch();
+        }
+
+        function triggerClearTerm () {
+            angular.forEach(vm.clearTerm, function (handler) {
+                handler();
+            });
+            vm.triggerSearch();
+        }
+
+        function triggerRestoreState () {
+            if ($localStorage.searchTableState) {
+                var state = angular.fromJson($localStorage.searchTableState);
+                angular.forEach(vm.restoreStateHs, function (handler) {
+                    handler(state);
+                });
+            }
+        }
+
+        function triggerSearch () {
+            if (vm.tableSearch && vm.tableSearch[0]) {
+                vm.tableSearch[0]();
+            }
+        }
+
         function truncButton (str) {
             var ret = str;
             if (str.length > 20) {
@@ -420,6 +310,7 @@
         }
 
         function viewProduct (cp) {
+            setTimestamp();
             var toAdd = true;
             for (var i = 0; i < vm.previouslyViewed.length; i++) {
                 if (vm.previouslyViewed[i].id === cp.id) {
@@ -436,73 +327,172 @@
             $location.url('/product/' + cp.id);
         }
 
+        ////////////////////////////////////////////////////////////////////
 
-        $scope.prepend = function (name) {
-            if (name.substring(0,3) !== 'CMS') {
-                return 'NQF-' + name;
+        function incrementTable (results) {
+            var size = 500, delay = 100;
+            if (results.length > 0) {
+                vm.isPreLoading = false;
+                vm.allCps = vm.allCps.concat(results.splice(0,size));
+                $timeout(function () {
+                    incrementTable(results);
+                }, delay);
             } else {
-                return name;
+                vm.isLoading = false;
             }
-        };
+        }
 
-        $scope.hasResults = function () {
-            return angular.isDefined($scope.searchResults) && $scope.searchResults.length > 0;
-        };
+        function manageStorage () {
+            if ($localStorage.previouslyCompared) {
+                vm.previouslyCompared = $localStorage.previouslyCompared;
+            } else {
+                vm.previouslyCompared = [];
+            }
+            if ($localStorage.previouslyViewed) {
+                vm.previouslyViewed = $localStorage.previouslyViewed;
+            } else {
+                vm.previouslyViewed = [];
+            }
+        }
 
-        $scope.hasSearched = function () {
-            return vm.hasDoneASearch && vm.activeSearch;
-        };
+        function populateSearchOptions () {
+            vm.lookaheadSource = {all: [], developers: [], products: []};
+            commonService.getSearchOptions()
+                .then(function (options) {
+                    if (vm.isPreLoading) {
+                        cfpLoadingBar.start();
+                    }
 
-        $scope.browseAll = function () {
-            $scope.clear();
-            vm.activeSearch = true;
-            vm.search();
-        };
+                    vm.searchOptions = options;
+                    var i;
+                    options.practiceTypes = [];
+                    for (i = 0; i < options.practiceTypeNames.length; i++) {
+                        options.practiceTypes.push(options.practiceTypeNames[i].name);
+                    }
+                    for (i = 0; i < options.certificationStatuses.length; i++) {
+                        if (options.certificationStatuses[i].name === 'Pending') {
+                            options.certificationStatuses.splice(i,1);
+                            break;
+                        }
+                    }
+                    for (i = 0; i < options.developerNames.length; i++) {
+                        vm.lookaheadSource.all.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
+                        vm.lookaheadSource.developers.push({type: 'developer', value: options.developerNames[i].name, statuses: options.developerNames[i].statuses});
+                    }
+                    for (i = 0; i < options.productNames.length; i++) {
+                        vm.lookaheadSource.all.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
+                        vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
+                    }
+                    $localStorage.lookaheadSource = vm.lookaheadSource;
+                    setFilterInfo();
+                });
+        }
 
-        vm.errorResult = function () {
-            delete $localStorage.searchResults;
-            vm.hasDoneASearch = true;
-            $scope.searchResults = [];
-            $scope.displayedResults = [];
-            $scope.visiblePage = 1;
-            vm.resultCount = 0;
-            vm.compareCps = [];
-        };
+        function restoreResults () {
+            if ($localStorage.searchTableState && $localStorage.searchTimestamp) {
+                var nowStamp = Math.floor((new Date()).getTime() / 1000 / 60);
+                var difference = nowStamp - $localStorage.searchTimestamp;
+                vm.hasTableState = true;
 
-        function clear () {
-            delete $localStorage.searchResults;
-            delete $localStorage.query;
-            delete $localStorage.lookaheadSource;
-            delete $localStorage.refine;
-            $scope.searchResults = [];
-            $scope.displayedResults = [];
-            $scope.visiblePage = 1;
-            vm.resultCount = 0;
-            vm.compareCps = [];
-            vm.hasDoneASearch = false;
-            vm.activeSearch = false;
-            vm.query = angular.copy(vm.defaultQuery);
-            vm.refineType = '';
+                if (difference > CACHE_TIMEOUT) {
+                    vm.activeSearch = false;
+                } else {
+                    cfpLoadingBar.start();
+                    $timeout(
+                        function () {
+                            vm.triggerRestoreState();
+                            cfpLoadingBar.complete();
+                        },
+                        RELOAD_TIMEOUT
+                    );
+                    vm.activeSearch = true;
+                    setTimestamp();
+                }
+            } else {
+                vm.hasTableState = false;
+            }
+        }
+
+        function setFilterInfo () {
+            var i;
+            vm.defaultRefineModel = {
+                acb: {
+                    'Drummond Group': true,
+                    'ICSA Labs': true,
+                    'InfoGard': true
+                },
+                certificationEdition: {
+                    '2011': false,
+                    '2014': true,
+                    '2015': true
+                },
+                certificationStatus: {
+                    'Active': true,
+                    'Retired': false,
+                    'Suspended by ONC-ACB': true,
+                    'Withdrawn by Developer': false,
+                    'Withdrawn by Developer Under Surveillance/Review': false,
+                    'Withdrawn by ONC-ACB': false,
+                    'Suspended by ONC': true,
+                    'Terminated by ONC': false
+                }
+            };
             vm.refineModel = angular.copy(vm.defaultRefineModel);
-            if (vm.searchForm) {
-                vm.searchForm.$setPristine();
+            vm.filterItems = {
+                pageSize: '50',
+                acbItems: [],
+                cqms: { 2011: [], other: [] },
+                criteria: { 2011: [], 2014: [], 2015: []},
+                editionItems: [],
+                statusItems: []
+            };
+            vm.searchOptions.certBodyNames = $filter('orderBy')(vm.searchOptions.certBodyNames, 'name');
+            for (i = 0; i < vm.searchOptions.certBodyNames.length; i++) {
+                vm.filterItems.acbItems.push({value: vm.searchOptions.certBodyNames[i].name, selected: vm.defaultRefineModel.acb[vm.searchOptions.certBodyNames[i].name]});
+            }
+            vm.searchOptions.editions = $filter('orderBy')(vm.searchOptions.editions, 'name');
+            for (i = 0; i < vm.searchOptions.editions.length; i++) {
+                vm.filterItems.editionItems.push({value: vm.searchOptions.editions[i].name, selected: vm.defaultRefineModel.certificationEdition[vm.searchOptions.editions[i].name]});
+            }
+            vm.searchOptions.certificationStatuses = $filter('orderBy')(vm.searchOptions.certificationStatuses, 'name');
+            for (i = 0; i < vm.searchOptions.certificationStatuses.length; i++) {
+                vm.filterItems.statusItems.push({value: vm.searchOptions.certificationStatuses[i].name, selected: vm.defaultRefineModel.certificationStatus[vm.searchOptions.certificationStatuses[i].name]});
+            }
+            vm.searchOptions.certificationCriterionNumbers = $filter('orderBy')(vm.searchOptions.certificationCriterionNumbers, utilService.sortCert);
+            for (i = 0; i < vm.searchOptions.certificationCriterionNumbers.length; i++) {
+                var crit = vm.searchOptions.certificationCriterionNumbers[i];
+                switch (crit.name.substring(4,7)) {
+                case '314':
+                    vm.filterItems.criteria[2014].push({value: crit.name, selected: false, display: crit.name + ': ' + crit.title});
+                    break;
+                case '315':
+                    vm.filterItems.criteria[2015].push({value: crit.name, selected: false, display: crit.name + ': ' + crit.title});
+                    break;
+                default:
+                    vm.filterItems.criteria[2011].push({value: crit.name, selected: false, display: crit.name + ': ' + crit.title});
+                }
+            }
+            vm.searchOptions.cqmCriterionNumbers = $filter('orderBy')(vm.searchOptions.cqmCriterionNumbers, utilService.sortCqm);
+            for (i = 0; i < vm.searchOptions.cqmCriterionNumbers.length; i++) {
+                var cqm = vm.searchOptions.cqmCriterionNumbers[i];
+                if (cqm.name.substring(0,3) === 'CMS') {
+                    vm.filterItems.cqms.other.push({value: cqm.name, selected: false, display: cqm.name + ': ' + cqm.title});
+                } else {
+                    vm.filterItems.cqms[2011].push({value: 'NQF-' + cqm.name, selected: false, display: 'NQF-' + cqm.name + ': ' + cqm.title});
+                }
             }
         }
-        $scope.clear = clear;
 
-        $scope.sort = function (header) {
-            if (header === vm.query.orderBy) {
-                vm.query.sortDescending = !vm.query.sortDescending;
-            } else {
-                vm.query.sortDescending = false;
-                vm.query.orderBy = header;
+        function setTimestamp () {
+            if (vm.activeSearch) {
+                $localStorage.searchTimestamp = Math.floor((new Date()).getTime() / 1000 / 60);
             }
-            vm.search();
+            if (vm.timestampPromise !== null) {
+                $timeout.cancel(vm.timestampPromise);
+            }
+            vm.timestampPromise = $timeout(function () {
+                setTimestamp();
+            }, 60000); //set timestamp every minute while search is active
         }
-
-        $scope.pageChanged = function (pageNumber) {
-            vm.query.pageNumber = pageNumber - 1;
-            vm.search();
-        };
     }
 })();

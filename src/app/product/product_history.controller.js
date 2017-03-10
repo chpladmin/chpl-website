@@ -52,7 +52,7 @@
                 }
 
                 if (activity.description === 'Created a certified product') {
-                    activity.change.push('Product was certified');
+                    activity.change.push('Certified product was uploaded to the CHPL');
                 }
             }
         }
