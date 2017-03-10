@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
+    function SearchController ($filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -23,13 +23,14 @@
         vm.registerRestoreState = registerRestoreState;
         vm.registerSearch = registerSearch;
         vm.reloadResults = reloadResults;
-        vm.statusFont = statusFont;
+        vm.statusFont = utilService.statusFont;
         vm.toggleCompare = toggleCompare;
         vm.triggerClearFilters = triggerClearFilters;
         vm.triggerClearTerm = triggerClearTerm;
         vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
         vm.truncButton = truncButton;
+        vm.viewCertificationStatusLegend = viewCertificationStatusLegend;
         vm.viewProduct = viewProduct;
 
         activate();
@@ -222,37 +223,6 @@
             restoreResults();
         }
 
-        function statusFont (status) {
-            var ret;
-            switch (status) {
-            case 'Active':
-                ret = 'fa-check-circle status-good';
-                break;
-            case 'Retired':
-                ret = 'fa-university status-neutral';
-                break;
-            case 'Suspended by ONC':
-                ret = 'fa-minus-square status-warning';
-                break;
-            case 'Suspended by ONC-ACB':
-                ret = 'fa-minus-circle status-warning';
-                break;
-            case 'Terminated by ONC':
-                ret = 'fa-window-close status-bad';
-                break;
-            case 'Withdrawn by Developer Under Surveillance/Review':
-                ret = 'fa-exclamation-circle status-bad';
-                break;
-            case 'Withdrawn by Developer':
-                ret = 'fa-stop-circle status-neutral';
-                break;
-            case 'Withdrawn by ONC-ACB':
-                ret = 'fa-times-circle status-bad';
-                break;
-            }
-            return ret;
-        }
-
         function toggleCompare (row) {
             setTimestamp();
             var toAdd = true;
@@ -307,6 +277,23 @@
             }
             ret +='<span class="pull-right"><i class="fa fa-close"></i></span><span class="sr-only">Remove ' + str + ' from compare</span>';
             return ret;
+        }
+
+        function viewCertificationStatusLegend () {
+            vm.viewCertificationStatusLegendInstance = $uibModal.open({
+                templateUrl: 'app/components/certificationStatus/certificationStatus.html',
+                controller: 'CertificationStatusController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg'
+            });
+            vm.viewCertificationStatusLegendInstance.result.then(function (response) {
+                $log.info(response);
+            }, function (result) {
+                $log.info(result)
+            });
         }
 
         function viewProduct (cp) {

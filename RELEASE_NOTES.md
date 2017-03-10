@@ -6,6 +6,7 @@ _Date TBD_
 ### New features
 * Updated front end UI to do all search/filter on front end
 * Updated surveillance filters (Never NC, Open NC, Closed NC)
+* Displayed certification status icon legend as modal
 
 ---
 
