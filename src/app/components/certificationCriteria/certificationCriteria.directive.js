@@ -17,6 +17,8 @@
                 viewAll: '=',
                 isEditing: '=',
                 resources: '=',
+                accessibilityStandards: '=?',
+                qmsStandards: '=?',
                 save: '&'
             },
             scope: {},

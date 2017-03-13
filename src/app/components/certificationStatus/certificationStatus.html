@@ -1,0 +1,63 @@
+<div class="" role="modal" aria-labeled-by="titleLabel">
+  <div class="modal-header">
+    <button class="btn btn-default pull-right" aria-label="Close Legend"
+            ng-click="vm.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close modal</span></button>
+    <h2 class="modal-title" id="titleLabel">Certification Status Icon Legend</h2>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col"><span class="sr-only">Category</span></th>
+          <th scope="col">Icon</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="rows" rowspan="3">Active Products</th>
+          <td class="text-center"><i class="fa" ng-class="vm.statusFont('Active')"></i></td>
+          <td>Active</td>
+          <td>Product is certified and in good standing.</td>
+        </tr>
+        <tr>
+          <td class="text-center"><i class="fa" ng-class="vm.statusFont('Suspended by ONC')"></i></td>
+          <td>Suspended by ONC</td>
+          <td>Certification of the product has been suspended by ONC. While the product remains certified, the developer will be unable to update or certify new products during the suspension.</td>
+        </tr>
+        <tr>
+          <td class="text-center"><i class="fa" ng-class="vm.statusFont('Suspended by ONC-ACB')"></i></td>
+          <td>Suspended by ONC-ACB</td>
+          <td>Product's certification is suspended because corrective action plan not completed in time. The product is still considered certified, but it is at risk of having its certification withdrawn.</td>
+        <tr>
+          <th scope="rows" rowspan="3">Decertified Products</th>
+          <td class="text-center"><i class="fa" ng-class="vm.statusFont('Terminated by ONC')"></i></td>
+          <td>Terminated by ONC</td>
+          <td>The certification of the product has been terminated by ONC.</td>
+        </tr>
+        <tr>
+          <td class="text-center"><i class="fa" ng-class="vm.statusFont('Withdrawn by Developer Under Surveillance/Review')"></i></td>
+          <td>Withdrawn by Developer Under Surveillance/Review</td>
+          <td>The certification of the product has been withdrawn by the developer while the product was under ONC-ACB surveillance or ONC direct review. It is no longer considered certified.</td>
+        </tr>
+        <tr>
+          <td class="text-center"><i class="fa" ng-class="vm.statusFont('Withdrawn by ONC-ACB')"></i></td>
+          <td>Withdrawn by ONC-ACB</td>
+          <td>Product's certification is withdrawn by the product's developer's ONC-ACB. No longer considered a certified product.</td>
+        </tr>
+        <tr>
+          <th scope="rows" rowspan="2">Inactive Products</th>
+          <td class="text-center"><i class="fa" ng-class="vm.statusFont('Withdrawn by Developer')"></i></td>
+          <td>Withdrawn by Developer</td>
+          <td>Product's certification is withdrawn by the product's developer. No longer a certified product.</td>
+        </tr>
+        <tr>
+          <td class="text-center"><i class="fa" ng-class="vm.statusFont('Retired')"></i></td>
+          <td>Retired</td>
+          <td>Product's certification is retired as part of HHS policy. It is no longer certified.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

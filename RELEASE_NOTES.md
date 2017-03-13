@@ -1,19 +1,27 @@
 # Release Notes
 
 ## Version TBD
+_27 March 2017_
+
+### New features
+* Add "Surveillance initiated by" to Surveillance Activity
+
+## Version 7.3.2
 _13 March 2017_
 
 ### New features
 * Updated front end UI to do all search/filter on front end
 * Updated surveillance filters (Never NC, Open NC, Closed NC)
-* Add "Surveillance initiated by" to Surveillance Activity
+* Displayed certification status icon legend as modal
+* Moved QMS & Accessibility info from 'additional information' to relevant criteria
+* Rearranged Resources navigation
 
 ---
 
-## Version 7.3.1 (TBD)
-_13 Mar 2017_ (TBD)
+## Version 7.3.1
+_13 March 2017_
 
-### Textual changes
+### Text changes
 * Added login warning text
 * Updated product details history text
 * Added tooltips to surveillance details headers
