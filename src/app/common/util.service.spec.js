@@ -49,6 +49,17 @@
             expect(options.length).toBe(1);
         });
 
+        it('should get the right icon for various statuses', function () {
+            expect(util.statusFont('Active')).toBe('fa-check-circle status-good');
+            expect(util.statusFont('Retired')).toBe('fa-university status-neutral');
+            expect(util.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
+            expect(util.statusFont('Suspended by ONC-ACB')).toBe('fa-minus-circle status-warning');
+            expect(util.statusFont('Terminated by ONC')).toBe('fa-window-close status-bad');
+            expect(util.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
+            expect(util.statusFont('Withdrawn by Developer')).toBe('fa-stop-circle status-neutral');
+            expect(util.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
+        });
+
         describe('sorting', function () {
 
             it('should be able to sort certs', function () {
