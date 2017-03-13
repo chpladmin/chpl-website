@@ -8,6 +8,7 @@ _Date TBD_
 * Updated surveillance filters (Never NC, Open NC, Closed NC)
 * Displayed certification status icon legend as modal
 * Moved QMS & Accessibility info from 'additional information' to relevant criteria
+* Rearranged Resources navigation
 
 ---
 
