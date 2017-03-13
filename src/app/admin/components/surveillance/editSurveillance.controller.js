@@ -14,11 +14,11 @@
         vm.deleteRequirement = deleteRequirement;
         vm.editRequirement = editRequirement;
         vm.inspectNonconformities = inspectNonconformities;
-        vm.save = save;
-        vm.sortRequirements = utilService.sortRequirements;
-        vm.isChplAdmin = authService.isChplAdmin;
         vm.isAcbAdmin = authService.isAcbAdmin;
         vm.isAcbStaff = authService.isAcbStaff;
+        vm.isChplAdmin = authService.isChplAdmin;
+        vm.save = save;
+        vm.sortRequirements = utilService.sortRequirements;
 
         activate();
 

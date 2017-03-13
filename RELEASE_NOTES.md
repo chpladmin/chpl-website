@@ -1,7 +1,7 @@
 # Release Notes
 
 ## Version TBD
-_27 March 2017_
+_Date TBD_
 
 ### New features
 * Updated front end UI to do all search/filter on front end
