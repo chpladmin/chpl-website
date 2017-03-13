@@ -13,7 +13,6 @@
             module('chpl.templates');
             module('chpl')
         });
-//                          'app/common/components/util/a.html'));
 
         beforeEach(inject(function (_$compile_, $rootScope, _$log_) {
             $compile = _$compile_;

@@ -3,7 +3,7 @@
 
     describe('chpl.search.controller', function () {
 
-        var commonService, scope, vm, $log, $location, $q, Mock;
+        var commonService, scope, vm, $log, $location, $q, Mock, $uibModal;
 
         var mock = {};
         mock.products = [
@@ -18,6 +18,24 @@
         mock.options.practiceTypeNames  = ['Practice 1', 'Practice 2'];
         mock.options.certBodyNames  = ['CB 1', 'CB 2'];
         mock.options.certificationStatuses = ['Active', 'Retired'];
+        mock.fakeModal = {
+            result: {
+                then: function (confirmCallback, cancelCallback) {
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }},
+            close: function (item) { this.result.confirmCallBack(item); },
+            dismiss: function (type) { this.result.cancelCallback(type); }
+        };
+        mock.fakeModalOptions = {
+            templateUrl: 'app/components/certificationStatus/certificationStatus.html',
+            controller: 'CertificationStatusController',
+            controllerAs: 'vm',
+            animation: false,
+            backdrop: 'static',
+            keyboard: false,
+            size: 'lg'
+        };
 
         mock.refineModel = {
             certificationStatus: {
@@ -63,11 +81,15 @@
                 });
             });
 
-            inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_, _Mock_) {
+            inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_, _Mock_, _$uibModal_) {
                 $log = _$log_;
                 $q = _$q_;
                 $location = _$location_;
                 Mock = _Mock_;
+                $uibModal = _$uibModal_;
+                spyOn($uibModal, 'open').and.callFake(function () {
+                    return mock.fakeModal;
+                });
                 commonService = _commonService_;
                 commonService.getAll.and.returnValue($q.when({'results': Mock.allCps}));
                 commonService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
@@ -162,16 +184,32 @@
             it('should have a function to get the right icon for a status', function () {
                 expect(vm.statusFont).toBeDefined();
             });
+        });
 
-            it('should get the right icon for various statuses', function () {
-                expect(vm.statusFont('Active')).toBe('fa-check-circle status-good');
-                expect(vm.statusFont('Retired')).toBe('fa-university status-neutral');
-                expect(vm.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
-                expect(vm.statusFont('Suspended by ONC-ACB')).toBe('fa-minus-circle status-warning');
-                expect(vm.statusFont('Terminated by ONC')).toBe('fa-window-close status-bad');
-                expect(vm.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
-                expect(vm.statusFont('Withdrawn by Developer')).toBe('fa-stop-circle status-neutral');
-                expect(vm.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
+        describe('viewing certification status', function () {
+            it('should have a function to view certification statuses', function () {
+                expect(vm.viewCertificationStatusLegend).toBeDefined();
+            });
+
+            it('should create a modal instance when then certification status legend is viewed', function () {
+                expect(vm.viewCertificationStatusLegendInstance).toBeUndefined();
+                vm.viewCertificationStatusLegend();
+                expect(vm.viewCertificationStatusLegendInstance).toBeDefined();
+                expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
+            });
+
+            it('should log that the status was closed', function () {
+                var initialCount = $log.info.logs.length;
+                vm.viewCertificationStatusLegend();
+                vm.viewCertificationStatusLegendInstance.close('closed');
+                expect($log.info.logs.length).toBe(initialCount + 1);
+            });
+
+            it('should log that the status was closed', function () {
+                var initialCount = $log.info.logs.length;
+                vm.viewCertificationStatusLegend();
+                vm.viewCertificationStatusLegendInstance.dismiss('dismissed');
+                expect($log.info.logs.length).toBe(initialCount + 1);
             });
         });
     });

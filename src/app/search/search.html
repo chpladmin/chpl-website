@@ -207,7 +207,7 @@
                       <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</span></th>
                       <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</span></th>
                       <th scope="col">Version</th>
-                      <th scope="col" class="search-header text-center" st-sort="certificationStatus" st-skip-natural="true">Status</th>
+                      <th scope="col" class="search-header text-center" st-sort="certificationStatus" st-skip-natural="true">Status <a href ng-click="vm.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></a></th>
                       <th scope="col"><span class="sr-only">Actions</span></th>
 	                </tr>
                   </thead>
@@ -280,20 +280,6 @@
                 <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyViewed()">Clear</button>
               </uib-accordion-group>
             </uib-accordion>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Certification Status Icon Legend</th>
-                  <th scope="col"><span class="sr-only">Icon</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="status in vm.searchOptions.certificationStatuses | orderBy:'name'">
-                  <td>{{ status.name }}</td>
-                  <td><i class="fa" ng-class="vm.statusFont(status.name)"></i></td>
-                </tr>
-              </tbody>
-            </table>
           </div>  <!-- end of sidebar -->
         </div>
       </div> <!-- end of search results -->
