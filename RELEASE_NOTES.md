@@ -7,6 +7,7 @@ _Date TBD_
 * Updated front end UI to do all search/filter on front end
 * Updated surveillance filters (Never NC, Open NC, Closed NC)
 * Displayed certification status icon legend as modal
+* Moved QMS & Accessibility info from 'additional information' to relevant criteria
 
 ---
 

@@ -16,6 +16,8 @@
                                      cert="n"
                                      is-editing="vm.isEditing"
                                      resources="vm.resources"
+                                     accessibility-standards="vm.product.accessibilityStandards"
+                                     qms-standards="vm.product.qmsStandards"
                                      save="vm.registerCerts(handler)">
           </ai-certification-criteria>
         </div>
@@ -107,26 +109,6 @@
             <p ng-if="vm.product.sedTestingEnd">{{ vm.product.sedTestingEnd | date : 'mediumDate' : 'UTC' }}</p>
             <p ng-if="!vm.product.sedTestingEnd">N/A</p>
           </span>
-          <span ng-if="vm.product.qmsStandards.length > 0 || vm.product.chplProductNumber.substring(0,3) !== 'CHP'">
-            <h4>Quality Management System</h4>
-            <table ng-if="vm.product.qmsStandards && vm.product.qmsStandards.length > 0" class="table">
-              <thead>
-                <tr>
-                  <th scope="cols">Standard</th>
-                  <th scope="cols">Description</th>
-                  <th scope="cols">Applicable Criteria</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="qms in vm.product.qmsStandards">
-                  <td>{{ qms.qmsStandardName }}</td>
-                  <td>{{ qms.qmsModification ? qms.qmsModification : 'N/A' }}</td>
-                  <td>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <span ng-if="!vm.product.qmsStandards || vm.product.qmsStandards.length === 0">N/A</span>
-          </span>
           <span ng-if="vm.product.ics !== null">
             <h4>Inherited Certification Status</h4>
             <p ng-if="vm.product.ics !== null">{{ vm.product.ics ? 'True' : 'False' }}</p>
@@ -140,12 +122,6 @@
             <h4>Developer Identified Targeted User<span ng-if="vm.product.targetedUsers.length > 1">s</span></h4>
             <ul>
               <li ng-repeat="user in vm.product.targetedUsers">{{ user.targetedUserName }}</li>
-            </ul>
-          </span>
-          <span ng-if="vm.product.accessibilityStandards && vm.product.accessibilityStandards.length > 0">
-            <h4>Accessibility Standard<span ng-if="vm.product.accessibilityStandards.length > 1">s</span></h4>
-            <ul>
-              <li ng-repeat="std in vm.product.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
             </ul>
           </span>
           <span ng-if="vm.product.numMeaningfulUse">
