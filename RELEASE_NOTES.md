@@ -11,10 +11,10 @@ _Date TBD_
 
 ---
 
-## Version 7.3.1 (TBD)
-_13 Mar 2017_ (TBD)
+## Version 7.3.1
+_13 March 2017_
 
-### Textual changes
+### Text changes
 * Added login warning text
 * Updated product details history text
 * Added tooltips to surveillance details headers
