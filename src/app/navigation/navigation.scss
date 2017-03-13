@@ -5,11 +5,13 @@
 
 .nav {
     .dropdown-menu {
-        min-width: 320px;
-
         p {
             margin-left: 2px;
             margin-right: 2px;
+        }
+
+        #admin& {
+            width: $screen-xs * 2 / 3;
         }
     }
 }
