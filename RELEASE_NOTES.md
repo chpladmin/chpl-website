@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 7.3.1
+_13 March 2017_
+
+### Text changes
+* Added login warning text
+* Updated product details history text
+* Added tooltips to surveillance details headers
+
+---
+
 ## Version 7.3.0
 _27 February 2017_
 
