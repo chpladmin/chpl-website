@@ -77,7 +77,7 @@
 
             it('should not require an end date when all NCs are closed and the surveillance has an end date', function () {
                 vm.surveillance.requirements[0].nonconformities[0].status = {id:2, name: 'Closed'};
-                vm.surveillance.endDate = '1472702800000';
+                vm.surveillance.endDateObject = '1472702800000';
                 expect(vm.missingEndDate()).toBe(false);
             });
         });
