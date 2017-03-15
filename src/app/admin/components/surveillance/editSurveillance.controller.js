@@ -17,6 +17,7 @@
         vm.isAcbAdmin = authService.isAcbAdmin;
         vm.isAcbStaff = authService.isAcbStaff;
         vm.isChplAdmin = authService.isChplAdmin;
+        vm.missingEndDate = missingEndDate;
         vm.save = save;
         vm.sortRequirements = utilService.sortRequirements;
 
@@ -157,6 +158,16 @@
             }, function (result) {
                 $log.info(result);
             });
+        }
+
+        function missingEndDate () {
+            var hasOpen = false;
+            for (var i = 0; i < vm.surveillance.requirements.length; i++) {
+                for (var j = 0; j < vm.surveillance.requirements[i].nonconformities.length; j++) {
+                    hasOpen = hasOpen || (vm.surveillance.requirements[i].nonconformities[j].status.name === 'Open');
+                }
+            }
+            return !hasOpen && !vm.surveillance.endDate;
         }
 
         function save () {

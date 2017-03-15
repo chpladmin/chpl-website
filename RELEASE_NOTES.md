@@ -10,6 +10,7 @@ _Date TBD_
 * Moved QMS & Accessibility info from 'additional information' to relevant criteria
 * Rearranged Resources navigation
 * Add "Surveillance initiated by" to Surveillance Activity
+* Required users to enter surveillance end date if no open Non-Conformites exist
 
 ---
 
