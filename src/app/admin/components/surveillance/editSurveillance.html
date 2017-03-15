@@ -17,6 +17,13 @@
       <div class="col-sm-3"><strong>Surveillance ID:</strong></div>
       <div class="col-sm-9">{{ vm.surveillance.friendlyId }}</div>
     </div>
+    <div class="row" ng-if="vm.workType !== 'initiate'">
+      <div class="col-sm-3"><strong>Surveillance initiated by:</strong></div>
+      <div class="col-sm-9">
+      	<span>{{ vm.surveillance.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}</span>
+      </div>
+     </div>
+    </div>
     <div class="form-group">
       <label for="startDate" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
       <div class="col-sm-9">
@@ -49,6 +56,15 @@
                 ng-options="type as type.name for type in vm.data.surveillanceTypes.data | orderBy:'name'" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.surveillanceType.$touched) && vm.editForm.surveillanceType.$error.required">Field is required</div>
+      </div>
+    </div> 
+    <div class="form-group" ng-if="vm.workType === 'initiate' && vm.authorities.length > 1">
+      <label for="authority" class="col-sm-3">Initiated by <span class="text-danger">*</span></label>
+      <div class="col-sm-9">
+        <select class="input-sm form-control" ng-model="vm.surveillance.authority" id="authority" name="authority"
+                ng-options="authority for authority in vm.authorities" required> 
+        </select>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.authority.$touched) && vm.editForm.authority.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
@@ -102,7 +118,7 @@
         <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
       </ul>
     </div>
-    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate()) && vm.showFormErrors">
+    <div class="text-danger text-left" ng-if="vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()) && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.startDate.$error.required">Start Date is required</li>
@@ -112,15 +128,18 @@
         <li ng-if="vm.editForm.surveillanceType.$error.required">Surveillance Type is required</li>
         <li ng-if="vm.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
         <li ng-if="vm.editForm.sitesSurveilled.$error.number">Sites Surveilled must be a number</li>
+        <li ng-if="vm.editForm.authority.$error.required">Initiated by is required</li>
         <li ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">At least one Requirement must be surveilled</li>
+        <li ng-if="vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()">User must have authority for ONC-Admin to edit surveillance created by ONC-Admin</li>
         <li ng-if="vm.missingEndDate()">End Date is required when there are no open Nonconformities</li>
       </ul>
     </div>
-    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate()) && vm.showFormErrors && !vm.disableValidation"
+    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin())) && vm.showFormErrors && !vm.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>
-    <button class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
+    <button ng-disabled="vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()"
+    		class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
             confirm="Are you sure you wish to delete this surveillance?"
             confirm-ok="Yes"
             confirm-cancel="No"

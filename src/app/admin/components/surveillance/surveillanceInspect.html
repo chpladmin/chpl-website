@@ -37,6 +37,7 @@
         <strong>End Date:</strong>{{ vm.surveillance.endDate | date : 'mediumDate' : 'UTC' }}<br />
         <strong>Surveillance Type:</strong>{{ vm.surveillance.type.name }}<br />
         <strong>Number of sites surveilled:</strong>{{ vm.surveillance.randomizedSitesUsed ? vm.surveillance.randomizedSitesUsed : 'N/A' }}<br />
+        <strong>Surveillance initiated by:</strong>{{ vm.surveillance.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}<br />
         <table class="table table-condensed">
           <thead>
             <tr>

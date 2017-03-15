@@ -5,7 +5,7 @@
         .controller('EditSurveillanceController', EditSurveillanceController);
 
     /** @ngInject */
-    function EditSurveillanceController ($uibModal, $uibModalInstance, $log, surveillance, surveillanceTypes, workType, commonService, utilService) {
+    function EditSurveillanceController ($uibModal, $uibModalInstance, $log, surveillance, surveillanceTypes, workType, commonService, utilService, authService) {
         var vm = this;
 
         vm.addRequirement = addRequirement;
@@ -14,6 +14,9 @@
         vm.deleteRequirement = deleteRequirement;
         vm.editRequirement = editRequirement;
         vm.inspectNonconformities = inspectNonconformities;
+        vm.isAcbAdmin = authService.isAcbAdmin;
+        vm.isAcbStaff = authService.isAcbStaff;
+        vm.isChplAdmin = authService.isChplAdmin;
         vm.missingEndDate = missingEndDate;
         vm.save = save;
         vm.sortRequirements = utilService.sortRequirements;
@@ -23,6 +26,16 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.authorities = [];
+            if(vm.isAcbAdmin()){
+                vm.authorities.push('ROLE_ACB_ADMIN');
+            }
+            if(vm.isAcbStaff()){
+                vm.authorities.push('ROLE_ACB_STAFF');
+            }
+            if(vm.isChplAdmin()){
+                vm.authorities.push('ROLE_ADMIN');
+            }   	
             vm.surveillance = angular.copy(surveillance);
             if (vm.surveillance.startDate) {
                 vm.surveillance.startDateObject = new Date(vm.surveillance.startDate);
@@ -149,12 +162,22 @@
 
         function missingEndDate () {
             var hasOpen = false;
-            for (var i = 0; i < vm.surveillance.requirements.length; i++) {
-                for (var j = 0; j < vm.surveillance.requirements[i].nonconformities.length; j++) {
-                    hasOpen = hasOpen || (vm.surveillance.requirements[i].nonconformities[j].status.name === 'Open');
+            if(vm.surveillance.requirements){
+                for (var i = 0; i < vm.surveillance.requirements.length; i++) {
+                    for (var j = 0; j < vm.surveillance.requirements[i].nonconformities.length; j++) {
+                        hasOpen = hasOpen || (vm.surveillance.requirements[i].nonconformities[j].status.name === 'Open');
+                    }
                 }
+                if(!hasOpen){
+                    if(vm.surveillance.endDateObject){
+                        return false;
+                    }
+                    else{
+                        return true;
+                    }
+                } 
             }
-            return !hasOpen && !vm.surveillance.endDate;
+            return false;
         }
 
         function save () {
@@ -167,38 +190,49 @@
             if (vm.workType === 'confirm') {
                 $uibModalInstance.close(vm.surveillance);
             } else if (vm.workType === 'initiate') {
+                if(!vm.surveillance.authority){
+                    if(vm.isChplAdmin()){
+                        vm.surveillance.authority = 'ROLE_ADMIN';
+                    }
+                    else if(vm.isAcbAdmin()){
+                        vm.surveillance.authority = 'ROLE_ACB_ADMIN';
+                    }
+                    else if(vm.isAcbStaff()){
+                        vm.surveillance.authority = 'ROLE_ACB_STAFF';
+                    }
+                }
                 vm.surveillance.certifiedProduct.edition = vm.surveillance.certifiedProduct.certificationEdition.name;
                 commonService.initiateSurveillance(vm.surveillance)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                            $uibModalInstance.close(response);
-                        } else {
-                            vm.errorMessages = [response];
-                        }
-                    },function (error) {
-                        if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-                            vm.errorMessages = error.data.errorMessages;
-                        } else if (error.data.error) {
-                            vm.errorMessages = [error.data.error];
-                        } else {
-                            vm.errorMessages = [error.statusText];
-                        }
-                    });
+                .then(function (response) {
+                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                        $uibModalInstance.close(response);
+                    } else {
+                        vm.errorMessages = [response];
+                    }
+                },function (error) {
+                    if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+                        vm.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        vm.errorMessages = [error.data.error];
+                    } else {
+                        vm.errorMessages = [error.statusText];
+                    }
+                });
             } else if (vm.workType === 'edit') {
                 commonService.updateSurveillance(vm.surveillance)
-                    .then(function (response) {
-                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                            $uibModalInstance.close(response);
-                        } else {
-                            vm.errorMessages = [response];
-                        }
-                    },function (error) {
-                        if (error.data.errorMessages && error.data.errorMessages.length > 0) {
-                            vm.errorMessages = error.data.errorMessages;
-                        } else {
-                            vm.errorMessages = [error.statusText];
-                        }
-                    });
+                .then(function (response) {
+                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                        $uibModalInstance.close(response);
+                    } else {
+                        vm.errorMessages = [response];
+                    }
+                },function (error) {
+                    if (error.data.errorMessages && error.data.errorMessages.length > 0) {
+                        vm.errorMessages = error.data.errorMessages;
+                    } else {
+                        vm.errorMessages = [error.statusText];
+                    }
+                });
             }
         }
 
