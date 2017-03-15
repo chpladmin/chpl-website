@@ -9,6 +9,7 @@ _Date TBD_
 * Displayed certification status icon legend as modal
 * Moved QMS & Accessibility info from 'additional information' to relevant criteria
 * Rearranged Resources navigation
+* Required users to enter surveillance end date if no open Non-Conformites exist
 
 ---
 
