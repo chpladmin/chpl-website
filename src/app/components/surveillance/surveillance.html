@@ -35,7 +35,8 @@
             <td><span ng-repeat="res in vm.surveillanceResults(surv) | orderBy:vm.sortResults track by $index">{{ res }}<br /></span></td>
           </tr>
           <tr>
-            <th scope="row">Surveillance initiated by</th>
+            <th scope="row">
+           	  <a href uib-tooltip="Indicates whether surveillance was initiated by ONC-ACB or through ONC direct review." tooltip-trigger="mouseenter focus click">Surveillance initiated by</a></th>
             <td>{{ surv.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}</td>
           </tr>
         </tbody>
