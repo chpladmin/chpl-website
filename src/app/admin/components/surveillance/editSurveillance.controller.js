@@ -169,6 +169,17 @@
             if (vm.workType === 'confirm') {
                 $uibModalInstance.close(vm.surveillance);
             } else if (vm.workType === 'initiate') {
+                if(!vm.surveillance.authority){
+                    if(vm.isChplAdmin()){
+                        vm.surveillance.authority = 'ROLE_ADMIN';
+                    }
+                    else if(vm.isAcbAdmin()){
+                        vm.surveillance.authority = 'ROLE_ACB_ADMIN';
+                    }
+                    else if(vm.isAcbStaff()){
+                        vm.surveillance.authority = 'ROLE_ACB_STAFF';
+                    }
+                }
                 vm.surveillance.certifiedProduct.edition = vm.surveillance.certifiedProduct.certificationEdition.name;
                 commonService.initiateSurveillance(vm.surveillance)
                 .then(function (response) {
