@@ -17,6 +17,7 @@
         vm.isAcbAdmin = authService.isAcbAdmin;
         vm.isAcbStaff = authService.isAcbStaff;
         vm.isChplAdmin = authService.isChplAdmin;
+        
         vm.save = save;
         vm.sortRequirements = utilService.sortRequirements;
 
@@ -25,7 +26,16 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-        	vm.authorities = ['ONC', 'ONC-ACB'];
+            vm.authorities = [];
+            if(vm.isAcbAdmin()){
+                vm.authorities.push('ROLE_ACB_ADMIN');
+            }
+            if(vm.isAcbStaff()){
+                vm.authorities.push('ROLE_ACB_STAFF');
+            }
+            if(vm.isChplAdmin()){
+                vm.authorities.push('ROLE_ADMIN');
+            }   	
             vm.surveillance = angular.copy(surveillance);
             if (vm.surveillance.startDate) {
                 vm.surveillance.startDateObject = new Date(vm.surveillance.startDate);
@@ -36,10 +46,6 @@
             vm.disableValidation = vm.surveillance.errorMessages && vm.surveillance.errorMessages.length > 0;
             vm.workType = workType;
             vm.showFormErrors = false;
-            if(vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()){
-            	vm.disableValidation = false;
-            	vm.showFormErrors = true;
-            }
             vm.data = surveillanceTypes;
             if (vm.surveillance.type) {
                 vm.surveillance.type = findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
@@ -155,9 +161,8 @@
         }
 
         function save () {
-        	if(!vm.surveillance.errorMessages.length > 0){
-        		vm.surveillance.startDate = vm.surveillance.startDateObject.getTime();
-                if (vm.surveillance.endDateObject) {
+            vm.surveillance.startDate = vm.surveillance.startDateObject.getTime();
+            if (vm.surveillance.endDateObject) {
                     vm.surveillance.endDate = vm.surveillance.endDateObject.getTime();
                 } else {
                     vm.surveillance.endDate = null;
@@ -166,12 +171,6 @@
                     $uibModalInstance.close(vm.surveillance);
                 } else if (vm.workType === 'initiate') {
                     vm.surveillance.certifiedProduct.edition = vm.surveillance.certifiedProduct.certificationEdition.name;
-                    if(vm.surveillance.authority === 'ONC'){
-                    	vm.surveillance.authority = 'ROLE_ADMIN';
-                    }
-                    else if(vm.surveillance.authority === 'ONC-ACB'){
-                    	vm.surveillance.authority = 'ROLE_ACB_STAFF';
-                    }
                     commonService.initiateSurveillance(vm.surveillance)
                         .then(function (response) {
                             if (!response.status || response.status === 200 || angular.isObject(response.status)) {
@@ -204,7 +203,6 @@
                             }
                         });
                 }
-        	} 
         }
 
         ////////////////////////////////////////////////////////////////////
