@@ -118,7 +118,7 @@
         <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
       </ul>
     </div>
-    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()) && vm.showFormErrors">
+    <div class="text-danger text-left" ng-if="vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()) && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.startDate.$error.required">Start Date is required</li>
@@ -134,7 +134,7 @@
         <li ng-if="vm.missingEndDate()">End Date is required when there are no open Nonconformities</li>
       </ul>
     </div>
-    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()) && vm.showFormErrors && !vm.disableValidation)"
+    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin())) && vm.showFormErrors && !vm.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>

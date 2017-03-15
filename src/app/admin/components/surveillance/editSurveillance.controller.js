@@ -162,12 +162,22 @@
 
         function missingEndDate () {
             var hasOpen = false;
-            for (var i = 0; i < vm.surveillance.requirements.length; i++) {
-                for (var j = 0; j < vm.surveillance.requirements[i].nonconformities.length; j++) {
-                    hasOpen = hasOpen || (vm.surveillance.requirements[i].nonconformities[j].status.name === 'Open');
+            if(vm.surveillance.requirements){
+                for (var i = 0; i < vm.surveillance.requirements.length; i++) {
+                    for (var j = 0; j < vm.surveillance.requirements[i].nonconformities.length; j++) {
+                        hasOpen = hasOpen || (vm.surveillance.requirements[i].nonconformities[j].status.name === 'Open');
+                    }
                 }
+                if(!hasOpen){
+                    if(vm.surveillance.endDateObject){
+                        return false;
+                    }
+                    else{
+                        return true;
+                    }
+                } 
             }
-            return !hasOpen && !vm.surveillance.endDate;
+            return false;
         }
 
         function save () {
