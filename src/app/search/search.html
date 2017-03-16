@@ -256,15 +256,6 @@
           </div>  <!-- end of search results -->
           <div class="col-md-3"> <!-- sidebar -->
             <uib-accordion close-others="false">
-              <!--
-              <uib-accordion-group class="panel-ai" is-open="vm.boxes.prevComp" aria-expanded="{{ vm.boxes.prevComp }}" template-url="app/common/templates/accordion.html"
-                                   heading="Previous {{ vm.previouslyCompared.length }} products compared">
-                <ul class="list-unstyled text-left">
-                  <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product'"><a href="" ng-click="vm.toggleCompare(cp)">{{ cp.product }}</a></li>
-                </ul>
-                <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
-              </uib-accordion-group>
-              -->
               <uib-accordion-group class="panel-ai" is-open="vm.boxes.prevView" aria-expanded="{{ vm.boxes.prevView }}" template-url="app/common/templates/accordion.html">
                 <uib-accordion-heading aria-expanded="{{ vm.boxes.prevView }}">
                   Previous {{ vm.previouslyViewed.length }} product<span ng-if="vm.previouslyViewed.length !== 1">s</span> viewed

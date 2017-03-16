@@ -13,7 +13,6 @@
         vm.clear = clear;
         vm.clearPreviouslyCompared = clearPreviouslyCompared;
         vm.clearPreviouslyViewed = clearPreviouslyViewed;
-        vm.compare = compare;
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
         vm.loadResults = loadResults;
@@ -24,12 +23,10 @@
         vm.registerSearch = registerSearch;
         vm.reloadResults = reloadResults;
         vm.statusFont = utilService.statusFont;
-        vm.toggleCompare = toggleCompare;
         vm.triggerClearFilters = triggerClearFilters;
         vm.triggerClearTerm = triggerClearTerm;
         vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
-        vm.truncButton = truncButton;
         vm.viewCertificationStatusLegend = viewCertificationStatusLegend;
         vm.viewProduct = viewProduct;
 
@@ -70,7 +67,6 @@
         }
 
         function clear () {
-            vm.compareCps = [];
             vm.triggerClearFilters();
             vm.triggerClearTerm();
             vm.activeSearch = false;
@@ -80,7 +76,6 @@
         }
 
         function clearPreviouslyCompared () {
-            vm.previouslyCompared = [];
             $localStorage.previouslyCompared = [];
         }
 
@@ -102,33 +97,6 @@
                         (obj.statuses['suspendedByOnc'] > 0 && vm.refineModel.certificationStatus['Suspended by ONC']) ||
                         (obj.statuses['terminatedByOnc'] > 0 && vm.refineModel.certificationStatus['Terminated by ONC']) ||
                         (obj.statuses['retired'] > 0 && vm.refineModel.certificationStatus['Retired']));
-            }
-        }
-
-        function compare () {
-            setTimestamp();
-            if (vm.compareCps) {
-                var comparePath = '/compare/' + vm.compareCps.map(function (elem) { return elem.id; }).join('&');
-
-                if (comparePath.indexOf('&') > 0) {
-                    var toAdd;
-                    for (var i = 0; i < vm.compareCps.length; i++) {
-                        toAdd = true;
-                        for (var j = 0; j < vm.previouslyCompared.length; j++) {
-                            if (vm.previouslyCompared[j].id === vm.compareCps[i].id) {
-                                toAdd = false;
-                            }
-                        }
-                        if (toAdd) {
-                            vm.previouslyCompared.push(vm.compareCps[i]);
-                        }
-                    }
-                    while (vm.previouslyCompared.length > 20) {
-                        vm.previouslyCompared.shift();
-                    }
-                    $localStorage.previouslyCompared = vm.previouslyCompared;
-                    $location.url(comparePath);
-                }
             }
         }
 
@@ -223,24 +191,6 @@
             restoreResults();
         }
 
-        function toggleCompare (row) {
-            setTimestamp();
-            var toAdd = true;
-            if (angular.isUndefined(vm.compareCps)) {
-                vm.compareCps = [];
-            }
-            for (var i = 0; i < vm.compareCps.length; i++) {
-                if (vm.compareCps[i].id === row.id) {
-                    vm.compareCps.splice(i,1);
-                    toAdd = false;
-                }
-            }
-            if (toAdd) {
-                vm.compareCps.push(row);
-            }
-            vm.boxes.compare = true;
-        }
-
         function triggerClearFilters () {
             angular.forEach(vm.clearFilterHs, function (handler) {
                 handler();
@@ -270,15 +220,6 @@
             }
         }
 
-        function truncButton (str) {
-            var ret = str;
-            if (str.length > 20) {
-                ret = ret.substring(0,20) + '&#8230;';
-            }
-            ret +='<span class="pull-right"><i class="fa fa-close"></i></span><span class="sr-only">Remove ' + str + ' from compare</span>';
-            return ret;
-        }
-
         function viewCertificationStatusLegend () {
             vm.viewCertificationStatusLegendInstance = $uibModal.open({
                 templateUrl: 'app/components/certificationStatus/certificationStatus.html',
@@ -298,14 +239,8 @@
 
         function viewProduct (cp) {
             setTimestamp();
-            var toAdd = true;
-            for (var i = 0; i < vm.previouslyViewed.length; i++) {
-                if (vm.previouslyViewed[i].id === cp.id) {
-                    toAdd = false;
-                }
-            }
-            if (toAdd) {
-                vm.previouslyViewed.push(cp);
+            if (vm.previouslyViewed.indexOf(cp.id) === -1) {
+                vm.previouslyViewed.push(cp.id);
                 if (vm.previouslyViewed.length > 20) {
                     vm.previouslyViewed.shift();
                 }
@@ -330,11 +265,6 @@
         }
 
         function manageStorage () {
-            if ($localStorage.previouslyCompared) {
-                vm.previouslyCompared = $localStorage.previouslyCompared;
-            } else {
-                vm.previouslyCompared = [];
-            }
             if ($localStorage.previouslyViewed) {
                 vm.previouslyViewed = $localStorage.previouslyViewed;
             } else {

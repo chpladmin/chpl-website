@@ -24,6 +24,7 @@
         vm.clearProducts = clearProducts;
         vm.isInList = isInList;
         vm.queryUrl = queryUrl;
+        vm.saveProducts = saveProducts;
         vm.toggleProduct = toggleProduct;
 
         activate ();
@@ -53,6 +54,22 @@
 
         function queryUrl () {
             return vm.compareWidget.productIds.join('&');
+        }
+
+        function saveProducts () {
+            var previously = $localStorage.previouslyCompared;
+            if (!previously) {
+                previously = [];
+            }
+            for (var i = 0; i < vm.compareWidget.productIds.length; i++) {
+                if (previously.indexOf(vm.compareWidget.productIds[i]) === -1) {
+                    previously.push(vm.compareWidget.productIds[i]);
+                }
+            }
+            while (previously.length > 20) {
+                previously.shift();
+            }
+            $localStorage.previouslyCompared = previously;
         }
 
         function toggleProduct (id, name) {

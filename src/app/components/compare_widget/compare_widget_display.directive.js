@@ -18,6 +18,7 @@
                     widgetController.clearProducts();
                 };
                 scope.compare = function () {
+                    widgetController.saveProducts();
                     $location.url('/compare/' + widgetController.queryUrl());
                     scope.$emit('HideCompareWidget');
                 };

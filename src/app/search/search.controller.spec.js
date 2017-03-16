@@ -118,37 +118,6 @@
             expect(vm.hasResults).toBeDefined;
         });
 
-        it('should know which elements are selected for comparison', function () {
-            expect(vm.compareCps).toBeUndefined();
-            vm.toggleCompare({id: 1});
-            expect(vm.compareCps.length).toBe(1);
-            vm.toggleCompare({id: 1});
-            expect(vm.compareCps.length).toBe(0);
-        });
-
-        it('should redirect to /compare when "compare" is clicked', function () {
-            spyOn($location, 'path');
-
-            vm.toggleCompare({id: 123});
-            vm.toggleCompare({id: 234});
-            vm.compare();
-
-            expect($location.path).toHaveBeenCalledWith('/compare/123&234');
-        });
-
-        it('should not redirect to /compare unless there are at least 2 ids to compare', function () {
-            spyOn($location, 'path');
-
-            vm.compare();
-
-            expect($location.path).not.toHaveBeenCalled();
-
-            vm.toggleCompare({id:123});
-
-            vm.compare();
-            expect($location.path).not.toHaveBeenCalled();
-        });
-
         describe('certificationStatus filters', function () {
 
             var objToFilter;

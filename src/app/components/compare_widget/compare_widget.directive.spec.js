@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.aiCompareWidget', function () {
-        var $compile, $rootScope, vm, el, $log, mock;
+        var $compile, $rootScope, vm, el, $localStorage, $log, mock;
         mock = {
             products: [
                 {id: 1, name: 'name1'},
@@ -13,10 +13,11 @@
 
         beforeEach(function () {
             module('chpl.compare-widget');
-            inject(function (_$compile_, _$rootScope_, _$log_, $localStorage) {
+            inject(function (_$compile_, _$rootScope_, _$log_, _$localStorage_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
                 $log = _$log_;
+                $localStorage = _$localStorage_;
                 delete($localStorage.compareWidget);
 
                 el = angular.element('<ai-compare-widget></ai-compare-widget>');
@@ -78,6 +79,14 @@
 
             it('should know what the queryUrl should be', function () {
                 expect(vm.queryUrl()).toBe('1&2&3');
+            });
+
+            describe('previously compared objects', function () {
+                it('should add active products to the previously compared list on save', function () {
+                    $localStorage.previouslyCompared = [];
+                    vm.saveProducts();
+                    expect($localStorage.previouslyCompared).toEqual([1,2,3]);
+                });
             });
         });
     });
