@@ -11,6 +11,7 @@ _Date TBD_
 * Rearranged Resources navigation
 * Add "Surveillance initiated by" to Surveillance Activity
 * Required users to enter surveillance end date if no open Non-Conformites exist
+* Don't show "CertID" button for Retired products
 
 ---
 
