@@ -12,6 +12,7 @@ _Date TBD_
 * Add "Surveillance initiated by" to Surveillance Activity
 * Required users to enter surveillance end date if no open Non-Conformites exist
 * Don't show "CertID" button for Retired products
+* Don't show unnecessary elements of widget for 2014/2015 and 2015 CMS IDs
 
 ---
 
