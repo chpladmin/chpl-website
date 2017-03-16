@@ -21,6 +21,12 @@
               <ai-cms-widget-display widget="vm.widget"></ai-cms-widget-display>
             </div>
           </li>
+          <li class="dropdown" uib-dropdown is-open="vm.compareWidgetExpanded" auto-close="disabled">
+            <a href class="dropdown-toggle" id="compare-widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.compareWidgetExpanded">Compare<br />Products <span class="fa fa-caret-down"></span></a>
+            <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="compare-widget-toggle" id="compare-widget-dropdown">
+              <ai-compare-widget-display widget="vm.compareWidget"></ai-compare-widget-display>
+            </div>
+          </li>
           <li ng-class="{'active': (vm.isActive('/resources') || vm.isActive('/overview')) }" class="dropdown" uib-dropdown>
             <a href class="dropdown-toggle" id="resource-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">CHPL<br />Resources <span class="fa fa-caret-down"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="resource-toggle">

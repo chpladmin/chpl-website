@@ -12,6 +12,7 @@
             'chpl.cms_lookup',
             'chpl.common',
             'chpl.compare',
+            'chpl.compare-widget',
             'chpl.constants',
             'chpl.decertifications',
             'chpl.download',

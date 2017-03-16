@@ -13,6 +13,7 @@ _Date TBD_
 * Required users to enter surveillance end date if no open Non-Conformites exist
 * Don't show "CertID" button for Retired products
 * Don't show unnecessary elements of widget for 2014/2015 and 2015 CMS IDs
+* Moved Compare to widget on navigation bar
 
 ---
 

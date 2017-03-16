@@ -1,0 +1,15 @@
+<div>
+  <div ng-if="!widget.products || widget.products.length === 0">No products selected.</div>
+  <ul class="list-unstyled selectedProducts" ng-if="widget.products && widget.products.length > 0">
+    <li ng-repeat="item in widget.products | orderBy:'name'">
+      <button class="btn btn-ai-grey btn-sm btn-block" ng-click="toggleProduct(item.id)">
+        <i class="fa fa-close pull-right"></i>
+        {{ item.name }} <span class="sr-only">Remove {{ item.name }} from Compare Widget</span>&nbsp;&nbsp;&nbsp;
+      </button>
+    </li>
+  </ul>
+  <div ng-if="widget.products && widget.products.length > 0">
+    <a href ng-click="compare()" type="button" class="btn btn-ai btn-sm btn-block" ng-disabled="widget.products.length === 1">Compare products</a>{{ queryUrl() }}
+    <a href ng-click="clearProducts()" type="button" class="btn btn-ai btn-sm btn-block">Remove all products</a>
+  </div>
+</div>
