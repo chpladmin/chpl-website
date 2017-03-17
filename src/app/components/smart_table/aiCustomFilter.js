@@ -99,8 +99,15 @@
                         }
 
                         for (i = 0; i < expected.matchAny.items.length; i++) {
-                            if (actual.toLowerCase() === expected.matchAny.items[i].toLowerCase()
-                                || actual.toLowerCase().indexOf(expected.matchAny.items[i].toLowerCase()) > -1) {
+                            if (
+                                (actual + '').toLowerCase() === (expected.matchAny.items[i] + '').toLowerCase()
+                                    ||
+                                    (
+                                        !expected.matchAny.matchFull
+                                            &&
+                                            (actual + '').toLowerCase().indexOf((expected.matchAny.items[i] + '').toLowerCase()) > -1
+                                    )
+                            ) {
                                 return true;
                             }
                         }

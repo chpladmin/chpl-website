@@ -10,7 +10,9 @@
             bindToController: {
                 allowAnd: '@?',
                 hasChanges: '=?',
+                hidden: '@?',
                 hiddenOptions: '@?',
+                matchFull: '@?',
                 nameSpace: '@'
             },
             controller: 'ListMultipleController',
@@ -23,6 +25,7 @@
                 fixedItems: '=?',
                 predicate: '@',
                 predicateExpression: '=',
+                registerAllowAll: '&?',
                 registerClearFilter: '&',
                 registerRestoreState: '&'
             },
@@ -37,6 +40,14 @@
         function activate () {
             var table = ctrls[0];
             var ctrl = ctrls[1];
+            if (scope.registerAllowAll) {
+                var allowAll = scope.registerAllowAll({
+                    allowAll: function () {
+                        ctrl.allowAll();
+                    }
+                });
+                scope.$on('$destroy', allowAll);
+            }
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearFilter();
@@ -57,6 +68,7 @@
                 setSelected();
                 ctrl.distinctItems = scope.distinctItems;
                 ctrl.selected = scope.selected;
+                ctrl.storeState();
                 ctrl.filterChanged();
             });
             ctrl.distinctItems = scope.distinctItems;
@@ -145,10 +157,12 @@
         var vm = this;
 
         vm.activate = activate;
+        vm.allowAll = allowAll;
         vm.clearFilter = clearFilter;
         vm.filterChanged = filterChanged;
         vm.isNotDefault = isNotDefault;
         vm.restoreState = restoreState;
+        vm.storeState = storeState;
         vm.toggleSelection = toggleSelection;
 
         ////////////////////////////////////////////////////////////////////
@@ -159,6 +173,18 @@
             }
         }
 
+        function allowAll () {
+            angular.forEach(vm.distinctItems, function (item) {
+                if (item.isSelected) {
+                    item.isSelected = false;
+                    vm.toggleSelection(item.value);
+                }
+            })
+            vm.matchAll = false;
+            vm.storeState();
+            vm.filterChanged();
+        }
+
         function clearFilter () {
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected !== item.selected) {
@@ -167,7 +193,7 @@
                 }
             })
             vm.matchAll = false;
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            vm.storeState();
             vm.filterChanged();
         }
 
@@ -178,15 +204,17 @@
             if (vm.matchAll) {
                 query = {
                     matchAll: {
-                        items: vm.selected,
-                        all: numberOfItems === 0
+                        all: numberOfItems === 0,
+                        matchFull: vm.matchFull,
+                        items: vm.selected
                     }
                 };
             } else {
                 query = {
                     matchAny: {
-                        items: vm.selected,
-                        all: (numberOfItems === 0 || (!vm.hiddenOptions && numberOfItems === vm.distinctItems.length))
+                        all: (numberOfItems === 0 || (!vm.hiddenOptions && numberOfItems === vm.distinctItems.length)),
+                        matchFull: vm.matchFull,
+                        items: vm.selected
                     }
                 };
             }
@@ -209,6 +237,10 @@
                 }
                 setToTableState();
             }
+        }
+
+        function storeState () {
+            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
         }
 
         function toggleSelection (value) {

@@ -20,9 +20,8 @@
     <div class="row" ng-if="vm.workType !== 'initiate'">
       <div class="col-sm-3"><strong>Surveillance initiated by:</strong></div>
       <div class="col-sm-9">
-      	<span>{{ vm.surveillance.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}</span>
+        <span>{{ vm.surveillance.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}</span>
       </div>
-     </div>
     </div>
     <div class="form-group">
       <label for="startDate" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
@@ -38,14 +37,15 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="endDate" class="col-sm-3">End Date</label>
+      <label for="endDate" class="col-sm-3">End Date <span class="text-danger" ng-if="vm.missingEndDate()">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.surveillance.endDateObject" is-open="vm.surveillance.endDatePicker" close-text="Close" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.surveillance.endDateObject" is-open="vm.surveillance.endDatePicker" close-text="Close" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }" ng-required="vm.missingEndDate()">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.endDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.required">Field is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
     </div>
@@ -57,12 +57,12 @@
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.surveillanceType.$touched) && vm.editForm.surveillanceType.$error.required">Field is required</div>
       </div>
-    </div> 
+    </div>
     <div class="form-group" ng-if="vm.workType === 'initiate' && vm.authorities.length > 1">
       <label for="authority" class="col-sm-3">Initiated by <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <select class="input-sm form-control" ng-model="vm.surveillance.authority" id="authority" name="authority"
-                ng-options="authority for authority in vm.authorities" required> 
+                ng-options="authority for authority in vm.authorities" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.authority.$touched) && vm.editForm.authority.$error.required">Field is required</div>
       </div>
@@ -123,7 +123,6 @@
       <ul>
         <li ng-if="vm.editForm.startDate.$error.required">Start Date is required</li>
         <li ng-if="vm.editForm.startDate.$error.date">Start Date is an improper format (mm/dd/yyyy)</li>
-        <li ng-if="vm.editForm.endDate.$error.required">End Date is required</li>
         <li ng-if="vm.editForm.endDate.$error.date">End Date is an improper format (mm/dd/yyyy)</li>
         <li ng-if="vm.editForm.surveillanceType.$error.required">Surveillance Type is required</li>
         <li ng-if="vm.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
@@ -139,7 +138,7 @@
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>
     <button ng-disabled="vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()"
-    		class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
+            class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
             confirm="Are you sure you wish to delete this surveillance?"
             confirm-ok="Yes"
             confirm-cancel="No"

@@ -13,6 +13,9 @@ _Date TBD_
 * Required users to enter surveillance end date if no open Non-Conformites exist
 * Don't show "CertID" button for Retired products
 * Don't show unnecessary elements of widget for 2014/2015 and 2015 CMS IDs
+* Moved Compare to widget on navigation bar
+* Moved Previously Viewed/Previously Compared to filter section
+* Added columns to search result for Certification Date & CHPL ID
 
 ---
 

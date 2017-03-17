@@ -120,6 +120,9 @@
         }
 
         function save () {
+            if (vm.requirement.result.name === 'No Non-Conformity') {
+                vm.requirement.nonconformities = [];
+            }
             $uibModalInstance.close(vm.requirement);
         }
 
