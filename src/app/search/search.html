@@ -172,10 +172,10 @@
             <p class="text-right">
               <a href ng-click="vm.browseAll()">Browse all</a> |
               <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
-              <span ng-if="vm.previouslyCompared && vm.previouslyCompared.length > 0 && !vm.viewingPreviouslyCompared"> | <a href ng-click="vm.viewPreviouslyCompared()">See Previously Compared</a></span>
-              <span ng-if="vm.viewingPreviouslyCompared"> | Viewing Previously Compared <a href ng-click="vm.clearPreviouslyCompared()">clear</a></span>
-              <span ng-if="vm.previouslyViewed && vm.previouslyViewed.length > 0 && !vm.viewingPreviouslyViewed"> | <a href ng-click="vm.viewPreviouslyViewed()">See Previously Viewed</a></span>
-              <span ng-if="vm.viewingPreviouslyViewed"> | Viewing Previously Viewed <a href ng-click="vm.clearPreviouslyViewed()">clear</a></span>
+              <span ng-if="vm.previouslyCompared && vm.previouslyCompared.length > 0 && !vm.viewingPreviouslyCompared"> | <a href ng-click="vm.viewPreviouslyCompared()">See {{ vm.previouslyCompared.length }} Previously Compared Listing<span ng-if="vm.previouslyCompared.length !== 1">s</span></a></span>
+              <span ng-if="vm.viewingPreviouslyCompared"> | <a href ng-click="vm.clearPreviouslyCompared()">Clear {{ vm.previouslyCompared.length }} Recently Compared Listing<span ng-if="vm.previouslyCompared.length !== 1">s</span></a></span>
+              <span ng-if="vm.previouslyViewed && vm.previouslyViewed.length > 0 && !vm.viewingPreviouslyViewed"> | <a href ng-click="vm.viewPreviouslyViewed()">See {{ vm.previouslyViewed.length }} Previously Viewed Listing<span ng-if="vm.previouslyViewed.length !== 1">s</span></a></span>
+              <span ng-if="vm.viewingPreviouslyViewed"> | <a href ng-click="vm.clearPreviouslyViewed()">Clear {{ vm.previouslyViewed.length }} Recently Viewed Listing<span ng-if="vm.previouslyViewed.length !== 1">s</span></a></span>
             </p>
           </div>
         </div>
@@ -230,7 +230,7 @@
                   <td>{{ cp.developer }}</td>
                   <td>{{ cp.product }}</td>
                   <td>{{ cp.version }}</td>
-                  <td>{{ cp.certificationDate | date : 'mediumDate' : 'GMT'}}</td>
+                  <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC'}}</td>
                   <td>{{ cp.chplProductNumber }}</td>
                   <td class="text-center"><a href uib-tooltip="{{ cp.certificationStatus }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ cp.certificationStatus }}</span><i class="fa" ng-class="vm.statusFont(cp.certificationStatus)"></i></a></td>
                   <td>
