@@ -16,6 +16,7 @@
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
         vm.loadResults = loadResults;
+        vm.registerAllowAll = registerAllowAll;
         vm.registerClearFilter = registerClearFilter;
         vm.registerClearTerm = registerClearTerm;
         vm.registerRestoreComponents = registerRestoreComponents;
@@ -23,11 +24,14 @@
         vm.registerSearch = registerSearch;
         vm.reloadResults = reloadResults;
         vm.statusFont = utilService.statusFont;
+        vm.triggerAllowAll = triggerAllowAll;
         vm.triggerClearFilters = triggerClearFilters;
         vm.triggerClearTerm = triggerClearTerm;
         vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
         vm.viewCertificationStatusLegend = viewCertificationStatusLegend;
+        vm.viewPreviouslyCompared = viewPreviouslyCompared;
+        vm.viewPreviouslyViewed = viewPreviouslyViewed;
         vm.viewProduct = viewProduct;
 
         activate();
@@ -46,6 +50,7 @@
 
             vm.categoryChanged = {};
             vm.boxes = {};
+            vm.allowAllHs = [];
             vm.clearFilterHs = [];
             vm.restoreStateHs = [];
             vm.isLoading = true;
@@ -58,6 +63,29 @@
             vm.loadResults();
             setTimestamp();
         }
+
+        vm.defaultRefineModel = {
+            acb: {
+                'Drummond Group': true,
+                'ICSA Labs': true,
+                'InfoGard': true
+            },
+            certificationEdition: {
+                '2011': false,
+                '2014': true,
+                '2015': true
+            },
+            certificationStatus: {
+                'Active': true,
+                'Retired': false,
+                'Suspended by ONC-ACB': true,
+                'Withdrawn by Developer': false,
+                'Withdrawn by Developer Under Surveillance/Review': false,
+                'Withdrawn by ONC-ACB': false,
+                'Suspended by ONC': true,
+                'Terminated by ONC': false
+            }
+        };
 
         function browseAll () {
             vm.triggerClearFilters();
@@ -76,12 +104,19 @@
         }
 
         function clearPreviouslyCompared () {
+            vm.previouslyCompared = [];
+            vm.previouslyIds = [];
+            vm.viewingPreviouslyCompared = false;
             $localStorage.previouslyCompared = [];
+            delete $localStorage.viewingPreviouslyCompared;
         }
 
         function clearPreviouslyViewed () {
             vm.previouslyViewed = [];
+            vm.previouslyIds = [];
+            vm.viewingPreviouslyViewed = false;
             $localStorage.previouslyViewed = [];
+            delete $localStorage.viewingPreviouslyViewed;
         }
 
         function certificationStatusFilter (obj) {
@@ -119,7 +154,10 @@
                 }
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {
-                    results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber, results[i].previousDevelopers].join('|');
+                    results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
+                    if (results[i].previousDevelopers) {
+                        results[i].mainSearch += '|' + results[i].previousDevelopers;
+                    }
                     results[i].surveillance = angular.toJson({
                         hasOpenSurveillance: results[i].hasOpenSurveillance,
                         hasClosedSurveillance: results[i].hasClosedSurveillance,
@@ -133,6 +171,16 @@
             }, function (error) {
                 $log.debug(error);
             });
+        }
+
+        function registerAllowAll (handler) {
+            vm.allowAllHs.push(handler);
+            var removeHandler = function () {
+                vm.allowAllHs = vm.allowAllHs.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
         }
 
         function registerClearFilter (handler) {
@@ -191,7 +239,22 @@
             restoreResults();
         }
 
+        function triggerAllowAll () {
+            vm.previouslyIds = [];
+            vm.viewingPreviouslyCompared = false;
+            delete $localStorage.viewingPreviouslyCompared;
+            vm.viewingPreviouslyViewed = false;
+            angular.forEach(vm.allowAllHs, function (handler) {
+                handler();
+            });
+        }
+
         function triggerClearFilters () {
+            vm.previouslyIds = [];
+            vm.viewingPreviouslyCompared = false;
+            delete $localStorage.viewingPreviouslyCompared;
+            vm.viewingPreviouslyViewed = false;
+            delete $localStorage.viewingPreviouslyViewed;
             angular.forEach(vm.clearFilterHs, function (handler) {
                 handler();
             });
@@ -237,10 +300,40 @@
             });
         }
 
+        function viewPreviouslyCompared (doNotSearch) {
+            if (!doNotSearch) {
+                vm.triggerAllowAll();
+            }
+            $localStorage.viewingPreviouslyCompared = true;
+            vm.viewingPreviouslyCompared = true;
+            vm.previouslyIds = [{ value: -1, selected: false}];
+            angular.forEach(vm.previouslyCompared, function (id) {
+                vm.previouslyIds.push({value: id, selected: true})
+            });
+            if (!doNotSearch) {
+                vm.triggerSearch();
+            }
+        }
+
+        function viewPreviouslyViewed (doNotSearch) {
+            if (!doNotSearch) {
+                vm.triggerAllowAll();
+            }
+            $localStorage.viewingPreviouslyViewed = true;
+            vm.viewingPreviouslyViewed = true;
+            vm.previouslyIds = [{ value: -1, selected: false}];
+            angular.forEach(vm.previouslyViewed, function (id) {
+                vm.previouslyIds.push({value: id, selected: true})
+            });
+            if (!doNotSearch) {
+                vm.triggerSearch();
+            }
+        }
+
         function viewProduct (cp) {
             setTimestamp();
-            if (vm.previouslyViewed.indexOf(cp.id) === -1) {
-                vm.previouslyViewed.push(cp.id);
+            if (vm.previouslyViewed.indexOf((cp.id + '')) === -1) {
+                vm.previouslyViewed.push((cp.id + ''));
                 if (vm.previouslyViewed.length > 20) {
                     vm.previouslyViewed.shift();
                 }
@@ -261,14 +354,32 @@
                 }, delay);
             } else {
                 vm.isLoading = false;
+                if (vm.viewingPreviouslyCompared) {
+                    vm.viewPreviouslyCompared();
+                } else if (vm.viewingPreviouslyViewed) {
+                    vm.viewPreviouslyViewed();
+                }
             }
         }
 
         function manageStorage () {
+            if ($localStorage.previouslyCompared) {
+                vm.previouslyCompared = $localStorage.previouslyCompared;
+            } else {
+                vm.previouslyCompared = [];
+            }
+            if ($localStorage.viewingPreviouslyCompared) {
+                vm.viewingPreviouslyCompared = true;
+                vm.viewPreviouslyCompared(true);
+            }
             if ($localStorage.previouslyViewed) {
                 vm.previouslyViewed = $localStorage.previouslyViewed;
             } else {
                 vm.previouslyViewed = [];
+            }
+            if ($localStorage.viewingPreviouslyViewed) {
+                vm.viewingPreviouslyViewed = true;
+                vm.viewPreviouslyViewed(true);
             }
         }
 
@@ -301,7 +412,7 @@
                         vm.lookaheadSource.products.push({type: 'product', value: options.productNames[i].name, statuses: options.productNames[i].statuses});
                     }
                     $localStorage.lookaheadSource = vm.lookaheadSource;
-                    setFilterInfo();
+                    setFilterInfo(vm.defaultRefineModel);
                 });
         }
 
@@ -330,31 +441,9 @@
             }
         }
 
-        function setFilterInfo () {
+        function setFilterInfo (refineModel) {
             var i;
-            vm.defaultRefineModel = {
-                acb: {
-                    'Drummond Group': true,
-                    'ICSA Labs': true,
-                    'InfoGard': true
-                },
-                certificationEdition: {
-                    '2011': false,
-                    '2014': true,
-                    '2015': true
-                },
-                certificationStatus: {
-                    'Active': true,
-                    'Retired': false,
-                    'Suspended by ONC-ACB': true,
-                    'Withdrawn by Developer': false,
-                    'Withdrawn by Developer Under Surveillance/Review': false,
-                    'Withdrawn by ONC-ACB': false,
-                    'Suspended by ONC': true,
-                    'Terminated by ONC': false
-                }
-            };
-            vm.refineModel = angular.copy(vm.defaultRefineModel);
+            vm.refineModel = angular.copy(refineModel);
             vm.filterItems = {
                 pageSize: '50',
                 acbItems: [],

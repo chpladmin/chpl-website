@@ -1,4 +1,4 @@
-<ul class="list-unstyled">
+<ul class="list-unstyled" ng-show="!vm.hidden">
   <li class="text-center" ng-if="vm.allowAnd">
     <label ng-class="{ 'emphasis' : vm.matchAll }">
       <input type="checkbox" ng-model="vm.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">

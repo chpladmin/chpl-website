@@ -5,7 +5,7 @@
         .controller('ProductController', ProductController);
 
     /** @ngInclude */
-    function ProductController ($log, $routeParams, $uibModal, commonService, authService) {
+    function ProductController ($localStorage, $log, $routeParams, $uibModal, commonService, authService) {
         var vm = this;
 
         vm.loadProduct = loadProduct;
@@ -17,6 +17,19 @@
 
         function activate () {
             vm.productId = $routeParams.id;
+            if ($localStorage.previouslyViewed) {
+                vm.previouslyViewed = $localStorage.previouslyViewed;
+
+                if (vm.previouslyViewed.indexOf((vm.productId + '')) === -1) {
+                    vm.previouslyViewed.push((vm.productId + ''));
+                    if (vm.previouslyViewed.length > 20) {
+                        vm.previouslyViewed.shift();
+                    }
+                    $localStorage.previouslyViewed = vm.previouslyViewed;
+                }
+            } else {
+                $localStorage.previouslyViewed = [vm.productId + ''];
+            }
             vm.isAuthed = authService.isAuthed();
             vm.loadProduct();
         }
