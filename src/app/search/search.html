@@ -168,76 +168,70 @@
       <div id="resultsSection" ng-show="vm.activeSearch || vm.searchForm.$dirty" class="main-content">
         <div class="row">
           <div class="col-md-12">
-            <span class="pull-right">
+            <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
+            <p class="text-right">
               <a href ng-click="vm.browseAll()">Browse all</a> |
               <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
               <span ng-if="vm.previouslyCompared && vm.previouslyCompared.length > 0 && !vm.viewingPreviouslyCompared"> | <a href ng-click="vm.viewPreviouslyCompared()">See Previously Compared</a></span>
               <span ng-if="vm.viewingPreviouslyCompared"> | Viewing Previously Compared <a href ng-click="vm.clearPreviouslyCompared()">clear</a></span>
               <span ng-if="vm.previouslyViewed && vm.previouslyViewed.length > 0 && !vm.viewingPreviouslyViewed"> | <a href ng-click="vm.viewPreviouslyViewed()">See Previously Viewed</a></span>
               <span ng-if="vm.viewingPreviouslyViewed"> | Viewing Previously Viewed <a href ng-click="vm.clearPreviouslyViewed()">clear</a></span>
-            </span>
-            <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
+            </p>
           </div>
         </div>
         <div ng-if="vm.hasResults()" class="row">
           <div class="col-md-12 table-responsive">
-            <table class="table search-table table-striped">
+            <table class="table search-table table-striped table-responsive">
               <colgroup>
-                <col class="col-md-3 col-xs-1">
-                <col class="col-md-3 col-xs-1">
+                <col class="col-xs-1">
+                <col class="col-md-2 col-xs-1">
+                <col class="col-md-2 col-xs-1">
                 <col class="col-xs-1">
                 <col class="col-xs-1">
                 <col class="col-xs-1">
-                <col class="col-md-3 col-xs-7">
+                <col class="col-xs-1">
+                <col class="col-md-3 col-xs-5">
               </colgroup>
               <thead>
 			    <tr>
-                  <td colspan="6" class="text-center">
-                    <p>
-                      <span class="pull-right" ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-                        <label for="pageSizeTop" class="sr-only">Show how many results</label>
-                        Showing up to&nbsp;
-                        <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
-                                ng-options="v as v for v in [50,100,250]">
-                        </select>
-                        &nbsp;results per page
-                      </span>
-				      <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
-                    </p>
+                  <td colspan="8" class="text-center">
+				    <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
                   </td>
 			    </tr>
                 <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-		          <th scope="col" class="search-header" st-sort="product" st-skip-natural="true" st-sort-default="true">Product Name</th>
-                  <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
                   <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
-                  <th scope="col">Version</th>
+                  <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+		          <th scope="col" class="search-header" st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
+                  <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
+                  <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+		          <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL ID</th>
                   <th scope="col" class="search-header text-center" st-sort="certificationStatus" st-skip-natural="true">Status <a href ng-click="vm.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></a></th>
                   <th scope="col"><span class="sr-only">Actions</span></th>
                 </tr>
               </thead>
               <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
                 <tr>
-                  <td colspan="6" class="text-center">
-                    <p>
-                      <span class="pull-right">
-                        <label for="pageSizeBottom" class="sr-only">Show how many results</label>
-                        Showing up to&nbsp;
-                        <select ng-model="vm.filterItems.pageSize" id="pageSizeBottom"
-                                ng-options="v as v for v in [50,100,250]">
-                        </select>
-                        &nbsp;results per page
-                      </span>
-		              <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
-                    </p>
+                  <td colspan="8" class="text-center">
+                    <div class="text-right" ng-if="vm.displayedCps && vm.displayedCps.length > 0">
+                      <label for="pageSizeTop" class="sr-only">Show how many results</label>
+                      Showing up to&nbsp;
+                      <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
+                              ng-options="v as v for v in [50,100,250]">
+                      </select>
+                      &nbsp;results per page
+                    </div>
+				    <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
                   </td>
                 </tr>
               </tfoot>
               <tbody>
                 <tr ng-repeat="cp in vm.displayedCps">
-                  <td>{{ cp.product }}</td>
-                  <td>{{ cp.developer }}</td>
                   <td>{{ cp.edition }}</td>
+                  <td>{{ cp.developer }}</td>
+                  <td>{{ cp.product }}</td>
                   <td>{{ cp.version }}</td>
+                  <td>{{ cp.certificationDate | date : 'mediumDate' : 'GMT'}}</td>
+                  <td>{{ cp.chplProductNumber }}</td>
                   <td class="text-center"><a href uib-tooltip="{{ cp.certificationStatus }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ cp.certificationStatus }}</span><i class="fa" ng-class="vm.statusFont(cp.certificationStatus)"></i></a></td>
                   <td>
                     <div class="btn-group btn-group-justified">
