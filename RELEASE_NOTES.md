@@ -16,6 +16,7 @@ _Date TBD_
 * Moved Compare to widget on navigation bar
 * Moved Previously Viewed/Previously Compared to filter section
 * Added columns to search result for Certification Date & CHPL ID
+* Updated text on Resources/Overview
 
 ---
 
