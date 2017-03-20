@@ -84,12 +84,12 @@
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button" uib-dropdown-menu>
               <li>
                 <a href ng-click="vm.showCqms = !vm.showCqms">
-                  <i class="fa" ng-class="vm.showCqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showCqms ? 'Hide' : 'View' }} Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-2011'] || vm.categoryChanged['cqm-other']"><span class="sr-only">Filter has non-default option selected</span>*</span
-                                                                                                                                                                                                                                                                                                                      </a>
+                  <i class="fa" ng-class="vm.showCqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showCqms ? 'Hide' : 'View' }} Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-2011'] || vm.categoryChanged['cqm-other']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.show2011Cqms = !vm.show2011Cqms">
-                  <i class="fa" ng-class="vm.show2011Cqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2011Cqms ? 'Hide' : 'View' }} 2011 Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-2011']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                  <i class="fa" ng-class="vm.show2011Cqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2011Cqms ? 'Hide' : 'View' }} 2014 Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-2011']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.show2011Cqms">

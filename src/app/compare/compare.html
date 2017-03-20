@@ -18,7 +18,7 @@
             <th scope="col"><span class="sr-only">Category</span></th>
             <th scope="col" ng-repeat="product in vm.products | orderBy:'certificationDate'">
               {{ product.product.name }}<br />
-              <ai-cms-widget-button product-id="{{ product.id }}" product-name="{{ product.product.name }}"></ai-cms-widget-button>
+              <ai-cms-widget-button product-id="{{ product.id }}" product-name="{{ product.product.name }}" ng-if="product.certificationStatus.name !== 'Retired'"></ai-cms-widget-button>
             </th>
           </tr>
         </thead>
