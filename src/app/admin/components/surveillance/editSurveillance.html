@@ -118,7 +118,12 @@
         <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
       </ul>
     </div>
-    <div class="text-danger text-left" ng-if="vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()) && vm.showFormErrors">
+    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid ||
+                                              !vm.surveillance.requirements ||
+                                              vm.surveillance.requirements.length === 0 ||
+                                              vm.missingEndDate() ||
+                                              (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()))
+                                              && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.startDate.$error.required">Start Date is required</li>
