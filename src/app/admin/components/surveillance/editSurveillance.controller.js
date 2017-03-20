@@ -171,7 +171,7 @@
                     }
                 }
             }
-            return (noNcs || allClosed) && !vm.surveillance.endDateObject;
+            return vm.surveillance.requirements && (noNcs || allClosed) && !vm.surveillance.endDateObject;
         }
 
         function save () {
