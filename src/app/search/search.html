@@ -1,7 +1,7 @@
 <div ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
   <div class="pending" ng-if="vm.isPreLoading"></div>
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
-    <st-manage register-search="vm.registerSearch(search)" />
+    <st-manage register-search="vm.registerSearch(search)" name-space="searchTableState" />
     <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
         <h1>Search</h1>

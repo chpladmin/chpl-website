@@ -68,7 +68,7 @@
                 setSelected();
                 ctrl.distinctItems = scope.distinctItems;
                 ctrl.selected = scope.selected;
-                ctrl.storeState();
+                //ctrl.storeState();
                 ctrl.filterChanged();
             });
             ctrl.distinctItems = scope.distinctItems;
@@ -153,7 +153,7 @@
     }
 
     /** @ngInclude */
-    function ListMultipleController ($localStorage) {
+    function ListMultipleController ($log, $localStorage) {
         var vm = this;
 
         vm.activate = activate;
@@ -174,6 +174,7 @@
         }
 
         function allowAll () {
+            $log.info('allowAll', vm.predicate);
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected) {
                     item.isSelected = false;
@@ -181,8 +182,9 @@
                 }
             })
             vm.matchAll = false;
-            vm.storeState();
+            //vm.storeState();
             vm.filterChanged();
+            vm.storeState();
         }
 
         function clearFilter () {
@@ -193,8 +195,9 @@
                 }
             })
             vm.matchAll = false;
-            vm.storeState();
+            //vm.storeState();
             vm.filterChanged();
+            vm.storeState();
         }
 
         function filterChanged () {
@@ -250,8 +253,8 @@
             } else {
                 vm.selected.push(value);
             }
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
             vm.filterChanged();
+            vm.storeState();
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -273,6 +276,7 @@
                 }
             })
             vm.filterChanged();
+            vm.storeState();
         }
     }
 })();
