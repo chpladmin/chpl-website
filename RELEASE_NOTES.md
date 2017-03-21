@@ -17,6 +17,7 @@ _Date TBD_
 * Moved Previously Viewed/Previously Compared to filter section
 * Added columns to search result for Certification Date & CHPL ID
 * Updated text on Resources/Overview
+* Changes to display of Banned Developers
 
 ---
 
