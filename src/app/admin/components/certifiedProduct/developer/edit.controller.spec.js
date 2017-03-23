@@ -47,7 +47,7 @@
         describe('housekeeping', function () {
             it('should exist', function () {
                 expect(vm).toBeDefined();
-                expect(vm.developer.statusHistory).toEqual([]);
+                expect(vm.developer.statusEvents).toEqual([]);
             });
 
             it('should have a way to close the modal', function () {
@@ -61,24 +61,24 @@
             it('should push statuses to the history if one is changed', function () {
                 var newStatus = {status: 'new'};
                 vm.changeCurrentStatus(newStatus.status);
-                expect(vm.developer.statusHistory[0].status).toEqual(newStatus);
-                expect(typeof(vm.developer.statusHistory[0].changeDate)).toBe('object');
+                expect(vm.developer.statusEvents[0].status).toEqual(newStatus);
+                expect(typeof(vm.developer.statusEvents[0].statusDate)).toBe('object');
             });
 
             it('should remove previous statuses', function () {
                 var newStatus = {status: 'new'};
                 vm.changeCurrentStatus(newStatus.status);
                 vm.changeCurrentStatus(newStatus.status);
-                expect(vm.developer.statusHistory.length).toBe(2);
+                expect(vm.developer.statusEvents.length).toBe(2);
                 vm.removePreviousStatus(0);
-                expect(vm.developer.statusHistory.length).toBe(1);
+                expect(vm.developer.statusEvents.length).toBe(1);
             });
 
             it('should add an empty status', function () {
-                expect(vm.developer.statusHistory.length).toBe(0);
+                expect(vm.developer.statusEvents.length).toBe(0);
                 vm.addPreviousStatus();
-                expect(vm.developer.statusHistory.length).toBe(1);
-                expect(vm.developer.statusHistory[0]).toEqual({});
+                expect(vm.developer.statusEvents.length).toBe(1);
+                expect(vm.developer.statusEvents[0]).toEqual({});
             });
         });
     });

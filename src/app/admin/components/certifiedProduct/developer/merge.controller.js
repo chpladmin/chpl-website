@@ -24,7 +24,7 @@
             vm.developer = angular.copy(vm.developers[0]);
             delete vm.developer.lastModifiedDate;
             delete vm.developer.developerId;
-            vm.developer.statusHistory = [];
+            vm.developer.statusEvents = [];
             vm.updateDeveloper = {developerIds: []};
             vm.loadedAsInactiveByOnc = false;
             for (var i = 0; i < vm.developers.length; i++) {
@@ -35,7 +35,7 @@
         }
 
         function addPreviousStatus () {
-            vm.developer.statusHistory.push({});
+            vm.developer.statusEvents.push({});
         }
 
         function addressRequired () {
@@ -47,7 +47,7 @@
         }
 
         function removePreviousStatus (idx) {
-            vm.developer.statusHistory.splice(idx, 1);
+            vm.developer.statusEvents.splice(idx, 1);
         }
 
         function save () {

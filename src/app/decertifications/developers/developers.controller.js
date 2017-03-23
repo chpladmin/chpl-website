@@ -33,7 +33,7 @@
             for (var i = 0; i < vm.decertifiedDevelopers.length; i++) {
                 vm.modifiedDecertifiedDevelopers.push({
                     acb: [],
-                    decertificationDate: vm.decertifiedDevelopers[i].developer.decertificationDate,
+                    decertificationDate: vm.decertifiedDevelopers[i].decertificationDate,
                     developer: vm.decertifiedDevelopers[i].developer.name,
                     status: vm.decertifiedDevelopers[i].developer.status.status
                 });

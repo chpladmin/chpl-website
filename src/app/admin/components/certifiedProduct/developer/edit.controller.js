@@ -24,8 +24,8 @@
             vm.developer = angular.copy(activeDeveloper);
             vm.updateDeveloper = {developerIds: [vm.developer.developerId]};
             vm.activeAcbs = angular.copy(activeAcbs);
-            if (angular.isUndefined(vm.developer.statusHistory)) {
-                vm.developer.statusHistory = [];
+            if (angular.isUndefined(vm.developer.statusEvents)) {
+                vm.developer.statusEvents = [];
             }
 
             vm.isAcbAdmin = authService.isAcbAdmin();
@@ -35,7 +35,7 @@
         }
 
         function addPreviousStatus () {
-            vm.developer.statusHistory.push({});
+            vm.developer.statusEvents.push({});
         }
 
         function addressRequired () {
@@ -43,9 +43,9 @@
         }
 
         function changeCurrentStatus (previousStatus) {
-            vm.developer.statusHistory.push({
+            vm.developer.statusEvents.push({
                 status: {status: previousStatus},
-                changeDate: new Date()
+                statusDate: new Date()
             });
         }
 
@@ -54,7 +54,7 @@
         }
 
         function removePreviousStatus (idx) {
-            vm.developer.statusHistory.splice(idx, 1);
+            vm.developer.statusEvents.splice(idx, 1);
         }
 
         function save () {

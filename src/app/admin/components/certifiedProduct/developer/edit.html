@@ -20,9 +20,9 @@
     <div ng-if="!vm.isChplAdmin">
       <strong>Developer Status: </strong>{{ vm.developer.status.status }}
     </div>
-    <div ng-if="!vm.isChplAdmin" ng-repeat="status in vm.developer.statusHistory | orderBy:'changeDate' track by $index">
+    <div ng-if="!vm.isChplAdmin" ng-repeat="status in vm.developer.statusEvents | orderBy:'statusDate' track by $index">
       <strong>Previous Developer Status: </strong>{{ status.status }}<br />
-      <strong>Change Date: </strong>{{ status.changeDate }}
+      <strong>Change Date: </strong>{{ status.statusDate }}
     </div>
     <div class="form-group" ng-if="vm.isChplAdmin">
       <label for="developerStatus">Current Developer Status <span class="text-danger">*</span></label>
@@ -35,7 +35,7 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerStatus.$touched) && vm.editForm.developerStatus.$error.required">Developer status is required</div>
       <div class="bg-info" ng-if="vm.isBeingActivatedFromOncInactiveStatus()">To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.</div>
     </div>
-    <div ng-repeat="status in vm.developer.statusHistory | orderBy: 'changeDate' track by $index" ng-if="vm.isChplAdmin">
+    <div ng-repeat="status in vm.developer.statusEvents | orderBy: 'statusDate' track by $index" ng-if="vm.isChplAdmin">
       <div class="form-group">
         <label for="developerStatus{{ $index }}">Previous Developer Status <span class="text-danger">*</span></label>
         <select ng-model="status.status.status" required
@@ -47,14 +47,14 @@
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['developerStatus' + $index].$touched) && vm.editForm['developerStatus' + $index].$error.required">Developer Status is required</div>
       </div>
       <div class="form-group">
-        <label for="changeDate{{ $index }}">Change Date <span class="text-danger">*</span></label>
+        <label for="statusDate{{ $index }}">Change Date <span class="text-danger">*</span></label>
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.changeDate" is-open="status.changeDatePicker" close-text="Close" id="changeDate{{ $index }}" name="changeDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.statusDate" is-open="status.statusDatePicker" close-text="Close" id="statusDate{{ $index }}" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="status.changeDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="status.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['changeDate' + $index].$touched) && vm.editForm['changeDate' + $index].$error.required">Change date is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.editForm['statusDate' + $index].$error.required">Change date is required</div>
         <button class="btn btn-block btn-danger" ng-click="vm.removePreviousStatus($index)"><i class="fa fa-trash"></i> Remove status</button>
       </div>
     </div>

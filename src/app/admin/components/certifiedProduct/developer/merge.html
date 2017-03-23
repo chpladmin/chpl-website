@@ -18,11 +18,11 @@
           </div>
           <div class="panel-body">
             Status: {{ developer.status.status }}<br />
-            <span ng-if="developer.statusHistory && developer.statusHistory.length > 0">Previous Status<span ng-if="developer.statusHistory.length !== 0">s</span>:
+            <span ng-if="developer.statusEvents && developer.statusEvents.length > 0">Previous Status<span ng-if="developer.statusEvents.length !== 0">s</span>:
               <ul>
-                <li ng-repeat="status in developer.statusHistory | orderBy:'changeDate'">
+                <li ng-repeat="status in developer.statusEvents | orderBy:'statusDate'">
                   Status: {{ status.status }}<br />
-                  Change date: {{ status.changeDate | date : 'mediumDate' : 'UTC' }}
+                  Change date: {{ status.statusDate | date : 'mediumDate' : 'UTC' }}
                 </li>
               </ul>
             </span>
@@ -64,7 +64,7 @@
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm.developerStatus.$touched) && vm.mergeForm.developerStatus.$error.required">Developer status is required</div>
               <div class="bg-info" ng-if="vm.isBeingActivatedFromOncInactiveStatus()">To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.</div>
             </div>
-            <div ng-repeat="status in vm.developer.statusHistory | orderBy: 'changeDate' track by $index">
+            <div ng-repeat="status in vm.developer.statusEvents | orderBy: 'statusDate' track by $index">
               <div class="form-group">
                 <label for="developerStatus{{ $index }}">Previous Developer Status <span class="text-danger">*</span></label>
                 <select ng-model="status.status.status" required
@@ -76,14 +76,14 @@
                 <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm['developerStatus' + $index].$touched) && vm.mergeForm['developerStatus' + $index].$error.required">Developer Status is required</div>
               </div>
               <div class="form-group">
-                <label for="changeDate{{ $index }}">Change Date <span class="text-danger">*</span></label>
+                <label for="statusDate{{ $index }}">Change Date <span class="text-danger">*</span></label>
                 <div class="input-group">
-                  <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.changeDate" is-open="status.changeDatePicker" close-text="Close" id="changeDate{{ $index }}" name="changeDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+                  <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.statusDate" is-open="status.statusDatePicker" close-text="Close" id="statusDate{{ $index }}" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
                   <span class="input-group-btn">
-                    <button type="button" class="btn btn-ai btn-sm" ng-click="status.changeDatePicker = true"><i class="fa fa-calendar"></i></button>
+                    <button type="button" class="btn btn-ai btn-sm" ng-click="status.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
                   </span>
                 </div>
-                <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm['changeDate' + $index].$touched) && vm.mergeForm['changeDate' + $index].$error.required">Change date is required</div>
+                <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm['statusDate' + $index].$touched) && vm.mergeForm['statusDate' + $index].$error.required">Change date is required</div>
                 <button class="btn btn-block btn-danger" ng-click="vm.removePreviousStatus($index)"><i class="fa fa-trash"></i> Remove status</button>
               </div>
             </div>

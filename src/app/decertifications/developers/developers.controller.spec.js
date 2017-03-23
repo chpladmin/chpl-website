@@ -6,8 +6,9 @@
 
         mock = {
             modifiedDecertifiedDevelopers: [
-                {developer: 'Greenway Health, LLC', acb: ['Drummond Group'], status: 'Under certification ban by ONC', decertificationDate: 1490126033141}],
-            filter: { acb: 'Drummond', developer: 'epic', status: 'broke'}
+                {acb: ['Drummond Group'], decertificationDate: 1481938585744, developer: 'Greenway Health, LLC', status: 'Under certification ban by ONC'},
+                {acb: ['ICSA Labs'], decertificationDate: 1490194030517, developer: '4Medica', status: 'Under certification ban by ONC'}
+            ]
         };
 
         beforeEach(function () {
@@ -22,7 +23,7 @@
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
-                Mock.decertifiedDevelopers.decertifiedDeveloperResults[0].developer.decertificationDate = 1490126033141;
+                //Mock.decertifiedDevelopers.decertifiedDeveloperResults[0].developer.decertificationDate = 1490126033141;
                 commonService = _commonService_;
                 commonService.getDecertifiedDevelopers.and.returnValue($q.when(Mock.decertifiedDevelopers));
 
@@ -49,7 +50,7 @@
         });
 
         it('should know how many decertified Developers there are', function () {
-            expect(vm.decertifiedDevelopers.length).toBe(1);
+            expect(vm.decertifiedDevelopers.length).toBe(2);
         });
 
         it('should set the displayed Developers to match the found ones', function () {
