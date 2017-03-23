@@ -10,6 +10,7 @@
 
         vm.cancel = cancel;
         vm.deleteDoc = deleteDoc;
+        vm.isCapMustCompleteRequired = isCapMustCompleteRequired;
         vm.save = save;
         vm.sortNonconformityTypes = utilService.sortNonconformityTypes;
 
@@ -67,6 +68,17 @@
                 }), function (error) {
                     $log.debug(error);
                 };
+        }
+        
+        function isCapMustCompleteRequired () {
+            if(!vm.nonconformity.capMustCompleteDateObject){
+                if(vm.nonconformity.capApprovalDateObject){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            } 
         }
 
         function save () {
