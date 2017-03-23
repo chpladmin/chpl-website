@@ -21,7 +21,7 @@
             <span ng-if="developer.statusEvents && developer.statusEvents.length > 0">Previous Status<span ng-if="developer.statusEvents.length !== 0">s</span>:
               <ul>
                 <li ng-repeat="status in developer.statusEvents | orderBy:'statusDate'">
-                  Status: {{ status.status }}<br />
+                  Status: {{ status.status.status }}<br />
                   Change date: {{ status.statusDate | date : 'mediumDate' : 'UTC' }}
                 </li>
               </ul>

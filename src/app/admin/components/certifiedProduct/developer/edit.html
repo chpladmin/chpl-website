@@ -21,7 +21,7 @@
       <strong>Developer Status: </strong>{{ vm.developer.status.status }}
     </div>
     <div ng-if="!vm.isChplAdmin" ng-repeat="status in vm.developer.statusEvents | orderBy:'statusDate' track by $index">
-      <strong>Previous Developer Status: </strong>{{ status.status }}<br />
+      <strong>Previous Developer Status: </strong>{{ status.status.status }}<br />
       <strong>Change Date: </strong>{{ status.statusDate }}
     </div>
     <div class="form-group" ng-if="vm.isChplAdmin">
