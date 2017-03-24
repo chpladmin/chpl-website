@@ -359,7 +359,21 @@
             </div>
             <div class="panel-body">
               <div>{{ vm.activeDeveloper.name }} (Developer Code: {{ vm.activeDeveloper.developerCode }}) <em class="pull-right">Last modified date: {{ vm.activeDeveloper.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
-              <div>{{ vm.activeDeveloper.status.status }}</div>
+              <div ng-if="!vm.activeDeveloper.statusEvents || vm.activeDeveloper.statusEvents.length === 0">{{ vm.activeDeveloper.status.status }}</div>
+              <table ng-if="vm.activeDeveloper.statusEvents && vm.activeDeveloper.statusEvents.length > 0" class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th scope="col">Status History</th>
+                    <th scope="col">Effective date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="status in vm.activeDeveloper.statusEvents | orderBy:'-statusDate'">
+                    <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
+                    <td>{{ status.statusDate | date : 'mediumDate' : 'UTC' }}</td>
+                  </tr>
+                </tbody>
+              </table>
               <div>
                 Line 1: {{ vm.activeDeveloper.address.line1 }}<br />
                 Line 2: {{ vm.activeDeveloper.address.line2 }}<br />
