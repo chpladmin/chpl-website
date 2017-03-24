@@ -18,6 +18,7 @@ _Date TBD_
 * Added columns to search result for Certification Date & CHPL ID
 * Updated text on Resources/Overview
 * Changes to display of Banned Developers
+* Allow editing of Developer Status History
 
 ---
 
