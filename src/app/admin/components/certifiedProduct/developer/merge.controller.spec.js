@@ -21,7 +21,7 @@
                 commonService = _commonService_;
                 commonService.updateDeveloper.and.returnValue($q.when({}));
                 Mock = _Mock_;
-                mock.developers = [].concat(Mock.developers[0]).concat(Mock.developers[1]).concat(Mock.developers[2]).concat(Mock.developers[3]);
+                mock.developers = [].concat(Mock.developers[0]).concat(Mock.developers[1]).concat(Mock.developers[2]).concat(Mock.developers[3]).concat(Mock.developers[4]);
                 mock.developers[0].statusEvents = [{status: {status: 'new'}, statusDate: 'date'}];
 
                 scope = $rootScope.$new();
@@ -51,12 +51,6 @@
             });
         });
 
-        it('should know if any of the merging developers were inactive', function () {
-            expect(vm.isBeingActivatedFromOncInactiveStatus()).toBe(false);
-            vm.developer.status = mock.developers[1].status;
-            expect(vm.isBeingActivatedFromOncInactiveStatus()).toBe(true);
-        });
-
         describe('developer status history', function () {
             it('should set status history to empty on the new developer', function () {
                 expect(vm.developer.statusEvents.length).toBe(0);
@@ -65,7 +59,7 @@
             it('should add an empty statuse', function () {
                 vm.addPreviousStatus();
                 expect(vm.developer.statusEvents.length).toBe(1);
-                expect(vm.developer.statusEvents[0]).toEqual({});
+                expect(vm.developer.statusEvents[0].statusDateObject).toBeDefined();
             });
 
             it('should remove previous statuses', function () {

@@ -71,7 +71,11 @@
         }
 
         function isBeingActivatedFromOncInactiveStatus () {
-            return vm.loadedAsInactiveByOnc && mostRecentStatus() && mostRecentStatus().status.status !== 'Suspended by ONC' && mostRecentStatus().status.status !== 'Under certification ban by ONC';
+            if (mostRecentStatus() !== null) {
+                return vm.loadedAsInactiveByOnc && mostRecentStatus().status.status !== 'Suspended by ONC' && mostRecentStatus().status.status !== 'Under certification ban by ONC';
+            } else {
+                return false;
+            }
         }
 
         function isMissingRequiredFields () {
@@ -138,16 +142,8 @@
 
         function mostRecentStatus () {
             if (vm.developer.statusEvents && vm.developer.statusEvents.length > 0) {
-                if (vm.developer.statusEvents.length > 1) {
-                    var status = vm.developer.statusEvents[0];
-                    for (var i = 1; i < vm.developer.statusEvents.length; i++) {
-                        if (status.statusDateObject < vm.developer.statusEvents[i].statusDateObject) {
-                            status = vm.developer.statusEvents[i];
-                        }
-                    }
-                } else {
-                    return vm.developer.statusEvents[0];
-                }
+                var orderedStatus = $filter('orderBy')(vm.developer.statusEvents,'statusDateObject', true);
+                return orderedStatus[0];
             } else {
                 return null;
             }
