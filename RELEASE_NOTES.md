@@ -4,6 +4,12 @@
 _Date TBD_
 
 ### New features
+* When creating or editing a surveillance activity nonconformity, show an error to require the "Date Corrective Action Plan Must Be Completed" when there is a value for "Date Corrective Action Plan Was Approved"
+
+## Version TBD
+_Date TBD_
+
+### New features
 * Updated front end UI to do all search/filter on front end
 * Updated surveillance filters (Never NC, Open NC, Closed NC)
 * Displayed certification status icon legend as modal
@@ -17,6 +23,8 @@ _Date TBD_
 * Moved Previously Viewed/Previously Compared to filter section
 * Added columns to search result for Certification Date & CHPL ID
 * Updated text on Resources/Overview
+* Changes to display of Banned Developers
+* Allow editing of Developer Status History
 
 ---
 

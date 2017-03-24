@@ -873,7 +873,57 @@
                     for (j = 0; j < trans.length; j++) {
                         activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
                     }
-                    if (activity.details.length === 0) {
+
+                    var foundEvents = false;
+                    var statusEvents = utilService.arrayCompare(data[i].originalData.statusEvents,data[i].newData.statusEvents);
+                    var sortedEvents, translatedEvents;
+                    translatedEvents = '<table class="table table-condensed"><thead><tr>';
+                    if (statusEvents.added.length > 0) {
+                        foundEvents = true;
+                        translatedEvents += '<th>Added Status Event' + (statusEvents.added.length > 1 ? 's' : '') + '</th>';
+                    }
+                    if (statusEvents.edited.length > 0) {
+                        foundEvents = true;
+                        translatedEvents += '<th>Edited Status Event' + (statusEvents.edited.length > 1 ? 's' : '') + '</th>';
+                    }
+                    if (statusEvents.removed.length > 0) {
+                        foundEvents = true;
+                        translatedEvents += '<th>Removed Status Event' + (statusEvents.removed.length > 1 ? 's' : '') + '</th>';
+                    }
+                    translatedEvents += '</tr></thead><tbody><tr>';
+                    if (statusEvents.added.length > 0) {
+                        translatedEvents += '<td><ul>';
+
+                        sortedEvents = $filter('orderBy')(statusEvents.added,'statusDate',true);
+                        for (j = 0; j < sortedEvents.length; j++) {
+                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+                        }
+                        translatedEvents += '</ul></td>';
+                    }
+                    if (statusEvents.edited.length > 0) {
+                        translatedEvents += '<td><ul>';
+
+                        sortedEvents = $filter('orderBy')(statusEvents.edited,'before.statusDate',true);
+                        for (j = 0; j < sortedEvents.length; j++) {
+                            translatedEvents += '<li><strong>' + sortedEvents[j].before.status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + sortedEvents[j].after.status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
+                        }
+                        translatedEvents += '</ul></td>';
+                    }
+                    if (statusEvents.removed.length > 0) {
+                        translatedEvents += '<td><ul>';
+
+                        sortedEvents = $filter('orderBy')(statusEvents.removed,'statusDate',true);
+                        for (j = 0; j < sortedEvents.length; j++) {
+                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+                        }
+                        translatedEvents += '</ul></td>';
+                    }
+                    translatedEvents += '</tr></tbody><table>';
+                    if (foundEvents) {
+                        activity.details.push(translatedEvents);
+                    }
+
+                    if (activity.details.length === 0 && !foundEvents) {
                         delete activity.details;
                     } else {
                         activity.csvDetails = activity.details.join('\n');
