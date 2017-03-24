@@ -11,12 +11,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
-                    $delegate.updateCP = jasmine.createSpy('updateCP');
-                    return $delegate;
-                });
-            });
+            module('chpl.mock', 'chpl.admin');
 
             inject(function ($controller, $rootScope, _$log_,  _Mock_) {
                 $log = _$log_;
