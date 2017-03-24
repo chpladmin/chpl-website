@@ -63,7 +63,7 @@
                   <option value="Under certification ban by ONC">Under certification ban by ONC</option>
                 </select>
                 <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['developerStatus' + $index].$touched) && vm.editForm['developerStatus' + $index].$error.required">Developer Status is required</div>
-                <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['developerStatus' + $index].$touched) && vm.matchesPrevious(status)">Developer Status must differ from previous Status</div>
+                <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['developerStatus' + $index].$touched) && vm.matchesPreviousStatus(status)">Developer Status must differ from previous Status</div>
               </div>
             </td>
             <td>
@@ -76,6 +76,7 @@
                   </span>
                 </div>
                 <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.editForm['statusDate' + $index].$error.required">Change date is required</div>
+                <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.matchesPreviousDate(status)">Only one change of status allowed per day</div>
               </div>
             </td>
             <td>
@@ -156,13 +157,14 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || (!vm.developer.statusEvents || vm.developer.statusEvents.length === 0) || vm.hasMatches()) && vm.showFormErrors">
+    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || (!vm.developer.statusEvents || vm.developer.statusEvents.length === 0) || vm.hasStatusMatches() || vm.hasDateMatches()) && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.developerName.$error.required">Developer name is required</li>
         <li ng-if="!vm.developer.statusEvents || vm.developer.statusEvents.length === 0">Developer must have a status</li>
         <li ng-if="vm.isMissingRequiredFields()">Developer status is required</li>
-        <li ng-if="vm.hasMatches()">Developer status must not repeat</li>
+        <li ng-if="vm.hasStatusMatches()">Developer status must not repeat</li>
+        <li ng-if="vm.hasDateMatches()">Only one change of status allowed per day</li>
         <li ng-if="vm.editForm.addressLine1.$error.required">Address Line 1 is required</li>
         <li ng-if="vm.editForm.addressCity.$error.required">City is required</li>
         <li ng-if="vm.editForm.addressState.$error.required">State is required</li>

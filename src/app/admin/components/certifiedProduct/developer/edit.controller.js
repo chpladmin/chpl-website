@@ -10,10 +10,12 @@
 
         vm.addPreviousStatus = addPreviousStatus;
         vm.addressRequired = addressRequired;
-        vm.hasMatches = hasMatches;
+        vm.hasDateMatches = hasDateMatches;
+        vm.hasStatusMatches = hasStatusMatches;
         vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
         vm.isMissingRequiredFields = isMissingRequiredFields;
-        vm.matchesPrevious = matchesPrevious;
+        vm.matchesPreviousDate = matchesPreviousDate;
+        vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.removePreviousStatus = removePreviousStatus;
         vm.save = save;
         vm.cancel = cancel;
@@ -52,10 +54,18 @@
             $uibModalInstance.dismiss('cancelled');
         }
 
-        function hasMatches () {
+        function hasDateMatches () {
             var ret = false;
             for (var i = 0; i < vm.developer.statusEvents.length; i++) {
-                ret = ret || vm.matchesPrevious(vm.developer.statusEvents[i]);
+                ret = ret || vm.matchesPreviousDate(vm.developer.statusEvents[i]);
+            }
+            return ret;
+        }
+
+        function hasStatusMatches () {
+            var ret = false;
+            for (var i = 0; i < vm.developer.statusEvents.length; i++) {
+                ret = ret || vm.matchesPreviousStatus(vm.developer.statusEvents[i]);
             }
             return ret;
         }
@@ -73,8 +83,17 @@
             return false;
         }
 
-        function matchesPrevious (status) {
-            var orderedStatus = $filter('orderBy')(vm.developer.statusEvents,'statusDateObject', true);
+        function matchesPreviousDate (status) {
+            var orderedStatus = $filter('orderBy')(vm.developer.statusEvents,'statusDateObject');
+            var statusLoc = orderedStatus.indexOf(status);
+            if (statusLoc > 0) {
+                return ($filter('date')(status.statusDateObject, 'mediumDate', 'UTC') === $filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC'));
+            }
+            return false;
+        }
+
+        function matchesPreviousStatus (status) {
+            var orderedStatus = $filter('orderBy')(vm.developer.statusEvents,'statusDateObject');
             var statusLoc = orderedStatus.indexOf(status);
             if (statusLoc > 0) {
                 return (status.status.status === orderedStatus[statusLoc - 1].status.status);
