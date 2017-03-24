@@ -27,6 +27,10 @@
                 commonService = _commonService_;
                 commonService.updateDeveloper.and.returnValue($q.when({}));
                 Mock = _Mock_;
+                mock.firstDev = angular.copy(Mock.developers[0]);
+                for (var i = 0; i < mock.firstDev.statusEvents.length; i++) {
+                    mock.firstDev.statusEvents[i].statusDateObject = new Date(mock.firstDev.statusEvents[i].statusDate);
+                }
 
                 scope = $rootScope.$new();
                 vm = $controller('EditDeveloperController', {
@@ -47,7 +51,6 @@
         describe('housekeeping', function () {
             it('should exist', function () {
                 expect(vm).toBeDefined();
-                expect(vm.developer.statusEvents).toEqual([]);
             });
 
             it('should have a way to close the modal', function () {
@@ -58,27 +61,21 @@
         });
 
         describe('developer status history', function () {
-            it('should push statuses to the history if one is changed', function () {
-                var newStatus = {status: 'new'};
-                vm.changeCurrentStatus(newStatus.status);
-                expect(vm.developer.statusEvents[0].status).toEqual(newStatus);
-                expect(typeof(vm.developer.statusEvents[0].statusDate)).toBe('object');
+            it('should add statusEventObjects for each statusDate in history', function () {
+                expect(vm.developer.statusEvents).toEqual(mock.firstDev.statusEvents);
             });
 
             it('should remove previous statuses', function () {
-                var newStatus = {status: 'new'};
-                vm.changeCurrentStatus(newStatus.status);
-                vm.changeCurrentStatus(newStatus.status);
-                expect(vm.developer.statusEvents.length).toBe(2);
+                var initLength = vm.developer.statusEvents.length;
                 vm.removePreviousStatus(0);
-                expect(vm.developer.statusEvents.length).toBe(1);
+                expect(vm.developer.statusEvents.length).toBe(initLength - 1);
             });
 
             it('should add an empty status', function () {
-                expect(vm.developer.statusEvents.length).toBe(0);
+                var initLength = vm.developer.statusEvents.length;
                 vm.addPreviousStatus();
-                expect(vm.developer.statusEvents.length).toBe(1);
-                expect(vm.developer.statusEvents[0]).toEqual({});
+                expect(vm.developer.statusEvents.length).toBe(initLength + 1);
+                expect(vm.developer.statusEvents[vm.developer.statusEvents.length - 1].statusDateObject).toBeDefined();
             });
         });
     });

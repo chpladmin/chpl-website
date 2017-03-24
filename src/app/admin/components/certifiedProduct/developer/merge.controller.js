@@ -43,7 +43,7 @@
         }
 
         function isBeingActivatedFromOncInactiveStatus () {
-            return vm.loadedAsInactiveByOnc && vm.developer.status.status !== 'Suspended by ONC' && vm.developer.status.status !== 'Under certification ban by ONC';
+            return vm.loadedAsInactiveByOnc && vm.developer.statusEvents[0].status.status !== 'Suspended by ONC' && vm.developer.statusEvents[0].status.status !== 'Under certification ban by ONC';
         }
 
         function removePreviousStatus (idx) {

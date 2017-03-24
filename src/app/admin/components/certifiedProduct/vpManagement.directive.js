@@ -218,6 +218,11 @@
                     .then(function (developers) {
                         vm.developers = developers.developers;
                         prepCodes();
+                        for (var i = 0; i < vm.developers.length; i++) {
+                            if (result.developerId === vm.developers[i].developerId) {
+                                vm.activeDeveloper = vm.developers[i];
+                            }
+                        }
                     });
             }, function (result) {
                 if (result !== 'cancelled') {
