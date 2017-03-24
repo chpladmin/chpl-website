@@ -882,6 +882,10 @@
                         foundEvents = true;
                         translatedEvents += '<th>Added Status Event' + (statusEvents.added.length > 1 ? 's' : '') + '</th>';
                     }
+                    if (statusEvents.edited.length > 0) {
+                        foundEvents = true;
+                        translatedEvents += '<th>Edited Status Event' + (statusEvents.edited.length > 1 ? 's' : '') + '</th>';
+                    }
                     if (statusEvents.removed.length > 0) {
                         foundEvents = true;
                         translatedEvents += '<th>Removed Status Event' + (statusEvents.removed.length > 1 ? 's' : '') + '</th>';
@@ -892,7 +896,16 @@
 
                         sortedEvents = $filter('orderBy')(statusEvents.added,'statusDate',true);
                         for (j = 0; j < sortedEvents.length; j++) {
-                            translatedEvents += '<li>Status: ' + sortedEvents[j].status.statusName + ' with Effective date: ' + $filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + '</li>';
+                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+                        }
+                        translatedEvents += '</ul></td>';
+                    }
+                    if (statusEvents.edited.length > 0) {
+                        translatedEvents += '<td><ul>';
+
+                        sortedEvents = $filter('orderBy')(statusEvents.edited,'before.statusDate',true);
+                        for (j = 0; j < sortedEvents.length; j++) {
+                            translatedEvents += '<li><strong>' + sortedEvents[j].before.status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + sortedEvents[j].after.status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
                         }
                         translatedEvents += '</ul></td>';
                     }
@@ -901,7 +914,7 @@
 
                         sortedEvents = $filter('orderBy')(statusEvents.removed,'statusDate',true);
                         for (j = 0; j < sortedEvents.length; j++) {
-                            translatedEvents += '<li>Status: ' + sortedEvents[j].status.statusName + ' with Effective date: ' + $filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + '</li>';
+                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
                         }
                         translatedEvents += '</ul></td>';
                     }
