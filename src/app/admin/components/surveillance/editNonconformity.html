@@ -80,7 +80,7 @@
       <label for="capMustCompleteDate" class="col-sm-3">Corrective Action Plan Must Complete Date <span class="text-danger" ng-if="vm.nonconformity.capApprovalDateObject">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capMustCompleteDateObject" is-open="vm.nonconformity.capMustCompleteDatePicker" close-text="Close" id="capMustCompleteDate" name="capMustCompleteDate" ng-model-options="{ timezone: 'UTC' }">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capMustCompleteDateObject" is-open="vm.nonconformity.capMustCompleteDatePicker" close-text="Close" id="capMustCompleteDate" name="capMustCompleteDate" ng-model-options="{ timezone: 'UTC' }" ng-required="vm.nonconformity.capApprovalDateObject">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capMustCompleteDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
@@ -203,7 +203,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || vm.isCapMustCompleteRequired()) && vm.showFormErrors">
+    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid) && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.nonconformityType.$error.required">Non-Conformity Type is required</li>
@@ -216,7 +216,7 @@
         <li ng-if="vm.editForm.capStartDate.$error.date">Corrective Action Plan Start Date is an improper format (mm/dd/yyyy)</li>
         <li ng-if="vm.editForm.capEndDate.$error.required">Corrective Action Plan End Date is required</li>
         <li ng-if="vm.editForm.capEndDate.$error.date">Corrective Action Plan End Date is an improper format (mm/dd/yyyy)</li>
-        <li ng-if="vm.isCapMustCompleteRequired()">Corrective Action Plan Must Complete Date is required</li>
+        <li ng-if="vm.editForm.capMustCompleteDate.$error.required">Corrective Action Plan Must Complete Date is required</li>
         <li ng-if="vm.editForm.capMustCompleteDate.$error.date">Corrective Action Plan Must Complete Date is an improper format (mm/dd/yyyy)</li>
         <li ng-if="vm.editForm.sitesPassed.$error.required">Number of sites passed is required</li>
         <li ng-if="vm.editForm.sitesPassed.$error.number">Number of sites passed must be a number</li>
@@ -228,7 +228,7 @@
         <li ng-if="vm.editForm.resolution.$error.required">Resolution is required</li>
       </ul>
     </div>
-    <button ng-disabled="(vm.editForm.$invalid || vm.isCapMustCompleteRequired()) && vm.showFormErrors && !vm.disableValidation"
+    <button ng-disabled="(vm.editForm.$invalid) && vm.showFormErrors && !vm.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>

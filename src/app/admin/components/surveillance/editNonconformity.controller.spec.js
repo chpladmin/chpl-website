@@ -56,42 +56,5 @@
                 expect(mock.modalInstance.dismiss).toHaveBeenCalled();
             });
         });
-        
-        describe('business rules', function () {
-            beforeEach(function () {
-                vm.surveillance = angular.copy(Mock.surveillances[0]);
-            });
-
-            it('When creating a nonconformity, it should not require a Corrective Action Plan Must Complete Date when there is no entry for Corrective Action Plan Approval Date', function () {
-                expect(vm.isCapMustCompleteRequired()).toBe(false);
-            });
-            
-            it('When creating a nonconformity, it should require a Corrective Action Plan Must Complete Date when there is an entry for Corrective Action Plan Approval Date', function () {
-                vm.nonconformity.capApprovalDateObject = '03/22/2017';
-                expect(vm.isCapMustCompleteRequired()).toBe(true);
-            });
-            
-            it('When editing a nonconformity, it should not require a Corrective Action Plan Must Complete Date when there is no entry for Corrective Action Plan Approval Date', function () {
-                vm.workType = 'edit';
-                expect(vm.isCapMustCompleteRequired()).toBe(false);
-            });
-            
-            it('When editing a nonconformity, it should require a Corrective Action Plan Must Complete Date when there is an entry for Corrective Action Plan Approval Date', function () {
-                vm.workType = 'edit';
-                vm.nonconformity.capApprovalDateObject = '03/22/2017';
-                expect(vm.isCapMustCompleteRequired()).toBe(true);
-            });
-            
-            it('When adding a nonconformity, it should not require a Corrective Action Plan Must Complete Date when there is no entry for Corrective Action Plan Approval Date', function () {
-                vm.workType = 'add';
-                expect(vm.isCapMustCompleteRequired()).toBe(false);
-            });
-            
-            it('When adding a nonconformity, it should require a Corrective Action Plan Must Complete Date when there is an entry for Corrective Action Plan Approval Date', function () {
-                vm.workType = 'add';
-                vm.nonconformity.capApprovalDateObject = '03/22/2017';
-                expect(vm.isCapMustCompleteRequired()).toBe(true);
-            });
-        });
     });
 })();
