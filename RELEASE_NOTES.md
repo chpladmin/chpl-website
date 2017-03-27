@@ -4,7 +4,8 @@
 _Date TBD_
 
 ### New features
-* When creating or editing a surveillance activity nonconformity, show an error to require the "Date Corrective Action Plan Must Be Completed" when there is a value for "Date Corrective Action Plan Was Approved"
+* When uploading or editing a surveillance activity nonconformity, show an error to require the "Date Corrective Action Plan Must Be Completed" when there is a value for "Date Corrective Action Plan Was Approved"
+* When uploading or editing a surveillance activity nonconformity, show errors that break rules for "Corrective Action Plan End Date"
 
 ## Version TBD
 _Date TBD_
