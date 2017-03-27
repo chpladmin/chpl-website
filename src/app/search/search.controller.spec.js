@@ -118,43 +118,6 @@
             expect(vm.hasResults).toBeDefined;
         });
 
-        describe('certificationStatus filters', function () {
-
-            var objToFilter;
-
-            beforeEach(function () {
-                objToFilter = {id: 1, statuses: {active: 1, withdrawnByDeveloper: 0, retired: 1, withdrawnByAcb: 0, suspendedByAcb: 0}};
-            });
-
-            it('should have a filter to filter out certificationStatuses', function () {
-                expect(vm.certificationStatusFilter).toBeDefined();
-            });
-
-            it('should return false if the selected status has 0 objects', function () {
-                vm.refineModel.certificationStatus['Active'] = false;
-                vm.refineModel.certificationStatus['Withdrawn by ONC-ACB'] = false;
-                vm.refineModel.certificationStatus['Suspended by ONC-ACB'] = false;
-                vm.refineModel.certificationStatus['Withdrawn By Developer'] = true;
-                vm.refineModel.certificationStatus['Withdrawn By Developer Under Surveillance/Review'] = false;
-                vm.refineModel.certificationStatus['Retired'] = false;
-                expect(vm.certificationStatusFilter(objToFilter)).toBe(false);
-            });
-
-            it('should return true if the selected status has 1 or more objects', function () {
-                vm.refineModel.certificationStatus['Active'] = true;
-                expect(vm.certificationStatusFilter(objToFilter)).toBe(true);
-            });
-
-            it('should return true if the object has no statuses', function () {
-                delete objToFilter.statuses;
-                expect(vm.certificationStatusFilter(objToFilter)).toBe(true);
-            });
-
-            it('should have a function to get the right icon for a status', function () {
-                expect(vm.statusFont).toBeDefined();
-            });
-        });
-
         describe('viewing certification status', function () {
             it('should have a function to view certification statuses', function () {
                 expect(vm.viewCertificationStatusLegend).toBeDefined();

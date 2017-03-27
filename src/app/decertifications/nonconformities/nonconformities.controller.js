@@ -86,10 +86,9 @@
                 for (var i = 0; i < results.length; i++) {
                     results[i].mainSearch = [results[i].developer, results[i].product, results[i].version, results[i].chplProductNumber].join('|');
                     results[i].surveillance = angular.toJson({
-                        hasOpenSurveillance: results[i].hasOpenSurveillance,
-                        hasClosedSurveillance: results[i].hasClosedSurveillance,
-                        hasOpenNonconformities: results[i].hasOpenNonconformities,
-                        hasClosedNonconformities: results[i].hasClosedNonconformities
+                        surveillanceCount: results[i].surveillanceCount,
+                        openNonconformityCount: results[i].openNonconformityCount,
+                        closedNonconformityCount: results[i].closedNonconformityCount
                     });
                 }
                 vm.allCps = [];

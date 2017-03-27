@@ -4,7 +4,10 @@
 _Date TBD_
 
 ### New features
+* Changes to display of Banned Developers
+* Allow editing of Developer Status History
 * When creating or editing a surveillance activity nonconformity, show an error to require the "Date Corrective Action Plan Must Be Completed" when there is a value for "Date Corrective Action Plan Was Approved"
+* Built "Nonconformities" page
 
 ---
 
@@ -25,8 +28,6 @@ _27 March 2017_
 * Moved Previously Viewed/Previously Compared to filter section
 * Added columns to search result for Certification Date & CHPL ID
 * Updated text on Resources/Overview
-* Changes to display of Banned Developers
-* Allow editing of Developer Status History
 
 ---
 

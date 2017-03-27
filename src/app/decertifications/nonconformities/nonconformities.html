@@ -58,14 +58,14 @@
                 </td>
 			  </tr>
               <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-                <th scope="col" st-sort="edition" st-skip-natural="true">Edition</th>
-                <th scope="col" st-sort="developer" st-skip-natural="true">Developer</th>
-		        <th scope="col" st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
-                <th scope="col" st-sort="version" st-skip-natural="true">Version</th>
-		        <th scope="col" st-sort="chplProductNumber" st-skip-natural="true">CHPL ID</th>
-		        <th scope="col" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
-		        <th scope="col" st-sort="hasOpenNonconformity" st-skip-natural="true"># Open NCs</th>
-		        <th scope="col" st-sort="hasClosedNonconformity" st-skip-natural="true"># Closed NCs</th>
+                <th scope="col" st-sort="edition" st-skip-natural="true" class="search-header">Edition</th>
+                <th scope="col" st-sort="developer" st-skip-natural="true" class="search-header">Developer</th>
+		        <th scope="col" st-sort="product" st-skip-natural="true" st-sort-default="true" class="search-header">Product</th>
+                <th scope="col" st-sort="version" st-skip-natural="true" class="search-header">Version</th>
+		        <th scope="col" st-sort="chplProductNumber" st-skip-natural="true" class="search-header">CHPL ID</th>
+		        <th scope="col" st-sort="acb" st-skip-natural="true" class="search-header">ONC-ACB</th>
+		        <th scope="col" st-sort="openNonconformityCount" st-skip-natural="true" class="search-header"># Open NCs</th>
+		        <th scope="col" st-sort="closedNonconformityCount" st-skip-natural="true" class="search-header"># Closed NCs</th>
               </tr>
             </thead>
             <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
@@ -91,8 +91,8 @@
                 <td>{{ cp.version }}</td>
                 <td>{{ cp.chplProductNumber }}</td>
                 <td>{{ cp.acb }}</td>
-                <td>{{ cp.hasOpenNonconformity }}</td>
-                <td>{{ cp.hasClosedNonconformity }}</td>
+                <td>{{ cp.openNonconformityCount }}</td>
+                <td>{{ cp.closedNonconformityCount }}</td>
               </tr>
             </tbody>
           </table>
