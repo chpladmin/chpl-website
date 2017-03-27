@@ -7,8 +7,6 @@
     /** @ngInject */
     function EditProductController ($uibModalInstance, activeProduct, commonService) {
         var vm = this;
-        vm.product = angular.copy(activeProduct);
-        vm.updateProduct = {productIds: [vm.product.productId]};
 
         vm.addPreviousOwner = addPreviousOwner;
         vm.changeCurrent = changeCurrent;
@@ -21,6 +19,8 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.product = angular.copy(activeProduct);
+            vm.updateProduct = {productIds: [vm.product.productId]};
             commonService.getDevelopers(true).then(function (developers) {
                 vm.developers = developers.developers;
             });
