@@ -1,13 +1,15 @@
 # Release Notes
 
-## Version 8.0.0
-_27 March 2017_
+## Version TBD
+_Date TBD_
 
 ### New features
 * When creating or editing a surveillance activity nonconformity, show an error to require the "Date Corrective Action Plan Must Be Completed" when there is a value for "Date Corrective Action Plan Was Approved"
 
-## Version TBD
-_Date TBD_
+---
+
+## Version 8.0.0
+_27 March 2017_
 
 ### New features
 * Updated front end UI to do all search/filter on front end
