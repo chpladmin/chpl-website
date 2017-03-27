@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 8.0.0
+_27 March 2017_
 
 ### New features
 * Updated front end UI to do all search/filter on front end
