@@ -13,7 +13,8 @@
             replace: true,
             templateUrl: 'app/navigation/navigation-top.html',
             bindToController: {
-                widget: '=?'
+                widget: '=?',
+                compareWidget: '=?'
             },
             scope: { },
             controllerAs: 'vm',
@@ -50,6 +51,7 @@
         vm.isOncStaff = isOncStaff;
         vm.loadAnnouncements = loadAnnouncements;
         vm.showCmsWidget = showCmsWidget;
+        vm.showCompareWidget = showCompareWidget;
 
         activate();
 
@@ -62,6 +64,16 @@
                 vm.showCmsWidget();
             });
             $scope.$on('$destroy', cmsWidget);
+
+            var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
+                vm.showCompareWidget(true);
+            });
+            $scope.$on('$destroy', showCompareWidget);
+
+            var hideCompareWidget = $rootScope.$on('HideCompareWidget', function () {
+                vm.showCompareWidget(false);
+            });
+            $scope.$on('$destroy', hideCompareWidget);
         }
 
         function clear () {
@@ -118,6 +130,10 @@
 
         function showCmsWidget () {
             vm.widgetExpanded = true;
+        }
+
+        function showCompareWidget (show) {
+            vm.compareWidgetExpanded = show;
         }
     }
 })();

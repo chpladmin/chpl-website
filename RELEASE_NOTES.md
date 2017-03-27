@@ -1,5 +1,25 @@
 # Release Notes
 
+## Version 8.0.0
+_27 March 2017_
+
+### New features
+* Updated front end UI to do all search/filter on front end
+* Updated surveillance filters (Never NC, Open NC, Closed NC)
+* Displayed certification status icon legend as modal
+* Moved QMS & Accessibility info from 'additional information' to relevant criteria
+* Rearranged Resources navigation
+* Add "Surveillance initiated by" to Surveillance Activity
+* Required users to enter surveillance end date if no open Non-Conformites exist
+* Don't show "CertID" button for Retired products
+* Don't show unnecessary elements of widget for 2014/2015 and 2015 CMS IDs
+* Moved Compare to widget on navigation bar
+* Moved Previously Viewed/Previously Compared to filter section
+* Added columns to search result for Certification Date & CHPL ID
+* Updated text on Resources/Overview
+
+---
+
 ## Version 7.3.1
 _13 March 2017_
 

@@ -21,12 +21,21 @@
               <ai-cms-widget-display widget="vm.widget"></ai-cms-widget-display>
             </div>
           </li>
+          <li class="dropdown" uib-dropdown is-open="vm.compareWidgetExpanded" auto-close="disabled">
+            <a href class="dropdown-toggle" id="compare-widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.compareWidgetExpanded">Compare<br />Products <span class="fa fa-caret-down"></span></a>
+            <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="compare-widget-toggle" id="compare-widget-dropdown">
+              <ai-compare-widget-display widget="vm.compareWidget"></ai-compare-widget-display>
+            </div>
+          </li>
           <li ng-class="{'active': (vm.isActive('/resources') || vm.isActive('/overview')) }" class="dropdown" uib-dropdown>
             <a href class="dropdown-toggle" id="resource-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false">CHPL<br />Resources <span class="fa fa-caret-down"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="resource-toggle">
-              <li><a href="#/resources">Resources</a></li>
-              <li><a href="#/overview">Overview</a></li>
-              <li><a href="mailto:ONC_CHPL@hhs.gov">Contact <i class="fa fa-envelope-o"></i></a></li>
+              <li><a href="#/resources/overview">Overview</a></li>
+              <li><a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf">CHPL Public User Guide <i class="fa fa-download text-right"></i></li>
+              <li><a href="#/resources/download">Download the CHPL</a></li>
+              <li><a href="#/resources/chpl_api">CHPL API</a></li>
+              <li><a href="#/resources/cms_lookup">CMS ID Reverse Lookup</a></li>
+              <li><a href="mailto:ONC_CHPL@hhs.gov">Contact Us <i class="fa fa-envelope-o"></i></a></li>
             </ul>
           </li>
           <li ng-class="{'active': vm.isActive('/decertifications/products') }"><a href="#/decertifications/products">Decertified<br/>Products</a></li>
@@ -34,7 +43,7 @@
           <li ng-class="{'active': vm.isActive('/decertifications/developers') }"><a href="#/decertifications/developers">Banned<br/>Developers</a></li>
           <li ng-class="{'active': vm.isActive('/admin') }" class="dropdown" uib-dropdown auto-close="outsideClick">
             &nbsp;<br /><a href class="dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span ng-if="!vm.getUsername()" class="sr-only">Log in</span>{{ vm.getUsername() }} <span class="fa fa-caret-down"></span></a>
-            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="login-toggle">
+            <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
               <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isAcbStaff()"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
               <li ng-if="vm.isChplAdmin()"><a href="#/admin/userManagement">User Management</a></li>
               <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/acbManagement">ONC-ACB Management</a></li>

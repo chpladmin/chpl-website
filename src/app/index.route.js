@@ -37,12 +37,6 @@
                 templateUrl: 'app/decertifications/products/products.html',
                 title: 'Decertified Products'
             })
-            .when('/overview', {
-                templateUrl: 'app/overview/overview.html',
-                controller: 'OverviewController',
-                controllerAs: 'vm',
-                title: 'CHPL Overview'
-            })
             .when('/product/:id', {
                 templateUrl: 'app/product/product.html',
                 controller: 'ProductController',
@@ -61,11 +55,29 @@
                 controllerAs: 'vm',
                 title: 'CHPL Registration'
             })
-            .when('/resources', {
-                templateUrl: 'app/resources/resources.html',
-                controller: 'ResourcesController',
+            .when('/resources/chpl_api', {
+                templateUrl: 'app/resources/chpl_api/chpl_api.html',
+                controller: 'ChplApiController',
                 controllerAs: 'vm',
-                title: 'CHPL Resources'
+                title: 'CHPL API'
+            })
+            .when('/resources/cms_lookup', {
+                templateUrl: 'app/resources/cms_lookup/cms_lookup.html',
+                controller: 'CmsLookupController',
+                controllerAs: 'vm',
+                title: 'CMS ID Reverse Lookup'
+            })
+            .when('/resources/download', {
+                templateUrl: 'app/resources/download/download.html',
+                controller: 'DownloadController',
+                controllerAs: 'vm',
+                title: 'Download the CHPL'
+            })
+            .when('/resources/overview', {
+                templateUrl: 'app/resources/overview/overview.html',
+                controller: 'OverviewController',
+                controllerAs: 'vm',
+                title: 'CHPL Overview'
             })
             .when('/search', {
                 controller: 'SearchController',

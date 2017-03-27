@@ -1,0 +1,45 @@
+<li>
+  <label for="filter-has-never-had-surveillance">
+    <input type="radio" ng-model="vm.query.surveillance" id="filter-has-never-had-surveillance" name="surveillance" value="never" ng-change="vm.filterChanged()">
+    <span ng-class="{ 'emphasis': vm.query.surveillance === 'never' }">Has never had a surveillance activity</span>
+  </label>
+</li>
+<li>
+  <label for="filter-has-had-surveillance">
+    <input type="radio" ng-model="vm.query.surveillance" id="filter-has-had-surveillance" name="surveillance" value="has-had" ng-change="vm.filterChanged()">
+    <span ng-class="{ 'emphasis': vm.query.surveillance === 'has-had' }">Has had a surveillance activity <i class="fa" ng-class="vm.query.surveillance === 'has-had' ? 'fa-caret-down' : 'fa-caret-right'"></i></span>
+  </label>
+</li>
+<span ng-if="vm.query.surveillance === 'has-had'">
+  <li class="text-center">
+    <label ng-class="{ 'emphasis' : vm.query.matchAll }">
+      <input type="checkbox" ng-model="vm.query.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
+      Matching <u>{{ vm.query.matchAll ? 'all' : 'any' }}</u>
+    </label>
+  </li>
+  <li>
+    <label for="filter-never-nonconformity">
+      &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.NC.never" id="filter-never-nonconformity" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.NC.never }">Never had a Nonconformity</span>
+    </label>
+  </li>
+  <li>
+    <label for="filter-open-nonconformity">
+      &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.NC.open" id="filter-open-nonconformity" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.NC.open }">Open Nonconformity</span>
+    </label>
+  </li>
+  <li>
+    <label for="filter-closed-nonconformity">
+      &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.NC.closed" id="filter-closed-nonconformity" ng-change="vm.filterChanged()">
+      <span ng-class="{ 'emphasis' : vm.query.NC.closed }">Closed Nonconformity</span>
+    </label>
+  </li>
+</span>
+<li class="text-center" ng-if="vm.query.surveillance">
+  <span>
+    <a href ng-click="vm.clearSurveillanceActivityFilter(); $event.stopPropagation();">
+      Clear Surveillance Activity Filter
+    </a>
+  </span>
+</li>

@@ -1,373 +1,257 @@
 <div ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
-  <div class="container-fluid">
+  <div class="pending" ng-if="vm.isPreLoading"></div>
+  <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
+    <st-manage register-search="vm.registerSearch(search)" name-space="searchTableState" />
     <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
         <h1>Search</h1>
       </div>
     </div>
-    <div class="form-horizontal search-inputs" ng-form="vm.searchForm" ng-submit="vm.search()" aria-live="polite">
+    <div class="form-horizontal search-inputs" ng-form="vm.searchForm" aria-live="polite">
       <div class="form-group" id="filters">
         <div class="form-group-lg">
           <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
             <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ACB/CHPL ID</label>
-            <div class="input-group input-group-lg">
-              <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
-                     ng-keyup="$event.keyCode === 13 && vm.search()"
-                     uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
-                     typeahead-focus-first="false"
-                     typeahead-input-formatter="$model.value" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-ai" ng-click="vm.search()"><i class="fa fa-search"></i><span class="sr-only">Search</span></button>
-              </span>
-            </div>
-            <a href ng-if="vm.hasDoneASearch && !vm.activeSearch" class="restore-previous-search" ng-click="vm.reloadResults()">Restore previous search</a>
+            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID"
+                   ng-model="vm.query" ng-change="vm.activeSearch = true"
+                   ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearTerm(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+            <span ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
+              <a href ng-click="vm.browseAll()">Browse all</a><br />
+              <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()">Restore previous search</a>
+            </span>
           </div>
         </div>
-        <div class="col-sm-8" ng-if="vm.activeSearch || vm.searchForm.$dirty">
-          <div class="">
-            <div uib-dropdown auto-close="outsideClick" class="btn-group">
-              <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                <a ng-if="vm.isCategoryChanged(['certificationStatus'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
-              </button>
-              <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
-                <li ng-repeat="status in vm.certificationStatuses | orderBy:'name'">
-                  <label for="filter-status-{{ status.name }}">
-                    <input type="checkbox" ng-model="vm.refineModel.certificationStatus[status.name]" id="filter-status-{{ status.name }}">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationStatus',status.name) }">{{ status.name }}</span>
-                  </label>
-                </li>
-              </ul>
-            </div>
-            <div uib-dropdown auto-close="outsideClick" class="btn-group">
-              <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-edition-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                <a ng-if="vm.isCategoryChanged(['certificationEdition'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Edition <i class="fa fa-filter"></i>
-              </button>
-              <ul class="dropdown-menu" aria-labeledby="filter-edition-button" uib-dropdown-menu>
-                <li ng-repeat="edition in vm.editions | orderBy:'name'">
-                  <label for="filter-edition-{{ edition.name }}">
-                    <input type="checkbox" ng-model="vm.refineModel.certificationEdition[edition.name]" id="filter-edition-{{ edition.name }}">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationEdition',edition.name) }">{{ edition.name }}</span>
-                  </label>
-                </li>
-              </ul>
-            </div>
-            <div uib-dropdown auto-close="outsideClick" class="btn-group">
-              <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-criteria-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                <a ng-if="vm.isCategoryChanged(['certificationCriteria'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Criteria <i class="fa fa-filter"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-criteria-button" uib-dropdown-menu>
-                <li>
-                  <a href ng-click="vm.show2011 = !vm.show2011">
-                    <i class="fa" ng-class="vm.show2011 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2011 ? 'Hide' : 'View' }} 2011 Certification Criteria
-                  </a>
-                </li>
-                <li ng-repeat="criteria in vm.certs | orderBy:vm.sortCert" ng-if="vm.show2011 && criteria.name.substring(4,7) !== '314' && criteria.name.substring(4,7) !== '315'">
-                  <label for="filter-criteria-{{ criteria.name }}">
-                    <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationCriteria',criteria.name) }">{{ criteria.name + ': ' + criteria.title }}</span>
-                  </label>
-                </li>
-                <li>
-                  <a href ng-click="vm.show2014 = !vm.show2014">
-                    <i class="fa" ng-class="vm.show2014 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2014 ? 'Hide' : 'View' }} 2014 Certification Criteria
-                  </a>
-                </li>
-                <li ng-repeat="criteria in vm.certs | orderBy:vm.sortCert" ng-if="vm.show2014 && criteria.name.substring(4,7) === '314'">
-                  <label for="filter-criteria-{{ criteria.name }}">
-                    <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationCriteria',criteria.name) }">{{ criteria.name + ': ' + criteria.title }}</span>
-                  </label>
-                </li>
-                <li>
-                  <a href ng-click="vm.show2015 = !vm.show2015">
-                    <i class="fa" ng-class="vm.show2015 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2015 ? 'Hide' : 'View' }} 2015 Certification Criteria
-                  </a>
-                </li>
-                <li ng-repeat="criteria in vm.certs | orderBy:vm.sortCert" ng-if="vm.show2015 && criteria.name.substring(4,7) === '315'">
-                  <label for="filter-criteria-{{ criteria.name }}">
-                    <input type="checkbox" ng-model="vm.refineModel.certificationCriteria[criteria.name]" id="filter-criteria-{{ criteria.name }}">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('certificationCriteria',criteria.name) }">{{ criteria.name + ': ' + criteria.title }}</span>
-                  </label>
-                </li>
-              </ul>
-            </div>
-            <div uib-dropdown auto-close="outsideClick" class="btn-group">
-              <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-more-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-                <a ng-if="vm.isCategoryChanged(['cqms','acb','hasHadSurveillance','practiceType','product','developer','version'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button" uib-dropdown-menu>
-                <li>
-                  <a href ng-click="vm.showCqms = !vm.showCqms">
-                    <i class="fa" ng-class="vm.showCqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showCqms ? 'Hide' : 'View' }} Clinical Quality Measures
-                  </a>
-                </li>
-                <li ng-repeat="cqm in vm.cqms | orderBy:vm.sortCqm" ng-if="vm.showCqms">
-                  <label for="filter-cqm-{{ cqm.name }}">
-                    <input type="checkbox" ng-model="vm.refineModel.cqms[cqm.name]" id="filter-cqm-{{ cqm.name }}">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('cqms',cqm.name) }">{{ prepend(cqm.name) + ': ' + cqm.title }}</span>
-                  </label>
-                </li>
-                <li>
-                  <a href ng-click="vm.showAcbs = !vm.showAcbs">
-                    <i class="fa" ng-class="vm.showAcbs ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showAcbs ? 'Hide' : 'View' }} ONC-ACBs
-                  </a>
-                </li>
-                <li ng-repeat="acb in vm.certBodies | orderBy:'name'" ng-if="vm.showAcbs">
-                  <label for="filter-acb-{{ acb.name }}">
-                    <input type="checkbox" ng-model="vm.refineModel.acb[acb.name]" id="filter-acb-{{ acb.name }}">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('acb',acb.name) }">{{ acb.name }}</span>
-                  </label>
-                </li>
-                <li>
-                  <a href ng-click="vm.showConformities = !vm.showConformities">
-                    <i class="fa" ng-class="vm.showConformities ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showConformities ? 'Hide' : 'View' }} Surveillance Activity
-                  </a>
-                </li>
-                <li ng-if="vm.showConformities">
-                  <label for="filter-has-had-surveillance">
-                    <input type="radio" ng-model="vm.refineModel.hasHadSurveillance" id="filter-has-had-surveillance" name="hasHadSurveillance" value="has-had">
-                    Has had surveillance activity
-                  </label>
-                </li>
-                <li ng-if="vm.showConformities">
-                  <label for="filter-open-surveillance">
-                    <input type="checkbox" ng-model="vm.refineModel.surveillance.OPEN_SURVEILLANCE" id="filter-open-surveillance" ng-disabled="vm.refineModel.hasHadSurveillance !== 'has-had'">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('surveillance','OPEN_SURVEILLANCE') }">Open Surveillance</span>
-                  </label>
-                </li>
-                <li ng-if="vm.showConformities">
-                  <label for="filter-closed-surveillance">
-                    <input type="checkbox" ng-model="vm.refineModel.surveillance.CLOSED_SURVEILLANCE" id="filter-closed-surveillance" ng-disabled="vm.refineModel.hasHadSurveillance !== 'has-had'">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('surveillance','CLOSED_SURVEILLANCE') }">Closed Surveillance</span>
-                  </label>
-                </li>
-                <li ng-if="vm.showConformities">
-                  <label for="filter-open-nonconformity">
-                    <input type="checkbox" ng-model="vm.refineModel.surveillance.OPEN_NONCONFORMITY" id="filter-open-nonconformity" ng-disabled="vm.refineModel.hasHadSurveillance !== 'has-had'">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('surveillance','OPEN_NONCONFORMITY') }">Open Nonconformity</span>
-                  </label>
-                </li>
-                <li ng-if="vm.showConformities">
-                  <label for="filter-closed-nonconformity">
-                    <input type="checkbox" ng-model="vm.refineModel.surveillance.CLOSED_NONCONFORMITY" id="filter-closed-nonconformity" ng-disabled="vm.refineModel.hasHadSurveillance !== 'has-had'">
-                    <span ng-class="{ 'emphasis' : vm.isChangedFromDefault('surveillance','CLOSED_NONCONFORMITY') }">Closed Nonconformity</span>
-                  </label>
-                </li>
-                <li ng-if="vm.showConformities">
-                  <label for="filter-has-never-had-surveillance">
-                    <input type="radio" ng-model="vm.refineModel.hasHadSurveillance" id="filter-has-never-had-surveillance" name="hasHadSurveillance" value="never">
-                    Has never had surveillance activity
-                  </label>
-                </li>
-                <li ng-if="vm.showConformities && vm.refineModel.hasHadSurveillance">
-                  <span>
-                    <a href ng-click="vm.clearSurveillanceActivityFilter(); $event.stopPropagation();">
-                      Clear Surveillance Activity Filter
-                    </a>
-                  </span>
-                </li>
-                <li>
-                  <a href ng-click="vm.showPracticeType = !vm.showPracticeType">
-                    <i class="fa" ng-class="vm.showPracticeType ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showPracticeType ? 'Hide' : 'View' }} Practice Type
-                  </a>
-                </li>
-                <li ng-if="vm.showPracticeType">
-                  <label for="filter-practiceType-ambulatory">
-                    <input type="radio" ng-model="vm.refineModel.practiceType" id="filter-practiceType-ambulatory" value="Ambulatory">
-                    Ambulatory
-                  </label>
-                </li>
-                <li ng-if="vm.showPracticeType">
-                  <label for="filter-practiceType-inpatient">
-                    <input type="radio" ng-model="vm.refineModel.practiceType" id="filter-practiceType-inpatient" value="Inpatient">
-                    Inpatient
-                  </label>
-                </li>
-                <li ng-if="vm.showPracticeType && vm.refineModel.practiceType">
-                  <span>
-                    <a href ng-click="vm.refineModel.practiceType = undefined; $event.stopPropagation();">
-                      Clear Practice Type Filter
-                    </a>
-                  </span>
-                </li>
-                <li class="form-horizontal">
-                  <div class="form-group">
-                    <label for="developerRefine" class="col-sm-4 control-label">Developer</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ng-model="vm.refineModel.developer"
-                             uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.developers | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
-                             typeahead-focus-first="false"
-                             typeahead-input-formatter="$model.value" />
-                    </div>
-                  </div>
-                </li>
-                <li class="form-horizontal">
-                  <div class="form-group">
-                    <label for="productRefine" class="col-sm-4 control-label">Product</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="productRefine" placeholder="Product" ng-model="vm.refineModel.product"
-                             uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.products | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
-                             typeahead-focus-first="false"
-                             typeahead-input-formatter="$model.value" />
-                    </div>
-                  </div>
-                </li>
-                <li class="form-horizontal">
-                  <div class="form-group">
-                    <label for="versionRefine" class="col-sm-4 control-label">Version</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="versionRefine" placeholder="Version" ng-model="vm.refineModel.version" />
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <button class="btn btn-lg btn-ai-success" type="button" ng-click="vm.search()">
-              Apply filters
+        <!--
+            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
+                   ng-keyup="$event.keyCode === 13 && vm.search()"
+                   uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
+                   typeahead-focus-first="false"
+                   typeahead-input-formatter="$model.value" />
+            -->
+        <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
+          <st-list-multiple collection="vm.allCps" fixed-items="vm.previouslyIds" predicate="id" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" match-full="true" hidden="true"></st-list-multiple>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group">
+            <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
             </button>
+            <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
+              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.statusItems" has-changes="vm.categoryChanged['certificationStatus']" predicate="certificationStatus" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
+            </ul>
+          </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group">
+            <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-edition-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Edition <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labeledby="filter-edition-button" uib-dropdown-menu>
+              <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" predicate="edition" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-list-multiple>
+            </ul>
+          </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group">
+            <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-criteria-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.categoryChanged['criteria'][2011] || vm.categoryChanged['criteria'][2014] || vm.categoryChanged['criteria'][2015]" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Criteria <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-criteria-button" uib-dropdown-menu>
+              <li>
+                <a href ng-click="vm.show2011 = !vm.show2011">
+                  <i class="fa" ng-class="vm.show2011 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2011 ? 'Hide' : 'View' }} 2011 Certification Criteria <span ng-if="vm.categoryChanged['criteria'][2011]"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.show2011">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+              </li>
+              <li>
+                <a href ng-click="vm.show2014 = !vm.show2014">
+                  <i class="fa" ng-class="vm.show2014 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2014 ? 'Hide' : 'View' }} 2014 Certification Criteria <span ng-if="vm.categoryChanged['criteria'][2014]"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.show2014">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+              </li>
+              <li>
+                <a href ng-click="vm.show2015 = !vm.show2015">
+                  <i class="fa" ng-class="vm.show2015 ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2015 ? 'Hide' : 'View' }} 2015 Certification Criteria <span ng-if="vm.categoryChanged['criteria'][2015]"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.show2015">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2015]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+              </li>
+            </ul>
+          </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group">
+            <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-more-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.isCategoryChanged(['cqm-2011','cqm-other','acb','surveillance','practiceType','product','developer','version'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button" uib-dropdown-menu>
+              <li>
+                <a href ng-click="vm.showCqms = !vm.showCqms">
+                  <i class="fa" ng-class="vm.showCqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showCqms ? 'Hide' : 'View' }} Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-2011'] || vm.categoryChanged['cqm-other']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-if="vm.showCqms">
+                <a href ng-click="vm.show2011Cqms = !vm.show2011Cqms">
+                  <i class="fa" ng-class="vm.show2011Cqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.show2011Cqms ? 'Hide' : 'View' }} 2014 Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-2011']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.showCqms && vm.show2011Cqms">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+              </li>
+              <li ng-if="vm.showCqms">
+                <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
+                  <i class="fa" ng-class="vm.showOtherCqms ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showOtherCqms ? 'Hide' : 'View' }} 2014/2015 Clinical Quality Measures <span ng-if="vm.categoryChanged['cqm-other']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.showCqms && vm.showOtherCqms">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+              </li>
+              <li>
+                <a href ng-click="vm.showAcbs = !vm.showAcbs">
+                  <i class="fa" ng-class="vm.showAcbs ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showAcbs ? 'Hide' : 'View' }} ONC-ACBs <span ng-if="vm.categoryChanged['acb']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.showAcbs">
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" predicate="acb" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" hidden-options="true"></st-list-multiple>
+              </li>
+              <li>
+                <a href ng-click="vm.showConformities = !vm.showConformities">
+                  <i class="fa" ng-class="vm.showConformities ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showConformities ? 'Hide' : 'View' }} Surveillance Activity <span ng-if="vm.categoryChanged['surveillance']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <ai-surveillance-filter ng-show="vm.showConformities" has-changes="vm.categoryChanged['surveillance']" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></ai-surveillance-filter>
+              <li>
+                <a href ng-click="vm.showPracticeType = !vm.showPracticeType">
+                  <i class="fa" ng-class="vm.showPracticeType ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showPracticeType ? 'Hide' : 'View' }} Practice Type <span ng-if="vm.categoryChanged['practiceType']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.showPracticeType">
+                <st-select-distinct collection="vm.allCps" fixed-items="vm.searchOptions.practiceTypes" has-changes="vm.categoryChanged['practiceType']" predicate="practiceType" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-select-distinct>
+              </li>
+              <li class="form-horizontal">
+                <div class="form-group">
+                  <label for="developerRefine" class="col-sm-4 control-label">
+                    Developer
+                    <span ng-if="vm.categoryChanged['developer']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ai-enhanced-text has-changes="vm.categoryChanged['developer']" predicate="developer" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+                  </div>
+                </div>
+              </li>
+              <li class="form-horizontal">
+                <div class="form-group">
+                  <label for="productRefine" class="col-sm-4 control-label">
+                    Product
+                    <span ng-if="vm.categoryChanged['product']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="productRefine" placeholder="Product" ai-enhanced-text has-changes="vm.categoryChanged['product']" predicate="product" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+                  </div>
+                </div>
+              </li>
+              <li class="form-horizontal">
+                <div class="form-group">
+                  <label for="versionRefine" class="col-sm-4 control-label">
+                    Version
+                    <span ng-if="vm.categoryChanged['version']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="versionRefine" placeholder="Version" ai-enhanced-text has-changes="vm.categoryChanged['version']" predicate="version" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
 
     <div aria-live="polite" id="mainContent" tabindex="-1">
-      <div id="resultsSection" ng-if="hasSearched()" class="main-content">
+      <div id="resultsSection" ng-show="vm.activeSearch || vm.searchForm.$dirty" class="main-content">
         <div class="row">
-          <div class="col-md-9">
-            <div class="row">
-              <div class="col-md-12">
-                <span class="pull-right">
-                  <a href="" ng-click="browseAll()">Browse all</a> | <a href="" ng-click="vm.clearFilters()">Clear filters</a>
-                </span>
-                <p ng-if="!hasResults()"><strong>No results found.</strong></p>
-                <p ng-if="hasResults()"><strong>{{ vm.resultCount }} results found.</strong></p>
-                <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
-              </div>
-            </div>
-            <div ng-if="hasResults()" class="row">
-              <div class="col-md-12 table-responsive">
-                <table class="table search-table table-striped">
-                  <colgroup>
-                    <col class="col-md-3 col-xs-1">
-                    <col class="col-md-3 col-xs-1">
-                    <col class="col-xs-1">
-                    <col class="col-xs-1">
-                    <col class="col-xs-1">
-                    <col class="col-md-3 col-xs-7">
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <td colspan="6" class="text-center">
-                        <p>
-                          <span class="pull-right">
-                            <label for="pageSizeTop" class="sr-only">Show how many results</label>
-                            Showing up to
-                            <select ng-model="vm.query.pageSize" id="pageSizeTop" ng-change="vm.search()">
-                              <option value="50">50</option>
-                              <option value="100">100</option>
-                              <option value="250">250</option>
-                            </select>
-                            results per page
-                          </span>
-                          <uib-pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
-                                          max-size="10" class="pagination-sm" boundary-link-numbers="true"></uib-pagination>
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-		              <th scope="col" class="search-header" ng-click="sort('product')"><span ng-class="{'sort-ascent': vm.query.orderBy==='product' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='product' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'product'}">Product Name</span> <a class="sr-only sr-only-focusable" href ng-click="sort('product')"><br />Sort by product</a></th>
-                      <th scope="col" class="search-header" ng-click="sort('developer')"><span ng-class="{'sort-ascent': vm.query.orderBy==='developer' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='developer' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'developer'}">Developer</span> <a class="sr-only sr-only-focusable" href ng-click="sort('developer')"><br />Sort by developer</a></th>
-                      <th scope="col" class="search-header" ng-click="sort('certificationEdition')"><span ng-class="{'sort-ascent': vm.query.orderBy==='certificationEdition' && !vm.query.sortDescending, 'sort-descent': vm.query.orderBy==='certificationEdition' && vm.query.sortDescending, 'sort-none': vm.query.orderBy !== 'certificationEdition'}">Edition</span> <a class="sr-only sr-only-focusable" href ng-click="sort('certificationEdition')"><br />Sort by certification edition</a></th>
-                      <th scope="col" class="">Version</th>
-                      <th scope="col" class="">Status</th>
-                      <th scope="col" class=""><span class="sr-only">Actions</span></th>
-	                </tr>
-	              </thead>
-                  <tfoot>
-                    <tr>
-                      <td colspan="6" class="text-center">
-                        <p class="pull-right">
-                          <label for="pageSizeBottom" class="sr-only">Show how many results</label>
-                          Showing up to
-                          <select ng-model="vm.query.pageSize" id="pageSizeBottom" ng-change="vm.search()">
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="250">250</option>
-                          </select>
-                          results per page
-                        </p>
-                        <uib-pagination total-items="vm.resultCount" ng-model="visiblePage" items-per-page="vm.query.pageSize" ng-change="pageChanged(visiblePage)"
-                                        max-size="10" class="pagination-sm" boundary-link-numbers="true"></uib-pagination>
-                      </td>
-                    </tr>
-                  </tfoot>
-	              <tbody>
-	                <tr ng-repeat="row in displayedResults" class="search-row">
-                      <td class="">{{ row.product.name }}</td>
-                      <td class="">{{ row.developer.name }}</td>
-                      <td class="">{{ row.certificationEdition.name }}</td>
-                      <td class="">{{ row.product.version }}</td>
-                      <td class="text-center"><a href uib-tooltip="{{ row.certificationStatus.name }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ row.certificationStatus.name }}</span><i class="fa" ng-class="vm.statusFont(row.certificationStatus.name)"></i></a></td>
-                      <td class="">
-                        <div class="btn-group btn-group-justified">
-                          <div class="btn-group">
-                            <button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(row)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ row.product.name }}</span></button>
-                          </div>
-                          <div class="btn-group">
-                            <button href class="btn btn-ai-success btn-sm" ng-click="vm.toggleCompare(row)"><i class="fa fa-plus"></i> <span class="sr-only">Add {{ row.product.name}} to </span>Compare</button>
-                          </div>
-                          <div class="btn-group">
-                            <ai-cms-widget-button product-id="{{ row.id }}" product-name="{{ row.product.name }}"></ai-cms-widget-button>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+          <div class="col-md-12">
+            <p>Please note that only active and suspended listings are shown by default. Use the Certification Status / Certification Edition filters above to display retired, withdrawn, terminated, or 2011 edition listings.</p>
+            <p class="text-right">
+              <a href ng-click="vm.browseAll()">Browse all</a> |
+              <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
+              <span ng-if="vm.previouslyCompared && vm.previouslyCompared.length > 0 && !vm.viewingPreviouslyCompared"> | <a href ng-click="vm.viewPreviouslyCompared()">See {{ vm.previouslyCompared.length }} Previously Compared Listing<span ng-if="vm.previouslyCompared.length !== 1">s</span></a></span>
+              <span ng-if="vm.viewingPreviouslyCompared"> | <a href ng-click="vm.clearPreviouslyCompared()">Clear {{ vm.previouslyCompared.length }} Recently Compared Listing<span ng-if="vm.previouslyCompared.length !== 1">s</span></a></span>
+              <span ng-if="vm.previouslyViewed && vm.previouslyViewed.length > 0 && !vm.viewingPreviouslyViewed"> | <a href ng-click="vm.viewPreviouslyViewed()">See {{ vm.previouslyViewed.length }} Previously Viewed Listing<span ng-if="vm.previouslyViewed.length !== 1">s</span></a></span>
+              <span ng-if="vm.viewingPreviouslyViewed"> | <a href ng-click="vm.clearPreviouslyViewed()">Clear {{ vm.previouslyViewed.length }} Recently Viewed Listing<span ng-if="vm.previouslyViewed.length !== 1">s</span></a></span>
+            </p>
           </div>
-          <div class="col-md-3">
-            <uib-accordion close-others="false">
-              <uib-accordion-group class="panel-ai" is-open="vm.boxes.compare" aria-expanded="{{ vm.boxes.compare }}" template-url="app/common/templates/accordion.html">
-                <uib-accordion-heading aria-expanded="{{ vm.boxes.compare }}">
-                  Compare <span ng-if="vm.compareCps.length >= 2">{{ vm.compareCps.length }}</span> products <span ng-if="vm.compareCps.length < 2">(minimum 2)</span>
-                </uib-accordion-heading>
-                <button href class="btn btn-ai-grey btn-sm btn-block" ng-repeat="cp in vm.compareCps" ng-click="vm.toggleCompare(cp)" ng-bind-html="vm.truncButton(cp.product.name)" title="{{ cp.product.name }}"></button>
-                <button href class="btn btn-ai-success btn-sm btn-block" ng-click="vm.compare()" ng-disabled="vm.compareCps.length <= 1">Compare</button>
-              </uib-accordion-group>
-              <uib-accordion-group class="panel-ai" is-open="vm.boxes.prevComp" aria-expanded="{{ vm.boxes.prevComp }}" template-url="app/common/templates/accordion.html"
-                                   heading="Previous {{ vm.previouslyCompared.length }} products compared">
-                <ul class="list-unstyled text-left">
-                  <li ng-repeat="cp in vm.previouslyCompared | orderBy:'product.name'"><a href="" ng-click="vm.toggleCompare(cp)">{{ cp.product.name }}</a></li>
-                </ul>
-                <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyCompared()">Clear</button>
-              </uib-accordion-group>
-              <uib-accordion-group class="panel-ai" is-open="vm.boxes.prevView" aria-expanded="{{ vm.boxes.prevView }}" template-url="app/common/templates/accordion.html"
-                                   heading="Previous {{ vm.previouslyViewed.length }} products viewed">
-                <ul class="list-unstyled text-left">
-                  <li ng-repeat="cp in vm.previouslyViewed | orderBy:'product.name'"><a href="" ng-click="vm.viewProduct(cp)">{{ cp.product.name }}</a></li>
-                </ul>
-                <button class="btn btn-ai-success btn-sm btn-block" ng-click="vm.clearPreviouslyViewed()">Clear</button>
-              </uib-accordion-group>
-            </uib-accordion>
-            <table class="table">
+        </div>
+        <div ng-if="vm.hasResults()" class="row">
+          <div class="col-md-12 table-responsive">
+            <table class="table search-table table-striped table-responsive">
+              <colgroup>
+                <col class="col-xs-1">
+                <col class="col-md-2 col-xs-1">
+                <col class="col-md-2 col-xs-1">
+                <col class="col-xs-1">
+                <col class="col-xs-1">
+                <col class="col-xs-1">
+                <col class="col-xs-1">
+                <col class="col-md-3 col-xs-5">
+              </colgroup>
               <thead>
-                <tr>
-                  <th scope="col">Certification Status Icon Legend</th>
-                  <th scope="col"><span class="sr-only">Icon</th>
+			    <tr>
+                  <td colspan="8" class="text-center">
+				    <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
+                  </td>
+			    </tr>
+                <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
+                  <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
+                  <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
+		          <th scope="col" class="search-header" st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
+                  <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
+                  <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
+		          <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL ID</th>
+                  <th scope="col" class="search-header text-center" st-sort="certificationStatus" st-skip-natural="true">Status <a href ng-click="vm.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></a></th>
+                  <th scope="col"><span class="sr-only">Actions</span></th>
                 </tr>
               </thead>
+              <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
+                <tr>
+                  <td colspan="8" class="text-center">
+                    <div class="text-right" ng-if="vm.displayedCps && vm.displayedCps.length > 0">
+                      <label for="pageSizeTop" class="sr-only">Show how many results</label>
+                      Showing up to&nbsp;
+                      <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
+                              ng-options="v as v for v in [50,100,250]">
+                      </select>
+                      &nbsp;results per page
+                    </div>
+				    <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
+                  </td>
+                </tr>
+              </tfoot>
               <tbody>
-                <tr ng-repeat="status in vm.certificationStatuses | orderBy:'name'">
-                  <td>{{ status.name }}</td>
-                  <td><i class="fa" ng-class="vm.statusFont(status.name)"></i></td>
+                <tr ng-repeat="cp in vm.displayedCps">
+                  <td>{{ cp.edition }}</td>
+                  <td>{{ cp.developer }}</td>
+                  <td>{{ cp.product }}</td>
+                  <td>{{ cp.version }}</td>
+                  <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC'}}</td>
+                  <td>{{ cp.chplProductNumber }}</td>
+                  <td class="text-center"><a href uib-tooltip="{{ cp.certificationStatus }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ cp.certificationStatus }}</span><i class="fa" ng-class="vm.statusFont(cp.certificationStatus)"></i></a></td>
+                  <td>
+                    <div class="btn-group btn-group-justified">
+                      <div class="btn-group">
+                        <button href class="btn btn-primary btn-sm" ng-click="vm.viewProduct(cp)"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></button>
+                      </div>
+                      <div class="btn-group">
+                        <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-compare-widget-button>
+                      </div>
+                      <div class="btn-group" ng-if="cp.certificationStatus !== 'Retired'">
+                        <ai-cms-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-cms-widget-button>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-      </div> <!-- end of search results -->
+      </div>  <!-- end of search results -->
     </div>
   </div>
-</div> <!-- end controller -->
+</div>

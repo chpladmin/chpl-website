@@ -39,8 +39,8 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
-                if ($localStorage.widget) {
-                    vm.widget = $localStorage.widget;
+                if (hasWidget()) {
+                    vm.widget = getWidget();
                 } else {
                     vm.clearProducts();
                 }
@@ -57,7 +57,7 @@
                 vm.widget = {
                     productIds: []
                 };
-                $localStorage.widget = vm.widget;
+                setWidget(vm.widget);
             }
 
             function create () {
@@ -66,7 +66,7 @@
                     {action: 'create', ids: vm.widget.productIds.join(',')}, {},
                     function () {
                         vm.widget.inProgress = false;
-                        $localStorage.widget = vm.widget;
+                        setWidget(vm.widget);
                     });
             }
 
@@ -112,15 +112,27 @@
                         {action: 'search', ids: vm.widget.productIds.join(',')},
                         function () {
                             vm.widget.inProgress = false;
-                            $localStorage.widget = vm.widget;
+                            setWidget(vm.widget);
                         });
                 } else {
                     vm.widget.searchResult = {};
-                    $localStorage.widget = vm.widget;
+                    setWidget(vm.widget);
                 }
             }
 
             ////////////////////////////////////////////////////////////////////
+
+            function getWidget () {
+                return $localStorage.cmsWidget;
+            }
+
+            function hasWidget () {
+                return $localStorage.cmsWidget ? true : false;
+            }
+
+            function setWidget (widget) {
+                $localStorage.cmsWidget = widget;
+            }
 
             function generatePdf2 (data) {
 

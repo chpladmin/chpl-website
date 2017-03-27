@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.resources', function () {
+    describe('chpl.download', function () {
 
         var $log, authService, mock, scope, vm;
 
@@ -11,7 +11,7 @@
 
         beforeEach(function () {
             module('chpl.loginServices');
-            module('chpl.resources', function ($provide) {
+            module('chpl.download', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
@@ -30,7 +30,7 @@
                 authService.isOncStaff.and.returnValue(false);
 
                 scope = $rootScope.$new();
-                vm = $controller('ResourcesController', {
+                vm = $controller('DownloadController', {
                     $scope: scope
                 });
                 scope.$digest();
@@ -46,10 +46,6 @@
         describe('controller', function () {
             it('should exist', function () {
                 expect(vm).toBeDefined();
-            });
-
-            it('should load have a swaggerUI at start', function () {
-                expect(vm.swaggerUrl.length).toBeGreaterThan(0);
             });
 
             it('should know what the API Key is', function () {

@@ -21,6 +21,7 @@
         };
     }
 
+    /** @ngInclude **/
     function SurveillanceController ($log, $scope, $uibModal, $filter, commonService, authService, utilService, API) {
         var vm = this;
 
