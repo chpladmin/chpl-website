@@ -7,13 +7,18 @@
     /** @ngInject */
     function EditVersionController ($uibModalInstance, activeVersion, commonService) {
         var vm = this;
-        vm.version = angular.copy(activeVersion);
-        vm.updateVersion = {versionIds: [vm.version.versionId]};
 
         vm.save = save;
         vm.cancel = cancel;
 
+        activate();
+
         ////////////////////////////////////////////////////////////////////
+
+        function activate () {
+            vm.version = angular.copy(activeVersion);
+            vm.updateVersion = {versionIds: [vm.version.versionId]};
+        }
 
         function save () {
             vm.updateVersion.version = vm.version;
