@@ -5,7 +5,7 @@
       <h1>Nonconformities</h1>
     </div>
   </div>
-  <div class="mainContent" id="mainContent" tabindex="-1" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
+  <div class="main-content" id="mainContent" tabindex="-1" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
     <div class="row">
       <div class="col-sm-12">
         <p>
@@ -52,20 +52,20 @@
         <div class="col-md-12 table-responsive">
           <table class="table table-striped table-responsive">
             <thead>
-			  <tr>
+              <tr>
                 <td colspan="8" class="text-center">
-				  <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
+                  <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
                 </td>
-			  </tr>
+              </tr>
               <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-                <th scope="col" st-sort="edition" st-skip-natural="true" class="search-header">Edition</th>
-                <th scope="col" st-sort="developer" st-skip-natural="true" class="search-header">Developer</th>
-		        <th scope="col" st-sort="product" st-skip-natural="true" st-sort-default="true" class="search-header">Product</th>
-                <th scope="col" st-sort="version" st-skip-natural="true" class="search-header">Version</th>
-		        <th scope="col" st-sort="chplProductNumber" st-skip-natural="true" class="search-header">CHPL ID</th>
-		        <th scope="col" st-sort="acb" st-skip-natural="true" class="search-header">ONC-ACB</th>
-		        <th scope="col" st-sort="openNonconformityCount" st-skip-natural="true" class="search-header"># Open NCs</th>
-		        <th scope="col" st-sort="closedNonconformityCount" st-skip-natural="true" class="search-header"># Closed NCs</th>
+                <th scope="col" st-sort="edition" st-skip-natural="true" class="search-header sort-none">Edition</th>
+                <th scope="col" st-sort="developer" st-skip-natural="true" class="search-header sort-none">Developer</th>
+                <th scope="col" st-sort="product" st-skip-natural="true" st-sort-default="true" class="search-header sort-none">Product</th>
+                <th scope="col" st-sort="version" st-skip-natural="true" class="search-header sort-none">Version</th>
+                <th scope="col" st-sort="chplProductNumber" st-skip-natural="true" class="search-header sort-none">CHPL ID</th>
+                <th scope="col" st-sort="acb" st-skip-natural="true" class="search-header sort-none">ONC-ACB</th>
+                <th scope="col" st-sort="openNonconformityCount" st-skip-natural="true" class="search-header sort-none"># Open NCs</th>
+                <th scope="col" st-sort="closedNonconformityCount" st-skip-natural="true" class="search-header sort-none"># Closed NCs</th>
               </tr>
             </thead>
             <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
@@ -79,7 +79,7 @@
                     </select>
                     &nbsp;results per page
                   </div>
-				  <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
+                  <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
                 </td>
               </tr>
             </tfoot>

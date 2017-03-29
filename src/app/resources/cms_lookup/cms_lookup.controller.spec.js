@@ -27,6 +27,8 @@
             inject(function ($controller, $rootScope, _$log_, _$localStorage_, _$q_, _commonService_) {
                 $log = _$log_;
                 $localStorage = _$localStorage_;
+                $localStorage.lookupCertIds = null;
+                $localStorage.lookupProducts = null;
                 $q = _$q_;
                 commonService = _commonService_;
                 commonService.lookupCertificationId.and.returnValue($q.when(mock.goodResponse));
