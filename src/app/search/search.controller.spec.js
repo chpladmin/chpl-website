@@ -72,8 +72,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock');
-            module('chpl.search', function ($provide) {
+            module('chpl.mock', 'chpl.search', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getAll = jasmine.createSpy('getAll');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');

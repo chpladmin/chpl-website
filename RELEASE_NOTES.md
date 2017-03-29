@@ -8,6 +8,7 @@ _Date TBD_
 * Allow editing of Developer Status History
 * When creating or editing a surveillance activity nonconformity, show an error to require the "Date Corrective Action Plan Must Be Completed" when there is a value for "Date Corrective Action Plan Was Approved"
 * Built "Nonconformities" page
+* Allow Additional Software version to be not required
 
 ---
 
