@@ -9,6 +9,7 @@
         return {
             bindToController: {
                 hasChanges: '=?',
+                initialState: '=?',
                 nameSpace: '@'
             },
             controller: 'SurveillanceFilterController',
@@ -50,7 +51,7 @@
         }
     }
     /** @ngInclude */
-    function SurveillanceFilterController ($localStorage) {
+    function SurveillanceFilterController ($log, $localStorage) {
         var vm = this;
 
         vm.activate = activate;
@@ -61,15 +62,11 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.query = {
-                NC: {}
-            };
+            reset();
         }
 
         function clearSurveillanceActivityFilter () {
-            vm.query = {
-                NC: {}
-            };
+            reset();
             vm.filterChanged();
         }
 
@@ -79,8 +76,16 @@
             if (tableState.search.predicateObject.surveillance) {
                 delete tableState.search.predicateObject.surveillance;
             }
-            if (vm.query.surveillance || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
+            if (vm.initialState) {
+                vm.hasChanges = vm.hasChanges || (vm.query.surveillance !== vm.initialState.surveillance);
+                vm.hasChanges = vm.hasChanges || (vm.query.NC.never !== vm.initialState.NC.never);
+                vm.hasChanges = vm.hasChanges || (vm.query.NC.open !== vm.initialState.NC.open);
+                vm.hasChanges = vm.hasChanges || (vm.query.NC.closed !== vm.initialState.NC.closed);
+                vm.hasChanges = vm.hasChanges || (vm.query.matchAll !== vm.initialState.matchAll);
+            } else if (vm.query.surveillance || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
                 vm.hasChanges = true;
+            }
+            if (vm.initialState || vm.hasChanges) {
                 vm.tableCtrl.search(vm.query, 'surveillance');
             } else {
                 delete tableState.search.predicateObject.surveillance;
@@ -93,6 +98,18 @@
             vm.query = state.search.predicateObject.surveillance;
             if (vm.query) {
                 vm.filterChanged();
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function reset () {
+            if (vm.initialState) {
+                vm.query = angular.copy(vm.initialState);
+            } else {
+                vm.query = {
+                    NC: {}
+                }
             }
         }
     }

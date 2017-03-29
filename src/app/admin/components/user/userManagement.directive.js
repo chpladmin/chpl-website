@@ -48,7 +48,7 @@
 
         function updateUser (user) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/user/userEdit.html',
+                templateUrl: 'app/admin/components/user/edit.html',
                 controller: 'EditUserController',
                 controllerAs: 'vm',
                 animation: false,
@@ -72,7 +72,7 @@
 
         function inviteUser () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/user/userEdit.html',
+                templateUrl: 'app/admin/components/user/edit.html',
                 controller: 'EditUserController',
                 controllerAs: 'vm',
                 animation: false,
