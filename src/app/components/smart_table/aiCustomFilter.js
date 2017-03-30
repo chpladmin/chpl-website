@@ -41,15 +41,15 @@
                         }
                         var surv = angular.fromJson(actual);
                         if (expected.surveillance === 'never') {
-                            ret = !surv.hasOpenSurveillance && !surv.hasClosedSurveillance;
+                            ret = surv.surveillanceCount === 0;
                         } else {
-                            ret = surv.hasOpenSurveillance || surv.hasClosedSurveillance;
+                            ret = surv.surveillanceCount !== 0;
                             if (expected.NC) {
                                 var never = expected.NC.never;
                                 var open = expected.NC.open;
                                 var closed = expected.NC.closed;
-                                var openNC = surv.hasOpenNonconformities;
-                                var closedNC = surv.hasClosedNonconformities;
+                                var openNC = surv.openNonconformityCount > 0;
+                                var closedNC = surv.closedNonconformityCount > 0;
                                 /*
                                  * matching one of the posibles
                                  */

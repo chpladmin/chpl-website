@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/announcement/announcements.html',
+                templateUrl: 'app/admin/components/announcements/view.html',
                 scope: {},
                 bindToController: {
                     admin: '='
@@ -46,7 +46,7 @@
 
         function create () {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/announcement/announcementEdit.html',
+                templateUrl: 'app/admin/components/announcements/edit.html',
                 controller: 'AnnouncementEditController',
                 controllerAs: 'vm',
                 animation: false,
@@ -74,7 +74,7 @@
 
         function edit (a, index) {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/announcement/announcementEdit.html',
+                templateUrl: 'app/admin/components/announcements/edit.html',
                 controller: 'AnnouncementEditController',
                 controllerAs: 'vm',
                 animation: false,
