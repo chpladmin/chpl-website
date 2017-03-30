@@ -23,6 +23,7 @@
         var vm = this;
 
         vm.addItem = addItem;
+        vm.buildGrouping = buildGrouping;
         vm.editItem = editItem;
         vm.isAndOrOr = isAndOrOr;
         vm.removeItem = removeItem;
@@ -32,22 +33,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.displaySw = {};
-            vm.groupCount = 0;
-            if (vm.additionalSoftware) {
-                for (var i = 0; i < vm.additionalSoftware.length; i++) {
-                    if (vm.additionalSoftware[i].grouping === null) {
-                        vm.displaySw['defaultGroup' + i] = [vm.additionalSoftware[i]];
-                        vm.groupCount += 1;
-                    } else {
-                        if (!vm.displaySw[vm.additionalSoftware[i].grouping]) {
-                            vm.displaySw[vm.additionalSoftware[i].grouping] = [];
-                            vm.groupCount += 1;
-                        }
-                        vm.displaySw[vm.additionalSoftware[i].grouping].push(vm.additionalSoftware[i]);
-                    }
-                }
-            }
+            vm.buildGrouping();
         }
 
         function addItem () {
@@ -72,6 +58,25 @@
                     $log.debug('dismissed', result);
                 }
             });
+        }
+
+        function buildGrouping () {
+            vm.displaySw = {};
+            vm.groupCount = 0;
+            if (vm.additionalSoftware) {
+                for (var i = 0; i < vm.additionalSoftware.length; i++) {
+                    if (vm.additionalSoftware[i].grouping === null) {
+                        vm.displaySw['defaultGroup' + i] = [vm.additionalSoftware[i]];
+                        vm.groupCount += 1;
+                    } else {
+                        if (!vm.displaySw[vm.additionalSoftware[i].grouping]) {
+                            vm.displaySw[vm.additionalSoftware[i].grouping] = [];
+                            vm.groupCount += 1;
+                        }
+                        vm.displaySw[vm.additionalSoftware[i].grouping].push(vm.additionalSoftware[i]);
+                    }
+                }
+            }
         }
 
         function editItem (sw, index) {
