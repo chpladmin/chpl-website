@@ -31,7 +31,6 @@
               <a ng-if="vm.isCategoryChanged(['acb','edition'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Filter <i class="fa fa-filter"></i>
             </button>
-            <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
             <div class="dropdown-menu row" aria-labeledby="filter-button" uib-dropdown-menu>
               <div class="col-sm-6">
                 <strong>ONC-ACB</strong>
@@ -40,6 +39,9 @@
               <div class="col-sm-6">
                 <strong>Certification Edition</strong>
                 <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" predicate="edition" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="nonconformitiesTableState"></st-list-multiple>
+              </div>
+              <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged(['acb','edition'])">
+                <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
               </div>
             </div>
           </div>
@@ -89,7 +91,7 @@
                 <td>{{ cp.developer }}</td>
                 <td>{{ cp.product }}</td>
                 <td>{{ cp.version }}</td>
-                <td>{{ cp.chplProductNumber }}</td>
+                <td><a href="#/product/{{ cp.id }}">{{ cp.chplProductNumber }}</a></td>
                 <td>{{ cp.acb }}</td>
                 <td>{{ cp.openNonconformityCount }}</td>
                 <td>{{ cp.closedNonconformityCount }}</td>

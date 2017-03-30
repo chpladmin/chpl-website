@@ -67,12 +67,99 @@
             expect(vm.isAndOrOr(4,4,4,4)).toBe('');
         });
 
-        it('should create a modal instance when additional software is added', function () {
-            expect(vm.editModalInstance).toBeUndefined();
-            vm.addItem();
-            expect(vm.editModalInstance).toBeDefined();
-            expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-            expect(actualOptions.resolve.software()).toEqual({ name: '', version: '', certifiedProductSelfCHPLId: '' });
+        describe('adding new software', function () {
+            it('should create a modal instance when additional software is added', function () {
+                expect(vm.editModalInstance).toBeUndefined();
+                vm.addItem();
+                expect(vm.editModalInstance).toBeDefined();
+                expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
+                expect(actualOptions.resolve.software()).toEqual({ name: '', version: '', certifiedProductSelfCHPLId: '' });
+            });
+
+            it('should add new sw to the array', function () {
+                vm.additionalSoftware = undefined;
+                vm.addItem();
+                vm.editModalInstance.close('new');
+                expect(vm.additionalSoftware).toEqual(['new']);
+            });
+
+            it('should append new sw to the array', function () {
+                vm.additionalSoftware = ['one'];
+                vm.addItem();
+                vm.editModalInstance.close('new');
+                expect(vm.additionalSoftware).toEqual(['one','new']);
+            });
+
+            it('should log a dismissed modal', function () {
+                var logCount = $log.debug.logs.length;
+                vm.addItem();
+                vm.editModalInstance.dismiss('new');
+                expect($log.debug.logs.length).toBe(logCount + 1);
+            });
+
+            it('should not log a cancelled modal', function () {
+                var logCount = $log.debug.logs.length;
+                vm.addItem();
+                vm.editModalInstance.dismiss('cancelled');
+                expect($log.debug.logs.length).toBe(logCount);
+            });
+        });
+
+        describe('editing existing software', function () {
+            beforeEach(function () {
+                vm.additionalSoftware = ['one'];
+            });
+
+            it('should create a modal instance', function () {
+                expect(vm.editModalInstance).toBeUndefined();
+                vm.editItem('one',0);
+                expect(vm.editModalInstance).toBeDefined();
+                expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
+                expect(actualOptions.resolve.software()).toEqual('one');
+            });
+
+            it('should edit sw in the array', function () {
+                vm.editItem('one',0);
+                vm.editModalInstance.close('new');
+                expect(vm.additionalSoftware).toEqual(['new']);
+            });
+
+            it('should log a dismissed modal', function () {
+                var logCount = $log.debug.logs.length;
+                vm.editItem('one',0);
+                vm.editModalInstance.dismiss('new');
+                expect($log.debug.logs.length).toBe(logCount + 1);
+            });
+
+            it('should not log a cancelled modal', function () {
+                var logCount = $log.debug.logs.length;
+                vm.editItem('one',0);
+                vm.editModalInstance.dismiss('cancelled');
+                expect($log.debug.logs.length).toBe(logCount);
+            });
+        });
+
+        it('should remove software', function () {
+            vm.additionalSoftware = ['one'];
+            vm.removeItem(0);
+            expect(vm.additionalSoftware).toEqual([]);
+        });
+
+        describe('software grouping', function () {
+            it('should build grouping objects', function () {
+                vm.additionalSoftware = [
+                    {id: 1, grouping: null},
+                    {id: 2, grouping: 'a'},
+                    {id: 3, grouping: 'a'},
+                    {id: 4, grouping: 'b'}
+                ];
+                vm.buildGrouping();
+                expect(vm.displaySw).toEqual({
+                    defaultGroup0: [{id: 1, grouping: null}],
+                    a: [{id: 2, grouping: 'a'},{id: 3, grouping: 'a'}],
+                    b: [{id: 4, grouping: 'b'}]
+                });
+            });
         });
     });
 })();
