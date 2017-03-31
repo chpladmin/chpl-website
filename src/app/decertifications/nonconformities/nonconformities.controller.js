@@ -76,7 +76,7 @@
                 vm.allCps = [];
                 vm.displayedCps = [];
                 for (var i = 0; i < results.length; i++) {
-                    if (results[i].surveillanceCount > 0) {
+                    if (results[i].surveillanceCount > 0 && (results[i].openNonconformityCount > 0 || results[i].closedNonconformityCount > 0)) {
                         results[i].mainSearch = [results[i].developer, results[i].product, results[i].version, results[i].chplProductNumber].join('|');
                         results[i].surveillance = angular.toJson({
                             surveillanceCount: results[i].surveillanceCount,
@@ -124,11 +124,6 @@
         }
 
         function triggerClearFilters () {
-            vm.previouslyIds = [];
-            vm.viewingPreviouslyCompared = false;
-            delete $localStorage.viewingPreviouslyCompared;
-            vm.viewingPreviouslyViewed = false;
-            delete $localStorage.viewingPreviouslyViewed;
             angular.forEach(vm.clearFilterHs, function (handler) {
                 handler();
             });
