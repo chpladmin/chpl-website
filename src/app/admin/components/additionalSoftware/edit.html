@@ -17,7 +17,6 @@
     <div class="form-group">
       <label for="swVersion">Version</label>
       <input class="input-sm form-control" type="text" ng-disabled="vm.sw.certifiedProductNumber" ng-model="vm.sw.version" id="swVersion" name="swVersion"></input>
-      <div class="text-info" ng-if="vm.sw.version">Any versions listed indicate the minimum required version for this criteria.</div>
     </div>
     <div class="form-group">
       <label for="swChplId">CHPL Id <span ng-if="!vm.sw.name && !vm.sw.version" class="text-danger">*</span></label>
