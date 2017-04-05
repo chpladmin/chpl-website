@@ -42,7 +42,6 @@
                 'InfoGard': true
             },
             certificationEdition: {
-                '2011': true,
                 '2014': true,
                 '2015': true
             },
@@ -194,7 +193,9 @@
             }
             vm.searchOptions.editions = $filter('orderBy')(vm.searchOptions.editions, 'name');
             for (i = 0; i < vm.searchOptions.editions.length; i++) {
-                vm.filterItems.editionItems.push({value: vm.searchOptions.editions[i].name, selected: vm.defaultRefineModel.certificationEdition[vm.searchOptions.editions[i].name]});
+                if (vm.searchOptions.editions[i].name !== '2011') {
+                    vm.filterItems.editionItems.push({value: vm.searchOptions.editions[i].name, selected: vm.defaultRefineModel.certificationEdition[vm.searchOptions.editions[i].name]});
+                }
             }
         }
     }

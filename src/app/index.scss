@@ -580,6 +580,11 @@ option[disabled] {
     vertical-align: top;
 }
 
+#filters .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
 #search-page .dropdown-menu {
     width: 150%;
     max-height: 300px;
