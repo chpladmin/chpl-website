@@ -377,6 +377,10 @@
             return self.postApiCall('/products/update', productObject);
         };
 
+        self.splitProduct = function (productObject) {
+            return self.postApiCall('/products/' + productObject.oldProduct.productId + '/split', productObject);
+        };
+
         self.updateVersion = function (versionObject) {
             return self.postApiCall('/versions/update', versionObject);
         };
