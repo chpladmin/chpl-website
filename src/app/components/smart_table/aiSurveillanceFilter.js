@@ -18,6 +18,7 @@
             restrict: 'E',
             require: ['^stTable', 'aiSurveillanceFilter'],
             scope: {
+                registerAllowAll: '&',
                 registerClearFilter: '&',
                 registerRestoreState: '&'
             },
@@ -34,6 +35,12 @@
         function activate () {
             var table = ctrls[0];
             var ctrl = ctrls[1];
+            var allowAll = scope.registerAllowAll({
+                allowAll: function () {
+                    ctrl.allowAll();
+                }
+            });
+            scope.$on('$destroy', allowAll);
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearSurveillanceActivityFilter();
@@ -55,6 +62,7 @@
         var vm = this;
 
         vm.activate = activate;
+        vm.allowAll = allowAll;
         vm.clearSurveillanceActivityFilter = clearSurveillanceActivityFilter;
         vm.filterChanged = filterChanged;
         vm.restoreState = restoreState;
@@ -63,6 +71,13 @@
 
         function activate () {
             reset();
+        }
+
+        function allowAll () {
+            vm.query = {
+                NC: {}
+            }
+            vm.filterChanged();
         }
 
         function clearSurveillanceActivityFilter () {
