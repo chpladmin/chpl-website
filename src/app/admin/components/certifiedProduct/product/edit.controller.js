@@ -10,6 +10,7 @@
 
         vm.addPreviousOwner = addPreviousOwner;
         vm.changeCurrent = changeCurrent;
+        vm.isContactRequired = isContactRequired;
         vm.removePreviousOwner = removePreviousOwner;
         vm.save = save;
         vm.cancel = cancel;
@@ -40,6 +41,22 @@
                 },
                 transferDate: new Date()
             });
+        }
+
+        function isContactRequired () {
+            if (vm.product.contact) {
+                if (vm.product.contact.firstName ||
+                    vm.product.contact.lastName ||
+                    vm.product.contact.title ||
+                    vm.product.contact.email ||
+                    vm.product.contact.phoneNumber) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
 
         function removePreviousOwner (idx) {

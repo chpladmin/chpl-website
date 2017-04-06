@@ -10,14 +10,14 @@
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
-      <label class="col-md-4" for="productName">Product Name</label>
+      <label class="col-md-4 control-label" for="productName">Product Name</label>
       <div class="col-md-8">
         <input class="input-sm form-control" type="text" ng-model="vm.product.name" id="productName" name="productName" required></input>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.productName.$touched) && vm.editForm.productName.$error.required">Product name is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-4" for="productOwner">Current Product owner</label>
+      <label class="col-md-4 control-label" for="productOwner">Current Product owner</label>
       <div class="col-md-8">
         <select ng-model="vm.product.developerId" required
                 ng-change="vm.changeCurrent({{ vm.product.developerId }})"
@@ -29,7 +29,7 @@
     </div>
     <div ng-repeat="prevOwner in vm.product.ownerHistory | orderBy:'transferDate' track by $index">
       <div class="form-group">
-        <label class="col-md-4" for="productOwner{{ $index }}">Previous Product owner</label>
+        <label class="col-md-4 control-label" for="productOwner{{ $index }}">Previous Product owner</label>
         <div class="col-md-8">
           <select ng-model="prevOwner.developer.developerId" required
                   id="productOwner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-4" for="transferDate{{ $index }}">Transfer Date</label>
+        <label class="col-md-4 control-label" for="transferDate{{ $index }}">Transfer Date</label>
         <div class="col-md-4">
           <div class="input-group">
             <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transferDate{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
@@ -59,6 +59,12 @@
         <button class="btn btn-block btn-success" ng-click="vm.addPreviousOwner()"><i class="fa fa-plus"></i> Add Product owner</button>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-12">
+        Contact information:
+      </div>
+    </div>
+    <ai-contact contact="vm.product.contact" form="vm.editForm" form-horizontal="true" is-editing="true" show-form-errors="vm.showFormErrors"></ai-contact>
   </div>
   <div class="modal-footer">
     <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors"

@@ -17,31 +17,7 @@
         <input class="input-sm form-control" type="text" required ng-model="vm.user.user.subjectName" id="username" name="username"></input>
         <div class="text-danger" ng-if="vm.editForm.username.$touched && vm.editForm.username.$error.required">User name is required</div>
       </div>
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input class="input-sm form-control" type="text" ng-model="vm.user.user.title" id="title"></input>
-      </div>
-      <div class="form-group">
-        <label for="firstName">First Name <span class="text-danger">*</span></label>
-        <input class="input-sm form-control" type="text" required ng-model="vm.user.user.firstName" id="firstName" name="firstName"></input>
-        <div class="text-danger" ng-if="vm.editForm.firstName.$touched && vm.editForm.firstName.$error.required">First name is required</div>
-      </div>
-      <div class="form-group">
-        <label for="lastName">Last Name <span class="text-danger">*</span></label>
-        <input class="input-sm form-control" type="text" required ng-model="vm.user.user.lastName" id="lastName" name="lastName"></input>
-        <div class="text-danger" ng-if="vm.editForm.lastName.$touched && vm.editForm.lastName.$error.required">Last name is required</div>
-      </div>
-      <div class="form-group">
-        <label for="email">Email <span class="text-danger">*</span></label>
-        <input class="input-sm form-control" type="email" required ng-model="vm.user.user.email" id="email" name="email"></input>
-        <div class="text-danger" ng-if="vm.editForm.email.$touched && vm.editForm.email.$error.required">Email is required</div>
-        <div class="text-danger" ng-if="vm.editForm.email.$touched && vm.editForm.email.$error.email">Invalid email</div>
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone Number <span class="text-danger">*</span></label>
-        <input class="input-sm form-control" type="text" required ng-model="vm.user.user.phoneNumber" id="phone" name="phone"></input>
-        <div class="text-danger" ng-if="vm.editForm.phone.$touched && vm.editForm.phone.$error.required">Phone is required</div>
-      </div>
+      <ai-contact contact="vm.user.user" error-messages="vm.contactErrorMessages" form="vm.editForm" is-editing="true" is-required="true" show-form-errors="vm.showFormErrors"></ai-contact>
       <div class="form-group">
         <label for="isLocked">Locked</label>
         <input type="checkbox" ng-model="vm.user.user.accountLocked" id="isLocked"></input>
@@ -75,11 +51,7 @@
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.username.$error.required">User name is required</li>
-        <li ng-if="vm.editForm.firstName.$error.required">First name is required</li>
-        <li ng-if="vm.editForm.lastName.$error.required">Last name is required</li>
-        <li ng-if="vm.editForm.email.$error.required">Email is required</li>
-        <li ng-if="vm.editForm.email.$error.email">Invalid email</li>
-        <li ng-if="vm.editForm.phone.$error.required">Phone is required</li>
+        <li ng-repeat="error in vm.contactErrorMessages">{{ error }}</li>
         <li ng-if="vm.editForm.roles.$error.required">At least one role is required</li>
         <li ng-if="vm.editForm.inviteEmail.$error.required">Email is required</li>
         <li ng-if="vm.editForm.inviteEmail.$error.email">Invalid email</li>

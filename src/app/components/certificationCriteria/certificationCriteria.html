@@ -71,7 +71,7 @@
               <ul class="list-unstyled">
                 <li ng-repeat="qms in vm.qmsStandards">
                   <strong>Standard: </strong>{{ qms.qmsStandardName }}<br />
-                  <strong>Description: </strong><span ng-if="!qms.qmsModification">N/A</span><ai-ellipse ng-if="qms.qmsModification" text="{{ qms.qmsModification }}" max-length="32" word-boundaries="true"></ai-ellipse><br />
+                  <strong>Description: </strong><span ng-if="!qms.qmsModification">N/A</span><ai-ellipsis ng-if="qms.qmsModification" text="{{ qms.qmsModification }}" max-length="32" word-boundaries="true"></ai-ellipsis><br />
                   <strong>Applicable Criteria: </strong>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}
                 </li>
               </ul>

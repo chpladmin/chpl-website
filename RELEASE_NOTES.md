@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1389
+* Added POC to Product level; refactored Contact as separate component
+
+---
+
 ## Version TBD
 _Date TBD_
 

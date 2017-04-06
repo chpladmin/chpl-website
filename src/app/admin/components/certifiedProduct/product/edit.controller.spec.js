@@ -103,5 +103,41 @@
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('bad thing');
             });
         });
+
+        describe('contact information', function () {
+            it('should not require a contact by default', function () {
+                expect(vm.isContactRequired()).toBe(false);
+            });
+
+            it('should require a contact if any elements of the contact exist', function () {
+                vm.product.contact = {};
+                expect(vm.isContactRequired()).toBe(false);
+
+                vm.product.contact.firstName = 'John';
+                expect(vm.isContactRequired()).toBe(true);
+                vm.product.contact = {};
+                expect(vm.isContactRequired()).toBe(false);
+
+                vm.product.contact.lastName = 'Smith';
+                expect(vm.isContactRequired()).toBe(true);
+                vm.product.contact = {};
+                expect(vm.isContactRequired()).toBe(false);
+
+                vm.product.contact.title = 'Mr.';
+                expect(vm.isContactRequired()).toBe(true);
+                vm.product.contact = {};
+                expect(vm.isContactRequired()).toBe(false);
+
+                vm.product.contact.email = 'sample@example.com';
+                expect(vm.isContactRequired()).toBe(true);
+                vm.product.contact = {};
+                expect(vm.isContactRequired()).toBe(false);
+
+                vm.product.contact.phoneNumber = '123-123-1234';
+                expect(vm.isContactRequired()).toBe(true);
+                vm.product.contact = {};
+                expect(vm.isContactRequired()).toBe(false);
+            });
+        });
     });
 })();
