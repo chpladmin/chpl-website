@@ -138,8 +138,10 @@
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {
                     results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
+                    results[i].developerSearch = results[i].developer;
                     if (results[i].previousDevelopers) {
                         results[i].mainSearch += '|' + results[i].previousDevelopers;
+                        results[i].developerSearch += '|' + results[i].previousDevelopers;
                     }
                     results[i].surveillance = angular.toJson({
                         surveillanceCount: results[i].surveillanceCount,

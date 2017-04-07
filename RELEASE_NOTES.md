@@ -12,6 +12,10 @@ _Date TBD_
 * Built "Nonconformities" page
 * Allow Additional Software version to be not required
 * Made 'surveillance activity' a main filter
+* Searching for "Developer" specifically now searches in previous developers
+
+### Bugs fixed
+* Filtering for some CQMs would return improper results. Ex: filters for CMS2 would return products without CMS2 but with CMS22
 
 ---
 

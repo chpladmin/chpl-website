@@ -23,6 +23,7 @@
                 var itemDate;
                 var queryDate;
                 var i,ret;
+                var separator = expected.separator ? expected.separator : '';
 
                 if (angular.isObject(expected)) {
                     //exact match
@@ -100,12 +101,12 @@
 
                         for (i = 0; i < expected.matchAny.items.length; i++) {
                             if (
-                                (actual + '').toLowerCase() === (expected.matchAny.items[i] + '').toLowerCase()
+                                (actual + separator).toLowerCase() === (expected.matchAny.items[i] + separator).toLowerCase()
                                     ||
                                     (
                                         !expected.matchAny.matchFull
                                             &&
-                                            (actual + '').toLowerCase().indexOf((expected.matchAny.items[i] + '').toLowerCase()) > -1
+                                            (actual + separator).toLowerCase().indexOf((expected.matchAny.items[i] + separator).toLowerCase()) > -1
                                     )
                             ) {
                                 return true;
@@ -127,8 +128,8 @@
 
                         ret = true;
                         for (i = 0; i < expected.matchAll.items.length; i++) {
-                            ret = ret && (actual.toLowerCase() === expected.matchAll.items[i].toLowerCase()
-                                          || actual.toLowerCase().indexOf(expected.matchAll.items[i].toLowerCase()) > -1);
+                            ret = ret && ((actual + separator).toLowerCase() === (expected.matchAll.items[i] + separator).toLowerCase()
+                                          || (actual + separator).toLowerCase().indexOf((expected.matchAll.items[i] + separator).toLowerCase()) > -1);
                         }
 
                         return ret;
