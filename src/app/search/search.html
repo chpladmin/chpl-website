@@ -99,7 +99,7 @@
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.show2011Cqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" separator="☺"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
@@ -107,7 +107,7 @@
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.showOtherCqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" separator="☺"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
@@ -132,7 +132,7 @@
                     <span ng-if="vm.categoryChanged['developer']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                   </label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ai-enhanced-text has-changes="vm.categoryChanged['developer']" predicate="developer" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+                    <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ai-enhanced-text has-changes="vm.categoryChanged['developer']" predicate="developerSearch" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
                   </div>
                 </div>
               </li>
