@@ -9,20 +9,18 @@
     </div>
     <div class="form-horizontal search-inputs" ng-form="vm.searchForm" aria-live="polite">
       <div class="form-group" id="filters">
-        <div class="form-group-lg">
-          <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
-            <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ACB/CHPL ID</label>
-            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID"
-                   ng-model="vm.query" ng-change="vm.activeSearch = true"
-                   ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearTerm(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
-            <span ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
-              <a href ng-click="vm.browseAll()">Browse all</a><br />
-              <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()">Restore previous search</a>
-            </span>
-          </div>
+        <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
+          <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ONC-ACB/CHPL ID</label>
+          <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID"
+                 ng-model="vm.query" ng-change="vm.activeSearch = true"
+                 ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearTerm(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+          <span ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
+            <a href ng-click="vm.browseAll()">Browse all</a><br />
+            <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()">Restore previous search</a>
+          </span>
         </div>
         <!--
-            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ACB/CHPL ID" ng-model="vm.query.searchTermObject"
+            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID" ng-model="vm.query.searchTermObject"
                    ng-keyup="$event.keyCode === 13 && vm.search()"
                    uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
                    typeahead-focus-first="false"
@@ -31,7 +29,7 @@
         <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
           <st-list-multiple collection="vm.allCps" fixed-items="vm.previouslyIds" predicate="id" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" match-full="true" hidden="true"></st-list-multiple>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
-            <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-ai dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
@@ -39,7 +37,7 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
-            <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-edition-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-ai dropdown-toggle" type="button" id="filter-edition-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Edition <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-edition-button" uib-dropdown-menu>
@@ -47,7 +45,7 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
-            <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-criteria-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-ai dropdown-toggle" type="button" id="filter-criteria-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['criteria'][2011] || vm.categoryChanged['criteria'][2014] || vm.categoryChanged['criteria'][2015]" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Criteria <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-criteria-button" uib-dropdown-menu>
@@ -78,8 +76,16 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
-            <button class="btn btn-lg btn-ai dropdown-toggle" type="button" id="filter-more-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.isCategoryChanged(['cqm-2011','cqm-other','acb','surveillance','practiceType','product','developer','version'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
+            <button class="btn btn-ai dropdown-toggle" type="button" id="filter-surveillance-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.categoryChanged['surveillance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Surveillance Activity <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-surveillance-button" uib-dropdown-menu>
+              <ai-surveillance-filter has-changes="vm.categoryChanged['surveillance']" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" register-allow-all="vm.registerAllowAll(allowAll)" name-space="searchTableState"></ai-surveillance-filter>
+            </ul>
+          </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group">
+            <button class="btn btn-ai dropdown-toggle" type="button" id="filter-more-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.isCategoryChanged(['cqm-2011','cqm-other','acb','practiceType','product','developer','version'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button" uib-dropdown-menu>
               <li>
@@ -93,7 +99,7 @@
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.show2011Cqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" separator="☺"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
@@ -101,7 +107,7 @@
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.showOtherCqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" separator="☺"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
@@ -111,12 +117,6 @@
               <li ng-show="vm.showAcbs">
                 <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" predicate="acb" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" hidden-options="true"></st-list-multiple>
               </li>
-              <li>
-                <a href ng-click="vm.showConformities = !vm.showConformities">
-                  <i class="fa" ng-class="vm.showConformities ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showConformities ? 'Hide' : 'View' }} Surveillance Activity <span ng-if="vm.categoryChanged['surveillance']"><span class="sr-only">Filter has non-default option selected</span>*</span>
-                </a>
-              </li>
-              <ai-surveillance-filter ng-show="vm.showConformities" has-changes="vm.categoryChanged['surveillance']" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></ai-surveillance-filter>
               <li>
                 <a href ng-click="vm.showPracticeType = !vm.showPracticeType">
                   <i class="fa" ng-class="vm.showPracticeType ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showPracticeType ? 'Hide' : 'View' }} Practice Type <span ng-if="vm.categoryChanged['practiceType']"><span class="sr-only">Filter has non-default option selected</span>*</span>
@@ -132,7 +132,7 @@
                     <span ng-if="vm.categoryChanged['developer']"><span class="sr-only">Filter has non-default option selected</span>*</span>
                   </label>
                   <div class="col-sm-8">
-                    <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ai-enhanced-text has-changes="vm.categoryChanged['developer']" predicate="developer" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+                    <input type="text" class="form-control" id="developerRefine" placeholder="Developer" ai-enhanced-text has-changes="vm.categoryChanged['developer']" predicate="developerSearch" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
                   </div>
                 </div>
               </li>

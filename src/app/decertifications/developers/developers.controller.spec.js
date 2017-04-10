@@ -2,31 +2,30 @@
     'use strict';
 
     describe('decertifications.developers.controller', function () {
-        var vm, scope, $log, $q, commonService, mock;
+        var vm, scope, $log, $q, commonService, mock, Mock;
 
         mock = {
-            decertifiedDeveloperResults:[{"developer":{"developerId":4,"developerCode":"1003","name":"4medica, Inc.","website":null,"address":null,"contact":{"contactId":64,"firstName":"Barb","lastName":"Jones","email":"bjones@example.com","phoneNumber":"123-123-1234","title":null},"status":{"id":2,"status":"Suspended by ONC"},"lastModifiedDate":"1480695890024","deleted":false,"transparencyAttestations":[]},"certifyingBody":[{"id":6,"acbCode":"07","name":"ICSA Labs","website":"http://www.example.com","address":{"addressId":4,"line1":"Line 1","line2":null,"city":"City","state":"State","zipcode":"Zip","country":"US"},"isDeleted":false}],"estimatedUsers":null}],
-            muuAccurateAsOfDate: (new Date('2017-01-13')).getTime(),
             modifiedDecertifiedDevelopers: [
-                {stDeveloper: '4medica, Inc.', stAcb: ['ICSA Labs'], stStatus: 'Suspended by ONC', stEstimatedUsers: null}],
-            filter: { acb: 'Drummond', developer: 'epic', status: 'broke'}
+                {acb: ['Drummond Group'], decertificationDate: 1481938585744, developer: 'Greenway Health, LLC', status: 'Under certification ban by ONC'},
+                {acb: ['ICSA Labs'], decertificationDate: 1490194030517, developer: '4Medica', status: 'Under certification ban by ONC'}
+            ]
         };
 
         beforeEach(function () {
-            module('chpl.decertifications', function ($provide) {
+            module('chpl.mock', 'chpl.decertifications', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getDecertifiedDevelopers = jasmine.createSpy('getDecertifiedDevelopers');
-                    $delegate.getMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('getMeaningfulUseUsersAccurateAsOfDate');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_) {
+            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_, _Mock_) {
                 $log = _$log_;
                 $q = _$q_;
+                Mock = _Mock_;
+                //Mock.decertifiedDevelopers.decertifiedDeveloperResults[0].developer.decertificationDate = 1490126033141;
                 commonService = _commonService_;
-                commonService.getDecertifiedDevelopers.and.returnValue($q.when({decertifiedDeveloperResults: mock.decertifiedDeveloperResults}));
-                commonService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.muuAccurateAsOfDate}));
+                commonService.getDecertifiedDevelopers.and.returnValue($q.when(Mock.decertifiedDevelopers));
 
                 scope = $rootScope.$new();
                 vm = $controller('DecertifiedDevelopersController', {
@@ -51,19 +50,15 @@
         });
 
         it('should know how many decertified Developers there are', function () {
-            expect(vm.decertifiedDevelopers.length).toBe(1);
+            expect(vm.decertifiedDevelopers.length).toBe(2);
         });
 
         it('should set the displayed Developers to match the found ones', function () {
-            expect(vm.displayedDevelopers).toEqual(mock.decertifiedDeveloperResults);
+            expect(vm.displayedDevelopers).toEqual(Mock.decertifiedDevelopers.decertifiedDeveloperResults);
         });
 
         it('should generate the smart-table fields', function () {
             expect(vm.modifiedDecertifiedDevelopers).toEqual(mock.modifiedDecertifiedDevelopers);
-        });
-
-        it('should know what the muu_accurate_as_of_date is', function () {
-            expect(vm.muuAccurateAsOf).toEqual(mock.muuAccurateAsOfDate);
         });
     });
 })();

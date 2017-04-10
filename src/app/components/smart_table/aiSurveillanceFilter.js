@@ -9,6 +9,7 @@
         return {
             bindToController: {
                 hasChanges: '=?',
+                initialState: '=?',
                 nameSpace: '@'
             },
             controller: 'SurveillanceFilterController',
@@ -17,6 +18,7 @@
             restrict: 'E',
             require: ['^stTable', 'aiSurveillanceFilter'],
             scope: {
+                registerAllowAll: '&',
                 registerClearFilter: '&',
                 registerRestoreState: '&'
             },
@@ -33,6 +35,12 @@
         function activate () {
             var table = ctrls[0];
             var ctrl = ctrls[1];
+            var allowAll = scope.registerAllowAll({
+                allowAll: function () {
+                    ctrl.allowAll();
+                }
+            });
+            scope.$on('$destroy', allowAll);
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearSurveillanceActivityFilter();
@@ -50,10 +58,11 @@
         }
     }
     /** @ngInclude */
-    function SurveillanceFilterController ($localStorage) {
+    function SurveillanceFilterController ($log, $localStorage) {
         var vm = this;
 
         vm.activate = activate;
+        vm.allowAll = allowAll;
         vm.clearSurveillanceActivityFilter = clearSurveillanceActivityFilter;
         vm.filterChanged = filterChanged;
         vm.restoreState = restoreState;
@@ -61,15 +70,18 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            reset();
+        }
+
+        function allowAll () {
             vm.query = {
                 NC: {}
-            };
+            }
+            vm.filterChanged();
         }
 
         function clearSurveillanceActivityFilter () {
-            vm.query = {
-                NC: {}
-            };
+            reset();
             vm.filterChanged();
         }
 
@@ -79,8 +91,16 @@
             if (tableState.search.predicateObject.surveillance) {
                 delete tableState.search.predicateObject.surveillance;
             }
-            if (vm.query.surveillance || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
+            if (vm.initialState) {
+                vm.hasChanges = vm.hasChanges || (vm.query.surveillance !== vm.initialState.surveillance);
+                vm.hasChanges = vm.hasChanges || (vm.query.NC.never !== vm.initialState.NC.never);
+                vm.hasChanges = vm.hasChanges || (vm.query.NC.open !== vm.initialState.NC.open);
+                vm.hasChanges = vm.hasChanges || (vm.query.NC.closed !== vm.initialState.NC.closed);
+                vm.hasChanges = vm.hasChanges || (vm.query.matchAll !== vm.initialState.matchAll);
+            } else if (vm.query.surveillance || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
                 vm.hasChanges = true;
+            }
+            if (vm.initialState || vm.hasChanges) {
                 vm.tableCtrl.search(vm.query, 'surveillance');
             } else {
                 delete tableState.search.predicateObject.surveillance;
@@ -93,6 +113,18 @@
             vm.query = state.search.predicateObject.surveillance;
             if (vm.query) {
                 vm.filterChanged();
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function reset () {
+            if (vm.initialState) {
+                vm.query = angular.copy(vm.initialState);
+            } else {
+                vm.query = {
+                    NC: {}
+                }
             }
         }
     }

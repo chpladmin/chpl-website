@@ -23,6 +23,7 @@
                 var itemDate;
                 var queryDate;
                 var i,ret;
+                var separator = expected.separator ? expected.separator : '';
 
                 if (angular.isObject(expected)) {
                     //exact match
@@ -41,15 +42,15 @@
                         }
                         var surv = angular.fromJson(actual);
                         if (expected.surveillance === 'never') {
-                            ret = !surv.hasOpenSurveillance && !surv.hasClosedSurveillance;
+                            ret = surv.surveillanceCount === 0;
                         } else {
-                            ret = surv.hasOpenSurveillance || surv.hasClosedSurveillance;
+                            ret = surv.surveillanceCount !== 0;
                             if (expected.NC) {
                                 var never = expected.NC.never;
                                 var open = expected.NC.open;
                                 var closed = expected.NC.closed;
-                                var openNC = surv.hasOpenNonconformities;
-                                var closedNC = surv.hasClosedNonconformities;
+                                var openNC = surv.openNonconformityCount > 0;
+                                var closedNC = surv.closedNonconformityCount > 0;
                                 /*
                                  * matching one of the posibles
                                  */
@@ -100,12 +101,12 @@
 
                         for (i = 0; i < expected.matchAny.items.length; i++) {
                             if (
-                                (actual + '').toLowerCase() === (expected.matchAny.items[i] + '').toLowerCase()
+                                (actual + separator).toLowerCase() === (expected.matchAny.items[i] + separator).toLowerCase()
                                     ||
                                     (
                                         !expected.matchAny.matchFull
                                             &&
-                                            (actual + '').toLowerCase().indexOf((expected.matchAny.items[i] + '').toLowerCase()) > -1
+                                            (actual + separator).toLowerCase().indexOf((expected.matchAny.items[i] + separator).toLowerCase()) > -1
                                     )
                             ) {
                                 return true;
@@ -127,8 +128,8 @@
 
                         ret = true;
                         for (i = 0; i < expected.matchAll.items.length; i++) {
-                            ret = ret && (actual.toLowerCase() === expected.matchAll.items[i].toLowerCase()
-                                          || actual.toLowerCase().indexOf(expected.matchAll.items[i].toLowerCase()) > -1);
+                            ret = ret && ((actual + separator).toLowerCase() === (expected.matchAll.items[i] + separator).toLowerCase()
+                                          || (actual + separator).toLowerCase().indexOf((expected.matchAll.items[i] + separator).toLowerCase()) > -1);
                         }
 
                         return ret;

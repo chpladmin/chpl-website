@@ -1,139 +1,118 @@
 (function () {
     'use strict';
 
-    describe('chpl.registration', function () {
+    describe('chpl.registration.controller', function () {
+
+        var authService, commonService, scope, vm, $log, $location, $q;
+
+        var mock = {};
+        mock.authorizeUser = {
+            hash: 'hash',
+            userName: 'subjectName',
+            password: 'password'
+        };
+        mock.validUser = {
+            hash: 'hash',
+            user: {
+                subjectName: 'subjectName',
+                password: 'password',
+                passwordverify: 'password',
+                title: 'title',
+                firstName: 'firstName',
+                lastName: 'lastName',
+                email: 'email@email.email',
+                phoneNumber: 'phone'
+            }
+        };
 
         beforeEach(function () {
-            module('chpl.registration');
-        });
-
-        describe('controller', function () {
-
-            var authService, commonService, mockAuthService, mockCommonService, scope, ctrl, $log, $location;
-            var validUser, authorizeUser;
-
-            beforeEach(function () {
-                mockAuthService = {};
-                mockCommonService = {};
-                module('chpl.registration', function ($provide) {
-                    $provide.value('commonService', mockCommonService);
-                    $provide.value('authService', mockAuthService);
+            module('chpl.mock', 'chpl.registration', function ($provide) {
+                $provide.decorator('commonService', function ($delegate) {
+                    $delegate.authorizeUser = jasmine.createSpy('authorizeUser');
+                    $delegate.createInvitedUser = jasmine.createSpy('createInvitedUser');
+                    return $delegate;
                 });
-
-                inject(function ($q) {
-                    mockCommonService.createInvitedUser = function () {
-                        $log.debug('createInvitedUser');
-                        var defer = $q.defer();
-                        defer.resolve();
-                        return defer.promise;
-                    };
-                    mockCommonService.authorizeUser = function () {
-                        var defer = $q.defer();
-                        defer.resolve();
-                        return defer.promise;
-                    };
-                    mockAuthService.isAuthed = function () { return $q.when(true); };
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
+                    return $delegate;
                 });
             });
 
-            beforeEach(inject(function (_$log_, $rootScope, $controller, _commonService_, _authService_, _$location_) {
+            inject(function (_$log_, $rootScope, $controller, _authService_, _commonService_, _$location_, _$q_) {
                 $log = _$log_;
-                scope = $rootScope.$new();
-                authService = _authService_;
-                commonService = _commonService_;
+                $q = _$q_;
                 $location = _$location_;
-                ctrl = $controller('CreateController', {
+                authService = _authService_;
+                authService.isAuthed.and.returnValue(true);
+                commonService = _commonService_;
+                commonService.authorizeUser.and.returnValue($q.when({}));
+                commonService.createInvitedUser.and.returnValue($q.when({}));
+
+                scope = $rootScope.$new();
+                vm = $controller('CreateController', {
                     $scope: scope,
                     $routeParams: {hash: 'fakehash'},
                     authService: authService,
                     commonService: commonService,
                     $location: $location
                 });
-                validUser = {
-                    hash: 'hash',
-                    user: {
-                        subjectName: 'subjectName',
-                        password: 'password',
-                        passwordverify: 'password',
-                        title: 'title',
-                        firstName: 'firstName',
-                        lastName: 'lastName',
-                        email: 'email@email.email',
-                        phoneNumber: 'phone'
-                    }
-                }
-                authorizeUser = {
-                    hash: 'hash',
-                    userName: 'subjectName',
-                    password: 'password'
-                }
                 scope.$digest();
-            }));
-
-            afterEach(function () {
-                if ($log.debug.logs.length > 0) {
-                    //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
-                }
             });
+        });
 
-            it('should exist', function () {
-                expect(ctrl).toBeDefined();
-            });
 
-            it('should have a "create user" function', function () {
-                expect(ctrl.createUser).toBeDefined();
-            });
+        afterEach(function () {
+            if ($log.debug.logs.length > 0) {
+                //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+            }
+        });
 
-            it('should have the hash as part of the userDetails object', function () {
-                expect(ctrl.userDetails.hash).toBe('fakehash');
-            });
+        it('should exist', function () {
+            expect(vm).toBeDefined();
+        });
 
-            it('should not call createUser if the details aren\'t complete', function () {
-                spyOn(commonService, 'createInvitedUser');
-                ctrl.createUser();
-                expect(commonService.createInvitedUser).not.toHaveBeenCalled();
-            });
+        it('should have a "create user" function', function () {
+            expect(vm.createUser).toBeDefined();
+        });
 
-            it('should have an isAuthed function', function () {
-                expect(ctrl.isAuthed).toBeDefined();
-            });
+        it('should have the hash as part of the userDetails object', function () {
+            expect(vm.userDetails.hash).toBe('fakehash');
+        });
 
-            xit('should call createUser if the details are complete', function () {
-                spyOn(commonService, 'createInvitedUser');
-                ctrl.userDetails = validUser;
-                ctrl.createUser();
-                expect(commonService.createInvitedUser).toHaveBeenCalled();
-            });
+        it('should not call createUser if the details aren\'t complete', function () {
+            vm.createUser();
+            expect(commonService.createInvitedUser).not.toHaveBeenCalled();
+        });
 
-            it('should require password and verify password to be equal', function () {
-                ctrl.userDetails = validUser;
-                expect(ctrl.validateUser()).toBe(true);
-                ctrl.userDetails.user.password = 'test';
-                ctrl.userDetails.user.passwordverify = 'test2';
-                expect(ctrl.validateUser()).not.toBe(true);
-            });
+        it('should have an isAuthed function', function () {
+            expect(vm.isAuthed).toBeDefined();
+        });
 
-            xit('should call "authorizeUser" if the user tries to log in', function () {
-                ctrl.authorizeDetails = authorizeUser;
-                $log.debug(ctrl.authorizeDetails.hash);
-                spyOn(commonService, 'authorizeUser');
-                ctrl.authorizeUser();
-                expect(commonService.authorizeUser).toHaveBeenCalledWith({subjectName: 'subjectName', password: 'password', hash: 'hash'});
-            });
+        it('should call createUser if the details are complete', function () {
+            vm.userDetails = mock.validUser;
+            vm.createUser();
+            expect(commonService.createInvitedUser).toHaveBeenCalled();
+        });
 
-            xit('should redirect to /admin after createUser is finished', function () {
-                spyOn($location, 'path');
-                ctrl.userDetails = validUser;
-                ctrl.createUser();
-                expect($location.path).toHaveBeenCalledWith('/admin');
-            });
+        it('should require password and verify password to be equal', function () {
+            vm.userDetails = mock.validUser;
+            expect(vm.validateUser()).toBe(true);
+            vm.userDetails.user.password = 'test';
+            vm.userDetails.user.passwordverify = 'test2';
+            expect(vm.validateUser()).not.toBe(true);
+        });
 
-            xit('should redirect to /admin after authorizeUser is finished', function () {
-                spyOn($location, 'path');
-                ctrl.authorizeDetails = authorizeUser;
-                ctrl.authorizeUser();
-                expect($location.path).toHaveBeenCalledWith('/admin');
-            });
+        it('should call "authorizeUser" if the user tries to log in', function () {
+            vm.authorizeUser();
+            expect(commonService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'});
+        });
+
+        it('should redirect to /admin after authorizeUser is finished', function () {
+            spyOn($location, 'path');
+            vm.authorizeDetails = mock.authorizeUser;
+            vm.authorizeUser();
+            scope.$digest();
+            expect($location.path).toHaveBeenCalledWith('/admin');
         });
     });
 })();

@@ -9,7 +9,6 @@
         var vm = this;
 
         vm.browseAll = browseAll;
-        vm.certificationStatusFilter = certificationStatusFilter;
         vm.clear = clear;
         vm.clearPreviouslyCompared = clearPreviouslyCompared;
         vm.clearPreviouslyViewed = clearPreviouslyViewed;
@@ -119,22 +118,6 @@
             delete $localStorage.viewingPreviouslyViewed;
         }
 
-        function certificationStatusFilter (obj) {
-            // TODO: fix
-            if (!obj.statuses) {
-                return true;
-            } else {
-                return ((obj.statuses['active'] > 0 && vm.refineModel.certificationStatus['Active']) ||
-                        (obj.statuses['withdrawnByAcb'] > 0 && vm.refineModel.certificationStatus['Withdrawn by ONC-ACB']) ||
-                        (obj.statuses['withdrawnByDeveloper'] > 0 && vm.refineModel.certificationStatus['Withdrawn by Developer']) ||
-                        (obj.statuses['withdrawnByDeveloperUnderSurveillanceReview'] > 0 && vm.refineModel.certificationStatus['Withdrawn by Developer Under Surveillance/Review']) ||
-                        (obj.statuses['suspendedByAcb'] > 0 && vm.refineModel.certificationStatus['Suspended by ONC-ACB']) ||
-                        (obj.statuses['suspendedByOnc'] > 0 && vm.refineModel.certificationStatus['Suspended by ONC']) ||
-                        (obj.statuses['terminatedByOnc'] > 0 && vm.refineModel.certificationStatus['Terminated by ONC']) ||
-                        (obj.statuses['retired'] > 0 && vm.refineModel.certificationStatus['Retired']));
-            }
-        }
-
         function hasResults () {
             return angular.isDefined(vm.allCps);
         }
@@ -155,14 +138,15 @@
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {
                     results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
+                    results[i].developerSearch = results[i].developer;
                     if (results[i].previousDevelopers) {
                         results[i].mainSearch += '|' + results[i].previousDevelopers;
+                        results[i].developerSearch += '|' + results[i].previousDevelopers;
                     }
                     results[i].surveillance = angular.toJson({
-                        hasOpenSurveillance: results[i].hasOpenSurveillance,
-                        hasClosedSurveillance: results[i].hasClosedSurveillance,
-                        hasOpenNonconformities: results[i].hasOpenNonconformities,
-                        hasClosedNonconformities: results[i].hasClosedNonconformities
+                        surveillanceCount: results[i].surveillanceCount,
+                        openNonconformityCount: results[i].openNonconformityCount,
+                        closedNonconformityCount: results[i].closedNonconformityCount
                     });
                 }
                 vm.allCps = [];

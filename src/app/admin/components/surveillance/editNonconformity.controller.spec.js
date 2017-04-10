@@ -2,7 +2,7 @@
     'use strict';
 
     describe('admin.EditNonconformityController.controller', function () {
-        var vm, scope, $log, $q, commonService, mock;
+        var vm, scope, $log, mock, Mock;
 
         mock = {};
         mock.modalInstance = {
@@ -11,21 +11,15 @@
         };
 
         beforeEach(function () {
-            module('chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
-                    $delegate.updateCP = jasmine.createSpy('updateCP');
-                    return $delegate;
-                });
-            });
+            module('chpl.mock', 'chpl.admin');
 
-            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_) {
+            inject(function ($controller, $rootScope, _$log_,  _Mock_) {
                 $log = _$log_;
-                $q = _$q_;
-                commonService = _commonService_;
-                commonService.updateCP.and.returnValue($q.when(mock));
+                Mock = _Mock_;
 
                 scope = $rootScope.$new();
                 vm = $controller('EditNonconformityController', {
+                    surveillance: Mock.surveillances[0],
                     surveillanceTypes: {},
                     disableValidation: false,
                     nonconformity: {},

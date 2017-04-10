@@ -580,6 +580,11 @@ option[disabled] {
     vertical-align: top;
 }
 
+#filters .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
 #search-page .dropdown-menu {
     width: 150%;
     max-height: 300px;
@@ -647,7 +652,6 @@ option[disabled] {
 #decertifiedDeveloperFilter .dropdown-menu {
     width: 100%;
 }
-
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

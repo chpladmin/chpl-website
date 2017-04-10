@@ -5,7 +5,7 @@
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
-    function CmsLookupController ($scope, $log, $localStorage, commonService) {
+    function CmsLookupController ($log, $localStorage, commonService) {
         var vm = this;
 
 		vm.lookupCertIds = lookupCertIds;
@@ -35,7 +35,7 @@
             vm.lookupProductsFormatInvalidIds = [];
             vm.lookupProductsCertIdNotFound = [];
 
-            if ((vm.lookup !== "undefined") && (vm.certIds !== "undefined")) {
+            if (vm.certIds && vm.certIds.length > 0) {
                 vm.certIds = vm.certIds.replace(/[;,\s]+/g, " ");
                 vm.certIds = vm.certIds.trim().toUpperCase();
 

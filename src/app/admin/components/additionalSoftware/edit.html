@@ -15,9 +15,8 @@
       <div class="text-danger" ng-if="vm.editForm.swName.$touched && vm.editForm.swName.$error.required">Software name is required</div>
     </div>
     <div class="form-group">
-      <label for="swVersion">Version <span ng-if="vm.sw.name && !vm.sw.certifiedProductNumber" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.sw.name && !vm.sw.certifiedProductNumber" ng-disabled="vm.sw.certifiedProductNumber" ng-model="vm.sw.version" id="swVersion" name="swVersion"></input>
-      <div class="text-danger" ng-if="vm.editForm.swVersion.$touched && vm.editForm.swVersion.$error.required">Software version is required</div>
+      <label for="swVersion">Version</label>
+      <input class="input-sm form-control" type="text" ng-disabled="vm.sw.certifiedProductNumber" ng-model="vm.sw.version" id="swVersion" name="swVersion"></input>
     </div>
     <div class="form-group">
       <label for="swChplId">CHPL Id <span ng-if="!vm.sw.name && !vm.sw.version" class="text-danger">*</span></label>

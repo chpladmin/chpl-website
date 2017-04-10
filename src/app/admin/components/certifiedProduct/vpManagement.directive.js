@@ -201,7 +201,7 @@
 
         function editDeveloper () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/vpEditDeveloper.html',
+                templateUrl: 'app/admin/components/certifiedProduct/developer/edit.html',
                 controller: 'EditDeveloperController',
                 controllerAs: 'vm',
                 animation: false,
@@ -218,6 +218,11 @@
                     .then(function (developers) {
                         vm.developers = developers.developers;
                         prepCodes();
+                        for (var i = 0; i < vm.developers.length; i++) {
+                            if (result.developerId === vm.developers[i].developerId) {
+                                vm.activeDeveloper = vm.developers[i];
+                            }
+                        }
                     });
             }, function (result) {
                 if (result !== 'cancelled') {
@@ -228,7 +233,7 @@
 
         function mergeDevelopers () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/vpMergeDeveloper.html',
+                templateUrl: 'app/admin/components/certifiedProduct/developer/merge.html',
                 controller: 'MergeDeveloperController',
                 controllerAs: 'vm',
                 animation: false,
@@ -269,7 +274,7 @@
 
         function editProduct () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/vpEditProduct.html',
+                templateUrl: 'app/admin/components/certifiedProduct/product/edit.html',
                 controller: 'EditProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -290,7 +295,7 @@
 
         function mergeProducts () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/vpMergeProduct.html',
+                templateUrl: 'app/admin/components/certifiedProduct/product/merge.html',
                 controller: 'MergeProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -317,7 +322,7 @@
 
         function mergeVersions () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/vpMergeVersion.html',
+                templateUrl: 'app/admin/components/certifiedProduct/version/merge.html',
                 controller: 'MergeVersionController',
                 controllerAs: 'vm',
                 animation: false,
@@ -357,7 +362,7 @@
 
         function editVersion () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/vpEditVersion.html',
+                templateUrl: 'app/admin/components/certifiedProduct/version/edit.html',
                 controller: 'EditVersionController',
                 controllerAs: 'vm',
                 animation: false,
@@ -396,7 +401,7 @@
 
         function editCertifiedProduct () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/vpEditCertifiedProduct.html',
+                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/vpEditCertifiedProduct.html',
                 controller: 'EditCertifiedProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -434,7 +439,7 @@
             }
 
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/vpInspect.html',
+                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/vpInspect.html',
                 controller: 'InspectController',
                 controllerAs: 'vm',
                 animation: false,

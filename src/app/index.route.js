@@ -23,13 +23,19 @@
                 controller: 'DecertifiedDevelopersController',
                 controllerAs: 'vm',
                 templateUrl: 'app/decertifications/developers/developers.html',
-                title: 'Decertified Developers'
+                title: 'Banned Developers'
             })
             .when('/decertifications/inactive', {
                 controller: 'InactiveCertificationsController',
                 controllerAs: 'vm',
                 templateUrl: 'app/decertifications/inactive/inactive.html',
                 title: 'Inactive Certificates'
+            })
+            .when('/decertifications/nonconformities', {
+                controller: 'NonconformitiesController',
+                controllerAs: 'vm',
+                templateUrl: 'app/decertifications/nonconformities/nonconformities.html',
+                title: 'Nonconformities'
             })
             .when('/decertifications/products', {
                 controller: 'DecertifiedProductsController',

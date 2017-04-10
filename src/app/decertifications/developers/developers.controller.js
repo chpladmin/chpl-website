@@ -26,23 +26,19 @@
                     vm.decertifiedDevelopers = [];
                     vm.loadDevelopers();
                 });
-            commonService.getMeaningfulUseUsersAccurateAsOfDate()
-                .then(function (response) {
-                    vm.muuAccurateAsOf = response.accurateAsOfDate;
-                });
         }
 
         function loadDevelopers () {
             vm.modifiedDecertifiedDevelopers = [];
             for (var i = 0; i < vm.decertifiedDevelopers.length; i++) {
                 vm.modifiedDecertifiedDevelopers.push({
-                    stAcb: [],
-                    stDeveloper: vm.decertifiedDevelopers[i].developer.name,
-                    stStatus: vm.decertifiedDevelopers[i].developer.status.status,
-                    stEstimatedUsers: vm.decertifiedDevelopers[i].estimatedUsers
+                    acb: [],
+                    decertificationDate: vm.decertifiedDevelopers[i].decertificationDate,
+                    developer: vm.decertifiedDevelopers[i].developer.name,
+                    status: vm.decertifiedDevelopers[i].developer.status.status
                 });
                 for (var j = 0; j < vm.decertifiedDevelopers[i].certifyingBody.length; j++) {
-                    vm.modifiedDecertifiedDevelopers[i].stAcb.push(vm.decertifiedDevelopers[i].certifyingBody[j].name)
+                    vm.modifiedDecertifiedDevelopers[i].acb.push(vm.decertifiedDevelopers[i].certifyingBody[j].name)
                 }
             }
         }

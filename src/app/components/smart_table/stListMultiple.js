@@ -13,7 +13,8 @@
                 hidden: '@?',
                 hiddenOptions: '@?',
                 matchFull: '@?',
-                nameSpace: '@'
+                nameSpace: '@',
+                separator: '@?'
             },
             controller: 'ListMultipleController',
             controllerAs: 'vm',
@@ -203,23 +204,19 @@
         function filterChanged () {
             vm.hasChanges = getChanged();
             var query, numberOfItems = vm.selected.length;
-
+            query = { separator: vm.separator ? vm.separator : '' };
             if (vm.matchAll) {
-                query = {
-                    matchAll: {
-                        all: numberOfItems === 0,
-                        matchFull: vm.matchFull,
-                        items: vm.selected
-                    }
-                };
+                query.matchAll = {
+                    all: numberOfItems === 0,
+                    matchFull: vm.matchFull,
+                    items: vm.selected
+                }
             } else {
-                query = {
-                    matchAny: {
-                        all: (numberOfItems === 0 || (!vm.hiddenOptions && numberOfItems === vm.distinctItems.length)),
-                        matchFull: vm.matchFull,
-                        items: vm.selected
-                    }
-                };
+                query.matchAny = {
+                    all: (numberOfItems === 0 || (!vm.hiddenOptions && numberOfItems === vm.distinctItems.length)),
+                    matchFull: vm.matchFull,
+                    items: vm.selected
+                }
             }
             vm.tableCtrl.search(query, vm.predicate);
         }
