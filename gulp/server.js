@@ -32,6 +32,7 @@ function browserSyncInit(baseDir, browser) {
     server.middleware = [
         proxyMiddleware('/rest', {
             target: 'http://localhost:8080/chpl-service',
+            //target: 'https://chpl.ahrqdev.org/rest',
             pathRewrite: { '^/rest' : '' },
             changeOrigin: true
         })
