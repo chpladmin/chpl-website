@@ -1,35 +1,38 @@
 (function () {
     'use strict';
 
-    describe('chpl.admin.login.directive', function () {
+    describe('login directive', function () {
 
-        var element, scope, $log, mockAuthService, commonService, mockCommonService, ctrl, $q;
+        var vm, el, $q, $log, authService, commonService;
 
         beforeEach(function () {
-            mockCommonService = {};
-            mockAuthService = {};
-
-            module('chpl.templates');
-            module('chpl.admin', function ($provide) {
-                $provide.value('commonService', mockCommonService);
-                $provide.value('authService', mockAuthService);
+            module('chpl.templates', 'chpl.admin', function ($provide) {
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
+                    $delegate.logout = jasmine.createSpy('logout');
+                    return $delegate;
+                });
+                $provide.decorator('commonService', function ($delegate) {
+                    $delegate.login = jasmine.createSpy('login');
+                    return $delegate;
+                });
             });
 
-            inject(function () {
-                mockAuthService.logout = function () {};
-                mockCommonService.login = function () {};
-                mockAuthService.isAuthed = function () {return true};
+            inject(function ($compile, $rootScope, _$q_, _$log_, _authService_, _commonService_) {
+                $q = _$q_;
+                $log = _$log_;
+                authService = _authService_;
+                authService.isAuthed.and.returnValue(true);
+                commonService = _commonService_;
+                commonService.login.and.returnValue($q.when({}));
+
+                el = angular.element('<ai-login></ai-login>');
+
+                $compile(el)($rootScope.$new());
+                $rootScope.$digest();
+                vm = el.isolateScope().vm;
             });
         });
-
-        beforeEach(inject(function ($compile, $rootScope, _$log_) {
-            $log = _$log_;
-            scope = $rootScope.$new();
-
-            element = angular.element('<ai-login></ai-login');
-            $compile(element)(scope);
-            scope.$digest();
-        }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
@@ -37,50 +40,26 @@
             }
         });
 
-        describe('controller', function () {
+        it('should exist', function () {
+            expect(vm).toBeDefined();
+        });
 
-            beforeEach(inject(function ($controller, _commonService_, _$q_) {
-                commonService = _commonService_;
-                $q = _$q_;
+        it('should have a function to log in', function () {
+            expect(vm.login).toBeDefined();
+        });
 
-                ctrl = $controller('LoginController', {
-                    $scope: scope,
-                    $element: null,
-                    commonService: commonService
-                });
-                scope.$digest();
-            }));
+        it('should call commonService.login with correct parameters', function () {
+            vm.userName = 'test';
+            vm.password = 'password';
+            vm.login();
+            expect(commonService.login).toHaveBeenCalledWith({userName: 'test', password: 'password'});
+        });
 
-            it('should exist', function () {
-                expect(ctrl).toBeDefined();
-            });
-
-            it('should have a function to log in', function () {
-                expect(ctrl.login).toBeDefined();
-            });
-
-            it('should call commonService.login with correct parameters', function () {
-                spyOn(commonService, 'login').and.callFake(function () {
-                    return $q.when({});
-                });
-                ctrl.userName = 'test';
-                ctrl.password = 'password';
-                ctrl.login();
-                expect(commonService.login).toHaveBeenCalledWith({userName: 'test', password: 'password'});
-            });
-
-            xit('should have an error message if login credentials are bad', function () {
-                spyOn(commonService, 'login').and.callFake(function () {
-                    var defer = $q.defer();
-                    defer.reject('Invalid username / password');
-                    return defer.promise;
-                });
-                ctrl.login()
-                    .then(function (response) {
-                        $log.debug(response);
-                        expect(ctrl.message).toBe('Invalid username / password')
-                    });
-            });
+        it('should have an error message if login credentials are bad', function () {
+            commonService.login.and.returnValue($q.reject({data: {error: 'Invalid username / password'}}));
+            vm.login();
+            el.isolateScope().$digest();
+            expect(vm.message).toBe('Invalid username / password')
         });
     });
 })();

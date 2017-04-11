@@ -10,8 +10,12 @@
 
         self.parseJwt = function (token) {
             if (angular.isString(token)) {
-                var base64 = token.split('.')[1].replace('-','+').replace('_','/');
-                return angular.fromJson($window.atob(base64));
+                var vals = token.split('.');
+                if (vals.length > 1) {
+                    var base64 = vals[1].replace('-','+').replace('_','/');
+                    return angular.fromJson($window.atob(base64));
+                }
+                return {};
             }
         };
 

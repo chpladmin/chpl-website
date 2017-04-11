@@ -7,12 +7,11 @@
     .run(runBlock);
 
   /** @ngInject */
-    function runBlock($anchorScroll, $location, $log, $rootScope, $timeout, $window, ENVIRONMENT) {
+    function runBlock($anchorScroll, $location, $log, $rootScope, $timeout, $window) {
         var routeChange = $rootScope.$on('$routeChangeSuccess', function (event, current) {
             if (current.$$route) {
                 $rootScope.title = current.$$route.title;
                 $rootScope.currentPage = $location.path();
-                $rootScope.ENVIRONMENT = ENVIRONMENT;
             }
             if ($location.hash()) {
                 $anchorScroll();
