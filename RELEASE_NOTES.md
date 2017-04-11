@@ -9,6 +9,14 @@
 _Date TBD_
 
 ### New features
+* Added Google Tag Manager event tracking
+
+---
+
+## Version 8.1.0
+_10 April 2017_
+
+### New features
 * When uploading or editing a surveillance activity nonconformity, show an error to require the "Date Corrective Action Plan Must Be Completed" when there is a value for "Date Corrective Action Plan Was Approved"
 * When uploading or editing a surveillance activity nonconformity, show errors that break rules for "Corrective Action Plan End Date"
 * Changes to display of Banned Developers
@@ -17,6 +25,10 @@ _Date TBD_
 * Built "Nonconformities" page
 * Allow Additional Software version to be not required
 * Made 'surveillance activity' a main filter
+* Searching for "Developer" specifically now searches in previous developers
+
+### Bugs fixed
+* Filtering for some CQMs would return improper results. Ex: filters for CMS2 would return products without CMS2 but with CMS22
 
 ---
 

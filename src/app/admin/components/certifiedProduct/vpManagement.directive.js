@@ -322,7 +322,7 @@
 
         function mergeVersions () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/version/version.html',
+                templateUrl: 'app/admin/components/certifiedProduct/version/merge.html',
                 controller: 'MergeVersionController',
                 controllerAs: 'vm',
                 animation: false,

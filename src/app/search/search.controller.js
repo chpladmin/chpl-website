@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
+    function SearchController ($analytics, $filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -87,6 +87,7 @@
         };
 
         function browseAll () {
+            $analytics.eventTrack('Browse All');
             vm.triggerClearFilters();
             vm.triggerClearTerm();
             vm.activeSearch = true;
@@ -138,8 +139,10 @@
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {
                     results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
+                    results[i].developerSearch = results[i].developer;
                     if (results[i].previousDevelopers) {
                         results[i].mainSearch += '|' + results[i].previousDevelopers;
+                        results[i].developerSearch += '|' + results[i].previousDevelopers;
                     }
                     results[i].surveillance = angular.toJson({
                         surveillanceCount: results[i].surveillanceCount,
@@ -283,6 +286,7 @@
         }
 
         function viewPreviouslyCompared (doNotSearch) {
+            $analytics.eventTrack('View Previously Compared');
             if (!doNotSearch) {
                 vm.triggerAllowAll();
             }
@@ -298,6 +302,7 @@
         }
 
         function viewPreviouslyViewed (doNotSearch) {
+            $analytics.eventTrack('View Previously Viewed');
             if (!doNotSearch) {
                 vm.triggerAllowAll();
             }

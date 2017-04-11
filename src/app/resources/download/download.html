@@ -47,7 +47,8 @@
             <option value="{{ vm.API }}/surveillance/download?api_key={{ vm.API_KEY }}">Non-Conformities</option>
           </select>
           <span class="input-group-btn">
-            <a type="button" class="btn btn-ai-success" href="{{ vm.downloadOption }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
+            <a type="button" class="btn btn-ai-success" href="{{ vm.downloadOption }}"
+               analytics-on="click" analytics-event="Download" analytics-properties="{ file: vm.downloadOption }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
           </span>
         </div>
       </div>
