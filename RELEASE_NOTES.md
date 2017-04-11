@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1105
+* Allow splitting of Products along Version lines
+
+---
+
 ## Version TBD
 _Date TBD_
 

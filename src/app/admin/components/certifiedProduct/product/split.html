@@ -1,0 +1,65 @@
+<div role="modal" aria-labeled-by="splitProductLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="splitProductLabel">Split Product</h4>
+  </div>
+  <div class="modal-body form-horizontal" ng-form="vm.splitForm">
+    <div class="form-group">
+      <div class="col-md-6">
+        <strong>Original Product Name: </strong>{{ vm.product.name }}
+      </div>
+      <label class="col-md-2" for="productName">New Product Name</label>
+      <div class="col-md-4">
+        <input class="input-sm form-control" type="text" ng-model="vm.splitProduct.newProductName" id="productName" name="productName" required></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.splitForm.productName.$touched) && vm.splitForm.productName.$error.required">Product name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2 col-md-offset-6" for="productCode">New Product Code</label>
+      <div class="col-md-4">
+        <input class="input-sm form-control" type="text" ng-model="vm.splitProduct.newProductCode" id="productCode" name="productCode" required></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.splitForm.productCode.$touched) && vm.splitForm.productCode.$error.required">Product code is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-5">
+        <label for="oldVersions">Versions staying with original Product</label>
+          <select ng-model="vm.versionsToMoveToNew" multiple data-ng-attr-size="{{ vm.versions.length }}"
+                  id="oldVersions" name="oldVersions" class="input-sm form-control"
+                  ng-dblclick="vm.moveToNew()" ng-keyup="$event.keyCode === 13 && vm.moveToNew()"
+                  ng-options="v as v.version for v in vm.splitProduct.oldVersions | orderBy: 'version'">
+          </select>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.splitForm.oldVersions.$touched) && vm.splitProduct.oldVersions.length === 0">At least one Version must remain</div>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-sm btn-ai btn-block" ng-click="vm.moveToNew()" ng-disabled="!vm.versionsToMoveToNew || vm.versionsToMoveToNew.length === 0"><i class="fa fa-arrow-right"></i><span class="sr-only">Move to New Product</span></button>
+        <button class="btn btn-sm btn-ai btn-block" ng-click="vm.moveToOld()" ng-disabled="!vm.versionsToMoveToOld || vm.versionsToMoveToOld.length === 0"><i class="fa fa-arrow-left"></i><span class="sr-only">Move to Old Product</span></button>
+      </div>
+      <div class="col-md-5">
+        <label for="newVersions">Versions going with new Product</label>
+          <select ng-model="vm.versionsToMoveToOld" multiple data-ng-attr-size="{{ vm.versions.length }}"
+                  id="newVersions" name="newVersions" class="input-sm form-control"
+                  ng-dblclick="vm.moveToOld()" ng-keyup="$event.keyCode === 13 && vm.moveToOld()"
+                  ng-options="v as v.version for v in vm.splitProduct.newVersions | orderBy: 'version'">
+          </select>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.splitForm.newVersions.$touched) && vm.splitProduct.newVersions.length === 0">At least one Version must transfer</div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button ng-disabled="vm.splitForm.$invalid && vm.showFormErrors"
+            ng-mouseover="vm.showFormErrors = true"
+            class="btn btn-ai-success btn-block" ng-click="vm.save()">Save Products</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()">Cancel Edits</button>
+  </div>
+</div>
