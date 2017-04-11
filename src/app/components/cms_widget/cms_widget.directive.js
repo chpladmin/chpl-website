@@ -22,7 +22,7 @@
         };
 
         /** @ngInject */
-        function CmsWidgetController (WidgetService, $localStorage, $log) {
+        function CmsWidgetController ($analytics, $localStorage, $log, WidgetService) {
             var vm = this;
 
             vm.addProduct = addProduct;
@@ -62,6 +62,9 @@
 
             function create () {
                 vm.widget.inProgress = true;
+                if (vm.widget.searchResult && vm.widget.searchResult.year) {
+                    $analytics.eventTrack('Get EHR Certification ID', { year: vm.widget.searchResult.year });
+                }
                 vm.widget.createResponse = WidgetService.save(
                     {action: 'create', ids: vm.widget.productIds.join(',')}, {},
                     function () {
@@ -71,6 +74,7 @@
             }
 
             function generatePdf () {
+                $analytics.eventTrack('Download EHR Certification ID PDF', { year: vm.widget.searchResult.year });
                 WidgetService.get(
                     {action: vm.widget.createResponse.ehrCertificationId, includeCriteria: true},
                     function (response) {
@@ -212,6 +216,7 @@
                 // Add products table to PDF
                 doc.setFontSize(10);
                 doc.setFontType("normal");
+                $log.debug(columns,rows);
                 doc.autoTable(columns, rows, {
                     theme: "grid",
                     headerStyles: {

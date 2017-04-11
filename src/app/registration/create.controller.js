@@ -32,8 +32,7 @@
         }
 
         function authorizeUser () {
-            if (((vm.authorizeDetails.userName && vm.authorizeDetails.password)
-                 || vm.isAuthed())
+            if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || vm.isAuthed()
                 && vm.authorizeDetails.hash) {
                 commonService.authorizeUser(vm.authorizeDetails)
                     .then(function () {
