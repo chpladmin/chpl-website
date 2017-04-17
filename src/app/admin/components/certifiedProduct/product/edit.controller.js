@@ -67,6 +67,9 @@
             for (var i = 0; i < vm.product.ownerHistory.length; i++) {
                 vm.product.ownerHistory[i].transferDate = vm.product.ownerHistory[i].transferDate.getTime();
             }
+            if (!vm.isContactRequired() && vm.product.contact) {
+                delete vm.product.contact;
+            }
             vm.updateProduct.product = vm.product;
             vm.updateProduct.newDeveloperId = vm.product.developerId;
             commonService.updateProduct(vm.updateProduct)
