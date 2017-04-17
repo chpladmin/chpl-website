@@ -24,10 +24,10 @@
                     var message, title, id = response.headers()['chpl-id-changed'];
                     if (id.indexOf(',') > -1) {
                         title = 'CHPL IDs Changed';
-                        message = 'Your activity caused the CHPL Product Identifiers to change. They used to be: "' + id + "'";
+                        message = 'Your activity caused CHPL Product Numbers to change';
                     } else {
                         title = 'CHPL ID Changed';
-                        message = 'Your activity caused the a CHPL Product Identifier to change. It used to be: "' + id + '"'
+                        message = 'Your activity caused a CHPL Product Number to change';
                     }
                     toaster.pop({
                         type: 'success',
