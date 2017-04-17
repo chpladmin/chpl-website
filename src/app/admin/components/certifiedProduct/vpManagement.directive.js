@@ -663,6 +663,7 @@
             });
             vm.splitProductInstance.result.then(function (result) {
                 vm.activeProduct = result.product;
+                vm.activeVersion = '';
                 vm.products.push(result.newProduct);
                 vm.versions = result.versions;
             }, function (result) {

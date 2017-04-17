@@ -52,6 +52,7 @@
     </div>
   </div>
   <div class="modal-footer">
+    <div class="text-danger" ng-if="vm.errorMessage">{{ vm.errorMessage }}</div>
     <button ng-disabled="vm.splitForm.$invalid && vm.showFormErrors"
             ng-mouseover="vm.showFormErrors = true"
             class="btn btn-ai-success btn-block" ng-click="vm.save()">Save Products</button>
