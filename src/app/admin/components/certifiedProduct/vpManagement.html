@@ -387,11 +387,7 @@
                   <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
                 </ul>
                 <strong>Contact information</strong><br />
-                First name: {{ vm.activeDeveloper.contact.firstName }}<br />
-                Last name: {{ vm.activeDeveloper.contact.lastName }}<br />
-                Title: {{ vm.activeDeveloper.contact.title }}<br />
-                Email: {{ vm.activeDeveloper.contact.email }}<br />
-                Phone: {{ vm.activeDeveloper.contact.phoneNumber }}<br />
+                <ai-contact contact="vm.activeDeveloper.contact"></ai-contact>
               </div>
               <p ng-if="vm.developerMessage !== undefined" class="bg-danger">{{ vm.developerMessage }}</p>
             </div>
@@ -448,12 +444,21 @@
             <div class="panel-heading">
               <span>Select a product</span>
               <span class="pull-right">
-                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)"><a href="" ng-click="vm.editProduct()"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |</span>
+                <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)">
+                  <span ng-if="vm.versions.length > 1">
+                    <a href="" ng-click="vm.splitProduct()"><i class="fa fa-scissors"></i> Split Product</a> |
+                  </span>
+                  <a href="" ng-click="vm.editProduct()"><i class="fa fa-pencil-square-o"></i> Edit Product</a> |
+                </span>
                 <a href="" ng-click="vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
               </span>
             </div>
             <div class="panel-body">
               <div>{{ vm.activeProduct.name }} <em class="pull-right">Last modified date: {{ vm.activeProduct.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
+              <span ng-if="vm.activeProduct.contact">
+                <strong>Contact information</strong><br />
+                <ai-contact contact="vm.activeProduct.contact"></ai-contact>
+              </span>
               <p ng-if="vm.productMessage !== undefined" class="bg-danger">{{ vm.productMessage }}</p>
             </div>
           </div>

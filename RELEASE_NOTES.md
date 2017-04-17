@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### New features
+* Added Google Tag Manager event tracking
+* Added POC to Product level; refactored Contact as separate component
+* Allow splitting of Products along Version lines
+
+---
+
 ## Version 8.1.0
 _10 April 2017_
 

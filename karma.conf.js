@@ -79,8 +79,6 @@ module.exports = function(config) {
             'karma-ng-html2js-preprocessor'
         ],
 
-        reporters: ['progress'],
-
         proxies: {
             '/assets/': path.join('/base/', conf.paths.src, '/assets/')
         }

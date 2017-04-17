@@ -2,7 +2,7 @@
     'ACTIVE_CAP': false,
     'API': '/rest',
     'CACHE_TIMEOUT': 60,
+    'DEVELOPER_MODE': false,
     'ENABLE_LOGGING': true,
-    'ENVIRONMENT': 'qa',
     'RELOAD_TIMEOUT': 3000
 }

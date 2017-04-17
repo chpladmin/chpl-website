@@ -48,7 +48,6 @@
         vm.refreshUser = refreshUser;
         vm.refreshApi = refreshApi;
         vm.refreshApiKeyUsage = refreshApiKeyUsage;
-        vm.refreshVisitors = refreshVisitors;
         vm.singleCp = singleCp;
 
         activate();
@@ -67,7 +66,6 @@
                 endDate: angular.copy(vm.activityRange.endDate)
             };
             vm.refreshActivity();
-            vm.refreshVisitors();
             vm.loadApiKeys();
             vm.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
@@ -213,35 +211,6 @@
                 });
         }
 
-        function refreshVisitors () {
-            commonService.externalApiCall('https://openchpl.appspot.com/query?id=agpzfm9wZW5jaHBschULEghBcGlRdWVyeRiAgICAvKGCCgw&format=data-table','')
-                .then(function (data) {
-                    vm.browserVariety.data = data;
-                });
-            commonService.externalApiCall('https://openchpl.appspot.com/query?id=agpzfm9wZW5jaHBschULEghBcGlRdWVyeRiAgICA2uOGCgw&format=data-table','')
-                .then(function (data) {
-                    vm.country.data = data;
-                    vm.map.data = data;
-                });
-            commonService.externalApiCall('https://openchpl.appspot.com/query?id=agpzfm9wZW5jaHBschULEghBcGlRdWVyeRiAgICAmdKFCgw&format=data-table','')
-                .then(function (data) {
-                    vm.cities.data = data;
-                    vm.cityMap.data = data;
-                });
-            commonService.externalApiCall('https://openchpl.appspot.com/query?id=agpzfm9wZW5jaHBschULEghBcGlRdWVyeRiAgICA7bGDCgw&format=data-table','')
-                .then(function (data) {
-                    data.cols[0].type = 'date';
-                    var date;
-                    for (var i = 0; i < data.rows.length; i++) {
-                        date = data.rows[i].c[0].v;
-                        data.rows[i].c[0].v = new Date(date.substring(0,4),
-                                                       parseInt(date.substring(4,6)) - 1,
-                                                       date.substring(6,8));
-                    }
-                    vm.traffic.data = data;
-                });
-        }
-
         function singleCp () {
             commonService.getSingleCertifiedProductActivity(vm.productId)
                 .then(function (data) {
@@ -274,53 +243,6 @@
             }
             vm.tab = newTab;
         }
-
-        ////////////////////////////////////////////////////////////////////
-        // Chart options
-
-        vm.browserVariety = {
-            type: 'PieChart',
-            options: {
-                is3D: true,
-                title: 'Visitors by browser (last 7 days)'
-            }
-        };
-        vm.cities = {
-            type: 'PieChart',
-            options: {
-                is3D: true,
-                title: 'Visitors by city (last 7 days)'
-            }
-        };
-        vm.country = {
-            type: 'PieChart',
-            options: {
-                is3D: true,
-                title: 'Visitors by country (last 7 days)'
-            }
-        };
-        vm.traffic = {
-            type: 'LineChart',
-            options: {
-                legend: { position: 'none' },
-                hAxis: {
-                    slantedText: true
-                },
-                title: 'Visitors for the last 14 days'
-            }
-        };
-        vm.map = {
-            type: 'GeoChart',
-            options: {
-            }
-        };
-        vm.cityMap = {
-            type: 'GeoChart',
-            options: {
-                region: 'US',
-                displayMode: 'markers'
-            }
-        };
 
         ////////////////////////////////////////////////////////////////////
         // Helper functions
@@ -970,6 +892,11 @@
                         activity.action += '<li>' + change + '</li>';
                         wasChanged = true;
                     }
+                    var contactChanges = compareContact(data[i].originalData.contact, data[i].newData.contact);
+                    if (contactChanges && contactChanges.length > 0) {
+                        activity.action += '<li>Contact changes<ul>' + contactChanges.join('') + '</ul></li>';
+                        wasChanged = true;
+                    }
                     if (!angular.equals(data[i].originalData.ownerHistory, data[i].newData.ownerHistory)) {
                         var action = '<li>Owner history changed. Was:<ul>';
                         if (data[i].originalData.ownerHistory.length === 0) {
@@ -1009,12 +936,20 @@
             for (var i = 0; i < data.length; i++) {
                 var activity = {date: data[i].activityDate};
                 if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
-                    activity.name = data[i].newData.productName;
+                    activity.product = data[i].newData.productName;
+                    activity.name = data[i].newData.version;
                     activity.action = 'Update:<ul>';
                     change = compareItem(data[i].originalData, data[i].newData, 'version', 'Version');
                     if (change) activity.action += '<li>' + change + '</li>';
+                    change = compareItem(data[i].originalData, data[i].newData, 'productName', 'Associated Product');
+                    if (change) activity.action += '<li>' + change + '</li>';
                     activity.action += '</ul>';
                 } else {
+                    if (data[i].newData) {
+                        activity.product = data[i].newData.productName;
+                    } else if (data[i].originalData) {
+                        activity.product = data[i].originalData.productName;
+                    }
                     vm.interpretNonUpdate(activity, data[i], 'version', 'version');
                 }
                 ret.push(activity);
