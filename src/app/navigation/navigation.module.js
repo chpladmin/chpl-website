@@ -21,10 +21,18 @@
             response: function (response) {
                 // Pop up a notification if the CHPL ID changed
                 if (response.headers && response.headers()['chpl-id-changed']) {
+                    var message, title, id = response.headers()['chpl-id-changed'];
+                    if (id.indexOf(',') > -1) {
+                        title = 'CHPL IDs Changed';
+                        message = 'Your activity caused CHPL Product Numbers to change';
+                    } else {
+                        title = 'CHPL ID Changed';
+                        message = 'Your activity caused a CHPL Product Number to change';
+                    }
                     toaster.pop({
                         type: 'success',
-                        title: 'CHPL ID Changed',
-                        body: 'Your activity caused the CHPL Product Identifier to change. It used to be: "' + response.headers()['chpl-id-changed'] + '"'
+                        title: title,
+                        body: message
                     });
                 }
                 // If a token was sent back, save it

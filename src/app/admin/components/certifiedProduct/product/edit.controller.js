@@ -21,6 +21,9 @@
 
         function activate () {
             vm.product = angular.copy(activeProduct);
+            if (!vm.product.contact) {
+                vm.product.contact = {};
+            }
             vm.updateProduct = {productIds: [vm.product.productId]};
             commonService.getDevelopers(true).then(function (developers) {
                 vm.developers = developers.developers;
