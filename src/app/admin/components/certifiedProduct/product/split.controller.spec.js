@@ -74,7 +74,7 @@
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.splitProduct.and.returnValue($q.when({status: 500}));
+                commonService.splitProduct.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();

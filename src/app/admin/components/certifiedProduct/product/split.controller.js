@@ -61,10 +61,10 @@
                             newProduct: response.newProduct
                         });
                     } else {
-                        vm.errorMessage = response;
+                        vm.errorMessage = response.data.error;
                     }
                 },function (error) {
-                    vm.errorMessage = error;
+                    vm.errorMessage = error.data.error;
                 });
         }
 
