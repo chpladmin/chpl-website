@@ -7,6 +7,7 @@ _Date TBD_
 * Added Google Tag Manager event tracking
 * Added POC to Product level; refactored Contact as separate component
 * Allow splitting of Products along Version lines
+* Show retired/deleted ONC-ACBs on main page search filter
 
 ---
 
