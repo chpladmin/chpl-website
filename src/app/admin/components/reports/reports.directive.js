@@ -892,6 +892,11 @@
                         activity.action += '<li>' + change + '</li>';
                         wasChanged = true;
                     }
+                    var contactChanges = compareContact(data[i].originalData.contact, data[i].newData.contact);
+                    if (contactChanges && contactChanges.length > 0) {
+                        activity.action += '<li>Contact changes<ul>' + contactChanges.join('') + '</ul></li>';
+                        wasChanged = true;
+                    }
                     if (!angular.equals(data[i].originalData.ownerHistory, data[i].newData.ownerHistory)) {
                         var action = '<li>Owner history changed. Was:<ul>';
                         if (data[i].originalData.ownerHistory.length === 0) {

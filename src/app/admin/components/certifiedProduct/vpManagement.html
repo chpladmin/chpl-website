@@ -387,11 +387,7 @@
                   <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
                 </ul>
                 <strong>Contact information</strong><br />
-                First name: {{ vm.activeDeveloper.contact.firstName }}<br />
-                Last name: {{ vm.activeDeveloper.contact.lastName }}<br />
-                Title: {{ vm.activeDeveloper.contact.title }}<br />
-                Email: {{ vm.activeDeveloper.contact.email }}<br />
-                Phone: {{ vm.activeDeveloper.contact.phoneNumber }}<br />
+                <ai-contact contact="vm.activeDeveloper.contact"></ai-contact>
               </div>
               <p ng-if="vm.developerMessage !== undefined" class="bg-danger">{{ vm.developerMessage }}</p>
             </div>
@@ -459,6 +455,10 @@
             </div>
             <div class="panel-body">
               <div>{{ vm.activeProduct.name }} <em class="pull-right">Last modified date: {{ vm.activeProduct.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em></div>
+              <span ng-if="vm.activeProduct.contact">
+                <strong>Contact information</strong><br />
+                <ai-contact contact="vm.activeProduct.contact"></ai-contact>
+              </span>
               <p ng-if="vm.productMessage !== undefined" class="bg-danger">{{ vm.productMessage }}</p>
             </div>
           </div>

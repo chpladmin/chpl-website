@@ -84,11 +84,7 @@
               Website: {{ vm.developer.website }}<br />
               Transparency Attestation: {{ vm.developer.transparencyAttestations[0].attestation }}<br />
               <strong>Contact information</strong><br />
-              First name: {{ vm.developer.contact.firstName }}<br />
-              Last name: {{ vm.developer.contact.lastName }}<br />
-              Title: {{ vm.developer.contact.title }}<br />
-              Email: {{ vm.developer.contact.email }}<br />
-              Phone: {{ vm.developer.contact.phoneNumber }}<br />
+              <ai-contact contact="vm.developer.contact"></ai-contact>
               <br />
               Last Modified Date: {{ vm.developer.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
             </div>
@@ -111,11 +107,7 @@
               Website: {{ vm.cp.developer.website }}<br />
               Transparency Attestation: {{ vm.cp.transparencyAttestation }}<br />
               <strong>Contact information</strong><br />
-              First name: {{ vm.cp.developer.contact.firstName }}<br />
-              Last name: {{ vm.cp.developer.contact.lastName }}<br />
-              Title: {{ vm.cp.developer.contact.title }}<br />
-              Email: {{ vm.cp.developer.contact.email }}<br />
-              Phone: {{ vm.cp.developer.contact.phoneNumber }}<br />
+              <ai-contact contact="vm.cp.developer.contact"></ai-contact>
             </div>
             <div class="panel-footer" ng-if="vm.cp.developer.developerId">
               <button class="btn btn-default btn-block" ng-click="vm.saveInspectingDeveloper()">Save as Developer Information</button>

@@ -25,6 +25,11 @@
                 </li>
               </ul>
             </span>
+            <span ng-if="product.contact">
+              <strong>Contact information</strong><br />
+              <ai-contact contact="contact"></ai-contact>
+              <br />
+            </span>
             Last Modified Date: {{ product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
           </div>
         </div>
@@ -58,6 +63,8 @@
           </div>
         </div>
         <button class="btn btn-block btn-success" ng-click="vm.addPreviousOwner()"><i class="fa fa-plus"></i> Add Product owner</button>
+        Contact information:
+        <ai-contact contact="vm.product.contact" form="vm.mergeForm" is-editing="true" show-form-errors="vm.showFormErrors"></ai-contact>
       </div>
     </div>
   </div>
