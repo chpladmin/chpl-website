@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1430
+* Update Activity reports for greater usability
+
+--
+
 ## Version TBD
 _Date TBD_
 

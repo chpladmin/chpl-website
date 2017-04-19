@@ -65,6 +65,9 @@
 
         vm.defaultRefineModel = {
             acb: {
+                'CCHIT': false,
+                'SLI Global': false,
+                'Surescripts LLC': false,
                 'Drummond Group': true,
                 'ICSA Labs': true,
                 'InfoGard': true

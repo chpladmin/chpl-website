@@ -27,28 +27,22 @@
     /** @ngInject */
     function ReportController($log, $filter, $uibModal, commonService, utilService, authService) {
         var vm = this;
-        vm.isAcbAdmin = authService.isAcbAdmin();
-        vm.isChplAdmin = authService.isChplAdmin();
-        vm.isOncStaff = authService.isOncStaff();
-        vm.tab = 'cp';
-        vm.activityRange = { range: 60};
-        vm.questionableRange = 0;
 
-        vm.refreshActivity = refreshActivity;
-        vm.changeTab = changeTab;
         vm.clearApiKeyFilter = clearApiKeyFilter;
         vm.compareSurveillances = compareSurveillances;
         vm.loadApiKeys = loadApiKeys;
+        vm.refreshAcb = refreshAcb;
+        vm.refreshActivity = refreshActivity;
+        vm.refreshAnnouncement = refreshAnnouncement;
+        vm.refreshApi = refreshApi;
+        vm.refreshApiKeyUsage = refreshApiKeyUsage;
+        vm.refreshAtl = refreshAtl;
         vm.refreshCp = refreshCp;
         vm.refreshDeveloper = refreshDeveloper;
         vm.refreshProduct = refreshProduct;
-        vm.refreshAcb = refreshAcb;
-        vm.refreshAtl = refreshAtl;
-        vm.refreshAnnouncement = refreshAnnouncement;
         vm.refreshUser = refreshUser;
-        vm.refreshApi = refreshApi;
-        vm.refreshApiKeyUsage = refreshApiKeyUsage;
         vm.singleCp = singleCp;
+        vm.validDates = validDates;
 
         activate();
 
@@ -56,38 +50,114 @@
         // Functions
 
         function activate () {
-            vm.activityRange.endDate = new Date();
-            vm.activityRange.startDate = new Date();
-            vm.activityRange.startDate.setDate(vm.activityRange.startDate.getDate() - vm.activityRange.range);
+            vm.isAcbAdmin = authService.isAcbAdmin();
+            vm.isChplAdmin = authService.isChplAdmin();
+            vm.isOncStaff = authService.isOncStaff();
+            vm.tab = 'cp';
+            vm.activityRange = { range: 60 };
+            vm.questionableRange = 0;
+            var start = new Date();
+            var end = new Date();
+            start.setDate(end.getDate() - vm.activityRange.range);
+            vm.activityRange.listing = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end)
+            };
+            vm.activityRange.developer = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end)
+            };
+            vm.activityRange.product = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end)
+            };
+            vm.activityRange.acb = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end)
+            };
+            vm.activityRange.atl = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end)
+            };
+            vm.activityRange.announcement = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end)
+            };
+            vm.activityRange.userActivity = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end)
+            };
+            vm.activityRange.api_key = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end)
+            };
             vm.apiKey = {
                 visiblePage: 1,
                 pageSize: 100,
                 startDate: angular.copy(vm.activityRange.startDate),
                 endDate: angular.copy(vm.activityRange.endDate)
             };
-            vm.refreshActivity();
+            vm.refreshActivity(true);
             vm.loadApiKeys();
             vm.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
-        function refreshActivity () {
-            if (vm.productId) {
-                vm.singleCp();
+        function refreshActivity (refreshAll) {
+            if (refreshAll) {
+                if (vm.productId) {
+                    vm.singleCp();
+                } else {
+                    vm.refreshCp();
+                }
+                vm.refreshDeveloper();
+                vm.refreshProduct();
+                vm.refreshAcb();
+                vm.refreshAtl();
+                vm.refreshAnnouncement();
+                vm.refreshUser();
+                vm.refreshApi();
+                vm.refreshApiKeyUsage();
             } else {
-                vm.refreshCp();
+                switch (vm.workType) {
+                case '':
+                case 'cp-upload':
+                case 'cp-status':
+                case 'cp-surveillance':
+                case 'cp-cap':
+                case 'cp-other':
+                    if (vm.productId) {
+                        vm.singleCp();
+                    } else {
+                        vm.refreshCp();
+                    }
+                    break;
+                case 'dev':
+                    vm.refreshDeveloper();
+                    break;
+                case 'prod':
+                    vm.refreshProduct();
+                    break;
+                case 'acb':
+                    vm.refreshAcb();
+                    break;
+                case 'atl':
+                    vm.refreshAtl();
+                    break;
+                case 'announcement':
+                    vm.refreshAnnouncement();
+                    break;
+                case 'users':
+                    vm.refreshUser();
+                    break;
+                case 'api_key_management':
+                    vm.refreshApi();
+                    break;
+                }
             }
-            vm.refreshDeveloper();
-            vm.refreshProduct();
-            vm.refreshAcb();
-            vm.refreshAtl();
-            vm.refreshAnnouncement();
-            vm.refreshUser();
-            vm.refreshApi();
-            vm.refreshApiKeyUsage();
         }
 
         function refreshCp () {
-            commonService.getCertifiedProductActivity(dateAdjust(vm.activityRange))
+            commonService.getCertifiedProductActivity(dateAdjust(vm.activityRange.listing))
                 .then(function (data) {
                     interpretCps(data);
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
@@ -99,7 +169,7 @@
         }
 
         function refreshDeveloper () {
-            commonService.getDeveloperActivity(dateAdjust(vm.activityRange))
+            commonService.getDeveloperActivity(dateAdjust(vm.activityRange.developer))
                 .then(function (data) {
                     vm.searchedDevelopers = interpretDevelopers(data);
                     vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
@@ -107,12 +177,12 @@
         }
 
         function refreshProduct () {
-            commonService.getProductActivity(dateAdjust(vm.activityRange))
+            commonService.getProductActivity(dateAdjust(vm.activityRange.product))
                 .then(function (data) {
                     vm.searchedProducts = interpretProducts(data);
                     vm.displayedProducts = [].concat(vm.searchedProducts);
                 });
-            commonService.getVersionActivity(dateAdjust(vm.activityRange))
+            commonService.getVersionActivity(dateAdjust(vm.activityRange.product))
                 .then(function (data) {
                     vm.searchedVersions = vm.interpretVersions(data);
                     vm.displayedVersions = [].concat(vm.searchedVersions);
@@ -120,7 +190,7 @@
         }
 
         function refreshAcb () {
-            commonService.getAcbActivity(dateAdjust(vm.activityRange))
+            commonService.getAcbActivity(dateAdjust(vm.activityRange.acb))
                 .then(function (data) {
                     vm.searchedACBs = vm.interpretAcbs(data);
                     vm.displayedACBs = [].concat(vm.searchedACBs);
@@ -128,7 +198,7 @@
         }
 
         function refreshAtl () {
-            commonService.getAtlActivity(dateAdjust(vm.activityRange))
+            commonService.getAtlActivity(dateAdjust(vm.activityRange.atl))
                 .then(function (data) {
                     vm.searchedATLs = vm.interpretAtls(data);
                     vm.displayedATLs = [].concat(vm.searchedATLs);
@@ -136,7 +206,7 @@
         }
 
         function refreshAnnouncement () {
-            commonService.getAnnouncementActivity(dateAdjust(vm.activityRange))
+            commonService.getAnnouncementActivity(dateAdjust(vm.activityRange.announcement))
                 .then(function (data) {
                     vm.searchedAnnouncements = vm.interpretAnnouncements(data);
                     vm.displayedAnnouncements = [].concat(vm.searchedAnnouncements);
@@ -145,12 +215,12 @@
 
         function refreshUser () {
             if (vm.isChplAdmin || vm.isOncStaff) {
-                commonService.getUserActivity(dateAdjust(vm.activityRange))
+                commonService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
                     .then(function (data) {
                         vm.searchedUsers = vm.interpretUsers(data);
                         vm.displayedUsers = [].concat(vm.searchedUsers);
                     });
-                commonService.getUserActivities(dateAdjust(vm.activityRange))
+                commonService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
                     .then(function (data) {
                         vm.searchedUserActivities = vm.interpretUserActivities(data);
                         vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
@@ -160,7 +230,7 @@
 
         function refreshApi () {
             if (vm.isChplAdmin || vm.isOncStaff) {
-                commonService.getApiUserActivity(dateAdjust(vm.activityRange))
+                commonService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
                     .then(function (data) {
                         vm.searchedApiActivity = data;
                         vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
@@ -220,28 +290,9 @@
                 });
         }
 
-        function changeTab(newTab) {
-            switch (newTab) {
-            case 'cp':
-                vm.refreshCp();
-                break;
-            case 'dev':
-                vm.refreshDeveloper();
-                break;
-            case 'prod':
-                vm.refreshProduct();
-                break;
-            case 'acb':
-                vm.refreshAcb();
-                break;
-            case 'users':
-                vm.refreshUser();
-                break;
-            case 'visitors':
-                vm.refreshVisitors();
-                break;
-            }
-            vm.tab = newTab;
+        function validDates (key) {
+            var diffDays = Math.ceil((vm.activityRange[key].endDate.getTime() - vm.activityRange[key].startDate.getTime()) / (1000 * 60 * 60 * 24));
+            return (diffDays > 0 && diffDays <= vm.activityRange.range);
         }
 
         ////////////////////////////////////////////////////////////////////
