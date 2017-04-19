@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1436
+* Show retired/deleted ONC-ACBs on main page search filter
+
+--
+
 ## Version TBD
 _Date TBD_
 
