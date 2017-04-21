@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
+    function SearchController ($analytics, $filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -54,7 +54,6 @@
             vm.restoreStateHs = [];
             vm.isLoading = true;
             vm.isPreLoading = true;
-            cfpLoadingBar.start();
 
             manageStorage();
             populateSearchOptions();
@@ -139,9 +138,6 @@
 
         function loadResults() {
             commonService.getAll().then(function (response) {
-                if (vm.isPreLoading) {
-                    cfpLoadingBar.start();
-                }
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {
                     results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
@@ -380,10 +376,6 @@
             vm.lookaheadSource = {all: [], developers: [], products: []};
             commonService.getSearchOptions(true)
                 .then(function (options) {
-                    if (vm.isPreLoading) {
-                        cfpLoadingBar.start();
-                    }
-
                     vm.searchOptions = options;
                     var i;
                     options.practiceTypes = [];
@@ -424,11 +416,9 @@
                 if (difference > CACHE_TIMEOUT) {
                     vm.activeSearch = false;
                 } else {
-                    cfpLoadingBar.start();
                     $timeout(
                         function () {
                             vm.triggerRestoreState();
-                            cfpLoadingBar.complete();
                         },
                         RELOAD_TIMEOUT
                     );

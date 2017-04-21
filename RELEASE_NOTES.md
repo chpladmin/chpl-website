@@ -1,5 +1,13 @@
 # Release Notes
 
+### OCD-1439 (feature)
+* Allow optionally banning Developers on appropriate status change
+
+### OCD-1421 (bug)
+* Fixed bug related to too long Name/Additional Software in CMS PDF generation
+
+---
+
 ## Version TBD
 _Date TBD_
 

@@ -233,5 +233,72 @@
                 expect(vm.productMessage).toBe('split messages');
             });
         });
+
+        describe('editing a Listing', function () {
+            var listingEditOptions;
+            beforeEach(function () {
+                listingEditOptions = {
+                    templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/edit.html',
+                    controller: 'EditCertifiedProductController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'lg',
+                    resolve: {
+                        activeCP: jasmine.any(Function),
+                        isAcbAdmin: jasmine.any(Function),
+                        isAcbStaff: jasmine.any(Function),
+                        isChplAdmin: jasmine.any(Function),
+                        resources: jasmine.any(Function),
+                        workType: jasmine.any(Function)
+                    }
+                };
+            });
+
+            it('should create a modal instance when a Listing is to be edited', function () {
+                expect(vm.modalInstance).toBeUndefined();
+                vm.editCertifiedProduct()
+                expect(vm.modalInstance).toBeDefined();
+            });
+
+            it('should resolve elements on edit', function () {
+                vm.editCertifiedProduct()
+                expect($uibModal.open).toHaveBeenCalledWith(listingEditOptions);
+                expect(actualOptions.resolve.activeCP()).toEqual('');
+                actualOptions.resolve.isAcbAdmin().then(function (result) { expect(result).toEqual(true); });
+                actualOptions.resolve.isAcbStaff().then(function (result) { expect(result).toEqual(true); });
+                actualOptions.resolve.isChplAdmin().then(function (result) { expect(result).toEqual(true); });
+                expect(actualOptions.resolve.resources()).toEqual(vm.resources);
+                expect(actualOptions.resolve.workType()).toEqual(vm.workType);
+                el.isolateScope().$digest();
+            });
+
+            it('should do stuff with the returned data', function () {
+                var result = {id: 4};
+                spyOn(vm, 'refreshDevelopers');
+                spyOn(vm, 'loadCp');
+                vm.editCertifiedProduct();
+                vm.modalInstance.close(result);
+                expect(vm.activeCP).toEqual(result);
+                expect(vm.productId).toEqual(result.id);
+                expect(vm.refreshDevelopers).toHaveBeenCalled();
+                expect(vm.loadCp).toHaveBeenCalled();
+            });
+
+            it('should log a cancelled modal', function () {
+                var logCount = $log.info.logs.length;
+                vm.editCertifiedProduct();
+                vm.modalInstance.dismiss('cancelled');
+                expect($log.info.logs.length).toBe(logCount + 1);
+            });
+
+            it('should report messages if they were sent back', function () {
+                vm.editCertifiedProduct();
+                vm.modalInstance.dismiss('cancelled');
+                vm.modalInstance.dismiss('edit messages');
+                expect(vm.cpMessage).toBe('edit messages');
+            });
+        });
     });
 })();
