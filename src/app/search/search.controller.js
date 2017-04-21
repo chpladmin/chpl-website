@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
+    function SearchController ($analytics, $filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -54,7 +54,6 @@
             vm.restoreStateHs = [];
             vm.isLoading = true;
             vm.isPreLoading = true;
-            cfpLoadingBar.start();
 
             manageStorage();
             populateSearchOptions();
@@ -65,6 +64,9 @@
 
         vm.defaultRefineModel = {
             acb: {
+                'CCHIT': false,
+                'SLI Global': false,
+                'Surescripts LLC': false,
                 'Drummond Group': true,
                 'ICSA Labs': true,
                 'InfoGard': true
@@ -84,6 +86,9 @@
                 'Suspended by ONC': true,
                 'Terminated by ONC': false
             }
+        };
+        vm.retired = {
+            acb: {'CCHIT': true, 'SLI Global': true, 'Surescripts LLC': true}
         };
 
         function browseAll () {
@@ -133,9 +138,6 @@
 
         function loadResults() {
             commonService.getAll().then(function (response) {
-                if (vm.isPreLoading) {
-                    cfpLoadingBar.start();
-                }
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {
                     results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
@@ -372,17 +374,19 @@
 
         function populateSearchOptions () {
             vm.lookaheadSource = {all: [], developers: [], products: []};
-            commonService.getSearchOptions()
+            commonService.getSearchOptions(true)
                 .then(function (options) {
-                    if (vm.isPreLoading) {
-                        cfpLoadingBar.start();
-                    }
-
                     vm.searchOptions = options;
                     var i;
                     options.practiceTypes = [];
                     for (i = 0; i < options.practiceTypeNames.length; i++) {
                         options.practiceTypes.push(options.practiceTypeNames[i].name);
+                    }
+                    for (i = 0; i < options.certBodyNames.length; i++) {
+                        if (options.certBodyNames[i].name === 'Pending') {
+                            options.certBodyNames.splice(i,1);
+                            break;
+                        }
                     }
                     for (i = 0; i < options.certificationStatuses.length; i++) {
                         if (options.certificationStatuses[i].name === 'Pending') {
@@ -412,11 +416,9 @@
                 if (difference > CACHE_TIMEOUT) {
                     vm.activeSearch = false;
                 } else {
-                    cfpLoadingBar.start();
                     $timeout(
                         function () {
                             vm.triggerRestoreState();
-                            cfpLoadingBar.complete();
                         },
                         RELOAD_TIMEOUT
                     );
@@ -429,7 +431,7 @@
         }
 
         function setFilterInfo (refineModel) {
-            var i;
+            var i, obj;
             vm.refineModel = angular.copy(refineModel);
             vm.filterItems = {
                 pageSize: '50',
@@ -441,7 +443,14 @@
             };
             vm.searchOptions.certBodyNames = $filter('orderBy')(vm.searchOptions.certBodyNames, 'name');
             for (i = 0; i < vm.searchOptions.certBodyNames.length; i++) {
-                vm.filterItems.acbItems.push({value: vm.searchOptions.certBodyNames[i].name, selected: vm.defaultRefineModel.acb[vm.searchOptions.certBodyNames[i].name]});
+                obj = {
+                    value: vm.searchOptions.certBodyNames[i].name,
+                    selected: vm.defaultRefineModel.acb[vm.searchOptions.certBodyNames[i].name]
+                };
+                if (vm.retired.acb[vm.searchOptions.certBodyNames[i].name]) {
+                    obj.display = obj.value + ' (Retired)';
+                }
+                vm.filterItems.acbItems.push(obj);
             }
             vm.searchOptions.editions = $filter('orderBy')(vm.searchOptions.editions, 'name');
             for (i = 0; i < vm.searchOptions.editions.length; i++) {

@@ -86,9 +86,9 @@
             return self.simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
         };
 
-        self.getSearchOptions = function (simple) {
-            if (simple)
-                return self.simpleApiCall('/data/search_options?simple=true');
+        self.getSearchOptions = function (showDeleted) {
+            if (showDeleted)
+                return self.simpleApiCall('/data/search_options?showDeleted=true');
             else
                 return self.simpleApiCall('/data/search_options');
         };
