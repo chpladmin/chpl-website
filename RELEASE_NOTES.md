@@ -1,5 +1,13 @@
 # Release Notes
 
+### OCD-1439 (feature)
+* Allow optionally banning Developers on appropriate status change
+
+### OCD-1421 (bug)
+* Fixed bug related to too long Name/Additional Software in CMS PDF generation
+
+---
+
 ## Version TBD
 _Date TBD_
 
@@ -8,7 +16,6 @@ _Date TBD_
 * Added POC to Product level; refactored Contact as separate component
 * Allow splitting of Products along Version lines
 * Show retired/deleted ONC-ACBs on main page search filter
-* Allow optionally banning Developers on appropriate status change
 
 ---
 
