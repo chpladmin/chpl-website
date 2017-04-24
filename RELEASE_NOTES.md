@@ -1,5 +1,8 @@
 # Release Notes
 
+### OCD-1415 (bug)
+* Fixed bug related to Merged Developer status history
+
 ### OCD-1439 (feature)
 * Allow optionally banning Developers on appropriate status change
 
