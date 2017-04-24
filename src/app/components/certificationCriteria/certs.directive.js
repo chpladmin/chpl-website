@@ -41,7 +41,7 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($scope, ACTIVE_CAP) {
+        function CertsController ($analytics, $scope, ACTIVE_CAP) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
@@ -218,6 +218,23 @@
             }
 
             function showPanel (panel) {
+                if (vm.panelShown !== panel) {
+                    switch (panel) {
+                    case 'cert':
+                        $analytics.eventTrack('View Details', { panel: 'Certification Criteria'});
+                        break;
+                    case 'cqm':
+                        $analytics.eventTrack('View Details', { panel: 'Clinical Quality Measures'});
+                    break;
+                    case 'additional':
+                        $analytics.eventTrack('View Details', { panel: 'Additional Information'});
+                        break;
+                    case 'surveillance':
+                        $analytics.eventTrack('View Details', { panel: 'Surveillance Activity'});
+                        break;
+                    }
+                }
+
                 vm.panelShown = vm.panelShown === panel ? '' : panel;
             }
 

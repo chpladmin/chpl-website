@@ -5,15 +5,6 @@
         var vm, el, $log, mock, Mock, $uibModal, actualOptions;
 
         mock = {};
-        mock.fakeModal = {
-            result: {
-                then: function (confirmCallback, cancelCallback) {
-                    this.confirmCallBack = confirmCallback;
-                    this.cancelCallback = cancelCallback;
-                }},
-            close: function (item) { this.result.confirmCallBack(item); },
-            dismiss: function (type) { this.result.cancelCallback(type); }
-        };
         mock.fakeModalOptions = {
             templateUrl: 'app/admin/components/additionalSoftware/edit.html',
             controller: 'EditAdditionalSoftwareController',
@@ -25,7 +16,6 @@
                 software: jasmine.any(Function)
             }
         };
-
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.templates','chpl.admin');

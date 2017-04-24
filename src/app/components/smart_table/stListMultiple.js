@@ -175,7 +175,6 @@
         }
 
         function allowAll () {
-            $log.info('allowAll', vm.predicate);
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected) {
                     item.isSelected = false;

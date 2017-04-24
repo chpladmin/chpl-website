@@ -130,31 +130,7 @@
       </select>
     </div>
     Contact information:<br />
-    <div class="form-group">
-      <label for="contactFirst">First Name <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.firstName" id="contactFirst" name="contactFirst"></input>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactFirst.$touched) && vm.editForm.contactFirst.$error.required">Field is required</div>
-    </div>
-    <div class="form-group">
-      <label for="contactLast">Last Name <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.lastName" id="contactLast" name="contactLast"></input>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactLast.$touched) && vm.editForm.contactLast.$error.required">Field is required</div>
-    </div>
-    <div class="form-group">
-      <label for="contactTitle">Title</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.developer.contact.title" id="contactTitle" name="contactTitle"></input>
-    </div>
-    <div class="form-group">
-      <label for="contactEmail">Email <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="email" required ng-model="vm.developer.contact.email" id="contactEmail" name="contactEmail"></input>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactEmail.$touched) && vm.editForm.contactEmail.$error.required">Field is required</div>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactEmail.$touched) && vm.editForm.contactEmail.$error.email">Invalid email</div>
-    </div>
-    <div class="form-group">
-      <label for="contactPhoneNumber">Phone <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.developer.contact.phoneNumber" id="contactPhoneNumber" name="contactPhoneNumber"></input>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.contactPhoneNumber.$touched) && vm.editForm.contactPhoneNumber.$error.required">Field is required</div>
-    </div>
+    <ai-contact contact="vm.developer.contact" error-messages="vm.contactErrorMessages" form="vm.editForm" is-editing="true" is-required="true" show-form-errors="vm.showFormErrors"></ai-contact>
   </div>
   <div class="modal-footer">
     <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || (!vm.developer.statusEvents || vm.developer.statusEvents.length === 0) || vm.hasStatusMatches() || vm.hasDateMatches()) && vm.showFormErrors">
@@ -171,11 +147,7 @@
         <li ng-if="vm.editForm.addressZipcode.$error.required">Zipcode is required</li>
         <li ng-if="vm.editForm.addressCountry.$error.required">Country is required</li>
         <li ng-if="vm.editForm.developerWebsite.$error.url">Website is invalid (http://www.example.com)</li>
-        <li ng-if="vm.editForm.contactFirst.$error.required">First Name is required</li>
-        <li ng-if="vm.editForm.contactLast.$error.required">Last Name is required</li>
-        <li ng-if="vm.editForm.contactEmail.$error.required">Contact email is required</li>
-        <li ng-if="vm.editForm.contactEmail.$error.email">Invalid email (example@example.com)</li>
-        <li ng-if="vm.editForm.contactPhoneNumber.$error.required">Contact Phone Number is required</li>
+        <li ng-repeat="error in vm.contactErrorMessages">{{ error }}</li>
       </ul>
     </div>
     <button ng-disabled="(vm.editForm.$invalid || (!vm.developer.statusEvents || vm.developer.statusEvents.length === 0)) && vm.showFormErrors"

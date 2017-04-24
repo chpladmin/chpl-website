@@ -1,6 +1,6 @@
 {
     "name": "chpl",
-    "version": "8.1.0",
+    "version": "8.2.0",
     "scripts": {
         "test": "gulp test"
     },
@@ -51,7 +51,7 @@
         "karma-phantomjs-shim": "~1.2.0",
         "lodash": "~3.10.1",
         "main-bower-files": "~2.9.0",
-        "phantomjs": "~1.9.18",
+        "phantomjs": "~2.1.1",
         "uglify-save-license": "~0.4.1",
         "wiredep": "~2.2.2"
     },

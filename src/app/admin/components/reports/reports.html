@@ -459,6 +459,7 @@
         <table st-table="vm.displayedVersions" st-safe-src="vm.searchedVersions" class="table table-striped">
           <thead>
             <tr>
+              <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
               <th class="search-header" st-sort="name" st-skip-natural="true">Version</th>
               <th class="">Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
@@ -466,9 +467,10 @@
           </thead>
           <tbody>
             <tr ng-if="vm.displayedVersions.length === 0">
-              <td colspan="3">No activity found</td>
+              <td colspan="4">No activity found</td>
             </tr>
 	        <tr ng-repeat="activity in vm.displayedVersions" ng-if="vm.displayedVersions.length > 0">
+		      <td class="">{{ activity.product }}</td>
 		      <td class="">{{ activity.name }}</td>
 		      <td class=""><span ng-bind-html="activity.action"></span></td>
 		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
@@ -738,42 +740,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-
-    <div class="row" ng-if="vm.workType === 'visitors'">
-      <div class="col-sm-12">
-        <h3>Visitor analytics</h3>
-        <div class="row">
-          <div class="col-md-12">
-            <div google-chart chart="vm.browserVariety" class="google-chart"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div google-chart chart="vm.country" class="google-chart"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div google-chart chart="vm.cities" class="google-chart"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div google-chart chart="vm.map" class="google-chart"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div google-chart chart="vm.cityMap" class="google-chart"></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div google-chart chart="vm.traffic" class="google-chart"></div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

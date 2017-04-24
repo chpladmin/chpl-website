@@ -2,14 +2,14 @@
     'use strict';
 
     angular.module('chpl')
-        .controller('EllipseController', EllipseController)
-        .directive('aiEllipse', aiEllipse);
+        .controller('EllipsisController', EllipsisController)
+        .directive('aiEllipsis', aiEllipsis);
 
-    function aiEllipse () {
+    function aiEllipsis () {
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/util/ellipse.html',
+            templateUrl: 'app/components/util/ellipsis.html',
             bindToController: {
                 text: '@',
                 maxLength: '@?',
@@ -17,12 +17,12 @@
             },
             scope: {},
             controllerAs: 'vm',
-            controller: 'EllipseController'
+            controller: 'EllipsisController'
         };
     }
 
     /** @ngInclude */
-    function EllipseController () {
+    function EllipsisController () {
         var vm = this;
 
         activate();
