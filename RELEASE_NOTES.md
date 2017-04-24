@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 8.2.0
+_24 April 2017_
 
 ### New features
 * Added Google Tag Manager event tracking
