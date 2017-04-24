@@ -1,18 +1,19 @@
 # Release Notes
 
-### OCD-1415 (bug)
-* Fixed bug related to Merged Developer status history
+## Version TBD
+_Date TBD_
 
-### OCD-1439 (feature)
+### New Features
 * Allow optionally banning Developers on appropriate status change
 
-### OCD-1421 (bug)
+### Bugs fixed
+* Fixed bug related to Merged Developer status history
 * Fixed bug related to too long Name/Additional Software in CMS PDF generation
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 8.2.0
+_24 April 2017_
 
 ### New features
 * Added Google Tag Manager event tracking
