@@ -1,0 +1,39 @@
+<section class="row">
+  <div class="col-sm-12 admin-inner-tab main-content form-horizontal" ng-form="vm.activityForm">
+    <h3>Surveillance Notification Recipients</h3>
+    <table class="table table-condensed" st-table="vm.displayedSurveillanceRecipients" st-safe-src="vm.surveillanceRecipients">
+      <thead>
+        <tr>
+          <th scope="col" class="search-header" st-sort="acb.name" st-skip-natural="true" st-sort-default="true">Type of Report</th>
+          <th scope="col" class="search-header" st-sort="email" st-skip-natural="true">Email Address</th>
+          <th scope="col">Daily</th>
+          <th scope="col">Weekly</th>
+          <th scope="col"><span class="sr-only">Actions</span></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <td>
+            <select id="reportType" ng-model="vm.newRecipient.type">
+              <option value="ONC">ONC</option>
+              <option value="Drummond">Drummond</option>
+            </select>
+          </td>
+          <td><input type="email" id="email" ng-model="vm.newRecipient.email"></td>
+          <td><input type="checkbox" id="daily" ng-model="vm.newRecipient.daily"></td>
+          <td><input type="checkbox" id="weekly" ng-model="vm.newRecipient.weekly"></td>
+          <td><button class="btn btn-primary" ng-click="vm.addRecipient()" ng-disabled="!vm.isNewRecipientValid()"><i class="fa fa-plus"></i><span class="sr-only">Add recipient</span></button></td>
+        </tr>
+      </tfoot>
+      <tbody>
+        <tr ng-repeat="recipient in vm.displayedSurveillanceRecipients track by recipient.id">
+          <td>{{ recipient.acb ? recipient.acb.name : 'ONC' }}</td>
+          <td>{{ recipient.email }}</td>
+          <td>{{ recipient.daily ? 'True' : 'False' }}</td>
+          <td>{{ recipient.weekly ? 'True' : 'False' }}</td>
+          <td>Edit/Remove</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('decertifications.developers.controller', function () {
+    describe('chpl.decertifications.developers.controller', function () {
         var vm, scope, $log, $q, commonService, mock, Mock;
 
         mock = {

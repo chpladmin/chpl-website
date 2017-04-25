@@ -2,8 +2,7 @@
     'use strict';
 
     describe('chpl.admin.vpManagement.directive', function () {
-
-        var el, $log, $q, commonService, authService, vm, /*FileUploader,*/ mock, Mock, $uibModal, actualOptions;
+        var el, $log, $q, commonService, authService, vm, mock, Mock, $uibModal, actualOptions;
 
         mock = {};
         mock.developers = {developers: [{name: 'Developer 1', transparencyAttestations: []}, {name: 'Developer 2', transparencyAttestations: []}]};
@@ -40,6 +39,7 @@
                     $delegate.isAcbStaff = jasmine.createSpy('isAcbStaff');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
+
                     return $delegate;
                 });
 
@@ -68,13 +68,9 @@
 
                     return $delegate;
                 });
-
-                $provide.decorator('FileUploader', function ($delegate) {
-                    return $delegate;
-                });
             });
 
-            inject(function ($controller, _commonService_, _authService_, /*_FileUploader_,*/ $compile, $rootScope, _$log_, _$q_, _Mock_, _$uibModal_) {
+            inject(function ($controller, _commonService_, _authService_, $compile, $rootScope, _$log_, _$q_, _Mock_, _$uibModal_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
@@ -83,7 +79,6 @@
                     actualOptions = options;
                     return Mock.fakeModal;
                 });
-                //FileUploader = _FileUploader_;
                 authService = _authService_;
                 authService = _authService_;
                 authService.getApiKey.and.returnValue($q.when('fake api key'));
@@ -124,7 +119,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 

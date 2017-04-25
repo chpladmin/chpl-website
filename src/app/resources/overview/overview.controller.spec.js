@@ -1,36 +1,43 @@
 (function () {
     'use strict';
 
-    describe('chpl.overview.controller', function () {
-        var commonService, scope, vm, $log, $q, ctrl;
+    describe('chpl.overview', function () {
+        var commonService, scope, vm, $log, $q;
+
         beforeEach(function () {
             module('chpl.overview', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.getAtls = jasmine.createSpy('getAtls');
                     $delegate.getAnnouncements = jasmine.createSpy('getAnnouncements');
+
+                    return $delegate;
                 });
             });
 
-            inject(function (_commonService_, _$log_, $controller, $q, $rootScope) {
-                commonService = _commonService_;
+            inject(function (_commonService_, _$log_, $controller, _$q_, $rootScope) {
                 $log = _$log_;
+                $q = _$q_;
+                commonService = _commonService_;
                 commonService.getAcbs.and.returnValue($q.when({acbs: [{id:0, name:'test-acb'}]}));
                 commonService.getAtls.and.returnValue($q.when({atls: [{id:0, name:'test-atl'}]}));
                 commonService.getAnnouncements.and.returnValue($q.when({announcements: [{title:0, description:'test-atl'}]}));
 
-                ctrl = $controller;
                 scope = $rootScope.$new();
-                vm = ctrl('OverviewController');
+                vm = $controller('OverviewController');
                 scope.$digest();
             });
+        });
 
-            afterEach(function () {
-                if ($log.debug.logs.length > 0) {
-//                    console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
-                }
-            });
+        afterEach(function () {
+            if ($log.debug.logs.length > 0) {
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
+            }
+        });
 
+        describe('controller', function () {
             it('should exist', function () {
                 expect(vm).toBeDefined();
             });
@@ -47,10 +54,11 @@
             });
 
             it('should log an error if getAcbs fails', function () {
+                var initLength = $log.error.logs.length
                 commonService.getAcbs.and.returnValue($q.reject('expected error'));
                 vm.loadAcbs();
                 scope.$digest();
-                expect($log.debug.logs.length).toBeGreaterThan(0);
+                expect($log.error.logs.length).toBe(initLength + 1);
             });
 
             it('should call the common service to load atls', function () {
@@ -59,10 +67,11 @@
             });
 
             it('should log an error if getAtls fails', function () {
+                var initLength = $log.error.logs.length
                 commonService.getAtls.and.returnValue($q.reject('expected error'));
                 vm.loadAtls();
                 scope.$digest();
-                expect($log.debug.logs.length).toBeGreaterThan(0);
+                expect($log.error.logs.length).toBe(initLength + 1);
             });
 
             it('should call the common service to load announcements', function () {
@@ -71,10 +80,11 @@
             });
 
             it('should log an error if getAnnouncements fails', function () {
+                var initLength = $log.error.logs.length
                 commonService.getAnnouncements.and.returnValue($q.reject('expected error'));
                 vm.loadAnnouncements();
                 scope.$digest();
-                expect($log.debug.logs.length).toBeGreaterThan(0);
+                expect($log.error.logs.length).toBe(initLength + 1);
             });
         });
     });
