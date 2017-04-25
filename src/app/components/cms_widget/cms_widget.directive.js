@@ -63,7 +63,7 @@
             function create () {
                 vm.widget.inProgress = true;
                 if (vm.widget.searchResult && vm.widget.searchResult.year) {
-                    $analytics.eventTrack('Get EHR Certification ID', { year: vm.widget.searchResult.year });
+                    $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
                 }
                 vm.widget.createResponse = WidgetService.save(
                     {action: 'create', ids: vm.widget.productIds.join(',')}, {},
@@ -74,7 +74,7 @@
             }
 
             function generatePdf () {
-                $analytics.eventTrack('Download EHR Certification ID PDF', { year: vm.widget.searchResult.year });
+                $analytics.eventTrack('Download EHR Certification ID PDF', { category: 'CMS Widget' });
                 WidgetService.get(
                     {action: vm.widget.createResponse.ehrCertificationId, includeCriteria: true},
                     function (response) {

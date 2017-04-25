@@ -98,7 +98,7 @@
           </div>
           <div class="product-element">
             <h2 class="product-heading">Mandatory Disclosures URL</h2>
-            <ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" text="{{ vm.product.transparencyAttestationUrl }}"></ai-a>
+            <ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" text="{{ vm.product.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: vm.product.transparencyAttestationUrl }"></ai-a>
             <p ng-if="!vm.product.transparencyAttestationUrl">No report on file</p>
           </div>
         </span>

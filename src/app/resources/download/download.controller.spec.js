@@ -6,6 +6,7 @@
         var $log, authService, mock, scope, vm;
 
         mock = {};
+        mock.API = 'api';
         mock.API_KEY = 'api key';
         mock.token = 'a token here';
 

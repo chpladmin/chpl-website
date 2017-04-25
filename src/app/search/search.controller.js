@@ -92,7 +92,7 @@
         };
 
         function browseAll () {
-            $analytics.eventTrack('Browse All');
+            $analytics.eventTrack('Browse All', { category: 'Search' });
             vm.triggerClearFilters();
             vm.triggerClearTerm();
             vm.activeSearch = true;
@@ -288,7 +288,6 @@
         }
 
         function viewPreviouslyCompared (doNotSearch) {
-            $analytics.eventTrack('View Previously Compared');
             if (!doNotSearch) {
                 vm.triggerAllowAll();
             }
@@ -299,12 +298,12 @@
                 vm.previouslyIds.push({value: id, selected: true})
             });
             if (!doNotSearch) {
+                $analytics.eventTrack('View Previously Compared', { category: 'Search' });
                 vm.triggerSearch();
             }
         }
 
         function viewPreviouslyViewed (doNotSearch) {
-            $analytics.eventTrack('View Previously Viewed');
             if (!doNotSearch) {
                 vm.triggerAllowAll();
             }
@@ -315,6 +314,7 @@
                 vm.previouslyIds.push({value: id, selected: true})
             });
             if (!doNotSearch) {
+                $analytics.eventTrack('View Previously Viewed', { category: 'Search' });
                 vm.triggerSearch();
             }
         }
