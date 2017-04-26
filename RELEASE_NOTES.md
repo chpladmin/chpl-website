@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New Features
 * Allow optionally banning Developers on appropriate status change
+* Tweaked GTM events and expanded the events that are tracked
 
 ### Bugs fixed
 * Fixed bug related to Merged Developer status history
