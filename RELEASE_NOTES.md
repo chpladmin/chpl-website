@@ -10,6 +10,7 @@ _Date TBD_
 ### Bugs fixed
 * Fixed bug related to Merged Developer status history
 * Fixed bug related to too long Name/Additional Software in CMS PDF generation
+* Viewing previously viewed/compared clears all filters to allow it
 
 ---
 

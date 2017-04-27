@@ -17,7 +17,6 @@
         vm.loadResults = loadResults;
         vm.registerAllowAll = registerAllowAll;
         vm.registerClearFilter = registerClearFilter;
-        vm.registerClearTerm = registerClearTerm;
         vm.registerRestoreComponents = registerRestoreComponents;
         vm.registerRestoreState = registerRestoreState;
         vm.registerSearch = registerSearch;
@@ -25,7 +24,6 @@
         vm.statusFont = utilService.statusFont;
         vm.triggerAllowAll = triggerAllowAll;
         vm.triggerClearFilters = triggerClearFilters;
-        vm.triggerClearTerm = triggerClearTerm;
         vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
         vm.viewCertificationStatusLegend = viewCertificationStatusLegend;
@@ -94,14 +92,12 @@
         function browseAll () {
             $analytics.eventTrack('Browse All', { category: 'Search' });
             vm.triggerClearFilters();
-            vm.triggerClearTerm();
             vm.activeSearch = true;
             setTimestamp();
         }
 
         function clear () {
             vm.triggerClearFilters();
-            vm.triggerClearTerm();
             vm.activeSearch = false;
             if (vm.searchForm) {
                 vm.searchForm.$setPristine();
@@ -180,16 +176,6 @@
             return removeHandler;
         }
 
-        function registerClearTerm (handler) {
-            vm.clearTerm = [handler]
-            var removeHandler = function () {
-                vm.clearTerm = vm.clearTerm.filter(function (aHandler) {
-                    return aHandler !== handler;
-                });
-            };
-            return removeHandler;
-        }
-
         function registerRestoreComponents (handler) {
             vm.restoreComponents = [handler];
             var removeHandler = function () {
@@ -248,13 +234,6 @@
             vm.triggerSearch();
         }
 
-        function triggerClearTerm () {
-            angular.forEach(vm.clearTerm, function (handler) {
-                handler();
-            });
-            vm.triggerSearch();
-        }
-
         function triggerRestoreState () {
             if ($localStorage.searchTableState) {
                 var state = angular.fromJson($localStorage.searchTableState);
@@ -289,6 +268,7 @@
 
         function viewPreviouslyCompared (doNotSearch) {
             if (!doNotSearch) {
+                vm.triggerClearFilters();
                 vm.triggerAllowAll();
             }
             $localStorage.viewingPreviouslyCompared = true;
@@ -305,6 +285,7 @@
 
         function viewPreviouslyViewed (doNotSearch) {
             if (!doNotSearch) {
+                vm.triggerClearFilters();
                 vm.triggerAllowAll();
             }
             $localStorage.viewingPreviouslyViewed = true;
