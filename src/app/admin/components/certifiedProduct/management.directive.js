@@ -36,6 +36,7 @@
         vm.isProductEditable = isProductEditable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
+        vm.massRejectPendingListings = massRejectPendingListings;
         vm.mergeDevelopers = mergeDevelopers;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
@@ -230,6 +231,26 @@
                     vm.developerMessage = result;
                 }
             });
+        }
+
+        function massRejectPendingListings () {
+            var idsToReject = [];
+            angular.forEach(vm.massReject, function (value, key) {
+                if (value) {
+                    idsToReject.push(parseInt(key));
+                }
+            });
+            commonService.massRejectPendingListings(idsToReject)
+                .then(function () {
+                    angular.forEach(vm.massReject, function (value, key) {
+                        if (value) {
+                            clearPendingListing(parseInt(key));
+                            delete(vm.massReject[key]);
+                        }
+                    });
+                }, function (error) {
+                    vm.uploadingListingsMessages = error.data.errorMessages;
+                });
         }
 
         function mergeDevelopers () {
@@ -517,7 +538,11 @@
 
         function rejectCp (cpId) {
             commonService.rejectPendingCp(cpId)
-                .then(vm.refreshPending);
+                .then(function () {
+                    clearPendingListing(cpId);
+                }, function (error) {
+                    vm.uploadingListingsMessages = error.data.errorMessages;
+                });
         }
 
         function rejectSurveillance (survId) {
@@ -678,6 +703,15 @@
         }
 
         ////////////////////////////////////////////////////////////////////
+
+        function clearPendingListing(cpId) {
+            for (var i = 0; i < vm.uploadingCps.length; i++) {
+                if (cpId === vm.uploadingCps[i].id) {
+                    vm.uploadingCps.splice(i,1)
+                    vm.pendingProducts = vm.uploadingCps.length;
+                }
+            }
+        }
 
         function getResources () {
             commonService.getSearchOptions()

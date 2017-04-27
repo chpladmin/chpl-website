@@ -104,6 +104,7 @@
       <div class="col-sm-12">
         <h3>View Products in the process of upload</h3>
         <p ng-if="vm.uploadingCps.length === 0">No products currently in queue</p>
+        <p ng-if="vm.uploadingListingsMessages">{{ vm.uploadingListingsMessages }}</p>
         <table class="table table-striped" ng-if="vm.uploadingCps.length > 0">
           <thead>
             <tr>
@@ -113,9 +114,23 @@
               <th scope="col">Version</th>
               <th scope="col">Certification date</th>
               <th scope="col">Status</th>
-              <th class="text-center">Action</th>
+              <th scope="cols" colspan="2"><span class="sr-only">Actions</span></th>
+              <th scope="col">Mass Reject</th>
             </tr>
           </thead>
+          <tfoot>
+            <tr>
+              <th colspan="8">&nbsp;</th>
+              <th>
+                <button class="btn btn-warning btn-block"
+                        confirm="Are you sure you wish to remove these products from the queue?"
+                        confirm-ok="Yes"
+                        confirm-cancel="No"
+                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                        ng-click="vm.massRejectPendingListings()"><i class="fa fa-trash-o"></i> Clear</button>
+              </th>
+            </tr>
+          </tfoot>
           <tbody>
             <tr ng-repeat="cp in vm.uploadingCps | orderBy: 'certificationDate' track by cp.id">
               <td>{{ cp.chplProductNumber }}</td>
@@ -134,6 +149,9 @@
                         confirm-cancel="No"
                         confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
                         ng-click="vm.rejectCp(cp.id)"><i class="fa fa-trash-o"></i> Clear</button>
+              </td>
+              <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
+                <input type="checkbox" ng-model="vm.massReject[cp.id]">
               </td>
             </tr>
           </tbody>
