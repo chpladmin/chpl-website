@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/certifiedProduct/vpManagement.html',
+                templateUrl: 'app/admin/components/certifiedProduct/management.html',
                 bindToController: {
                     workType: '=?',
                     pendingProducts: '=?',
@@ -402,7 +402,7 @@
 
         function editCertifiedProduct () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/edit.html',
+                templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
                 controller: 'EditCertifiedProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -442,7 +442,7 @@
             }
 
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/inspect.html',
+                templateUrl: 'app/admin/components/certifiedProduct/listing/inspect.html',
                 controller: 'InspectController',
                 controllerAs: 'vm',
                 animation: false,
@@ -460,17 +460,7 @@
                 size: 'lg'
             });
             vm.modalInstance.result.then(function (result) {
-                if (result.developerCreated) {
-                    vm.developers.push(result.developer);
-                }
-                for (var i = 0; i < vm.uploadingCps.length; i++) {
-                    if (cpId === vm.uploadingCps[i].id) {
-                        vm.uploadingCps.splice(i,1)
-                        vm.pendingProducts = vm.uploadingCps.length;
-                    }
-                }
-            }, function (result) {
-                if (result !== 'cancelled') {
+                if (result.status === 'confirmed' || result.status === 'rejected') {
                     if (result.developerCreated) {
                         vm.developers.push(result.developer);
                     }
@@ -481,6 +471,8 @@
                         }
                     }
                 }
+            }, function (result) {
+                $log.info('inspection: ' + result);
             });
         }
 

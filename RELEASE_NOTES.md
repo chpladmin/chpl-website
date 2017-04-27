@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1406
+* Updated Pending Listing workflow
+  * Allow mass reject
+  * Display errors if Listing was previously "completed"
+
 ## Version TBD
 _Date TBD_
 

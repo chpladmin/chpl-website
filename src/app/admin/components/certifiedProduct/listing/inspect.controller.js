@@ -187,7 +187,9 @@
         function reject () {
             commonService.rejectPendingCp(vm.cp.id)
                 .then(function () {
-                    $uibModalInstance.dismiss('rejected');
+                    $uibModalInstance.close({status: 'rejected'});
+                }, function (error) {
+                    vm.errorMessages = error.data.errorMessages;
                 });
         }
 

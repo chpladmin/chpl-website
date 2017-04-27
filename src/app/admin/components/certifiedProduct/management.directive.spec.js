@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    describe('chpl.admin.vpManagement.directive', function () {
+    describe('chpl.admin.listing.management.directive', function () {
 
-        var el, $log, $q, commonService, authService, vm, /*FileUploader,*/ mock, Mock, $uibModal, actualOptions;
+        var el, $log, $q, commonService, authService, vm, mock, Mock, $uibModal, actualOptions;
 
         mock = {};
         mock.developers = {developers: [{name: 'Developer 1', transparencyAttestations: []}, {name: 'Developer 2', transparencyAttestations: []}]};
@@ -74,7 +74,7 @@
                 });
             });
 
-            inject(function ($controller, _commonService_, _authService_, /*_FileUploader_,*/ $compile, $rootScope, _$log_, _$q_, _Mock_, _$uibModal_) {
+            inject(function ($controller, _commonService_, _authService_, $compile, $rootScope, _$log_, _$q_, _Mock_, _$uibModal_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
@@ -83,8 +83,6 @@
                     actualOptions = options;
                     return Mock.fakeModal;
                 });
-                //FileUploader = _FileUploader_;
-                authService = _authService_;
                 authService = _authService_;
                 authService.getApiKey.and.returnValue($q.when('fake api key'));
                 authService.getToken.and.returnValue($q.when('fake token'));
@@ -238,7 +236,7 @@
             var listingEditOptions;
             beforeEach(function () {
                 listingEditOptions = {
-                    templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/edit.html',
+                    templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
                     controller: 'EditCertifiedProductController',
                     controllerAs: 'vm',
                     animation: false,
