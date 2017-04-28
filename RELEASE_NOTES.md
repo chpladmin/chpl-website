@@ -5,10 +5,14 @@ _Date TBD_
 
 ### New Features
 * Allow optionally banning Developers on appropriate status change
+* Tweaked GTM events and expanded the events that are tracked
+* Show description instead of just name on Functionality Tested & Standard
+* Changed description of "Non-conformities" file on download page
 
 ### Bugs fixed
 * Fixed bug related to Merged Developer status history
 * Fixed bug related to too long Name/Additional Software in CMS PDF generation
+* Viewing previously viewed/compared clears all filters to allow it
 
 ---
 

@@ -4,7 +4,7 @@
     <span class="sr-only">{{ vm.cert.success ? 'meets' : 'does not meet'}}</span>
     {{ vm.cert.number }}: {{ vm.cert.title }}
     <button ng-if="vm.isEditing" class="btn btn-ai-success btn-sm pull-right" ng-click="vm.editCert()"><i class="fa fa-pencil-square-o"> Edit</i></button>
-    <a href class="pull-right" ng-click="vm.showDetails = !vm.showDetails" aria-expanded="{{ vm.showDetails }}" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ vm.cert.number }}</span></a>
+    <a href class="pull-right" ng-click="vm.toggleCriteria()" aria-expanded="{{ vm.showDetails }}" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ vm.cert.number }}</span></a>
     <div ng-if="vm.showDetails">
       <div ng-if="vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0">
         <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="false"></ai-additional-software>
@@ -24,7 +24,7 @@
           <tr ng-if="vm.cert.testStandards !== null">
             <td>Standard</td>
             <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0"><div ng-repeat="m in vm.cert.testStandards">
-                <a href ng-if="m.testStandardDescription" uib-tooltip="{{ m.testStandardDescription }}" tooltip-trigger="mouseenter focus click">{{ m.testStandardName }}</a>
+                <span ng-if="m.testStandardDescription"><ai-ellipsis text="{{ m.testStandardDescription }}" max-length="100" word-boundaries="true"></ai-ellipsis></a>
                 <span ng-if="!m.testStandardDescription">{{ m.testStandardName }}</span>
             </div></td>
             <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">None</td>
@@ -57,7 +57,12 @@
           </tr>
           <tr ng-if="vm.cert.testFunctionality !== null">
             <td>Functionality Tested</td>
-            <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0"><div ng-repeat="m in vm.cert.testFunctionality"><a href uib-tooltip="{{ m.description }}" tooltip-trigger="mouseenter focus click"><span ng-class="{'bg-danger': m.testFunctionalityId === null}">{{ m.name }}<span ng-if="m.testFunctionalityId === null"> Warning: Functionality tested not found in system, it will not be saved</span></span></div></td>
+            <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0">
+              <div ng-repeat="m in vm.cert.testFunctionality">
+                <ai-ellipsis text="{{ m.description }}" max-length="100" word-boundaries="true"></ai-ellipsis>
+                <span ng-if="m.testFunctionalityId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
+              </div>
+            </td>
             <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.testProcedures !== null">
@@ -99,7 +104,7 @@
           </tr>
           <tr ng-if="vm.cert.apiDocumentation !== null">
             <td>API Documentation</td>
-            <td ng-if="vm.cert.apiDocumentation"><ai-a href="{{ vm.cert.apiDocumentation }}" text="{{ vm.cert.apiDocumentation }}"></ai-a></td>
+            <td ng-if="vm.cert.apiDocumentation"><ai-a href="{{ vm.cert.apiDocumentation }}" text="{{ vm.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: vm.cert.apiDocumentation }"></ai-a></td>
             <td ng-if="!vm.cert.apiDocumentation">None</td>
           </tr>
           <tr ng-if="vm.cert.privacySecurityFramework !== null">
