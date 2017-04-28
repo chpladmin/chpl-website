@@ -58,7 +58,7 @@
             vm.questionableRange = 0;
             var start = new Date();
             var end = new Date();
-            start.setDate(end.getDate() - vm.activityRange.range);
+            start.setDate(end.getDate() - vm.activityRange.range + 1); // offset to account for inclusion of endDate in range
             vm.activityRange.listing = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end)
@@ -292,7 +292,7 @@
 
         function validDates (key) {
             var diffDays = Math.ceil((vm.activityRange[key].endDate.getTime() - vm.activityRange[key].startDate.getTime()) / (1000 * 60 * 60 * 24));
-            return (diffDays > 0 && diffDays <= vm.activityRange.range);
+            return (0 <= diffDays && diffDays < vm.activityRange.range);
         }
 
         ////////////////////////////////////////////////////////////////////
