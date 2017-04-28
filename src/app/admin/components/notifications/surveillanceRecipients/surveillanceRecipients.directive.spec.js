@@ -11,6 +11,7 @@
         beforeEach(function () {
             module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
+                    $delegate.getNotificationReportTypes = jasmine.createSpy('getNotificationReportTypes');
                     $delegate.getSurveillanceRecipients = jasmine.createSpy('getSurveillanceRecipients');
 
                     return $delegate;
@@ -22,6 +23,7 @@
                 $q = _$q_;
                 Mock = _Mock_;
                 commonService = _commonService_;
+                commonService.getNotificationReportTypes.and.returnValue($q.when(Mock.notificationReportTypes));
                 commonService.getSurveillanceRecipients.and.returnValue($q.when(Mock.surveillanceRecipients));
 
                 el = angular.element('<ai-surveillance-recipients acbs="acbs"></ai-surveillance-recipients>');
@@ -51,22 +53,38 @@
                 expect(vm).toBeDefined();
             });
 
-            it('should have the surveillance notification recipients', function () {
-                expect(vm.surveillanceRecipients).toBeDefined();
-                expect(vm.surveillanceRecipients).toEqual(Mock.surveillanceRecipients);
-                expect(commonService.getSurveillanceRecipients).toHaveBeenCalled();
-            });
-
             it('should have a list of acbs', function () {
                 expect(vm.acbs).toEqual(mock.acbs);
             });
 
-            it('should have a warning message if loading emails fails', function () {
-                var initCount = $log.warn.logs.length;
-                commonService.getSurveillanceRecipients.and.returnValue($q.reject('an error'));
-                vm.loadRecipients();
-                scope.$digest();
-                expect($log.warn.logs.length).toBe(initCount + 1);
+            describe('service interactions', function () {
+                it('should have the surveillance notification recipients', function () {
+                    expect(vm.surveillanceRecipients).toBeDefined();
+                    expect(vm.surveillanceRecipients).toEqual(Mock.surveillanceRecipients);
+                    expect(commonService.getSurveillanceRecipients).toHaveBeenCalled();
+                });
+
+                it('should have a warning message if loading emails fails', function () {
+                    var initCount = $log.warn.logs.length;
+                    commonService.getSurveillanceRecipients.and.returnValue($q.reject('an error'));
+                    vm.loadRecipients();
+                    scope.$digest();
+                    expect($log.warn.logs.length).toBe(initCount + 1);
+                });
+
+                it('should have the notification report types', function () {
+                    expect(vm.notificationReportTypes).toBeDefined();
+                    expect(vm.notificationReportTypes).toEqual(Mock.notificationReportTypes);
+                    expect(commonService.getNotificationReportTypes).toHaveBeenCalled();
+                });
+
+                it('should have a warning message if loading report types fails', function () {
+                    var initCount = $log.warn.logs.length;
+                    commonService.getNotificationReportTypes.and.returnValue($q.reject('an error'));
+                    vm.loadNotificationReportTypes();
+                    scope.$digest();
+                    expect($log.warn.logs.length).toBe(initCount + 1);
+                });
             });
         });
     });

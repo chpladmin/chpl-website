@@ -623,5 +623,13 @@
         self.setMeaningfulUseUsersAccurateAsOfDate = function (date) {
             return self.postApiCall('/meaningful_use/accurate_as_of', date);
         };
+
+        self.getNotificationReportTypes = function () {
+            return self.simpleApiCall('/notifications/types');
+        };
+
+        self.getSurveillanceRecipients = function () {
+            return self.simpleApiCall('/notifications/surveillance');
+        };
     }
 })();
