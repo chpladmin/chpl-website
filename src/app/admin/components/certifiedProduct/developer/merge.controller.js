@@ -5,11 +5,12 @@
         .controller('MergeDeveloperController', MergeDeveloperController);
 
     /** @ngInject */
-    function MergeDeveloperController ($filter, $uibModalInstance, developers, commonService) {
+    function MergeDeveloperController ($log, $filter, $uibModalInstance, developers, commonService) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;
         vm.addressRequired = addressRequired;
+        vm.cancel = cancel;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
         vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
@@ -18,7 +19,6 @@
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.removePreviousStatus = removePreviousStatus;
         vm.save = save;
-        vm.cancel = cancel;
 
         activate();
 
@@ -107,6 +107,9 @@
         }
 
         function save () {
+            for (var i = 0; i < vm.developer.statusEvents.length; i++) {
+                vm.developer.statusEvents[i].statusDate = vm.developer.statusEvents[i].statusDateObject.getTime();
+            }
             vm.updateDeveloper.developer = vm.developer;
             commonService.updateDeveloper(vm.updateDeveloper)
                 .then(function (response) {

@@ -36,11 +36,12 @@
     }
 
     /** @ngInject */
-    function CertificationCriteriaController ($scope, $log, $uibModal) {
+    function CertificationCriteriaController ($analytics, $log, $uibModal) {
         var vm = this;
 
         vm.editCert = editCert;
         vm.saveEdits = saveEdits;
+        vm.toggleCriteria = toggleCriteria;
 
         activate();
 
@@ -89,6 +90,13 @@
             if (vm.cert.sed === 'null') {
                 delete (vm.cert.sed);
             }
+        }
+
+        function toggleCriteria () {
+            if (!vm.showDetails) {
+                $analytics.eventTrack('Viewed criteria details', { category: 'Listing Details', label: vm.cert.number });
+            }
+            vm.showDetails = !vm.showDetails
         }
     }
 })();
