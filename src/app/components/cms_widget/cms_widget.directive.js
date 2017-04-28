@@ -63,7 +63,7 @@
             function create () {
                 vm.widget.inProgress = true;
                 if (vm.widget.searchResult && vm.widget.searchResult.year) {
-                    $analytics.eventTrack('Get EHR Certification ID', { year: vm.widget.searchResult.year });
+                    $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
                 }
                 vm.widget.createResponse = WidgetService.save(
                     {action: 'create', ids: vm.widget.productIds.join(',')}, {},
@@ -74,7 +74,7 @@
             }
 
             function generatePdf () {
-                $analytics.eventTrack('Download EHR Certification ID PDF', { year: vm.widget.searchResult.year });
+                $analytics.eventTrack('Download EHR Certification ID PDF', { category: 'CMS Widget' });
                 WidgetService.get(
                     {action: vm.widget.createResponse.ehrCertificationId, includeCriteria: true},
                     function (response) {
@@ -145,29 +145,28 @@
                 }
 
                 // Setup the product listing
-                var columns = ["", "Certifying Body", "Practice Type", "Product Certification #", "Developer",
-                               "Product Name", "Version", "Classification", "Certification Edition",
-                               "Additional Software Required"];
-                var rows = [];
                 var prods = data["products"];
+                var productsForTable = [];
                 prods.forEach(function (item,index) {
                     // Decode additional software
                     var software = decodeURIComponent(item.additionalSoftware);
                     if (null !== software) {
                         software = software.replace(/\+/g, " ");
                     }
-                    // Add product details row
-                    rows.push(
-                        [index + 1,
-                         item.acb,
-                         (null !== item.practiceType ? item.practiceType : "N/A"),
-                         item.chplProductNumber,
-                         item.vendor,
-                         item.name,
-                         item.version,
-                         (null !== item.classification ? item.classification : "N/A"),
-                         item.year,
-                         software]);
+                    productsForTable.push({
+                        columns: ['Listing ' + (index + 1), ''],
+                        rows: [
+                            ['Certifying Body',item.acb],
+                            ['Practice Type',(null !== item.practiceType ? item.practiceType : "N/A")],
+                            ['Product Certification #',item.chplProductNumber],
+                            ['Developer',item.vendor],
+                            ['Product Name',item.name],
+                            ['Version',item.version],
+                            ['Classification',(null !== item.classification ? item.classification : "N/A")],
+                            ['Certification Edition',item.year],
+                            ['Additional Software Required',software]
+                        ]
+                    });
                 });
 
                 // Setup the criteria listing
@@ -216,27 +215,31 @@
                 // Add products table to PDF
                 doc.setFontSize(10);
                 doc.setFontType("normal");
-                $log.debug(columns,rows);
-                doc.autoTable(columns, rows, {
-                    theme: "grid",
-                    headerStyles: {
-                        valign: "middle",
-                        halign: "center",
-                        overflow: "linebreak",
-                        columnWidth: "auto",
-                        fillColor: [0, 112, 201]
-                    },
-                    bodyStyles: {
-                        valign: "middle",
-                        halign: "left",
-                        overflow: "linebreak",
-                        columnWidth: "auto"
-                    },
-                    startY: bodyStartY+90,
-                    margin: 20,
-                    pageBreak: "auto",
-                    tableWidth: "auto"
-                });
+                for (var i = 0; i < productsForTable.length; i++) {
+                    doc.autoTable(productsForTable[i].columns, productsForTable[i].rows, {
+                        theme: "grid",
+                        headerStyles: {
+                            valign: "middle",
+                            halign: "left",
+                            overflow: "linebreak",
+                            fillColor: [0, 112, 201]
+                        },
+                        bodyStyles: {
+                            valign: "middle",
+                            halign: "left",
+                            overflow: "linebreak"
+                        },
+                        columnStyles: {
+                            0: {columnWidth: 175},
+                            1: {columnWidth: 'auto'}
+                        },
+                        startY: i === 0 ? bodyStartY+90 : doc.autoTable.previous.finalY + 10,
+                        margin: 20,
+                        pageBreak: "avoid",
+                        tableWidth: "auto"
+                    });
+
+                }
 
                 // Add criteria table to PDF
                 if (null !== critRows) {
