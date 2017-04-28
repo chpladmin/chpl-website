@@ -515,6 +515,10 @@
             return self.postApiCall('/certified_products/pending/' + cpId + '/reject', {});
         };
 
+        self.massRejectPendingListings = function (ids) {
+            return self.postApiCall('/certified_products/pending/reject', {ids: ids});
+        };
+
         self.rejectPendingSurveillance = function (survId) {
             return self.postApiCall('/surveillance/pending/' + survId + '/reject', {});
         };

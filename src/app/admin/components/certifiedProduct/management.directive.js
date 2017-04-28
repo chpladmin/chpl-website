@@ -29,6 +29,7 @@
         vm.editDeveloper = editDeveloper;
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
+        vm.getNumberOfListingsToReject = getNumberOfListingsToReject;
         vm.inspectCp = inspectCp;
         vm.inspectSurveillance = inspectSurveillance;
         vm.isDeveloperEditable = isDeveloperEditable;
@@ -401,6 +402,16 @@
                     vm.versionMessage = result;
                 }
             });
+        }
+
+        function getNumberOfListingsToReject () {
+            var ret = 0;
+            angular.forEach(vm.massReject, function (value) {
+                if (value) {
+                    ret += 1;
+                }
+            });
+            return ret;
         }
 
         function selectCp () {

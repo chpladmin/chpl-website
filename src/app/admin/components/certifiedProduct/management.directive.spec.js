@@ -355,6 +355,17 @@
                 el.isolateScope().$digest();
                 expect(vm.uploadingListingsMessages).toEqual([1,2]);
             });
+
+            it('should know how many Listings are ready to be rejected', function () {
+                expect(vm.getNumberOfListingsToReject()).toBe(1);
+                vm.massReject[2] = true;
+                vm.massReject[3] = true;
+                expect(vm.getNumberOfListingsToReject()).toBe(3);
+                vm.massReject[1] = false;
+                vm.massReject[2] = false;
+                vm.massReject[3] = false;
+                expect(vm.getNumberOfListingsToReject()).toBe(0);
+            });
         });
     });
 })();
