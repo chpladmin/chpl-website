@@ -8,6 +8,7 @@ _Date TBD_
 * Tweaked GTM events and expanded the events that are tracked
 * Show description instead of just name on Functionality Tested & Standard
 * Changed description of "Non-conformities" file on download page
+* Allow Privacy & Security value: `Approach 1;Approach 2`
 
 ### Bugs fixed
 * Fixed bug related to Merged Developer status history
