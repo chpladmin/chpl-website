@@ -55,6 +55,7 @@
         function deleteRecipient () {
             commonService.deleteRecipient(vm.recipient)
                 .then(function (response) {
+                    $log.debug(response);
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close({
                             status: 'deleted'
@@ -77,7 +78,7 @@
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close({
-                                recipient: response.recipient,
+                                recipient: response,
                                 status: 'updated'
                             });
                         } else {
@@ -91,7 +92,7 @@
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close({
-                                recipient: response.recipient
+                                recipient: response
                             });
                         } else {
                             vm.errorMessage = response.data.error;

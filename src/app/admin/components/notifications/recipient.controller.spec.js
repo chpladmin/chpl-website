@@ -24,9 +24,9 @@
                 $q = _$q_;
                 Mock = _Mock_;
                 commonService = _commonService_;
-                commonService.createRecipient.and.returnValue($q.when({recipient: mock.newRecipient}));
+                commonService.createRecipient.and.returnValue($q.when(mock.newRecipient));
                 commonService.deleteRecipient.and.returnValue($q.when({recipient: mock.newRecipient}));
-                commonService.updateRecipient.and.returnValue($q.when({recipient: mock.newRecipient}));
+                commonService.updateRecipient.and.returnValue($q.when(mock.newRecipient));
 
                 scope = $rootScope.$new();
                 vm = $controller('RecipientController', {

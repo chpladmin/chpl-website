@@ -16,7 +16,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <tr ng-repeat="recipient in vm.displayedRecipients track by recipient.id">
+        <tr ng-repeat="recipient in vm.displayedRecipients">
           <td>{{ recipient.email }}</td>
           <td>
             <ul class="list-unstyled">
@@ -38,7 +38,7 @@
       <tbody>
         <tr ng-repeat="report in vm.notificationReportTypes | orderBy : 'name'">
           <td>{{ report.name }}</td>
-          <td>{{ report.title }}</td>
+          <td>{{ report.description }}</td>
           <td>{{ report.requiresAcb ? 'Yes' : 'No' }}</td>
         </tr>
       </tbody>

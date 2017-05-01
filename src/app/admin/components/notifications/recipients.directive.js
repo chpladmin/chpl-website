@@ -111,6 +111,7 @@
         }
 
         function loadRecipients () {
+            vm.recipients = [];
             commonService.getNotificationRecipients()
                 .then (function (result) {
                     vm.recipients = result.results;
