@@ -75,8 +75,8 @@
                     ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"
                     product-id="vm.productId"></ai-reports>
-        <ai-surveillance-recipients ng-if="vm.navState.screen === 'notifications' && vm.navState.notifications === 'surveillance'"
-                                    acbs="vm.acbs"></ai-surveillance-recipients>
+        <ai-notification-recipients ng-if="vm.navState.screen === 'notifications' && vm.navState.notifications === 'surveillance'"
+                                    acbs="vm.acbs"></ai-notifiaction-recipients>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>
         <ai-announcements-management admin="true" ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
         <ai-cms-management admin="true" ng-if="vm.navState.screen === 'cmsManagement'"></ai-cms-management>

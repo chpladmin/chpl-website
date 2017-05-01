@@ -1,0 +1,47 @@
+<section class="row">
+  <div class="col-sm-12 admin-inner-tab main-content form-horizontal" ng-form="vm.activityForm">
+    <h3>Notification Recipients</h3>
+    <table class="table table-condensed" st-table="vm.displayedRecipients" st-safe-src="vm.recipients">
+      <thead>
+        <tr>
+          <th scope="col" class="search-header" st-sort="email" st-skip-natural="true" st-sort-default="true">Recipient</th>
+          <th scope="col">Subscriptions</th>
+          <th scope="col"><span class="sr-only">Actions</span></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+          <td><button class="btn btn-primary" ng-click="vm.createRecipient()"><i class="fa fa-plus"></i><span class="sr-only">Create recipient</span></button></td>
+        </tr>
+      </tfoot>
+      <tbody>
+        <tr ng-repeat="recipient in vm.displayedRecipients track by recipient.id">
+          <td>{{ recipient.email }}</td>
+          <td>
+            <ul class="list-unstyled">
+              <li ng-repeat="subscription in recipient.subscriptions">{{ subscription.notificationType.name}} <span ng-if="subscription.acb">({{ subscription.acb.name }})</span></li>
+            </ul>
+          <td><button class="btn btn-ai-success" ng-click="vm.editRecipient(recipient.id)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit recipient for {{ recipient.email }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Subscription Types</h3>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Subscription Type</th>
+          <th scope="col">Subscription Description</th>
+          <th scope="col">ONC-ACB Specific?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="report in vm.notificationReportTypes | orderBy : 'name'">
+          <td>{{ report.name }}</td>
+          <td>{{ report.title }}</td>
+          <td>{{ report.requiresAcb ? 'Yes' : 'No' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

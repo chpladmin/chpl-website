@@ -624,12 +624,30 @@
             return self.postApiCall('/meaningful_use/accurate_as_of', date);
         };
 
+        /*
+         * Email notification services
+         */
         self.getNotificationReportTypes = function () {
-            return self.simpleApiCall('/notifications/types');
+            return self.simpleApiCall('/data/notification_types');
         };
 
-        self.getSurveillanceRecipients = function () {
-            return self.simpleApiCall('/notifications/surveillance');
+        self.getNotificationRecipients = function () {
+            return self.simpleApiCall('/notifications/recipients');
         };
+
+        self.createRecipient = function (recipient) {
+            return self.postApiCall('/notifications/recipients/create', recipient);
+        };
+
+        self.updateRecipient = function (recipient) {
+            return self.postApiCall('/notifications/recipients/' + recipient.id + '/update', recipient);
+        };
+
+        self.deleteRecipient = function (recipient) {
+            return self.postApiCall('/notifications/recipients/' + recipient.id + '/delete', recipient);
+        };
+        /*
+         * End email notification services
+         */
     }
 })();
