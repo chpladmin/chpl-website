@@ -89,6 +89,8 @@
             vm.editRecipientInstance.result.then(function (result) {
                 if (result.status === 'updated') {
                     vm.recipients[editIndex] = result.recipient;
+                } else if (result.status === 'deleted') {
+                    vm.recipients.splice(editIndex,1);
                 }
             }, function (result) {
                 if (result !== 'Cancelled') {
