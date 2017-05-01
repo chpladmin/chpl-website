@@ -23,10 +23,14 @@
           </tr>
           <tr ng-if="vm.cert.testStandards !== null">
             <td>Standard</td>
-            <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0"><div ng-repeat="m in vm.cert.testStandards">
-                <span ng-if="m.testStandardDescription"><ai-ellipsis text="{{ m.testStandardDescription }}" max-length="100" word-boundaries="true"></ai-ellipsis></a>
-                <span ng-if="!m.testStandardDescription">{{ m.testStandardName }}</span>
-            </div></td>
+            <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0">
+              <ul>
+                <li ng-repeat="m in vm.cert.testStandards">
+                  <span ng-if="m.testStandardDescription"><ai-ellipsis text="{{ m.testStandardDescription }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
+                  <span ng-if="!m.testStandardDescription">{{ m.testStandardName }}</span>
+                </li>
+              </ul>
+            </td>
             <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.g1Success">
@@ -58,10 +62,13 @@
           <tr ng-if="vm.cert.testFunctionality !== null">
             <td>Functionality Tested</td>
             <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0">
-              <div ng-repeat="m in vm.cert.testFunctionality">
-                <ai-ellipsis text="{{ m.description }}" max-length="100" word-boundaries="true"></ai-ellipsis>
-                <span ng-if="m.testFunctionalityId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
-              </div>
+              <ul>
+                <li ng-repeat="m in vm.cert.testFunctionality">
+                  <span ng-if="!m.description">{{ m.name }}</span>
+                  <ai-ellipsis ng-if="m.description" text="{{ m.description }}" max-length="100" word-boundaries="true"></ai-ellipsis>
+                  <span ng-if="m.testFunctionalityId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
+                </li>
+              </ul>
             </td>
             <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">None</td>
           </tr>
