@@ -16,7 +16,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <tr ng-repeat="recipient in vm.displayedRecipients">
+        <tr ng-repeat="recipient in vm.displayedRecipients track by recipient.id">
           <td>{{ recipient.email }}</td>
           <td>
             <ul class="list-unstyled">
