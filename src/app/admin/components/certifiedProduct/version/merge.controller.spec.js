@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.MergeVersionController.controller', function () {
+    describe('chpl.admin.MergeVersionController.controller', function () {
         var vm, scope, $log, $q, commonService, mock, Mock;
 
         mock = {

@@ -2,7 +2,6 @@
     'use strict';
 
     describe('chpl.admin.listing.management.directive', function () {
-
         var el, $log, $q, commonService, authService, vm, mock, Mock, $uibModal, actualOptions;
 
         mock = {};
@@ -40,6 +39,7 @@
                     $delegate.isAcbStaff = jasmine.createSpy('isAcbStaff');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
+
                     return $delegate;
                 });
 
@@ -68,10 +68,6 @@
                     $delegate.rejectPendingCp = jasmine.createSpy('rejectPendingCp');
                     $delegate.updateProduct = jasmine.createSpy('updateProduct');
 
-                    return $delegate;
-                });
-
-                $provide.decorator('FileUploader', function ($delegate) {
                     return $delegate;
                 });
             });
@@ -126,7 +122,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 

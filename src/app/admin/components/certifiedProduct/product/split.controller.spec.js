@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.SplitProductController.controller', function () {
+    describe('chpl.admin.SplitProductController.controller', function () {
         var vm, scope, $log, $q, commonService, Mock;
 
         beforeEach(function () {
