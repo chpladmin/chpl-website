@@ -49,13 +49,17 @@
                 });
         };
 
-        self.postApiCall = function (endpoint, postObject) {
+        self.postApiCall = function (endpoint, postObject, allowEmptyResponse) {
             return $http.post(API + endpoint, postObject)
                 .then(function (response) {
                     if (angular.isObject(response.data)) {
                         return response.data;
                     } else {
-                        return $q.reject(response);
+                        if (allowEmptyResponse) {
+                            return response;
+                        } else {
+                            return $q.reject(response);
+                        }
                     }
                 }, function (response) {
                     return $q.reject(response);
@@ -644,7 +648,7 @@
         };
 
         self.deleteRecipient = function (recipient) {
-            return self.postApiCall('/notifications/recipients/' + recipient.id + '/delete', recipient);
+            return self.postApiCall('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
         };
         /*
          * End email notification services

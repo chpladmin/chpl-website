@@ -64,14 +64,7 @@
             });
         }
 
-        function editRecipient (id) {
-            var editIndex;
-            for (var i = 0; i < vm.recipients.length; i++) {
-                if (vm.recipients[i].id === id) {
-                    editIndex = i;
-                    break;
-                }
-            }
+        function editRecipient (recipient) {
             vm.editRecipientInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/notifications/recipient.html',
                 controller: 'RecipientController',
@@ -82,15 +75,19 @@
                 size: 'md',
                 resolve: {
                     acbs: function () { return vm.acbs; },
-                    recipient: function () { return vm.recipients[editIndex]; },
+                    recipient: function () { return recipient; },
                     reportTypes: function () { return vm.notificationReportTypes; }
                 }
             });
             vm.editRecipientInstance.result.then(function (result) {
                 if (result.status === 'updated') {
-                    vm.recipients[editIndex] = result.recipient;
+                    vm.loadRecipients();
                 } else if (result.status === 'deleted') {
-                    vm.recipients.splice(editIndex,1);
+                    for (var i = 0; i < vm.recipients.length; i++) {
+                        if (recipient.id === vm.recipients[i].id) {
+                            vm.recipients.splice(i,1);
+                        }
+                    }
                 }
             }, function (result) {
                 if (result !== 'Cancelled') {

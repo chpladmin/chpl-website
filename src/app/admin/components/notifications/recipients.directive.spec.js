@@ -145,12 +145,12 @@
             describe('editing a recipient', function () {
                 it('should edit a modal instance', function () {
                     expect(vm.editRecipientInstance).toBeUndefined();
-                    vm.editRecipient(Mock.recipients[0].id);
+                    vm.editRecipient(Mock.recipients[0]);
                     expect(vm.editRecipientInstance).toBeDefined();
                 });
 
                 it('should resolve the acbs and report types on edit', function () {
-                    vm.editRecipient(Mock.recipients[0].id);
+                    vm.editRecipient(Mock.recipients[0]);
                     expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
                     expect(actualOptions.resolve.acbs()).toEqual(mock.acbs);
                     expect(actualOptions.resolve.recipient()).toEqual(Mock.recipients[0]);
@@ -159,13 +159,13 @@
 
                 it('should log a cancelled modal', function () {
                     var logCount = $log.info.logs.length;
-                    vm.editRecipient(Mock.recipients[0].id);
+                    vm.editRecipient(Mock.recipients[0]);
                     vm.editRecipientInstance.dismiss('Cancelled');
                     expect($log.info.logs.length).toBe(logCount + 1);
                 });
 
                 it('should report messages if they were sent back', function () {
-                    vm.editRecipient(Mock.recipients[0].id);
+                    vm.editRecipient(Mock.recipients[0]);
                     vm.editRecipientInstance.dismiss('message');
                     expect(vm.editMessage).toBe('message');
                 });

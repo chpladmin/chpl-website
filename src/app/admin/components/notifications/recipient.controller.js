@@ -55,8 +55,7 @@
         function deleteRecipient () {
             commonService.deleteRecipient(vm.recipient)
                 .then(function (response) {
-                    $log.debug(response);
-                    if (!response.status || response.status === 200) {
+                    if (response.status === 200) {
                         $uibModalInstance.close({
                             status: 'deleted'
                         });
