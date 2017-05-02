@@ -11,6 +11,7 @@ var pathSrcHtml = [
 ];
 
 var pathSrcJs = [
+    //path.join(conf.paths.src, '/**/!(*.spec).js')
     path.join(conf.paths.src, '/**/!(*.spec|cap*|certid*|swagger*|st*).js')
 ];
 
@@ -31,23 +32,23 @@ function runTests (singleRun, done) {
         singleRun: singleRun,
         autoWatch: !singleRun,
         reporters: reporters,
-        growlReporter: { prefix: 'CHPL Unit Tests\n' },
         preprocessors: preprocessors,
+        coverageReporter: {
+            dir: 'test_reports/coverage',
+            reporters: [
+                { type: 'lcov', subdir: '.' },
+                { type: 'text-summary' }
+            ]
+        },
+        growlReporter: { prefix: 'CHPL Unit Tests\n' },
         htmlReporter: {
-            outputFile: 'test_reports/units.html'
+            groupSuites: true,
+            outputFile: 'test_reports/units.html',
+            useCompactStyle: true
         },
         junitReporter: {
             outputDir: 'test_reports',
             suite: 'unit'
-        },
-        coverageReporter: {
-            // specify a common output directory
-            dir: 'test_reports/coverage',
-            reporters: [
-                { type: 'lcov', subdir: '.' },
-                // display summary to screen
-                { type: 'text-summary' }
-            ]
         }
     };
 

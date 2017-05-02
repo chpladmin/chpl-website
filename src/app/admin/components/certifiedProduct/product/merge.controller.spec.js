@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.MergeProductController.controller', function () {
+    describe('chpl.admin.MergeProductController.controller', function () {
         var vm, scope, $log, $q, commonService, mock, Mock;
 
         mock = {};

@@ -29,7 +29,7 @@
                 .then (function (result) {
                     vm.announcements = result.announcements;
                 }, function (error) {
-                    $log.debug('error in app.overview.controller.loadAnnouncements', error);
+                    $log.error('error in app.overview.controller.loadAnnouncements', error);
                 });
         }
 
@@ -38,7 +38,7 @@
                 .then (function (result) {
                     vm.acbs = result.acbs;
                 }, function (error) {
-                    $log.debug('error in app.overview.controller.loadAcbs', error);
+                    $log.error('error in app.overview.controller.loadAcbs', error);
                 });
         }
 
@@ -47,7 +47,7 @@
                 .then(function (result) {
                     vm.atls = result.atls;
                 }, function (error) {
-                    $log.debug('error in app.overview.controller.loadAtls', error);
+                    $log.error('error in app.overview.controller.loadAtls', error);
                 });
         }
 

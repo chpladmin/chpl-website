@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.EditProductController.controller', function () {
+    describe('chpl.admin.EditProductController.controller', function () {
         var vm, scope, $log, $q, commonService, Mock;
 
         beforeEach(function () {

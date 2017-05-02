@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.EditVersionController.controller', function () {
+    describe('chpl.admin.EditVersionController.controller', function () {
         var vm, scope, $log, $q, commonService, Mock, mock;
 
         mock = {
