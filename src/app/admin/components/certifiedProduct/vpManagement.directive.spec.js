@@ -80,7 +80,6 @@
                     return Mock.fakeModal;
                 });
                 authService = _authService_;
-                authService = _authService_;
                 authService.getApiKey.and.returnValue($q.when('fake api key'));
                 authService.getToken.and.returnValue($q.when('fake token'));
                 authService.isAcbAdmin.and.returnValue($q.when(true));
