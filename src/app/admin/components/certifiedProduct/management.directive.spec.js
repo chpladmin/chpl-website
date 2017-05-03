@@ -102,7 +102,7 @@
                 commonService.getQmsStandards.and.returnValue($q.when([]));
                 commonService.getSearchOptions.and.returnValue($q.when({}));
                 commonService.getTargetedUsers.and.returnValue($q.when([]));
-                commonService.getTestFunctionality.and.returnValue($q.when([]));
+                commonService.getTestFunctionality.and.returnValue($q.when({data: []}));
                 commonService.getTestStandards.and.returnValue($q.when([]));
                 commonService.getTestTools.and.returnValue($q.when([]));
                 commonService.getUcdProcesses.and.returnValue($q.when([]));

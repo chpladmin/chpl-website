@@ -41,7 +41,7 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($analytics, $scope, ACTIVE_CAP) {
+        function CertsController ($analytics, $log, $scope, ACTIVE_CAP) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;

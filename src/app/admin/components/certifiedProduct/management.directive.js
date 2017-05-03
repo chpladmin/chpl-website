@@ -433,6 +433,11 @@
         }
 
         function editCertifiedProduct () {
+            var resources = angular.copy(vm.resources);
+            var filteredFunctionality = resources.testFunctionalities.data.filter(function (func) {
+                return func.year === vm.activeCP.certificationEdition.name;
+            });
+            resources.testFunctionalities.data = filteredFunctionality;
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
                 controller: 'EditCertifiedProductController',
@@ -446,7 +451,7 @@
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
                     isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
-                    resources: function () { return vm.resources; },
+                    resources: function () { return resources; },
                     workType: function () { return vm.workType; }
                 }
             });
