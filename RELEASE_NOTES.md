@@ -11,6 +11,7 @@ _Date TBD_
 * Allow Privacy & Security value: `Approach 1;Approach 2`
 * Update Activity reports for greater usability
 * Added section for Notifications: Surveillance Activity, though currently hidden
+* Displayed filtered Test Functionalities on Criteria editing
 
 ### Bugs fixed
 * Fixed bug related to Merged Developer status history
