@@ -30,7 +30,8 @@
         function activate () {
             vm.handlers = [];
             vm.navState = {
-                reports: 'cp-upload'
+                reports: 'cp-upload',
+                notifications: 'surveillance'
             };
 
             // base case

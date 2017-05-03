@@ -9,6 +9,8 @@ _Date TBD_
 * Show description instead of just name on Functionality Tested & Standard
 * Changed description of "Non-conformities" file on download page
 * Allow Privacy & Security value: `Approach 1;Approach 2`
+* Update Activity reports for greater usability
+* Added section for Notifications: Surveillance Activity, though currently hidden
 
 ### Bugs fixed
 * Fixed bug related to Merged Developer status history

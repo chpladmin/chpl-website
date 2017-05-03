@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.editCertifiedProduct.controller', function () {
+    describe('chpl.admin.editCertifiedProduct.controller', function () {
         var vm, scope, $log, $q, commonService, utilService, mock;
 
         mock = {};
