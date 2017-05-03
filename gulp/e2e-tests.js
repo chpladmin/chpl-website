@@ -3,6 +3,7 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
+var protractorReport = require('gulp-protractor-cucumber-html-report');
 
 var browserSync = require('browser-sync');
 
@@ -17,20 +18,31 @@ function runProtractor (done) {
     var params = process.argv;
     var args = params.length > 3 ? [params[3], params[4]] : [];
 
-    gulp.src(path.join(conf.paths.e2e, '/**/*.js'))
+    //gulp.src(path.join(conf.paths.e2e, '/**/*.js')) // use this for Jasmine e2e tests
+    gulp.src(path.join(conf.paths.features, '/**/*.feature'))
         .pipe($.protractor.protractor({
             configFile: 'protractor.conf.js',
             args: args
         }))
         .on('error', function (err) {
             // Make sure failed tests cause gulp to exit non-zero
+            buildReport();
             throw err;
         })
         .on('end', function () {
             // Close browser sync server
             browserSync.exit();
             done();
+            buildReport();
         });
+}
+
+function buildReport () {
+    gulp.src('test_reports/cucumber_report.json')
+        .pipe(protractorReport({
+            dest: 'test_reports/',
+            filename: 'cucumber_report.html'
+        }));
 }
 
 gulp.task('protractor', ['protractor:src']);
