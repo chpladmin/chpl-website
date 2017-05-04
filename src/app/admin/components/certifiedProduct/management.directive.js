@@ -250,7 +250,18 @@
                         }
                     });
                 }, function (error) {
-                    vm.uploadingListingsMessages = error.data.errorMessages;
+                    angular.forEach(vm.massReject, function (value, key) {
+                        if (value) {
+                            clearPendingListing(parseInt(key));
+                            delete(vm.massReject[key]);
+                        }
+                    });
+                    if (error.data.errors && error.data.errors.length > 0) {
+                        vm.uploadingListingsMessages = error.data.errors.map(function (error) {
+                            var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                            return ret;
+                        });
+                    }
                 });
         }
 
@@ -497,7 +508,7 @@
                 size: 'lg'
             });
             vm.modalInstance.result.then(function (result) {
-                if (result.status === 'confirmed' || result.status === 'rejected') {
+                if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
                     if (result.developerCreated) {
                         vm.developers.push(result.developer);
                     }
@@ -506,6 +517,9 @@
                             vm.uploadingCps.splice(i,1)
                             vm.pendingProducts = vm.uploadingCps.length;
                         }
+                    }
+                    if (result.status === 'resolved') {
+                        vm.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.firstName + ' ' + result.contact.lastName + '"'];
                     }
                 }
             }, function (result) {

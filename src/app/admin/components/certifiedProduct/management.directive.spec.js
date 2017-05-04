@@ -348,10 +348,10 @@
             });
 
             it('should have error messages if rejection fails', function () {
-                commonService.massRejectPendingListings.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                commonService.massRejectPendingListings.and.returnValue($q.reject({data: {"errors":[{"errorMessages":["This pending certified product has already been confirmed or rejected by another user."],"warningMessages":[],"objectId":"15.07.07.2642.EIC61.56.1.0.160402","contact":{"contactId":32,"firstName":"Mandy","lastName":"Hancock","email":"Mandy.hancock@greenwayhealth.com","phoneNumber":"205-443-4115","title":null}},{"errorMessages":["This pending certified product has already been confirmed or rejected by another user."],"warningMessages":[],"objectId":"15.07.07.2642.EIC61.55.1.1.160402","contact":{"contactId":32,"firstName":"Mandy","lastName":"Hancock","email":"Mandy.hancock@greenwayhealth.com","phoneNumber":"205-443-4115","title":null}},{"errorMessages":["This pending certified product has already been confirmed or rejected by another user."],"warningMessages":[],"objectId":"15.07.07.2642.EIC61.56.1.0.160402","contact":{"contactId":32,"firstName":"Mandy","lastName":"Hancock","email":"Mandy.hancock@greenwayhealth.com","phoneNumber":"205-443-4115","title":null}}]}}));
                 vm.massRejectPendingListings();
                 el.isolateScope().$digest();
-                expect(vm.uploadingListingsMessages).toEqual([1,2]);
+                expect(vm.uploadingListingsMessages.length).toEqual(3);
             });
 
             it('should know how many Listings are ready to be rejected', function () {

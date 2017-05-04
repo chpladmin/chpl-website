@@ -104,7 +104,11 @@
       <div class="col-sm-12">
         <h3>View Products in the process of upload</h3>
         <p ng-if="vm.uploadingCps.length === 0">No products currently in queue</p>
-        <p ng-if="vm.uploadingListingsMessages">{{ vm.uploadingListingsMessages }}</p>
+        <div ng-if="vm.uploadingListingsMessages">
+          <ul>
+            <li ng-repeat="message in vm.uploadingListingsMessages">{{ message }}</li>
+          </ul>
+        </div>
         <table class="table table-striped" ng-if="vm.uploadingCps.length > 0">
           <thead>
             <tr>
