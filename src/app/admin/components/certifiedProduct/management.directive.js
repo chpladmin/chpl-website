@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/certifiedProduct/vpManagement.html',
+                templateUrl: 'app/admin/components/certifiedProduct/management.html',
                 bindToController: {
                     workType: '=?',
                     pendingProducts: '=?',
@@ -29,6 +29,7 @@
         vm.editDeveloper = editDeveloper;
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
+        vm.getNumberOfListingsToReject = getNumberOfListingsToReject;
         vm.inspectCp = inspectCp;
         vm.inspectSurveillance = inspectSurveillance;
         vm.isDeveloperEditable = isDeveloperEditable;
@@ -36,6 +37,7 @@
         vm.isProductEditable = isProductEditable;
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
+        vm.massRejectPendingListings = massRejectPendingListings;
         vm.mergeDevelopers = mergeDevelopers;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
@@ -232,6 +234,26 @@
             });
         }
 
+        function massRejectPendingListings () {
+            var idsToReject = [];
+            angular.forEach(vm.massReject, function (value, key) {
+                if (value) {
+                    idsToReject.push(parseInt(key));
+                }
+            });
+            commonService.massRejectPendingListings(idsToReject)
+                .then(function () {
+                    angular.forEach(vm.massReject, function (value, key) {
+                        if (value) {
+                            clearPendingListing(parseInt(key));
+                            delete(vm.massReject[key]);
+                        }
+                    });
+                }, function (error) {
+                    vm.uploadingListingsMessages = error.data.errorMessages;
+                });
+        }
+
         function mergeDevelopers () {
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/certifiedProduct/developer/merge.html',
@@ -382,6 +404,16 @@
             });
         }
 
+        function getNumberOfListingsToReject () {
+            var ret = 0;
+            angular.forEach(vm.massReject, function (value) {
+                if (value) {
+                    ret += 1;
+                }
+            });
+            return ret;
+        }
+
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -402,7 +434,7 @@
 
         function editCertifiedProduct () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/edit.html',
+                templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
                 controller: 'EditCertifiedProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -442,7 +474,7 @@
             }
 
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/inspect.html',
+                templateUrl: 'app/admin/components/certifiedProduct/listing/inspect.html',
                 controller: 'InspectController',
                 controllerAs: 'vm',
                 animation: false,
@@ -460,17 +492,7 @@
                 size: 'lg'
             });
             vm.modalInstance.result.then(function (result) {
-                if (result.developerCreated) {
-                    vm.developers.push(result.developer);
-                }
-                for (var i = 0; i < vm.uploadingCps.length; i++) {
-                    if (cpId === vm.uploadingCps[i].id) {
-                        vm.uploadingCps.splice(i,1)
-                        vm.pendingProducts = vm.uploadingCps.length;
-                    }
-                }
-            }, function (result) {
-                if (result !== 'cancelled') {
+                if (result.status === 'confirmed' || result.status === 'rejected') {
                     if (result.developerCreated) {
                         vm.developers.push(result.developer);
                     }
@@ -481,6 +503,8 @@
                         }
                     }
                 }
+            }, function (result) {
+                $log.info('inspection: ' + result);
             });
         }
 
@@ -525,7 +549,11 @@
 
         function rejectCp (cpId) {
             commonService.rejectPendingCp(cpId)
-                .then(vm.refreshPending);
+                .then(function () {
+                    clearPendingListing(cpId);
+                }, function (error) {
+                    vm.uploadingListingsMessages = error.data.errorMessages;
+                });
         }
 
         function rejectSurveillance (survId) {
@@ -686,6 +714,15 @@
         }
 
         ////////////////////////////////////////////////////////////////////
+
+        function clearPendingListing(cpId) {
+            for (var i = 0; i < vm.uploadingCps.length; i++) {
+                if (cpId === vm.uploadingCps[i].id) {
+                    vm.uploadingCps.splice(i,1)
+                    vm.pendingProducts = vm.uploadingCps.length;
+                }
+            }
+        }
 
         function getResources () {
             commonService.getSearchOptions()
