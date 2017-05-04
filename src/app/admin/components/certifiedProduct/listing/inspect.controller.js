@@ -187,13 +187,23 @@
         function reject () {
             commonService.rejectPendingCp(vm.cp.id)
                 .then(function () {
-                    $uibModalInstance.dismiss('rejected');
+                    $uibModalInstance.close({status: 'rejected'});
+                }, function (error) {
+                    if (error.data.contact) {
+                        $uibModalInstance.close({
+                            contact: error.data.contact,
+                            objectId: error.data.objectId,
+                            status: 'resolved'
+                        });
+                    } else {
+                        vm.errorMessages = error.data.errorMessages;
+                    }
                 });
         }
 
         function editCertifiedProduct () {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/edit.html',
+                templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
                 controller: 'EditCertifiedProductController',
                 controllerAs: 'vm',
                 animation: false,
