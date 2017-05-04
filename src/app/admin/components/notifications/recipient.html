@@ -60,6 +60,7 @@
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-if="vm.recipient.id"
             ng-click="vm.deleteRecipient()"><i class="fa fa-trash"></i><span class="sr-only">Delete Recipient</span></button>
   </div>
 </div>
