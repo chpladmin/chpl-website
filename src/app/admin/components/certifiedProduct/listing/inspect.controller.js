@@ -195,7 +195,7 @@
 
         function editCertifiedProduct () {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/edit.html',
+                templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
                 controller: 'EditCertifiedProductController',
                 controllerAs: 'vm',
                 animation: false,
