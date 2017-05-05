@@ -5,6 +5,9 @@
   * Allow mass reject
   * Display errors if Listing was previously "completed"
 
+## OCD-1484
+* Displayed filtered Test Standards on Criteria editing
+
 ## Version TBD
 _Date TBD_
 

@@ -445,10 +445,14 @@
 
         function editCertifiedProduct () {
             var resources = angular.copy(vm.resources);
-            var filteredFunctionality = resources.testFunctionalities.data.filter(function (func) {
-                return func.year === vm.activeCP.certificationEdition.name;
+            var filteredFunctionality = resources.testFunctionalities.data.filter(function (item) {
+                return !item.year || item.year === vm.activeCP.certificationEdition.name;
             });
             resources.testFunctionalities.data = filteredFunctionality;
+            var filteredTestStandards = resources.testStandards.data.filter(function (item) {
+                return !item.year || item.year === vm.activeCP.certificationEdition.name;
+            });
+            resources.testStandards.data = filteredTestStandards;
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
                 controller: 'EditCertifiedProductController',
