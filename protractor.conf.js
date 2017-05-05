@@ -32,7 +32,7 @@ exports.config = {
         // This may be an array of strings to specify multiple tags to include.
         tags: ['~@ignore','~@wip'],
         // How to format features (progress, summary, pretty, json)
-        format: ['progress', 'pretty', 'json:test_reports/cucumber_report.json'],
+        format: ['progress', 'pretty', 'usage', 'json:test_reports/cucumber_report.json'],
     },
 
     // Options to be passed to Jasmine-node.

@@ -8,6 +8,9 @@
 ## OCD-1484
 * Displayed filtered Test Standards on Criteria editing
 
+## OCD-1493
+* Added 'download definition file' download option
+
 ## Version TBD
 _Date TBD_
 
