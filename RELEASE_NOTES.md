@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 8.3.0
+_8 May 2017_
 
 ### New Features
 * Allow optionally banning Developers on appropriate status change
