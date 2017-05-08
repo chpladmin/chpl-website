@@ -1,15 +1,18 @@
 # Release Notes
 
-## OCD-1406
+## Version TBD
+_Date TBD_
+
+### New Features
 * Updated Pending Listing workflow
   * Allow mass reject
   * Display errors if Listing was previously "completed"
-
-## OCD-1484
 * Displayed filtered Test Standards on Criteria editing
 
-## Version TBD
-_Date TBD_
+=======
+
+## Version 8.3.0
+_8 May 2017_
 
 ### New Features
 * Allow optionally banning Developers on appropriate status change
