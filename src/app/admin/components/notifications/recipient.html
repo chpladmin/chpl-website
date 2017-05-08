@@ -1,0 +1,66 @@
+<div role="modal" aria-labeled-by="recipientLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="recipientLabel">Notification Recipient</h4>
+  </div>
+  <div class="modal-body form-horizontal" ng-form="vm.recipientForm">
+    <div class="form-group">
+      <label class="col-md-4" for="email">Recipient email</label>
+      <div class="col-md-8">
+        <input class="input-sm form-control" type="email" ng-model="vm.recipient.email" id="email" name="email" required></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.recipientForm.email.$touched) && vm.recipientForm.email.$error.required">Email is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.recipientForm.email.$touched) && vm.recipientForm.email.$error.email">Email format is invalid</div>
+      </div>
+    </div>
+    <div ng-repeat="subscription in vm.recipient.subscriptions track by $index">
+      <div class="form-group">
+        <label class="col-md-4" for="subscription{{ $index }}">Subscription {{ $index + 1 }}</label>
+        <div class="col-md-6">
+          <select class="input-sm form-control" ng-model="subscription.notificationType" id="subscription{{ $index }}" name="subscription{{ $index }}" required
+                  ng-options="report as report.name for report in vm.reportTypes | orderBy:'name'"></select>
+          <div class="text-danger" ng-if="(vm.showFormErrors || vm.recipientForm['subscription' + $index].$touched) && vm.recipientForm['subscription' + $index].$error.required">Subscription type is required</div>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-sm btn-danger pull-right" ng-click="vm.removeSubscription($index)" ng-if="vm.recipient.subscriptions.length > 1"><i class="fa fa-trash"></i><span class="sr-only">Remove subscription</span></button>
+        </div>
+      </div>
+      <div class="form-group" ng-if="subscription.notificationType.requiresAcb || $index > 3">
+        <label class="col-md-3 col-md-offset-1" for="subscriptionAcb{{ $index }}">ONC-ACB</label>
+        <div class="col-md-6">
+          <select class="input-sm form-control" ng-model="subscription.acb" id="subscriptionAcb{{ $index }}" name="subscriptionAcb{{ $index }}" required
+                  ng-options="acb as acb.name for acb in vm.acbs | orderBy:'name'"></select>
+          <div class="text-danger" ng-if="(vm.showFormErrors || vm.recipientForm['subscriptionAcb' + $index].$touched) && vm.recipientForm['subscriptionAcb' + $index].$error.required">ONC-ACB is required</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2 col-md-offset-10">
+        <button class="btn btn-sm btn-primary pull-right" ng-click="vm.addSubscription()"><i class="fa fa-plus"></i><span class="sr-only">Add subscription</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-danger" ng-if="vm.errorMessage">{{ vm.errorMessage }}</div>
+    <button ng-disabled="vm.recipientForm.$invalid && vm.showFormErrors"
+            ng-mouseover="vm.showFormErrors = true"
+            class="btn btn-ai-success pull-right" ng-click="vm.save()"><i class="fa fa-save"></i><span class="sr-only">Save Recipient</span></button>
+    <button class="btn btn-warning pull-left"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><i class="fa fa-ban"></i><span class="sr-only">Cancel</span></button>
+    <button class="btn btn-danger pull-left"
+            confirm="Are you sure you wish to delete this subscriber?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-if="vm.recipient.id"
+            ng-click="vm.deleteRecipient()"><i class="fa fa-trash"></i><span class="sr-only">Delete Recipient</span></button>
+  </div>
+</div>

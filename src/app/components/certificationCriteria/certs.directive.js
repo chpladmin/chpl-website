@@ -41,7 +41,7 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($analytics, $scope, ACTIVE_CAP) {
+        function CertsController ($analytics, $log, $scope, ACTIVE_CAP) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
@@ -221,16 +221,16 @@
                 if (vm.panelShown !== panel) {
                     switch (panel) {
                     case 'cert':
-                        $analytics.eventTrack('View Details', { panel: 'Certification Criteria'});
+                        $analytics.eventTrack('Viewed Criteria', { category: 'Listing Details', label: vm.product.chplProductNumber});
                         break;
                     case 'cqm':
-                        $analytics.eventTrack('View Details', { panel: 'Clinical Quality Measures'});
-                    break;
+                        $analytics.eventTrack('Viewed CQM Details', { category: 'Listing Details', label: vm.product.chplProductNumber});
+                        break;
                     case 'additional':
-                        $analytics.eventTrack('View Details', { panel: 'Additional Information'});
+                        $analytics.eventTrack('Viewed additional information', { category: 'Listing Details', label: vm.product.chplProductNumber});
                         break;
                     case 'surveillance':
-                        $analytics.eventTrack('View Details', { panel: 'Surveillance Activity'});
+                        $analytics.eventTrack('Viewed surveillance information', { category: 'Listing Details', label: vm.product.chplProductNumber});
                         break;
                     }
                 }

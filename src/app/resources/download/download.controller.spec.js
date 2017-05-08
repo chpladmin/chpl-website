@@ -6,12 +6,12 @@
         var $log, authService, mock, scope, vm;
 
         mock = {};
+        mock.API = 'api';
         mock.API_KEY = 'api key';
         mock.token = 'a token here';
 
         beforeEach(function () {
-            module('chpl.loginServices');
-            module('chpl.download', function ($provide) {
+            module('chpl.loginServices', 'chpl.download', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');

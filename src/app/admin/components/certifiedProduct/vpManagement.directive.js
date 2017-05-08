@@ -401,8 +401,13 @@
         }
 
         function editCertifiedProduct () {
+            var resources = angular.copy(vm.resources);
+            var filteredFunctionality = resources.testFunctionalities.data.filter(function (func) {
+                return func.year === vm.activeCP.certificationEdition.name;
+            });
+            resources.testFunctionalities.data = filteredFunctionality;
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/vpEditCertifiedProduct.html',
+                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/edit.html',
                 controller: 'EditCertifiedProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -412,9 +417,9 @@
                 resolve: {
                     activeCP: function () { return vm.activeCP; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isChplStaff; },
+                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
-                    resources: function () { return vm.resources; },
+                    resources: function () { return resources; },
                     workType: function () { return vm.workType; }
                 }
             });
@@ -427,6 +432,8 @@
             }, function (result) {
                 if (result !== 'cancelled') {
                     vm.cpMessage = result;
+                } else {
+                    $log.info(result);
                 }
             });
         }
@@ -440,7 +447,7 @@
             }
 
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/vpInspect.html',
+                templateUrl: 'app/admin/components/certifiedProduct/certifiedProduct/inspect.html',
                 controller: 'InspectController',
                 controllerAs: 'vm',
                 animation: false,

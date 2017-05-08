@@ -3,136 +3,66 @@
 
     describe('chpl.admin.reports.directive', function () {
 
-        var element, scope, $log, ctrl;
+        var el, $log, $q, commonService, authService, vm, Mock;
 
         beforeEach(function () {
-            var mockCommonService = {};
-            var mockAuthService = {};
+            module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
+                    $delegate.isAcbStaff = jasmine.createSpy('isAcbStaff');
+                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
+                    return $delegate;
+                });
 
-            module('chpl.templates');
-            module('chpl.admin', function ($provide) {
-                $provide.value('commonService', mockCommonService);
-                $provide.value('authService', mockAuthService);
+                $provide.decorator('commonService', function ($delegate) {
+                    $delegate.getCertifiedProductActivity = jasmine.createSpy('getCertifiedProductActivity');
+                    $delegate.getDeveloperActivity = jasmine.createSpy('getDeveloperActivity');
+                    $delegate.getProductActivity = jasmine.createSpy('getProductActivity');
+                    $delegate.getVersionActivity = jasmine.createSpy('getVersionActivity');
+                    $delegate.getAcbActivity = jasmine.createSpy('getAcbActivity');
+                    $delegate.getAtlActivity = jasmine.createSpy('getAtlActivity');
+                    $delegate.getAnnouncementActivity = jasmine.createSpy('getAnnouncementActivity');
+                    $delegate.getUserActivity = jasmine.createSpy('getUserActivity');
+                    $delegate.getUserActivities = jasmine.createSpy('getUserActivities');
+                    $delegate.getApiUserActivity = jasmine.createSpy('getApiUserActivity');
+                    $delegate.getApiActivity = jasmine.createSpy('getApiActivity');
+                    $delegate.getApiUsers = jasmine.createSpy('getApiUsers');
+                    $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
+                    return $delegate;
+                });
             });
 
-            inject(function ($q) {
-                mockCommonService.developerActivity = [{"id":16,"description":"Developer Epic Systems Corporation was updated.","originalData":{"developerCode":"1448","id":449,"address":null,"contact":null,"creationDate":1459774929469,"deleted":false,"lastModifiedDate":1459774929469,"lastModifiedUser":-1,"name":"Epic Systems Corporation","website":null,"transparencyAttestationMappings":[{"id":null,"developerId":449,"acbId":1,"acbName":"InfoGard","transparencyAttestation":null},{"id":null,"developerId":449,"acbId":3,"acbName":"Drummond Group Inc.","transparencyAttestation":null},{"id":null,"developerId":449,"acbId":6,"acbName":"ICSA Labs","transparencyAttestation":null}]},"newData":{"developerCode":"1448","id":449,"address":{"id":1,"streetLineOne":"1979 Milky Way","streetLineTwo":null,"city":"Verona","state":"WI","zipcode":"53593","country":"USA","creationDate":1459887759394,"deleted":false,"lastModifiedDate":1459887759394,"lastModifiedUser":-2},"contact":{"id":4,"firstName":"","lastName":"Sasha TerMaat","email":"epic@epic.com","phoneNumber":"1233211234","title":null,"signatureDate":null},"creationDate":1459774929469,"deleted":false,"lastModifiedDate":1459887759472,"lastModifiedUser":-2,"name":"Epic Systems Corporation","website":"www.epic.com","transparencyAttestationMappings":[{"id":null,"developerId":449,"acbId":1,"acbName":"InfoGard","transparencyAttestation":null},{"id":null,"developerId":449,"acbId":3,"acbName":"Drummond Group Inc.","transparencyAttestation":null},{"id":null,"developerId":449,"acbId":6,"acbName":"ICSA Labs","transparencyAttestation":null}]},"activityDate":1459887759535,"activityObjectId":449,"concept":"ACTIVITY_CONCEPT_DEVELOPER","responsibleUser":{"userId":-2,"subjectName":"admin","firstName":"Administrator","lastName":"Administrator","email":"info@ainq.com","phoneNumber":"(301) 560-6999","title":null,"complianceTermsAccepted":true,"accountLocked":false,"accountEnabled":true,"hash":null}}]
-                mockCommonService.productActivity = [{"id":35,developer: {name:'fake'}, "description":"Product 4medica iEHR® Cloud Ambulatory Solution mark 2 was updated.","originalData":{"id":28,"creationDate":1459774932119,"deleted":false,"lastModifiedDate":1459774932119,"lastModifiedUser":-1,"name":"4medica iEHR® Cloud Ambulatory Solution","productVersions":[],"reportFileLocation":null,"developerId":3},"newData":{"id":28,"creationDate":1459774932119,"deleted":false,"lastModifiedDate":1460031909756,"lastModifiedUser":-2,"name":"4medica iEHR® Cloud Ambulatory Solution mark 2","productVersions":[],"reportFileLocation":null,"developerId":3},"activityDate":1460031909812,"activityObjectId":28,"concept":"ACTIVITY_CONCEPT_PRODUCT","responsibleUser":{"userId":-2,"subjectName":"admin","firstName":"Administrator","lastName":"Administrator","email":"info@ainq.com","phoneNumber":"(301) 560-6999","title":null,"complianceTermsAccepted":true,"accountLocked":false,"accountEnabled":true,"hash":null}}];
-                mockCommonService.versionActivity = ['Version 1', 'Version 2'];
-                mockCommonService.certBodyActivity  = ['CB 1', 'CB 2'];
-                mockCommonService.cpActivity = [
-                    {"id":116,"description":"Corrective action plan for CHP-028100 was created.","originalData":null,"newData":{"id":1,"certifiedProductId":7085,"surveillanceStartDate":1459900800000,"surveillanceEndDate":null,"surveillanceResult":false,"nonComplianceDeterminationDate":1460678400000,"approvalDate":null,"startDate":null,"requiredCompletionDate":null,"actualCompletionDate":null,"summary":"Summary","developerExplanation":null,"resolution":null},"activityDate":1461612293311,"activityObjectId":1,"concept":"ACTIVITY_CONCEPT_CERTIFIED_PRODUCT"},
-                    {"id":117,"description":"Corrective action plan for CHP-028100 was created.","originalData":null,"newData":{"id":2,"certifiedProductId":7085,"surveillanceStartDate":1459382400000,"surveillanceEndDate":null,"surveillanceResult":false,"nonComplianceDeterminationDate":1460505600000,"approvalDate":null,"startDate":null,"requiredCompletionDate":null,"actualCompletionDate":null,"summary":null,"developerExplanation":null,"resolution":null},"activityDate":1461612309431,"activityObjectId":2,"concept":"ACTIVITY_CONCEPT_CERTIFIED_PRODUCT"}
-                ];
-                mockCommonService.userActivity = [];
-                mockCommonService.userActivities = [];
-                mockCommonService.apiActivity = [];
-                mockCommonService.apiUserActivity = [];
-                mockCommonService.announcementActivity = [];
+            inject(function ($controller, _commonService_, _authService_, $compile, $rootScope, _$log_, _$q_, _Mock_) {
+                $log = _$log_;
+                $q = _$q_;
+                Mock = _Mock_;
+                authService = _authService_;
+                authService.isAcbAdmin.and.returnValue($q.when(true));
+                authService.isAcbStaff.and.returnValue($q.when(true));
+                authService.isChplAdmin.and.returnValue($q.when(true));
+                authService.isOncStaff.and.returnValue($q.when(true));
+                commonService = _commonService_;
+                commonService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
+                commonService.getDeveloperActivity.and.returnValue($q.when([]));
+                commonService.getProductActivity.and.returnValue($q.when([]));
+                commonService.getVersionActivity.and.returnValue($q.when([]));
+                commonService.getAcbActivity.and.returnValue($q.when([]));
+                commonService.getAtlActivity.and.returnValue($q.when([]));
+                commonService.getAnnouncementActivity.and.returnValue($q.when([]));
+                commonService.getUserActivity.and.returnValue($q.when([]));
+                commonService.getUserActivities.and.returnValue($q.when([]));
+                commonService.getApiUserActivity.and.returnValue($q.when([]));
+                commonService.getApiActivity.and.returnValue($q.when([]));
+                commonService.getApiUsers.and.returnValue($q.when([]));
+                commonService.getSingleCertifiedProductActivity.and.returnValue($q.when([]));
+                el = angular.element('<ai-reports></ai-reports');
 
-                mockCommonService.simpleApiCall = function () {
-                    var defer = $q.defer();
-                    defer.resolve({
-                        cols:[{type:'string'}],
-                        rows:[]
-                    });
-                    return defer.promise;
-                };
-
-                mockCommonService.externalApiCall = function () {
-                    var defer = $q.defer();
-                    defer.resolve({
-                        cols:[{type:'string'}],
-                        rows:[]
-                    });
-                    return defer.promise;
-                };
-
-                mockCommonService.getCertifiedProductActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.cpActivity);
-                    return defer.promise;
-                };
-
-                mockCommonService.getProductActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.productActivity);
-                    return defer.promise;
-                };
-
-                mockCommonService.getVersionActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.versionActivity);
-                    return defer.promise;
-                };
-
-                mockCommonService.getDeveloperActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.developerActivity);
-                    return defer.promise;
-                };
-
-                mockCommonService.getAcbActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.certBodyActivity);
-                    return defer.promise;
-                };
-
-                mockCommonService.getAtlActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.certBodyActivity);
-                    return defer.promise;
-                };
-
-                mockCommonService.getUserActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.userActivity);
-                    return defer.promise;
-                };
-
-                mockCommonService.getUserActivities = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.userActivities);
-                    return defer.promise;
-                };
-
-                mockCommonService.getApiActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.apiActivities);
-                    return defer.promise;
-                };
-
-                mockCommonService.getApiUserActivity = function () {
-                    var defer = $q.defer();
-                    defer.resolve(this.apiUserActivities);
-                    return defer.promise;
-                };
-
-                mockCommonService.getAnnouncementActivity = function () { return $q.when(mockCommonService.announcementActivity); };
-                mockCommonService.getApiUsers = function () { return $q.when([]) };
-
-                mockAuthService.isAcbAdmin = function () {
-                    return true;
-                };
-
-                mockAuthService.isChplAdmin = function () {
-                    return true;
-                };
-
-                mockAuthService.isOncStaff = function () {
-                    return true;
-                };
+                $compile(el)($rootScope.$new());
+                $rootScope.$digest();
+                vm = el.isolateScope().vm;
             });
         });
-
-        beforeEach(inject(function ($compile, $rootScope, _$log_) {
-            $log = _$log_;
-            scope = $rootScope.$new();
-
-            element = angular.element('<ai-reports></ai-reports');
-            $compile(element)(scope);
-            scope.$digest();
-        }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
@@ -141,22 +71,43 @@
         });
 
         describe('controller', function () {
-
-            beforeEach(inject(function ($controller) {
-                ctrl = $controller('ReportController', {
-                    $scope: scope,
-                    $element: null
-                });
-                scope.$digest();
-            }));
-
             it('should have loaded activity', function () {
-                expect(ctrl.searchedCertifiedProducts.length).toBeGreaterThan(0);
+                expect(vm.searchedCertifiedProducts).toBeDefined();
             });
 
             it('should know if the logged in user is ACB and/or CHPL admin', function () {
-                expect(ctrl.isAcbAdmin).toBeTruthy();
-                expect(ctrl.isChplAdmin).toBeTruthy();
+                expect(vm.isAcbAdmin).toBeTruthy();
+                expect(vm.isChplAdmin).toBeTruthy();
+            });
+        });
+
+        describe('date ranges', function () {
+            beforeEach(function () {
+                vm.activityRange = {
+                    range: 60,
+                    key: {
+                        startDate: new Date('1/15/2017'),
+                        endDate: new Date('2/15/2017')
+                    }
+                };
+            });
+
+            it('should have a function to determine if a date range is okay', function () {
+                expect(vm.validDates).toBeDefined()
+            });
+
+            it('should allow dates with less than the range separation', function () {
+                expect(vm.validDates('key')).toBe(true);
+            });
+
+            it('should not allow dates separated by more than the range', function () {
+                vm.activityRange.range = 1;
+                expect(vm.validDates('key')).toBe(false);
+            });
+
+            it('should not allow dates where start is after end', function () {
+                vm.activityRange.key.startDate = new Date('3/15/2017');
+                expect(vm.validDates('key')).toBe(false);
             });
         });
     });

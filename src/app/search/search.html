@@ -13,7 +13,7 @@
           <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ONC-ACB/CHPL ID</label>
           <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID"
                  ng-model="vm.query" ng-change="vm.activeSearch = true"
-                 ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearTerm(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+                 ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
           <span ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
             <a href ng-click="vm.browseAll()">Browse all</a><br />
             <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()">Restore previous search</a>

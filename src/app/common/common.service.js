@@ -49,13 +49,17 @@
                 });
         };
 
-        self.postApiCall = function (endpoint, postObject) {
+        self.postApiCall = function (endpoint, postObject, allowEmptyResponse) {
             return $http.post(API + endpoint, postObject)
                 .then(function (response) {
                     if (angular.isObject(response.data)) {
                         return response.data;
                     } else {
-                        return $q.reject(response);
+                        if (allowEmptyResponse) {
+                            return response;
+                        } else {
+                            return $q.reject(response);
+                        }
                     }
                 }, function (response) {
                     return $q.reject(response);
@@ -623,5 +627,31 @@
         self.setMeaningfulUseUsersAccurateAsOfDate = function (date) {
             return self.postApiCall('/meaningful_use/accurate_as_of', date);
         };
+
+        /*
+         * Email notification services
+         */
+        self.getNotificationReportTypes = function () {
+            return self.simpleApiCall('/data/notification_types');
+        };
+
+        self.getNotificationRecipients = function () {
+            return self.simpleApiCall('/notifications/recipients');
+        };
+
+        self.createRecipient = function (recipient) {
+            return self.postApiCall('/notifications/recipients/create', recipient);
+        };
+
+        self.updateRecipient = function (recipient) {
+            return self.postApiCall('/notifications/recipients/' + recipient.id + '/update', recipient);
+        };
+
+        self.deleteRecipient = function (recipient) {
+            return self.postApiCall('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
+        };
+        /*
+         * End email notification services
+         */
     }
 })();

@@ -49,6 +49,10 @@
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" class="" ng-click="vm.changeSubNav('api_key_management')">API Key Management Activity</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key_usage'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" class="" ng-click="vm.changeSubNav('api_key_usage')">API Key Usage Activity</a></li>
 
+            <!--
+            <li ng-class="{'active': vm.navState.screen === 'notifications'}" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href ng-click="vm.changeScreen('notifications')">Notifications</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.notifications === 'surveillance'}" ng-if="vm.navState.screen === 'notifications'"><a href class="" ng-click="vm.changeSubNav('surveillance')">Surveillance Activity</a></li>
+            -->
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" class="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
@@ -72,6 +76,8 @@
                     ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"
                     product-id="vm.productId"></ai-reports>
+        <ai-notification-recipients ng-if="vm.navState.screen === 'notifications' && vm.navState.notifications === 'surveillance'"
+                                    acbs="vm.acbs"></ai-notifiaction-recipients>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>
         <ai-announcements-management admin="true" ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
         <ai-cms-management admin="true" ng-if="vm.navState.screen === 'cmsManagement'"></ai-cms-management>
