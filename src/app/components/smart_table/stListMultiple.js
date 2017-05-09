@@ -14,7 +14,8 @@
                 hiddenOptions: '@?',
                 matchFull: '@?',
                 nameSpace: '@',
-                separator: '@?'
+                separator: '@?',
+                trackAnalytics: '@?'
             },
             controller: 'ListMultipleController',
             controllerAs: 'vm',
@@ -154,7 +155,7 @@
     }
 
     /** @ngInclude */
-    function ListMultipleController ($log, $localStorage) {
+    function ListMultipleController ($analytics, $log, $localStorage) {
         var vm = this;
 
         vm.activate = activate;
@@ -248,6 +249,15 @@
                 vm.selected.splice(index, 1);
             } else {
                 vm.selected.push(value);
+                if (vm.trackAnalytics) {
+                    var event;
+                    switch (vm.predicate) {
+                    case 'criteriaMet': event = 'Certification Criteria Filter'; break;
+                    case 'cqmsMet': event = 'CQM Filter'; break;
+                    default: event = 'Other';
+                    }
+                    $analytics.eventTrack(event, { category: 'Search', label: value });
+                }
             }
             vm.filterChanged();
             vm.storeState();

@@ -58,7 +58,7 @@
         }
     }
     /** @ngInclude */
-    function SurveillanceFilterController ($log, $localStorage) {
+    function SurveillanceFilterController ($analytics, $log, $localStorage) {
         var vm = this;
 
         vm.activate = activate;
@@ -85,7 +85,7 @@
             vm.filterChanged();
         }
 
-        function filterChanged () {
+        function filterChanged (initialLoad) {
             vm.hasChanges = false;
             var tableState = vm.tableCtrl.tableState();
             if (tableState.search.predicateObject.surveillance) {
@@ -99,6 +99,18 @@
                 vm.hasChanges = vm.hasChanges || (vm.query.matchAll !== vm.initialState.matchAll);
             } else if (vm.query.surveillance || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
                 vm.hasChanges = true;
+                if (!initialLoad) {
+                    var events = [];
+                    if (vm.query.surveillance && vm.query.surveillance === 'never') { events.push('Never Surveilled'); }
+                    else {
+                        if (vm.query.surveillance && vm.query.surveillance === 'has-had') { events.push('Has had Surveillance'); }
+                        if (vm.query.NC.never) { events.push('Never had a Nonconformity'); }
+                        if (vm.query.NC.open) { events.push('Open Nonconformity'); }
+                        if (vm.query.NC.closed) { events.push('Closed Nonconformity'); }
+                        if (vm.query.NC.matchAll) { events.push('Matching All'); }
+                    }
+                    $analytics.eventTrack('Surveillance Filter', { category: 'Search', label: events.join(',') });
+                }
             }
             if (vm.initialState || vm.hasChanges) {
                 vm.tableCtrl.search(vm.query, 'surveillance');
@@ -112,7 +124,7 @@
         function restoreState (state) {
             vm.query = state.search.predicateObject.surveillance;
             if (vm.query) {
-                vm.filterChanged();
+                vm.filterChanged(true);
             }
         }
 
