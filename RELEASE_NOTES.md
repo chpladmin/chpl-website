@@ -8,6 +8,7 @@ _Date TBD_
   * Allow mass reject
   * Display errors if Listing was previously "completed"
 * Displayed filtered Test Standards on Criteria editing
+* Added GTM tracking to Search - Criteria/CQMs/Surveillance filters
 
 =======
 

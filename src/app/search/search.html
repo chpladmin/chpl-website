@@ -55,7 +55,7 @@
                 </a>
               </li>
               <li ng-show="vm.show2011">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2011]" has-changes="vm.categoryChanged['criteria'][2011]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" track-analytics="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2014 = !vm.show2014">
@@ -63,7 +63,7 @@
                 </a>
               </li>
               <li ng-show="vm.show2014">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2014]" has-changes="vm.categoryChanged['criteria'][2014]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" track-analytics="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.show2015 = !vm.show2015">
@@ -71,7 +71,7 @@
                 </a>
               </li>
               <li ng-show="vm.show2015">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2015]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.criteria[2015]" has-changes="vm.categoryChanged['criteria'][2015]" predicate="criteriaMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" track-analytics="true"></st-list-multiple>
               </li>
             </ul>
           </div>
@@ -99,7 +99,7 @@
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.show2011Cqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" separator="☺"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms[2011]" has-changes="vm.categoryChanged['cqm-2011']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" separator="☺" track-analytics="true"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
                 <a href ng-click="vm.showOtherCqms = !vm.showOtherCqms">
@@ -107,7 +107,7 @@
                 </a>
               </li>
               <li ng-show="vm.showCqms && vm.showOtherCqms">
-                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" separator="☺"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.cqms.other" has-changes="vm.categoryChanged['cqm-other']" predicate="cqmsMet" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" allow-and="true" separator="☺" track-analytics="true"></st-list-multiple>
               </li>
               <li>
                 <a href ng-click="vm.showAcbs = !vm.showAcbs">
