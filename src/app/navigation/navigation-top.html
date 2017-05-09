@@ -15,6 +15,15 @@
       <div class="collapse navbar-collapse" uib-collapse="navCollapsed" aria-labeledby="menu-toggle">
         <ul class="nav navbar-nav navbar-right">
           <li ng-class="{'active': vm.isActive('/search') }"><a href="#/search">CHPL<br />Search <i class="fa fa-search"></i></a></li>
+          <li ng-class="{'active': vm.isActive('/decertifications') }" class="dropdown" uib-dropdown>
+            <a href class="dropdown-toggle" id="shortcut-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false"><br />Shortcuts <span class="fa fa-caret-down"></span></a>
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="shortcut-toggle">
+              <li><a href="#/decertifications/products">Decertified Products</a></li>
+              <li><a href="#/decertifications/inactive">Inactive Certificates</a></li>
+              <li><a href="#/decertifications/developers">Banned Developers</a></li>
+              <li><a href="#/decertifications/nonconformities">Nonconformities</a></li>
+            </ul>
+          </li>
           <li class="dropdown" uib-dropdown is-open="vm.widgetExpanded" auto-close="disabled">
             <a href class="dropdown-toggle" id="widget-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.widgetExpanded">CMS ID<br />Creator <span class="fa fa-caret-down"></span></a>
             <div class="dropdown-menu" uib-dropdown-menu aria-labelledby="widget-toggle" id="widget-dropdown">
@@ -36,30 +45,6 @@
               <li><a href="#/resources/chpl_api">CHPL API</a></li>
               <li><a href="#/resources/cms_lookup">CMS ID Reverse Lookup</a></li>
               <li><a href="mailto:ONC_CHPL@hhs.gov">Contact Us <i class="fa fa-envelope-o"></i></a></li>
-            </ul>
-          </li>
-          <li ng-class="{'active': vm.isActive('/decertifications/products') }"><a href="#/decertifications/products">Decertified<br/>Products</a></li>
-          <li ng-class="{'active': vm.isActive('/decertifications/inactive') }"><a href="#/decertifications/inactive">Inactive<br/>Certificates</a></li>
-          <li ng-class="{'active': vm.isActive('/decertifications/developers') }"><a href="#/decertifications/developers">Banned<br/>Developers</a></li>
-          <li ng-class="{'active': vm.isActive('/admin') }" class="dropdown" uib-dropdown auto-close="outsideClick">
-            &nbsp;<br /><a href class="dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> <span ng-if="!vm.getUsername()" class="sr-only">Log in</span>{{ vm.getUsername() }} <span class="fa fa-caret-down"></span></a>
-            <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
-              <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isAcbStaff()"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
-              <li ng-if="vm.isChplAdmin()"><a href="#/admin/userManagement">User Management</a></li>
-              <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/acbManagement">ONC-ACB Management</a></li>
-              <li ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="#/admin/atlManagement">ONC-ATL Management</a></li>
-              <li ng-if="vm.isAuthed()"><a href="#/admin/reports">Reports</a></li>
-              <!--
-              <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/notifications">Notifications</a></li>
-              -->
-              <li ng-if="vm.isChplAdmin()"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
-              <li ng-if="vm.isChplAdmin()"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
-              <li ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="#/admin/cmsManagement">CMS Management</a></li>
-              <li>
-                <ai-login form-class="navbar-form"
-                          p-class="navbar-text"
-                          p-class-fail="navbar-text">
-                </ai-login>
             </ul>
           </li>
         </ul>

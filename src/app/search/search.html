@@ -1,31 +1,30 @@
-<div ng-class="{'search-unsearched': !vm.activeSearch && vm.searchForm.$pristine }" id="search-page">
-  <div class="pending" ng-if="vm.isPreLoading"></div>
+<div id="search-page">
+  <div class="pending" ng-show="vm.isPreLoading"></div>
+  <div class="search-unsearched" ng-if="!vm.activeSearch && vm.searchForm.$pristine"></div>
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
     <st-manage register-search="vm.registerSearch(search)" name-space="searchTableState" />
-    <div class="row" ng-if="vm.activeSearch || vm.searchForm.$dirty">
+    <div class="row" ng-show="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
         <h1>Search</h1>
       </div>
     </div>
     <div class="form-horizontal search-inputs" ng-form="vm.searchForm" aria-live="polite">
       <div class="form-group" id="filters">
-        <div ng-class="{'col-sm-8 col-sm-offset-2 search-pristine': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
+        <div ng-class="{'col-sm-8 col-sm-offset-2': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
           <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ONC-ACB/CHPL ID</label>
-          <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID"
-                 ng-model="vm.query" ng-change="vm.activeSearch = true"
-                 ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+          <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID"
+                   ng-model="vm.query" ng-change="vm.activeSearch = true"
+                   ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" />
+            <span class="input-group-btn">
+              <button ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="btn btn-default" ng-click="vm.browseAll()"><i class="fa fa-ellipsis-h"></i> Browse all</button>
+            </span>
+          </div>
           <span ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
-            <a href ng-click="vm.browseAll()">Browse all</a><br />
-            <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()">Restore previous search</a>
+            <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()"><i class="fa fa-backward"></i> Restore previous search</a>
           </span>
         </div>
-        <!--
-            <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID" ng-model="vm.query.searchTermObject"
-                   ng-keyup="$event.keyCode === 13 && vm.search()"
-                   uib-typeahead="element as element.value + ' (' + element.type + ')' for element in vm.lookaheadSource.all | filter:vm.certificationStatusFilter | filter:{value:$viewValue} | limitTo:16"
-                   typeahead-focus-first="false"
-                   typeahead-input-formatter="$model.value" />
-            -->
         <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
           <st-list-multiple collection="vm.allCps" fixed-items="vm.previouslyIds" predicate="id" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" match-full="true" hidden="true"></st-list-multiple>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
@@ -252,6 +251,33 @@
           </div>
         </div>
       </div>  <!-- end of search results -->
+
+      <div id="collections" ng-if="!vm.activeSearch && vm.searchForm.$pristine">
+        <div class="row">
+          <div class="col-md-3 col-md-offset-3 col-sm-6">
+            <div class="well well-lg text-center">
+              <a href="#/decertifications/inactive">Inactive Certificates</a>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="well well-lg text-center">
+              <a href="#/decertifications/products">Decertified Products</a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-md-offset-3 col-sm-6">
+            <div class="well well-lg text-center">
+              <a href="#/decertifications/developers">Banned Developers</a>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="well well-lg text-center">
+              <a href="#/decertifications/nonconformities">Nonconformities</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

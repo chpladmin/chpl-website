@@ -14,7 +14,30 @@
             <a href="https://gobierno.usa.gov/">GobiernoUSA.gov</a>
           </p>
         </div>
-        <div class="col-sm-6" ng-if="vm.announcements.length > 0">
+        <div class="col-sm-6">
+          <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown" uib-dropdown auto-close="outsideClick">
+            <a href class="dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false"><span ng-if="!vm.getUsername()">Administrator Login</span>{{ vm.getUsername() }} <span class="fa fa-caret-up"></span></a>
+            <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
+              <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isAcbStaff()"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
+              <li ng-if="vm.isChplAdmin()"><a href="#/admin/userManagement">User Management</a></li>
+              <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/acbManagement">ONC-ACB Management</a></li>
+              <li ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="#/admin/atlManagement">ONC-ATL Management</a></li>
+              <li ng-if="vm.isAuthed()"><a href="#/admin/reports">Reports</a></li>
+              <!--
+              <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/notifications">Notifications</a></li>
+              -->
+              <li ng-if="vm.isChplAdmin()"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
+              <li ng-if="vm.isChplAdmin()"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
+              <li ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="#/admin/cmsManagement">CMS Management</a></li>
+              <li>
+                <ai-login form-class="navbar-form"
+                          p-class="navbar-text"
+                          p-class-fail="navbar-text">
+                </ai-login>
+            </ul>
+          </li>
+          </ul>
           <div ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
             <p class="announcement nav-text spaced-out badge pull-right">{{ announcement.title }}<span ng-if="announcement.text">: {{ announcement.text }}</span></p>
           </div>
