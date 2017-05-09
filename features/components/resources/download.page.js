@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     // page definition
-    downloadPage: {
+    model: {
         pageTitle: element(by.tagName('h1')),
         downloadSelect: element(by.id('downloadSelect')),
         downloadOptions: element(by.id('downloadSelect')).all(by.tagName('option')),
@@ -17,6 +17,6 @@ module.exports = {
     },
 
     selectDownloadFile: function (name) {
-        this.downloadPage.downloadSelect.element(by.cssContainingText('option', name)).click();
+        this.model.downloadSelect.element(by.cssContainingText('option', name)).click();
     }
 };

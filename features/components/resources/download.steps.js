@@ -1,4 +1,4 @@
-//features/components/resources/downloadSteps.js
+//features/components/resources/download.steps.js
 var page = require('./download.page.js');
 var {defineSupportCode} = require('cucumber');
 
@@ -13,27 +13,27 @@ defineSupportCode(({Given, When, Then}) => {
     });
 
     Then('I should see \'Download the CHPL\' as the page title', function () {
-        var pageTitle = page.downloadPage.pageTitle;
+        var pageTitle = page.model.pageTitle;
         return (expect(pageTitle.getText()).eventually.to.equal('Download the CHPL'));
     });
 
     Then('there should be {int} Download Files', function (count) {
-        var downloadOptions = page.downloadPage.downloadOptions;
+        var downloadOptions = page.model.downloadOptions;
         return (expect(downloadOptions.count()).to.eventually.equal(count));
     });
 
     Then('there should be {int} Definition Files', function (count) {
-        var definitionOptions = page.downloadPage.definitionOptions;
+        var definitionOptions = page.model.definitionOptions;
         return (expect(definitionOptions.count()).to.eventually.equal(count));
     });
 
     Then('the download select box should be {stringInDoubleQuotes}', function (file) {
-        var activeDownloadFile = page.downloadPage.activeDownloadFile;
+        var activeDownloadFile = page.model.activeDownloadFile;
         return (expect(activeDownloadFile.getText()).to.eventually.equal(file));
     });
 
     Then('the definition select box should be {stringInDoubleQuotes}', function (file) {
-        var activeDefinitionFile = page.downloadPage.activeDefinitionFile;
+        var activeDefinitionFile = page.model.activeDefinitionFile;
         return (expect(activeDefinitionFile.getText()).to.eventually.equal(file));
     });
 });
