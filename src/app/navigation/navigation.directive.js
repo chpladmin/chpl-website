@@ -29,7 +29,7 @@
             replace: true,
             templateUrl: 'app/navigation/navigation-bottom.html',
             bindToController: { },
-            scope: {},
+            scope: { },
             controllerAs: 'vm',
             controller: 'NavigationController'
         }

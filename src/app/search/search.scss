@@ -53,17 +53,6 @@ ul.pagination li {
     min-height: 600px;
 }
 
-.search-pristine {
-    position: relative;
-    top: 50%;
-    transform: translateY(800%);
-}
-
-.restore-previous-search {
-    position: absolute;
-    bottom: -40px;
-}
-
 .restore-previous-search a {
     color: #fff;
 }
@@ -105,4 +94,16 @@ ul.pagination li {
     background-color: black;
     opacity: .5;
     z-index: 3000;
+}
+
+#collections {
+    .well-lg {
+        a {
+            font-size: larger;
+            color: black;
+            &:hover {
+                color: #666;
+            }
+        }
+    }
 }

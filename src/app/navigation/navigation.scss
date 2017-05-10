@@ -13,3 +13,11 @@
         }
     }
 }
+
+footer {
+    @media (min-width: 768px) {
+    .navbar-right {
+        margin-right: 0px;
+    }
+    }
+}

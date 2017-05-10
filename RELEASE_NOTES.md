@@ -3,6 +3,11 @@
 ## Version TBD
 _Date TBD_
 
+### Big Changes
+* Reworked entire general public Navigation
+  * Added "Collections"/"Shortcuts"
+  * Consolidated top nav
+
 ### New Features
 * Updated Pending Listing workflow
   * Allow mass reject

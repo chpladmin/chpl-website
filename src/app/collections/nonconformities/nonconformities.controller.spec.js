@@ -1,12 +1,12 @@
 (function () {
     'use strict';
 
-    describe('chpl.decertifications.nonconformities.controller', function () {
+    describe('chpl.collections.nonconformities.controller', function () {
 
         var commonService, scope, vm, $log, $q, Mock;
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.decertifications', function ($provide) {
+            module('chpl.mock', 'chpl.collections', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getAllNonconformities = jasmine.createSpy('getAllNonconformities');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');

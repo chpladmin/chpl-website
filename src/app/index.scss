@@ -87,27 +87,25 @@ a.btn {
     .navbar-fixed-top .nav {
         position: absolute;
         bottom: 0;
-        right: 0;
+        right: 15px;
     }
-}
-
-footer .navbar-default a {
-    color: #214e75;
-}
-
-footer .navbar-default {
-    background-color: #ebebeb;
-    background-image: none;
-}
-
-footer p {
-    color: #363636;
 }
 
 footer {
     margin-top: 150px;
-}
+    .navbar-default a {
+        color: #214e75;
+    }
 
+    .navbar-default {
+        background-color: #ebebeb;
+        background-image: none;
+    }
+
+    p {
+        color: #363636;
+    }
+}
 .announcement.badge {
     white-space: inherit;
 }
