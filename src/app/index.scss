@@ -23,7 +23,7 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
 }
 
 body {
-    margin-top: 150px;
+    margin-top: 170px;
     background-image: url('../assets/images/CHPL_BackgroundPattern.png');
     font-family: 'Lato', sans-serif;
 }
@@ -51,7 +51,7 @@ a.btn {
     background-repeat: no-repeat;
     background-size: cover;
     border-bottom: 20px solid #0070c9;
-    min-height: 130px;
+    min-height: 160px;
     box-shadow: none;
 }
 
@@ -81,7 +81,7 @@ a.btn {
 @media (min-width: 767px) {
     .navbar-fixed-top .container {
         position: relative;
-        min-height: 130px;
+        min-height: 160px;
     }
 
     .navbar-fixed-top .nav {
@@ -143,6 +143,12 @@ h4 {
 
 footer .spaced-out {
     margin: 10px 40px;
+}
+
+header {
+    a.navbar-brand img {
+        margin: 10px 40px;
+    }
 }
 
 #loading-bar .bar {
