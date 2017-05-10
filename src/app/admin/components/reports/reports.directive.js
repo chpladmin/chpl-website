@@ -570,7 +570,6 @@
                     output.other.push(activity);
                 }
                 if (activity.questionable) {
-                    $log.debug(activity);
                     output.questionable.push(activity);
                 }
             }
