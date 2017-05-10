@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.decertifications.developers.controller', function () {
+    describe('chpl.collections.developers.controller', function () {
         var vm, scope, $log, $q, commonService, mock, Mock;
 
         mock = {
@@ -12,7 +12,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.decertifications', function ($provide) {
+            module('chpl.mock', 'chpl.collections', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getDecertifiedDevelopers = jasmine.createSpy('getDecertifiedDevelopers');
                     return $delegate;

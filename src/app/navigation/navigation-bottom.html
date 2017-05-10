@@ -1,5 +1,5 @@
 <footer>
-  <nav class="navbar navbar-default navbar-fixed-bottom">
+  <nav class="nav navbar navbar-default navbar-fixed-bottom">
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-6">
@@ -16,8 +16,8 @@
         </div>
         <div class="col-sm-6">
           <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown" uib-dropdown auto-close="outsideClick">
-            <a href class="dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="false"><span ng-if="!vm.getUsername()">Administrator Login</span>{{ vm.getUsername() }} <span class="fa fa-caret-up"></span></a>
+          <li class="dropdown" uib-dropdown auto-close="outsideClick" is-open="vm.adminLoginIsOpen">
+            <button href class="btn btn-default navbar-btn dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.adminLoginIsOpen"><span ng-if="!vm.getUsername()">Administrator Login</span>{{ vm.getUsername() }} <span class="fa" ng-class="vm.adminLoginIsOpen ? 'fa-caret-up' : 'fa-caret-right'"></span></button>
             <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
               <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isAcbStaff()"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
               <li ng-if="vm.isChplAdmin()"><a href="#/admin/userManagement">User Management</a></li>

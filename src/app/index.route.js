@@ -13,35 +13,35 @@
                 controllerAs: 'vm',
                 title: 'CHPL Administration'
             })
+            .when('/collections/developers', {
+                controller: 'DecertifiedDevelopersController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/developers/developers.html',
+                title: 'Banned Developers'
+            })
+            .when('/collections/inactive', {
+                controller: 'InactiveCertificationsController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/inactive/inactive.html',
+                title: 'Inactive Certificates'
+            })
+            .when('/collections/nonconformities', {
+                controller: 'NonconformitiesController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/nonconformities/nonconformities.html',
+                title: 'Nonconformities'
+            })
+            .when('/collections/products', {
+                controller: 'DecertifiedProductsController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/products/products.html',
+                title: 'Decertified Products'
+            })
             .when('/compare/:compareIds', {
                 controller: 'CompareController',
                 controllerAs: 'vm',
                 templateUrl: 'app/compare/compare.html',
                 title: 'CHPL Product Comparison'
-            })
-            .when('/decertifications/developers', {
-                controller: 'DecertifiedDevelopersController',
-                controllerAs: 'vm',
-                templateUrl: 'app/decertifications/developers/developers.html',
-                title: 'Banned Developers'
-            })
-            .when('/decertifications/inactive', {
-                controller: 'InactiveCertificationsController',
-                controllerAs: 'vm',
-                templateUrl: 'app/decertifications/inactive/inactive.html',
-                title: 'Inactive Certificates'
-            })
-            .when('/decertifications/nonconformities', {
-                controller: 'NonconformitiesController',
-                controllerAs: 'vm',
-                templateUrl: 'app/decertifications/nonconformities/nonconformities.html',
-                title: 'Nonconformities'
-            })
-            .when('/decertifications/products', {
-                controller: 'DecertifiedProductsController',
-                controllerAs: 'vm',
-                templateUrl: 'app/decertifications/products/products.html',
-                title: 'Decertified Products'
             })
             .when('/product/:id', {
                 templateUrl: 'app/product/product.html',

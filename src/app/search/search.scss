@@ -95,3 +95,15 @@ ul.pagination li {
     opacity: .5;
     z-index: 3000;
 }
+
+#collections {
+    .well-lg {
+        a {
+            font-size: larger;
+            color: black;
+            &:hover {
+                color: #666;
+            }
+        }
+    }
+}

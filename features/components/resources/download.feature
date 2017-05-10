@@ -12,7 +12,7 @@ Feature: Downloading data from CHPL
     Given I am on the Resources-Download page
     Then There should be 8 Download Files
 
-  @wip
+  @ignore
   Scenario: Seeing a data definition file select
     Given I am on the Resources-Download page
     Then There should be 8 Definition Files

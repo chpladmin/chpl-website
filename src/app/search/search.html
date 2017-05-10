@@ -12,7 +12,7 @@
       <div class="form-group" id="filters">
         <div ng-class="{'col-sm-8 col-sm-offset-2': !vm.activeSearch && vm.searchForm.$pristine, 'col-sm-4': vm.activeSearch || vm.searchForm.$dirty}">
           <label for="searchField" class="control-label sr-only">Search by Developer, Product, or ONC-ACB/CHPL ID</label>
-          <div class="input-group">
+          <div class="input-group" ng-class="{'input-group-lg' : !vm.activeSearch && vm.searchForm.$pristine }">
             <span class="input-group-addon"><i class="fa fa-search"></i></span>
             <input type="text" class="form-control" id="searchField" placeholder="Search by Developer, Product, or ONC-ACB/CHPL ID"
                    ng-model="vm.query" ng-change="vm.activeSearch = true"
@@ -256,24 +256,24 @@
         <div class="row">
           <div class="col-md-3 col-md-offset-3 col-sm-6">
             <div class="well well-lg text-center">
-              <a href="#/decertifications/inactive">Inactive Certificates</a>
+              <a href="#/collections/developers">Banned Developers</a>
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
             <div class="well well-lg text-center">
-              <a href="#/decertifications/products">Decertified Products</a>
+              <a href="#/collections/products">Decertified Products</a>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3 col-md-offset-3 col-sm-6">
             <div class="well well-lg text-center">
-              <a href="#/decertifications/developers">Banned Developers</a>
+              <a href="#/collections/inactive">Inactive Certificates</a>
             </div>
           </div>
           <div class="col-md-3 col-sm-6">
             <div class="well well-lg text-center">
-              <a href="#/decertifications/nonconformities">Nonconformities</a>
+              <a href="#/collections/nonconformities">Nonconformities</a>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.decertifications')
+    angular.module('chpl.collections')
         .controller('DecertifiedDevelopersController', DecertifiedDevelopersController);
 
     /** @ngInject */
