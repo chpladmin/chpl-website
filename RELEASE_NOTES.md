@@ -9,6 +9,7 @@ _Date TBD_
   * Display errors if Listing was previously "completed"
 * Displayed filtered Test Standards on Criteria editing
 * Added GTM tracking to Search - Criteria/CQMs/Surveillance filters
+* Added "Questionable Activity Report"
 
 ### Text edits
 * Added description to Nonconformities page
