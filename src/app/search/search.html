@@ -85,7 +85,7 @@
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-ai dropdown-toggle" type="button" id="filter-more-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.isCategoryChanged(['cqm-2011','cqm-other','acb','practiceType','product','developer','version'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
+              <a ng-if="vm.isCategoryChanged(['cqm-2011','cqm-other','acb','practiceType','product','developer','version', 'certificationDate'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button" uib-dropdown-menu>
               <li>
@@ -124,6 +124,14 @@
               </li>
               <li ng-show="vm.showPracticeType">
                 <st-select-distinct collection="vm.allCps" fixed-items="vm.searchOptions.practiceTypes" has-changes="vm.categoryChanged['practiceType']" predicate="practiceType" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState"></st-select-distinct>
+              </li>
+              <li>
+                <a href ng-click="vm.showCertificationDate = !vm.showCertificationDate">
+                  <i class="fa" ng-class="vm.showCertificationDate ? 'fa-caret-down' : 'fa-caret-right'"></i> {{ vm.showCertificationDate ? 'Hide' : 'View' }} Certification Date <span ng-if="vm.categoryChanged['certificationDate']"><span class="sr-only">Filter has non-default option selected</span>*</span>
+                </a>
+              </li>
+              <li ng-show="vm.showCertificationDate">
+                <ai-date-range predicate="certificationDate" has-changes="vm.categoryChanged['certificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" track-analytics="true"></ai-date-range>
               </li>
               <li class="form-horizontal">
                 <div class="form-group">
