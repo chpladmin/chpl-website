@@ -29,7 +29,7 @@
           <button class="btn btn-sm btn-danger pull-right" ng-click="vm.removeSubscription($index)" ng-if="vm.recipient.subscriptions.length > 1"><i class="fa fa-trash"></i><span class="sr-only">Remove subscription</span></button>
         </div>
       </div>
-      <div class="form-group" ng-if="subscription.notificationType.requiresAcb || $index > 3">
+      <div class="form-group" ng-if="subscription.notificationType.requiresAcb">
         <label class="col-md-3 col-md-offset-1" for="subscriptionAcb{{ $index }}">ONC-ACB</label>
         <div class="col-md-6">
           <select class="input-sm form-control" ng-model="subscription.acb" id="subscriptionAcb{{ $index }}" name="subscriptionAcb{{ $index }}" required

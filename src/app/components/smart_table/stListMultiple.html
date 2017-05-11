@@ -5,6 +5,10 @@
       Matching <u class="matchingAnyAll">{{ vm.matchAll ? 'all' : 'any' }}</u>
     </label>
   </li>
+  <li class="text-right">
+    <a href ng-click="vm.selectAll()">Select All</a> |
+    <a href ng-click="vm.clearFilter()">Reset</a>
+  </li>
   <li ng-repeat="item in vm.distinctItems">
     <label ng-class="{ 'emphasis' : vm.isNotDefault(item) }">
       <input type="checkbox"
