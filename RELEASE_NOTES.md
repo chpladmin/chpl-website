@@ -10,6 +10,8 @@ _Date TBD_
 * Displayed filtered Test Standards on Criteria editing
 * Added GTM tracking to Search - Criteria/CQMs/Surveillance filters
 * Added "Questionable Activity Report"
+* Added filtering by Certification Date
+* Added "select all" & "reset" to checkbox list filters
 
 ### Text edits
 * Added description to Nonconformities page
