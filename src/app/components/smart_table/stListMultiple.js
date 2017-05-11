@@ -164,6 +164,7 @@
         vm.filterChanged = filterChanged;
         vm.isNotDefault = isNotDefault;
         vm.restoreState = restoreState;
+        vm.selectAll = selectAll;
         vm.storeState = storeState;
         vm.toggleSelection = toggleSelection;
 
@@ -179,7 +180,7 @@
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected) {
                     item.isSelected = false;
-                    vm.toggleSelection(item.value);
+                    vm.toggleSelection(item.value, true);
                 }
             })
             vm.matchAll = false;
@@ -192,7 +193,7 @@
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected !== item.selected) {
                     item.isSelected = item.selected;
-                    vm.toggleSelection(item.value);
+                    vm.toggleSelection(item.value, true);
                 }
             })
             vm.matchAll = false;
@@ -239,11 +240,23 @@
             }
         }
 
+        function selectAll () {
+            angular.forEach(vm.distinctItems, function (item) {
+                if (!item.isSelected) {
+                    item.isSelected = true;
+                    vm.selected.push(item.value);
+                }
+            })
+            vm.matchAll = false;
+            vm.filterChanged();
+            vm.storeState();
+        }
+
         function storeState () {
             $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
         }
 
-        function toggleSelection (value) {
+        function toggleSelection (value, dontSearch) {
             var index = vm.selected.indexOf(value);
             if(index > -1) {
                 vm.selected.splice(index, 1);
@@ -259,8 +272,10 @@
                     $analytics.eventTrack(event, { category: 'Search', label: value });
                 }
             }
-            vm.filterChanged();
-            vm.storeState();
+            if (!dontSearch) {
+                vm.filterChanged();
+                vm.storeState();
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
