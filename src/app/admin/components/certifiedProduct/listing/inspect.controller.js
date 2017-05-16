@@ -189,7 +189,15 @@
                 .then(function () {
                     $uibModalInstance.close({status: 'rejected'});
                 }, function (error) {
-                    vm.errorMessages = error.data.errorMessages;
+                    if (error.data.contact) {
+                        $uibModalInstance.close({
+                            contact: error.data.contact,
+                            objectId: error.data.objectId,
+                            status: 'resolved'
+                        });
+                    } else {
+                        vm.errorMessages = error.data.errorMessages;
+                    }
                 });
         }
 

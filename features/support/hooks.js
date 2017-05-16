@@ -1,18 +1,24 @@
-var myHooks = function () {
-    this.Before(function (scenario) {
+var {defineSupportCode} = require('cucumber');
 
-        // Just like inside step definitions, "this" is set to a World instance.
-        // It's actually the same instance the current scenario step definitions
-        // will receive.
-
+defineSupportCode(({After}) => {
+    // Returning the promise
+    After(function (scenarioResult) {
+        var world = this;
+        if (scenarioResult.isFailed()) {
+            return browser.takeScreenshot().then(function (png) {
+                var decodedImage = new Buffer(png, 'base64');
+                return world.attach(decodedImage, 'image/png');
+            });
+        }
     });
+});
 
-    this.After(function (scenario) {
-        // Just like inside step definitions, "this" is set to a World instance.
-        // It's actually the same instance the current scenario step definitions
-        // will receive.
-
+defineSupportCode(({Before}) => {
+    Before(function () {
+        // do setup stuff here
     });
-};
+});
 
-module.exports = myHooks;
+defineSupportCode(({setDefaultTimeout}) => {
+    setDefaultTimeout(10 * 1000);
+});

@@ -165,6 +165,7 @@
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
                     vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                     vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
+                    vm.displayedCertifiedProductsQuestionable = [].concat(vm.searchedCertifiedProductsQuestionable);
                 });
         }
 
@@ -286,7 +287,11 @@
                 .then(function (data) {
                     interpretCps(data);
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
+                    vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
+                    vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
+                    vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                     vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
+                    vm.displayedCertifiedProductsQuestionable = [].concat(vm.searchedCertifiedProductsQuestionable);
                 });
         }
 
@@ -344,7 +349,8 @@
                 status: [],
                 surveillance: [],
                 cap: [],
-                other: []
+                other: [],
+                questionable: []
             };
             var change;
             var questionable;
@@ -354,7 +360,8 @@
                 var activity = {
                     date: data[i].activityDate,
                     newId: data[i].id,
-                    acb: ''
+                    acb: '',
+                    questionable: false
                 };
                 activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                 if (data[i].description === 'Created a certified product') {
@@ -394,6 +401,7 @@
                         change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
                         if (change)
                             if (nestedKeys[j].questionable && questionable) {
+                                activity.questionable = true;
                                 activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
                             } else {
                                 activity.details.push(change);
@@ -406,10 +414,12 @@
                     }
                     certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
                     for (j = 0; j < certChanges.length; j++) {
+                        if (certChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                     }
                     var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
                     for (j = 0; j < cqmChanges.length; j++) {
+                        if (cqmChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                     }
                     var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
@@ -559,12 +569,16 @@
                     activity.action = data[i].description;
                     output.other.push(activity);
                 }
+                if (activity.questionable) {
+                    output.questionable.push(activity);
+                }
             }
             vm.searchedCertifiedProductsUpload = output.upload;
             vm.searchedCertifiedProductsStatus = output.status;
             vm.searchedCertifiedProductsSurveillance = output.surveillance;
             vm.searchedCertifiedProductsCAP = output.cap;
             vm.searchedCertifiedProducts = output.other;
+            vm.searchedCertifiedProductsQuestionable = output.questionable;
         }
 
         function compareCerts (prev, curr, questionable) {
@@ -588,6 +602,7 @@
                     change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
                     if (change)
                         if (certKeys[j].questionable && questionable) {
+                            obj.questionable = true;
                             obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
                         } else {
                             obj.changes.push('<li>' + change + '</li>');
@@ -769,6 +784,7 @@
                 change = compareItem(prev[i], curr[i], 'success', 'Success');
                 if (change)
                     if (questionable) {
+                        obj.questionable = true;
                         obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
                     } else {
                         obj.changes.push('<li>' + change + '</li>');

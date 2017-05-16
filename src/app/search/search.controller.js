@@ -217,6 +217,7 @@
             vm.viewingPreviouslyCompared = false;
             delete $localStorage.viewingPreviouslyCompared;
             vm.viewingPreviouslyViewed = false;
+            delete $localStorage.viewingPreviouslyViewed;
             angular.forEach(vm.allowAllHs, function (handler) {
                 handler();
             });

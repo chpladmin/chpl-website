@@ -90,6 +90,18 @@
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([1,2]);
             });
+
+            it('should dismiss the modal with the contact if the pending listing was already resolved', function () {
+                var contact = {name: 'person'};
+                commonService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+                vm.reject();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    contact: contact,
+                    objectId: 1,
+                    status: 'resolved'
+                });
+            });
         });
     })
 })();

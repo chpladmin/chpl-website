@@ -1,5 +1,5 @@
 //features/step_definitions/test_step_definitions.js
-var angularPage = require('../pages/angularPage.js');
+var angularPage = require('./angularPage.js');
 var {defineSupportCode} = require('cucumber');
 
 defineSupportCode(({Given, When, Then}) => {
