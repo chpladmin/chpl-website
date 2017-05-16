@@ -12,6 +12,7 @@ _Date TBD_
 * Added "Questionable Activity Report"
 * Added filtering by Certification Date
 * Added "select all" & "reset" to checkbox list filters
+* Made "Surveillance Activity Notifications" visible
 
 ### Text edits
 * Added description to Nonconformities page
