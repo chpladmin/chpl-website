@@ -24,9 +24,7 @@
             <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/acbManagement">ONC-ACB Management</a></li>
             <li ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="#/admin/atlManagement">ONC-ATL Management</a></li>
             <li ng-if="vm.isAuthed()"><a href="#/admin/reports">Reports</a></li>
-            <!--
-                <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/notifications">Notifications</a></li>
-                -->
+            <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/notifications">Notifications</a></li>
             <li ng-if="vm.isChplAdmin()"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
             <li ng-if="vm.isChplAdmin()"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
             <li ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="#/admin/cmsManagement">CMS Management</a></li>
