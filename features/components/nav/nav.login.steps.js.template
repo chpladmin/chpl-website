@@ -1,0 +1,16 @@
+var page = require('./nav.page.js');
+var {defineSupportCode} = require('cucumber');
+
+defineSupportCode(({Given, When, Then}) => {
+
+    Given('I am logged in as {stringInDoubleQuotes}', function (role) {
+        switch (role) {
+        case 'ROLE_ADMIN':
+            return page.login('username','password');
+            break;
+        case 'ROLE_ACB_ADMIN':
+            return page.login('username-acb','password-acb');
+            break;
+        }
+    });
+});
