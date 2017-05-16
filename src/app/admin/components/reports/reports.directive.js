@@ -125,6 +125,7 @@
                 case 'cp-surveillance':
                 case 'cp-cap':
                 case 'cp-other':
+                case 'cp-questionable':
                     if (vm.productId) {
                         vm.singleCp();
                     } else {
