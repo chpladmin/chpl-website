@@ -401,7 +401,7 @@
               <td>{{ activity.acb }}</td>
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
-              <td>{{ activity.certificationEdition }}</td>
+              <td><span ng-class="{ 'bg-danger' : activity.certificationEdition === '2011' }">{{ activity.certificationEdition }}</span></td>
               <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>
