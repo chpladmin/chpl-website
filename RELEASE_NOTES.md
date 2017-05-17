@@ -13,6 +13,7 @@ _Date TBD_
 * Added filtering by Certification Date
 * Added "select all" & "reset" to checkbox list filters
 * Made "Surveillance Activity Notifications" visible
+* Default to all time on single product activity report
 
 ### Text edits
 * Added description to Nonconformities page

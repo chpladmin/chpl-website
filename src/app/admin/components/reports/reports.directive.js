@@ -63,6 +63,9 @@
                 startDate: angular.copy(start),
                 endDate: angular.copy(end)
             };
+            if (vm.productId) {
+                vm.activityRange.listing.startDate = new Date('4/1/2016');
+            }
             vm.activityRange.developer = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end)
@@ -298,6 +301,9 @@
 
         function validDates (key) {
             var diffDays = Math.ceil((vm.activityRange[key].endDate.getTime() - vm.activityRange[key].startDate.getTime()) / (1000 * 60 * 60 * 24));
+            if (key === 'listing' && vm.productId) {
+                return (vm.activityRange.listing.startDate.getTime() < vm.activityRange.listing.endDate.getTime());
+            }
             return (0 <= diffDays && diffDays < vm.activityRange.range);
         }
 
