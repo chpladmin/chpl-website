@@ -35,7 +35,7 @@ ul.pagination li {
 }
 
 .search-inputs {
-    padding-top: 15px;
+    padding-top: 30px;
     margin-left: 0px;
     margin-right: 0px;
 }
@@ -53,8 +53,11 @@ ul.pagination li {
     min-height: 600px;
 }
 
-.restore-previous-search a {
-    color: #fff;
+.restore-previous-search {
+    padding-top: 10px;
+    a {
+        color: #fff;
+    }
 }
 
 .restore-previous-search a:hover,
@@ -97,13 +100,17 @@ ul.pagination li {
 }
 
 #collections {
-    .well-lg {
-        a {
-            font-size: larger;
-            color: black;
-            &:hover {
-                color: #666;
-            }
-        }
+    .btn {
+        margin-top: 20px;
+    }
+
+    .btn-lg {
+        font-family: 'Oswald', sans-serif;
+        font-size: x-large;
+        text-align: left;
+    }
+    img {
+        height: 45px;
+        padding-right: 5px;
     }
 }

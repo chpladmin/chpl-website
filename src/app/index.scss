@@ -93,19 +93,21 @@ a.btn {
 
 footer {
     margin-top: 150px;
-    .navbar-default a {
-        color: #214e75;
-    }
 
     .navbar-default {
         background-color: #ebebeb;
         background-image: none;
-    }
 
-    p {
-        color: #363636;
+        p {
+            color: #363636;
+
+            a {
+                color: #214e75;
+            }
+        }
     }
 }
+
 .announcement.badge {
     white-space: inherit;
 }

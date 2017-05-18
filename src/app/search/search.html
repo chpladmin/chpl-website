@@ -21,9 +21,9 @@
               <button ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="btn btn-default" ng-click="vm.browseAll()"><i class="fa fa-ellipsis-h"></i> Browse all</button>
             </span>
           </div>
-          <span ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
+          <div ng-if="!vm.activeSearch && vm.searchForm.$pristine" class="restore-previous-search">
             <a href ng-if="vm.hasTableState" ng-click="vm.reloadResults()"><i class="fa fa-backward"></i> Restore previous search</a>
-          </span>
+          </div>
         </div>
         <div class="col-sm-8" ng-show="vm.activeSearch || vm.searchForm.$dirty">
           <st-list-multiple collection="vm.allCps" fixed-items="vm.previouslyIds" predicate="id" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" match-full="true" hidden="true"></st-list-multiple>
@@ -262,27 +262,19 @@
 
       <div id="collections" ng-if="!vm.activeSearch && vm.searchForm.$pristine">
         <div class="row">
-          <div class="col-md-3 col-md-offset-3 col-sm-6">
-            <div class="well well-lg text-center">
-              <a href="#/collections/developers">Banned Developers</a>
-            </div>
+          <div class="col-md-4 col-md-offset-2 col-sm-6">
+            <a class="btn btn-lg btn-block btn-ai" href="#/collections/developers"><img src="assets/images/BannedDevelopers_CHPL_Icon.png" alt="Banned Developers Icon"></img> Banned Developers</a>
           </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="well well-lg text-center">
-              <a href="#/collections/products">Decertified Products</a>
-            </div>
+          <div class="col-md-4 col-sm-6">
+            <a class="btn btn-lg btn-block btn-ai" href="#/collections/products"><img src="assets/images/DecertifiedProducts_CHPL_Icon.png" alt="Decertified Products Icon"></img> Decertified Products</a>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-3 col-md-offset-3 col-sm-6">
-            <div class="well well-lg text-center">
-              <a href="#/collections/inactive">Inactive Certificates</a>
-            </div>
+          <div class="col-md-4 col-md-offset-2 col-sm-6">
+            <a class="btn btn-lg btn-block btn-ai" href="#/collections/inactive"><img src="assets/images/InactiveCertificates_CHPL_Icon.png" alt="Inactive Certificates Icon"></img> Inactive Certificates</a>
           </div>
-          <div class="col-md-3 col-sm-6">
-            <div class="well well-lg text-center">
-              <a href="#/collections/nonconformities">Nonconformities</a>
-            </div>
+          <div class="col-md-4 col-sm-6">
+            <a class="btn btn-lg btn-block btn-ai" href="#/collections/nonconformities"><img src="assets/images/Nonconformities_CHPL_Icon.png" alt="Nonconformities Icon"></img> Nonconformities</a>
           </div>
         </div>
       </div>
