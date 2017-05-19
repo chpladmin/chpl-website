@@ -2,11 +2,11 @@
  *  If you want to override some bootstrap variables, you have to change values here.
  *  The list of variables are listed here bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
  */
-$navbar-inverse-link-color: #5AADBB;
+$navbar-inverse-link-color: #5aadbb;
 $icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
 $fa-font-path: "../../bower_components/font-awesome/fonts";
 @import "../../bower_components/font-awesome/scss/font-awesome.scss";
-@import url('https://fonts.googleapis.com/css?family=Oswald:400,300|Lato:400,300,300italic');
+@import url("https://fonts.googleapis.com/css?family=Oswald:400,300|Lato:400,300,300italic");
 
 /**
  *  Do not remove the comments below. It's the markers used by wiredep to inject
@@ -16,20 +16,20 @@ $fa-font-path: "../../bower_components/font-awesome/fonts";
 // endbower
 
 .browsehappy {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+    margin: .2em 0;
+    background: #ccc;
+    color: #000;
+    padding: .2em 0;
 }
 
 body {
     margin-top: 170px;
-    background-image: url('../assets/images/CHPL_BackgroundPattern.png');
-    font-family: 'Lato', sans-serif;
+    background-image: url("../assets/images/CHPL_BackgroundPattern.png");
+    font-family: "Lato", sans-serif;
 }
 
 header {
-    transition: all 0.4s ease;
+    transition: all .4s ease;
 }
 
 a {
@@ -42,12 +42,12 @@ a.btn {
 }
 
 .navbar-inverse .navbar-nav>li>a {
-    font-family: 'Oswald', sans-serif;
+    font-family: "Oswald", sans-serif;
     color: #ffdd3c;
 }
 
 .navbar-inverse {
-    background-image: url('../assets/images/CHPL_Header.png');
+    background-image: url("../assets/images/CHPL_Header.png");
     background-repeat: no-repeat;
     background-size: cover;
     border-bottom: 20px solid #0070c9;
@@ -55,30 +55,35 @@ a.btn {
     box-shadow: none;
 }
 
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.open>a {
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.open>a {
     box-shadow: none;
 }
 
 .no-br {
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 .anchor-element {
     position: relative;
 }
+
 .page-anchor {
     position: absolute;
     top: -125px;
 }
 
 @media (max-width: 767px) {
+
     .navbar-nav > li > a {
         line-height: 20px;
         padding-top: 10px;
-        padding-bottom: 10px;}
+        padding-bottom: 10px;
+    }
 }
 
 @media (min-width: 767px) {
+
     .navbar-fixed-top .container {
         position: relative;
         min-height: 160px;
@@ -112,18 +117,25 @@ footer {
     white-space: inherit;
 }
 
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
+    cursor: pointer;
+}
 
-.clickable { cursor: pointer; }
+.clickable {
+    cursor: pointer;
+}
 
 h1 {
-    font-family: 'Oswald', sans-serif;
+    font-family: "Oswald", sans-serif;
     font-weight: 300; /* 400-regular, 300-light */
     color: #0070c9;
 }
 
 h2 {
-    font-family: 'Oswald', sans-serif;
+    font-family: "Oswald", sans-serif;
     font-weight: 300;
     color: #0070c9;
 }
@@ -135,12 +147,12 @@ h4 {
 .splash-row {
     margin-top: 40px;
     border: 1px solid #e1e1e1;
-    border-bottom: 0px;
+    border-bottom: 0;
     background: #fff;
 }
 
 .splash-row .spaced-out {
-    margin: 40px 40px;
+    margin: 40px;
 }
 
 footer .spaced-out {
@@ -148,6 +160,7 @@ footer .spaced-out {
 }
 
 header {
+
     a.navbar-brand img {
         margin: 10px 40px;
     }
@@ -158,21 +171,21 @@ header {
 }
 
 #loading-bar .peg {
-    -moz-box-shadow: #ffdd3c 1px 0 6px 1px;
-    -ms-box-shadow: #ffdd3c 1px 0 6px 1px;
-    -webkit-box-shadow: #ffdd3c 1px 0 6px 1px;
+    //    -moz-box-shadow: #ffdd3c 1px 0 6px 1px;
+    //    -ms-box-shadow: #ffdd3c 1px 0 6px 1px;
+    //    -webkit-box-shadow: #ffdd3c 1px 0 6px 1px;
     box-shadow: #ffdd3c 1px 0 6px 1px;
 }
 
 #loading-bar-spinner .spinner-icon {
-    border:10px solid transparent;
-    border-top-color:  #ffdd3c;
+    border: 10px solid transparent;
+    border-top-color: #ffdd3c;
     border-left-color: #ffdd3c;
     top: 50%;
     left: 50%;
     margin-top: -64px;
     margin-left: -64px;
-    width:128px;
+    width: 128px;
     height: 128px;
     position: fixed;
 }
@@ -203,26 +216,29 @@ header {
     border: 1px solid #e1e1e1;
 }
 
-.sort-none:after, .st-sort-none:after {
-                         content: "\f0dc";
-                         font-family: FontAwesome;
-                         padding: 0 6px;
-                         font-size: large;
-                     }
+.sort-none:after,
+.st-sort-none:after {
+    content: "\f0dc";
+    font-family: "FontAwesome";
+    padding: 0 6px;
+    font-size: large;
+}
 
-.sort-ascent:after, .st-sort-ascent:after {
-                        content: "\f0de";
-                        font-family: FontAwesome;
-                        padding: 0 6px;
-                        font-size: large;
-                    }
+.sort-ascent:after,
+.st-sort-ascent:after {
+    content: "\f0de";
+    font-family: "FontAwesome";
+    padding: 0 6px;
+    font-size: large;
+}
 
-.sort-descent:after, .st-sort-descent:after {
-                         content: "\f0dd";
-                         font-family: FontAwesome;
-                         padding: 0 6px;
-                         font-size: large;
-                     }
+.sort-descent:after,
+.st-sort-descent:after {
+    content: "\f0dd";
+    font-family: "FontAwesome";
+    padding: 0 6px;
+    font-size: large;
+}
 
 .btn-ai-grey {
     background: #e1e1e1;
@@ -237,38 +253,37 @@ header {
     color: #db411e;
 }
 
-.btn-ai-grey .ai-lead {
-    color: #0070c9;
-    font-family: 'Oswald', sans-serif;
-}
-
 .ai-panel>.panel-heading {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0070c9, #004378); /* Standard syntax */
 }
 
 .ai-gradient {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0070c9, #004378); /* Standard syntax */
 }
 
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.open>a {
-    background-image: none;
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.active>a:focus,
+.navbar-inverse .navbar-nav>.active>a:hover,
+.navbar-inverse .navbar-nav>.open>a {
     background: #0070c9;
+    background-image: none;
 }
 
 .text-bottom {
     position: relative;
 }
 
-.text-bottom p, .text-bottom a {
-    bottom: 0px;
+.text-bottom p,
+.text-bottom a {
+    bottom: 0;
 }
 
 .panel-ai {
@@ -277,9 +292,9 @@ header {
 
 .panel-ai > .panel-heading {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0070c9, #004378); /* Standard syntax */
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -301,9 +316,9 @@ header {
 
 .panel-ai > .panel-heading .badge {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0070c9, #004378); /* Standard syntax */
 }
 
@@ -313,36 +328,40 @@ header {
 
 .btn-ai {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0070c9, #004378); /* Standard syntax */
 }
+
 .btn-ai:focus,
 .btn-ai.focus {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0057b0, #001045); /* Standard syntax */
 }
+
 .btn-ai:hover {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0057b0, #001045); /* Standard syntax */
 }
+
 .btn-ai:active,
 .btn-ai.active,
 .open > .dropdown-toggle.btn-ai {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0057b0, #001045); /* Standard syntax */
-    border:red;
+    border: red;
 }
+
 .btn-ai:active:hover,
 .btn-ai.active:hover,
 .open > .dropdown-toggle.btn-ai:hover,
@@ -353,17 +372,19 @@ header {
 .btn-ai.active.focus,
 .open > .dropdown-toggle.btn-ai.focus {
     color: #f5d43c;
-    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#0057b0, #001045); /* Standard syntax */
-    border:red;
+    border: red;
 }
+
 .btn-ai:active,
 .btn-ai.active,
 .open > .dropdown-toggle.btn-ai {
     /*background-image: none;*/
 }
+
 .btn-ai.disabled,
 .btn-ai[disabled],
 fieldset[disabled] .btn-ai,
@@ -385,6 +406,7 @@ fieldset[disabled] .btn-ai.active {
     background-color: #fff;
     border-color: #ccc;
 }
+
 .btn-ai .badge {
     color: #fff;
     background-color: #333;
@@ -392,11 +414,12 @@ fieldset[disabled] .btn-ai.active {
 
 .btn-ai-success {
     color: #fff;
-    background: -webkit-linear-gradient(#008b00, #006800); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#008b00, #006800); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#008b00, #006800); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#008b00, #006800); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#008b00, #006800); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#008b00, #006800); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#008b00, #006800); /* Standard syntax */
 }
+
 .btn-ai-success:focus,
 .btn-ai-success.focus,
 .btn-ai-success:hover,
@@ -404,6 +427,7 @@ fieldset[disabled] .btn-ai.active {
     color: #fff;
     background: #004800;
 }
+
 .btn-ai-success:active:hover,
 .btn-ai-success.active:hover,
 .open > .dropdown-toggle.btn-ai-success:hover,
@@ -416,11 +440,13 @@ fieldset[disabled] .btn-ai.active {
     color: #fff;
     background: #004800;
 }
+
 .btn-ai-success:active,
 .btn-ai-success.active,
 .open > .dropdown-toggle.btn-ai-success {
     background-image: none;
 }
+
 .btn-ai-success.disabled,
 .btn-ai-success[disabled],
 fieldset[disabled] .btn-ai-success,
@@ -444,6 +470,7 @@ fieldset[disabled] .btn-ai-success.active {
     opacity: 1;
     text-decoration: line-through;
 }
+
 .btn-ai-success .badge {
     color: #fff;
     background-color: #333;
@@ -451,14 +478,15 @@ fieldset[disabled] .btn-ai-success.active {
 
 .btn-ai-certid {
     color: #000;
-    background: -webkit-linear-gradient(#f5d43c, #c0a000); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#f5d43c, #c0a000); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#f5d43c, #c0a000); /* For Firefox 3.6 to 15 */
+    //    background: -webkit-linear-gradient(#f5d43c, #c0a000); /* For Safari 5.1 to 6.0 */
+    //    background: -o-linear-gradient(#f5d43c, #c0a000); /* For Opera 11.1 to 12.0 */
+    //    background: -moz-linear-gradient(#f5d43c, #c0a000); /* For Firefox 3.6 to 15 */
     background: linear-gradient(#f5d43c, #c0a000);  /* Standard syntax */
 }
+
 .btn-ai-certid-toggleon {
     color: #000;
-	background: #f5d43c;
+    background: #f5d43c;
 }
 
 .btn-ai-certid-toggleon:focus,
@@ -474,62 +502,66 @@ fieldset[disabled] .btn-ai-success.active {
 .btn-ai-certid:hover,
 .btn-ai-certid:active {
     color: #000;
-	background: #f5d43c;
+    background: #f5d43c;
 }
 
 .cert-id-lookup-error li {
-	font-weight: 700;
-	list-style: none;
+    font-weight: 700;
+    list-style: none;
 }
 
-.panel-widget-certid  {
-	border-color: #f5d43c;
+.panel-widget-certid {
+    border-color: #f5d43c;
 }
 
 .panel-widget-certid > .panel-heading {
     color: #000;
-    background: -webkit-linear-gradient(#f5d43c, #c0a000);
-    background: -o-linear-gradient(#f5d43c, #c0a000);
-    background: -moz-linear-gradient(#f5d43c, #c0a000);
-	background: linear-gradient(#f5d43c, #c0a000);
+    //    background: -webkit-linear-gradient(#f5d43c, #c0a000);
+    //    background: -o-linear-gradient(#f5d43c, #c0a000);
+    //    background: -moz-linear-gradient(#f5d43c, #c0a000);
+    background: linear-gradient(#f5d43c, #c0a000);
 }
+
 .panel-widget-certid > .panel-heading a {
     color: #000;
 }
+
 .panel-widget-certid > .panel-collapse .panel-body {
-	background: #fde190;
-	background: #fff;
-	color: #000;
+    background: #fff;
+    color: #000;
 }
 
-
 :focus {
-    outline: thin dotted;
-    outline: 5px auto -webkit-focus-ring-color;
+    outline: thin dotted 5px auto -webkit-focus-ring-color;
     outline-offset: -2px;
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    #333 !important;
+    color: #333 !important;
 }
+
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    #333 !important;
-   opacity:  1;
+    color: #333 !important;
+    opacity: 1;
 }
+
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    #333 !important;
-   opacity:  1;
+    color: #333 !important;
+    opacity: 1;
 }
+
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-   color:    #333 !important;
+    color: #333 !important;
 }
+
 :placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
-  color:    #333 !important;
+    color: #333 !important;
 }
 
 .btn-default[disabled] {
     color: #000;
 }
+
 .btn[disabled] {
     opacity: 1;
 }
@@ -629,8 +661,8 @@ option[disabled] {
 #search-page .dropdown-menu>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>div>li.form-horizontal>div.form-group,
 #decertifications-page .dropdown-menu>li.form-horizontal>div.form-group {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 #search-page .dropdown-menu>li>div>label.control-label,
@@ -658,6 +690,21 @@ option[disabled] {
 #decertifiedDeveloperFilter .dropdown-menu {
     width: 100%;
 }
+
+.animate-if.ng-enter {
+    transition: all cubic-bezier(.25, .46, .45, .94) .5s;
+}
+
+.animate-if.ng-enter,
+.animate-if.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+
+.animate-if.ng-leave,
+.animate-if.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically
