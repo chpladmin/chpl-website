@@ -1,36 +1,4 @@
-.pagination {
-    margin: 0;
-}
-
-ul.pagination li {
-    cursor: pointer;
-}
-
 .search-header {
-    cursor: pointer;
-}
-
-.splash-row .jumbotron {
-    background-color: inherit;
-}
-
-.jumbotron h1 {
-    color: #0070c9;
-}
-
-.search-row:hover>td {
-    font-weight: 700;
-}
-
-.search-activate-filter {
-    cursor: pointer;
-}
-
-.filter-category {
-    cursor: pointer;
-}
-
-.pointer {
     cursor: pointer;
 }
 
@@ -41,38 +9,39 @@ ul.pagination li {
 }
 
 .search-unsearched {
-    background-color: #0070c9;
-    background-image: url("../assets/images/CHPL_Logo-01.png");
-    background-repeat: no-repeat;
-    background-position: bottom right;
-    background-attachment: fixed;
     position: absolute;
     height: 100%;
     width: 100%;
     top: 0;
     min-height: 600px;
+    background: {
+        color: #0070c9;
+        image: url("../assets/images/CHPL_Logo-01.png");
+        repeat: no-repeat;
+        position: bottom right;
+        attachment: fixed;
+    }
 }
 
 .restore-previous-search {
     padding-top: 10px;
 
     a {
+        font: {
+            size: larger;
+        }
         color: #fff;
-    }
-}
 
-.restore-previous-search a:hover,
-.restore-previous-search a:active,
-.restore-previous-search a:focus {
-    color: #ccc;
+        &:hover,
+        &:active,
+        &:focus {
+            color: #ccc;
+        }
+    }
 }
 
 .search-table th {
     color: #0070c9;
-}
-
-.search-sub-table th {
-    color: #333;
 }
 
 .pending {
