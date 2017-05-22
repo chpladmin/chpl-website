@@ -63,6 +63,9 @@
                 startDate: angular.copy(start),
                 endDate: angular.copy(end)
             };
+            if (vm.productId) {
+                vm.activityRange.listing.startDate = new Date('4/1/2016');
+            }
             vm.activityRange.developer = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end)
@@ -125,6 +128,7 @@
                 case 'cp-surveillance':
                 case 'cp-cap':
                 case 'cp-other':
+                case 'cp-questionable':
                     if (vm.productId) {
                         vm.singleCp();
                     } else {
@@ -297,6 +301,9 @@
 
         function validDates (key) {
             var diffDays = Math.ceil((vm.activityRange[key].endDate.getTime() - vm.activityRange[key].startDate.getTime()) / (1000 * 60 * 60 * 24));
+            if (key === 'listing' && vm.productId) {
+                return (vm.activityRange.listing.startDate.getTime() < vm.activityRange.listing.endDate.getTime());
+            }
             return (0 <= diffDays && diffDays < vm.activityRange.range);
         }
 
@@ -384,15 +391,21 @@
                     activity.certificationDate = data[i].newData.certificationDate;
                     activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
                     questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
+                    activity.details = [];
                     var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
                     if (statusChange) {
                         var statusActivity = angular.copy(activity);
                         statusActivity.details = statusChange;
                         output.status.push(statusActivity);
+
+                        // count status change as questionable
+                        activity.details.push('<span class="bg-danger"><strong>' + statusChange + '</strong></span>');
+                        activity.questionable = true;
                     }
-                    if (data[i].newData.certificationEdition.name === '2011')
+                    if (data[i].newData.certificationEdition.name === '2011') {
                         activity.action = '<span class="bg-danger">' + activity.action + '</span>';
-                    activity.details = [];
+                        activity.questionable = true;
+                    }
                     for (j = 0; j < simpleCpFields.length; j++) {
                         change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
                         if (change) activity.details.push(change);
@@ -569,6 +582,7 @@
                     activity.action = data[i].description;
                     output.other.push(activity);
                 }
+
                 if (activity.questionable) {
                     output.questionable.push(activity);
                 }

@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 8.4.0
+_22 May 2017_
 
 ### New Features
 * Updated Pending Listing workflow
@@ -13,6 +13,7 @@ _Date TBD_
 * Added filtering by Certification Date
 * Added "select all" & "reset" to checkbox list filters
 * Made "Surveillance Activity Notifications" visible
+* Default to all time on single product activity report
 
 ### Text edits
 * Added description to Nonconformities page
