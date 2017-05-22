@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 8.4.0
+_22 May 2017_
 
 ### New Features
 * Updated Pending Listing workflow
