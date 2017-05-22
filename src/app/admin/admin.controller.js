@@ -59,7 +59,7 @@
                 if ($routeParams.subSection) {
                     vm.navState[vm.navState.screen] = $routeParams.subSection;
                 }
-                if ($routeParams.productId)  {
+                if ($routeParams.productId) {
                     vm.navState.reports = '';
                     vm.productId = $routeParams.productId;
                 }
@@ -120,7 +120,7 @@
 
         function clearProductId () {
             var path = $location.path();
-            if ($routeParams.productId)  {
+            if ($routeParams.productId) {
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
@@ -129,7 +129,7 @@
 
         function clearSubsection () {
             var path = $location.path();
-            if ($routeParams.productId)  {
+            if ($routeParams.productId) {
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
@@ -159,7 +159,7 @@
             return authService.isCmsStaff();
         }
 
-        function isOncStaff() {
+        function isOncStaff () {
             return authService.isOncStaff();
         }
 

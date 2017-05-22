@@ -132,7 +132,7 @@
             return ret;
         }
 
-        function loadResults() {
+        function loadResults () {
             commonService.getAll().then(function (response) {
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {

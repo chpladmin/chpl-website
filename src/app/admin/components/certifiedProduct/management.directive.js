@@ -729,7 +729,7 @@
         }
 
         function ternaryFilter (field) {
-            if (field == null) {
+            if (field === null) {
                 return 'N/A';
             } else {
                 return field ? 'True' : 'False';
@@ -738,7 +738,7 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function clearPendingListing(cpId) {
+        function clearPendingListing (cpId) {
             for (var i = 0; i < vm.uploadingCps.length; i++) {
                 if (cpId === vm.uploadingCps[i].id) {
                     vm.uploadingCps.splice(i,1)

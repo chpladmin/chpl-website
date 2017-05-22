@@ -75,12 +75,12 @@
             }
         }
 
-        function selectInspectingDeveloper() {
+        function selectInspectingDeveloper () {
             vm.cp.developer.developerId = vm.developerSelect.developerId;
             vm.loadDev();
         }
 
-        function saveInspectingDeveloper() {
+        function saveInspectingDeveloper () {
             var dev = {
                 developer: {
                     name: vm.cp.developer.name,
@@ -119,12 +119,12 @@
             }
         }
 
-        function selectInspectingProduct() {
+        function selectInspectingProduct () {
             vm.cp.product.productId = vm.productSelect.productId;
             vm.loadPrd();
         }
 
-        function saveInspectingProduct() {
+        function saveInspectingProduct () {
             var prd = {
                 product: {
                     name: vm.cp.product.name,
@@ -156,12 +156,12 @@
             }
         }
 
-        function selectInspectingVersion() {
+        function selectInspectingVersion () {
             vm.cp.version.versionId = vm.versionSelect.versionId;
             vm.loadVer();
         }
 
-        function saveInspectingVersion() {
+        function saveInspectingVersion () {
             var ver = {
                 version: {
                     version: vm.cp.version.version,
@@ -283,7 +283,7 @@
         }
 
         function ternaryFilter (field) {
-            if (field == null) {
+            if (field === null) {
                 return 'N/A';
             } else {
                 return field ? 'True' : 'False';

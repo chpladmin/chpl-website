@@ -27,7 +27,7 @@ _22 May 2017_
 * Added description to Nonconformities page
 * Added note about 2011 Decertified Products
 
-=======
+---
 
 ## Version 8.3.0
 _8 May 2017_

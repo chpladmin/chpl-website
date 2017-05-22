@@ -161,15 +161,15 @@
 
         function willCauseSuspension (name) {
             switch (name) {
-                case('Active'):
-                case('Retired'):
-                case('Suspended by ONC-ACB'):
-                case('Suspended by ONC'):
-                case('Withdrawn by Developer'):
-                case('Withdrawn by ONC-ACB'):
+            case ('Active'):
+            case ('Retired'):
+            case ('Suspended by ONC-ACB'):
+            case ('Suspended by ONC'):
+            case ('Withdrawn by Developer'):
+            case ('Withdrawn by ONC-ACB'):
                 return false;
-                case('Terminated by ONC'):
-                case('Withdrawn by Developer Under Surveillance/Review'):
+            case ('Terminated by ONC'):
+            case ('Withdrawn by Developer Under Surveillance/Review'):
                 return true;
             }
         }

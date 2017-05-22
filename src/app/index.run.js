@@ -1,13 +1,13 @@
 /*eslint angular/no-private-call: [2,{"allow":["$$route"]}]*/
 (function () {
-  'use strict';
+    'use strict';
 
-  angular
-    .module('chpl')
-    .run(runBlock);
+    angular
+        .module('chpl')
+        .run(runBlock);
 
-  /** @ngInject */
-    function runBlock($anchorScroll, $location, $log, $rootScope, $timeout, $window) {
+    /** @ngInject */
+    function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $window) {
         var routeChange = $rootScope.$on('$routeChangeSuccess', function (event, current) {
             if (current.$$route) {
                 $rootScope.title = current.$$route.title;

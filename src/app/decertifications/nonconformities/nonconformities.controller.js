@@ -66,7 +66,7 @@
             return ret;
         }
 
-        function loadResults() {
+        function loadResults () {
             commonService.getAllNonconformities().then(function (response) {
                 if (vm.isPreLoading) {
                     cfpLoadingBar.start();

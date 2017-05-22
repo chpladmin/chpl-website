@@ -6,7 +6,7 @@
         .controller('CertificationStatusController', CertificationStatusController);
 
     /** @ngInject */
-    function CertificationStatusController($log, $uibModalInstance, utilService) {
+    function CertificationStatusController ($log, $uibModalInstance, utilService) {
         var vm = this;
 
         vm.cancel = cancel;

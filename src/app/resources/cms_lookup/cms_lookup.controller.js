@@ -8,7 +8,7 @@
     function CmsLookupController ($log, $localStorage, commonService) {
         var vm = this;
 
-		vm.lookupCertIds = lookupCertIds;
+        vm.lookupCertIds = lookupCertIds;
 
         activate();
 
@@ -106,13 +106,13 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function clearLookup() {
+        function clearLookup () {
             delete $localStorage.lookupCertIds;
             vm.certIds = null;
             clearLookupResults();
         }
 
-        function clearLookupResults() {
+        function clearLookupResults () {
             delete $localStorage.lookupProducts;
             delete $localStorage.lookupProductsFormatInvalidIds
             delete $localStorage.lookupProductsCertIdNotFound;

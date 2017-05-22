@@ -15,8 +15,8 @@
         mock.options.certificationCriterionNumbers = ['Cert 1', 'Cert 2'];
         mock.options.cqmCriterionNumbers = ['CQM 1', 'CQM 2'];
         mock.options.editions = ['Edition 1', 'Edition 2'];
-        mock.options.practiceTypeNames  = ['Practice 1', 'Practice 2'];
-        mock.options.certBodyNames  = ['CB 1', 'CB 2'];
+        mock.options.practiceTypeNames = ['Practice 1', 'Practice 2'];
+        mock.options.certBodyNames = ['CB 1', 'CB 2'];
         mock.options.certificationStatuses = ['Active', 'Retired'];
         mock.fakeModal = {
             result: {

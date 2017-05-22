@@ -9,5 +9,17 @@
         "angular": true,
         "module": true,
         "inject": true
+    },
+    "rules": {
+        "curly": ["error"],
+        "eqeqeq": ["error"],
+        "no-multi-spaces": ["error"],
+        "eol-last": ["error"],
+        "func-call-spacing": ["error"],
+        "indent": ["error"],
+        "no-multiple-empty-lines": ["error"],
+        "no-tabs": ["error"],
+        "no-trailing-spaces": ["error"],
+        "space-before-function-paren": ["error"]
     }
 }

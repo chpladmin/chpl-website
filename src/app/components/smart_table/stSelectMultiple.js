@@ -18,14 +18,14 @@
 
                     initialize();
 
-                    function initialize() {
+                    function initialize () {
                         bindCollection(scope.collection);
                         scope.$watch('collection', function (newCollection) {
                             bindCollection(newCollection);
                         });
                     }
 
-                    function getPredicate() {
+                    function getPredicate () {
                         var predicate = scope.predicate;
                         if (!predicate && scope.predicateExpression) {
                             predicate = scope.predicateExpression;
@@ -33,7 +33,7 @@
                         return predicate;
                     }
 
-                    function getDropdownLabel() {
+                    function getDropdownLabel () {
                         var allCount = scope.distinctItems.length;
 
                         var selected = getSelectedOptions();
@@ -49,7 +49,7 @@
                         return selected.length + ' items';
                     }
 
-                    function getSelectedOptions() {
+                    function getSelectedOptions () {
                         var selectedOptions = [];
 
                         angular.forEach(scope.distinctItems, function (item) {
@@ -61,7 +61,7 @@
                         return selectedOptions;
                     }
 
-                    function bindCollection(collection) {
+                    function bindCollection (collection) {
                         var predicate = getPredicate();
                         var distinctItems = [];
 
@@ -84,7 +84,7 @@
                         filterChanged();
                     }
 
-                    function filterChanged() {
+                    function filterChanged () {
                         scope.dropdownLabel = getDropdownLabel();
 
                         var predicate = getPredicate();
@@ -104,7 +104,7 @@
                         table.search(query, predicate);
                     }
 
-                    function fillDistinctItems(values, distinctItems) {
+                    function fillDistinctItems (values, distinctItems) {
                         if (!angular.isObject(values)) {
                             values = [values];
                         }
@@ -120,7 +120,7 @@
                         }
                     }
 
-                    function findItemWithValue(collection, value) {
+                    function findItemWithValue (collection, value) {
                         for (var i = 0; i < collection.length; i++) {
                             if (collection[i].value === value)
                                 return true;
