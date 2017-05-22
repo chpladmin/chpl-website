@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### New features
+* Allow Closed CAP with open Nonconformity
+
+---
+
 ## Version 8.4.0
 _22 May 2017_
 
