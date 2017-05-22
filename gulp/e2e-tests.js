@@ -27,18 +27,18 @@ function runProtractor (done) {
         .on('error', function (err) {
             // Make sure failed tests cause gulp to exit non-zero
             buildReport();
-            throw err;
+            //throw err;
         })
         .on('end', function () {
             // Close browser sync server
             browserSync.exit();
-            done();
             buildReport();
+            done();
         });
 }
 
-function buildReport () {
-    gulp.src('test_reports/cucumber_report.json')
+function buildReport (failing, err) {
+    return gulp.src('test_reports/cucumber_report.json')
         .pipe(protractorReport({
             dest: 'test_reports/',
             filename: 'cucumber_report.html'
@@ -48,3 +48,4 @@ function buildReport () {
 gulp.task('protractor', ['protractor:src']);
 gulp.task('protractor:src', ['serve:e2e', 'webdriver-update'], runProtractor);
 gulp.task('protractor:dist', ['serve:e2e-dist', 'webdriver-update'], runProtractor);
+gulp.task('protractor:report', buildReport);

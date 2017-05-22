@@ -1,5 +1,26 @@
 # Release Notes
 
+## Version 8.4.0
+_22 May 2017_
+
+### New Features
+* Updated Pending Listing workflow
+  * Allow mass reject
+  * Display errors if Listing was previously "completed"
+* Displayed filtered Test Standards on Criteria editing
+* Added GTM tracking to Search - Criteria/CQMs/Surveillance filters
+* Added "Questionable Activity Report"
+* Added filtering by Certification Date
+* Added "select all" & "reset" to checkbox list filters
+* Made "Surveillance Activity Notifications" visible
+* Default to all time on single product activity report
+
+### Text edits
+* Added description to Nonconformities page
+* Added note about 2011 Decertified Products
+
+=======
+
 ## Version 8.3.0
 _8 May 2017_
 
