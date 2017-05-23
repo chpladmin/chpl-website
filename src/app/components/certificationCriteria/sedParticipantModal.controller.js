@@ -52,11 +52,13 @@
         }
 
         function orderAges (ageRange) {
-            if (ageRange.name.length === 3)
+            if (ageRange.name.length === 3) {
                 return 0;
-            else if (ageRange.name.length === 4)
+            } else if (ageRange.name.length === 4) {
                 return 10;
-            else return parseInt(ageRange.name.charAt(0));
+            } else {
+                return parseInt(ageRange.name.charAt(0));
+            }
         }
 
         function save () {

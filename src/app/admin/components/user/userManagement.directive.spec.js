@@ -31,8 +31,10 @@
             scope = $rootScope.$new();
 
             scope.fakeFunction = function () {};
-            scope.userManagementInviteUser = {$setPristine: function () {},
-                                              $setUntouched: function () {}};
+            scope.userManagementInviteUser = {
+                $setPristine: function () {},
+                $setUntouched: function () {}
+            };
 
             element = angular.element('<ai-user-management create-user="fakeFunction" modify-user="fakeFunction" delete-user="fakeFunction" cancel-user="fakeFunction"></ai-user-management');
             $compile(element)(scope);

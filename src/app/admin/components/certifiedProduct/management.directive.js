@@ -69,7 +69,9 @@
             vm.isAcbStaff = authService.isAcbStaff();
             vm.uploadingCps = [];
             vm.uploadingSurveillances = [];
-            if (angular.isUndefined(vm.workType)) vm.workType = 'manage';//vm.workType = vm.productId ? 'manage' : vm.isChplAdmin ? 'manage' : 'upload';
+            if (angular.isUndefined(vm.workType)) {
+                vm.workType = 'manage';
+            }
             vm.mergeType = 'developer';
             vm.uploadMessage = '';
             vm.uploadErrors = [];
@@ -177,12 +179,12 @@
         }
 
         function refreshPending () {
-            commonService.getUploadingCps ()
+            commonService.getUploadingCps()
                 .then(function (cps) {
                     vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
                     vm.pendingProducts = vm.uploadingCps.length;
                 })
-            commonService.getUploadingSurveillances ()
+            commonService.getUploadingSurveillances()
                 .then(function (surveillances) {
                     vm.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
                     vm.pendingSurveillances = vm.uploadingSurveillances.length;
@@ -611,8 +613,9 @@
                     ret += 'Errors:&nbsp;' + cp.errorMessages.length;
                 }
                 if (cp.warningMessages.length > 0) {
-                    if (ret.length > 0)
+                    if (ret.length > 0) {
                         ret += '<br />';
+                    }
                     ret += 'Warnings:&nbsp;' + cp.warningMessages.length;
                 }
                 if (ret.length === 0) {
@@ -629,8 +632,9 @@
                 ret += 'Errors:&nbsp;' + surv.errorMessages.length;
             }
             if (surv.warningMessages && surv.warningMessages.length > 0) {
-                if (ret.length > 0)
+                if (ret.length > 0) {
                     ret += '<br />';
+                }
                 ret += 'Warnings:&nbsp;' + surv.warningMessages.length;
             }
             if (ret.length === 0) {

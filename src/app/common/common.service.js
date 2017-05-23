@@ -2,155 +2,221 @@
     'use strict';
 
     angular.module('chpl.common')
-        .service('commonService', commonService);
+        .factory('commonService', commonService);
 
     /** @ngInject */
     function commonService ($http, $q, API) {
-        var self = this;
-
-        self.addressRequired = addressRequired;
+        var service = {
+            addressRequired: addressRequired,
+            login: login,
+            changePassword: changePassword,
+            resetPassword: resetPassword,
+            search: search,
+            getAll: getAll,
+            getAllNonconformities: getAllNonconformities,
+            getSearchOptions: getSearchOptions,
+            getEducation: getEducation,
+            getAgeRanges: getAgeRanges,
+            getTestStandards: getTestStandards,
+            getQmsStandards: getQmsStandards,
+            getUcdProcesses: getUcdProcesses,
+            getAccessibilityStandards: getAccessibilityStandards,
+            getTestFunctionality: getTestFunctionality,
+            getTestTools: getTestTools,
+            getTargetedUsers: getTargetedUsers,
+            getSurveillanceLookups: getSurveillanceLookups,
+            getCmsDownload: getCmsDownload,
+            getAnnouncements: getAnnouncements,
+            getSimpleProduct: getSimpleProduct,
+            getVersion: getVersion,
+            getProduct: getProduct,
+            getDevelopers: getDevelopers,
+            getDeveloper: getDeveloper,
+            getProductsByDeveloper: getProductsByDeveloper,
+            getVersionsByProduct: getVersionsByProduct,
+            getProductsByVersion: getProductsByVersion,
+            getEditions: getEditions,
+            getPractices: getPractices,
+            getCertificationStatuses: getCertificationStatuses,
+            getCertBodies: getCertBodies,
+            getCertifiedProductActivity: getCertifiedProductActivity,
+            getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
+            getDeveloperActivity: getDeveloperActivity,
+            getProductActivity: getProductActivity,
+            getVersionActivity: getVersionActivity,
+            getAcbActivity: getAcbActivity,
+            getAtlActivity: getAtlActivity,
+            getUserActivity: getUserActivity,
+            getUserActivities: getUserActivities,
+            getAnnouncementActivity: getAnnouncementActivity,
+            getUploadingCps: getUploadingCps,
+            getUploadingSurveillances: getUploadingSurveillances,
+            keepalive: keepalive,
+            updateDeveloper: updateDeveloper,
+            updateProduct: updateProduct,
+            splitProduct: splitProduct,
+            updateVersion: updateVersion,
+            updateCP: updateCP,
+            getAcbs: getAcbs,
+            getAtls: getAtls,
+            getUsersAtAcb: getUsersAtAcb,
+            getAnnouncement: getAnnouncement,
+            getUsersAtAtl: getUsersAtAtl,
+            createACB: createACB,
+            createATL: createATL,
+            createAnnouncement: createAnnouncement,
+            modifyAnnouncement: modifyAnnouncement,
+            modifyACB: modifyACB,
+            modifyATL: modifyATL,
+            deleteAnnouncement: deleteAnnouncement,
+            undeleteAnnouncement: undeleteAnnouncement,
+            deleteACB: deleteACB,
+            undeleteACB: undeleteACB,
+            deleteATL: deleteATL,
+            undeleteATL: undeleteATL,
+            getUsers: getUsers,
+            confirmUser: confirmUser,
+            addRole: addRole,
+            revokeRole: revokeRole,
+            updateUser: updateUser,
+            deleteUser: deleteUser,
+            removeUserFromAcb: removeUserFromAcb,
+            removeUserFromAtl: removeUserFromAtl,
+            inviteUser: inviteUser,
+            createInvitedUser: createInvitedUser,
+            authorizeUser: authorizeUser,
+            confirmPendingCp: confirmPendingCp,
+            confirmPendingSurveillance: confirmPendingSurveillance,
+            rejectPendingCp: rejectPendingCp,
+            massRejectPendingListings: massRejectPendingListings,
+            rejectPendingSurveillance: rejectPendingSurveillance,
+            lookupCertificationId: lookupCertificationId,
+            initiateCap: initiateCap,
+            updateCap: updateCap,
+            getCap: getCap,
+            deleteCap: deleteCap,
+            deleteDoc: deleteDoc,
+            deleteSurveillanceDocument: deleteSurveillanceDocument,
+            initiateSurveillance: initiateSurveillance,
+            updateSurveillance: updateSurveillance,
+            deleteSurveillance: deleteSurveillance,
+            registerApi: registerApi,
+            getApiUsers: getApiUsers,
+            revokeApi: revokeApi,
+            getApiUserActivity: getApiUserActivity,
+            getApiActivity: getApiActivity,
+            getDecertifiedDevelopers: getDecertifiedDevelopers,
+            getDecertifiedProducts: getDecertifiedProducts,
+            getInactiveCertifications: getInactiveCertifications,
+            getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
+            setMeaningfulUseUsersAccurateAsOfDate: setMeaningfulUseUsersAccurateAsOfDate,
+            getNotificationReportTypes: getNotificationReportTypes,
+            getNotificationRecipients: getNotificationRecipients,
+            createRecipient: createRecipient,
+            updateRecipient: updateRecipient,
+            deleteRecipient: deleteRecipient,
+        }
+        return service
 
         ////////////////////////////////////////////////////////////////////
 
         function addressRequired (address) {
-            if (!address) return false;
-            if (address.line1 && address.line1.length > 0) return true;
-            if (address.line2 && address.line2.length > 0) return true;
-            if (address.city && address.city.length > 0) return true;
-            if (address.state && address.state.length > 0) return true;
-            if (address.zipcode && address.zipcode.length > 0) return true;
-            if (address.country && address.country.length > 0) return true;
+            if (!address) { return false; }
+            if (address.line1 && address.line1.length > 0) { return true; }
+            if (address.line2 && address.line2.length > 0) { return true; }
+            if (address.city && address.city.length > 0) { return true; }
+            if (address.state && address.state.length > 0) { return true; }
+            if (address.zipcode && address.zipcode.length > 0) { return true; }
+            if (address.country && address.country.length > 0) { return true; }
             return false;
         }
 
-        self.simpleApiCall = function (endpoint) {
-            return $http.get(API + endpoint)
-                .then(function (response) {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return $q.reject(response.data);
-                    }
-                }, function (response) {
-                    return $q.reject(response.data);
-                });
-        };
+        function login (userObj) {
+            return postApiCall('/auth/authenticate', userObj);
+        }
 
-        self.externalApiCall = function (endpoint) {
-            return $http.get(endpoint)
-                .then(function (response) {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return $q.reject(response.data);
-                    }
-                }, function (response) {
-                    return $q.reject(response.data);
-                });
-        };
+        function changePassword (userObj) {
+            return postApiCall('/auth/change_password', userObj);
+        }
 
-        self.postApiCall = function (endpoint, postObject, allowEmptyResponse) {
-            return $http.post(API + endpoint, postObject)
-                .then(function (response) {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        if (allowEmptyResponse) {
-                            return response;
-                        } else {
-                            return $q.reject(response);
-                        }
-                    }
-                }, function (response) {
-                    return $q.reject(response);
-                });
-        };
+        function resetPassword (userObj) {
+            return postApiCall('/auth/reset_password', userObj);
+        }
 
-        self.login = function (userObj) {
-            return self.postApiCall('/auth/authenticate', userObj);
-        };
+        function search (queryObj) {
+            return postApiCall('/search', queryObj);
+        }
 
-        self.changePassword = function (userObj) {
-            return self.postApiCall('/auth/change_password', userObj);
-        };
+        function getAll () {
+            return simpleApiCall('/certified_products');
+        }
 
-        self.resetPassword = function (userObj) {
-            return self.postApiCall('/auth/reset_password', userObj);
-        };
+        function getAllNonconformities () {
+            return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
+        }
 
-        self.search = function (queryObj) {
-            return self.postApiCall('/search', queryObj);
-        };
+        function getSearchOptions (showDeleted) {
+            if (showDeleted) {
+                return simpleApiCall('/data/search_options?showDeleted=true');
+            } else {
+                return simpleApiCall('/data/search_options');
+            }
+        }
 
-        self.getAll = function () {
-            return self.simpleApiCall('/certified_products');
-        };
+        function getEducation () {
+            return simpleApiCall('/data/education_types');
+        }
 
-        self.getAllNonconformities = function () {
-            return self.simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
-        };
+        function getAgeRanges () {
+            return simpleApiCall('/data/age_ranges');
+        }
 
-        self.getSearchOptions = function (showDeleted) {
-            if (showDeleted)
-                return self.simpleApiCall('/data/search_options?showDeleted=true');
-            else
-                return self.simpleApiCall('/data/search_options');
-        };
+        function getTestStandards () {
+            return simpleApiCall('/data/test_standards');
+        }
 
-        self.getEducation = function () {
-            return self.simpleApiCall('/data/education_types');
-        };
+        function getQmsStandards () {
+            return simpleApiCall('/data/qms_standards');
+        }
 
-        self.getAgeRanges = function () {
-            return self.simpleApiCall('/data/age_ranges');
-        };
+        function getUcdProcesses () {
+            return simpleApiCall('/data/ucd_processes');
+        }
 
-        self.getTestStandards = function () {
-            return self.simpleApiCall('/data/test_standards');
-        };
+        function getAccessibilityStandards () {
+            return simpleApiCall('/data/accessibility_standards');
+        }
 
-        self.getQmsStandards = function () {
-            return self.simpleApiCall('/data/qms_standards');
-        };
+        function getTestFunctionality () {
+            return simpleApiCall('/data/test_functionality');
+        }
 
-        self.getUcdProcesses = function () {
-            return self.simpleApiCall('/data/ucd_processes');
-        };
+        function getTestTools () {
+            return simpleApiCall('/data/test_tools');
+        }
 
-        self.getAccessibilityStandards = function () {
-            return self.simpleApiCall('/data/accessibility_standards');
-        };
+        function getTargetedUsers () {
+            return simpleApiCall('/data/targeted_users');
+        }
 
-        self.getTestFunctionality = function () {
-            return self.simpleApiCall('/data/test_functionality');
-        };
-
-        self.getTestTools = function () {
-            return self.simpleApiCall('/data/test_tools');
-        };
-
-        self.getTargetedUsers = function () {
-            return self.simpleApiCall('/data/targeted_users');
-        };
-
-        self.getSurveillanceLookups = function () {
+        function getSurveillanceLookups () {
             var data = {};
-            self.simpleApiCall('/data/surveillance_types')
+            simpleApiCall('/data/surveillance_types')
                 .then(function (response) {
                     data.surveillanceTypes = response;
-                    self.simpleApiCall('/data/surveillance_requirement_types')
+                    simpleApiCall('/data/surveillance_requirement_types')
                         .then(function (response) {
                             data.surveillanceRequirementTypes = response;
-                            self.simpleApiCall('/data/surveillance_result_types')
+                            simpleApiCall('/data/surveillance_result_types')
                                 .then(function (response) {
                                     data.surveillanceResultTypes = response;
-                                    self.simpleApiCall('/data/nonconformity_status_types')
+                                    simpleApiCall('/data/nonconformity_status_types')
                                         .then(function (response) {
                                             data.nonconformityStatusTypes = response;
-                                            self.simpleApiCall('/data/surveillance_requirements')
+                                            simpleApiCall('/data/surveillance_requirements')
                                                 .then(function (response) {
                                                     data.surveillanceRequirements = response;
-                                                    self.simpleApiCall('/data/nonconformity_types')
+                                                    simpleApiCall('/data/nonconformity_types')
                                                         .then(function (response) {
                                                             data.nonconformityTypes = response;
                                                         })
@@ -160,69 +226,69 @@
                         })
                 })
             return data;
-        };
+        }
 
-        self.getCmsDownload = function () {
-            return self.simpleApiCall('/certification_ids/');
-        };
+        function getCmsDownload () {
+            return simpleApiCall('/certification_ids/');
+        }
 
-        self.getAnnouncements = function (pending) {
-            return self.simpleApiCall('/announcements/?future=' + pending);
-        };
+        function getAnnouncements (pending) {
+            return simpleApiCall('/announcements/?future=' + pending);
+        }
 
-        self.getSimpleProduct = function (productId) {
-            return self.simpleApiCall('/products/' + productId);
-        };
+        function getSimpleProduct (productId) {
+            return simpleApiCall('/products/' + productId);
+        }
 
-        self.getVersion = function (versionId) {
-            return self.simpleApiCall('/versions/' + versionId);
-        };
+        function getVersion (versionId) {
+            return simpleApiCall('/versions/' + versionId);
+        }
 
-        self.getProduct = function (productId) {
-            return self.simpleApiCall('/certified_products/' + productId + '/details');
-        };
+        function getProduct (productId) {
+            return simpleApiCall('/certified_products/' + productId + '/details');
+        }
 
-        self.getDevelopers = function (showDeleted) {
+        function getDevelopers (showDeleted) {
             if (showDeleted) {
-                return self.simpleApiCall('/developers/?showDeleted=true');
+                return simpleApiCall('/developers/?showDeleted=true');
             } else {
-                return self.simpleApiCall('/developers/');
+                return simpleApiCall('/developers/');
             }
-        };
+        }
 
-        self.getDeveloper = function (developerId) {
-            return self.simpleApiCall('/developers/' + developerId);
-        };
+        function getDeveloper (developerId) {
+            return simpleApiCall('/developers/' + developerId);
+        }
 
-        self.getProductsByDeveloper = function (developerId) {
-            return self.simpleApiCall('/products/?developerId=' + developerId);
-        };
+        function getProductsByDeveloper (developerId) {
+            return simpleApiCall('/products/?developerId=' + developerId);
+        }
 
-        self.getVersionsByProduct = function (productId) {
-            return self.simpleApiCall('/versions/?productId=' + productId);
-        };
+        function getVersionsByProduct (productId) {
+            return simpleApiCall('/versions/?productId=' + productId);
+        }
 
-        self.getProductsByVersion = function (versionId, editable) {
-            return self.simpleApiCall('/certified_products/?versionId=' + versionId + '&editable=' + editable);
-        };
+        function getProductsByVersion (versionId, editable) {
+            return simpleApiCall('/certified_products/?versionId=' + versionId + '&editable=' + editable);
+        }
 
-        self.getEditions = function () {
-            return self.simpleApiCall('/data/certification_editions');
-        };
+        function getEditions () {
+            return simpleApiCall('/data/certification_editions');
+        }
 
-        self.getPractices = function () {
-            return self.simpleApiCall('/data/practice_types');
-        };
+        function getPractices () {
+            return simpleApiCall('/data/practice_types');
+        }
 
-        self.getCertificationStatuses = function () {
-            return self.simpleApiCall('/data/certification_statuses');
-        };
+        function getCertificationStatuses () {
+            return simpleApiCall('/data/certification_statuses');
+        }
 
-        self.getCertBodies = function () {
-            return self.simpleApiCall('/data/certification_bodies');
-        };
+        function getCertBodies () {
+            return simpleApiCall('/data/certification_bodies');
+        }
 
-        self.getCertifiedProductActivity = function (activityRange) {
+        function getCertifiedProductActivity (activityRange) {
             var call = '/activity/certified_products';
             var params = [];
             if (activityRange.startDate) {
@@ -234,14 +300,14 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getSingleCertifiedProductActivity = function (productId) {
-            return self.simpleApiCall('/activity/certified_products/' + productId);
-        };
+        function getSingleCertifiedProductActivity (productId) {
+            return simpleApiCall('/activity/certified_products/' + productId);
+        }
 
-        self.getDeveloperActivity = function (activityRange) {
+        function getDeveloperActivity (activityRange) {
             var call = '/activity/developers';
             var params = [];
             if (activityRange.startDate) {
@@ -253,10 +319,10 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getProductActivity = function (activityRange) {
+        function getProductActivity (activityRange) {
             var call = '/activity/products';
             var params = [];
             if (activityRange.startDate) {
@@ -268,10 +334,10 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getVersionActivity = function (activityRange) {
+        function getVersionActivity (activityRange) {
             var call = '/activity/versions';
             var params = [];
             if (activityRange.startDate) {
@@ -283,10 +349,10 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getAcbActivity = function (activityRange) {
+        function getAcbActivity (activityRange) {
             var call = '/activity/acbs';
             var params = [];
             if (activityRange.startDate) {
@@ -298,10 +364,10 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getAtlActivity = function (activityRange) {
+        function getAtlActivity (activityRange) {
             var call = '/activity/atls';
             var params = [];
             if (activityRange.startDate) {
@@ -313,10 +379,10 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getUserActivity = function (activityRange) {
+        function getUserActivity (activityRange) {
             var call = '/activity/users';
             var params = [];
             if (activityRange.startDate) {
@@ -328,10 +394,10 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getUserActivities = function (activityRange) {
+        function getUserActivities (activityRange) {
             var call = '/activity/user_activities';
             var params = [];
             if (activityRange.startDate) {
@@ -343,10 +409,10 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getAnnouncementActivity = function (activityRange) {
+        function getAnnouncementActivity (activityRange) {
             var call = '/activity/announcements';
             var params = [];
             if (activityRange.startDate) {
@@ -358,228 +424,227 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
-
-        self.getUploadingCps = function () {
-            return self.simpleApiCall('/certified_products/pending');
-        };
-
-        self.getUploadingSurveillances = function () {
-            return self.simpleApiCall('/surveillance/pending');
-        };
-
-        self.keepalive = function () {
-            return self.simpleApiCall('/auth/keep_alive');
-        };
-
-        self.updateDeveloper = function (developerObject) {
-            return self.postApiCall('/developers/update', developerObject);
-        };
-
-        self.updateProduct = function (productObject) {
-            return self.postApiCall('/products/update', productObject);
-        };
-
-        self.splitProduct = function (productObject) {
-            return self.postApiCall('/products/' + productObject.oldProduct.productId + '/split', productObject);
-        };
-
-        self.updateVersion = function (versionObject) {
-            return self.postApiCall('/versions/update', versionObject);
-        };
-
-        self.updateCP = function (cpObject) {
-            return self.postApiCall('/certified_products/update', cpObject);
-        };
-
-        self.getAcbs = function (editable, deleted) {
-            if (angular.isUndefined(deleted)) { deleted = false; }
-            return self.simpleApiCall('/acbs/?editable=' + editable + '&showDeleted=' + deleted);
-        };
-
-        self.getAtls = function (editable, deleted) {
-            if (angular.isUndefined(deleted)) { deleted = false; }
-            return self.simpleApiCall('/atls/?editable=' + editable + '&showDeleted=' + deleted);
-        };
-
-        self.getUsersAtAcb = function (acbId) {
-            return self.simpleApiCall('/acbs/' + acbId + '/users');
-        };
-
-        self.getAnnouncement = function (announcementId) {
-            return self.simpleApiCall('/announcements/' + announcementId + '/');
-        };
-
-        self.getUsersAtAtl = function (atlId) {
-            return self.simpleApiCall('/atls/' + atlId + '/users');
-        };
-
-        self.createACB = function (acb) {
-            return self.postApiCall('/acbs/create', acb);
-        };
-
-        self.createATL = function (atl) {
-            return self.postApiCall('/atls/create', atl);
-        };
-
-        self.createAnnouncement = function (announcement) {
-            return self.postApiCall('/announcements/create/', announcement);
-        };
-
-        self.modifyAnnouncement = function (announcement) {
-            return self.postApiCall('/announcements/update', announcement);
-        };
-
-        self.modifyACB = function (acb) {
-            return self.postApiCall('/acbs/update', acb);
-        };
-
-        self.modifyATL = function (atl) {
-            return self.postApiCall('/atls/update', atl);
-        };
-
-        self.deleteAnnouncement = function (announcementId) {
-            return self.postApiCall('/announcements/' + announcementId + '/delete', {});
-        };
-
-        self.undeleteAnnouncement = function (announcementId) {
-            return self.postApiCall('/announcements/' + announcementId + '/undelete', {});
-        };
-
-        self.deleteACB = function (acbId) {
-            return self.postApiCall('/acbs/' + acbId + '/delete', {});
-        };
-
-        self.undeleteACB = function (acbId) {
-            return self.postApiCall('/acbs/' + acbId + '/undelete', {});
-        };
-
-        self.deleteATL = function (atlId) {
-            return self.postApiCall('/atls/' + atlId + '/delete', {});
-        };
-
-        self.undeleteATL = function (atlId) {
-            return self.postApiCall('/atls/' + atlId + '/undelete', {});
-        };
-
-        self.getUsers = function () {
-            return self.simpleApiCall('/users/');
-        };
-
-        self.confirmUser = function (userObject) {
-            return self.postApiCall('/users/confirm', userObject);
-        };
-
-        self.addRole = function (payload) {
-            return self.postApiCall('/users/grant_role', payload);
-        };
-
-        self.revokeRole = function (payload) {
-            return self.postApiCall('/users/revoke_role', payload);
-        };
-
-        self.updateUser = function (user) {
-            return self.postApiCall('/users/update', user);
-        };
-
-        self.deleteUser = function (userId) {
-            return self.postApiCall('/users/' + userId + '/delete', {});
-        };
-
-        self.removeUserFromAcb = function (userId, acbId) {
-            return self.postApiCall('/acbs/' + acbId + '/remove_user/' + userId, {});
-        };
-
-        self.removeUserFromAtl = function (userId, atlId) {
-            return self.postApiCall('/atls/' + atlId + '/remove_user/' + userId, {});
-        };
-
-        self.inviteUser = function (invitationObject) {
-            return self.postApiCall('/users/invite', invitationObject);
-        };
-
-        self.createInvitedUser = function (contactDetails) {
-            return self.postApiCall('/users/create', contactDetails);
-        };
-
-        self.authorizeUser = function (userAuthorization) {
-            return self.postApiCall('/users/authorize', userAuthorization);
-        };
-
-        self.confirmPendingCp = function (pendingCp) {
-            return self.postApiCall('/certified_products/pending/confirm', pendingCp);
-        };
-
-        self.confirmPendingSurveillance = function (surveillance) {
-            return self.postApiCall('/surveillance/pending/confirm', surveillance);
-        };
-
-        self.rejectPendingCp = function (cpId) {
-            return self.postApiCall('/certified_products/pending/' + cpId + '/reject', {});
-        };
-
-        self.massRejectPendingListings = function (ids) {
-            return self.postApiCall('/certified_products/pending/reject', {ids: ids});
-        };
-
-        self.rejectPendingSurveillance = function (survId) {
-            return self.postApiCall('/surveillance/pending/' + survId + '/reject', {});
-        };
-
-        self.lookupCertificationId = function (certId) {
-            return self.simpleApiCall('/certification_ids/' + certId);
+            return simpleApiCall(call);
         }
 
-        self.initiateCap = function (cap) {
-            return self.postApiCall('/corrective_action_plan/create', cap);
-        };
+        function getUploadingCps () {
+            return simpleApiCall('/certified_products/pending');
+        }
 
-        self.updateCap = function (cap) {
-            return self.postApiCall('/corrective_action_plan/update', cap);
-        };
+        function getUploadingSurveillances () {
+            return simpleApiCall('/surveillance/pending');
+        }
 
-        self.getCap = function (certifiedProductId) {
-            return self.simpleApiCall('/corrective_action_plan/?certifiedProductId=' + certifiedProductId);
-        };
+        function keepalive () {
+            return simpleApiCall('/auth/keep_alive');
+        }
 
-        self.deleteCap = function (capId) {
-            return self.postApiCall('/corrective_action_plan/' + capId + '/delete', {});
-        };
+        function updateDeveloper (developerObject) {
+            return postApiCall('/developers/update', developerObject);
+        }
 
-        self.deleteDoc = function (docId) {
-            return self.postApiCall('/corrective_action_plan/documentation/' + docId + '/delete', {});
-        };
+        function updateProduct (productObject) {
+            return postApiCall('/products/update', productObject);
+        }
 
-        self.deleteSurveillanceDocument = function (survId, nonconId, docId) {
-            return self.postApiCall('/surveillance/' + survId + '/nonconformity/' + nonconId + '/document/' + docId + '/delete', {});
-        };
+        function splitProduct (productObject) {
+            return postApiCall('/products/' + productObject.oldProduct.productId + '/split', productObject);
+        }
 
-        self.initiateSurveillance = function (surveillance) {
-            return self.postApiCall('/surveillance/create', surveillance);
-        };
+        function updateVersion (versionObject) {
+            return postApiCall('/versions/update', versionObject);
+        }
 
-        self.updateSurveillance = function (surveillance) {
-            return self.postApiCall('/surveillance/update', surveillance);
-        };
+        function updateCP (cpObject) {
+            return postApiCall('/certified_products/update', cpObject);
+        }
 
-        self.deleteSurveillance = function (surveillanceId) {
-            return self.postApiCall('/surveillance/' + surveillanceId + '/delete', {});
-        };
+        function getAcbs (editable, deleted) {
+            if (angular.isUndefined(deleted)) { deleted = false; }
+            return simpleApiCall('/acbs/?editable=' + editable + '&showDeleted=' + deleted);
+        }
 
-        self.registerApi = function (user) {
-            return self.postApiCall('/key/register', user);
-        };
+        function getAtls (editable, deleted) {
+            if (angular.isUndefined(deleted)) { deleted = false; }
+            return simpleApiCall('/atls/?editable=' + editable + '&showDeleted=' + deleted);
+        }
 
-        self.getApiUsers = function () {
-            return self.simpleApiCall('/key/');
-        };
+        function getUsersAtAcb (acbId) {
+            return simpleApiCall('/acbs/' + acbId + '/users');
+        }
 
-        self.revokeApi = function (user) {
-            return self.postApiCall('/key/revoke', user);
-        };
+        function getAnnouncement (announcementId) {
+            return simpleApiCall('/announcements/' + announcementId + '/');
+        }
 
-        self.getApiUserActivity = function (activityRange) {
+        function getUsersAtAtl (atlId) {
+            return simpleApiCall('/atls/' + atlId + '/users');
+        }
+
+        function createACB (acb) {
+            return postApiCall('/acbs/create', acb);
+        }
+
+        function createATL (atl) {
+            return postApiCall('/atls/create', atl);
+        }
+
+        function createAnnouncement (announcement) {
+            return postApiCall('/announcements/create/', announcement);
+        }
+
+        function modifyAnnouncement (announcement) {
+            return postApiCall('/announcements/update', announcement);
+        }
+
+        function modifyACB (acb) {
+            return postApiCall('/acbs/update', acb);
+        }
+
+        function modifyATL (atl) {
+            return postApiCall('/atls/update', atl);
+        }
+
+        function deleteAnnouncement (announcementId) {
+            return postApiCall('/announcements/' + announcementId + '/delete', {});
+        }
+
+        function undeleteAnnouncement (announcementId) {
+            return postApiCall('/announcements/' + announcementId + '/undelete', {});
+        }
+
+        function deleteACB (acbId) {
+            return postApiCall('/acbs/' + acbId + '/delete', {});
+        }
+
+        function undeleteACB (acbId) {
+            return postApiCall('/acbs/' + acbId + '/undelete', {});
+        }
+
+        function deleteATL (atlId) {
+            return postApiCall('/atls/' + atlId + '/delete', {});
+        }
+
+        function undeleteATL (atlId) {
+            return postApiCall('/atls/' + atlId + '/undelete', {});
+        }
+
+        function getUsers () {
+            return simpleApiCall('/users/');
+        }
+
+        function confirmUser (userObject) {
+            return postApiCall('/users/confirm', userObject);
+        }
+
+        function addRole (payload) {
+            return postApiCall('/users/grant_role', payload);
+        }
+
+        function revokeRole (payload) {
+            return postApiCall('/users/revoke_role', payload);
+        }
+
+        function updateUser (user) {
+            return postApiCall('/users/update', user);
+        }
+
+        function deleteUser (userId) {
+            return postApiCall('/users/' + userId + '/delete', {});
+        }
+
+        function removeUserFromAcb (userId, acbId) {
+            return postApiCall('/acbs/' + acbId + '/remove_user/' + userId, {});
+        }
+
+        function removeUserFromAtl (userId, atlId) {
+            return postApiCall('/atls/' + atlId + '/remove_user/' + userId, {});
+        }
+
+        function inviteUser (invitationObject) {
+            return postApiCall('/users/invite', invitationObject);
+        }
+
+        function createInvitedUser (contactDetails) {
+            return postApiCall('/users/create', contactDetails);
+        }
+
+        function authorizeUser (userAuthorization) {
+            return postApiCall('/users/authorize', userAuthorization);
+        }
+
+        function confirmPendingCp (pendingCp) {
+            return postApiCall('/certified_products/pending/confirm', pendingCp);
+        }
+
+        function confirmPendingSurveillance (surveillance) {
+            return postApiCall('/surveillance/pending/confirm', surveillance);
+        }
+
+        function rejectPendingCp (cpId) {
+            return postApiCall('/certified_products/pending/' + cpId + '/reject', {});
+        }
+
+        function massRejectPendingListings (ids) {
+            return postApiCall('/certified_products/pending/reject', {ids: ids});
+        }
+
+        function rejectPendingSurveillance (survId) {
+            return postApiCall('/surveillance/pending/' + survId + '/reject', {});
+        }
+
+        function lookupCertificationId (certId) {
+            return simpleApiCall('/certification_ids/' + certId);
+        }
+        function initiateCap (cap) {
+            return postApiCall('/corrective_action_plan/create', cap);
+        }
+
+        function updateCap (cap) {
+            return postApiCall('/corrective_action_plan/update', cap);
+        }
+
+        function getCap (certifiedProductId) {
+            return simpleApiCall('/corrective_action_plan/?certifiedProductId=' + certifiedProductId);
+        }
+
+        function deleteCap (capId) {
+            return postApiCall('/corrective_action_plan/' + capId + '/delete', {});
+        }
+
+        function deleteDoc (docId) {
+            return postApiCall('/corrective_action_plan/documentation/' + docId + '/delete', {});
+        }
+
+        function deleteSurveillanceDocument (survId, nonconId, docId) {
+            return postApiCall('/surveillance/' + survId + '/nonconformity/' + nonconId + '/document/' + docId + '/delete', {});
+        }
+
+        function initiateSurveillance (surveillance) {
+            return postApiCall('/surveillance/create', surveillance);
+        }
+
+        function updateSurveillance (surveillance) {
+            return postApiCall('/surveillance/update', surveillance);
+        }
+
+        function deleteSurveillance (surveillanceId) {
+            return postApiCall('/surveillance/' + surveillanceId + '/delete', {});
+        }
+
+        function registerApi (user) {
+            return postApiCall('/key/register', user);
+        }
+
+        function getApiUsers () {
+            return simpleApiCall('/key/');
+        }
+
+        function revokeApi (user) {
+            return postApiCall('/key/revoke', user);
+        }
+
+        function getApiUserActivity (activityRange) {
             var call = '/activity/api_keys';
             var params = [];
             if (activityRange.startDate) {
@@ -591,10 +656,10 @@
             if (params.length > 0) {
                 call += '?' + params.join('&');
             }
-            return self.simpleApiCall(call);
-        };
+            return simpleApiCall(call);
+        }
 
-        self.getApiActivity = function (options) {
+        function getApiActivity (options) {
             var params = [];
             var queryParams = '';
             if (angular.isDefined(options.pageNumber)) { params.push('pageNumber=' + options.pageNumber); }
@@ -609,53 +674,100 @@
                 params.push(tmp);
             }
             if (params.length > 0) { queryParams = '?' + params.join('&'); }
-            return self.postApiCall('/key/activity/' + queryParams, {});
-        };
+            return postApiCall('/key/activity/' + queryParams, {});
+        }
 
-        self.getDecertifiedDevelopers = function () {
-            return self.simpleApiCall('/decertifications/developers');
-        };
+        function getDecertifiedDevelopers () {
+            return simpleApiCall('/decertifications/developers');
+        }
 
-        self.getDecertifiedProducts = function () {
-            return self.simpleApiCall('/decertifications/certified_products');
-        };
+        function getDecertifiedProducts () {
+            return simpleApiCall('/decertifications/certified_products');
+        }
 
-        self.getInactiveCertifications = function () {
-            return self.simpleApiCall('/decertifications/inactive_certificates');
-        };
+        function getInactiveCertifications () {
+            return simpleApiCall('/decertifications/inactive_certificates');
+        }
 
-        self.getMeaningfulUseUsersAccurateAsOfDate = function () {
-            return self.simpleApiCall('/meaningful_use/accurate_as_of');
-        };
+        function getMeaningfulUseUsersAccurateAsOfDate () {
+            return simpleApiCall('/meaningful_use/accurate_as_of');
+        }
 
-        self.setMeaningfulUseUsersAccurateAsOfDate = function (date) {
-            return self.postApiCall('/meaningful_use/accurate_as_of', date);
-        };
+        function setMeaningfulUseUsersAccurateAsOfDate (date) {
+            return postApiCall('/meaningful_use/accurate_as_of', date);
+        }
 
         /*
          * Email notification services
          */
-        self.getNotificationReportTypes = function () {
-            return self.simpleApiCall('/data/notification_types');
-        };
+        function getNotificationReportTypes () {
+            return simpleApiCall('/data/notification_types');
+        }
 
-        self.getNotificationRecipients = function () {
-            return self.simpleApiCall('/notifications/recipients');
-        };
+        function getNotificationRecipients () {
+            return simpleApiCall('/notifications/recipients');
+        }
 
-        self.createRecipient = function (recipient) {
-            return self.postApiCall('/notifications/recipients/create', recipient);
-        };
+        function createRecipient (recipient) {
+            return postApiCall('/notifications/recipients/create', recipient);
+        }
 
-        self.updateRecipient = function (recipient) {
-            return self.postApiCall('/notifications/recipients/' + recipient.id + '/update', recipient);
-        };
+        function updateRecipient (recipient) {
+            return postApiCall('/notifications/recipients/' + recipient.id + '/update', recipient);
+        }
 
-        self.deleteRecipient = function (recipient) {
-            return self.postApiCall('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
-        };
+        function deleteRecipient (recipient) {
+            return postApiCall('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
+        }
         /*
          * End email notification services
          */
+
+        ////////////////////////////////////////////////////////////////////
+
+        function simpleApiCall (endpoint) {
+            return $http.get(API + endpoint)
+                .then(function (response) {
+                    if (angular.isObject(response.data)) {
+                        return response.data;
+                    } else {
+                        return $q.reject(response.data);
+                    }
+                }, function (response) {
+                    return $q.reject(response.data);
+                });
+        }
+
+        /*
+        function externalApiCall (endpoint) {
+            return $http.get(endpoint)
+                .then(function (response) {
+                    if (angular.isObject(response.data)) {
+                        return response.data;
+                    } else {
+                        return $q.reject(response.data);
+                    }
+                }, function (response) {
+                    return $q.reject(response.data);
+                });
+        }
+        */
+
+        function postApiCall (endpoint, postObject, allowEmptyResponse) {
+            return $http.post(API + endpoint, postObject)
+                .then(function (response) {
+                    if (angular.isObject(response.data)) {
+                        return response.data;
+                    } else {
+                        if (allowEmptyResponse) {
+                            return response;
+                        } else {
+                            return $q.reject(response);
+                        }
+                    }
+                }, function (response) {
+                    return $q.reject(response);
+                });
+        }
     }
 })();

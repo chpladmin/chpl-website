@@ -57,8 +57,9 @@
                 }
             });
             vm.editUibModalInstance.result.then(function (result) {
-                if (vm.cert.testTasks === null)
+                if (vm.cert.testTasks === null) {
                     vm.cert.testTasks = [];
+                }
                 vm.cert.testTasks.push(result);
             }, function (result) {
                 if (result !== 'cancelled') {

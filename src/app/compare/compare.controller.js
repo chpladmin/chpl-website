@@ -112,8 +112,9 @@
             var cert;
             for (var i = 0; i < product.certificationResults.length; i++) {
                 cert = product.certificationResults[i];
-                if (angular.isUndefined(vm.allCerts[cert.number]))
+                if (angular.isUndefined(vm.allCerts[cert.number])) {
                     vm.allCerts[cert.number] = {number: cert.number, title: cert.title, values: []};
+                }
                 if (cert.success) {
                     vm.allCerts[cert.number].atLeastOne = true;
                 }
@@ -135,8 +136,9 @@
                 } else {
                     cqm.displayId = 'NQF-' + cqm.nqfNumber;
                 }
-                if (angular.isUndefined(vm.allCqms[cqm.displayId]))
+                if (angular.isUndefined(vm.allCqms[cqm.displayId])) {
                     vm.allCqms[cqm.displayId] = {displayId: cqm.displayId, title: cqm.title, values: []};
+                }
                 if (cqm.success) {
                     vm.allCqms[cqm.displayId].atLeastOne = true;
                 }

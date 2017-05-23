@@ -68,8 +68,9 @@
                                 commonService.lookupCertificationId(id)
                                     .then(function (data) {
 
-                                        if (vm.lookupProducts === null)
+                                        if (vm.lookupProducts === null) {
                                             vm.lookupProducts = [];
+                                        }
 
                                         // If the ID was found, then I have data...
                                         if (data.products.length > 0) {

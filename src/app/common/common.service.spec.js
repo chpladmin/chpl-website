@@ -27,7 +27,6 @@
         mock.practices = ['Practice 1', 'Practice 2'];
         mock.certBodies = ['CB 1', 'CB 2'];
 
-
         beforeEach(inject(function (_commonService_, _$httpBackend_) {
             commonService = _commonService_;
             $httpBackend = _$httpBackend_;

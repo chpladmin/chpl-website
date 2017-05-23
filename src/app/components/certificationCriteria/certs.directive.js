@@ -194,8 +194,9 @@
                         ret = parseInt(number) * 100 + letter.charCodeAt(0);
                     } else {
                         number = cert.number.substring(12,14);
-                        if (number.substring(1,2) === ')')
+                        if (number.substring(1,2) === ')') {
                             number = number.substring(0,1);
+                        }
                         ret = letter.charCodeAt(0) * 100 + parseInt(number);
                     }
                 }

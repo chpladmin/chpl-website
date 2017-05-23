@@ -60,7 +60,6 @@
             });
         });
 
-
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
                 //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));

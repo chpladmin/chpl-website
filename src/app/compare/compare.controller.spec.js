@@ -14,15 +14,15 @@
             });
 
             inject(function ($q) {
-                mockCommonService.products = [
-                    { developer: 'Developer',
-                      product: 'Product',
-                      certificationDate: '2015-02-01 00:00:00.00',
-                      certificationResults: [],
-                      certificationEdition: {name: '2014'},
-                      cqmResults: [],
-                      applicableCqmCriteria: []}
-                ];
+                mockCommonService.products = [{
+                    developer: 'Developer',
+                    product: 'Product',
+                    certificationDate: '2015-02-01 00:00:00.00',
+                    certificationResults: [],
+                    certificationEdition: {name: '2014'},
+                    cqmResults: [],
+                    applicableCqmCriteria: []
+                }];
 
                 mockCommonService.getProduct = function () {
                     var defer = $q.defer();

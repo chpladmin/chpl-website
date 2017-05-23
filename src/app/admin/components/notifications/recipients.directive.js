@@ -100,7 +100,7 @@
 
         function loadNotificationReportTypes () {
             commonService.getNotificationReportTypes()
-                .then (function (result) {
+                .then(function (result) {
                     vm.notificationReportTypes = result;
                 }, function (error) {
                     $log.warn('error in notification.recipients loadNotificationReportTypes', error);
@@ -110,7 +110,7 @@
         function loadRecipients () {
             vm.recipients = [];
             commonService.getNotificationRecipients()
-                .then (function (result) {
+                .then(function (result) {
                     vm.recipients = result.results;
                 }, function (error) {
                     $log.warn('error in notification.recipients loadRecipients', error);

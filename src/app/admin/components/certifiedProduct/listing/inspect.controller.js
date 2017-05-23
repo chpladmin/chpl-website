@@ -262,16 +262,19 @@
         function isDisabled () {
             switch (vm.stage) {
             case 'dev':
-                if (vm.developerChoice === 'choose' && !vm.cp.developer.developerId)
+                if (vm.developerChoice === 'choose' && !vm.cp.developer.developerId) {
                     return true;
+                }
                 return false;
             case 'prd':
-                if (vm.productChoice === 'choose' && !vm.cp.product.productId)
+                if (vm.productChoice === 'choose' && !vm.cp.product.productId) {
                     return true;
+                }
                 return false;
             case 'ver':
-                if (vm.versionChoice === 'choose' && !vm.cp.version.versionId)
+                if (vm.versionChoice === 'choose' && !vm.cp.version.versionId) {
                     return true;
+                }
                 return false;
             default:
                 return true;

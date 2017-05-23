@@ -57,7 +57,7 @@
 
         function loadData () {
             return commonService.getAtls()
-                .then (function (data) {
+                .then(function (data) {
                     vm.atls = data.atls;
                 });
         }
@@ -124,8 +124,9 @@
         };
 
         vm.addressRequired = function (atl) {
-            if (atl)
+            if (atl) {
                 return commonService.addressRequired(atl.address);
+            }
         };
     }
 })();

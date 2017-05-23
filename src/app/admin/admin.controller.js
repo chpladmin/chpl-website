@@ -67,13 +67,13 @@
 
             // load editable acbs & atls
             commonService.getAcbs(true, vm.isChplAdmin())
-                .then (function (data) {
+                .then(function (data) {
                     vm.acbs = $filter('orderBy')(data.acbs,'name');
                     vm.activeAcb = vm.acbs[0];
                     vm.navState.acbManagement = vm.activeAcb;
                 });
             commonService.getAtls(true, vm.isChplAdmin())
-                .then (function (data) {
+                .then(function (data) {
                     vm.atls = $filter('orderBy')(data.atls,'name');
                     vm.activeAtl = vm.atls[0];
                     vm.navState.atlManagement = vm.activeAtl;
@@ -96,7 +96,7 @@
             vm.clearProductId();
             if (screen === 'acbManagement') {
                 commonService.getAcbs(true, vm.isChplAdmin())
-                    .then (function (data) {
+                    .then(function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
@@ -104,7 +104,7 @@
             }
             if (screen === 'atlManagement') {
                 commonService.getAtls(true, vm.isChplAdmin())
-                    .then (function (data) {
+                    .then(function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];
                         vm.navState.atlManagement = vm.activeAtl;

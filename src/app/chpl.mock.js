@@ -3,7 +3,7 @@
 
     angular
         .module('chpl.mock', [])
-        .service('Mock', mock);
+        .factory('Mock', mock);
 
     function mock () {
         var mock = {};

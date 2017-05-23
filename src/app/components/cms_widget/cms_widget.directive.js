@@ -34,7 +34,7 @@
             vm.search = search;
             vm.toggleProduct = toggleProduct;
 
-            activate ();
+            activate();
 
             ////////////////////////////////////////////////////////////////////
 
@@ -333,8 +333,9 @@
                     keys.shift();
                     result = true;
                     for (index=0; index < keys.length; ++index) {
-                        if (-1 === criteriaMet.indexOf(keys[index]))
+                        if (-1 === criteriaMet.indexOf(keys[index])) {
                             result = false;
+                        }
                     }
                     return [result];
                 }

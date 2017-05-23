@@ -51,7 +51,7 @@
                 .then(function (data) {
                     vm.correctiveActionPlan = data.plans;
                 }, function (error) {
-                    $log.error (error);
+                    $log.error(error);
                 });
         }
 

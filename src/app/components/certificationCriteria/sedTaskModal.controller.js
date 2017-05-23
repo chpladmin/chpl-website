@@ -37,8 +37,9 @@
                 }
             });
             vm.editModalInstance.result.then(function (result) {
-                if (vm.task.testParticipants === null || angular.isUndefined(vm.task.testParticipants))
+                if (vm.task.testParticipants === null || angular.isUndefined(vm.task.testParticipants)) {
                     vm.task.testParticipants = [];
+                }
                 vm.task.testParticipants.push(result);
             }, function (result) {
                 if (result !== 'cancelled') {

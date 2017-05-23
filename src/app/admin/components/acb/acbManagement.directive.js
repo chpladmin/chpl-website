@@ -56,7 +56,7 @@
 
         function loadData () {
             return commonService.getAcbs()
-                .then (function (data) {
+                .then(function (data) {
                     vm.acbs = data.acbs;
                 });
         }
@@ -123,8 +123,9 @@
         };
 
         vm.addressRequired = function (acb) {
-            if (acb)
+            if (acb) {
                 return commonService.addressRequired(acb.address);
+            }
         };
     }
 })();

@@ -145,12 +145,15 @@
                 },function (error) {
                     vm.errors = [];
                     if (error.data) {
-                        if (error.data.error && error.data.error.length > 0)
+                        if (error.data.error && error.data.error.length > 0) {
                             vm.errors.push(error.data.error);
-                        if (error.data.errorMessages && error.data.errorMessages.length > 0)
+                        }
+                        if (error.data.errorMessages && error.data.errorMessages.length > 0) {
                             vm.errors = vm.errors.concat(error.data.errorMessages);
-                        if (error.data.warningMessages && error.data.warningMessages.length > 0)
+                        }
+                        if (error.data.warningMessages && error.data.warningMessages.length > 0) {
                             vm.errors = vm.errors.concat(error.data.warningMessages);
+                        }
                     }
                     vm.isSaving = false;
                 });

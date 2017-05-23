@@ -118,8 +118,9 @@
 
         function findItemWithValue (collection, value) {
             for (var i = 0; i < collection.length; i++) {
-                if (collection[i].value === value)
+                if (collection[i].value === value) {
                     return true;
+                }
             }
             return false;
         }
