@@ -187,14 +187,6 @@ header {
     position: fixed;
 }
 
-.table-striped-foldout>tbody>tr:nth-of-type(even) {
-    background-color: #fff;
-}
-
-.table-striped-foldout>tbody>tr:nth-of-type(4n+1) {
-    background-color: #dee1ff;
-}
-
 .table-striped>tbody>tr:nth-of-type(odd) {
     background-color: #dee1ff;
 }
@@ -223,18 +215,17 @@ header {
 
 .sort-ascent:after,
 .st-sort-ascent:after {
-    content: "\f0de";
     font-family: "FontAwesome";
     padding: 0 6px;
     font-size: large;
-}
 
-.sort-descent:after,
-.st-sort-descent:after {
-    content: "\f0dd";
-    font-family: "FontAwesome";
-    padding: 0 6px;
-    font-size: large;
+    &:after {
+        content: "\f0de";
+    }
+
+    &:after {
+        content: "\f0dd";
+    }
 }
 
 .btn-ai-grey {
