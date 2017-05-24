@@ -24,11 +24,10 @@
         mock.certs = ['Cert 1', 'Cert 2'];
         mock.cqms = ['CQM 1', 'CQM 2'];
         mock.editions = ['Edition 1', 'Edition 2'];
-        mock.practices  = ['Practice 1', 'Practice 2'];
-        mock.certBodies  = ['CB 1', 'CB 2'];
+        mock.practices = ['Practice 1', 'Practice 2'];
+        mock.certBodies = ['CB 1', 'CB 2'];
 
-
-        beforeEach(inject(function (_commonService_, _$httpBackend_) {
+        beforeEach(inject(function (_$httpBackend_, _commonService_) {
             commonService = _commonService_;
             $httpBackend = _$httpBackend_;
 

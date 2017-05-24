@@ -8,7 +8,7 @@
         beforeEach(function () {
             module('chpl.chpl_api', 'chpl.constants');
 
-            inject(function ($controller, $rootScope, _$log_) {
+            inject(function ($controller, _$log_, $rootScope) {
                 $log = _$log_;
 
                 scope = $rootScope.$new();

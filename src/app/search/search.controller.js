@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
+    function SearchController ($analytics, $filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_TIMEOUT, RELOAD_TIMEOUT, commonService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -132,7 +132,7 @@
             return ret;
         }
 
-        function loadResults() {
+        function loadResults () {
             commonService.getAll().then(function (response) {
                 var results = response.results;
                 for (var i = 0; i < results.length; i++) {

@@ -5,7 +5,7 @@
         .controller('CreateController', CreateController);
 
     /** @ngInject */
-    function CreateController ($log, $routeParams, $location, authService, commonService) {
+    function CreateController ($location, $log, $routeParams, authService, commonService) {
         var vm = this;
 
         vm.authorizeUser = authorizeUser;

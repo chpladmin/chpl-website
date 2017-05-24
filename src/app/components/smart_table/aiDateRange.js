@@ -55,7 +55,7 @@
     }
 
     /** @ngInclude */
-    function AiDateRangeController ($analytics, $filter, $log, $localStorage) {
+    function AiDateRangeController ($analytics, $filter, $localStorage) {
         var vm = this;
 
         vm.activate = activate;

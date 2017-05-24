@@ -5,7 +5,7 @@
         .controller('EditAtlController', EditAtlController);
 
     /** @ngInject */
-    function EditAtlController ($uibModalInstance, atl, action, isChplAdmin, commonService) {
+    function EditAtlController ($uibModalInstance, action, atl, commonService, isChplAdmin) {
         var vm = this;
         vm.atl = angular.copy(atl);
         vm.action = action;

@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($uibModalInstance, $uibModal, $log, inspectingCp, developers, isAcbAdmin, isAcbStaff, isChplAdmin, resources, commonService) {
+    function InspectController ($log, $uibModal, $uibModalInstance, commonService, developers, inspectingCp, isAcbAdmin, isAcbStaff, isChplAdmin, resources) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -75,12 +75,12 @@
             }
         }
 
-        function selectInspectingDeveloper() {
+        function selectInspectingDeveloper () {
             vm.cp.developer.developerId = vm.developerSelect.developerId;
             vm.loadDev();
         }
 
-        function saveInspectingDeveloper() {
+        function saveInspectingDeveloper () {
             var dev = {
                 developer: {
                     name: vm.cp.developer.name,
@@ -119,12 +119,12 @@
             }
         }
 
-        function selectInspectingProduct() {
+        function selectInspectingProduct () {
             vm.cp.product.productId = vm.productSelect.productId;
             vm.loadPrd();
         }
 
-        function saveInspectingProduct() {
+        function saveInspectingProduct () {
             var prd = {
                 product: {
                     name: vm.cp.product.name,
@@ -156,12 +156,12 @@
             }
         }
 
-        function selectInspectingVersion() {
+        function selectInspectingVersion () {
             vm.cp.version.versionId = vm.versionSelect.versionId;
             vm.loadVer();
         }
 
-        function saveInspectingVersion() {
+        function saveInspectingVersion () {
             var ver = {
                 version: {
                     version: vm.cp.version.version,
@@ -262,16 +262,19 @@
         function isDisabled () {
             switch (vm.stage) {
             case 'dev':
-                if (vm.developerChoice === 'choose' && !vm.cp.developer.developerId)
+                if (vm.developerChoice === 'choose' && !vm.cp.developer.developerId) {
                     return true;
+                }
                 return false;
             case 'prd':
-                if (vm.productChoice === 'choose' && !vm.cp.product.productId)
+                if (vm.productChoice === 'choose' && !vm.cp.product.productId) {
                     return true;
+                }
                 return false;
             case 'ver':
-                if (vm.versionChoice === 'choose' && !vm.cp.version.versionId)
+                if (vm.versionChoice === 'choose' && !vm.cp.version.versionId) {
                     return true;
+                }
                 return false;
             default:
                 return true;
@@ -283,7 +286,7 @@
         }
 
         function ternaryFilter (field) {
-            if (field == null) {
+            if (field === null) {
                 return 'N/A';
             } else {
                 return field ? 'True' : 'False';

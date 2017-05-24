@@ -58,7 +58,7 @@
         }
     }
     /** @ngInclude */
-    function SurveillanceFilterController ($analytics, $log, $localStorage) {
+    function SurveillanceFilterController ($analytics, $localStorage) {
         var vm = this;
 
         vm.activate = activate;

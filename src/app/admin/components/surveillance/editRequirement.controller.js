@@ -5,7 +5,7 @@
         .controller('EditRequirementController', EditRequirementController);
 
     /** @ngInject */
-    function EditRequirementController ($uibModal, $uibModalInstance, $log, disableValidation, randomized, requirement, surveillanceId, surveillanceTypes, workType, utilService) {
+    function EditRequirementController ($log, $uibModal, $uibModalInstance, disableValidation, randomized, requirement, surveillanceId, surveillanceTypes, utilService, workType) {
         var vm = this;
 
         vm.addNonconformity = addNonconformity;

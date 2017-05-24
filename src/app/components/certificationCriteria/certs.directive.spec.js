@@ -11,7 +11,7 @@
             module('chpl.templates');
             module('chpl');
 
-            inject(function ($compile, $rootScope, _$log_) {
+            inject(function ($compile, _$log_, $rootScope) {
                 $log = _$log_;
                 el = angular.element('<ai-certs edit-mode="true" certs=\'' + mock.certs + '\' cqms=\'' + mock.certs + '\'></ai-certs');
                 $compile(el)($rootScope.$new());

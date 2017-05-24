@@ -42,7 +42,7 @@
 
         function loadUsers () {
             commonService.getApiUsers()
-                .then (function (result) {
+                .then(function (result) {
                     vm.users = result;
                 }, function (error) {
                     $log.debug('error in app.registration.apiKey.controller.loadUsers', error);

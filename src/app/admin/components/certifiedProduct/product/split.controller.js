@@ -5,7 +5,7 @@
         .controller('SplitProductController', SplitProductController);
 
     /** @ngInject */
-    function SplitProductController ($log, $uibModalInstance, product, versions, commonService) {
+    function SplitProductController ($log, $uibModalInstance, commonService, product, versions) {
         var vm = this;
 
         vm.moveToNew = moveToNew;

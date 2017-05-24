@@ -6,7 +6,7 @@
         .controller('ProductHistoryController', ProductHistoryController);
 
     /** @ngInject */
-    function ProductHistoryController($log, $uibModalInstance, activity) {
+    function ProductHistoryController ($log, $uibModalInstance, activity) {
         var vm = this;
 
         vm.cancel = cancel;

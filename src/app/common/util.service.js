@@ -2,19 +2,20 @@
     'use strict';
 
     angular.module('chpl.common')
-        .service('utilService', utilService);
+        .factory('utilService', utilService);
 
     /** @ngInject */
     function utilService () {
-        var self = this;
-
-        self.arrayCompare = arrayCompare;
-        self.extendSelect = extendSelect;
-        self.sortCert = sortCert;
-        self.sortCqm = sortCqm;
-        self.sortNonconformityTypes = sortNonconformityTypes;
-        self.sortRequirements = sortRequirements;
-        self.statusFont = statusFont;
+        var service = {
+            arrayCompare: arrayCompare,
+            extendSelect: extendSelect,
+            sortCert: sortCert,
+            sortCqm: sortCqm,
+            sortNonconformityTypes: sortNonconformityTypes,
+            sortRequirements: sortRequirements,
+            statusFont: statusFont,
+        }
+        return service;
 
         ////////////////////////////////////////////////////////////////////
 
@@ -121,7 +122,7 @@
             } else if (type.name === 'Other Requirement') {
                 return 0;
             }
-            return self.sortCert(type);
+            return sortCert(type);
         }
 
         function sortRequirements (req) {
