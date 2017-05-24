@@ -171,9 +171,6 @@ header {
 }
 
 #loading-bar .peg {
-    //    -moz-box-shadow: #ffdd3c 1px 0 6px 1px;
-    //    -ms-box-shadow: #ffdd3c 1px 0 6px 1px;
-    //    -webkit-box-shadow: #ffdd3c 1px 0 6px 1px;
     box-shadow: #ffdd3c 1px 0 6px 1px;
 }
 
@@ -241,8 +238,14 @@ header {
 }
 
 .btn-ai-grey {
-    background: #e1e1e1;
+    background: linear-gradient(#e1e1e1, #b2b2b2);
     color: #000;
+
+    &:active,
+    &:hover,
+    &:focus {
+        background: linear-gradient(#c9c9c9, #838383);
+    }
 }
 
 .btn-ai-grey.btn-sm {
@@ -255,18 +258,12 @@ header {
 
 .ai-panel>.panel-heading {
     color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+    background: linear-gradient(#0070c9, #004378);
 }
 
 .ai-gradient {
     color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+    background: linear-gradient(#0070c9, #004378);
 }
 
 .navbar-inverse .navbar-nav>.active>a,
@@ -292,10 +289,7 @@ header {
 
 .panel-ai > .panel-heading {
     color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+    background: linear-gradient(#0070c9, #004378);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     border-color: #337ab7;
@@ -316,10 +310,7 @@ header {
 
 .panel-ai > .panel-heading .badge {
     color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+    background: linear-gradient(#0070c9, #004378);
 }
 
 .panel-ai > .panel-footer + .panel-collapse > .panel-body {
@@ -328,83 +319,45 @@ header {
 
 .btn-ai {
     color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0070c9, #004378); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0070c9, #004378); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0070c9, #004378); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0070c9, #004378); /* Standard syntax */
+    background: linear-gradient(#0070c9, #004378);
+
+    &:focus,
+    &.focus,
+    &:hover {
+        color: #fff;
+        background: linear-gradient(#0057b0, #001045);
+    }
+
+    &:active,
+    &.active {
+        color: #fff;
+        background: linear-gradient(#0057b0, #001045);
+
+        &:hover,
+        &:focus {
+            border: red;
+        }
+    }
+
+    &.disabled,
+    &[disabled] {
+        background-color: #fff;
+        border-color: #ccc;
+
+        &:hover,
+        &:focus,
+        &.focus,
+        &:active {
+            background-color: #fff;
+            border-color: #ccc;
+        }
+    }
 }
 
-.btn-ai:focus,
-.btn-ai.focus {
-    color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0057b0, #001045); /* Standard syntax */
-}
-
-.btn-ai:hover {
-    color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0057b0, #001045); /* Standard syntax */
-}
-
-.btn-ai:active,
-.btn-ai.active,
 .open > .dropdown-toggle.btn-ai {
     color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0057b0, #001045); /* Standard syntax */
+    background: linear-gradient(#0057b0, #001045);
     border: red;
-}
-
-.btn-ai:active:hover,
-.btn-ai.active:hover,
-.open > .dropdown-toggle.btn-ai:hover,
-.btn-ai:active:focus,
-.btn-ai.active:focus,
-.open > .dropdown-toggle.btn-ai:focus,
-.btn-ai:active.focus,
-.btn-ai.active.focus,
-.open > .dropdown-toggle.btn-ai.focus {
-    color: #f5d43c;
-    //    background: -webkit-linear-gradient(#0057b0, #001045); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#0057b0, #001045); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#0057b0, #001045); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#0057b0, #001045); /* Standard syntax */
-    border: red;
-}
-
-.btn-ai:active,
-.btn-ai.active,
-.open > .dropdown-toggle.btn-ai {
-    /*background-image: none;*/
-}
-
-.btn-ai.disabled,
-.btn-ai[disabled],
-fieldset[disabled] .btn-ai,
-.btn-ai.disabled:hover,
-.btn-ai[disabled]:hover,
-fieldset[disabled] .btn-ai:hover,
-.btn-ai.disabled:focus,
-.btn-ai[disabled]:focus,
-fieldset[disabled] .btn-ai:focus,
-.btn-ai.disabled.focus,
-.btn-ai[disabled].focus,
-fieldset[disabled] .btn-ai.focus,
-.btn-ai.disabled:active,
-.btn-ai[disabled]:active,
-fieldset[disabled] .btn-ai:active,
-.btn-ai.disabled.active,
-.btn-ai[disabled].active,
-fieldset[disabled] .btn-ai.active {
-    background-color: #fff;
-    border-color: #ccc;
 }
 
 .btn-ai .badge {
@@ -414,95 +367,71 @@ fieldset[disabled] .btn-ai.active {
 
 .btn-ai-success {
     color: #fff;
-    //    background: -webkit-linear-gradient(#008b00, #006800); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#008b00, #006800); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#008b00, #006800); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#008b00, #006800); /* Standard syntax */
+    background: linear-gradient(#008b00, #006800);
+
+    &:focus,
+    &.focus,
+    &:hover {
+        color: #fff;
+        background: #004800;
+    }
+
+    &:active {
+        color: #fff;
+        background: #004800;
+        background-image: none;
+    }
+
+    &.disabled,
+    &[disabled] {
+        background-color: #344834;
+        border-color: #ccc;
+        opacity: 1;
+        text-decoration: line-through;
+
+        &:hover,
+        &:focus,
+        &.focus,
+        &:active {
+            background-color: #344834;
+            border-color: #ccc;
+            opacity: 1;
+            text-decoration: line-through;
+        }
+    }
+
+    .badge {
+        color: #fff;
+        background-color: #333;
+    }
 }
 
-.btn-ai-success:focus,
-.btn-ai-success.focus,
-.btn-ai-success:hover,
-.btn-ai-success:active {
-    color: #fff;
-    background: #004800;
-}
-
-.btn-ai-success:active:hover,
-.btn-ai-success.active:hover,
-.open > .dropdown-toggle.btn-ai-success:hover,
-.btn-ai-success:active:focus,
-.btn-ai-success.active:focus,
-.open > .dropdown-toggle.btn-ai-success:focus,
-.btn-ai-success:active.focus,
-.btn-ai-success.active.focus,
-.open > .dropdown-toggle.btn-ai-success.focus {
-    color: #fff;
-    background: #004800;
-}
-
-.btn-ai-success:active,
-.btn-ai-success.active,
 .open > .dropdown-toggle.btn-ai-success {
     background-image: none;
 }
 
-.btn-ai-success.disabled,
-.btn-ai-success[disabled],
-fieldset[disabled] .btn-ai-success,
-.btn-ai-success.disabled:hover,
-.btn-ai-success[disabled]:hover,
-fieldset[disabled] .btn-ai-success:hover,
-.btn-ai-success.disabled:focus,
-.btn-ai-success[disabled]:focus,
-fieldset[disabled] .btn-ai-success:focus,
-.btn-ai-success.disabled.focus,
-.btn-ai-success[disabled].focus,
-fieldset[disabled] .btn-ai-success.focus,
-.btn-ai-success.disabled:active,
-.btn-ai-success[disabled]:active,
-fieldset[disabled] .btn-ai-success:active,
-.btn-ai-success.disabled.active,
-.btn-ai-success[disabled].active,
-fieldset[disabled] .btn-ai-success.active {
-    background-color: #344834;
-    border-color: #ccc;
-    opacity: 1;
-    text-decoration: line-through;
-}
-
-.btn-ai-success .badge {
-    color: #fff;
-    background-color: #333;
-}
-
 .btn-ai-certid {
     color: #000;
-    //    background: -webkit-linear-gradient(#f5d43c, #c0a000); /* For Safari 5.1 to 6.0 */
-    //    background: -o-linear-gradient(#f5d43c, #c0a000); /* For Opera 11.1 to 12.0 */
-    //    background: -moz-linear-gradient(#f5d43c, #c0a000); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#f5d43c, #c0a000);  /* Standard syntax */
+    background: linear-gradient(#f5d43c, #c0a000);
+
+    &:focus,
+    &.focus,
+    &:hover,
+    &:active {
+        background: #f5d43c;
+    }
 }
 
 .btn-ai-certid-toggleon {
     color: #000;
     background: #f5d43c;
-}
 
-.btn-ai-certid-toggleon:focus,
-.btn-ai-certid-toggleon.focus,
-.btn-ai-certid-toggleon:hover,
-.btn-ai-certid-toggleon:active {
-    color: #000;
-    background: #ffe25e !important;
-}
-
-.btn-ai-certid:focus,
-.btn-ai-certid.focus,
-.btn-ai-certid:hover,
-.btn-ai-certid:active {
-    color: #000;
-    background: #f5d43c;
+    &:focus,
+    &.focus,
+    &:hover,
+    &:active {
+        background: #ffe25e !important;
+    }
 }
 
 .cert-id-lookup-error li {
@@ -516,9 +445,6 @@ fieldset[disabled] .btn-ai-success.active {
 
 .panel-widget-certid > .panel-heading {
     color: #000;
-    //    background: -webkit-linear-gradient(#f5d43c, #c0a000);
-    //    background: -o-linear-gradient(#f5d43c, #c0a000);
-    //    background: -moz-linear-gradient(#f5d43c, #c0a000);
     background: linear-gradient(#f5d43c, #c0a000);
 }
 
