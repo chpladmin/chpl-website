@@ -9,6 +9,14 @@ _Date TBD_
 
 ---
 
+## Version 8.4.1
+_24 May 2017_
+
+### Bug fix
+* Allow navigation to last elements of Admin section
+
+---
+
 ## Version 8.4.0
 _22 May 2017_
 
