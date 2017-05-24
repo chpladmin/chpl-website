@@ -36,7 +36,7 @@
     }
 
     /** @ngInject */
-    function NavigationController (authService, commonService, $location, $log, $scope, $rootScope, $localStorage) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, commonService) {
         var vm = this;
 
         vm.clear = clear;

@@ -14,7 +14,7 @@
             module('chpl')
         });
 
-        beforeEach(inject(function (_$compile_, $rootScope, _$log_) {
+        beforeEach(inject(function (_$compile_, _$log_, $rootScope) {
             $compile = _$compile_;
             $log = _$log_;
             scope = $rootScope.$new();

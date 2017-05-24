@@ -22,7 +22,7 @@
     }
 
     /** @ngInject */
-    function AcbManagementController (commonService, authService, $log, $uibModal) {
+    function AcbManagementController ($log, $uibModal, authService, commonService) {
         var vm = this;
 
         vm.doWork = doWork;

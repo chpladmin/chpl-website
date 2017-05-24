@@ -27,7 +27,7 @@
         });
 
     /** @ngInject */
-    function ReportController ($log, $filter, $uibModal, commonService, utilService, authService) {
+    function ReportController ($filter, $log, $uibModal, authService, commonService, utilService) {
         var vm = this;
 
         vm.clearApiKeyFilter = clearApiKeyFilter;

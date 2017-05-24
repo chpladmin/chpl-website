@@ -156,7 +156,7 @@
     }
 
     /** @ngInclude */
-    function ListMultipleController ($analytics, $log, $localStorage) {
+    function ListMultipleController ($analytics, $localStorage) {
         var vm = this;
 
         vm.activate = activate;

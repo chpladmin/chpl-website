@@ -5,7 +5,7 @@
         .controller('EditNonconformityController', EditNonconformityController);
 
     /** @ngInject */
-    function EditNonconformityController ($uibModalInstance, $log, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, workType, commonService, utilService, authService, FileUploader, API) {
+    function EditNonconformityController ($log, $uibModalInstance, API, FileUploader, authService, commonService, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, utilService, workType) {
         var vm = this;
 
         vm.cancel = cancel;

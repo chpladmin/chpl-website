@@ -5,7 +5,7 @@
         .controller('NonconformitiesController', NonconformitiesController);
 
     /** @ngInject */
-    function NonconformitiesController ($filter, $localStorage, $log, $rootScope, $scope, $timeout, cfpLoadingBar, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
+    function NonconformitiesController ($filter, $localStorage, $log, $rootScope, $scope, $timeout, CACHE_TIMEOUT, RELOAD_TIMEOUT, cfpLoadingBar, commonService) {
         var vm = this;
 
         vm.hasResults = hasResults;

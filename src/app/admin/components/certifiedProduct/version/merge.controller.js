@@ -5,7 +5,7 @@
         .controller('MergeVersionController', MergeVersionController);
 
     /** @ngInject */
-    function MergeVersionController ($uibModalInstance, versions, productId, commonService) {
+    function MergeVersionController ($uibModalInstance, commonService, productId, versions) {
         var vm = this;
 
         vm.save = save;

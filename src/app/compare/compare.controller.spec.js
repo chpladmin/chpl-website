@@ -35,7 +35,7 @@
             });
         });
 
-        beforeEach(inject(function (_$log_, $rootScope, $controller, _commonService_, _utilService_) {
+        beforeEach(inject(function ($controller, _$log_, $rootScope, _commonService_, _utilService_) {
             $log = _$log_;
             scope = $rootScope.$new();
             commonService = _commonService_;

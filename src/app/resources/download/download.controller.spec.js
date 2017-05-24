@@ -21,7 +21,7 @@
                 });
             });
 
-            inject(function ($controller, $rootScope, _$log_, _authService_) {
+            inject(function ($controller, _$log_, $rootScope, _authService_) {
                 $log = _$log_;
                 authService = _authService_;
                 authService.getApiKey.and.returnValue(mock.API_KEY);

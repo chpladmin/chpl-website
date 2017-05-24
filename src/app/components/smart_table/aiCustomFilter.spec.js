@@ -8,7 +8,7 @@
         beforeEach(function () {
             module('chpl.common', 'chpl.mock');
 
-            inject(function (_customFilterFilter_, _$log_, _Mock_) {
+            inject(function (_$log_, _Mock_, _customFilterFilter_) {
                 aiCustomFilter = _customFilterFilter_;
                 $log = _$log_;
                 Mock = _Mock_;

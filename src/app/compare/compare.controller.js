@@ -5,7 +5,7 @@
         .controller('CompareController', CompareController);
 
     /** @ngInject */
-    function CompareController ($scope, $log, $routeParams, $filter, commonService, utilService) {
+    function CompareController ($filter, $log, $routeParams, commonService, utilService) {
         var vm = this;
 
         vm.fillInBlanks = fillInBlanks;

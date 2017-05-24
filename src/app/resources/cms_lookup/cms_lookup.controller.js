@@ -5,7 +5,7 @@
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
-    function CmsLookupController ($log, $localStorage, commonService) {
+    function CmsLookupController ($localStorage, $log, commonService) {
         var vm = this;
 
         vm.lookupCertIds = lookupCertIds;

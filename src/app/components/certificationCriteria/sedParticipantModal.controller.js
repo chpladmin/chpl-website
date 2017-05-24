@@ -5,7 +5,7 @@
         .controller('EditSedParticipantController', EditSedParticipantController);
 
     /** @ngInject */
-    function EditSedParticipantController ($uibModalInstance, participant, commonService) {
+    function EditSedParticipantController ($uibModalInstance, commonService, participant) {
         var vm = this;
 
         vm.participant = participant.participant;

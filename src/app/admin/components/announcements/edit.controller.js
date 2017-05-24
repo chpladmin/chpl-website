@@ -5,7 +5,7 @@
         .controller('AnnouncementEditController', AnnouncementEditController);
 
     /** @ngInject */
-    function AnnouncementEditController ($uibModalInstance, authService, announcement, action, commonService) {
+    function AnnouncementEditController ($uibModalInstance, action, announcement, authService, commonService) {
         var vm = this;
         vm.announcement = angular.copy(announcement);
         vm.action = action;

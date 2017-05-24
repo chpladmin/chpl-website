@@ -1,6 +1,11 @@
 {
-    "extends": ["eslint:recommended",
-                "plugin:angular/johnpapa"],
+    "plugins": [
+        "angular"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:angular/johnpapa"
+    ],
     "env": {
         "browser": true,
         "jasmine": true
@@ -21,6 +26,7 @@
         "no-tabs": ["error"],
         "no-trailing-spaces": ["error"],
         "space-before-function-paren": ["error"],
+        "angular/di-order": ["error"],
         "angular/file-name": ["off"],
         "angular/function-type": ["off"]
     }

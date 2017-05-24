@@ -5,7 +5,7 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($uibModalInstance, $uibModal, $log, cert, resources, utilService, hasIcs) {
+    function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, cert, hasIcs, resources, utilService) {
         var vm = this;
 
         vm.cert = cert;

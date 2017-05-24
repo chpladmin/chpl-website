@@ -22,7 +22,7 @@
     }
 
     /** @ngInject */
-    function AtlManagementController (commonService, authService, $log, $uibModal) {
+    function AtlManagementController ($log, $uibModal, authService, commonService) {
         var vm = this;
 
         vm.doWork = doWork;

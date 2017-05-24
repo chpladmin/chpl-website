@@ -18,7 +18,7 @@
         });
 
     /** @ngInject */
-    function AnnouncementsController ($log, commonService, authService, $uibModal) {
+    function AnnouncementsController ($log, $uibModal, authService, commonService) {
         var vm = this;
 
         vm.loadAnnouncements = loadAnnouncements;

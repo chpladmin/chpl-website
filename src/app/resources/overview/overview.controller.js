@@ -6,7 +6,7 @@
         .controller('OverviewController', OverviewController);
 
     /** @ngInject */
-    function OverviewController ($log, $anchorScroll, $location, commonService) {
+    function OverviewController ($anchorScroll, $location, $log, commonService) {
         var vm = this;
 
         vm.loadAcbs = loadAcbs;

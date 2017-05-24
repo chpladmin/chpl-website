@@ -5,7 +5,7 @@
         .controller('ProductController', ProductController);
 
     /** @ngInclude */
-    function ProductController ($localStorage, $log, $routeParams, $uibModal, commonService, authService) {
+    function ProductController ($localStorage, $log, $routeParams, $uibModal, authService, commonService) {
         var vm = this;
 
         vm.loadProduct = loadProduct;

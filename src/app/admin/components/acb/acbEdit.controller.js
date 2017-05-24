@@ -5,7 +5,7 @@
         .controller('EditAcbController', EditAcbController);
 
     /** @ngInject */
-    function EditAcbController ($uibModalInstance, acb, action, isChplAdmin, commonService) {
+    function EditAcbController ($uibModalInstance, acb, action, commonService, isChplAdmin) {
         var vm = this;
         vm.acb = angular.copy(acb);
         vm.action = action;

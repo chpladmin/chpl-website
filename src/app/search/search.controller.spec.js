@@ -80,7 +80,7 @@
                 });
             });
 
-            inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_, _Mock_, _$uibModal_) {
+            inject(function ($controller, _$location_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 $location = _$location_;

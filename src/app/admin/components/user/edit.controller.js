@@ -5,7 +5,7 @@
         .controller('EditUserController', EditUserController);
 
     /** @ngInject */
-    function EditUserController ($uibModalInstance, user, action, acbId, atlId, commonService) {
+    function EditUserController ($uibModalInstance, acbId, action, atlId, commonService, user) {
         var vm = this;
 
         vm.cancel = cancel;

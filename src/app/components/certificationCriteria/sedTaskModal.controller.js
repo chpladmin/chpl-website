@@ -5,7 +5,7 @@
         .controller('EditSedTaskController', EditSedTaskController);
 
     /** @ngInject */
-    function EditSedTaskController ($uibModalInstance, $uibModal, $log, task) {
+    function EditSedTaskController ($log, $uibModal, $uibModalInstance, task) {
         var vm = this;
 
         vm.task = task.task;

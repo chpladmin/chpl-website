@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($uibModalInstance, $uibModal, $log, inspectingCp, developers, isAcbAdmin, isAcbStaff, isChplAdmin, resources, commonService) {
+    function InspectController ($log, $uibModal, $uibModalInstance, commonService, developers, inspectingCp, isAcbAdmin, isAcbStaff, isChplAdmin, resources) {
         var vm = this;
 
         vm.loadDev = loadDev;

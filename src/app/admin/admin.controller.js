@@ -5,7 +5,7 @@
         .controller('AdminController', AdminController);
 
     /** @ngInclude */
-    function AdminController ($log, $filter, $routeParams, $location, authService, commonService) {
+    function AdminController ($filter, $location, $log, $routeParams, authService, commonService) {
         var vm = this;
 
         vm.changeAcb = changeAcb

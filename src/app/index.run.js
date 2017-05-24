@@ -1,7 +1,4 @@
-/*
-  eslint angular/no-private-call: [2,{"allow":["$$route"]}]
-  eslint angular/no-run-logic: [0]
-*/
+/* eslint-disable angular/no-private-call, angular/no-run-logic */
 (function () {
     'use strict';
 
