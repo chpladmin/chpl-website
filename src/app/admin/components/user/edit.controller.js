@@ -5,7 +5,7 @@
         .controller('EditUserController', EditUserController);
 
     /** @ngInject */
-    function EditUserController ($uibModalInstance, user, action, acbId, atlId, commonService) {
+    function EditUserController ($uibModalInstance, acbId, action, atlId, commonService, user) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -28,7 +28,6 @@
             vm.loadRoles();
         }
 
-
         function cancel () {
             $uibModalInstance.dismiss('cancelled');
         }
@@ -36,8 +35,10 @@
         function deleteUser () {
             var userObject;
             if (vm.acbId) {
-                userObject = {acbId: vm.acbId,
-                              userId: vm.user.user.userId};
+                userObject = {
+                    acbId: vm.acbId,
+                    userId: vm.user.user.userId
+                };
                 commonService.removeUserFromAcb(userObject.userId, userObject.acbId)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
@@ -49,8 +50,10 @@
                         errorMessage(error.data.error);
                     });
             } else if (vm.atlId) {
-                userObject = {atlId: vm.atlId,
-                              userId: vm.user.user.userId};
+                userObject = {
+                    atlId: vm.atlId,
+                    userId: vm.user.user.userId
+                };
                 commonService.removeUserFromAtl(userObject.userId, userObject.atlId)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
@@ -114,8 +117,9 @@
         }
 
         function save () {
-            if (!vm.user.roles)
+            if (!vm.user.roles) {
                 vm.user.roles = [];
+            }
 
             var roleObject = {subjectName: vm.user.user.subjectName};
             for (var i = 0; i < vm.roles.length; i++) {

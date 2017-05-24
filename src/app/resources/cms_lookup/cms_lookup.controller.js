@@ -5,10 +5,10 @@
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
-    function CmsLookupController ($log, $localStorage, commonService) {
+    function CmsLookupController ($localStorage, $log, commonService) {
         var vm = this;
 
-		vm.lookupCertIds = lookupCertIds;
+        vm.lookupCertIds = lookupCertIds;
 
         activate();
 
@@ -68,8 +68,9 @@
                                 commonService.lookupCertificationId(id)
                                     .then(function (data) {
 
-                                        if (vm.lookupProducts === null)
+                                        if (vm.lookupProducts === null) {
                                             vm.lookupProducts = [];
+                                        }
 
                                         // If the ID was found, then I have data...
                                         if (data.products.length > 0) {
@@ -106,13 +107,13 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function clearLookup() {
+        function clearLookup () {
             delete $localStorage.lookupCertIds;
             vm.certIds = null;
             clearLookupResults();
         }
 
-        function clearLookupResults() {
+        function clearLookupResults () {
             delete $localStorage.lookupProducts;
             delete $localStorage.lookupProductsFormatInvalidIds
             delete $localStorage.lookupProductsCertIdNotFound;

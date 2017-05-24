@@ -47,7 +47,7 @@
                 });
             });
 
-            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;

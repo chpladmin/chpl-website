@@ -24,7 +24,7 @@
                 });
             });
 
-            inject(function ($controller, $rootScope, _$log_, _$localStorage_, _$q_, _commonService_) {
+            inject(function ($controller, _$localStorage_, _$log_, _$q_, $rootScope, _commonService_) {
                 $log = _$log_;
                 $localStorage = _$localStorage_;
                 $localStorage.lookupCertIds = null;

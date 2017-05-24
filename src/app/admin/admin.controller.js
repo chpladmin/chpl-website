@@ -5,7 +5,7 @@
         .controller('AdminController', AdminController);
 
     /** @ngInclude */
-    function AdminController ($log, $filter, $routeParams, $location, authService, commonService) {
+    function AdminController ($filter, $location, $log, $routeParams, authService, commonService) {
         var vm = this;
 
         vm.changeAcb = changeAcb
@@ -59,7 +59,7 @@
                 if ($routeParams.subSection) {
                     vm.navState[vm.navState.screen] = $routeParams.subSection;
                 }
-                if ($routeParams.productId)  {
+                if ($routeParams.productId) {
                     vm.navState.reports = '';
                     vm.productId = $routeParams.productId;
                 }
@@ -67,13 +67,13 @@
 
             // load editable acbs & atls
             commonService.getAcbs(true, vm.isChplAdmin())
-                .then (function (data) {
+                .then(function (data) {
                     vm.acbs = $filter('orderBy')(data.acbs,'name');
                     vm.activeAcb = vm.acbs[0];
                     vm.navState.acbManagement = vm.activeAcb;
                 });
             commonService.getAtls(true, vm.isChplAdmin())
-                .then (function (data) {
+                .then(function (data) {
                     vm.atls = $filter('orderBy')(data.atls,'name');
                     vm.activeAtl = vm.atls[0];
                     vm.navState.atlManagement = vm.activeAtl;
@@ -96,7 +96,7 @@
             vm.clearProductId();
             if (screen === 'acbManagement') {
                 commonService.getAcbs(true, vm.isChplAdmin())
-                    .then (function (data) {
+                    .then(function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
                         vm.navState.acbManagement = vm.activeAcb;
@@ -104,7 +104,7 @@
             }
             if (screen === 'atlManagement') {
                 commonService.getAtls(true, vm.isChplAdmin())
-                    .then (function (data) {
+                    .then(function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];
                         vm.navState.atlManagement = vm.activeAtl;
@@ -120,7 +120,7 @@
 
         function clearProductId () {
             var path = $location.path();
-            if ($routeParams.productId)  {
+            if ($routeParams.productId) {
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
@@ -129,7 +129,7 @@
 
         function clearSubsection () {
             var path = $location.path();
-            if ($routeParams.productId)  {
+            if ($routeParams.productId) {
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
@@ -159,7 +159,7 @@
             return authService.isCmsStaff();
         }
 
-        function isOncStaff() {
+        function isOncStaff () {
             return authService.isOncStaff();
         }
 

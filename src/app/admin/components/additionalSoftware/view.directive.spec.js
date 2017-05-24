@@ -20,7 +20,7 @@
         beforeEach(function () {
             module('chpl.mock', 'chpl.templates','chpl.admin');
 
-            inject(function ($compile, $rootScope, _$log_, _Mock_, _$uibModal_) {
+            inject(function ($compile, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $log = _$log_;
                 Mock = _Mock_;
                 $uibModal = _$uibModal_;

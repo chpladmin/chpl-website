@@ -8,6 +8,14 @@ _Date TBD_
   * Added "Collections"/"Shortcuts"
   * Consolidated top nav
 
+### New features
+* Allow Closed CAP with open Nonconformity
+
+---
+
+## Version 8.4.0
+_22 May 2017_
+
 ### New Features
 * Updated Pending Listing workflow
   * Allow mass reject
@@ -24,7 +32,7 @@ _Date TBD_
 * Added description to Nonconformities page
 * Added note about 2011 Decertified Products
 
-=======
+---
 
 ## Version 8.3.0
 _8 May 2017_

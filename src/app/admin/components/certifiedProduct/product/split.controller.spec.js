@@ -12,7 +12,7 @@
                 });
             });
 
-            inject(function ($controller, $rootScope, _$log_, _$q_, _commonService_, _Mock_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;

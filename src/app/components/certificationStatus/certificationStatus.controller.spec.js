@@ -17,7 +17,7 @@
                     return $delegate;
                 });
             });
-            inject(function ($controller, $rootScope, _$log_, _utilService_) {
+            inject(function ($controller, _$log_, $rootScope, _utilService_) {
                 $log = _$log_;
                 utilService = _utilService_;
                 utilService.statusFont.and.returnValue('font');

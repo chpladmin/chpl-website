@@ -27,7 +27,7 @@
         vm.saveProducts = saveProducts;
         vm.toggleProduct = toggleProduct;
 
-        activate ();
+        activate();
 
         ////////////////////////////////////////////////////////////////////
 

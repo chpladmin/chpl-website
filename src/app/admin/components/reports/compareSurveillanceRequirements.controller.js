@@ -5,7 +5,7 @@
         .controller('CompareSurveillanceRequirementsController', CompareSurveillanceRequirementsController);
 
     /** @ngInject */
-    function CompareSurveillanceRequirementsController ($uibModalInstance, oldSurveillance, newSurveillance) {
+    function CompareSurveillanceRequirementsController ($uibModalInstance, newSurveillance, oldSurveillance) {
         var vm = this;
 
         vm.cancel = cancel;

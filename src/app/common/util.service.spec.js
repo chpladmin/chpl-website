@@ -22,7 +22,7 @@
             secondValue: 'a second value'
         };
 
-        beforeEach(inject(function (_utilService_, _$log_) {
+        beforeEach(inject(function (_$log_, _utilService_) {
             $log = _$log_;
             util = _utilService_;
         }));

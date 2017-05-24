@@ -5,7 +5,7 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($uibModalInstance, $uibModal, $log, cert, resources, utilService, hasIcs) {
+    function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, cert, hasIcs, resources, utilService) {
         var vm = this;
 
         vm.cert = cert;
@@ -29,7 +29,7 @@
                           {name: 'N/A', value: null}];
             vm.allMeasures = [{abbreviation: 'MD'},
                            {abbreviation: 'LP'}];
-            vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length  > 0;
+            vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0;
             vm.hasIcs = hasIcs;
             vm.resources = resources;
         }
@@ -57,8 +57,9 @@
                 }
             });
             vm.editUibModalInstance.result.then(function (result) {
-                if (vm.cert.testTasks === null)
+                if (vm.cert.testTasks === null) {
                     vm.cert.testTasks = [];
+                }
                 vm.cert.testTasks.push(result);
             }, function (result) {
                 if (result !== 'cancelled') {

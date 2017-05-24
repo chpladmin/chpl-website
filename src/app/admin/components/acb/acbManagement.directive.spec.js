@@ -28,7 +28,7 @@
             });
         });
 
-        beforeEach(inject(function ($compile, $rootScope, _$log_) {
+        beforeEach(inject(function ($compile, _$log_, $rootScope) {
             $log = _$log_;
             scope = $rootScope.$new();
 

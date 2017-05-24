@@ -12,7 +12,7 @@
 
         beforeEach(function () {
             module('chpl.product','chpl.mocks');
-            inject(function ($controller, $rootScope, _$log_, product_activity) {
+            inject(function ($controller, _$log_, $rootScope, product_activity) {
                 $log = _$log_;
                 mock.activity = product_activity();
 

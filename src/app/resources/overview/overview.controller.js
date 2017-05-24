@@ -6,7 +6,7 @@
         .controller('OverviewController', OverviewController);
 
     /** @ngInject */
-    function OverviewController($log, $anchorScroll, $location, commonService) {
+    function OverviewController ($anchorScroll, $location, $log, commonService) {
         var vm = this;
 
         vm.loadAcbs = loadAcbs;
@@ -26,7 +26,7 @@
 
         function loadAnnouncements () {
             commonService.getAnnouncements(false)
-                .then (function (result) {
+                .then(function (result) {
                     vm.announcements = result.announcements;
                 }, function (error) {
                     $log.error('error in app.overview.controller.loadAnnouncements', error);
@@ -35,7 +35,7 @@
 
         function loadAcbs () {
             commonService.getAcbs(false)
-                .then (function (result) {
+                .then(function (result) {
                     vm.acbs = result.acbs;
                 }, function (error) {
                     $log.error('error in app.overview.controller.loadAcbs', error);

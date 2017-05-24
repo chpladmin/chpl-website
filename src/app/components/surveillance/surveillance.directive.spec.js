@@ -13,7 +13,7 @@
                 });
             });
 
-            inject(function ($compile, $rootScope, _$q_, _$log_, _commonService_) {
+            inject(function ($compile, _$log_, _$q_, $rootScope, _commonService_) {
                 $q = _$q_;
                 $log = _$log_;
                 commonService = _commonService_;

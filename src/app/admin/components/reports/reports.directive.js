@@ -8,8 +8,10 @@
                 restrict: 'E',
                 replace: true,
                 templateUrl: 'app/admin/components/reports/reports.html',
-                bindToController: { workType: '=',
-                                    productId: '='},
+                bindToController: {
+                    workType: '=',
+                    productId: '='
+                },
                 scope: {triggerRefresh: '&'},
                 controllerAs: 'vm',
                 controller: 'ReportController',
@@ -25,7 +27,7 @@
         });
 
     /** @ngInject */
-    function ReportController($log, $filter, $uibModal, commonService, utilService, authService) {
+    function ReportController ($filter, $log, $uibModal, authService, commonService, utilService) {
         var vm = this;
 
         vm.clearApiKeyFilter = clearApiKeyFilter;
@@ -279,7 +281,7 @@
 
         function loadApiKeys () {
             commonService.getApiUsers()
-                .then (function (result) {
+                .then(function (result) {
                     vm.apiKeys = result;
                 }, function (error) {
                     $log.debug('error in app.admin.report.controller.loadApiKeys', error);
@@ -408,17 +410,18 @@
                     }
                     for (j = 0; j < simpleCpFields.length; j++) {
                         change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
-                        if (change) activity.details.push(change);
+                        if (change) { activity.details.push(change); }
                     }
                     for (j = 0; j < nestedKeys.length; j++) {
                         change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                        if (change)
+                        if (change) {
                             if (nestedKeys[j].questionable && questionable) {
                                 activity.questionable = true;
                                 activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
                             } else {
                                 activity.details.push(change);
                             }
+                        }
                     }
                     var accessibilityStandardsKeys = [];
                     var accessibilityStandards = compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
@@ -481,7 +484,7 @@
                         activity.details = [];
                         for (j = 0; j < capFields.length; j++) {
                             change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
-                            if (change) activity.details.push(change);
+                            if (change) { activity.details.push(change); }
                         }
                         certChanges = compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
                         for (j = 0; j < certChanges.length; j++) {
@@ -534,7 +537,7 @@
                             ];
                             for (k = 0; k < simpleFields.length; k++) {
                                 change = compareItem(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
-                                if (change) actions.push(change);
+                                if (change) { actions.push(change); }
                             }
                             for (k = 0; k < nestedKeys.length; k++) {
                                 change = nestedCompare(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], nestedKeys[k].key, nestedKeys[k].subkey, nestedKeys[k].display, nestedKeys[k].filter);
@@ -614,13 +617,14 @@
                 var obj = { number: curr[i].number, changes: [] };
                 for (j = 0; j < certKeys.length; j++) {
                     change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
-                    if (change)
+                    if (change) {
                         if (certKeys[j].questionable && questionable) {
                             obj.questionable = true;
                             obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
                         } else {
                             obj.changes.push('<li>' + change + '</li>');
                         }
+                    }
                 }
                 var measures = utilService.arrayCompare(prev[i].g1MacraMeasures,curr[i].g1MacraMeasures);
                 if (measures.added.length > 0) {
@@ -696,8 +700,9 @@
                 for (j = 0; j < testTasks.length; j++) {
                     obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
                 }
-                if (obj.changes.length > 0)
+                if (obj.changes.length > 0) {
                     ret.push(obj);
+                }
             }
             return ret;
         }
@@ -722,8 +727,9 @@
                         obj.changes.push('<li>' + change + '</li>');
                     }
                 }
-                if (obj.changes.length > 0)
+                if (obj.changes.length > 0) {
                     ret.push(obj);
+                }
             }
             return ret;
         }
@@ -752,7 +758,7 @@
                             var obj = { name: curr[j].description, changes: [] };
                             for (k = 0; k < keys.length; k++) {
                                 change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display, keys[k].filter);
-                                if (change) obj.changes.push('<li>' + change + '</li>');
+                                if (change) { obj.changes.push('<li>' + change + '</li>'); }
                             }
                             var testParticipantKeys = [
                                 {key: 'ageRange', display: 'Age'},
@@ -768,8 +774,9 @@
                             for (k = 0; k < testParticipants.length; k++) {
                                 obj.changes.push('<li>Test Participant "' + testParticipants[k].name + '" changes<ul>' + testParticipants[k].changes.join('') + '</ul></li>');
                             }
-                            if (obj.changes.length > 0)
+                            if (obj.changes.length > 0) {
                                 ret.push(obj);
+                            }
                             prev[i].evaluated = true;
                             curr[j].evaluated = true;
                         }
@@ -796,26 +803,30 @@
             for (i = 0; i < prev.length; i++) {
                 var obj = { cmsId: curr[i].cmsId, changes: [] };
                 change = compareItem(prev[i], curr[i], 'success', 'Success');
-                if (change)
+                if (change) {
                     if (questionable) {
                         obj.questionable = true;
                         obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
                     } else {
                         obj.changes.push('<li>' + change + '</li>');
                     }
+                }
                 for (j = 0; j < prev[i].allVersions.length; j++) {
-                    if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) < 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0)
+                    if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) < 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0) {
                         obj.changes.push('<li>' + prev[i].allVersions[j] + ' added</li>');
-                    if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) < 0)
+                    }
+                    if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) < 0) {
                         obj.changes.push('<li>' + prev[i].allVersions[j] + ' removed</li>');
+                    }
                 }
                 var criteriaKeys = [];
                 var criteria = compareArray(prev[i].criteria, curr[i].criteria, criteriaKeys, 'certificationNumber');
                 for (j = 0; j < criteria.length; j++) {
                     obj.changes.push('<li>Certification Criteria "' + criteria[j].name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
                 }
-                if (obj.changes.length > 0)
+                if (obj.changes.length > 0) {
                     ret.push(obj);
+                }
             }
             return ret;
         }
@@ -856,12 +867,15 @@
                     activity.details = [];
                     for (j = 0; j < simpleFields.length; j++) {
                         change = compareItem(data[i].originalData, data[i].newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
-                        if (change) activity.details.push(change);
+                        if (change) {
+                            activity.details.push(change);
+                        }
                     }
                     for (j = 0; j < nestedKeys.length; j++) {
                         change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
-                        if (change)
+                        if (change) {
                             activity.details.push(change);
+                        }
                     }
                     var addressChanges = compareAddress(data[i].originalData.address, data[i].newData.address);
                     if (addressChanges && addressChanges.length > 0) {
@@ -1004,8 +1018,9 @@
                     vm.interpretNonUpdate(activity, data[i], 'product');
                     wasChanged = true;
                 }
-                if (wasChanged)
+                if (wasChanged) {
                     ret.push(activity);
+                }
             }
             return ret;
         }
@@ -1021,9 +1036,9 @@
                     activity.name = data[i].newData.version;
                     activity.action = 'Update:<ul>';
                     change = compareItem(data[i].originalData, data[i].newData, 'version', 'Version');
-                    if (change) activity.action += '<li>' + change + '</li>';
+                    if (change) { activity.action += '<li>' + change + '</li>'; }
                     change = compareItem(data[i].originalData, data[i].newData, 'productName', 'Associated Product');
-                    if (change) activity.action += '<li>' + change + '</li>';
+                    if (change) { activity.action += '<li>' + change + '</li>'; }
                     activity.action += '</ul>';
                 } else {
                     if (data[i].newData) {
@@ -1051,9 +1066,9 @@
                     } else {
                         activity.action = 'Update:<ul>';
                         change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
+                        if (change) { activity.action += '<li>' + change + '</li>'; }
                         change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action += '<li>' + change + '</li>';
+                        if (change) { activity.action += '<li>' + change + '</li>'; }
                         change = compareAddress(data[i].originalData.address, data[i].newData.address);
                         if (change && change.length > 0) {
                             activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
@@ -1081,9 +1096,9 @@
                     } else {
                         activity.action = 'Update:<ul>';
                         change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
-                        if (change) activity.action += '<li>' + change + '</li>';
+                        if (change) { activity.action += '<li>' + change + '</li>'; }
                         change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
-                        if (change) activity.action += '<li>' + change + '</li>';
+                        if (change) { activity.action += '<li>' + change + '</li>'; }
                         change = compareAddress(data[i].originalData.address, data[i].newData.address);
                         if (change && change.length > 0) {
                             activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
@@ -1114,7 +1129,7 @@
         };
 
         vm.interpretNonUpdate = function (activity, data, text, key) {
-            if (!key) key = 'name';
+            if (!key) { key = 'name'; }
             if (data.originalData && !data.newData) { // no new data: deleted
                 activity.name = data.originalData[key];
                 activity.action = ['"' + activity.name + '" has been deleted'];
@@ -1158,7 +1173,7 @@
 
             for (var i = 0; i < fields.length; i++) {
                 change = compareItem(prev, curr, fields[i].key, fields[i].display, fields[i].filter);
-                if (change) ret.push('<li>' + change + '</li>');
+                if (change) { ret.push('<li>' + change + '</li>'); }
             }
             return ret;
         }
@@ -1185,13 +1200,14 @@
                         if (prev[i][root] === curr[j][root]) {
                             for (var k = 0; k < keys.length; k++) {
                                 change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
-                                if (change) obj.changes.push('<li>' + change + '</li>');
+                                if (change) { obj.changes.push('<li>' + change + '</li>'); }
                             }
                             prev[i].evaluated = true;
                             curr[j].evaluated = true;
                         }
-                        if (obj.changes.length > 0)
+                        if (obj.changes.length > 0) {
                             ret.push(obj);
+                        }
                     }
                     if (!prev[i].evaluated) {
                         ret.push({ name: prev[i][root], changes: ['<li>' + prev[i][root] + ' removed</li>']});
@@ -1208,22 +1224,25 @@
 
         function compareItem (oldData, newData, key, display, filter) {
             if (oldData && oldData[key] && newData && newData[key] && oldData[key] !== newData[key]) {
-                if (filter)
+                if (filter) {
                     return display + ' changed from ' + $filter(filter)(oldData[key],'mediumDate','UTC') + ' to ' + $filter(filter)(newData[key],'mediumDate','UTC');
-                else
+                } else {
                     return display + ' changed from ' + oldData[key] + ' to ' + newData[key];
+                }
             }
             if ((!oldData || !oldData[key]) && newData && newData[key]) {
-                if (filter)
+                if (filter) {
                     return display + ' added: ' + $filter(filter)(newData[key],'mediumDate','UTC');
-                else
+                } else {
                     return display + ' added: ' + newData[key];
+                }
             }
             if (oldData && oldData[key] && (!newData || !newData[key])) {
-                if (filter)
+                if (filter) {
                     return display + ' removed. Was: ' + $filter(filter)(oldData[key],'mediumDate','UTC');
-                else
+                } else {
                     return display + ' removed. Was: ' + oldData[key];
+                }
             }
         }
 
