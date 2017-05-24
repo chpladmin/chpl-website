@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Allow Closed CAP with open Nonconformity
+* Refresh main search page results on interval to get data changes without requiring page refresh
 
 ---
 

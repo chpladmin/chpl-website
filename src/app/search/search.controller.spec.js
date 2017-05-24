@@ -3,7 +3,7 @@
 
     describe('chpl.search.controller', function () {
 
-        var commonService, scope, vm, $log, $location, $q, Mock, $uibModal;
+        var commonService, scope, vm, $interval, $log, $location, $q, Mock, $uibModal, CACHE_REFRESH_TIMEOUT;
 
         var mock = {};
         mock.products = [
@@ -80,17 +80,20 @@
                 });
             });
 
-            inject(function ($controller, _$location_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _commonService_) {
+            inject(function ($controller, _$interval_, _$location_, _$log_, _$q_, $rootScope, _$uibModal_, _CACHE_REFRESH_TIMEOUT_, _Mock_, _commonService_) {
+                $interval = _$interval_;
+                $location = _$location_;
                 $log = _$log_;
                 $q = _$q_;
-                $location = _$location_;
-                Mock = _Mock_;
                 $uibModal = _$uibModal_;
+                CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_;
+                Mock = _Mock_;
+                commonService = _commonService_;
+
                 spyOn($uibModal, 'open').and.callFake(function () {
                     return mock.fakeModal;
                 });
-                commonService = _commonService_;
-                commonService.getAll.and.returnValue($q.when({'results': Mock.allCps}));
+                commonService.getAll.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
                 commonService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
 
                 scope = $rootScope.$new();
@@ -105,7 +108,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -141,6 +146,32 @@
                 vm.viewCertificationStatusLegend();
                 vm.viewCertificationStatusLegendInstance.dismiss('dismissed');
                 expect($log.info.logs.length).toBe(initialCount + 1);
+            });
+        });
+
+        describe('updating results data in the background', function () {
+            it('should refresh the /certified_products list on a timer', function () {
+                expect(commonService.getAll.calls.count()).toBe(1);
+                $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
+                expect(commonService.getAll.calls.count()).toBe(2);
+                $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
+                expect(commonService.getAll.calls.count()).toBe(3);
+            });
+
+            it('should be able to stop the refresh interval', function () {
+                expect(vm.stopCacheRefreshPromise).toBeDefined();
+                expect(vm.stopCacheRefresh).toBeDefined();
+                vm.stopCacheRefresh();
+                expect(vm.stopCacheRefreshPromise).not.toBeDefined();
+            });
+
+            it('should integrate results on the timer', function () {
+                var newResults = angular.copy(Mock.allCps);
+                newResults.push(angular.copy(newResults[0]));
+                expect(vm.allCps.length).toBe(5);
+                commonService.getAll.and.returnValue($q.when({'results': newResults}));
+                $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
+                expect(vm.allCps.length).toBe(6);
             });
         });
     });
