@@ -5,7 +5,7 @@
         .controller('SurveillanceInspectController', SurveillanceInspectController);
 
     /** @ngInject */
-    function SurveillanceInspectController ($uibModalInstance, $uibModal, $log, surveillance, commonService, utilService) {
+    function SurveillanceInspectController ($log, $uibModal, $uibModalInstance, commonService, surveillance, utilService) {
         var vm = this;
 
         vm.cancel = cancel;

@@ -27,7 +27,7 @@
 
         describe('controller', function () {
 
-            beforeEach(inject(function (_$log_, $rootScope, $controller, _authService_, _commonService_) {
+            beforeEach(inject(function ($controller, _$log_, $rootScope, _authService_, _commonService_) {
                 $log = _$log_;
                 scope = $rootScope.$new();
                 ctrl = $controller('AdminController', {

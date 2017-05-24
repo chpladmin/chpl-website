@@ -38,8 +38,9 @@
                 if (vm.wordBoundaries) {
                     var parts = vm.displayText.split(' ');
                     parts.splice(parts.length - 1, 1);
-                    if (parts.length > 0)
+                    if (parts.length > 0) {
                         vm.displayText = parts.join(' ');
+                    }
                 }
             }
         }

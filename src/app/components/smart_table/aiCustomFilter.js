@@ -6,14 +6,14 @@
     /** @ngInject */
     function CustomFilter ($filter, cfpLoadingBar) {
         var filterFilter = $filter('filter');
-        var standardComparator = function standardComparator(obj, text) {
+        var standardComparator = function standardComparator (obj, text) {
             text = ('' + text).toLowerCase();
             return ('' + obj).toLowerCase().indexOf(text) > -1;
         };
 
-        return function customFilter(array, expression) {
+        return function customFilter (array, expression) {
 
-            function customComparator(actual, expected) {
+            function customComparator (actual, expected) {
                 var isBeforeActivated = expected.before;
                 var isAfterActivated = expected.after;
                 var isLower = expected.lower;

@@ -17,7 +17,7 @@
                 httpProvider = $httpProvider;
             });
 
-            inject(function (_authInterceptor_, _$log_) {
+            inject(function (_$log_, _authInterceptor_) {
                 mockAuthService.getToken = function () { return token; };
                 mockAuthService.getApiKey = function () { return 'key'; };
                 mockAuthService.saveToken = function () { };
@@ -87,7 +87,7 @@
         describe('controller', function () {
             var scope, $location, ctrl;
 
-            beforeEach(inject(function ($rootScope, $controller, _$location_) {
+            beforeEach(inject(function ($controller, _$location_, $rootScope) {
                 $location = _$location_;
                 scope = $rootScope.$new();
 

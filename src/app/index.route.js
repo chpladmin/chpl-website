@@ -5,7 +5,7 @@
         .module('chpl')
         .config(routeConfig);
 
-    function routeConfig($routeProvider) {
+    function routeConfig ($routeProvider) {
         $routeProvider
             .when('/admin/:section?/:subSection?/:productId?', {
                 templateUrl: 'app/admin/admin.html',

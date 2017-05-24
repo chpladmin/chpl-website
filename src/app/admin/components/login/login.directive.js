@@ -21,7 +21,7 @@
         .controller('LoginController', LoginController);
 
     /** @ngInclude */
-    function LoginController ($scope, commonService, authService, $log, Idle, Keepalive) {
+    function LoginController ($log, $scope, Idle, Keepalive, authService, commonService) {
         var vm = this;
 
         vm.activate = activate;

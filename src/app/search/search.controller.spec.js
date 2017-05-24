@@ -15,8 +15,8 @@
         mock.options.certificationCriterionNumbers = ['Cert 1', 'Cert 2'];
         mock.options.cqmCriterionNumbers = ['CQM 1', 'CQM 2'];
         mock.options.editions = ['Edition 1', 'Edition 2'];
-        mock.options.practiceTypeNames  = ['Practice 1', 'Practice 2'];
-        mock.options.certBodyNames  = ['CB 1', 'CB 2'];
+        mock.options.practiceTypeNames = ['Practice 1', 'Practice 2'];
+        mock.options.certBodyNames = ['CB 1', 'CB 2'];
         mock.options.certificationStatuses = ['Active', 'Retired'];
         mock.fakeModal = {
             result: {
@@ -80,7 +80,7 @@
                 });
             });
 
-            inject(function (_$log_, $rootScope, $controller, _commonService_, _$location_, _$q_, _Mock_, _$uibModal_) {
+            inject(function ($controller, _$location_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 $location = _$location_;
