@@ -302,6 +302,7 @@
                     .then(function (versions) {
                         vm.versions = versions;
                     });
+                loadFamily();
                 vm.mergeProduct = angular.copy(vm.activeProduct);
                 delete vm.mergeProduct.productId;
                 delete vm.mergeProduct.lastModifiedDate;
@@ -675,6 +676,7 @@
                             }
                             vm.activeProduct = vm.productSelect;
                             vm.activeProduct.developerId = vm.activeDeveloper.developerId;
+                            loadFamily();
                             commonService.getVersionsByProduct(vm.activeProduct.productId)
                                 .then(function (versions) {
                                     vm.versions = versions;
@@ -799,6 +801,13 @@
             commonService.getTargetedUsers()
                 .then(function (response) {
                     vm.resources.targetedUsers = response;
+                });
+        }
+
+        function loadFamily () {
+            commonService.getFamilyOfListing(vm.activeProduct.productId)
+                .then(function (family) {
+                    vm.resources.relatedListings = family.listings;
                 });
         }
 

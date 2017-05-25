@@ -16,6 +16,7 @@
         vm.extendSelect = extendSelect;
         vm.findModel = findModel;
         vm.prep = prep;
+        vm.requiredIcsCode = requiredIcsCode;
         vm.registerCerts = registerCerts;
         vm.save = save;
         vm.willCauseSuspension = willCauseSuspension;
@@ -32,17 +33,21 @@
             vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
             vm.bodies = resources.bodies;
+            vm.accessibilityStandards = resources.accessibilityStandards;
             vm.classifications = resources.classifications;
             vm.practices = resources.practices;
             vm.qmsStandards = resources.qmsStandards;
-            vm.accessibilityStandards = resources.accessibilityStandards;
-            vm.targetedUsers = resources.targetedUsers;
+            vm.relatedListings = resources.relatedListings || [];
             vm.statuses = resources.statuses;
+            vm.targetedUsers = resources.targetedUsers;
             vm.testingLabs = resources.testingLabs;
             vm.resources = resources;
             vm.workType = workType;
             vm.showFormErrors = false;
             vm.message = '';
+            if (angular.isUndefined(vm.cp.icsParents)) {
+                vm.cp.icsParents = [];
+            }
             if (vm.cp.chplProductNumber.length > 12) {
                 var idFields = vm.cp.chplProductNumber.split('.');
                 vm.idFields = {
@@ -107,6 +112,14 @@
         function prep () {
             vm.directCertsDirective();
             $timeout(vm.save, 1000);
+        }
+
+        function requiredIcsCode () {
+            var code = -1;
+            for (var i = 0; i < vm.cp.icsParents.length; i++) {
+                code = Math.max(code, parseInt(vm.cp.icsParents[i].chplProductNumber.split('.')[6]) + 1);
+            }
+            return code + '';
         }
 
         function registerCerts (handler) {

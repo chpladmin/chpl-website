@@ -30,6 +30,7 @@
         <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="1" ng-pattern="/^[0-9]*$/" required></input>
         <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.editForm.idIcs.$error.required">Field is required</span>
         <span class="text-danger form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">Must consist of numbers only</span>
+        <span class="text-warning form-control-static" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.cp.ics && vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.icsParents.length > 0">ICS Code should be exactly one more than highest ICS code of all of this Listing's ICS parents</span>
       </div>
       <span class="form-control-static">
         {{ vm.idFields.suffix }}
@@ -105,6 +106,40 @@
     <div class="form-group">
       <label for="cpIcs">Inherited Certification Status</label>
       <input class="" type="checkbox" ng-model="vm.cp.ics" id="cpIcs"></input>
+    </div>
+    <div ng-if="vm.cp.certificationEdition.name === '2015' && vm.cp.ics">
+      Inherited Certification Management
+      <div class="form-horizontal">
+        <div class="form-group form-group-sm" ng-repeat="parent in vm.cp.icsParents track by $index">
+          <label class="col-sm-6 control-label" for="icsParent{{ $index }}">ICS Parent</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="parent.chplProductNumber" id="icsParent{{ $index }}"
+                      ng-options="listing.chplProductNumber as (listing.chplProductNumber + ' (' + (listing.certificationDate | date : 'mediumDate' : 'UTC') + ')') for listing in vm.relatedListings | orderBy:'certificationDate'">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cp.icsParents.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-6 control-label" for="newIcsParent">New ICS Parent</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="vm.newIcsParent.chplProductNumber" id="newIcsParent"
+                      ng-options="listing.chplProductNumber as (listing.chplProductNumber + ' (' + (listing.certificationDate | date : 'mediumDate' : 'UTC') + ')') for listing in vm.relatedListings | orderBy:'certificationDate'">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.icsParents, vm.newIcsParent); vm.newIcsParent = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+            </div>
+          </div>
+          <label class="col-sm-6 control-label" for="newIcsParentOther">New unlisted ICS Parent</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <input type="text" class="form-control" ng-model="vm.newIcsParentOther.chplProductNumber" id="newIcsParentOther">
+              <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.icsParents, vm.newIcsParentOther); vm.addNewValue(vm.relatedListings, vm.newIcsParentOther); vm.newIcsParentOther = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       QMS Testing
@@ -265,15 +300,15 @@
     </ai-certs>
   </div>
   <div class="modal-footer">
-    <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
+    <div class="text-left text-danger" ng-if="vm.showFormErrors && vm.editForm.$invalid">
       The following error(s) must be fixed:
       <ul>
-        <li ng-if="vm.editForm.idProd && !vm.editForm.idProd.$error.required && !vm.editForm.idProd.$valid">CHPL Product Number Product Code must consist of letters, numbers and/or "_"</span>
-        <li ng-if="vm.editForm.idProd.$error.required">CHPL Product Number Product Code is required</span>
-        <li ng-if="vm.editForm.idVer && !vm.editForm.idVer.$error.required && !vm.editForm.idVer.$valid">CHPL Product Number Version Code must consist of letters, numbers and/or "_"</span>
-        <li ng-if="vm.editForm.idVer.$error.required">CHPL Product Number Version Code is required</span>
-        <li ng-if="vm.editForm.idIcs && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">CHPL Product Number ICS Code must consist of numbers only</span>
-        <li ng-if="vm.editForm.idIcs.$error.required">CHPL Product Number ICS Code is required</span>
+        <li ng-if="vm.editForm.idProd && !vm.editForm.idProd.$error.required && !vm.editForm.idProd.$valid">CHPL Product Number Product Code must consist of letters, numbers and/or "_"</li>
+        <li ng-if="vm.editForm.idProd.$error.required">CHPL Product Number Product Code is required</li>
+        <li ng-if="vm.editForm.idVer && !vm.editForm.idVer.$error.required && !vm.editForm.idVer.$valid">CHPL Product Number Version Code must consist of letters, numbers and/or "_"</li>
+        <li ng-if="vm.editForm.idVer.$error.required">CHPL Product Number Version Code is required</li>
+        <li ng-if="vm.editForm.idIcs && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">CHPL Product Number ICS Code must consist of numbers only</li>
+        <li ng-if="vm.editForm.idIcs.$error.required">CHPL Product Number ICS Code is required</li>
         <li ng-if="vm.editForm.cpPractice.$error.required">Practice Type is required</li>
         <li ng-if="vm.editForm.cpClassification.$error.required">Classification Type is required</li>
         <li ng-if="vm.editForm.cpBody.$error.required">Certification Body is required</li>
@@ -283,6 +318,13 @@
         <li ng-if="vm.editForm.cpReportFileLoc.$error.url">Report File Location URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpSedReportFileLoc.$error.url">SED Report File Location URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpTouLoc.$error.url">Terms of Use URL is an invalid format (http://www.example.com)</li>
+      </ul>
+    </div>
+    <div class="text-left text-warning" ng-if="vm.showFormErrors && vm.cp.certificationEdition.name === '2015' && vm.cp.ics && (vm.cp.icsParents.length === 0 || (vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.icsParents.length > 0))">
+      The following warning should be fixed:
+      <ul>
+        <li ng-if="vm.cp.icsParents.length === 0">Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from</li>
+        <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.icsParents.length > 0">ICS Code should be exactly one more than highest ICS code of all of this Listing's ICS parents</li>
       </ul>
     </div>
     <div class="text-danger text-left" ng-if="vm.errors">

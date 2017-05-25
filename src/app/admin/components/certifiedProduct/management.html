@@ -596,6 +596,10 @@
                   <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
+                  <ul>
+                    <li ng-repeat="parent in vm.activeCP.icsParents"><strong>Parent:</strong> <a href="#/product/{{ parent.certifiedProductId}}">{{ parent.chplProductNumber }}</a></li>
+                    <li ng-repeat="child in vm.activeCP.icsChildren"><strong>Child:</strong> <a href="#/product/{{ child.certifiedProductId}}">{{ child.chplProductNumber }}</a></li>
+                  </ul>
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
                   <ul>
                     <li ng-repeat="qms in vm.activeCP.qmsStandards"><strong>Standard:</strong> {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification"><strong><br />Modification:</strong> {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria"> <strong><br />Applicable Criteria:</strong> {{ qms.applicableCriteria }}</span></li>

@@ -6,23 +6,23 @@
 
         mock = {};
         mock.activeCP = {
-            chplProductNumber: 'CHP-123123',
-            practiceType: [],
-            classificationType: [],
+            certificationStatus: [],
             certifyingBody: [],
-            certificationStatus: []
-
+            chplProductNumber: 'CHP-123123',
+            classificationType: [],
+            practiceType: [],
         };
 
         mock.resources = {
+            accessibilityStandards: [],
             bodies: [],
             classifications: [],
+            icsFamily: [],
             practices: [],
             qmsStandards: [],
-            accessibilityStandards: [],
-            targetedUsers: [],
             statuses: [],
-            testingLabs: []
+            targetedUsers: [],
+            testingLabs: [],
         }
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
@@ -98,6 +98,48 @@
             expect(vm.willCauseSuspension('Withdrawn by Developer')).toBe(false);
             expect(vm.willCauseSuspension('Withdrawn by Developer Under Surveillance/Review')).toBe(true);
             expect(vm.willCauseSuspension('Withdrawn by ONC-ACB')).toBe(false);
+        });
+
+        describe('ics family', function () {
+            it('should build an icsParents object if the Listing doesn\'t come with one', function () {
+                expect(vm.cp.icsParents).toEqual([]);
+            });
+
+            describe('ics code calculations', function () {
+                it('should expect the code to be -1 if no parents', function () {
+                    vm.cp.icsParents = [];
+                    expect(vm.requiredIcsCode()).toEqual('-1');
+                });
+
+                it('should expect the code to be 1 if one parent and parent has ICS 0', function () {
+                    vm.cp.icsParents = [{chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}];
+                    expect(vm.requiredIcsCode()).toEqual('1');
+                });
+
+                it('should expect the code to be 1 if two parents and parents have ICS 0', function () {
+                    vm.cp.icsParents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}
+                    ];
+                    expect(vm.requiredIcsCode()).toEqual('1');
+                });
+
+                it('should expect the code to be 2 if two parents and parents have ICS 1', function () {
+                    vm.cp.icsParents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'}
+                    ];
+                    expect(vm.requiredIcsCode()).toEqual('2');
+                });
+
+                it('should expect the code to be 3 if two parents and parents have ICS 1,2', function () {
+                    vm.cp.icsParents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.2.1.170331'}
+                    ];
+                    expect(vm.requiredIcsCode()).toEqual('3');
+                });
+            });
         });
     })
 })();

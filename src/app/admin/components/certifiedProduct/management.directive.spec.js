@@ -50,6 +50,7 @@
                     $delegate.getCertificationStatuses = jasmine.createSpy('getCertificationStatuses');
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     $delegate.getEditions = jasmine.createSpy('getEditions');
+                    $delegate.getFamilyOfListing = jasmine.createSpy('getFamilyOfListing');
                     $delegate.getPractices = jasmine.createSpy('getPractices');
                     $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.getProducts = jasmine.createSpy('getProducts');
@@ -95,6 +96,7 @@
                 commonService.getCertificationStatuses.and.returnValue($q.when(mock.certificationStatuses));
                 commonService.getDevelopers.and.returnValue($q.when(mock.developers));
                 commonService.getEditions.and.returnValue($q.when(mock.editions));
+                commonService.getFamilyOfListing.and.returnValue($q.when({data: []}));
                 commonService.getPractices.and.returnValue($q.when(mock.practices));
                 commonService.getProduct.and.returnValue($q.when(mock.products[0]));
                 commonService.getProducts.and.returnValue($q.when(mock.products));
