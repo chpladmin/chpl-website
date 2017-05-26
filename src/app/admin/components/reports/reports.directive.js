@@ -46,6 +46,9 @@
         vm.singleCp = singleCp;
         vm.validDates = validDates;
 
+        // private function exposed for testing
+        vm.interpretCps = interpretCps;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////
@@ -437,6 +440,20 @@
                     for (j = 0; j < cqmChanges.length; j++) {
                         if (cqmChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
+                    }
+                    if (data[i].originalData.icsParents) {
+                        var icsParentsKeys = [];
+                        var icsParents = compareArray(data[i].originalData.icsParents, data[i].newData.icsParents, icsParentsKeys, 'chplProductNumber');
+                        for (j = 0; j < icsParents.length; j++) {
+                            activity.details.push('ICS Parent "' + icsParents[j].name + '" changes<ul>' + icsParents[j].changes.join('') + '</ul>');
+                        }
+                    }
+                    if (data[i].originalData.icsChildren) {
+                        var icsChildrenKeys = [];
+                        var icsChildren = compareArray(data[i].originalData.icsChildren, data[i].newData.icsChildren, icsChildrenKeys, 'chplProductNumber');
+                        for (j = 0; j < icsChildren.length; j++) {
+                            activity.details.push('ICS Child "' + icsChildren[j].name + '" changes<ul>' + icsChildren[j].changes.join('') + '</ul>');
+                        }
                     }
                     var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
                     var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');

@@ -1,5 +1,13 @@
 # Release Notes
 
+## OCD-1536
+* ICS Family Tree work
+  * Allow admins to build family tree links on edit/upload of Listing
+  * Display simple family tree data on Listing details page
+  * Display activity of family tree changes "Other" Activity report
+
+---
+
 ## Version TBD
 _Date TBD_
 
