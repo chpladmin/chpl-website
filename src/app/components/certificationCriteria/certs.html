@@ -104,7 +104,7 @@
             <h4>SED Intended User Description</h4>
             <p>{{ vm.product.sedIntendedUserDescription ? vm.product.sedIntendedUserDescription : 'N/A' }}</p>
           </span>
-            <span ng-if="vm.product.sedTestingEnd">
+          <span ng-if="vm.product.sedTestingEnd">
             <h4>SED Testing Completion Date</h4>
             <p ng-if="vm.product.sedTestingEnd">{{ vm.product.sedTestingEnd | date : 'mediumDate' : 'UTC' }}</p>
             <p ng-if="!vm.product.sedTestingEnd">N/A</p>
@@ -113,6 +113,22 @@
             <h4>Inherited Certification Status</h4>
             <p ng-if="vm.product.ics !== null">{{ vm.product.ics ? 'True' : 'False' }}</p>
             <p ng-if="vm.product.ics == null">N/A</p>
+          </span>
+          <span ng-if="vm.product.icsParents">
+            <h5>Inherits from</h5>
+            <ul>
+              <li ng-repeat="listing in vm.activeCP.icsParents | orderBy: 'certificationDate'">
+                <a href="#/product/{{ listing.certifiedProductId}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
+              </li>
+            </ul>
+          </span>
+          <span ng-if="vm.product.icsChildren">
+            <h5>Provides for</h5>
+            <ul>
+              <li ng-repeat="listing in vm.activeCP.icsChildren | orderBy: 'certificationDate'">
+                <a href="#/product/{{ listing.certifiedProductId}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
+              </li>
+            </ul>
           </span>
           <span ng-if="vm.product.otherAcb">
             <h4>Other ACB</h4>
@@ -145,10 +161,10 @@
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cap'">
         <ai-corrective-action-plan
-             corrective-action-plan="vm.cap"
-             certified-product-id="vm.product.id"
-             certification-results="vm.product.certificationResults"
-             is-admin="false"></ai-corrective-action-plan>
+           corrective-action-plan="vm.cap"
+           certified-product-id="vm.product.id"
+           certification-results="vm.product.certificationResults"
+           is-admin="false"></ai-corrective-action-plan>
       </div>
     </div>
   </div>
