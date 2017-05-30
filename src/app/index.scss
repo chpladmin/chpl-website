@@ -236,16 +236,17 @@ header {
     &:active,
     &:hover,
     &:focus {
+        color: #000;
         background: linear-gradient(#c9c9c9, #838383);
     }
-}
 
-.btn-ai-grey.btn-sm {
-    border-radius: 12px;
-}
+    &.btn-sm {
+        border-radius: 12px;
+    }
 
-.btn-ai-grey .fa {
-    color: #db411e;
+    .fa {
+        color: #db411e;
+    }
 }
 
 .ai-panel>.panel-heading {
@@ -344,17 +345,17 @@ header {
             border-color: #ccc;
         }
     }
+
+    .badge {
+        color: #fff;
+        background-color: #333;
+    }
 }
 
 .open > .dropdown-toggle.btn-ai {
     color: #f5d43c;
     background: linear-gradient(#0057b0, #001045);
     border: red;
-}
-
-.btn-ai .badge {
-    color: #fff;
-    background-color: #333;
 }
 
 .btn-ai-success {
