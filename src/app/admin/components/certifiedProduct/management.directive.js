@@ -805,7 +805,7 @@
         }
 
         function loadFamily () {
-            commonService.getFamilyOfListing(vm.activeProduct.productId)
+            commonService.getRelatedListings(vm.activeProduct.productId)
                 .then(function (family) {
                     vm.resources.relatedListings = family.listings;
                 });

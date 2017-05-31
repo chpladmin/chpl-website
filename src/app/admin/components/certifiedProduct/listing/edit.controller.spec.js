@@ -10,6 +10,7 @@
             certifyingBody: [],
             chplProductNumber: 'CHP-123123',
             classificationType: [],
+            ics: { inherits: false },
             practiceType: [],
         };
 
@@ -17,9 +18,9 @@
             accessibilityStandards: [],
             bodies: [],
             classifications: [],
-            icsFamily: [],
             practices: [],
             qmsStandards: [],
+            relatedListings: [],
             statuses: [],
             targetedUsers: [],
             testingLabs: [],
@@ -102,22 +103,22 @@
 
         describe('ics family', function () {
             it('should build an icsParents object if the Listing doesn\'t come with one', function () {
-                expect(vm.cp.icsParents).toEqual([]);
+                expect(vm.cp.ics.parents).toEqual([]);
             });
 
             describe('ics code calculations', function () {
                 it('should expect the code to be -1 if no parents', function () {
-                    vm.cp.icsParents = [];
+                    vm.cp.ics.parents = [];
                     expect(vm.requiredIcsCode()).toEqual('-1');
                 });
 
                 it('should expect the code to be 1 if one parent and parent has ICS 0', function () {
-                    vm.cp.icsParents = [{chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}];
+                    vm.cp.ics.parents = [{chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}];
                     expect(vm.requiredIcsCode()).toEqual('1');
                 });
 
                 it('should expect the code to be 1 if two parents and parents have ICS 0', function () {
-                    vm.cp.icsParents = [
+                    vm.cp.ics.parents = [
                         {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'},
                         {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}
                     ];
@@ -125,7 +126,7 @@
                 });
 
                 it('should expect the code to be 2 if two parents and parents have ICS 1', function () {
-                    vm.cp.icsParents = [
+                    vm.cp.ics.parents = [
                         {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
                         {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'}
                     ];
@@ -133,7 +134,7 @@
                 });
 
                 it('should expect the code to be 3 if two parents and parents have ICS 1,2', function () {
-                    vm.cp.icsParents = [
+                    vm.cp.ics.parents = [
                         {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
                         {chplProductNumber: '15.07.07.2713.CQ01.02.2.1.170331'}
                     ];

@@ -12,7 +12,7 @@
         <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
           <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
                                      view-all="vm.viewAllCerts"
-                                     has-ics="vm.product.ics"
+                                     has-ics="vm.product.ics.inherits"
                                      cert="n"
                                      is-editing="vm.isEditing"
                                      resources="vm.resources"
@@ -111,21 +111,21 @@
           </span>
           <span ng-if="vm.product.ics !== null">
             <h4>Inherited Certification Status</h4>
-            <p ng-if="vm.product.ics !== null">{{ vm.product.ics ? 'True' : 'False' }}</p>
-            <p ng-if="vm.product.ics == null">N/A</p>
+            <p ng-if="vm.product.ics.inherits !== null">{{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
+            <p ng-if="vm.product.ics.inherits === null">N/A</p>
           </span>
-          <span ng-if="vm.product.icsParents">
+          <span ng-if="vm.product.ics.parents">
             <h5>Inherits from</h5>
             <ul>
-              <li ng-repeat="listing in vm.activeCP.icsParents | orderBy: 'certificationDate'">
+              <li ng-repeat="listing in vm.activeCP.ics.parents | orderBy: 'certificationDate'">
                 <a href="#/product/{{ listing.certifiedProductId}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
               </li>
             </ul>
           </span>
-          <span ng-if="vm.product.icsChildren">
+          <span ng-if="vm.product.ics.children">
             <h5>Provides for</h5>
             <ul>
-              <li ng-repeat="listing in vm.activeCP.icsChildren | orderBy: 'certificationDate'">
+              <li ng-repeat="listing in vm.activeCP.ics.children | orderBy: 'certificationDate'">
                 <a href="#/product/{{ listing.certifiedProductId}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
               </li>
             </ul>

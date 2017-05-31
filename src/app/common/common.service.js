@@ -54,7 +54,6 @@
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
-            getFamilyOfListing: getFamilyOfListing,
             getInactiveCertifications: getInactiveCertifications,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getNotificationRecipients: getNotificationRecipients,
@@ -65,6 +64,7 @@
             getProductsByDeveloper: getProductsByDeveloper,
             getProductsByVersion: getProductsByVersion,
             getQmsStandards: getQmsStandards,
+            getRelatedListings: getRelatedListings,
             getSearchOptions: getSearchOptions,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
@@ -168,12 +168,12 @@
             return simpleApiCall('/data/education_types');
         }
 
-        function getFamilyOfListing (productId) {
-            return simpleApiCall('/product/' + productId + '/family');
-        }
-
         function getAgeRanges () {
             return simpleApiCall('/data/age_ranges');
+        }
+
+        function getRelatedListings (productId) {
+            return simpleApiCall('/product/' + productId + '/listings');
         }
 
         function getTestStandards () {

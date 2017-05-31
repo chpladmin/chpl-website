@@ -50,12 +50,12 @@
                     $delegate.getCertificationStatuses = jasmine.createSpy('getCertificationStatuses');
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     $delegate.getEditions = jasmine.createSpy('getEditions');
-                    $delegate.getFamilyOfListing = jasmine.createSpy('getFamilyOfListing');
                     $delegate.getPractices = jasmine.createSpy('getPractices');
                     $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.getProducts = jasmine.createSpy('getProducts');
                     $delegate.getProductsByDeveloper = jasmine.createSpy('getProductsByDeveloper');
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
+                    $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getTargetedUsers = jasmine.createSpy('getTargetedUsers');
                     $delegate.getTestFunctionality = jasmine.createSpy('getTestFunctionality');
@@ -96,12 +96,12 @@
                 commonService.getCertificationStatuses.and.returnValue($q.when(mock.certificationStatuses));
                 commonService.getDevelopers.and.returnValue($q.when(mock.developers));
                 commonService.getEditions.and.returnValue($q.when(mock.editions));
-                commonService.getFamilyOfListing.and.returnValue($q.when({data: []}));
                 commonService.getPractices.and.returnValue($q.when(mock.practices));
                 commonService.getProduct.and.returnValue($q.when(mock.products[0]));
                 commonService.getProducts.and.returnValue($q.when(mock.products));
                 commonService.getProductsByDeveloper.and.returnValue($q.when(mock.products));
                 commonService.getQmsStandards.and.returnValue($q.when([]));
+                commonService.getRelatedListings.and.returnValue($q.when({data: []}));
                 commonService.getSearchOptions.and.returnValue($q.when({}));
                 commonService.getTargetedUsers.and.returnValue($q.when([]));
                 commonService.getTestFunctionality.and.returnValue($q.when({data: []}));

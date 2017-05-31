@@ -45,8 +45,8 @@
             vm.workType = workType;
             vm.showFormErrors = false;
             vm.message = '';
-            if (angular.isUndefined(vm.cp.icsParents)) {
-                vm.cp.icsParents = [];
+            if (angular.isUndefined(vm.cp.ics.parents)) {
+                vm.cp.ics.parents = [];
             }
             if (vm.cp.chplProductNumber.length > 12) {
                 var idFields = vm.cp.chplProductNumber.split('.');
@@ -116,8 +116,8 @@
 
         function requiredIcsCode () {
             var code = -1;
-            for (var i = 0; i < vm.cp.icsParents.length; i++) {
-                code = Math.max(code, parseInt(vm.cp.icsParents[i].chplProductNumber.split('.')[6]) + 1);
+            for (var i = 0; i < vm.cp.ics.parents.length; i++) {
+                code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6]) + 1);
             }
             return code + '';
         }
