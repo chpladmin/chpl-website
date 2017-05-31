@@ -1,4 +1,4 @@
-<div class="container-fluid" id="nonconformities-page">
+<div class="container-fluid collection-page">
   <div class="pending" ng-if="vm.isPreLoading"></div>
   <div class="row">
     <div class="col-sm-12">
@@ -26,9 +26,9 @@
         </div>
         <div class="col-sm-8">
           <ai-surveillance-filter ng-show="false" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="nonconformitiesTableState" initial-state="vm.defaultRefineModel.surveillance"></ai-surveillance-filter>
-          <div uib-dropdown auto-close="outsideClick" class="btn-group" id="nonconformitiesFilter">
+          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
             <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.isCategoryChanged(['acb','edition'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
+              <a ng-if="vm.isCategoryChanged(['acb', 'edition'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Filter <i class="fa fa-filter"></i>
             </button>
             <div class="dropdown-menu row" aria-labeledby="filter-button" uib-dropdown-menu>
@@ -40,7 +40,7 @@
                 <strong>Certification Edition</strong>
                 <st-list-multiple collection="vm.allCps" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" predicate="edition" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="nonconformitiesTableState"></st-list-multiple>
               </div>
-              <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged(['acb','edition'])">
+              <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged(['acb', 'edition'])">
                 <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
               </div>
             </div>
@@ -60,14 +60,14 @@
                 </td>
               </tr>
               <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-                <th scope="col" st-sort="edition" st-skip-natural="true" class="search-header sort-none">Edition</th>
-                <th scope="col" st-sort="developer" st-skip-natural="true" class="search-header sort-none">Developer</th>
-                <th scope="col" st-sort="product" st-skip-natural="true" st-sort-default="true" class="search-header sort-none">Product</th>
-                <th scope="col" st-sort="version" st-skip-natural="true" class="search-header sort-none">Version</th>
-                <th scope="col" st-sort="chplProductNumber" st-skip-natural="true" class="search-header sort-none">CHPL ID</th>
-                <th scope="col" st-sort="acb" st-skip-natural="true" class="search-header sort-none">ONC-ACB</th>
-                <th scope="col" st-sort="openNonconformityCount" st-skip-natural="true" class="search-header sort-none"># Open NCs</th>
-                <th scope="col" st-sort="closedNonconformityCount" st-skip-natural="true" class="search-header sort-none"># Closed NCs</th>
+                <th scope="col" st-sort="edition" st-skip-natural="true" class="search-header">Edition</th>
+                <th scope="col" st-sort="developer" st-skip-natural="true" class="search-header">Developer</th>
+                <th scope="col" st-sort="product" st-skip-natural="true" st-sort-default="true" class="search-header">Product</th>
+                <th scope="col" st-sort="version" st-skip-natural="true" class="search-header">Version</th>
+                <th scope="col" st-sort="chplProductNumber" st-skip-natural="true" class="search-header">CHPL ID</th>
+                <th scope="col" st-sort="acb" st-skip-natural="true" class="search-header">ONC-ACB</th>
+                <th scope="col" st-sort="openNonconformityCount" st-skip-natural="true" class="search-header"># Open NCs</th>
+                <th scope="col" st-sort="closedNonconformityCount" st-skip-natural="true" class="search-header"># Closed NCs</th>
               </tr>
             </thead>
             <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">

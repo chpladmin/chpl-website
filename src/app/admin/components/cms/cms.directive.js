@@ -13,7 +13,7 @@
                     //admin: '='
                 },
                 controllerAs: 'vm',
-                controller: 'CmsController'
+                controller: 'CmsController',
             };
         });
 
@@ -44,8 +44,8 @@
                 removeAfterUpload: true,
                 headers: {
                     Authorization: 'Bearer ' + authService.getToken(),
-                    'API-Key': authService.getApiKey()
-                }
+                    'API-Key': authService.getApiKey(),
+                },
             });
 
             if (angular.isUndefined(vm.uploader.filters)) {
@@ -56,7 +56,7 @@
                 fn: function (item) {
                     var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
                     return '|csv|'.indexOf(extension) !== -1;
-                }
+                },
             });
             vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                 $log.info('onSuccessItem', fileItem, response, status, headers);

@@ -5,7 +5,7 @@
         var vm, scope, $log, $q, commonService, Mock, mock;
 
         mock = {
-            version: {versionId: 1, version: 'a version'}
+            version: {versionId: 1, version: 'a version'},
         }
 
         beforeEach(function () {
@@ -26,7 +26,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('EditVersionController', {
                     activeVersion: mock.version,
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });
@@ -54,7 +54,7 @@
             it('should call the common service', function () {
                 var updateVersion = {
                     version: angular.copy(vm.version),
-                    versionIds: [1]
+                    versionIds: [1],
                 };
                 vm.save();
                 scope.$digest();

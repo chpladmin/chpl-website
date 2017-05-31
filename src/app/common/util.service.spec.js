@@ -16,10 +16,10 @@
                 {key: 'key', value: 'fourth', id: 1},
                 {key: 'key', value: 'fifth', id: 1},
                 {key: 'key', value: 'sixth', specialKey: 2},
-                {key: 'key', value: 'seventh', specialKey: 2}
+                {key: 'key', value: 'seventh', specialKey: 2},
             ],
             options: [],
-            secondValue: 'a second value'
+            secondValue: 'a second value',
         };
 
         beforeEach(inject(function (_$log_, _utilService_) {
@@ -78,35 +78,35 @@
             it('should be able to sort requirements', function () {
                 var criteria2014 = {
                     requirement: '170.314 (g)(4)',
-                    type: { id: 1, name: 'Certified Capability' }
+                    type: { id: 1, name: 'Certified Capability' },
                 };
                 var criteria2014_2 = {
                     requirement: '170.314 (g)(10)',
-                    type: { id: 1, name: 'Certified Capability' }
+                    type: { id: 1, name: 'Certified Capability' },
                 };
                 var criteria2015_d_1 = {
                     requirement: '170.315 (d)(1)',
-                    type: { id: 1, name: 'Certified Capability' }
+                    type: { id: 1, name: 'Certified Capability' },
                 };
                 var criteria2015_e_1 = {
                     requirement: '170.315 (e)(1)',
-                    type: { id: 1, name: 'Certified Capability' }
+                    type: { id: 1, name: 'Certified Capability' },
                 };
                 var criteria2015_g_4 = {
                     requirement: '170.315 (g)(4)',
-                    type: { id: 1, name: 'Certified Capability' }
+                    type: { id: 1, name: 'Certified Capability' },
                 };
                 var criteria2015_g_10 = {
                     requirement: '170.315 (g)(10)',
-                    type: { id: 1, name: 'Certified Capability' }
+                    type: { id: 1, name: 'Certified Capability' },
                 };
                 var transparency_requirement = {
                     requirement: '170.523 (k)(2)',
-                    type: { id: 2, name: 'Transparency or Disclosure Requirement' }
+                    type: { id: 2, name: 'Transparency or Disclosure Requirement' },
                 };
                 var other_requirement = {
                     requirement: 'fake requirement',
-                    type: { id: 3, name: 'Other Requirement'}
+                    type: { id: 3, name: 'Other Requirement' },
                 };
                 expect(util.sortRequirements(criteria2014)).toBeLessThan(util.sortRequirements(criteria2014_2));
                 expect(util.sortRequirements(criteria2014_2)).toBeLessThan(util.sortRequirements(criteria2015_d_1));

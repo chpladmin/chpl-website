@@ -33,6 +33,6 @@
             'swaggerUi',
             'toaster',
             'ui.bootstrap',
-            'ui.bootstrap.fontawesome'
+            'ui.bootstrap.fontawesome',
         ]);
 })();

@@ -15,11 +15,11 @@
                     formHorizontal: '=?',
                     isEditing: '=?',
                     isRequired: '=?',
-                    showFormErrors: '=?'
+                    showFormErrors: '=?',
                 },
                 scope: {},
                 controllerAs: 'vm',
-                controller: 'ContactController'
+                controller: 'ContactController',
             };
         });
 

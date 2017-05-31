@@ -36,7 +36,7 @@
                 vm = $controller('EditDeveloperController', {
                     activeAcbs: mock.acbs,
                     activeDeveloper: Mock.developers[0],
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

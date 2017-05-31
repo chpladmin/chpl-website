@@ -7,7 +7,7 @@
 
         var mock = {};
         mock.products = [
-            { developer: 'Developer', product: 'Product' }
+            { developer: 'Developer', product: 'Product' },
         ];
         mock.options = {};
         mock.options.developerNames = ['Developer 1', 'Developer 2'];
@@ -25,7 +25,7 @@
                     this.cancelCallback = cancelCallback;
                 }},
             close: function (item) { this.result.confirmCallBack(item); },
-            dismiss: function (type) { this.result.cancelCallback(type); }
+            dismiss: function (type) { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
             templateUrl: 'app/components/certificationStatus/certificationStatus.html',
@@ -34,7 +34,7 @@
             animation: false,
             backdrop: 'static',
             keyboard: false,
-            size: 'lg'
+            size: 'lg',
         };
 
         mock.refineModel = {
@@ -46,29 +46,23 @@
                 'Withdrawn by Developer Under Surveillance/Review': false,
                 'Withdrawn by ONC-ACB': false,
                 'Suspended by ONC': true,
-                'Terminated by ONC': false
+                'Terminated by ONC': false,
             },
             certificationEdition: {
                 '2011': false,
                 '2014': true,
-                '2015': true
+                '2015': true,
             },
             acb: {
                 'Drummond Group': true,
                 'ICSA Labs': true,
-                'InfoGard': true
-            }
+                'InfoGard': true,
+            },
         }
         mock.refine = {
-            certificationStatuses: [
-                'Active', 'Suspended by ONC-ACB', 'Suspended by ONC'
-            ],
-            certificationEditions: [
-                '2014', '2015'
-            ],
-            certificationBodies: [
-                'Drummond Group', 'ICSA Labs', 'InfoGard'
-            ]
+            certificationStatuses: ['Active', 'Suspended by ONC-ACB', 'Suspended by ONC'],
+            certificationEditions: ['2014', '2015'],
+            certificationBodies: ['Drummond Group', 'ICSA Labs', 'InfoGard'],
         };
 
         beforeEach(function () {
@@ -100,7 +94,7 @@
                 vm = $controller('SearchController', {
                     $scope: scope,
                     $location: $location,
-                    commonService: commonService
+                    commonService: commonService,
                 });
                 scope.$digest();
             });

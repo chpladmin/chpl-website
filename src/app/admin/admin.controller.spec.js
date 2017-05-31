@@ -32,7 +32,7 @@
                 scope = $rootScope.$new();
                 ctrl = $controller('AdminController', {
                     authService: _authService_,
-                    commonService: _commonService_
+                    commonService: _commonService_,
                 });
                 scope.$digest();
             }));

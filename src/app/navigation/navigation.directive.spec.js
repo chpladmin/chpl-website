@@ -92,7 +92,7 @@
                 scope = $rootScope.$new();
 
                 ctrl = $controller('NavigationController', {
-                    '$scope': scope
+                    '$scope': scope,
                 });
             }));
 

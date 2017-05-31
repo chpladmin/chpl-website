@@ -13,10 +13,10 @@
             templateUrl: 'app/registration/components/apiKey.html',
             scope: {},
             bindToController: {
-                admin: '='
+                admin: '=',
             },
             controllerAs: 'vm',
-            controller: 'ApiKeyController'
+            controller: 'ApiKeyController',
         };
     }
 

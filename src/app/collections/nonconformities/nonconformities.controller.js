@@ -5,7 +5,7 @@
         .controller('NonconformitiesController', NonconformitiesController);
 
     /** @ngInject */
-    function NonconformitiesController ($filter, $localStorage, $log, $rootScope, $scope, $timeout, CACHE_TIMEOUT, RELOAD_TIMEOUT, cfpLoadingBar, commonService) {
+    function NonconformitiesController ($filter, $localStorage, $log, $rootScope, $scope, $timeout, CACHE_TIMEOUT, RELOAD_TIMEOUT, commonService) {
         var vm = this;
 
         vm.hasResults = hasResults;
@@ -26,9 +26,7 @@
             vm.categoryChanged = {};
             vm.clearFilterHs = [];
             vm.restoreStateHs = [];
-            vm.isLoading = true;
             vm.isPreLoading = true;
-            cfpLoadingBar.start();
 
             populateSearchOptions();
             restoreResults();
@@ -39,19 +37,19 @@
             acb: {
                 'Drummond Group': true,
                 'ICSA Labs': true,
-                'InfoGard': true
+                'InfoGard': true,
             },
             certificationEdition: {
                 '2014': true,
-                '2015': true
+                '2015': true,
             },
             surveillance: {
                 surveillance: 'has-had',
                 NC: {
                     open: true,
-                    closed: true
-                }
-            }
+                    closed: true,
+                },
+            },
         };
 
         function hasResults () {
@@ -67,26 +65,21 @@
         }
 
         function loadResults () {
-            commonService.getAllNonconformities().then(function (response) {
-                if (vm.isPreLoading) {
-                    cfpLoadingBar.start();
-                }
+            commonService.getCollection('nonconformities').then(function (response) {
                 var results = response.results;
                 vm.allCps = [];
-                vm.displayedCps = [];
                 for (var i = 0; i < results.length; i++) {
                     if (results[i].surveillanceCount > 0 && (results[i].openNonconformityCount > 0 || results[i].closedNonconformityCount > 0)) {
                         results[i].mainSearch = [results[i].developer, results[i].product, results[i].version, results[i].chplProductNumber].join('|');
                         results[i].surveillance = angular.toJson({
                             surveillanceCount: results[i].surveillanceCount,
                             openNonconformityCount: results[i].openNonconformityCount,
-                            closedNonconformityCount: results[i].closedNonconformityCount
+                            closedNonconformityCount: results[i].closedNonconformityCount,
                         });
                         vm.allCps.push(results[i]);
                     }
                 }
                 vm.isPreLoading = false;
-                vm.isLoading = false;
             }, function (error) {
                 $log.debug(error);
             });
@@ -147,17 +140,11 @@
         ////////////////////////////////////////////////////////////////////
 
         function populateSearchOptions () {
-            vm.lookaheadSource = {all: [], developers: [], products: []};
             commonService.getSearchOptions()
                 .then(function (options) {
-                    if (vm.isPreLoading) {
-                        cfpLoadingBar.start();
-                    }
-
                     vm.searchOptions = options;
-                    var i;
                     options.practiceTypes = [];
-                    for (i = 0; i < options.practiceTypeNames.length; i++) {
+                    for (var i = 0; i < options.practiceTypeNames.length; i++) {
                         options.practiceTypes.push(options.practiceTypeNames[i].name);
                     }
                     setFilterInfo(vm.defaultRefineModel);
@@ -166,13 +153,9 @@
 
         function restoreResults () {
             if ($localStorage.nonconformitiesTableState) {
-                vm.hasTableState = true;
-
-                cfpLoadingBar.start();
                 $timeout(
                     function () {
                         vm.triggerRestoreState();
-                        cfpLoadingBar.complete();
                     },
                     RELOAD_TIMEOUT
                 );
@@ -185,7 +168,7 @@
             vm.filterItems = {
                 pageSize: '50',
                 acbItems: [],
-                editionItems: []
+                editionItems: [],
             };
             vm.searchOptions.certBodyNames = $filter('orderBy')(vm.searchOptions.certBodyNames, 'name');
             for (i = 0; i < vm.searchOptions.certBodyNames.length; i++) {

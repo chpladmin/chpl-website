@@ -8,7 +8,7 @@
         beforeEach(function () {
             module('chpl.mock', 'chpl.collections', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
-                    $delegate.getAllNonconformities = jasmine.createSpy('getAllNonconformities');
+                    $delegate.getCollection = jasmine.createSpy('getCollection');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     return $delegate;
                 });
@@ -19,13 +19,13 @@
                 $q = _$q_;
                 Mock = _Mock_;
                 commonService = _commonService_;
-                commonService.getAllNonconformities.and.returnValue($q.when({'results': Mock.allNonconformities}));
+                commonService.getCollection.and.returnValue($q.when({'results': Mock.allNonconformities}));
                 commonService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
 
                 scope = $rootScope.$new();
                 vm = $controller('NonconformitiesController', {
                     $scope: scope,
-                    commonService: commonService
+                    commonService: commonService,
                 });
                 scope.$digest();
             });

@@ -13,10 +13,10 @@
             templateUrl: 'app/admin/components/notifications/recipients.html',
             scope: {},
             bindToController: {
-                acbs: '='
+                acbs: '=',
             },
             controllerAs: 'vm',
-            controller: 'NotificationRecipientsController'
+            controller: 'NotificationRecipientsController',
         };
     }
 
@@ -50,8 +50,8 @@
                 resolve: {
                     acbs: function () { return vm.acbs; },
                     recipient: function () { return {}; },
-                    reportTypes: function () { return vm.notificationReportTypes; }
-                }
+                    reportTypes: function () { return vm.notificationReportTypes; },
+                },
             });
             vm.createRecipientInstance.result.then(function (result) {
                 vm.recipients.push(result.recipient);
@@ -76,8 +76,8 @@
                 resolve: {
                     acbs: function () { return vm.acbs; },
                     recipient: function () { return recipient; },
-                    reportTypes: function () { return vm.notificationReportTypes; }
-                }
+                    reportTypes: function () { return vm.notificationReportTypes; },
+                },
             });
             vm.editRecipientInstance.result.then(function (result) {
                 if (result.status === 'updated') {

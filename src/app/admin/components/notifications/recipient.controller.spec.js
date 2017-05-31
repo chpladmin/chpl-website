@@ -33,7 +33,7 @@
                     acbs: mock.acbs,
                     recipient: {},
                     reportTypes: Mock.notificationReportTypes,
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

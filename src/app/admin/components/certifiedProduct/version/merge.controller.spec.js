@@ -6,7 +6,7 @@
 
         mock = {
             versions: [{versionId: 1},{versionId: 2}],
-            updateVersion: {versionIds: [1,2], newProductId: 1}
+            updateVersion: {versionIds: [1,2], newProductId: 1},
         };
 
         beforeEach(function () {
@@ -28,7 +28,7 @@
                 vm = $controller('MergeVersionController', {
                     productId: 1,
                     versions: mock.versions,
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

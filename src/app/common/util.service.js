@@ -23,7 +23,7 @@
             var ret = {
                 added: [],
                 edited: [],
-                removed: []
+                removed: [],
             };
             if (angular.isUndefined(key)) { key = 'id'; }
             var i,j;

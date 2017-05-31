@@ -24,7 +24,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('EditProductController', {
                     activeProduct: Mock.products[0],
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

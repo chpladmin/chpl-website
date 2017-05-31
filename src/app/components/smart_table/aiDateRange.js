@@ -9,7 +9,7 @@
             bindToController: {
                 hasChanges: '=?',
                 nameSpace: '@',
-                trackAnalytics: '@?'
+                trackAnalytics: '@?',
             },
             controller: 'AiDateRangeController',
             controllerAs: 'vm',
@@ -19,9 +19,9 @@
             scope: {
                 predicate: '@',
                 registerClearFilter: '&',
-                registerRestoreState: '&'
+                registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/aiDateRange.html'
+            templateUrl: 'app/components/smart_table/aiDateRange.html',
         }
     }
 
@@ -37,13 +37,13 @@
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearFilter();
-                }
+                },
             });
             scope.$on('$destroy', clearFilter);
             var restoreState = scope.registerRestoreState({
                 restoreState: function (state) {
                     ctrl.restoreState(state);
-                }
+                },
             });
             scope.$on('$destroy', restoreState);
 

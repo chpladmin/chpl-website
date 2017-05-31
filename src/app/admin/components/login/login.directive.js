@@ -12,10 +12,10 @@
                 bindToController: {
                     formClass: '@',
                     pClass: '@',
-                    pClassFail: '@'
+                    pClassFail: '@',
                 },
                 controllerAs: 'vm',
-                controller: 'LoginController'
+                controller: 'LoginController',
             };
         })
         .controller('LoginController', LoginController);
@@ -39,7 +39,7 @@
             LOGIN: 1,
             CHANGE: 2,
             RESET: 3,
-            NONE: 4
+            NONE: 4,
         };
 
         vm.activate();

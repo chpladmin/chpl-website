@@ -26,8 +26,8 @@
             size: 'lg',
             resolve: {
                 product: jasmine.any(Function),
-                versions: jasmine.any(Function)
-            }
+                versions: jasmine.any(Function),
+            },
         };
 
         beforeEach(function () {
@@ -251,8 +251,8 @@
                         isAcbStaff: jasmine.any(Function),
                         isChplAdmin: jasmine.any(Function),
                         resources: jasmine.any(Function),
-                        workType: jasmine.any(Function)
-                    }
+                        workType: jasmine.any(Function),
+                    },
                 };
             });
 
@@ -306,7 +306,7 @@
                 vm.uploadingCps = [{id: 1}, {id: 2}];
                 vm.massReject = {
                     1: true,
-                    2: false
+                    2: false,
                 };
             });
 

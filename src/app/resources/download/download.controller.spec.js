@@ -31,7 +31,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('DownloadController', {
-                    $scope: scope
+                    $scope: scope,
                 });
                 scope.$digest();
             });

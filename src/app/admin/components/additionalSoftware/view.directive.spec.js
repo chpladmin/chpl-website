@@ -13,8 +13,8 @@
             backdrop: 'static',
             keyboard: false,
             resolve: {
-                software: jasmine.any(Function)
-            }
+                software: jasmine.any(Function),
+            },
         };
 
         beforeEach(function () {
@@ -141,13 +141,13 @@
                     {id: 1, grouping: null},
                     {id: 2, grouping: 'a'},
                     {id: 3, grouping: 'a'},
-                    {id: 4, grouping: 'b'}
+                    {id: 4, grouping: 'b'},
                 ];
                 vm.buildGrouping();
                 expect(vm.displaySw).toEqual({
                     defaultGroup0: [{id: 1, grouping: null}],
                     a: [{id: 2, grouping: 'a'},{id: 3, grouping: 'a'}],
-                    b: [{id: 4, grouping: 'b'}]
+                    b: [{id: 4, grouping: 'b'}],
                 });
             });
         });

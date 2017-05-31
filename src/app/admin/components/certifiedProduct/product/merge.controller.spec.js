@@ -28,7 +28,7 @@
                 vm = $controller('MergeProductController', {
                     developerId: 1,
                     products: mock.products,
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

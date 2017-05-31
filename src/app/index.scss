@@ -110,6 +110,10 @@ footer {
                 color: #214e75;
             }
         }
+
+        .badge {
+            color: #fff;
+        }
     }
 }
 
@@ -205,27 +209,24 @@ header {
     border: 1px solid #e1e1e1;
 }
 
-.sort-none:after,
-.st-sort-none:after {
-    content: "\f0dc";
-    font-family: "FontAwesome";
-    padding: 0 6px;
-    font-size: large;
+.search-header {
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:after {
+        content: "\f0dc";
+        font-family: "FontAwesome";
+        padding: 0 6px;
+        font-size: large;
+    }
 }
 
-.sort-ascent:after,
 .st-sort-ascent:after {
-    font-family: "FontAwesome";
-    padding: 0 6px;
-    font-size: large;
+    content: "\f0de";
+}
 
-    &:after {
-        content: "\f0de";
-    }
-
-    &:after {
-        content: "\f0dd";
-    }
+.st-sort-descent:after {
+    content: "\f0dd";
 }
 
 .btn-ai-grey {

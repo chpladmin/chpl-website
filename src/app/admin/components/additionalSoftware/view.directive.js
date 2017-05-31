@@ -10,11 +10,11 @@
                 templateUrl: 'app/admin/components/additionalSoftware/view.html',
                 bindToController: {
                     additionalSoftware: '=?',
-                    isEditing: '=?'
+                    isEditing: '=?',
                 },
                 scope: {},
                 controllerAs: 'vm',
-                controller: 'AdditionalSoftwareController'
+                controller: 'AdditionalSoftwareController',
             };
         });
 
@@ -45,8 +45,8 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    software: function () { return { name: '', version: '', certifiedProductSelfCHPLId: '' }; }
-                }
+                    software: function () { return { name: '', version: '', certifiedProductSelfCHPLId: '' }; },
+                },
             });
             vm.editModalInstance.result.then(function (result) {
                 if (!vm.additionalSoftware) {
@@ -88,8 +88,8 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    software: function () { return sw; }
-                }
+                    software: function () { return sw; },
+                },
             });
             vm.editModalInstance.result.then(function (result) {
                 vm.additionalSoftware[index] = result;
