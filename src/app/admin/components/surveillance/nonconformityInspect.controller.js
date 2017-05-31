@@ -5,7 +5,7 @@
         .controller('NonconformityInspectController', NonconformityInspectController);
 
     /** @ngInject */
-    function NonconformityInspectController ($uibModalInstance, $uibModal, nonconformities) {
+    function NonconformityInspectController ($uibModal, $uibModalInstance, nonconformities) {
         var vm = this;
 
         vm.cancel = cancel;

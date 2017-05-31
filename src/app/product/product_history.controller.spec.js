@@ -12,7 +12,7 @@
 
         beforeEach(function () {
             module('chpl.product','chpl.mocks');
-            inject(function ($controller, $rootScope, _$log_, product_activity) {
+            inject(function ($controller, _$log_, $rootScope, product_activity) {
                 $log = _$log_;
                 mock.activity = product_activity();
 
@@ -52,23 +52,27 @@
 
         describe('interpreting the report', function () {
             it('should have an item for certification status changing', function () {
-                expect(vm.activity[7].change).toEqual(['Certification Status changed from "Active" to "Suspended by ONC"']);
+                expect(vm.activity[0].change).toEqual(['Certification Status changed from "Active" to "Suspended by ONC"']);
             });
 
             it('should have an item for surveillance being added', function () {
-                expect(vm.activity[16].change).toEqual(['Surveillance activity was added']);
+                expect(vm.activity[1].change).toEqual(['Surveillance activity was added']);
             });
 
             it('should have an item for surveillance being updated', function () {
-                expect(vm.activity[19].change).toEqual(['Surveillance activity was updated']);
+                expect(vm.activity[2].change).toEqual(['Surveillance activity was updated']);
             });
 
             it('should have an item for when the product was certified', function () {
-                expect(vm.activity[23].change).toEqual(['Certified product was uploaded to the CHPL']);
+                expect(vm.activity[3].change).toEqual(['Certified product was uploaded to the CHPL']);
             });
 
             it('should have an item for surveillance being deleted', function () {
-                expect(vm.activity[24].change).toEqual(['Surveillance activity was deleted']);
+                expect(vm.activity[4].change).toEqual(['Surveillance activity was deleted']);
+            });
+
+            it('should have an item for certification criteria being added', function () {
+                expect(vm.activity[5].change).toEqual(['Added certification criteria:<ul><li>170.315 (g)(7)</li><li>170.315 (g)(8)</li><li>170.315 (g)(9)</li></ul>']);
             });
         });
     });

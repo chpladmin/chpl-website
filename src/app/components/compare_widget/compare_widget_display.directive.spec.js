@@ -6,7 +6,7 @@
 
         beforeEach(function () {
             module('chpl.templates', 'chpl.compare-widget');
-            inject(function (_$compile_, _$rootScope_, _$log_) {
+            inject(function (_$compile_, _$log_, _$rootScope_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
                 $log = _$log_;

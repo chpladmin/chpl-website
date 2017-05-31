@@ -36,7 +36,7 @@
     }
 
     /** @ngInject */
-    function NavigationController (authService, commonService, $location, $log, $scope, $rootScope, $localStorage) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, commonService) {
         var vm = this;
 
         vm.clear = clear;
@@ -121,7 +121,7 @@
 
         function loadAnnouncements () {
             commonService.getAnnouncements(false)
-                .then (function (result) {
+                .then(function (result) {
                     vm.announcements = result.announcements;
                 }, function (error) {
                     $log.debug('error in chpl.overview.controller.loadAnnouncements', error);

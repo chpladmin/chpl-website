@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, commonService, utilService, CACHE_TIMEOUT, RELOAD_TIMEOUT) {
+    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, commonService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -15,6 +15,7 @@
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
         vm.loadResults = loadResults;
+        vm.refreshResults = refreshResults;
         vm.registerAllowAll = registerAllowAll;
         vm.registerClearFilter = registerClearFilter;
         vm.registerRestoreComponents = registerRestoreComponents;
@@ -22,6 +23,7 @@
         vm.registerSearch = registerSearch;
         vm.reloadResults = reloadResults;
         vm.statusFont = utilService.statusFont;
+        vm.stopCacheRefresh = stopCacheRefresh;
         vm.triggerAllowAll = triggerAllowAll;
         vm.triggerClearFilters = triggerClearFilters;
         vm.triggerRestoreState = triggerRestoreState;
@@ -52,6 +54,7 @@
             vm.restoreStateHs = [];
             vm.isLoading = true;
             vm.isPreLoading = true;
+            vm.displayedCps = [];
 
             manageStorage();
             populateSearchOptions();
@@ -132,25 +135,22 @@
             return ret;
         }
 
-        function loadResults() {
+        function loadResults () {
             commonService.getAll().then(function (response) {
                 var results = response.results;
-                for (var i = 0; i < results.length; i++) {
-                    results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
-                    results[i].developerSearch = results[i].developer;
-                    if (results[i].previousDevelopers) {
-                        results[i].mainSearch += '|' + results[i].previousDevelopers;
-                        results[i].developerSearch += '|' + results[i].previousDevelopers;
-                    }
-                    results[i].surveillance = angular.toJson({
-                        surveillanceCount: results[i].surveillanceCount,
-                        openNonconformityCount: results[i].openNonconformityCount,
-                        closedNonconformityCount: results[i].closedNonconformityCount
-                    });
-                }
                 vm.allCps = [];
-                vm.displayedCps = [];
-                incrementTable(results);
+                incrementTable(parseAllResults(results));
+            }, function (error) {
+                $log.debug(error);
+            });
+
+            vm.stopCacheRefreshPromise = $interval(vm.refreshResults, CACHE_REFRESH_TIMEOUT * 1000);
+        }
+
+        function refreshResults () {
+            commonService.getAll().then(function (response) {
+                var results = response.results;
+                vm.allCps = parseAllResults(results);
             }, function (error) {
                 $log.debug(error);
             });
@@ -210,6 +210,13 @@
             vm.activeSearch = true;
             setTimestamp();
             restoreResults();
+        }
+
+        function stopCacheRefresh () {
+            if (angular.isDefined(vm.stopCacheRefreshPromise)) {
+                $interval.cancel(vm.stopCacheRefreshPromise);
+                vm.stopCacheRefreshPromise = undefined;
+            }
         }
 
         function triggerAllowAll () {
@@ -354,6 +361,23 @@
             }
         }
 
+        function parseAllResults (results) {
+            for (var i = 0; i < results.length; i++) {
+                results[i].mainSearch = [results[i].developer, results[i].product, results[i].acbCertificationId, results[i].chplProductNumber].join('|');
+                results[i].developerSearch = results[i].developer;
+                if (results[i].previousDevelopers) {
+                    results[i].mainSearch += '|' + results[i].previousDevelopers;
+                    results[i].developerSearch += '|' + results[i].previousDevelopers;
+                }
+                results[i].surveillance = angular.toJson({
+                    surveillanceCount: results[i].surveillanceCount,
+                    openNonconformityCount: results[i].openNonconformityCount,
+                    closedNonconformityCount: results[i].closedNonconformityCount
+                });
+            }
+            return results;
+        }
+
         function populateSearchOptions () {
             vm.lookaheadSource = {all: [], developers: [], products: []};
             commonService.getSearchOptions(true)
@@ -478,5 +502,9 @@
                 setTimestamp();
             }, 60000); //set timestamp every minute while search is active
         }
+
+        $scope.$on('$destroy', function () {
+            vm.stopCacheRefresh();
+        });
     }
 })();

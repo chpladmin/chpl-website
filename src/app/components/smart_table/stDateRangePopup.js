@@ -38,7 +38,7 @@
                         });
                     });
 
-                    function open(before) {
+                    function open (before) {
                         return function ($event) {
                             $event.preventDefault();
                             $event.stopPropagation();

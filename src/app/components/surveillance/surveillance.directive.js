@@ -22,7 +22,7 @@
     }
 
     /** @ngInclude **/
-    function SurveillanceController ($log, $scope, $uibModal, $filter, commonService, authService, utilService, API) {
+    function SurveillanceController ($filter, $log, $scope, $uibModal, API, authService, commonService, utilService) {
         var vm = this;
 
         vm.editSurveillance = editSurveillance;

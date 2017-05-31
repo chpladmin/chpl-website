@@ -5,7 +5,7 @@
         .controller('EditSurveillanceController', EditSurveillanceController);
 
     /** @ngInject */
-    function EditSurveillanceController ($uibModal, $uibModalInstance, $log, surveillance, surveillanceTypes, workType, commonService, utilService, authService) {
+    function EditSurveillanceController ($log, $uibModal, $uibModalInstance, authService, commonService, surveillance, surveillanceTypes, utilService, workType) {
         var vm = this;
 
         vm.addRequirement = addRequirement;

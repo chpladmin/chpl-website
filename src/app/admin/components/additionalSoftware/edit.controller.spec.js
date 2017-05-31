@@ -7,7 +7,7 @@
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin');
 
-            inject(function ($controller, $rootScope, _$log_, _Mock_) {
+            inject(function ($controller, _$log_, $rootScope, _Mock_) {
                 $log = _$log_;
                 Mock = _Mock_;
 

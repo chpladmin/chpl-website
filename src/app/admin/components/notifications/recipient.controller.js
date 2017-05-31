@@ -67,7 +67,7 @@
                 });
         }
 
-        function removeSubscription(idx) {
+        function removeSubscription (idx) {
             vm.recipient.subscriptions.splice(idx,1);
         }
 

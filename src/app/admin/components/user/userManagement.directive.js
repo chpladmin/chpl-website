@@ -19,7 +19,7 @@
         });
 
     /** @ngInject */
-    function UserManagementController (commonService, $log, $uibModal) {
+    function UserManagementController ($log, $uibModal, commonService) {
         var vm = this;
 
         vm.updateUser = updateUser;

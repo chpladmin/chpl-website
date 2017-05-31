@@ -5,7 +5,7 @@
         .controller('DownloadController', DownloadController);
 
     /** @ngInject */
-    function DownloadController ($scope, $log, API, authService) {
+    function DownloadController ($log, API, authService) {
         var vm = this;
 
         vm.getToken = authService.getToken;

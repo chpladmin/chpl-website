@@ -1,5 +1,23 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### New features
+* Allow Closed CAP with open Nonconformity
+* Refresh main search page results on interval to get data changes without requiring page refresh
+* Display addition of criteria in Listing activity popup
+
+---
+
+## Version 8.4.1
+_24 May 2017_
+
+### Bug fix
+* Allow navigation to last elements of Admin section
+
+---
+
 ## Version 8.4.0
 _22 May 2017_
 
@@ -19,7 +37,7 @@ _22 May 2017_
 * Added description to Nonconformities page
 * Added note about 2011 Decertified Products
 
-=======
+---
 
 ## Version 8.3.0
 _8 May 2017_

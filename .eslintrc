@@ -1,6 +1,11 @@
 {
-    "extends": "eslint:recommended",
-    "plugins": ["angular"],
+    "plugins": [
+        "angular"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:angular/johnpapa"
+    ],
     "env": {
         "browser": true,
         "jasmine": true
@@ -9,5 +14,20 @@
         "angular": true,
         "module": true,
         "inject": true
+    },
+    "rules": {
+        "curly": ["error"],
+        "eqeqeq": ["error"],
+        "no-multi-spaces": ["error"],
+        "eol-last": ["error"],
+        "func-call-spacing": ["error"],
+        "indent": ["error"],
+        "no-multiple-empty-lines": ["error", { "max": 1 }],
+        "no-tabs": ["error"],
+        "no-trailing-spaces": ["error"],
+        "space-before-function-paren": ["error"],
+        "angular/di-order": ["error"],
+        "angular/file-name": ["off"],
+        "angular/function-type": ["off"]
     }
 }

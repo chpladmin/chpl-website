@@ -15,14 +15,14 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate() {
+        function activate () {
             if (!vm.items) {
                 vm.items = [];
             }
             vm.localId = $scope.$id;
         }
 
-        function addItem() {
+        function addItem () {
             var val = {};
             val[vm.key] = vm.newItem;
 
@@ -38,7 +38,7 @@
             vm.newThird = '';
         }
 
-        function removeItem(index) {
+        function removeItem (index) {
             vm.items.splice(index, 1);
         }
     }

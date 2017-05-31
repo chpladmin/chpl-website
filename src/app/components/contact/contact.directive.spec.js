@@ -7,7 +7,7 @@
         beforeEach(function () {
             module('chpl.templates','chpl');
 
-            inject(function ($compile, $rootScope, _$log_) {
+            inject(function ($compile, _$log_, $rootScope) {
                 $log = _$log_;
 
                 el = angular.element('<ai-contact></ai-contact>');

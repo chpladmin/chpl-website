@@ -26,13 +26,15 @@
             });
         });
 
-        beforeEach(inject(function ($compile, $rootScope, _$log_) {
+        beforeEach(inject(function ($compile, _$log_, $rootScope) {
             $log = _$log_;
             scope = $rootScope.$new();
 
             scope.fakeFunction = function () {};
-            scope.userManagementInviteUser = {$setPristine: function () {},
-                                              $setUntouched: function () {}};
+            scope.userManagementInviteUser = {
+                $setPristine: function () {},
+                $setUntouched: function () {}
+            };
 
             element = angular.element('<ai-user-management create-user="fakeFunction" modify-user="fakeFunction" delete-user="fakeFunction" cancel-user="fakeFunction"></ai-user-management');
             $compile(element)(scope);

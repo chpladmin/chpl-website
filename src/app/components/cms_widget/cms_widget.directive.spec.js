@@ -11,7 +11,7 @@
 
         beforeEach(function () {
             module('chpl.cms-widget');
-            inject(function (_$compile_, _$rootScope_, _$log_, _$httpBackend_) {
+            inject(function (_$compile_, _$httpBackend_, _$log_, _$rootScope_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
                 $log = _$log_;

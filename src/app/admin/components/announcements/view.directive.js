@@ -18,7 +18,7 @@
         });
 
     /** @ngInject */
-    function AnnouncementsController ($log, commonService, authService, $uibModal) {
+    function AnnouncementsController ($log, $uibModal, authService, commonService) {
         var vm = this;
 
         vm.loadAnnouncements = loadAnnouncements;
@@ -37,7 +37,7 @@
 
         function loadAnnouncements () {
             commonService.getAnnouncements(true)
-                .then (function (result) {
+                .then(function (result) {
                     vm.announcements = result.announcements;
                 }, function (error) {
                     $log.debug('error in app.admin.announcement.controller.loadAnnouncements', error);
