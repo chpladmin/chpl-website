@@ -7,6 +7,7 @@ _Date TBD_
 * Allow Closed CAP with open Nonconformity
 * Refresh main search page results on interval to get data changes without requiring page refresh
 * Display addition of criteria in Listing activity popup
+* Added 'download definition file' download option
 
 ---
 
