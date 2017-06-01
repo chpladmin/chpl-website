@@ -1,15 +1,22 @@
 'use strict';
 module.exports = {
     // page definition
-    downloadPage: {
-        downloadSelect: element(by.id('downloadOption')),
-        downloadOptions: element(by.id('downloadOption')).all(by.tagName('option')),
+    model: {
+        pageTitle: element(by.tagName('h1')),
+        downloadSelect: element(by.id('downloadSelect')),
+        downloadOptions: element(by.id('downloadSelect')).all(by.tagName('option')),
+        activeDownloadFile: element(by.id('downloadSelect')).element(by.css('option:checked')),
         definitionSelect: element(by.id('definitionSelect')),
-        defintionOptions: element(by.id('definitionSelect')).all(by.tagName('option')),
+        definitionOptions: element(by.id('definitionSelect')).all(by.tagName('option')),
+        activeDefinitionFile: element(by.id('definitionSelect')).element(by.css('option:checked'))
     },
 
     //page methods
     go: function () {
         return browser.get('#/resources/download');
+    },
+
+    selectDownloadFile: function (name) {
+        this.model.downloadSelect.element(by.cssContainingText('option', name)).click();
     }
 };
