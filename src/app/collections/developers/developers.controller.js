@@ -5,7 +5,7 @@
         .controller('DecertifiedDevelopersController', DecertifiedDevelopersController);
 
     /** @ngInject */
-    function DecertifiedDevelopersController ($filter, $localStorage, $log, $rootScope, $scope, $timeout, CACHE_TIMEOUT, RELOAD_TIMEOUT, commonService) {
+    function DecertifiedDevelopersController ($filter, $localStorage, $log, $rootScope, $scope, $timeout, RELOAD_TIMEOUT, commonService) {
         var vm = this;
 
         vm.hasResults = hasResults;

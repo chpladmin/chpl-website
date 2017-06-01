@@ -5,7 +5,7 @@
         .controller('InactiveCertificatesController', InactiveCertificatesController);
 
     /** @ngInject */
-    function InactiveCertificatesController ($filter, $localStorage, $log, $rootScope, $scope, $timeout, CACHE_TIMEOUT, RELOAD_TIMEOUT, commonService) {
+    function InactiveCertificatesController ($filter, $localStorage, $log, $rootScope, $scope, $timeout, RELOAD_TIMEOUT, commonService) {
         var vm = this;
 
         vm.getMeaningfulUseUsersAccurateAsOfDate = getMeaningfulUseUsersAccurateAsOfDate;

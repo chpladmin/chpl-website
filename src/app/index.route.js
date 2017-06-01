@@ -13,6 +13,12 @@
                 controllerAs: 'vm',
                 title: 'CHPL Administration',
             })
+            .when('/collections/apiCriteria', {
+                controller: 'ApiCriteriaController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/apiCriteria/apiCriteria.html',
+                title: 'API Criteria',
+            })
             .when('/collections/developers', {
                 controller: 'DecertifiedDevelopersController',
                 controllerAs: 'vm',

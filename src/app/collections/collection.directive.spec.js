@@ -19,10 +19,9 @@
                 commonService = _commonService_;
                 commonService.getCollection.and.returnValue($q.when({results: []}));
 
-                el = angular.element('<ai-collection body-text="bodyText" columns="columns" filter="filter"></ai-collection>');
+                el = angular.element('<ai-collection columns="columns" filter="filter"><ai-body-text>This is body text</ai-body-text><ai-title>Title</ai-title></ai-collection>');
 
                 scope = $rootScope.$new();
-                scope.bodyText = 'This is my body text';
                 scope.columns = [];
                 scope.filter = jasmine.any(Function);
                 $compile(el)(scope);
