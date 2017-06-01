@@ -173,7 +173,7 @@
         }
 
         function getRelatedListings (productId) {
-            return simpleApiCall('/product/' + productId + '/listings');
+            return simpleApiCall('/products/' + productId + '/listings');
         }
 
         function getTestStandards () {
