@@ -1,14 +1,21 @@
 # Release Notes
 
-## OCD-1493
-* Added 'download definition file' download option
-
 ## Version TBD
 _Date TBD_
 
 ### New features
 * Allow Closed CAP with open Nonconformity
 * Refresh main search page results on interval to get data changes without requiring page refresh
+* Display addition of criteria in Listing activity popup
+* Added 'download definition file' download option
+
+---
+
+## Version 8.4.1
+_24 May 2017_
+
+### Bug fix
+* Allow navigation to last elements of Admin section
 
 ---
 
