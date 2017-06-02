@@ -8,12 +8,12 @@
   <div class="main-content" id="mainContent" tabindex="-1" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
     <div class="row">
       <div class="col-sm-12">
-        <div ng-transclude-slot="aiBodyText"></div>
+        <ng-transclude ng-transclude-slot="aiBodyText"></ng-transclude>
       </div>
     </div>
     <st-manage register-search="vm.registerSearch(search)" name-space="vm.dataStore" />
     <div class="form-horizontal" ng-form="vm.searchForm" aria-live="polite">
-<!--
+
       <div class="form-group" id="filters">
         <div class="col-sm-4">
           <div class="input-group">
@@ -23,31 +23,38 @@
             <label for="generalFilter"><span class="sr-only">Search by Developer, Product, Version, or CHPL ID</span></label>
           </div>
         </div>
-        <div class="col-sm-8">
+
+        <div class="col-sm-8" ng-if="vm.filters.length > 0">
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
             <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.isCategoryChanged(['acb', 'edition', 'decertificationDate'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
+              <a ng-if="vm.isCategoryChanged()" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Filter <i class="fa fa-filter"></i>
             </button>
             <div class="dropdown-menu row" aria-labeledby="filter-button" uib-dropdown-menu>
-              <div class="col-sm-6">
+              <div class="col-sm-6" ng-if="vm.isFilterActive('acb')">
                 <strong>ONC-ACB</strong>
                 <st-list-multiple collection="vm.allCps" predicate="acb" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore" hidden-options="true"></st-list-multiple>
+              </div>
+              <div class="col-sm-6" ng-if="vm.isFilterActive('edition')">
                 <strong>Certification Edition</strong>
                 <st-list-multiple collection="vm.allCps" predicate="edition" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore"></st-list-multiple>
               </div>
-              <div class="col-sm-6">
+              <div class="col-sm-6" ng-if="vm.isFilterActive('certificationDate')">
+                <strong>Certification Date</strong>
+                <ai-date-range predicate="certificationDate" has-changes="vm.categoryChanged['certificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore"></ai-date-range>
+              </div>
+              <div class="col-sm-6" ng-if="vm.isFilterActive('decertificationDate')">
                 <strong>Decertification Date</strong>
                 <ai-date-range predicate="decertificationDate" has-changes="vm.categoryChanged['decertificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore"></ai-date-range>
               </div>
-              <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged(['acb', 'edition', 'decertificationDate'])">
+              <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged()">
                 <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
               </div>
             </div>
           </div>
         </div>
       </div> <!-- #filters -->
-    <!--</div><!-- filter form -->
+    </div><!-- filter form -->
 
     <div aria-live="polite">
       <div ng-if="vm.hasResults()" class="row">
@@ -83,10 +90,13 @@
             </tfoot>
             <tbody>
               <tr ng-repeat="cp in vm.displayedCps">
-                <td ng-repeat="col in vm.columns">{{ cp[col.predicate] }}</td>
-<!--                <td>{{ cp.decertificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                <td>{{ (cp.estimatedUsers || cp.estimatedUsers === 0) ? cp.estimatedUsers : 'Unknown' }}</td>
-                <td><a href="#/product/{{ cp.id }}">{{ cp.chplProductNumber }}</a></td>
+                <td ng-repeat="col in vm.columns" ng-bind-html="vm.parseDataElement(cp, col)">
+                  <span ng-if="col.isLink"><a href="#/product/{{ cp.id }}">{{ cp[col.predicate] }}</a></span>
+                  <span ng-if="!col.isLink">{{ cp[col.predicate] }}</span>
+                </td>
+                <!--                <td>{{ cp.decertificationDate | date : 'mediumDate' : 'UTC' }}</td>
+                                    <td>{{ (cp.estimatedUsers || cp.estimatedUsers === 0) ? cp.estimatedUsers : 'Unknown' }}</td>
+                <td>
                 -->
               </tr>
             </tbody>

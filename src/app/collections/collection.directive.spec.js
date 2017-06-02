@@ -19,11 +19,12 @@
                 commonService = _commonService_;
                 commonService.getCollection.and.returnValue($q.when({results: []}));
 
-                el = angular.element('<ai-collection columns="columns" filter="filter"><ai-body-text>This is body text</ai-body-text><ai-title>Title</ai-title></ai-collection>');
+                el = angular.element('<ai-collection collection-key="key" columns="columns" filters="filters" refine-model="refineModel"><ai-body-text>This is body text</ai-body-text><ai-title>Title</ai-title></ai-collection>');
 
                 scope = $rootScope.$new();
                 scope.columns = [];
-                scope.filter = jasmine.any(Function);
+                scope.filters = [];
+                scope.refineModel = {};
                 $compile(el)(scope);
                 scope.$digest();
                 vm = el.isolateScope().vm;
@@ -33,7 +34,7 @@
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });

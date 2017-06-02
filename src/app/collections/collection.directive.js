@@ -9,10 +9,11 @@
     function aiCollection () {
         return {
             bindToController: {
-                collection: '@',
+                collectionKey: '@',
                 columns: '=',
                 dataStore: '@',
-                filter: '&',
+                filters: '=?',
+                refineModel: '=?',
             },
             controller: 'CollectionController',
             controllerAs: 'vm',
@@ -29,12 +30,14 @@
     }
 
     /** @ngInject */
-    function CollectionController ($filter, $localStorage, $log, $timeout, RELOAD_TIMEOUT, commonService) {
+    function CollectionController ($filter, $localStorage, $log, $timeout, RELOAD_TIMEOUT, collectionsService, commonService) {
         var vm = this;
 
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
+        vm.isFilterActive = isFilterActive;
         vm.loadResults = loadResults;
+        vm.parseDataElement = parseDataElement;
         vm.registerClearFilter = registerClearFilter;
         vm.registerRestoreState = registerRestoreState;
         vm.registerSearch = registerSearch;
@@ -57,44 +60,44 @@
             vm.loadResults();
         }
 
-        /*
-        vm.defaultRefineModel = {
-            acb: {
-                'Drummond Group': true,
-                'ICSA Labs': true,
-                'InfoGard': true,
-            },
-            certificationEdition: {
-                '2014': true,
-                '2015': true,
-            },
-            certificationStatus: [
-                'Withdrawn by Developer',
-            ],
-        };
-        */
-
         function hasResults () {
             return angular.isDefined(vm.allCps);
         }
 
-        function isCategoryChanged (categories) {
+        function isCategoryChanged () {
             var ret = false;
-            for (var i = 0; i < categories.length; i++) {
-                ret = ret || vm.categoryChanged[categories[i]];
+            for (var i = 0; i < vm.filters.length; i++) {
+                ret = ret || vm.categoryChanged[vm.filters[i]];
             }
             return ret;
         }
 
+        function isFilterActive (key) {
+            return vm.filters.indexOf(key) > -1;
+        }
+
         function loadResults () {
-            $log.debug('loadResults');
-            commonService.getCollection(vm.collection).then(function (response) {
+            commonService.getCollection(vm.collectionKey).then(function (response) {
                 var results = response.results;
-                vm.allCps = $filter('apiCriteriaFilter')(results, {edition: '2015'});
+                vm.allCps = collectionsService.translate(vm.collectionKey, results);
                 vm.isPreLoading = false;
             }, function (error) {
                 $log.debug(error);
             });
+        }
+
+        function parseDataElement (cp, col) {
+            var ret = cp[col.predicate];
+            if (col.nullDisplay && (ret === null || angular.isUndefined(ret))) {
+                ret = col.nullDisplay;
+            }
+            if (col.isDate) {
+                ret = $filter('date')(ret,'mediumDate','UTC');
+            }
+            if (col.isLink) {
+                ret = '<a href="#/product/' + cp.id + '">' + ret + '</a>';
+            }
+            return ret;
         }
 
         function registerClearFilter (handler) {
@@ -163,10 +166,12 @@
         }
 
         function setFilterInfo () {
-            var i;
             vm.filterItems = {
                 pageSize: '50',
             };
+            if (vm.isFilterActive('acb')) {
+                vm.filterItems.acbItems = angular.copy(vm.refineModel.acb);
+            }
         }
     }
 })();

@@ -3,7 +3,7 @@
 
     describe('chpl.collections.apiCollection.controller', function () {
 
-        var commonService, scope, vm, $log, $q, Mock, mock;
+        var commonService, scope, vm, $log;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.collections', function ($provide) {
@@ -12,10 +12,8 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function ($controller, _$log_, $rootScope, _commonService_) {
                 $log = _$log_;
-                $q = _$q_;
-                Mock = _Mock_;
                 commonService = _commonService_;
 
                 scope = $rootScope.$new();

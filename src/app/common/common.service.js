@@ -159,7 +159,7 @@
             case 'inactiveCertificates':
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,estimatedUsers');
             case 'apiCriteria':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,apiDocumentation,mandatoryDisclosures');
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationDate,criteriaMet,apiDocumentation,mandatoryDisclosures');
             }
         }
 
