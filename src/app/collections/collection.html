@@ -11,7 +11,7 @@
         <ng-transclude ng-transclude-slot="aiBodyText"></ng-transclude>
       </div>
     </div>
-    <st-manage register-search="vm.registerSearch(search)" name-space="vm.dataStore" />
+    <st-manage register-search="vm.registerSearch(search)" />
     <div class="form-horizontal" ng-form="vm.searchForm" aria-live="polite">
 
       <div class="form-group" id="filters">
@@ -19,7 +19,7 @@
           <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-search"></i></div>
             <input type="text" class="form-control input-sm" id="generalFilter" placeholder="search by Developer, Product, Version, or CHPL ID"
-                   ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore">
+                   ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)">
             <label for="generalFilter"><span class="sr-only">Search by Developer, Product, Version, or CHPL ID</span></label>
           </div>
         </div>
@@ -33,19 +33,19 @@
             <div class="dropdown-menu row" aria-labeledby="filter-button" uib-dropdown-menu>
               <div class="col-sm-6" ng-if="vm.isFilterActive('acb')">
                 <strong>ONC-ACB</strong>
-                <st-list-multiple collection="vm.allCps" predicate="acb" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore" hidden-options="true"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" predicate="acb" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" hidden-options="true"></st-list-multiple>
               </div>
               <div class="col-sm-6" ng-if="vm.isFilterActive('edition')">
                 <strong>Certification Edition</strong>
-                <st-list-multiple collection="vm.allCps" predicate="edition" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore"></st-list-multiple>
+                <st-list-multiple collection="vm.allCps" predicate="edition" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
               </div>
               <div class="col-sm-6" ng-if="vm.isFilterActive('certificationDate')">
                 <strong>Certification Date</strong>
-                <ai-date-range predicate="certificationDate" has-changes="vm.categoryChanged['certificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore"></ai-date-range>
+                <ai-date-range predicate="certificationDate" has-changes="vm.categoryChanged['certificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
               </div>
               <div class="col-sm-6" ng-if="vm.isFilterActive('decertificationDate')">
                 <strong>Decertification Date</strong>
-                <ai-date-range predicate="decertificationDate" has-changes="vm.categoryChanged['decertificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="vm.dataStore"></ai-date-range>
+                <ai-date-range predicate="decertificationDate" has-changes="vm.categoryChanged['decertificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
               </div>
               <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged()">
                 <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
@@ -72,7 +72,7 @@
             </thead>
             <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
               <tr>
-                <td colspan="{{ vm.columns.length }}" ng-transclude-slot="footerText"></td>
+                <td colspan="{{ vm.columns.length }}"><ng-transclude ng-transclude-slot="aiFooterText"></ng-transclude></td>
               </tr>
               <tr>
                 <td colspan="{{ vm.columns.length }}" class="text-center">

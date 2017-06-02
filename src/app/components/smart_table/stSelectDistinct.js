@@ -8,7 +8,7 @@
         return {
             bindToController: {
                 hasChanges: '=?',
-                nameSpace: '@',
+                nameSpace: '@?',
             },
             controller: 'SelectDistinctController',
             controllerAs: 'vm',
@@ -121,7 +121,9 @@
             }
 
             vm.tableCtrl.search(query, vm.predicate);
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            if (vm.nameSpace) {
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            }
         }
 
         function restoreState (state) {

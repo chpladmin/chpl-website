@@ -23,12 +23,45 @@
 
         describe('apiCriteria translation', function () {
             it('should filter on apiCriteria', function () {
-                expect(service.translate('apiCriteria', Mock.allCps).length).toBe(1);
+                expect(service.translate('apiCriteria', Mock.allCps).length).toBe(2);
             });
 
             it('should generate a mainSearch', function () {
                 var results = service.translate('apiCriteria', Mock.allCps);
                 expect(results[0].mainSearch).toEqual('Carefluence|Carefluence Open API|1.0|15.04.04.2649.Care.01.0.0.160701');
+            });
+        });
+
+        describe('decertifiedProducts translation', function () {
+            it('should filter on decertifiedProducts', function () {
+                expect(service.translate('decertifiedProducts', Mock.allCps).length).toBe(1);
+            });
+
+            it('should generate a mainSearch', function () {
+                var results = service.translate('decertifiedProducts', Mock.allCps);
+                expect(results[0].mainSearch).toEqual('Strateq Health Inc.|37 Degrees|V1.07|CHP-028979');
+            });
+        });
+
+        describe('inactiveCertificates translation', function () {
+            it('should filter on inactiveCertificates', function () {
+                expect(service.translate('inactiveCertificates', Mock.allCps).length).toBe(1);
+            });
+
+            it('should generate a mainSearch', function () {
+                var results = service.translate('inactiveCertificates', Mock.allCps);
+                expect(results[0].mainSearch).toEqual('Carefluence|Carefluence Open API|1.0|15.04.04.2649.Care.01.0.0.160701');
+            });
+        });
+
+        describe('nonconformities translation', function () {
+            it('should filter on nonconformities', function () {
+                expect(service.translate('nonconformities', Mock.allCps).length).toBe(3);
+            });
+
+            it('should generate a mainSearch', function () {
+                var results = service.translate('nonconformities', Mock.allCps);
+                expect(results[0].mainSearch).toEqual('DrScribe, Inc.|365EHR|4.0.14|CHP-026059');
             });
         });
     });

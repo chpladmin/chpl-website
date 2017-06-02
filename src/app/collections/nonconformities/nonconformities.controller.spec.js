@@ -3,24 +3,18 @@
 
     describe('chpl.collections.nonconformities.controller', function () {
 
-        var commonService, scope, vm, $log, $q, Mock;
+        var commonService, scope, vm, $log;
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.collections', function ($provide) {
+            module('chpl.collections', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
-                    $delegate.getCollection = jasmine.createSpy('getCollection');
-                    $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function ($controller, _$log_, $rootScope, _commonService_) {
                 $log = _$log_;
-                $q = _$q_;
-                Mock = _Mock_;
                 commonService = _commonService_;
-                commonService.getCollection.and.returnValue($q.when({'results': Mock.allNonconformities}));
-                commonService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
 
                 scope = $rootScope.$new();
                 vm = $controller('NonconformitiesController', {

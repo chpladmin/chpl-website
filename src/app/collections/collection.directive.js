@@ -11,7 +11,6 @@
             bindToController: {
                 collectionKey: '@',
                 columns: '=',
-                dataStore: '@',
                 filters: '=?',
                 refineModel: '=?',
             },
@@ -39,10 +38,10 @@
         vm.loadResults = loadResults;
         vm.parseDataElement = parseDataElement;
         vm.registerClearFilter = registerClearFilter;
-        vm.registerRestoreState = registerRestoreState;
+        //vm.registerRestoreState = registerRestoreState;
         vm.registerSearch = registerSearch;
         vm.triggerClearFilters = triggerClearFilters;
-        vm.triggerRestoreState = triggerRestoreState;
+        //vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
 
         activate();
@@ -52,11 +51,11 @@
         function activate () {
             vm.categoryChanged = {};
             vm.clearFilterHs = [];
-            vm.restoreStateHs = [];
+            //vm.restoreStateHs = [];
             vm.isPreLoading = true;
 
             setFilterInfo();
-            restoreResults();
+            //restoreResults();
             vm.loadResults();
         }
 
@@ -110,6 +109,7 @@
             return removeHandler;
         }
 
+        /*
         function registerRestoreState (handler) {
             vm.restoreStateHs.push(handler);
             var removeHandler = function () {
@@ -119,6 +119,7 @@
             };
             return removeHandler;
         }
+        */
 
         function registerSearch (handler) {
             vm.tableSearchHs = [handler];
@@ -137,6 +138,7 @@
             vm.triggerSearch();
         }
 
+        /*
         function triggerRestoreState () {
             if ($localStorage[vm.dataStore]) {
                 var state = angular.fromJson($localStorage[vm.dataStore]);
@@ -145,6 +147,7 @@
                 });
             }
         }
+        */
 
         function triggerSearch () {
             if (vm.tableSearchHs && vm.tableSearchHs[0]) {
@@ -154,6 +157,7 @@
 
         ////////////////////////////////////////////////////////////////////
 
+        /*
         function restoreResults () {
             if ($localStorage[vm.dataStore]) {
                 $timeout(
@@ -164,6 +168,7 @@
                 );
             }
         }
+        */
 
         function setFilterInfo () {
             vm.filterItems = {
@@ -171,6 +176,9 @@
             };
             if (vm.isFilterActive('acb')) {
                 vm.filterItems.acbItems = angular.copy(vm.refineModel.acb);
+            }
+            if (vm.isFilterActive('edition')) {
+                vm.filterItems.editionItems = angular.copy(vm.refineModel.edition);
             }
         }
     }

@@ -8,7 +8,7 @@
         return {
             bindToController: {
                 hasChanges: '=?',
-                nameSpace: '@',
+                nameSpace: '@?',
             },
             controller: 'EnhancedTextController',
             controllerAs: 'vm',
@@ -87,7 +87,9 @@
 
             vm.promise = $timeout(function () {
                 vm.tableCtrl.search(query, vm.predicate);
-                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+                if (vm.nameSpace) {
+                    $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+                }
                 vm.promise = null;
             }, vm.throttle);
         }

@@ -8,7 +8,7 @@
         return {
             bindToController: {
                 hasChanges: '=?',
-                nameSpace: '@',
+                nameSpace: '@?',
                 trackAnalytics: '@?',
             },
             controller: 'AiDateRangeController',
@@ -125,7 +125,9 @@
         }
 
         function storeState () {
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            if (vm.nameSpace) {
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            }
         }
     }
 })();

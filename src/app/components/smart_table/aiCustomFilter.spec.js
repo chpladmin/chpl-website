@@ -22,7 +22,7 @@
         });
 
         it('whould filter on text', function () {
-            expect(aiCustomFilter(Mock.allCps, {chplProductNumber: 'CHP-'}).length).toBe(4);
+            expect(aiCustomFilter(Mock.allCps, {chplProductNumber: 'CHP-'}).length).toBe(5);
         });
 
         it('whould return exact match searches values', function () {
@@ -30,19 +30,19 @@
         });
 
         it('should allow matching any', function () {
-            expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {all: false, items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(1);
+            expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {all: false, items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(2);
         });
 
         describe('surveillance filter', function () {
             describe('has surveillance', function () {
                 it('never', function () {
                     var survFilter = {surveillance:'never'};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(2);
+                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);
                 });
 
                 it('has-had', function () {
                     var survFilter = {surveillance:'has-had'};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);
+                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(4);
                 });
             });
 
@@ -54,7 +54,7 @@
 
                 it('has-had with closed NCs', function () {
                     var survFilter = {surveillance:'has-had', NC:{closed:true}};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(1);
+                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(2);
                 });
 
                 it('has-had with open NCs', function () {
@@ -78,12 +78,12 @@
             describe('match any with multiples', function () {
                 it('has-had with open & closed NCs', function () {
                     var survFilter = {surveillance:'has-had', NC:{open:true, closed: true}};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(2);
+                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);
                 });
 
                 it('has-had with never & closed NCs', function () {
                     var survFilter = {surveillance:'has-had', NC:{never:true, closed: true}};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(1);
+                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(2);
                 });
 
                 it('has-had with never & open NCs', function () {
@@ -93,7 +93,7 @@
 
                 it('has-had with never, closed & open NCs', function () {
                     var survFilter = {surveillance:'has-had', NC:{never:true, closed: true, open: true}};
-                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);
+                    expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(4);
                 });
             });
         });

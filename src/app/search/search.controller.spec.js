@@ -160,12 +160,13 @@
             });
 
             it('should integrate results on the timer', function () {
+                var initialCount = Mock.allCps.length;
                 var newResults = angular.copy(Mock.allCps);
                 newResults.push(angular.copy(newResults[0]));
-                expect(vm.allCps.length).toBe(5);
+                expect(vm.allCps.length).toBe(initialCount);
                 commonService.getAll.and.returnValue($q.when({'results': newResults}));
                 $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
-                expect(vm.allCps.length).toBe(6);
+                expect(vm.allCps.length).toBe(initialCount + 1);
             });
         });
     });

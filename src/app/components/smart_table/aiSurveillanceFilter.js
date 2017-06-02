@@ -10,7 +10,7 @@
             bindToController: {
                 hasChanges: '=?',
                 initialState: '=?',
-                nameSpace: '@',
+                nameSpace: '@?',
             },
             controller: 'SurveillanceFilterController',
             controllerAs: 'vm',
@@ -118,7 +118,9 @@
                 delete tableState.search.predicateObject.surveillance;
                 vm.tableCtrl.search();
             }
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            if (vm.nameSpace) {
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            }
         }
 
         function restoreState (state) {

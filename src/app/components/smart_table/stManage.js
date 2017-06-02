@@ -10,7 +10,7 @@
             scope: {
                 registerSearch: '&',
                 registerRestoreComponents: '&',
-                nameSpace: '@',
+                nameSpace: '@?',
             },
             link: function (scope, element, attr, ctrl) {
                 var search = scope.registerSearch({

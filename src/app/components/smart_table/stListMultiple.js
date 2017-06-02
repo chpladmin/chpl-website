@@ -13,7 +13,7 @@
                 hidden: '@?',
                 hiddenOptions: '@?',
                 matchFull: '@?',
-                nameSpace: '@',
+                nameSpace: '@?',
                 separator: '@?',
                 trackAnalytics: '@?',
             },
@@ -254,7 +254,9 @@
         }
 
         function storeState () {
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            if (vm.nameSpace) {
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            }
         }
 
         function toggleSelection (value, dontSearch) {

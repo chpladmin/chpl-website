@@ -20,7 +20,7 @@
                 { predicate: 'version', display: 'Version' },
                 { predicate: 'acb', display: 'ONC-ACB' },
                 { predicate: 'certificationDate', display: 'Certification Date', isDate: true },
-                { predicate: 'chplProductNumber', display: 'CHPL Product Number', sortDefault: true, isLink: true },
+                { predicate: 'chplProductNumber', display: 'CHPL ID', sortDefault: true, isLink: true },
                 { predicate: 'apiDocumentation', display: 'API Documentation', nullDisplay: 'N/A' },
             ];
             vm.filters = ['acb', 'certificationDate'];
