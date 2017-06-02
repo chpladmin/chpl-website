@@ -27,8 +27,9 @@ Feature: Downloading data from CHPL
 
   Scenario: Authenticated users have 9 definition files
     Given I am on the Resources-Download page
-    And I am logged in as "ROLE_ADMIN"
-    When I refresh the page
+    And I am not logged in
+    When I am logged in as "ROLE_ADMIN"
+    And I refresh the page
     Then there should be 9 Definition Files
 
   Scenario: Starting situation of Download & Definition select boxes

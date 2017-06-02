@@ -25,7 +25,7 @@ defineSupportCode(({Given, When, Then}) => {
     });
 
     Then('there should be {int} Definition Files', function (count) {
-        var definitionSelect = page.model.definitionSelenct;
+        var definitionSelect = page.model.definitionSelect;
         var definitionOptions = page.model.definitionOptions;
         return definitionSelect.click().then(function () {
             return (expect(definitionOptions.count()).to.eventually.equal(count));
