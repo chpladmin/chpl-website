@@ -18,9 +18,9 @@
         <div class="col-sm-4">
           <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-search"></i></div>
-            <input type="text" class="form-control input-sm" id="generalFilter" placeholder="search by Developer, Product, Version, or CHPL ID"
+            <input type="text" class="form-control input-sm" id="generalFilter" placeholder="{{ vm.searchText }}"
                    ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)">
-            <label for="generalFilter"><span class="sr-only">Search by Developer, Product, Version, or CHPL ID</span></label>
+            <label for="generalFilter"><span class="sr-only">{{ vm.searchText }}</span></label>
           </div>
         </div>
 

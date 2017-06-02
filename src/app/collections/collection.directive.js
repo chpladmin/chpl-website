@@ -13,6 +13,7 @@
                 columns: '=',
                 filters: '=?',
                 refineModel: '=?',
+                searchText: '@?',
             },
             controller: 'CollectionController',
             controllerAs: 'vm',
@@ -54,6 +55,9 @@
             //vm.restoreStateHs = [];
             vm.isPreLoading = true;
 
+            if (!vm.searchText) {
+                vm.searchText = 'Search by Developer, Product, Version, or CHPL ID';
+            }
             setFilterInfo();
             //restoreResults();
             vm.loadResults();
@@ -77,8 +81,7 @@
 
         function loadResults () {
             commonService.getCollection(vm.collectionKey).then(function (response) {
-                var results = response.results;
-                vm.allCps = collectionsService.translate(vm.collectionKey, results);
+                vm.allCps = collectionsService.translate(vm.collectionKey, response);
                 vm.isPreLoading = false;
             }, function (error) {
                 $log.debug(error);
@@ -89,6 +92,9 @@
             var ret = cp[col.predicate];
             if (col.nullDisplay && (ret === null || angular.isUndefined(ret))) {
                 ret = col.nullDisplay;
+            }
+            if (col.transformFn) {
+                ret = col.transformFn(ret);
             }
             if (col.isDate) {
                 ret = $filter('date')(ret,'mediumDate','UTC');

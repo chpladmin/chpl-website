@@ -20,7 +20,7 @@
                 title: 'API Criteria',
             })
             .when('/collections/developers', {
-                controller: 'DecertifiedDevelopersController',
+                controller: 'BannedDevelopersController',
                 controllerAs: 'vm',
                 templateUrl: 'app/collections/developers/developers.html',
                 title: 'Banned Developers',

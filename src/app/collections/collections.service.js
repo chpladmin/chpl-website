@@ -16,13 +16,15 @@
         function translate (key, array) {
             switch (key) {
             case 'apiCriteria':
-                return apiCriteria(array);
+                return apiCriteria(array.results);
+            case 'bannedDevelopers':
+                return bannedDevelopers(array.decertifiedDeveloperResults);
             case 'decertifiedProducts':
-                return decertifiedProducts(array);
+                return decertifiedProducts(array.results);
             case 'inactiveCertificates':
-                return inactiveCertificates(array);
+                return inactiveCertificates(array.results);
             case 'nonconformities':
-                return nonconformities(array);
+                return nonconformities(array.results);
             }
         }
 
@@ -47,6 +49,28 @@
 
                     ret.push(cp);
                 }
+            }
+            return ret;
+        }
+
+        /*
+         * All developers found are included, but need to be transformed
+         */
+        function bannedDevelopers (array) {
+            var ret = [];
+            var dev;
+            for (var i = 0; i < array.length; i ++) {
+                dev = {
+                    acb: [],
+                    decertificationDate: array[i].decertificationDate,
+                    developer: array[i].developer.name,
+                    mainSearch: array[i].developer.name,
+                    status: array[i].developer.status.status,
+                }
+                for (var j = 0; j < array[i].certifyingBody.length; j++) {
+                    dev.acb.push(array[i].certifyingBody[j].name);
+                }
+                ret.push(dev);
             }
             return ret;
         }
