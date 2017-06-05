@@ -55,7 +55,6 @@
                     $delegate.getProducts = jasmine.createSpy('getProducts');
                     $delegate.getProductsByDeveloper = jasmine.createSpy('getProductsByDeveloper');
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
-                    $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getTargetedUsers = jasmine.createSpy('getTargetedUsers');
                     $delegate.getTestFunctionality = jasmine.createSpy('getTestFunctionality');
@@ -101,7 +100,6 @@
                 commonService.getProducts.and.returnValue($q.when(mock.products));
                 commonService.getProductsByDeveloper.and.returnValue($q.when(mock.products));
                 commonService.getQmsStandards.and.returnValue($q.when([]));
-                commonService.getRelatedListings.and.returnValue($q.when({data: []}));
                 commonService.getSearchOptions.and.returnValue($q.when({}));
                 commonService.getTargetedUsers.and.returnValue($q.when([]));
                 commonService.getTestFunctionality.and.returnValue($q.when({data: []}));

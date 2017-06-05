@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.editCertifiedProduct.controller', function () {
-        var vm, scope, $log, $q, commonService, utilService, mock;
+        var vm, scope, $log, $q, commonService, utilService, mock, Mock;
 
         mock = {};
         mock.activeCP = {
@@ -12,6 +12,7 @@
             classificationType: [],
             ics: { inherits: false },
             practiceType: [],
+            product: { productId: 1 },
         };
 
         mock.resources = {
@@ -20,19 +21,16 @@
             classifications: [],
             practices: [],
             qmsStandards: [],
-            relatedListings: [],
             statuses: [],
             targetedUsers: [],
             testingLabs: [],
         }
-        mock.modalInstance = {
-            close: jasmine.createSpy('close'),
-            dismiss: jasmine.createSpy('dismiss')
-        };
+        mock.relatedListings = [{id: 1}];
 
         beforeEach(function () {
-            module('chpl.admin', function ($provide) {
+            module('chpl.admin', 'chpl.mock', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
+                    $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
                     $delegate.updateCP = jasmine.createSpy('updateCP');
                     return $delegate;
                 });
@@ -42,11 +40,13 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _commonService_, _utilService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_, _utilService_) {
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;
+                commonService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
                 commonService.updateCP.and.returnValue($q.when(mock));
+                Mock = _Mock_;
                 utilService = _utilService_;
                 utilService.extendSelect.and.returnValue([]);
 
@@ -58,7 +58,7 @@
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',
-                    $uibModalInstance: mock.modalInstance,
+                    $uibModalInstance: Mock.modalInstance,
                     $scope: scope
                 });
                 scope.$digest();
@@ -79,7 +79,7 @@
             it('should have a way to close the modal', function () {
                 expect(vm.cancel).toBeDefined();
                 vm.cancel();
-                expect(mock.modalInstance.dismiss).toHaveBeenCalled();
+                expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
             });
         });
 
@@ -102,19 +102,39 @@
         });
 
         describe('ics family', function () {
+            it('should call the common service to get related listings', function () {
+                expect(commonService.getRelatedListings).toHaveBeenCalled();
+            });
+
+            it('should load the related listings on load', function () {
+                expect(vm.relatedListings).toEqual(mock.relatedListings);
+            });
+
             it('should build an icsParents object if the Listing doesn\'t come with one', function () {
                 expect(vm.cp.ics.parents).toEqual([]);
+            });
+
+            describe('disabling related options', function () {
+                it('should disable itself', function () {
+                    expect(vm.disabledParent({ chplProductNumber: 'CHP-123123'})).toBe(true);
+                });
+
+                it('should disable ones that are already parents', function () {
+                    expect(vm.disabledParent({ chplProductNumber: '123'})).toBe(false);
+                    vm.cp.ics.parents = [{ chplProductNumber: '123' }];
+                    expect(vm.disabledParent({ chplProductNumber: '123'})).toBe(true);
+                });
             });
 
             describe('ics code calculations', function () {
                 it('should expect the code to be -1 if no parents', function () {
                     vm.cp.ics.parents = [];
-                    expect(vm.requiredIcsCode()).toEqual('-1');
+                    expect(vm.requiredIcsCode()).toBe('-1');
                 });
 
                 it('should expect the code to be 1 if one parent and parent has ICS 0', function () {
                     vm.cp.ics.parents = [{chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}];
-                    expect(vm.requiredIcsCode()).toEqual('1');
+                    expect(vm.requiredIcsCode()).toBe('1');
                 });
 
                 it('should expect the code to be 1 if two parents and parents have ICS 0', function () {
@@ -122,7 +142,7 @@
                         {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'},
                         {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}
                     ];
-                    expect(vm.requiredIcsCode()).toEqual('1');
+                    expect(vm.requiredIcsCode()).toBe('1');
                 });
 
                 it('should expect the code to be 2 if two parents and parents have ICS 1', function () {
@@ -130,7 +150,7 @@
                         {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
                         {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'}
                     ];
-                    expect(vm.requiredIcsCode()).toEqual('2');
+                    expect(vm.requiredIcsCode()).toBe('2');
                 });
 
                 it('should expect the code to be 3 if two parents and parents have ICS 1,2', function () {
@@ -138,7 +158,7 @@
                         {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
                         {chplProductNumber: '15.07.07.2713.CQ01.02.2.1.170331'}
                     ];
-                    expect(vm.requiredIcsCode()).toEqual('3');
+                    expect(vm.requiredIcsCode()).toBe('3');
                 });
             });
         });

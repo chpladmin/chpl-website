@@ -111,22 +111,22 @@
           </span>
           <span ng-if="vm.product.ics !== null">
             <h4>Inherited Certification Status</h4>
-            <p ng-if="vm.product.ics.inherits !== null">{{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
+            <p ng-if="vm.product.ics.inherits !== null"><strong>Inherits:</strong> {{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
             <p ng-if="vm.product.ics.inherits === null">N/A</p>
           </span>
           <span ng-if="vm.product.ics.parents && vm.product.ics.parents.length > 0">
             <h5>Inherits from</h5>
             <ul>
-              <li ng-repeat="listing in vm.activeCP.ics.parents | orderBy: 'certificationDate'">
-                <a href="#/product/{{ listing.certifiedProductId}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
+              <li ng-repeat="listing in vm.product.ics.parents | orderBy: 'certificationDate'">
+                <a href="#/product/{{ listing.id}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
               </li>
             </ul>
           </span>
           <span ng-if="vm.product.ics.children && vm.product.ics.children.length > 0">
             <h5>Provides for</h5>
             <ul>
-              <li ng-repeat="listing in vm.activeCP.ics.children | orderBy: 'certificationDate'">
-                <a href="#/product/{{ listing.certifiedProductId}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
+              <li ng-repeat="listing in vm.product.ics.children | orderBy: 'certificationDate'">
+                <a href="#/product/{{ listing.id}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
               </li>
             </ul>
           </span>

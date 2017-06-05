@@ -12,6 +12,7 @@
         vm.attachModel = attachModel;
         vm.cancel = cancel;
         vm.directCertsDirective = directCertsDirective;
+        vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
         vm.extendSelect = extendSelect;
         vm.findModel = findModel;
@@ -37,7 +38,6 @@
             vm.classifications = resources.classifications;
             vm.practices = resources.practices;
             vm.qmsStandards = resources.qmsStandards;
-            vm.relatedListings = resources.relatedListings || [];
             vm.statuses = resources.statuses;
             vm.targetedUsers = resources.targetedUsers;
             vm.testingLabs = resources.testingLabs;
@@ -61,6 +61,7 @@
 
             vm.handlers = [];
             vm.attachModel();
+            loadFamily();
         }
 
         function addNewValue (array, object) {
@@ -90,6 +91,15 @@
             angular.forEach(vm.handlers, function (handler) {
                 handler();
             });
+        }
+
+        function disabledParent (listing) {
+            var ret = false;
+            ret = ret || vm.cp.chplProductNumber === listing.chplProductNumber;
+            for (var i = 0; i < vm.cp.ics.parents.length; i++) {
+                ret = ret || vm.cp.ics.parents[i].chplProductNumber === listing.chplProductNumber;
+            }
+            return ret;
         }
 
         function disabledStatus (name) {
@@ -188,6 +198,15 @@
             case ('Withdrawn by Developer Under Surveillance/Review'):
                 return true;
             }
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function loadFamily () {
+            commonService.getRelatedListings(vm.cp.product.productId)
+                .then(function (family) {
+                    vm.relatedListings = family;
+                });
         }
     }
 })();

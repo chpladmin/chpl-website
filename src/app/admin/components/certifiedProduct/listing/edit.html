@@ -111,24 +111,20 @@
     </div>
     <div ng-if="vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits">
       Inherited Certification Management
+      <ul class="list-unstyled text-right">
+        <li ng-repeat="parent in vm.cp.ics.parents track by $index">
+          <strong>Inherits from:</strong> {{ parent.chplProductNumber }} <span ng-if="parent.certificationDate">( {{ parent.certificationDate | date : 'mediumDate' : 'UTC' }} )</span>
+          <button class="btn btn-sm btn-danger" ng-click="vm.cp.ics.parents.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button>
+          <div class="clearfix"></div>
+        </li>
+      </ul>
       <div class="form-horizontal">
-        <div class="form-group form-group-sm" ng-repeat="parent in vm.cp.ics.parents track by $index">
-          <label class="col-sm-6 control-label" for="icsParent{{ $index }}">Inherits from</label>
-          <div class="col-sm-6">
-            <div class="input-group">
-              <select class="form-control" ng-model="parent.chplProductNumber" id="icsParent{{ $index }}"
-                      ng-options="listing.chplProductNumber as (listing.chplProductNumber + ' (' + (listing.certificationDate | date : 'mediumDate' : 'UTC') + ')') for listing in vm.relatedListings | orderBy:'certificationDate'">
-              </select>
-              <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cp.ics.parents.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
-            </div>
-          </div>
-        </div>
         <div class="form-group form-group-sm">
           <label class="col-sm-6 control-label" for="newIcsParent">New Listing to inherit from</label>
           <div class="col-sm-6">
             <div class="input-group">
               <select class="form-control" ng-model="vm.newIcsParent.chplProductNumber" id="newIcsParent"
-                      ng-options="listing.chplProductNumber as (listing.chplProductNumber + ' (' + (listing.certificationDate | date : 'mediumDate' : 'UTC') + ')') for listing in vm.relatedListings | orderBy:'certificationDate'">
+                      ng-options="listing.chplProductNumber as (listing.chplProductNumber + ' (' + (listing.certificationDate | date : 'mediumDate' : 'UTC') + ')') disable when vm.disabledParent(listing) for listing in vm.relatedListings | orderBy:'certificationDate'">
               </select>
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.ics.parents, vm.newIcsParent); vm.newIcsParent = ''" ng-disabled="!vm.newIcsParent"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
@@ -138,7 +134,7 @@
             <div class="input-group">
               <input type="text" class="form-control" ng-model="vm.newIcsParentOther.chplProductNumber" id="newIcsParentOther" name="newIcsParentOther"
                      ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d+\.[01]\.\d{6}$/">
-              <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.ics.parents, vm.newIcsParentOther); vm.addNewValue(vm.relatedListings, vm.newIcsParentOther); vm.newIcsParentOther = ''" ng-disabled="!vm.newIcsParentOther || vm.editForm.newIcsParentOther.$error.pattern"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+              <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.ics.parents, vm.newIcsParentOther); vm.newIcsParentOther = ''" ng-disabled="!vm.newIcsParentOther || vm.editForm.newIcsParentOther.$error.pattern"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.newIcsParentOther.$touched) && vm.editForm.newIcsParentOther.$error.pattern">Improper format</div>
           </div>
