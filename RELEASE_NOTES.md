@@ -1,20 +1,30 @@
 # Release Notes
 
-### Big Changes (OCD-1359)
-* Reworked entire general public Navigation
-  * Added "Collections"/"Shortcuts"
-  * Consolidated top nav
+## OCD-1350
+* Added "API Criteria" collection
 
 ---
 
 ## Version TBD
 _Date TBD_
 
+### Big changes
+* Reworked entire general public Navigation
+  * Added "Collections"/"Shortcuts"
+  * Consolidated top and bottom nav
+
+### New features
+* Added 'download definition file' download option
+
+---
+
+## Version 8.5.0
+_5 June 2017_
+
 ### New features
 * Allow Closed CAP with open Nonconformity
 * Refresh main search page results on interval to get data changes without requiring page refresh
 * Display addition of criteria in Listing activity popup
-* Added 'download definition file' download option
 
 ---
 
