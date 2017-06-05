@@ -48,13 +48,11 @@
             getCmsDownload: getCmsDownload,
             getCollection: getCollection,
             getDecertifiedDevelopers: getDecertifiedDevelopers,
-            getDecertifiedProducts: getDecertifiedProducts,
             getDeveloper: getDeveloper,
             getDeveloperActivity: getDeveloperActivity,
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
-            getInactiveCertifications: getInactiveCertifications,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getNotificationRecipients: getNotificationRecipients,
             getNotificationReportTypes: getNotificationReportTypes,
@@ -157,7 +155,7 @@
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
             case 'decertifiedProducts':
             case 'inactiveCertificates':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,estimatedUsers');
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
             case 'apiCriteria':
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationDate,criteriaMet,apiDocumentation,mandatoryDisclosures');
             case 'bannedDevelopers':
@@ -689,14 +687,6 @@
 
         function getDecertifiedDevelopers () {
             return simpleApiCall('/decertifications/developers');
-        }
-
-        function getDecertifiedProducts () {
-            return simpleApiCall('/decertifications/certified_products');
-        }
-
-        function getInactiveCertifications () {
-            return simpleApiCall('/decertifications/inactive_certificates');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {

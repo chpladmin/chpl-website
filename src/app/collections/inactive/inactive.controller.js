@@ -21,7 +21,7 @@
                 { predicate: 'product', display: 'Product' },
                 { predicate: 'version', display: 'Version' },
                 { predicate: 'decertificationDate', display: 'Decertification Date', isDate: true },
-                { predicate: 'estimatedUsers', display: '# of Known User', nullDisplay: 'Unknown' },
+                { predicate: 'numMeaningfulUse', display: '# of Known Users', nullDisplay: 'Unknown' },
                 { predicate: 'acb', display: 'ONC-ACB' },
                 { predicate: 'chplProductNumber', display: 'CHPL ID', sortDefault: true, isLink: true },
             ];
