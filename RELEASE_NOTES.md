@@ -1,5 +1,15 @@
 # Release Notes
 
+## Version 8.5.0
+_5 June 2017_
+
+### New features
+* Allow Closed CAP with open Nonconformity
+* Refresh main search page results on interval to get data changes without requiring page refresh
+* Display addition of criteria in Listing activity popup
+
+---
+
 ## Version 8.4.1
 _24 May 2017_
 

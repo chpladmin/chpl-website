@@ -18,7 +18,7 @@
         });
 
     /** @ngInject */
-    function CmsController ($log, commonService, authService, FileUploader, API) {
+    function CmsController ($log, API, FileUploader, authService, commonService) {
         var vm = this;
 
         vm.getDownload = getDownload;

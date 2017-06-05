@@ -5,7 +5,7 @@
         .controller('MergeDeveloperController', MergeDeveloperController);
 
     /** @ngInject */
-    function MergeDeveloperController ($log, $filter, $uibModalInstance, developers, commonService) {
+    function MergeDeveloperController ($filter, $log, $uibModalInstance, commonService, developers) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;

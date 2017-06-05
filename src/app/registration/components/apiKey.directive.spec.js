@@ -40,7 +40,7 @@
 
         describe('controller', function () {
 
-            beforeEach(inject(function ($controller, _$log_, $rootScope, _commonService_, _$q_) {
+            beforeEach(inject(function ($controller, _$log_, _$q_, $rootScope, _commonService_) {
                 $log = _$log_;
                 scope = $rootScope.$new();
                 commonService = _commonService_;

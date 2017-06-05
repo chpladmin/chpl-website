@@ -5,7 +5,7 @@
         .controller('MergeProductController', MergeProductController);
 
     /** @ngInject */
-    function MergeProductController ($uibModalInstance, products, developerId, commonService) {
+    function MergeProductController ($uibModalInstance, commonService, developerId, products) {
         var vm = this;
 
         vm.addPreviousOwner = addPreviousOwner;

@@ -44,7 +44,7 @@
                     return $delegate;
                 });
             });
-            inject(function ($controller, $rootScope, _$log_, _$uibModal_, _$q_, _commonService_, _authService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _commonService_) {
                 $log = _$log_;
                 $uibModal = _$uibModal_;
                 spyOn($uibModal, 'open').and.callFake(function (options) {

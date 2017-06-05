@@ -38,7 +38,7 @@
                 });
             });
 
-            inject(function (_$log_, $rootScope, $controller, _authService_, _commonService_, _$location_, _$q_) {
+            inject(function ($controller, _$location_, _$log_, _$q_, $rootScope, _authService_, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 $location = _$location_;
@@ -59,7 +59,6 @@
                 scope.$digest();
             });
         });
-
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {

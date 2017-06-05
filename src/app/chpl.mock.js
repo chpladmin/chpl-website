@@ -3,9 +3,9 @@
 
     angular
         .module('chpl.mock', [])
-        .service('Mock', mock);
+        .factory('Mock', mock);
 
-    function  mock () {
+    function mock () {
         var mock = {};
 
         mock.acbs = [{id: 1, name: 'Drummond'}];

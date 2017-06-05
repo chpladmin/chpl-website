@@ -5,7 +5,7 @@
         .controller('ChplApiController', ChplApiController);
 
     /** @ngInject */
-    function ChplApiController ($log, $location, API) {
+    function ChplApiController ($location, $log, API) {
         var vm = this;
 
         activate();

@@ -5,7 +5,7 @@
         .controller('EditDeveloperController', EditDeveloperController);
 
     /** @ngInject */
-    function EditDeveloperController ($uibModalInstance, $filter, $log, activeDeveloper, activeAcbs, commonService, authService) {
+    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, commonService) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;

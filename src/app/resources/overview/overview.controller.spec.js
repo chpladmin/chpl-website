@@ -15,7 +15,7 @@
                 });
             });
 
-            inject(function (_commonService_, _$log_, $controller, _$q_, $rootScope) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _commonService_) {
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;

@@ -5,7 +5,7 @@
         .controller('ConfirmController', ConfirmController);
 
     /** @ngInject */
-    function ConfirmController ($log, $routeParams, $location, commonService) {
+    function ConfirmController ($location, $log, $routeParams, commonService) {
         var vm = this;
 
         vm.confirmUser = confirmUser;
