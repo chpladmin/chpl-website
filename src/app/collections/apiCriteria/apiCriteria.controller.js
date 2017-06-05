@@ -22,7 +22,7 @@
                 { predicate: 'version', display: 'Version' },
                 { predicate: 'chplProductNumber', display: 'CHPL ID', sortDefault: true, isLink: true },
                 { predicate: 'apiDocumentation', display: 'API Documentation', transformFn: vm.apiTransform },
-                { predicate: 'mandatoryDisclosures', display: 'Mandatory Disclosures URL', transformFn: vm.disclosuresTransform },
+                { predicate: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL', transformFn: vm.disclosuresTransform },
             ];
         }
 
