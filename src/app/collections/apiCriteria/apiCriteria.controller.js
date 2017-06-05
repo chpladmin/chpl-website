@@ -45,7 +45,7 @@
                         apis[value].push(key);
                     }
                 }
-                ret = '<ul class="list-unstyled">';
+                ret = '<ul>';
                 angular.forEach(apis, function (value, key) {
                     ret += '<li>' + value.join(', ') + ': ' + '<ai-a href="' + key + '">' + key + '</ai-a></li>';
                 });

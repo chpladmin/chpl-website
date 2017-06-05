@@ -45,17 +45,17 @@
 
             it('should create a list of three elements if the APIs are all different', function () {
                 var data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☹http://example2.com☺170.315 (g)(9)☹http://example3.com';
-                expect(vm.apiTransform(data)).toBe('<ul class="list-unstyled"><li>170.315 (g)(7): <ai-a href="http://example1.com">http://example1.com</ai-a></li><li>170.315 (g)(8): <ai-a href="http://example2.com">http://example2.com</ai-a></li><li>170.315 (g)(9): <ai-a href="http://example3.com">http://example3.com</ai-a></li></ul>');
+                expect(vm.apiTransform(data)).toBe('<ul><li>170.315 (g)(7): <ai-a href="http://example1.com">http://example1.com</ai-a></li><li>170.315 (g)(8): <ai-a href="http://example2.com">http://example2.com</ai-a></li><li>170.315 (g)(9): <ai-a href="http://example3.com">http://example3.com</ai-a></li></ul>');
             });
 
             it('should combine elements a list of three elements if the APIs the same', function () {
                 var data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☹http://example1.com☺170.315 (g)(9)☹http://example1.com';
-                expect(vm.apiTransform(data)).toBe('<ul class="list-unstyled"><li>170.315 (g)(7), 170.315 (g)(8), 170.315 (g)(9): <ai-a href="http://example1.com">http://example1.com</ai-a></li></ul>');
+                expect(vm.apiTransform(data)).toBe('<ul><li>170.315 (g)(7), 170.315 (g)(8), 170.315 (g)(9): <ai-a href="http://example1.com">http://example1.com</ai-a></li></ul>');
             });
 
             it('should only have one element if only one api link', function () {
                 var data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☺170.315 (g)(9)☹';
-                expect(vm.apiTransform(data)).toBe('<ul class="list-unstyled"><li>170.315 (g)(7): <ai-a href="http://example1.com">http://example1.com</ai-a></li></ul>');
+                expect(vm.apiTransform(data)).toBe('<ul><li>170.315 (g)(7): <ai-a href="http://example1.com">http://example1.com</ai-a></li></ul>');
             });
         });
 
