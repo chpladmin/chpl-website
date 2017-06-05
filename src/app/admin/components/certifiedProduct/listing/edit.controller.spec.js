@@ -10,8 +10,7 @@
             practiceType: [],
             classificationType: [],
             certifyingBody: [],
-            certificationStatus: []
-
+            certificationStatus: [],
         };
 
         mock.resources = {
@@ -22,11 +21,11 @@
             accessibilityStandards: [],
             targetedUsers: [],
             statuses: [],
-            testingLabs: []
+            testingLabs: [],
         }
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
-            dismiss: jasmine.createSpy('dismiss')
+            dismiss: jasmine.createSpy('dismiss'),
         };
 
         beforeEach(function () {
@@ -58,7 +57,7 @@
                     resources: mock.resources,
                     workType: 'manage',
                     $uibModalInstance: mock.modalInstance,
-                    $scope: scope
+                    $scope: scope,
                 });
                 scope.$digest();
             });

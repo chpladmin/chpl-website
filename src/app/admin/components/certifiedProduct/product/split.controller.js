@@ -23,7 +23,7 @@
             vm.splitProduct = {
                 newVersions: [],
                 oldProduct: product,
-                oldVersions: versions
+                oldVersions: versions,
             };
         }
 
@@ -58,7 +58,7 @@
                         $uibModalInstance.close({
                             product: response.oldProduct,
                             versions: vm.splitProduct.oldVersions,
-                            newProduct: response.newProduct
+                            newProduct: response.newProduct,
                         });
                     } else {
                         vm.errorMessage = response.data.error;

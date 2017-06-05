@@ -57,7 +57,7 @@
                 .then(function (response) {
                     if (response.status === 200) {
                         $uibModalInstance.close({
-                            status: 'deleted'
+                            status: 'deleted',
                         });
                     } else {
                         vm.errorMessage = response.data.error;
@@ -78,7 +78,7 @@
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close({
                                 recipient: response,
-                                status: 'updated'
+                                status: 'updated',
                             });
                         } else {
                             vm.errorMessage = response.data.error;
@@ -91,7 +91,7 @@
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close({
-                                recipient: response
+                                recipient: response,
                             });
                         } else {
                             vm.errorMessage = response.data.error;

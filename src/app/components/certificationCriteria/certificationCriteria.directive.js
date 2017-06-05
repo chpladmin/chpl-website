@@ -19,7 +19,7 @@
                 resources: '=',
                 accessibilityStandards: '=?',
                 qmsStandards: '=?',
-                save: '&'
+                save: '&',
             },
             scope: {},
             controllerAs: 'vm',
@@ -28,10 +28,10 @@
                 var handler = ctrl.save({
                     handler: function () {
                         ctrl.saveEdits();
-                    }
+                    },
                 });
                 scope.$on('$destroy', handler);
-            }
+            },
         };
     }
 
@@ -62,8 +62,8 @@
                 resolve: {
                     cert: function () { return vm.cert; },
                     hasIcs: function () { return vm.hasIcs; },
-                    resources: function () { return vm.resources; }
-                }
+                    resources: function () { return vm.resources; },
+                },
             });
             vm.editUibModalInstance.result.then(function (result) {
                 vm.cert = result;

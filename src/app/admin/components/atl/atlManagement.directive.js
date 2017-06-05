@@ -13,11 +13,11 @@
             templateUrl: 'app/admin/components/atl/atlManagement.html',
             bindToController: {
                 workType: '=?',
-                activeAtl: '=?'
+                activeAtl: '=?',
             },
             scope: {},
             controllerAs: 'vm',
-            controller: 'AtlManagementController'
+            controller: 'AtlManagementController',
         };
     }
 
@@ -73,8 +73,8 @@
                 resolve: {
                     atl: function () { return {}; },
                     action: function () { return 'create'; },
-                    isChplAdmin: function () { return vm.isChplAdmin; }
-                }
+                    isChplAdmin: function () { return vm.isChplAdmin; },
+                },
             });
             vm.modalInstance.result.then(function () {
                 vm.activate();
@@ -96,8 +96,8 @@
                 resolve: {
                     atl: function () { return atl; },
                     action: function () { return 'edit'; },
-                    isChplAdmin: function () { return vm.isChplAdmin; }
-                }
+                    isChplAdmin: function () { return vm.isChplAdmin; },
+                },
             });
             vm.modalInstance.result.then(function (result) {
                 if (result !== 'deleted') {

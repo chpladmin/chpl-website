@@ -1,33 +1,34 @@
 {
     "plugins": [
-        "angular"
+        "angular",
     ],
     "extends": [
         "eslint:recommended",
-        "plugin:angular/johnpapa"
+        "plugin:angular/johnpapa",
     ],
     "env": {
         "browser": true,
-        "jasmine": true
+        "jasmine": true,
     },
     "globals": {
         "angular": true,
         "module": true,
-        "inject": true
+        "inject": true,
     },
     "rules": {
+        "comma-dangle": ["error", "always-multiline"],
         "curly": ["error"],
-        "eqeqeq": ["error"],
-        "no-multi-spaces": ["error"],
         "eol-last": ["error"],
+        "eqeqeq": ["error"],
         "func-call-spacing": ["error"],
         "indent": ["error"],
+        "no-multi-spaces": ["error"],
         "no-multiple-empty-lines": ["error", { "max": 1 }],
         "no-tabs": ["error"],
         "no-trailing-spaces": ["error"],
         "space-before-function-paren": ["error"],
         "angular/di-order": ["error"],
         "angular/file-name": ["off"],
-        "angular/function-type": ["off"]
+        "angular/function-type": ["off"],
     }
 }

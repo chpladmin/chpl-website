@@ -55,8 +55,8 @@
                 resolve: {
                     surveillance: function () { return vm.surveillance; },
                     surveillanceTypes: function () { return vm.surveillanceTypes; },
-                    workType: function () { return 'confirm'; }
-                }
+                    workType: function () { return 'confirm'; },
+                },
             });
             vm.editModalInstance.result.then(function (result) {
                 vm.surveillance = result;
@@ -76,9 +76,9 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    nonconformities: function () { return noncons; }
+                    nonconformities: function () { return noncons; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
             vm.modalInstance.result.then(function (response) {
                 noncons = response;

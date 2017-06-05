@@ -13,11 +13,11 @@
             templateUrl: 'app/admin/components/acb/acbManagement.html',
             bindToController: {
                 workType: '=?',
-                activeAcb: '=?'
+                activeAcb: '=?',
             },
             scope: {},
             controllerAs: 'vm',
-            controller: 'AcbManagementController'
+            controller: 'AcbManagementController',
         };
     }
 
@@ -72,8 +72,8 @@
                 resolve: {
                     acb: function () { return {}; },
                     action: function () { return 'create'; },
-                    isChplAdmin: function () { return vm.isChplAdmin; }
-                }
+                    isChplAdmin: function () { return vm.isChplAdmin; },
+                },
             });
             vm.modalInstance.result.then(function () {
                 vm.activate();
@@ -95,8 +95,8 @@
                 resolve: {
                     acb: function () { return acb; },
                     action: function () { return 'edit'; },
-                    isChplAdmin: function () { return vm.isChplAdmin; }
-                }
+                    isChplAdmin: function () { return vm.isChplAdmin; },
+                },
             });
             vm.modalInstance.result.then(function (result) {
                 if (result !== 'deleted') {

@@ -62,7 +62,7 @@
                         vm.allCerts[cert].values.push({
                             productId: product.id,
                             allowed: false,
-                            certificationDate: product.certificationDate
+                            certificationDate: product.certificationDate,
                         });
                     }
                 }
@@ -77,7 +77,7 @@
                         vm.allCqms[cqm].values.push({
                             productId: product.id,
                             allowed: false,
-                            certificationDate: product.certificationDate
+                            certificationDate: product.certificationDate,
                         });
                     }
                 }
@@ -122,7 +122,7 @@
                     productId: product.id,
                     allowed: true,
                     success: cert.success,
-                    certificationDate: product.certificationDate
+                    certificationDate: product.certificationDate,
                 });
             }
         }
@@ -147,7 +147,7 @@
                     allowed: true,
                     success: cqm.success,
                     certificationDate: product.certificationDate,
-                    successVersions: cqm.successVersions
+                    successVersions: cqm.successVersions,
                 });
             }
         }
@@ -156,7 +156,7 @@
             vm.hasNon2015 = vm.hasNon2015 || product.certificationEdition.name !== '2015';
             vm.productList.push({
                 id: product.id,
-                certificationDate: product.certificationDate
+                certificationDate: product.certificationDate,
             });
         }
     }

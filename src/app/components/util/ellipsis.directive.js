@@ -13,11 +13,11 @@
             bindToController: {
                 text: '@',
                 maxLength: '@?',
-                wordBoundaries: '@?'
+                wordBoundaries: '@?',
             },
             scope: {},
             controllerAs: 'vm',
-            controller: 'EllipsisController'
+            controller: 'EllipsisController',
         };
     }
 

@@ -32,7 +32,7 @@
                     toaster.pop({
                         type: 'success',
                         title: title,
-                        body: message
+                        body: message,
                     });
                 }
                 // If a token was sent back, save it
@@ -49,7 +49,7 @@
                     }
                 }
                 return response;
-            }
+            },
         }
     }
 

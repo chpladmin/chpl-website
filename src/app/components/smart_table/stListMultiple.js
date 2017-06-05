@@ -13,9 +13,9 @@
                 hidden: '@?',
                 hiddenOptions: '@?',
                 matchFull: '@?',
-                nameSpace: '@',
+                nameSpace: '@?',
                 separator: '@?',
-                trackAnalytics: '@?'
+                trackAnalytics: '@?',
             },
             controller: 'ListMultipleController',
             controllerAs: 'vm',
@@ -29,9 +29,9 @@
                 predicateExpression: '=',
                 registerAllowAll: '&?',
                 registerClearFilter: '&',
-                registerRestoreState: '&'
+                registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/stListMultiple.html'
+            templateUrl: 'app/components/smart_table/stListMultiple.html',
         }
     }
 
@@ -46,20 +46,20 @@
                 var allowAll = scope.registerAllowAll({
                     allowAll: function () {
                         ctrl.allowAll();
-                    }
+                    },
                 });
                 scope.$on('$destroy', allowAll);
             }
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearFilter();
-                }
+                },
             });
             scope.$on('$destroy', clearFilter);
             var restoreState = scope.registerRestoreState({
                 restoreState: function (state) {
                     ctrl.restoreState(state);
-                }
+                },
             });
             scope.$on('$destroy', restoreState);
 
@@ -110,7 +110,7 @@
                 if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
                     distinctItems.push({
                         value: value,
-                        selected: true
+                        selected: true,
                     });
                 }
             }
@@ -211,13 +211,13 @@
                 query.matchAll = {
                     all: numberOfItems === 0,
                     matchFull: vm.matchFull,
-                    items: vm.selected
+                    items: vm.selected,
                 }
             } else {
                 query.matchAny = {
                     all: (numberOfItems === 0 || (!vm.hiddenOptions && numberOfItems === vm.distinctItems.length)),
                     matchFull: vm.matchFull,
-                    items: vm.selected
+                    items: vm.selected,
                 }
             }
             vm.tableCtrl.search(query, vm.predicate);
@@ -254,7 +254,9 @@
         }
 
         function storeState () {
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            if (vm.nameSpace) {
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            }
         }
 
         function toggleSelection (value, dontSearch) {

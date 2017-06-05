@@ -31,7 +31,7 @@
             vm.handlers = [];
             vm.navState = {
                 reports: 'cp-upload',
-                notifications: 'surveillance'
+                notifications: 'surveillance',
             };
 
             // base case

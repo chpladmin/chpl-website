@@ -33,7 +33,7 @@
             scope.fakeFunction = function () {};
             scope.userManagementInviteUser = {
                 $setPristine: function () {},
-                $setUntouched: function () {}
+                $setUntouched: function () {},
             };
 
             element = angular.element('<ai-user-management create-user="fakeFunction" modify-user="fakeFunction" delete-user="fakeFunction" cancel-user="fakeFunction"></ai-user-management');
@@ -52,7 +52,7 @@
             beforeEach(inject(function ($controller, $q) {
                 ctrl = $controller('UserManagementController', {
                     $scope: scope,
-                    $element: null
+                    $element: null,
                 });
                 spyOn(mockCommonService, 'inviteUser').and.returnValue($q.when({hash: 'the hash'}));
                 scope.$digest();

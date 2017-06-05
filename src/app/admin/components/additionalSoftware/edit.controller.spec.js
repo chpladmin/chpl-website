@@ -14,7 +14,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('EditAdditionalSoftwareController', {
                     software: 'software',
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

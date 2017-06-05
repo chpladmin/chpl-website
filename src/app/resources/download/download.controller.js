@@ -28,7 +28,7 @@
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2015&format=csv', label: '2015 CSV', display: '2015 edition summary (csv)'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2014&format=csv', label: '2014 CSV', display: '2014 edition summary (csv)'},
                 { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY + '&type=all', label: 'Surveillance', display: 'Surveillance Activity'},
-                { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY, label: 'Non-Conformities', display: 'Non-Conformities'}
+                { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY, label: 'Non-Conformities', display: 'Non-Conformities'},
             ]
             vm.definitionOptions = [
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&definition=true', label: 'Complete XML', display: 'Complete listing (xml) Definition File'},
@@ -38,7 +38,7 @@
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2015&format=csv&definition=true', label: '2015 CSV', display: '2015 edition summary (csv) Definition File'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2014&format=csv&definition=true', label: '2014 CSV', display: '2014 edition summary (csv) Definition File'},
                 { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY + '&type=all&definition=true', label: 'Surveillance', display: 'Surveillance Activity Definition File'},
-                { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY + '&definition=true', label: 'Non-Conformities', display: 'Non-Conformities Definition File'}
+                { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY + '&definition=true', label: 'Non-Conformities', display: 'Non-Conformities Definition File'},
             ]
 
             if (vm.showRestricted()) {

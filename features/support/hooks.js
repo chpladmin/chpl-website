@@ -11,11 +11,23 @@ defineSupportCode(({After}) => {
             });
         }
     });
+
+    After(function () {
+        /*
+        return browser.element(by.tagName('footer')).element(by.id('login-toggle')).getText().then(function (text) {
+            if (text !== 'Administrator Login') {
+                return browser.element(by.tagName('footer')).element(by.id('login-toggle')).click().then(function () {
+                    return browser.element(by.tagName('footer')).element(by.buttonText('Log Out')).click();
+                });
+            }
+        });
+        */
+    });
 });
 
 defineSupportCode(({Before}) => {
     Before(function () {
-        // do setup stuff here
+        //return browser.get('#/');
     });
 });
 

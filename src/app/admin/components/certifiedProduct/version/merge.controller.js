@@ -22,7 +22,7 @@
             delete vm.version.versionId;
             vm.updateVersion = {
                 versionIds: [],
-                newProductId: productId
+                newProductId: productId,
             };
             for (var i = 0; i < vm.versions.length; i++) {
                 vm.updateVersion.versionIds.push(vm.versions[i].versionId);

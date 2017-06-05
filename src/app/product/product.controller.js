@@ -65,8 +65,8 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    activity: function () { return vm.activity; }
-                }
+                    activity: function () { return vm.activity; },
+                },
             });
             vm.viewProductHistoryInstance.result.then(function (response) {
                 $log.info(response);
