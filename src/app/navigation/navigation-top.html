@@ -18,6 +18,7 @@
           <li ng-class="{'active': vm.isActive('/collections') }" class="dropdown" uib-dropdown is-open="vm.collectionsIsOpen">
             <a href class="dropdown-toggle" id="shortcut-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.collectionsIsOpen">Shortcuts <span class="fa" ng-class="vm.collectionsIsOpen ? 'fa-caret-down' : 'fa-caret-right'"></span></a>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="shortcut-toggle" id="shortcut-dropdown-menu">
+              <li><a href="#/collections/apiCriteria"><img src="assets/images/APICriteria_dropdown.png" alt="API Criteria Icon"></img>API Criteria</a></li>
               <li><a href="#/collections/developers"><img src="assets/images/BannedDevelopers_dropdown.png" alt="Banned Developers Icon"></img>Banned Developers</a></li>
               <li><a href="#/collections/products"><img src="assets/images/DecertifiedProducts_dropdown.png" alt="Decertified Products Icon"></img>Decertified Products</a></li>
               <li><a href="#/collections/inactive"><img src="assets/images/InactiveCertificates_dropdown.png" alt="Inactive Certificates Icon"></img>Inactive Certificates</a></li>
