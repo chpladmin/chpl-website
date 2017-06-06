@@ -10,16 +10,16 @@
             scope: {
                 registerSearch: '&',
                 registerRestoreComponents: '&',
-                nameSpace: '@'
+                nameSpace: '@?',
             },
             link: function (scope, element, attr, ctrl) {
                 var search = scope.registerSearch({
                     search: function () {
                         ctrl.search();
-                    }
+                    },
                 });
                 scope.$on('$destroy', search);
-            }
+            },
         }
     }
 })();

@@ -24,11 +24,15 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.options = [{name: 'True', value: true},
-                          {name: 'False', value: false},
-                          {name: 'N/A', value: null}];
-            vm.allMeasures = [{abbreviation: 'MD'},
-                           {abbreviation: 'LP'}];
+            vm.options = [
+                {name: 'True', value: true},
+                {name: 'False', value: false},
+                {name: 'N/A', value: null},
+            ];
+            vm.allMeasures = [
+                {abbreviation: 'MD'},
+                {abbreviation: 'LP'},
+            ];
             vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0;
             vm.hasIcs = hasIcs;
             vm.resources = resources;
@@ -53,8 +57,8 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    task: function () { return { task: {} }; }
-                }
+                    task: function () { return { task: {} }; },
+                },
             });
             vm.editUibModalInstance.result.then(function (result) {
                 if (vm.cert.testTasks === null) {
@@ -82,8 +86,8 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    task: function () { return {'task': task}; }
-                }
+                    task: function () { return {'task': task}; },
+                },
             });
             vm.editUibModalInstance.result.then(function (result) {
                 vm.cert.testTasks[idx] = result;

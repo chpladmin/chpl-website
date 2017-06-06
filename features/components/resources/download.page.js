@@ -13,7 +13,7 @@ module.exports = {
 
     //page methods
     go: function () {
-        browser.get('#/resources/download');
+        return browser.get('#/resources/download');
     },
 
     selectDownloadFile: function (name) {

@@ -9,7 +9,7 @@
         mock.authorizeUser = {
             hash: 'hash',
             userName: 'subjectName',
-            password: 'password'
+            password: 'password',
         };
         mock.validUser = {
             hash: 'hash',
@@ -21,8 +21,8 @@
                 firstName: 'firstName',
                 lastName: 'lastName',
                 email: 'email@email.email',
-                phoneNumber: 'phone'
-            }
+                phoneNumber: 'phone',
+            },
         };
 
         beforeEach(function () {
@@ -54,7 +54,7 @@
                     $routeParams: {hash: 'fakehash'},
                     authService: authService,
                     commonService: commonService,
-                    $location: $location
+                    $location: $location,
                 });
                 scope.$digest();
             });

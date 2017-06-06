@@ -10,7 +10,7 @@
             bindToController: {
                 hasChanges: '=?',
                 initialState: '=?',
-                nameSpace: '@'
+                nameSpace: '@?',
             },
             controller: 'SurveillanceFilterController',
             controllerAs: 'vm',
@@ -20,9 +20,9 @@
             scope: {
                 registerAllowAll: '&',
                 registerClearFilter: '&',
-                registerRestoreState: '&'
+                registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/aiSurveillanceFilter.html'
+            templateUrl: 'app/components/smart_table/aiSurveillanceFilter.html',
         }
     }
 
@@ -38,19 +38,19 @@
             var allowAll = scope.registerAllowAll({
                 allowAll: function () {
                     ctrl.allowAll();
-                }
+                },
             });
             scope.$on('$destroy', allowAll);
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearSurveillanceActivityFilter();
-                }
+                },
             });
             scope.$on('$destroy', clearFilter);
             var restoreState = scope.registerRestoreState({
                 restoreState: function (state) {
                     ctrl.restoreState(state);
-                }
+                },
             });
             scope.$on('$destroy', restoreState);
             ctrl.tableCtrl = table;
@@ -75,7 +75,7 @@
 
         function allowAll () {
             vm.query = {
-                NC: {}
+                NC: {},
             }
             vm.filterChanged();
         }
@@ -118,7 +118,9 @@
                 delete tableState.search.predicateObject.surveillance;
                 vm.tableCtrl.search();
             }
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            if (vm.nameSpace) {
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            }
         }
 
         function restoreState (state) {
@@ -135,7 +137,7 @@
                 vm.query = angular.copy(vm.initialState);
             } else {
                 vm.query = {
-                    NC: {}
+                    NC: {},
                 }
             }
         }

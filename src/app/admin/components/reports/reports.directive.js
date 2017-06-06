@@ -10,7 +10,7 @@
                 templateUrl: 'app/admin/components/reports/reports.html',
                 bindToController: {
                     workType: '=',
-                    productId: '='
+                    productId: '=',
                 },
                 scope: {triggerRefresh: '&'},
                 controllerAs: 'vm',
@@ -19,10 +19,10 @@
                     var handler = scope.triggerRefresh({
                         handler: function () {
                             ctrl.refreshActivity();
-                        }
+                        },
                     });
                     scope.$on('$destroy', handler);
-                }
+                },
             };
         });
 
@@ -66,44 +66,44 @@
             start.setDate(end.getDate() - vm.activityRange.range + 1); // offset to account for inclusion of endDate in range
             vm.activityRange.listing = {
                 startDate: angular.copy(start),
-                endDate: angular.copy(end)
+                endDate: angular.copy(end),
             };
             if (vm.productId) {
                 vm.activityRange.listing.startDate = new Date('4/1/2016');
             }
             vm.activityRange.developer = {
                 startDate: angular.copy(start),
-                endDate: angular.copy(end)
+                endDate: angular.copy(end),
             };
             vm.activityRange.product = {
                 startDate: angular.copy(start),
-                endDate: angular.copy(end)
+                endDate: angular.copy(end),
             };
             vm.activityRange.acb = {
                 startDate: angular.copy(start),
-                endDate: angular.copy(end)
+                endDate: angular.copy(end),
             };
             vm.activityRange.atl = {
                 startDate: angular.copy(start),
-                endDate: angular.copy(end)
+                endDate: angular.copy(end),
             };
             vm.activityRange.announcement = {
                 startDate: angular.copy(start),
-                endDate: angular.copy(end)
+                endDate: angular.copy(end),
             };
             vm.activityRange.userActivity = {
                 startDate: angular.copy(start),
-                endDate: angular.copy(end)
+                endDate: angular.copy(end),
             };
             vm.activityRange.api_key = {
                 startDate: angular.copy(start),
-                endDate: angular.copy(end)
+                endDate: angular.copy(end),
             };
             vm.apiKey = {
                 visiblePage: 1,
                 pageSize: 100,
                 startDate: angular.copy(vm.activityRange.startDate),
-                endDate: angular.copy(vm.activityRange.endDate)
+                endDate: angular.copy(vm.activityRange.endDate),
             };
             vm.refreshActivity(true);
             vm.loadApiKeys();
@@ -262,7 +262,7 @@
                 visiblePage: 1,
                 pageSize: 100,
                 startDate: angular.copy(vm.activityRange.startDate),
-                endDate: angular.copy(vm.activityRange.endDate)
+                endDate: angular.copy(vm.activityRange.endDate),
             };
         }
 
@@ -276,9 +276,9 @@
                 keyboard: false,
                 resolve: {
                     newSurveillance: function () { return newS; },
-                    oldSurveillance: function () { return oldS; }
+                    oldSurveillance: function () { return oldS; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
         }
 
@@ -346,7 +346,7 @@
                 {key: 'sedReportFileLocation', display: 'SED Report File Location'},
                 {key: 'sedTesting', display: 'SED Tested'},
                 {key: 'sedTestingEnd', display: 'SED Testing End Date', filter: 'date'},
-                {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'}
+                {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
             ];
             var nestedKeys = [
                 //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
@@ -354,7 +354,7 @@
                 {key: 'classificationType', subkey: 'name', display: 'Classification Type'},
                 {key: 'ics', subkey: 'inherits', display: 'ICS Status'},
                 {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
-                {key: 'testingLab', subkey: 'name', display: 'Testing Lab'}
+                {key: 'testingLab', subkey: 'name', display: 'Testing Lab'},
             ];
             var output = {
                 upload: [],
@@ -362,7 +362,7 @@
                 surveillance: [],
                 cap: [],
                 other: [],
-                questionable: []
+                questionable: [],
             };
             var change;
             var questionable;
@@ -373,7 +373,7 @@
                     date: data[i].activityDate,
                     newId: data[i].id,
                     acb: '',
-                    questionable: false
+                    questionable: false,
                 };
                 activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                 if (data[i].description === 'Created a certified product') {
@@ -496,7 +496,7 @@
                             {key: 'randomizedSurveillance', display: 'Result of Randomized Surveillance'},
                             {key: 'resolution', display: 'Description of Resolution'},
                             {key: 'surveillanceEndDate', display: 'Surveillance Ended', filter: 'date'},
-                            {key: 'surveillanceStartDate', display: 'Surveillance Began', filter: 'date'}
+                            {key: 'surveillanceStartDate', display: 'Surveillance Began', filter: 'date'},
                         ];
                         activity.details = [];
                         for (j = 0; j < capFields.length; j++) {
@@ -546,11 +546,11 @@
                                 {key: 'endDate', display: 'End Date', filter: 'date'},
                                 {key: 'friendlyId', display: 'Surveillance ID'},
                                 {key: 'randomizedSitesUsed', display: 'Number of sites surveilled'},
-                                {key: 'startDate', display: 'Start Date', filter: 'date'}
+                                {key: 'startDate', display: 'Start Date', filter: 'date'},
                             ];
                             nestedKeys = [
                                 //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
-                                {key: 'type', subkey: 'name', display: 'Certification Type'}
+                                {key: 'type', subkey: 'name', display: 'Certification Type'},
                             ];
                             for (k = 0; k < simpleFields.length; k++) {
                                 change = compareItem(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
@@ -570,7 +570,7 @@
                             if (actions.length === 0) {
                                 activity.source = {
                                     oldS: data[i].originalData,
-                                    newS: data[i].newData
+                                    newS: data[i].newData,
                                 }
                             } else {
                                 action += actions.join('</li><li>');
@@ -625,7 +625,7 @@
                 {key: 'gap', display: 'GAP Tested', questionable: true},
                 {key: 'privacySecurityFramework', display: 'Privacy &amp; Security Framework'},
                 {key: 'sed', display: 'SED tested'},
-                {key: 'success', display: 'Successful', questionable: true}
+                {key: 'success', display: 'Successful', questionable: true},
             ];
             var i, j;
             prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
@@ -677,7 +677,7 @@
                     {key: 'version', display: 'Version'},
                     {key: 'grouping', display: 'Grouping'},
                     {key: 'certifiedProductNumber', display: 'CHPL Product Number'},
-                    {key: 'justification', display: 'Justification'}
+                    {key: 'justification', display: 'Justification'},
                 ];
                 var addlSw = compareArray(prev[i].additionalSoftware, curr[i].additionalSoftware, addlSwKeys, 'name');
                 for (j = 0; j < addlSw.length; j++) {
@@ -732,7 +732,7 @@
                 {key: 'developerSummary', display: 'Developer Summary'},
                 {key: 'resolution', display: 'Resolution'},
                 {key: 'surveillancePassRate', display: 'Pass Rate'},
-                {key: 'surveillanceSitesSurveilled', display: 'Sites Surveilled'}
+                {key: 'surveillanceSitesSurveilled', display: 'Sites Surveilled'},
             ];
             prev.sort(function (a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
             curr.sort(function (a,b) {return (a.certificationCriterionNumber > b.certificationCriterionNumber) ? 1 : ((b.certificationCriterionNumber > a.certificationCriterionNumber) ? -1 : 0);} );
@@ -763,7 +763,7 @@
                 {key: 'taskTimeAvg', display: 'Time Average'},
                 {key: 'taskTimeDeviationObservedAvg', display: 'Time Deviation Observed Average'},
                 {key: 'taskTimeDeviationOptimalAvg', display: 'Time Deviation Optimal Average'},
-                {key: 'taskTimeStddev', display: 'Time Standard Deviation'}
+                {key: 'taskTimeStddev', display: 'Time Standard Deviation'},
             ];
             var i, j, k;
             if (prev !== null) {
@@ -785,7 +785,7 @@
                                 {key: 'gender', display: 'Gender'},
                                 {key: 'occupation', display: 'Occupation'},
                                 {key: 'productExperienceMonths', display: 'Product Experience (Months)'},
-                                {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'}
+                                {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'},
                             ];
                             var testParticipants = compareArray(prev[i].testParticipants, curr[j].testParticipants, testParticipantKeys, 'testParticipantId');
                             for (k = 0; k < testParticipants.length; k++) {
@@ -854,10 +854,10 @@
                 {key: 'developerCode', display: 'Developer Code'},
                 //{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                 {key: 'name', display: 'Name'},
-                {key: 'website', display: 'Website'}
+                {key: 'website', display: 'Website'},
             ];
             var nestedKeys = [
-                {key: 'status', subkey: 'statusName', display: 'Developer Status'}
+                {key: 'status', subkey: 'statusName', display: 'Developer Status'},
             ];
             var ret = [];
             var change;
@@ -869,7 +869,7 @@
                     developer: data[i].newData.name,
                     developerCode: data[i].newData.developerCode,
                     responsibleUser: getResponsibleUser(data[i].responsibleUser),
-                    date: data[i].activityDate
+                    date: data[i].activityDate,
                 };
                 activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
                 if (data[i].description.startsWith('Merged')) {
@@ -982,7 +982,7 @@
                     id: data[i].id,
                     product: data[i].newData.name,
                     responsibleUser: getResponsibleUser(data[i].responsibleUser),
-                    date: data[i].activityDate
+                    date: data[i].activityDate,
                 };
                 if (data[i].developer) {
                     activity.developer = data[i].developer.name;
@@ -1168,7 +1168,7 @@
                 {key: 'city', display: 'City'},
                 {key: 'state', display: 'State'},
                 {key: 'zipcode', display: 'Zipcode'},
-                {key: 'country', display: 'Country'}
+                {key: 'country', display: 'Country'},
             ];
             return compareObject(prev, curr, simpleFields);
         }
@@ -1179,7 +1179,7 @@
                 {key: 'lastName', display: 'Last Name'},
                 {key: 'phoneNumber', display: 'Phone Number'},
                 {key: 'title', display: 'Title'},
-                {key: 'email', display: 'Email'}
+                {key: 'email', display: 'Email'},
             ];
             return compareObject(prev, curr, simpleFields);
         }

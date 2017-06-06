@@ -10,7 +10,7 @@
             require: '^aiCompareWidget',
             restrict: 'E',
             scope: {
-                widget: '='
+                widget: '=',
             },
             templateUrl: 'app/components/compare_widget/compare_widget_display.html',
             link: function (scope, el, attrs, widgetController) {
@@ -25,7 +25,7 @@
                 scope.toggleProduct = function (id) {
                     widgetController.toggleProduct(id);
                 };
-            }
+            },
         };
     }
 })();

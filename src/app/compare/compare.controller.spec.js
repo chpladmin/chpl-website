@@ -21,7 +21,7 @@
                     certificationResults: [],
                     certificationEdition: {name: '2014'},
                     cqmResults: [],
-                    applicableCqmCriteria: []
+                    applicableCqmCriteria: [],
                 }];
 
                 mockCommonService.getProduct = function () {
@@ -44,7 +44,7 @@
                 $scope: scope,
                 $routeParams: {compareIds: '123&234'},
                 commonService: commonService,
-                utilService: utilService
+                utilService: utilService,
             });
             scope.$digest();
         }));

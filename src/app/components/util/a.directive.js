@@ -25,11 +25,11 @@
                 templateUrl: 'app/components/util/a.html',
                 bindToController: {
                     href: '@',
-                    text: '@'
+                    text: '@',
                 },
                 scope: {},
                 controllerAs: 'vm',
-                controller: 'AController'
+                controller: 'AController',
             };
         });
 })();

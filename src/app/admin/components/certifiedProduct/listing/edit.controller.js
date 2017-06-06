@@ -55,7 +55,7 @@
                     prod: idFields[4],
                     ver: idFields[5],
                     ics: idFields[6],
-                    suffix: idFields[7] + '.' + idFields[8]
+                    suffix: idFields[7] + '.' + idFields[8],
                 };
             }
 
@@ -157,7 +157,7 @@
                 vm.isSaving = true;
                 commonService.updateCP({
                     listing: vm.cp,
-                    banDeveloper: vm.banDeveloper
+                    banDeveloper: vm.banDeveloper,
                 }).then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

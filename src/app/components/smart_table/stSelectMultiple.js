@@ -9,7 +9,7 @@
                 scope: {
                     collection: '=',
                     predicate: '@',
-                    predicateExpression: '='
+                    predicateExpression: '=',
                 },
                 templateUrl: 'app/components/smart_table/stSelectMultiple.html',
                 link: function (scope, element, attr, table) {
@@ -90,7 +90,7 @@
                         var predicate = getPredicate();
 
                         var query = {
-                            matchAny: {}
+                            matchAny: {},
                         };
 
                         query.matchAny.items = getSelectedOptions();
@@ -114,7 +114,7 @@
                             if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
                                 distinctItems.push({
                                     value: value,
-                                    selected: true
+                                    selected: true,
                                 });
                             }
                         }
@@ -128,7 +128,7 @@
                         }
                         return false;
                     }
-                }
+                },
             }
         })
 })();

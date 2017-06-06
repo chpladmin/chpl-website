@@ -7,7 +7,7 @@
         mock = {};
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
-            dismiss: jasmine.createSpy('dismiss')
+            dismiss: jasmine.createSpy('dismiss'),
         };
 
         beforeEach(function () {
@@ -25,7 +25,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('CertificationStatusController', {
                     $scope: scope,
-                    $uibModalInstance: mock.modalInstance
+                    $uibModalInstance: mock.modalInstance,
                 });
                 scope.$digest();
             });

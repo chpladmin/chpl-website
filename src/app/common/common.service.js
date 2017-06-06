@@ -33,7 +33,6 @@
             getAccessibilityStandards: getAccessibilityStandards,
             getAgeRanges: getAgeRanges,
             getAll: getAll,
-            getAllNonconformities: getAllNonconformities,
             getAnnouncement: getAnnouncement,
             getAnnouncementActivity: getAnnouncementActivity,
             getAnnouncements: getAnnouncements,
@@ -47,14 +46,12 @@
             getCertificationStatuses: getCertificationStatuses,
             getCertifiedProductActivity: getCertifiedProductActivity,
             getCmsDownload: getCmsDownload,
-            getDecertifiedDevelopers: getDecertifiedDevelopers,
-            getDecertifiedProducts: getDecertifiedProducts,
+            getCollection: getCollection,
             getDeveloper: getDeveloper,
             getDeveloperActivity: getDeveloperActivity,
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
-            getInactiveCertifications: getInactiveCertifications,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getNotificationRecipients: getNotificationRecipients,
             getNotificationReportTypes: getNotificationReportTypes,
@@ -152,8 +149,18 @@
             return simpleApiCall('/certified_products');
         }
 
-        function getAllNonconformities () {
-            return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
+        function getCollection (type) {
+            switch (type) {
+            case 'nonconformities':
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
+            case 'decertifiedProducts':
+            case 'inactiveCertificates':
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
+            case 'apiCriteria':
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationDate,criteriaMet,apiDocumentation,mandatoryDisclosures');
+            case 'bannedDevelopers':
+                return simpleApiCall('/decertifications/developers');
+            }
         }
 
         function getSearchOptions (showDeleted) {
@@ -680,18 +687,6 @@
             }
             if (params.length > 0) { queryParams = '?' + params.join('&'); }
             return postApiCall('/key/activity/' + queryParams, {});
-        }
-
-        function getDecertifiedDevelopers () {
-            return simpleApiCall('/decertifications/developers');
-        }
-
-        function getDecertifiedProducts () {
-            return simpleApiCall('/decertifications/certified_products');
-        }
-
-        function getInactiveCertifications () {
-            return simpleApiCall('/decertifications/inactive_certificates');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {

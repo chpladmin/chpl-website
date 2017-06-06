@@ -37,7 +37,7 @@
             if (vm.acbId) {
                 userObject = {
                     acbId: vm.acbId,
-                    userId: vm.user.user.userId
+                    userId: vm.user.user.userId,
                 };
                 commonService.removeUserFromAcb(userObject.userId, userObject.acbId)
                     .then(function (response) {
@@ -52,7 +52,7 @@
             } else if (vm.atlId) {
                 userObject = {
                     atlId: vm.atlId,
-                    userId: vm.user.user.userId
+                    userId: vm.user.user.userId,
                 };
                 commonService.removeUserFromAtl(userObject.userId, userObject.atlId)
                     .then(function (response) {

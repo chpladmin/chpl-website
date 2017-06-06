@@ -35,7 +35,7 @@
                     $scope: scope,
                     $routeParams: {hash: 'fakehash'},
                     commonService: commonService,
-                    $location: $location
+                    $location: $location,
                 });
                 scope.$digest();
             }));

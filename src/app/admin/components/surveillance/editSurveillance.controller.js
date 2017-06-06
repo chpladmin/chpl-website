@@ -66,9 +66,9 @@
                     requirement: function () { return { nonconformities: [] }; },
                     surveillanceId: function () { return vm.surveillance.id; },
                     surveillanceTypes: function () { return vm.data; },
-                    workType: function () { return 'add'; }
+                    workType: function () { return 'add'; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
             vm.modalInstance.result.then(function (response) {
                 if (!vm.surveillance.requirements) {
@@ -112,9 +112,9 @@
                     requirement: function () { return req; },
                     surveillanceId: function () { return vm.surveillance.id; },
                     surveillanceTypes: function () { return vm.data; },
-                    workType: function () { return 'edit'; }
+                    workType: function () { return 'edit'; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
             vm.modalInstance.result.then(function (response) {
                 var found = false;
@@ -149,9 +149,9 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    nonconformities: function () { return noncons; }
+                    nonconformities: function () { return noncons; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
             vm.modalInstance.result.then(function (response) {
                 noncons = response;

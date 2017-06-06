@@ -8,4 +8,4 @@ test_reports/
 src/app/index.constants.js
 .project
 .settings/
-/features/components/admin/admin.login.steps.js
+/features/components/nav/nav.login.steps.js

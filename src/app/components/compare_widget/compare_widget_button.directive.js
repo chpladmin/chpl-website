@@ -11,7 +11,7 @@
             restrict: 'E',
             scope: {
                 productId: '@',
-                productName: '@'
+                productName: '@',
             },
             templateUrl: 'app/components/compare_widget/compare_widget_button.html',
             link: function (scope, el, attrs, widgetController) {
@@ -22,7 +22,7 @@
                 scope.isInList = function (id) {
                     return widgetController.isInList(id);
                 };
-            }
+            },
         };
     }
 })();

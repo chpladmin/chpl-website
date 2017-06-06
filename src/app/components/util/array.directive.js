@@ -54,11 +54,11 @@
                     items: '=',
                     key: '@',
                     keySecond: '@',
-                    keyThird: '@'
+                    keyThird: '@',
                 },
                 scope: {},
                 controllerAs: 'vm',
-                controller: 'ArrayController'
+                controller: 'ArrayController',
             };
         });
 })();

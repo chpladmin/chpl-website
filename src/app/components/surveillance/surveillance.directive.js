@@ -13,11 +13,11 @@
             scope: {},
             bindToController: {
                 allowEditing: '=',
-                certifiedProduct: '='
+                certifiedProduct: '=',
             },
             size: 'lg',
             controllerAs: 'vm',
-            controller: 'SurveillanceController'
+            controller: 'SurveillanceController',
         };
     }
 
@@ -55,8 +55,8 @@
                 resolve: {
                     surveillance: function () { return surveillance; },
                     surveillanceTypes: function () { return vm.surveillanceTypes; },
-                    workType: function () { return 'edit'; }
-                }
+                    workType: function () { return 'edit'; },
+                },
             });
             vm.uibModalInstance.result.then(function () {
                 commonService.getProduct(vm.certifiedProduct.id)
@@ -110,8 +110,8 @@
                 resolve: {
                     surveillance: function () { return { certifiedProduct: vm.certifiedProduct }; },
                     surveillanceTypes: function () { return vm.surveillanceTypes; },
-                    workType: function () { return 'initiate'; }
-                }
+                    workType: function () { return 'initiate'; },
+                },
             });
             vm.uibModalInstance.result.then(function () {
                 commonService.getProduct(vm.certifiedProduct.id)

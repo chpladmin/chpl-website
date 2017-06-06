@@ -13,8 +13,8 @@
             ics: { inherits: false },
             practiceType: [],
             product: { productId: 1 },
+            targetedUsers: [],
         };
-
         mock.resources = {
             accessibilityStandards: [],
             bodies: [],
@@ -22,8 +22,6 @@
             practices: [],
             qmsStandards: [],
             statuses: [],
-            targetedUsers: [],
-            testingLabs: [],
         }
         mock.relatedListings = [{id: 1}];
 
@@ -59,7 +57,7 @@
                     resources: mock.resources,
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
-                    $scope: scope
+                    $scope: scope,
                 });
                 scope.$digest();
             });
@@ -140,7 +138,7 @@
                 it('should expect the code to be 1 if two parents and parents have ICS 0', function () {
                     vm.cp.ics.parents = [
                         {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'},
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'},
                     ];
                     expect(vm.requiredIcsCode()).toBe('1');
                 });
@@ -148,7 +146,7 @@
                 it('should expect the code to be 2 if two parents and parents have ICS 1', function () {
                     vm.cp.ics.parents = [
                         {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'}
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
                     ];
                     expect(vm.requiredIcsCode()).toBe('2');
                 });
@@ -156,7 +154,7 @@
                 it('should expect the code to be 3 if two parents and parents have ICS 1,2', function () {
                     vm.cp.ics.parents = [
                         {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.2.1.170331'}
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.2.1.170331'},
                     ];
                     expect(vm.requiredIcsCode()).toBe('3');
                 });

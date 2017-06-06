@@ -70,12 +70,12 @@
                 'Surescripts LLC': false,
                 'Drummond Group': true,
                 'ICSA Labs': true,
-                'InfoGard': true
+                'InfoGard': true,
             },
             certificationEdition: {
                 '2011': false,
                 '2014': true,
-                '2015': true
+                '2015': true,
             },
             certificationStatus: {
                 'Active': true,
@@ -85,11 +85,11 @@
                 'Withdrawn by Developer Under Surveillance/Review': false,
                 'Withdrawn by ONC-ACB': false,
                 'Suspended by ONC': true,
-                'Terminated by ONC': false
-            }
+                'Terminated by ONC': false,
+            },
         };
         vm.retired = {
-            acb: {'CCHIT': true, 'SLI Global': true, 'Surescripts LLC': true}
+            acb: {'CCHIT': true, 'SLI Global': true, 'Surescripts LLC': true},
         };
 
         function browseAll () {
@@ -265,7 +265,7 @@
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
-                size: 'lg'
+                size: 'lg',
             });
             vm.viewCertificationStatusLegendInstance.result.then(function (response) {
                 $log.info(response);
@@ -372,7 +372,7 @@
                 results[i].surveillance = angular.toJson({
                     surveillanceCount: results[i].surveillanceCount,
                     openNonconformityCount: results[i].openNonconformityCount,
-                    closedNonconformityCount: results[i].closedNonconformityCount
+                    closedNonconformityCount: results[i].closedNonconformityCount,
                 });
             }
             return results;
@@ -445,13 +445,13 @@
                 cqms: { 2011: [], other: [] },
                 criteria: { 2011: [], 2014: [], 2015: []},
                 editionItems: [],
-                statusItems: []
+                statusItems: [],
             };
             vm.searchOptions.certBodyNames = $filter('orderBy')(vm.searchOptions.certBodyNames, 'name');
             for (i = 0; i < vm.searchOptions.certBodyNames.length; i++) {
                 obj = {
                     value: vm.searchOptions.certBodyNames[i].name,
-                    selected: vm.defaultRefineModel.acb[vm.searchOptions.certBodyNames[i].name]
+                    selected: vm.defaultRefineModel.acb[vm.searchOptions.certBodyNames[i].name],
                 };
                 if (vm.retired.acb[vm.searchOptions.certBodyNames[i].name]) {
                     obj.display = obj.value + ' (Retired)';

@@ -89,9 +89,9 @@
                     address: vm.cp.developer.address,
                     transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, acbName: vm.cp.certifyingBody.name, attestation: vm.cp.transparencyAttestation}],
                     contact: vm.cp.developer.contact,
-                    developerId: vm.cp.developer.developerId
+                    developerId: vm.cp.developer.developerId,
                 },
-                developerIds: [vm.cp.developer.developerId]
+                developerIds: [vm.cp.developer.developerId],
             };
             if (!dev.developer.address.country) {
                 dev.developer.address.country = 'USA';
@@ -128,10 +128,10 @@
             var prd = {
                 product: {
                     name: vm.cp.product.name,
-                    productId: vm.cp.product.productId
+                    productId: vm.cp.product.productId,
                 },
                 productIds: [vm.cp.product.productId],
-                newDeveloperId: vm.cp.developer.developerId
+                newDeveloperId: vm.cp.developer.developerId,
             };
             commonService.updateProduct(prd)
                 .then(function () {
@@ -165,9 +165,9 @@
             var ver = {
                 version: {
                     version: vm.cp.version.version,
-                    productId: vm.cp.version.versionId
+                    productId: vm.cp.version.versionId,
                 },
-                versionIds: [vm.cp.version.versionId]
+                versionIds: [vm.cp.version.versionId],
             };
             commonService.updateVersion(ver)
                 .then(function () {
@@ -193,7 +193,7 @@
                         $uibModalInstance.close({
                             contact: error.data.contact,
                             objectId: error.data.objectId,
-                            status: 'resolved'
+                            status: 'resolved',
                         });
                     } else {
                         vm.errorMessages = error.data.errorMessages;
@@ -216,8 +216,8 @@
                     isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return vm.resources; },
-                    workType: function () { return 'confirm'; }
-                }
+                    workType: function () { return 'confirm'; },
+                },
             });
             vm.editModalInstance.result.then(function (result) {
                 vm.cp = result;

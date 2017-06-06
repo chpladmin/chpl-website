@@ -104,8 +104,8 @@
                     range: 60,
                     key: {
                         startDate: new Date('1/15/2017'),
-                        endDate: new Date('2/15/2017')
-                    }
+                        endDate: new Date('2/15/2017'),
+                    },
                 };
             });
 

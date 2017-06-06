@@ -5,7 +5,7 @@
         var el, scope, $log, $q, commonService, vm, Mock, mock, $uibModal, actualOptions;
 
         mock = {
-            acbs: [{id: 1, name: 'fake'}]
+            acbs: [{id: 1, name: 'fake'}],
         };
         mock.fakeModalOptions = {
             templateUrl: 'app/admin/components/notifications/recipient.html',
@@ -18,8 +18,8 @@
             resolve: {
                 acbs: jasmine.any(Function),
                 recipient: jasmine.any(Function),
-                reportTypes: jasmine.any(Function)
-            }
+                reportTypes: jasmine.any(Function),
+            },
         };
 
         beforeEach(function () {

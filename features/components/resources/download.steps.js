@@ -8,23 +8,33 @@ defineSupportCode(({Given, When, Then}) => {
         return page.go();
     });
 
+    When('I refresh the page', function () {
+        return page.go();
+    });
+
     When('I change the download file select box to {stringInDoubleQuotes}', function (file) {
         return page.selectDownloadFile(file);
+    });
+
+    Then('there should be {int} Download Files', function (count) {
+        var downloadSelect = page.model.downloadSelect;
+        var downloadOptions = page.model.downloadOptions;
+        return downloadSelect.click().then(function () {
+            return (expect(downloadOptions.count()).to.eventually.equal(count));
+        })
+    });
+
+    Then('there should be {int} Definition Files', function (count) {
+        var definitionSelect = page.model.definitionSelect;
+        var definitionOptions = page.model.definitionOptions;
+        return definitionSelect.click().then(function () {
+            return (expect(definitionOptions.count()).to.eventually.equal(count));
+        })
     });
 
     Then('I should see \'Download the CHPL\' as the page title', function () {
         var pageTitle = page.model.pageTitle;
         return (expect(pageTitle.getText()).eventually.to.equal('Download the CHPL'));
-    });
-
-    Then('there should be {int} Download Files', function (count) {
-        var downloadOptions = page.model.downloadOptions;
-        return (expect(downloadOptions.count()).to.eventually.equal(count));
-    });
-
-    Then('there should be {int} Definition Files', function (count) {
-        var definitionOptions = page.model.definitionOptions;
-        return (expect(definitionOptions.count()).to.eventually.equal(count));
     });
 
     Then('the download select box should be {stringInDoubleQuotes}', function (file) {

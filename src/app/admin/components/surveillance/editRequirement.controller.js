@@ -52,9 +52,9 @@
                     requirementId: function () { return vm.requirement.id; },
                     surveillanceId: function () { return vm.surveillanceId; },
                     surveillanceTypes: function () { return vm.data; },
-                    workType: function () { return 'add'; }
+                    workType: function () { return 'add'; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
             vm.modalInstance.result.then(function (response) {
                 if (!vm.requirement.nonconformities) {
@@ -94,9 +94,9 @@
                     requirementId: function () { return vm.requirement.id; },
                     surveillanceId: function () { return vm.surveillanceId; },
                     surveillanceTypes: function () { return vm.data; },
-                    workType: function () { return vm.workType; }
+                    workType: function () { return vm.workType; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
             vm.modalInstance.result.then(function (response) {
                 var found = false;
