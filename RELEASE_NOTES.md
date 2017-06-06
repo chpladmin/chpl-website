@@ -1,5 +1,20 @@
 # Release Notes
 
+## OCD-1575 (new features)
+* Triggers retired items on main filter when retired items are selected
+  * Trigger: Selecting any of:
+    *"Retired" status
+    *"2011" edition
+    * Retired ACB
+    * 2011 Criteria
+    * 2014 CQM
+  * Turns on all of:
+    * "Retired" status
+    * "2011" edition
+    * all retired ACBs
+
+---
+
 ## Version TBD
 _Date TBD_
 
