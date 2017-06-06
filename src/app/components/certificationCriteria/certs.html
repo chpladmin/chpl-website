@@ -92,12 +92,12 @@
         <span>
           <span ng-if="vm.product.certificationEdition.name === '2014'">
             <h4>Test Results Summary</h4>
-            <ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" text="{{ vm.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.reportFileLocation }"></ai-a>
+            <a ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.reportFileLocation }">{{ vm.reportFileLocation }}</a>
             <p ng-if="!vm.reportFileLocation">No report on file</p>
           </span>
           <span ng-if="vm.product.sedReportFileLocation !== null">
             <h4>Usability Report</h4>
-            <ai-a ng-if="vm.product.sedReportFileLocation" href="{{ vm.product.sedReportFileLocation }}" text="{{ vm.product.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.product.sedReportFileLocation }"></ai-a>
+            <a ai-a ng-if="vm.product.sedReportFileLocation" href="{{ vm.product.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.product.sedReportFileLocation }">{{ vm.product.sedReportFileLocation }}</a>
             <p ng-if="!vm.product.sedReportFileLocation">No report on file</p>
           </span>
           <span ng-if="vm.product.sedIntendedUserDescription">

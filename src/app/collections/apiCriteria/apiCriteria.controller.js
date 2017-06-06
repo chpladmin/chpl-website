@@ -5,7 +5,7 @@
         .controller('ApiCriteriaController', ApiCriteriaController);
 
     /** @ngInject */
-    function ApiCriteriaController () {
+    function ApiCriteriaController ($compile, $scope) {
         var vm = this;
 
         vm.apiTransform = apiTransform;
@@ -47,9 +47,10 @@
                 }
                 ret = '<ul>';
                 angular.forEach(apis, function (value, key) {
-                    ret += '<li>' + value.join(', ') + ': ' + '<ai-a href="' + key + '">' + key + '</ai-a></li>';
+                    ret += '<li>' + value.join(', ') + ': ' + '<a ai-a href="' + key + '">' + key + '</a></li>';
                 });
                 ret += '</ul>';
+                ret = $compile(ret)($scope)[0].outerHTML;
             }
             return ret;
         }
@@ -57,7 +58,8 @@
         function disclosuresTransform (data) {
             var ret = 'Unknown';
             if (data) {
-                ret = '<ai-a href="' + data + '">' + data + '</ai-a>';
+                ret = '<a ai-a href="' + data + '">' + data + '</a>';
+                ret = $compile(ret)($scope)[0].outerHTML;
             }
             return ret;
         }

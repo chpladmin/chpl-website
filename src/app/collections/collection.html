@@ -67,7 +67,7 @@
                 </td>
               </tr>
               <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-                <th ng-repeat="col in vm.columns" scope="col" class="search-header" st-sort="{{ col.predicate }}" st-skip-natural="true" st-sort-default="col.sortDefault">{{ col.display }}</th>
+                <th ng-repeat="col in vm.columns" scope="col" class="search-header" st-sort="{{ col.predicate }}" st-skip-natural="true" st-sort-default="{{ col.sortDefault }}">{{ col.display }}</th>
               </tr>
             </thead>
             <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
