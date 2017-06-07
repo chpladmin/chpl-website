@@ -21,6 +21,7 @@ _Date TBD_
     * "Retired" status
     * "2011" edition
     * All retired ACBs
+* Changed admin Notifications section to just "Subscription Management"
 
 ---
 
