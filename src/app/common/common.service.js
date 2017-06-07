@@ -54,8 +54,8 @@
             getEditions: getEditions,
             getEducation: getEducation,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
-            getNotificationRecipients: getNotificationRecipients,
-            getNotificationReportTypes: getNotificationReportTypes,
+            getSubscriptionRecipients: getSubscriptionRecipients,
+            getSubscriptionReportTypes: getSubscriptionReportTypes,
             getPractices: getPractices,
             getProduct: getProduct,
             getProductActivity: getProductActivity,
@@ -700,11 +700,11 @@
         /*
          * Email notification services
          */
-        function getNotificationReportTypes () {
+        function getSubscriptionReportTypes () {
             return simpleApiCall('/data/notification_types');
         }
 
-        function getNotificationRecipients () {
+        function getSubscriptionRecipients () {
             return simpleApiCall('/notifications/recipients');
         }
 
