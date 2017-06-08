@@ -73,7 +73,7 @@
                 ctrl = $controller('AtlManagementController', {
                     $scope: scope,
                     $element: null,
-                    commonService: commonService
+                    commonService: commonService,
                 });
                 scope.$digest();
             }));

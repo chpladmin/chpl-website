@@ -8,7 +8,7 @@
                 require: '^stTable',
                 scope: {
                     before: '=',
-                    after: '='
+                    after: '=',
                 },
                 templateUrl: 'app/components/smart_table/stDateRangePopup.html',
                 link: function (scope, element, attr, table) {
@@ -54,7 +54,7 @@
                     scope.openBefore = open(true);
                     scope.openAfter = open();
                     scope.datepickerOptions = { closeOnDateSelection: false };
-                }
+                },
             }
         })
 })();

@@ -10,10 +10,10 @@
                 lookupCertIds: 'A014E01O3PSTEAV A014E01O3PSTEAV A014E01O3PSTEA7 NOTANID',
                 lookupProducts: [{id:296,name:'2013 Systemedx Clinical Navigator',version:'2013.12',chplProductNumber:'CHP-022218',year:'2014',practiceType:'Ambulatory',acb:'InfoGard',vendor:'Systemedx Inc',classification:'Complete EHR',additionalSoftware:'Microsoft+SQL+Server+for+all+criteria',certificationId:'A014E01O3PSTEAV',certificationIdEdition:'2014'}],
                 lookupProductsCertIdNotFound: ["A014E01O3PSTEA7"],
-                lookupProductsFormatInvalidIds: ["NOTANID"]
+                lookupProductsFormatInvalidIds: ["NOTANID"],
             },
             goodResponse: {"products":[{"id":296,"name":"2013 Systemedx Clinical Navigator","version":"2013.12","chplProductNumber":"CHP-022218","year":"2014","practiceType":"Ambulatory","acb":"InfoGard","vendor":"Systemedx Inc","classification":"Complete EHR","additionalSoftware":"Microsoft+SQL+Server+for+all+criteria"}],"ehrCertificationId":"A014E01O3PSTEAV","year":"2014","criteria":null,"cqms":null},
-            badResponse: {"products":[],"ehrCertificationId":null,"year":null,"criteria":null,"cqms":null}
+            badResponse: {"products":[],"ehrCertificationId":null,"year":null,"criteria":null,"cqms":null},
         };
 
         beforeEach(function () {
@@ -35,7 +35,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('CmsLookupController', {
-                    $scope: scope
+                    $scope: scope,
                 });
                 scope.$digest();
             });

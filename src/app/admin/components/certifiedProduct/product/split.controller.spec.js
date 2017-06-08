@@ -19,14 +19,14 @@
                 commonService = _commonService_;
                 commonService.splitProduct.and.returnValue($q.when({
                     oldProduct: 'a product',
-                    newProduct: 'new product'
+                    newProduct: 'new product',
                 }));
 
                 scope = $rootScope.$new();
                 vm = $controller('SplitProductController', {
                     product: Mock.products[0],
                     versions: [1,2,3],
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });
@@ -69,7 +69,7 @@
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({
                     product: 'a product',
                     versions: [1,2],
-                    newProduct: 'new product'
+                    newProduct: 'new product',
                 });
             });
 

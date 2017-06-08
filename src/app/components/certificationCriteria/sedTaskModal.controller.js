@@ -33,8 +33,8 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    participant: function () { return { participant: {} }; }
-                }
+                    participant: function () { return { participant: {} }; },
+                },
             });
             vm.editModalInstance.result.then(function (result) {
                 if (vm.task.testParticipants === null || angular.isUndefined(vm.task.testParticipants)) {
@@ -70,8 +70,8 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    participant: function () { return {'participant': participant}; }
-                }
+                    participant: function () { return {'participant': participant}; },
+                },
             });
             vm.editModalInstance.result.then(function (result) {
                 vm.task.testParticipants[idx] = result;

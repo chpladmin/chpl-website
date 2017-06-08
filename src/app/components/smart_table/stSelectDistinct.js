@@ -8,7 +8,7 @@
         return {
             bindToController: {
                 hasChanges: '=?',
-                nameSpace: '@'
+                nameSpace: '@?',
             },
             controller: 'SelectDistinctController',
             controllerAs: 'vm',
@@ -21,9 +21,9 @@
                 fixedItems: '=?',
                 predicate: '@',
                 registerClearFilter: '&',
-                registerRestoreState: '&'
+                registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/stSelectDistinct.html'
+            templateUrl: 'app/components/smart_table/stSelectDistinct.html',
         }
     }
 
@@ -42,13 +42,13 @@
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearFilter();
-                }
+                },
             });
             scope.$on('$destroy', clearFilter);
             var restoreState = scope.registerRestoreState({
                 restoreState: function (state) {
                     ctrl.restoreState(state);
-                }
+                },
             });
             scope.$on('$destroy', restoreState);
 
@@ -121,7 +121,9 @@
             }
 
             vm.tableCtrl.search(query, vm.predicate);
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            if (vm.nameSpace) {
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            }
         }
 
         function restoreState (state) {

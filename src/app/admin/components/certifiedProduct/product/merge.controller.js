@@ -29,7 +29,7 @@
             vm.product.ownerHistory = [];
             vm.updateProduct = {
                 productIds: [],
-                newDeveloperId: developerId
+                newDeveloperId: developerId,
             };
             for (var i = 0; i < vm.products.length; i++) {
                 vm.updateProduct.productIds.push(vm.products[i].productId);

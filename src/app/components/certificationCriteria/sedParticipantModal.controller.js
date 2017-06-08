@@ -26,7 +26,7 @@
                 });
             vm.participant.education = {
                 name: vm.participant.educationTypeName,
-                id: vm.participant.educationTypeId
+                id: vm.participant.educationTypeId,
             };
             commonService.getAgeRanges()
                 .then(function (result) {
@@ -34,7 +34,7 @@
                 });
             vm.participant.ageRangeObj = {
                 name: vm.participant.ageRange,
-                id: vm.participant.ageRangeId
+                id: vm.participant.ageRangeId,
             };
         }
 

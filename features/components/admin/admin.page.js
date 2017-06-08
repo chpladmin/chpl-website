@@ -2,32 +2,29 @@
 module.exports = {
     // page definition
     model: {
-        usernameField: element(by.css('.jumbotron')).element(by.id('username')),
+        adminNavItems: element(by.tagName('footer')).element(by.css('navbar-right')).element(by.css('dropdown-menu')).all(by.tagName('li')),
+        footerLoginButton: element(by.tagName('footer')).element(by.buttonText('Log In')),
+        footerPasswordField: element(by.tagName('footer')).element(by.id('password')),
+        footerToggleButton: element(by.tagName('footer')).element(by.id('login-toggle')),
+        footerUsernameField: element(by.tagName('footer')).element(by.id('username')),
+        loginButton: element(by.css('.jumbotron')).element(by.buttonText('Log In')),
         passwordField: element(by.css('.jumbotron')).element(by.id('password')),
-        loginButton: element(by.css('.jumbotron')).element(by.buttonText('Log In'))
-                                                          /*
-        pageTitle: element(by.tagName('h1')),
-        downloadSelect: element(by.id('downloadSelect')),
-        downloadOptions: element(by.id('downloadSelect')).all(by.tagName('option')),
-        activeDownloadFile: element(by.id('downloadSelect')).element(by.css('option:checked')),
-        definitionSelect: element(by.id('definitionSelect')),
-        definitionOptions: element(by.id('definitionSelect')).all(by.tagName('option')),
-        activeDefinitionFile: element(by.id('definitionSelect')).element(by.css('option:checked'))
-        */
+        usernameField: element(by.css('.jumbotron')).element(by.id('username'))
     },
 
     //page methods
     go: function () {
-        browser.get('#/admin');
-    },
-
-    getTitle: function () {
-        return browser.getTitle();
+        return browser.get('#/admin');
     },
 
     login: function (username, password) {
-        this.model.usernameField.sendKeys(username);
-        this.model.passwordField.sendKeys(password);
-        this.model.loginButton.click();
+        return this.openAdminNav()
+            .then(this.model.footerUsernameField.sendKeys(username))
+            .then(this.model.footerPasswordField.sendKeys(password))
+            .then(this.model.footerLoginButton.click());
+    },
+
+    openAdminNav: function () {
+        return this.model.footerToggleButton.click();
     }
 };

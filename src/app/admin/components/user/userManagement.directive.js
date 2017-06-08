@@ -11,10 +11,10 @@
                 scope: {},
                 bindToController: {
                     acbId: '@',
-                    atlId: '@'
+                    atlId: '@',
                 },
                 controllerAs: 'vm',
-                controller: 'UserManagementController'
+                controller: 'UserManagementController',
             };
         });
 
@@ -58,8 +58,8 @@
                     user: function () { return user; },
                     action: function () { return 'edit'; },
                     acbId: function () { return vm.acbId; },
-                    atlId: function () { return vm.atlId; }
-                }
+                    atlId: function () { return vm.atlId; },
+                },
             });
             vm.modalInstance.result.then(function () {
                 vm.freshenUsers();
@@ -82,8 +82,8 @@
                     user: function () { return {}; },
                     action: function () { return 'invite'; },
                     acbId: function () { return vm.acbId; },
-                    atlId: function () { return vm.atlId; }
-                }
+                    atlId: function () { return vm.atlId; },
+                },
             });
             vm.modalInstance.result.then(function (result) {
                 $log.info(result);

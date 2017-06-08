@@ -7,7 +7,7 @@
         mock = {};
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
-            dismiss: jasmine.createSpy('dismiss')
+            dismiss: jasmine.createSpy('dismiss'),
         };
 
         beforeEach(function () {
@@ -28,7 +28,7 @@
                     surveillanceId: 1,
                     workType: 'create',
                     $uibModalInstance: mock.modalInstance,
-                    $scope: scope
+                    $scope: scope,
                 });
                 scope.$digest();
             });

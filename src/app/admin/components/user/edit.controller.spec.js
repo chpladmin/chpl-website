@@ -40,7 +40,7 @@
                     acbId: null,
                     atlId: null,
                     user: mock.user,
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });
@@ -82,7 +82,7 @@
             beforeEach(function () {
                 vm.userInvitation = {
                     permissions: ['a role'],
-                    emailAddress: 'fake@sample.com'
+                    emailAddress: 'fake@sample.com',
                 }
             });
 

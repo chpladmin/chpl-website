@@ -86,7 +86,7 @@
                     'First name is required',
                     'Last name is required',
                     'Email is required',
-                    'Phone number is required'
+                    'Phone number is required',
                 ]);
 
                 vm.contact.firstName = 'John';
@@ -94,20 +94,20 @@
                 expect(vm.errorMessages).toEqual([
                     'Last name is required',
                     'Email is required',
-                    'Phone number is required'
+                    'Phone number is required',
                 ]);
 
                 vm.contact.lastName = 'Smith';
                 vm.updateErrors();
                 expect(vm.errorMessages).toEqual([
                     'Email is required',
-                    'Phone number is required'
+                    'Phone number is required',
                 ]);
 
                 vm.contact.email = 'sample@example.com';
                 vm.updateErrors();
                 expect(vm.errorMessages).toEqual([
-                    'Phone number is required'
+                    'Phone number is required',
                 ]);
 
                 vm.contact.phoneNumber = '123-123-1234';

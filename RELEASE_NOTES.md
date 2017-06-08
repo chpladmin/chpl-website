@@ -3,6 +3,31 @@
 ## Version TBD
 _Date TBD_
 
+### Big changes
+* Reworked entire general public Navigation
+  * Added "Collections"/"Shortcuts"
+  * Consolidated top and bottom nav
+
+### New features
+* Added 'download definition file' download option
+* Triggers retired items on main filter when retired items are selected
+  * Trigger: Selecting any of:
+    * "Retired" status
+    * "2011" edition
+    * Retired ACB
+    * 2011 Criteria
+    * 2014 CQM
+  * Turns on all of:
+    * "Retired" status
+    * "2011" edition
+    * All retired ACBs
+* Changed admin Notifications section to just "Subscription Management"
+
+---
+
+## Version 8.5.0
+_5 June 2017_
+
 ### New features
 * Allow Closed CAP with open Nonconformity
 * Refresh main search page results on interval to get data changes without requiring page refresh

@@ -7,7 +7,7 @@
         mock = {};
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
-            dismiss: jasmine.createSpy('dismiss')
+            dismiss: jasmine.createSpy('dismiss'),
         };
 
         beforeEach(function () {
@@ -20,7 +20,7 @@
                 vm = $controller('ProductHistoryController', {
                     $scope: scope,
                     $uibModalInstance: mock.modalInstance,
-                    activity: mock.activity
+                    activity: mock.activity,
                 });
                 scope.$digest();
             });

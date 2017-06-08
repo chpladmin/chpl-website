@@ -106,8 +106,8 @@
                 removeAfterUpload: true,
                 headers: {
                     Authorization: 'Bearer ' + authService.getToken(),
-                    'API-Key': authService.getApiKey()
-                }
+                    'API-Key': authService.getApiKey(),
+                },
             });
             vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                 $log.info('onSuccessItem', fileItem, response, status, headers);

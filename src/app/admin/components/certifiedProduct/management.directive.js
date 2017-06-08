@@ -12,11 +12,11 @@
                     workType: '=?',
                     pendingProducts: '=?',
                     pendingSurveillances: '=?',
-                    productId: '='
+                    productId: '=',
                 },
                 scope: {},
                 controllerAs: 'vm',
-                controller: 'VpManagementController'
+                controller: 'VpManagementController',
             };
         });
 
@@ -89,8 +89,8 @@
                     removeAfterUpload: true,
                     headers: {
                         Authorization: 'Bearer ' + authService.getToken(),
-                        'API-Key': authService.getApiKey()
-                    }
+                        'API-Key': authService.getApiKey(),
+                    },
                 });
                 if (angular.isUndefined(vm.uploader.filters)) {
                     vm.uploader.filters = [];
@@ -100,7 +100,7 @@
                     fn: function (item) {
                         var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
                         return '|csv|'.indexOf(extension) !== -1;
-                    }
+                    },
                 });
                 vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                     $log.info('onSuccessItem', fileItem, response, status, headers);
@@ -127,8 +127,8 @@
                     removeAfterUpload: true,
                     headers: {
                         Authorization: 'Bearer ' + authService.getToken(),
-                        'API-Key': authService.getApiKey()
-                    }
+                        'API-Key': authService.getApiKey(),
+                    },
                 });
                 if (angular.isUndefined(vm.surveillanceUploader.filters)) {
                     vm.surveillanceUploader.filters = [];
@@ -138,7 +138,7 @@
                     fn: function (item) { //, options) {
                         var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
                         return '|csv|'.indexOf(extension) !== -1;
-                    }
+                    },
                 });
                 vm.surveillanceUploader.onSuccessItem = function (fileItem, response, status, headers) {
                     $log.info('onSuccessItem', fileItem, response, status, headers);
@@ -214,8 +214,8 @@
                 keyboard: false,
                 resolve: {
                     activeDeveloper: function () { return vm.activeDeveloper; },
-                    activeAcbs: function () { return vm.activeAcbs; }
-                }
+                    activeAcbs: function () { return vm.activeAcbs; },
+                },
             });
             vm.modalInstance.result.then(function (result) {
                 vm.activeDeveloper = result;
@@ -277,8 +277,8 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    developers: function () { return vm.mergingDevelopers; }
-                }
+                    developers: function () { return vm.mergingDevelopers; },
+                },
             });
             vm.modalInstance.result.then(function () {
                 vm.developerMessage = null;
@@ -317,8 +317,8 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    activeProduct: function () { return vm.activeProduct; }
-                }
+                    activeProduct: function () { return vm.activeProduct; },
+                },
             });
             vm.modalInstance.result.then(function (result) {
                 vm.activeProduct = result;
@@ -340,8 +340,8 @@
                 size: 'lg',
                 resolve: {
                     products: function () { return vm.mergingProducts; },
-                    developerId: function () { return vm.activeDeveloper.developerId; }
-                }
+                    developerId: function () { return vm.activeDeveloper.developerId; },
+                },
             });
             vm.modalInstance.result.then(function () {
                 vm.productMessage = null;
@@ -366,8 +366,8 @@
                 keyboard: false,
                 resolve: {
                     versions: function () { return vm.mergingVersions; },
-                    productId: function () { return vm.activeProduct.productId; }
-                }
+                    productId: function () { return vm.activeProduct.productId; },
+                },
             });
             vm.modalInstance.result.then(function () {
                 vm.productMessage = null;
@@ -405,8 +405,8 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    activeVersion: function () { return vm.activeVersion; }
-                }
+                    activeVersion: function () { return vm.activeVersion; },
+                },
             });
             vm.modalInstance.result.then(function (result) {
                 vm.activeVersion = result;
@@ -469,8 +469,8 @@
                     isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return resources; },
-                    workType: function () { return vm.workType; }
-                }
+                    workType: function () { return vm.workType; },
+                },
             });
             vm.modalInstance.result.then(function (result) {
                 vm.activeCP = result;
@@ -509,9 +509,9 @@
                     isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return vm.resources; },
-                    workType: function () { return vm.workType; }
+                    workType: function () { return vm.workType; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
             vm.modalInstance.result.then(function (result) {
                 if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
@@ -542,9 +542,9 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    surveillance: function () { return surv; }
+                    surveillance: function () { return surv; },
                 },
-                size: 'lg'
+                size: 'lg',
             });
             vm.modalInstance.result.then(function () {
                 vm.refreshPending();
@@ -590,7 +590,7 @@
             var query = {
                 pageNumber: 0,
                 pageSize: '50',
-                searchTerm: vm.surveillanceSearch.query
+                searchTerm: vm.surveillanceSearch.query,
             };
             vm.surveillanceProduct = null;
             vm.surveillanceSearch.results = null;
@@ -715,8 +715,8 @@
                 size: 'lg',
                 resolve: {
                     product: function () { return vm.activeProduct; },
-                    versions: function () { return vm.versions; }
-                }
+                    versions: function () { return vm.versions; },
+                },
             });
             vm.splitProductInstance.result.then(function (result) {
                 vm.activeProduct = result.product;

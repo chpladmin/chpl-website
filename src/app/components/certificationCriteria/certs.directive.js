@@ -24,7 +24,7 @@
                 save: '&',
                 product: '=',
                 cap: '=',
-                resources: '='
+                resources: '=',
             },
             scope: {},
             controllerAs: 'vm',
@@ -33,10 +33,10 @@
                 var handler = ctrl.save({
                     handler: function () {
                         ctrl.saveEdits();
-                    }
+                    },
                 });
                 scope.$on('$destroy', handler);
-            }
+            },
         };
         return directive;
 
@@ -70,7 +70,6 @@
                         vm.cqms = newCqms;
                         vm.prepCqms();
                     }}, true);
-
             }
 
             function prepCqms () {

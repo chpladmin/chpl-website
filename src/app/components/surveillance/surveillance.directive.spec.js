@@ -45,7 +45,7 @@
             var surv = {
                 endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
                 friendlyId: 'SURV01',
-                requirements: [{nonconformities: []}]
+                requirements: [{nonconformities: []}],
             };
             expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: No Open Non-Conformities Found');
         });

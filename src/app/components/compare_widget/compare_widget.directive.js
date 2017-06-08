@@ -9,12 +9,12 @@
     function aiCompareWidget () {
         return {
             bindToController: {
-                compareWidget: '=?'
+                compareWidget: '=?',
             },
             controller: 'CompareWidgetController',
             controllerAs: 'vm',
             restrict: 'EA',
-            scope: {}
+            scope: {},
         };
     }
     /** @ngInject */
@@ -38,7 +38,7 @@
         function clearProducts () {
             vm.compareWidget = {
                 products: [],
-                productIds: []
+                productIds: [],
             };
             saveWidget();
         }
