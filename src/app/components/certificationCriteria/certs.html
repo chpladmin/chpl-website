@@ -130,6 +130,9 @@
               </li>
             </ul>
           </span>
+          <span ng-if="(vm.product.ics.parents && vm.product.ics.parents.length > 0) || (vm.product.ics.children && vm.product.ics.children.length > 0)">
+            <cytoscape id="ics-cytoscape" graph-options="vm.icsOptions" graph-elements="vm.icsElements" graph-layout="vm.icsLayout" graph-style="vm.icsStyle" graph-ready="vm.ics_cy_graph_ready"></cytoscape>
+          </span>
           <span ng-if="vm.product.otherAcb">
             <h4>Other ACB</h4>
             <p>{{ vm.product.otherAcb }}</p>

@@ -45,6 +45,7 @@
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
+            vm.buildIcsGraph = buildIcsGraph;
             vm.prepCqms = prepCqms
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
@@ -70,6 +71,85 @@
                         vm.cqms = newCqms;
                         vm.prepCqms();
                     }}, true);
+                vm.buildIcsGraph();
+            }
+
+            function buildIcsGraph () {
+                vm.icsOptions = {
+                    autoungrabify: true,
+                    userPanningEnabled: false,
+                    userZoomingEnabled: false,
+                };
+
+                vm.icsLayout = {
+                    directed: 'true',
+                    fit: 'true',
+                    name: 'breadthfirst',
+                };
+
+                vm.ics_cy_graph_ready = function (evt) {
+                    $log.info('graph ready to be interacted with: ', evt);
+                }
+
+                vm.icsElements = {
+                    n1: {
+                        group: 'nodes',
+                        data: {
+                            label: '15.07.07.1447.BE01.03.1.1.161014',
+                        },
+                    },
+                    n2: {
+                        group: 'nodes',
+                        data: {
+                            label: '15.07.07.1447.BE01.01.0.1.161014',
+                        },
+                    },
+                    n3: {
+                        group: 'nodes',
+                        data: {
+                            label: '15.07.07.1447.BE01.02.0.1.161014',
+                        },
+                    },
+                    e1: {
+                        group: 'edges',
+                        data: {
+                            source: 'n2',
+                            target: 'n1',
+                        },
+                    },
+                    e2: {
+                        group: 'edges',
+                        data: {
+                            source: 'n3',
+                            target: 'n1',
+                        },
+                    },
+                };
+                vm.icsStyle = [
+                    {
+                        selector: 'node',
+                        style: {
+                            //width: 'label' ,
+                            //height: 'label',
+                            shape: 'ellipse',
+                            label: 'data(label)',
+                            'font-size': '12pt',
+                            'text-halign': 'center',
+                            'text-valign': 'top',
+                            'border-width': 0,
+                            'background-color': 'blue',
+                        },
+                    },
+                    {
+                        selector: 'edge',
+                        style: {
+                            width: 3,
+                            'line-color': '#ccc',
+                            'target-arrow-color': '#ccc',
+                            'target-arrow-shape': 'triangle',
+                        },
+                    },
+                ];
             }
 
             function prepCqms () {
