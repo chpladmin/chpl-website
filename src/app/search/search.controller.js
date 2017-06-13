@@ -21,6 +21,7 @@
         vm.registerRestoreComponents = registerRestoreComponents;
         vm.registerRestoreState = registerRestoreState;
         vm.registerSearch = registerSearch;
+        vm.registerShowRetired = registerShowRetired;
         vm.reloadResults = reloadResults;
         vm.statusFont = utilService.statusFont;
         vm.stopCacheRefresh = stopCacheRefresh;
@@ -28,6 +29,7 @@
         vm.triggerClearFilters = triggerClearFilters;
         vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
+        vm.triggerShowRetired = triggerShowRetired;
         vm.viewCertificationStatusLegend = viewCertificationStatusLegend;
         vm.viewPreviouslyCompared = viewPreviouslyCompared;
         vm.viewPreviouslyViewed = viewPreviouslyViewed;
@@ -47,14 +49,15 @@
                 vm.clear();
             }
 
-            vm.categoryChanged = {};
-            vm.boxes = {};
             vm.allowAllHs = [];
+            vm.boxes = {};
+            vm.categoryChanged = {};
             vm.clearFilterHs = [];
-            vm.restoreStateHs = [];
+            vm.displayedCps = [];
             vm.isLoading = true;
             vm.isPreLoading = true;
-            vm.displayedCps = [];
+            vm.restoreStateHs = [];
+            vm.showRetiredHs = [];
 
             manageStorage();
             populateSearchOptions();
@@ -90,6 +93,7 @@
         };
         vm.retired = {
             acb: {'CCHIT': true, 'SLI Global': true, 'Surescripts LLC': true},
+            edition: { '2011': true },
         };
 
         function browseAll () {
@@ -206,6 +210,16 @@
             return removeHandler;
         }
 
+        function registerShowRetired (handler) {
+            vm.showRetiredHs.push(handler);
+            var removeHandler = function () {
+                vm.showRetiredHs = vm.showRetiredHs.filter(function (aHandler) {
+                    return aHandler !== handler;
+                });
+            };
+            return removeHandler;
+        }
+
         function reloadResults () {
             vm.activeSearch = true;
             setTimestamp();
@@ -255,6 +269,17 @@
             if (vm.tableSearch && vm.tableSearch[0]) {
                 vm.tableSearch[0]();
             }
+        }
+
+        function triggerShowRetired () {
+            vm.previouslyIds = [];
+            vm.viewingPreviouslyCompared = false;
+            delete $localStorage.viewingPreviouslyCompared;
+            vm.viewingPreviouslyViewed = false;
+            delete $localStorage.viewingPreviouslyViewed;
+            angular.forEach(vm.showRetiredHs, function (handler) {
+                handler();
+            });
         }
 
         function viewCertificationStatusLegend () {
@@ -455,38 +480,69 @@
                 };
                 if (vm.retired.acb[vm.searchOptions.certBodyNames[i].name]) {
                     obj.display = obj.value + ' (Retired)';
+                    obj.retired = true;
                 }
                 vm.filterItems.acbItems.push(obj);
             }
             vm.searchOptions.editions = $filter('orderBy')(vm.searchOptions.editions, 'name');
             for (i = 0; i < vm.searchOptions.editions.length; i++) {
-                vm.filterItems.editionItems.push({value: vm.searchOptions.editions[i].name, selected: vm.defaultRefineModel.certificationEdition[vm.searchOptions.editions[i].name]});
+                obj = {
+                    value: vm.searchOptions.editions[i].name,
+                    selected: vm.defaultRefineModel.certificationEdition[vm.searchOptions.editions[i].name],
+                };
+                if (vm.retired.edition[vm.searchOptions.editions[i].name]) {
+                    obj.display = obj.value + ' (Retired)';
+                    obj.retired = true;
+                }
+                vm.filterItems.editionItems.push(obj);
             }
             vm.searchOptions.certificationStatuses = $filter('orderBy')(vm.searchOptions.certificationStatuses, 'name');
             for (i = 0; i < vm.searchOptions.certificationStatuses.length; i++) {
-                vm.filterItems.statusItems.push({value: vm.searchOptions.certificationStatuses[i].name, selected: vm.defaultRefineModel.certificationStatus[vm.searchOptions.certificationStatuses[i].name]});
+                obj = {
+                    value: vm.searchOptions.certificationStatuses[i].name,
+                    selected: vm.defaultRefineModel.certificationStatus[vm.searchOptions.certificationStatuses[i].name],
+                };
+                if (obj.value === 'Retired') {
+                    obj.retired = true;
+                }
+                vm.filterItems.statusItems.push(obj);
             }
             vm.searchOptions.certificationCriterionNumbers = $filter('orderBy')(vm.searchOptions.certificationCriterionNumbers, utilService.sortCert);
             for (i = 0; i < vm.searchOptions.certificationCriterionNumbers.length; i++) {
                 var crit = vm.searchOptions.certificationCriterionNumbers[i];
+                obj = {
+                    value: crit.name,
+                    selected: false,
+                    display: crit.name + ': ' + crit.title,
+                };
                 switch (crit.name.substring(4,7)) {
                 case '314':
-                    vm.filterItems.criteria[2014].push({value: crit.name, selected: false, display: crit.name + ': ' + crit.title});
+                    vm.filterItems.criteria[2014].push(obj);
                     break;
                 case '315':
-                    vm.filterItems.criteria[2015].push({value: crit.name, selected: false, display: crit.name + ': ' + crit.title});
+                    vm.filterItems.criteria[2015].push(obj);
                     break;
                 default:
-                    vm.filterItems.criteria[2011].push({value: crit.name, selected: false, display: crit.name + ': ' + crit.title});
+                    obj.display = obj.display + ' (Retired)';
+                    obj.retired = true;
+                    vm.filterItems.criteria[2011].push(obj);
                 }
             }
             vm.searchOptions.cqmCriterionNumbers = $filter('orderBy')(vm.searchOptions.cqmCriterionNumbers, utilService.sortCqm);
             for (i = 0; i < vm.searchOptions.cqmCriterionNumbers.length; i++) {
                 var cqm = vm.searchOptions.cqmCriterionNumbers[i];
+                obj = {
+                    selected: false,
+                };
                 if (cqm.name.substring(0,3) === 'CMS') {
-                    vm.filterItems.cqms.other.push({value: cqm.name, selected: false, display: cqm.name + ': ' + cqm.title});
+                    obj.value = cqm.name;
+                    obj.display = cqm.name + ': ' + cqm.title;
+                    vm.filterItems.cqms.other.push(obj);
                 } else {
-                    vm.filterItems.cqms[2011].push({value: 'NQF-' + cqm.name, selected: false, display: 'NQF-' + cqm.name + ': ' + cqm.title});
+                    obj.value = 'NQF-' + cqm.name;
+                    obj.display = 'NQF-' + cqm.name + ': ' + cqm.title + '( Retired)';
+                    obj.retired = true;
+                    vm.filterItems.cqms[2011].push(obj);
                 }
             }
         }

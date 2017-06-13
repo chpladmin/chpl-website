@@ -14,7 +14,7 @@
       <input type="checkbox"
              value="{{ item.value }}"
              ng-model="item.isSelected"
-             ng-change="vm.toggleSelection(item.value)">{{ item.display ? item.display : item.value }}
+             ng-change="vm.toggleSelection(item)">{{ item.display ? item.display : item.value }}
     </label>
   </li>
 </ul>
