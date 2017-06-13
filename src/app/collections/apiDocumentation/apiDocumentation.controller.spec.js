@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.collections.apiCollection.controller', function () {
+    describe('chpl.collections.apiDocumentation.controller', function () {
 
         var commonService, scope, vm, $log;
 
@@ -17,7 +17,7 @@
                 commonService = _commonService_;
 
                 scope = $rootScope.$new();
-                vm = $controller('ApiCriteriaController', {
+                vm = $controller('ApiDocumentationController', {
                     $scope: scope,
                     commonService: commonService,
                 });
@@ -45,17 +45,17 @@
 
             it('should create a list of three elements if the APIs are all different', function () {
                 var data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☹http://example2.com☺170.315 (g)(9)☹http://example3.com';
-                expect(vm.apiTransform(data)).toBe('<ul class="ng-scope"><li>170.315 (g)(7): <a ai-a="" href="http://example1.com">http://example1.com</a></li><li>170.315 (g)(8): <a ai-a="" href="http://example2.com">http://example2.com</a></li><li>170.315 (g)(9): <a ai-a="" href="http://example3.com">http://example3.com</a></li></ul>');
+                expect(vm.apiTransform(data)).toBe('<dl class="ng-scope"><dt>170.315 (g)(7)</dt><dd><a ai-a="" href="http://example1.com">http://example1.com</a></dd><dt>170.315 (g)(8)</dt><dd><a ai-a="" href="http://example2.com">http://example2.com</a></dd><dt>170.315 (g)(9)</dt><dd><a ai-a="" href="http://example3.com">http://example3.com</a></dd></dl>');
             });
 
             it('should combine elements a list of three elements if the APIs the same', function () {
                 var data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☹http://example1.com☺170.315 (g)(9)☹http://example1.com';
-                expect(vm.apiTransform(data)).toBe('<ul class="ng-scope"><li>170.315 (g)(7), 170.315 (g)(8), 170.315 (g)(9): <a ai-a="" href="http://example1.com">http://example1.com</a></li></ul>');
+                expect(vm.apiTransform(data)).toBe('<dl class="ng-scope"><dt>170.315 (g)(7), 170.315 (g)(8), 170.315 (g)(9)</dt><dd><a ai-a="" href="http://example1.com">http://example1.com</a></dd></dl>');
             });
 
             it('should only have one element if only one api link', function () {
                 var data = '170.315 (g)(7)☹http://example1.com☺170.315 (g)(8)☺170.315 (g)(9)☹';
-                expect(vm.apiTransform(data)).toBe('<ul class="ng-scope"><li>170.315 (g)(7): <a ai-a="" href="http://example1.com">http://example1.com</a></li></ul>');
+                expect(vm.apiTransform(data)).toBe('<dl class="ng-scope"><dt>170.315 (g)(7)</dt><dd><a ai-a="" href="http://example1.com">http://example1.com</a></dd></dl>');
             });
         });
 

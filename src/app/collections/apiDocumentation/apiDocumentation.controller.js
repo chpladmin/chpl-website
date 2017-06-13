@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('chpl.collections')
-        .controller('ApiCriteriaController', ApiCriteriaController);
+        .controller('ApiDocumentationController', ApiDocumentationController);
 
     /** @ngInject */
-    function ApiCriteriaController ($compile, $scope) {
+    function ApiDocumentationController ($compile, $scope) {
         var vm = this;
 
         vm.apiTransform = apiTransform;
@@ -45,11 +45,11 @@
                         apis[value].push(key);
                     }
                 }
-                ret = '<ul>';
+                ret = '<dl>';
                 angular.forEach(apis, function (value, key) {
-                    ret += '<li>' + value.join(', ') + ': ' + '<a ai-a href="' + key + '">' + key + '</a></li>';
+                    ret += '<dt>' + value.join(', ') + '</dt><dd>' + '<a ai-a href="' + key + '">' + key + '</a></dd>';
                 });
-                ret += '</ul>';
+                ret += '</dl>';
                 ret = $compile(ret)($scope)[0].outerHTML;
             }
             return ret;

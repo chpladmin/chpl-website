@@ -1,10 +1,5 @@
 # Release Notes
 
-## OCD-1350
-* Added "API Criteria" collection
-
----
-
 ## Version TBD
 _Date TBD_
 
@@ -15,6 +10,7 @@ _Date TBD_
 
 ### New features
 * Added 'download definition file' download option
+* Added "API Criteria" collection
 
 ---
 
