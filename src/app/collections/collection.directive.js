@@ -76,7 +76,7 @@
         }
 
         function isFilterActive (key) {
-            return vm.filters.indexOf(key) > -1;
+            return vm.filters && vm.filters.length > 0 && vm.filters.indexOf(key) > -1;
         }
 
         function loadResults () {

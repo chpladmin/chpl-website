@@ -13,11 +13,11 @@
                 controllerAs: 'vm',
                 title: 'CHPL Administration',
             })
-            .when('/collections/apiCriteria', {
-                controller: 'ApiCriteriaController',
+            .when('/collections/apiDocumentation', {
+                controller: 'ApiDocumentationController',
                 controllerAs: 'vm',
-                templateUrl: 'app/collections/apiCriteria/apiCriteria.html',
-                title: 'API Criteria',
+                templateUrl: 'app/collections/apiDocumentation/apiDocumentation.html',
+                title: 'API Documentation for 2015 Edition Certified Products',
             })
             .when('/collections/developers', {
                 controller: 'BannedDevelopersController',
