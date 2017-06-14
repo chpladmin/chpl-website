@@ -3,50 +3,31 @@
 
     describe('chpl.a.directive', function () {
 
-        var element;
-        var scope;
+        var el;
         var $log;
-        var $compile;
-        var ctrl;
 
         beforeEach(function () {
-            module('chpl.templates');
             module('chpl')
         });
 
-        beforeEach(inject(function (_$compile_, _$log_, $rootScope) {
-            $compile = _$compile_;
+        beforeEach(inject(function ($compile, _$log_, $rootScope) {
             $log = _$log_;
-            scope = $rootScope.$new();
 
-            element = angular.element('<ai-a href="fakeUrl" text="fakeText"></ai-a>');
-            $compile(element)(scope);
-            scope.$digest();
-            ctrl = element.controller('aiA');
+            el = angular.element('<a ai-a>text</a>');
+            $compile(el)($rootScope.$new());
         }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
-        describe('controller', function () {
-
-            it('should exist', function () {
-                expect(ctrl).toBeDefined();
-            });
-
-            it('should prepend with "http" if it isn\'t already', function () {
-                expect(ctrl.actualLink).toBe('http://fakeUrl');
-            });
-
-            it('should not prepend if "http" is already there', function () {
-                element = angular.element('<ai-a href="https://fakeUrl" text="fakeText"></ai-a>');
-                $compile(element)(scope);
-                scope.$digest();
-                ctrl = element.controller('aiA');
-                expect(ctrl.actualLink).toBe('https://fakeUrl');
+        describe('template', function () {
+            it('should have the disclaimer link', function () {
+                expect(el.html()).toBe('text<a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" class="pull-right"><i class="fa fa-external-link"></i><span class="sr-only">Web Site Disclaimers</span></a>');
             });
         });
     });

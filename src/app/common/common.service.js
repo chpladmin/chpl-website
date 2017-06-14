@@ -47,7 +47,6 @@
             getCertifiedProductActivity: getCertifiedProductActivity,
             getCmsDownload: getCmsDownload,
             getCollection: getCollection,
-            getDecertifiedDevelopers: getDecertifiedDevelopers,
             getDeveloper: getDeveloper,
             getDeveloperActivity: getDeveloperActivity,
             getDevelopers: getDevelopers,
@@ -156,8 +155,8 @@
             case 'decertifiedProducts':
             case 'inactiveCertificates':
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
-            case 'apiCriteria':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationDate,criteriaMet,apiDocumentation,mandatoryDisclosures');
+            case 'apiDocumentation':
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,criteriaMet,apiDocumentation,transparencyAttestationUrl');
             case 'bannedDevelopers':
                 return simpleApiCall('/decertifications/developers');
             }
@@ -683,10 +682,6 @@
             }
             if (params.length > 0) { queryParams = '?' + params.join('&'); }
             return postApiCall('/key/activity/' + queryParams, {});
-        }
-
-        function getDecertifiedDevelopers () {
-            return simpleApiCall('/decertifications/developers');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {

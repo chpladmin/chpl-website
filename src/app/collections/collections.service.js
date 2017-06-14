@@ -15,8 +15,8 @@
 
         function translate (key, array) {
             switch (key) {
-            case 'apiCriteria':
-                return apiCriteria(array.results);
+            case 'apiDocumentation':
+                return apiDocumentation(array.results);
             case 'bannedDevelopers':
                 return bannedDevelopers(array.decertifiedDeveloperResults);
             case 'decertifiedProducts':
@@ -32,13 +32,13 @@
 
         /*
          * Listings are part of this collection if:
-            - 2015 Edition and
-            - at least one of:
-              - 170.315 (g)(7)
-              - 170.315 (g)(8)
-              - 170.315 (g)(9)
+         * - 2015 Edition and
+         * - at least one of:
+         *   - 170.315 (g)(7)
+         *   - 170.315 (g)(8)
+         *   - 170.315 (g)(9)
          */
-        function apiCriteria (array) {
+        function apiDocumentation (array) {
             var ret = [];
             var cp;
             for (var i = 0; i < array.length; i ++) {
@@ -77,11 +77,11 @@
 
         /*
          * Listings are part of this collection if:
-            - 2014 or 2015 Edition and
-            - at least one of:
-              -  Withdrawn by Developer Under Surveillance/Review
-              -  Withdrawn by ONC-ACB
-              -  Terminated by ONC
+         * - 2014 or 2015 Edition and
+         * - at least one of:
+         *   - Withdrawn by Developer Under Surveillance/Review
+         *   - Withdrawn by ONC-ACB
+         *   - Terminated by ONC
          */
         function decertifiedProducts (array ) {
             var ret = [];
@@ -103,11 +103,10 @@
             return ret;
         }
 
-                /*
+        /*
          * Listings are part of this collection if:
-            - 2014 or 2015 Edition and
-            - Certification status =
-              -  Withdrawn by Developer
+         * - 2014 or 2015 Edition and
+         * - Certification status = Withdrawn by Developer
          */
         function inactiveCertificates (array ) {
             var ret = [];
@@ -129,10 +128,10 @@
 
         /*
          * Listings are part of this collection if:
-            - Surveillance Count > 0 and
-            - at least one of:
-              - Open NC Count > 0
-              - Closed NC Count > 0
+         * - Surveillance Count > 0 and
+         * - at least one of:
+         *   - Open NC Count > 0
+         *   - Closed NC Count > 0
          */
         function nonconformities (array) {
             var ret = [];

@@ -21,13 +21,13 @@
             }
         });
 
-        describe('apiCriteria translation', function () {
-            it('should filter on apiCriteria', function () {
-                expect(service.translate('apiCriteria', {results: Mock.allCps}).length).toBe(2);
+        describe('apiDocumentation translation', function () {
+            it('should filter on apiDocumentation', function () {
+                expect(service.translate('apiDocumentation', {results: Mock.allCps}).length).toBe(2);
             });
 
             it('should generate a mainSearch', function () {
-                var results = service.translate('apiCriteria', {results: Mock.allCps});
+                var results = service.translate('apiDocumentation', {results: Mock.allCps});
                 expect(results[0].mainSearch).toEqual('Carefluence|Carefluence Open API|1.0|15.04.04.2649.Care.01.0.0.160701');
             });
         });

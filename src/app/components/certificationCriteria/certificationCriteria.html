@@ -111,7 +111,7 @@
           </tr>
           <tr ng-if="vm.cert.apiDocumentation !== null">
             <td>API Documentation</td>
-            <td ng-if="vm.cert.apiDocumentation"><ai-a href="{{ vm.cert.apiDocumentation }}" text="{{ vm.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: vm.cert.apiDocumentation }"></ai-a></td>
+            <td ng-if="vm.cert.apiDocumentation"><a ai-a href="{{ vm.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: vm.cert.apiDocumentation }">{{ vm.cert.apiDocumentation }}</a></td>
             <td ng-if="!vm.cert.apiDocumentation">None</td>
           </tr>
           <tr ng-if="vm.cert.privacySecurityFramework !== null">

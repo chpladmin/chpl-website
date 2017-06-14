@@ -23,7 +23,7 @@
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
@@ -35,6 +35,5 @@
         it('should have isolate scope object with instanciate members', function () {
             expect(vm).toEqual(jasmine.any(Object));
         });
-
     });
 })();

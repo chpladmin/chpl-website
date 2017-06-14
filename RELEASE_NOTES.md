@@ -22,6 +22,9 @@ _Date TBD_
     * "2011" edition
     * All retired ACBs
 * Changed admin Notifications section to just "Subscription Management"
+* Added "API Documentation" collection
+* Added Listing History explanatory text
+* Updated summary description of surveillance result
 
 ---
 
