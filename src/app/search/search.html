@@ -389,27 +389,28 @@
           </div>
         </div>
       </div>  <!-- end of search results -->
-
-      <div id="collections" ng-if="!vm.activeSearch && vm.searchForm.$pristine">
-        <div class="row">
-          <div class="col-lg-4 col-sm-6">
-            <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/apiDocumentation">API Info for 2015 Ed. Products</a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/nonconformities">Products Under Corrective Action</a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/products">Decertified Products</a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="btn btn-lg btn-block btn-ai-grey" href="#/resources/cms_lookup">CMS ID Reverse Lookup</a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/inactive">Inactive Certificates</a>
-          </div>
-          <div class="col-lg-4 col-sm-6">
-            <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/developers">Banned Developers</a>
-          </div>
+    </div>
+  </div>
+  <div class="container" ng-if="!vm.activeSearch && vm.searchForm.$pristine">
+    <div id="collections">
+      <div class="row">
+        <div class="col-lg-4 col-sm-6">
+          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/apiDocumentation">API Info for 2015 Ed. Products</a>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/nonconformities">Products Under Corrective Action</a>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/products">Decertified Products</a>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <a class="btn btn-lg btn-block btn-ai-grey" href="#/resources/cms_lookup">CMS ID Reverse Lookup</a>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/inactive">Inactive Certificates</a>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <a class="btn btn-lg btn-block btn-ai-grey" href="#/collections/developers">Banned Developers</a>
         </div>
       </div>
     </div>
