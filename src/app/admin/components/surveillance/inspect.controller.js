@@ -45,7 +45,7 @@
         function editSurveillance () {
             fixRequirementOptions();
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/surveillance/edit.html',
+                templateUrl: 'app/admin/components/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,
@@ -62,7 +62,7 @@
                 vm.surveillance = result;
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                 }
             });
         }

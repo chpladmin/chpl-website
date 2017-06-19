@@ -38,7 +38,7 @@
 
         function addNonconformity () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/editNonconformity.html',
+                templateUrl: 'app/admin/components/surveillance/nonconformity/edit.html',
                 controller: 'EditNonconformityController',
                 controllerAs: 'vm',
                 animation: false,
@@ -80,7 +80,7 @@
         function editNonconformity (noncon) {
             noncon.guiId = noncon.id ? noncon.id : (new Date()).getTime();
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/editNonconformity.html',
+                templateUrl: 'app/admin/components/surveillance/nonconformity/edit.html',
                 controller: 'EditNonconformityController',
                 controllerAs: 'vm',
                 animation: false,
