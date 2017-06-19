@@ -5,8 +5,8 @@ OCD-1463: Ellipsis long names on CMS ID & Compare widgets
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 9.0.0
+_19 June 2017_
 
 ### Big changes
 * Reworked entire general public Navigation
