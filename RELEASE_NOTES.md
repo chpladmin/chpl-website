@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.0.0
+_19 June 2017_
 
 ### Big changes
 * Reworked entire general public Navigation
