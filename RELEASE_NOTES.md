@@ -1,5 +1,6 @@
 # Release Notes
 
+OCD-1412: Pending Surveillance UX
 OCD-1552: Allow scrolling on CMS ID & Compare widgets
 OCD-1463: Ellipsis long names on CMS ID & Compare widgets
 

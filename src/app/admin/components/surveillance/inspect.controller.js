@@ -45,7 +45,7 @@
         function editSurveillance () {
             fixRequirementOptions();
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/editSurveillance.html',
+                templateUrl: 'app/admin/components/surveillance/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,
@@ -69,7 +69,7 @@
 
         function inspectNonconformities (noncons) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/nonconformityInspect.html',
+                templateUrl: 'app/admin/components/surveillance/nonconformity/inspect.html',
                 controller: 'NonconformityInspectController',
                 controllerAs: 'vm',
                 animation: false,

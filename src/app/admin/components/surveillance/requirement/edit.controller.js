@@ -28,7 +28,6 @@
             vm.showFormErrors = false;
             vm.surveillanceId = surveillanceId;
             vm.workType = workType;
-            $log.debug(vm.workType);
             if (vm.requirement.type) {
                 vm.requirement.type = findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data);
             }
