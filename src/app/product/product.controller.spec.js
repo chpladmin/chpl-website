@@ -16,10 +16,10 @@
                     this.cancelCallback = cancelCallback;
                 }},
             close: function (item) { this.result.confirmCallBack(item); },
-            dismiss: function (type) { this.result.cancelCallback(type); }
+            dismiss: function (type) { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
-            templateUrl: 'app/product/product_history.html',
+            templateUrl: 'app/product/history/history.html',
             controller: 'ProductHistoryController',
             controllerAs: 'vm',
             animation: false,
@@ -27,8 +27,8 @@
             keyboard: false,
             size: 'lg',
             resolve: {
-                activity: jasmine.any(Function)
-            }
+                activity: jasmine.any(Function),
+            },
         };
 
         beforeEach(function () {
@@ -62,7 +62,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('ProductController', {
                     $scope: scope,
-                    $routeParams: {id: mock.productId}
+                    $routeParams: {id: mock.productId},
                 })
                 scope.$digest();
             });

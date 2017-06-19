@@ -31,7 +31,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('DownloadController', {
-                    $scope: scope
+                    $scope: scope,
                 });
                 scope.$digest();
             });
@@ -39,7 +39,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -73,6 +75,17 @@
                 authService.isChplAdmin.and.returnValue(true);
                 authService.isOncStaff.and.returnValue(true);
                 expect(vm.showRestricted()).toBe(true);
+            });
+
+            it('should change the definition select when the download is changed', function () {
+                vm.downloadOptions = [1, 2, 3];
+                vm.definitionOptions = ['a', 'b', 'c'];
+                vm.downloadOption = 1;
+                vm.definitionOption = 'a';
+
+                vm.downloadOption = 2
+                vm.changeDownload();
+                expect(vm.definitionOption).toBe('b');
             });
         });
     });

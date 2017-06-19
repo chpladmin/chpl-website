@@ -8,7 +8,7 @@
                 require: '^stTable',
                 scope: {
                     before: '=',
-                    after: '='
+                    after: '=',
                 },
                 templateUrl: 'app/components/smart_table/stDateRange.html',
                 link: function (scope, element, attr, table) {
@@ -34,7 +34,7 @@
                             })
                         });
                     });
-                }
+                },
             }
         })
 })();

@@ -8,7 +8,7 @@
         return {
             bindToController: {
                 hasChanges: '=?',
-                nameSpace: '@'
+                nameSpace: '@?',
             },
             controller: 'EnhancedTextController',
             controllerAs: 'vm',
@@ -19,8 +19,8 @@
             scope: {
                 predicate: '@',
                 registerClearFilter: '&',
-                registerRestoreState: '&'
-            }
+                registerRestoreState: '&',
+            },
         }
     }
 
@@ -36,13 +36,13 @@
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearFilter();
-                }
+                },
             });
             scope.$on('$destroy', clearFilter);
             var restoreState = scope.registerRestoreState({
                 restoreState: function (state) {
                     ctrl.restoreState(state);
-                }
+                },
             });
             scope.$on('$destroy', restoreState);
 
@@ -87,7 +87,9 @@
 
             vm.promise = $timeout(function () {
                 vm.tableCtrl.search(query, vm.predicate);
-                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+                if (vm.nameSpace) {
+                    $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+                }
                 vm.promise = null;
             }, vm.throttle);
         }

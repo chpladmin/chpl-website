@@ -10,11 +10,11 @@
             'chpl.admin',
             'chpl.chpl_api',
             'chpl.cms_lookup',
+            'chpl.collections',
             'chpl.common',
             'chpl.compare',
             'chpl.compare-widget',
             'chpl.constants',
-            'chpl.decertifications',
             'chpl.download',
             'chpl.navigation',
             'chpl.overview',
@@ -33,6 +33,6 @@
             'swaggerUi',
             'toaster',
             'ui.bootstrap',
-            'ui.bootstrap.fontawesome'
+            'ui.bootstrap.fontawesome',
         ]);
 })();

@@ -48,7 +48,7 @@
 
                 ctrl = $controller('ApiKeyController', {
                     $element: null,
-                    commonService: commonService
+                    commonService: commonService,
                 });
                 scope.$digest();
             }));

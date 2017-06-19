@@ -10,10 +10,10 @@
                 templateUrl: 'app/admin/components/announcements/view.html',
                 scope: {},
                 bindToController: {
-                    admin: '='
+                    admin: '=',
                 },
                 controllerAs: 'vm',
-                controller: 'AnnouncementsController'
+                controller: 'AnnouncementsController',
             };
         });
 
@@ -55,8 +55,8 @@
                 resolve: {
                     announcement: function () {return {}; },
                     action: function () { return 'create'; },
-                    authService: function () { return authService; }
-                }
+                    authService: function () { return authService; },
+                },
             });
             vm.editModalInstance.result.then(function (result) {
                 if (!vm.announcement) {
@@ -83,8 +83,8 @@
                 resolve: {
                     announcement: function () { return a; },
                     action: function () { return 'edit'; },
-                    authService: function () { return authService; }
-                }
+                    authService: function () { return authService; },
+                },
             });
             vm.editModalInstance.result.then(function (result) {
                 if (result === 'deleted') {

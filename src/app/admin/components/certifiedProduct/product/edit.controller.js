@@ -40,9 +40,9 @@
         function changeCurrent (prevId) {
             vm.product.ownerHistory.push({
                 developer: {
-                    developerId: prevId
+                    developerId: prevId,
                 },
-                transferDate: new Date()
+                transferDate: new Date(),
             });
         }
 

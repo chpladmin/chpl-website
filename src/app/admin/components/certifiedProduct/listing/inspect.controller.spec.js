@@ -6,7 +6,7 @@
 
         mock = {};
         mock.inspectingCp = {
-            developer: { developerId: 1}
+            developer: { developerId: 1},
         };
         mock.resources = {
             bodies: [],
@@ -16,7 +16,7 @@
             accessibilityStandards: [],
             targetedUsers: [],
             statuses: [],
-            testingLabs: []
+            testingLabs: [],
         }
 
         beforeEach(function () {
@@ -46,7 +46,7 @@
                     isAcbAdmin: true,
                     isAcbStaff: true,
                     isChplAdmin: true,
-                    resources: mock.resources
+                    resources: mock.resources,
                 });
                 scope.$digest();
             });
@@ -99,7 +99,7 @@
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({
                     contact: contact,
                     objectId: 1,
-                    status: 'resolved'
+                    status: 'resolved',
                 });
             });
         });

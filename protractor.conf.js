@@ -28,11 +28,11 @@ exports.config = {
             'features/components/**/*.js',
             'features/support/**/*.js'
         ],
-        // Only execute the features or scenarios with tags matching @dev.
-        // This may be an array of strings to specify multiple tags to include.
-        tags: ['~@ignore','~@wip'],
+        // Don't execute the features or scenarios with tags matching @ignore.
+        // This may be an array of strings to specify multiple tags to include/exclude.
+        tags: ['~@ignore'],
         // How to format features (progress, summary, pretty, json)
-        format: ['progress', 'pretty', 'json:test_reports/cucumber_report.json'],
+        format: ['pretty', 'json:test_reports/cucumber_report.json'],
     },
 
     // Options to be passed to Jasmine-node.

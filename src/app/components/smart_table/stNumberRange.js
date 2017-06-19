@@ -8,7 +8,7 @@
                 require: '^stTable',
                 scope: {
                     lower: '=',
-                    higher: '='
+                    higher: '=',
                 },
                 templateUrl: 'app/components/smart_table/stNumberRange.html',
                 link: function (scope, element, attr, table) {
@@ -35,7 +35,7 @@
                             });
                         });
                     });
-                }
+                },
             };
         })
 })();

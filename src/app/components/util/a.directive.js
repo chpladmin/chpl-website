@@ -1,35 +1,21 @@
 (function () {
     'use strict';
-
     angular.module('chpl')
-        .controller('AController', function () {
-            var vm = this;
+        .directive('aiA', aiA);
 
-            activate();
+    /** @ngInclude */
+    function aiA () {
+        return {
+            template: aiATemplate,
+            restrict: 'A',
+        }
+    }
 
-            ////////////////////////////////////////////////////////////////////
-
-            function activate () {
-                vm.actualLink = vm.href;
-                if (vm.href.substring(0,4) !== 'http') {
-                    vm.actualLink = 'http://' + vm.href;
-                }
-            }
-        });
-
-    angular.module('chpl')
-        .directive('aiA', function () {
-            return {
-                restrict: 'E',
-                replace: true,
-                templateUrl: 'app/components/util/a.html',
-                bindToController: {
-                    href: '@',
-                    text: '@'
-                },
-                scope: {},
-                controllerAs: 'vm',
-                controller: 'AController'
-            };
-        });
+    function aiATemplate (element) {
+        return (element.text() +
+                '<a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" class="pull-right">' +
+                '<i class="fa fa-external-link"></i>' +
+                '<span class="sr-only">Web Site Disclaimers</span>' +
+                '</a>');
+    }
 })();

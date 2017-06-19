@@ -1,0 +1,101 @@
+<div class="container-fluid collection-page">
+  <div class="pending" ng-if="vm.isPreLoading"></div>
+  <div class="row">
+    <div class="col-sm-12">
+      <h1><ng-transclude ng-transclude-slot="aiTitle"></ng-transclude></h1>
+    </div>
+  </div>
+  <div class="main-content" id="mainContent" tabindex="-1" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
+    <div class="row">
+      <div class="col-sm-12">
+        <ng-transclude ng-transclude-slot="aiBodyText"></ng-transclude>
+      </div>
+    </div>
+    <st-manage register-search="vm.registerSearch(search)" />
+    <div class="form-horizontal" ng-form="vm.searchForm" aria-live="polite">
+
+      <div class="form-group" id="filters">
+        <div class="col-sm-4">
+          <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+            <input type="text" class="form-control input-sm" id="generalFilter" placeholder="{{ vm.searchText }}"
+                   ai-enhanced-text predicate="mainSearch" register-clear-filter="vm.registerClearFilter(clearFilter)">
+            <label for="generalFilter"><span class="sr-only">{{ vm.searchText }}</span></label>
+          </div>
+        </div>
+
+        <div class="col-sm-8" ng-if="vm.filters.length > 0">
+          <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <a ng-if="vm.isCategoryChanged()" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
+              Filter <i class="fa fa-filter"></i>
+            </button>
+            <div class="dropdown-menu row" aria-labeledby="filter-button" uib-dropdown-menu>
+              <div class="col-sm-6" ng-if="vm.isFilterActive('acb')">
+                <strong>ONC-ACB</strong>
+                <st-list-multiple collection="vm.allCps" predicate="acb" fixed-items="vm.filterItems.acbItems" has-changes="vm.categoryChanged['acb']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)" hidden-options="true"></st-list-multiple>
+              </div>
+              <div class="col-sm-6" ng-if="vm.isFilterActive('edition')">
+                <strong>Certification Edition</strong>
+                <st-list-multiple collection="vm.allCps" predicate="edition" fixed-items="vm.filterItems.editionItems" has-changes="vm.categoryChanged['edition']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
+              </div>
+              <div class="col-sm-6" ng-if="vm.isFilterActive('certificationDate')">
+                <strong>Certification Date</strong>
+                <ai-date-range predicate="certificationDate" has-changes="vm.categoryChanged['certificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
+              </div>
+              <div class="col-sm-6" ng-if="vm.isFilterActive('decertificationDate')">
+                <strong>Decertification Date</strong>
+                <ai-date-range predicate="decertificationDate" has-changes="vm.categoryChanged['decertificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
+              </div>
+              <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged()">
+                <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- #filters -->
+    </div><!-- filter form -->
+
+    <div aria-live="polite">
+      <div ng-if="vm.hasResults()" class="row">
+        <div class="col-md-12 table-responsive">
+          <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                <td colspan="{{ vm.columns.length }}" class="text-center">
+                  <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
+                </td>
+              </tr>
+              <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
+                <th ng-repeat="col in vm.columns" scope="col" class="search-header" st-sort="{{ col.predicate }}" st-skip-natural="true" st-sort-default="{{ col.sortDefault }}">{{ col.display }}</th>
+              </tr>
+            </thead>
+            <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
+              <tr>
+                <td colspan="{{ vm.columns.length }}"><ng-transclude ng-transclude-slot="aiFooterText"></ng-transclude></td>
+              </tr>
+              <tr>
+                <td colspan="{{ vm.columns.length }}" class="text-center">
+                  <div class="text-right" ng-if="vm.displayedCps && vm.displayedCps.length > 0">
+                    <label for="pageSizeTop" class="sr-only">Show how many results</label>
+                    Showing up to&nbsp;
+                    <select ng-model="vm.filterItems.pageSize" id="pageSizeTop"
+                            ng-options="v as v for v in [50,100,250]">
+                    </select>
+                    &nbsp;results per page
+                  </div>
+                  <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
+                </td>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr ng-repeat="cp in vm.displayedCps">
+                <td ng-repeat="col in vm.columns" ng-bind-html="vm.parseDataElement(cp, col)"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>  <!-- end of search results -->
+  </div> <!-- #mainContent -->
+</div>

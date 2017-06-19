@@ -14,11 +14,11 @@
             templateUrl: 'app/navigation/navigation-top.html',
             bindToController: {
                 widget: '=?',
-                compareWidget: '=?'
+                compareWidget: '=?',
             },
             scope: { },
             controllerAs: 'vm',
-            controller: 'NavigationController'
+            controller: 'NavigationController',
         }
     }
 
@@ -29,9 +29,9 @@
             replace: true,
             templateUrl: 'app/navigation/navigation-bottom.html',
             bindToController: { },
-            scope: {},
+            scope: { },
             controllerAs: 'vm',
-            controller: 'NavigationController'
+            controller: 'NavigationController',
         }
     }
 

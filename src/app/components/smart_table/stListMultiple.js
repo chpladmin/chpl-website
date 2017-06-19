@@ -13,9 +13,10 @@
                 hidden: '@?',
                 hiddenOptions: '@?',
                 matchFull: '@?',
-                nameSpace: '@',
+                nameSpace: '@?',
                 separator: '@?',
-                trackAnalytics: '@?'
+                trackAnalytics: '@?',
+                triggerShowRetired: '&?',
             },
             controller: 'ListMultipleController',
             controllerAs: 'vm',
@@ -29,9 +30,10 @@
                 predicateExpression: '=',
                 registerAllowAll: '&?',
                 registerClearFilter: '&',
-                registerRestoreState: '&'
+                registerRestoreState: '&',
+                registerShowRetired: '&?',
             },
-            templateUrl: 'app/components/smart_table/stListMultiple.html'
+            templateUrl: 'app/components/smart_table/stListMultiple.html',
         }
     }
 
@@ -46,22 +48,30 @@
                 var allowAll = scope.registerAllowAll({
                     allowAll: function () {
                         ctrl.allowAll();
-                    }
+                    },
                 });
                 scope.$on('$destroy', allowAll);
             }
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
                     ctrl.clearFilter();
-                }
+                },
             });
             scope.$on('$destroy', clearFilter);
             var restoreState = scope.registerRestoreState({
                 restoreState: function (state) {
                     ctrl.restoreState(state);
-                }
+                },
             });
             scope.$on('$destroy', restoreState);
+            if (scope.registerShowRetired) {
+                var showRetired = scope.registerShowRetired({
+                    showRetired: function (state) {
+                        ctrl.showRetired(state);
+                    },
+                });
+                scope.$on('$destroy', showRetired);
+            }
 
             setItems();
             setSelected();
@@ -70,7 +80,6 @@
                 setSelected();
                 ctrl.distinctItems = scope.distinctItems;
                 ctrl.selected = scope.selected;
-                //ctrl.storeState();
                 ctrl.filterChanged();
             });
             ctrl.distinctItems = scope.distinctItems;
@@ -110,7 +119,7 @@
                 if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
                     distinctItems.push({
                         value: value,
-                        selected: true
+                        selected: true,
                     });
                 }
             }
@@ -166,6 +175,7 @@
         vm.isNotDefault = isNotDefault;
         vm.restoreState = restoreState;
         vm.selectAll = selectAll;
+        vm.showRetired = showRetired;
         vm.storeState = storeState;
         vm.toggleSelection = toggleSelection;
 
@@ -178,14 +188,21 @@
         }
 
         function allowAll () {
+            var restoreAnalytics = false;
+            if (vm.trackAnalytics) {
+                vm.trackAnalaytics = false;
+                restoreAnalytics = true;
+            }
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected) {
                     item.isSelected = false;
-                    vm.toggleSelection(item.value, true);
+                    vm.toggleSelection(item, true, true);
                 }
             })
+            if (restoreAnalytics) {
+                vm.trackAnalaytics = true;
+            }
             vm.matchAll = false;
-            //vm.storeState();
             vm.filterChanged();
             vm.storeState();
         }
@@ -194,11 +211,10 @@
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected !== item.selected) {
                     item.isSelected = item.selected;
-                    vm.toggleSelection(item.value, true);
+                    vm.toggleSelection(item, true, true);
                 }
             })
             vm.matchAll = false;
-            //vm.storeState();
             vm.filterChanged();
             vm.storeState();
         }
@@ -211,13 +227,13 @@
                 query.matchAll = {
                     all: numberOfItems === 0,
                     matchFull: vm.matchFull,
-                    items: vm.selected
+                    items: vm.selected,
                 }
             } else {
                 query.matchAny = {
                     all: (numberOfItems === 0 || (!vm.hiddenOptions && numberOfItems === vm.distinctItems.length)),
                     matchFull: vm.matchFull,
-                    items: vm.selected
+                    items: vm.selected,
                 }
             }
             vm.tableCtrl.search(query, vm.predicate);
@@ -253,16 +269,33 @@
             vm.storeState();
         }
 
-        function storeState () {
-            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+        function showRetired () {
+            angular.forEach(vm.distinctItems, function (item) {
+                if (!item.isSelected && item.retired) {
+                    item.isSelected = true;
+                    vm.selected.push(item.value);
+                }
+            })
+            vm.matchAll = false;
+            vm.filterChanged();
+            vm.storeState();
         }
 
-        function toggleSelection (value, dontSearch) {
-            var index = vm.selected.indexOf(value);
+        function storeState () {
+            if (vm.nameSpace) {
+                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+            }
+        }
+
+        function toggleSelection (item, dontSearch, dontTriggerRetired) {
+            var index = vm.selected.indexOf(item.value);
             if(index > -1) {
                 vm.selected.splice(index, 1);
             } else {
-                vm.selected.push(value);
+                vm.selected.push(item.value);
+                if (!dontTriggerRetired && item.retired) {
+                    vm.triggerShowRetired();
+                }
                 if (vm.trackAnalytics) {
                     var event;
                     switch (vm.predicate) {
@@ -270,7 +303,7 @@
                     case 'cqmsMet': event = 'CQM Filter'; break;
                     default: event = 'Other';
                     }
-                    $analytics.eventTrack(event, { category: 'Search', label: value });
+                    $analytics.eventTrack(event, { category: 'Search', label: item.value });
                 }
             }
             if (!dontSearch) {

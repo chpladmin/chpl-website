@@ -13,11 +13,11 @@
             scope: {},
             bindToController: {
                 allowEditing: '=',
-                certifiedProduct: '='
+                certifiedProduct: '=',
             },
             size: 'lg',
             controllerAs: 'vm',
-            controller: 'SurveillanceController'
+            controller: 'SurveillanceController',
         };
     }
 
@@ -55,8 +55,8 @@
                 resolve: {
                     surveillance: function () { return surveillance; },
                     surveillanceTypes: function () { return vm.surveillanceTypes; },
-                    workType: function () { return 'edit'; }
-                }
+                    workType: function () { return 'edit'; },
+                },
             });
             vm.uibModalInstance.result.then(function () {
                 commonService.getProduct(vm.certifiedProduct.id)
@@ -71,28 +71,37 @@
         }
 
         function getTitle (surv) {
-            var closed = surv.endDate ? true : false;
-            var title = '';
-            /*
-            if (surv.friendlyId) {
-                title += surv.friendlyId + ': ';
-            }
-            */
-            title += closed ?
+            var title = surv.endDate ?
                 'Closed Surveillance, Ended ' + $filter('date')(surv.endDate, 'mediumDate', 'UTC') + ': ' :
                 'Open Surveillance, Began ' + $filter('date')(surv.startDate, 'mediumDate', 'UTC') + ': ';
-            var nonconformityCount = 0;
+            var open = 0;
+            var closed = 0;
             for (var i = 0; i < surv.requirements.length; i++) {
                 for (var j = 0; j < surv.requirements[i].nonconformities.length; j++) {
                     if (surv.requirements[i].nonconformities[j].status.name === 'Open') {
-                        nonconformityCount += 1;
+                        open += 1;
+                    }
+                    if (surv.requirements[i].nonconformities[j].status.name === 'Closed') {
+                        closed += 1;
                     }
                 }
             }
-            switch (nonconformityCount) {
-            case 0: title += 'No Open Non-Conformities Found'; break;
-            case 1: title += '1 Open Non-Conformity Found'; break;
-            default: title += nonconformityCount + ' Open Non-Conformities Found';
+            if (open && closed) {
+                title += open + ' Open and ' + closed + ' Closed Non-Conformities Were Found';
+            } else if (open) {
+                if (open === 1) {
+                    title += '1 Open Non-Conformity Was Found';
+                } else {
+                    title += open + ' Open Non-Conformities Were Found';
+                }
+            } else if (closed) {
+                if (closed === 1) {
+                    title += '1 Closed Non-Conformity Was Found';
+                } else {
+                    title += closed + ' Closed Non-Conformities Were Found';
+                }
+            } else {
+                title += 'No Non-Conformities Were Found';
             }
             return title;
         }
@@ -110,8 +119,8 @@
                 resolve: {
                     surveillance: function () { return { certifiedProduct: vm.certifiedProduct }; },
                     surveillanceTypes: function () { return vm.surveillanceTypes; },
-                    workType: function () { return 'initiate'; }
-                }
+                    workType: function () { return 'initiate'; },
+                },
             });
             vm.uibModalInstance.result.then(function () {
                 commonService.getProduct(vm.certifiedProduct.id)

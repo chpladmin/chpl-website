@@ -19,7 +19,7 @@
 
         function activate () {
             vm.userDetails = {user:{
-                complianceTermsAccepted: true
+                complianceTermsAccepted: true,
             }};
             vm.authorizeDetails = {};
             vm.userDetails.hash = $routeParams.hash;

@@ -13,7 +13,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('ChplApiController', {
-                    $scope: scope
+                    $scope: scope,
                 });
                 scope.$digest();
             });

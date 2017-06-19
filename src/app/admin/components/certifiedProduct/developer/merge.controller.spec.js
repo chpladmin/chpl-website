@@ -27,7 +27,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('MergeDeveloperController', {
                     developers: mock.developers,
-                    $uibModalInstance: Mock.modalInstance
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

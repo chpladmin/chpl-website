@@ -7,7 +7,7 @@
         mock = {};
         mock.announcement = {
             startDate: 1490631134315,
-            endDate: 1490631434315
+            endDate: 1490631434315,
         }
 
         beforeEach(function () {
@@ -42,7 +42,7 @@
                     authService: authService,
                     commonService: commonService,
                     $uibModalInstance: Mock.modalInstance,
-                    $scope: scope
+                    $scope: scope,
                 });
                 scope.$digest();
             });
