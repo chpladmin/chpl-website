@@ -1,6 +1,6 @@
 <section class="row">
   <div class="col-sm-12 admin-inner-tab main-content form-horizontal" ng-form="vm.activityForm">
-    <h3>Notification Recipients</h3>
+    <h3>Subscription Recipients</h3>
     <table class="table table-condensed" st-table="vm.displayedRecipients" st-safe-src="vm.recipients">
       <thead>
         <tr>
@@ -20,7 +20,7 @@
           <td>{{ recipient.email }}</td>
           <td>
             <ul class="list-unstyled">
-              <li ng-repeat="subscription in recipient.subscriptions">{{ subscription.notificationType.name}} <span ng-if="subscription.acb">({{ subscription.acb.name }})</span></li>
+              <li ng-repeat="subscription in recipient.subscriptions | orderBy:'notificationType.name'">{{ subscription.notificationType.name}} <span ng-if="subscription.acb">({{ subscription.acb.name }})</span></li>
             </ul>
           <td><button class="btn btn-ai-success" ng-click="vm.editRecipient(recipient)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit recipient for {{ recipient.email }}</span></td>
         </tr>
@@ -36,7 +36,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="report in vm.notificationReportTypes | orderBy : 'name'">
+        <tr ng-repeat="report in vm.subscriptionReportTypes | orderBy : 'name'">
           <td>{{ report.name }}</td>
           <td>{{ report.description }}</td>
           <td>{{ report.requiresAcb ? 'Yes' : 'No' }}</td>

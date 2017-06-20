@@ -125,13 +125,13 @@
             <td>ONC-ACB</td>
             <td>{{ acb.name }}</td>
             <td>{{ acb.acbCode }}</td>
-            <td><ai-a ng-if="acb.website" href="{{ acb.website }}" text="{{ acb.website }}"></ai-a></td>
+            <td><a ai-a ng-if="acb.website" href="{{ acb.website }}">{{ acb.website }}</a></td>
           </tr>
           <tr ng-repeat="atl in vm.atls | orderBy: 'name'">
             <td>ONC-ATL</td>
             <td>{{ atl.name }}</td>
             <td>{{ atl.atlCode }}</td>
-            <td><ai-a ng-if="atl.website" href="{{ atl.website }}" text="{{ atl.website }}"></ai-a></td>
+            <td><a ai-a ng-if="atl.website" href="{{ atl.website }}">{{ atl.website }}</a></td>
           </tr>
         </tbody>
       </table>

@@ -33,7 +33,7 @@
           <h2 class="product-heading">Developer</h2>
           <p>{{ vm.product.developer.name }}</p>
           <p ng-if="vm.product && vm.product.developer.status.status !== 'Active'"><strong>Developer Status:</strong> <i class="fa status-bad" ng-class="vm.product.developer.status.status === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ vm.product.developer.status.status }}</p>
-          <p ng-if="vm.product.developer.website"><ai-a href="{{ vm.product.developer.website }}" text="{{ vm.product.developer.website }}"></ai-a></p>
+          <p ng-if="vm.product.developer.website"><a ai-a href="{{ vm.product.developer.website }}">{{ vm.product.developer.website }}</a></p>
           <span ng-if="vm.product.developer.address">
             <h3>Address</h3>
             <address>
@@ -98,7 +98,7 @@
           </div>
           <div class="product-element">
             <h2 class="product-heading">Mandatory Disclosures URL</h2>
-            <ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" text="{{ vm.product.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: vm.product.transparencyAttestationUrl }"></ai-a>
+            <a ai-a ng-if="vm.product.transparencyAttestationUrl" href="{{ vm.product.transparencyAttestationUrl }}" analytics-on="click" analytics-event="Transparency Disclosure" analytics-properties="{ category: 'Download Details', label: vm.product.transparencyAttestationUrl }">{{ vm.product.transparencyAttestationUrl }}</a>
             <p ng-if="!vm.product.transparencyAttestationUrl">No report on file</p>
           </div>
         </span>
