@@ -46,6 +46,9 @@
         vm.singleCp = singleCp;
         vm.validDates = validDates;
 
+        // private function exposed for testing
+        vm.interpretCps = interpretCps;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////
@@ -335,7 +338,6 @@
                 {key: 'accessibilityCertified', display: 'Accessibility Certified'},
                 {key: 'certificationDate', display: 'Certification Date', filter: 'date'},
                 {key: 'chplProductNumber', display: 'CHPL Product Number'},
-                {key: 'ics', display: 'ICS Status'},
                 ///{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                 {key: 'otherAcb', display: 'Other ONC-ACB'},
                 {key: 'productAdditionalSoftware', display: 'Product-wide Additional Software'},
@@ -350,6 +352,7 @@
                 //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
                 {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
                 {key: 'classificationType', subkey: 'name', display: 'Classification Type'},
+                {key: 'ics', subkey: 'inherits', display: 'ICS Status'},
                 {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
                 {key: 'testingLab', subkey: 'name', display: 'Testing Lab'},
             ];
@@ -437,6 +440,20 @@
                     for (j = 0; j < cqmChanges.length; j++) {
                         if (cqmChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
+                    }
+                    if (data[i].originalData.ics.parents) {
+                        var icsParentsKeys = [];
+                        var icsParents = compareArray(data[i].originalData.ics.parents, data[i].newData.ics.parents, icsParentsKeys, 'chplProductNumber');
+                        for (j = 0; j < icsParents.length; j++) {
+                            activity.details.push('ICS Parent "' + icsParents[j].name + '" changes<ul>' + icsParents[j].changes.join('') + '</ul>');
+                        }
+                    }
+                    if (data[i].originalData.ics.children) {
+                        var icsChildrenKeys = [];
+                        var icsChildren = compareArray(data[i].originalData.ics.children, data[i].newData.ics.children, icsChildrenKeys, 'chplProductNumber');
+                        for (j = 0; j < icsChildren.length; j++) {
+                            activity.details.push('ICS Child "' + icsChildren[j].name + '" changes<ul>' + icsChildren[j].changes.join('') + '</ul>');
+                        }
                     }
                     var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
                     var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');

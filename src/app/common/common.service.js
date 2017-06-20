@@ -61,6 +61,7 @@
             getProductsByDeveloper: getProductsByDeveloper,
             getProductsByVersion: getProductsByVersion,
             getQmsStandards: getQmsStandards,
+            getRelatedListings: getRelatedListings,
             getSearchOptions: getSearchOptions,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
@@ -177,6 +178,10 @@
 
         function getAgeRanges () {
             return simpleApiCall('/data/age_ranges');
+        }
+
+        function getRelatedListings (productId) {
+            return simpleApiCall('/products/' + productId + '/listings');
         }
 
         function getTestStandards () {

@@ -1,8 +1,19 @@
 # Release Notes
 
 OCD-1412: Pending Surveillance UX
-OCD-1552: Allow scrolling on CMS ID & Compare widgets
-OCD-1463: Ellipsis long names on CMS ID & Compare widgets
+
+---
+
+## Version TBD
+_Date TBD_
+
+### New features
+* ICS Family Tree work
+  * Allow admins to build family tree links on edit/upload of Listing
+  * Display simple family tree data on Listing details page
+  * Display activity of family tree changes "Other" Activity report
+* Allow scrolling on CMS ID & Compare widgets
+* Ellipsis long names on CMS ID & Compare widgets
 
 ---
 

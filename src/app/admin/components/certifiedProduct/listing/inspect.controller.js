@@ -237,6 +237,7 @@
             case 'prd':
                 vm.stage = 'ver';
                 vm.loadVer();
+                loadFamily();
                 break;
             case 'ver':
                 vm.stage = 'cp';
@@ -290,6 +291,17 @@
                 return 'N/A';
             } else {
                 return field ? 'True' : 'False';
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function loadFamily () {
+            if (vm.product && vm.product.productId) {
+                commonService.getFamilyOfListing(vm.product.productId)
+                    .then(function (family) {
+                        vm.resources.relatedListings = family.listings;
+                    });
             }
         }
     }
