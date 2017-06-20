@@ -20,7 +20,7 @@
           <td>{{ recipient.email }}</td>
           <td>
             <ul class="list-unstyled">
-              <li ng-repeat="subscription in recipient.subscriptions">{{ subscription.notificationType.name}} <span ng-if="subscription.acb">({{ subscription.acb.name }})</span></li>
+              <li ng-repeat="subscription in recipient.subscriptions | orderBy:'notificationType.name'">{{ subscription.notificationType.name}} <span ng-if="subscription.acb">({{ subscription.acb.name }})</span></li>
             </ul>
           <td><button class="btn btn-ai-success" ng-click="vm.editRecipient(recipient)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit recipient for {{ recipient.email }}</span></td>
         </tr>
