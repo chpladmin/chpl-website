@@ -597,8 +597,8 @@
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
                   <ul>
-                    <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#/product/{{ parent.certifiedProductId}}">{{ parent.chplProductNumber }}</a></li>
-                    <li ng-repeat="child in vm.activeCP.ics.children"><strong>Provides for:</strong> <a href="#/product/{{ child.certifiedProductId}}">{{ child.chplProductNumber }}</a></li>
+                    <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#/product/{{ parent.id }}">{{ parent.chplProductNumber }}</a></li>
+                    <li ng-repeat="child in vm.activeCP.ics.children"><strong>ICS Source for:</strong> <a href="#/product/{{ child.id }}">{{ child.chplProductNumber }}</a></li>
                   </ul>
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
                   <ul>
