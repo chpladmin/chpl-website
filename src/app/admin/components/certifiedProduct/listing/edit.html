@@ -120,7 +120,7 @@
       </ul>
       <div class="form-horizontal">
         <div class="form-group form-group-sm">
-          <label class="col-sm-6 control-label" for="newIcsParent">New Listing to inherit from</label>
+          <label class="col-sm-6 control-label" for="newIcsParent">ICS Source Listings (Same Product)</label>
           <div class="col-sm-6">
             <div class="input-group">
               <select class="form-control" ng-model="vm.newIcsParent.chplProductNumber" id="newIcsParent"
@@ -129,7 +129,7 @@
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.ics.parents, vm.newIcsParent); vm.newIcsParent = ''" ng-disabled="!vm.newIcsParent"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
           </div>
-          <label class="col-sm-6 control-label" for="newIcsParentOther">New unlisted Listing to inherit from</label>
+          <label class="col-sm-6 control-label" for="newIcsParentOther">ICS Source Listings (Other - Enter CHPL ID)</label>
           <div class="col-sm-6">
             <div class="input-group">
               <input type="text" class="form-control" ng-model="vm.newIcsParentOther.chplProductNumber" id="newIcsParentOther" name="newIcsParentOther"
