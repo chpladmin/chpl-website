@@ -3,7 +3,7 @@
 
     describe('chpl.admin', function () {
 
-        var scope, $log, mockAuthService, mockCommonService, ctrl;
+        var $log, ctrl, mockAuthService, mockCommonService, scope;
 
         beforeEach(function () {
             mockAuthService = {};

@@ -3,7 +3,7 @@
     'use strict';
 
     describe('chpl.aiCmsWidget', function () {
-        var $compile, $rootScope, vm, el, $log, mock, $httpBackend;
+        var $compile, $httpBackend, $log, $rootScope, el, mock, vm;
         mock = {
             endpoint: '/rest/certification_ids',
             searchResponse: {"products":[{"name":"ABELMed EHR - EMR / PM","productId":6836,"version":"12"},{"name":"4medica iEHR® Cloud Ambulatory Solution mark 2","productId":6493,"version":"15.10.1"},{"name":"4medica iEHR Cloud Ambulatory Suite","productId":6993,"version":"15.10"}],"metCounts":{"cqmsAmbulatoryCoreRequiredMet":7,"criteriaRequired":21,"cqmsAmbulatoryRequiredMet":3,"cqmsInpatientRequired":16,"cqmsAmbulatoryRequired":3,"domainsRequiredMet":3,"criteriaCpoeRequiredMet":1,"criteriaTocRequired":2,"domainsRequired":3,"criteriaRequiredMet":21,"cqmsInpatientRequiredMet":0,"criteriaCpoeRequired":1,"cqmsAmbulatoryCoreRequired":6,"criteriaTocRequiredMet":2},"metPercentages":{"cqmsInpatient":0,"cqmsAmbulatory":100,"cqmDomains":100,"criteriaMet":100},"year":"2014","isValid":true},

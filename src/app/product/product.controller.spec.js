@@ -3,7 +3,7 @@
 
     describe('chpl.product.controller', function () {
 
-        var $controller, $uibModal, scope, vm, $log, $q, commonService, authService, mock, actualOptions;
+        var $controller, $log, $q, $uibModal, actualOptions, authService, commonService, mock, scope, vm;
         mock = {};
         mock.activity = {};
         mock.productId = 123123;

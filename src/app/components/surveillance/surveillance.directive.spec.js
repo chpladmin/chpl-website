@@ -2,7 +2,7 @@
     'use strict';
 
     describe('surveillance directive', function () {
-        var vm, el, $q, $log, commonService;
+        var $log, $q, commonService, el, vm;
 
         beforeEach(function () {
             module('chpl.templates');

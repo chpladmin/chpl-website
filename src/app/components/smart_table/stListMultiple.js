@@ -221,7 +221,8 @@
 
         function filterChanged () {
             vm.hasChanges = getChanged();
-            var query, numberOfItems = vm.selected.length;
+            var query;
+            var numberOfItems = vm.selected.length;
             query = { separator: vm.separator ? vm.separator : '' };
             if (vm.matchAll) {
                 query.matchAll = {

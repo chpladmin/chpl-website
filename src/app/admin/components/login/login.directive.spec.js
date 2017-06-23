@@ -3,7 +3,7 @@
 
     describe('login directive', function () {
 
-        var vm, el, $q, $log, authService, commonService;
+        var $log, $q, authService, commonService, el, vm;
 
         beforeEach(function () {
             module('chpl.templates', 'chpl.admin', function ($provide) {

@@ -368,7 +368,7 @@
             var change;
             var questionable;
 
-            var i, j, k, chplNum, certChanges, cpNum, cpId, link;
+            var certChanges, chplNum, cpId, cpNum, i, j, k, link;
             for (i = 0; i < data.length; i++) {
                 var activity = {
                     date: data[i].activityDate,

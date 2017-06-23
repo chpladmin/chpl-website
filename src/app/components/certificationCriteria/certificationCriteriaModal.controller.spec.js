@@ -2,7 +2,7 @@
     'use strict';
 
     describe('components.EditCertificationCriteriaController.controller', function () {
-        var vm, scope, $log, utilService, mock;
+        var $log, mock, scope, utilService, vm;
 
         mock = {};
         mock.modalInstance = {

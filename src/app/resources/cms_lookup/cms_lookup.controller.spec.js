@@ -3,7 +3,7 @@
 
     describe('chpl.cms_lookup', function () {
 
-        var $log, scope, vm, $localStorage, $q, commonService, mock;
+        var $localStorage, $log, $q, commonService, mock, scope, vm;
 
         mock = {
             localStorage: {

@@ -313,7 +313,7 @@
 
             function checkCriterionIsMet (key, criteriaMet) {
                 var keys = key.split(',');
-                var result, index;
+                var index, result;
 
                 // Check for logic key values
                 // | = (any criterion in list will do)

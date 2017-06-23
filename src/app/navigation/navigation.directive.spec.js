@@ -3,7 +3,7 @@
 
     describe('chpl.navigation', function () {
 
-        var httpProvider, authInterceptor, mockAuthService, $log;
+        var $log, authInterceptor, httpProvider, mockAuthService;
         var username = 'user name';
         var token = 'example token';
         var trueApiUrl = '/rest';
@@ -85,7 +85,7 @@
         });
 
         describe('controller', function () {
-            var scope, $location, ctrl;
+            var $location, ctrl, scope;
 
             beforeEach(inject(function ($controller, _$location_, $rootScope) {
                 $location = _$location_;

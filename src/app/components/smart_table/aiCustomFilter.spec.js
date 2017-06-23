@@ -3,7 +3,7 @@
 
     describe('aiCustomFilter', function () {
 
-        var aiCustomFilter, $log, Mock;
+        var $log, Mock, aiCustomFilter;
 
         beforeEach(function () {
             module('chpl.common', 'chpl.mock');

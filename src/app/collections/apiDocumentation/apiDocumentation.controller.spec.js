@@ -3,7 +3,7 @@
 
     describe('chpl.collections.apiDocumentation.controller', function () {
 
-        var commonService, scope, vm, $log;
+        var $log, commonService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.collections', function ($provide) {

@@ -3,7 +3,7 @@
 
     describe('chpl.certificationStatus', function () {
 
-        var vm, scope, $log, mock, utilService;
+        var $log, mock, scope, utilService, vm;
         mock = {};
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
