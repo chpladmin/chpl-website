@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('surviellance directive', function () {
+    describe('surveillance directive', function () {
         var vm, el, $q, $log, commonService;
 
         beforeEach(function () {

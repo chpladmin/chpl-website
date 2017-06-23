@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 (function () {
     'use strict';
 

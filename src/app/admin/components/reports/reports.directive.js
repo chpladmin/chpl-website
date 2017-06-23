@@ -161,6 +161,7 @@
                 case 'api_key_management':
                     vm.refreshApi();
                     break;
+                    // no default
                 }
             }
         }

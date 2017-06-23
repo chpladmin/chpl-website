@@ -71,14 +71,14 @@
             });
 
             it('should set the token if one is found, from the correct URL', function () {
-                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}", headers: function () {return [];}};
+                var headers = {config: {url: trueApiUrl}, data: '{"token":"this is my token"}', headers: function () {return [];}};
                 spyOn(mockAuthService, 'saveToken');
                 authInterceptor.response(headers);
                 expect(mockAuthService.saveToken).toHaveBeenCalled();
             });
 
             it('should JSON parse a "string" data object', function () {
-                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}"};
+                var headers = {config: {url: trueApiUrl}, data: '{"token":"this is my token"}'};
                 var response = authInterceptor.response(headers);
                 expect(response).toEqual({config: {url: trueApiUrl}, data: {token: 'this is my token'}});
             });

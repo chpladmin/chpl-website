@@ -285,18 +285,13 @@
       </div>
     </div>
     <br />
-    <ai-certs certs="vm.cp.certificationResults"
-              cqms="vm.cp.cqmResults"
-              count-certs="vm.cp.countCerts"
-              count-cqms="vm.cp.countCqms"
-              default-all="true"
+    <ai-certs default-all="true"
               edit-mode="true"
-              is-editing="true"
               is-confirming="vm.workType === 'confirm'"
-              report-file-location="{{ vm.cp.reportFileLocation }}"
-              save="vm.registerCerts(handler)"
+              is-editing="true"
               product="vm.cp"
-              resources="vm.resources">
+              resources="vm.resources"
+              save="vm.registerCerts(handler)">
     </ai-certs>
   </div>
   <div class="modal-footer">

@@ -38,7 +38,7 @@
             if (isAuthed()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
-                return identity[2] + " " + identity[3];
+                return identity[2] + ' ' + identity[3];
             } else {
                 logout();
                 return '';

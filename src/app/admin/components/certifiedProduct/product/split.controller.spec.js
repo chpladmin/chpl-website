@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.SplitProductController.controller', function () {
-        var vm, scope, $log, $q, commonService, Mock;
+        var $log, $q, Mock, commonService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {

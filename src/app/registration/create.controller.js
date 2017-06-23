@@ -25,7 +25,7 @@
             vm.userDetails.hash = $routeParams.hash;
             vm.authorizeDetails.hash = $routeParams.hash;
             vm.message = {value: '', success: null};
-            vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
+            vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
             if (vm.isAuthed) {
                 vm.authorizeUser();
             }

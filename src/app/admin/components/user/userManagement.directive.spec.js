@@ -14,7 +14,7 @@
             });
 
             inject(function ($q) {
-                mockCommonService.users = {"data": {"users":[{"subjectName":"admin","firstName":"Administrator","lastName":"Administrator","email":"info@ainq.com","phoneNumber":"(301) 560-6999","title":null,"accountLocked":false,"accountEnabled":true}]}};
+                mockCommonService.users = {'data': {'users':[{'subjectName':'admin','firstName':'Administrator','lastName':'Administrator','email':'info@ainq.com','phoneNumber':'(301) 560-6999','title':null,'accountLocked':false,'accountEnabled':true}]}};
 
                 mockCommonService.getUsers = function () {
                     return $q.when(this.users);
