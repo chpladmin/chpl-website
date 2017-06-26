@@ -290,7 +290,7 @@
 
         function toggleSelection (item, dontSearch, dontTriggerRetired) {
             var index = vm.selected.indexOf(item.value);
-            if(index > -1) {
+            if (index > -1) {
                 vm.selected.splice(index, 1);
             } else {
                 vm.selected.push(item.value);

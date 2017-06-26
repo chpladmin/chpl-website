@@ -18,7 +18,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.userDetails = {user:{
+            vm.userDetails = {user: {
                 complianceTermsAccepted: true,
             }};
             vm.authorizeDetails = {};
@@ -53,13 +53,13 @@
                 commonService.createInvitedUser(vm.userDetails)
                     .then(function () {
                         vm.message.value = 'Your account has been created. Please check your email to confirm your account';
-                        vm.userDetails = {user:{}};
+                        vm.userDetails = {user: {}};
                         vm.createUserForm.$setPristine();
                         vm.createUserForm.$setUntouched();
                         vm.message.success = true;
                     },function (error) {
                         vm.message.value = error.data.error;
-                        vm.userDetails = {user:{}};
+                        vm.userDetails = {user: {}};
                         vm.createUserForm.$setPristine();
                         vm.createUserForm.$setUntouched();
                         vm.message.success = false;
