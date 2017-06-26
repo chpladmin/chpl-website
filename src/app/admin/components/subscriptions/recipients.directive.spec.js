@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.subscriptions.recipients.directive', function () {
-        var el, scope, $log, $q, commonService, vm, Mock, mock, $uibModal, actualOptions;
+        var $log, $q, $uibModal, Mock, actualOptions, commonService, el, mock, scope, vm;
 
         mock = {
             acbs: [{id: 1, name: 'fake'}],

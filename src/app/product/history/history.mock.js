@@ -1,3 +1,4 @@
+/* eslint-disable quotes, key-spacing */
 (function () {
     'use strict';
 

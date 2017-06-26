@@ -160,6 +160,7 @@
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,criteriaMet,apiDocumentation,transparencyAttestationUrl');
             case 'bannedDevelopers':
                 return simpleApiCall('/decertifications/developers');
+                //no default
             }
         }
 

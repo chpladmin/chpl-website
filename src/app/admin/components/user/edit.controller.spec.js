@@ -2,7 +2,7 @@
     'use strict';
 
     describe('admin.EditUserController.controller', function () {
-        var vm, scope, $log, $q, commonService, mock, Mock;
+        var $log, $q, Mock, commonService, mock, scope, vm;
 
         mock = {};
         mock.user = {roles: ['ROLE_ADMIN'], user: {subjectName: 'username', userId: 'userId'}};

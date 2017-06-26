@@ -36,11 +36,11 @@
             vm.lookupProductsCertIdNotFound = [];
 
             if (vm.certIds && vm.certIds.length > 0) {
-                vm.certIds = vm.certIds.replace(/[;,\s]+/g, " ");
+                vm.certIds = vm.certIds.replace(/[;,\s]+/g, ' ');
                 vm.certIds = vm.certIds.trim().toUpperCase();
 
                 // Check format of input
-                if ("" === vm.certIds.trim()) {
+                if (vm.certIds.trim() === '') {
                     clearLookup();
                 } else {
 
@@ -56,7 +56,7 @@
                     idArray.forEach(function (id) {
 
                         // Check if we've already checked this ID in case the user entered duplicates
-                        if (typeof preventDuplicationIds[id] === "undefined") {
+                        if (typeof preventDuplicationIds[id] === 'undefined') {
                             preventDuplicationIds[id] = true;
 
                             // Check if ID format is valid
@@ -95,7 +95,7 @@
                                         $localStorage.lookupProductsCertIdNotFound = vm.lookupProductsCertIdNotFound;
 
                                     }, function (error) {
-                                        $log.debug("Error: " + error);
+                                        $log.debug('Error: ' + error);
                                         clearLookupResults();
                                     });
                             }

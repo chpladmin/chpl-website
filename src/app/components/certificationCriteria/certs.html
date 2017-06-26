@@ -1,5 +1,8 @@
 <div class="row">
-  <div class="col-sm-12">
+  <div class="col-sm-12" ng-if="!vm.product">
+    Loading...<i class="fa fa-spin fa-spinner"></i>
+  </div>
+  <div class="col-sm-12" ng-if="vm.product">
     <p class="">
       <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts"></input>
       <label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
@@ -92,8 +95,8 @@
         <span>
           <span ng-if="vm.product.certificationEdition.name === '2014'">
             <h4>Test Results Summary</h4>
-            <a ai-a ng-if="vm.reportFileLocation" href="{{ vm.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.reportFileLocation }">{{ vm.reportFileLocation }}</a>
-            <p ng-if="!vm.reportFileLocation">No report on file</p>
+            <a ai-a ng-if="vm.product.reportFileLocation" href="{{ vm.product.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.product.reportFileLocation }">{{ vm.product.reportFileLocation }}</a>
+            <p ng-if="!vm.product.reportFileLocation">No report on file</p>
           </span>
           <span ng-if="vm.product.sedReportFileLocation !== null">
             <h4>Usability Report</h4>

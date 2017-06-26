@@ -197,6 +197,7 @@
             case ('Terminated by ONC'):
             case ('Withdrawn by Developer Under Surveillance/Review'):
                 return true;
+            default: return false;
             }
         }
 

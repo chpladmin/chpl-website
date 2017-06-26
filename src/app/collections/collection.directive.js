@@ -100,7 +100,11 @@
                 ret = $filter('date')(ret,'mediumDate','UTC');
             }
             if (col.isLink) {
-                ret = '<a href="#/product/' + cp.id + '">' + ret + '</a>';
+                if (col.initialPanel) {
+                    ret = '<a href="#/product/' + cp.id + '/' + col.initialPanel + '">' + ret + '</a>';
+                } else {
+                    ret = '<a href="#/product/' + cp.id + '">' + ret + '</a>';
+                }
             }
             return ret;
         }

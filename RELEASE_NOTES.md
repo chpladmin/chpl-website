@@ -10,6 +10,7 @@ _Date TBD_
   * Display activity of family tree changes "Other" Activity report
 * Allow scrolling on CMS ID & Compare widgets
 * Ellipsis long names on CMS ID & Compare widgets
+* Links to Listing details from CAP Collection open "Surveillance Activity" accordion
 
 ---
 
