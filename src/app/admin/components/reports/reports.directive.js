@@ -442,18 +442,23 @@
                         if (cqmChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                     }
-                    if (data[i].originalData.ics.parents) {
-                        var icsParentsKeys = [];
-                        var icsParents = compareArray(data[i].originalData.ics.parents, data[i].newData.ics.parents, icsParentsKeys, 'chplProductNumber');
-                        for (j = 0; j < icsParents.length; j++) {
-                            activity.details.push('ICS Parent "' + icsParents[j].name + '" changes<ul>' + icsParents[j].changes.join('') + '</ul>');
+                    if (typeof(data[i].originalData.ics) === 'object' &&
+                        typeof(data[i].newData.ics) === 'object' &&
+                        data[i].originalData.ics &&
+                        data[i].newData.ics) {
+                        if (data[i].originalData.ics.parents) {
+                            var icsParentsKeys = [];
+                            var icsParents = compareArray(data[i].originalData.ics.parents, data[i].newData.ics.parents, icsParentsKeys, 'chplProductNumber');
+                            for (j = 0; j < icsParents.length; j++) {
+                                activity.details.push('ICS Parent "' + icsParents[j].name + '" changes<ul>' + icsParents[j].changes.join('') + '</ul>');
+                            }
                         }
-                    }
-                    if (data[i].originalData.ics.children) {
-                        var icsChildrenKeys = [];
-                        var icsChildren = compareArray(data[i].originalData.ics.children, data[i].newData.ics.children, icsChildrenKeys, 'chplProductNumber');
-                        for (j = 0; j < icsChildren.length; j++) {
-                            activity.details.push('ICS Child "' + icsChildren[j].name + '" changes<ul>' + icsChildren[j].changes.join('') + '</ul>');
+                        if (data[i].originalData.ics.children) {
+                            var icsChildrenKeys = [];
+                            var icsChildren = compareArray(data[i].originalData.ics.children, data[i].newData.ics.children, icsChildrenKeys, 'chplProductNumber');
+                            for (j = 0; j < icsChildren.length; j++) {
+                                activity.details.push('ICS Child "' + icsChildren[j].name + '" changes<ul>' + icsChildren[j].changes.join('') + '</ul>');
+                            }
                         }
                     }
                     var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
@@ -468,7 +473,7 @@
                     }
                     if (activity.details.length === 0) {
                         delete activity.details;
-                    } else {
+                    } else if (!statusChange || (statusChange && activity.details.length > 1)) {
                         activity.csvDetails = activity.details.join('\n');
                         output.other.push(activity);
                     }
