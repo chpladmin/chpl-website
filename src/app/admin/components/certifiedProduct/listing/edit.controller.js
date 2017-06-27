@@ -206,7 +206,7 @@
         function loadFamily () {
             commonService.getRelatedListings(vm.cp.product.productId)
                 .then(function (family) {
-                    vm.relatedListings = family;
+                    vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
                 });
         }
     }
