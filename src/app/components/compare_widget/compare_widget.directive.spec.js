@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.aiCompareWidget', function () {
-        var $compile, $rootScope, vm, el, $localStorage, $log, mock;
+        var $compile, $localStorage, $log, $rootScope, el, mock, vm;
         mock = {
             products: [
                 {id: 1, name: 'name1'},

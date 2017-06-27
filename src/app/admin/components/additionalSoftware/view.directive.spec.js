@@ -2,7 +2,7 @@
     'use strict';
 
     describe('admin.additionalSoftware', function () {
-        var vm, el, $log, mock, Mock, $uibModal, actualOptions;
+        var $log, $uibModal, Mock, actualOptions, el, mock, vm;
 
         mock = {};
         mock.fakeModalOptions = {

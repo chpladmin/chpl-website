@@ -3,7 +3,7 @@
 
     describe('chpl.collections.nonconformities.controller', function () {
 
-        var commonService, scope, vm, $log;
+        var $log, commonService, scope, vm;
 
         beforeEach(function () {
             module('chpl.collections', function ($provide) {

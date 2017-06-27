@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.aiCompareWidgetButton', function () {
-        var $compile, $rootScope, vm, el, $log;
+        var $compile, $log, $rootScope, el, vm;
 
         beforeEach(function () {
             module('chpl.templates');

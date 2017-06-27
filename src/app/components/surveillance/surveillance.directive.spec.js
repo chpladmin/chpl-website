@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    describe('surviellance directive', function () {
-        var vm, el, $q, $log, commonService;
+    describe('surveillance directive', function () {
+        var $log, $q, commonService, el, vm;
 
         beforeEach(function () {
             module('chpl.templates');

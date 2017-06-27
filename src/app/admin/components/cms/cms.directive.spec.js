@@ -2,7 +2,7 @@
     'use strict';
 
     describe('cms directive', function () {
-        var vm, el, $q, $log, commonService, authService;
+        var $log, $q, authService, commonService, el, vm;
 
         var mock = {};
         mock.muuAccurateAsOfDate = new Date('2017-01-13');

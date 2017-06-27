@@ -18,7 +18,7 @@
                 { predicate: 'developer', display: 'Developer' },
                 { predicate: 'product', display: 'Product' },
                 { predicate: 'version', display: 'Version' },
-                { predicate: 'chplProductNumber', display: 'CHPL ID', isLink: true },
+                { predicate: 'chplProductNumber', display: 'CHPL ID', isLink: true , initialPanel: 'surveillance' },
                 { predicate: 'acb', display: 'ONC-ACB' },
                 { predicate: 'openNonconformityCount', display: '# Open NCs', sortDefault: 'reverse' },
                 { predicate: 'closedNonconformityCount', display: '# Closed NCs' },

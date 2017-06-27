@@ -3,7 +3,7 @@
 
     describe('chpl.admin.reports.directive', function () {
 
-        var el, $log, $q, commonService, authService, vm, Mock;
+        var $log, $q, Mock, authService, commonService, el, vm;
 
         var activityTemplate = {
             acb: 'CCHIT',
@@ -135,8 +135,8 @@
             });
 
             it('should recognize added/removed ICS Parents', function () {
-                icsFamilyActivity.originalData.ics.parents =[{chplProductNumber:'ID',certificationDate:1490194030517,certifiedProductId:1},{chplProductNumber:'ID2',certificationDate:1490194030517,certifiedProductId:2}];
-                icsFamilyActivity.newData.ics.parents = [{chplProductNumber:'ID2',certificationDate:1490194030517,certifiedProductId:2},{chplProductNumber:'ID3',certificationDate:1490194030517,certifiedProductId:3}];
+                icsFamilyActivity.originalData.ics.parents =[{chplProductNumber: 'ID',certificationDate: 1490194030517,certifiedProductId: 1},{chplProductNumber: 'ID2',certificationDate: 1490194030517,certifiedProductId: 2}];
+                icsFamilyActivity.newData.ics.parents = [{chplProductNumber: 'ID2',certificationDate: 1490194030517,certifiedProductId: 2},{chplProductNumber: 'ID3',certificationDate: 1490194030517,certifiedProductId: 3}];
                 var activity = angular.copy(activityTemplate);
                 activity.details = ['ICS Parent "ID" changes<ul><li>ID removed</li></ul>', 'ICS Parent "ID3" changes<ul><li>ID3 added</li></ul>'];
                 activity.csvDetails = 'ICS Parent "ID" changes<ul><li>ID removed</li></ul>\nICS Parent "ID3" changes<ul><li>ID3 added</li></ul>';
@@ -146,8 +146,8 @@
             });
 
             it('should recognize added/removed ICS Children', function () {
-                icsFamilyActivity.originalData.ics.children = [{chplProductNumber:'ID2',certificationDate:1490194030517,certifiedProductId:2},{chplProductNumber:'ID3',certificationDate:1490194030517,certifiedProductId:3}];
-                icsFamilyActivity.newData.ics.children =[{chplProductNumber:'ID',certificationDate:1490194030517,certifiedProductId:1},{chplProductNumber:'ID2',certificationDate:1490194030517,certifiedProductId:2}];
+                icsFamilyActivity.originalData.ics.children = [{chplProductNumber: 'ID2',certificationDate: 1490194030517,certifiedProductId: 2},{chplProductNumber: 'ID3',certificationDate: 1490194030517,certifiedProductId: 3}];
+                icsFamilyActivity.newData.ics.children =[{chplProductNumber: 'ID',certificationDate: 1490194030517,certifiedProductId: 1},{chplProductNumber: 'ID2',certificationDate: 1490194030517,certifiedProductId: 2}];
                 var activity = angular.copy(activityTemplate);
                 activity.details = ['ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>', 'ICS Child "ID" changes<ul><li>ID added</li></ul>'];
                 activity.csvDetails = 'ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>\nICS Child "ID" changes<ul><li>ID added</li></ul>';

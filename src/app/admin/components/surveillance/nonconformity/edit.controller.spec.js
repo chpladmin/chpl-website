@@ -2,7 +2,7 @@
     'use strict';
 
     describe('admin.EditNonconformityController.controller', function () {
-        var vm, scope, $log, mock, Mock;
+        var $log, Mock, mock, scope, vm;
 
         mock = {};
         mock.modalInstance = {

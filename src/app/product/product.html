@@ -104,13 +104,9 @@
         </span>
       </div>
       <div class="col-sm-8">
-        <ai-certs certs="vm.product.certificationResults"
-                  cqms="vm.product.cqmResults"
-                  count-certs="vm.product.countCerts"
-                  count-cqms="vm.product.countCqms"
-                  report-file-location="{{ vm.product.reportFileLocation }}"
-                  product="vm.product"
-                  cap="vm.correctiveActionPlan">
+        <ai-certs cap="vm.correctiveActionPlan"
+                  initial-panel="{{ vm.initialPanel }}"
+                  product="vm.product">
         </ai-certs>
       </div>
     </div>

@@ -2,7 +2,7 @@
     'use strict';
 
     describe('admin.InspectSurveillanceController.controller', function () {
-        var vm, scope, $log, $q, $uibModal, commonService, utilService, Mock, actualOptions;
+        var $log, $q, $uibModal, Mock, actualOptions, commonService, scope, utilService, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {

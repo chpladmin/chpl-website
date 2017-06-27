@@ -3,7 +3,7 @@
 
     describe('chpl.registration.apiKey.directive', function () {
 
-        var $log, scope, ctrl, commonService, mockCommonService, $q;
+        var $log, $q, commonService, ctrl, mockCommonService, scope;
 
         beforeEach(function () {
             mockCommonService = {};

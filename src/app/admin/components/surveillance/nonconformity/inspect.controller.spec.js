@@ -2,7 +2,7 @@
     'use strict';
 
     describe('admin.NonconformityInspectController.controller', function () {
-        var vm, scope, $log, Mock;
+        var $log, Mock, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin');

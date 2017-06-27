@@ -3,7 +3,7 @@
 
     describe('chpl.collections.products.controller', function () {
 
-        var commonService, scope, vm, $log, $q, mock;
+        var $log, $q, commonService, mock, scope, vm;
         mock = {
             muuAccurateAsOfDate: (new Date('2017-01-13')).getTime(),
         };

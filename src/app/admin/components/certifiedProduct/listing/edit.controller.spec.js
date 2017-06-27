@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.editCertifiedProduct.controller', function () {
-        var vm, scope, $log, $q, commonService, utilService, mock, Mock;
+        var $log, $q, Mock, commonService, mock, scope, utilService, vm;
 
         mock = {};
         mock.activeCP = {

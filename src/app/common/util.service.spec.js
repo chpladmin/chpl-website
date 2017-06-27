@@ -5,7 +5,7 @@
 
         beforeEach(module('chpl.common'));
 
-        var util, $log, mock;
+        var $log, mock, util;
         mock = {
             newValue: 'fake',
             objects: [

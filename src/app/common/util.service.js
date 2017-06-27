@@ -168,6 +168,7 @@
             case 'Withdrawn by ONC-ACB':
                 ret = 'fa-times-circle status-bad';
                 break;
+                // no default
             }
             return ret;
         }
