@@ -12,6 +12,9 @@ _Date TBD_
 * Ellipsis long names on CMS ID & Compare widgets
 * Links to Listing details from CAP Collection open "Surveillance Activity" accordion
 
+### Text changes
+* Change "Additional Software" to "Relied Upon Software"
+
 ---
 
 ## Version 9.0.0
