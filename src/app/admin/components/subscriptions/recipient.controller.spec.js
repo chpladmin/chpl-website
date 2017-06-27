@@ -1,12 +1,22 @@
 (function () {
     'use strict';
 
-    describe('chpl.admin.notifications.recipient.controller', function () {
-        var vm, scope, $log, $q, commonService, Mock, mock;
+    describe('chpl.admin.subscriptions.recipient.controller', function () {
+        var $log, $q, Mock, commonService, mock, scope, vm;
 
         mock = {};
-        mock.acbs = [{ id: 1, isDeleted: false}, { id: 2, isDeleted: true }];
-        mock.newRecipient = {email: 'sample@sample.com', subscriptions: [{ id: 1}]}
+        mock.acbs = [
+            { id: 1, isDeleted: false},
+            { id: 2, isDeleted: true },
+            { id: 3, isDeleted: false },
+        ];
+        mock.newRecipient = {
+            email: 'sample@sample.com',
+            subscriptions: [
+                { id: 1, notificationType: {id: 1}, acb: {id: 3}},
+                { id: 2, notificationType: {id: 3}},
+            ],
+        };
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
@@ -32,7 +42,7 @@
                 vm = $controller('RecipientController', {
                     acbs: mock.acbs,
                     recipient: {},
-                    reportTypes: Mock.notificationReportTypes,
+                    reportTypes: Mock.subscriptionReportTypes,
                     $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
@@ -58,6 +68,10 @@
 
             it('should not have deleted ACBs', function () {
                 expect(vm.acbs.length).toBeLessThan(mock.acbs.length);
+            });
+
+            it('should have a nearly empty array of subscriptions at load', function () {
+                expect(vm.recipient.subscriptions).toEqual([{}]);
             });
         });
 
@@ -123,6 +137,14 @@
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalledWith('bad thing');
+            });
+
+            it('should connect recipient subscriptions with reports', function () {
+                vm.attachReports();
+                expect(vm.recipient.subscriptions).toEqual([
+                    { id: 1, notificationType: { id: 1, name: 'ONC-ACB Daily Surveillance Broken Rules', description: 'A daily email of surveillance rules that have been broken within the last day for listings certified by a specific ONC-ACB.', requiresAcb: true }, acb: { id: 3, isDeleted: false } },
+                    { id: 2, notificationType: { id: 3, name: 'ONC Daily Surveillance Broken Rules', description: 'A daily email of surveillance rules that have been broken within the last day for any listing.', requiresAcb: false }},
+                ]);
             });
         });
 

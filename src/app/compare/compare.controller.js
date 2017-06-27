@@ -48,7 +48,7 @@
         }
 
         function fillInBlanks () {
-            var needToAddBlank, product, i, k, cert;
+            var cert, i, k, needToAddBlank, product;
             for (i = 0; i < vm.productList.length; i++) {
                 product = vm.productList[i];
                 for (cert in vm.allCerts) {

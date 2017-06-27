@@ -16,6 +16,7 @@
                 nameSpace: '@?',
                 separator: '@?',
                 trackAnalytics: '@?',
+                triggerShowRetired: '&?',
             },
             controller: 'ListMultipleController',
             controllerAs: 'vm',
@@ -30,6 +31,7 @@
                 registerAllowAll: '&?',
                 registerClearFilter: '&',
                 registerRestoreState: '&',
+                registerShowRetired: '&?',
             },
             templateUrl: 'app/components/smart_table/stListMultiple.html',
         }
@@ -62,6 +64,14 @@
                 },
             });
             scope.$on('$destroy', restoreState);
+            if (scope.registerShowRetired) {
+                var showRetired = scope.registerShowRetired({
+                    showRetired: function (state) {
+                        ctrl.showRetired(state);
+                    },
+                });
+                scope.$on('$destroy', showRetired);
+            }
 
             setItems();
             setSelected();
@@ -70,7 +80,6 @@
                 setSelected();
                 ctrl.distinctItems = scope.distinctItems;
                 ctrl.selected = scope.selected;
-                //ctrl.storeState();
                 ctrl.filterChanged();
             });
             ctrl.distinctItems = scope.distinctItems;
@@ -166,6 +175,7 @@
         vm.isNotDefault = isNotDefault;
         vm.restoreState = restoreState;
         vm.selectAll = selectAll;
+        vm.showRetired = showRetired;
         vm.storeState = storeState;
         vm.toggleSelection = toggleSelection;
 
@@ -178,14 +188,21 @@
         }
 
         function allowAll () {
+            var restoreAnalytics = false;
+            if (vm.trackAnalytics) {
+                vm.trackAnalaytics = false;
+                restoreAnalytics = true;
+            }
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected) {
                     item.isSelected = false;
-                    vm.toggleSelection(item.value, true);
+                    vm.toggleSelection(item, true, true);
                 }
             })
+            if (restoreAnalytics) {
+                vm.trackAnalaytics = true;
+            }
             vm.matchAll = false;
-            //vm.storeState();
             vm.filterChanged();
             vm.storeState();
         }
@@ -194,18 +211,18 @@
             angular.forEach(vm.distinctItems, function (item) {
                 if (item.isSelected !== item.selected) {
                     item.isSelected = item.selected;
-                    vm.toggleSelection(item.value, true);
+                    vm.toggleSelection(item, true, true);
                 }
             })
             vm.matchAll = false;
-            //vm.storeState();
             vm.filterChanged();
             vm.storeState();
         }
 
         function filterChanged () {
             vm.hasChanges = getChanged();
-            var query, numberOfItems = vm.selected.length;
+            var query;
+            var numberOfItems = vm.selected.length;
             query = { separator: vm.separator ? vm.separator : '' };
             if (vm.matchAll) {
                 query.matchAll = {
@@ -253,18 +270,33 @@
             vm.storeState();
         }
 
+        function showRetired () {
+            angular.forEach(vm.distinctItems, function (item) {
+                if (!item.isSelected && item.retired) {
+                    item.isSelected = true;
+                    vm.selected.push(item.value);
+                }
+            })
+            vm.matchAll = false;
+            vm.filterChanged();
+            vm.storeState();
+        }
+
         function storeState () {
             if (vm.nameSpace) {
                 $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
             }
         }
 
-        function toggleSelection (value, dontSearch) {
-            var index = vm.selected.indexOf(value);
-            if(index > -1) {
+        function toggleSelection (item, dontSearch, dontTriggerRetired) {
+            var index = vm.selected.indexOf(item.value);
+            if (index > -1) {
                 vm.selected.splice(index, 1);
             } else {
-                vm.selected.push(value);
+                vm.selected.push(item.value);
+                if (!dontTriggerRetired && item.retired) {
+                    vm.triggerShowRetired();
+                }
                 if (vm.trackAnalytics) {
                     var event;
                     switch (vm.predicate) {
@@ -272,7 +304,7 @@
                     case 'cqmsMet': event = 'CQM Filter'; break;
                     default: event = 'Other';
                     }
-                    $analytics.eventTrack(event, { category: 'Search', label: value });
+                    $analytics.eventTrack(event, { category: 'Search', label: item.value });
                 }
             }
             if (!dontSearch) {

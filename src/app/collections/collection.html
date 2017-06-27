@@ -67,7 +67,7 @@
                 </td>
               </tr>
               <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-                <th ng-repeat="col in vm.columns" scope="col" class="search-header" st-sort="{{ col.predicate }}" st-skip-natural="true" st-sort-default="col.sortDefault">{{ col.display }}</th>
+                <th ng-repeat="col in vm.columns" scope="col" class="search-header" st-sort="{{ col.predicate }}" st-skip-natural="true" st-sort-default="{{ col.sortDefault }}">{{ col.display }}</th>
               </tr>
             </thead>
             <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
@@ -90,14 +90,7 @@
             </tfoot>
             <tbody>
               <tr ng-repeat="cp in vm.displayedCps">
-                <td ng-repeat="col in vm.columns" ng-bind-html="vm.parseDataElement(cp, col)">
-                  <span ng-if="col.isLink"><a href="#/product/{{ cp.id }}">{{ cp[col.predicate] }}</a></span>
-                  <span ng-if="!col.isLink">{{ cp[col.predicate] }}</span>
-                </td>
-                <!--                <td>{{ cp.decertificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                                    <td>{{ (cp.estimatedUsers || cp.estimatedUsers === 0) ? cp.estimatedUsers : 'Unknown' }}</td>
-                <td>
-                -->
+                <td ng-repeat="col in vm.columns" ng-bind-html="vm.parseDataElement(cp, col)"></td>
               </tr>
             </tbody>
           </table>

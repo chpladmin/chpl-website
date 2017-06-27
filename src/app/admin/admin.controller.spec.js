@@ -3,7 +3,7 @@
 
     describe('chpl.admin', function () {
 
-        var scope, $log, mockAuthService, mockCommonService, ctrl;
+        var $log, ctrl, mockAuthService, mockCommonService, scope;
 
         beforeEach(function () {
             mockAuthService = {};
@@ -20,8 +20,8 @@
                 mockAuthService.isChplAdmin = function () { return true; };
                 mockAuthService.isAcbAdmin = function () { return true; };
                 mockAuthService.isAtlAdmin = function () { return true; };
-                mockCommonService.getAcbs = function () { return $q.when({acbs: [{id:0}]}); };
-                mockCommonService.getAtls = function () { return $q.when({atls: [{id:0}]}); };
+                mockCommonService.getAcbs = function () { return $q.when({acbs: [{id: 0}]}); };
+                mockCommonService.getAtls = function () { return $q.when({atls: [{id: 0}]}); };
             });
         });
 

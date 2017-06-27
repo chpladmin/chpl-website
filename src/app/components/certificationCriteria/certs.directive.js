@@ -12,19 +12,15 @@
             replace: true,
             templateUrl: 'app/components/certificationCriteria/certs.html',
             bindToController: {
-                certs: '=',
-                cqms: '=',
-                viewAllCerts: '=?defaultAll',
-                countCerts: '=',
-                countCqms: '=',
-                editMode: '=',
-                reportFileLocation: '@',
-                isEditing: '=?',
-                isConfirming: '=',
-                save: '&',
-                product: '=',
                 cap: '=',
+                editMode: '=',
+                initialPanel: '@?',
+                isConfirming: '=',
+                isEditing: '=?',
+                product: '=',
                 resources: '=',
+                save: '&',
+                viewAllCerts: '=?defaultAll',
             },
             scope: {},
             controllerAs: 'vm',
@@ -64,11 +60,20 @@
                 if (angular.isUndefined(vm.viewAllCerts)) {
                     vm.viewAllCerts = false;
                 }
-                vm.prepCqms();
-                vm.panelShown = 'cert';
-                $scope.$watch('vm.cqms', function (newCqms) {
-                    if (newCqms) {
-                        vm.cqms = newCqms;
+                if (vm.initialPanel) {
+                    if (vm.initialPanel !== 'none') {
+                        vm.panelShown = vm.initialPanel;
+                    }
+                } else {
+                    vm.panelShown = 'cert';
+                }
+                $scope.$watch('vm.product', function (product) {
+                    if (product) {
+                        vm.product = product;
+                        vm.certs = vm.product.certificationResults;
+                        vm.countCerts = vm.product.countCerts;
+                        vm.countCqms = vm.product.countCqms;
+                        vm.cqms = vm.product.cqmResults;
                         vm.prepCqms();
                     }}, true);
                 vm.buildIcsGraph();
@@ -312,6 +317,7 @@
                     case 'surveillance':
                         $analytics.eventTrack('Viewed surveillance information', { category: 'Listing Details', label: vm.product.chplProductNumber});
                         break;
+                        // no default
                     }
                 }
 

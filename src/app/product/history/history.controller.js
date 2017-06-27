@@ -6,10 +6,11 @@
         .controller('ProductHistoryController', ProductHistoryController);
 
     /** @ngInject */
-    function ProductHistoryController ($log, $uibModalInstance, activity) {
+    function ProductHistoryController ($location, $log, $uibModalInstance, activity) {
         var vm = this;
 
         vm.cancel = cancel;
+        vm.goToApi = goToApi;
 
         activate();
 
@@ -24,16 +25,22 @@
             $uibModalInstance.dismiss('product history cancelled');
         }
 
+        function goToApi () {
+            $location.path('/resources/chpl_api');
+            vm.cancel();
+        }
+
         ////////////////////////////////////////////////////////////////////
 
         function interpretActivity () {
-            var activity, prev, curr;
+            var activity, curr, prev;
             for (var i = 0; i < vm.activity.length; i++) {
                 activity = vm.activity[i];
                 activity.change = [];
                 prev = activity.originalData;
                 curr = activity.newData;
                 if (prev && curr) {
+                    vm.listingId = prev.id;
                     if (prev.certificationStatus.name !== curr.certificationStatus.name) {
                         activity.change.push('Certification Status changed from "' + prev.certificationStatus.name + '" to "' + curr.certificationStatus.name + '"');
                     }
@@ -71,6 +78,7 @@
                 }
 
                 if (activity.description === 'Created a certified product') {
+                    vm.listingId = curr.id;
                     activity.change.push('Certified product was uploaded to the CHPL');
                 }
             }

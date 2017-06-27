@@ -30,6 +30,12 @@
             } else {
                 $localStorage.previouslyViewed = [vm.productId + ''];
             }
+            if ($routeParams.initialPanel) {
+                vm.initialPanel = $routeParams.initialPanel;
+            } else {
+                vm.initialPanel = 'cert';
+            }
+
             vm.isAuthed = authService.isAuthed();
             vm.loadProduct();
         }
@@ -57,7 +63,7 @@
 
         function viewProductHistory () {
             vm.viewProductHistoryInstance = $uibModal.open({
-                templateUrl: 'app/product/product_history.html',
+                templateUrl: 'app/product/history/history.html',
                 controller: 'ProductHistoryController',
                 controllerAs: 'vm',
                 animation: false,

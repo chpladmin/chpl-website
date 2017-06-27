@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    describe('surviellance directive', function () {
-        var vm, el, $q, $log, commonService;
+    describe('surveillance directive', function () {
+        var $log, $q, commonService, el, vm;
 
         beforeEach(function () {
             module('chpl.templates');
@@ -41,13 +41,54 @@
             expect(vm).toEqual(jasmine.any(Object));
         });
 
-        it('should come up with correct titles', function () {
-            var surv = {
-                endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
-                friendlyId: 'SURV01',
-                requirements: [{nonconformities: []}],
-            };
-            expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: No Open Non-Conformities Found');
+        describe('surveillance titles', function () {
+            it('should come up with correct titles when there were no NCs', function () {
+                var surv = {
+                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    requirements: [{nonconformities: []}],
+                };
+                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: No Non-Conformities Were Found');
+            });
+
+            it('should come up with correct titles when there was 1 open NC', function () {
+                var surv = {
+                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    requirements: [{nonconformities: [{status: {name: 'Open'}}]}],
+                };
+                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open Non-Conformity Was Found');
+            });
+
+            it('should come up with correct titles when there were multiple open NCs', function () {
+                var surv = {
+                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    requirements: [{nonconformities: [{status: {name: 'Open'}}]}, {nonconformities: [{status: {name: 'Open'}}]}],
+                };
+                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Open Non-Conformities Were Found');
+            });
+
+            it('should come up with correct titles when there was 1 closed NC', function () {
+                var surv = {
+                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    requirements: [{nonconformities: [{status: {name: 'Closed'}}]}],
+                };
+                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Closed Non-Conformity Was Found');
+            });
+
+            it('should come up with correct titles when there were multiple closed NCs', function () {
+                var surv = {
+                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    requirements: [{nonconformities: [{status: {name: 'Closed'}}]}, {nonconformities: [{status: {name: 'Closed'}}]}],
+                };
+                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Closed Non-Conformities Were Found');
+            });
+
+            it('should come up with correct titles when there were open and closed NCs', function () {
+                var surv = {
+                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    requirements: [{nonconformities: [{status: {name: 'Open'}}]}, {nonconformities: [{status: {name: 'Closed'}}]}],
+                };
+                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open and 1 Closed Non-Conformities Were Found');
+            });
         });
     });
 })();

@@ -15,7 +15,7 @@
             }
         });
 
-        var commonService, $httpBackend;
+        var $httpBackend, commonService;
 
         var mock = {};
         mock.aProduct = {id: 123, product: 'product 1', developer: 'developer 1'};

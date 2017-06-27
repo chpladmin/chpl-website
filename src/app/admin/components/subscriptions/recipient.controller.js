@@ -9,6 +9,7 @@
         var vm = this;
 
         vm.addSubscription = addSubscription;
+        vm.attachReports = attachReports;
         vm.cancel = cancel;
         vm.deleteRecipient = deleteRecipient;
         vm.removeSubscription = removeSubscription;
@@ -23,9 +24,15 @@
             vm.recipient = angular.copy(recipient);
             vm.reportTypes = angular.copy(reportTypes);
 
-            if (!vm.recipient.subscriptions) {
-                vm.recipient.subscriptions = [{}];
-            } else {
+            vm.attachReports();
+        }
+
+        function addSubscription () {
+            vm.recipient.subscriptions.push({});
+        }
+
+        function attachReports () {
+            if (vm.recipient.subscriptions) {
                 var i, j;
                 for (i = 0; i < vm.recipient.subscriptions.length; i++) {
                     for (j = 0; j < vm.reportTypes.length; j++) {
@@ -41,11 +48,9 @@
                         }
                     }
                 }
+            } else {
+                vm.recipient.subscriptions = [{}];
             }
-        }
-
-        function addSubscription () {
-            vm.recipient.subscriptions.push({});
         }
 
         function cancel () {

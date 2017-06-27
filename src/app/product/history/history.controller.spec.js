@@ -3,7 +3,7 @@
 
     describe('chpl.product.product_history', function () {
 
-        var vm, scope, $log, mock;
+        var $location, $log, mock, scope, vm;
         mock = {};
         mock.modalInstance = {
             close: jasmine.createSpy('close'),
@@ -12,7 +12,8 @@
 
         beforeEach(function () {
             module('chpl.product','chpl.mocks');
-            inject(function ($controller, _$log_, $rootScope, product_activity) {
+            inject(function ($controller, _$location_, _$log_, $rootScope, product_activity) {
+                $location = _$location_;
                 $log = _$log_;
                 mock.activity = product_activity();
 
@@ -36,6 +37,10 @@
             it('should know what the activity is', function () {
                 expect(vm.activity).toEqual(mock.activity);
             });
+
+            it('should know what the Listing id is', function () {
+                expect(vm.listingId).toBe(6993);
+            });
         });
 
         describe('housekeeping', function () {
@@ -47,6 +52,18 @@
                 expect(vm.cancel).toBeDefined();
                 vm.cancel();
                 expect(mock.modalInstance.dismiss).toHaveBeenCalled();
+            });
+
+            it('should have a way to go to the API page', function () {
+                spyOn($location, 'path');
+                vm.goToApi();
+                expect($location.path).toHaveBeenCalledWith('/resources/chpl_api');
+            });
+
+            it('should close the modal on navigation', function () {
+                spyOn(vm, 'cancel');
+                vm.goToApi();
+                expect(vm.cancel).toHaveBeenCalled();
             });
         });
 

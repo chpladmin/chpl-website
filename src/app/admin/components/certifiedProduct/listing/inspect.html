@@ -301,14 +301,9 @@
               </span>
               <br />
               <ai-certs ng-if="vm.cp !== ''"
-                        certs="vm.cp.certificationResults"
-                        cqms="vm.cp.cqmResults"
-                        count-certs="vm.cp.countCerts"
-                        count-cqms="vm.cp.countCqms"
                         default-all="true"
                         edit-mode="false"
                         is-confirming="true"
-                        report-file-location="{{ vm.cp.reportFileLocation }}"
                         product="vm.cp">
               </ai-certs>
               <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()">Edit Certified Product</button></p>

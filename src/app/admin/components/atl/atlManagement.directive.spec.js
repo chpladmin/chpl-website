@@ -3,7 +3,7 @@
 
     describe('chpl.admin.atlManagement.directive', function () {
 
-        var element, scope, $log, ctrl, commonService;
+        var $log, commonService, ctrl, element, scope;
 
         beforeEach(function () {
             var mockAuthService = {};

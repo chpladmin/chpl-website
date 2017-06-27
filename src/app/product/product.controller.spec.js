@@ -3,7 +3,7 @@
 
     describe('chpl.product.controller', function () {
 
-        var $uibModal, scope, vm, $log, $q, commonService, authService, mock, actualOptions;
+        var $controller, $log, $q, $uibModal, actualOptions, authService, commonService, mock, scope, vm;
         mock = {};
         mock.activity = {};
         mock.productId = 123123;
@@ -19,7 +19,7 @@
             dismiss: function (type) { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
-            templateUrl: 'app/product/product_history.html',
+            templateUrl: 'app/product/history/history.html',
             controller: 'ProductHistoryController',
             controllerAs: 'vm',
             animation: false,
@@ -44,7 +44,8 @@
                     return $delegate;
                 });
             });
-            inject(function ($controller, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _commonService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _commonService_) {
+                $controller = _$controller_;
                 $log = _$log_;
                 $uibModal = _$uibModal_;
                 spyOn($uibModal, 'open').and.callFake(function (options) {
@@ -109,6 +110,24 @@
                 vm.loadProduct();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initialCount + 1);
+            });
+
+            describe('initial panel options', function () {
+                it('should set to criteria by default', function () {
+                    expect(vm.initialPanel).toBe('cert');
+                });
+
+                it('should be able to be open to surveillance', function () {
+                    vm = $controller('ProductController', {
+                        $scope: scope,
+                        $routeParams: {
+                            id: mock.productId,
+                            initialPanel: 'surveillance',
+                        },
+                    })
+                    scope.$digest();
+                    expect(vm.initialPanel).toBe('surveillance');
+                });
             });
         });
 

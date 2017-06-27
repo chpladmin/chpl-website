@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl', function () {
-        var vm, el, $log;
+        var $log, el, vm;
 
         beforeEach(function () {
             module('chpl.templates','chpl');

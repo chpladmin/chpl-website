@@ -2,31 +2,31 @@
     'use strict';
 
     angular.module('chpl.admin')
-        .directive('aiNotificationRecipients', aiNotificationRecipients)
-        .controller('NotificationRecipientsController', NotificationRecipientsController);
+        .directive('aiSubscriptionRecipients', aiSubscriptionRecipients)
+        .controller('SubscriptionRecipientsController', SubscriptionRecipientsController);
 
     /** @ngInject */
-    function aiNotificationRecipients () {
+    function aiSubscriptionRecipients () {
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/notifications/recipients.html',
+            templateUrl: 'app/admin/components/subscriptions/recipients.html',
             scope: {},
             bindToController: {
                 acbs: '=',
             },
             controllerAs: 'vm',
-            controller: 'NotificationRecipientsController',
+            controller: 'SubscriptionRecipientsController',
         };
     }
 
     /** @ngInject */
-    function NotificationRecipientsController ($log, $uibModal, commonService) {
+    function SubscriptionRecipientsController ($log, $uibModal, commonService) {
         var vm = this;
 
         vm.createRecipient = createRecipient;
         vm.editRecipient = editRecipient;
-        vm.loadNotificationReportTypes = loadNotificationReportTypes;
+        vm.loadSubscriptionReportTypes = loadSubscriptionReportTypes;
         vm.loadRecipients = loadRecipients;
 
         activate();
@@ -34,13 +34,13 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.loadNotificationReportTypes();
+            vm.loadSubscriptionReportTypes();
             vm.loadRecipients();
         }
 
         function createRecipient () {
             vm.createRecipientInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/notifications/recipient.html',
+                templateUrl: 'app/admin/components/subscriptions/recipient.html',
                 controller: 'RecipientController',
                 controllerAs: 'vm',
                 animation: false,
@@ -50,7 +50,7 @@
                 resolve: {
                     acbs: function () { return vm.acbs; },
                     recipient: function () { return {}; },
-                    reportTypes: function () { return vm.notificationReportTypes; },
+                    reportTypes: function () { return vm.subscriptionReportTypes; },
                 },
             });
             vm.createRecipientInstance.result.then(function (result) {
@@ -66,7 +66,7 @@
 
         function editRecipient (recipient) {
             vm.editRecipientInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/notifications/recipient.html',
+                templateUrl: 'app/admin/components/subscriptions/recipient.html',
                 controller: 'RecipientController',
                 controllerAs: 'vm',
                 animation: false,
@@ -76,7 +76,7 @@
                 resolve: {
                     acbs: function () { return vm.acbs; },
                     recipient: function () { return recipient; },
-                    reportTypes: function () { return vm.notificationReportTypes; },
+                    reportTypes: function () { return vm.subscriptionReportTypes; },
                 },
             });
             vm.editRecipientInstance.result.then(function (result) {
@@ -88,6 +88,8 @@
                             vm.recipients.splice(i,1);
                         }
                     }
+                } else {
+                    $log.info('unknown edit close', result);
                 }
             }, function (result) {
                 if (result !== 'Cancelled') {
@@ -98,22 +100,22 @@
             });
         }
 
-        function loadNotificationReportTypes () {
-            commonService.getNotificationReportTypes()
+        function loadSubscriptionReportTypes () {
+            commonService.getSubscriptionReportTypes()
                 .then(function (result) {
-                    vm.notificationReportTypes = result;
+                    vm.subscriptionReportTypes = result;
                 }, function (error) {
-                    $log.warn('error in notification.recipients loadNotificationReportTypes', error);
+                    $log.warn('error in subscription.recipients loadSubscriptionReportTypes', error);
                 });
         }
 
         function loadRecipients () {
             vm.recipients = [];
-            commonService.getNotificationRecipients()
+            commonService.getSubscriptionRecipients()
                 .then(function (result) {
                     vm.recipients = result.results;
                 }, function (error) {
-                    $log.warn('error in notification.recipients loadRecipients', error);
+                    $log.warn('error in subscription.recipients loadRecipients', error);
                 });
         }
     }

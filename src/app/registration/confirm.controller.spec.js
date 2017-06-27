@@ -9,7 +9,7 @@
 
         describe('controller', function () {
 
-            var commonService, mockCommonService, scope, ctrl, $log, $location;
+            var $location, $log, commonService, ctrl, mockCommonService, scope;
 
             beforeEach(function () {
                 mockCommonService = {};
