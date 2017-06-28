@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.overview', function () {
-        var commonService, scope, vm, $log, $q;
+        var $log, $q, commonService, scope, vm;
 
         beforeEach(function () {
             module('chpl.overview', function ($provide) {
@@ -19,9 +19,9 @@
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;
-                commonService.getAcbs.and.returnValue($q.when({acbs: [{id:0, name:'test-acb'}]}));
-                commonService.getAtls.and.returnValue($q.when({atls: [{id:0, name:'test-atl'}]}));
-                commonService.getAnnouncements.and.returnValue($q.when({announcements: [{title:0, description:'test-atl'}]}));
+                commonService.getAcbs.and.returnValue($q.when({acbs: [{id: 0, name: 'test-acb'}]}));
+                commonService.getAtls.and.returnValue($q.when({atls: [{id: 0, name: 'test-atl'}]}));
+                commonService.getAnnouncements.and.returnValue($q.when({announcements: [{title: 0, description: 'test-atl'}]}));
 
                 scope = $rootScope.$new();
                 vm = $controller('OverviewController');

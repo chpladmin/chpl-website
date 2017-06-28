@@ -25,6 +25,7 @@
                 return inactiveCertificates(array.results);
             case 'nonconformities':
                 return nonconformities(array.results);
+                // no default
             }
         }
 

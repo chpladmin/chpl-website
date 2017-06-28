@@ -28,7 +28,7 @@
     }
 
     function stSelectDistinctLink (scope, element, attr, ctrls) {
-        var table, ctrl, predicate;
+        var ctrl, predicate, table;
 
         activate();
 

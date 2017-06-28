@@ -221,7 +221,8 @@
 
         function filterChanged () {
             vm.hasChanges = getChanged();
-            var query, numberOfItems = vm.selected.length;
+            var query;
+            var numberOfItems = vm.selected.length;
             query = { separator: vm.separator ? vm.separator : '' };
             if (vm.matchAll) {
                 query.matchAll = {
@@ -289,7 +290,7 @@
 
         function toggleSelection (item, dontSearch, dontTriggerRetired) {
             var index = vm.selected.indexOf(item.value);
-            if(index > -1) {
+            if (index > -1) {
                 vm.selected.splice(index, 1);
             } else {
                 vm.selected.push(item.value);

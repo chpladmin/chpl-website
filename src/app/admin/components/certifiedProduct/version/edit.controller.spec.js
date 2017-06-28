@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.EditVersionController.controller', function () {
-        var vm, scope, $log, $q, commonService, Mock, mock;
+        var $log, $q, Mock, commonService, mock, scope, vm;
 
         mock = {
             version: {versionId: 1, version: 'a version'},

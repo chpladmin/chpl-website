@@ -348,7 +348,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function incrementTable (results) {
-            var size = 500, delay = 100;
+            var delay = 100, size = 500;
             if (results.length > 0) {
                 vm.isPreLoading = false;
                 vm.allCps = vm.allCps.concat(results.splice(0,size));

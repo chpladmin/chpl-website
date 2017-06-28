@@ -17,7 +17,7 @@
                 controller: 'ApiDocumentationController',
                 controllerAs: 'vm',
                 templateUrl: 'app/collections/apiDocumentation/apiDocumentation.html',
-                title: 'API Documentation for 2015 Edition Certified Products',
+                title: 'API Information for 2015 Edition Products',
             })
             .when('/collections/developers', {
                 controller: 'BannedDevelopersController',
@@ -35,7 +35,7 @@
                 controller: 'NonconformitiesController',
                 controllerAs: 'vm',
                 templateUrl: 'app/collections/nonconformities/nonconformities.html',
-                title: 'Nonconformities',
+                title: 'Products Under Corrective Action',
             })
             .when('/collections/products', {
                 controller: 'DecertifiedProductsController',
@@ -49,7 +49,7 @@
                 templateUrl: 'app/compare/compare.html',
                 title: 'CHPL Product Comparison',
             })
-            .when('/product/:id', {
+            .when('/product/:id/:initialPanel?', {
                 templateUrl: 'app/product/product.html',
                 controller: 'ProductController',
                 controllerAs: 'vm',

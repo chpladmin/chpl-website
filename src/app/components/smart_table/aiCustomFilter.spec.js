@@ -3,7 +3,7 @@
 
     describe('aiCustomFilter', function () {
 
-        var aiCustomFilter, $log, Mock;
+        var $log, Mock, aiCustomFilter;
 
         beforeEach(function () {
             module('chpl.common', 'chpl.mock');
@@ -36,63 +36,63 @@
         describe('surveillance filter', function () {
             describe('has surveillance', function () {
                 it('never', function () {
-                    var survFilter = {surveillance:'never'};
+                    var survFilter = {surveillance: 'never'};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);
                 });
 
                 it('has-had', function () {
-                    var survFilter = {surveillance:'has-had'};
+                    var survFilter = {surveillance: 'has-had'};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(4);
                 });
             });
 
             describe('has nonconformities', function () {
                 it('has-had with no NCs', function () {
-                    var survFilter = {surveillance:'has-had', NC:{never:true}};
+                    var survFilter = {surveillance: 'has-had', NC: {never: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(1);
                 });
 
                 it('has-had with closed NCs', function () {
-                    var survFilter = {surveillance:'has-had', NC:{closed:true}};
+                    var survFilter = {surveillance: 'has-had', NC: {closed: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(2);
                 });
 
                 it('has-had with open NCs', function () {
-                    var survFilter = {surveillance:'has-had', NC:{open:true}};
+                    var survFilter = {surveillance: 'has-had', NC: {open: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(1);
                 });
             });
 
             describe('match all', function () {
                 it('has-had with no NCs & open', function () {
-                    var survFilter = {surveillance:'has-had', matchAll: true, NC:{never:true, open: true}};
+                    var survFilter = {surveillance: 'has-had', matchAll: true, NC: {never: true, open: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(0);
                 });
 
                 it('has-had with closed & open', function () {
-                    var survFilter = {surveillance:'has-had', matchAll: true, NC:{closed: true, open: true}};
+                    var survFilter = {surveillance: 'has-had', matchAll: true, NC: {closed: true, open: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(0);
                 });
             });
 
             describe('match any with multiples', function () {
                 it('has-had with open & closed NCs', function () {
-                    var survFilter = {surveillance:'has-had', NC:{open:true, closed: true}};
+                    var survFilter = {surveillance: 'has-had', NC: {open: true, closed: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(3);
                 });
 
                 it('has-had with never & closed NCs', function () {
-                    var survFilter = {surveillance:'has-had', NC:{never:true, closed: true}};
+                    var survFilter = {surveillance: 'has-had', NC: {never: true, closed: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(2);
                 });
 
                 it('has-had with never & open NCs', function () {
-                    var survFilter = {surveillance:'has-had', NC:{never:true, open: true}};
+                    var survFilter = {surveillance: 'has-had', NC: {never: true, open: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(1);
                 });
 
                 it('has-had with never, closed & open NCs', function () {
-                    var survFilter = {surveillance:'has-had', NC:{never:true, closed: true, open: true}};
+                    var survFilter = {surveillance: 'has-had', NC: {never: true, closed: true, open: true}};
                     expect(aiCustomFilter(Mock.allCps, {surveillance: survFilter}).length).toBe(4);
                 });
             });

@@ -3,6 +3,23 @@
 ## Version TBD
 _Date TBD_
 
+### New features
+* ICS Family Tree work
+  * Allow admins to build family tree links on edit/upload of Listing
+  * Display simple family tree data on Listing details page
+  * Display activity of family tree changes "Other" Activity report
+* Allow scrolling on CMS ID & Compare widgets
+* Ellipsis long names on CMS ID & Compare widgets
+* Links to Listing details from CAP Collection open "Surveillance Activity" accordion
+
+### Text changes
+* Change "Additional Software" to "Relied Upon Software"
+
+---
+
+## Version 9.0.0
+_19 June 2017_
+
 ### Big changes
 * Reworked entire general public Navigation
   * Added "Collections"/"Shortcuts"

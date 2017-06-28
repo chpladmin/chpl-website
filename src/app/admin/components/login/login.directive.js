@@ -33,7 +33,7 @@
         vm.misMatchPasswords = misMatchPasswords;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
-        vm.pwPattern = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}";
+        vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
 
         vm.activityEnum = {
             LOGIN: 1,

@@ -46,6 +46,9 @@
         vm.singleCp = singleCp;
         vm.validDates = validDates;
 
+        // private function exposed for testing
+        vm.interpretCps = interpretCps;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////
@@ -158,6 +161,7 @@
                 case 'api_key_management':
                     vm.refreshApi();
                     break;
+                    // no default
                 }
             }
         }
@@ -335,10 +339,9 @@
                 {key: 'accessibilityCertified', display: 'Accessibility Certified'},
                 {key: 'certificationDate', display: 'Certification Date', filter: 'date'},
                 {key: 'chplProductNumber', display: 'CHPL Product Number'},
-                {key: 'ics', display: 'ICS Status'},
                 ///{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                 {key: 'otherAcb', display: 'Other ONC-ACB'},
-                {key: 'productAdditionalSoftware', display: 'Product-wide Additional Software'},
+                {key: 'productAdditionalSoftware', display: 'Product-wide Relied Upon Software'},
                 {key: 'reportFileLocation', display: 'ONC-ATL Test Report File Location'},
                 {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
                 {key: 'sedReportFileLocation', display: 'SED Report File Location'},
@@ -350,6 +353,7 @@
                 //{key: 'certificationStatus', subkey: 'name', display: 'Certification Status', questionable: true},
                 {key: 'certifyingBody', subkey: 'name', display: 'Certifying Body'},
                 {key: 'classificationType', subkey: 'name', display: 'Classification Type'},
+                {key: 'ics', subkey: 'inherits', display: 'ICS Status'},
                 {key: 'practiceType', subkey: 'name', display: 'Practice Type'},
                 {key: 'testingLab', subkey: 'name', display: 'Testing Lab'},
             ];
@@ -364,7 +368,7 @@
             var change;
             var questionable;
 
-            var i, j, k, chplNum, certChanges, cpNum, cpId, link;
+            var certChanges, chplNum, cpId, cpNum, i, j, k, link;
             for (i = 0; i < data.length; i++) {
                 var activity = {
                     date: data[i].activityDate,
@@ -438,6 +442,25 @@
                         if (cqmChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                     }
+                    if (typeof(data[i].originalData.ics) === 'object' &&
+                        typeof(data[i].newData.ics) === 'object' &&
+                        data[i].originalData.ics &&
+                        data[i].newData.ics) {
+                        if (data[i].originalData.ics.parents) {
+                            var icsParentsKeys = [];
+                            var icsParents = compareArray(data[i].originalData.ics.parents, data[i].newData.ics.parents, icsParentsKeys, 'chplProductNumber');
+                            for (j = 0; j < icsParents.length; j++) {
+                                activity.details.push('ICS Parent "' + icsParents[j].name + '" changes<ul>' + icsParents[j].changes.join('') + '</ul>');
+                            }
+                        }
+                        if (data[i].originalData.ics.children) {
+                            var icsChildrenKeys = [];
+                            var icsChildren = compareArray(data[i].originalData.ics.children, data[i].newData.ics.children, icsChildrenKeys, 'chplProductNumber');
+                            for (j = 0; j < icsChildren.length; j++) {
+                                activity.details.push('ICS Child "' + icsChildren[j].name + '" changes<ul>' + icsChildren[j].changes.join('') + '</ul>');
+                            }
+                        }
+                    }
                     var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
                     var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
                     for (j = 0; j < qmsStandards.length; j++) {
@@ -450,7 +473,7 @@
                     }
                     if (activity.details.length === 0) {
                         delete activity.details;
-                    } else {
+                    } else if (!statusChange || (statusChange && activity.details.length > 1)) {
                         activity.csvDetails = activity.details.join('\n');
                         output.other.push(activity);
                     }
@@ -664,7 +687,7 @@
                 ];
                 var addlSw = compareArray(prev[i].additionalSoftware, curr[i].additionalSoftware, addlSwKeys, 'name');
                 for (j = 0; j < addlSw.length; j++) {
-                    obj.changes.push('<li>Additional software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul></li>');
+                    obj.changes.push('<li>Relied Upon Software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul></li>');
                 }
                 var testProceduresKeys = [];
                 var testProcedures = compareArray(prev[i].testProcedures, curr[i].testProcedures, testProceduresKeys, 'testProcedureVersion');

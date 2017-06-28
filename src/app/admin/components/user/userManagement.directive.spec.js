@@ -3,10 +3,10 @@
 
     describe('chpl.admin.userManagement.directive', function () {
 
-        var element, scope, $log, ctrl, mockCommonService;
+        var $log, ctrl, element, mockCommonService, scope;
 
         beforeEach(function () {
-            mockCommonService = {};
+            mockCommonService = { };
 
             module('chpl.templates');
             module('chpl.admin', function ($provide) {
@@ -14,7 +14,7 @@
             });
 
             inject(function ($q) {
-                mockCommonService.users = {"data": {"users":[{"subjectName":"admin","firstName":"Administrator","lastName":"Administrator","email":"info@ainq.com","phoneNumber":"(301) 560-6999","title":null,"accountLocked":false,"accountEnabled":true}]}};
+                mockCommonService.users = {'data': {'users': [{'subjectName': 'admin','firstName': 'Administrator','lastName': 'Administrator','email': 'info@ainq.com','phoneNumber': '(301) 560-6999','title': null,'accountLocked': false,'accountEnabled': true}]}};
 
                 mockCommonService.getUsers = function () {
                     return $q.when(this.users);

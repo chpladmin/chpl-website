@@ -61,6 +61,7 @@
             getProductsByDeveloper: getProductsByDeveloper,
             getProductsByVersion: getProductsByVersion,
             getQmsStandards: getQmsStandards,
+            getRelatedListings: getRelatedListings,
             getSearchOptions: getSearchOptions,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
@@ -159,6 +160,7 @@
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,criteriaMet,apiDocumentation,transparencyAttestationUrl');
             case 'bannedDevelopers':
                 return simpleApiCall('/decertifications/developers');
+                //no default
             }
         }
 
@@ -176,6 +178,10 @@
 
         function getAgeRanges () {
             return simpleApiCall('/data/age_ranges');
+        }
+
+        function getRelatedListings (productId) {
+            return simpleApiCall('/products/' + productId + '/listings');
         }
 
         function getTestStandards () {

@@ -3,7 +3,7 @@
 
     describe('chpl.compare.compare', function () {
 
-        var commonService, utilService, scope, ctrl, $log;
+        var $log, commonService, ctrl, scope, utilService;
 
         beforeEach(function () {
             var mockCommonService = {};

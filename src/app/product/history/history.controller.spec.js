@@ -3,7 +3,7 @@
 
     describe('chpl.product.product_history', function () {
 
-        var vm, scope, $location, $log, mock;
+        var $location, $log, mock, scope, vm;
         mock = {};
         mock.modalInstance = {
             close: jasmine.createSpy('close'),

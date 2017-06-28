@@ -3,19 +3,33 @@
 
     describe('chpl.certs.directive', function () {
 
-        var vm, el, $log;
+        var $compile, $log, commonService, el, scope, vm;
 
-        var mock = {certs: '[{"title": "2011 Certifications","certs": [{"hasVersion": false,"number": "170.302(a)","title": "Dr","isActive": true},{"hasVersion": false,"number": "170.302(c)","title": "Main","isActive": false},],"numActive": 1},{"title": "2014 Certifications","certs": [{"hasVersion": false,"number": "170.314(a)(1)","title": "Compu","isActive": false},{"hasVersion": false,"number": "170.314(a)(2)","title": "Drug","isActive": true},],"numActive": 1},{"title": "Clinical Quality Measures","certs": [{"hasVersion": false,"number": "NQF 0001(A)","title": "Ast","isActive": true},{"hasVersion": false,"number": "NQF 0002(A)","title": "Ph","isActive": false},{"hasVersion": true,"number": "CMS100","title": "AM","isActive": false},{"hasVersion": true,"number": "CMS102","title": "St","isActive": true,"version": "v0"},],"numActive": 2}]'};
+        var mock = {};
+        mock.product = {
+            certificationResults: [],
+            cqms: [],
+        }
 
         beforeEach(function () {
-            module('chpl.templates');
-            module('chpl');
+            module('chpl.templates','chpl',function ($provide) {
+                $provide.decorator('commonService', function ($delegate) {
+                    $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
+                    return $delegate;
+                });
+            });
 
-            inject(function ($compile, _$log_, $rootScope) {
+            inject(function (_$compile_, _$log_, $q, $rootScope, _commonService_) {
+                $compile = _$compile_;
                 $log = _$log_;
-                el = angular.element('<ai-certs edit-mode="true" certs=\'' + mock.certs + '\' cqms=\'' + mock.certs + '\'></ai-certs');
-                $compile(el)($rootScope.$new());
-                $rootScope.$digest();
+                commonService = _commonService_;
+                commonService.getSurveillanceLookups.and.returnValue($q.when({}));
+
+                el = angular.element('<ai-certs product="product"></ai-certs>');
+                scope = $rootScope.$new();
+                scope.product = mock.product;
+                $compile(el)(scope);
+                scope.$digest();
                 vm = el.isolateScope().vm;
             });
         });
@@ -28,12 +42,38 @@
             }
         });
 
-        it('should be compiled', function () {
-            expect(el.html()).not.toEqual(null);
+        describe('the directive', function () {
+            it('should be compiled', function () {
+                expect(el.html()).not.toEqual(null);
+            });
         });
 
-        it('should have isolate scope object with instanciate members', function () {
-            expect(vm).toEqual(jasmine.any(Object));
+        describe('the controller', function () {
+            it('should have isolate scope object with instanciate members', function () {
+                expect(vm).toEqual(jasmine.any(Object));
+            });
+
+            describe('initial state', function () {
+                it('should be open to criteria by default', function () {
+                    expect(vm.panelShown).toBe('cert');
+                });
+
+                it('should be able to be open to nothing', function () {
+                    el = angular.element('<ai-certs product="product" initial-panel="none"></ai-certs>');
+                    $compile(el)(scope);
+                    scope.$digest();
+                    vm = el.isolateScope().vm;
+                    expect(vm.panelShown).toBeUndefined();
+                });
+
+                it('should be able to be open to surveillance', function () {
+                    el = angular.element('<ai-certs product="product" initial-panel="surveillance"></ai-certs>');
+                    $compile(el)(scope);
+                    scope.$digest();
+                    vm = el.isolateScope().vm;
+                    expect(vm.panelShown).toBe('surveillance');
+                });
+            });
         });
     });
 })();

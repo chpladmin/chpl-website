@@ -589,13 +589,17 @@
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
-                  <strong>Product wide Additional Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
+                  <strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
                   <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
                   <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
-                  <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
+                  <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
+                  <ul>
+                    <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#/product/{{ parent.id }}">{{ parent.chplProductNumber }}</a></li>
+                    <li ng-repeat="child in vm.activeCP.ics.children"><strong>ICS Source for:</strong> <a href="#/product/{{ child.id }}">{{ child.chplProductNumber }}</a></li>
+                  </ul>
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
                   <ul>
                     <li ng-repeat="qms in vm.activeCP.qmsStandards"><strong>Standard:</strong> {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification"><strong><br />Modification:</strong> {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria"> <strong><br />Applicable Criteria:</strong> {{ qms.applicableCriteria }}</span></li>
@@ -621,13 +625,8 @@
                 </span>
                 <br />
                 <ai-certs ng-if="vm.activeCP !== ''"
-                          certs="vm.activeCP.certificationResults"
-                          cqms="vm.activeCP.cqmResults"
-                          count-certs="vm.activeCP.countCerts"
-                          count-cqms="vm.activeCP.countCqms"
                           default-all="true"
                           edit-mode="false"
-                          report-file-location="{{ vm.activeCP.reportFileLocation }}"
                           product="vm.activeCP">
                 </ai-certs>
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>

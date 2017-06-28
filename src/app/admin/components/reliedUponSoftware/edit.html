@@ -6,11 +6,11 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="additionalSoftwareLabel">Additional Software</h4>
+    <h4 class="modal-title" id="additionalSoftwareLabel">Relied Upon Software</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
-      <label for="swName">Additional Software <span ng-if="vm.sw.version && !vm.sw.certifiedProductNumber" class="text-danger">*</span></label>
+      <label for="swName">Relied Upon Software <span ng-if="vm.sw.version && !vm.sw.certifiedProductNumber" class="text-danger">*</span></label>
       <input class="input-sm form-control" type="text" ng-required="vm.sw.version && !vm.sw.certifiedProductNumber" ng-disabled="vm.sw.certifiedProductNumber" ng-model="vm.sw.name" id="swName" name="swName"></input>
       <div class="text-danger" ng-if="vm.editForm.swName.$touched && vm.editForm.swName.$error.required">Software name is required</div>
     </div>
@@ -29,7 +29,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="vm.editForm.$invalid" class="btn btn-ai-success btn-block" ng-click="vm.save()">Save Additional Software</button>
+    <button ng-disabled="vm.editForm.$invalid" class="btn btn-ai-success btn-block" ng-click="vm.save()">Save Relied Upon Software</button>
     <button class="btn btn-warning btn-block"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
