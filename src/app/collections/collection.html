@@ -67,7 +67,13 @@
                 </td>
               </tr>
               <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-                <th ng-repeat="col in vm.columns" scope="col" class="search-header" st-sort="{{ col.predicate }}" st-skip-natural="true" st-sort-default="{{ col.sortDefault }}">{{ col.display }}</th>
+                <th ng-repeat="col in vm.columns"
+                    scope="col" class="search-header"
+                    ng-attr-st-sort="{{ col.multiSort ? undefined : col.predicate }}" ng-attr-ai-multi-sort="{{ col.multiSort ? col.predicate : undefined }}"
+                    st-skip-natural="true" ng-attr-st-sort-default="{{ col.sortDefault ? col.sortDefault : undefined }}"
+                    ng-attr-st-descending-first="{{ col.descendingFirst ? col.descendingFirst : undefined }}">
+                  {{ col.display }}
+                </th>
               </tr>
             </thead>
             <tfoot ng-if="vm.displayedCps && vm.displayedCps.length > 0">
