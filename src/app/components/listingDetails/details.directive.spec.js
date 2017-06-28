@@ -12,7 +12,7 @@
         }
 
         beforeEach(function () {
-            module('chpl.templates','chpl',function ($provide) {
+            module('chpl.templates', 'chpl', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
                     return $delegate;

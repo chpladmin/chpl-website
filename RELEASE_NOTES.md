@@ -11,6 +11,7 @@ _Date TBD_
 * Allow scrolling on CMS ID & Compare widgets
 * Ellipsis long names on CMS ID & Compare widgets
 * Links to Listing details from CAP Collection open "Surveillance Activity" accordion
+* Added "Measures Successfully Tested" accordion element
 
 ### Text changes
 * Change "Additional Software" to "Relied Upon Software"
