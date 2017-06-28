@@ -158,6 +158,14 @@
         <ai-surveillance certified-product="vm.product"></ai-surveillance>
       </div>
     </div>
+    <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name === '2015'">
+      <div class="panel-heading">
+        <a href ng-click="vm.showPanel('g1g2')" aria-expanded="{{ vm.panelShown === 'g1g2' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-right'"></i> Successfully Tested Measures</a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'g1g2'">
+        <ai-g1g2 listing="vm.product"></ai-g1g2>
+      </div>
+    </div>
     <div class="panel panel-ai" ng-if="vm.cap && vm.ACTIVE_CAP">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cap')" aria-expanded="{{ vm.panelShown === 'cap' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cap' ? 'fa-caret-down' : 'fa-caret-right'"></i> Non-conformities<span class="pull-right">({{ vm.cap.length && vm.cap.length > 0 ? vm.cap.length : 0 }} found)</span></a>
