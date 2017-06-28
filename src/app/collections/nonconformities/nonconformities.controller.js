@@ -14,13 +14,13 @@
 
         function activate () {
             vm.columnSet = [
-                { predicate: 'edition', display: 'Edition', multiSort: true },
+                { predicate: 'edition', display: 'Edition', multiSort: true, descendingFirst: true },
                 { predicate: 'developer', display: 'Developer', multiSort: true },
                 { predicate: 'product', display: 'Product', multiSort: true },
                 { predicate: 'version', display: 'Version', multiSort: true },
-                { predicate: 'chplProductNumber', display: 'CHPL ID', multiSort: true, isLink: true , initialPanel: 'surveillance' },
+                { predicate: 'chplProductNumber', display: 'CHPL ID', multiSort: true, isLink: true, initialPanel: 'surveillance' },
                 { predicate: 'acb', display: 'ONC-ACB', multiSort: true },
-                { predicate: 'openNonconformityCount', display: '# Open NCs', multiSort: true, descendingFirst: true, sortDefault: ['-openNonconformityCount', 'edition', 'developer'] },
+                { predicate: 'openNonconformityCount', display: '# Open NCs', multiSort: true, descendingFirst: true, sortDefault: ['-openNonconformityCount', '-edition', 'developer'] },
                 { predicate: 'closedNonconformityCount', display: '# Closed NCs', multiSort: true, descendingFirst: true },
             ];
             vm.filters = ['acb', 'edition'];
