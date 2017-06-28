@@ -65,16 +65,6 @@
                     $$hashKey: jasmine.any(String),
                 });
             });
-
-            xit('should combine matching measures on G value', function () {
-                expect(vm.measures[4]).toEqual({
-                    name: 'Electronic Prescribing: Eligible Clinician Group',
-                    description: 'Required Test 1: Stage 2 Objective 4 and Stage 3 Objective 2, ACI Transition Objective 2 Measure 1 and ACI Objective 2 Measure 1',
-                    g: 'G1;G2',
-                    criteria: ['170.315 (a)(10)', '170.315 (b)(3)'],
-                    $$hashKey: jasmine.any(String),
-                });
-            });
         });
     });
 })();

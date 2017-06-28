@@ -30,18 +30,14 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {/*
-            $scope.$watch('vm.listing', function (listing) {
-                if (listing) {
-                    // do stuff
-                    }}, true);*/
+        function activate () {
             analyzeMeasures();
         }
 
         ////////////////////////////////////////////////////////////////////
 
         function analyzeMeasures () {
-            var appending, cert, doubleG, i, j, k;
+            var appending, cert, i, j, k;
             vm.measures = [];
             for (i = 0; i < vm.listing.certificationResults.length; i++) {
                 cert = vm.listing.certificationResults[i];
@@ -83,22 +79,6 @@
                                 criteria: [cert.g2MacraMeasures[j].criteria.number],
                             });
                         }
-                    }
-                }
-            }
-            for (i = 0; i < vm.measures.length - 1; i++) {
-                for (j = i + 1; j < vm.measures.length; j++) {
-                    doubleG = false;
-                    if (vm.measures[i].name === vm.measures[j].name &&
-                        vm.measures[i].description === vm.measures[j].description &&
-                        vm.measures[i].criteria.length === vm.measures[j].criteria.length) {
-                        for (k = 0; k < vm.measures[i].criteria.length; k++) {
-                            doubleG = doubleG || vm.measures[j].criteria.indexOf(vm.measures[i].criteria[k]) > -1;
-                        }
-                    }
-                    if (doubleG) {
-                        vm.measures[i].g = 'G1;G2';
-                        vm.measures.splice(k,1);
                     }
                 }
             }
