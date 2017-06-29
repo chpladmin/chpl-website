@@ -25,10 +25,14 @@
                 return inactiveCertificates(array.results);
             case 'nonconformities':
                 return nonconformities(array.results);
+            case 'transparencyAttestations':
+                return transparencyAttestations(array.developers);
                 // no default
             }
         }
 
+        ////////////////////////////////////////////////////////////////////
+        // translation functions
         ////////////////////////////////////////////////////////////////////
 
         /*
@@ -148,6 +152,57 @@
                 }
             }
             return ret;
+        }
+
+        /*
+         * All developers found are included, but need to be transformed
+         */
+        function transparencyAttestations (array) {
+            var ret = [];
+            var dev;
+            for (var i = 0; i < array.length; i ++) {
+                if (array[i].transparencyAttestations && array[i].transparencyAttestations.length > 0) {
+                    dev = {
+                        developer: array[i].name,
+                        mainSearch: array[i].name,
+                        transparencyAttestation: joinAttestations(array[i].transparencyAttestations),
+                        disclosureUrl: [],
+                    }
+                    if (array[i].disclosureUrls && array[i].disclosuresUrls.length > 0) {
+                        for (var j = 0; j < array[i].disclosureUrls.length; j++) {
+                            dev.disclosureUrl.push(array[i].disclosuresUrls[j].name);
+                        }
+                    }
+                    ret.push(dev);
+                }
+            }
+            return ret;
+        }
+
+        ////////////////////////////////////////////////////////////////////
+        // helper functions
+        ////////////////////////////////////////////////////////////////////
+
+        function expandAttestation (att) {
+            switch (att) {
+            case 'Affirmative': return '<span class="text-success">Supports</span>';
+            case 'Negative': return '<span class="text-danger">Declined to Support</span>';
+            case 'N/A': return '<span class="text-muted">Not Applicable</span>';
+            default: return att;
+            }
+        }
+
+        function joinAttestations (atts) {
+            var ret = [];
+            for (var i = 0; i < atts.length; i++) {
+                if (atts[i].attestation) {
+                    ret.push('<strong>' + atts[i].acbName + '</strong>: ' + expandAttestation(atts[i].attestation));
+                }
+            }
+            if (ret.length === 0) {
+                ret.push('<span class="text-danger">Has not fulfilled requirement</span>');
+            }
+            return ret.join('<br />');
         }
     }
 })();

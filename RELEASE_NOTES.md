@@ -1,5 +1,10 @@
 # Release Notes
 
+OCD-1628:
+* Added "Transparency Attestations" for Developers Collection
+
+---
+
 ## Version TBD
 _Date TBD_
 

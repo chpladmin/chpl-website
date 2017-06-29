@@ -14,9 +14,9 @@
 
         function activate () {
             vm.columnSet = [
-                { predicate: 'developer', display: 'Developer' },
-                { predicate: 'decertificationDate', display: 'Decertification Date', isDate: true, sortDefault: true },
-                { predicate: 'acb', display: 'ONC-ACB', transformFn: acbTransform },
+                { predicate: 'developer', display: 'Developer', sortType: 'single' },
+                { predicate: 'decertificationDate', display: 'Decertification Date', sortType: 'single', isDate: true, sortDefault: true },
+                { predicate: 'acb', display: 'ONC-ACB', transformFn: acbTransform, sortType: 'none' },
             ];
             vm.filters = ['acb', 'decertificationDate'];
             vm.refineModel = {
