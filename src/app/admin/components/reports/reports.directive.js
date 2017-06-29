@@ -341,7 +341,7 @@
                 {key: 'chplProductNumber', display: 'CHPL Product Number'},
                 ///{key: 'lastModifiedDate', display: 'Last Modified Date', filter: 'date'},
                 {key: 'otherAcb', display: 'Other ONC-ACB'},
-                {key: 'productAdditionalSoftware', display: 'Product-wide Additional Software'},
+                {key: 'productAdditionalSoftware', display: 'Product-wide Relied Upon Software'},
                 {key: 'reportFileLocation', display: 'ONC-ATL Test Report File Location'},
                 {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
                 {key: 'sedReportFileLocation', display: 'SED Report File Location'},
@@ -687,7 +687,7 @@
                 ];
                 var addlSw = compareArray(prev[i].additionalSoftware, curr[i].additionalSoftware, addlSwKeys, 'name');
                 for (j = 0; j < addlSw.length; j++) {
-                    obj.changes.push('<li>Additional software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul></li>');
+                    obj.changes.push('<li>Relied Upon Software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul></li>');
                 }
                 var testProceduresKeys = [];
                 var testProcedures = compareArray(prev[i].testProcedures, curr[i].testProcedures, testProceduresKeys, 'testProcedureVersion');

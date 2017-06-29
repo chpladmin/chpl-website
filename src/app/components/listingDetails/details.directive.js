@@ -10,7 +10,7 @@
         var directive = {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/certificationCriteria/certs.html',
+            templateUrl: 'app/components/listingDetails/details.html',
             bindToController: {
                 cap: '=',
                 editMode: '=',
@@ -316,6 +316,9 @@
                         break;
                     case 'surveillance':
                         $analytics.eventTrack('Viewed surveillance information', { category: 'Listing Details', label: vm.product.chplProductNumber});
+                        break;
+                    case 'g1g2':
+                        $analytics.eventTrack('Viewed G1/G2 information', { category: 'Listing Details', label: vm.product.chplProductNumber});
                         break;
                         // no default
                     }

@@ -23,7 +23,7 @@
             qmsStandards: [],
             statuses: [],
         }
-        mock.relatedListings = [{id: 1}];
+        mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
 
         beforeEach(function () {
             module('chpl.admin', 'chpl.mock', function ($provide) {
@@ -104,8 +104,8 @@
                 expect(commonService.getRelatedListings).toHaveBeenCalled();
             });
 
-            it('should load the related listings on load', function () {
-                expect(vm.relatedListings).toEqual(mock.relatedListings);
+            it('should load the related listings on load, without the 2014 ones', function () {
+                expect(vm.relatedListings).toEqual([mock.relatedListings[0]]);
             });
 
             it('should build an icsParents object if the Listing doesn\'t come with one', function () {
