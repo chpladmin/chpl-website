@@ -1,5 +1,9 @@
 # Release Notes
 
+OCD-1412: Pending Surveillance UX
+
+---
+
 ## Version TBD
 _Date TBD_
 

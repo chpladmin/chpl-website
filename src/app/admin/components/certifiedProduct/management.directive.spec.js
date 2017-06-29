@@ -65,6 +65,7 @@
                     $delegate.getUploadingSurveillances = jasmine.createSpy('getUploadingSurveillances');
                     $delegate.getVersionsByProduct = jasmine.createSpy('getVersionsByProduct');
                     $delegate.massRejectPendingListings = jasmine.createSpy('massRejectPendingListings');
+                    $delegate.massRejectPendingSurveillance = jasmine.createSpy('massRejectPendingSurveillance');
                     $delegate.rejectPendingCp = jasmine.createSpy('rejectPendingCp');
                     $delegate.updateProduct = jasmine.createSpy('updateProduct');
 
@@ -110,6 +111,7 @@
                 commonService.getUploadingSurveillances.and.returnValue($q.when(mock.uploadingSurveillances));
                 commonService.getVersionsByProduct.and.returnValue($q.when(mock.products));
                 commonService.massRejectPendingListings.and.returnValue($q.when({}));
+                commonService.massRejectPendingSurveillance.and.returnValue($q.when({}));
                 commonService.rejectPendingCp.and.returnValue($q.when({}));
 
                 el = angular.element('<ai-vp-management></ai-vp-management');
@@ -363,6 +365,52 @@
                 vm.massReject[2] = false;
                 vm.massReject[3] = false;
                 expect(vm.getNumberOfListingsToReject()).toBe(0);
+            });
+        });
+
+        describe('rejecting pending surveillances', function () {
+            beforeEach(function () {
+                vm.uploadingSurveillances = [{id: 1}, {id: 2}];
+                vm.massRejectSurveillance = {
+                    1: true,
+                    2: false,
+                };
+            });
+
+            it('should call the common service to mass reject surveillances', function () {
+                vm.massRejectPendingSurveillance();
+                el.isolateScope().$digest();
+                expect(commonService.massRejectPendingSurveillance).toHaveBeenCalledWith([1]);
+            });
+
+            it('should reset the pending checkboxes on success', function () {
+                vm.massRejectPendingSurveillance();
+                el.isolateScope().$digest();
+                expect(vm.massRejectSurveillance).toEqual({2: false});
+            });
+
+            it('should remove the surveillances from the list of surveillances if rejection is successful', function () {
+                vm.massRejectPendingSurveillance();
+                el.isolateScope().$digest();
+                expect(vm.uploadingSurveillances).toEqual([{id: 2}]);
+            });
+
+            it('should have error messages if rejection fails', function () {
+                commonService.massRejectPendingSurveillance.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
+                vm.massRejectPendingSurveillance();
+                el.isolateScope().$digest();
+                expect(vm.uploadingSurveillanceMessages.length).toEqual(3);
+            });
+
+            it('should know how many Surveillance are ready to be rejected', function () {
+                expect(vm.getNumberOfSurveillanceToReject()).toBe(1);
+                vm.massRejectSurveillance[2] = true;
+                vm.massRejectSurveillance[3] = true;
+                expect(vm.getNumberOfSurveillanceToReject()).toBe(3);
+                vm.massRejectSurveillance[1] = false;
+                vm.massRejectSurveillance[2] = false;
+                vm.massRejectSurveillance[3] = false;
+                expect(vm.getNumberOfSurveillanceToReject()).toBe(0);
             });
         });
     });
