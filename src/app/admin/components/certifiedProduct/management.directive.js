@@ -477,7 +477,7 @@
                 getResources();
                 vm.productId = result.id;
                 vm.refreshDevelopers();
-                //vm.loadCp();
+                vm.loadCp();
             }, function (result) {
                 if (result !== 'cancelled') {
                     vm.cpMessage = result;
