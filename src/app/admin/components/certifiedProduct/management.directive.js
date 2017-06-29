@@ -30,6 +30,7 @@
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
         vm.getNumberOfListingsToReject = getNumberOfListingsToReject;
+        vm.getNumberOfSurveillanceToReject = getNumberOfSurveillanceToReject;
         vm.inspectCp = inspectCp;
         vm.inspectSurveillance = inspectSurveillance;
         vm.isDeveloperEditable = isDeveloperEditable;
@@ -38,6 +39,7 @@
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.massRejectPendingListings = massRejectPendingListings;
+        vm.massRejectPendingSurveillance = massRejectPendingSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
@@ -267,6 +269,37 @@
                 });
         }
 
+        function massRejectPendingSurveillance () {
+            var idsToReject = [];
+            angular.forEach(vm.massRejectSurveillance, function (value, key) {
+                if (value) {
+                    idsToReject.push(parseInt(key));
+                }
+            });
+            commonService.massRejectPendingSurveillance(idsToReject)
+                .then(function () {
+                    angular.forEach(vm.massRejectSurveillance, function (value, key) {
+                        if (value) {
+                            clearPendingSurveillance(parseInt(key));
+                            delete(vm.massRejectSurveillance[key]);
+                        }
+                    });
+                }, function (error) {
+                    angular.forEach(vm.massRejectSurveillance, function (value, key) {
+                        if (value) {
+                            clearPendingSurveillance(parseInt(key));
+                            delete(vm.massRejectSurveillance[key]);
+                        }
+                    });
+                    if (error.data.errors && error.data.errors.length > 0) {
+                        vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
+                            var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                            return ret;
+                        });
+                    }
+                });
+        }
+
         function mergeDevelopers () {
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/certifiedProduct/developer/merge.html',
@@ -427,6 +460,16 @@
             return ret;
         }
 
+        function getNumberOfSurveillanceToReject () {
+            var ret = 0;
+            angular.forEach(vm.massRejectSurveillance, function (value) {
+                if (value) {
+                    ret += 1;
+                }
+            });
+            return ret;
+        }
+
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -477,7 +520,7 @@
                 getResources();
                 vm.productId = result.id;
                 vm.refreshDevelopers();
-                vm.loadCp();
+                //vm.loadCp();
             }, function (result) {
                 if (result !== 'cancelled') {
                     vm.cpMessage = result;
@@ -535,7 +578,7 @@
 
         function inspectSurveillance (surv) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/surveillanceInspect.html',
+                templateUrl: 'app/admin/components/surveillance/inspect.html',
                 controller: 'SurveillanceInspectController',
                 controllerAs: 'vm',
                 animation: false,
@@ -583,7 +626,11 @@
 
         function rejectSurveillance (survId) {
             commonService.rejectPendingSurveillance(survId)
-                .then(vm.refreshPending);
+                .then(function () {
+                    clearPendingSurveillance(survId);
+                }, function (error) {
+                    vm.uploadingSurveillanceMessages = error.data.errorMessages;
+                });
         }
 
         function searchForSurveillance () {
@@ -747,6 +794,15 @@
                 if (cpId === vm.uploadingCps[i].id) {
                     vm.uploadingCps.splice(i,1)
                     vm.pendingProducts = vm.uploadingCps.length;
+                }
+            }
+        }
+
+        function clearPendingSurveillance (survId) {
+            for (var i = 0; i < vm.uploadingSurveillances.length; i++) {
+                if (survId === vm.uploadingSurveillances[i].id) {
+                    vm.uploadingSurveillances.splice(i,1)
+                    vm.pendingSurveillances = vm.uploadingSurveillances.length;
                 }
             }
         }
