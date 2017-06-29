@@ -13,7 +13,7 @@
     <label class="control-label" for="data{{ vm.cert.number }}">{{ vm.cert.number }}: {{ vm.cert.title }}</label>
     <div ng-if="vm.cert.success">
       <input type="checkbox" ng-model="vm.cert.metViaAdditionalSoftware" id="data_additionalSoftware{{ vm.cert.number }}" name="data_additionalSoftware"></input>
-      <label class="control-label" for="data_additionalSoftware{{ vm.cert.number }}">Certification met via additional software</label>
+      <label class="control-label" for="data_additionalSoftware{{ vm.cert.number }}">Certification met via relied upon software</label>
       <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="true" ng-if="vm.cert.metViaAdditionalSoftware"></ai-additional-software>
     </div>
     <table class="table table-striped" ng-if="vm.cert.success">

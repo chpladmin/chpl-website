@@ -164,7 +164,7 @@
                             ['Version',item.version],
                             ['Classification',(item.classification ? item.classification : 'N/A')],
                             ['Certification Edition',item.year],
-                            ['Additional Software Required',software],
+                            ['Relied Upon Software Required',software],
                         ],
                     });
                 });

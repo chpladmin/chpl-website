@@ -221,6 +221,13 @@ header {
     }
 }
 
+.nowrap {
+
+    th {
+        white-space: nowrap;
+    }
+}
+
 .st-sort-ascent:after {
     content: "\f0de";
 }
