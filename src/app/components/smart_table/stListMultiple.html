@@ -1,0 +1,20 @@
+<ul class="list-unstyled" ng-show="!vm.hidden">
+  <li class="text-center" ng-if="vm.allowAnd">
+    <label ng-class="{ 'emphasis' : vm.matchAll }">
+      <input type="checkbox" ng-model="vm.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
+      Matching <u class="matchingAnyAll">{{ vm.matchAll ? 'all' : 'any' }}</u>
+    </label>
+  </li>
+  <li class="text-right">
+    <a href ng-click="vm.selectAll()">Select All</a> |
+    <a href ng-click="vm.clearFilter()">Reset</a>
+  </li>
+  <li ng-repeat="item in vm.distinctItems">
+    <label ng-class="{ 'emphasis' : vm.isNotDefault(item) }">
+      <input type="checkbox"
+             value="{{ item.value }}"
+             ng-model="item.isSelected"
+             ng-change="vm.toggleSelection(item)">{{ item.display ? item.display : item.value }}
+    </label>
+  </li>
+</ul>

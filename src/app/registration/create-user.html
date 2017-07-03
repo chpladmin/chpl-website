@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>User Registration</h1>
+    </div>
+  </div>
+  <div class="row main-content" id="mainContent" tabindex="-1">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="row">
+        <div class="col-md-12">
+          <p>Welcome to the Open Data CHPL. You've been invited to be an Administrator on the ONC's Open Data CHPL, which will allow you to manage certified product listings on the CHPL. Please use the form below to create an account, or log in to your existing account.</p>
+        </div>
+      </div>
+      <div ng-if="vm.message.value.length > 0" class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <p class="lead" ng-class="vm.message.success ? 'bg-success' : 'bg-danger'">{{ vm.message.value }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 form-horizontal" ng-form="vm.createUserForm" ng-show="vm.isCreateUser">
+          <p>Create a new account</p>
+          <div class="form-group">
+            <label for="username" class="control-label col-md-4">Username <span class="text-danger">*</span></label>
+            <div class="col-md-8">
+              <input type="text" id="username" name="username" ng-model="vm.userDetails.user.subjectName" class="form-control" required />
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.createUserForm.username.$touched) && vm.createUserForm.username.$error.required">Field is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password" class="control-label col-md-4">Password <span class="text-danger">*</span></label>
+            <div class="col-md-8">
+              <input type="password" id="password" name="password" ng-model="vm.userDetails.user.password" class="form-control" required ng-pattern="vm.pwPattern" />
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.createUserForm.password.$touched) && vm.createUserForm.password.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.createUserForm.password.$touched) && vm.createUserForm.password.$error.pattern">Password must
+                <ul>
+                  <li>Contain at least one upper case letter</li>
+                  <li>Contain at least one lower case letter</li>
+                  <li>Contain at least one number</li>
+                  <li>Contain at least one special character</li>
+                  <li>Be at least eight characters long</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="passwordverify" class="control-label col-md-4">Verify password <span class="text-danger">*</span></label>
+            <div class="col-md-8">
+              <input type="password" id="passwordverify" name="passwordverify" ng-model="vm.userDetails.user.passwordverify" class="form-control" required />
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.createUserForm.passwordverify.$touched) && vm.createUserForm.passwordverify.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.createUserForm.passwordverify.$touched) && vm.misMatchPasswords()">Passwords must match</div>
+            </div>
+          </div>
+          <ai-contact contact="vm.userDetails.user" error-messages="vm.contactErrorMessages" form="vm.createUserForm" form-horizontal="true" is-editing="true" is-required="true" show-form-errors="vm.showFormErrors"></ai-contact>
+          <div class="text-danger text-left" ng-if="vm.createUserForm.$invalid && vm.showFormErrors">
+            The following error(s) must be fixed:
+            <ul>
+              <li ng-if="vm.createUserForm.username.$error.required">Username is required</li>
+              <li ng-if="vm.createUserForm.password.$error.required">Password is required</li>
+              <li ng-if="vm.createUserForm.password.$error.pattern">Password must
+                <ul>
+                  <li>Contain at least one upper case letter</li>
+                  <li>Contain at least one lower case letter</li>
+                  <li>Contain at least one number</li>
+                  <li>Contain at least one special character</li>
+                  <li>Be at least eight characters long</li>
+                </ul>
+              </li>
+              <li ng-if="vm.createUserForm.passwordverify.$error.required">Verification password is required</li>
+              <li ng-if="vm.misMatchPasswords()">Passwords must match</li>
+              <li ng-repeat="error in vm.contactErrorMessages">{{ error }}</li>
+            </ul>
+          </div>
+          <button class="btn btn-default btn-block"
+                  ng-mouseover="vm.showFormErrors = true"
+                  ng-click="vm.createUser()" ng-disabled="vm.createUserForm.$invalid && vm.showFormErrors">Create account</button>
+          <p>Or <a href="" ng-click="vm.isCreateUser = ! vm.isCreateUser">sign into your existing account</a></p>
+          <p>If you require accessibility assistance, please contact Dustin Charles at <a href="mailto:onc_chpl@hhs.gov">onc_chpl@hhs.gov</a></p>
+        </div>
+        <div class="col-md-12" ng-form="vm.authorizeUserForm" ng-show="!vm.isCreateUser">
+          <p>Sign into your existing account</p>
+          <label for="authorize-username" class="control-label">Username <span class="text-danger">*</span></label>
+          <input type="text" id="authorize-username" ng-model="vm.authorizeDetails.userName" class="form-control" required />
+          <label for="authorize-password" class="control-label">Password <span class="text-danger">*</span></label>
+          <input type="password" id="authorize-password" ng-model="vm.authorizeDetails.password" class="form-control" required />
+          <button class="btn btn-default btn-block" ng-click="vm.authorizeUser()" ng-disabled="vm.authorizeUserForm.$invalid">Sign into your account</button>
+          <p>Or <a href="" ng-click="vm.isCreateUser = ! vm.isCreateUser">create a new account</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> <!-- end controller -->

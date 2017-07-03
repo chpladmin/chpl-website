@@ -1,0 +1,102 @@
+<div role="modal" aria-labeled-by="editLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit ONC-ACB</h4>
+    <h4 class="modal-title" ng-if="vm.action === 'create'" id="editLabel">Create ONC-ACB</h4>
+  </div>
+  <div class="modal-body" ng-form="vm.editForm">
+    <div class="form-group">
+      <label for="acbName">ONC-ACB Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.acb.name" id="acbName" name="acbName" ng-disabled="vm.acb.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.acbName.$touched && vm.editForm.acbName.$error.required">ONC-ACB Name is required</div>
+    </div>
+    <div>
+      <strong>ONC-ACB Code: </strong>{{ vm.acb.acbCode }}
+    </div>
+    <div class="form-group">
+      <label for="addressLine1">Address Line 1 <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.acb.address.line1" id="addressLine1" name="addressLine1" ng-disabled="vm.acb.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressLine1.$touched && vm.editForm.addressLine1.$error.required">Address is required</div>
+    </div>
+    <div class="form-group">
+      <label for="addressLine2">Address Line 2</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.acb.address.line2" id="addressLine2" name="addressLine2" ng-disabled="vm.acb.isDeleted"></input>
+    </div>
+    <div class="form-group">
+      <label for="addressCity">City <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.acb.address.city" id="addressCity" name="addressCity" ng-disabled="vm.acb.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressCity.$touched && vm.editForm.addressCity.$error.required">Address is required</div>
+    </div>
+    <div class="form-group">
+      <label for="addressState">State <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.acb.address.state" id="addressState" name="addressState" ng-disabled="vm.acb.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressState.$touched && vm.editForm.addressState.$error.required">Address is required</div>
+    </div>
+    <div class="form-group">
+      <label for="addressZipcode">Zip Code <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.acb.address.zipcode" id="addressZipcode" name="addressZipcode" ng-disabled="vm.acb.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressZipcode.$touched && vm.editForm.addressZipcode.$error.required">Address is required</div>
+    </div>
+    <div class="form-group">
+      <label for="addressCountry">Country <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.acb.address.country" id="addressCountry" name="addressCountry" ng-disabled="vm.acb.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.addressCountry.$touched && vm.editForm.addressCountry.$error.required">Address is required</div>
+    </div>
+    <div class="form-group">
+      <label for="acbWebsite">Website <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="url" required ng-model="vm.acb.website" id="acbWebsite" name="acbWebsite" placeholder="http://www.example.com" ng-disabled="vm.acb.isDeleted"></input>
+      <div class="text-danger" ng-if="vm.editForm.acbWebsite.$touched && vm.editForm.acbWebsite.$error.required">Website address is required</div>
+      <div class="text-danger" ng-if="vm.editForm.acbWebsite.$touched && vm.editForm.acbWebsite.$error.url">Website is invalid</div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-danger text-left" ng-if="vm.editForm.$invalid && vm.showFormErrors">
+      The following error(s) must be fixed:
+      <ul>
+        <li ng-if="vm.editForm.acbName.$error.required">ONC-ACB Name is required</li>
+        <li ng-if="vm.editForm.addressLine1.$error.required">Address Line 1 is required</li>
+        <li ng-if="vm.editForm.addressCity.$error.required">City is required</li>
+        <li ng-if="vm.editForm.addressState.$error.required">State is required</li>
+        <li ng-if="vm.editForm.addressZipcode.$error.required">Zip code is required</li>
+        <li ng-if="vm.editForm.addressCountry.$error.required">Country is required</li>
+        <li ng-if="vm.editForm.acbWebsite.$error.required">Website address is required</li>
+        <li ng-if="vm.editForm.acbWebsite.$error.url">Website is invalid</li>
+      </ul>
+    </div>
+    <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors" class="btn btn-ai-success btn-block"
+            ng-mouseover="vm.showFormErrors = true"
+            ng-if="vm.action === 'create'"
+            ng-click="vm.create()"><i class="fa fa-save"></i> Create ONC-ACB</button>
+    <span ng-if="!vm.acb.isDeleted">
+      <button ng-disabled="vm.editForm.$invalid && vm.showFormErrors" class="btn btn-ai-success btn-block"
+              ng-mouseover="vm.showFormErrors = true"
+              ng-if="vm.action === 'edit'"
+              ng-click="vm.save()"><i class="fa fa-save"></i> Save ONC-ACB</button>
+      <button class="btn btn-warning btn-block"
+              confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
+      <button class="btn btn-danger btn-block"
+              ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.acb.isDeleted"
+              confirm="Are you sure you wish to delete this ONC-ACB?"
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.deleteAcb()"><i class="fa fa-trash-o"></i> Delete ONC-ACB</button>
+    </span>
+    <button class="btn btn-ai-success btn-block"
+            ng-if="vm.action === 'edit' && vm.isChplAdmin && vm.acb.isDeleted"
+            confirm="Are you sure you wish to restore this ONC-ACB?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.undeleteAcb()"><i class="fa fa-undo"></i> Restore ONC-ACB</button>
+  </div>
+</div>

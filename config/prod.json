@@ -1,0 +1,9 @@
+{
+    'ACTIVE_CAP': false,
+    'API': '/rest',
+    'CACHE_TIMEOUT': 60,
+    'CACHE_REFRESH_TIMEOUT': 300,
+    'DEVELOPER_MODE': false,
+    'ENABLE_LOGGING': false,
+    'RELOAD_TIMEOUT': 3000
+}

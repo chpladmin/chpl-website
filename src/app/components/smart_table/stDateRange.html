@@ -1,0 +1,16 @@
+<div class="form-horizontal" ng-form="dateForm">
+  <div class="form-group">
+    <label class="col-sm-4" for="after" ng-class="{ 'emphasis' : after }">From</label>
+    <div class="input-group col-sm-7">
+      <input type="date" class="form-control input-sm" id="after" name="after" ng-model="after" placeholder="yyyy-MM-dd" ng-model-options="{timezone:'UTC'}">
+      <div class="text-danger" ng-if="dateForm.after.$touched && dateForm.after.$error.date">Improper format (yyyy-MM-dd)</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4" for="before" ng-class="{ 'emphasis' : before }">To</label>
+    <div class="input-group col-sm-7">
+      <input type="date" class="form-control input-sm" id="before" name="before" ng-model="before" placeholder="yyyy-MM-dd" ng-model-options="{timezone:'UTC'}">
+      <div class="text-danger" ng-if="dateForm.before.$touched && dateForm.before.$error.date">Improper format (yyyy-MM-dd)</div>
+    </div>
+  </div>
+</div>

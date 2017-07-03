@@ -1,0 +1,159 @@
+<div role="modal" aria-labeled-by="editSurveillanceLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="editSurveillanceLabel"><span ng-if="vm.workType === 'edit'">Edit</span><span ng-if="vm.workType === 'initiate'">Initiate</span> Surveillance Activity</h4>
+  </div>
+  <div class="modal-body form-horizontal" ng-form="vm.editForm">
+    <div class="row">
+      <div class="col-sm-3"><strong>CHPL Product Number:</strong></div>
+      <div class="col-sm-9">{{ vm.surveillance.certifiedProduct.chplProductNumber }}</div>
+    </div>
+    <div class="row" ng-if="vm.surveillance.friendlyId">
+      <div class="col-sm-3"><strong>Surveillance ID:</strong></div>
+      <div class="col-sm-9">{{ vm.surveillance.friendlyId }}</div>
+    </div>
+    <div class="row" ng-if="vm.workType !== 'initiate'">
+      <div class="col-sm-3"><strong>Surveillance initiated by:</strong></div>
+      <div class="col-sm-9">
+        <span>{{ vm.surveillance.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="startDate" class="col-sm-3">Start Date <span class="text-danger">*</span></label>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.surveillance.startDateObject" is-open="vm.surveillance.startDatePicker" close-text="Close" id="startDate" name="startDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.startDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.startDate.$touched) && vm.editForm.startDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.startDate.$touched) && vm.editForm.startDate.$error.date">Improper format (mm/dd/yyyy)</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="endDate" class="col-sm-3">End Date <span class="text-danger" ng-if="vm.missingEndDate()">*</span></label>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.surveillance.endDateObject" is-open="vm.surveillance.endDatePicker" close-text="Close" id="endDate" name="endDate" ng-model-options="{ timezone: 'UTC' }" ng-required="vm.missingEndDate()">
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.endDatePicker = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.endDate.$touched) && vm.editForm.endDate.$error.date">Improper format (mm/dd/yyyy)</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="surveillanceType" class="col-sm-3">Surveillance Type <span class="text-danger">*</span></label>
+      <div class="col-sm-9">
+        <select class="input-sm form-control" ng-model="vm.surveillance.type" id="surveillanceType" name="surveillanceType"
+                ng-options="type as type.name for type in vm.data.surveillanceTypes.data | orderBy:'name'" required>
+        </select>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.surveillanceType.$touched) && vm.editForm.surveillanceType.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group" ng-if="vm.workType === 'initiate' && vm.authorities.length > 1">
+      <label for="authority" class="col-sm-3">Initiated by <span class="text-danger">*</span></label>
+      <div class="col-sm-9">
+        <select class="input-sm form-control" ng-model="vm.surveillance.authority" id="authority" name="authority"
+                ng-options="authority for authority in vm.authorities" required>
+        </select>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.authority.$touched) && vm.editForm.authority.$error.required">Field is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="sitesSurveilled" class="col-sm-3">Number of sites surveilled <span class="text-danger" ng-if="vm.surveillance.type.name === 'Randomized'">*</span></label>
+      <div class="col-sm-9">
+        <input class="input-sm form-control" type="number" ng-model="vm.surveillance.randomizedSitesUsed" id="sitesSurveilled" name="sitesSurveilled" ng-required="vm.surveillance.type.name === 'Randomized'" ng-disabled="vm.surveillance.type.name === 'Reactive' && !vm.disableValidation"></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.sitesSurveilled.$touched) && vm.editForm.sitesSurveilled.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.sitesSurveilled.$touched) && vm.editForm.sitesSurveilled.$error.number">Must be a number</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <button class="btn btn-success pull-right" ng-click="vm.addRequirement()" ng-disabled="!vm.surveillance.type"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</button>
+        <h5>Requirements</h5>
+        <span ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">No Surveilled Requirements Found</span>
+        <table class="table table-condensed" ng-if="vm.surveillance.requirements && vm.surveillance.requirements.length > 0">
+          <thead>
+            <tr>
+              <th scope="col">Type</th>
+              <th scope="col">Requirement</th>
+              <th scope="col">Result</th>
+              <th scope="col">Non-conformities</th>
+              <th scope="col">Remove</th>
+              <th scope="col">Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="req in vm.surveillance.requirements | orderBy:['type.name',vm.sortRequirements] track by $index">
+              <td>{{ req.type.name }}</td>
+              <td>{{ req.requirement }}</td>
+              <td>{{ req.result.name }}</td>
+              <td>
+                <span ng-if="req.nonconformities.length === 0">N/A</span>
+                <button ng-if="req.nonconformities.length > 0" class="btn btn-ai-success" ng-click="vm.inspectNonconformities(req.nonconformities)"><i class="fa fa-eye"></i><span class="sr-only">Inspect</span></button>
+              </td>
+              <td>
+                <button class="btn btn-danger" ng-click="vm.deleteRequirement(req)"><i class="fa fa-trash"></i><span class="sr-only">Remove this requirement</button>
+              </td>
+              <td>
+                <button class="btn btn-success" ng-click="vm.editRequirement(req)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this requirement</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-danger text-left" ng-if="vm.errorMessages && vm.errorMessages.length > 0">
+      <ul>
+        <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
+      </ul>
+    </div>
+    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid ||
+                                              !vm.surveillance.requirements ||
+                                              vm.surveillance.requirements.length === 0 ||
+                                              vm.missingEndDate() ||
+                                              (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()))
+                                              && vm.showFormErrors">
+      The following error(s) must be fixed:
+      <ul>
+        <li ng-if="vm.editForm.startDate.$error.required">Start Date is required</li>
+        <li ng-if="vm.editForm.startDate.$error.date">Start Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="vm.editForm.endDate.$error.date">End Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="vm.editForm.surveillanceType.$error.required">Surveillance Type is required</li>
+        <li ng-if="vm.editForm.sitesSurveilled.$error.required">Sites Surveilled is required</li>
+        <li ng-if="vm.editForm.sitesSurveilled.$error.number">Sites Surveilled must be a number</li>
+        <li ng-if="vm.editForm.authority.$error.required">Initiated by is required</li>
+        <li ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">At least one Requirement must be surveilled</li>
+        <li ng-if="vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()">User must have authority for ONC-Admin to edit surveillance created by ONC-Admin</li>
+        <li ng-if="vm.missingEndDate()">End Date is required when there are no open Nonconformities</li>
+      </ul>
+    </div>
+    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin())) && vm.showFormErrors && !vm.disableValidation"
+            class="btn btn-ai-success pull-right"
+            ng-mouseover="vm.showFormErrors = true"
+            ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>
+    <button ng-disabled="vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()"
+            class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
+            confirm="Are you sure you wish to delete this surveillance?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.deleteSurveillance()"><i class="fa fa-trash-o"></i> Delete</button>
+    <button class="btn btn-warning pull-left"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><i class="fa fa-close"></i> Cancel</button>
+  </div>
+</div>
