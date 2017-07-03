@@ -5,9 +5,10 @@
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
-    function CmsLookupController ($localStorage, $log, commonService) {
+    function CmsLookupController ($localStorage, $log, commonService, utilService) {
         var vm = this;
 
+        vm.getCsv = getCsv;
         vm.lookupCertIds = lookupCertIds;
 
         activate();
@@ -23,11 +24,15 @@
             vm.lookupProducts = $localStorage.lookupProducts;
             vm.lookupProductsFormatInvalidIds = $localStorage.lookupProductsFormatInvalidIds;
             vm.lookupProductsCertIdNotFound = $localStorage.lookupProductsCertIdNotFound;
+            vm.csvData = $localStorage.lookupProductsCsv;
 
-            vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
             if ($localStorage.lookupCertIds && !$localStorage.lookupProducts) {
                 lookupCertIds();
             }
+        }
+
+        function getCsv () {
+            utilService.makeCsv(vm.csvData);
         }
 
         function lookupCertIds () {
@@ -85,6 +90,7 @@
                                                 }
                                                 vm.lookupProducts.push(product);
                                             });
+                                            buildCsv();
                                         } else {
                                             // ...otherwise, if the ID was not found, tell the user.
                                             vm.lookupProductsCertIdNotFound.push(id);
@@ -107,6 +113,33 @@
 
         ////////////////////////////////////////////////////////////////////
 
+        function buildCsv () {
+            var cp, i;
+            vm.csvData = {
+                name: 'CMS_ID',
+                values: [
+                    ['CMS EHR Certification ID', 'CMS EHR Certification ID Edition', 'Product Name', 'Version', 'Developer', 'CHPL Product Number', 'Product Certification Edition', 'Classification Type', 'Practice Type'],
+                ],
+            };
+            for (i = 0; i < vm.lookupProducts.length; i++) {
+                cp = vm.lookupProducts[i];
+                vm.csvData.name += '.' + cp.certificationId;
+                vm.csvData.values.push([
+                    cp.certificationId,
+                    cp.certificationIdEdition,
+                    cp.name,
+                    cp.version,
+                    cp.vendor,
+                    cp.chplProductNumber,
+                    cp.year,
+                    cp.classification,
+                    cp.practiceType,
+                ]);
+            }
+            vm.csvData.name += '.csv';
+            $localStorage.lookupProductsCsv = vm.csvData;
+        }
+
         function clearLookup () {
             delete $localStorage.lookupCertIds;
             vm.certIds = null;
@@ -117,7 +150,9 @@
             delete $localStorage.lookupProducts;
             delete $localStorage.lookupProductsFormatInvalidIds
             delete $localStorage.lookupProductsCertIdNotFound;
+            delete $localStorage.lookupProductsCsv;
             vm.lookupProducts = null;
+            vm.csvData = null;
         }
     }
 })();

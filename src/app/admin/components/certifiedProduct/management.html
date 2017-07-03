@@ -598,7 +598,8 @@
               <div class="panel-heading">
                 <span>Select a Certified Product</span>
                 <span class="pull-right">
-                  <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Product Listing</a> |
+                  <a href="#/admin/reports/{{ vm.activeCP.id}}"><i class="fa fa-eye"></i> View Listing History</a> |
+                  <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
                   <span ng-if="vm.isProductEditable(vm.activeCP)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
                 </span>
