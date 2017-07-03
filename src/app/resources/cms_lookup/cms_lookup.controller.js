@@ -5,7 +5,7 @@
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
-    function CmsLookupController ($localStorage, $log, commonService) {
+    function CmsLookupController ($localStorage, $log, commonService, utilService) {
         var vm = this;
 
         vm.getCsv = getCsv;
@@ -32,7 +32,7 @@
         }
 
         function getCsv () {
-            commonService.getCsv(vm.csvData);
+            utilService.makeCsv(vm.csvData);
         }
 
         function lookupCertIds () {

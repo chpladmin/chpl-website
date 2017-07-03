@@ -5,10 +5,11 @@
         .factory('utilService', utilService);
 
     /** @ngInject */
-    function utilService () {
+    function utilService (Blob, FileSaver) {
         var service = {
             arrayCompare: arrayCompare,
             extendSelect: extendSelect,
+            makeCsv: makeCsv,
             sortCert: sortCert,
             sortCqm: sortCqm,
             sortNonconformityTypes: sortNonconformityTypes,
@@ -88,6 +89,13 @@
                 options.push(newValue);
             }
             return options;
+        }
+
+        function makeCsv (data) {
+            var blob = new Blob(data.values, {
+                type: 'application/csv',
+            });
+            FileSaver.saveAs(blob, data.name);
         }
 
         function sortCert (cert) {

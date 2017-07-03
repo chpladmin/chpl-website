@@ -3,7 +3,7 @@
 
     describe('chpl.cms_lookup', function () {
 
-        var $localStorage, $log, $q, commonService, mock, scope, vm;
+        var $localStorage, $log, $q, commonService, mock, scope, utilService, vm;
 
         mock = {
             localStorage: {
@@ -26,21 +26,25 @@
         beforeEach(function () {
             module('chpl.cms_lookup', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
-                    $delegate.getCsv = jasmine.createSpy('getCsv');
                     $delegate.lookupCertificationId = jasmine.createSpy('lookupCertificationId');
+                    return $delegate;
+                });
+                $provide.decorator('utilService', function ($delegate) {
+                    $delegate.makeCsv = jasmine.createSpy('makeCsv');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$localStorage_, _$log_, _$q_, $rootScope, _commonService_) {
+            inject(function ($controller, _$localStorage_, _$log_, _$q_, $rootScope, _commonService_, _utilService_) {
                 $log = _$log_;
                 $localStorage = _$localStorage_;
                 $localStorage.lookupCertIds = null;
                 $localStorage.lookupProducts = null;
                 $q = _$q_;
                 commonService = _commonService_;
-                commonService.getCsv.and.returnValue($q.when({}));
                 commonService.lookupCertificationId.and.returnValue($q.when(mock.goodResponse));
+                utilService = _utilService_;
+                utilService.makeCsv.and.returnValue();
 
                 scope = $rootScope.$new();
                 vm = $controller('CmsLookupController', {
@@ -152,7 +156,7 @@
                 vm.lookupCertIds();
                 scope.$digest();
                 vm.getCsv();
-                expect(commonService.getCsv).toHaveBeenCalledWith(mock.csvData);
+                expect(utilService.makeCsv).toHaveBeenCalledWith(mock.csvData);
             });
         });
     });
