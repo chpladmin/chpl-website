@@ -69,9 +69,7 @@
 	    </table>
 	    <div class="pull-right">
           <button class="btn btn-lg btn-ai-success pull-right" ng-if="vm.lookupProducts && vm.lookupProducts.length > 0"
-                  ng-csv="vm.lookupProducts" filename="{{ vm.filename }}"
-                  csv-header="['CMS EHR Certification ID', 'CMS EHR Certification ID Edition', 'Product Name', 'Version', 'Developer', 'CHPL Product Number', 'Product Certification Edition', 'Classification Type', 'Practice Type']"
-                  csv-column-order="['certificationId', 'certificationIdEdition', 'name', 'version', 'vendor', 'chplProductNumber', 'year', 'classification', 'practiceType']">
+                  ng-click="vm.getCsv()">
             <i class="fa fa-cloud-download"></i> Download Results
           </button>
 	    </div>

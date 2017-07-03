@@ -46,6 +46,7 @@
             getCertificationStatuses: getCertificationStatuses,
             getCertifiedProductActivity: getCertifiedProductActivity,
             getCmsDownload: getCmsDownload,
+            getCsv: getCsv,
             getCollection: getCollection,
             getDeveloper: getDeveloper,
             getDeveloperActivity: getDeveloperActivity,
@@ -244,6 +245,10 @@
 
         function getCmsDownload () {
             return simpleApiCall('/certification_ids/');
+        }
+
+        function getCsv (data) {
+            return postApiCall('/resources/create', data);
         }
 
         function getAnnouncements (pending) {

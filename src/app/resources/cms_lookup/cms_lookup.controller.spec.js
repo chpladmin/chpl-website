@@ -8,17 +8,25 @@
         mock = {
             localStorage: {
                 lookupCertIds: 'A014E01O3PSTEAV A014E01O3PSTEAV A014E01O3PSTEA7 NOTANID',
-                lookupProducts: [{id: 296,name: '2013 Systemedx Clinical Navigator',version: '2013.12',chplProductNumber: 'CHP-022218',year: '2014',practiceType: 'Ambulatory',acb: 'InfoGard',vendor: 'Systemedx Inc',classification: 'Complete EHR',additionalSoftware: 'Microsoft+SQL+Server+for+all+criteria',certificationId: 'A014E01O3PSTEAV',certificationIdEdition: '2014'}],
+                lookupProducts: [{id: 296, name: '2013 Systemedx Clinical Navigator', version: '2013.12', chplProductNumber: 'CHP-022218', year: '2014', practiceType: 'Ambulatory', acb: 'InfoGard', vendor: 'Systemedx Inc', classification: 'Complete EHR', additionalSoftware: 'Microsoft+SQL+Server+for+all+criteria', certificationId: 'A014E01O3PSTEAV', certificationIdEdition: '2014'}],
                 lookupProductsCertIdNotFound: ['A014E01O3PSTEA7'],
                 lookupProductsFormatInvalidIds: ['NOTANID'],
             },
             goodResponse: {'products': [{'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'}],'ehrCertificationId': 'A014E01O3PSTEAV','year': '2014','criteria': null,'cqms': null},
             badResponse: {'products': [],'ehrCertificationId': null,'year': null,'criteria': null,'cqms': null},
+            csvData: {
+                name: 'CMS_ID.A014E01O3PSTEAV.csv',
+                values: [
+                    ['CMS EHR Certification ID', 'CMS EHR Certification ID Edition', 'Product Name', 'Version', 'Developer', 'CHPL Product Number', 'Product Certification Edition', 'Classification Type', 'Practice Type'],
+                    ['A014E01O3PSTEAV', '2014', '2013 Systemedx Clinical Navigator', '2013.12', 'Systemedx Inc', 'CHP-022218', '2014', 'Complete EHR', 'Ambulatory'],
+                ],
+            },
         };
 
         beforeEach(function () {
             module('chpl.cms_lookup', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
+                    $delegate.getCsv = jasmine.createSpy('getCsv');
                     $delegate.lookupCertificationId = jasmine.createSpy('lookupCertificationId');
                     return $delegate;
                 });
@@ -31,6 +39,7 @@
                 $localStorage.lookupProducts = null;
                 $q = _$q_;
                 commonService = _commonService_;
+                commonService.getCsv.and.returnValue($q.when({}));
                 commonService.lookupCertificationId.and.returnValue($q.when(mock.goodResponse));
 
                 scope = $rootScope.$new();
@@ -127,6 +136,23 @@
                     expect($localStorage.lookupProductsCertIdNotFound).toBeUndefined();
                     expect(vm.lookupProducts).toBe(null);
                 });
+            });
+        });
+
+        describe('getting a csv', function () {
+            it('should build the csv object', function () {
+                vm.certIds = 'A014E01O3PSTEAV';
+                vm.lookupCertIds();
+                scope.$digest();
+                expect(vm.csvData).toEqual(mock.csvData);
+            });
+
+            it('should call the commonService to convert JSON -> CSV', function () {
+                vm.certIds = 'A014E01O3PSTEAV';
+                vm.lookupCertIds();
+                scope.$digest();
+                vm.getCsv();
+                expect(commonService.getCsv).toHaveBeenCalledWith(mock.csvData);
             });
         });
     });
