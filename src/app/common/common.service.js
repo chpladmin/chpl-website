@@ -88,6 +88,7 @@
             login: login,
             lookupCertificationId: lookupCertificationId,
             massRejectPendingListings: massRejectPendingListings,
+            massRejectPendingSurveillance: massRejectPendingSurveillance,
             modifyACB: modifyACB,
             modifyATL: modifyATL,
             modifyAnnouncement: modifyAnnouncement,
@@ -604,6 +605,10 @@
 
         function rejectPendingSurveillance (survId) {
             return postApiCall('/surveillance/pending/' + survId + '/reject', {});
+        }
+
+        function massRejectPendingSurveillance (ids) {
+            return postApiCall('/surveillance/pending/reject', {ids: ids});
         }
 
         function lookupCertificationId (certId) {
