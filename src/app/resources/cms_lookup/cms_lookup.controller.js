@@ -123,7 +123,9 @@
             };
             for (i = 0; i < vm.lookupProducts.length; i++) {
                 cp = vm.lookupProducts[i];
-                vm.csvData.name += '.' + cp.certificationId;
+                if (vm.csvData.name.indexOf(cp.certificationId) === -1) {
+                    vm.csvData.name += '.' + cp.certificationId;
+                }
                 vm.csvData.values.push([
                     cp.certificationId,
                     cp.certificationIdEdition,
