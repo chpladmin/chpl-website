@@ -158,6 +158,18 @@
                 vm.getCsv();
                 expect(utilService.makeCsv).toHaveBeenCalledWith(mock.csvData);
             });
+
+            it('should only have the CMS ID once in the filename', function () {
+                var multIdResponse = {'products': [
+                    {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
+                    {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
+                ],'ehrCertificationId': 'A014E01O3PSTEAV','year': '2014','criteria': null,'cqms': null};
+                commonService.lookupCertificationId.and.returnValue($q.when(multIdResponse));
+                vm.certIds = 'A014E01O3PSTEAV';
+                vm.lookupCertIds();
+                scope.$digest();
+                expect(vm.csvData.name).toBe('CMS_ID.A014E01O3PSTEAV.csv');
+            });
         });
     });
 })();
