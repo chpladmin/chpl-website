@@ -33,21 +33,18 @@
         vm.viewCertificationStatusLegend = viewCertificationStatusLegend;
         vm.viewPreviouslyCompared = viewPreviouslyCompared;
         vm.viewPreviouslyViewed = viewPreviouslyViewed;
-        vm.viewProduct = viewProduct;
 
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            $scope.$on('ClearResults', function () {
-                delete $localStorage.clearResults;
-                vm.clear();
-            });
             if ($localStorage.clearResults) {
-                delete $localStorage.clearResults;
                 vm.clear();
             }
+            $scope.$on('ClearResults', function () {
+                vm.clear();
+            });
 
             vm.allowAllHs = [];
             vm.boxes = {};
@@ -104,6 +101,7 @@
         }
 
         function clear () {
+            delete $localStorage.clearResults;
             vm.triggerClearFilters();
             vm.activeSearch = false;
             if (vm.searchForm) {
@@ -333,7 +331,7 @@
             }
         }
 
-        function viewProduct (cp) {
+/*        function viewProduct (cp) {
             setTimestamp();
             if (vm.previouslyViewed.indexOf((cp.id + '')) === -1) {
                 vm.previouslyViewed.push((cp.id + ''));
@@ -343,7 +341,7 @@
                 $localStorage.previouslyViewed = vm.previouslyViewed;
             }
             $location.url('/product/' + cp.id);
-        }
+        }*/
 
         ////////////////////////////////////////////////////////////////////
 

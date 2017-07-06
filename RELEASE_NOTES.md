@@ -8,6 +8,14 @@ OCD-1628:
 ## Version TBD
 _Date TBD_
 
+OCD-1412: Pending Surveillance UX
+OCD-1496: JSON -> CSV for CMS IDs Download file
+
+---
+
+## Version 9.1.0
+_3 July 2017_
+
 ### New features
 * ICS Family Tree work
   * Allow admins to build family tree links on edit/upload of Listing
