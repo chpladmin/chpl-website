@@ -47,6 +47,10 @@
                 <strong>Decertification Date</strong>
                 <ai-date-range predicate="decertificationDate" has-changes="vm.categoryChanged['decertificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
               </div>
+              <div class="col-sm-6" ng-if="vm.isFilterActive('acbAttestations')">
+                <strong>Attestation</strong>
+                <st-list-multiple collection="vm.allCps" predicate="acbAttestations" fixed-items="vm.filterItems.acbAttestations" has-changes="vm.categoryChanged['acbAttestations']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
+              </div>
               <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged()">
                 <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
               </div>
