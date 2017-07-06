@@ -43,6 +43,12 @@
                 templateUrl: 'app/collections/products/products.html',
                 title: 'Decertified Products',
             })
+            .when('/collections/transparencyAttestations', {
+                controller: 'TransparencyAttestationsController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/transparencyAttestations/transparencyAttestations.html',
+                title: 'Transparency Attestations',
+            })
             .when('/compare/:compareIds', {
                 controller: 'CompareController',
                 controllerAs: 'vm',

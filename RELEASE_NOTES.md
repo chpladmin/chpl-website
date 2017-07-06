@@ -1,10 +1,15 @@
 # Release Notes
 
+OCD-1412: Pending Surveillance UX
+
+---
+
 ## Version TBD
 _Date TBD_
 
-OCD-1412: Pending Surveillance UX
-OCD-1496: JSON -> CSV for CMS IDs Download file
+### New features
+* Added "Transparency Attestations" for Developers Collection
+* Tweaked "CMS ID Lookup" download to have a filename
 
 ---
 

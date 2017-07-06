@@ -16,15 +16,15 @@
 
         function activate () {
             vm.columnSet = [
-                { predicate: 'edition', display: 'Edition' },
-                { predicate: 'developer', display: 'Developer' },
-                { predicate: 'product', display: 'Product' },
-                { predicate: 'version', display: 'Version' },
-                { predicate: 'decertificationDate', display: 'Decertification Date', isDate: true },
-                { predicate: 'numMeaningfulUse', display: '# of Known Users', nullDisplay: 'Unknown' },
-                { predicate: 'acb', display: 'ONC-ACB' },
-                { predicate: 'chplProductNumber', display: 'CHPL ID', sortDefault: true, isLink: true },
-                { predicate: 'certificationStatus', display: 'Status' },
+                { predicate: 'edition', display: 'Edition', sortType: 'single' },
+                { predicate: 'developer', display: 'Developer', sortType: 'single' },
+                { predicate: 'product', display: 'Product', sortType: 'single' },
+                { predicate: 'version', display: 'Version', sortType: 'single' },
+                { predicate: 'decertificationDate', display: 'Decertification Date', sortType: 'single', isDate: true },
+                { predicate: 'numMeaningfulUse', display: '# of Known Users', sortType: 'single', nullDisplay: 'Unknown' },
+                { predicate: 'acb', display: 'ONC-ACB', sortType: 'single' },
+                { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },
+                { predicate: 'certificationStatus', display: 'Status', sortType: 'single' },
             ];
             vm.filters = ['acb', 'certificationStatus', 'decertificationDate', 'edition'];
             vm.refineModel = {

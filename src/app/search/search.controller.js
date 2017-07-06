@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, commonService, utilService) {
+    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, commonService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -55,6 +55,7 @@
             vm.isPreLoading = true;
             vm.restoreStateHs = [];
             vm.showRetiredHs = [];
+            vm.SPLIT_PRIMARY = SPLIT_PRIMARY;
 
             manageStorage();
             populateSearchOptions();
