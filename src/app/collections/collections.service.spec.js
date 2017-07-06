@@ -91,10 +91,10 @@
             });
 
             it('should join Attestations', function () {
-                expect(results[0].acbAttestations).toEqual('<strong>ICSA Labs</strong>: <span class="text-muted">Not Applicable</span>');
-                expect(results[1].acbAttestations).toEqual('<strong>Drummond Group</strong>: <span class="text-success">Supports</span>');
-                expect(results[2].acbAttestations).toEqual('<strong>ICSA Labs</strong>: <span class="text-success">Supports</span><br /><strong>InfoGard</strong>: <span class="text-success">Supports</span>');
-                expect(results[3].acbAttestations).toEqual('<strong>InfoGard</strong>: <span class="text-success">Supports</span>');
+                expect(results[0].acbAttestations).toEqual('<span class="text-muted">Not Applicable (ICSA Labs)</span>');
+                expect(results[1].acbAttestations).toEqual('<span class="text-success">Supports (Drummond Group)</span>');
+                expect(results[2].acbAttestations).toEqual('<span class="text-success">Supports (ICSA Labs)</span><br /><span class="text-success">Supports (InfoGard)</span>');
+                expect(results[3].acbAttestations).toEqual('<span class="text-success">Supports (InfoGard)</span>');
             });
 
             it('should split Urls', function () {
