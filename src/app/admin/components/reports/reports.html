@@ -59,7 +59,10 @@
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
               <td>{{ activity.certificationEdition }}</td>
-              <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
+              <td>
+                <a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a>
+                <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
+              </td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
 		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
@@ -129,7 +132,10 @@
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
               <td>{{ activity.certificationEdition }}</td>
-              <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
+              <td>
+                <a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a>
+                <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
+              </td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>{{ activity.details }}</td>
 		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
@@ -327,7 +333,10 @@
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
               <td>{{ activity.certificationEdition }}</td>
-              <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
+              <td>
+                <a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a>
+                <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
+              </td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>
                 <ul class="list-unstyled" ng-if="activity.details">
@@ -402,7 +411,10 @@
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
               <td><span ng-class="{ 'bg-danger' : activity.certificationEdition === '2011' }">{{ activity.certificationEdition }}</span></td>
-              <td><a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a></td>
+              <td>
+                <a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a>
+                <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
+              </td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>
                 <ul class="list-unstyled" ng-if="activity.details">

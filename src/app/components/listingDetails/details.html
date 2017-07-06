@@ -121,7 +121,7 @@
             <h5>Inherits from</h5>
             <ul>
               <li ng-repeat="listing in vm.product.ics.parents | orderBy: 'certificationDate'">
-                <a href="#/product/{{ listing.id}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
+                <a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
               </li>
             </ul>
           </span>
@@ -129,7 +129,7 @@
             <h5>ICS Source for</h5>
             <ul>
               <li ng-repeat="listing in vm.product.ics.children | orderBy: 'certificationDate'">
-                <a href="#/product/{{ listing.id}}">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
+                <a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
               </li>
             </ul>
           </span>

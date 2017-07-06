@@ -1,5 +1,5 @@
 <div style="background: white">
-  <table class="table table-condensed nowrap">
+  <table class="table table-condensed nowrap" ng-if="vm.measures && vm.measures.length > 0">
     <thead>
       <tr>
         <th scope="col">Measure Name</th>
@@ -17,4 +17,5 @@
       </tr>
     </tbody>
   </table>
+  <p ng-if="!vm.measures || vm.measures.length === 0">No measures successfully tested</p>
 </div>
