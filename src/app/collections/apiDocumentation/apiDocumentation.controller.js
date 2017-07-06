@@ -5,7 +5,7 @@
         .controller('ApiDocumentationController', ApiDocumentationController);
 
     /** @ngInject */
-    function ApiDocumentationController ($compile, $scope) {
+    function ApiDocumentationController ($compile, $scope, SPLIT_PRIMARY, SPLIT_SECONDARY) {
         var vm = this;
 
         vm.apiTransform = apiTransform;
@@ -32,10 +32,10 @@
             var ret = 'Unknown';
             if (data) {
                 var apis = {};
-                var pairs = data.split('☺');
+                var pairs = data.split(SPLIT_PRIMARY);
                 var key, value;
                 for (var i = 0; i < pairs.length; i++) {
-                    var items = pairs[i].split('☹');
+                    var items = pairs[i].split(SPLIT_SECONDARY);
                     key = items[0];
                     value = items[1];
                     if (value) {

@@ -79,11 +79,11 @@
         describe('transparencyAttestations translation', function () {
             var results;
             beforeEach(function () {
-                results = service.translate('transparencyAttestations', {developers: Mock.developers});
+                results = service.translate('transparencyAttestations', Mock.collections.developers);
             });
 
             it('should filter on transparencyAttestations', function () {
-                expect(results.length).toBe(3);
+                expect(results.length).toBe(4);
             });
 
             it('should generate a mainSearch', function () {
@@ -91,9 +91,17 @@
             });
 
             it('should join Attestations', function () {
-                expect(results[0].transparencyAttestation).toEqual('<strong>ICSA Labs</strong>: <span class="text-muted">Not Applicable</span>');
-                expect(results[1].transparencyAttestation).toEqual('<strong>Drummond Group</strong>: <span class="text-success">Supports</span>');
-                expect(results[2].transparencyAttestation).toEqual('<strong>Drummond Group</strong>: <span class="text-success">Supports</span>');
+                expect(results[0].acbAttestations).toEqual('<strong>ICSA Labs</strong>: <span class="text-muted">Not Applicable</span>');
+                expect(results[1].acbAttestations).toEqual('<strong>Drummond Group</strong>: <span class="text-success">Supports</span>');
+                expect(results[2].acbAttestations).toEqual('<strong>ICSA Labs</strong>: <span class="text-success">Supports</span><br /><strong>InfoGard</strong>: <span class="text-success">Supports</span>');
+                expect(results[3].acbAttestations).toEqual('<strong>InfoGard</strong>: <span class="text-success">Supports</span>');
+            });
+
+            it('should split Urls', function () {
+                expect(results[0].transparencyAttestationUrls).toEqual([]);
+                expect(results[1].transparencyAttestationUrls).toEqual(['http://fiehr.com/Support/Disclosures']);
+                expect(results[2].transparencyAttestationUrls).toEqual(['http://www.asp.md/certified.htm']);
+                expect(results[3].transparencyAttestationUrls).toEqual(['http://insynchcs.com/meaningful-use-certification.html', 'http://www.insynchcs.com/meaningful-use-certification']);
             });
         });
     });

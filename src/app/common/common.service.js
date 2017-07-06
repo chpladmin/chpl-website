@@ -162,7 +162,7 @@
             case 'nonconformities':
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
             case 'transparencyAttestations':
-                return simpleApiCall('/developers/');
+                return simpleApiCall('/collections/developers/');
                 //no default
             }
         }

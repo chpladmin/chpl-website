@@ -5,7 +5,7 @@
         .factory('collectionsService', collectionsService);
 
     /** @ngInject */
-    function collectionsService () {
+    function collectionsService (SPLIT_PRIMARY) {
         var service = {
             translate: translate,
         }
@@ -26,7 +26,7 @@
             case 'nonconformities':
                 return nonconformities(array.results);
             case 'transparencyAttestations':
-                return transparencyAttestations(array.developers);
+                return transparencyAttestations(array);
                 // no default
             }
         }
@@ -155,23 +155,20 @@
         }
 
         /*
-         * All developers found are included, but need to be transformed
+         * Only developers with Listings that are Active or Suspended by ONC/ONC-ACB are included, and need to be transformed
          */
         function transparencyAttestations (array) {
             var ret = [];
             var dev;
             for (var i = 0; i < array.length; i ++) {
-                if (array[i].transparencyAttestations && array[i].transparencyAttestations.length > 0) {
+                if (array[i].listingCounts.active > 0 ||
+                    array[i].listingCounts.suspendedByOncAcb > 0 ||
+                    array[i].listingCounts.suspendedByOnc > 0) {
                     dev = {
-                        developer: array[i].name,
+                        name: array[i].name,
                         mainSearch: array[i].name,
-                        transparencyAttestation: joinAttestations(array[i].transparencyAttestations),
-                        disclosureUrl: [],
-                    }
-                    if (array[i].disclosureUrls && array[i].disclosuresUrls.length > 0) {
-                        for (var j = 0; j < array[i].disclosureUrls.length; j++) {
-                            dev.disclosureUrl.push(array[i].disclosuresUrls[j].name);
-                        }
+                        acbAttestations: joinAttestations(array[i].acbAttestations),
+                        transparencyAttestationUrls: array[i].transparencyAttestationUrls ? array[i].transparencyAttestationUrls.split(SPLIT_PRIMARY) : [],
                     }
                     ret.push(dev);
                 }
@@ -194,9 +191,14 @@
 
         function joinAttestations (atts) {
             var ret = [];
-            for (var i = 0; i < atts.length; i++) {
-                if (atts[i].attestation) {
-                    ret.push('<strong>' + atts[i].acbName + '</strong>: ' + expandAttestation(atts[i].attestation));
+            if (atts) {
+                var items = atts.split(SPLIT_PRIMARY);
+                var item;
+                for (var i = 0; i < items.length; i++) {
+                    item = items[i].split(':');
+                    if (item[1]) {
+                        ret.push('<strong>' + item[0] + '</strong>: ' + expandAttestation(item[1]));
+                    }
                 }
             }
             if (ret.length === 0) {
