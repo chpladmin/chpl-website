@@ -45,7 +45,7 @@
         function editSurveillance (surveillance) {
             fixRequirementOptions();
             vm.uibModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/editSurveillance.html',
+                templateUrl: 'app/admin/components/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,
@@ -65,7 +65,7 @@
                     });
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug(result);
+                    $log.info(result);
                 }
             });
         }
@@ -109,7 +109,7 @@
         function initiateSurveillance () {
             fixRequirementOptions();
             vm.uibModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/editSurveillance.html',
+                templateUrl: 'app/admin/components/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,
@@ -129,7 +129,7 @@
                     });
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug(result);
+                    $log.info(result);
                 }
             });
         }
