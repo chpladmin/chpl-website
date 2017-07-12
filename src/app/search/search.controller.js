@@ -39,9 +39,6 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            if ($localStorage.clearResults) {
-                vm.clear();
-            }
             $scope.$on('ClearResults', function () {
                 vm.clear();
             });
@@ -60,6 +57,9 @@
             manageStorage();
             populateSearchOptions();
             restoreResults();
+            if ($localStorage.clearResults) {
+                vm.clear();
+            }
             vm.loadResults();
             setTimestamp();
         }

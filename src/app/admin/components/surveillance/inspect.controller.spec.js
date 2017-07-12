@@ -1,12 +1,14 @@
 (function () {
     'use strict';
 
-    describe('admin.InspectSurveillanceController.controller', function () {
+    describe('the Surveillance Inspection controller', function () {
         var $log, $q, $uibModal, Mock, actualOptions, commonService, scope, utilService, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
+                    $delegate.confirmPendingSurveillance = jasmine.createSpy('confirmPendingSurveillance');
+                    $delegate.rejectPendingSurveillance = jasmine.createSpy('rejectPendingSurveillance');
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
                     return $delegate;
                 });
@@ -20,6 +22,8 @@
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;
+                commonService.confirmPendingSurveillance.and.returnValue($q.when([]));
+                commonService.rejectPendingSurveillance.and.returnValue($q.when([]));
                 commonService.getSurveillanceLookups.and.returnValue($q.when([]));
                 utilService = _utilService_;
                 utilService.sortRequirements.and.returnValue(1);
@@ -46,19 +50,17 @@
             }
         });
 
-        describe('housekeeping', function () {
-            it('should exist', function () {
-                expect(vm).toBeDefined();
-            });
-
-            it('should have a way to close the modal', function () {
-                expect(vm.cancel).toBeDefined();
-                vm.cancel();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
-            });
+        it('should exist', function () {
+            expect(vm).toBeDefined();
         });
 
-        describe('editing a Surveillance', function () {
+        it('should have a way to close it\'s own modal', function () {
+            expect(vm.cancel).toBeDefined();
+            vm.cancel();
+            expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
+        });
+
+        describe('when editing a Surveillance', function () {
             var surveillanceEditOptions;
             beforeEach(function () {
                 surveillanceEditOptions = {
@@ -83,13 +85,13 @@
                 };
             });
 
-            it('should create a modal instance when a Surveillance is to be edited', function () {
+            it('should create a modal instance', function () {
                 expect(vm.editModalInstance).toBeUndefined();
                 vm.editSurveillance();
                 expect(vm.editModalInstance).toBeDefined();
             });
 
-            it('should resolve elements on edit', function () {
+            it('should resolve elements on that modal', function () {
                 vm.editSurveillance();
                 expect($uibModal.open).toHaveBeenCalledWith(surveillanceEditOptions);
                 expect(actualOptions.resolve.surveillance()).toEqual(Mock.surveillances[0]);
@@ -114,6 +116,72 @@
                 vm.editSurveillance();
                 vm.editModalInstance.dismiss('not cancelled');
                 expect($log.info.logs.length).toBe(logCount + 1);
+            });
+        });
+
+        describe('when confirming or rejecting', function () {
+            it('should close the modal if confirmation is successful', function () {
+                vm.confirm();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 'confirmed'});
+            });
+
+            it('should close the modal if rejection is successful', function () {
+                vm.reject();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 'rejected'});
+            });
+
+            it('should not dismiss the modal if confirmation fails', function () {
+                commonService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+                vm.confirm();
+                scope.$digest();
+                expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
+            });
+
+            it('should not dismiss the modal if rejection fails', function () {
+                commonService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+                vm.reject();
+                scope.$digest();
+                expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
+            });
+
+            it('should have error messages if confirmation fails', function () {
+                commonService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                vm.confirm();
+                scope.$digest();
+                expect(vm.errorMessages).toEqual([1,2]);
+            });
+
+            it('should have error messages if rejection fails', function () {
+                commonService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                vm.reject();
+                scope.$digest();
+                expect(vm.errorMessages).toEqual([1,2]);
+            });
+
+            it('should dismiss the modal with the contact if the pending surveillance was already resolved on confirm', function () {
+                var contact = {name: 'person'};
+                commonService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+                vm.confirm();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    contact: contact,
+                    objectId: 1,
+                    status: 'resolved',
+                });
+            });
+
+            it('should dismiss the modal with the contact if the pending surveillance was already resolved on reject', function () {
+                var contact = {name: 'person'};
+                commonService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+                vm.reject();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    contact: contact,
+                    objectId: 1,
+                    status: 'resolved',
+                });
             });
         });
     });

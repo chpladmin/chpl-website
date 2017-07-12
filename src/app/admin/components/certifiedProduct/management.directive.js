@@ -243,30 +243,20 @@
             angular.forEach(vm.massReject, function (value, key) {
                 if (value) {
                     idsToReject.push(parseInt(key));
+                    clearPendingListing(parseInt(key));
+                    delete(vm.massReject[key]);
                 }
             });
             commonService.massRejectPendingListings(idsToReject)
-                .then(function () {
-                    angular.forEach(vm.massReject, function (value, key) {
-                        if (value) {
-                            clearPendingListing(parseInt(key));
-                            delete(vm.massReject[key]);
-                        }
-                    });
-                }, function (error) {
-                    angular.forEach(vm.massReject, function (value, key) {
-                        if (value) {
-                            clearPendingListing(parseInt(key));
-                            delete(vm.massReject[key]);
-                        }
-                    });
-                    if (error.data.errors && error.data.errors.length > 0) {
-                        vm.uploadingListingsMessages = error.data.errors.map(function (error) {
-                            var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
-                            return ret;
-                        });
-                    }
-                });
+                .then(function () {},
+                      function (error) {
+                          if (error.data.errors && error.data.errors.length > 0) {
+                              vm.uploadingListingsMessages = error.data.errors.map(function (error) {
+                                  var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                                  return ret;
+                              });
+                          }
+                      });
         }
 
         function massRejectPendingSurveillance () {
@@ -274,30 +264,20 @@
             angular.forEach(vm.massRejectSurveillance, function (value, key) {
                 if (value) {
                     idsToReject.push(parseInt(key));
+                    clearPendingSurveillance(parseInt(key));
+                    delete(vm.massRejectSurveillance[key]);
                 }
             });
             commonService.massRejectPendingSurveillance(idsToReject)
-                .then(function () {
-                    angular.forEach(vm.massRejectSurveillance, function (value, key) {
-                        if (value) {
-                            clearPendingSurveillance(parseInt(key));
-                            delete(vm.massRejectSurveillance[key]);
-                        }
-                    });
-                }, function (error) {
-                    angular.forEach(vm.massRejectSurveillance, function (value, key) {
-                        if (value) {
-                            clearPendingSurveillance(parseInt(key));
-                            delete(vm.massRejectSurveillance[key]);
-                        }
-                    });
-                    if (error.data.errors && error.data.errors.length > 0) {
-                        vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
-                            var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
-                            return ret;
-                        });
-                    }
-                });
+                .then(function () {},
+                      function (error) {
+                          if (error.data.errors && error.data.errors.length > 0) {
+                              vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
+                                  var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                                  return ret;
+                              });
+                          }
+                      });
         }
 
         function mergeDevelopers () {
@@ -589,12 +569,20 @@
                 },
                 size: 'lg',
             });
-            vm.modalInstance.result.then(function () {
-                vm.refreshPending();
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.refreshPending();
+            vm.modalInstance.result.then(function (result) {
+                if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
+                    for (var i = 0; i < vm.uploadingSurveillances.length; i++) {
+                        if (surv.id === vm.uploadingSurveillances[i].id) {
+                            vm.uploadingSurveillances.splice(i,1)
+                            vm.pendingSurveillances = vm.uploadingSurveillances.length;
+                        }
+                    }
+                    if (result.status === 'resolved') {
+                        vm.uploadingSurveillanceMessages = ['Surveillance with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.firstName + ' ' + result.contact.lastName + '"'];
+                    }
                 }
+            }, function (result) {
+                $log.info('inspection: ' + result);
             });
         }
 

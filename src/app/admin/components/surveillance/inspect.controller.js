@@ -34,10 +34,18 @@
                 .then(function () {
                     $uibModalInstance.close({status: 'confirmed'});
                 }, function (error) {
-                    if (error.data.messages) {
-                        vm.errorMessages = error.data.errorMessages;
+                    if (error.data.contact) {
+                        $uibModalInstance.close({
+                            contact: error.data.contact,
+                            objectId: error.data.objectId,
+                            status: 'resolved',
+                        });
                     } else {
-                        vm.errorMessages = [error.statusText];
+                        if (error.data.errorMessages) {
+                            vm.errorMessages = error.data.errorMessages;
+                        } else {
+                            vm.errorMessages = [error.statusText];
+                        }
                     }
                 });
         }
@@ -90,9 +98,17 @@
         function reject () {
             commonService.rejectPendingSurveillance(vm.surveillance.id)
                 .then(function () {
-                    $uibModalInstance.dismiss('rejected');
+                    $uibModalInstance.close({status: 'rejected'});
                 },function (error) {
-                    vm.errorMessages = [error.statusText]
+                    if (error.data.contact) {
+                        $uibModalInstance.close({
+                            contact: error.data.contact,
+                            objectId: error.data.objectId,
+                            status: 'resolved',
+                        });
+                    } else {
+                        vm.errorMessages = error.data.errorMessages;
+                    }
                 });
         }
 
