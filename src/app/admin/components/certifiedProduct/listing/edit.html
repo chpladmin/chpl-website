@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
           <label for="idIcs" class="sr-only">ICS Code:</label>
-          <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required></input>
+          <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]$/" required></input>
         </div>
         <span class="form-control-static">
           {{ vm.idFields.suffix }}
@@ -35,7 +35,7 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idVer.$touched) && vm.editForm.idVer.$error.required">Version Code is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idVer.$touched) && !vm.editForm.idVer.$error.required && !vm.editForm.idVer.$valid">Version Code must consist of letters, numbers and/or "_", and be 2 characters long</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.editForm.idIcs.$error.required">ICS Code is required</div>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">ICS Code must consist of numbers only and be 2 characters long</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">ICS Code must be a single number from 0 to 9</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.cp.ics.inherits && vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</div>
     </div>
     <div ng-if="!vm.idFields">
@@ -135,7 +135,7 @@
           <div class="col-sm-6">
             <div class="input-group">
               <input type="text" class="form-control" ng-model="vm.newIcsParentOther.chplProductNumber" id="newIcsParentOther" name="newIcsParentOther"
-                     ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d+\.[01]\.\d{6}$/">
+                     ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d\.[01]\.\d{6}$/">
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.ics.parents, vm.newIcsParentOther); vm.newIcsParentOther = ''" ng-disabled="!vm.newIcsParentOther || vm.editForm.newIcsParentOther.$error.pattern"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.newIcsParentOther.$touched) && vm.editForm.newIcsParentOther.$error.pattern">Improper format</div>
@@ -308,7 +308,7 @@
         <li ng-if="vm.editForm.idProd.$error.required">CHPL Product Number Product Code is required</li>
         <li ng-if="vm.editForm.idVer && !vm.editForm.idVer.$error.required && !vm.editForm.idVer.$valid">CHPL Product Number Version Code must consist of letters, numbers and/or "_", and be 2 characters long</li>
         <li ng-if="vm.editForm.idVer.$error.required">CHPL Product Number Version Code is required</li>
-        <li ng-if="vm.editForm.idIcs && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">CHPL Product Number ICS Code must consist of numbers only and be 2 characters long</li>
+        <li ng-if="vm.editForm.idIcs && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">CHPL Product Number ICS Code must be a single number from 0 to 9</li>
         <li ng-if="vm.editForm.idIcs.$error.required">CHPL Product Number ICS Code is required</li>
         <li ng-if="vm.editForm.cpPractice.$error.required">Practice Type is required</li>
         <li ng-if="vm.editForm.cpClassification.$error.required">Classification Type is required</li>
