@@ -53,8 +53,9 @@
         <h4>To form this one</h4>
         <div class="form-group">
           <label for="developerName">Developer Name <span class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName" name="developerName"></input>
+          <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName" name="developerName" ng-maxlength="300"></input>
           <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.developerName.$touched) && vm.mergeForm.developerName.$error.required">Developer name is required</div>
+          <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.developerName.$touched) && vm.mergeForm.developerName.$error.maxlength">Developer name is too long</div>
           <table class="table table-condensed">
             <thead>
               <tr>
@@ -108,27 +109,32 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" name="addressLine1"></input>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" ng-maxlength="250"></input>
               <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressLine1.$touched) && vm.mergeForm.addressLine1.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressLine1.$touched) && vm.mergeForm.addressLine1.$error.maxlength">Field is too long</div>
             </div>
             <div class="form-group">
               <label for="addressLine2">Address Line 2</label>
-              <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="addressLine2"></input>
+              <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="addressLine2" name="addressLine2" ng-maxlength="250"></input>
+              <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressLine2.$touched) && vm.mergeForm.addressLine2.$error.maxlength">Field is too long</div>
             </div>
             <div class="form-group">
               <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity"></input>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity" ng-maxlength="250"></input>
               <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressCity.$touched) && vm.mergeForm.addressCity.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressCity.$touched) && vm.mergeForm.addressCity.$error.maxlength">Field is too long</div>
             </div>
             <div class="form-group">
               <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState"></input>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState" ng-maxlength="250"></input>
               <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressState.$touched) && vm.mergeForm.addressState.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressState.$touched) && vm.mergeForm.addressState.$error.maxlength">Field is too long</div>
             </div>
             <div class="form-group">
               <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode"></input>
+              <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode" ng-maxlength="25"></input>
               <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressZipcode.$touched) && vm.mergeForm.addressZipcode.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.addressZipcode.$touched) && vm.mergeForm.addressZipcode.$error.maxlength">Field is too long</div>
             </div>
             <div class="form-group">
               <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
@@ -137,8 +143,9 @@
             </div>
             <div class="form-group">
               <label for="developerWebsite">Website</label>
-              <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite"></input>
+              <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite" ng-maxlength="250"></input>
               <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.developerWebsite.$touched) && vm.mergeForm.developerWebsite.$error.url">Website is invalid</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors && vm.mergeForm.developerWebsite.$touched) && vm.mergeForm.developerWebsite.$error.maxlength">Website is too long</div>
             </div>
           </div>
           <div class="col-sm-6">
@@ -153,16 +160,23 @@
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.mergeForm.developerName.$error.required">Developer name is required</li>
+        <li ng-if="vm.mergeForm.developerName.$error.maxlength">Developer name is too long</li>
         <li ng-if="!vm.developer.statusEvents || vm.developer.statusEvents.length === 0">Developer must have a status</li>
         <li ng-if="vm.isMissingRequiredFields()">Developer status is required</li>
         <li ng-if="vm.hasStatusMatches()">Developer status must not repeat</li>
         <li ng-if="vm.hasDateMatches()">Only one change of status allowed per day</li>
         <li ng-if="vm.mergeForm.addressLine1.$error.required">Address Line 1 is required</li>
+        <li ng-if="vm.mergeForm.addressLine1.$error.maxlength">Address Line 1 is too long</li>
+        <li ng-if="vm.mergeForm.addressLine2.$error.maxlength">Address Line 2 is too long</li>
         <li ng-if="vm.mergeForm.addressCity.$error.required">City is required</li>
+        <li ng-if="vm.mergeForm.addressCity.$error.maxlength">City is too long</li>
         <li ng-if="vm.mergeForm.addressState.$error.required">State is required</li>
+        <li ng-if="vm.mergeForm.addressState.$error.maxlength">State is too long</li>
         <li ng-if="vm.mergeForm.addressZipcode.$error.required">Zipcode is required</li>
+        <li ng-if="vm.mergeForm.addressZipcode.$error.maxlength">Zipcode is too long</li>
         <li ng-if="vm.mergeForm.addressCountry.$error.required">Country is required</li>
         <li ng-if="vm.mergeForm.developerWebsite.$error.url">Website is invalid (http://www.example.com)</li>
+        <li ng-if="vm.mergeForm.developerWebsite.$error.maxlength">Website is too long</li>
         <li ng-repeat="error in vm.contactErrorMessages">{{ error }}</li>
       </ul>
     </div>

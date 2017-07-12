@@ -396,7 +396,7 @@
           <h3 ng-if="vm.inspectingCp">System developer information</h3>
           <div class="panel panel-ai panel-admin">
             <div class="panel-heading">
-              <span>Select a developer</span>
+              <span>Active Developer</span>
               <span class="pull-right">
                 <span ng-if="vm.workType !== 'merge' && vm.isDeveloperEditable(vm.activeDeveloper)"><a href="" ng-click="vm.editDeveloper()"><i class="fa fa-pencil-square-o"></i> Edit Developer</a> |</span>
                 <a href="" ng-click="vm.activeDeveloper = ''; vm.activeProduct = ''; vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
@@ -487,7 +487,7 @@
         <div class="col-sm-12">
           <div class="panel panel-ai panel-admin">
             <div class="panel-heading">
-              <span>Select a product</span>
+              <span>Active Product</span>
               <span class="pull-right">
                 <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)">
                   <span ng-if="vm.versions.length > 1">
@@ -556,7 +556,7 @@
         <div class="col-sm-12">
           <div class="panel panel-ai panel-admin">
             <div class="panel-heading">
-              <span>Select a version</span>
+              <span>Active Version</span>
               <span class="pull-right">
                 <span ng-if="vm.workType !== 'merge' && vm.isDeveloperMergeable(vm.activeDeveloper)"><a href="" ng-click="vm.editVersion()"><i class="fa fa-pencil-square-o"></i> Edit Version</a> |</span>
                 <a href="" ng-click="vm.activeVersion = ''; vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
@@ -596,9 +596,9 @@
           <div ng-if="vm.activeCP !== ''">
             <div class="panel panel-ai panel-admin">
               <div class="panel-heading">
-                <span>Select a Certified Product</span>
+                <span>Active Listing</span>
                 <span class="pull-right">
-                  <a href="#/admin/reports/{{ vm.activeCP.id}}"><i class="fa fa-eye"></i> View Listing History</a> |
+                  <a href="#/admin/reports/{{ vm.activeCP.id}}"><i class="fa fa-calendar"></i> View Listing History</a> |
                   <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
                   <span ng-if="vm.isProductEditable(vm.activeCP)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>

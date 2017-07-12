@@ -1,5 +1,10 @@
 # Release Notes
 
+OCD-1654: Implemented length restrictions on Listing elements
+OCD-1662: Implement min/max length restrictions on CHPL Product Number Code values
+
+---
+
 ## Version TBD
 _Date TBD_
 

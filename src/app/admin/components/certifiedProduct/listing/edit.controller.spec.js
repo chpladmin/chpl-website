@@ -130,33 +130,41 @@
                     expect(vm.requiredIcsCode()).toBe('-1');
                 });
 
-                it('should expect the code to be 1 if one parent and parent has ICS 0', function () {
-                    vm.cp.ics.parents = [{chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'}];
-                    expect(vm.requiredIcsCode()).toBe('1');
+                it('should expect the code to be 01 if one parent and parent has ICS 00', function () {
+                    vm.cp.ics.parents = [{chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'}];
+                    expect(vm.requiredIcsCode()).toBe('01');
                 });
 
-                it('should expect the code to be 1 if two parents and parents have ICS 0', function () {
+                it('should expect the code to be 01 if two parents and parents have ICS 00', function () {
                     vm.cp.ics.parents = [
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'},
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.0.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.00.1.170331'},
                     ];
-                    expect(vm.requiredIcsCode()).toBe('1');
+                    expect(vm.requiredIcsCode()).toBe('01');
                 });
 
-                it('should expect the code to be 2 if two parents and parents have ICS 1', function () {
+                it('should expect the code to be 02 if two parents and parents have ICS 01', function () {
                     vm.cp.ics.parents = [
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
                     ];
-                    expect(vm.requiredIcsCode()).toBe('2');
+                    expect(vm.requiredIcsCode()).toBe('02');
                 });
 
-                it('should expect the code to be 3 if two parents and parents have ICS 1,2', function () {
+                it('should expect the code to be 03 if two parents and parents have ICS 01,02', function () {
                     vm.cp.ics.parents = [
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.2.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.02.1.170331'},
                     ];
-                    expect(vm.requiredIcsCode()).toBe('3');
+                    expect(vm.requiredIcsCode()).toBe('03');
+                });
+
+                it('should expect the code to be 10 if two parents and parents have ICS 01,09', function () {
+                    vm.cp.ics.parents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.01.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.09.1.170331'},
+                    ];
+                    expect(vm.requiredIcsCode()).toBe('10');
                 });
             });
         });
