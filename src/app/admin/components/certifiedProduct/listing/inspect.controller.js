@@ -180,7 +180,15 @@
                 .then(function (result) {
                     $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
                 }, function (error) {
-                    vm.errorMessages = error.data.errorMessages;
+                    if (error.data.contact) {
+                        $uibModalInstance.close({
+                            contact: error.data.contact,
+                            objectId: error.data.objectId,
+                            status: 'resolved',
+                        });
+                    } else {
+                        vm.errorMessages = error.data.errorMessages;
+                    }
                 });
         }
 

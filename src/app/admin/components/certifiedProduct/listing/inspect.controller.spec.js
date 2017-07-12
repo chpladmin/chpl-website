@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.inspectCertifiedProduct.controller', function () {
+    describe('the Listing Inspection controller', function () {
         var $log, $q, Mock, commonService, mock, scope, vm;
 
         mock = {};
@@ -22,6 +22,7 @@
         beforeEach(function () {
             module('chpl.admin', 'chpl.mock', function ($provide) {
                 $provide.decorator('commonService', function ($delegate) {
+                    $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
                     $delegate.rejectPendingCp = jasmine.createSpy('rejectPendingCp');
 
@@ -34,6 +35,7 @@
                 $q = _$q_;
                 Mock = _Mock_;
                 commonService = _commonService_;
+                commonService.confirmPendingCp.and.returnValue($q.when({}));
                 commonService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
                 commonService.rejectPendingCp.and.returnValue($q.when({}));
 
@@ -58,23 +60,38 @@
             }
         });
 
-        describe('housekeeping', function () {
-            it('should exist', function () {
-                expect(vm).toBeDefined();
-            });
-
-            it('should have a way to close the modal', function () {
-                expect(vm.cancel).toBeDefined();
-                vm.cancel();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
-            });
+        it('should exist', function () {
+            expect(vm).toBeDefined();
         });
 
-        describe('rejecting a pending Listing', function () {
+        it('should have a way to close it\'s own modal', function () {
+            expect(vm.cancel).toBeDefined();
+            vm.cancel();
+            expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
+        });
+
+        describe('when confirming or rejecting', function () {
+            it('should close the modal if confirmation is successful', function () {
+                vm.confirm();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    status: 'confirmed',
+                    developerCreated: false,
+                    developer: undefined,
+                });
+            });
+
             it('should close the modal if rejection is successful', function () {
                 vm.reject();
                 scope.$digest();
-                expect(Mock.modalInstance.close).toHaveBeenCalled();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 'rejected'});
+            });
+
+            it('should not dismiss the modal if confirmation fails', function () {
+                commonService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
+                vm.confirm();
+                scope.$digest();
+                expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should not dismiss the modal if rejection fails', function () {
@@ -84,6 +101,13 @@
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
+            it('should have error messages if confirmation fails', function () {
+                commonService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                vm.confirm();
+                scope.$digest();
+                expect(vm.errorMessages).toEqual([1,2]);
+            });
+
             it('should have error messages if rejection fails', function () {
                 commonService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
                 vm.reject();
@@ -91,7 +115,19 @@
                 expect(vm.errorMessages).toEqual([1,2]);
             });
 
-            it('should dismiss the modal with the contact if the pending listing was already resolved', function () {
+            it('should dismiss the modal with the contact if the pending listing was already resolved on confirmation', function () {
+                var contact = {name: 'person'};
+                commonService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+                vm.confirm();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    contact: contact,
+                    objectId: 1,
+                    status: 'resolved',
+                });
+            });
+
+            it('should dismiss the modal with the contact if the pending listing was already resolved on rejection', function () {
                 var contact = {name: 'person'};
                 commonService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
                 vm.reject();
