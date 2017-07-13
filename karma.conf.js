@@ -48,8 +48,8 @@ module.exports = function(config) {
 
         autoWatch: false,
 
-        browserDisconnectTimeout: 30000,
-        browserNoActivityTimeout: 30000,
+        browserDisconnectTimeout: 60000,
+        browserNoActivityTimeout: 60000,
         browserDisconnectTolerance: 10,
 
         ngHtml2JsPreprocessor: {

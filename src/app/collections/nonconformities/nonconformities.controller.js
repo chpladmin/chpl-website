@@ -14,14 +14,14 @@
 
         function activate () {
             vm.columnSet = [
-                { predicate: 'edition', display: 'Edition', multiSort: true, descendingFirst: true },
-                { predicate: 'developer', display: 'Developer', multiSort: true },
-                { predicate: 'product', display: 'Product', multiSort: true },
-                { predicate: 'version', display: 'Version', multiSort: true },
-                { predicate: 'chplProductNumber', display: 'CHPL ID', multiSort: true, isLink: true, initialPanel: 'surveillance' },
-                { predicate: 'acb', display: 'ONC-ACB', multiSort: true },
-                { predicate: 'openNonconformityCount', display: '# Open NCs', multiSort: true, descendingFirst: true, sortDefault: ['-openNonconformityCount', '-edition', 'developer'] },
-                { predicate: 'closedNonconformityCount', display: '# Closed NCs', multiSort: true, descendingFirst: true },
+                { predicate: 'edition', display: 'Edition', sortType: 'multi', descendingFirst: true },
+                { predicate: 'developer', display: 'Developer', sortType: 'multi' },
+                { predicate: 'product', display: 'Product', sortType: 'multi' },
+                { predicate: 'version', display: 'Version', sortType: 'multi' },
+                { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'multi', isLink: true, initialPanel: 'surveillance' },
+                { predicate: 'acb', display: 'ONC-ACB', sortType: 'multi' },
+                { predicate: 'openNonconformityCount', display: '# Open NCs', sortType: 'multi', descendingFirst: true, sortDefault: ['-openNonconformityCount', '-edition', 'developer'] },
+                { predicate: 'closedNonconformityCount', display: '# Closed NCs', sortType: 'multi', descendingFirst: true },
             ];
             vm.filters = ['acb', 'edition'];
             vm.refineModel = {

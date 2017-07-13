@@ -192,5 +192,20 @@
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
         });
+
+        describe('array to CSV', function () {
+            var data;
+
+            beforeEach(function () {
+                data = [
+                    ['header 1', 'header 2', 'header 3', 'header 4'],
+                    ['String with "quotes"', 'String with ,commas,', 'String with "both,omg"', 'String with\nnewline'],
+                ];
+            });
+
+            it('should convert arrays', function () {
+                expect(util.arrayToCsv(data)).toEqual('header 1,header 2,header 3,header 4\n"String with ""quotes""","String with ,commas,","String with ""both,omg""","String with\nnewline"');
+            });
+        });
     });
 })();

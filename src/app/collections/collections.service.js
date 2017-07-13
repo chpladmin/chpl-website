@@ -5,7 +5,7 @@
         .factory('collectionsService', collectionsService);
 
     /** @ngInject */
-    function collectionsService () {
+    function collectionsService (SPLIT_PRIMARY) {
         var service = {
             translate: translate,
         }
@@ -25,10 +25,14 @@
                 return inactiveCertificates(array.results);
             case 'nonconformities':
                 return nonconformities(array.results);
+            case 'transparencyAttestations':
+                return transparencyAttestations(array);
                 // no default
             }
         }
 
+        ////////////////////////////////////////////////////////////////////
+        // translation functions
         ////////////////////////////////////////////////////////////////////
 
         /*
@@ -148,6 +152,73 @@
                 }
             }
             return ret;
+        }
+
+        /*
+         * Only developers with Listings that are Active or Suspended by ONC/ONC-ACB are included, and need to be transformed
+         */
+        function transparencyAttestations (array) {
+            var ret = [];
+            var dev;
+            for (var i = 0; i < array.length; i ++) {
+                if (array[i].listingCounts.active > 0 ||
+                    array[i].listingCounts.suspendedByOncAcb > 0 ||
+                    array[i].listingCounts.suspendedByOnc > 0) {
+                    dev = {
+                        name: array[i].name,
+                        mainSearch: array[i].name,
+                        acbAttestations: joinAttestations(array[i].acbAttestations),
+                        transparencyAttestationUrls: array[i].transparencyAttestationUrls ? array[i].transparencyAttestationUrls.split(SPLIT_PRIMARY) : [],
+                        acb: findAcbs(array[i].acbAttestations),
+                    }
+                    ret.push(dev);
+                }
+            }
+            return ret;
+        }
+
+        ////////////////////////////////////////////////////////////////////
+        // helper functions
+        ////////////////////////////////////////////////////////////////////
+
+        function expandAttestation (att, acb) {
+            switch (att) {
+            case 'Affirmative': return '<span class="text-success">Supports (' + acb + ')</span>';
+            case 'Negative': return '<span class="text-danger">Declined to Support (' + acb + ')</span>';
+            case 'N/A': return '<span class="text-muted">Not Applicable (' + acb + ')</span>';
+            default: return att;
+            }
+        }
+
+        function findAcbs (atts) {
+            var ret = []
+            if (atts) {
+                var items = atts.split(SPLIT_PRIMARY);
+                var item;
+                for (var i = 0; i < items.length; i++) {
+                    item = items[i].split(':');
+                    ret.push(item[0]);
+                }
+            }
+            return ret.join(SPLIT_PRIMARY);
+        }
+
+        function joinAttestations (atts) {
+            var ret = [];
+            if (atts) {
+                var items = atts.split(SPLIT_PRIMARY);
+                var item;
+                for (var i = 0; i < items.length; i++) {
+                    item = items[i].split(':');
+                    if (item[1]) {
+                        ret.push(expandAttestation(item[1], item[0]));
+                    }
+                }
+            }
+            if (ret.length === 0) {
+                ret.push('<span class="text-danger">Has not fulfilled requirement</span>');
+            }
+            return ret.join('<br />');
         }
     }
 })();

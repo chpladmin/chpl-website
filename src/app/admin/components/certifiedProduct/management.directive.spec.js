@@ -337,15 +337,13 @@
                 expect(commonService.massRejectPendingListings).toHaveBeenCalledWith([1]);
             });
 
-            it('should reset the pending checkboxes on success', function () {
+            it('should reset the pending checkboxes', function () {
                 vm.massRejectPendingListings();
-                el.isolateScope().$digest();
                 expect(vm.massReject).toEqual({2: false});
             });
 
-            it('should remove the listings from the list of listings if rejection is successful', function () {
+            it('should remove the listings from the list of listings', function () {
                 vm.massRejectPendingListings();
-                el.isolateScope().$digest();
                 expect(vm.uploadingCps).toEqual([{id: 2}]);
             });
 
@@ -383,15 +381,13 @@
                 expect(commonService.massRejectPendingSurveillance).toHaveBeenCalledWith([1]);
             });
 
-            it('should reset the pending checkboxes on success', function () {
+            it('should reset the pending checkboxes', function () {
                 vm.massRejectPendingSurveillance();
-                el.isolateScope().$digest();
                 expect(vm.massRejectSurveillance).toEqual({2: false});
             });
 
-            it('should remove the surveillances from the list of surveillances if rejection is successful', function () {
+            it('should remove the surveillances from the list of surveillances', function () {
                 vm.massRejectPendingSurveillance();
-                el.isolateScope().$digest();
                 expect(vm.uploadingSurveillances).toEqual([{id: 2}]);
             });
 
@@ -411,6 +407,70 @@
                 vm.massRejectSurveillance[2] = false;
                 vm.massRejectSurveillance[3] = false;
                 expect(vm.getNumberOfSurveillanceToReject()).toBe(0);
+            });
+        });
+        describe('inspecting a pending Surveillance', function () {
+            var surveillanceInspectOptions;
+            beforeEach(function () {
+                vm.uploadingSurveillances = [
+                    {id: 1},
+                    {id: 2},
+                ];
+                surveillanceInspectOptions = {
+                    templateUrl: 'app/admin/components/surveillance/inspect.html',
+                    controller: 'SurveillanceInspectController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'lg',
+                    resolve: {
+                        surveillance: jasmine.any(Function),
+                    },
+                };
+            });
+
+            it('should create a modal instance when a Listing is to be edited', function () {
+                expect(vm.modalInstance).toBeUndefined();
+                vm.inspectSurveillance({})
+                expect(vm.modalInstance).toBeDefined();
+            });
+
+            it('should resolve elements on inspect', function () {
+                vm.inspectSurveillance({id: 'a surveillance'})
+                expect($uibModal.open).toHaveBeenCalledWith(surveillanceInspectOptions);
+                expect(actualOptions.resolve.surveillance()).toEqual({id: 'a surveillance'});
+                el.isolateScope().$digest();
+            });
+
+            it('should remove the inspected surv on close', function () {
+                var result = {
+                    status: 'confirmed',
+                };
+                vm.inspectSurveillance(vm.uploadingSurveillances[0]);
+                vm.modalInstance.close(result);
+                expect(vm.uploadingSurveillances).toEqual([{id: 2}]);
+            });
+
+            it('should report the user who did something on resolved', function () {
+                var result = {
+                    status: 'resolved',
+                    objectId: 'id',
+                    contact: {
+                        firstName: 'fname',
+                        lastName: 'lname',
+                    },
+                };
+                vm.inspectSurveillance(vm.uploadingSurveillances[0]);
+                vm.modalInstance.close(result);
+                expect(vm.uploadingSurveillanceMessages[0]).toEqual('Surveillance with ID: "id" has already been resolved by "fname lname"');
+            });
+
+            it('should log a cancelled modal', function () {
+                var logCount = $log.info.logs.length;
+                vm.inspectSurveillance({});
+                vm.modalInstance.dismiss('cancelled');
+                expect($log.info.logs.length).toBe(logCount + 1);
             });
         });
     });

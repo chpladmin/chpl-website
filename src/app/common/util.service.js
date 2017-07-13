@@ -8,6 +8,7 @@
     function utilService (Blob, FileSaver) {
         var service = {
             arrayCompare: arrayCompare,
+            arrayToCsv: arrayToCsv,
             extendSelect: extendSelect,
             makeCsv: makeCsv,
             sortCert: sortCert,
@@ -76,6 +77,23 @@
             return ret;
         }
 
+        function arrayToCsv (data) {
+            return data.map(function (row) {
+                return row.map(function (cell) {
+                    if (cell.indexOf('"') > -1 ||
+                        cell.indexOf(',') > -1 ||
+                        cell.indexOf('\n') > -1) {
+                        return '"' + cell.replace(/"/g,'""') + '"';
+                    } else {
+                        return cell;
+                    }
+                })
+                    .join(',');
+            })
+                .join('\n');
+
+        }
+
         function extendSelect (options, value) {
             var newValue = { name: value };
             var addingNew = true;
@@ -92,7 +110,7 @@
         }
 
         function makeCsv (data) {
-            var blob = new Blob(data.values, {
+            var blob = new Blob([this.arrayToCsv(data.values)], {
                 type: 'application/csv',
             });
             FileSaver.saveAs(blob, data.name);

@@ -47,6 +47,10 @@
                 <strong>Decertification Date</strong>
                 <ai-date-range predicate="decertificationDate" has-changes="vm.categoryChanged['decertificationDate']" register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-date-range>
               </div>
+              <div class="col-sm-6" ng-if="vm.isFilterActive('acbAttestations')">
+                <strong>Attestation</strong>
+                <st-list-multiple collection="vm.allCps" predicate="acbAttestations" fixed-items="vm.filterItems.acbAttestations" has-changes="vm.categoryChanged['acbAttestations']" register-allow-all="vm.registerAllowAll(allowAll)" register-clear-filter="vm.registerClearFilter(clearFilter)"></st-list-multiple>
+              </div>
               <div class="col-sm-12 text-center" ng-if="vm.isCategoryChanged()">
                 <a href ng-click="vm.triggerClearFilters()">Clear Filters</a>
               </div>
@@ -67,11 +71,24 @@
                 </td>
               </tr>
               <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
-                <th ng-repeat="col in vm.columns"
+                <th ng-repeat-start="col in vm.columns"
+                    ng-if="col.sortType === 'single'"
                     scope="col" class="search-header"
-                    ng-attr-st-sort="{{ col.multiSort ? undefined : col.predicate }}" ng-attr-ai-multi-sort="{{ col.multiSort ? col.predicate : undefined }}"
+                    st-sort="{{ col.predicate }}"
                     st-skip-natural="true" ng-attr-st-sort-default="{{ col.sortDefault ? col.sortDefault : undefined }}"
                     ng-attr-st-descending-first="{{ col.descendingFirst ? col.descendingFirst : undefined }}">
+                  {{ col.display }}
+                </th>
+                <th
+                    ng-if="col.sortType === 'multi'"
+                    scope="col" class="search-header"
+                    ai-multi-sort="{{ col.predicate }}"
+                    st-skip-natural="true" ng-attr-st-sort-default="{{ col.sortDefault ? col.sortDefault : undefined }}"
+                    ng-attr-st-descending-first="{{ col.descendingFirst ? col.descendingFirst : undefined }}">
+                  {{ col.display }}
+                </th>
+                <th ng-repeat-end
+                    ng-if="col.sortType === 'none'" scope="col">
                   {{ col.display }}
                 </th>
               </tr>
