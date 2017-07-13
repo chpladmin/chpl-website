@@ -37,7 +37,7 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($analytics, $log, $scope, ACTIVE_CAP) {
+        function CertsController ($analytics, $log, $scope, ACTIVE_CAP, cytoData) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
@@ -80,15 +80,58 @@
             }
 
             function buildIcsGraph () {
+                vm.icsListings = [
+                    {
+                        id: 1,
+                        chplId: '15.07.07.1447.BE01.01.0.1.161014',
+                        parents: [],
+                        children: [
+                            {id: 2, chplId: '15.07.07.1447.BE01.02.1.1.161014'},
+                            {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
+                        ],
+                    },
+                    {
+                        id: 2,
+                        chplId: '15.07.07.1447.BE01.02.1.1.161014',
+                        parents: [
+                            {id: 1, chplId: '15.07.07.1447.BE01.01.0.1.161014'},
+                        ],
+                        children: [
+                            {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
+                        ],
+                    },
+                    {
+                        id: 3,
+                        chplId: '15.07.07.1447.BE01.03.2.1.161014',
+                        parents: [
+                            {id: 1, chplId: '15.07.07.1447.BE01.01.0.1.161014'},
+                            {id: 2, chplId: '15.07.07.1447.BE01.02.1.1.161014'},
+                        ],
+                        children: [
+                            {id: 4, chplId: '15.07.07.1447.BE01.04.3.1.161014'},
+                        ],
+                    },
+                    {
+                        id: 4,
+                        chplId: '15.07.07.1447.BE01.04.3.1.161014',
+                        parents: [
+                            {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
+                        ],
+                        children: [],
+                    },
+                ];
+
                 vm.icsOptions = {
-                    autoungrabify: true,
-                    userPanningEnabled: false,
-                    userZoomingEnabled: false,
+                    //autoungrabify: true,
+                    //userPanningEnabled: true,
+                    //userZoomingEnabled: true,
+                    minZoom: .5,
+                    maxZoom: 3,
                 };
 
                 vm.icsLayout = {
                     directed: 'true',
-                    fit: 'true',
+                    //fit: 'true',
                     name: 'breadthfirst',
                 };
 
@@ -96,53 +139,60 @@
                     $log.info('graph ready to be interacted with: ', evt);
                 }
 
-                vm.icsElements = {
-                    n1: {
+                vm.icsElements = {};
+                var edge, i, j, node;
+                for (i = 0; i < vm.icsListings.length; i++) {
+                    node = {
                         group: 'nodes',
                         data: {
-                            label: '15.07.07.1447.BE01.03.1.1.161014',
+                            id: vm.icsListings[i].id,
+                            chplId: vm.icsListings[i].chplId,
+                            label: vm.icsListings[i].chplId,
                         },
-                    },
-                    n2: {
-                        group: 'nodes',
-                        data: {
-                            label: '15.07.07.1447.BE01.01.0.1.161014',
-                        },
-                    },
-                    n3: {
-                        group: 'nodes',
-                        data: {
-                            label: '15.07.07.1447.BE01.02.0.1.161014',
-                        },
-                    },
-                    e1: {
-                        group: 'edges',
-                        data: {
-                            source: 'n2',
-                            target: 'n1',
-                        },
-                    },
-                    e2: {
-                        group: 'edges',
-                        data: {
-                            source: 'n3',
-                            target: 'n1',
-                        },
-                    },
-                };
+                    };
+                    if (node.data.id === 3) { // fix this later
+                        node.data.active = true;
+                        //node.data.label = node.data.chplId;
+                    }
+                    vm.icsElements[node.data.id] = node;
+                    for (j = 0; j < vm.icsListings[i].parents.length; j++) {
+                        edge = {
+                            group: 'edges',
+                            data: {
+                                source: vm.icsListings[i].parents[j].id,
+                                target: node.data.id,
+                                id: vm.icsListings[i].parents[j].id + '-' + node.data.id,
+                            },
+                        };
+                        vm.icsElements[edge.data.id] = edge;
+                    }
+                }
+
                 vm.icsStyle = [
                     {
                         selector: 'node',
                         style: {
-                            //width: 'label' ,
-                            //height: 'label',
-                            shape: 'ellipse',
+                            width: 'label' ,
+                            height: 'label',
+                            shape: 'roundrectangle',
                             label: 'data(label)',
+                            color: 'white',
                             'font-size': '12pt',
+                            'min-zoomed-font-size': '8pt',
                             'text-halign': 'center',
-                            'text-valign': 'top',
+                            'text-valign': 'center',
                             'border-width': 0,
                             'background-color': 'blue',
+                            'padding-left': '10px',
+                            'padding-top': '15px',
+                            'padding-right': '10px',
+                            'padding-bottom': '15px',
+                        },
+                    },
+                    {
+                        selector: 'node[?active]',
+                        style: {
+                            'background-color': 'red',
                         },
                     },
                     {
@@ -155,6 +205,34 @@
                         },
                     },
                 ];
+                $scope.$on('cy:node:click', function (ng, cy) {
+                    var node = cy.cyTarget;
+                    $log.info('click', cy, node.data());
+                });
+/*                $scope.$on('cy:node:mouseover', function (ng, cy) {/*
+                    var node = cy.cyTarget;
+                    $log.info('over', node.data(), vm.icsElements[node.id()]);
+                    vm.icsElements[node.id()].data.label = node.data('chplId');
+                    $scope.$apply();
+                });
+                $scope.$on('cy:node:mouseout', function (ng, cy) {
+                    var node = cy.cyTarget;
+                    $log.info('out', node.data());
+//                    if (!node.data().active) {
+//                        vm.icsElements[node.data().id].data.label = undefined;
+//                        $scope.$apply();
+//                    }
+                });
+                */
+                cytoData.getGraph('ics-cytoscape').then(function (graph) {
+                    angular.forEach(vm.icsElements, function (ele) {
+                        if (ele.data.chplId) {
+//                            ele.data.label = ele.data.chplId;
+                        }
+                    });
+                    vm.graphPng = graph.png();
+                    vm.icsImageGenerated = true;
+                });
             }
 
             function prepCqms () {
