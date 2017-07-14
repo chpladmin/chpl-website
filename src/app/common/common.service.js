@@ -52,6 +52,7 @@
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
+            getIcsFamily: getIcsFamily,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
@@ -177,6 +178,10 @@
 
         function getEducation () {
             return simpleApiCall('/data/education_types');
+        }
+
+        function getIcsFamily (id) {
+            return simpleApiCall('/certified_products/' + id + '/ics_relationships');
         }
 
         function getAgeRanges () {

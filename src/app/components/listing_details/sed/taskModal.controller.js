@@ -26,7 +26,7 @@
 
         function addParticipant () {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listingDetails/sed/participantModal.html',
+                templateUrl: 'app/components/listing_details/sed/participantModal.html',
                 controller: 'EditSedParticipantController',
                 controllerAs: 'vm',
                 animation: false,
@@ -63,7 +63,7 @@
 
         function editParticipant (participant, idx) {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listingDetails/sed/participantModal.html',
+                templateUrl: 'app/components/listing_details/sed/participantModal.html',
                 controller: 'EditSedParticipantController',
                 controllerAs: 'vm',
                 animation: false,

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl. listingDetails.aiG1G2Directive', function () {
+    describe('chpl. listing_details.aiG1G2Directive', function () {
 
         var $log, Mock, el, scope, vm;
 

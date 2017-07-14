@@ -10,7 +10,7 @@
         var directive = {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/listingDetails/details.html',
+            templateUrl: 'app/components/listing_details/details.html',
             bindToController: {
                 cap: '=',
                 editMode: '=',
@@ -37,17 +37,17 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($analytics, $log, $scope, ACTIVE_CAP, cytoData) {
+        function CertsController ($analytics, $log, $scope, $uibModal, ACTIVE_CAP, commonService) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
-            vm.buildIcsGraph = buildIcsGraph;
             vm.prepCqms = prepCqms
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
             vm.showDetails = showDetails;
             vm.showPanel = showPanel;
+            vm.viewIcsFamily = viewIcsFamily;
 
             activate();
 
@@ -76,163 +76,6 @@
                         vm.cqms = vm.product.cqmResults;
                         vm.prepCqms();
                     }}, true);
-                vm.buildIcsGraph();
-            }
-
-            function buildIcsGraph () {
-                vm.icsListings = [
-                    {
-                        id: 1,
-                        chplId: '15.07.07.1447.BE01.01.0.1.161014',
-                        parents: [],
-                        children: [
-                            {id: 2, chplId: '15.07.07.1447.BE01.02.1.1.161014'},
-                            {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
-                        ],
-                    },
-                    {
-                        id: 2,
-                        chplId: '15.07.07.1447.BE01.02.1.1.161014',
-                        parents: [
-                            {id: 1, chplId: '15.07.07.1447.BE01.01.0.1.161014'},
-                        ],
-                        children: [
-                            {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
-                        ],
-                    },
-                    {
-                        id: 3,
-                        chplId: '15.07.07.1447.BE01.03.2.1.161014',
-                        parents: [
-                            {id: 1, chplId: '15.07.07.1447.BE01.01.0.1.161014'},
-                            {id: 2, chplId: '15.07.07.1447.BE01.02.1.1.161014'},
-                        ],
-                        children: [
-                            {id: 4, chplId: '15.07.07.1447.BE01.04.3.1.161014'},
-                        ],
-                    },
-                    {
-                        id: 4,
-                        chplId: '15.07.07.1447.BE01.04.3.1.161014',
-                        parents: [
-                            {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
-                        ],
-                        children: [],
-                    },
-                ];
-
-                vm.icsOptions = {
-                    //autoungrabify: true,
-                    //userPanningEnabled: true,
-                    //userZoomingEnabled: true,
-                    minZoom: .5,
-                    maxZoom: 3,
-                };
-
-                vm.icsLayout = {
-                    directed: 'true',
-                    //fit: 'true',
-                    name: 'breadthfirst',
-                };
-
-                vm.ics_cy_graph_ready = function (evt) {
-                    $log.info('graph ready to be interacted with: ', evt);
-                }
-
-                vm.icsElements = {};
-                var edge, i, j, node;
-                for (i = 0; i < vm.icsListings.length; i++) {
-                    node = {
-                        group: 'nodes',
-                        data: {
-                            id: vm.icsListings[i].id,
-                            chplId: vm.icsListings[i].chplId,
-                            label: vm.icsListings[i].chplId,
-                        },
-                    };
-                    if (node.data.id === 3) { // fix this later
-                        node.data.active = true;
-                        //node.data.label = node.data.chplId;
-                    }
-                    vm.icsElements[node.data.id] = node;
-                    for (j = 0; j < vm.icsListings[i].parents.length; j++) {
-                        edge = {
-                            group: 'edges',
-                            data: {
-                                source: vm.icsListings[i].parents[j].id,
-                                target: node.data.id,
-                                id: vm.icsListings[i].parents[j].id + '-' + node.data.id,
-                            },
-                        };
-                        vm.icsElements[edge.data.id] = edge;
-                    }
-                }
-
-                vm.icsStyle = [
-                    {
-                        selector: 'node',
-                        style: {
-                            width: 'label' ,
-                            height: 'label',
-                            shape: 'roundrectangle',
-                            label: 'data(label)',
-                            color: 'white',
-                            'font-size': '12pt',
-                            'min-zoomed-font-size': '8pt',
-                            'text-halign': 'center',
-                            'text-valign': 'center',
-                            'border-width': 0,
-                            'background-color': 'blue',
-                            'padding-left': '10px',
-                            'padding-top': '15px',
-                            'padding-right': '10px',
-                            'padding-bottom': '15px',
-                        },
-                    },
-                    {
-                        selector: 'node[?active]',
-                        style: {
-                            'background-color': 'red',
-                        },
-                    },
-                    {
-                        selector: 'edge',
-                        style: {
-                            width: 3,
-                            'line-color': '#ccc',
-                            'target-arrow-color': '#ccc',
-                            'target-arrow-shape': 'triangle',
-                        },
-                    },
-                ];
-                $scope.$on('cy:node:click', function (ng, cy) {
-                    var node = cy.cyTarget;
-                    $log.info('click', cy, node.data());
-                });
-/*                $scope.$on('cy:node:mouseover', function (ng, cy) {/*
-                    var node = cy.cyTarget;
-                    $log.info('over', node.data(), vm.icsElements[node.id()]);
-                    vm.icsElements[node.id()].data.label = node.data('chplId');
-                    $scope.$apply();
-                });
-                $scope.$on('cy:node:mouseout', function (ng, cy) {
-                    var node = cy.cyTarget;
-                    $log.info('out', node.data());
-//                    if (!node.data().active) {
-//                        vm.icsElements[node.data().id].data.label = undefined;
-//                        $scope.$apply();
-//                    }
-                });
-                */
-                cytoData.getGraph('ics-cytoscape').then(function (graph) {
-                    angular.forEach(vm.icsElements, function (ele) {
-                        if (ele.data.chplId) {
-//                            ele.data.label = ele.data.chplId;
-                        }
-                    });
-                    vm.graphPng = graph.png();
-                    vm.icsImageGenerated = true;
-                });
             }
 
             function prepCqms () {
@@ -403,6 +246,79 @@
                 }
 
                 vm.panelShown = vm.panelShown === panel ? '' : panel;
+            }
+
+            function viewIcsFamily () {
+                commonService.getIcsFamily().then(function (family) {
+                    vm.uibModalInstance = $uibModal.open({
+                        templateUrl: 'app/components/listing_details/ics_family/icsFamilyModal.html',
+                        controller: 'IcsFamilyController',
+                        controllerAs: 'vm',
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'lg',
+                        resolve: {
+                            family: function () { return family; },
+                            listing: function () { return vm.product; },
+                        },
+                    });
+                }, function () { //debugging code
+                    var family = [
+                        {
+                            id: 1,
+                            chplId: '15.07.07.1447.BE01.01.0.1.161014',
+                            parents: [],
+                            children: [
+                                {id: 2, chplId: '15.07.07.1447.BE01.02.1.1.161014'},
+                                {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
+                            ],
+                        },
+                        {
+                            id: 2,
+                            chplId: '15.07.07.1447.BE01.02.1.1.161014',
+                            parents: [
+                                {id: 1, chplId: '15.07.07.1447.BE01.01.0.1.161014'},
+                            ],
+                            children: [
+                                {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
+                            ],
+                        },
+                        {
+                            id: 3,
+                            chplId: '15.07.07.1447.BE01.03.2.1.161014',
+                            parents: [
+                                {id: 1, chplId: '15.07.07.1447.BE01.01.0.1.161014'},
+                                {id: 2, chplId: '15.07.07.1447.BE01.02.1.1.161014'},
+                            ],
+                            children: [
+                                {id: 4, chplId: '15.07.07.1447.BE01.04.3.1.161014'},
+                            ],
+                        },
+                        {
+                            id: 4,
+                            chplId: '15.07.07.1447.BE01.04.3.1.161014',
+                            parents: [
+                                {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
+                            ],
+                            children: [],
+                        },
+                    ];
+                    vm.product.id = 3;
+                    vm.uibModalInstance = $uibModal.open({
+                        templateUrl: 'app/components/listing_details/ics_family/icsFamilyModal.html',
+                        controller: 'IcsFamilyController',
+                        controllerAs: 'vm',
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'lg',
+                        resolve: {
+                            family: function () { return family; },
+                            listing: function () { return vm.product; },
+                        },
+                    });
+                });
             }
 
             ////////////////////////////////////////////////////////////////////

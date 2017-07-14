@@ -1,0 +1,39 @@
+<div role="modal" aria-labeled-by="modalLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close modal"
+            ng-click="vm.close()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="modalLabel">ICS Family Tree</h4>
+  </div>
+  <div class="modal-body">
+    <figure>
+      <cytoscape id="ics-cytoscape"
+                 graph-options="vm.icsOptions" graph-elements="vm.icsElements" graph-layout="vm.icsLayout" graph-style="vm.icsStyle" graph-ready="vm.icsCyGraphReady">
+      </cytoscape>
+      <figcaption class="sr-only">
+    	<h6>Overview</h6>
+    	<p>The image shows the ICS relationship between related Listings</p>
+    	<h6>Values</h6>
+    	<table class="table table-condensed">
+          <thead>
+            <tr>
+              <th scope="col">Listing ID</th>
+              <th scope="col">Parent(s)</th>
+              <th scope="col">Child(ren)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="listing in vm.icsFamily | orderBy:'chplId'">
+              <td>{{ listing.chplId }}</td>
+              <td><ul><li ng-repeat="parent in listing.parents | orderBy:'chplId'">{{ parent.chplId }}</li></ul></td>
+              <td><ul><li ng-repeat="child in listing.children | orderBy:'chplId'">{{ child.chplId }}</li></ul></td>
+            </tr>
+          </tbody>
+    	</table>
+      </figcaption>
+    </figure>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-ai-success pull-right" ng-click="vm.compare()">Compare all Listings</button>
+    <button class="btn btn-default pull-left" ng-click="vm.close()">Close</button>
+  </div>
+</div>
