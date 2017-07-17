@@ -30,6 +30,7 @@
         vm.editProduct = editProduct;
         vm.editVersion = editVersion;
         vm.getNumberOfListingsToReject = getNumberOfListingsToReject;
+        vm.getNumberOfSurveillanceToReject = getNumberOfSurveillanceToReject;
         vm.inspectCp = inspectCp;
         vm.inspectSurveillance = inspectSurveillance;
         vm.isDeveloperEditable = isDeveloperEditable;
@@ -38,6 +39,7 @@
         vm.loadCp = loadCp;
         vm.loadSurveillance = loadSurveillance;
         vm.massRejectPendingListings = massRejectPendingListings;
+        vm.massRejectPendingSurveillance = massRejectPendingSurveillance;
         vm.mergeDevelopers = mergeDevelopers;
         vm.mergeProducts = mergeProducts;
         vm.mergeVersions = mergeVersions;
@@ -241,30 +243,41 @@
             angular.forEach(vm.massReject, function (value, key) {
                 if (value) {
                     idsToReject.push(parseInt(key));
+                    clearPendingListing(parseInt(key));
+                    delete(vm.massReject[key]);
                 }
             });
             commonService.massRejectPendingListings(idsToReject)
-                .then(function () {
-                    angular.forEach(vm.massReject, function (value, key) {
-                        if (value) {
-                            clearPendingListing(parseInt(key));
-                            delete(vm.massReject[key]);
-                        }
-                    });
-                }, function (error) {
-                    angular.forEach(vm.massReject, function (value, key) {
-                        if (value) {
-                            clearPendingListing(parseInt(key));
-                            delete(vm.massReject[key]);
-                        }
-                    });
-                    if (error.data.errors && error.data.errors.length > 0) {
-                        vm.uploadingListingsMessages = error.data.errors.map(function (error) {
-                            var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
-                            return ret;
-                        });
-                    }
-                });
+                .then(function () {},
+                      function (error) {
+                          if (error.data.errors && error.data.errors.length > 0) {
+                              vm.uploadingListingsMessages = error.data.errors.map(function (error) {
+                                  var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                                  return ret;
+                              });
+                          }
+                      });
+        }
+
+        function massRejectPendingSurveillance () {
+            var idsToReject = [];
+            angular.forEach(vm.massRejectSurveillance, function (value, key) {
+                if (value) {
+                    idsToReject.push(parseInt(key));
+                    clearPendingSurveillance(parseInt(key));
+                    delete(vm.massRejectSurveillance[key]);
+                }
+            });
+            commonService.massRejectPendingSurveillance(idsToReject)
+                .then(function () {},
+                      function (error) {
+                          if (error.data.errors && error.data.errors.length > 0) {
+                              vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
+                                  var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                                  return ret;
+                              });
+                          }
+                      });
         }
 
         function mergeDevelopers () {
@@ -427,6 +440,16 @@
             return ret;
         }
 
+        function getNumberOfSurveillanceToReject () {
+            var ret = 0;
+            angular.forEach(vm.massRejectSurveillance, function (value) {
+                if (value) {
+                    ret += 1;
+                }
+            });
+            return ret;
+        }
+
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -535,7 +558,7 @@
 
         function inspectSurveillance (surv) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/surveillanceInspect.html',
+                templateUrl: 'app/admin/components/surveillance/inspect.html',
                 controller: 'SurveillanceInspectController',
                 controllerAs: 'vm',
                 animation: false,
@@ -546,12 +569,20 @@
                 },
                 size: 'lg',
             });
-            vm.modalInstance.result.then(function () {
-                vm.refreshPending();
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    vm.refreshPending();
+            vm.modalInstance.result.then(function (result) {
+                if (result.status === 'confirmed' || result.status === 'rejected' || result.status === 'resolved') {
+                    for (var i = 0; i < vm.uploadingSurveillances.length; i++) {
+                        if (surv.id === vm.uploadingSurveillances[i].id) {
+                            vm.uploadingSurveillances.splice(i,1)
+                            vm.pendingSurveillances = vm.uploadingSurveillances.length;
+                        }
+                    }
+                    if (result.status === 'resolved') {
+                        vm.uploadingSurveillanceMessages = ['Surveillance with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.firstName + ' ' + result.contact.lastName + '"'];
+                    }
                 }
+            }, function (result) {
+                $log.info('inspection: ' + result);
             });
         }
 
@@ -583,7 +614,11 @@
 
         function rejectSurveillance (survId) {
             commonService.rejectPendingSurveillance(survId)
-                .then(vm.refreshPending);
+                .then(function () {
+                    clearPendingSurveillance(survId);
+                }, function (error) {
+                    vm.uploadingSurveillanceMessages = error.data.errorMessages;
+                });
         }
 
         function searchForSurveillance () {
@@ -747,6 +782,15 @@
                 if (cpId === vm.uploadingCps[i].id) {
                     vm.uploadingCps.splice(i,1)
                     vm.pendingProducts = vm.uploadingCps.length;
+                }
+            }
+        }
+
+        function clearPendingSurveillance (survId) {
+            for (var i = 0; i < vm.uploadingSurveillances.length; i++) {
+                if (survId === vm.uploadingSurveillances[i].id) {
+                    vm.uploadingSurveillances.splice(i,1)
+                    vm.pendingSurveillances = vm.uploadingSurveillances.length;
                 }
             }
         }

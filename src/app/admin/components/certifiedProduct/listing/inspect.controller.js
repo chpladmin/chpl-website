@@ -180,7 +180,15 @@
                 .then(function (result) {
                     $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
                 }, function (error) {
-                    vm.errorMessages = error.data.errorMessages;
+                    if (error.data.contact) {
+                        $uibModalInstance.close({
+                            contact: error.data.contact,
+                            objectId: error.data.objectId,
+                            status: 'resolved',
+                        });
+                    } else {
+                        vm.errorMessages = error.data.errorMessages;
+                    }
                 });
         }
 
@@ -237,6 +245,7 @@
             case 'prd':
                 vm.stage = 'ver';
                 vm.loadVer();
+                loadFamily();
                 break;
             case 'ver':
                 vm.stage = 'cp';
@@ -290,6 +299,17 @@
                 return 'N/A';
             } else {
                 return field ? 'True' : 'False';
+            }
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function loadFamily () {
+            if (vm.product && vm.product.productId) {
+                commonService.getFamilyOfListing(vm.product.productId)
+                    .then(function (family) {
+                        vm.resources.relatedListings = family.listings;
+                    });
             }
         }
     }

@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.subscriptions.recipient.controller', function () {
-        var vm, scope, $log, $q, commonService, Mock, mock;
+        var $log, $q, Mock, commonService, mock, scope, vm;
 
         mock = {};
         mock.acbs = [

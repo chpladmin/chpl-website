@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/certificationCriteria/certificationCriteria.html',
+            templateUrl: 'app/components/listingDetails/criteria.html',
             bindToController: {
                 cert: '=',
                 hasIcs: '=',
@@ -52,7 +52,7 @@
 
         function editCert () {
             vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/components/certificationCriteria/certificationCriteriaModal.html',
+                templateUrl: 'app/components/listingDetails/criteriaModal.html',
                 controller: 'EditCertificationCriteriaController',
                 controllerAs: 'vm',
                 animation: false,

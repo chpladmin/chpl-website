@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    describe('admin.EditAdditionalSoftwareController.controller', function () {
-        var vm, scope, $log, Mock;
+    describe('admin.EditRequirementController.controller', function () {
+        var $log, Mock, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin');
@@ -12,9 +12,15 @@
                 Mock = _Mock_;
 
                 scope = $rootScope.$new();
-                vm = $controller('EditAdditionalSoftwareController', {
-                    software: 'software',
+                vm = $controller('EditRequirementController', {
+                    $scope: scope,
                     $uibModalInstance: Mock.modalInstance,
+                    disableValidation: false,
+                    randomized: false,
+                    requirement: {},
+                    surveillanceId: 1,
+                    surveillanceTypes: {},
+                    workType: 'create',
                 });
                 scope.$digest();
             });
@@ -22,7 +28,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.debug('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -35,12 +43,6 @@
                 expect(vm.cancel).toBeDefined();
                 vm.cancel();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
-            });
-
-            it('should have a way to close the modal', function () {
-                expect(vm.save).toBeDefined();
-                vm.save();
-                expect(Mock.modalInstance.close).toHaveBeenCalled();
             });
         });
     });

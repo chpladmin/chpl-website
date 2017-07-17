@@ -3,7 +3,7 @@
 
     describe('chpl.registration.controller', function () {
 
-        var authService, commonService, scope, vm, $log, $location, $q;
+        var $location, $log, $q, authService, commonService, scope, vm;
 
         var mock = {};
         mock.authorizeUser = {

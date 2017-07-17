@@ -3,17 +3,24 @@
 
     describe('chpl.cms_lookup', function () {
 
-        var $log, scope, vm, $localStorage, $q, commonService, mock;
+        var $localStorage, $log, $q, commonService, mock, scope, utilService, vm;
 
         mock = {
             localStorage: {
                 lookupCertIds: 'A014E01O3PSTEAV A014E01O3PSTEAV A014E01O3PSTEA7 NOTANID',
-                lookupProducts: [{id:296,name:'2013 Systemedx Clinical Navigator',version:'2013.12',chplProductNumber:'CHP-022218',year:'2014',practiceType:'Ambulatory',acb:'InfoGard',vendor:'Systemedx Inc',classification:'Complete EHR',additionalSoftware:'Microsoft+SQL+Server+for+all+criteria',certificationId:'A014E01O3PSTEAV',certificationIdEdition:'2014'}],
-                lookupProductsCertIdNotFound: ["A014E01O3PSTEA7"],
-                lookupProductsFormatInvalidIds: ["NOTANID"],
+                lookupProducts: [{id: 296, name: '2013 Systemedx Clinical Navigator', version: '2013.12', chplProductNumber: 'CHP-022218', year: '2014', practiceType: 'Ambulatory', acb: 'InfoGard', vendor: 'Systemedx Inc', classification: 'Complete EHR', additionalSoftware: 'Microsoft+SQL+Server+for+all+criteria', certificationId: 'A014E01O3PSTEAV', certificationIdEdition: '2014'}],
+                lookupProductsCertIdNotFound: ['A014E01O3PSTEA7'],
+                lookupProductsFormatInvalidIds: ['NOTANID'],
             },
-            goodResponse: {"products":[{"id":296,"name":"2013 Systemedx Clinical Navigator","version":"2013.12","chplProductNumber":"CHP-022218","year":"2014","practiceType":"Ambulatory","acb":"InfoGard","vendor":"Systemedx Inc","classification":"Complete EHR","additionalSoftware":"Microsoft+SQL+Server+for+all+criteria"}],"ehrCertificationId":"A014E01O3PSTEAV","year":"2014","criteria":null,"cqms":null},
-            badResponse: {"products":[],"ehrCertificationId":null,"year":null,"criteria":null,"cqms":null},
+            goodResponse: {'products': [{'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'}],'ehrCertificationId': 'A014E01O3PSTEAV','year': '2014','criteria': null,'cqms': null},
+            badResponse: {'products': [],'ehrCertificationId': null,'year': null,'criteria': null,'cqms': null},
+            csvData: {
+                name: 'CMS_ID.A014E01O3PSTEAV.csv',
+                values: [
+                    ['CMS EHR Certification ID', 'CMS EHR Certification ID Edition', 'Product Name', 'Version', 'Developer', 'CHPL Product Number', 'Product Certification Edition', 'Classification Type', 'Practice Type'],
+                    ['A014E01O3PSTEAV', '2014', '2013 Systemedx Clinical Navigator', '2013.12', 'Systemedx Inc', 'CHP-022218', '2014', 'Complete EHR', 'Ambulatory'],
+                ],
+            },
         };
 
         beforeEach(function () {
@@ -22,9 +29,13 @@
                     $delegate.lookupCertificationId = jasmine.createSpy('lookupCertificationId');
                     return $delegate;
                 });
+                $provide.decorator('utilService', function ($delegate) {
+                    $delegate.makeCsv = jasmine.createSpy('makeCsv');
+                    return $delegate;
+                });
             });
 
-            inject(function ($controller, _$localStorage_, _$log_, _$q_, $rootScope, _commonService_) {
+            inject(function ($controller, _$localStorage_, _$log_, _$q_, $rootScope, _commonService_, _utilService_) {
                 $log = _$log_;
                 $localStorage = _$localStorage_;
                 $localStorage.lookupCertIds = null;
@@ -32,6 +43,8 @@
                 $q = _$q_;
                 commonService = _commonService_;
                 commonService.lookupCertificationId.and.returnValue($q.when(mock.goodResponse));
+                utilService = _utilService_;
+                utilService.makeCsv.and.returnValue();
 
                 scope = $rootScope.$new();
                 vm = $controller('CmsLookupController', {
@@ -127,6 +140,35 @@
                     expect($localStorage.lookupProductsCertIdNotFound).toBeUndefined();
                     expect(vm.lookupProducts).toBe(null);
                 });
+            });
+        });
+
+        describe('getting a csv', function () {
+            it('should build the csv object', function () {
+                vm.certIds = 'A014E01O3PSTEAV';
+                vm.lookupCertIds();
+                scope.$digest();
+                expect(vm.csvData).toEqual(mock.csvData);
+            });
+
+            it('should call the commonService to convert JSON -> CSV', function () {
+                vm.certIds = 'A014E01O3PSTEAV';
+                vm.lookupCertIds();
+                scope.$digest();
+                vm.getCsv();
+                expect(utilService.makeCsv).toHaveBeenCalledWith(mock.csvData);
+            });
+
+            it('should only have the CMS ID once in the filename', function () {
+                var multIdResponse = {'products': [
+                    {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
+                    {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
+                ],'ehrCertificationId': 'A014E01O3PSTEAV','year': '2014','criteria': null,'cqms': null};
+                commonService.lookupCertificationId.and.returnValue($q.when(multIdResponse));
+                vm.certIds = 'A014E01O3PSTEAV';
+                vm.lookupCertIds();
+                scope.$digest();
+                expect(vm.csvData.name).toBe('CMS_ID.A014E01O3PSTEAV.csv');
             });
         });
     });

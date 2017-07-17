@@ -12,10 +12,12 @@
         vm.attachModel = attachModel;
         vm.cancel = cancel;
         vm.directCertsDirective = directCertsDirective;
+        vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
         vm.extendSelect = extendSelect;
         vm.findModel = findModel;
         vm.prep = prep;
+        vm.requiredIcsCode = requiredIcsCode;
         vm.registerCerts = registerCerts;
         vm.save = save;
         vm.willCauseSuspension = willCauseSuspension;
@@ -32,17 +34,20 @@
             vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
             vm.bodies = resources.bodies;
+            vm.accessibilityStandards = resources.accessibilityStandards;
             vm.classifications = resources.classifications;
             vm.practices = resources.practices;
             vm.qmsStandards = resources.qmsStandards;
-            vm.accessibilityStandards = resources.accessibilityStandards;
-            vm.targetedUsers = resources.targetedUsers;
             vm.statuses = resources.statuses;
+            vm.targetedUsers = resources.targetedUsers;
             vm.testingLabs = resources.testingLabs;
             vm.resources = resources;
             vm.workType = workType;
             vm.showFormErrors = false;
             vm.message = '';
+            if (angular.isUndefined(vm.cp.ics.parents)) {
+                vm.cp.ics.parents = [];
+            }
             if (vm.cp.chplProductNumber.length > 12) {
                 var idFields = vm.cp.chplProductNumber.split('.');
                 vm.idFields = {
@@ -56,6 +61,7 @@
 
             vm.handlers = [];
             vm.attachModel();
+            loadFamily();
         }
 
         function addNewValue (array, object) {
@@ -87,6 +93,15 @@
             });
         }
 
+        function disabledParent (listing) {
+            var ret = false;
+            ret = ret || vm.cp.chplProductNumber === listing.chplProductNumber;
+            for (var i = 0; i < vm.cp.ics.parents.length; i++) {
+                ret = ret || vm.cp.ics.parents[i].chplProductNumber === listing.chplProductNumber;
+            }
+            return ret;
+        }
+
         function disabledStatus (name) {
             return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
         }
@@ -107,6 +122,14 @@
         function prep () {
             vm.directCertsDirective();
             $timeout(vm.save, 1000);
+        }
+
+        function requiredIcsCode () {
+            var code = -1;
+            for (var i = 0; i < vm.cp.ics.parents.length; i++) {
+                code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6]) + 1);
+            }
+            return code + '';
         }
 
         function registerCerts (handler) {
@@ -174,7 +197,17 @@
             case ('Terminated by ONC'):
             case ('Withdrawn by Developer Under Surveillance/Review'):
                 return true;
+            default: return false;
             }
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function loadFamily () {
+            commonService.getRelatedListings(vm.cp.product.productId)
+                .then(function (family) {
+                    vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
+                });
         }
     }
 })();

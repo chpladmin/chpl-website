@@ -2,7 +2,7 @@
     'use strict';
 
     describe('admin.EditSurveillanceController.controller', function () {
-        var vm, scope, $log, $q, commonService, utilService, mock, Mock;
+        var $log, $q, Mock, commonService, mock, scope, utilService, vm;
 
         mock = {};
         mock.modalInstance = {
@@ -71,7 +71,7 @@
             });
 
             it('should require an end date when all NCs are closed and there\'s no surveillance end date', function () {
-                vm.surveillance.requirements[0].nonconformities[0].status = {id:2, name: 'Closed'};
+                vm.surveillance.requirements[0].nonconformities[0].status = {id: 2, name: 'Closed'};
                 expect(vm.missingEndDate()).toBe(true);
             });
 
@@ -81,7 +81,7 @@
             });
 
             it('should not require an end date when all NCs are closed and the surveillance has an end date', function () {
-                vm.surveillance.requirements[0].nonconformities[0].status = {id:2, name: 'Closed'};
+                vm.surveillance.requirements[0].nonconformities[0].status = {id: 2, name: 'Closed'};
                 vm.surveillance.endDateObject = '1472702800000';
                 expect(vm.missingEndDate()).toBe(false);
             });

@@ -21,7 +21,8 @@
             response: function (response) {
                 // Pop up a notification if the CHPL ID changed
                 if (response.headers && response.headers()['chpl-id-changed']) {
-                    var message, title, id = response.headers()['chpl-id-changed'];
+                    var message, title;
+                    var id = response.headers()['chpl-id-changed'];
                     if (id.indexOf(',') > -1) {
                         title = 'CHPL IDs Changed';
                         message = 'Your activity caused CHPL Product Numbers to change';

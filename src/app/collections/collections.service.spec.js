@@ -75,5 +75,34 @@
                 expect(results[0].mainSearch).toEqual('DrScribe, Inc.|365EHR|4.0.14|CHP-026059');
             });
         });
+
+        describe('transparencyAttestations translation', function () {
+            var results;
+            beforeEach(function () {
+                results = service.translate('transparencyAttestations', Mock.collections.developers);
+            });
+
+            it('should filter on transparencyAttestations', function () {
+                expect(results.length).toBe(4);
+            });
+
+            it('should generate a mainSearch', function () {
+                expect(results[0].mainSearch).toEqual('ACL Laboratories');
+            });
+
+            it('should join Attestations', function () {
+                expect(results[0].acbAttestations).toEqual('<span class="text-muted">Not Applicable (ICSA Labs)</span>');
+                expect(results[1].acbAttestations).toEqual('<span class="text-success">Supports (Drummond Group)</span>');
+                expect(results[2].acbAttestations).toEqual('<span class="text-success">Supports (ICSA Labs)</span><br /><span class="text-success">Supports (InfoGard)</span>');
+                expect(results[3].acbAttestations).toEqual('<span class="text-success">Supports (InfoGard)</span>');
+            });
+
+            it('should split Urls', function () {
+                expect(results[0].transparencyAttestationUrls).toEqual([]);
+                expect(results[1].transparencyAttestationUrls).toEqual(['http://fiehr.com/Support/Disclosures']);
+                expect(results[2].transparencyAttestationUrls).toEqual(['http://www.asp.md/certified.htm']);
+                expect(results[3].transparencyAttestationUrls).toEqual(['http://insynchcs.com/meaningful-use-certification.html', 'http://www.insynchcs.com/meaningful-use-certification']);
+            });
+        });
     });
 })();

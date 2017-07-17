@@ -3,7 +3,7 @@
 
     describe('chpl.navigation', function () {
 
-        var httpProvider, authInterceptor, mockAuthService, $log;
+        var $log, authInterceptor, httpProvider, mockAuthService;
         var username = 'user name';
         var token = 'example token';
         var trueApiUrl = '/rest';
@@ -71,21 +71,21 @@
             });
 
             it('should set the token if one is found, from the correct URL', function () {
-                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}", headers: function () {return [];}};
+                var headers = {config: {url: trueApiUrl}, data: '{"token":"this is my token"}', headers: function () {return [];}};
                 spyOn(mockAuthService, 'saveToken');
                 authInterceptor.response(headers);
                 expect(mockAuthService.saveToken).toHaveBeenCalled();
             });
 
             it('should JSON parse a "string" data object', function () {
-                var headers = {config: {url: trueApiUrl}, data: "{\"token\":\"this is my token\"}"};
+                var headers = {config: {url: trueApiUrl}, data: '{"token":"this is my token"}'};
                 var response = authInterceptor.response(headers);
                 expect(response).toEqual({config: {url: trueApiUrl}, data: {token: 'this is my token'}});
             });
         });
 
         describe('controller', function () {
-            var scope, $location, ctrl;
+            var $location, ctrl, scope;
 
             beforeEach(inject(function ($controller, _$location_, $rootScope) {
                 $location = _$location_;

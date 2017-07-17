@@ -168,6 +168,11 @@
       <div class="col-sm-12">
         <h3>View Surveillance Activity in the process of upload</h3>
         <p ng-if="vm.uploadingSurveillances.length === 0">No activities currently in queue</p>
+        <div ng-if="vm.uploadingSurveillanceMessages">
+          <ul>
+            <li ng-repeat="message in vm.uploadingSurveillanceMessages">{{ message }}</li>
+          </ul>
+        </div>
         <table class="table table-striped" ng-if="vm.uploadingSurveillances.length > 0">
           <thead>
             <tr>
@@ -178,9 +183,23 @@
               <th scope="col">Number of Requirements Surveilled</th>
               <th scope="col">Record Type</th>
               <th scope="col">Status</th>
-              <th class="text-center">Action</th>
+              <th scope="cols" colspan="2" class="text-center">Action</th>
             </tr>
           </thead>
+          <tfoot>
+            <tr>
+              <th colspan="8">&nbsp;</th>
+              <th>
+                <button class="btn btn-danger btn-block"
+                        ng-disabled="vm.getNumberOfSurveillanceToReject() < 1"
+                        confirm="Are you sure you wish to remove {{ vm.getNumberOfSurveillanceToReject() }} surveillance{{ vm.getNumberOfSurveillanceToReject() > 1 ? 's' : '' }} from the queue?"
+                        confirm-ok="Yes"
+                        confirm-cancel="No"
+                        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+                        ng-click="vm.massRejectPendingSurveillance()"><i class="fa fa-trash-o"></i> Reject</button>
+              </th>
+            </tr>
+          </tfoot>
           <tbody>
             <tr ng-repeat="surv in vm.uploadingSurveillances | orderBy: 'certifiedProduct.chplProductNumber' track by surv.id">
               <td><a href="#/product/{{ surv.certifiedProduct.id}}">{{ surv.certifiedProduct.chplProductNumber }}</a></td>
@@ -195,6 +214,9 @@
               <td><span ng-bind-html="vm.parseSurveillanceUploadError(surv)"></span></td>
               <td class="text-center">
                 <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)"><i class="fa fa-eye"></i> Inspect</button>
+              </td>
+              <td class="text-center">
+                <input type="checkbox" class="form-control" ng-model="vm.massRejectSurveillance[surv.id]">
               </td>
             </tr>
           </tbody>
@@ -576,7 +598,8 @@
               <div class="panel-heading">
                 <span>Select a Certified Product</span>
                 <span class="pull-right">
-                  <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Product Listing</a> |
+                  <a href="#/admin/reports/{{ vm.activeCP.id}}"><i class="fa fa-eye"></i> View Listing History</a> |
+                  <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
                   <span ng-if="vm.isProductEditable(vm.activeCP)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
                 </span>
@@ -589,13 +612,17 @@
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
-                  <strong>Product wide Additional Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
+                  <strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
                   <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
                   <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
-                  <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics) }} <br />
+                  <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
+                  <ul>
+                    <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#/product/{{ parent.id }}">{{ parent.chplProductNumber }}</a></li>
+                    <li ng-repeat="child in vm.activeCP.ics.children"><strong>ICS Source for:</strong> <a href="#/product/{{ child.id }}">{{ child.chplProductNumber }}</a></li>
+                  </ul>
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
                   <ul>
                     <li ng-repeat="qms in vm.activeCP.qmsStandards"><strong>Standard:</strong> {{ qms.qmsStandardName }} <span ng-if="qms.qmsModification"><strong><br />Modification:</strong> {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria"> <strong><br />Applicable Criteria:</strong> {{ qms.applicableCriteria }}</span></li>
@@ -621,13 +648,8 @@
                 </span>
                 <br />
                 <ai-certs ng-if="vm.activeCP !== ''"
-                          certs="vm.activeCP.certificationResults"
-                          cqms="vm.activeCP.cqmResults"
-                          count-certs="vm.activeCP.countCerts"
-                          count-cqms="vm.activeCP.countCqms"
                           default-all="true"
                           edit-mode="false"
-                          report-file-location="{{ vm.activeCP.reportFileLocation }}"
                           product="vm.activeCP">
                 </ai-certs>
                 <p ng-if="vm.cpMessage !== undefined" class="bg-danger">{{ vm.cpMessage }}</p>

@@ -275,12 +275,12 @@
                 <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
                 <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
                 <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
-                <span ng-if="vm.cp.productAdditionalSoftware"><strong>Additional Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br /></span>
+                <span ng-if="vm.cp.productAdditionalSoftware"><strong>Relied Upon Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br /></span>
                 <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
                 <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
                 <strong>Other ACB:</strong> {{ vm.cp.otherAcb ? vm.cp.otherAcb : 'N/A' }} <br />
                 <strong>Transparency URL:</strong> {{ vm.cp.transparencyAttestationUrl ? vm.cp.transparencyAttestationUrl : 'None' }} <br />
-                <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics) }} <br />
+                <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics.inherits) }} <br />
                 <strong>QMS:</strong> {{ vm.cp.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
                 <ul>
                   <li ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }}<span ng-if="qms.qmsModification">, {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria">, {{ qms.applicableCriteria }}</span></li>
@@ -301,14 +301,9 @@
               </span>
               <br />
               <ai-certs ng-if="vm.cp !== ''"
-                        certs="vm.cp.certificationResults"
-                        cqms="vm.cp.cqmResults"
-                        count-certs="vm.cp.countCerts"
-                        count-cqms="vm.cp.countCqms"
                         default-all="true"
                         edit-mode="false"
                         is-confirming="true"
-                        report-file-location="{{ vm.cp.reportFileLocation }}"
                         product="vm.cp">
               </ai-certs>
               <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()">Edit Certified Product</button></p>

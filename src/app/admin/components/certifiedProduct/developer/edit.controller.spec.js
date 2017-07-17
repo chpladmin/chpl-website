@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.EditDeveloperController.controller', function () {
-        var vm, scope, $log, $q, authService, commonService, mock, Mock;
+        var $log, $q, Mock, authService, commonService, mock, scope, vm;
 
         mock = {};
         mock.acbs = ['Drummond','ICSA','Infogard'];

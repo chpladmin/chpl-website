@@ -43,13 +43,19 @@
                 templateUrl: 'app/collections/products/products.html',
                 title: 'Decertified Products',
             })
+            .when('/collections/transparencyAttestations', {
+                controller: 'TransparencyAttestationsController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/transparencyAttestations/transparencyAttestations.html',
+                title: 'Transparency Attestations',
+            })
             .when('/compare/:compareIds', {
                 controller: 'CompareController',
                 controllerAs: 'vm',
                 templateUrl: 'app/compare/compare.html',
                 title: 'CHPL Product Comparison',
             })
-            .when('/product/:id', {
+            .when('/product/:id/:initialPanel?', {
                 templateUrl: 'app/product/product.html',
                 controller: 'ProductController',
                 controllerAs: 'vm',

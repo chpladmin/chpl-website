@@ -79,6 +79,7 @@
         function clear () {
             $rootScope.$broadcast('ClearResults', {});
             $localStorage.clearResults = true;
+            $location.url('/search');
         }
 
         function getUsername () {

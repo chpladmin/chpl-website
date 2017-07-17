@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.collection.directive', function () {
-        var el, scope, $log, $q, commonService, vm;
+        var $log, $q, commonService, el, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.templates', 'chpl.collections', function ($provide) {

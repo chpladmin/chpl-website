@@ -3,7 +3,7 @@
 
     describe('chpl.search.controller', function () {
 
-        var commonService, scope, vm, $interval, $log, $location, $q, Mock, $uibModal, CACHE_REFRESH_TIMEOUT;
+        var $interval, $location, $log, $q, $uibModal, CACHE_REFRESH_TIMEOUT, Mock, commonService, scope, vm;
 
         var mock = {};
         mock.products = [

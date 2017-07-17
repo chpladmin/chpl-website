@@ -5,7 +5,7 @@
     <li ng-repeat="item in widget.searchResult.products | orderBy:'name'">
       <button class="btn btn-ai-grey btn-sm btn-block" ng-click="removeProduct(item.productId)">
         <i class="fa fa-close pull-right"></i>
-        {{ item.name }} <span class="sr-only">Remove {{ item.name }} from EHR Certification ID</span>&nbsp;&nbsp;&nbsp;
+        <ai-ellipsis text="{{ item.name }}" max-length="80"></ai-ellipsis> <span class="sr-only">Remove {{ item.name }} from EHR Certification ID</span>&nbsp;&nbsp;&nbsp;
       </button>
     </li>
   </ul>

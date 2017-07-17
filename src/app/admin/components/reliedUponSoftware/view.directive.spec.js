@@ -2,11 +2,11 @@
     'use strict';
 
     describe('admin.additionalSoftware', function () {
-        var vm, el, $log, mock, Mock, $uibModal, actualOptions;
+        var $log, $uibModal, Mock, actualOptions, el, mock, vm;
 
         mock = {};
         mock.fakeModalOptions = {
-            templateUrl: 'app/admin/components/additionalSoftware/edit.html',
+            templateUrl: 'app/admin/components/reliedUponSoftware/edit.html',
             controller: 'EditAdditionalSoftwareController',
             controllerAs: 'vm',
             animation: false,
@@ -58,7 +58,7 @@
         });
 
         describe('adding new software', function () {
-            it('should create a modal instance when additional software is added', function () {
+            it('should create a modal instance when relied upon software is added', function () {
                 expect(vm.editModalInstance).toBeUndefined();
                 vm.addItem();
                 expect(vm.editModalInstance).toBeDefined();

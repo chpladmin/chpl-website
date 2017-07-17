@@ -61,6 +61,7 @@
             getProductsByDeveloper: getProductsByDeveloper,
             getProductsByVersion: getProductsByVersion,
             getQmsStandards: getQmsStandards,
+            getRelatedListings: getRelatedListings,
             getSearchOptions: getSearchOptions,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
@@ -87,6 +88,7 @@
             login: login,
             lookupCertificationId: lookupCertificationId,
             massRejectPendingListings: massRejectPendingListings,
+            massRejectPendingSurveillance: massRejectPendingSurveillance,
             modifyACB: modifyACB,
             modifyATL: modifyATL,
             modifyAnnouncement: modifyAnnouncement,
@@ -150,15 +152,18 @@
 
         function getCollection (type) {
             switch (type) {
-            case 'nonconformities':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
-            case 'decertifiedProducts':
-            case 'inactiveCertificates':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
             case 'apiDocumentation':
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,criteriaMet,apiDocumentation,transparencyAttestationUrl');
             case 'bannedDevelopers':
                 return simpleApiCall('/decertifications/developers');
+            case 'decertifiedProducts':
+            case 'inactiveCertificates':
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
+            case 'nonconformities':
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
+            case 'transparencyAttestations':
+                return simpleApiCall('/collections/developers/');
+                //no default
             }
         }
 
@@ -176,6 +181,10 @@
 
         function getAgeRanges () {
             return simpleApiCall('/data/age_ranges');
+        }
+
+        function getRelatedListings (productId) {
+            return simpleApiCall('/products/' + productId + '/listings');
         }
 
         function getTestStandards () {
@@ -598,6 +607,10 @@
 
         function rejectPendingSurveillance (survId) {
             return postApiCall('/surveillance/pending/' + survId + '/reject', {});
+        }
+
+        function massRejectPendingSurveillance (ids) {
+            return postApiCall('/surveillance/pending/reject', {ids: ids});
         }
 
         function lookupCertificationId (certId) {

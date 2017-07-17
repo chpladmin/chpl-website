@@ -5,7 +5,7 @@
 
         beforeEach(module('chpl.common'));
 
-        var util, $log, mock;
+        var $log, mock, util;
         mock = {
             newValue: 'fake',
             objects: [
@@ -190,6 +190,21 @@
                 var b = null;
                 ret.removed.push(mock.objects[0]);
                 expect(util.arrayCompare(a,b)).toEqual(ret);
+            });
+        });
+
+        describe('array to CSV', function () {
+            var data;
+
+            beforeEach(function () {
+                data = [
+                    ['header 1', 'header 2', 'header 3', 'header 4'],
+                    ['String with "quotes"', 'String with ,commas,', 'String with "both,omg"', 'String with\nnewline'],
+                ];
+            });
+
+            it('should convert arrays', function () {
+                expect(util.arrayToCsv(data)).toEqual('header 1,header 2,header 3,header 4\n"String with ""quotes""","String with ,commas,","String with ""both,omg""","String with\nnewline"');
             });
         });
     });

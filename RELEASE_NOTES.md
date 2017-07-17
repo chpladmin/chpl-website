@@ -1,5 +1,36 @@
 # Release Notes
 
+## Version 9.2.0
+_17 July 2017_
+
+### New features
+* Added "Transparency Attestations" for Developers Collection
+* Tweaked "CMS ID Lookup" download to have a filename
+* Pending Surveillance UX changed for better responsiveness
+* Return to "blue screen with buttons" on "Logo" click
+* Allow "Details" button on search results to open in new window
+
+---
+
+## Version 9.1.0
+_3 July 2017_
+
+### New features
+* ICS Family Tree work
+  * Allow admins to build family tree links on edit/upload of Listing
+  * Display simple family tree data on Listing details page
+  * Display activity of family tree changes "Other" Activity report
+* Allow scrolling on CMS ID & Compare widgets
+* Ellipsis long names on CMS ID & Compare widgets
+* Links to Listing details from CAP Collection open "Surveillance Activity" accordion
+* Added "Measures Successfully Tested" accordion element
+* Updated CA Collection table to multi-sort
+
+### Text changes
+* Change "Additional Software" to "Relied Upon Software"
+
+---
+
 ## Version 9.0.0
 _19 June 2017_
 

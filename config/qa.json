@@ -5,5 +5,7 @@
     'CACHE_REFRESH_TIMEOUT': 30,
     'DEVELOPER_MODE': true,
     'ENABLE_LOGGING': true,
-    'RELOAD_TIMEOUT': 3000
+    'RELOAD_TIMEOUT': 3000,
+    'SPLIT_PRIMARY': '☺',
+    'SPLIT_SECONDARY': '☹'
 }

@@ -33,7 +33,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function interpretActivity () {
-            var activity, prev, curr;
+            var activity, curr, prev;
             for (var i = 0; i < vm.activity.length; i++) {
                 activity = vm.activity[i];
                 activity.change = [];

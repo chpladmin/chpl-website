@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, commonService, utilService) {
+    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, commonService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -33,7 +33,6 @@
         vm.viewCertificationStatusLegend = viewCertificationStatusLegend;
         vm.viewPreviouslyCompared = viewPreviouslyCompared;
         vm.viewPreviouslyViewed = viewPreviouslyViewed;
-        vm.viewProduct = viewProduct;
 
         activate();
 
@@ -41,13 +40,8 @@
 
         function activate () {
             $scope.$on('ClearResults', function () {
-                delete $localStorage.clearResults;
                 vm.clear();
             });
-            if ($localStorage.clearResults) {
-                delete $localStorage.clearResults;
-                vm.clear();
-            }
 
             vm.allowAllHs = [];
             vm.boxes = {};
@@ -58,10 +52,14 @@
             vm.isPreLoading = true;
             vm.restoreStateHs = [];
             vm.showRetiredHs = [];
+            vm.SPLIT_PRIMARY = SPLIT_PRIMARY;
 
             manageStorage();
             populateSearchOptions();
             restoreResults();
+            if ($localStorage.clearResults) {
+                vm.clear();
+            }
             vm.loadResults();
             setTimestamp();
         }
@@ -104,6 +102,7 @@
         }
 
         function clear () {
+            delete $localStorage.clearResults;
             vm.triggerClearFilters();
             vm.activeSearch = false;
             if (vm.searchForm) {
@@ -333,7 +332,7 @@
             }
         }
 
-        function viewProduct (cp) {
+/*        function viewProduct (cp) {
             setTimestamp();
             if (vm.previouslyViewed.indexOf((cp.id + '')) === -1) {
                 vm.previouslyViewed.push((cp.id + ''));
@@ -343,12 +342,12 @@
                 $localStorage.previouslyViewed = vm.previouslyViewed;
             }
             $location.url('/product/' + cp.id);
-        }
+        }*/
 
         ////////////////////////////////////////////////////////////////////
 
         function incrementTable (results) {
-            var size = 500, delay = 100;
+            var delay = 100, size = 500;
             if (results.length > 0) {
                 vm.isPreLoading = false;
                 vm.allCps = vm.allCps.concat(results.splice(0,size));

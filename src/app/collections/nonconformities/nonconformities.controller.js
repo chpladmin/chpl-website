@@ -14,14 +14,14 @@
 
         function activate () {
             vm.columnSet = [
-                { predicate: 'edition', display: 'Edition' },
-                { predicate: 'developer', display: 'Developer' },
-                { predicate: 'product', display: 'Product' },
-                { predicate: 'version', display: 'Version' },
-                { predicate: 'chplProductNumber', display: 'CHPL ID', isLink: true },
-                { predicate: 'acb', display: 'ONC-ACB' },
-                { predicate: 'openNonconformityCount', display: '# Open NCs', sortDefault: 'reverse' },
-                { predicate: 'closedNonconformityCount', display: '# Closed NCs' },
+                { predicate: 'edition', display: 'Edition', sortType: 'multi', descendingFirst: true },
+                { predicate: 'developer', display: 'Developer', sortType: 'multi' },
+                { predicate: 'product', display: 'Product', sortType: 'multi' },
+                { predicate: 'version', display: 'Version', sortType: 'multi' },
+                { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'multi', isLink: true, initialPanel: 'surveillance' },
+                { predicate: 'acb', display: 'ONC-ACB', sortType: 'multi' },
+                { predicate: 'openNonconformityCount', display: '# Open NCs', sortType: 'multi', descendingFirst: true, sortDefault: ['-openNonconformityCount', '-edition', 'developer'] },
+                { predicate: 'closedNonconformityCount', display: '# Closed NCs', sortType: 'multi', descendingFirst: true },
             ];
             vm.filters = ['acb', 'edition'];
             vm.refineModel = {

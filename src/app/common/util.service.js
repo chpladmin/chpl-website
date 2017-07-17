@@ -5,10 +5,12 @@
         .factory('utilService', utilService);
 
     /** @ngInject */
-    function utilService () {
+    function utilService (Blob, FileSaver) {
         var service = {
             arrayCompare: arrayCompare,
+            arrayToCsv: arrayToCsv,
             extendSelect: extendSelect,
+            makeCsv: makeCsv,
             sortCert: sortCert,
             sortCqm: sortCqm,
             sortNonconformityTypes: sortNonconformityTypes,
@@ -75,6 +77,23 @@
             return ret;
         }
 
+        function arrayToCsv (data) {
+            return data.map(function (row) {
+                return row.map(function (cell) {
+                    if (cell.indexOf('"') > -1 ||
+                        cell.indexOf(',') > -1 ||
+                        cell.indexOf('\n') > -1) {
+                        return '"' + cell.replace(/"/g,'""') + '"';
+                    } else {
+                        return cell;
+                    }
+                })
+                    .join(',');
+            })
+                .join('\n');
+
+        }
+
         function extendSelect (options, value) {
             var newValue = { name: value };
             var addingNew = true;
@@ -88,6 +107,13 @@
                 options.push(newValue);
             }
             return options;
+        }
+
+        function makeCsv (data) {
+            var blob = new Blob([this.arrayToCsv(data.values)], {
+                type: 'application/csv',
+            });
+            FileSaver.saveAs(blob, data.name);
         }
 
         function sortCert (cert) {
@@ -168,6 +194,7 @@
             case 'Withdrawn by ONC-ACB':
                 ret = 'fa-times-circle status-bad';
                 break;
+                // no default
             }
             return ret;
         }

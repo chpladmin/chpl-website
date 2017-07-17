@@ -34,10 +34,18 @@
                 .then(function () {
                     $uibModalInstance.close({status: 'confirmed'});
                 }, function (error) {
-                    if (error.data.messages) {
-                        vm.errorMessages = error.data.errorMessages;
+                    if (error.data.contact) {
+                        $uibModalInstance.close({
+                            contact: error.data.contact,
+                            objectId: error.data.objectId,
+                            status: 'resolved',
+                        });
                     } else {
-                        vm.errorMessages = [error.statusText];
+                        if (error.data.errorMessages) {
+                            vm.errorMessages = error.data.errorMessages;
+                        } else {
+                            vm.errorMessages = [error.statusText];
+                        }
                     }
                 });
         }
@@ -45,7 +53,7 @@
         function editSurveillance () {
             fixRequirementOptions();
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/editSurveillance.html',
+                templateUrl: 'app/admin/components/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,
@@ -62,14 +70,14 @@
                 vm.surveillance = result;
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                 }
             });
         }
 
         function inspectNonconformities (noncons) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/nonconformityInspect.html',
+                templateUrl: 'app/admin/components/surveillance/nonconformity/inspect.html',
                 controller: 'NonconformityInspectController',
                 controllerAs: 'vm',
                 animation: false,
@@ -90,9 +98,17 @@
         function reject () {
             commonService.rejectPendingSurveillance(vm.surveillance.id)
                 .then(function () {
-                    $uibModalInstance.dismiss('rejected');
+                    $uibModalInstance.close({status: 'rejected'});
                 },function (error) {
-                    vm.errorMessages = [error.statusText]
+                    if (error.data.contact) {
+                        $uibModalInstance.close({
+                            contact: error.data.contact,
+                            objectId: error.data.objectId,
+                            status: 'resolved',
+                        });
+                    } else {
+                        vm.errorMessages = error.data.errorMessages;
+                    }
                 });
         }
 

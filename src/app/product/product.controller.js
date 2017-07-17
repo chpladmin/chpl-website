@@ -30,6 +30,12 @@
             } else {
                 $localStorage.previouslyViewed = [vm.productId + ''];
             }
+            if ($routeParams.initialPanel) {
+                vm.initialPanel = $routeParams.initialPanel;
+            } else {
+                vm.initialPanel = 'cert';
+            }
+
             vm.isAuthed = authService.isAuthed();
             vm.loadProduct();
         }
