@@ -153,7 +153,7 @@
         function getCollection (type) {
             switch (type) {
             case 'apiDocumentation':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,criteriaMet,apiDocumentation,transparencyAttestationUrl');
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
             case 'bannedDevelopers':
                 return simpleApiCall('/decertifications/developers');
             case 'decertifiedProducts':

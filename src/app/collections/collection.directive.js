@@ -187,6 +187,9 @@
             if (vm.isFilterActive('acb')) {
                 vm.filterItems.acbItems = angular.copy(vm.refineModel.acb);
             }
+            if (vm.isFilterActive('certificationStatus')) {
+                vm.filterItems.statusItems = angular.copy(vm.refineModel.certificationStatus);
+            }
             if (vm.isFilterActive('acbAttestations')) {
                 vm.filterItems.acbAttestations = angular.copy(vm.refineModel.acbAttestations);
             }
