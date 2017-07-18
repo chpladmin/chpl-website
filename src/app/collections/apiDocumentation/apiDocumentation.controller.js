@@ -24,6 +24,19 @@
                 { predicate: 'apiDocumentation', display: 'API Documentation', sortType: 'single', transformFn: vm.apiTransform },
                 { predicate: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL', sortType: 'single', transformFn: vm.disclosuresTransform },
             ];
+            vm.filters = ['certificationStatus'];
+            vm.refineModel = {
+                certificationStatus: [
+                    { value: 'Active', selected: true },
+                    { value: 'Suspended by ONC', selected: true },
+                    { value: 'Suspended by ONC-ACB', selected: true },
+                    { value: 'Retired', selected: false },
+                    { value: 'Withdrawn by Developer', selected: false },
+                    { value: 'Withdrawn by Developer Under Surveillance/Review', selected: false },
+                    { value: 'Withdrawn by ONC-ACB', selected: false },
+                    { value: 'Terminated by ONC', selected: false },
+                ],
+            };
         }
 
         ////////////////////////////////////////////////////////////////////
