@@ -43,7 +43,7 @@
                 vm.task.testParticipants.push(result);
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                 }
             });
         }
@@ -77,7 +77,7 @@
                 vm.task.testParticipants[idx] = result;
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                 }
             });
         }

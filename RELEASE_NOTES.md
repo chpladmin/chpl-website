@@ -6,6 +6,9 @@ _Date TBD_
 ### New features
 * Added "certification status" to filter for API Doc collection
 
+### Text changes
+* Changed wording of G1/G2 accordion
+
 ---
 
 ## Version 9.2.0

@@ -160,7 +160,7 @@
     </div>
     <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name === '2015'">
       <div class="panel-heading">
-        <a href ng-click="vm.showPanel('g1g2')" aria-expanded="{{ vm.panelShown === 'g1g2' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-right'"></i> Successfully Tested Measures</a>
+        <a href ng-click="vm.showPanel('g1g2')" aria-expanded="{{ vm.panelShown === 'g1g2' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-right'"></i> Successfully Tested G1/G2 Measures</a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'g1g2'">
         <ai-g1g2 listing="vm.product"></ai-g1g2>

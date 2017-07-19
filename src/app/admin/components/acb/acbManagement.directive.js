@@ -22,12 +22,9 @@
     }
 
     /** @ngInject */
-    function AcbManagementController ($log, $uibModal, authService, commonService) {
+    function AcbManagementController ($log, $uibModal, authService) {
         var vm = this;
 
-        vm.doWork = doWork;
-        vm.activateAcb = activateAcb;
-        vm.loadData = loadData;
         vm.createAcb = createAcb;
         vm.editAcb = editAcb;
 
@@ -36,29 +33,11 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.isChplAdmin = authService.isChplAdmin();
             vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.acbs = [];
-            vm.workType = 'acb';
-        }
-
-        function doWork (workType) {
-            if (workType === 'newAcb') {
-                vm.activeAcb = null;
+            vm.isChplAdmin = authService.isChplAdmin();
+            if (angular.isUndefined(vm.workType)) {
+                vm.workType = 'acb';
             }
-            vm.workType = workType;
-        }
-
-        function activateAcb (acb) {
-            vm.workType = 'acb';
-            vm.activeAcb = acb;
-        }
-
-        function loadData () {
-            return commonService.getAcbs()
-                .then(function (data) {
-                    vm.acbs = data.acbs;
-                });
         }
 
         function createAcb () {
@@ -75,11 +54,11 @@
                     isChplAdmin: function () { return vm.isChplAdmin; },
                 },
             });
-            vm.modalInstance.result.then(function () {
-                vm.activate();
+            vm.modalInstance.result.then(function (result) {
+                vm.activeAcb = result;
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug(result);
+                    $log.info(result);
                 }
             });
         }
@@ -102,30 +81,13 @@
                 if (result !== 'deleted') {
                     vm.activeAcb = result;
                 } else {
-                    vm.activate();
+                    vm.activeAcb = null;
                 }
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug(result);
+                    $log.info(result);
                 }
             });
         }
-
-        vm.cancelACB = function () {
-            vm.loadData();
-        };
-
-        vm.deleteACB = function (acb) {
-            commonService.deleteACB(acb.id)
-                .then(function () {
-                    vm.activate();
-                });
-        };
-
-        vm.addressRequired = function (acb) {
-            if (acb) {
-                return commonService.addressRequired(acb.address);
-            }
-        };
     }
 })();
