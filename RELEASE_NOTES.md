@@ -13,6 +13,10 @@ _Date TBD_
 
 ### New features
 * Added "certification status" to filter for API Doc collection
+* Add "toaster" when Listing cache is evicted due to Admin activity
+
+### Text changes
+* Changed wording of G1/G2 accordion
 
 ---
 

@@ -1,90 +1,183 @@
 (function () {
     'use strict';
 
-    describe('chpl.admin.atlManagement.directive', function () {
-
-        var $log, commonService, ctrl, element, scope;
+    describe('the ATL Management', function () {
+        var $compile, $log, $uibModal, Mock, actualOptions, authService, el, scope, vm;
 
         beforeEach(function () {
-            var mockAuthService = {};
-            var mockCommonService = {};
-
-            module('chpl.templates');
-            module('chpl.admin', function ($provide) {
-                $provide.value('authService', mockAuthService);
-                $provide.value('commonService', mockCommonService);
-            });
-
-            mockCommonService.atls = {atls: [{name: 'test', id: 1, address: {}}, {name: 'test2', id: 2, address: {}}]};
-
-            inject(function ($q) {
-                mockAuthService.isAtlAdmin = function () {
-                    return true;
-                };
-
-                mockAuthService.isChplAdmin = function () {
-                    return true;
-                };
-
-                mockCommonService.addressRequired = function () {
-                    return false;
-                };
-
-                mockCommonService.getAtls = function () {
-                    return $q.when(mockCommonService.atls);
-                };
-
-                mockCommonService.getUsersAtAtl = function () {
-                    return $q.when({});
-                };
-
-                mockCommonService.simpleApiCall = function () {
-                    return $q.when({});
-                };
-
-                mockCommonService.getUsers = function () {
-                    return $q.when({});
-                };
+            module('chpl.templates', 'chpl.mock', 'chpl', 'chpl.admin', function ($provide) {
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.isAtlAdmin = jasmine.createSpy('isAtlAdmin');
+                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    return $delegate;
+                });
             });
         });
 
-        beforeEach(inject(function ($compile, _$log_, $rootScope) {
+        beforeEach(inject(function (_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _authService_) {
+            $compile = _$compile_;
             $log = _$log_;
+            Mock = _Mock_;
+            $uibModal = _$uibModal_;
+            spyOn($uibModal, 'open').and.callFake(function (options) {
+                actualOptions = options;
+                return Mock.fakeModal;
+            });
+            authService = _authService_;
+            authService.isAtlAdmin.and.returnValue(true);
+            authService.isChplAdmin.and.returnValue(true);
+
+            el = angular.element('<ai-atl-management active-atl="atl" work-type="atl"></ai-atl-management>');
             scope = $rootScope.$new();
-
-            scope.fakeFunction = function () {};
-
-            element = angular.element('<ai-atl-management create-atl="fakeFunction"></ai-atl-management');
-            $compile(element)(scope);
+            scope.atl = {};
+            $compile(el)(scope);
             scope.$digest();
+            vm = el.isolateScope().vm;
         }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
+        describe('directive', function () {
+            it('should be compiled', function () {
+                expect(el.html()).not.toEqual(null);
+            });
+        });
+
         describe('controller', function () {
-
-            beforeEach(inject(function ($controller, _commonService_) {
-                commonService = _commonService_;
-
-                ctrl = $controller('AtlManagementController', {
-                    $scope: scope,
-                    $element: null,
-                    commonService: commonService,
-                });
-                scope.$digest();
-            }));
-
-            it('should exist', function () {
-                expect(ctrl).toBeDefined();
+            it('should have isolate scope object with instanciate members', function () {
+                expect(vm).toEqual(jasmine.any(Object));
             });
 
             it('should know if the logged in user is ATL and/or CHPL admin', function () {
-                expect(ctrl.isAtlAdmin).toBeTruthy();
-                expect(ctrl.isChplAdmin).toBeTruthy();
+                expect(vm.isAtlAdmin).toBeTruthy();
+                expect(vm.isChplAdmin).toBeTruthy();
+            });
+
+            it('should set the workType to atl if it\'s undefined', function () {
+                el = angular.element('<ai-atl-management active-atl="atl"></ai-atl-management>');
+                $compile(el)(scope);
+                scope.$digest();
+                vm = el.isolateScope().vm;
+                expect(vm.workType).toBe('atl');
+            });
+
+            describe('when editing an atl', function () {
+                var atl, modalOptions;
+                beforeEach(function () {
+                    atl = {};
+                    modalOptions = {
+                        templateUrl: 'app/admin/components/atl/atlEdit.html',
+                        controller: 'EditAtlController',
+                        controllerAs: 'vm',
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        resolve: {
+                            atl: jasmine.any(Function),
+                            action: jasmine.any(Function),
+                            isChplAdmin: jasmine.any(Function),
+                        },
+                    };
+                });
+
+                it('should create a modal instance', function () {
+                    expect(vm.modalInstance).toBeUndefined();
+                    vm.editAtl(atl);
+                    expect(vm.modalInstance).toBeDefined();
+                });
+
+                it('should resolve elements', function () {
+                    vm.editAtl(atl);
+                    expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                    expect(actualOptions.resolve.atl()).toEqual(atl);
+                    expect(actualOptions.resolve.action()).toBe('edit');
+                    expect(actualOptions.resolve.isChplAdmin()).toBe(true);
+                });
+
+                it('should replace the atl with the response', function () {
+                    vm.editAtl(atl);
+                    vm.modalInstance.close({name: 'new'});
+                    expect(vm.activeAtl).toEqual({name: 'new'});
+                });
+
+                it('should set the active ATL to null if it was deleted', function () {
+                    vm.editAtl(atl);
+                    vm.modalInstance.close('deleted');
+                    expect(vm.activeAtl).toBe(null);
+                });
+
+                it('should log a non-cancelled modal', function () {
+                    var logCount = $log.info.logs.length;
+                    vm.editAtl(atl);
+                    vm.modalInstance.dismiss('not cancelled');
+                    expect($log.info.logs.length).toBe(logCount + 1);
+                });
+
+                it('should not log a cancelled modal', function () {
+                    var logCount = $log.info.logs.length;
+                    vm.editAtl(atl);
+                    vm.modalInstance.dismiss('cancelled');
+                    expect($log.info.logs.length).toBe(logCount);
+                });
+            });
+
+            describe('when creating an atl', function () {
+                var modalOptions;
+                beforeEach(function () {
+                    modalOptions = {
+                        templateUrl: 'app/admin/components/atl/atlEdit.html',
+                        controller: 'EditAtlController',
+                        controllerAs: 'vm',
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        resolve: {
+                            atl: jasmine.any(Function),
+                            action: jasmine.any(Function),
+                            isChplAdmin: jasmine.any(Function),
+                        },
+                    };
+                });
+
+                it('should create a modal instance', function () {
+                    expect(vm.modalInstance).toBeUndefined();
+                    vm.createAtl();
+                    expect(vm.modalInstance).toBeDefined();
+                });
+
+                it('should resolve elements', function () {
+                    vm.createAtl();
+                    expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                    expect(actualOptions.resolve.atl()).toEqual({});
+                    expect(actualOptions.resolve.action()).toBe('create');
+                    expect(actualOptions.resolve.isChplAdmin()).toBe(true);
+                });
+
+                it('should replace the atl with the response', function () {
+                    vm.createAtl();
+                    vm.modalInstance.close({name: 'new'});
+                    expect(vm.activeAtl).toEqual({name: 'new'});
+                });
+
+                it('should log a non-cancelled modal', function () {
+                    var logCount = $log.info.logs.length;
+                    vm.createAtl();
+                    vm.modalInstance.dismiss('not cancelled');
+                    expect($log.info.logs.length).toBe(logCount + 1);
+                });
+
+                it('should not log a cancelled modal', function () {
+                    var logCount = $log.info.logs.length;
+                    vm.createAtl();
+                    vm.modalInstance.dismiss('cancelled');
+                    expect($log.info.logs.length).toBe(logCount);
+                });
             });
         });
     });
