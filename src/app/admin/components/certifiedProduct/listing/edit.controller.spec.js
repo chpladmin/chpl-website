@@ -158,6 +158,14 @@
                     ];
                     expect(vm.requiredIcsCode()).toBe('3');
                 });
+
+                it('should expect the code to be 10 if two parents and parents have ICS 1,9', function () {
+                    vm.cp.ics.parents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.1.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.9.1.170331'},
+                    ];
+                    expect(vm.requiredIcsCode()).toBe('10');
+                });
             });
         });
     })
