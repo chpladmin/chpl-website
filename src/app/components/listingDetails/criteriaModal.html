@@ -131,7 +131,8 @@
                   </div>
                   <label class="col-sm-6 control-label" for="testToolVersion{{ item.id }}">Test Tool Version</label>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control" ng-model="item.testToolVersion" id="testToolVersion{{ item.id }}"></input>
+                    <input type="text" class="form-control" ng-model="item.testToolVersion" id="testToolVersion{{ item.id }}" name="testToolVersion{{ item.id }}" ng-maxlength="50"></input>
+                    <div class="text-danger" ng-if="vm.editForm.testToolVersion{{ item.id }}.$error.maxlength">Field is too long</div>
                   </div>
                 </div>
                 <div ng-if="item.retired">
@@ -158,7 +159,8 @@
                 </div>
                 <label class="col-sm-6 control-label" for="newTestToolVersion">Test Tool Version</label>
                 <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="vm.newTestTool.testToolVersion" id="newTestToolVersion"></input>
+                  <input type="text" class="form-control" ng-model="vm.newTestTool.testToolVersion" id="newTestToolVersion" id="newTestToolVersion" ng-maxlength="50"></input>
+                  <div class="text-danger" ng-if="vm.editForm.testToolVersion{{ item.id }}.$error.maxlength">Field is too long</div>
                 </div>
               </div>
             </div>
@@ -170,7 +172,10 @@
         </tr>
         <tr ng-if="vm.cert.apiDocumentation !== null">
           <td><label class="control-label" for="data_api{{ vm.cert.number }}">API Documentation</label></td>
-          <td><input class="form-control input-sm" type="url" id="data_api{{ vm.cert.number }}" name="data_apiDocumentation" ng-model="vm.cert.apiDocumentation"></input></td>
+          <td>
+            <input class="form-control input-sm" type="url" id="data_api{{ vm.cert.number }}" name="data_apiDocumentation" ng-model="vm.cert.apiDocumentation" ng-maxlength="1024"></input>
+            <div class="text-danger" ng-if="vm.editForm.data_apiDocumentation.$error.maxlength">Field is too long</div>
+          </td>
         </tr>
         <tr ng-if="vm.cert.privacySecurityFramework !== null">
           <td><label class="control-label" for="data_psFramework{{ vm.cert.number }}">Privacy &amp; Security Framework</label></td>
@@ -215,7 +220,8 @@
                 </div>
                 <label class="col-sm-6 control-label" for="newUcdProcessExpandableName">Add new UCD Process to available options</label>
                 <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="vm.newUcdProcess.expandableName" id="newUcdProcessExpandableName" ng-change="vm.extendSelect(vm.resources.ucdProcesses.data, vm.newUcdProcess.expandableName); vm.newUcdProcess.ucdProcessName = vm.newUcdProcess.expandableName"></input>
+                  <input type="text" class="form-control" ng-model="vm.newUcdProcess.expandableName" id="newUcdProcessExpandableName" name="newUcdProcessExpandableName"ng-change="vm.extendSelect(vm.resources.ucdProcesses.data, vm.newUcdProcess.expandableName); vm.newUcdProcess.ucdProcessName = vm.newUcdProcess.expandableName" ng-maxlength="200"></input>
+                  <div class="text-danger" ng-if="vm.editForm.newUcdProcessExpandableName.$error.maxlength">Field is too long</div>
                 </div>
                 <label class="col-sm-6 control-label" for="newUcdProcessDetails">UCD Process Details</label>
                 <div class="col-sm-6">

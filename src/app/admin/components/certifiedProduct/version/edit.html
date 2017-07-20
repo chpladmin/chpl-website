@@ -11,8 +11,9 @@
   <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
       <label for="versionName">Version</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.version.version" id="versionName" name="versionName" required></input>
+      <input class="input-sm form-control" type="text" ng-model="vm.version.version" id="versionName" name="versionName" required ng-maxlength="250"></input>
       <div class="text-danger" ng-if="vm.editForm.versionName.$touched && vm.editForm.versionName.$error.required">Version is required</div>
+      <div class="text-danger" ng-if="vm.editForm.versionName.$touched && vm.editForm.versionName.$error.required">Field is too long</div>
     </div>
   </div>
   <div class="modal-footer">
