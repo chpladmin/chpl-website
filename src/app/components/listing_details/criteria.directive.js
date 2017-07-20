@@ -69,7 +69,7 @@
                 vm.cert = result;
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                 }
             });
         }
