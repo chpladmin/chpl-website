@@ -1,19 +1,13 @@
 # Release Notes
 
-### OCD-1654: 
-* Implemented length restrictions on Listing elements
-
-### OCD-1662: 
-* Implement min/max length restrictions on CHPL Product Number Code values
-
----
-
 ## Version TBD
 _Date TBD_
 
 ### New features
 * Added "certification status" to filter for API Doc collection
 * Add "toaster" when Listing cache is evicted due to Admin activity
+* Implemented length restrictions on Listing elements
+* Implement min/max length restrictions on CHPL Product Number Code values
 
 ### Text changes
 * Changed wording of G1/G2 accordion
