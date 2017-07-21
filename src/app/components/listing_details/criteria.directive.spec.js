@@ -53,7 +53,7 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'app/components/listingDetails/criteriaModal.html',
+                        templateUrl: 'app/components/listing_details/criteriaModal.html',
                         controller: 'EditCertificationCriteriaController',
                         controllerAs: 'vm',
                         animation: false,
