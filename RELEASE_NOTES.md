@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1691
+* Change ICS Code validation to require two digits
+
+---
+
 ## Version TBD
 _Date TBD_
 

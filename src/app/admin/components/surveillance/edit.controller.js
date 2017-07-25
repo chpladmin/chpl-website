@@ -48,7 +48,7 @@
             vm.showFormErrors = false;
             vm.data = surveillanceTypes;
             if (vm.surveillance.type) {
-                vm.surveillance.type = findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
+                vm.surveillance.type = utilService.findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
             }
         }
 
@@ -228,17 +228,6 @@
                         }
                     });
             }
-        }
-
-        ////////////////////////////////////////////////////////////////////
-
-        function findModel (id, array) {
-            for (var i = 0; i < array.length; i++) {
-                if (id.id === array[i].id) {
-                    id = array[i];
-                }
-            }
-            return id;
         }
     }
 })();
