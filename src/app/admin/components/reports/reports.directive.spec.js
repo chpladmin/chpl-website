@@ -384,6 +384,23 @@
             });
 
             describe('when parsing', function () {
+                it('unknown descriptions should report directly', function () {
+                    var expectedActivity, rawActivity;
+                    expectedActivity = {
+                        acb: '',
+                        date: 1492429771059,
+                        friendlyActivityDate: '2017-04-17',
+                        newId: 17497,
+                        questionable: false,
+                    };
+                    rawActivity = angular.copy(Mock.listingActivity[1]);
+                    rawActivity.description = 'Something odd with a Listing';
+                    expectedActivity.action = 'Something odd with a Listing';
+
+                    vm.interpretCps([rawActivity]);
+                    expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                });
+
                 describe('newly created Listings', function () {
                     var expectedActivity, rawActivity;
 
@@ -482,6 +499,50 @@
                         vm.interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
+
+                    it('should handle accessibility standards', function () {
+                        rawActivity.originalData.accessibilityStandards = [{accessibilityStandardName: 'a standard'}];
+                        expectedActivity.details = ['Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>'];
+                        expectedActivity.csvDetails = 'Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                    });
+
+                    it('should handle criteria addition', function () {
+                        rawActivity.originalData.certificationResults[0].success = false;
+                        expectedActivity.questionable = true;
+                        expectedActivity.details = ['Certification "170.302 (a)" changes<ul><li class="bg-danger"><strong>Successful added: true</strong></li></ul>'];
+                        expectedActivity.csvDetails = 'Certification "170.302 (a)" changes<ul><li class="bg-danger"><strong>Successful added: true</strong></li></ul>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                    });
+
+                    it('should handle cqm addition', function () {
+                        rawActivity.originalData.cqmResults[0].success = false;
+                        expectedActivity.questionable = true;
+                        expectedActivity.details = ['CQM "null" changes<ul><li class="bg-danger"><strong>Success added: true</strong></li></ul>'];
+                        expectedActivity.csvDetails = 'CQM "null" changes<ul><li class="bg-danger"><strong>Success added: true</strong></li></ul>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                    });
+
+                    it('should handle qms standards', function () {
+                        rawActivity.originalData.qmsStandards = [{qmsStandardName: 'a standard', qmsModification: 'a mod', applicableCriteria: 'none'}];
+                        rawActivity.newData.qmsStandards = [{qmsStandardName: 'a standard', qmsModification: 'no mods', applicableCriteria: 'all'}];
+                        expectedActivity.details = ['QMS Standard "a standard" changes<ul><li>QMS Modification changed from a mod to no mods</li><li>Applicable Criteria changed from none to all</li></ul>'];
+                        expectedActivity.csvDetails = 'QMS Standard "a standard" changes<ul><li>QMS Modification changed from a mod to no mods</li><li>Applicable Criteria changed from none to all</li></ul>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                    });
+
+                    it('should handle targeted users', function () {
+                        rawActivity.originalData.targetedUsers = [{targetedUserName: 'name 1'}];
+                        rawActivity.newData.targetedUsers = [{targetedUserName: 'name 2'}];
+                        expectedActivity.details = ['Targeted User "name 1" changes<ul><li>name 1 removed</li></ul>','Targeted User "name 2" changes<ul><li>name 2 added</li></ul>'];
+                        expectedActivity.csvDetails = 'Targeted User "name 1" changes<ul><li>name 1 removed</li></ul>\nTargeted User "name 2" changes<ul><li>name 2 added</li></ul>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                    });
                 });
 
                 describe('ICS family activity', function () {
@@ -523,6 +584,108 @@
 
                         vm.interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
+                    });
+                });
+
+                describe('Surveillance', function () {
+                    var expectedActivity, rawActivity;
+
+                    beforeEach(function () {
+                        expectedActivity = {
+                            acb: 'CCHIT',
+                            date: 1492429771059,
+                            details: ['N/A'],
+                            friendlyActivityDate: '2017-04-17',
+                            newId: 17497,
+                            questionable: false,
+                        };
+                        rawActivity = angular.copy(Mock.listingActivity[0]);
+                    });
+
+                    it('deletion should be recognized', function () {
+                        rawActivity.description = 'Surveillance was deleted from CHP-1231';
+                        expectedActivity.action = 'Surveillance was deleted from CHPL Product <a href="#/product/1480">CHP-009351</a>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                    });
+
+                    it('upload should be recognized', function () {
+                        rawActivity.description = 'Surveillance upload';
+                        expectedActivity.action = 'Surveillance was uploaded for CHPL Product <a href="#/product/1480">CHP-009351</a>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                    });
+
+                    it('addition shouls be recognized', function () {
+                        rawActivity.description = 'Surveillance was added';
+                        expectedActivity.action = 'Surveillance was added for CHPL Product <a href="#/product/1480">CHP-009351</a>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                    });
+
+                    it('strangeness should be handled', function () {
+                        rawActivity.description = 'Surveillance was changed in a weird way';
+                        expectedActivity.action = 'Surveillance was changed in a weird way<br /><a href="#/product/1480">CHP-009351</a>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                    });
+
+                    it('documentation upload should be reported', function () {
+                        rawActivity.description = 'Documentation';
+                        expectedActivity.action = 'Documentation was added to a nonconformity for <a href="#/product/1480">CHP-009351</a>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+
+                    });
+
+                    it('documentation removal should be reported', function () {
+                        rawActivity.description = 'A document was removed';
+                        expectedActivity.action = 'Documentation was removed from a nonconformity for <a href="#/product/1480">CHP-009351</a>';
+                        vm.interpretCps([rawActivity]);
+                        expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                    });
+
+                    describe('update', function () {
+                        beforeEach(function () {
+                            expectedActivity = {
+                                acb: 'CCHIT',
+                                date: 1492429771059,
+                                details: [],
+                                friendlyActivityDate: '2017-04-17',
+                                newId: 17497,
+                                questionable: false,
+                                action: 'Surveillance was updated for CHPL Product <a href="#/product/1480">CHP-009351</a>',
+                            };
+                            rawActivity = angular.copy(Mock.listingActivity[0]);
+                            rawActivity.description = 'Surveillance was updated';
+                            rawActivity.originalData.surveillance = [{friendlyId: 'SURV01'}];
+                            rawActivity.newData.surveillance = [{friendlyId: 'SURV01'}];
+                        });
+
+                        it('should punt to user feedback if no specified changes are found', function () {
+                            expectedActivity.source = {
+                                oldS: rawActivity.originalData,
+                                newS: rawActivity.newData,
+                            };
+                            vm.interpretCps([rawActivity]);
+                            expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        });
+
+                        it('should parse some simple fields', function () {
+                            rawActivity.originalData.surveillance[0].randomizedSitesUsed = 4;
+                            rawActivity.newData.surveillance[0].randomizedSitesUsed = 6;
+                            expectedActivity.details = ['SURV01<ul><li>Number of sites surveilled changed from 4 to 6</li></ul>']
+                            vm.interpretCps([rawActivity]);
+                            expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        });
+
+                        it('should parse nested fields', function () {
+                            rawActivity.originalData.surveillance[0].type = { name: 'randomized' };
+                            rawActivity.newData.surveillance[0].type = { name: 'reactive' };
+                            expectedActivity.details = ['SURV01<ul><li>Certification Type changed from randomized to reactive</li></ul>']
+                            vm.interpretCps([rawActivity]);
+                            expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        });
                     });
                 });
             });
