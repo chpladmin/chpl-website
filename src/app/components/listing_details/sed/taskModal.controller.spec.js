@@ -78,7 +78,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listingDetails/sed/participantModal.html',
+                    templateUrl: 'app/components/listing_details/sed/participantModal.html',
                     controller: 'EditSedParticipantController',
                     controllerAs: 'vm',
                     animation: false,
@@ -141,7 +141,7 @@
             var modalOptions, participant;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listingDetails/sed/participantModal.html',
+                    templateUrl: 'app/components/listing_details/sed/participantModal.html',
                     controller: 'EditSedParticipantController',
                     controllerAs: 'vm',
                     animation: false,

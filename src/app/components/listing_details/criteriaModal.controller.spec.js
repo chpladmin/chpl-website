@@ -108,7 +108,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listingDetails/sed/taskModal.html',
+                    templateUrl: 'app/components/listing_details/sed/taskModal.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -172,7 +172,7 @@
             var modalOptions, task;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listingDetails/sed/taskModal.html',
+                    templateUrl: 'app/components/listing_details/sed/taskModal.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
