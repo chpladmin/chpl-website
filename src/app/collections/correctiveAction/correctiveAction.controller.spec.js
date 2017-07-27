@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.collections.nonconformities.controller', function () {
+    describe('the Products: Corrective Action controller', function () {
 
         var $log, commonService, scope, vm;
 
@@ -17,7 +17,7 @@
                 commonService = _commonService_;
 
                 scope = $rootScope.$new();
-                vm = $controller('NonconformitiesController', {
+                vm = $controller('CorrectiveActionController', {
                     $scope: scope,
                     commonService: commonService,
                 });

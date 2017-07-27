@@ -19,6 +19,12 @@
                 templateUrl: 'app/collections/apiDocumentation/apiDocumentation.html',
                 title: 'API Information for 2015 Edition Products',
             })
+            .when('/collections/correctiveAction', {
+                controller: 'CorrectiveActionController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/correctiveAction/correctiveAction.html',
+                title: 'Products: Corrective Action Status',
+            })
             .when('/collections/developers', {
                 controller: 'BannedDevelopersController',
                 controllerAs: 'vm',
@@ -30,12 +36,6 @@
                 controllerAs: 'vm',
                 templateUrl: 'app/collections/inactive/inactive.html',
                 title: 'Inactive Certificates',
-            })
-            .when('/collections/nonconformities', {
-                controller: 'NonconformitiesController',
-                controllerAs: 'vm',
-                templateUrl: 'app/collections/nonconformities/nonconformities.html',
-                title: 'Products Under Corrective Action',
             })
             .when('/collections/products', {
                 controller: 'DecertifiedProductsController',

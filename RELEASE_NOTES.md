@@ -1,5 +1,10 @@
 # Release Notes
 
+### OCD-1705
+* Updated Products: Corrective Action Collection
+
+---
+
 ## Version TBD
 _Date TBD_
 
