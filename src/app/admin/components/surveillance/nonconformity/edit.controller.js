@@ -64,9 +64,7 @@
                             vm.nonconformity.documents.splice(i,1);
                         }
                     }
-                }), function (error) {
-                    $log.debug(error);
-                };
+                });
         }
 
         function save () {

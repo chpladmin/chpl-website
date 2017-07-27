@@ -287,8 +287,6 @@
             commonService.getApiUsers()
                 .then(function (result) {
                     vm.apiKeys = result;
-                }, function (error) {
-                    $log.debug('error in app.admin.report.controller.loadApiKeys', error);
                 });
         }
 
