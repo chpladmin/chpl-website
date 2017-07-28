@@ -43,6 +43,25 @@
             });
         });
 
+        describe('correctiveAction translation', function () {
+            var results;
+            beforeEach(function () {
+                results = service.translate('correctiveAction', {results: Mock.allCps});
+            });
+
+            it('should filter on correctiveAction', function () {
+                expect(results.length).toBe(3);
+            });
+
+            it('should generate a mainSearch', function () {
+                expect(results[0].mainSearch).toEqual('DrScribe, Inc.|365EHR|4.0.14|CHP-026059');
+            });
+
+            it('should generate a nonconformity json element', function () {
+                expect(results[0].nonconformities).toEqual('{"openNonconformityCount":2,"closedNonconformityCount":0}');
+            });
+        });
+
         describe('decertifiedProducts translation', function () {
             it('should filter on decertifiedProducts', function () {
                 expect(service.translate('decertifiedProducts', {results: Mock.allCps}).length).toBe(1);
@@ -62,17 +81,6 @@
             it('should generate a mainSearch', function () {
                 var results = service.translate('inactiveCertificates', {results: Mock.allCps});
                 expect(results[0].mainSearch).toEqual('Carefluence|Carefluence Open API|1.0|15.04.04.2649.Care.01.0.0.160701');
-            });
-        });
-
-        describe('nonconformities translation', function () {
-            it('should filter on nonconformities', function () {
-                expect(service.translate('nonconformities', {results: Mock.allCps}).length).toBe(3);
-            });
-
-            it('should generate a mainSearch', function () {
-                var results = service.translate('nonconformities', {results: Mock.allCps});
-                expect(results[0].mainSearch).toEqual('DrScribe, Inc.|365EHR|4.0.14|CHP-026059');
             });
         });
 

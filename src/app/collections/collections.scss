@@ -1,7 +1,7 @@
 .collection-page {
 
     .dropdown-menu {
-        width: 150%;
+//        width: 150%;
         max-height: 300px;
         overflow: auto;
 
@@ -47,10 +47,13 @@
     }
 
     .dropdown-filter {
-        min-width: 500px;
+        //min-width: 500px;
 
         .dropdown-menu {
-            width: 100%;
+            //width: 100%;
+            width: 250%;
+            max-height: 300px;
+            overflow: auto;
         }
     }
 }

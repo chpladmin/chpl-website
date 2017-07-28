@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.collection.directive', function () {
+    describe('the Collections', function () {
         var $log, $q, commonService, el, scope, vm;
 
         beforeEach(function () {
@@ -39,13 +39,26 @@
             }
         });
 
-        describe('loading', function () {
+        describe('directive', function () {
             it('should be compiled', function () {
                 expect(el.html()).not.toEqual(null);
             });
+        });
 
+        describe('controller', function () {
             it('should exist', function () {
                 expect(vm).toBeDefined();
+            });
+
+            describe('when figuring out if filters have changed', function () {
+                it('should report true if any filter has changes', function () {
+                    vm.filters = ['acb', 'atl'];
+                    vm.categoryChanged = {
+                        acb: false,
+                        atl: true,
+                    };
+                    expect(vm.isCategoryChanged()).toBe(true);
+                });
             });
         });
     });
