@@ -8,6 +8,8 @@
     function BannedDevelopersController () {
         var vm = this;
 
+        vm._acbTransform = acbTransform;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////

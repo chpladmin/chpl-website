@@ -4,7 +4,7 @@
         .filter('customFilter', CustomFilter);
 
     /** @ngInject */
-    function CustomFilter ($filter, cfpLoadingBar) {
+    function CustomFilter ($filter, $log, cfpLoadingBar) {
         var filterFilter = $filter('filter');
         var standardComparator = function standardComparator (obj, text) {
             text = ('' + text).toLowerCase();
@@ -24,6 +24,7 @@
                 var queryDate;
                 var i,ret;
                 var separator = expected.separator ? expected.separator : '';
+                var closed, closedNC, open, openNC;
 
                 if (angular.isObject(expected)) {
                     //exact match
@@ -47,10 +48,10 @@
                             ret = surv.surveillanceCount !== 0;
                             if (expected.NC) {
                                 var never = expected.NC.never;
-                                var open = expected.NC.open;
-                                var closed = expected.NC.closed;
-                                var openNC = surv.openNonconformityCount > 0;
-                                var closedNC = surv.closedNonconformityCount > 0;
+                                open = expected.NC.open;
+                                closed = expected.NC.closed;
+                                openNC = surv.openNonconformityCount > 0;
+                                closedNC = surv.closedNonconformityCount > 0;
                                 /*
                                  * matching one of the posibles
                                  */
@@ -84,6 +85,28 @@
                                  * !never && !open && !closed
                                  * fall back to "all", and the original return value
                                  */
+                            }
+                        }
+                        return ret;
+                    }
+
+                    //nonconformities match
+                    if (expected.nonconformities) {
+                        if (!actual) {
+                            return false;
+                        }
+                        var nc = angular.fromJson(actual);
+                        open = expected.nonconformities.open;
+                        closed = expected.nonconformities.closed;
+                        openNC = nc.openNonconformityCount > 0;
+                        closedNC = nc.closedNonconformityCount > 0;
+                        if (expected.nonconformities.matchAll) {
+                            ret = (open === openNC) && (closed === closedNC);
+                        } else {
+                            if (!open && !closed) {
+                                ret = true;
+                            } else {
+                                ret = (open && openNC) || (closed && closedNC)
                             }
                         }
                         return ret;

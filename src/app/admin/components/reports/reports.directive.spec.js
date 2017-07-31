@@ -464,23 +464,23 @@
                     });
 
                     it('should interpret basic field changes', function () {
-                        rawActivity.originalData.certificationDate = new Date('3/12/2003').getTime();
-                        expectedActivity.details = ['Certification Date changed from Mar 11, 2003 to Sep 30, 2010'];
-                        expectedActivity.csvDetails = 'Certification Date changed from Mar 11, 2003 to Sep 30, 2010';
+                        rawActivity.newData.productAdditionalSoftware = 'Some new software';
+                        expectedActivity.details = ['Product-wide Relied Upon Software added: Some new software'];
+                        expectedActivity.csvDetails = 'Product-wide Relied Upon Software added: Some new software';
                         vm.interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
-                    it('should mark 2011 changes as questioanble', function () {
+                    it('should mark 2011 changes as questionable', function () {
                         // set raw data
                         rawActivity.newData.certificationEdition.name = '2011';
-                        rawActivity.originalData.certificationDate = new Date('3/12/2003').getTime();
+                        rawActivity.newData.productAdditionalSoftware = 'Some new software';
                         rawActivity.originalData.certificationEdition.name = '2011';
 
                         // set expected result
                         expectedActivity.action = '<span class="bg-danger">undefined</span>';
-                        expectedActivity.csvDetails = 'Certification Date changed from Mar 11, 2003 to Sep 30, 2010';
-                        expectedActivity.details = ['Certification Date changed from Mar 11, 2003 to Sep 30, 2010'];
+                        expectedActivity.csvDetails = 'Product-wide Relied Upon Software added: Some new software';
+                        expectedActivity.details = ['Product-wide Relied Upon Software added: Some new software'];
                         expectedActivity.certificationEdition = '2011';
                         expectedActivity.questionable = true;
 

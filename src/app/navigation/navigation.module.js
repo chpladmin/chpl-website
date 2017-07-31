@@ -48,7 +48,7 @@
                 switch (caches[i]) {
                 case 'listingCollection':
                     title = 'Update processing';
-                    body = 'Your changes may take up to 20 minutes to be reflected in the search results and shortcuts pages';
+                    body = 'Your changes may not be reflected immediately in the search results and shortcuts pages. Please contact CHPL admin if you have any concerns';
                     break;
                     //no default
                 }
