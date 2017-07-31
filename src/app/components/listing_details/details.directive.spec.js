@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.certs.directive', function () {
+    describe('the Listing Details', function () {
 
         var $compile, $log, commonService, el, scope, vm;
 
@@ -42,13 +42,13 @@
             }
         });
 
-        describe('the directive', function () {
+        describe('directive', function () {
             it('should be compiled', function () {
                 expect(el.html()).not.toEqual(null);
             });
         });
 
-        describe('the controller', function () {
+        describe('controller', function () {
             it('should have isolate scope object with instanciate members', function () {
                 expect(vm).toEqual(jasmine.any(Object));
             });
