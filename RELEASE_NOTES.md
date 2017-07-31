@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 9.3.0
+_31 July 2017_
+
+### New features
+* Added "certification status" to filter for API Doc collection
+* Add "toaster" when Listing cache is evicted due to Admin activity
+* Implemented length restrictions on Listing elements
+* Implement min/max length restrictions on CHPL Product Number Code values
+
+### Text changes
+* Changed wording of G1/G2 accordion
+
+---
+
 ## Version 9.2.0
 _17 July 2017_
 

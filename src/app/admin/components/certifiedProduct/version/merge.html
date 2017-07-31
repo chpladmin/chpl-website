@@ -25,8 +25,9 @@
         <h4>To form this one</h4>
         <div class="form-group">
           <label for="versionName">Version <span class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" required ng-model="vm.version.version" id="versionName" name="versionName"></input>
+          <input class="input-sm form-control" type="text" required ng-model="vm.version.version" id="versionName" name="versionName" ng-maxlength="250"></input>
           <div class="text-danger" ng-if="vm.mergeForm.versionName.$touched && vm.mergeForm.versionName.$error.required">Version is required</div>
+          <div class="text-danger" ng-if="vm.mergeForm.versionName.$touched && vm.mergeForm.versionName.$error.required">Field is too long</div>
         </div>
       </div>
     </div>

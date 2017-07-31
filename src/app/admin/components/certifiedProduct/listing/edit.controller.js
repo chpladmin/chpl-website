@@ -129,7 +129,7 @@
             for (var i = 0; i < vm.cp.ics.parents.length; i++) {
                 code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6]) + 1);
             }
-            return code + '';
+            return '' + code;
         }
 
         function registerCerts (handler) {

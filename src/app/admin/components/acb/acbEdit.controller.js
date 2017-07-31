@@ -7,14 +7,11 @@
     /** @ngInject */
     function EditAcbController ($uibModalInstance, acb, action, commonService, isChplAdmin) {
         var vm = this;
-        vm.acb = angular.copy(acb);
-        vm.action = action;
-        vm.isChplAdmin = isChplAdmin;
 
-        vm.save = save;
         vm.cancel = cancel;
         vm.create = create;
         vm.deleteAcb = deleteAcb;
+        vm.save = save;
         vm.undeleteAcb = undeleteAcb;
 
         activate();
@@ -22,22 +19,12 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.acb = angular.copy(acb);
+            vm.action = action;
+            vm.isChplAdmin = isChplAdmin;
             if (vm.action === 'create') {
                 vm.acb.address = {};
             }
-        }
-
-        function save () {
-            commonService.modifyACB(vm.acb)
-                .then(function (response) {
-                    if (!response.status || response.status === 200) {
-                        $uibModalInstance.close(response);
-                    } else {
-                        $uibModalInstance.dismiss('An error occurred');
-                    }
-                },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
-                });
         }
 
         function cancel () {
@@ -62,6 +49,19 @@
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close('deleted');
+                    } else {
+                        $uibModalInstance.dismiss('An error occurred');
+                    }
+                },function (error) {
+                    $uibModalInstance.dismiss(error.data.error);
+                });
+        }
+
+        function save () {
+            commonService.modifyACB(vm.acb)
+                .then(function (response) {
+                    if (!response.status || response.status === 200) {
+                        $uibModalInstance.close(response);
                     } else {
                         $uibModalInstance.dismiss('An error occurred');
                     }

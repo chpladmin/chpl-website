@@ -22,44 +22,22 @@
     }
 
     /** @ngInject */
-    function AtlManagementController ($log, $uibModal, authService, commonService) {
+    function AtlManagementController ($log, $uibModal, authService) {
         var vm = this;
 
-        vm.doWork = doWork;
-        vm.activate = activate;
-        vm.activateAtl = activateAtl;
-        vm.loadData = loadData;
         vm.createAtl = createAtl;
         vm.editAtl = editAtl;
 
-        vm.activate();
+        activate();
 
         ////////////////////////////////////////////////////////////////////
-
-        function doWork (workType) {
-            if (workType === 'newAtl') {
-                vm.activeAtl = null;
-            }
-            vm.workType = workType;
-        }
 
         function activate () {
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isAtlAdmin = authService.isAtlAdmin();
-            vm.atls = [];
-            vm.workType = 'atl';
-        }
-
-        function activateAtl (atl) {
-            vm.workType = 'atl';
-            vm.activeAtl = atl;
-        }
-
-        function loadData () {
-            return commonService.getAtls()
-                .then(function (data) {
-                    vm.atls = data.atls;
-                });
+            if (angular.isUndefined(vm.workType)) {
+                vm.workType = 'atl';
+            }
         }
 
         function createAtl () {
@@ -76,11 +54,11 @@
                     isChplAdmin: function () { return vm.isChplAdmin; },
                 },
             });
-            vm.modalInstance.result.then(function () {
-                vm.activate();
+            vm.modalInstance.result.then(function (result) {
+                vm.activeAtl = result;
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug(result);
+                    $log.info(result);
                 }
             });
         }
@@ -103,30 +81,13 @@
                 if (result !== 'deleted') {
                     vm.activeAtl = result;
                 } else {
-                    vm.activate();
+                    vm.activeAtl = null;
                 }
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug(result);
+                    $log.info(result);
                 }
             });
         }
-
-        vm.cancelATL = function () {
-            vm.loadData();
-        };
-
-        vm.deleteATL = function (atl) {
-            commonService.deleteATL(atl.id)
-                .then(function () {
-                    vm.activate();
-                });
-        };
-
-        vm.addressRequired = function (atl) {
-            if (atl) {
-                return commonService.addressRequired(atl.address);
-            }
-        };
     }
 })();

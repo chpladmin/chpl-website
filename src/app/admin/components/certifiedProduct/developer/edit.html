@@ -11,8 +11,9 @@
   <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
       <label for="developerName">Developer Name <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName" name="developerName"></input>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName" name="developerName" ng-maxlength="300"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerName.$touched) && vm.editForm.developerName.$error.required">Developer name is required</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerName.$touched) && vm.editForm.developerName.$error.maxlength">Developer name is too long</div>
     </div>
     <div>
       <strong>Developer Code: </strong>{{ vm.developer.developerCode }}
@@ -89,27 +90,32 @@
     </div>
     <div class="form-group">
       <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" name="addressLine1"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" ng-maxlength="250"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressLine1.$touched) && vm.editForm.addressLine1.$error.required">Field is required</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressLine1.$touched) && vm.editForm.addressLine1.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
       <label for="addressLine2">Address Line 2</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="addressLine2"></input>
+      <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="addressLine2" name="addressLine2" ng-maxlength="250"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressLine2.$touched) && vm.editForm.addressLine2.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
       <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity" ng-maxlength="250"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressCity.$touched) && vm.editForm.addressCity.$error.required">Field is required</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressCity.$touched) && vm.editForm.addressCity.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
       <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState" ng-maxlength="250"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressState.$touched) && vm.editForm.addressState.$error.required">Field is required</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressState.$touched) && vm.editForm.addressState.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
       <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode"></input>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode" ng-maxlength="25"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressZipcode.$touched) && vm.editForm.addressZipcode.$error.required">Field is required</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressZipcode.$touched) && vm.editForm.addressZipcode.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
       <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
@@ -118,8 +124,9 @@
     </div>
     <div class="form-group">
       <label for="developerWebsite">Website</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite" placeholder="http://www.example.com"></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite" placeholder="http://www.example.com" ng-maxlength="300"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerWebsite.$touched) && vm.editForm.developerWebsite.$error.url">Website is invalid</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerWebsite.$touched) && vm.editForm.developerWebsite.$error.maxlength">Website is too long</div>
     </div>
     <div class="form-group" ng-if="vm.isAcbAdmin" ng-repeat="acb in vm.activeAcbs | orderBy:'toString()'">
       <label for="developerTransparency{{acb}}">{{ acb }} Transparency Attestation</label>
@@ -137,16 +144,23 @@
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.developerName.$error.required">Developer name is required</li>
+        <li ng-if="vm.editForm.developerName.$error.maxlength">Developer name is too long</li>
         <li ng-if="!vm.developer.statusEvents || vm.developer.statusEvents.length === 0">Developer must have a status</li>
         <li ng-if="vm.isMissingRequiredFields()">Developer status is required</li>
         <li ng-if="vm.hasStatusMatches()">Developer status must not repeat</li>
         <li ng-if="vm.hasDateMatches()">Only one change of status allowed per day</li>
         <li ng-if="vm.editForm.addressLine1.$error.required">Address Line 1 is required</li>
+        <li ng-if="vm.editForm.addressLine1.$error.maxlength">Address Line 1 is too long</li>
+        <li ng-if="vm.editForm.addressLine2.$error.maxlength">Address Line 2 is too long</li>
         <li ng-if="vm.editForm.addressCity.$error.required">City is required</li>
+        <li ng-if="vm.editForm.addressCity.$error.maxlength">City is too long</li>
         <li ng-if="vm.editForm.addressState.$error.required">State is required</li>
+        <li ng-if="vm.editForm.addressState.$error.maxlength">State is too long</li>
         <li ng-if="vm.editForm.addressZipcode.$error.required">Zipcode is required</li>
+        <li ng-if="vm.editForm.addressZipcode.$error.maxlength">Zipcode is too long</li>
         <li ng-if="vm.editForm.addressCountry.$error.required">Country is required</li>
         <li ng-if="vm.editForm.developerWebsite.$error.url">Website is invalid (http://www.example.com)</li>
+        <li ng-if="vm.editForm.developerWebsite.$error.maxlength">Website is too long</li>
         <li ng-repeat="error in vm.contactErrorMessages">{{ error }}</li>
       </ul>
     </div>

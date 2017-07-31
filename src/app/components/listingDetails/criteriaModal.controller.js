@@ -42,9 +42,10 @@
             if (!array) {
                 array = [];
             }
-            if (object && object !== {}) {
+            if (object && !angular.equals(object, {})) {
                 array.push(angular.copy(object));
             }
+            return array;
         }
 
         function addTask () {
@@ -61,13 +62,13 @@
                 },
             });
             vm.editUibModalInstance.result.then(function (result) {
-                if (vm.cert.testTasks === null) {
+                if (!vm.cert.testTasks || vm.cert.testTasks === null) {
                     vm.cert.testTasks = [];
                 }
                 vm.cert.testTasks.push(result);
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                 }
             });
         }
@@ -93,7 +94,7 @@
                 vm.cert.testTasks[idx] = result;
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                 }
             });
         }

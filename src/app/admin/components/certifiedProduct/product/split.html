@@ -15,15 +15,17 @@
       </div>
       <label class="col-md-2" for="productName">New Product Name</label>
       <div class="col-md-4">
-        <input class="input-sm form-control" type="text" ng-model="vm.splitProduct.newProductName" id="productName" name="productName" required></input>
+        <input class="input-sm form-control" type="text" ng-model="vm.splitProduct.newProductName" id="productName" name="productName" required ng-maxlength="300"></input>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.splitForm.productName.$touched) && vm.splitForm.productName.$error.required">Product name is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.splitForm.productName.$touched) && vm.splitForm.productName.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
       <label class="col-md-2 col-md-offset-6" for="productCode">New Product Code</label>
       <div class="col-md-4">
-        <input class="input-sm form-control" type="text" ng-model="vm.splitProduct.newProductCode" id="productCode" name="productCode" required></input>
+        <input class="input-sm form-control" type="text" ng-model="vm.splitProduct.newProductCode" id="productCode" name="productCode" ng-pattern="/^[A-Za-z0-9_]{4}$/" required></input>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.splitForm.productCode.$touched) && vm.splitForm.productCode.$error.required">Product code is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.splitForm.productCode.$touched) && !vm.splitForm.productCode.$error.required && !vm.splitForm.productCode.$valid">Product Code must consist of letters, numbers and/or "_", and be 4 characters long</div>
       </div>
     </div>
     <div class="form-group">
