@@ -64,6 +64,7 @@
         vm.clearFilter = clearFilter;
         vm.filterChanged = filterChanged;
         vm.restoreState = restoreState;
+        vm.storeState = storeState;
 
         ////////////////////////////////////////////////////////////////////
 
@@ -88,7 +89,7 @@
             vm.promise = $timeout(function () {
                 vm.tableCtrl.search(query, vm.predicate);
                 if (vm.nameSpace) {
-                    $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+                    vm.storeState();
                 }
                 vm.promise = null;
             }, vm.throttle);
@@ -101,6 +102,10 @@
                 vm.hasChanges = predicateSearch.length > 0;
                 vm.filterChanged();
             }
+        }
+
+        function storeState () {
+            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
         }
     }
 })();

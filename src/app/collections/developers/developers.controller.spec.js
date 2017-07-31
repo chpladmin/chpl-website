@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.collections.developers.controller', function () {
+    describe('the Developer Collection controller', function () {
 
         var $log, commonService, scope, vm;
 
@@ -33,6 +33,13 @@
 
         it('should exist', function () {
             expect(vm).toBeDefined();
+        });
+
+        describe('transformation function', function () {
+            it('should join data with "<br />"s', function () {
+                var data = [1,2,3];
+                expect(vm._acbTransform(data)).toBe('1<br />2<br />3');
+            });
         });
     });
 })();
