@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.3.0
+_31 July 2017_
 
 ### New features
 * Added "certification status" to filter for API Doc collection
