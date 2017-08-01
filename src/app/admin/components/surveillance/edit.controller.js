@@ -10,8 +10,8 @@
 
         vm.addRequirement = addRequirement;
         vm.cancel = cancel;
-        vm.deleteSurveillance = deleteSurveillance;
         vm.deleteRequirement = deleteRequirement;
+        vm.deleteSurveillance = deleteSurveillance;
         vm.editRequirement = editRequirement;
         vm.inspectNonconformities = inspectNonconformities;
         vm.isAcbAdmin = authService.isAcbAdmin;
@@ -48,7 +48,7 @@
             vm.showFormErrors = false;
             vm.data = surveillanceTypes;
             if (vm.surveillance.type) {
-                vm.surveillance.type = findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
+                vm.surveillance.type = utilService.findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
             }
         }
 
@@ -82,6 +82,14 @@
 
         function cancel () {
             $uibModalInstance.dismiss('cancelled');
+        }
+
+        function deleteRequirement (req) {
+            for (var i = 0; i < vm.surveillance.requirements.length; i++) {
+                if (angular.equals(vm.surveillance.requirements[i],req)) {
+                    vm.surveillance.requirements.splice(i,1);
+                }
+            }
         }
 
         function deleteSurveillance () {
@@ -130,14 +138,6 @@
             }, function (result) {
                 $log.info(result);
             });
-        }
-
-        function deleteRequirement (req) {
-            for (var i = 0; i < vm.surveillance.requirements.length; i++) {
-                if (angular.equals(vm.surveillance.requirements[i],req)) {
-                    vm.surveillance.requirements.splice(i,1);
-                }
-            }
         }
 
         function inspectNonconformities (noncons) {
@@ -228,17 +228,6 @@
                         }
                     });
             }
-        }
-
-        ////////////////////////////////////////////////////////////////////
-
-        function findModel (id, array) {
-            for (var i = 0; i < array.length; i++) {
-                if (id.id === array[i].id) {
-                    id = array[i];
-                }
-            }
-            return id;
         }
     }
 })();

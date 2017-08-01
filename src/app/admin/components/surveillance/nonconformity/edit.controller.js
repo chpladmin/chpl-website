@@ -27,10 +27,10 @@
             vm.surveillanceId = surveillanceId;
             vm.workType = workType;
             if (vm.nonconformity.nonconformityType) {
-                vm.nonconformity.nonconformityType = findModel(vm.nonconformity.nonconformityType, vm.data.nonconformityTypes.data);
+                vm.nonconformity.nonconformityType = utilService.findModel(vm.nonconformity.nonconformityType, vm.data.nonconformityTypes.data);
             }
             if (vm.nonconformity.status) {
-                vm.nonconformity.status = findModel(vm.nonconformity.status, vm.data.nonconformityStatusTypes.data);
+                vm.nonconformity.status = utilService.findModel(vm.nonconformity.status, vm.data.nonconformityStatusTypes.data);
             }
             if (vm.nonconformity.dateOfDetermination) {
                 vm.nonconformity.dateOfDeterminationObject = new Date(vm.nonconformity.dateOfDetermination);
@@ -120,15 +120,6 @@
             vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
                 $log.info('onCancelItem', fileItem, response, status, headers);
             };
-        }
-
-        function findModel (id, array) {
-            for (var i = 0; i < array.length; i++) {
-                if (id.id === array[i].id) {
-                    id = array[i];
-                }
-            }
-            return id;
         }
     }
 })();

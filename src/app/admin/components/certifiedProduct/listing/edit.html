@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
           <label for="idIcs" class="sr-only">ICS Code:</label>
-          <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2"  required></input>
+          <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required></input>
         </div>
         <span class="form-control-static">
           {{ vm.idFields.suffix }}
@@ -35,9 +35,8 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idVer.$touched) && vm.editForm.idVer.$error.required">Version Code is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idVer.$touched) && !vm.editForm.idVer.$error.required && !vm.editForm.idVer.$valid">Version Code must consist of letters, numbers and/or "_", and be 2 characters long</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.editForm.idIcs.$error.required">ICS Code is required</div>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">ICS Code must be a single number from 0 to 9</div>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.cp.ics.inherits && vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.requiredIcsCode() < 10 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</div>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.cp.ics.inherits && vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 9 && vm.cp.ics.parents.length > 0">This Listing has reached the maximum inheritance. Please contact the CHPL team for further assistance</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">ICS Code must be a two digit single number from 00 to 99</div>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.idIcs.$touched) && vm.cp.ics.inherits && vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</div>
     </div>
     <div ng-if="!vm.idFields">
       <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
@@ -309,7 +308,7 @@
         <li ng-if="vm.editForm.idProd.$error.required">CHPL Product Number Product Code is required</li>
         <li ng-if="vm.editForm.idVer && !vm.editForm.idVer.$error.required && !vm.editForm.idVer.$valid">CHPL Product Number Version Code must consist of letters, numbers and/or "_", and be 2 characters long</li>
         <li ng-if="vm.editForm.idVer.$error.required">CHPL Product Number Version Code is required</li>
-        <li ng-if="vm.editForm.idIcs && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">CHPL Product Number ICS Code must be a single number from 0 to 9</li>
+        <li ng-if="vm.editForm.idIcs && !vm.editForm.idIcs.$error.required && !vm.editForm.idIcs.$valid">CHPL Product Number ICS Code must be a two digit single number from 00 to 99</li>
         <li ng-if="vm.editForm.idIcs.$error.required">CHPL Product Number ICS Code is required</li>
         <li ng-if="vm.editForm.cpPractice.$error.required">Practice Type is required</li>
         <li ng-if="vm.editForm.cpClassification.$error.required">Classification Type is required</li>
@@ -323,8 +322,7 @@
         <li ng-if="vm.editForm.cpReportFileLoc.$error.maxlength">Report File Locaiton URL is too long</li>
         <li ng-if="vm.editForm.cpSedReportFileLoc.$error.url">SED Report File Location URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpSedReportFileLoc.$error.maxlength">SED Report File Location URL is too long</li>
-        <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.requiredIcsCode() < 10 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</li>
-        <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 9 && vm.cp.ics.parents.length > 0">This Listing has reached the maximum inheritance. Please contact the CHPL team for further assistance</li>
+        <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</li>
       </ul>
     </div>
     <div class="text-left text-warning" ng-if="vm.showFormErrors && vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0">

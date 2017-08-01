@@ -10,11 +10,11 @@
 
         vm.cert = cert;
 
-        vm.addNewValue = addNewValue;
+        vm.addNewValue = utilService.addNewValue;
         vm.addTask = addTask;
         vm.cancel = cancel;
         vm.editTask = editTask;
-        vm.extendSelect = extendSelect;
+        vm.extendSelect = utilService.extendSelect;
         vm.isToolAvailable = isToolAvailable;
         vm.save = save;
         vm.removeTask = removeTask;
@@ -36,16 +36,6 @@
             vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0;
             vm.hasIcs = hasIcs;
             vm.resources = resources;
-        }
-
-        function addNewValue (array, object) {
-            if (!array) {
-                array = [];
-            }
-            if (object && !angular.equals(object, {})) {
-                array.push(angular.copy(object));
-            }
-            return array;
         }
 
         function addTask () {
@@ -97,10 +87,6 @@
                     $log.info('dismissed', result);
                 }
             });
-        }
-
-        function extendSelect (options, value) {
-            options = utilService.extendSelect(options, value);
         }
 
         function isToolAvailable (tool) {

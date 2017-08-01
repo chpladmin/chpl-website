@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Updated Products: Corrective Action Collection
+* Change ICS Code validation to require two digits
 
 ---
 
