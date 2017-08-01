@@ -10,8 +10,8 @@
 
         vm.addRequirement = addRequirement;
         vm.cancel = cancel;
-        vm.deleteSurveillance = deleteSurveillance;
         vm.deleteRequirement = deleteRequirement;
+        vm.deleteSurveillance = deleteSurveillance;
         vm.editRequirement = editRequirement;
         vm.inspectNonconformities = inspectNonconformities;
         vm.isAcbAdmin = authService.isAcbAdmin;
@@ -84,6 +84,14 @@
             $uibModalInstance.dismiss('cancelled');
         }
 
+        function deleteRequirement (req) {
+            for (var i = 0; i < vm.surveillance.requirements.length; i++) {
+                if (angular.equals(vm.surveillance.requirements[i],req)) {
+                    vm.surveillance.requirements.splice(i,1);
+                }
+            }
+        }
+
         function deleteSurveillance () {
             commonService.deleteSurveillance(vm.surveillance.id)
                 .then(function (response) {
@@ -130,14 +138,6 @@
             }, function (result) {
                 $log.info(result);
             });
-        }
-
-        function deleteRequirement (req) {
-            for (var i = 0; i < vm.surveillance.requirements.length; i++) {
-                if (angular.equals(vm.surveillance.requirements[i],req)) {
-                    vm.surveillance.requirements.splice(i,1);
-                }
-            }
         }
 
         function inspectNonconformities (noncons) {
