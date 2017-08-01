@@ -43,7 +43,7 @@
             scope.$on('$destroy', allowAll);
             var clearFilter = scope.registerClearFilter({
                 clearFilter: function () {
-                    ctrl.clearSurveillanceActivityFilter();
+                    ctrl.clearFilter();
                 },
             });
             scope.$on('$destroy', clearFilter);
@@ -63,9 +63,10 @@
 
         vm.activate = activate;
         vm.allowAll = allowAll;
-        vm.clearSurveillanceActivityFilter = clearSurveillanceActivityFilter;
+        vm.clearFilter = clearFilter;
         vm.filterChanged = filterChanged;
         vm.restoreState = restoreState;
+        vm.storeState = storeState;
 
         ////////////////////////////////////////////////////////////////////
 
@@ -80,37 +81,55 @@
             vm.filterChanged();
         }
 
-        function clearSurveillanceActivityFilter () {
+        function clearFilter () {
             reset();
             vm.filterChanged();
         }
 
-        function filterChanged (initialLoad) {
+        function filterChanged () {
             vm.hasChanges = false;
             var tableState = vm.tableCtrl.tableState();
+            var events = [];
             if (tableState.search.predicateObject.surveillance) {
                 delete tableState.search.predicateObject.surveillance;
             }
             if (vm.initialState) {
-                vm.hasChanges = vm.hasChanges || (vm.query.surveillance !== vm.initialState.surveillance);
-                vm.hasChanges = vm.hasChanges || (vm.query.NC.never !== vm.initialState.NC.never);
-                vm.hasChanges = vm.hasChanges || (vm.query.NC.open !== vm.initialState.NC.open);
-                vm.hasChanges = vm.hasChanges || (vm.query.NC.closed !== vm.initialState.NC.closed);
-                vm.hasChanges = vm.hasChanges || (vm.query.matchAll !== vm.initialState.matchAll);
+                if (vm.query.surveillance !== vm.initialState.surveillance) {
+                    if (vm.query.surveillance === 'never') { events.push('Never Surveilled') }
+                    else if (vm.query.surveillance === 'has-had') { events.push('Has had Surveillance') }
+                    else { events.push('Cleared Surveillance') }
+                }
+                if (vm.query.NC.never !== vm.initialState.NC.never) {
+                    if (vm.query.NC.never) { events.push('Never had a Nonconformity') }
+                    else { events.push('Cleared Never had a Nonconformity') }
+                }
+                if (vm.query.NC.open !== vm.initialState.NC.open) {
+                    if (vm.query.NC.open) { events.push('Open Nonconformity') }
+                    else { events.push('Cleared Open Nonconformity') }
+                }
+                if (vm.query.NC.closed !== vm.initialState.NC.closed) {
+                    if (vm.query.NC.closed) { events.push('Closed Nonconformity') }
+                    else { events.push('Cleared Closed Nonconformity') }
+                }
+                if (vm.query.matchAll !== vm.initialState.matchAll) {
+                    if (vm.query.matchAll) { events.push('Matching All') }
+                    else if (vm.query.matchAll === false) { events.push('Matching Any') }
+                    else { events.push('Cleared Match All') }
+                }
+                vm.hasChanges = (events.length > 0);
             } else if (vm.query.surveillance || vm.query.NC.never || vm.query.NC.open || vm.query.NC.closed || vm.query.matchAll) {
                 vm.hasChanges = true;
-                if (!initialLoad) {
-                    var events = [];
-                    if (vm.query.surveillance && vm.query.surveillance === 'never') { events.push('Never Surveilled'); }
-                    else {
-                        if (vm.query.surveillance && vm.query.surveillance === 'has-had') { events.push('Has had Surveillance'); }
-                        if (vm.query.NC.never) { events.push('Never had a Nonconformity'); }
-                        if (vm.query.NC.open) { events.push('Open Nonconformity'); }
-                        if (vm.query.NC.closed) { events.push('Closed Nonconformity'); }
-                        if (vm.query.NC.matchAll) { events.push('Matching All'); }
-                    }
-                    $analytics.eventTrack('Surveillance Filter', { category: 'Search', label: events.join(',') });
+                if (vm.query.surveillance && vm.query.surveillance === 'never') { events.push('Never Surveilled'); }
+                else {
+                    if (vm.query.surveillance && vm.query.surveillance === 'has-had') { events.push('Has had Surveillance'); }
+                    if (vm.query.NC.never) { events.push('Never had a Nonconformity'); }
+                    if (vm.query.NC.open) { events.push('Open Nonconformity'); }
+                    if (vm.query.NC.closed) { events.push('Closed Nonconformity'); }
+                    if (vm.query.NC.matchAll) { events.push('Matching All'); }
                 }
+            }
+            if (vm.hasChanges) {
+                $analytics.eventTrack('Surveillance Filter', { category: 'Search', label: events.join(',') });
             }
             if (vm.initialState || vm.hasChanges) {
                 vm.tableCtrl.search(vm.query, 'surveillance');
@@ -119,15 +138,19 @@
                 vm.tableCtrl.search();
             }
             if (vm.nameSpace) {
-                $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
+                vm.storeState();
             }
         }
 
         function restoreState (state) {
             vm.query = state.search.predicateObject.surveillance;
             if (vm.query) {
-                vm.filterChanged(true);
+                vm.filterChanged();
             }
+        }
+
+        function storeState () {
+            $localStorage[vm.nameSpace] = angular.toJson(vm.tableCtrl.tableState());
         }
 
         ////////////////////////////////////////////////////////////////////

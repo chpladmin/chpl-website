@@ -82,7 +82,7 @@
             var query = vm.element[0].value;
             vm.hasChanges = query.length > 0;
 
-            if (vm.promise !== null) {
+            if (vm.promise) {
                 $timeout.cancel(vm.promise);
             }
 
