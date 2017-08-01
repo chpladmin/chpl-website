@@ -8,26 +8,26 @@
 
         beforeEach(function () {
             module('chpl.templates', 'chpl');
+
+            inject(function (_$analytics_, _$compile_, $controller, _$localStorage_, _$log_, $rootScope) {
+                $analytics = _$analytics_;
+                $compile = _$compile_;
+                $localStorage = _$localStorage_;
+                delete($localStorage[stateKey]);
+                $log = _$log_;
+
+                el = angular.element('<div st-table><ai-date-range register-clear-filter="cfFun" register-restore-state="rsFun"></ai-date-range></div>');
+                scope = $rootScope.$new();
+                scope.cfFun = jasmine.createSpy('clearFilter');
+                scope.rsFun = jasmine.createSpy('restoreState');
+                $compile(el)(scope);
+
+                vm = $controller('AiDateRangeController', {
+                    '$scope': scope,
+                });
+                scope.$digest();
+            })
         });
-
-        beforeEach(inject(function (_$analytics_, _$compile_, $controller, _$localStorage_, _$log_, $rootScope) {
-            $analytics = _$analytics_;
-            $compile = _$compile_;
-            $localStorage = _$localStorage_;
-            delete($localStorage[stateKey]);
-            $log = _$log_;
-
-            el = angular.element('<div st-table><ai-date-range register-clear-filter="cfFun" register-restore-state="rsFun"></ai-date-range></div>');
-            scope = $rootScope.$new();
-            scope.cfFun = jasmine.createSpy('clearFilter');
-            scope.rsFun = jasmine.createSpy('restoreState');
-            $compile(el)(scope);
-
-            vm = $controller('AiDateRangeController', {
-                '$scope': scope,
-            });
-            scope.$digest();
-        }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
@@ -89,12 +89,12 @@
                         };
                     });
 
-                    it('should trigger a filteChanged event', function () {
+                    it('should trigger a filterChanged event', function () {
                         vm.restoreState(state);
                         expect(vm.filterChanged).toHaveBeenCalled();
                     });
 
-                    it('should not trigger a filteChanged event if there\'s no stored predicate', function () {
+                    it('should not trigger a filterChanged event if there\'s no stored predicate', function () {
                         state.search.predicateObject = {};
                         vm.restoreState(state);
                         expect(vm.filterChanged).not.toHaveBeenCalled();

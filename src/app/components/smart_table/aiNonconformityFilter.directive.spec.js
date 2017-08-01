@@ -96,7 +96,7 @@
                         };
                     });
 
-                    it('should trigger a filteChanged event', function () {
+                    it('should trigger a filterChanged event', function () {
                         vm.restoreState(state);
                         expect(vm.filterChanged).toHaveBeenCalled();
                     });
