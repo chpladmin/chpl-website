@@ -157,11 +157,11 @@
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
             case 'bannedDevelopers':
                 return simpleApiCall('/decertifications/developers');
+            case 'correctiveAction':
+                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
             case 'decertifiedProducts':
             case 'inactiveCertificates':
                 return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
-            case 'nonconformities':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
             case 'transparencyAttestations':
                 return simpleApiCall('/collections/developers/');
                 //no default

@@ -46,7 +46,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -101,7 +103,6 @@
                     criteriaOptions: {},
                 }});
                 expect(actualOptions.resolve.workType()).toEqual('confirm');
-                scope.$digest();
             });
 
             it('should do stuff with the returned data', function () {
@@ -117,6 +118,32 @@
                 vm.editModalInstance.dismiss('not cancelled');
                 expect($log.info.logs.length).toBe(logCount + 1);
             });
+
+            it('should not log a cancelled modal', function () {
+                var logCount = $log.info.logs.length;
+                vm.editSurveillance();
+                vm.editModalInstance.dismiss('cancelled');
+                expect($log.info.logs.length).toBe(logCount);
+            });
+
+            it('should pass in only the appropriate edition of requirements', function () {
+                vm.surveillanceTypes = {
+                    surveillanceRequirements: {
+                        criteriaOptions2014: [2014],
+                        criteriaOptions2015: [2015],
+                    },
+                };
+                vm.surveillance.certifiedProduct.edition = '2011';
+                vm.editSurveillance();
+                expect(vm.surveillanceTypes.surveillanceRequirements.criteriaOptions).toEqual();
+                vm.surveillance.certifiedProduct.edition = '2015';
+                vm.editSurveillance();
+                expect(vm.surveillanceTypes.surveillanceRequirements.criteriaOptions).toEqual([2015]);
+                vm.surveillance.certifiedProduct.edition = '2014';
+                vm.editSurveillance();
+                expect(vm.surveillanceTypes.surveillanceRequirements.criteriaOptions).toEqual([2014]);
+            });
+
         });
 
         describe('when confirming or rejecting', function () {
@@ -160,6 +187,13 @@
                 expect(vm.errorMessages).toEqual([1,2]);
             });
 
+            it('should have error messages as statusText if confirmation fails', function () {
+                commonService.confirmPendingSurveillance.and.returnValue($q.reject({statusText: 'an error', data: {}}));
+                vm.confirm();
+                scope.$digest();
+                expect(vm.errorMessages).toEqual(['an error']);
+            });
+
             it('should dismiss the modal with the contact if the pending surveillance was already resolved on confirm', function () {
                 var contact = {name: 'person'};
                 commonService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
@@ -182,6 +216,44 @@
                     objectId: 1,
                     status: 'resolved',
                 });
+            });
+        });
+
+        describe('when inspecting nonconformities', function () {
+            var modalOptions;
+            beforeEach(function () {
+                modalOptions = {
+                    templateUrl: 'app/admin/components/surveillance/nonconformity/inspect.html',
+                    controller: 'NonconformityInspectController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'lg',
+                    resolve: {
+                        nonconformities: jasmine.any(Function),
+                    },
+                };
+            });
+
+            it('should create a modal instance', function () {
+                expect(vm.modalInstance).toBeUndefined();
+                vm.inspectNonconformities();
+                expect(vm.modalInstance).toBeDefined();
+            });
+
+            it('should resolve elements on that modal', function () {
+                var noncons = [1,2,3];
+                vm.inspectNonconformities(noncons);
+                expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.nonconformities()).toEqual(noncons);
+            });
+
+            it('should log a non-closed modal', function () {
+                var logCount = $log.info.logs.length;
+                vm.inspectNonconformities();
+                vm.modalInstance.dismiss('string');
+                expect($log.info.logs.length).toBe(logCount + 1);
             });
         });
     });

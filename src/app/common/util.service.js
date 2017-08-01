@@ -5,11 +5,13 @@
         .factory('utilService', utilService);
 
     /** @ngInject */
-    function utilService (Blob, FileSaver) {
+    function utilService ($log, Blob, FileSaver) {
         var service = {
+            addNewValue: addNewValue,
             arrayCompare: arrayCompare,
             arrayToCsv: arrayToCsv,
             extendSelect: extendSelect,
+            findModel: findModel,
             makeCsv: makeCsv,
             sortCert: sortCert,
             sortCqm: sortCqm,
@@ -20,6 +22,16 @@
         return service;
 
         ////////////////////////////////////////////////////////////////////
+
+        function addNewValue (array, object) {
+            if (!array) {
+                array = [];
+            }
+            if (object && !angular.equals(object, {})) {
+                array.push(angular.copy(object));
+            }
+            return array;
+        }
 
         function arrayCompare (before, after, key) {
             var ret = {
@@ -107,6 +119,16 @@
                 options.push(newValue);
             }
             return options;
+        }
+
+        function findModel (id, array) {
+            for (var i = 0; i < array.length; i++) {
+                if (id.id === array[i].id) {
+                    id = array[i];
+                    return id;
+                }
+            }
+            return id;
         }
 
         function makeCsv (data) {
