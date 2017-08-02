@@ -198,8 +198,8 @@
 
                 it('should expect the code to be 10 if two parents and parents have ICS 04,09', function () {
                     vm.cp.ics.parents = [
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.04.1.170331'},
                         {chplProductNumber: '15.07.07.2713.CQ01.02.09.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.04.1.170331'},
                     ];
                     expect(vm.requiredIcsCode()).toBe('10');
                 });
