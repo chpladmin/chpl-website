@@ -1,7 +1,7 @@
 <div role="modal" aria-labeled-by="editLabel">
   <div class="modal-header">
-    <button type="button" class="close pull-right" aria-label="Cancel edits"
-            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+    <button type="button" class="close pull-right" aria-label="Cancel"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
@@ -63,24 +63,22 @@
             ng-mouseover="vm.showFormErrors = true"
             ng-if="vm.action === 'create'"
             ng-click="vm.create()"><i class="fa fa-save"></i> Create announcement</button>
-    <span ng-if="!vm.announcement.isDeleted">
-      <button ng-disabled="(vm.editForm.$invalid || vm.datesInvalid()) && vm.showFormErrors" class="btn btn-ai-success btn-block"
-              ng-mouseover="vm.showFormErrors = true"
-              ng-if="vm.action === 'edit'"
-              ng-click="vm.save()"><i class="fa fa-save"></i> Save announcement</button>
-      <button class="btn btn-warning btn-block"
-              confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
-              confirm-ok="Yes"
-              confirm-cancel="No"
-              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
-      <button class="btn btn-danger btn-block"
-              ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.announcement.isDeleted"
-              confirm="Are you sure you wish to delete this announcement?"
-              confirm-ok="Yes"
-              confirm-cancel="No"
-              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="vm.deleteAnnouncement()"><i class="fa fa-trash-o"></i> Delete announcement</button>
-    </span>
+    <button ng-disabled="(vm.editForm.$invalid || vm.datesInvalid()) && vm.showFormErrors" class="btn btn-ai-success btn-block"
+            ng-mouseover="vm.showFormErrors = true"
+            ng-if="vm.action === 'edit'"
+            ng-click="vm.save()"><i class="fa fa-save"></i> Save announcement</button>
+    <button class="btn btn-danger btn-block"
+            ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.announcement.isDeleted"
+            confirm="Are you sure you wish to delete this announcement?"
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.deleteAnnouncement()"><i class="fa fa-trash-o"></i> Delete announcement</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
   </div>
 </div>

@@ -3,27 +3,27 @@
 
     angular.module('chpl.admin')
         .controller('AnnouncementsController', AnnouncementsController)
-        .directive('aiAnnouncementsManagement', function () {
-            return {
-                restrict: 'E',
-                replace: true,
-                templateUrl: 'app/admin/components/announcements/view.html',
-                scope: {},
-                bindToController: {
-                    admin: '=',
-                },
-                controllerAs: 'vm',
-                controller: 'AnnouncementsController',
-            };
-        });
+        .directive('aiAnnouncementsManagement', aiAnnouncementsManagement);
 
     /** @ngInject */
-    function AnnouncementsController ($log, $uibModal, authService, commonService) {
+    function aiAnnouncementsManagement () {
+        return {
+            controller: 'AnnouncementsController',
+            controllerAs: 'vm',
+            replace: true,
+            restrict: 'E',
+            scope: {},
+            templateUrl: 'app/admin/components/announcements/view.html',
+        };
+    }
+
+    /** @ngInject */
+    function AnnouncementsController ($log, $uibModal, commonService) {
         var vm = this;
 
-        vm.loadAnnouncements = loadAnnouncements;
         vm.create = create;
         vm.edit = edit;
+        vm.loadAnnouncements = loadAnnouncements;
 
         activate();
 
@@ -31,21 +31,10 @@
 
         function activate () {
             vm.loadAnnouncements();
-            vm.isChplAdmin = authService.isChplAdmin();
-            vm.errorMessage = '';
-        }
-
-        function loadAnnouncements () {
-            commonService.getAnnouncements(true)
-                .then(function (result) {
-                    vm.announcements = result.announcements;
-                }, function (error) {
-                    $log.debug('error in app.admin.announcement.controller.loadAnnouncements', error);
-                });
         }
 
         function create () {
-            vm.editModalInstance = $uibModal.open({
+            vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/announcements/edit.html',
                 controller: 'AnnouncementEditController',
                 controllerAs: 'vm',
@@ -55,25 +44,24 @@
                 resolve: {
                     announcement: function () {return {}; },
                     action: function () { return 'create'; },
-                    authService: function () { return authService; },
                 },
             });
-            vm.editModalInstance.result.then(function (result) {
-                if (!vm.announcement) {
-                    vm.announcement = [];
+            vm.modalInstance.result.then(function (result) {
+                if (!vm.announcements) {
+                    vm.announcements = [];
                 }
                 vm.announcements.push(result);
                 vm.errorMessage = '';
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                     vm.errorMessage = result;
                 }
             });
         }
 
         function edit (a, index) {
-            vm.editModalInstance = $uibModal.open({
+            vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/announcements/edit.html',
                 controller: 'AnnouncementEditController',
                 controllerAs: 'vm',
@@ -83,22 +71,30 @@
                 resolve: {
                     announcement: function () { return a; },
                     action: function () { return 'edit'; },
-                    authService: function () { return authService; },
                 },
             });
-            vm.editModalInstance.result.then(function (result) {
+            vm.modalInstance.result.then(function (result) {
                 if (result === 'deleted') {
-                    vm.loadAnnouncements();
+                    vm.announcements.splice(index, 1);
                 } else {
                     vm.announcements[index] = result;
                 }
                 vm.errorMessage = '';
             }, function (result) {
                 if (result !== 'cancelled') {
-                    $log.debug('dismissed', result);
+                    $log.info('dismissed', result);
                     vm.errorMessage = result;
                 }
             });
+        }
+
+        function loadAnnouncements () {
+            commonService.getAnnouncements(true)
+                .then(function (result) {
+                    vm.announcements = result.announcements;
+                }, function (error) {
+                    $log.info('error in app.admin.announcement.controller.loadAnnouncements', error);
+                });
         }
     }
 })();
