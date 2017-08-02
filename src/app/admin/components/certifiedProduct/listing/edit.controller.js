@@ -104,11 +104,8 @@
 
         function requiredIcsCode () {
             var code = -1;
-            var value;
             for (var i = 0; i < vm.cp.ics.parents.length; i++) {
-                value = parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6]);
-                code = Math.max(code, value);
-                $log.debug(vm.cp.ics.parents[i].chplProductNumber.split('.')[6], value, code);
+                code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6], 10));
             }
             code = code + 1;
             return (code > 9 || code < 0) ? '' + code : '0' + code;

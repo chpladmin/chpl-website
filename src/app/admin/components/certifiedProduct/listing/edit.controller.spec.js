@@ -196,12 +196,20 @@
                     expect(vm.requiredIcsCode()).toBe('03');
                 });
 
-                it('should expect the code to be 10 if two parents and parents have ICS 04,09', function () {
+                it('should expect the code to be 10 if two parents and parents have ICS 03,09', function () {
                     vm.cp.ics.parents = [
                         {chplProductNumber: '15.07.07.2713.CQ01.02.09.1.170331'},
-                        {chplProductNumber: '15.07.07.2713.CQ01.02.04.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.03.1.170331'},
                     ];
                     expect(vm.requiredIcsCode()).toBe('10');
+                });
+
+                it('should expect the code to be 18 if two parents and parents have ICS 17,11', function () {
+                    vm.cp.ics.parents = [
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.17.1.170331'},
+                        {chplProductNumber: '15.07.07.2713.CQ01.02.11.1.170331'},
+                    ];
+                    expect(vm.requiredIcsCode()).toBe('18');
                 });
             });
         });
