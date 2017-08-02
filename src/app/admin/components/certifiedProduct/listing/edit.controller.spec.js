@@ -162,9 +162,9 @@
             });
 
             describe('with respect to ics code calculations', function () {
-                it('should expect the code to be -1 if no parents', function () {
+                it('should expect the code to be 00 if no parents', function () {
                     vm.cp.ics.parents = [];
-                    expect(vm.requiredIcsCode()).toBe('-1');
+                    expect(vm.requiredIcsCode()).toBe('00');
                 });
 
                 it('should expect the code to be 1 if one parent and parent has ICS 00', function () {
