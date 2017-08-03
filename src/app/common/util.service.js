@@ -8,6 +8,7 @@
     function utilService ($log, Blob, FileSaver) {
         var service = {
             addNewValue: addNewValue,
+            addressRequired: addressRequired,
             arrayCompare: arrayCompare,
             arrayToCsv: arrayToCsv,
             extendSelect: extendSelect,
@@ -31,6 +32,17 @@
                 array.push(angular.copy(object));
             }
             return array;
+        }
+
+        function addressRequired (address) {
+            if (!address) { return false; }
+            if (address.line1 && address.line1.length > 0) { return true; }
+            if (address.line2 && address.line2.length > 0) { return true; }
+            if (address.city && address.city.length > 0) { return true; }
+            if (address.state && address.state.length > 0) { return true; }
+            if (address.zipcode && address.zipcode.length > 0) { return true; }
+            if (address.country && address.country.length > 0) { return true; }
+            return false;
         }
 
         function arrayCompare (before, after, key) {
@@ -107,18 +119,12 @@
         }
 
         function extendSelect (options, value) {
-            var newValue = { name: value };
-            var addingNew = true;
             for (var i = 0; i < options.length; i++) {
-                if (angular.isUndefined(options[i].id)) {
-                    options[i] = newValue;
-                    addingNew = false;
+                if (options[i].name === value) {
+                    return;
                 }
             }
-            if (addingNew) {
-                options.push(newValue);
-            }
-            return options;
+            options.push({name: value});
         }
 
         function findModel (id, array) {
@@ -167,8 +173,6 @@
         function sortNonconformityTypes (type) {
             if (type.name === 'Other Non-Conformity') {
                 return Number.MAX_VALUE;
-            } else if (type.name === 'Other Requirement') {
-                return 0;
             }
             return sortCert(type);
         }

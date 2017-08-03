@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Developer Merge controller', function () {
-        var $controller, $log, $q, Mock, commonService, mock, scope, vm;
+        var $controller, $log, $q, Mock, commonService, mock, scope, utilService, vm;
 
         mock = {};
         mock.acbs = ['Drummond','ICSA','Infogard'];
@@ -15,12 +15,13 @@
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _commonService_, _utilService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
                 commonService = _commonService_;
                 commonService.updateDeveloper.and.returnValue($q.when({}));
+                utilService = _utilService_;
                 Mock = _Mock_;
                 mock.developers = [].concat(Mock.developers[0]).concat(Mock.developers[1]).concat(Mock.developers[2]).concat(Mock.developers[3]).concat(Mock.developers[4]);
                 mock.developers[0].statusEvents = [{status: {status: 'new'}, statusDate: 'date'}];
@@ -74,10 +75,10 @@
             expect(vm.loadedAsInactiveByOnc).toBe(false);
         });
 
-        it('should farm out address checks to the common service', function () {
-            spyOn(commonService, 'addressRequired');
+        it('should farm out address checks to the utility service', function () {
+            spyOn(utilService, 'addressRequired');
             vm.addressRequired();
-            expect(commonService.addressRequired).toHaveBeenCalledWith(vm.developer.address);
+            expect(utilService.addressRequired).toHaveBeenCalledWith(vm.developer.address);
         });
 
         describe('developer status history', function () {

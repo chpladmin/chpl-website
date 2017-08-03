@@ -5,7 +5,7 @@
         .controller('EditDeveloperController', EditDeveloperController);
 
     /** @ngInject */
-    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, commonService) {
+    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, commonService, utilService) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;
@@ -47,7 +47,7 @@
         }
 
         function addressRequired () {
-            return commonService.addressRequired(vm.developer.address);
+            return utilService.addressRequired(vm.developer.address);
         }
 
         function cancel () {

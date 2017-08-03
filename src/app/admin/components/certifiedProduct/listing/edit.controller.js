@@ -103,11 +103,10 @@
         }
 
         function requiredIcsCode () {
-            var code = -1;
-            for (var i = 0; i < vm.cp.ics.parents.length; i++) {
-                code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6], 10));
-            }
-            code = code + 1;
+            var code = vm.cp.ics.parents
+                .map(function (item) { return parseInt(item.chplProductNumber.split('.')[6], 10); })
+                .reduce(function (max, cur) { return Math.max(max, cur); }, -1)
+                + 1;
             return (code > 9 || code < 0) ? '' + code : '0' + code;
         }
 
