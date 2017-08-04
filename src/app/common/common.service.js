@@ -119,138 +119,118 @@
         ////////////////////////////////////////////////////////////////////
 
         function addRole (payload) {
-            return postApiCall('/users/grant_role', payload);
+            return apiPOST('/users/grant_role', payload);
         }
 
         function authorizeUser (userAuthorization) {
-            return postApiCall('/users/authorize', userAuthorization);
+            return apiPOST('/users/authorize', userAuthorization);
         }
 
         function changePassword (userObj) {
-            return postApiCall('/auth/change_password', userObj);
+            return apiPOST('/auth/change_password', userObj);
         }
 
         function confirmPendingCp (pendingCp) {
-            return postApiCall('/certified_products/pending/confirm', pendingCp);
+            return apiPOST('/certified_products/pending/confirm', pendingCp);
         }
 
         function confirmPendingSurveillance (surveillance) {
-            return postApiCall('/surveillance/pending/confirm', surveillance);
+            return apiPOST('/surveillance/pending/confirm', surveillance);
         }
 
         function confirmUser (userObject) {
-            return postApiCall('/users/confirm', userObject);
+            return apiPOST('/users/confirm', userObject);
         }
 
         function createACB (acb) {
-            return postApiCall('/acbs/create', acb);
+            return apiPOST('/acbs/create', acb);
         }
 
         function createATL (atl) {
-            return postApiCall('/atls/create', atl);
+            return apiPOST('/atls/create', atl);
         }
 
         function createAnnouncement (announcement) {
-            return postApiCall('/announcements/create', announcement);
+            return apiPOST('/announcements/create', announcement);
         }
 
         function createInvitedUser (contactDetails) {
-            return postApiCall('/users/create', contactDetails);
+            return apiPOST('/users/create', contactDetails);
         }
 
         function createRecipient (recipient) {
-            return postApiCall('/notifications/recipients/create', recipient);
+            return apiPOST('/notifications/recipients/create', recipient);
         }
 
         function deleteACB (acbId) {
-            return postApiCall('/acbs/' + acbId + '/delete', {});
+            return apiPOST('/acbs/' + acbId + '/delete', {});
         }
 
         function deleteATL (atlId) {
-            return postApiCall('/atls/' + atlId + '/delete', {});
+            return apiPOST('/atls/' + atlId + '/delete', {});
         }
 
         function deleteAnnouncement (announcementId) {
-            return postApiCall('/announcements/' + announcementId + '/delete', {});
+            return apiPOST('/announcements/' + announcementId + '/delete', {});
         }
 
         function deleteCap (capId) {
-            return postApiCall('/corrective_action_plan/' + capId + '/delete', {});
+            return apiPOST('/corrective_action_plan/' + capId + '/delete', {});
         }
 
         function deleteDoc (docId) {
-            return postApiCall('/corrective_action_plan/documentation/' + docId + '/delete', {});
+            return apiPOST('/corrective_action_plan/documentation/' + docId + '/delete', {});
         }
 
         function deleteRecipient (recipient) {
-            return postApiCall('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
+            return apiPOST('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
         }
 
         function deleteSurveillance (surveillanceId) {
-            return postApiCall('/surveillance/' + surveillanceId + '/delete', {});
+            return apiPOST('/surveillance/' + surveillanceId + '/delete', {});
         }
 
         function deleteSurveillanceDocument (survId, nonconId, docId) {
-            return postApiCall('/surveillance/' + survId + '/nonconformity/' + nonconId + '/document/' + docId + '/delete', {});
+            return apiPOST('/surveillance/' + survId + '/nonconformity/' + nonconId + '/document/' + docId + '/delete', {});
         }
 
         function deleteUser (userId) {
-            return postApiCall('/users/' + userId + '/delete', {});
+            return apiPOST('/users/' + userId + '/delete', {});
         }
 
         function getAcbActivity (activityRange) {
             var call = '/activity/acbs';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getAcbs (editable, deleted) {
             if (angular.isUndefined(deleted)) { deleted = false; }
-            return simpleApiCall('/acbs/?editable=' + editable + '&showDeleted=' + deleted);
+            return apiGET('/acbs/?editable=' + editable + '&showDeleted=' + deleted);
         }
 
         function getAccessibilityStandards () {
-            return simpleApiCall('/data/accessibility_standards');
+            return apiGET('/data/accessibility_standards');
         }
 
         function getAgeRanges () {
-            return simpleApiCall('/data/age_ranges');
+            return apiGET('/data/age_ranges');
         }
 
         function getAll () {
-            return simpleApiCall('/certified_products');
+            return apiGET('/certified_products');
         }
 
         function getAnnouncement (announcementId) {
-            return simpleApiCall('/announcements/' + announcementId);
+            return apiGET('/announcements/' + announcementId);
         }
 
         function getAnnouncementActivity (activityRange) {
             var call = '/activity/announcements';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getAnnouncements (pending) {
-            return simpleApiCall('/announcements/?future=' + pending);
+            return apiGET('/announcements/?future=' + pending);
         }
 
         function getApiActivity (options) {
@@ -268,455 +248,375 @@
                 params.push(tmp);
             }
             if (params.length > 0) { queryParams = '?' + params.join('&'); }
-            return postApiCall('/key/activity/' + queryParams, {});
+            return apiPOST('/key/activity/' + queryParams, {});
         }
 
         function getApiUserActivity (activityRange) {
             var call = '/activity/api_keys';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getApiUsers () {
-            return simpleApiCall('/key/');
+            return apiGET('/key/');
         }
 
         function getAtlActivity (activityRange) {
             var call = '/activity/atls';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getAtls (editable, deleted) {
             if (angular.isUndefined(deleted)) { deleted = false; }
-            return simpleApiCall('/atls/?editable=' + editable + '&showDeleted=' + deleted);
+            return apiGET('/atls/?editable=' + editable + '&showDeleted=' + deleted);
         }
 
         function getCap (certifiedProductId) {
-            return simpleApiCall('/corrective_action_plan/?certifiedProductId=' + certifiedProductId);
+            return apiGET('/corrective_action_plan/?certifiedProductId=' + certifiedProductId);
         }
 
         function getCertBodies () {
-            return simpleApiCall('/data/certification_bodies');
+            return apiGET('/data/certification_bodies');
         }
 
         function getCertificationStatuses () {
-            return simpleApiCall('/data/certification_statuses');
+            return apiGET('/data/certification_statuses');
         }
 
         function getCertifiedProductActivity (activityRange) {
             var call = '/activity/certified_products';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getCmsDownload () {
-            return simpleApiCall('/certification_ids/');
+            return apiGET('/certification_ids/');
         }
 
         function getCollection (type) {
             switch (type) {
             case 'apiDocumentation':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
+                return apiGET('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
             case 'bannedDevelopers':
-                return simpleApiCall('/decertifications/developers');
+                return apiGET('/decertifications/developers');
             case 'correctiveAction':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
+                return apiGET('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
             case 'decertifiedProducts':
             case 'inactiveCertificates':
-                return simpleApiCall('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
+                return apiGET('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
             case 'transparencyAttestations':
-                return simpleApiCall('/collections/developers/');
+                return apiGET('/collections/developers/');
                 //no default
             }
         }
 
         function getDeveloper (developerId) {
-            return simpleApiCall('/developers/' + developerId);
+            return apiGET('/developers/' + developerId);
         }
 
         function getDeveloperActivity (activityRange) {
             var call = '/activity/developers';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getDevelopers (showDeleted) {
             if (showDeleted) {
-                return simpleApiCall('/developers/?showDeleted=true');
+                return apiGET('/developers/?showDeleted=true');
             } else {
-                return simpleApiCall('/developers/');
+                return apiGET('/developers/');
             }
         }
 
         function getEditions () {
-            return simpleApiCall('/data/certification_editions');
+            return apiGET('/data/certification_editions');
         }
 
         function getEducation () {
-            return simpleApiCall('/data/education_types');
+            return apiGET('/data/education_types');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {
-            return simpleApiCall('/meaningful_use/accurate_as_of');
+            return apiGET('/meaningful_use/accurate_as_of');
         }
 
         function getSubscriptionRecipients () {
-            return simpleApiCall('/notifications/recipients');
+            return apiGET('/notifications/recipients');
         }
 
         function getSubscriptionReportTypes () {
-            return simpleApiCall('/data/notification_types');
+            return apiGET('/data/notification_types');
         }
 
         function getPractices () {
-            return simpleApiCall('/data/practice_types');
+            return apiGET('/data/practice_types');
         }
 
         function getProduct (productId) {
-            return simpleApiCall('/certified_products/' + productId + '/details');
+            return apiGET('/certified_products/' + productId + '/details');
         }
 
         function getProductActivity (activityRange) {
             var call = '/activity/products';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getProductsByDeveloper (developerId) {
-            return simpleApiCall('/products/?developerId=' + developerId);
+            return apiGET('/products/?developerId=' + developerId);
         }
 
         function getProductsByVersion (versionId, editable) {
-            return simpleApiCall('/certified_products/?versionId=' + versionId + '&editable=' + editable);
+            return apiGET('/certified_products/?versionId=' + versionId + '&editable=' + editable);
         }
 
         function getQmsStandards () {
-            return simpleApiCall('/data/qms_standards');
+            return apiGET('/data/qms_standards');
         }
 
         function getRelatedListings (productId) {
-            return simpleApiCall('/products/' + productId + '/listings');
+            return apiGET('/products/' + productId + '/listings');
         }
 
         function getSearchOptions (showDeleted) {
             if (showDeleted) {
-                return simpleApiCall('/data/search_options?showDeleted=true');
+                return apiGET('/data/search_options?showDeleted=true');
             } else {
-                return simpleApiCall('/data/search_options');
+                return apiGET('/data/search_options');
             }
         }
 
         function getSimpleProduct (productId) {
-            return simpleApiCall('/products/' + productId);
+            return apiGET('/products/' + productId);
         }
 
         function getSingleCertifiedProductActivity (productId) {
-            return simpleApiCall('/activity/certified_products/' + productId);
+            return apiGET('/activity/certified_products/' + productId);
         }
 
         function getSurveillanceLookups () {
             var data = {};
-            simpleApiCall('/data/surveillance_types')
+            apiGET('/data/surveillance_types')
                 .then(function (response) {
                     data.surveillanceTypes = response;
-                    simpleApiCall('/data/surveillance_requirement_types')
-                        .then(function (response) {
-                            data.surveillanceRequirementTypes = response;
-                            simpleApiCall('/data/surveillance_result_types')
-                                .then(function (response) {
-                                    data.surveillanceResultTypes = response;
-                                    simpleApiCall('/data/nonconformity_status_types')
-                                        .then(function (response) {
-                                            data.nonconformityStatusTypes = response;
-                                            simpleApiCall('/data/surveillance_requirements')
-                                                .then(function (response) {
-                                                    data.surveillanceRequirements = response;
-                                                    simpleApiCall('/data/nonconformity_types')
-                                                        .then(function (response) {
-                                                            data.nonconformityTypes = response;
-                                                        })
-                                                })
-                                        })
-                                })
-                        })
-                })
+                });
+            apiGET('/data/surveillance_requirement_types')
+                .then(function (response) {
+                    data.surveillanceRequirementTypes = response;
+                });
+            apiGET('/data/surveillance_result_types')
+                .then(function (response) {
+                    data.surveillanceResultTypes = response;
+                });
+            apiGET('/data/nonconformity_status_types')
+                .then(function (response) {
+                    data.nonconformityStatusTypes = response;
+                });
+            apiGET('/data/surveillance_requirements')
+                .then(function (response) {
+                    data.surveillanceRequirements = response;
+                });
+            apiGET('/data/nonconformity_types')
+                .then(function (response) {
+                    data.nonconformityTypes = response;
+                });
             return data;
         }
 
         function getTargetedUsers () {
-            return simpleApiCall('/data/targeted_users');
+            return apiGET('/data/targeted_users');
         }
 
         function getTestFunctionality () {
-            return simpleApiCall('/data/test_functionality');
+            return apiGET('/data/test_functionality');
         }
 
         function getTestStandards () {
-            return simpleApiCall('/data/test_standards');
+            return apiGET('/data/test_standards');
         }
 
         function getTestTools () {
-            return simpleApiCall('/data/test_tools');
+            return apiGET('/data/test_tools');
         }
 
         function getUcdProcesses () {
-            return simpleApiCall('/data/ucd_processes');
+            return apiGET('/data/ucd_processes');
         }
 
         function getUploadingCps () {
-            return simpleApiCall('/certified_products/pending');
+            return apiGET('/certified_products/pending');
         }
 
         function getUploadingSurveillances () {
-            return simpleApiCall('/surveillance/pending');
+            return apiGET('/surveillance/pending');
         }
 
         function getUserActivities (activityRange) {
             var call = '/activity/user_activities';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getUserActivity (activityRange) {
             var call = '/activity/users';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getUsers () {
-            return simpleApiCall('/users');
+            return apiGET('/users');
         }
 
         function getUsersAtAcb (acbId) {
-            return simpleApiCall('/acbs/' + acbId + '/users');
+            return apiGET('/acbs/' + acbId + '/users');
         }
 
         function getUsersAtAtl (atlId) {
-            return simpleApiCall('/atls/' + atlId + '/users');
+            return apiGET('/atls/' + atlId + '/users');
         }
 
         function getVersion (versionId) {
-            return simpleApiCall('/versions/' + versionId);
+            return apiGET('/versions/' + versionId);
         }
 
         function getVersionActivity (activityRange) {
             var call = '/activity/versions';
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return simpleApiCall(call);
+            return getActivity(call, activityRange);
         }
 
         function getVersionsByProduct (productId) {
-            return simpleApiCall('/versions/?productId=' + productId);
+            return apiGET('/versions/?productId=' + productId);
         }
 
         function initiateCap (cap) {
-            return postApiCall('/corrective_action_plan/create', cap);
+            return apiPOST('/corrective_action_plan/create', cap);
         }
 
         function initiateSurveillance (surveillance) {
-            return postApiCall('/surveillance/create', surveillance);
+            return apiPOST('/surveillance/create', surveillance);
         }
 
         function inviteUser (invitationObject) {
-            return postApiCall('/users/invite', invitationObject);
+            return apiPOST('/users/invite', invitationObject);
         }
 
         function keepalive () {
-            return simpleApiCall('/auth/keep_alive');
+            return apiGET('/auth/keep_alive');
         }
 
         function login (userObj) {
-            return postApiCall('/auth/authenticate', userObj);
+            return apiPOST('/auth/authenticate', userObj);
         }
 
         function lookupCertificationId (certId) {
-            return simpleApiCall('/certification_ids/' + certId);
+            return apiGET('/certification_ids/' + certId);
         }
 
         function massRejectPendingListings (ids) {
-            return postApiCall('/certified_products/pending/reject', {ids: ids});
+            return apiPOST('/certified_products/pending/reject', {ids: ids});
         }
 
         function massRejectPendingSurveillance (ids) {
-            return postApiCall('/surveillance/pending/reject', {ids: ids});
+            return apiPOST('/surveillance/pending/reject', {ids: ids});
         }
 
         function modifyACB (acb) {
-            return postApiCall('/acbs/update', acb);
+            return apiPOST('/acbs/update', acb);
         }
 
         function modifyATL (atl) {
-            return postApiCall('/atls/update', atl);
+            return apiPOST('/atls/update', atl);
         }
 
         function modifyAnnouncement (announcement) {
-            return postApiCall('/announcements/update', announcement);
+            return apiPOST('/announcements/update', announcement);
         }
 
         function registerApi (user) {
-            return postApiCall('/key/register', user);
+            return apiPOST('/key/register', user);
         }
 
         function rejectPendingCp (cpId) {
-            return postApiCall('/certified_products/pending/' + cpId + '/reject', {});
+            return apiPOST('/certified_products/pending/' + cpId + '/reject', {});
         }
 
         function rejectPendingSurveillance (survId) {
-            return postApiCall('/surveillance/pending/' + survId + '/reject', {});
+            return apiPOST('/surveillance/pending/' + survId + '/reject', {});
         }
 
         function removeUserFromAcb (userId, acbId) {
-            return postApiCall('/acbs/' + acbId + '/remove_user/' + userId, {});
+            return apiPOST('/acbs/' + acbId + '/remove_user/' + userId, {});
         }
 
         function removeUserFromAtl (userId, atlId) {
-            return postApiCall('/atls/' + atlId + '/remove_user/' + userId, {});
+            return apiPOST('/atls/' + atlId + '/remove_user/' + userId, {});
         }
 
         function resetPassword (userObj) {
-            return postApiCall('/auth/reset_password', userObj);
+            return apiPOST('/auth/reset_password', userObj);
         }
 
         function revokeApi (user) {
-            return postApiCall('/key/revoke', user);
+            return apiPOST('/key/revoke', user);
         }
 
         function revokeRole (payload) {
-            return postApiCall('/users/revoke_role', payload);
+            return apiPOST('/users/revoke_role', payload);
         }
 
         function search (queryObj) {
-            return postApiCall('/search', queryObj);
+            return apiPOST('/search', queryObj);
         }
 
         function setMeaningfulUseUsersAccurateAsOfDate (date) {
-            return postApiCall('/meaningful_use/accurate_as_of', date);
+            return apiPOST('/meaningful_use/accurate_as_of', date);
         }
 
         function splitProduct (productObject) {
-            return postApiCall('/products/' + productObject.oldProduct.productId + '/split', productObject);
+            return apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
         }
 
         function undeleteACB (acbId) {
-            return postApiCall('/acbs/' + acbId + '/undelete', {});
+            return apiPOST('/acbs/' + acbId + '/undelete', {});
         }
 
         function undeleteATL (atlId) {
-            return postApiCall('/atls/' + atlId + '/undelete', {});
+            return apiPOST('/atls/' + atlId + '/undelete', {});
         }
 
         function undeleteAnnouncement (announcementId) {
-            return postApiCall('/announcements/' + announcementId + '/undelete', {});
+            return apiPOST('/announcements/' + announcementId + '/undelete', {});
         }
 
         function updateCP (cpObject) {
-            return postApiCall('/certified_products/update', cpObject);
+            return apiPOST('/certified_products/update', cpObject);
         }
 
         function updateCap (cap) {
-            return postApiCall('/corrective_action_plan/update', cap);
+            return apiPOST('/corrective_action_plan/update', cap);
         }
 
         function updateDeveloper (developerObject) {
-            return postApiCall('/developers/update', developerObject);
+            return apiPOST('/developers/update', developerObject);
         }
 
         function updateProduct (productObject) {
-            return postApiCall('/products/update', productObject);
+            return apiPOST('/products/update', productObject);
         }
 
         function updateRecipient (recipient) {
-            return postApiCall('/notifications/recipients/' + recipient.id + '/update', recipient);
+            return apiPOST('/notifications/recipients/' + recipient.id + '/update', recipient);
         }
 
         function updateSurveillance (surveillance) {
-            return postApiCall('/surveillance/update', surveillance);
+            return apiPOST('/surveillance/update', surveillance);
         }
 
         function updateUser (user) {
-            return postApiCall('/users/update', user);
+            return apiPOST('/users/update', user);
         }
 
         function updateVersion (versionObject) {
-            return postApiCall('/versions/update', versionObject);
+            return apiPOST('/versions/update', versionObject);
         }
 
         ////////////////////////////////////////////////////////////////////
 
-        function simpleApiCall (endpoint) {
+        function apiGET (endpoint) {
             return $http.get(API + endpoint)
                 .then(function (response) {
                     if (angular.isObject(response.data)) {
@@ -729,22 +629,7 @@
                 });
         }
 
-        /*
-        function externalApiCall (endpoint) {
-            return $http.get(endpoint)
-                .then(function (response) {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return $q.reject(response.data);
-                    }
-                }, function (response) {
-                    return $q.reject(response.data);
-                });
-        }
-        */
-
-        function postApiCall (endpoint, postObject, allowEmptyResponse) {
+        function apiPOST (endpoint, postObject, allowEmptyResponse) {
             return $http.post(API + endpoint, postObject)
                 .then(function (response) {
                     if (angular.isObject(response.data)) {
@@ -759,6 +644,20 @@
                 }, function (response) {
                     return $q.reject(response);
                 });
+        }
+
+        function getActivity (call, activityRange) {
+            var params = [];
+            if (activityRange.startDate) {
+                params.push('start=' + activityRange.startDate.getTime());
+            }
+            if (activityRange.endDate) {
+                params.push('end=' + activityRange.endDate.getTime());
+            }
+            if (params.length > 0) {
+                call += '?' + params.join('&');
+            }
+            return apiGET(call);
         }
     }
 })();

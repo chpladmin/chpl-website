@@ -30,6 +30,46 @@
             }
         });
 
+        it('should return a promise with the data if a GET doesn\'t return an object', function () {
+            $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
+            commonService.getProduct('id').then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            });
+            $httpBackend.flush();
+        });
+
+        it('should return a promise with the data if a GET responds with a failure', function () {
+            $httpBackend.expectGET(/certified_products\/id\/details/).respond(500, 'response');
+            commonService.getProduct('id').then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            });
+            $httpBackend.flush();
+        });
+
+        it('should return a promise with the data if a POST doesn\'t return an object', function () {
+            $httpBackend.expectPOST(/certified_products\/pending\/confirm/).respond(200, 'response');
+            commonService.confirmPendingCp('payload').then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            });
+            $httpBackend.flush();
+        });
+
+        it('should return a promise with the data if a POST responds with a failre', function () {
+            $httpBackend.expectPOST(/certified_products\/pending\/confirm/).respond(500, 'response');
+            commonService.confirmPendingCp('payload').then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            });
+            $httpBackend.flush();
+        });
+
         it('should addRole', function () {
             $httpBackend.expectPOST(/users\/grant_role/, 'payload').respond(200, {data: 'response'});
             commonService.addRole('payload').then(function (response) {
@@ -158,8 +198,8 @@
             $httpBackend.flush();
         });
 
-        it('should deleteRecipient', function () {
-            $httpBackend.expectPOST(/notifications\/recipients\/1\/delete/).respond(200, {data: 'response'});
+        it('should deleteRecipient', function () { // TODO; change API, this is the only endpoint that responds this way
+            $httpBackend.expectPOST(/notifications\/recipients\/1\/delete/).respond(200, 'response');
             commonService.deleteRecipient({id: 1}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -190,8 +230,42 @@
             $httpBackend.flush();
         });
 
-        // getAcbActivity
-        // getAcbs
+        it('should getAcbActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/acbs/).respond(200, {data: 'response'});
+            commonService.getAcbActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/acbs\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getAcbActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/acbs\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getAcbActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/acbs\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getAcbActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getAcbs', function () {
+            $httpBackend.expectGET(/acbs\/\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            commonService.getAcbs(false).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/acbs\/\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
+            commonService.getAcbs(false, true).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getAccessibilityStandards', function () {
             $httpBackend.expectGET(/data\/accessibility_standards/).respond(200, {data: 'response'});
@@ -225,7 +299,29 @@
             $httpBackend.flush();
         });
 
-        // getAnnouncementActivity
+        it('should getAnnouncementActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/announcements/).respond(200, {data: 'response'});
+            commonService.getAnnouncementActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/announcements\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getAnnouncementActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/announcements\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getAnnouncementActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/announcements\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getAnnouncementActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getAnnouncements', function () {
             $httpBackend.expectGET(/announcements\/\?future=payload/).respond(200, {data: 'response'});
@@ -235,8 +331,57 @@
             $httpBackend.flush();
         });
 
-        // getApiactivity
-        // getApiUserActivity
+        it('should getApiActivity', function () {
+            $httpBackend.expectPOST(/key\/activity\//).respond(200, {data: 'response'});
+            commonService.getApiActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectPOST(/key\/activity\/\?pageNumber=1&pageSize=2&startDate=\d+&endDate=\d+&dateAscending=true&filter=!apiKeyFilter/).respond(200, {data: 'response'});
+            commonService.getApiActivity({
+                pageNumber: 1,
+                pageSize: 2,
+                startDate: new Date(),
+                endDate: new Date(),
+                dateAscending: true,
+                filter: 'apiKeyFilter',
+            }).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectPOST(/key\/activity\/\?filter=apiKeyFilter/).respond(200, {data: 'response'});
+            commonService.getApiActivity({
+                filter: 'apiKeyFilter',
+                showOnly: true,
+            }).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getApiUserActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/api_keys/).respond(200, {data: 'response'});
+            commonService.getApiUserActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/api_keys\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getApiUserActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/api_keys\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getApiUserActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/api_keys\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getApiUserActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getApiUsers', function () {
             $httpBackend.expectGET(/key\//).respond(200, {data: 'response'});
@@ -246,8 +391,42 @@
             $httpBackend.flush();
         });
 
-        // getatlactivity
-        // getatls
+        it('should getAtlActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/atls/).respond(200, {data: 'response'});
+            commonService.getAtlActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/atls\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getAtlActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/atls\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getAtlActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/atls\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getAtlActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getAtls', function () {
+            $httpBackend.expectGET(/atls\/\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            commonService.getAtls(false).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/atls\/\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
+            commonService.getAtls(false, true).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getCap', function () {
             $httpBackend.expectGET(/corrective_action_plan\/\?certifiedProductId=payload/).respond(200, {data: 'response'});
@@ -273,7 +452,29 @@
             $httpBackend.flush();
         });
 
-        // getCertifiedProductActivity
+        it('should getCertifiedProductActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/certified_products/).respond(200, {data: 'response'});
+            commonService.getCertifiedProductActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/certified_products\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getCertifiedProductActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/certified_products\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getCertifiedProductActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/certified_products\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getCertifiedProductActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getCmsDownload', function () {
             $httpBackend.expectGET(/certification_ids\//).respond(200, {data: 'response'});
@@ -283,7 +484,38 @@
             $httpBackend.flush();
         });
 
-        // getCollection
+        it('should getCollection', function () {
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl/).respond(200, {data: 'response'});
+            commonService.getCollection('apiDocumentation').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/decertifications\/developers/).respond(200, {data: 'response'});
+            commonService.getCollection('bannedDevelopers').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount/).respond(200, {data: 'response'});
+            commonService.getCollection('correctiveAction').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse/).respond(200, {data: 'response'});
+            commonService.getCollection('decertifiedProducts').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse/).respond(200, {data: 'response'});
+            commonService.getCollection('inactiveCertificates').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/collections\/developers/).respond(200, {data: 'response'});
+            commonService.getCollection('transparencyAttestations').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getDeveloper', function () {
             $httpBackend.expectGET(/developers\/payload/).respond(200, {data: 'response'});
@@ -293,8 +525,42 @@
             $httpBackend.flush();
         });
 
-        // getdeveloperactivity
-        // getDevelopers
+        it('should getDeveloperActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/developers/).respond(200, {data: 'response'});
+            commonService.getDeveloperActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/developers\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getDeveloperActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/developers\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getDeveloperActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/developers\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getDeveloperActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getDevelopers', function () {
+            $httpBackend.expectGET(/developers\//).respond(200, {data: 'response'});
+            commonService.getDevelopers().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/developers\/\?showDeleted=true/).respond(200, {data: 'response'});
+            commonService.getDevelopers(true).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getEditions', function () {
             $httpBackend.expectGET(/data\/certification_editions/).respond(200, {data: 'response'});
@@ -352,7 +618,29 @@
             $httpBackend.flush();
         });
 
-        // getproductactivity
+        it('should getProductActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/products/).respond(200, {data: 'response'});
+            commonService.getProductActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/products\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getProductActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/products\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getProductActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/products\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getProductActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getProductsByDeveloper', function () {
             $httpBackend.expectGET(/products\/\?developerId=payload/).respond(200, {data: 'response'});
@@ -386,7 +674,18 @@
             $httpBackend.flush();
         });
 
-        // getSearchOptiosn
+        it('should getSearchOptions', function () {
+            $httpBackend.expectGET(/search_options/).respond(200, {data: 'response'});
+            commonService.getSearchOptions().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/search_options\?showDeleted=true/).respond(200, {data: 'response'});
+            commonService.getSearchOptions(true).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getSimpleProduct', function () {
             $httpBackend.expectGET(/products\/payload/).respond(200, {data: 'response'});
@@ -404,7 +703,24 @@
             $httpBackend.flush();
         });
 
-        // getsurveillancelookups
+        it('should getSurveillanceLookups', function () {
+            $httpBackend.expectGET(/data\/surveillance_types/).respond(200, {data: 'surveillance_types'});
+            $httpBackend.expectGET(/data\/surveillance_requirement_types/).respond(200, {data: 'surveillance_requirement_types'});
+            $httpBackend.expectGET(/data\/surveillance_result_types/).respond(200, {data: 'surveillance_result_types'});
+            $httpBackend.expectGET(/data\/nonconformity_status_types/).respond(200, {data: 'nonconformity_status_types'});
+            $httpBackend.expectGET(/data\/surveillance_requirements/).respond(200, {data: 'surveillance_requirements'});
+            $httpBackend.expectGET(/data\/nonconformity_types/).respond(200, {data: 'nonconformity_types'});
+            var response = commonService.getSurveillanceLookups();
+            $httpBackend.flush();
+            expect(response).toEqual({
+                surveillanceTypes: {data: 'surveillance_types'},
+                surveillanceRequirementTypes: {data: 'surveillance_requirement_types'},
+                surveillanceResultTypes: {data: 'surveillance_result_types'},
+                nonconformityStatusTypes: {data: 'nonconformity_status_types'},
+                surveillanceRequirements: {data: 'surveillance_requirements'},
+                nonconformityTypes: {data: 'nonconformity_types'},
+            });
+        });
 
         it('should getTargetedUsers', function () {
             $httpBackend.expectGET(/data\/targeted_users/).respond(200, {data: 'response'});
@@ -462,8 +778,53 @@
             $httpBackend.flush();
         });
 
-        // getUserActivities
-        // getUserActivity
+        it('should getUserActivitiesActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/user_activities/).respond(200, {data: 'response'});
+            commonService.getUserActivities({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/user_activities\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getUserActivities({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/user_activities\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getUserActivities({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/user_activities\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getUserActivities({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getUserActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/users/).respond(200, {data: 'response'});
+            commonService.getUserActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/users\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getUserActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/users\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getUserActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/users\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getUserActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getUsers', function () {
             $httpBackend.expectGET(/users/).respond(200, {data: 'response'});
@@ -497,7 +858,29 @@
             $httpBackend.flush();
         });
 
-        // getVersionActivity
+        it('should getVersionActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/versions/).respond(200, {data: 'response'});
+            commonService.getVersionActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/versions\?start=\d+/).respond(200, {data: 'response'});
+            commonService.getVersionActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/versions\?end=\d+/).respond(200, {data: 'response'});
+            commonService.getVersionActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/versions\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            commonService.getVersionActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
 
         it('should getVersionsByProduct', function () {
             $httpBackend.expectGET(/versions\/\?productId=payload/).respond(200, {data: 'response'});
@@ -767,15 +1150,6 @@
             $httpBackend.expectPOST(/versions\/update/).respond(200, {data: 'response'});
             commonService.updateVersion('payload').then(function (response) {
                 expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        // old
-
-        it('should return editions', function () {
-            commonService.getEditions().then(function (response) {
-                expect(response).toEqual(mock.editions);
             });
             $httpBackend.flush();
         });
