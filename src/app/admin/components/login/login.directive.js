@@ -21,7 +21,7 @@
         .controller('LoginController', LoginController);
 
     /** @ngInclude */
-    function LoginController ($log, $scope, Idle, Keepalive, authService, commonService) {
+    function LoginController ($log, $scope, Idle, Keepalive, authService, networkService) {
         var vm = this;
 
         vm.activate = activate;
@@ -60,7 +60,7 @@
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                         vm.activity = vm.activityEnum.NONE;
                     }
-                    commonService.keepalive()
+                    networkService.keepalive()
                         .then(function (response) {
                             authService.saveToken(response.token);
                         });
@@ -76,7 +76,7 @@
 
         function changePassword () {
             if (vm.newPassword === vm.confirmPassword) {
-                commonService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
+                networkService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
                     .then(function () {
                         vm.clear();
                         vm.messageClass = vm.pClass;
@@ -114,7 +114,7 @@
 
         function login () {
             vm.message = '';
-            commonService.login({userName: vm.userName, password: vm.password})
+            networkService.login({userName: vm.userName, password: vm.password})
                 .then(function () {
                     Idle.watch();
                     Keepalive.ping();
@@ -140,7 +140,7 @@
         }
 
         function sendReset () {
-            commonService.resetPassword({userName: vm.userName, email: vm.email})
+            networkService.resetPassword({userName: vm.userName, email: vm.email})
                 .then(function () {
                     vm.clear();
                     vm.messageClass = vm.pClass;

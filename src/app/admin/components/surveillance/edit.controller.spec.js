@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Surveillance Edit controller', function () {
-        var $controller, $log, $q, $uibModal, Mock, actualOptions, authService, commonService, scope, utilService, vm;
+        var $controller, $log, $q, $uibModal, Mock, actualOptions, authService, networkService, scope, utilService, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
@@ -12,7 +12,7 @@
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     return $delegate;
                 });
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.deleteSurveillance = jasmine.createSpy('deleteSurveillance');
                     $delegate.initiateSurveillance = jasmine.createSpy('initiateSurveillance');
                     $delegate.updateSurveillance = jasmine.createSpy('updateSurveillance');
@@ -24,7 +24,7 @@
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _commonService_, _utilService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_, _utilService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
@@ -32,10 +32,10 @@
                 authService.isAcbAdmin.and.returnValue(false);
                 authService.isAcbStaff.and.returnValue(false);
                 authService.isChplAdmin.and.returnValue(false);
-                commonService = _commonService_;
-                commonService.deleteSurveillance.and.returnValue($q.when({}));
-                commonService.initiateSurveillance.and.returnValue($q.when({}));
-                commonService.updateSurveillance.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.deleteSurveillance.and.returnValue($q.when({}));
+                networkService.initiateSurveillance.and.returnValue($q.when({}));
+                networkService.updateSurveillance.and.returnValue($q.when({}));
                 utilService = _utilService_;
                 utilService.sortRequirements.and.returnValue(1);
                 Mock = _Mock_;
@@ -179,35 +179,35 @@
 
         describe('when deleting the surveillance', function () {
             it('should close it\'s own modal on a status:200 response', function () {
-                commonService.deleteSurveillance.and.returnValue($q.when({status: 200}));
+                networkService.deleteSurveillance.and.returnValue($q.when({status: 200}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 200});
             });
 
             it('should close it\'s own modal if no status in the response', function () {
-                commonService.deleteSurveillance.and.returnValue($q.when({}));
+                networkService.deleteSurveillance.and.returnValue($q.when({}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({});
             });
 
             it('should close it\'s own modal if status is an object in the response', function () {
-                commonService.deleteSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
+                networkService.deleteSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: {status: 'OK'}});
             });
 
             it('should report errors if status has errors', function () {
-                commonService.deleteSurveillance.and.returnValue($q.when({status: 'bad'}));
+                networkService.deleteSurveillance.and.returnValue($q.when({status: 'bad'}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([{status: 'bad'}]);
             });
 
             it('should report errors if request fails', function () {
-                commonService.deleteSurveillance.and.returnValue($q.reject({statusText: 'errors'}));
+                networkService.deleteSurveillance.and.returnValue($q.reject({statusText: 'errors'}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual(['errors']);
@@ -435,63 +435,63 @@
                 });
 
                 it('should close it\'s own modal on a status:200 response', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.when({status: 200}));
+                    networkService.initiateSurveillance.and.returnValue($q.when({status: 200}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 200});
                 });
 
                 it('should close it\'s own modal if no status in the response', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.when({}));
+                    networkService.initiateSurveillance.and.returnValue($q.when({}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({});
                 });
 
                 it('should close it\'s own modal if status is an object in the response', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
+                    networkService.initiateSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: {status: 'OK'}});
                 });
 
                 it('should report errors if status has errors', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.when({status: 'bad'}));
+                    networkService.initiateSurveillance.and.returnValue($q.when({status: 'bad'}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([{status: 'bad'}]);
                 });
 
                 it('should report errors if request fails', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: ['errors']}}));
+                    networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: ['errors']}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual(['errors']);
                 });
 
                 it('should not report errors if request fails but no messages are returned', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+                    networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([undefined]);
                 });
 
                 it('should not report errors if request fails but no messages are returned', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: undefined}}));
+                    networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: undefined}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([undefined]);
                 });
 
                 it('should report errors if request fails and "data.error" is returned', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.reject({data: {error: 'an error'}}));
+                    networkService.initiateSurveillance.and.returnValue($q.reject({data: {error: 'an error'}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual(['an error']);
                 });
 
                 it('should report errors if request fails and "statusText" is returned', function () {
-                    commonService.initiateSurveillance.and.returnValue($q.reject({statusText: 'errors', data: {errorMessages: undefined}}));
+                    networkService.initiateSurveillance.and.returnValue($q.reject({statusText: 'errors', data: {errorMessages: undefined}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual(['errors']);
@@ -504,56 +504,56 @@
                 });
 
                 it('should close it\'s own modal on a status:200 response', function () {
-                    commonService.updateSurveillance.and.returnValue($q.when({status: 200}));
+                    networkService.updateSurveillance.and.returnValue($q.when({status: 200}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 200});
                 });
 
                 it('should close it\'s own modal if no status in the response', function () {
-                    commonService.updateSurveillance.and.returnValue($q.when({}));
+                    networkService.updateSurveillance.and.returnValue($q.when({}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({});
                 });
 
                 it('should close it\'s own modal if status is an object in the response', function () {
-                    commonService.updateSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
+                    networkService.updateSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: {status: 'OK'}});
                 });
 
                 it('should report errors if status has errors', function () {
-                    commonService.updateSurveillance.and.returnValue($q.when({status: 'bad'}));
+                    networkService.updateSurveillance.and.returnValue($q.when({status: 'bad'}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([{status: 'bad'}]);
                 });
 
                 it('should report errors if request fails', function () {
-                    commonService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: ['errors']}}));
+                    networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: ['errors']}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual(['errors']);
                 });
 
                 it('should not report errors if request fails but no messages are returned', function () {
-                    commonService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+                    networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([undefined]);
                 });
 
                 it('should not report errors if request fails but no messages are returned', function () {
-                    commonService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: undefined}}));
+                    networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: undefined}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([undefined]);
                 });
 
                 it('should report errors if request fails and "statusText" is returned', function () {
-                    commonService.updateSurveillance.and.returnValue($q.reject({statusText: 'errors', data: {errorMessages: undefined}}));
+                    networkService.updateSurveillance.and.returnValue($q.reject({statusText: 'errors', data: {errorMessages: undefined}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual(['errors']);

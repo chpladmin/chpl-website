@@ -10,7 +10,7 @@
 
             module('chpl.templates');
             module('chpl.admin', function ($provide) {
-                $provide.value('commonService', mockCommonService);
+                $provide.value('networkService', mockCommonService);
             });
 
             inject(function ($q) {

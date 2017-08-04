@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl.common')
+    angular.module('chpl.services')
         .filter('customFilter', CustomFilter);
 
     /** @ngInject */

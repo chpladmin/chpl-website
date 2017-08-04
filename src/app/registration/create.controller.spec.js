@@ -3,7 +3,7 @@
 
     describe('chpl.registration.controller', function () {
 
-        var $location, $log, $q, authService, commonService, scope, vm;
+        var $location, $log, $q, authService, networkService, scope, vm;
 
         var mock = {};
         mock.authorizeUser = {
@@ -27,7 +27,7 @@
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.registration', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.authorizeUser = jasmine.createSpy('authorizeUser');
                     $delegate.createInvitedUser = jasmine.createSpy('createInvitedUser');
                     return $delegate;
@@ -38,22 +38,22 @@
                 });
             });
 
-            inject(function ($controller, _$location_, _$log_, _$q_, $rootScope, _authService_, _commonService_) {
+            inject(function ($controller, _$location_, _$log_, _$q_, $rootScope, _authService_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 $location = _$location_;
                 authService = _authService_;
                 authService.isAuthed.and.returnValue(true);
-                commonService = _commonService_;
-                commonService.authorizeUser.and.returnValue($q.when({}));
-                commonService.createInvitedUser.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.authorizeUser.and.returnValue($q.when({}));
+                networkService.createInvitedUser.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 vm = $controller('CreateController', {
                     $scope: scope,
                     $routeParams: {hash: 'fakehash'},
                     authService: authService,
-                    commonService: commonService,
+                    networkService: networkService,
                     $location: $location,
                 });
                 scope.$digest();
@@ -80,7 +80,7 @@
 
         it('should not call createUser if the details aren\'t complete', function () {
             vm.createUser();
-            expect(commonService.createInvitedUser).not.toHaveBeenCalled();
+            expect(networkService.createInvitedUser).not.toHaveBeenCalled();
         });
 
         it('should have an isAuthed function', function () {
@@ -90,7 +90,7 @@
         it('should call createUser if the details are complete', function () {
             vm.userDetails = mock.validUser;
             vm.createUser();
-            expect(commonService.createInvitedUser).toHaveBeenCalled();
+            expect(networkService.createInvitedUser).toHaveBeenCalled();
         });
 
         it('should require password and verify password to be equal', function () {
@@ -103,7 +103,7 @@
 
         it('should call "authorizeUser" if the user tries to log in', function () {
             vm.authorizeUser();
-            expect(commonService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'});
+            expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'});
         });
 
         it('should redirect to /admin after authorizeUser is finished', function () {

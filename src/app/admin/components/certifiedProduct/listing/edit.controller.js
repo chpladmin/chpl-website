@@ -5,7 +5,7 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, commonService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, utilService, workType) {
+    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isAcbStaff, isChplAdmin, networkService, resources, utilService, workType) {
 
         var vm = this;
 
@@ -133,7 +133,7 @@
             vm.cp.sedTestingEnd = vm.cp.sedTestingEndDate.getTime();
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
-                commonService.updateCP({
+                networkService.updateCP({
                     listing: vm.cp,
                     banDeveloper: vm.banDeveloper,
                 }).then(function (response) {
@@ -184,7 +184,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function loadFamily () {
-            commonService.getRelatedListings(vm.cp.product.productId)
+            networkService.getRelatedListings(vm.cp.product.productId)
                 .then(function (family) {
                     vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
                 });

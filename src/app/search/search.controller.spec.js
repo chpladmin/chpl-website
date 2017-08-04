@@ -3,7 +3,7 @@
 
     describe('chpl.search.controller', function () {
 
-        var $interval, $location, $log, $q, $uibModal, CACHE_REFRESH_TIMEOUT, Mock, commonService, scope, vm;
+        var $interval, $location, $log, $q, $uibModal, CACHE_REFRESH_TIMEOUT, Mock, networkService, scope, vm;
 
         var mock = {};
         mock.products = [
@@ -67,14 +67,14 @@
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.search', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAll = jasmine.createSpy('getAll');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$interval_, _$location_, _$log_, _$q_, $rootScope, _$uibModal_, _CACHE_REFRESH_TIMEOUT_, _Mock_, _commonService_) {
+            inject(function ($controller, _$interval_, _$location_, _$log_, _$q_, $rootScope, _$uibModal_, _CACHE_REFRESH_TIMEOUT_, _Mock_, _networkService_) {
                 $interval = _$interval_;
                 $location = _$location_;
                 $log = _$log_;
@@ -82,19 +82,19 @@
                 $uibModal = _$uibModal_;
                 CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_;
                 Mock = _Mock_;
-                commonService = _commonService_;
+                networkService = _networkService_;
 
                 spyOn($uibModal, 'open').and.callFake(function () {
                     return mock.fakeModal;
                 });
-                commonService.getAll.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
-                commonService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
+                networkService.getAll.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
+                networkService.getSearchOptions.and.returnValue($q.when(Mock.search_options));
 
                 scope = $rootScope.$new();
                 vm = $controller('SearchController', {
                     $scope: scope,
                     $location: $location,
-                    commonService: commonService,
+                    networkService: networkService,
                 });
                 scope.$digest();
             });
@@ -145,11 +145,11 @@
 
         describe('updating results data in the background', function () {
             it('should refresh the /certified_products list on a timer', function () {
-                expect(commonService.getAll.calls.count()).toBe(1);
+                expect(networkService.getAll.calls.count()).toBe(1);
                 $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
-                expect(commonService.getAll.calls.count()).toBe(2);
+                expect(networkService.getAll.calls.count()).toBe(2);
                 $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
-                expect(commonService.getAll.calls.count()).toBe(3);
+                expect(networkService.getAll.calls.count()).toBe(3);
             });
 
             it('should be able to stop the refresh interval', function () {
@@ -164,7 +164,7 @@
                 var newResults = angular.copy(Mock.allCps);
                 newResults.push(angular.copy(newResults[0]));
                 expect(vm.allCps.length).toBe(initialCount);
-                commonService.getAll.and.returnValue($q.when({'results': newResults}));
+                networkService.getAll.and.returnValue($q.when({'results': newResults}));
                 $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
                 expect(vm.allCps.length).toBe(initialCount + 1);
             });

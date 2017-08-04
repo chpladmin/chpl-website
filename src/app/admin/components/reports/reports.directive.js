@@ -27,7 +27,7 @@
         });
 
     /** @ngInject */
-    function ReportController ($filter, $log, $uibModal, authService, commonService, utilService) {
+    function ReportController ($filter, $log, $uibModal, authService, networkService, utilService) {
         var vm = this;
 
         vm.clearApiKeyFilter = clearApiKeyFilter;
@@ -167,7 +167,7 @@
         }
 
         function refreshCp () {
-            commonService.getCertifiedProductActivity(dateAdjust(vm.activityRange.listing))
+            networkService.getCertifiedProductActivity(dateAdjust(vm.activityRange.listing))
                 .then(function (data) {
                     interpretCps(data);
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
@@ -180,7 +180,7 @@
         }
 
         function refreshDeveloper () {
-            commonService.getDeveloperActivity(dateAdjust(vm.activityRange.developer))
+            networkService.getDeveloperActivity(dateAdjust(vm.activityRange.developer))
                 .then(function (data) {
                     vm.searchedDevelopers = interpretDevelopers(data);
                     vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
@@ -188,12 +188,12 @@
         }
 
         function refreshProduct () {
-            commonService.getProductActivity(dateAdjust(vm.activityRange.product))
+            networkService.getProductActivity(dateAdjust(vm.activityRange.product))
                 .then(function (data) {
                     vm.searchedProducts = interpretProducts(data);
                     vm.displayedProducts = [].concat(vm.searchedProducts);
                 });
-            commonService.getVersionActivity(dateAdjust(vm.activityRange.product))
+            networkService.getVersionActivity(dateAdjust(vm.activityRange.product))
                 .then(function (data) {
                     vm.searchedVersions = vm.interpretVersions(data);
                     vm.displayedVersions = [].concat(vm.searchedVersions);
@@ -201,7 +201,7 @@
         }
 
         function refreshAcb () {
-            commonService.getAcbActivity(dateAdjust(vm.activityRange.acb))
+            networkService.getAcbActivity(dateAdjust(vm.activityRange.acb))
                 .then(function (data) {
                     vm.searchedACBs = vm.interpretAcbs(data);
                     vm.displayedACBs = [].concat(vm.searchedACBs);
@@ -209,7 +209,7 @@
         }
 
         function refreshAtl () {
-            commonService.getAtlActivity(dateAdjust(vm.activityRange.atl))
+            networkService.getAtlActivity(dateAdjust(vm.activityRange.atl))
                 .then(function (data) {
                     vm.searchedATLs = vm.interpretAtls(data);
                     vm.displayedATLs = [].concat(vm.searchedATLs);
@@ -217,7 +217,7 @@
         }
 
         function refreshAnnouncement () {
-            commonService.getAnnouncementActivity(dateAdjust(vm.activityRange.announcement))
+            networkService.getAnnouncementActivity(dateAdjust(vm.activityRange.announcement))
                 .then(function (data) {
                     vm.searchedAnnouncements = vm.interpretAnnouncements(data);
                     vm.displayedAnnouncements = [].concat(vm.searchedAnnouncements);
@@ -226,12 +226,12 @@
 
         function refreshUser () {
             if (vm.isChplAdmin || vm.isOncStaff) {
-                commonService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
+                networkService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
                     .then(function (data) {
                         vm.searchedUsers = vm.interpretUsers(data);
                         vm.displayedUsers = [].concat(vm.searchedUsers);
                     });
-                commonService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
+                networkService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
                     .then(function (data) {
                         vm.searchedUserActivities = vm.interpretUserActivities(data);
                         vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
@@ -241,7 +241,7 @@
 
         function refreshApi () {
             if (vm.isChplAdmin || vm.isOncStaff) {
-                commonService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
+                networkService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
                     .then(function (data) {
                         vm.searchedApiActivity = data;
                         vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
@@ -251,7 +251,7 @@
         function refreshApiKeyUsage () {
             if (vm.isChplAdmin || vm.isOncStaff) {
                 vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
-                commonService.getApiActivity(dateAdjust(vm.apiKey))
+                networkService.getApiActivity(dateAdjust(vm.apiKey))
                     .then(function (data) {
                         vm.searchedApi = data;
                     });
@@ -284,14 +284,14 @@
         }
 
         function loadApiKeys () {
-            commonService.getApiUsers()
+            networkService.getApiUsers()
                 .then(function (result) {
                     vm.apiKeys = result;
                 });
         }
 
         function singleCp () {
-            commonService.getSingleCertifiedProductActivity(vm.productId)
+            networkService.getSingleCertifiedProductActivity(vm.productId)
                 .then(function (data) {
                     interpretCps(data);
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);

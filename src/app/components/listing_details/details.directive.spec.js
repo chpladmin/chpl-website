@@ -3,7 +3,7 @@
 
     describe('the Listing Details', function () {
 
-        var $compile, $log, commonService, el, scope, vm;
+        var $compile, $log, el, networkService, scope, vm;
 
         var mock = {};
         mock.product = {
@@ -13,17 +13,17 @@
 
         beforeEach(function () {
             module('chpl.templates', 'chpl', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
                     return $delegate;
                 });
             });
 
-            inject(function (_$compile_, _$log_, $q, $rootScope, _commonService_) {
+            inject(function (_$compile_, _$log_, $q, $rootScope, _networkService_) {
                 $compile = _$compile_;
                 $log = _$log_;
-                commonService = _commonService_;
-                commonService.getSurveillanceLookups.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.getSurveillanceLookups.and.returnValue($q.when({}));
 
                 el = angular.element('<ai-certs product="product"></ai-certs>');
                 scope = $rootScope.$new();

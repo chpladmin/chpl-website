@@ -5,7 +5,7 @@
         .controller('AdminController', AdminController);
 
     /** @ngInclude */
-    function AdminController ($filter, $location, $log, $routeParams, authService, commonService) {
+    function AdminController ($filter, $location, $log, $routeParams, authService, networkService) {
         var vm = this;
 
         vm.changeAcb = changeAcb
@@ -66,13 +66,13 @@
             }
 
             // load editable acbs & atls
-            commonService.getAcbs(true, vm.isChplAdmin())
+            networkService.getAcbs(true, vm.isChplAdmin())
                 .then(function (data) {
                     vm.acbs = $filter('orderBy')(data.acbs,'name');
                     vm.activeAcb = vm.acbs[0];
                     vm.navState.acbManagement = vm.activeAcb;
                 });
-            commonService.getAtls(true, vm.isChplAdmin())
+            networkService.getAtls(true, vm.isChplAdmin())
                 .then(function (data) {
                     vm.atls = $filter('orderBy')(data.atls,'name');
                     vm.activeAtl = vm.atls[0];
@@ -95,7 +95,7 @@
         function changeScreen (screen) {
             vm.clearProductId();
             if (screen === 'acbManagement') {
-                commonService.getAcbs(true, vm.isChplAdmin())
+                networkService.getAcbs(true, vm.isChplAdmin())
                     .then(function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.activeAcb = vm.acbs[0];
@@ -103,7 +103,7 @@
                     });
             }
             if (screen === 'atlManagement') {
-                commonService.getAtls(true, vm.isChplAdmin())
+                networkService.getAtls(true, vm.isChplAdmin())
                     .then(function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.activeAtl = vm.atls[0];

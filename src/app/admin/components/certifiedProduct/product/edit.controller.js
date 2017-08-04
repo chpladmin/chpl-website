@@ -5,7 +5,7 @@
         .controller('EditProductController', EditProductController);
 
     /** @ngInject */
-    function EditProductController ($uibModalInstance, activeProduct, commonService) {
+    function EditProductController ($uibModalInstance, activeProduct, networkService) {
         var vm = this;
 
         vm.addPreviousOwner = addPreviousOwner;
@@ -25,7 +25,7 @@
                 vm.product.contact = {};
             }
             vm.updateProduct = {productIds: [vm.product.productId]};
-            commonService.getDevelopers(true).then(function (developers) {
+            networkService.getDevelopers(true).then(function (developers) {
                 vm.developers = developers.developers;
             });
             for (var i = 0; i < vm.product.ownerHistory.length; i++) {
@@ -75,7 +75,7 @@
             }
             vm.updateProduct.product = vm.product;
             vm.updateProduct.newDeveloperId = vm.product.developerId;
-            commonService.updateProduct(vm.updateProduct)
+            networkService.updateProduct(vm.updateProduct)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         response.developerId = vm.product.developerId;

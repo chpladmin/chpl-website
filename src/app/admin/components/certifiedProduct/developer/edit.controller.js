@@ -5,7 +5,7 @@
         .controller('EditDeveloperController', EditDeveloperController);
 
     /** @ngInject */
-    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, commonService, utilService) {
+    function EditDeveloperController ($filter, $log, $uibModalInstance, activeAcbs, activeDeveloper, authService, networkService, utilService) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;
@@ -126,7 +126,7 @@
                     vm.developer.transparencyAttestations.push({acbName: key, attestation: value});
                 }
             });
-            commonService.updateDeveloper(vm.updateDeveloper)
+            networkService.updateDeveloper(vm.updateDeveloper)
                 .then(function (response) {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                         $uibModalInstance.close(response);

@@ -18,7 +18,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.common', function ($provide) {
+            module('chpl.services', function ($provide) {
                 $provide.decorator('FileSaver', function ($delegate) {
                     $delegate.saveAs = jasmine.createSpy('saveAs');
                     return $delegate;

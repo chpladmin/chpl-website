@@ -2,11 +2,11 @@
     'use strict';
 
     describe('chpl.overview', function () {
-        var $log, $q, commonService, scope, vm;
+        var $log, $q, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.overview', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.getAtls = jasmine.createSpy('getAtls');
                     $delegate.getAnnouncements = jasmine.createSpy('getAnnouncements');
@@ -15,13 +15,13 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
-                commonService = _commonService_;
-                commonService.getAcbs.and.returnValue($q.when({acbs: [{id: 0, name: 'test-acb'}]}));
-                commonService.getAtls.and.returnValue($q.when({atls: [{id: 0, name: 'test-atl'}]}));
-                commonService.getAnnouncements.and.returnValue($q.when({announcements: [{title: 0, description: 'test-atl'}]}));
+                networkService = _networkService_;
+                networkService.getAcbs.and.returnValue($q.when({acbs: [{id: 0, name: 'test-acb'}]}));
+                networkService.getAtls.and.returnValue($q.when({atls: [{id: 0, name: 'test-atl'}]}));
+                networkService.getAnnouncements.and.returnValue($q.when({announcements: [{title: 0, description: 'test-atl'}]}));
 
                 scope = $rootScope.$new();
                 vm = $controller('OverviewController');
@@ -50,12 +50,12 @@
 
             it('should call the common service to load acbs', function () {
                 vm.loadAcbs();
-                expect(commonService.getAcbs).toHaveBeenCalled();
+                expect(networkService.getAcbs).toHaveBeenCalled();
             });
 
             it('should log an error if getAcbs fails', function () {
                 var initLength = $log.error.logs.length
-                commonService.getAcbs.and.returnValue($q.reject('expected error'));
+                networkService.getAcbs.and.returnValue($q.reject('expected error'));
                 vm.loadAcbs();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initLength + 1);
@@ -63,12 +63,12 @@
 
             it('should call the common service to load atls', function () {
                 vm.loadAtls();
-                expect(commonService.getAtls).toHaveBeenCalled();
+                expect(networkService.getAtls).toHaveBeenCalled();
             });
 
             it('should log an error if getAtls fails', function () {
                 var initLength = $log.error.logs.length
-                commonService.getAtls.and.returnValue($q.reject('expected error'));
+                networkService.getAtls.and.returnValue($q.reject('expected error'));
                 vm.loadAtls();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initLength + 1);
@@ -76,12 +76,12 @@
 
             it('should call the common service to load announcements', function () {
                 vm.loadAnnouncements();
-                expect(commonService.getAnnouncements).toHaveBeenCalled();
+                expect(networkService.getAnnouncements).toHaveBeenCalled();
             });
 
             it('should log an error if getAnnouncements fails', function () {
                 var initLength = $log.error.logs.length
-                commonService.getAnnouncements.and.returnValue($q.reject('expected error'));
+                networkService.getAnnouncements.and.returnValue($q.reject('expected error'));
                 vm.loadAnnouncements();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initLength + 1);

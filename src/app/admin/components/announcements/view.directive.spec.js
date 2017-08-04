@@ -2,17 +2,17 @@
     'use strict';
 
     describe('the Announcement Management View', function () {
-        var $compile, $log, $q, $uibModal, Mock, actualOptions, commonService, el, scope, vm;
+        var $compile, $log, $q, $uibModal, Mock, actualOptions, el, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.templates', 'chpl.admin', 'chpl.mock', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAnnouncements = jasmine.createSpy('getAnnouncements');
                     return $delegate;
                 });
             });
 
-            inject(function (_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _commonService_) {
+            inject(function (_$compile_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _networkService_) {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
@@ -22,8 +22,8 @@
                     actualOptions = options;
                     return Mock.fakeModal;
                 });
-                commonService = _commonService_;
-                commonService.getAnnouncements.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.getAnnouncements.and.returnValue($q.when({}));
 
                 el = angular.element('<ai-announcements-management></ai-announcements-management>');
                 scope = $rootScope.$new();
@@ -53,12 +53,12 @@
             });
 
             it('should load announcements on activation', function () {
-                expect(commonService.getAnnouncements).toHaveBeenCalled();
+                expect(networkService.getAnnouncements).toHaveBeenCalled();
             });
 
             it('should log an error on announcement load', function () {
                 var logCount = $log.info.logs.length;
-                commonService.getAnnouncements.and.returnValue($q.reject({}));
+                networkService.getAnnouncements.and.returnValue($q.reject({}));
                 vm.loadAnnouncements();
                 scope.$digest();
                 expect($log.info.logs.length).toBe(logCount + 1);

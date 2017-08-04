@@ -3,7 +3,7 @@
 
     describe('the Admin Reports', function () {
 
-        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, commonService, el, scope, vm;
+        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, el, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
@@ -15,7 +15,7 @@
                     return $delegate;
                 });
 
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCertifiedProductActivity = jasmine.createSpy('getCertifiedProductActivity');
                     $delegate.getDeveloperActivity = jasmine.createSpy('getDeveloperActivity');
                     $delegate.getProductActivity = jasmine.createSpy('getProductActivity');
@@ -33,7 +33,7 @@
                 });
             });
 
-            inject(function (_$compile_, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _commonService_) {
+            inject(function (_$compile_, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_) {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
@@ -48,20 +48,20 @@
                 authService.isAcbStaff.and.returnValue($q.when(true));
                 authService.isChplAdmin.and.returnValue($q.when(true));
                 authService.isOncStaff.and.returnValue($q.when(true));
-                commonService = _commonService_;
-                commonService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
-                commonService.getDeveloperActivity.and.returnValue($q.when([]));
-                commonService.getProductActivity.and.returnValue($q.when([]));
-                commonService.getVersionActivity.and.returnValue($q.when([]));
-                commonService.getAcbActivity.and.returnValue($q.when([]));
-                commonService.getAtlActivity.and.returnValue($q.when([]));
-                commonService.getAnnouncementActivity.and.returnValue($q.when([]));
-                commonService.getUserActivity.and.returnValue($q.when([]));
-                commonService.getUserActivities.and.returnValue($q.when([]));
-                commonService.getApiUserActivity.and.returnValue($q.when([]));
-                commonService.getApiActivity.and.returnValue($q.when([]));
-                commonService.getApiUsers.and.returnValue($q.when([]));
-                commonService.getSingleCertifiedProductActivity.and.returnValue($q.when([]));
+                networkService = _networkService_;
+                networkService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
+                networkService.getDeveloperActivity.and.returnValue($q.when([]));
+                networkService.getProductActivity.and.returnValue($q.when([]));
+                networkService.getVersionActivity.and.returnValue($q.when([]));
+                networkService.getAcbActivity.and.returnValue($q.when([]));
+                networkService.getAtlActivity.and.returnValue($q.when([]));
+                networkService.getAnnouncementActivity.and.returnValue($q.when([]));
+                networkService.getUserActivity.and.returnValue($q.when([]));
+                networkService.getUserActivities.and.returnValue($q.when([]));
+                networkService.getApiUserActivity.and.returnValue($q.when([]));
+                networkService.getApiActivity.and.returnValue($q.when([]));
+                networkService.getApiUsers.and.returnValue($q.when([]));
+                networkService.getSingleCertifiedProductActivity.and.returnValue($q.when([]));
                 el = angular.element('<ai-reports></ai-reports');
 
                 scope = $rootScope.$new()

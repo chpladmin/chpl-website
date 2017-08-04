@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.loginServices')
+    angular.module('chpl.services')
         .factory('authService', authService);
 
     /** @ngInclude */

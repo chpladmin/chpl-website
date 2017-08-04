@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, FileUploader, authService, commonService) {
+    function VpManagementController ($log, $uibModal, API, FileUploader, authService, networkService) {
         var vm = this;
 
         vm.doWork = doWork;
@@ -167,7 +167,7 @@
         }
 
         function refreshDevelopers () {
-            commonService.getDevelopers()
+            networkService.getDevelopers()
                 .then(function (developers) {
                     vm.developers = developers.developers;
                     prepCodes();
@@ -181,12 +181,12 @@
         }
 
         function refreshPending () {
-            commonService.getUploadingCps()
+            networkService.getUploadingCps()
                 .then(function (cps) {
                     vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
                     vm.pendingProducts = vm.uploadingCps.length;
                 })
-            commonService.getUploadingSurveillances()
+            networkService.getUploadingSurveillances()
                 .then(function (surveillances) {
                     vm.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
                     vm.pendingSurveillances = vm.uploadingSurveillances.length;
@@ -196,7 +196,7 @@
         function selectDeveloper () {
             if (vm.developerSelect) {
                 vm.activeDeveloper = vm.developerSelect;
-                commonService.getProductsByDeveloper(vm.activeDeveloper.developerId)
+                networkService.getProductsByDeveloper(vm.activeDeveloper.developerId)
                     .then(function (products) {
                         vm.products = products.products;
                     });
@@ -221,7 +221,7 @@
             });
             vm.modalInstance.result.then(function (result) {
                 vm.activeDeveloper = result;
-                commonService.getDevelopers()
+                networkService.getDevelopers()
                     .then(function (developers) {
                         vm.developers = developers.developers;
                         prepCodes();
@@ -247,7 +247,7 @@
                     delete(vm.massReject[key]);
                 }
             });
-            commonService.massRejectPendingListings(idsToReject)
+            networkService.massRejectPendingListings(idsToReject)
                 .then(function () {},
                       function (error) {
                           if (error.data.errors && error.data.errors.length > 0) {
@@ -268,7 +268,7 @@
                     delete(vm.massRejectSurveillance[key]);
                 }
             });
-            commonService.massRejectPendingSurveillance(idsToReject)
+            networkService.massRejectPendingSurveillance(idsToReject)
                 .then(function () {},
                       function (error) {
                           if (error.data.errors && error.data.errors.length > 0) {
@@ -295,7 +295,7 @@
             });
             vm.modalInstance.result.then(function () {
                 vm.developerMessage = null;
-                commonService.getDevelopers()
+                networkService.getDevelopers()
                     .then(function (developers) {
                         vm.developers = developers.developers;
                         prepCodes();
@@ -311,7 +311,7 @@
             if (vm.productSelect) {
                 vm.activeProduct = vm.productSelect;
                 vm.activeProduct.developerId = vm.activeDeveloper.developerId;
-                commonService.getVersionsByProduct(vm.activeProduct.productId)
+                networkService.getVersionsByProduct(vm.activeProduct.productId)
                     .then(function (versions) {
                         vm.versions = versions;
                     });
@@ -358,7 +358,7 @@
             });
             vm.modalInstance.result.then(function () {
                 vm.productMessage = null;
-                commonService.getProductsByDeveloper(vm.activeDeveloper.developerId)
+                networkService.getProductsByDeveloper(vm.activeDeveloper.developerId)
                     .then(function (products) {
                         vm.products = products.products;
                     });
@@ -384,7 +384,7 @@
             });
             vm.modalInstance.result.then(function () {
                 vm.productMessage = null;
-                commonService.getVersionsByProduct(vm.activeProduct.productId)
+                networkService.getVersionsByProduct(vm.activeProduct.productId)
                     .then(function (versions) {
                         vm.versions = versions;
                     });
@@ -399,7 +399,7 @@
             if (vm.versionSelect) {
                 vm.activeVersion = vm.versionSelect;
                 vm.activeVersion.productId = vm.activeProduct.productId;
-                commonService.getProductsByVersion(vm.activeVersion.versionId, true)
+                networkService.getProductsByVersion(vm.activeVersion.versionId, true)
                     .then(function (cps) {
                         vm.cps = cps;
                     });
@@ -456,11 +456,11 @@
                 vm.activeCP.certifyingBody = {};
                 vm.activeCP.practiceType = {};
                 vm.activeCP.classificationType = {};
-                commonService.getProduct(vm.cpSelect)
+                networkService.getProduct(vm.cpSelect)
                     .then(function (cp) {
                         vm.activeCP = cp;
                         vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
-                        commonService.getCap(vm.cpSelect)
+                        networkService.getCap(vm.cpSelect)
                             .then(function (cap) {
                                 vm.activeCP.cap = cap.plans;
                             });
@@ -604,7 +604,7 @@
         }
 
         function rejectCp (cpId) {
-            commonService.rejectPendingCp(cpId)
+            networkService.rejectPendingCp(cpId)
                 .then(function () {
                     clearPendingListing(cpId);
                 }, function (error) {
@@ -613,7 +613,7 @@
         }
 
         function rejectSurveillance (survId) {
-            commonService.rejectPendingSurveillance(survId)
+            networkService.rejectPendingSurveillance(survId)
                 .then(function () {
                     clearPendingSurveillance(survId);
                 }, function (error) {
@@ -629,7 +629,7 @@
             };
             vm.surveillanceProduct = null;
             vm.surveillanceSearch.results = null;
-            commonService.search(query)
+            networkService.search(query)
                 .then(function (response) {
                     vm.surveillanceSearch.results = response.results;
                     if (vm.surveillanceSearch.results.length === 1) {
@@ -690,7 +690,7 @@
         }
 
         function loadCp () {
-            commonService.getProduct(vm.productId)
+            networkService.getProduct(vm.productId)
                 .then(function (result) {
                     for (var i = 0; i < vm.developers.length; i++) {
                         if (result.developer.developerId === vm.developers[i].developerId) {
@@ -699,7 +699,7 @@
                         }
                     }
                     vm.activeDeveloper = vm.developerSelect;
-                    commonService.getProductsByDeveloper(vm.activeDeveloper.developerId)
+                    networkService.getProductsByDeveloper(vm.activeDeveloper.developerId)
                         .then(function (products) {
                             vm.products = products.products;
                             for (var i = 0; i < vm.products.length; i++) {
@@ -710,7 +710,7 @@
                             }
                             vm.activeProduct = vm.productSelect;
                             vm.activeProduct.developerId = vm.activeDeveloper.developerId;
-                            commonService.getVersionsByProduct(vm.activeProduct.productId)
+                            networkService.getVersionsByProduct(vm.activeProduct.productId)
                                 .then(function (versions) {
                                     vm.versions = versions;
                                     for (var i = 0; i < vm.versions.length; i++) {
@@ -721,7 +721,7 @@
                                     }
                                     vm.activeVersion = vm.versionSelect;
                                     vm.activeVersion.productId = vm.activeProduct.productId;
-                                    commonService.getProductsByVersion(vm.activeVersion.versionId, true)
+                                    networkService.getProductsByVersion(vm.activeVersion.versionId, true)
                                         .then(function (cps) {
                                             vm.cps = cps;
                                             vm.cpSelect = result.id;
@@ -733,7 +733,7 @@
         }
 
         function loadSurveillance () {
-            commonService.getProduct(vm.productId)
+            networkService.getProduct(vm.productId)
                 .then(function (result) {
                     vm.surveillanceProduct = result;
                 });
@@ -796,7 +796,7 @@
         }
 
         function getResources () {
-            commonService.getSearchOptions()
+            networkService.getSearchOptions()
                 .then(function (options) {
                     vm.resources.bodies = options.certBodyNames;
                     vm.resources.classifications = options.productClassifications;
@@ -805,42 +805,42 @@
                     vm.resources.statuses = options.certificationStatuses;
                 });
 
-            commonService.getAtls(false)
+            networkService.getAtls(false)
                 .then(function (data) {
                     vm.resources.testingLabs = data.atls;
                 });
 
-            commonService.getQmsStandards()
+            networkService.getQmsStandards()
                 .then(function (response) {
                     vm.resources.qmsStandards = response;
                 });
 
-            commonService.getAccessibilityStandards()
+            networkService.getAccessibilityStandards()
                 .then(function (response) {
                     vm.resources.accessibilityStandards = response;
                 });
 
-            commonService.getTestStandards()
+            networkService.getTestStandards()
                 .then(function (response) {
                     vm.resources.testStandards = response;
                 });
 
-            commonService.getUcdProcesses()
+            networkService.getUcdProcesses()
                 .then(function (response) {
                     vm.resources.ucdProcesses = response;
                 });
 
-            commonService.getTestFunctionality()
+            networkService.getTestFunctionality()
                 .then(function (response) {
                     vm.resources.testFunctionalities = response;
                 });
 
-            commonService.getTestTools()
+            networkService.getTestTools()
                 .then(function (response) {
                     vm.resources.testTools = response;
                 });
 
-            commonService.getTargetedUsers()
+            networkService.getTargetedUsers()
                 .then(function (response) {
                     vm.resources.targetedUsers = response;
                 });

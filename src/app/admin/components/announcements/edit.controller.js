@@ -5,7 +5,7 @@
         .controller('AnnouncementEditController', AnnouncementEditController);
 
     /** @ngInject */
-    function AnnouncementEditController ($uibModalInstance, action, announcement, authService, commonService) {
+    function AnnouncementEditController ($uibModalInstance, action, announcement, authService, networkService) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -31,7 +31,7 @@
         }
 
         function create () {
-            commonService.createAnnouncement(vm.announcement)
+            networkService.createAnnouncement(vm.announcement)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
@@ -52,7 +52,7 @@
         }
 
         function deleteAnnouncement () {
-            commonService.deleteAnnouncement(vm.announcement.id)
+            networkService.deleteAnnouncement(vm.announcement.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close('deleted');
@@ -65,7 +65,7 @@
         }
 
         function save () {
-            commonService.modifyAnnouncement(vm.announcement)
+            networkService.modifyAnnouncement(vm.announcement)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

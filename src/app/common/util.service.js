@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.common')
+    angular.module('chpl.services')
         .factory('utilService', utilService);
 
     /** @ngInject */

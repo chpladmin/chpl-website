@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.listing.management.directive', function () {
-        var $log, $q, $uibModal, Mock, actualOptions, authService, commonService, el, mock, vm;
+        var $log, $q, $uibModal, Mock, actualOptions, authService, el, mock, networkService, vm;
 
         mock = {};
         mock.developers = {developers: [{name: 'Developer 1', transparencyAttestations: []}, {name: 'Developer 2', transparencyAttestations: []}]};
@@ -43,7 +43,7 @@
                     return $delegate;
                 });
 
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAccessibilityStandards = jasmine.createSpy('getAccessibilityStandards');
                     $delegate.getAtls = jasmine.createSpy('getAtls');
                     $delegate.getCertBodies = jasmine.createSpy('getCertBodies');
@@ -73,7 +73,7 @@
                 });
             });
 
-            inject(function ($compile, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _commonService_) {
+            inject(function ($compile, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
@@ -89,30 +89,30 @@
                 authService.isAcbStaff.and.returnValue($q.when(true));
                 authService.isChplAdmin.and.returnValue($q.when(true));
                 authService.isOncStaff.and.returnValue($q.when(true));
-                commonService = _commonService_;
-                commonService.getAccessibilityStandards.and.returnValue($q.when([]));
-                commonService.getAtls.and.returnValue($q.when(mock.testingLabs));
-                commonService.getCertBodies.and.returnValue($q.when(mock.certBodies));
-                commonService.getCertificationStatuses.and.returnValue($q.when(mock.certificationStatuses));
-                commonService.getDevelopers.and.returnValue($q.when(mock.developers));
-                commonService.getEditions.and.returnValue($q.when(mock.editions));
-                commonService.getPractices.and.returnValue($q.when(mock.practices));
-                commonService.getProduct.and.returnValue($q.when(mock.products[0]));
-                commonService.getProducts.and.returnValue($q.when(mock.products));
-                commonService.getProductsByDeveloper.and.returnValue($q.when(mock.products));
-                commonService.getQmsStandards.and.returnValue($q.when([]));
-                commonService.getSearchOptions.and.returnValue($q.when({}));
-                commonService.getTargetedUsers.and.returnValue($q.when([]));
-                commonService.getTestFunctionality.and.returnValue($q.when({data: []}));
-                commonService.getTestStandards.and.returnValue($q.when({data: []}));
-                commonService.getTestTools.and.returnValue($q.when([]));
-                commonService.getUcdProcesses.and.returnValue($q.when([]));
-                commonService.getUploadingCps.and.returnValue($q.when(mock.uploadingCps));
-                commonService.getUploadingSurveillances.and.returnValue($q.when(mock.uploadingSurveillances));
-                commonService.getVersionsByProduct.and.returnValue($q.when(mock.products));
-                commonService.massRejectPendingListings.and.returnValue($q.when({}));
-                commonService.massRejectPendingSurveillance.and.returnValue($q.when({}));
-                commonService.rejectPendingCp.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.getAccessibilityStandards.and.returnValue($q.when([]));
+                networkService.getAtls.and.returnValue($q.when(mock.testingLabs));
+                networkService.getCertBodies.and.returnValue($q.when(mock.certBodies));
+                networkService.getCertificationStatuses.and.returnValue($q.when(mock.certificationStatuses));
+                networkService.getDevelopers.and.returnValue($q.when(mock.developers));
+                networkService.getEditions.and.returnValue($q.when(mock.editions));
+                networkService.getPractices.and.returnValue($q.when(mock.practices));
+                networkService.getProduct.and.returnValue($q.when(mock.products[0]));
+                networkService.getProducts.and.returnValue($q.when(mock.products));
+                networkService.getProductsByDeveloper.and.returnValue($q.when(mock.products));
+                networkService.getQmsStandards.and.returnValue($q.when([]));
+                networkService.getSearchOptions.and.returnValue($q.when({}));
+                networkService.getTargetedUsers.and.returnValue($q.when([]));
+                networkService.getTestFunctionality.and.returnValue($q.when({data: []}));
+                networkService.getTestStandards.and.returnValue($q.when({data: []}));
+                networkService.getTestTools.and.returnValue($q.when([]));
+                networkService.getUcdProcesses.and.returnValue($q.when([]));
+                networkService.getUploadingCps.and.returnValue($q.when(mock.uploadingCps));
+                networkService.getUploadingSurveillances.and.returnValue($q.when(mock.uploadingSurveillances));
+                networkService.getVersionsByProduct.and.returnValue($q.when(mock.products));
+                networkService.massRejectPendingListings.and.returnValue($q.when({}));
+                networkService.massRejectPendingSurveillance.and.returnValue($q.when({}));
+                networkService.rejectPendingCp.and.returnValue($q.when({}));
 
                 el = angular.element('<ai-vp-management></ai-vp-management');
 
@@ -153,7 +153,7 @@
             vm.developerSelect = [{developer: 'developer1'}];
             vm.selectDeveloper();
             expect(vm.activeDeveloper).toEqual([{developer: 'developer1'}]);
-            expect(commonService.getProductsByDeveloper).toHaveBeenCalled();
+            expect(networkService.getProductsByDeveloper).toHaveBeenCalled();
         });
 
         it('should create a mergeDeveloper if more than one developer is selected', function () {
@@ -176,7 +176,7 @@
             vm.activeDeveloper = {developerId: '123'};
             vm.selectProduct();
             expect(vm.activeProduct).toEqual({product: 'product1', developerId: '123'});
-            expect(commonService.getVersionsByProduct).toHaveBeenCalled();
+            expect(networkService.getVersionsByProduct).toHaveBeenCalled();
         });
 
         it('should create a mergeProduct if more than one product is selected', function () {
@@ -315,7 +315,7 @@
             it('should call the common service to reject listings', function () {
                 vm.rejectCp(1);
                 el.isolateScope().$digest();
-                expect(commonService.rejectPendingCp).toHaveBeenCalled();
+                expect(networkService.rejectPendingCp).toHaveBeenCalled();
             });
 
             it('should remove the listing from the list of listings if rejection is successful', function () {
@@ -325,7 +325,7 @@
             });
 
             it('should have error messages if rejection fails', function () {
-                commonService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
                 vm.rejectCp(1);
                 el.isolateScope().$digest();
                 expect(vm.uploadingListingsMessages).toEqual([1,2]);
@@ -334,7 +334,7 @@
             it('should call the common service to mass reject listings', function () {
                 vm.massRejectPendingListings();
                 el.isolateScope().$digest();
-                expect(commonService.massRejectPendingListings).toHaveBeenCalledWith([1]);
+                expect(networkService.massRejectPendingListings).toHaveBeenCalledWith([1]);
             });
 
             it('should reset the pending checkboxes', function () {
@@ -348,7 +348,7 @@
             });
 
             it('should have error messages if rejection fails', function () {
-                commonService.massRejectPendingListings.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
+                networkService.massRejectPendingListings.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
                 vm.massRejectPendingListings();
                 el.isolateScope().$digest();
                 expect(vm.uploadingListingsMessages.length).toEqual(3);
@@ -378,7 +378,7 @@
             it('should call the common service to mass reject surveillances', function () {
                 vm.massRejectPendingSurveillance();
                 el.isolateScope().$digest();
-                expect(commonService.massRejectPendingSurveillance).toHaveBeenCalledWith([1]);
+                expect(networkService.massRejectPendingSurveillance).toHaveBeenCalledWith([1]);
             });
 
             it('should reset the pending checkboxes', function () {
@@ -392,7 +392,7 @@
             });
 
             it('should have error messages if rejection fails', function () {
-                commonService.massRejectPendingSurveillance.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
+                networkService.massRejectPendingSurveillance.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
                 vm.massRejectPendingSurveillance();
                 el.isolateScope().$digest();
                 expect(vm.uploadingSurveillanceMessages.length).toEqual(3);

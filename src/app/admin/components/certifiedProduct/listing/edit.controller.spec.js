@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Certified Product Edit controller', function () {
-        var $controller, $log, $q, $timeout, Mock, commonService, mock, scope, utilService, vm;
+        var $controller, $log, $q, $timeout, Mock, mock, networkService, scope, utilService, vm;
 
         mock = {};
         mock.activeCP = {
@@ -28,7 +28,7 @@
 
         beforeEach(function () {
             module('chpl.admin', 'chpl.mock', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
                     $delegate.updateCP = jasmine.createSpy('updateCP');
                     return $delegate;
@@ -39,14 +39,14 @@
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$timeout_, _Mock_, _commonService_, _utilService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$timeout_, _Mock_, _networkService_, _utilService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
                 $timeout = _$timeout_;
-                commonService = _commonService_;
-                commonService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
-                commonService.updateCP.and.returnValue($q.when(mock));
+                networkService = _networkService_;
+                networkService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
+                networkService.updateCP.and.returnValue($q.when(mock));
                 Mock = _Mock_;
                 utilService = _utilService_;
                 utilService.extendSelect.and.returnValue([]);
@@ -138,7 +138,7 @@
 
         describe('when deailing with ics family', function () {
             it('should call the common service to get related listings', function () {
-                expect(commonService.getRelatedListings).toHaveBeenCalled();
+                expect(networkService.getRelatedListings).toHaveBeenCalled();
             });
 
             it('should load the related listings on load, without the 2014 ones', function () {
@@ -260,14 +260,14 @@
                 });
 
                 it('should close it\'s modal on a successful update', function () {
-                    commonService.updateCP.and.returnValue($q.when({status: 200}));
+                    networkService.updateCP.and.returnValue($q.when({status: 200}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
 
                 it('should report errors and turn off the saving flag', function () {
-                    commonService.updateCP.and.returnValue($q.when({status: 400, error: 'an error'}));
+                    networkService.updateCP.and.returnValue($q.when({status: 400, error: 'an error'}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual(['an error']);
@@ -275,7 +275,7 @@
                 });
 
                 it('should report errors on server data.error', function () {
-                    commonService.updateCP.and.returnValue($q.reject({data: {error: 'an error'}}));
+                    networkService.updateCP.and.returnValue($q.reject({data: {error: 'an error'}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual(['an error']);
@@ -283,7 +283,7 @@
                 });
 
                 it('should report errors on server data.errorMessages', function () {
-                    commonService.updateCP.and.returnValue($q.reject({data: {errorMessages: ['an error2']}}));
+                    networkService.updateCP.and.returnValue($q.reject({data: {errorMessages: ['an error2']}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual(['an error2']);
@@ -291,7 +291,7 @@
                 });
 
                 it('should report errors on server data.warningMessages', function () {
-                    commonService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
+                    networkService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual(['an error3']);
@@ -299,7 +299,7 @@
                 });
 
                 it('should report no errors if none were returned', function () {
-                    commonService.updateCP.and.returnValue($q.reject({}));
+                    networkService.updateCP.and.returnValue($q.reject({}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual([]);

@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.common')
-        .factory('commonService', commonService);
+    angular.module('chpl.services')
+        .factory('networkService', networkService);
 
     /** @ngInject */
-    function commonService ($http, $q, API) {
+    function networkService ($http, $q, API) {
         var service = {
             addRole: addRole,
             authorizeUser: authorizeUser,
