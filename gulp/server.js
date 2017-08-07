@@ -43,6 +43,8 @@ function browserSyncInit(baseDir, browser) {
         notify: false,
         open: false,
         server: server,
+        logFileChanges: false,
+        ghostMode: false,
         browser: browser
     });
 }
