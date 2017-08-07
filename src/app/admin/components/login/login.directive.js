@@ -2,23 +2,25 @@
     'use strict';
 
     angular.module('chpl.admin')
-        .directive('aiLogin', function () {
-            return {
-                restrict: 'E',
-                replace: true,
-                templateUrl: 'app/admin/components/login/login.html',
-                scope: {
-                },
-                bindToController: {
-                    formClass: '@',
-                    pClass: '@',
-                    pClassFail: '@',
-                },
-                controllerAs: 'vm',
-                controller: 'LoginController',
-            };
-        })
+        .directive('aiLogin', aiLogin)
         .controller('LoginController', LoginController);
+
+    function aiLogin () {
+        return {
+            restrict: 'E',
+            replace: true,
+            templateUrl: 'app/admin/components/login/login.html',
+            scope: {
+            },
+            bindToController: {
+                formClass: '@',
+                pClass: '@',
+                pClassFail: '@',
+            },
+            controllerAs: 'vm',
+            controller: 'LoginController',
+        };
+    }
 
     /** @ngInclude */
     function LoginController ($log, $scope, Idle, Keepalive, authService, networkService) {
@@ -27,13 +29,12 @@
         vm.activate = activate;
         vm.changePassword = changePassword;
         vm.clear = clear;
-        vm.isAuthed = isAuthed;
+        vm.isAuthed = authService.isAuthed;
         vm.login = login;
         vm.logout = logout;
         vm.misMatchPasswords = misMatchPasswords;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
-        vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
 
         vm.activityEnum = {
             LOGIN: 1,
@@ -47,16 +48,15 @@
         /////////////////////////////////////////////////////////
 
         function activate () {
-            if (vm.isAuthed()) {
-                vm.activity = vm.activityEnum.NONE;
-            } else {
-                vm.activity = vm.activityEnum.LOGIN;
-            }
+            vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
             vm.clear();
+            if (vm.isAuthed()) {
+                Idle.watch();
+            }
             $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
 
-                if (authService.isAuthed()) {
+                if (vm.isAuthed()) {
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                         vm.activity = vm.activityEnum.NONE;
                     }
@@ -69,13 +69,12 @@
                     Idle.unwatch();
                 }
             });
-            if (authService.isAuthed()) {
-                Idle.watch();
-            }
         }
 
         function changePassword () {
-            if (vm.newPassword === vm.confirmPassword) {
+            if (vm.misMatchPasswords()) {
+                vm.message = 'Passwords do not match. Please try again';
+            } else {
                 networkService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
                     .then(function () {
                         vm.clear();
@@ -85,8 +84,6 @@
                         vm.messageClass = vm.pClassFail;
                         vm.message = 'Error. Please check your credentials or contact the administrator';
                     });
-            } else {
-                vm.message = 'Passwords do not match. Please try again';
             }
         }
 
@@ -106,10 +103,6 @@
                 vm.loginForm.$setPristine();
                 vm.loginForm.$setUntouched();
             }
-        }
-
-        function isAuthed () {
-            return authService.isAuthed();
         }
 
         function login () {

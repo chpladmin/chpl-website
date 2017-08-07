@@ -16,7 +16,8 @@ var pathSrcJs = [
 ];
 
 function runTests (singleRun, done) {
-    var reporters = ['dots', 'junit', 'growl', 'html', 'coverage'];
+    //var reporters = ['dots', 'junit', 'growl', 'html', 'coverage'];
+    var reporters = ['mocha', 'junit', 'growl', 'html', 'coverage'];
     var preprocessors = {};
 
     pathSrcHtml.forEach(function(path) {
@@ -49,6 +50,9 @@ function runTests (singleRun, done) {
         junitReporter: {
             outputDir: 'test_reports',
             suite: 'unit'
+        },
+        mochaReporter: {
+            output: 'autowatch'
         }
     };
 
