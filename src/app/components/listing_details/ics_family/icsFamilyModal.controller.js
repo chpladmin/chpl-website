@@ -67,6 +67,8 @@
                         'min-zoomed-font-size': '6pt',
                         'text-halign': 'center',
                         'text-valign': 'center',
+                        'text-wrap': 'wrap',
+                        'text-max-width': 1000,
                         'border-width': 0,
                         'background-color': 'blue',
                         'padding-left': '10px',
@@ -116,7 +118,7 @@
                     data: {
                         id: vm.icsFamily[i].id,
                         chplId: vm.icsFamily[i].chplId,
-                        label: vm.icsFamily[i].chplId,
+                        label: vm.icsFamily[i].chplId + '\n' + vm.icsFamily[i].certificationStatus.name,
                     },
                 };
                 if (node.data.id === vm.listing.id) {

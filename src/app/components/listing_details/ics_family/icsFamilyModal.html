@@ -17,6 +17,7 @@
           <thead>
             <tr>
               <th scope="col">Listing ID</th>
+              <th scope="col">Certification Status</th>
               <th scope="col">Parent(s)</th>
               <th scope="col">Child(ren)</th>
             </tr>
@@ -24,6 +25,7 @@
           <tbody>
             <tr ng-repeat="listing in vm.icsFamily | orderBy:'chplId'">
               <td>{{ listing.chplId }}</td>
+              <td>{{ listing.certificationStatus.name }}</td>
               <td><ul><li ng-repeat="parent in listing.parents | orderBy:'chplId'">{{ parent.chplId }}</li></ul></td>
               <td><ul><li ng-repeat="child in listing.children | orderBy:'chplId'">{{ child.chplId }}</li></ul></td>
             </tr>
