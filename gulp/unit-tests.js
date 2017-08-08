@@ -15,7 +15,9 @@ var pathSrcJs = [
 ];
 
 function runTests (singleRun, done) {
-    var reporters = ['dots', 'junit', 'growl', 'html', 'coverage'];
+    //var reporters = ['dots', 'junit', 'growl', 'html', 'coverage'];
+    var reporters = ['mocha', 'junit', 'growl', 'html', 'coverage'];
+    if (!singleRun) { reporters.push('super-dots'); }
     var preprocessors = {};
 
     pathSrcHtml.forEach(function(path) {
@@ -48,6 +50,30 @@ function runTests (singleRun, done) {
         junitReporter: {
             outputDir: 'test_reports',
             suite: 'unit'
+        },
+        mochaReporter: {
+            output: singleRun ? 'full' : 'minimal',
+            divider: '',
+            symbols: {
+                success: '+',
+                info: 'i',
+                warning: '!',
+                error: 'x'
+            }
+        },
+        superDotsReporter: {
+            nbDotsPerLine: 64,
+            color: {
+                success: 'green',
+                failure: 'red',
+                ignore: 'yellow'
+            },
+            icon: {
+                success : '.',
+                failure : 'x',
+                ignore  : '?'
+
+            }
         }
     };
 

@@ -19,7 +19,7 @@
         });
 
     /** @ngInject */
-    function UserManagementController ($log, $uibModal, commonService) {
+    function UserManagementController ($log, $uibModal, networkService) {
         var vm = this;
 
         vm.updateUser = updateUser;
@@ -96,21 +96,21 @@
 
         vm.freshenUsers = function () {
             if (vm.acbId) {
-                commonService.getUsersAtAcb(vm.acbId)
+                networkService.getUsersAtAcb(vm.acbId)
                     .then(function (response) {
                         vm.users = response.users;
                     }, function (error) {
                         $log.debug(error);
                     });
             } else if (vm.atlId) {
-                commonService.getUsersAtAtl(vm.atlId)
+                networkService.getUsersAtAtl(vm.atlId)
                     .then(function (response) {
                         vm.users = response.users;
                     }, function (error) {
                         $log.debug(error);
                     });
             } else {
-                commonService.getUsers()
+                networkService.getUsers()
                     .then(function (response) {
                         vm.users = response.users;
                     }, function (error) {

@@ -3,7 +3,7 @@
 
     describe('chpl.cms_lookup', function () {
 
-        var $localStorage, $log, $q, commonService, mock, scope, utilService, vm;
+        var $localStorage, $log, $q, mock, networkService, scope, utilService, vm;
 
         mock = {
             localStorage: {
@@ -25,7 +25,7 @@
 
         beforeEach(function () {
             module('chpl.cms_lookup', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.lookupCertificationId = jasmine.createSpy('lookupCertificationId');
                     return $delegate;
                 });
@@ -35,14 +35,14 @@
                 });
             });
 
-            inject(function ($controller, _$localStorage_, _$log_, _$q_, $rootScope, _commonService_, _utilService_) {
+            inject(function ($controller, _$localStorage_, _$log_, _$q_, $rootScope, _networkService_, _utilService_) {
                 $log = _$log_;
                 $localStorage = _$localStorage_;
                 $localStorage.lookupCertIds = null;
                 $localStorage.lookupProducts = null;
                 $q = _$q_;
-                commonService = _commonService_;
-                commonService.lookupCertificationId.and.returnValue($q.when(mock.goodResponse));
+                networkService = _networkService_;
+                networkService.lookupCertificationId.and.returnValue($q.when(mock.goodResponse));
                 utilService = _utilService_;
                 utilService.makeCsv.and.returnValue();
 
@@ -68,11 +68,11 @@
             it('should only do something if there are certIds to parse', function () {
                 vm.certIds = undefined;
                 vm.lookupCertIds();
-                expect(commonService.lookupCertificationId).not.toHaveBeenCalled();
+                expect(networkService.lookupCertificationId).not.toHaveBeenCalled();
 
                 vm.certIds = '';
                 vm.lookupCertIds();
-                expect(commonService.lookupCertificationId).not.toHaveBeenCalled();
+                expect(networkService.lookupCertificationId).not.toHaveBeenCalled();
             });
 
             it('should convert certIds', function () {
@@ -93,7 +93,7 @@
                 it('should only lookup IDs once', function () {
                     vm.certIds = 'A014E01O3PSTEAV A014E01O3PSTEAV';
                     vm.lookupCertIds();
-                    expect(commonService.lookupCertificationId.calls.count()).toBe(1);
+                    expect(networkService.lookupCertificationId.calls.count()).toBe(1);
                 });
 
                 it('should list the ids that are in an invalid format', function () {
@@ -104,7 +104,7 @@
 
                 it('should list the ids that were not found', function () {
                     vm.certIds = 'A014E01O3PSTEA7';
-                    commonService.lookupCertificationId.and.returnValue($q.when(mock.badResponse));
+                    networkService.lookupCertificationId.and.returnValue($q.when(mock.badResponse));
                     vm.lookupCertIds();
                     scope.$digest();
                     expect(vm.lookupProductsCertIdNotFound).toEqual(['A014E01O3PSTEA7']);
@@ -131,7 +131,7 @@
                     $localStorage.lookupProductsFormatInvalidIds = 'fake';
                     $localStorage.lookupProductsCertIdNotFound = 'fake';
                     vm.lookupProducts = [];
-                    commonService.lookupCertificationId.and.returnValue($q.reject({status: 500}));
+                    networkService.lookupCertificationId.and.returnValue($q.reject({status: 500}));
                     vm.certIds = 'A014E01O3PSTEAV A014E01O3PSTEAV NOTANID A014E01O3PSTEA7';
                     vm.lookupCertIds();
                     scope.$digest();
@@ -151,7 +151,7 @@
                 expect(vm.csvData).toEqual(mock.csvData);
             });
 
-            it('should call the commonService to convert JSON -> CSV', function () {
+            it('should call the networkService to convert JSON -> CSV', function () {
                 vm.certIds = 'A014E01O3PSTEAV';
                 vm.lookupCertIds();
                 scope.$digest();
@@ -164,7 +164,7 @@
                     {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
                     {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
                 ],'ehrCertificationId': 'A014E01O3PSTEAV','year': '2014','criteria': null,'cqms': null};
-                commonService.lookupCertificationId.and.returnValue($q.when(multIdResponse));
+                networkService.lookupCertificationId.and.returnValue($q.when(multIdResponse));
                 vm.certIds = 'A014E01O3PSTEAV';
                 vm.lookupCertIds();
                 scope.$digest();

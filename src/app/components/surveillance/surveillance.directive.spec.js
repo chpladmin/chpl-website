@@ -2,23 +2,23 @@
     'use strict';
 
     describe('surveillance directive', function () {
-        var $log, $q, $uibModal, Mock, actualOptions, commonService, el, scope, vm;
+        var $log, $q, $uibModal, Mock, actualOptions, el, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.templates', 'chpl.mock', 'chpl', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
                     return $delegate;
                 });
             });
 
-            inject(function ($compile, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _commonService_) {
+            inject(function ($compile, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _networkService_) {
                 $q = _$q_;
                 $log = _$log_;
-                commonService = _commonService_;
-                commonService.getProduct.and.returnValue($q.when({}));
-                commonService.getSurveillanceLookups.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.getProduct.and.returnValue($q.when({}));
+                networkService.getSurveillanceLookups.and.returnValue($q.when({}));
                 Mock = _Mock_;
                 $uibModal = _$uibModal_;
                 spyOn($uibModal, 'open').and.callFake(function (options) {
@@ -151,7 +151,7 @@
             it('should do stuff with the returned data', function () {
                 vm.editSurveillance(Mock.surveillances[0]);
                 vm.uibModalInstance.close({});
-                expect(commonService.getProduct).toHaveBeenCalled();
+                expect(networkService.getProduct).toHaveBeenCalled();
             });
 
             it('should log a non-cancelled modal', function () {
@@ -214,7 +214,7 @@
             it('should do stuff with the returned data', function () {
                 vm.initiateSurveillance();
                 vm.uibModalInstance.close({});
-                expect(commonService.getProduct).toHaveBeenCalled();
+                expect(networkService.getProduct).toHaveBeenCalled();
             });
 
             it('should log a non-cancelled modal', function () {

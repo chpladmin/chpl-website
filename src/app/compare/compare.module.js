@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.compare', ['chpl.common']);
+    angular.module('chpl.compare', ['chpl.services']);
 })();

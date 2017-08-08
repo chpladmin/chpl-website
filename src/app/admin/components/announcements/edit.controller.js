@@ -5,25 +5,42 @@
         .controller('AnnouncementEditController', AnnouncementEditController);
 
     /** @ngInject */
-    function AnnouncementEditController ($uibModalInstance, action, announcement, authService, commonService) {
+    function AnnouncementEditController ($uibModalInstance, action, announcement, authService, networkService) {
         var vm = this;
-        vm.announcement = angular.copy(announcement);
-        vm.action = action;
 
-        vm.save = save;
         vm.cancel = cancel;
         vm.create = create;
-        vm.deleteAnnouncement = deleteAnnouncement;
         vm.datesInvalid = datesInvalid;
+        vm.deleteAnnouncement = deleteAnnouncement;
+        vm.save = save;
 
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.announcement = angular.copy(announcement);
+            vm.action = action;
             vm.isChplAdmin = authService.isChplAdmin();
             vm.announcement.startDate = new Date(announcement.startDate);
             vm.announcement.endDate = new Date(announcement.endDate);
+        }
+
+        function cancel () {
+            $uibModalInstance.dismiss('cancelled');
+        }
+
+        function create () {
+            networkService.createAnnouncement(vm.announcement)
+                .then(function (response) {
+                    if (!response.status || response.status === 200) {
+                        $uibModalInstance.close(response);
+                    } else {
+                        $uibModalInstance.dismiss('An error occurred');
+                    }
+                },function (error) {
+                    $uibModalInstance.dismiss(error.data.error);
+                });
         }
 
         function datesInvalid () {
@@ -34,38 +51,8 @@
             }
         }
 
-        function save () {
-            commonService.modifyAnnouncement(vm.announcement)
-                .then(function (response) {
-                    if (!response.status || response.status === 200) {
-                        $uibModalInstance.close(response);
-                    } else {
-                        $uibModalInstance.dismiss('An error occurred');
-                    }
-                },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
-                });
-        }
-
-        function cancel () {
-            $uibModalInstance.dismiss('cancelled');
-        }
-
-        function create () {
-            commonService.createAnnouncement(vm.announcement)
-                .then(function (response) {
-                    if (!response.status || response.status === 200) {
-                        $uibModalInstance.close(response);
-                    } else {
-                        $uibModalInstance.dismiss('An error occurred');
-                    }
-                },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
-                });
-        }
-
         function deleteAnnouncement () {
-            commonService.deleteAnnouncement(vm.announcement.id)
+            networkService.deleteAnnouncement(vm.announcement.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close('deleted');
@@ -77,5 +64,17 @@
                 });
         }
 
+        function save () {
+            networkService.modifyAnnouncement(vm.announcement)
+                .then(function (response) {
+                    if (!response.status || response.status === 200) {
+                        $uibModalInstance.close(response);
+                    } else {
+                        $uibModalInstance.dismiss('An error occurred');
+                    }
+                },function (error) {
+                    $uibModalInstance.dismiss(error.data.error);
+                });
+        }
     }
 })();

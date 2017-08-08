@@ -76,6 +76,8 @@ module.exports = function(config) {
             'karma-junit-reporter',
             'karma-growl-reporter',
             'karma-htmlfile-reporter',
+            'karma-mocha-reporter',
+            'karma-super-dots-reporter',
             'karma-ng-html2js-preprocessor'
         ],
 

@@ -37,7 +37,7 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($analytics, $log, $scope, $uibModal, ACTIVE_CAP, commonService) {
+        function CertsController ($analytics, $log, $scope, $uibModal, ACTIVE_CAP, networkService) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
@@ -249,7 +249,7 @@
             }
 
             function viewIcsFamily () {
-                commonService.getIcsFamily().then(function (family) {
+                networkService.getIcsFamily().then(function (family) {
                     vm.uibModalInstance = $uibModal.open({
                         templateUrl: 'app/components/listing_details/ics_family/icsFamilyModal.html',
                         controller: 'IcsFamilyController',

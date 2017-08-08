@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    describe('admin.announcements.edit.controller', function () {
-        var $log, $q, Mock, authService, commonService, mock, scope, vm;
+    describe('the Announcement Edit controller', function () {
+        var $log, $q, Mock, authService, mock, networkService, scope, vm;
 
         mock = {};
         mock.announcement = {
@@ -16,7 +16,7 @@
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     return $delegate;
                 });
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.createAnnouncement = jasmine.createSpy('createAnnouncement');
                     $delegate.deleteAnnouncement = jasmine.createSpy('deleteAnnouncement');
                     $delegate.modifyAnnouncement = jasmine.createSpy('modifyAnnouncement');
@@ -24,23 +24,21 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _authService_, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _authService_, _networkService_) {
                 $log = _$log_;
                 Mock = _Mock_;
                 $q = _$q_;
                 authService = _authService_;
                 authService.isChplAdmin.and.returnValue(true);
-                commonService = _commonService_;
-                commonService.createAnnouncement.and.returnValue($q.when({status: 200}));
-                commonService.deleteAnnouncement.and.returnValue($q.when({status: 200}));
-                commonService.modifyAnnouncement.and.returnValue($q.when({status: 200}));
+                networkService = _networkService_;
+                networkService.createAnnouncement.and.returnValue($q.when({status: 200}));
+                networkService.deleteAnnouncement.and.returnValue($q.when({status: 200}));
+                networkService.modifyAnnouncement.and.returnValue($q.when({status: 200}));
 
                 scope = $rootScope.$new();
                 vm = $controller('AnnouncementEditController', {
                     announcement: mock.announcement,
                     action: 'edit',
-                    authService: authService,
-                    commonService: commonService,
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
@@ -54,22 +52,20 @@
             }
         });
 
-        describe('housekeeping', function () {
-            it('should exist', function () {
-                expect(vm).toBeDefined();
-            });
+        it('should exist', function () {
+            expect(vm).toBeDefined();
+        });
 
-            it('should have some starting values', function () {
-                expect(vm.isChplAdmin).toBe(true);
-                expect(vm.announcement.startDate).toEqual(new Date(mock.announcement.startDate));
-                expect(vm.announcement.endDate).toEqual(new Date(mock.announcement.endDate));
-            });
+        it('should have some starting values', function () {
+            expect(vm.isChplAdmin).toBe(true);
+            expect(vm.announcement.startDate).toEqual(new Date(mock.announcement.startDate));
+            expect(vm.announcement.endDate).toEqual(new Date(mock.announcement.endDate));
+        });
 
-            it('should have a way to close the modal', function () {
-                expect(vm.cancel).toBeDefined();
-                vm.cancel();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
-            });
+        it('should have a way to close it\'s own modal', function () {
+            expect(vm.cancel).toBeDefined();
+            vm.cancel();
+            expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
         it('should know if the dates are invalid', function () {
@@ -84,11 +80,11 @@
             expect(vm.datesInvalid()).toBe(false); // can't check if only have one date
         });
 
-        describe('modifying announcements', function () {
+        describe('when modifying announcements', function () {
             it('should call the common service', function () {
                 vm.save();
                 scope.$digest();
-                expect(commonService.modifyAnnouncement).toHaveBeenCalled();
+                expect(networkService.modifyAnnouncement).toHaveBeenCalled();
             });
 
             it('should close the modal', function () {
@@ -98,25 +94,25 @@
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.modifyAnnouncement.and.returnValue($q.when({status: 500}));
+                networkService.modifyAnnouncement.and.returnValue($q.when({status: 500}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.modifyAnnouncement.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.modifyAnnouncement.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('bad thing');
             });
         });
 
-        describe('creating announcements', function () {
+        describe('when creating announcements', function () {
             it('should call the common service', function () {
                 vm.create();
                 scope.$digest();
-                expect(commonService.createAnnouncement).toHaveBeenCalled();
+                expect(networkService.createAnnouncement).toHaveBeenCalled();
             });
 
             it('should close the modal', function () {
@@ -126,25 +122,25 @@
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.createAnnouncement.and.returnValue($q.when({status: 500}));
+                networkService.createAnnouncement.and.returnValue($q.when({status: 500}));
                 vm.create();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.createAnnouncement.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.createAnnouncement.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.create();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('bad thing');
             });
         });
 
-        describe('deleting announcements', function () {
+        describe('when deleting announcements', function () {
             it('should call the common service', function () {
                 vm.deleteAnnouncement();
                 scope.$digest();
-                expect(commonService.deleteAnnouncement).toHaveBeenCalled();
+                expect(networkService.deleteAnnouncement).toHaveBeenCalled();
             });
 
             it('should close the modal', function () {
@@ -154,14 +150,14 @@
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.deleteAnnouncement.and.returnValue($q.when({status: 500}));
+                networkService.deleteAnnouncement.and.returnValue($q.when({status: 500}));
                 vm.deleteAnnouncement();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.deleteAnnouncement.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.deleteAnnouncement.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.deleteAnnouncement();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('bad thing');

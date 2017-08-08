@@ -2,22 +2,22 @@
     'use strict';
 
     describe('the Collections', function () {
-        var $log, $q, commonService, el, scope, vm;
+        var $log, $q, el, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.templates', 'chpl.collections', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCollection = jasmine.createSpy('getCollection');
 
                     return $delegate;
                 });
             });
 
-            inject(function ($compile, $controller, _$log_, _$q_, $rootScope, _commonService_) {
+            inject(function ($compile, $controller, _$log_, _$q_, $rootScope, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
-                commonService = _commonService_;
-                commonService.getCollection.and.returnValue($q.when({results: []}));
+                networkService = _networkService_;
+                networkService.getCollection.and.returnValue($q.when({results: []}));
 
                 el = angular.element('<ai-collection collection-key="key" columns="columns" filters="filters" refine-model="refineModel"><ai-body-text>This is body text</ai-body-text><ai-title>Title</ai-title></ai-collection>');
 

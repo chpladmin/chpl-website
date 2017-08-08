@@ -5,7 +5,7 @@
         .controller('ProductController', ProductController);
 
     /** @ngInclude */
-    function ProductController ($localStorage, $log, $routeParams, $uibModal, authService, commonService) {
+    function ProductController ($localStorage, $log, $routeParams, $uibModal, authService, networkService) {
         var vm = this;
 
         vm.loadProduct = loadProduct;
@@ -41,19 +41,19 @@
         }
 
         function loadProduct () {
-            commonService.getProduct(vm.productId)
+            networkService.getProduct(vm.productId)
                 .then(function (data) {
                     vm.product = data;
                 }, function (error) {
                     $log.error(error);
                 });
-            commonService.getSingleCertifiedProductActivity(vm.productId)
+            networkService.getSingleCertifiedProductActivity(vm.productId)
                 .then(function (data) {
                     vm.activity = data;
                 }, function (error) {
                     $log.error(error);
                 });
-            commonService.getCap(vm.productId)
+            networkService.getCap(vm.productId)
                 .then(function (data) {
                     vm.correctiveActionPlan = data.plans;
                 }, function (error) {

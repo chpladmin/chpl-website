@@ -77,7 +77,7 @@
         <ai-subscription-recipients ng-if="vm.navState.screen === 'subscriptions'"
                                     acbs="vm.acbs"></ai-subscription-recipients>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>
-        <ai-announcements-management admin="true" ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
+        <ai-announcements-management ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
         <ai-cms-management admin="true" ng-if="vm.navState.screen === 'cmsManagement'"></ai-cms-management>
       </div>
     </div>

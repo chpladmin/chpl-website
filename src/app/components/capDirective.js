@@ -1,8 +1,8 @@
 ;(function () {
     'use strict';
 
-    angular.module('chpl.common')
-        .controller('CorrectiveActionPlanController', ['$log', '$scope', '$uibModal', 'commonService', 'authService', 'API', 'ACTIVE_CAP', function ($log, $scope, $uibModal, commonService, authService, API, ACTIVE_CAP) {
+    angular.module('chpl.services')
+        .controller('CorrectiveActionPlanController', ['$log', '$scope', '$uibModal', 'networkService', 'authService', 'API', 'ACTIVE_CAP', function ($log, $scope, $uibModal, networkService, authService, API, ACTIVE_CAP) {
             var vm = this;
 
             vm.activate = activate;
@@ -37,7 +37,7 @@
                     }
                 });
                 vm.modalInstance.result.then(function (result) {
-                    commonService.getCap(vm.certifiedProductId)
+                    networkService.getCap(vm.certifiedProductId)
                         .then(function (result) {
                             vm.correctiveActionPlan = result.plans;
                         });
@@ -65,7 +65,7 @@
                     }
                 });
                 vm.modalInstance.result.then(function (result) {
-                    commonService.getCap(vm.certifiedProductId)
+                    networkService.getCap(vm.certifiedProductId)
                         .then(function (result) {
                             vm.correctiveActionPlan = result.plans;
                         });

@@ -5,7 +5,7 @@
         .controller('EditSedParticipantController', EditSedParticipantController);
 
     /** @ngInject */
-    function EditSedParticipantController ($uibModalInstance, commonService, participant) {
+    function EditSedParticipantController ($uibModalInstance, networkService, participant) {
         var vm = this;
 
         vm.participant = participant.participant;
@@ -20,7 +20,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            commonService.getEducation()
+            networkService.getEducation()
                 .then(function (result) {
                     vm.education = result;
                 });
@@ -28,7 +28,7 @@
                 name: vm.participant.educationTypeName,
                 id: vm.participant.educationTypeId,
             };
-            commonService.getAgeRanges()
+            networkService.getAgeRanges()
                 .then(function (result) {
                     vm.ageRanges = result;
                 });

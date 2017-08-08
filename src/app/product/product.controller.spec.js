@@ -3,7 +3,7 @@
 
     describe('chpl.product.controller', function () {
 
-        var $controller, $log, $q, $uibModal, actualOptions, authService, commonService, mock, scope, vm;
+        var $controller, $log, $q, $uibModal, actualOptions, authService, mock, networkService, scope, vm;
         mock = {};
         mock.activity = {};
         mock.productId = 123123;
@@ -33,7 +33,7 @@
 
         beforeEach(function () {
             module('chpl.product', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCap = jasmine.createSpy('getCap');
                     $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
@@ -44,7 +44,7 @@
                     return $delegate;
                 });
             });
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _commonService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _networkService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $uibModal = _$uibModal_;
@@ -53,10 +53,10 @@
                     return mock.fakeModal;
                 });
                 $q = _$q_;
-                commonService = _commonService_;
-                commonService.getCap.and.returnValue($q.when(mock.caps));
-                commonService.getProduct.and.returnValue($q.when(mock.products));
-                commonService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
+                networkService = _networkService_;
+                networkService.getCap.and.returnValue($q.when(mock.caps));
+                networkService.getProduct.and.returnValue($q.when(mock.products));
+                networkService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
                 authService = _authService_;
                 authService.isAuthed.and.returnValue(true);
 
@@ -89,24 +89,24 @@
             });
 
             it('should find product details on load', function () {
-                expect(commonService.getProduct).toHaveBeenCalled();
+                expect(networkService.getProduct).toHaveBeenCalled();
             });
 
             it('should log an error if the product load doesn\'t work', function () {
                 var initialCount = $log.error.logs.length;
-                commonService.getProduct.and.returnValue($q.reject('error message'));
+                networkService.getProduct.and.returnValue($q.reject('error message'));
                 vm.loadProduct();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initialCount + 1);
             });
 
             it('should get product history on load', function () {
-                expect(commonService.getSingleCertifiedProductActivity).toHaveBeenCalled();
+                expect(networkService.getSingleCertifiedProductActivity).toHaveBeenCalled();
             });
 
             it('should log an error if the product history load doesn\'t work', function () {
                 var initialCount = $log.error.logs.length;
-                commonService.getSingleCertifiedProductActivity.and.returnValue($q.reject('error message'));
+                networkService.getSingleCertifiedProductActivity.and.returnValue($q.reject('error message'));
                 vm.loadProduct();
                 scope.$digest();
                 expect($log.error.logs.length).toBe(initialCount + 1);

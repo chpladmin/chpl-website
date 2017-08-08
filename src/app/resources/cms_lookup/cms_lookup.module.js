@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.cms_lookup', ['ngStorage', 'chpl.common']);
+    angular.module('chpl.cms_lookup', ['ngStorage', 'chpl.services']);
 })();

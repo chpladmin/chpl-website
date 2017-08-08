@@ -5,7 +5,7 @@
         .controller('CreateController', CreateController);
 
     /** @ngInject */
-    function CreateController ($location, $log, $routeParams, authService, commonService) {
+    function CreateController ($location, $log, $routeParams, authService, networkService) {
         var vm = this;
 
         vm.authorizeUser = authorizeUser;
@@ -34,7 +34,7 @@
         function authorizeUser () {
             if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || vm.isAuthed()
                 && vm.authorizeDetails.hash) {
-                commonService.authorizeUser(vm.authorizeDetails)
+                networkService.authorizeUser(vm.authorizeDetails)
                     .then(function () {
                         $location.path('/admin');
                     },function (error) {
@@ -50,7 +50,7 @@
         function createUser () {
             if (vm.validateUser()) {
                 vm.userDetails.user.complianceTermsAccepted = true;
-                commonService.createInvitedUser(vm.userDetails)
+                networkService.createInvitedUser(vm.userDetails)
                     .then(function () {
                         vm.message.value = 'Your account has been created. Please check your email to confirm your account';
                         vm.userDetails = {user: {}};

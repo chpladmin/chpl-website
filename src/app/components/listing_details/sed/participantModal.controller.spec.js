@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the SED Participant Modal controller', function () {
-        var $log, $q, Mock, commonService, mock, scope, vm;
+        var $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
         mock.participant = {
@@ -14,20 +14,20 @@
 
         beforeEach(function () {
             module('chpl', 'chpl.mock', 'chpl.templates', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAgeRanges = jasmine.createSpy('getAgeRanges');
                     $delegate.getEducation = jasmine.createSpy('getEducation');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
-                commonService = _commonService_;
-                commonService.getAgeRanges.and.returnValue($q.when({}));
-                commonService.getEducation.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.getAgeRanges.and.returnValue($q.when({}));
+                networkService.getEducation.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 vm = $controller('EditSedParticipantController', {
@@ -58,8 +58,8 @@
         });
 
         it('should load Education and AgeRanges on load', function () {
-            expect(commonService.getAgeRanges).toHaveBeenCalled();
-            expect(commonService.getEducation).toHaveBeenCalled();
+            expect(networkService.getAgeRanges).toHaveBeenCalled();
+            expect(networkService.getEducation).toHaveBeenCalled();
             expect(vm.participant.education).toEqual({
                 name: mock.participant.educationTypeName,
                 id: mock.participant.educationTypeId,

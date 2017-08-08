@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.download', ['chpl.common', 'chpl.constants']);
+    angular.module('chpl.download', ['chpl.services', 'chpl.constants']);
 })();

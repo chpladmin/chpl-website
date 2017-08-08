@@ -3,13 +3,13 @@
 
     describe('chpl.compare.compare', function () {
 
-        var $log, commonService, ctrl, scope, utilService;
+        var $log, ctrl, networkService, scope, utilService;
 
         beforeEach(function () {
             var mockCommonService = {};
             var mockUtilService = {};
             module('chpl.compare', function ($provide) {
-                $provide.value('commonService', mockCommonService);
+                $provide.value('networkService', mockCommonService);
                 $provide.value('utilService', mockUtilService);
             });
 
@@ -35,15 +35,15 @@
             });
         });
 
-        beforeEach(inject(function ($controller, _$log_, $rootScope, _commonService_, _utilService_) {
+        beforeEach(inject(function ($controller, _$log_, $rootScope, _networkService_, _utilService_) {
             $log = _$log_;
             scope = $rootScope.$new();
-            commonService = _commonService_;
+            networkService = _networkService_;
             utilService = _utilService_;
             ctrl = $controller('CompareController', {
                 $scope: scope,
                 $routeParams: {compareIds: '123&234'},
-                commonService: commonService,
+                networkService: networkService,
                 utilService: utilService,
             });
             scope.$digest();

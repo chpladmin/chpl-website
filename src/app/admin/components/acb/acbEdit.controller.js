@@ -5,7 +5,7 @@
         .controller('EditAcbController', EditAcbController);
 
     /** @ngInject */
-    function EditAcbController ($uibModalInstance, acb, action, commonService, isChplAdmin) {
+    function EditAcbController ($uibModalInstance, acb, action, isChplAdmin, networkService) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -32,7 +32,7 @@
         }
 
         function create () {
-            commonService.createACB(vm.acb)
+            networkService.createACB(vm.acb)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
@@ -45,7 +45,7 @@
         }
 
         function deleteAcb () {
-            commonService.deleteACB(vm.acb.id)
+            networkService.deleteACB(vm.acb.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close('deleted');
@@ -58,7 +58,7 @@
         }
 
         function save () {
-            commonService.modifyACB(vm.acb)
+            networkService.modifyACB(vm.acb)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
@@ -71,7 +71,7 @@
         }
 
         function undeleteAcb () {
-            commonService.undeleteACB(vm.acb.id)
+            networkService.undeleteACB(vm.acb.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

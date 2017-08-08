@@ -5,7 +5,7 @@
         .controller('DecertifiedProductsController', DecertifiedProductsController);
 
     /** @ngInject */
-    function DecertifiedProductsController (commonService) {
+    function DecertifiedProductsController (networkService) {
         var vm = this;
 
         vm.getMeaningfulUseUsersAccurateAsOfDate = getMeaningfulUseUsersAccurateAsOfDate;
@@ -48,7 +48,7 @@
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {
-            commonService.getMeaningfulUseUsersAccurateAsOfDate()
+            networkService.getMeaningfulUseUsersAccurateAsOfDate()
                 .then(function (response) {
                     vm.muuAccurateAsOf = response.accurateAsOfDate;
                 });

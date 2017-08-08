@@ -5,7 +5,7 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, commonService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, utilService, workType) {
+    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isAcbStaff, isChplAdmin, networkService, resources, utilService, workType) {
 
         var vm = this;
 
@@ -103,10 +103,10 @@
         }
 
         function requiredIcsCode () {
-            var code = -1;
-            for (var i = 0; i < vm.cp.ics.parents.length; i++) {
-                code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6]) + 1);
-            }
+            var code = vm.cp.ics.parents
+                .map(function (item) { return parseInt(item.chplProductNumber.split('.')[6], 10); })
+                .reduce(function (max, cur) { return Math.max(max, cur); }, -1)
+                + 1;
             return (code > 9 || code < 0) ? '' + code : '0' + code;
         }
 
@@ -133,7 +133,7 @@
             vm.cp.sedTestingEnd = vm.cp.sedTestingEndDate.getTime();
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
-                commonService.updateCP({
+                networkService.updateCP({
                     listing: vm.cp,
                     banDeveloper: vm.banDeveloper,
                 }).then(function (response) {
@@ -184,7 +184,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function loadFamily () {
-            commonService.getRelatedListings(vm.cp.product.productId)
+            networkService.getRelatedListings(vm.cp.product.productId)
                 .then(function (family) {
                     vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
                 });

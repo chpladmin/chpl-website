@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the CHPL Navigation', function () {
-        var $compile, $localStorage, $location, $log, $q, $rootScope, authService, commonService, el, mock, scope, vm;
+        var $compile, $localStorage, $location, $log, $q, $rootScope, authService, el, mock, networkService, scope, vm;
         mock = {
             announcements: [],
             username: 'a user name',
@@ -15,7 +15,7 @@
                     $delegate.isAuthed = jasmine.createSpy('isAuthed');
                     return $delegate;
                 });
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAnnouncements = jasmine.createSpy('getAnnouncements');
                     return $delegate;
                 });
@@ -23,7 +23,7 @@
 
         });
 
-        beforeEach(inject(function (_$compile_, $controller, _$localStorage_, _$location_, _$log_, _$q_, _$rootScope_, _authService_, _commonService_) {
+        beforeEach(inject(function (_$compile_, $controller, _$localStorage_, _$location_, _$log_, _$q_, _$rootScope_, _authService_, _networkService_) {
             $compile = _$compile_;
             $localStorage = _$localStorage_;
             $location = _$location_;
@@ -33,8 +33,8 @@
             authService = _authService_;
             authService.getUsername.and.returnValue(mock.username);
             authService.isAuthed.and.returnValue(true);
-            commonService = _commonService_;
-            commonService.getAnnouncements.and.returnValue($q.when(mock.announcements));
+            networkService = _networkService_;
+            networkService.getAnnouncements.and.returnValue($q.when(mock.announcements));
 
             scope = $rootScope.$new();
             vm = $controller('NavigationController', {

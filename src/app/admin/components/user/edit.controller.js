@@ -5,7 +5,7 @@
         .controller('EditUserController', EditUserController);
 
     /** @ngInject */
-    function EditUserController ($uibModalInstance, acbId, action, atlId, commonService, user) {
+    function EditUserController ($uibModalInstance, acbId, action, atlId, networkService, user) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -39,7 +39,7 @@
                     acbId: vm.acbId,
                     userId: vm.user.user.userId,
                 };
-                commonService.removeUserFromAcb(userObject.userId, userObject.acbId)
+                networkService.removeUserFromAcb(userObject.userId, userObject.acbId)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close('deleted');
@@ -54,7 +54,7 @@
                     atlId: vm.atlId,
                     userId: vm.user.user.userId,
                 };
-                commonService.removeUserFromAtl(userObject.userId, userObject.atlId)
+                networkService.removeUserFromAtl(userObject.userId, userObject.atlId)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close('deleted');
@@ -65,7 +65,7 @@
                         errorMessage(error.data.error);
                     });
             } else {
-                commonService.deleteUser(vm.user.user.userId)
+                networkService.deleteUser(vm.user.user.userId)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close('deleted');
@@ -86,7 +86,7 @@
                 vm.userInvitation.testingLabId = vm.atlId;
             }
             if (vm.userInvitation.emailAddress && vm.userInvitation.emailAddress.length > 0 && vm.userInvitation.permissions.length > 0) {
-                commonService.inviteUser(vm.userInvitation)
+                networkService.inviteUser(vm.userInvitation)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close('invited');
@@ -126,13 +126,13 @@
                 var payload = angular.copy(roleObject);
                 payload.role = vm.roles[i];
                 if (vm.user.roles.indexOf(payload.role) > -1) {
-                    commonService.addRole(payload);
+                    networkService.addRole(payload);
                 } else if (!vm.acbId && !vm.atlId) {
-                    commonService.revokeRole(payload);
+                    networkService.revokeRole(payload);
                 }
             }
 
-            commonService.updateUser(vm.user.user)
+            networkService.updateUser(vm.user.user)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

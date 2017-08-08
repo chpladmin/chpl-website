@@ -3,22 +3,22 @@
 
     describe('the Transparency Attestation Collection controller', function () {
 
-        var $log, commonService, scope, vm;
+        var $log, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.collections', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, $rootScope, _commonService_) {
+            inject(function ($controller, _$log_, $rootScope, _networkService_) {
                 $log = _$log_;
-                commonService = _commonService_;
+                networkService = _networkService_;
 
                 scope = $rootScope.$new();
                 vm = $controller('TransparencyAttestationsController', {
-                    commonService: commonService,
+                    networkService: networkService,
                     $scope: scope,
                 });
                 scope.$digest();

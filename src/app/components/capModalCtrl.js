@@ -1,8 +1,8 @@
 ;(function () {
     'use strict';
 
-    angular.module('chpl.common')
-        .controller('EditCorrectiveActionPlanController', ['$uibModalInstance', 'action', 'certifiedProductId', 'certificationResults', 'correctiveActionPlan', 'commonService', 'authService', 'API', 'FileUploader', function ($uibModalInstance, action, certifiedProductId, certificationResults, correctiveActionPlan, commonService, authService, API, FileUploader) {
+    angular.module('chpl.services')
+        .controller('EditCorrectiveActionPlanController', ['$uibModalInstance', 'action', 'certifiedProductId', 'certificationResults', 'correctiveActionPlan', 'networkService', 'authService', 'API', 'FileUploader', function ($uibModalInstance, action, certifiedProductId, certificationResults, correctiveActionPlan, networkService, authService, API, FileUploader) {
             var vm = this;
 
             vm.cancel = cancel;
@@ -82,7 +82,7 @@
             }
 
             function deleteCap () {
-                commonService.deleteCap(vm.cap.id)
+                networkService.deleteCap(vm.cap.id)
                     .then(function (result) {
                         $uibModalInstance.close(result);
                     }), function (error) {
@@ -91,7 +91,7 @@
             }
 
             function deleteDoc (docId) {
-                commonService.deleteDoc(docId)
+                networkService.deleteDoc(docId)
                     .then(function (result) {
                         for (var i = 0; i < vm.cap.documentation.length; i++) {
                             if (vm.cap.documentation[i].id === docId) {
@@ -123,14 +123,14 @@
                 }
 
                 if (vm.action === 'initiate') {
-                    commonService.initiateCap(vm.cap)
+                    networkService.initiateCap(vm.cap)
                         .then(function (result) {
                             $uibModalInstance.close(result);
                         }), function (error) {
                             $uibModalInstance.dismss(error);
                         };
                 } else if (vm.action === 'edit') {
-                    commonService.updateCap(vm.cap)
+                    networkService.updateCap(vm.cap)
                         .then(function (result) {
                             $uibModalInstance.close(result);
                         }), function (error) {
