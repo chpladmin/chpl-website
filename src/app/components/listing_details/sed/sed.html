@@ -14,7 +14,7 @@
     <p ng-if="!vm.listing.sedTestingEnd">N/A</p>
   </span>
   <span>
-    <h4>SED Tested Certification Criteria & the UCD Processes used</h4>
+    <h4>SED Tested Certification Criteria & Associated UCD Processes</h4>
     <table class="table table-condensed nowrap" ng-if="vm.ucdProcesses && vm.ucdProcesses.length > 0">
       <thead>
         <tr>
@@ -33,7 +33,7 @@
     </table>
     <p ng-if="!vm.ucdProcesses || vm.ucdProcesses.length === 0">No Certification Criteria were tested for SED.</p>
   </span>
-  <span>
+  <span ng-if="vm.listing.certificationEdition.name === '2015'">
     <h4>SED Testing Tasks</h4>
     <table class="table table-condensed nowrap" ng-if="vm.tasks && vm.tasks.length > 0">
       <thead>
