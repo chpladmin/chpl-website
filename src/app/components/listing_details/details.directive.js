@@ -240,6 +240,9 @@
                     case 'g1g2':
                         $analytics.eventTrack('Viewed G1/G2 information', { category: 'Listing Details', label: vm.product.chplProductNumber});
                         break;
+                    case 'sed':
+                        $analytics.eventTrack('Viewed SED information', { category: 'Listing Details', label: vm.product.chplProductNumber});
+                        break;
                         // no default
                     }
                 }
