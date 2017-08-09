@@ -58,7 +58,7 @@
             });
 
             it('should have an array of tasks pulled from the criteria', function () {
-                expect(vm.tasks.length).toBeGreaterThan(0);
+                expect(vm.tasks.length).toBe(62);
             });
 
             it('should have the associated criteria attached to the tasks', function () {
@@ -70,19 +70,37 @@
                 expect(utilService.sortCert).toHaveBeenCalled();
             });
 
-            it('should farm out certs sorting to the util service', function () {
-                vm.sortCerts(vm.tasks[0]);
+            it('should farm out task sorting to the util service', function () {
+                vm.sortTasks(vm.tasks[0]);
                 expect(utilService.sortCerts).toHaveBeenCalledWith(['170.315 (b)(2)']);
             });
 
             it('should return the sorting value to the caller', function () {
-                var val = vm.sortCerts(vm.tasks[0]);
+                var val = vm.sortTasks(vm.tasks[0]);
                 expect(val).toBe(56);
             });
 
             it('should know what the task length is', function () {
                 expect(vm.taskCount).toBeDefined();
                 expect(vm.taskCount).toBe(62);
+            });
+
+            it('should have an array of criteria that were SED tested', function () {
+                expect(vm.ucdProcesses.length).toBe(1);
+            });
+
+            it('should associate the UCD Processes with multiple criteria', function () {
+                expect(vm.ucdProcesses[0].criteria).toEqual(['170.315 (b)(2)', '170.315 (a)(4)', '170.315 (a)(8)', '170.315 (a)(9)', '170.315 (a)(5)', '170.315 (a)(7)', '170.315 (a)(6)', '170.315 (a)(1)', '170.315 (a)(3)', '170.315 (a)(2)', '170.315 (b)(3)', '170.315 (a)(14)']);
+            });
+
+            it('should farm out process sorting to the util service', function () {
+                vm.sortProcesses(vm.tasks[0]);
+                expect(utilService.sortCerts).toHaveBeenCalledWith(['170.315 (b)(2)']);
+            });
+
+            it('should know what the process length is', function () {
+                expect(vm.criteriaCount).toBeDefined();
+                expect(vm.criteriaCount).toBe(12);
             });
         });
 
