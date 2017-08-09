@@ -1,0 +1,39 @@
+<div role="modal" aria-labeled-by="modalLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close modal"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="modalLabel">SED Participants</h4>
+  </div>
+  <div class="modal-body">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Age</th>
+          <th scope="col">Assistive Technology Needs</th>
+          <th scope="col">Computer Experience (Months)</th>
+          <th scope="col">Education Type</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Occupation</th>
+          <th scope="col">Product Experience (Months)</th>
+          <th scope="col">Professional Experience (Months)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="participant in vm.participants">
+          <td>{{ participant.ageRange }}</td>
+          <td>{{ participant.assistiveTechnologyNeeds }}</td>
+          <td>{{ participant.computerExperienceMonths }}</td>
+          <td>{{ participant.educationTypeName }}</td>
+          <td>{{ participant.gender }}</td>
+          <td>{{ participant.occupation }}</td>
+          <td>{{ participant.productExperienceMonths }}</td>
+          <td>{{ participant.professionalExperienceMonths }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default pull-left"
+          ng-click="vm.cancel()">Close</button>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div style="background: white">
+  <table class="table table-condensed nowrap" ng-if="vm.tasks && vm.tasks.length > 0">
+    <thead>
+      <tr>
+        <th scope="col">Description</th>
+        <th scope="col">Associated Criteria</th>
+        <th scope="col">Participants</th>
+        <th scope="col"><span class="sr-only">View details</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="task in vm.tasks | orderBy: [vm.sortCerts, 'description']">
+        <td>{{ task.description }}</td>
+        <td>{{ task.criteria.join('; ') }}</td>
+        <td><button class="btn btn-ai-success" ng-click="vm.viewParticipants(task)"><i class="fa fa-users"></i> {{ task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
+        <td><button class="btn btn-ai-success" ng-click="vm.viewDetails(task)"><i class="fa fa-eye"></i> Details</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <p ng-if="!vm.tasks || vm.tasks.length === 0">No SED Tasks are recorded.</p>
+</div>

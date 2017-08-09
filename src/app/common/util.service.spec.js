@@ -174,6 +174,11 @@
                 expect(util.sortNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortNonconformityTypes(transparency_k_2));
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
             });
+
+            it('should be able to order arrays of certs by the first cert', function () {
+                expect(util.sortCerts([])).toBeLessThan(util.sortCerts(['170.314 (a)(10)']));
+                expect(util.sortCerts(['170.314 (a)(2)'])).toBeLessThan(util.sortCerts(['170.314 (a)(10)']));
+            });
         });
 
         describe('when comparing arrays', function () {

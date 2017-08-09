@@ -7,6 +7,8 @@
       <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts"></input>
       <label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
     </p>
+
+    <!-- Certification Criteria -->
     <div class="panel panel-ai">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cert')" aria-expanded="{{ vm.panelShown === 'cert' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
@@ -26,6 +28,8 @@
         </div>
       </div>
     </div>
+
+    <!-- CQMs -->
     <div class="panel panel-ai">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cqm')" aria-expanded="{{ vm.panelShown === 'cqm' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
@@ -87,6 +91,8 @@
         </table>
       </div>
     </div>
+
+    <!-- Additional Information -->
     <div class="panel panel-ai" ng-if="!vm.isEditing && !vm.isConfirming">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('additional')" aria-expanded="{{ vm.panelShown === 'additional' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
@@ -150,6 +156,8 @@
         </span>
       </div>
     </div>
+
+    <!-- Surveillance -->
     <div class="panel panel-ai">
       <div class="panel-heading">
         <a href ng-click="vm.showPanel('surveillance')" aria-expanded="{{ vm.panelShown === 'surveillance' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-right'"></i> Surveillance Activities<span class="pull-right">({{ vm.product.surveillance && vm.product.surveillance.length ? vm.product.surveillance.length : 0 }} found)</span></a>
@@ -158,6 +166,8 @@
         <ai-surveillance certified-product="vm.product"></ai-surveillance>
       </div>
     </div>
+
+    <!-- G1/G2 Measures -->
     <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name === '2015'">
       <div class="panel-heading">
         <a href ng-click="vm.showPanel('g1g2')" aria-expanded="{{ vm.panelShown === 'g1g2' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-right'"></i> Successfully Tested G1/G2 Measures</a>
@@ -166,6 +176,18 @@
         <ai-g1g2 listing="vm.product"></ai-g1g2>
       </div>
     </div>
+
+    <!-- SED -->
+    <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name === '2015'">
+      <div class="panel-heading">
+        <a href ng-click="vm.showPanel('sed')" aria-expanded="{{ vm.panelShown === 'sed' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-right'"></i> Safety Enhanced Design (SED)<span class="pull-right">({{ vm.sedTaskCount ? vm.sedTaskCount : 0 }} found)</span></a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'sed'">
+        <ai-sed listing="vm.product" task-count="vm.sedTaskCount"></ai-sed>
+      </div>
+    </div>
+
+    <!-- Corrective Action Plan (OBE) -->
     <div class="panel panel-ai" ng-if="vm.cap && vm.ACTIVE_CAP">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cap')" aria-expanded="{{ vm.panelShown === 'cap' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cap' ? 'fa-caret-down' : 'fa-caret-right'"></i> Non-conformities<span class="pull-right">({{ vm.cap.length && vm.cap.length > 0 ? vm.cap.length : 0 }} found)</span></a>

@@ -15,6 +15,7 @@
             findModel: findModel,
             makeCsv: makeCsv,
             sortCert: sortCert,
+            sortCerts: sortCerts,
             sortCqm: sortCqm,
             sortNonconformityTypes: sortNonconformityTypes,
             sortRequirements: sortRequirements,
@@ -154,6 +155,14 @@
             var ret = edition * 10000 +
                 letter * 100 +
                 number;
+            return ret;
+        }
+
+        function sortCerts (array) {
+            var ret = Number.MIN_VALUE;
+            if (array.length > 0) {
+                ret = this.sortCert(array[0]);
+            }
             return ret;
         }
 
