@@ -44,11 +44,21 @@
           <th scope="col"><span class="sr-only">View details</span></th>
         </tr>
       </thead>
+      <tfoot>
+        <tr>
+          <td colspan="4">
+            <button class="btn btn-ai-success"
+                    ng-click="vm.getCsv()">
+              <i class="fa fa-cloud-download"></i> Download SED Task Information
+            </button>
+          </td>
+        </tr>
+      </tfoot>
       <tbody>
         <tr ng-repeat="task in vm.tasks | orderBy: [vm.sortTasks, 'description']">
           <td>{{ task.description }}</td>
           <td>{{ task.criteria.join('; ') }}</td>
-          <td><button class="btn btn-ai-success" ng-click="vm.viewParticipants(task)"><i class="fa fa-users"></i> {{ task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
+          <td><button class="btn btn-ai" ng-click="vm.viewParticipants(task)"><i class="fa fa-users"></i> {{ task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
           <td><button class="btn btn-ai-success" ng-click="vm.viewDetails(task)"><i class="fa fa-eye"></i> Details</button></td>
         </tr>
       </tbody>

@@ -8,8 +8,8 @@
         beforeEach(function () {
             module('chpl.templates', 'chpl.mock', 'chpl', function ($provide) {
                 $provide.decorator('utilService', function ($delegate) {
-                    $delegate.sortCert = jasmine.createSpy('sortCert');
-                    $delegate.sortCerts = jasmine.createSpy('sortCerts');
+                    $delegate.makeCsv = jasmine.createSpy('makeCsv');
+                    $delegate.sortCertArray = jasmine.createSpy('sortCertArray');
                     return $delegate;
                 });
             });
@@ -18,8 +18,8 @@
                 $log = _$log_;
                 Mock = _Mock_;
                 utilService = _utilService_;
-                utilService.sortCert.and.returnValue(0);
-                utilService.sortCerts.and.returnValue(56);
+                utilService.makeCsv.and.returnValue();
+                utilService.sortCertArray.and.callThrough();
                 $uibModal = _$uibModal_;
                 spyOn($uibModal, 'open').and.callFake(function (options) {
                     actualOptions = options;
@@ -57,50 +57,86 @@
                 expect(vm.listing).toEqual(Mock.fullListings[1]);
             });
 
-            it('should have an array of tasks pulled from the criteria', function () {
-                expect(vm.tasks.length).toBe(62);
+            describe('should use the util service', function () {
+                it('to enable sorting of tasks', function () {
+                    vm.sortTasks(vm.tasks[0]);
+                    expect(utilService.sortCertArray).toHaveBeenCalledWith(['170.315 (b)(2)']);
+                });
+
+                it('to enable sorting of processes', function () {
+                    vm.sortProcesses(vm.tasks[0]);
+                    expect(utilService.sortCertArray).toHaveBeenCalledWith(['170.315 (b)(2)']);
+                });
+
+                it('to make a csv', function () {
+                    vm.getCsv();
+                    expect(utilService.makeCsv).toHaveBeenCalled();
+                });
             });
 
-            it('should have the associated criteria attached to the tasks', function () {
-                expect(vm.tasks[0].criteria).toEqual(['170.315 (b)(2)']);
-            });
+            describe('during initialization', function () {
+                it('should know how many criteria were sed tested', function () {
+                    expect(vm.criteriaCount).toBeDefined();
+                    expect(vm.criteriaCount).toBe(12);
+                });
 
-            it('should farm out cert sorting to the util service', function () {
-                vm.sortCert('');
-                expect(utilService.sortCert).toHaveBeenCalled();
-            });
+                it('should filter out criteria that were not successful or not sed', function () {
+                    expect(vm.listing.certificationResults.length).toBe(12);
+                });
 
-            it('should farm out task sorting to the util service', function () {
-                vm.sortTasks(vm.tasks[0]);
-                expect(utilService.sortCerts).toHaveBeenCalledWith(['170.315 (b)(2)']);
-            });
+                describe('with respect to tasks', function () {
+                    it('should have an array of tasks pulled from the criteria', function () {
+                        expect(vm.tasks.length).toBe(62);
+                    });
 
-            it('should return the sorting value to the caller', function () {
-                var val = vm.sortTasks(vm.tasks[0]);
-                expect(val).toBe(56);
-            });
+                    it('should have the associated criteria attached to the tasks', function () {
+                        expect(vm.tasks[0].criteria).toEqual(['170.315 (b)(2)']);
+                    });
 
-            it('should know what the task length is', function () {
-                expect(vm.taskCount).toBeDefined();
-                expect(vm.taskCount).toBe(62);
-            });
+                    it('should know what the task length is', function () {
+                        expect(vm.taskCount).toBeDefined();
+                        expect(vm.taskCount).toBe(62);
+                    });
+                });
 
-            it('should have an array of criteria that were SED tested', function () {
-                expect(vm.ucdProcesses.length).toBe(1);
-            });
+                describe('with respect to ucd processes', function () {
+                    it('should have an array of ucd processes that were used', function () {
+                        expect(vm.ucdProcesses.length).toBe(1);
+                    });
 
-            it('should associate the UCD Processes with multiple criteria', function () {
-                expect(vm.ucdProcesses[0].criteria).toEqual(['170.315 (b)(2)', '170.315 (a)(4)', '170.315 (a)(8)', '170.315 (a)(9)', '170.315 (a)(5)', '170.315 (a)(7)', '170.315 (a)(6)', '170.315 (a)(1)', '170.315 (a)(3)', '170.315 (a)(2)', '170.315 (b)(3)', '170.315 (a)(14)']);
-            });
+                    it('should associate the UCD Processes with multiple criteria', function () {
+                        expect(vm.ucdProcesses[0].criteria).toEqual(['170.315 (a)(1)', '170.315 (a)(2)', '170.315 (a)(3)', '170.315 (a)(4)', '170.315 (a)(5)', '170.315 (a)(6)', '170.315 (a)(7)', '170.315 (a)(8)', '170.315 (a)(9)', '170.315 (a)(14)', '170.315 (b)(2)', '170.315 (b)(3)']);
+                    });
+                });
 
-            it('should farm out process sorting to the util service', function () {
-                vm.sortProcesses(vm.tasks[0]);
-                expect(utilService.sortCerts).toHaveBeenCalledWith(['170.315 (b)(2)']);
-            });
+                describe('for the csv download', function () {
+                    it('should create a data object with a name and a header row', function () {
+                        expect(vm.csvData.name).toBe('15.04.04.2891.Alls.17.1.1.170512.sed.csv');
+                        expect(vm.csvData.values[0]).toEqual([
+                            'CHPL Product Number', 'Certification Criteria',
+                            'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
+                            'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
+                        ]);
+                    });
 
-            it('should know what the process length is', function () {
-                expect(vm.criteriaCount).toBeDefined();
-                expect(vm.criteriaCount).toBe(12);
+                    it('should have data rows', function () {
+                        expect(vm.csvData.values.length).toBe(1257);
+                        expect(vm.csvData.values[1]).toEqual([
+                            '15.04.04.2891.Alls.17.1.1.170512', '170.315 (a)(1)',
+                            'Change the medication to Azithromycin based on alert', null, 0, 13, 12, 3.9, 0.7, 'Likert', 100, 0, 196, 79, 120, 79,
+                            '60-69', 'No', 360, 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 'Male', 'Family Practice Physician, Medical Informatics Officer', 96, 300,
+                        ]);
+                        expect(vm.csvData.values[1256]).toEqual([
+                            '15.04.04.2891.Alls.17.1.1.170512', '170.315 (b)(3)',
+                            'Medication History', null, 0, 1, 1, 2.7, 1.1, 'Likert', 100, 0, 428, 171, 180, 171,
+                            '40-49', 'No', 120, 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 'Male', 'Physician', 60, 192,
+                        ]);
+                    });
+
+                    it('should sort the rows by criteria', function () {
+                        expect(vm.csvData.values[1][1]).toBe('170.315 (a)(1)');
+                    });
+                });
             });
         });
 

@@ -175,9 +175,9 @@
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
             });
 
-            it('should be able to order arrays of certs by the first cert', function () {
-                expect(util.sortCerts([])).toBeLessThan(util.sortCerts(['170.314 (a)(10)']));
-                expect(util.sortCerts(['170.314 (a)(2)'])).toBeLessThan(util.sortCerts(['170.314 (a)(10)']));
+            it('should be able to order arrays of arrays of certs by the first cert', function () {
+                expect(util.sortCertArray([])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
+                expect(util.sortCertArray(['170.314 (a)(2)'])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
             });
         });
 
@@ -258,6 +258,17 @@
             it('should call the FileSaver to output', function () {
                 util.makeCsv(data);
                 expect(FileSaver.saveAs).toHaveBeenCalledWith(jasmine.any(Object), 'filename');
+            });
+
+            it('should handle null and undefined cells to blank strings', function () {
+                data.values[1][0] = null;
+                data.values[1][1] = undefined;
+                expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n,,"String with ""both,omg""","String with\nnewline"');
+            });
+
+            it('should handle raw numbers', function () {
+                data.values[1] = [1,2,3,4];
+                expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n1,2,3,4');
             });
         });
 

@@ -15,7 +15,7 @@
             findModel: findModel,
             makeCsv: makeCsv,
             sortCert: sortCert,
-            sortCerts: sortCerts,
+            sortCertArray: sortCertArray,
             sortCqm: sortCqm,
             sortNonconformityTypes: sortNonconformityTypes,
             sortRequirements: sortRequirements,
@@ -105,9 +105,10 @@
         function arrayToCsv (data) {
             return data.map(function (row) {
                 return row.map(function (cell) {
-                    if (cell.indexOf('"') > -1 ||
-                        cell.indexOf(',') > -1 ||
-                        cell.indexOf('\n') > -1) {
+                    if (typeof(cell) === 'string' &&
+                        (cell.indexOf('"') > -1 ||
+                         cell.indexOf(',') > -1 ||
+                         cell.indexOf('\n') > -1)) {
                         return '"' + cell.replace(/"/g,'""') + '"';
                     } else {
                         return cell;
@@ -158,7 +159,7 @@
             return ret;
         }
 
-        function sortCerts (array) {
+        function sortCertArray (array) {
             var ret = Number.MIN_VALUE;
             if (array.length > 0) {
                 ret = this.sortCert(array[0]);
