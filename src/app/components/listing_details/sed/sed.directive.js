@@ -57,7 +57,7 @@
 
         function viewDetails (task) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/view/taskModal.html',
+                templateUrl: 'app/components/listing_details/sed/taskModal.html',
                 controller: 'ViewSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
@@ -65,6 +65,7 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
+                    participants: function () { return vm.participants; },
                     task: function () { return task; },
                 },
             });
@@ -72,7 +73,7 @@
 
         function viewParticipants (task) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/view/participantsModal.html',
+                templateUrl: 'app/components/listing_details/sed/participantsModal.html',
                 controller: 'ViewSedParticipantsController',
                 controllerAs: 'vm',
                 animation: false,
@@ -93,6 +94,7 @@
             var PART_START = TASK_START + 14;
             var ROW_BASE = [vm.listing.chplProductNumber];
             object = {
+                participants: {},
                 tasks: {},
                 ucdProcesses: {},
             };
@@ -150,6 +152,12 @@
                         csvRow[PART_START + 6] = participant.productExperienceMonths;
                         csvRow[PART_START + 7] = participant.professionalExperienceMonths;
 
+                        if (angular.isUndefined(object.participants[participant.testParticipantId])) {
+                            object.participants[participant.testParticipantId] = participant;
+                            object.participants[participant.testParticipantId].tasks = [];
+                        }
+                        object.participants[participant.testParticipantId].tasks.push(task.testTaskId);
+
                         vm.csvData.values.push(angular.copy(csvRow));
                     }
                 }
@@ -171,6 +179,11 @@
                 vm.tasks.push(task);
             });
             vm.taskCount = vm.tasks.length;
+
+            vm.participants = [];
+            angular.forEach(object.participants, function (participant) {
+                vm.participants.push(participant);
+            });
 
             vm.ucdProcesses = [];
             angular.forEach(object.ucdProcesses, function (process) {
@@ -205,7 +218,6 @@
                 }
                 return 0;
             });
-
 
             var ret = mapped.map(function (el) {
                 return data[el.index];

@@ -99,6 +99,16 @@
                     });
                 });
 
+                describe('with respect to participants', function () {
+                    it('should have an array of unique participants pulled from the criteria', function () {
+                        expect(vm.participants.length).toBe(51);
+                    });
+
+                    it('should have an array of taskIds associated with each participant', function () {
+                        expect(vm.participants[0].tasks).toEqual([940, 941, 941, 944, 948, 949, 950, 951, 953, 954, 955, 956, 959, 960, 961, 964, 965, 967, 968, 973, 974, 975, 980, 981, 982, 983, 984, 985, 986, 987, 998, 999, 1000, 1001, 1002]);
+                    });
+                });
+
                 describe('with respect to ucd processes', function () {
                     it('should have an array of ucd processes that were used', function () {
                         expect(vm.ucdProcesses.length).toBe(1);
@@ -141,10 +151,10 @@
         });
 
         describe('when viewing Task details', function () {
-            var modalOptions, task;
+            var modalOptions, participants, task;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/view/taskModal.html',
+                    templateUrl: 'app/components/listing_details/sed/taskModal.html',
                     controller: 'ViewSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -152,10 +162,13 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
+                        participants: jasmine.any(Function),
                         task: jasmine.any(Function),
                     },
                 };
-                task = {};
+                task = {id: 1};
+                participants = [1,2,3];
+                vm.participants = participants;
             });
 
             it('should create a modal instance', function () {
@@ -167,6 +180,7 @@
             it('should resolve elements', function () {
                 vm.viewDetails(task);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.participants()).toEqual(participants);
                 expect(actualOptions.resolve.task()).toEqual(task);
             });
         });
@@ -175,7 +189,7 @@
             var modalOptions, task;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/view/participantsModal.html',
+                    templateUrl: 'app/components/listing_details/sed/participantsModal.html',
                     controller: 'ViewSedParticipantsController',
                     controllerAs: 'vm',
                     animation: false,
