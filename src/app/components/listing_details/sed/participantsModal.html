@@ -16,6 +16,7 @@
           <th scope="col">Occupation</th>
           <th scope="col">Product Experience (Months)</th>
           <th scope="col">Professional Experience (Months)</th>
+          <th scope="col" ng-if="vm.editMode">Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +29,7 @@
           <td>{{ participant.occupation }}</td>
           <td>{{ participant.productExperienceMonths }}</td>
           <td>{{ participant.professionalExperienceMonths }}</td>
+          <td ng-if="vm.editMode"><button class="btn btn-ai" ng-click="vm.editParticipant(participant)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></td>
         </tr>
       </tbody>
     </table>

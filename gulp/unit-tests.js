@@ -33,6 +33,7 @@ function runTests (singleRun, done) {
         configFile: path.join(__dirname, '/../karma.conf.js'),
         singleRun: singleRun,
         autoWatch: !singleRun,
+        autoWatchBatchDelay: 1000,
         reporters: reporters,
         preprocessors: preprocessors,
         coverageReporter: {

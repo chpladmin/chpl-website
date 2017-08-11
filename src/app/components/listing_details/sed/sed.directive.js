@@ -11,6 +11,7 @@
         var directive = {
             bindToController: {
                 criteriaCount: '=?',
+                editMode: '=?',
                 listing: '=',
                 taskCount: '=?',
             },
@@ -65,6 +66,7 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
+                    editMode: function () { return vm.editMode; },
                     participants: function () { return vm.participants; },
                     task: function () { return task; },
                 },
@@ -81,6 +83,7 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
+                    editMode: function () { return vm.editMode; },
                     participants: function () { return task.testParticipants; },
                 },
             });

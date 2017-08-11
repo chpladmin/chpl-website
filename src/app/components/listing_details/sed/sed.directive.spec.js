@@ -162,6 +162,7 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
+                        editMode: jasmine.any(Function),
                         participants: jasmine.any(Function),
                         task: jasmine.any(Function),
                     },
@@ -178,8 +179,10 @@
             });
 
             it('should resolve elements', function () {
+                vm.editMode = 'on';
                 vm.viewDetails(task);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.editMode()).toBe('on');
                 expect(actualOptions.resolve.participants()).toEqual(participants);
                 expect(actualOptions.resolve.task()).toEqual(task);
             });
@@ -197,6 +200,7 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
+                        editMode: jasmine.any(Function),
                         participants: jasmine.any(Function),
                     },
                 };
@@ -210,8 +214,10 @@
             });
 
             it('should resolve elements', function () {
+                vm.editMode = 'on';
                 vm.viewParticipants(task);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.editMode()).toBe('on');
                 expect(actualOptions.resolve.participants()).toEqual([]);
             });
         });

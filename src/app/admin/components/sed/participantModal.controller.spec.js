@@ -31,7 +31,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('EditSedParticipantController', {
-                    participant: {participant: angular.copy(mock.participant)},
+                    participant: angular.copy(mock.participant),
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });

@@ -13,7 +13,7 @@
             templateUrl: 'app/components/listing_details/details.html',
             bindToController: {
                 cap: '=',
-                editMode: '=',
+                editMode: '=?',
                 initialPanel: '@?',
                 isConfirming: '=',
                 isEditing: '=?',

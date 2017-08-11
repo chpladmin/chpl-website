@@ -13,7 +13,6 @@
         vm.addNewValue = utilService.addNewValue;
         vm.addTask = addTask;
         vm.cancel = cancel;
-        vm.editTask = editTask;
         vm.extendSelect = utilService.extendSelect;
         vm.isToolAvailable = isToolAvailable;
         vm.save = save;
@@ -65,28 +64,6 @@
 
         function cancel () {
             $uibModalInstance.dismiss('cancelled');
-        }
-
-        function editTask (task, idx) {
-            vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/sed/taskModal.html',
-                controller: 'EditSedTaskController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    task: function () { return {'task': task}; },
-                },
-            });
-            vm.editUibModalInstance.result.then(function (result) {
-                vm.cert.testTasks[idx] = result;
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.info('dismissed', result);
-                }
-            });
         }
 
         function isToolAvailable (tool) {

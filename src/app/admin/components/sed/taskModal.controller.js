@@ -8,8 +8,6 @@
     function EditSedTaskController ($log, $uibModal, $uibModalInstance, task) {
         var vm = this;
 
-        vm.task = task.task;
-
         vm.addParticipant = addParticipant;
         vm.cancel = cancel;
         vm.changed = changed;
@@ -22,6 +20,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.task = task;
         }
 
         function addParticipant () {
@@ -33,7 +32,7 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    participant: function () { return { participant: {} }; },
+                    participant: function () { return {}; },
                 },
             });
             vm.editModalInstance.result.then(function (result) {
@@ -70,7 +69,7 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    participant: function () { return {'participant': participant}; },
+                    participant: function () { return participant; },
                 },
             });
             vm.editModalInstance.result.then(function (result) {

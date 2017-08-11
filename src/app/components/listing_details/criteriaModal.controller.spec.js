@@ -143,58 +143,6 @@
             });
         });
 
-        describe('when editing a Task', function () {
-            var modalOptions, task;
-            beforeEach(function () {
-                modalOptions = {
-                    templateUrl: 'app/admin/components/sed/taskModal.html',
-                    controller: 'EditSedTaskController',
-                    controllerAs: 'vm',
-                    animation: false,
-                    backdrop: 'static',
-                    keyboard: false,
-                    size: 'lg',
-                    resolve: {
-                        task: jasmine.any(Function),
-                    },
-                };
-                task = {};
-                vm.cert.testTasks = [{}];
-            });
-
-            it('should create a modal instance', function () {
-                expect(vm.editUibModalInstance).toBeUndefined();
-                vm.editTask(task, 0);
-                expect(vm.editUibModalInstance).toBeDefined();
-            });
-
-            it('should resolve elements', function () {
-                vm.editTask(task, 0);
-                expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                expect(actualOptions.resolve.task()).toEqual({ task: task});
-            });
-
-            it('should replace the task with the response', function () {
-                vm.editTask(task, 0);
-                vm.editUibModalInstance.close({name: 'new'});
-                expect(vm.cert.testTasks).toEqual([{name: 'new'}]);
-            });
-
-            it('should log a non-cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.editTask(task, 0);
-                vm.editUibModalInstance.dismiss('not cancelled');
-                expect($log.info.logs.length).toBe(logCount + 1);
-            });
-
-            it('should not log a cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.editTask(task, 0);
-                vm.editUibModalInstance.dismiss('cancelled');
-                expect($log.info.logs.length).toBe(logCount);
-            });
-        });
-
         describe('when removing a task', function () {
             it('should remove the indicated one', function () {
                 vm.cert.testTasks = [0, 1, 2];

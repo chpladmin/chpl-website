@@ -2,17 +2,23 @@
     'use strict';
 
     describe('the SED View Participants Modal controller', function () {
-        var $log, Mock, scope, vm;
+        var $log, $uibModal, Mock, actualOptions, scope, vm;
 
         beforeEach(function () {
             module('chpl', 'chpl.mock', 'chpl.templates');
 
-            inject(function ($controller, _$log_, $rootScope, _Mock_) {
+            inject(function ($controller, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $log = _$log_;
                 Mock = _Mock_;
+                $uibModal = _$uibModal_;
+                spyOn($uibModal, 'open').and.callFake(function (options) {
+                    actualOptions = options;
+                    return Mock.fakeModal;
+                });
 
                 scope = $rootScope.$new();
                 vm = $controller('ViewSedParticipantsController', {
+                    editMode: false,
                     participants: [],
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -37,6 +43,35 @@
             expect(vm.cancel).toBeDefined();
             vm.cancel();
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
+        });
+
+        describe('when editing a Participant', function () {
+            var modalOptions;
+            beforeEach(function () {
+                modalOptions = {
+                    templateUrl: 'app/admin/components/sed/participantModal.html',
+                    controller: 'EditSedParticipantController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        participant: jasmine.any(Function),
+                    },
+                };
+            });
+
+            it('should create a modal instance', function () {
+                expect(vm.modalInstance).toBeUndefined();
+                vm.editParticipant();
+                expect(vm.modalInstance).toBeDefined();
+            });
+
+            it('should resolve elements', function () {
+                vm.editParticipant({id: 1});
+                expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.participant()).toEqual({id: 1});
+            });
         });
     });
 })();

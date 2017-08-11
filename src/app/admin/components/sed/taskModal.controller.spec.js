@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the SED Task Modal controller', function () {
+    describe('the Edit SED Task Modal controller', function () {
         var $log, $uibModal, Mock, actualOptions, scope, vm;
 
         beforeEach(function () {
@@ -18,7 +18,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('EditSedTaskController', {
-                    task: {task: {}},
+                    task: {},
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
@@ -99,7 +99,7 @@
             it('should resolve elements', function () {
                 vm.addParticipant();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                expect(actualOptions.resolve.participant()).toEqual({ participant: {}});
+                expect(actualOptions.resolve.participant()).toEqual({});
             });
 
             it('should push the result to the list of participants', function () {
@@ -164,7 +164,7 @@
             it('should resolve elements', function () {
                 vm.editParticipant(participant, 0);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                expect(actualOptions.resolve.participant()).toEqual({ participant: participant});
+                expect(actualOptions.resolve.participant()).toEqual(participant);
             });
 
             it('should replace the participant with the response', function () {

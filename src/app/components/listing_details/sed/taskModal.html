@@ -6,66 +6,68 @@
   </div>
   <div class="modal-body">
     <table class="table table-condensed">
-      <tr>
-        <th scope="row">Task Description</th>
-        <td>{{ vm.task.description }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Task Errors</th>
-        <td>{{ vm.task.taskErrors }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Task Errors Standard Deviation</th>
-        <td>{{ vm.task.taskErrorsStddev }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Path Deviation Observed</th>
-        <td>{{ vm.task.taskPathDeviationObserved }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Path Deviation Optimal</th>
-        <td>{{ vm.task.taskPathDeviationOptimal }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Task Rating</th>
-        <td>{{ vm.task.taskRating }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Task Rating Standard Deviation</th>
-        <td>{{ vm.task.taskRatingStddev }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Rating Scale</th>
-        <td>{{ vm.task.taskRatingScale }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Task Success Average</th>
-        <td>{{ vm.task.taskSuccessAverage }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Task Success Standard Deviation</th>
-        <td>{{ vm.task.taskSuccessStddev }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Time Average</th>
-        <td>{{ vm.task.taskTimeAvg }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Time Deviation Observed Average</th>
-        <td>{{ vm.task.taskTimeDeviationObservedAvg }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Time Deviation Optimal Average</th>
-        <td>{{ vm.task.taskTimeDeviationOptimalAvg }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Time Standard Deviation</th>
-        <td>{{ vm.task.taskTimeStddev }}</td>
-      </tr>
-      <tr>
-        <th scope="row">Participants</th>
-        <td><button class="btn btn-ai-success" ng-click="vm.viewParticipants()"><i class="fa fa-users"></i> {{ vm.task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
-      </tr>
+      <tbody>
+        <tr>
+          <th scope="row">Task Description</th>
+          <td>{{ vm.task.description }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Errors</th>
+          <td>{{ vm.task.taskErrors }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Errors Standard Deviation</th>
+          <td>{{ vm.task.taskErrorsStddev }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Path Deviation Observed</th>
+          <td>{{ vm.task.taskPathDeviationObserved }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Path Deviation Optimal</th>
+          <td>{{ vm.task.taskPathDeviationOptimal }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Rating</th>
+          <td>{{ vm.task.taskRating }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Rating Standard Deviation</th>
+          <td>{{ vm.task.taskRatingStddev }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Rating Scale</th>
+          <td>{{ vm.task.taskRatingScale }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Success Average</th>
+          <td>{{ vm.task.taskSuccessAverage }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Success Standard Deviation</th>
+          <td>{{ vm.task.taskSuccessStddev }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Time Average</th>
+          <td>{{ vm.task.taskTimeAvg }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Time Deviation Observed Average</th>
+          <td>{{ vm.task.taskTimeDeviationObservedAvg }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Time Deviation Optimal Average</th>
+          <td>{{ vm.task.taskTimeDeviationOptimalAvg }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Time Standard Deviation</th>
+          <td>{{ vm.task.taskTimeStddev }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Participants</th>
+          <td><button class="btn btn-ai-success" ng-click="vm.viewParticipants()"><i class="fa fa-users"></i> {{ vm.task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
+        </tr>
+      </tbody>
     </table>
   </div>
   <div class="modal-footer">

@@ -8,8 +8,6 @@
     function EditSedParticipantController ($uibModalInstance, networkService, participant) {
         var vm = this;
 
-        vm.participant = participant.participant;
-
         vm.cancel = cancel;
         vm.changed = changed;
         vm.orderAges = orderAges;
@@ -20,6 +18,8 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.participant = participant;
+
             networkService.getEducation()
                 .then(function (result) {
                     vm.education = result;

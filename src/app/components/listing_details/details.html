@@ -167,7 +167,7 @@
         <a href ng-click="vm.showPanel('sed')" aria-expanded="{{ vm.panelShown === 'sed' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-right'"></i> Safety Enhanced Design (SED)<span class="pull-right">({{ vm.sedCriteriaCount ? vm.sedCriteriaCount : 0 }} Certification Criteria<span ng-if="vm.product.certificationEdition.name === '2015'"> / {{ vm.sedTaskCount ? vm.sedTaskCount : 0 }} Testing Task<span ng-if="vm.sedTaskCount !== 1">s</span></span>)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'sed'">
-        <ai-sed criteria-count="vm.sedCriteriaCount" listing="vm.product" task-count="vm.sedTaskCount"></ai-sed>
+        <ai-sed criteria-count="vm.sedCriteriaCount" edit-mode="true" listing="vm.product" task-count="vm.sedTaskCount"></ai-sed>
       </div>
     </div>
 
