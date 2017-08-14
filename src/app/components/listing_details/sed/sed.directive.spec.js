@@ -123,7 +123,7 @@
                     it('should create a data object with a name and a header row', function () {
                         expect(vm.csvData.name).toBe('15.04.04.2891.Alls.17.1.1.170512.sed.csv');
                         expect(vm.csvData.values[0]).toEqual([
-                            'CHPL Product Number', 'Certification Criteria',
+                            'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
                             'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
                             'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
                         ]);
@@ -132,19 +132,19 @@
                     it('should have data rows', function () {
                         expect(vm.csvData.values.length).toBe(1257);
                         expect(vm.csvData.values[1]).toEqual([
-                            '15.04.04.2891.Alls.17.1.1.170512', '170.315 (a)(1)',
+                            '15.04.04.2891.Alls.17.1.1.170512', 'Allscripts', 'Allscripts TouchWorks EHR', '17.1 GA', '170.315 (a)(1)',
                             'Change the medication to Azithromycin based on alert', null, 0, 13, 12, 3.9, 0.7, 'Likert', 100, 0, 196, 79, 120, 79,
                             '60-69', 'No', 360, 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 'Male', 'Family Practice Physician, Medical Informatics Officer', 96, 300,
                         ]);
                         expect(vm.csvData.values[1256]).toEqual([
-                            '15.04.04.2891.Alls.17.1.1.170512', '170.315 (b)(3)',
+                            '15.04.04.2891.Alls.17.1.1.170512', 'Allscripts', 'Allscripts TouchWorks EHR', '17.1 GA', '170.315 (b)(3)',
                             'Medication History', null, 0, 1, 1, 2.7, 1.1, 'Likert', 100, 0, 428, 171, 180, 171,
                             '40-49', 'No', 120, 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 'Male', 'Physician', 60, 192,
                         ]);
                     });
 
                     it('should sort the rows by criteria', function () {
-                        expect(vm.csvData.values[1][1]).toBe('170.315 (a)(1)');
+                        expect(vm.csvData.values[1][4]).toBe('170.315 (a)(1)');
                     });
                 });
             });

@@ -93,9 +93,14 @@
 
         function analyzeCriteria () {
             var cert, csvRow, i, j, k, object, participant, process, task;
-            var TASK_START = 2;
+            var TASK_START = 5;
             var PART_START = TASK_START + 14;
-            var ROW_BASE = [vm.listing.chplProductNumber];
+            var ROW_BASE = [
+                vm.listing.chplProductNumber,
+                vm.listing.developer.name,
+                vm.listing.product.name,
+                vm.listing.version.version,
+            ];
             object = {
                 participants: {},
                 tasks: {},
@@ -104,7 +109,7 @@
             vm.csvData = {
                 name: vm.listing.chplProductNumber + '.sed.csv',
                 values: [[
-                    'CHPL Product Number', 'Certification Criteria',
+                    'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
                     'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
                     'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
                 ]],
@@ -118,7 +123,7 @@
 
             for (i = 0; i < vm.listing.certificationResults.length; i++) {
                 cert = vm.listing.certificationResults[i];
-                csvRow[1] = cert.name;
+                csvRow[4] = cert.name;
 
                 // compile criteria under tasks
                 for (j = 0; j < cert.testTasks.length; j++) {
@@ -207,7 +212,7 @@
                 } else {
                     return {
                         index: i,
-                        value: vm.sortCert(el[1]),
+                        value: vm.sortCert(el[4]),
                     }
                 }
             });
