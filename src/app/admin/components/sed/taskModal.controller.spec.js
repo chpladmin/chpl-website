@@ -18,6 +18,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('EditSedTaskController', {
+                    participants: [],
                     task: {},
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
