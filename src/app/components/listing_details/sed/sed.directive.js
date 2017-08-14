@@ -114,7 +114,6 @@
                     'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
                 ]],
             };
-            csvRow = angular.copy(ROW_BASE);
 
             vm.listing.certificationResults = vm.listing.certificationResults
                 .filter(function (cert) { return cert.success && cert.sed; })
@@ -123,25 +122,10 @@
 
             for (i = 0; i < vm.listing.certificationResults.length; i++) {
                 cert = vm.listing.certificationResults[i];
-                csvRow[4] = cert.name;
 
                 // compile criteria under tasks
                 for (j = 0; j < cert.testTasks.length; j++) {
                     task = cert.testTasks[j];
-                    csvRow[TASK_START + 0] = task.description;
-                    csvRow[TASK_START + 1] = task.taskErrors;
-                    csvRow[TASK_START + 2] = task.taskErrorsStddev;
-                    csvRow[TASK_START + 3] = task.taskPathDeviationObserved;
-                    csvRow[TASK_START + 4] = task.taskPathDeviationOptimal;
-                    csvRow[TASK_START + 5] = task.taskRating;
-                    csvRow[TASK_START + 6] = task.taskRatingStddev;
-                    csvRow[TASK_START + 7] = task.taskRatingScale;
-                    csvRow[TASK_START + 8] = task.taskSuccessAverage;
-                    csvRow[TASK_START + 9] = task.taskSuccessStddev;
-                    csvRow[TASK_START + 10] = task.taskTimeAvg;
-                    csvRow[TASK_START + 11] = task.taskTimeDeviationObservedAvg;
-                    csvRow[TASK_START + 12] = task.taskTimeDeviationOptimalAvg;
-                    csvRow[TASK_START + 13] = task.taskTimeStddev;
 
                     if (angular.isUndefined(object.tasks[task.testTaskId])) {
                         object.tasks[task.testTaskId] = task;
@@ -151,22 +135,12 @@
 
                     for (k = 0; k < task.testParticipants.length; k++) {
                         participant = task.testParticipants[k];
-                        csvRow[PART_START + 0] = participant.ageRange;
-                        csvRow[PART_START + 1] = participant.assistiveTechnologyNeeds;
-                        csvRow[PART_START + 2] = participant.computerExperienceMonths;
-                        csvRow[PART_START + 3] = participant.educationTypeName;
-                        csvRow[PART_START + 4] = participant.gender;
-                        csvRow[PART_START + 5] = participant.occupation;
-                        csvRow[PART_START + 6] = participant.productExperienceMonths;
-                        csvRow[PART_START + 7] = participant.professionalExperienceMonths;
 
                         if (angular.isUndefined(object.participants[participant.testParticipantId])) {
                             object.participants[participant.testParticipantId] = participant;
                             object.participants[participant.testParticipantId].tasks = [];
                         }
                         object.participants[participant.testParticipantId].tasks.push(task.testTaskId);
-
-                        vm.csvData.values.push(angular.copy(csvRow));
                     }
                 }
 
@@ -181,9 +155,40 @@
                 }
             }
 
+            csvRow = angular.copy(ROW_BASE);
             vm.tasks = [];
             angular.forEach(object.tasks, function (task) {
                 task.criteria = $filter('orderBy')(task.criteria, vm.sortCert);
+
+                csvRow[4] = task.criteria.join(';');
+                csvRow[TASK_START + 0] = task.description;
+                csvRow[TASK_START + 1] = task.taskErrors;
+                csvRow[TASK_START + 2] = task.taskErrorsStddev;
+                csvRow[TASK_START + 3] = task.taskPathDeviationObserved;
+                csvRow[TASK_START + 4] = task.taskPathDeviationOptimal;
+                csvRow[TASK_START + 5] = task.taskRating;
+                csvRow[TASK_START + 6] = task.taskRatingStddev;
+                csvRow[TASK_START + 7] = task.taskRatingScale;
+                csvRow[TASK_START + 8] = task.taskSuccessAverage;
+                csvRow[TASK_START + 9] = task.taskSuccessStddev;
+                csvRow[TASK_START + 10] = task.taskTimeAvg;
+                csvRow[TASK_START + 11] = task.taskTimeDeviationObservedAvg;
+                csvRow[TASK_START + 12] = task.taskTimeDeviationOptimalAvg;
+                csvRow[TASK_START + 13] = task.taskTimeStddev;
+
+                for (var k = 0; k < task.testParticipants.length; k++) {
+                    participant = task.testParticipants[k];
+                    csvRow[PART_START + 0] = participant.ageRange;
+                    csvRow[PART_START + 1] = participant.assistiveTechnologyNeeds;
+                    csvRow[PART_START + 2] = participant.computerExperienceMonths;
+                    csvRow[PART_START + 3] = participant.educationTypeName;
+                    csvRow[PART_START + 4] = participant.gender;
+                    csvRow[PART_START + 5] = participant.occupation;
+                    csvRow[PART_START + 6] = participant.productExperienceMonths;
+                    csvRow[PART_START + 7] = participant.professionalExperienceMonths;
+
+                    vm.csvData.values.push(angular.copy(csvRow));
+                }
                 vm.tasks.push(task);
             });
             vm.taskCount = vm.tasks.length;
@@ -210,9 +215,10 @@
                         value: Number.MIN_VALUE,
                     }
                 } else {
+                    var vals = el[4].split(';');
                     return {
                         index: i,
-                        value: vm.sortCert(el[4]),
+                        value: vals.reduce(function (sum, cur) { return sum + vm.sortCert(cur); }, 0),
                     }
                 }
             });
