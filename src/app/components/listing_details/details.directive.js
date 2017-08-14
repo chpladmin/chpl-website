@@ -249,7 +249,7 @@
             }
 
             function viewIcsFamily () {
-                networkService.getIcsFamily().then(function (family) {
+                networkService.getIcsFamily(vm.product.id).then(function (family) {
                     vm.uibModalInstance = $uibModal.open({
                         templateUrl: 'app/components/listing_details/ics_family/icsFamilyModal.html',
                         controller: 'IcsFamilyController',
