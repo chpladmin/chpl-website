@@ -1,7 +1,15 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.3.2
+_14 August 2017_
+
+### Bugs fixed
+* Re-enabled CQM filter
+
+---
+
+## Version 9.3.1
+_14 August 2017_
 
 ### New features
 * Updated Products: Corrective Action Collection
