@@ -1,5 +1,13 @@
 # Release Notes
 
+## Next Version
+_Date TBD_
+
+### Bugs fixed
+* Re-enabled CQM filter
+
+---
+
 ## Version 9.3.1
 _14 August 2017_
 

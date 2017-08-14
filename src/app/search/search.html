@@ -162,7 +162,7 @@
                    trigger-show-retired="vm.triggerShowRetired()"
                    name-space="searchTableState"
                    allow-and="true"
-                   separator="vm.SPLIT_PRIMARY"
+                   separator="{{ vm.SPLIT_PRIMARY }}"
                    track-analytics="true"></st-list-multiple>
               </li>
               <li ng-if="vm.showCqms">
@@ -180,7 +180,7 @@
                    register-restore-state="vm.registerRestoreState(restoreState)"
                    name-space="searchTableState"
                    allow-and="true"
-                   separator="vm.SPLIT_PRIMARY"
+                   separator="{{ vm.SPLIT_PRIMARY }}"
                    track-analytics="true"></st-list-multiple>
               </li>
               <li>
