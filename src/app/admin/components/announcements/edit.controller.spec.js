@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.announcements.edit.controller', function () {
+    describe('the Announcement Edit controller', function () {
         var $log, $q, Mock, authService, commonService, mock, scope, vm;
 
         mock = {};
@@ -39,8 +39,6 @@
                 vm = $controller('AnnouncementEditController', {
                     announcement: mock.announcement,
                     action: 'edit',
-                    authService: authService,
-                    commonService: commonService,
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
@@ -54,22 +52,20 @@
             }
         });
 
-        describe('housekeeping', function () {
-            it('should exist', function () {
-                expect(vm).toBeDefined();
-            });
+        it('should exist', function () {
+            expect(vm).toBeDefined();
+        });
 
-            it('should have some starting values', function () {
-                expect(vm.isChplAdmin).toBe(true);
-                expect(vm.announcement.startDate).toEqual(new Date(mock.announcement.startDate));
-                expect(vm.announcement.endDate).toEqual(new Date(mock.announcement.endDate));
-            });
+        it('should have some starting values', function () {
+            expect(vm.isChplAdmin).toBe(true);
+            expect(vm.announcement.startDate).toEqual(new Date(mock.announcement.startDate));
+            expect(vm.announcement.endDate).toEqual(new Date(mock.announcement.endDate));
+        });
 
-            it('should have a way to close the modal', function () {
-                expect(vm.cancel).toBeDefined();
-                vm.cancel();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
-            });
+        it('should have a way to close it\'s own modal', function () {
+            expect(vm.cancel).toBeDefined();
+            vm.cancel();
+            expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
         it('should know if the dates are invalid', function () {
@@ -84,7 +80,7 @@
             expect(vm.datesInvalid()).toBe(false); // can't check if only have one date
         });
 
-        describe('modifying announcements', function () {
+        describe('when modifying announcements', function () {
             it('should call the common service', function () {
                 vm.save();
                 scope.$digest();
@@ -112,7 +108,7 @@
             });
         });
 
-        describe('creating announcements', function () {
+        describe('when creating announcements', function () {
             it('should call the common service', function () {
                 vm.create();
                 scope.$digest();
@@ -140,7 +136,7 @@
             });
         });
 
-        describe('deleting announcements', function () {
+        describe('when deleting announcements', function () {
             it('should call the common service', function () {
                 vm.deleteAnnouncement();
                 scope.$digest();

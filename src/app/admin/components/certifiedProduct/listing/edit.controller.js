@@ -8,14 +8,14 @@
     function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, commonService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, utilService, workType) {
 
         var vm = this;
-        vm.addNewValue = addNewValue;
+
+        vm.addNewValue = utilService.addNewValue;
         vm.attachModel = attachModel;
         vm.cancel = cancel;
         vm.directCertsDirective = directCertsDirective;
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
-        vm.extendSelect = extendSelect;
-        vm.findModel = findModel;
+        vm.extendSelect = utilService.extendSelect;
         vm.prep = prep;
         vm.requiredIcsCode = requiredIcsCode;
         vm.registerCerts = registerCerts;
@@ -64,23 +64,14 @@
             loadFamily();
         }
 
-        function addNewValue (array, object) {
-            if (!array) {
-                array = [];
-            }
-            if (object && object !== {}) {
-                array.push(angular.copy(object));
-            }
-        }
-
         function attachModel () {
-            vm.cp.practiceType = vm.findModel(vm.cp.practiceType, vm.practices);
-            vm.cp.classificationType = vm.findModel(vm.cp.classificationType, vm.classifications);
-            vm.cp.certifyingBody = vm.findModel(vm.cp.certifyingBody, vm.bodies);
+            vm.cp.practiceType = utilService.findModel(vm.cp.practiceType, vm.practices);
+            vm.cp.classificationType = utilService.findModel(vm.cp.classificationType, vm.classifications);
+            vm.cp.certifyingBody = utilService.findModel(vm.cp.certifyingBody, vm.bodies);
             if (vm.cp.testingLab) {
-                vm.cp.testingLab = vm.findModel(vm.cp.testingLab, vm.testingLabs);
+                vm.cp.testingLab = utilService.findModel(vm.cp.testingLab, vm.testingLabs);
             }
-            vm.cp.certificationStatus = vm.findModel(vm.cp.certificationStatus, vm.statuses);
+            vm.cp.certificationStatus = utilService.findModel(vm.cp.certificationStatus, vm.statuses);
         }
 
         function cancel () {
@@ -106,19 +97,6 @@
             return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
         }
 
-        function extendSelect (options, value) {
-            options = utilService.extendSelect(options, value);
-        }
-
-        function findModel (id, array) {
-            for (var i = 0; i < array.length; i++) {
-                if (id.id === array[i].id) {
-                    id = array[i];
-                }
-            }
-            return id;
-        }
-
         function prep () {
             vm.directCertsDirective();
             $timeout(vm.save, 1000);
@@ -127,9 +105,10 @@
         function requiredIcsCode () {
             var code = -1;
             for (var i = 0; i < vm.cp.ics.parents.length; i++) {
-                code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6]) + 1);
+                code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6], 10));
             }
-            return '' + code;
+            code = code + 1;
+            return (code > 9 || code < 0) ? '' + code : '0' + code;
         }
 
         function registerCerts (handler) {
@@ -182,6 +161,8 @@
                 });
             } else if (vm.workType === 'confirm') {
                 $uibModalInstance.close(vm.cp);
+            } else {
+                $log.info('Cannot save; no work type found');
             }
         }
 

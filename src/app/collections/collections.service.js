@@ -19,12 +19,12 @@
                 return apiDocumentation(array.results);
             case 'bannedDevelopers':
                 return bannedDevelopers(array.decertifiedDeveloperResults);
+            case 'correctiveAction':
+                return correctiveActions(array.results);
             case 'decertifiedProducts':
                 return decertifiedProducts(array.results);
             case 'inactiveCertificates':
                 return inactiveCertificates(array.results);
-            case 'nonconformities':
-                return nonconformities(array.results);
             case 'transparencyAttestations':
                 return transparencyAttestations(array);
                 // no default
@@ -82,6 +82,33 @@
 
         /*
          * Listings are part of this collection if:
+         * - Surveillance Count > 0 and
+         * - at least one of:
+         *   - Open NC Count > 0
+         *   - Closed NC Count > 0
+         */
+        function correctiveActions (array) {
+            var ret = [];
+            var cp;
+            for (var i = 0; i < array.length; i ++) {
+                cp = array[i];
+
+                if (cp.surveillanceCount > 0 && (cp.openNonconformityCount > 0 || cp.closedNonconformityCount > 0)) {
+
+                    cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
+                    cp.nonconformities = angular.toJson({
+                        openNonconformityCount: cp.openNonconformityCount,
+                        closedNonconformityCount: cp.closedNonconformityCount,
+                    });
+
+                    ret.push(cp);
+                }
+            }
+            return ret;
+        }
+
+        /*
+         * Listings are part of this collection if:
          * - 2014 or 2015 Edition and
          * - at least one of:
          *   - Withdrawn by Developer Under Surveillance/Review
@@ -122,29 +149,6 @@
             for (var i = 0; i < array.length; i ++) {
                 cp = array[i];
                 if (cp.edition !== '2011' && statuses.indexOf(cp.certificationStatus) > -1) {
-
-                    cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
-
-                    ret.push(cp);
-                }
-            }
-            return ret;
-        }
-
-        /*
-         * Listings are part of this collection if:
-         * - Surveillance Count > 0 and
-         * - at least one of:
-         *   - Open NC Count > 0
-         *   - Closed NC Count > 0
-         */
-        function nonconformities (array) {
-            var ret = [];
-            var cp;
-            for (var i = 0; i < array.length; i ++) {
-                cp = array[i];
-
-                if (cp.surveillanceCount > 0 && (cp.openNonconformityCount > 0 || cp.closedNonconformityCount > 0)) {
 
                     cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
 

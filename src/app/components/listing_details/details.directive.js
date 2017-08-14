@@ -10,7 +10,7 @@
         var directive = {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/listingDetails/details.html',
+            templateUrl: 'app/components/listing_details/details.html',
             bindToController: {
                 cap: '=',
                 editMode: '=',

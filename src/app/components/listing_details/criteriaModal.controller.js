@@ -10,11 +10,11 @@
 
         vm.cert = cert;
 
-        vm.addNewValue = addNewValue;
+        vm.addNewValue = utilService.addNewValue;
         vm.addTask = addTask;
         vm.cancel = cancel;
         vm.editTask = editTask;
-        vm.extendSelect = extendSelect;
+        vm.extendSelect = utilService.extendSelect;
         vm.isToolAvailable = isToolAvailable;
         vm.save = save;
         vm.removeTask = removeTask;
@@ -38,19 +38,9 @@
             vm.resources = resources;
         }
 
-        function addNewValue (array, object) {
-            if (!array) {
-                array = [];
-            }
-            if (object && !angular.equals(object, {})) {
-                array.push(angular.copy(object));
-            }
-            return array;
-        }
-
         function addTask () {
             vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listingDetails/sed/taskModal.html',
+                templateUrl: 'app/components/listing_details/sed/taskModal.html',
                 controller: 'EditSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
@@ -79,7 +69,7 @@
 
         function editTask (task, idx) {
             vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listingDetails/sed/taskModal.html',
+                templateUrl: 'app/components/listing_details/sed/taskModal.html',
                 controller: 'EditSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
@@ -97,10 +87,6 @@
                     $log.info('dismissed', result);
                 }
             });
-        }
-
-        function extendSelect (options, value) {
-            options = utilService.extendSelect(options, value);
         }
 
         function isToolAvailable (tool) {

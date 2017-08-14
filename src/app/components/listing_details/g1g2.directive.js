@@ -17,7 +17,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/components/listingDetails/g1g2.html',
+            templateUrl: 'app/components/listing_details/g1g2.html',
         };
         return directive;
     }

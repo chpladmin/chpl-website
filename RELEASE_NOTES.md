@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 9.3.1
+_14 August 2017_
+
+### New features
+* Updated Products: Corrective Action Collection
+* Change ICS Code validation to require two digits
+
+---
+
 ## Version 9.3.0
 _31 July 2017_
 

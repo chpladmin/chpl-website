@@ -29,10 +29,10 @@
             vm.surveillanceId = surveillanceId;
             vm.workType = workType;
             if (vm.requirement.type) {
-                vm.requirement.type = findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data);
+                vm.requirement.type = utilService.findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data);
             }
             if (vm.requirement.result) {
-                vm.requirement.result = findModel(vm.requirement.result, vm.data.surveillanceResultTypes.data);
+                vm.requirement.result = utilService.findModel(vm.requirement.result, vm.data.surveillanceResultTypes.data);
             }
         }
 
@@ -124,26 +124,5 @@
             }
             $uibModalInstance.close(vm.requirement);
         }
-
-        ////////////////////////////////////////////////////////////////////
-
-        function findModel (id, array) {
-            for (var i = 0; i < array.length; i++) {
-                if (id.id === array[i].id) {
-                    id = array[i];
-                }
-            }
-            return id;
-        }
-/*
-        function findModelByValue (value, array) {
-            for (var i = 0; i < array.length; i++) {
-                if (value === array[i].name) {
-                    value = array[i];
-                }
-            }
-            return value;
-        }
-        */
     }
 })();

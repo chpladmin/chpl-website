@@ -8,6 +8,8 @@
     function TransparencyAttestationsController () {
         var vm = this;
 
+        vm._urlTransform = urlTransform;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////

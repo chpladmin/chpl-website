@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.common.util', function () {
+    describe('the Utility service', function () {
 
         beforeEach(module('chpl.common'));
 
@@ -58,6 +58,33 @@
             expect(util.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
             expect(util.statusFont('Withdrawn by Developer')).toBe('fa-stop-circle status-neutral');
             expect(util.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
+        });
+
+        describe('when adding a value to an array', function () {
+            it('should create the array if necessary', function () {
+                var array, object;
+                object = {id: 1};
+                array = util.addNewValue(array, object);
+                expect(array).toEqual([object]);
+            });
+
+            it('should not add an undefined or empty object', function () {
+                var array, object;
+                array = [];
+                array = util.addNewValue(array, object);
+                expect(array).toEqual([]);
+                object = {};
+                array = util.addNewValue(array, object);
+                expect(array).toEqual([]);
+            });
+        });
+
+        it('should match to a model', function () {
+            var id = {id: 2};
+            var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+            expect(id).not.toBe(array[1]);
+            id = util.findModel(id, array);
+            expect(id).toBe(array[1]);
         });
 
         describe('sorting', function () {

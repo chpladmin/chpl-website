@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Certification Criteria Edit controller', function () {
-        var $log, $uibModal, Mock, actualOptions, mock, scope, utilService, vm;
+        var $log, $uibModal, Mock, actualOptions, mock, scope, vm;
 
         mock = {};
         mock.resources = {
@@ -10,18 +10,11 @@
         };
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.mock', 'chpl', function ($provide) {
-                $provide.decorator('utilService', function ($delegate) {
-                    $delegate.extendSelect = jasmine.createSpy('extendSelect');
-                    return $delegate;
-                });
-            });
+            module('chpl.templates', 'chpl.mock', 'chpl');
 
-            inject(function ($controller, _$log_, $rootScope, _$uibModal_, _Mock_, _utilService_) {
+            inject(function ($controller, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $log = _$log_;
                 Mock = _Mock_;
-                utilService = _utilService_;
-                utilService.extendSelect.and.returnValue([]);
                 $uibModal = _$uibModal_;
                 spyOn($uibModal, 'open').and.callFake(function (options) {
                     actualOptions = options;
@@ -59,8 +52,9 @@
         });
 
         it('should farm out to utilService for extendSelect', function () {
-            vm.extendSelect([], 'val');
-            expect(utilService.extendSelect).toHaveBeenCalledWith([], 'val');
+            var options = [];
+            vm.extendSelect(options, 'val');
+            expect(options).toEqual([{name: 'val'}]);
         });
 
         describe('when concerned with retired tools', function () {
@@ -73,25 +67,6 @@
                 expect(vm.isToolAvailable(mock.resources.testTools.data[1])).toBe(false);
                 vm.hasIcs = true;
                 expect(vm.isToolAvailable(mock.resources.testTools.data[1])).toBe(true);
-            });
-        });
-
-        describe('when adding a value to an array', function () {
-            it('should create the array if necessary', function () {
-                var array, object;
-                object = {id: 1};
-                array = vm.addNewValue(array, object);
-                expect(array).toEqual([object]);
-            });
-
-            it('should not add an undefined or empty object', function () {
-                var array, object;
-                array = [];
-                array = vm.addNewValue(array, object);
-                expect(array).toEqual([]);
-                object = {};
-                array = vm.addNewValue(array, object);
-                expect(array).toEqual([]);
             });
         });
 
@@ -108,7 +83,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listingDetails/sed/taskModal.html',
+                    templateUrl: 'app/components/listing_details/sed/taskModal.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -172,7 +147,7 @@
             var modalOptions, task;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listingDetails/sed/taskModal.html',
+                    templateUrl: 'app/components/listing_details/sed/taskModal.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,

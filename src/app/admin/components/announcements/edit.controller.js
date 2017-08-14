@@ -7,44 +7,23 @@
     /** @ngInject */
     function AnnouncementEditController ($uibModalInstance, action, announcement, authService, commonService) {
         var vm = this;
-        vm.announcement = angular.copy(announcement);
-        vm.action = action;
 
-        vm.save = save;
         vm.cancel = cancel;
         vm.create = create;
-        vm.deleteAnnouncement = deleteAnnouncement;
         vm.datesInvalid = datesInvalid;
+        vm.deleteAnnouncement = deleteAnnouncement;
+        vm.save = save;
 
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.announcement = angular.copy(announcement);
+            vm.action = action;
             vm.isChplAdmin = authService.isChplAdmin();
             vm.announcement.startDate = new Date(announcement.startDate);
             vm.announcement.endDate = new Date(announcement.endDate);
-        }
-
-        function datesInvalid () {
-            if (vm.announcement.endDate && vm.announcement.startDate) {
-                return (vm.announcement.endDate < vm.announcement.startDate) }
-            else {
-                return false;
-            }
-        }
-
-        function save () {
-            commonService.modifyAnnouncement(vm.announcement)
-                .then(function (response) {
-                    if (!response.status || response.status === 200) {
-                        $uibModalInstance.close(response);
-                    } else {
-                        $uibModalInstance.dismiss('An error occurred');
-                    }
-                },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
-                });
         }
 
         function cancel () {
@@ -64,6 +43,14 @@
                 });
         }
 
+        function datesInvalid () {
+            if (vm.announcement.endDate && vm.announcement.startDate) {
+                return (vm.announcement.endDate < vm.announcement.startDate) }
+            else {
+                return false;
+            }
+        }
+
         function deleteAnnouncement () {
             commonService.deleteAnnouncement(vm.announcement.id)
                 .then(function (response) {
@@ -77,5 +64,17 @@
                 });
         }
 
+        function save () {
+            commonService.modifyAnnouncement(vm.announcement)
+                .then(function (response) {
+                    if (!response.status || response.status === 200) {
+                        $uibModalInstance.close(response);
+                    } else {
+                        $uibModalInstance.dismiss('An error occurred');
+                    }
+                },function (error) {
+                    $uibModalInstance.dismiss(error.data.error);
+                });
+        }
     }
 })();
