@@ -73,5 +73,7 @@
   <div class="modal-footer">
     <button class="btn btn-default pull-left"
           ng-click="vm.cancel()">Close</button>
+    <button class="btn btn-ai pull-right" ng-if="vm.editMode"
+            ng-click="vm.editTask()"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
   </div>
 </div>
