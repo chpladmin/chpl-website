@@ -80,7 +80,7 @@
                 });
 
                 it('should filter out criteria that were not successful or not sed', function () {
-                    expect(vm.listing.certificationResults.length).toBe(12);
+                    expect(vm.sedCriteria.length).toBe(12);
                 });
 
                 describe('with respect to tasks', function () {
@@ -224,7 +224,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/sed/taskModal.html',
+                    templateUrl: 'app/admin/components/sed/editTask.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -338,13 +338,12 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/sed/edit.html',
+                    templateUrl: 'app/admin/components/sed/editDetails.html',
                     controller: 'EditSedDetailsController',
                     controllerAs: 'vm',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
-                    //size: 'lg',
                     resolve: {
                         listing: jasmine.any(Function),
                     },

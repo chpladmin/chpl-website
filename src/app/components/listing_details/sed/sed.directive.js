@@ -48,7 +48,7 @@
 
         function addTask () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/sed/taskModal.html',
+                templateUrl: 'app/admin/components/sed/editTask.html',
                 controller: 'EditSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
@@ -56,7 +56,7 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    criteria: function () { return vm.listing.certificationResults; },
+                    criteria: function () { return vm.sedCriteria; },
                     participants: function () { return vm.allParticipants; },
                     task: function () { return {}; },
                 },
@@ -69,7 +69,7 @@
 
         function editDetails () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/sed/edit.html',
+                templateUrl: 'app/admin/components/sed/editDetails.html',
                 controller: 'EditSedDetailsController',
                 controllerAs: 'vm',
                 animation: false,
@@ -131,7 +131,7 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
-                    criteria: function () { return vm.listing.certificationResults; },
+                    criteria: function () { return vm.sedCriteria; },
                     editMode: function () { return vm.editMode; },
                     participants: function () { return vm.allParticipants; },
                     task: function () { return task; },
@@ -178,13 +178,13 @@
                 ]],
             };
 
-            vm.listing.certificationResults = vm.listing.certificationResults
+            vm.sedCriteria = vm.listing.certificationResults
                 .filter(function (cert) { return cert.success && cert.sed; })
                 .map(function (cert) { cert.name = cert.number; return cert; });
-            vm.criteriaCount = vm.listing.certificationResults.length;
+            vm.criteriaCount = vm.sedCriteria.length;
 
-            for (i = 0; i < vm.listing.certificationResults.length; i++) {
-                cert = vm.listing.certificationResults[i];
+            for (i = 0; i < vm.sedCriteria.length; i++) {
+                cert = vm.sedCriteria[i];
 
                 // compile criteria under tasks
                 for (j = 0; j < cert.testTasks.length; j++) {
