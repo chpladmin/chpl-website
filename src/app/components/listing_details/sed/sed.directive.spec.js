@@ -345,7 +345,9 @@
                     backdrop: 'static',
                     keyboard: false,
                     resolve: {
+                        criteria: jasmine.any(Function),
                         listing: jasmine.any(Function),
+                        ucdProcesses: jasmine.any(Function),
                     },
                 };
             });
@@ -359,14 +361,27 @@
             it('should resolve elements', function () {
                 vm.editDetails();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.criteria()).toEqual(vm.sedCriteria);
                 expect(actualOptions.resolve.listing()).toEqual(vm.listing);
+                expect(actualOptions.resolve.ucdProcesses()).toEqual(vm.ucdProcesses);
             });
 
             it('should replace the active listing with the edited one on close', function () {
                 var newListing = {id: 'fake'};
                 vm.editDetails();
-                vm.modalInstance.close(newListing);
+                vm.modalInstance.close({
+                    listing: newListing,
+                });
                 expect(vm.listing).toEqual(newListing);
+            });
+
+            it('should replace ucd processes with the new ones', function () {
+                var newProcesses = [1,2];
+                vm.editDetails();
+                vm.modalInstance.close({
+                    ucdProcesses: newProcesses,
+                });
+                expect(vm.ucdProcesses).toEqual(newProcesses);
             });
         });
     });

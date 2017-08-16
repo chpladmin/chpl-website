@@ -76,11 +76,14 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
+                    criteria: function () { return vm.sedCriteria; },
                     listing: function () { return vm.listing; },
+                    ucdProcesses: function () { return vm.ucdProcesses; },
                 },
             });
             vm.modalInstance.result.then(function (result) {
-                vm.listing = result;
+                vm.listing = result.listing;
+                vm.ucdProcesses = result.ucdProcesses;
             });
         }
 

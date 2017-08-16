@@ -29,6 +29,27 @@
       </div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedTestingEnd.$touched) && vm.editForm.cpSedTestingEnd.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
+    <div ng-repeat="process in vm.ucdProcesses track by $index">
+      <button class="btn btn-danger pull-right" ng-click="vm.ucdProcesses.splice($index, 1)"><i class="fa fa-trash"></i><span class="sr-only">Remove this UCD Process</span></button>
+      <div class="form-group">
+        <label for="processName{{ $index }}">UCD Process Name</label>
+        <input class="input-sm form-control" type="text" ng-model="process.ucdProcessName" id="processName{{ $index }}" name="processName{{ $index }}" required></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['processName' + $index].$touched) && vm.editForm['processName' + $index].$error.required">Field is required</div>
+      </div>
+      <div class="form-group">
+        <label for="processDetails{{ $index }}">UCD Process Details</label>
+        <input class="input-sm form-control" type="text" ng-model="process.ucdProcessDetails" id="processDetails{{ $index }}" details="processDetails{{ $index }}"></input>
+      </div>
+      <div class="form-group">
+        <label for="processCriteria{{ $index }}">UCD Process Criteria</label>
+        <select ng-options="criteria.number as criteria.number for criteria in vm.criteria | orderBy: vm.sortCert" ng-model="process.criteria"
+                multiple data-ng-attr-size="{{ vm.criteria.length }}" id="processCriteria{{ $index }}" name="processCriteria{{ $index }}"
+                class="form-control input-sm" required></select>
+        <div class="text-danger" ng-if="vm.editForm['processCriteria' + $index].$touched && vm.editForm['processCriteria' + $index].$error.required">Field is required</div>
+      </div>
+    </div>
+    <button class="btn btn-success pull-right" ng-click="vm.ucdProcesses.push({})"><i class="fa fa-plus"></i><span class="sr-only">Add new UCD Process</span></button>
+    <div class="clearfix"></div>
   </div>
   <div class="modal-footer">
     <div class="text-left text-danger" ng-if="vm.showFormErrors && vm.editForm.$invalid">

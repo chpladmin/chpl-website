@@ -20,7 +20,9 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('EditSedDetailsController', {
+                    criteria: [],
                     listing: mock.listing,
+                    ucdProcesses: [],
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
@@ -52,7 +54,9 @@
 
         it('should not create a date object if the value isn\'t there', function () {
             vm = $controller('EditSedDetailsController', {
+                criteria: [],
                 listing: {},
+                ucdProcesses: [],
                 $uibModalInstance: Mock.modalInstance,
                 $scope: scope,
             });
@@ -82,11 +86,16 @@
                 expect(vm.listing.sedTestingEnd).toBe('02/18/1989');
             });
 
-            it('should close the modal with the listing', function () {
+            it('should close the modal with the listing and the ucd processes', function () {
                 var anObj = {id: 3, sedTestingEndDate: new Date()};
+                var processes = [1,2];
                 vm.listing = anObj;
+                vm.ucdProcesses = processes;
                 vm.save();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith(anObj);
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    listing: anObj,
+                    ucdProcesses: processes,
+                });
             });
         });
     });
