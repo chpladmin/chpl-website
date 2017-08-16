@@ -2,8 +2,8 @@
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Close modal" ng-if="!vm.editMode"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <button type="button" class="close pull-right" aria-label="Cancel edits" ng-if="vm.editMode"
-            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+    <button type="button" class="close pull-right" aria-label="Cancel" ng-if="vm.editMode"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
@@ -89,11 +89,11 @@
       <button class="btn btn-default" ng-if="!vm.editMode"
               ng-click="vm.cancel()">Close</button>
       <button class="btn btn-warning" ng-if="vm.editMode"
-              confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+              confirm="Are you sure you wish to cancel? Your changes will not be saved."
               confirm-ok="Yes"
               confirm-cancel="No"
               confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="vm.cancel()">Cancel Edits</button>
+              ng-click="vm.cancel()">Cancel</button>
       <button class="btn btn-danger" ng-if="vm.editMode"
               confirm="Are you sure you wish to remove this Task? Your changes can not be undone."
               confirm-ok="Yes"

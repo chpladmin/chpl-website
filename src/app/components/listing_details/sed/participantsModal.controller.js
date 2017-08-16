@@ -8,6 +8,7 @@
     function ViewSedParticipantsController ($uibModal, $uibModalInstance, allParticipants, editMode, participants) {
         var vm = this;
 
+        vm.addParticipant = addParticipant;
         vm.cancel = cancel;
         vm.editParticipant = editParticipant;
         vm.isAssigned = isAssigned;
@@ -22,6 +23,24 @@
             vm.allParticipants = angular.copy(allParticipants);
             vm.editMode = editMode;
             vm.participants = angular.copy(participants);
+        }
+
+        function addParticipant () {
+            vm.modalInstance = $uibModal.open({
+                templateUrl: 'app/admin/components/sed/participantModal.html',
+                controller: 'EditSedParticipantController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    participant: function () { return {}; },
+                },
+            });
+            vm.modalInstance.result.then(function (result) {
+                vm.participants.push(result.participant);
+                vm.allParticipants.push(result.participant);
+            });
         }
 
         function cancel () {

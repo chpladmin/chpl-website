@@ -50,6 +50,16 @@
             expect(vm.listing.sedTestingEndDate).toEqual(jasmine.any(Object));
         });
 
+        it('should not create a date object if the value isn\'t there', function () {
+            vm = $controller('EditSedDetailsController', {
+                listing: {},
+                $uibModalInstance: Mock.modalInstance,
+                $scope: scope,
+            });
+            scope.$digest();
+            expect(vm.listing.sedTestingEndDate).toBeUndefined();
+        });
+
         describe('when saving a Listing', function () {
             it('should convert the date object back to a time', function () {
                 vm.listing.sedTestingEndDate = new Date();

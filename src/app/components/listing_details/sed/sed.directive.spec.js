@@ -2,7 +2,6 @@
     'use strict';
 
     describe('the SED Display', function () {
-
         var $log, $uibModal, Mock, actualOptions, el, scope, utilService, vm;
 
         beforeEach(function () {
@@ -218,6 +217,55 @@
                 });
                 expect(vm.tasks.length).toBe(initLength - 1);
                 expect(vm.allParticipants).toEqual([1]);
+            });
+        });
+
+        describe('when adding a Task', function () {
+            var modalOptions;
+            beforeEach(function () {
+                modalOptions = {
+                    templateUrl: 'app/admin/components/sed/taskModal.html',
+                    controller: 'EditSedTaskController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'lg',
+                    resolve: {
+                        criteria: jasmine.any(Function),
+                        participants: jasmine.any(Function),
+                        task: jasmine.any(Function),
+                    },
+                };
+            });
+
+            it('should create a modal instance', function () {
+                expect(vm.modalInstance).toBeUndefined();
+                vm.addTask();
+                expect(vm.modalInstance).toBeDefined();
+            });
+
+            it('should resolve elements', function () {
+                vm.allParticipants = [1,2];
+                vm.addTask();
+                expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.criteria()[0].number).toEqual('170.315 (b)(2)');
+                expect(actualOptions.resolve.participants()).toEqual([1,2]);
+                expect(actualOptions.resolve.task()).toEqual({});
+            });
+
+            it('should add the new task to the list of tasks', function () {
+                vm.tasks = [];
+                vm.addTask();
+                vm.modalInstance.close({task: 'new', participants: [2,3]});
+                expect(vm.tasks).toEqual(['new']);
+            });
+
+            it('should update the list of participants', function () {
+                vm.allParticipants = [1,2];
+                vm.addTask();
+                vm.modalInstance.close({task: 'new', participants: [2,3]});
+                expect(vm.allParticipants).toEqual([2,3]);
             });
         });
 

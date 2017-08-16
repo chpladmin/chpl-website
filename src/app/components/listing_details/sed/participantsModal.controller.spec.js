@@ -137,5 +137,57 @@
                 });
             });
         });
+
+        describe('when adding a Participant', function () {
+            var modalOptions;
+            beforeEach(function () {
+                modalOptions = {
+                    templateUrl: 'app/admin/components/sed/participantModal.html',
+                    controller: 'EditSedParticipantController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        participant: jasmine.any(Function),
+                    },
+                };
+                vm.participants = [
+                    {testParticipantId: 1},
+                    {testParticipantId: 2},
+                    {testParticipantId: 3},
+                ];
+                vm.allParticipants = [
+                    {testParticipantId: 1},
+                    {testParticipantId: 2},
+                    {testParticipantId: 3},
+                    {testParticipantId: 4},
+                ];
+            });
+
+            it('should create a modal instance', function () {
+                expect(vm.modalInstance).toBeUndefined();
+                vm.addParticipant();
+                expect(vm.modalInstance).toBeDefined();
+            });
+
+            it('should resolve elements', function () {
+                vm.addParticipant();
+                expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.participant()).toEqual({});
+            });
+
+            it('should add the new participant to the task array', function () {
+                vm.addParticipant();
+                vm.modalInstance.close({participant: {name: 'fake'}});
+                expect(vm.participants[3]).toEqual({name: 'fake'});
+            });
+
+            it('should add the new participant to the "all" array', function () {
+                vm.addParticipant();
+                vm.modalInstance.close({participant: {name: 'fake'}});
+                expect(vm.allParticipants[4]).toEqual({name: 'fake'});
+            });
+        });
     });
 })();

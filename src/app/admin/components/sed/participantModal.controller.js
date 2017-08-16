@@ -18,6 +18,9 @@
 
         function activate () {
             vm.participant = angular.copy(participant);
+            if (!vm.participant.testParticipantId) {
+                vm.participant.testParticipantId = (new Date()).getTime() * -1;
+            }
 
             networkService.getEducation()
                 .then(function (result) {

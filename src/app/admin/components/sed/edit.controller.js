@@ -18,7 +18,9 @@
 
         function activate () {
             vm.listing = angular.copy(listing);
-            vm.listing.sedTestingEndDate = new Date(vm.listing.sedTestingEnd);
+            if (vm.listing.sedTestingEnd) {
+                vm.listing.sedTestingEndDate = new Date(vm.listing.sedTestingEnd);
+            }
         }
 
         function cancel () {

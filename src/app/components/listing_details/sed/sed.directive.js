@@ -29,6 +29,7 @@
     function SedController ($filter, $log, $scope, $uibModal, utilService) {
         var vm = this;
 
+        vm.addTask = addTask;
         vm.editDetails = editDetails;
         vm.getCsv = getCsv;
         vm.sortCert = utilService.sortCert;
@@ -43,6 +44,27 @@
 
         function activate () {
             analyzeCriteria();
+        }
+
+        function addTask () {
+            vm.modalInstance = $uibModal.open({
+                templateUrl: 'app/admin/components/sed/taskModal.html',
+                controller: 'EditSedTaskController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    criteria: function () { return vm.listing.certificationResults; },
+                    participants: function () { return vm.allParticipants; },
+                    task: function () { return {}; },
+                },
+            });
+            vm.modalInstance.result.then(function (result) {
+                vm.allParticipants = result.participants;
+                vm.tasks.push(result.task);
+            });
         }
 
         function editDetails () {

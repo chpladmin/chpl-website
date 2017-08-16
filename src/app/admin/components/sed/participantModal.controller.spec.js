@@ -2,10 +2,11 @@
     'use strict';
 
     describe('the SED Participant Modal controller', function () {
-        var $log, $q, Mock, mock, networkService, scope, vm;
+        var $controller, $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
         mock.participant = {
+            testParticipantId: 3,
             educationTypeName: 'edTypeName',
             educationTypeId: 'edTypeId',
             ageRange: 'ageRnge',
@@ -21,7 +22,8 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+                $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
@@ -57,16 +59,30 @@
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
-        it('should load Education and AgeRanges on load', function () {
-            expect(networkService.getAgeRanges).toHaveBeenCalled();
-            expect(networkService.getEducation).toHaveBeenCalled();
-            expect(vm.participant.education).toEqual({
-                name: mock.participant.educationTypeName,
-                id: mock.participant.educationTypeId,
+        describe('on load', function () {
+            it('should load Education and AgeRanges', function () {
+                expect(networkService.getAgeRanges).toHaveBeenCalled();
+                expect(networkService.getEducation).toHaveBeenCalled();
+                expect(vm.participant.education).toEqual({
+                    name: mock.participant.educationTypeName,
+                    id: mock.participant.educationTypeId,
+                });
+                expect(vm.participant.ageRangeObj).toEqual({
+                    name: mock.participant.ageRange,
+                    id: mock.participant.ageRangeId,
+                });
             });
-            expect(vm.participant.ageRangeObj).toEqual({
-                name: mock.participant.ageRange,
-                id: mock.participant.ageRangeId,
+
+            it('should generate a testParticipantId if one doesn\'t exist', function () {
+                var part = angular.copy(mock.participant);
+                part.testParticipantId = undefined;
+                vm = $controller('EditSedParticipantController', {
+                    participant: angular.copy(part),
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(vm.participant.testParticipantId).toEqual(jasmine.any(Number));
             });
         });
 

@@ -1,7 +1,7 @@
 <div role="modal" aria-labeled-by="modalLabel">
   <div class="modal-header">
-    <button type="button" class="close pull-right" aria-label="Cancel edits"
-            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+    <button type="button" class="close pull-right" aria-label="Cancels"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
@@ -117,15 +117,24 @@
         <div class="text-danger" ng-if="vm.editForm.data_criteria.$touched && vm.editForm.data_criteria.$error.required">Field is required</div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-sm-4 text-right">
+        <strong>Participants <span class="text-danger">*</span></strong>
+      </div>
+      <div class="col-sm-8">
+        <button class="btn btn-ai-success" ng-click="vm.viewParticipants()"><i class="fa fa-users"></i> {{ vm.task.testParticipants ? vm.task.testParticipants.length : 0 }} participant<span ng-if="vm.task.testParticipants.length !== 1">s</span> assigned</button>
+        <div class="text-danger" ng-if="vm.task.testParticipants.length < 10">At least 10 test participants are required</div>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-warning pull-left"
-            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()">Cancel Edits</button>
-    <button ng-disabled="vm.editForm.$invalid"
+            ng-click="vm.cancel()">Cancel</button>
+    <button ng-disabled="vm.editForm.$invalid || vm.task.testParticipants.length < 10"
             class="btn btn-ai-success pull-right" ng-click="vm.save()"><i class="fa fa-save"></i><span class="sr-only">Save SED Task</span></button>
   </div>
 </div>

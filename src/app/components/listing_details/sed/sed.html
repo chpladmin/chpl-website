@@ -54,6 +54,11 @@
                     ng-click="vm.getCsv()">
               <i class="fa fa-cloud-download"></i> Download SED Task Information
             </button>
+            <button class="btn btn-ai pull-right"
+                    ng-if="vm.editMode"
+                    ng-click="vm.addTask()">
+              <i class="fa fa-plus"></i> Add Task
+            </button>
           </td>
         </tr>
       </tfoot>
