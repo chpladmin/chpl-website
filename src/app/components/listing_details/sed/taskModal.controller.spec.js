@@ -18,6 +18,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('ViewSedTaskController', {
+                    criteria: [],
                     editMode: false,
                     task: {},
                     participants: [],
@@ -58,12 +59,13 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
+                        allParticipants: jasmine.any(Function),
                         editMode: jasmine.any(Function),
                         participants: jasmine.any(Function),
                     },
                 };
                 vm.editMode = 'on';
-                vm.task.testParticipants = [];
+                vm.task.testParticipants = [1];
             });
 
             it('should create a modal instance', function () {
@@ -73,10 +75,31 @@
             });
 
             it('should resolve elements', function () {
+                vm.participants = [1,2];
                 vm.viewParticipants();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.allParticipants()).toEqual([1,2]);
                 expect(actualOptions.resolve.editMode()).toBe('on');
-                expect(actualOptions.resolve.participants()).toEqual([]);
+                expect(actualOptions.resolve.participants()).toEqual([1]);
+            });
+
+            it('should replace the task participant list with an edited one on close', function () {
+                var newParticipants = [1,2,3];
+                vm.viewParticipants();
+                vm.modalInstance.close({
+                    participants: newParticipants,
+                });
+                expect(vm.task.testParticipants).toEqual(newParticipants);
+            });
+
+            it('should replace the "all participants" list with an edited one on close', function () {
+                var newParticipants = [1,2,3];
+                vm.participants = [1,2];
+                vm.viewParticipants();
+                vm.modalInstance.close({
+                    allParticipants: newParticipants,
+                });
+                expect(vm.participants).toEqual(newParticipants);
             });
         });
 
@@ -92,6 +115,7 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
+                        criteria: jasmine.any(Function),
                         participants: jasmine.any(Function),
                         task: jasmine.any(Function),
                     },
@@ -106,13 +130,15 @@
 
             it('should resolve elements', function () {
                 vm.participants = [1,2];
+                vm.criteria = [3,4];
                 vm.editTask();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.criteria()).toEqual([3,4]);
                 expect(actualOptions.resolve.participants()).toEqual([1,2]);
                 expect(actualOptions.resolve.task()).toEqual({});
             });
 
-            it('should replace the task and participantswith the response', function () {
+            it('should replace the task and participants with the response', function () {
                 vm.editTask();
                 vm.modalInstance.close({task: 'new', participants: [2,3]});
                 expect(vm.task).toEqual('new');
@@ -131,6 +157,28 @@
                 vm.editTask();
                 vm.modalInstance.dismiss('cancelled');
                 expect($log.info.logs.length).toBe(logCount);
+            });
+
+            it('should have a way to save the changed task', function () {
+                expect(vm.save).toBeDefined();
+                vm.save();
+                expect(Mock.modalInstance.close).toHaveBeenCalled();
+            });
+        });
+
+        describe('when deleting the Task', function () {
+            it('should close it\'s modal', function () {
+                vm.deleteTask();
+                expect(Mock.modalInstance.close).toHaveBeenCalled();
+            });
+
+            it('should pass back a message and the participants', function () {
+                vm.participants = [1,2]
+                vm.deleteTask();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    deleted: true,
+                    participants: [1,2],
+                });
             });
         });
     });

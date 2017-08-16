@@ -101,11 +101,11 @@
 
                 describe('with respect to participants', function () {
                     it('should have an array of unique participants pulled from the criteria', function () {
-                        expect(vm.participants.length).toBe(51);
+                        expect(vm.allParticipants.length).toBe(51);
                     });
 
                     it('should have an array of taskIds associated with each participant', function () {
-                        expect(vm.participants[0].tasks).toEqual([940, 941, 941, 944, 948, 949, 950, 951, 953, 954, 955, 956, 959, 960, 961, 964, 965, 967, 968, 973, 974, 975, 980, 981, 982, 983, 984, 985, 986, 987, 998, 999, 1000, 1001, 1002]);
+                        expect(vm.allParticipants[0].tasks).toEqual([940, 941, 941, 944, 948, 949, 950, 951, 953, 954, 955, 956, 959, 960, 961, 964, 965, 967, 968, 973, 974, 975, 980, 981, 982, 983, 984, 985, 986, 987, 998, 999, 1000, 1001, 1002]);
                     });
                 });
 
@@ -165,34 +165,64 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
+                        criteria: jasmine.any(Function),
                         editMode: jasmine.any(Function),
                         participants: jasmine.any(Function),
                         task: jasmine.any(Function),
                     },
                 };
-                task = {id: 1};
+                task = {
+                    id: 1,
+                    testTaskId: 3,
+                };
                 participants = [1,2,3];
-                vm.participants = participants;
+                vm.allParticipants = participants;
             });
 
             it('should create a modal instance', function () {
                 expect(vm.modalInstance).toBeUndefined();
-                vm.viewDetails(task);
+                vm.viewTask(task);
                 expect(vm.modalInstance).toBeDefined();
             });
 
             it('should resolve elements', function () {
                 vm.editMode = 'on';
-                vm.viewDetails(task);
+                vm.viewTask(task);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.criteria()[0].number).toEqual('170.315 (b)(2)');
                 expect(actualOptions.resolve.editMode()).toBe('on');
                 expect(actualOptions.resolve.participants()).toEqual(participants);
                 expect(actualOptions.resolve.task()).toEqual(task);
             });
+
+            it('should replace the active task with an edited one on close', function () {
+                var newTask = {
+                    id: 'fake',
+                    testTaskId: vm.tasks[1].testTaskId,
+                };
+                vm.viewTask(vm.tasks[1]);
+                vm.modalInstance.close({
+                    task: newTask,
+                    participants: [1],
+                });
+                expect(vm.tasks[1]).toBe(newTask);
+                expect(vm.allParticipants).toEqual([1]);
+            });
+
+            it('should remove the active task if it was deleted', function () {
+                var initLength = vm.tasks.length;
+                vm.viewTask(vm.tasks[1]);
+                vm.modalInstance.close({
+                    deleted: true,
+                    participants: [1],
+                });
+                expect(vm.tasks.length).toBe(initLength - 1);
+                expect(vm.allParticipants).toEqual([1]);
+            });
         });
 
         describe('when viewing Task Participants', function () {
-            var modalOptions, task;
+            var modalOptions;
             beforeEach(function () {
                 modalOptions = {
                     templateUrl: 'app/components/listing_details/sed/participantsModal.html',
@@ -203,25 +233,93 @@
                     keyboard: false,
                     size: 'lg',
                     resolve: {
+                        allParticipants: jasmine.any(Function),
                         editMode: jasmine.any(Function),
                         participants: jasmine.any(Function),
                     },
                 };
-                task = {testParticipants: []};
+                vm.tasks = [
+                    {
+                        testTaskId: 1,
+                        testParticipants: [1,2],
+                    },
+                    {
+                        testTaskId: 2,
+                        testParticipants: [3,4],
+                    },
+                ];
             });
 
             it('should create a modal instance', function () {
                 expect(vm.modalInstance).toBeUndefined();
-                vm.viewParticipants(task);
+                vm.viewParticipants(vm.tasks[1]);
                 expect(vm.modalInstance).toBeDefined();
             });
 
             it('should resolve elements', function () {
+                vm.allParticipants = [1,2];
                 vm.editMode = 'on';
-                vm.viewParticipants(task);
+                vm.viewParticipants(vm.tasks[1]);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.allParticipants()).toEqual([1,2]);
                 expect(actualOptions.resolve.editMode()).toBe('on');
-                expect(actualOptions.resolve.participants()).toEqual([]);
+                expect(actualOptions.resolve.participants()).toEqual([3,4]);
+            });
+
+            it('should replace the task participant list with an edited one on close', function () {
+                var newParticipants = [1,2,3];
+                vm.viewParticipants(vm.tasks[1]);
+                vm.modalInstance.close({
+                    participants: newParticipants,
+                });
+                expect(vm.tasks[1].testParticipants).toEqual(newParticipants);
+            });
+
+            it('should replace the "all participants" list with an edited one on close', function () {
+                var newParticipants = [1,2,3];
+                vm.allParticipants = [1,2];
+                vm.viewParticipants(vm.tasks[1]);
+                vm.modalInstance.close({
+                    allParticipants: newParticipants,
+                });
+                expect(vm.allParticipants).toEqual(newParticipants);
+            });
+        });
+
+        describe('when editing SED details', function () {
+            var modalOptions;
+            beforeEach(function () {
+                modalOptions = {
+                    templateUrl: 'app/admin/components/sed/edit.html',
+                    controller: 'EditSedDetailsController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    //size: 'lg',
+                    resolve: {
+                        listing: jasmine.any(Function),
+                    },
+                };
+            });
+
+            it('should create a modal instance', function () {
+                expect(vm.modalInstance).toBeUndefined();
+                vm.editDetails();
+                expect(vm.modalInstance).toBeDefined();
+            });
+
+            it('should resolve elements', function () {
+                vm.editDetails();
+                expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
+                expect(actualOptions.resolve.listing()).toEqual(vm.listing);
+            });
+
+            it('should replace the active listing with the edited one on close', function () {
+                var newListing = {id: 'fake'};
+                vm.editDetails();
+                vm.modalInstance.close(newListing);
+                expect(vm.listing).toEqual(newListing);
             });
         });
     });

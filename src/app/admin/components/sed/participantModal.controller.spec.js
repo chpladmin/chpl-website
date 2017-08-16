@@ -13,7 +13,7 @@
         };
 
         beforeEach(function () {
-            module('chpl', 'chpl.mock', 'chpl.templates', function ($provide) {
+            module('chpl', 'chpl.admin', 'chpl.mock', 'chpl.templates', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAgeRanges = jasmine.createSpy('getAgeRanges');
                     $delegate.getEducation = jasmine.createSpy('getEducation');
@@ -70,27 +70,6 @@
             });
         });
 
-        describe('with respect to changes', function () {
-            it('should not mark itself as changed if cancelled', function () {
-                vm.participant.changed = true;
-                vm.cancel();
-                expect(vm.participant.changed).toBeUndefined();
-            });
-
-            it('should be able to mark itself as changed when the participant has an id', function () {
-                vm.participant.testParticipantId = 1;
-                expect(vm.participant.changed).toBeUndefined();
-                vm.changed();
-                expect(vm.participant.changed).toBe(true);
-            });
-
-            it('should not mark itself as changed if the participant has no id', function () {
-                expect(vm.participant.changed).toBeUndefined();
-                vm.changed();
-                expect(vm.participant.changed).toBeUndefined();
-            });
-        });
-
         describe('when saving the participant', function () {
             var aParticipant;
 
@@ -120,7 +99,7 @@
             it('should return the modal with the participant', function () {
                 vm.participant = aParticipant;
                 vm.save();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith(aParticipant);
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({participant: aParticipant});
             });
         });
 

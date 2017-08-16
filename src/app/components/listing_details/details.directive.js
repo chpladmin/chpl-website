@@ -45,7 +45,6 @@
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
-            vm.showDetails = showDetails;
             vm.showPanel = showPanel;
 
             activate();
@@ -215,11 +214,6 @@
                     ret = parseInt(cqm.nqfNumber);
                 }
                 return ret;
-            }
-
-            function showDetails (number) {
-                vm.certDetails = vm.certDetails === number ? '' : number;
-                vm.showSed = false;
             }
 
             function showPanel (panel) {

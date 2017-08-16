@@ -1,4 +1,7 @@
 <div style="background: white">
+  <span ng-if="vm.editMode">
+    <button class="btn btn-ai pull-right" ng-click="vm.editDetails()">Edit SED Details</button>
+  </span>
   <span ng-if="vm.listing.sedReportFileLocation !== null">
     <h4>Usability Report</h4>
     <a ai-a ng-if="vm.listing.sedReportFileLocation" href="{{ vm.listing.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.listing.sedReportFileLocation }">{{ vm.listing.sedReportFileLocation }}</a>
@@ -59,7 +62,7 @@
           <td>{{ task.description }}</td>
           <td>{{ task.criteria.join('; ') }}</td>
           <td><button class="btn btn-ai" ng-click="vm.viewParticipants(task)"><i class="fa fa-users"></i> {{ task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
-          <td><button class="btn btn-ai-success" ng-click="vm.viewDetails(task)"><i class="fa fa-eye"></i> Details</button></td>
+          <td><button class="btn btn-ai-success" ng-click="vm.viewTask(task)"><i class="fa fa-eye"></i> Details</button></td>
         </tr>
       </tbody>
     </table>

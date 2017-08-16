@@ -1,8 +1,14 @@
-<div role="modal" aria-labeled-by="sedLabel">
+<div role="modal" aria-labeled-by="modalLabel">
   <div class="modal-header">
-    <button type="button" class="close pull-right" aria-label="Close modal"
+    <button type="button" class="close pull-right" aria-label="Close modal" ng-if="!vm.editMode"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="sedLabel">SED Task</h4>
+    <button type="button" class="close pull-right" aria-label="Cancel edits" ng-if="vm.editMode"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="modalLabel">SED Task</h4>
   </div>
   <div class="modal-body">
     <table class="table table-condensed">
@@ -64,6 +70,14 @@
           <td>{{ vm.task.taskTimeStddev }}</td>
         </tr>
         <tr>
+          <th scope="row">Associated Certification Criteria</th>
+          <td>
+            <ul>
+              <li ng-repeat="crit in vm.task.criteria | orderBy: vm.sortCert">{{ crit }}</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
           <th scope="row">Participants</th>
           <td><button class="btn btn-ai-success" ng-click="vm.viewParticipants()"><i class="fa fa-users"></i> {{ vm.task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
         </tr>
@@ -71,9 +85,25 @@
     </table>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-default pull-left"
-          ng-click="vm.cancel()">Close</button>
-    <button class="btn btn-ai pull-right" ng-if="vm.editMode"
-            ng-click="vm.editTask()"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
+    <span class="pull-left">
+      <button class="btn btn-default" ng-if="!vm.editMode"
+              ng-click="vm.cancel()">Close</button>
+      <button class="btn btn-warning" ng-if="vm.editMode"
+              confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.cancel()">Cancel Edits</button>
+      <button class="btn btn-danger" ng-if="vm.editMode"
+              confirm="Are you sure you wish to remove this Task? Your changes can not be undone."
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.deleteTask()"><i class="fa fa-trash"></i><span class="sr-only">Delete Task</span></button>
+    </span>
+    <span class="pull-right" ng-if="vm.editMode">
+      <button class="btn btn-ai" ng-click="vm.editTask()"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
+      <button class="btn btn-ai-success" ng-click="vm.save()"><i class="fa fa-save"></i><span class="sr-only">Save</span></button>
+    </span>
   </div>
 </div>

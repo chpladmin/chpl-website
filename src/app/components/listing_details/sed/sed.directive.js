@@ -26,15 +26,16 @@
     }
 
     /** @ngInject */
-    function SedController ($filter, $log, $uibModal, utilService) {
+    function SedController ($filter, $log, $scope, $uibModal, utilService) {
         var vm = this;
 
+        vm.editDetails = editDetails;
         vm.getCsv = getCsv;
         vm.sortCert = utilService.sortCert;
         vm.sortProcesses = sortProcesses;
         vm.sortTasks = sortTasks;
-        vm.viewDetails = viewDetails;
         vm.viewParticipants = viewParticipants;
+        vm.viewTask = viewTask;
 
         activate();
 
@@ -42,6 +43,23 @@
 
         function activate () {
             analyzeCriteria();
+        }
+
+        function editDetails () {
+            vm.modalInstance = $uibModal.open({
+                templateUrl: 'app/admin/components/sed/edit.html',
+                controller: 'EditSedDetailsController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    listing: function () { return vm.listing; },
+                },
+            });
+            vm.modalInstance.result.then(function (result) {
+                vm.listing = result;
+            });
         }
 
         function getCsv () {
@@ -56,23 +74,6 @@
             return utilService.sortCertArray(task.criteria);
         }
 
-        function viewDetails (task) {
-            vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/taskModal.html',
-                controller: 'ViewSedTaskController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    editMode: function () { return vm.editMode; },
-                    participants: function () { return vm.participants; },
-                    task: function () { return task; },
-                },
-            });
-        }
-
         function viewParticipants (task) {
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/components/listing_details/sed/participantsModal.html',
@@ -83,9 +84,49 @@
                 keyboard: false,
                 size: 'lg',
                 resolve: {
+                    allParticipants: function () { return vm.allParticipants; },
                     editMode: function () { return vm.editMode; },
                     participants: function () { return task.testParticipants; },
                 },
+            });
+            vm.modalInstance.result.then(function (result) {
+                for (var i = 0; i < vm.tasks.length; i++) {
+                    if (vm.tasks[i].testTaskId === task.testTaskId) {
+                        vm.tasks[i].testParticipants = result.participants;
+                    }
+                }
+                vm.allParticipants = result.allParticipants;
+            });
+        }
+
+        function viewTask (task) {
+            vm.modalInstance = $uibModal.open({
+                templateUrl: 'app/components/listing_details/sed/taskModal.html',
+                controller: 'ViewSedTaskController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    criteria: function () { return vm.listing.certificationResults; },
+                    editMode: function () { return vm.editMode; },
+                    participants: function () { return vm.allParticipants; },
+                    task: function () { return task; },
+                },
+            });
+            vm.modalInstance.result.then(function (result) {
+                for (var i = 0; i < vm.tasks.length; i++) {
+                    if (vm.tasks[i].testTaskId === task.testTaskId) {
+                        if (result.deleted) {
+                            vm.tasks.splice(i, 1);
+                            vm.taskCount = vm.tasks.length;
+                        } else {
+                            vm.tasks[i] = result.task;
+                        }
+                    }
+                }
+                vm.allParticipants = result.participants;
             });
         }
 
@@ -193,9 +234,9 @@
             });
             vm.taskCount = vm.tasks.length;
 
-            vm.participants = [];
+            vm.allParticipants = [];
             angular.forEach(object.participants, function (participant) {
-                vm.participants.push(participant);
+                vm.allParticipants.push(participant);
             });
 
             vm.ucdProcesses = [];

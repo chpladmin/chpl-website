@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="sedLabel">
+<div role="modal" aria-labeled-by="modalLabel">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="sedLabel">SED Task</h4>
+    <h4 class="modal-title" id="modalLabel">SED Task</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
@@ -108,55 +108,24 @@
         <div class="text-danger" ng-if="vm.editForm.data_taskTimeStddev.$touched && vm.editForm.data_taskTimeStddev.$error.required">Field is required</div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <h5>Participants</h5>
-        <table class="table table-striped table-condensed">
-          <thead>
-            <tr>
-              <th scope="col">Age</th>
-              <th scope="col">Assistive Technology Needs</th>
-              <th scope="col">Computer Experience (Months)</th>
-              <th scope="col">Education Type</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Occupation</th>
-              <th scope="col">Product Experience (Months)</th>
-              <th scope="col">Professional Experience (Months)</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <td colspan="9"><button class="btn btn-ai-success btn-sm pull-right" ng-click="vm.addParticipant()"><i class="fa fa-plus"></i> Add Participant</button></td>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr ng-repeat="pers in vm.task.testParticipants track by $index">
-              <td>{{ pers.ageRange }}</td>
-              <td>{{ pers.assistiveTechnologyNeeds }}</td>
-              <td>{{ pers.computerExperienceMonths }}</td>
-              <td>{{ pers.educationTypeName }}</td>
-              <td>{{ pers.gender }}</td>
-              <td>{{ pers.occupation }}</td>
-              <td>{{ pers.productExperienceMonths }}</td>
-              <td>{{ pers.professionalExperienceMonths }}</td>
-              <td>
-                <button class="btn btn-ai-success btn-sm" ng-click="vm.editParticipant(pers, $index)"><i class="fa fa-pencil-square-o"></i> Edit</button>
-                <button class="btn btn-danger btn-sm" ng-click="vm.removeParticipant($index)"><i class="fa fa-trash"></i> Remove</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="form-group">
+      <label class="control-label col-sm-4" for="data_criteria">Associated Certification Criteria <span class="text-danger">*</span></label>
+      <div class="col-sm-8">
+        <select ng-options="criteria.number as criteria.number for criteria in vm.criteria | orderBy: vm.sortCert" ng-model="vm.task.criteria"
+                multiple data-ng-attr-size="{{ vm.criteria.length }}" id="data_criteria" name="data_criteria"
+                class="form-control input-sm" ng-change="vm.changed()" required></select>
+        <div class="text-danger" ng-if="vm.editForm.data_criteria.$touched && vm.editForm.data_criteria.$error.required">Field is required</div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="vm.editForm.$invalid" class="btn btn-ai-success btn-block" ng-click="vm.save()">Save SED Task</button>
-    <button class="btn btn-warning btn-block"
+    <button class="btn btn-warning pull-left"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()">Cancel Edits</button>
+    <button ng-disabled="vm.editForm.$invalid"
+            class="btn btn-ai-success pull-right" ng-click="vm.save()"><i class="fa fa-save"></i><span class="sr-only">Save SED Task</span></button>
   </div>
 </div>

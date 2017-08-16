@@ -18,6 +18,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('ViewSedParticipantsController', {
+                    allParticipants: [],
                     editMode: false,
                     participants: [],
                     $uibModalInstance: Mock.modalInstance,
@@ -45,6 +46,37 @@
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
+        describe('when dealing with participants assigned to a task', function () {
+            beforeEach(function () {
+                vm.participants = [
+                    {testParticipantId: 1},
+                    {testParticipantId: 2},
+                    {testParticipantId: 3},
+                ];
+                vm.allParticipants = [
+                    {testParticipantId: 1},
+                    {testParticipantId: 2},
+                    {testParticipantId: 3},
+                    {testParticipantId: 4},
+                ];
+            });
+
+            it('should toggle participants', function () {
+                var initLength = vm.participants.length;
+                vm.toggleParticipant(vm.allParticipants[1]);
+                expect(vm.participants.length).toBe(initLength - 1);
+                expect(vm.participants[1]).toEqual(vm.allParticipants[2]);
+                vm.toggleParticipant(vm.allParticipants[3]);
+                expect(vm.participants.length).toBe(initLength);
+                expect(vm.participants[initLength - 1]).toEqual(vm.allParticipants[3]);
+            });
+
+            it('should know when a participant is assigned', function () {
+                expect(vm.isAssigned(vm.allParticipants[1])).toBe(true);
+                expect(vm.isAssigned(vm.allParticipants[3])).toBe(false);
+            });
+        });
+
         describe('when editing a Participant', function () {
             var modalOptions;
             beforeEach(function () {
@@ -59,6 +91,17 @@
                         participant: jasmine.any(Function),
                     },
                 };
+                vm.participants = [
+                    {testParticipantId: 1},
+                    {testParticipantId: 2},
+                    {testParticipantId: 3},
+                ];
+                vm.allParticipants = [
+                    {testParticipantId: 1},
+                    {testParticipantId: 2},
+                    {testParticipantId: 3},
+                    {testParticipantId: 4},
+                ];
             });
 
             it('should create a modal instance', function () {
@@ -71,6 +114,27 @@
                 vm.editParticipant({id: 1});
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.participant()).toEqual({id: 1});
+            });
+
+            it('should replace the participant with the response', function () {
+                vm.editParticipant(vm.participants[1]);
+                vm.modalInstance.close({participant: {testParticipantId: 2, name: 'fake'}});
+                expect(vm.participants[1]).toEqual({testParticipantId: 2, name: 'fake'});
+            });
+
+            it('should update the "all participants" array', function () {
+                vm.editParticipant(vm.participants[1]);
+                vm.modalInstance.close({participant: {testParticipantId: 2, name: 'fake'}});
+                expect(vm.allParticipants[1]).toEqual({testParticipantId: 2, name: 'fake'});
+            });
+
+            it('should have a way to save the changed participants', function () {
+                expect(vm.save).toBeDefined();
+                vm.save();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    allParticipants: vm.allParticipants,
+                    participants: vm.participants,
+                });
             });
         });
     });
