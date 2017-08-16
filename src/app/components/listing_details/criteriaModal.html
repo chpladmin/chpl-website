@@ -231,64 +231,6 @@
             </div>
           </td>
         </tr>
-        <tr ng-if="vm.cert.sed !== null">
-          <td colspan="2">
-            <table class="table table-condensed" ng-repeat-start="task in vm.cert.testTasks track by $index">
-              <thead>
-                <tr>
-                  <th scope="col">Quality</th>
-                  <th scope="col">Measurement</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>Task Description</td><td>{{ task.description }}</td></tr>
-                <tr><td>Task Errors</td><td>{{ task.taskErrors }}</td></tr>
-                <tr><td>Task Errors Standard Deviation</td><td>{{ task.taskErrorsStddev }}</td></tr>
-                <tr><td>Path Deviation Observed</td><td>{{ task.taskPathDeviationObserved }}</td></tr>
-                <tr><td>Path Deviation Optimal</td><td>{{ task.taskPathDeviationOptimal }}</td></tr>
-                <tr><td>Task Rating</td><td>{{ task.taskRating }}</td></tr>
-                <tr><td>Task Rating Standard Deviation</td><td>{{ task.taskRatingStddev }}</td></tr>
-                <tr><td>Task Rating Scale</td><td>{{ task.taskRatingScale }}</td></tr>
-                <tr><td>Task Success Average</td><td>{{ task.taskSuccessAverage }}</td></tr>
-                <tr><td>Task Success Standard Deviation</td><td>{{ task.taskSuccessStddev }}</td></tr>
-                <tr><td>Task Time Average</td><td>{{ task.taskTimeAvg }}</td></tr>
-                <tr><td>Task Time Deviation Observed Average</td><td>{{ task.taskTimeDeviationObservedAvg }}</td></tr>
-                <tr><td>Task Time Deviation Optimal Average</td><td>{{ task.taskTimeDeviationOptimalAvg }}</td></tr>
-                <tr><td>Task Time Standard Deviation</td><td>{{ task.taskTimeStddev }}</td></tr>
-                <tr>
-                  <td>Number of test participants</td>
-                  <td>{{ task.testParticipants.length }} <a href class="pull-right" aria-expanded="task.showParticipants" ng-click="task.showParticipants = !task.showParticipants">({{ task.showParticipants ? 'Hide': 'View' }} Participant Details)</a></td>
-                </tr>
-              </tbody>
-            </table>
-            <table ng-repeat-end ng-if="task.showParticipants" class="table table-condensed">
-              <thead>
-                <tr>
-                  <th scope="col">Age</th>
-                  <th scope="col">Assistive Technology Needs</th>
-                  <th scope="col">Computer Experience (Months)</th>
-                  <th scope="col">Education Type</th>
-                  <th scope="col">Gender</th>
-                  <th scope="col">Occupation</th>
-                  <th scope="col">Product Experience (Months)</th>
-                  <th scope="col">Professional Experience (Months)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="pers in task.testParticipants track by $index">
-                  <td>{{ pers.ageRange }}</td>
-                  <td>{{ pers.assistiveTechnologyNeeds }}</td>
-                  <td>{{ pers.computerExperienceMonths }}</td>
-                  <td>{{ pers.educationTypeName }}</td>
-                  <td>{{ pers.gender }}</td>
-                  <td>{{ pers.occupation }}</td>
-                  <td>{{ pers.productExperienceMonths }}</td>
-                  <td>{{ pers.professionalExperienceMonths }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>

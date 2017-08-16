@@ -11,12 +11,10 @@
         vm.cert = cert;
 
         vm.addNewValue = utilService.addNewValue;
-        vm.addTask = addTask;
         vm.cancel = cancel;
         vm.extendSelect = utilService.extendSelect;
         vm.isToolAvailable = isToolAvailable;
         vm.save = save;
-        vm.removeTask = removeTask;
 
         activate();
 
@@ -37,41 +35,12 @@
             vm.resources = resources;
         }
 
-        function addTask () {
-            vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/sed/taskModal.html',
-                controller: 'EditSedTaskController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    task: function () { return { task: {} }; },
-                },
-            });
-            vm.editUibModalInstance.result.then(function (result) {
-                if (!vm.cert.testTasks || vm.cert.testTasks === null) {
-                    vm.cert.testTasks = [];
-                }
-                vm.cert.testTasks.push(result);
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.info('dismissed', result);
-                }
-            });
-        }
-
         function cancel () {
             $uibModalInstance.dismiss('cancelled');
         }
 
         function isToolAvailable (tool) {
             return vm.hasIcs || !tool.retired;
-        }
-
-        function removeTask (idx) {
-            vm.cert.testTasks.splice(idx,1);
         }
 
         function save () {
