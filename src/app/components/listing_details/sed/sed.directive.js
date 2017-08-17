@@ -194,6 +194,9 @@
                 // compile criteria under tasks
                 for (j = 0; j < cert.testTasks.length; j++) {
                     task = cert.testTasks[j];
+                    if (!task.testTaskId) {
+                        task.testTaskId = task.uniqueId;
+                    }
 
                     if (angular.isUndefined(object.tasks[task.testTaskId])) {
                         object.tasks[task.testTaskId] = task;
@@ -203,6 +206,9 @@
 
                     for (k = 0; k < task.testParticipants.length; k++) {
                         participant = task.testParticipants[k];
+                        if (!participant.testParticipantId) {
+                            participant.testParticipantId = participant.uniqueId;
+                        }
 
                         if (angular.isUndefined(object.participants[participant.testParticipantId])) {
                             object.participants[participant.testParticipantId] = participant;

@@ -34,6 +34,7 @@ function runTests (singleRun, done) {
         singleRun: singleRun,
         autoWatch: !singleRun,
         autoWatchBatchDelay: 1000,
+        reportSlowerThan: 300,
         reporters: reporters,
         preprocessors: preprocessors,
         coverageReporter: {

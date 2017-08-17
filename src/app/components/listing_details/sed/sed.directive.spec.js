@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the SED Display', function () {
-        var $log, $uibModal, Mock, actualOptions, el, scope, utilService, vm;
+        var $compile, $log, $uibModal, Mock, actualOptions, el, scope, utilService, vm;
 
         beforeEach(function () {
             module('chpl.templates', 'chpl.mock', 'chpl', function ($provide) {
@@ -13,7 +13,8 @@
                 });
             });
 
-            inject(function ($compile, _$log_, $rootScope, _$uibModal_, _Mock_, _utilService_) {
+            inject(function (_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _utilService_) {
+                $compile = _$compile_;
                 $log = _$log_;
                 Mock = _Mock_;
                 utilService = _utilService_;
@@ -147,6 +148,94 @@
                             'Reconcile Medications', null, 0, 14, 11, 3.1, 1, 'Likert', 85, 0, 219, 94, 120, 94,
                             '30-39', 'No', 180, 'Bachelor\'s degree', 'Female', 'Registered Nurse', 48, 60,
                         ]);
+                    });
+                });
+            });
+
+            describe('while dealing with pending listings', function () {
+                beforeEach(function () {
+                    el = angular.element('<ai-sed listing="listing"></ai-sed>');
+                    scope.listing = Mock.pendingListings[0];
+                    $compile(el)(scope);
+                    scope.$digest();
+                    vm = el.isolateScope().vm;
+                    scope.vm = vm;
+                });
+
+                describe('during initialization', function () {
+                    it('should know how many criteria were sed tested', function () {
+                        expect(vm.criteriaCount).toBe(11);
+                    });
+
+                    it('should filter out criteria that were not successful or not sed', function () {
+                        expect(vm.sedCriteria.length).toBe(11);
+                    });
+
+                    describe('with respect to tasks', function () {
+                        it('should have an array of tasks pulled from the criteria', function () {
+                            expect(vm.tasks.length).toBe(5);
+                        });
+
+                        it('should have the associated criteria attached to the tasks', function () {
+                            expect(vm.tasks[0].criteria).toEqual(['170.315 (a)(5)', '170.315 (a)(6)', '170.315 (a)(7)', '170.315 (a)(8)', '170.315 (a)(9)', '170.315 (a)(14)']);
+                        });
+
+                        it('should know what the task length is', function () {
+                            expect(vm.taskCount).toBeDefined();
+                            expect(vm.taskCount).toBe(5);
+                        });
+                    });
+
+                    describe('with respect to participants', function () {
+                        it('should have an array of unique participants pulled from the criteria', function () {
+                            expect(vm.allParticipants.length).toBe(15);
+                        });
+
+                        it('should have an array of taskIds associated with each participant', function () {
+                            expect(vm.allParticipants[0].tasks).toEqual(['A5.1', 'A2.1', 'A5.1', 'A5.1', 'A1.2', 'A2.1', 'A2.1', 'A5.1', 'B2.1', 'A5.1', 'A5.1']);
+                        });
+                    });
+
+                    describe('with respect to ucd processes', function () {
+                        it('should have an array of ucd processes that were used', function () {
+                            expect(vm.ucdProcesses.length).toBe(1);
+                        });
+
+                        it('should associate the UCD Processes with multiple criteria', function () {
+                            expect(vm.ucdProcesses[0].criteria).toEqual(['170.315 (a)(1)', '170.315 (a)(2)', '170.315 (a)(3)', '170.315 (a)(4)', '170.315 (a)(5)', '170.315 (a)(6)', '170.315 (a)(7)', '170.315 (a)(8)', '170.315 (a)(9)', '170.315 (a)(14)', '170.315 (b)(3)']);
+                        });
+                    });
+
+                    describe('for the csv download', function () {
+                        it('should create a data object with a name and a header row', function () {
+                            expect(vm.csvData.name).toBe('15.07.07.1447.EI97.62.01.1.160402.sed.csv');
+                            expect(vm.csvData.values[0]).toEqual([
+                                'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
+                                'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
+                                'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
+                            ]);
+                        });
+
+                        it('should have data rows', function () {
+                            expect(vm.csvData.values.length).toBe(53);
+                            expect(vm.csvData.values[1]).toEqual([
+                                '15.07.07.1447.EI97.62.01.1.160402', 'Epic Systems Corporation', 'EpicCare Inpatient - Core EMR', 'testV2', '170.315 (a)(1)',
+                                'Enable a user to electronically record, change, and access the following order types (i) Medications; (ii)Laboratory; and (iii) Radiology/imaging.', 16, 3, 10, 6, 3.2, 2, 'Likert', 90.24, 6, 91, 11, 10, 11,
+                                '20-29', 'No', 230, 'Master\'s degree', 'Male', 'Physician\'s Assistant', 13, 77,
+                            ]);
+                        });
+
+                        it('should sort the rows by criteria', function () {
+                            expect(vm.csvData.values[1][4]).toBe('170.315 (a)(1)');
+                        });
+
+                        it('should combine criteria under the same task', function () {
+                            expect(vm.csvData.values[52]).toEqual([
+                                '15.07.07.1447.EI97.62.01.1.160402', 'Epic Systems Corporation', 'EpicCare Inpatient - Core EMR', 'testV2', '170.315 (a)(5);170.315 (a)(6);170.315 (a)(7);170.315 (a)(8);170.315 (a)(9);170.315 (a)(14)',
+                                'Task for (a)(5)', 12, 3, 7, 4, 86, 3, 'System Usability Scale', 66.12, 8, 133, 13, 9, 12,
+                                '40-49', 'Yes, used VoiceOver', 240, 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 'Male', 'MD', 12, 120,
+                            ]);
+                        });
                     });
                 });
             });
