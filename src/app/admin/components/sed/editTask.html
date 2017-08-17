@@ -111,7 +111,7 @@
     <div class="form-group">
       <label class="control-label col-sm-4" for="data_criteria">Associated Certification Criteria <span class="text-danger">*</span></label>
       <div class="col-sm-8">
-        <select ng-options="criteria.number as criteria.number for criteria in vm.criteria | orderBy: vm.sortCert" ng-model="vm.task.criteria"
+        <select ng-options="criteria as criteria.number for criteria in vm.criteria | orderBy: vm.sortCert" ng-model="vm.task.criteria"
                 multiple data-ng-attr-size="{{ vm.criteria.length }}" id="data_criteria" name="data_criteria"
                 class="form-control input-sm" required></select>
         <div class="text-danger" ng-if="vm.editForm.data_criteria.$touched && vm.editForm.data_criteria.$error.required">Field is required</div>

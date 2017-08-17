@@ -73,7 +73,7 @@
           <th scope="row">Associated Certification Criteria</th>
           <td>
             <ul>
-              <li ng-repeat="crit in vm.task.criteria | orderBy: vm.sortCert">{{ crit }}</li>
+              <li ng-repeat="crit in vm.task.criteria | orderBy: vm.sortCert">{{ crit.number }}</li>
             </ul>
           </td>
         </tr>
