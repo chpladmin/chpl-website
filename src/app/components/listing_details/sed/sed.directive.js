@@ -13,6 +13,7 @@
                 criteriaCount: '=?',
                 editMode: '=?',
                 listing: '=',
+                resources: '=?',
                 taskCount: '=?',
             },
             controller: 'SedController',
@@ -78,6 +79,7 @@
                 resolve: {
                     criteria: function () { return vm.sedCriteria; },
                     listing: function () { return vm.listing; },
+                    resources: function () { return vm.resources; },
                     ucdProcesses: function () { return vm.ucdProcesses; },
                 },
             });

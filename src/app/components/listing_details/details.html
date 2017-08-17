@@ -173,7 +173,13 @@
         </a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'sed'">
-        <ai-sed criteria-count="vm.sedCriteriaCount" edit-mode="true" listing="vm.product" task-count="vm.sedTaskCount"></ai-sed>
+        <ai-sed
+           criteria-count="vm.sedCriteriaCount"
+           edit-mode="vm.isEditing"
+           listing="vm.product"
+           resources="vm.resources"
+           task-count="vm.sedTaskCount">
+        </ai-sed>
       </div>
     </div>
 

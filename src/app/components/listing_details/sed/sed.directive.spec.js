@@ -347,6 +347,7 @@
                     resolve: {
                         criteria: jasmine.any(Function),
                         listing: jasmine.any(Function),
+                        resources: jasmine.any(Function),
                         ucdProcesses: jasmine.any(Function),
                     },
                 };
@@ -359,10 +360,12 @@
             });
 
             it('should resolve elements', function () {
+                vm.resources = 'resources';
                 vm.editDetails();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.criteria()).toEqual(vm.sedCriteria);
                 expect(actualOptions.resolve.listing()).toEqual(vm.listing);
+                expect(actualOptions.resolve.resources()).toBe('resources');
                 expect(actualOptions.resolve.ucdProcesses()).toEqual(vm.ucdProcesses);
             });
 

@@ -5,12 +5,13 @@
         .controller('EditSedDetailsController', EditSedDetailsController);
 
     /** @ngInject */
-    function EditSedDetailsController ($log, $uibModalInstance, criteria, listing, ucdProcesses) {
-
+    function EditSedDetailsController ($log, $uibModalInstance, criteria, listing, resources, ucdProcesses, utilService) {
         var vm = this;
 
         vm.cancel = cancel;
+        vm.extendSelect = utilService.extendSelect;
         vm.save = save;
+        vm.sortCert = utilService.sortCert;
 
         activate();
 
@@ -19,6 +20,7 @@
         function activate () {
             vm.criteria = criteria;
             vm.listing = angular.copy(listing);
+            vm.resources = resources;
             vm.ucdProcesses = angular.copy(ucdProcesses);
             if (vm.listing.sedTestingEnd) {
                 vm.listing.sedTestingEndDate = new Date(vm.listing.sedTestingEnd);

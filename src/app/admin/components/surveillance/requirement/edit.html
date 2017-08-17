@@ -55,7 +55,7 @@
     </div>
     <div class="row" ng-if="vm.requirement.result.name === 'Non-Conformity'">
       <div class="col-sm-12">
-        <button class="btn btn-success pull-right" ng-click="vm.addNonconformity()"><i class="fa fa-plus"></i><span class="sr-only">Add a non-conformity</button>
+        <button class="btn btn-ai-success pull-right" ng-click="vm.addNonconformity()"><i class="fa fa-plus"></i><span class="sr-only">Add a non-conformity</button>
         <h5>Non-Conformities</h5>
         <p ng-if="vm.requirement.nonconformities.length === 0">No Non-Conformities found</p>
         <table class="table" ng-if="vm.requirement.nonconformities.length > 0">
@@ -77,7 +77,7 @@
                 <button class="btn btn-danger" ng-click="vm.deleteNonconformity(noncon)"><i class="fa fa-trash"></i><span class="sr-only">Remove this non-conformity</button>
               </td>
               <td>
-                <button class="btn btn-success" ng-click="vm.editNonconformity(noncon)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this non-conformity</button>
+                <button class="btn btn-ai-success" ng-click="vm.editNonconformity(noncon)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this non-conformity</button>
               </td>
             </tr>
           </tbody>
