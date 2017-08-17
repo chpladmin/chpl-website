@@ -91,12 +91,22 @@
             });
         });
 
-        it('should match to a model', function () {
-            var id = {id: 2};
-            var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
-            expect(id).not.toBe(array[1]);
-            id = util.findModel(id, array);
-            expect(id).toBe(array[1]);
+        describe('when connecting to a model', function () {
+            it('should match to a model', function () {
+                var id = {id: 2};
+                var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+                expect(id).not.toBe(array[1]);
+                id = util.findModel(id, array);
+                expect(id).toBe(array[1]);
+            });
+
+            it('should match with an optional key', function () {
+                var id = {name: 'name2'};
+                var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+                expect(id).not.toBe(array[1]);
+                id = util.findModel(id, array, 'name');
+                expect(id).toBe(array[1]);
+            });
         });
 
         describe('when sorting', function () {

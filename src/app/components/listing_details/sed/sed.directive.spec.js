@@ -475,7 +475,7 @@
             });
 
             it('should replace the active listing with the edited one on close', function () {
-                var newListing = {id: 'fake'};
+                var newListing = {id: 'fake', sed: {}};
                 vm.editDetails();
                 vm.modalInstance.close({
                     listing: newListing,
@@ -487,6 +487,7 @@
                 var newProcesses = [1,2];
                 vm.editDetails();
                 vm.modalInstance.close({
+                    listing: {sed: {}},
                     ucdProcesses: newProcesses,
                 });
                 expect(vm.ucdProcesses).toEqual(newProcesses);

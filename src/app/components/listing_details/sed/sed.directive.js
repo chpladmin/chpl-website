@@ -85,6 +85,7 @@
             });
             vm.modalInstance.result.then(function (result) {
                 vm.listing = result.listing;
+                vm.listing.sed.ucdProcesses = result.ucdProcesses;
                 vm.ucdProcesses = result.ucdProcesses;
             });
         }
