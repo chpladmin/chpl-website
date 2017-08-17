@@ -59,7 +59,7 @@
       <div class="form-group">
         <label class="control-label col-sm-4" for="processCriteria{{ $index }}">UCD Process {{ $index + 1 }} Applicable Criteria</label>
         <div class="col-sm-8">
-          <select ng-options="criteria.number as criteria.number for criteria in vm.criteria | orderBy: vm.sortCert" ng-model="process.criteria"
+          <select ng-options="criteria as criteria.number for criteria in vm.criteria | orderBy: vm.sortCert" ng-model="process.criteria"
                   multiple data-ng-attr-size="{{ vm.criteria.length }}" id="processCriteria{{ $index }}" name="processCriteria{{ $index }}"
                   class="form-control input-sm" required></select>
           <div class="text-danger" ng-if="vm.editForm['processCriteria' + $index].$touched && vm.editForm['processCriteria' + $index].$error.required">Field is required</div>

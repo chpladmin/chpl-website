@@ -30,7 +30,11 @@
         </thead>
         <tbody>
           <tr ng-repeat="process in vm.ucdProcesses | orderBy: [vm.sortProcesses]">
-            <td>{{ process.criteria.join('; ') }}</td>
+            <td>
+              <ul>
+                <li ng-repeat="crit in process.criteria | orderBy:vm.sortCert">{{ crit.number }}</li>
+              </ul>
+            </td>
             <td>{{ process.ucdProcessName }}</td>
             <td>{{ process.ucdProcessDetails ? process.ucdProcessDetails : 'N/A'}}</td>
           </tr>
