@@ -22,7 +22,7 @@
                     criteria: [],
                     participants: [],
                     task: {
-                        testTaskId: 3,
+                        id: 3,
                         testParticipants: [],
                     },
                     $uibModalInstance: Mock.modalInstance,
@@ -51,7 +51,7 @@
         });
 
         describe('on load', function () {
-            it('should generate a testTaskId if one doesn\'t exist', function () {
+            it('should generate an id if one doesn\'t exist', function () {
                 vm = $controller('EditSedTaskController', {
                     criteria: [],
                     participants: [],
@@ -60,7 +60,7 @@
                     $scope: scope,
                 });
                 scope.$digest();
-                expect(vm.task.testTaskId).toEqual(jasmine.any(Number));
+                expect(vm.task.id).toEqual(jasmine.any(Number));
             });
 
             it('should generate an array of participants if not given one', function () {

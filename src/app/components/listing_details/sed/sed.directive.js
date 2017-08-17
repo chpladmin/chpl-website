@@ -44,7 +44,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            analyzeCriteria();
+            analyzeSed();
         }
 
         function addTask () {
@@ -94,11 +94,11 @@
         }
 
         function sortProcesses (process) {
-            return utilService.sortCertArray(process.criteria);
+            return utilService.sortCertArray(process.criteria.map(function (item) { return item.number; }));
         }
 
         function sortTasks (task) {
-            return utilService.sortCertArray(task.criteria);
+            return utilService.sortCertArray(task.criteria.map(function (item) { return item.number; }));
         }
 
         function viewParticipants (task) {
@@ -118,7 +118,7 @@
             });
             vm.modalInstance.result.then(function (result) {
                 for (var i = 0; i < vm.tasks.length; i++) {
-                    if (vm.tasks[i].testTaskId === task.testTaskId) {
+                    if (vm.tasks[i].id === task.id) {
                         vm.tasks[i].testParticipants = result.participants;
                     }
                 }
@@ -144,7 +144,7 @@
             });
             vm.modalInstance.result.then(function (result) {
                 for (var i = 0; i < vm.tasks.length; i++) {
-                    if (vm.tasks[i].testTaskId === task.testTaskId) {
+                    if (vm.tasks[i].id === task.id) {
                         if (result.deleted) {
                             vm.tasks.splice(i, 1);
                             vm.taskCount = vm.tasks.length;
@@ -159,8 +159,8 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function analyzeCriteria () {
-            var cert, csvRow, i, j, k, object, participant, process, task;
+        function analyzeSed () {
+            var csvRow, i, j, object, participant, task;
             var TASK_START = 5;
             var PART_START = TASK_START + 14;
             var ROW_BASE = [
@@ -171,8 +171,6 @@
             ];
             object = {
                 participants: {},
-                tasks: {},
-                ucdProcesses: {},
             };
             vm.csvData = {
                 name: vm.listing.chplProductNumber + '.sed.csv',
@@ -188,53 +186,17 @@
                 .map(function (cert) { cert.name = cert.number; return cert; });
             vm.criteriaCount = vm.sedCriteria.length;
 
-            for (i = 0; i < vm.sedCriteria.length; i++) {
-                cert = vm.sedCriteria[i];
-
-                // compile criteria under tasks
-                for (j = 0; j < cert.testTasks.length; j++) {
-                    task = cert.testTasks[j];
-                    if (!task.testTaskId) {
-                        task.testTaskId = task.uniqueId;
-                    }
-
-                    if (angular.isUndefined(object.tasks[task.testTaskId])) {
-                        object.tasks[task.testTaskId] = task;
-                        object.tasks[task.testTaskId].criteria = [];
-                    }
-                    object.tasks[task.testTaskId].criteria.push(cert.number);
-
-                    for (k = 0; k < task.testParticipants.length; k++) {
-                        participant = task.testParticipants[k];
-                        if (!participant.testParticipantId) {
-                            participant.testParticipantId = participant.uniqueId;
-                        }
-
-                        if (angular.isUndefined(object.participants[participant.testParticipantId])) {
-                            object.participants[participant.testParticipantId] = participant;
-                            object.participants[participant.testParticipantId].tasks = [];
-                        }
-                        object.participants[participant.testParticipantId].tasks.push(task.testTaskId);
-                    }
-                }
-
-                // compile criteria under ucdProcesses
-                for (j = 0; j < cert.ucdProcesses.length; j++) {
-                    process = cert.ucdProcesses[j];
-                    if (angular.isUndefined(object.ucdProcesses[process.ucdProcessId])) {
-                        object.ucdProcesses[process.ucdProcessId] = process;
-                        object.ucdProcesses[process.ucdProcessId].criteria = [];
-                    }
-                    object.ucdProcesses[process.ucdProcessId].criteria.push(cert.number);
-                }
-            }
-
             csvRow = angular.copy(ROW_BASE);
-            vm.tasks = [];
-            angular.forEach(object.tasks, function (task) {
+
+            vm.tasks = vm.listing.sed.testTasks;
+            for (i = 0; i < vm.tasks.length; i++) {
+                task = vm.tasks[i];
+                if (!task.id) {
+                    task.id = task.uniqueId;
+                }
                 task.criteria = $filter('orderBy')(task.criteria, vm.sortCert);
 
-                csvRow[4] = task.criteria.join(';');
+                csvRow[4] = task.criteria.map(function (item) { return item.number; }).join(';');
                 csvRow[TASK_START + 0] = task.description;
                 csvRow[TASK_START + 1] = task.taskErrors;
                 csvRow[TASK_START + 2] = task.taskErrorsStddev;
@@ -249,9 +211,17 @@
                 csvRow[TASK_START + 11] = task.taskTimeDeviationObservedAvg;
                 csvRow[TASK_START + 12] = task.taskTimeDeviationOptimalAvg;
                 csvRow[TASK_START + 13] = task.taskTimeStddev;
+                for (j = 0; j < task.testParticipants.length; j++) {
+                    participant = task.testParticipants[j];
+                    if (!participant.id) {
+                        participant.id = participant.uniqueId;
+                    }
 
-                for (var k = 0; k < task.testParticipants.length; k++) {
-                    participant = task.testParticipants[k];
+                    if (angular.isUndefined(object.participants[participant.id])) {
+                        object.participants[participant.id] = participant;
+                        object.participants[participant.id].tasks = [];
+                    }
+                    object.participants[participant.id].tasks.push(task.id);
                     csvRow[PART_START + 0] = participant.ageRange;
                     csvRow[PART_START + 1] = participant.assistiveTechnologyNeeds;
                     csvRow[PART_START + 2] = participant.computerExperienceMonths;
@@ -263,8 +233,8 @@
 
                     vm.csvData.values.push(angular.copy(csvRow));
                 }
-                vm.tasks.push(task);
-            });
+            }
+
             vm.taskCount = vm.tasks.length;
 
             vm.allParticipants = [];
@@ -272,10 +242,9 @@
                 vm.allParticipants.push(participant);
             });
 
-            vm.ucdProcesses = [];
-            angular.forEach(object.ucdProcesses, function (process) {
-                process.criteria = $filter('orderBy')(process.criteria, vm.sortCert);
-                vm.ucdProcesses.push(process);
+            vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
+                item.criteria = $filter('orderBy')(item.criteria, vm.sortCert);
+                return item;
             });
 
             vm.csvData.values = csvSort(vm.csvData.values);

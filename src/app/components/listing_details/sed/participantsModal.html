@@ -32,7 +32,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <tr ng-repeat="participant in vm.allParticipants track by participant.testParticipantId" ng-if="vm.isAssigned(participant) || vm.editMode">
+        <tr ng-repeat="participant in vm.allParticipants track by participant.id" ng-if="vm.isAssigned(participant) || vm.editMode">
           <td>{{ participant.ageRange }}</td>
           <td>{{ participant.assistiveTechnologyNeeds }}</td>
           <td>{{ participant.computerExperienceMonths }}</td>

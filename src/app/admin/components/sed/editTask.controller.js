@@ -21,8 +21,8 @@
             vm.criteria = criteria;
             vm.participants = angular.copy(participants);
             vm.task = angular.copy(task);
-            if (!vm.task.testTaskId) {
-                vm.task.testTaskId = (new Date()).getTime() * -1;
+            if (!vm.task.id) {
+                vm.task.id = (new Date()).getTime() * -1;
             }
             if (!vm.task.testParticipants) {
                 vm.task.testParticipants = [];

@@ -108,6 +108,14 @@
                 expect(util.sortCert('170.302 (a)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
             });
 
+            it('should be able to sort cert objects by name', function () {
+                expect(util.sortCert({name: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({name: '170.314 (a)(10)'}));
+            });
+
+            it('should be able to sort cert objects by number', function () {
+                expect(util.sortCert({number: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({number: '170.314 (a)(10)'}));
+            });
+
             it('should be able to sort cqms', function () {
                 expect(util.sortCqm('NQF-0031')).toBeLessThan(util.sortCqm('NQF-0100'));
                 expect(util.sortCqm('NQF-0031')).toBeGreaterThan(util.sortCqm('CMS107'));

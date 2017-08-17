@@ -148,7 +148,7 @@
 
         function sortCert (cert) {
             if (angular.isObject(cert)) {
-                cert = cert.name;
+                cert = cert.name || cert.number;
             }
             var edition = parseInt(cert.substring(4,7));
             var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;

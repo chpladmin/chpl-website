@@ -49,15 +49,15 @@
         describe('when dealing with participants assigned to a task', function () {
             beforeEach(function () {
                 vm.participants = [
-                    {testParticipantId: 1},
-                    {testParticipantId: 2},
-                    {testParticipantId: 3},
+                    {id: 1},
+                    {id: 2},
+                    {id: 3},
                 ];
                 vm.allParticipants = [
-                    {testParticipantId: 1},
-                    {testParticipantId: 2},
-                    {testParticipantId: 3},
-                    {testParticipantId: 4},
+                    {id: 1},
+                    {id: 2},
+                    {id: 3},
+                    {id: 4},
                 ];
             });
 
@@ -92,15 +92,15 @@
                     },
                 };
                 vm.participants = [
-                    {testParticipantId: 1},
-                    {testParticipantId: 2},
-                    {testParticipantId: 3},
+                    {id: 1},
+                    {id: 2},
+                    {id: 3},
                 ];
                 vm.allParticipants = [
-                    {testParticipantId: 1},
-                    {testParticipantId: 2},
-                    {testParticipantId: 3},
-                    {testParticipantId: 4},
+                    {id: 1},
+                    {id: 2},
+                    {id: 3},
+                    {id: 4},
                 ];
             });
 
@@ -118,14 +118,14 @@
 
             it('should replace the participant with the response', function () {
                 vm.editParticipant(vm.participants[1]);
-                vm.modalInstance.close({participant: {testParticipantId: 2, name: 'fake'}});
-                expect(vm.participants[1]).toEqual({testParticipantId: 2, name: 'fake'});
+                vm.modalInstance.close({participant: {id: 2, name: 'fake'}});
+                expect(vm.participants[1]).toEqual({id: 2, name: 'fake'});
             });
 
             it('should update the "all participants" array', function () {
                 vm.editParticipant(vm.participants[1]);
-                vm.modalInstance.close({participant: {testParticipantId: 2, name: 'fake'}});
-                expect(vm.allParticipants[1]).toEqual({testParticipantId: 2, name: 'fake'});
+                vm.modalInstance.close({participant: {id: 2, name: 'fake'}});
+                expect(vm.allParticipants[1]).toEqual({id: 2, name: 'fake'});
             });
 
             it('should have a way to save the changed participants', function () {
@@ -153,15 +153,15 @@
                     },
                 };
                 vm.participants = [
-                    {testParticipantId: 1},
-                    {testParticipantId: 2},
-                    {testParticipantId: 3},
+                    {id: 1},
+                    {id: 2},
+                    {id: 3},
                 ];
                 vm.allParticipants = [
-                    {testParticipantId: 1},
-                    {testParticipantId: 2},
-                    {testParticipantId: 3},
-                    {testParticipantId: 4},
+                    {id: 1},
+                    {id: 2},
+                    {id: 3},
+                    {id: 4},
                 ];
             });
 

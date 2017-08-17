@@ -6,7 +6,7 @@
 
         mock = {};
         mock.participant = {
-            testParticipantId: 3,
+            id: 3,
             educationTypeName: 'edTypeName',
             educationTypeId: 'edTypeId',
             ageRange: 'ageRnge',
@@ -73,16 +73,16 @@
                 });
             });
 
-            it('should generate a testParticipantId if one doesn\'t exist', function () {
+            it('should generate an id if one doesn\'t exist', function () {
                 var part = angular.copy(mock.participant);
-                part.testParticipantId = undefined;
+                part.id = undefined;
                 vm = $controller('EditSedParticipantController', {
                     participant: angular.copy(part),
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
                 scope.$digest();
-                expect(vm.participant.testParticipantId).toEqual(jasmine.any(Number));
+                expect(vm.participant.id).toEqual(jasmine.any(Number));
             });
         });
 
@@ -99,7 +99,7 @@
                         name: 'fake3',
                         id: 'fake4',
                     },
-                    testParticipantId: 1,
+                    id: 1,
                 };
             });
 
