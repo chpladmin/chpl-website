@@ -781,15 +781,19 @@
 
             var taskKeys = [
                 {key: 'description', display: 'Description'},
-                {key: 'taskPathDeviationObserved', display: 'Path Deviation Observed'},
-                {key: 'taskPathDeviationOptimal', display: 'Path Deviation Optimal'},
+                {key: 'taskErrors', display: 'Task Errors'},
+                {key: 'taskErrorsStddev', display: 'Task Errors Standard Deviation'},
+                {key: 'taskPathDeviationObserved', display: 'Task Path Deviation Observed'},
+                {key: 'taskPathDeviationOptimal', display: 'Task Path Deviation Optimal'},
                 {key: 'taskRating', display: 'Task Rating'},
+                {key: 'taskRatingScale', display: 'Task Rating Scale'},
                 {key: 'taskRatingStddev', display: 'Task Rating Standard Deviation'},
-                {key: 'taskRatingScale', display: 'Rating Scale'},
-                {key: 'taskTimeAvg', display: 'Time Average'},
-                {key: 'taskTimeDeviationObservedAvg', display: 'Time Deviation Observed Average'},
-                {key: 'taskTimeDeviationOptimalAvg', display: 'Time Deviation Optimal Average'},
-                {key: 'taskTimeStddev', display: 'Time Standard Deviation'},
+                {key: 'taskSuccessAverage', display: 'Task Success Average'},
+                {key: 'taskSuccessStddev', display: 'Task Success Standard Deviation'},
+                {key: 'taskTimeAvg', display: 'Task Time Average'},
+                {key: 'taskTimeDeviationObservedAvg', display: 'Task Time Deviation Observed Average'},
+                {key: 'taskTimeDeviationOptimalAvg', display: 'Task Time Deviation Optimal Average'},
+                {key: 'taskTimeStddev', display: 'Task Time Standard Deviation'},
             ];
             var taskNested = [
                 {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
@@ -827,53 +831,6 @@
             for (i = 0; i < participants.length; i++) {
                 ret.push('<li>Participant changes<ul>' + participants[i].changes.join('') + '</ul></li>');
             }
-            /*
-            var change;
-            var keys = ;
-            var i, j, k;
-            if (prev !== null) {
-                prev.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
-                curr.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
-                for (i = 0; i < prev.length; i++) {
-                    for (j = 0; j < curr.length; j++) {
-                        if (prev[i].description === curr[j].description) {
-                            var obj = { name: curr[j].description, changes: [] };
-                            for (k = 0; k < keys.length; k++) {
-                                change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display, keys[k].filter);
-                                if (change) { obj.changes.push('<li>' + change + '</li>'); }
-                            }
-                            var testParticipantKeys = [
-                                {key: 'ageRange', display: 'Age'},
-                                {key: 'assistiveTechnologyNeeds', display: 'Assistive Technology Needs'},
-                                {key: 'computerExperienceMonths', display: 'Computer Experience Months'},
-                                {key: 'educationTypeName', display: 'Education Type'},
-                                {key: 'gender', display: 'Gender'},
-                                {key: 'occupation', display: 'Occupation'},
-                                {key: 'productExperienceMonths', display: 'Product Experience (Months)'},
-                                {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'},
-                            ];
-                            var testParticipants = compareArray(prev[i].testParticipants, curr[j].testParticipants, testParticipantKeys, 'testParticipantId');
-                            for (k = 0; k < testParticipants.length; k++) {
-                                obj.changes.push('<li>Test Participant "' + testParticipants[k].name + '" changes<ul>' + testParticipants[k].changes.join('') + '</ul></li>');
-                            }
-                            if (obj.changes.length > 0) {
-                                ret.push(obj);
-                            }
-                            prev[i].evaluated = true;
-                            curr[j].evaluated = true;
-                        }
-                    }
-                    if (!prev[i].evaluated) {
-                        ret.push({ name: prev[i].description, changes: ['<li>Task removed</li>'] });
-                    }
-                }
-                for (i = 0; i < curr.length; i++) {
-                    if (!curr[i].evaluated) {
-                        ret.push({ name: curr[i].description, changes: ['<li>Task added</li>'] });
-                    }
-                }
-            }
-            */
             return ret;
         }
 
