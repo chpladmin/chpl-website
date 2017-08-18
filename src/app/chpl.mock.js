@@ -18,6 +18,10 @@
                 originalData:{ucdProcesses:[],testTasks:[{id:1,description:'A description that changes',criteria:[],testParticipants:[]},{id:2,description:'A removed task',criteria:[],testParticipants:[]},{id:3,description:'Added participant',criteria:[],testParticipants:[]},{id:4,description:'Removed participant',criteria:[],testParticipants:[{id:1}]},{id:10,description:'Adding criteria',criteria:[],testParticipants:[]},{id:11,description:'Removing criteria',criteria:[{id:1,number:'number'}],testParticipants:[]}]},
                 newData:{ucdProcesses:[],testTasks:[{id:1,description:'A description that changed',criteria:[],testParticipants:[]},{id:5,description:'An added task',criteria:[],testParticipants:[]},{id:3,description:'Added participant',criteria:[],testParticipants:[{id:43}]},{id:4,description:'Removed participant',criteria:[],testParticipants:[]},{id:10,description:'Adding criteria',criteria:[{id:1,number:'number'}],testParticipants:[]},{id:11,description:'Removing criteria',criteria:[],testParticipants:[]}]},
             },
+            { // Participant changes
+                originalData:{ucdProcesses:[],testTasks:[{id:1,description:'Change participant age range',criteria:[],testParticipants:[{id:1,ageRange:'1-9',gender:'Female'}]},{id:2,description:'Change participant gender',criteria:[],testParticipants:[{id:2,gender:'Male',ageRange:'1-9'}]},{id:3,description:'Removed participant',criteria:[],testParticipants:[{id:3,ageRange:'1-9',gender:'Female'}]},{id:4,description:'Added participant',criteria:[],testParticipants:[]}]},
+                newData:{ucdProcesses:[],testTasks:[{id:1,description:'Change participant age range',criteria:[],testParticipants:[{id:1,ageRange:'100+',gender:'Female'}]},{id:2,description:'Change participant gender',criteria:[],testParticipants:[{id:2,gender:'Female',ageRange:'1-9'}]},{id:3,description:'Removed participant',criteria:[],testParticipants:[]},{id:4,description:'Added participant',criteria:[],testParticipants:[{id:3,ageRange:'1-9',gender:'Female'}]}]},
+            },
         ];
 
         return mock;

@@ -799,6 +799,34 @@
             for (i = 0; i < tasks.length; i++) {
                 ret.push('<li>Task Description "' + tasks[i].name + '" changes<ul>' + tasks[i].changes.join('') + '</ul></li>');
             }
+
+            prev.allParticipants = prev.testTasks.reduce(function (coll, test) {
+                coll = coll.concat(test.testParticipants.filter(function (part) {
+                    return !coll.includes(part);
+                }));
+                return coll;
+            },[]);
+            curr.allParticipants = curr.testTasks.reduce(function (coll, test) {
+                coll = coll.concat(test.testParticipants.filter(function (part) {
+                    return !coll.includes(part);
+                }));
+                return coll;
+            },[]);
+
+            var testParticipantKeys = [
+                {key: 'ageRange', display: 'Age Range'},
+                {key: 'assistiveTechnologyNeeds', display: 'Assistive Technology Needs'},
+                {key: 'computerExperienceMonths', display: 'Computer Experience Months'},
+                {key: 'educationTypeName', display: 'Education Type'},
+                {key: 'gender', display: 'Gender'},
+                {key: 'occupation', display: 'Occupation'},
+                {key: 'productExperienceMonths', display: 'Product Experience (Months)'},
+                {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'},
+            ];
+            var participants = compareArray(prev.allParticipants, curr.allParticipants, testParticipantKeys, 'id');
+            for (i = 0; i < participants.length; i++) {
+                ret.push('<li>Participant changes<ul>' + participants[i].changes.join('') + '</ul></li>');
+            }
             /*
             var change;
             var keys = ;
@@ -1319,7 +1347,7 @@
                             }
                             if (nested) {
                                 for (k = 0; k < nested.length; k++) {
-                                    nested[k].changes = utilService.arrayCompare(prev[i][nested[k].key],curr[i][nested[k].key],nested[k].compareId);
+                                    nested[k].changes = utilService.arrayCompare(prev[i][nested[k].key],curr[j][nested[k].key],nested[k].compareId);
                                     if (nested[k].changes.added.length > 0) {
                                         if (nested[k].countOnly) { obj.changes.push('<li>Added ' + nested[k].changes.added.length + ' ' + nested[k].display + (nested[k].changes.added.length !== 1 ? 's' : '') + '</li>') }
                                         else {

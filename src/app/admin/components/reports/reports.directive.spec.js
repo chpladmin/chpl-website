@@ -760,6 +760,20 @@
                             expect(activity[6]).toEqual('<li>Task Description "An added task" changes<ul><li>An added task added</li></ul></li>');
                         });
                     });
+
+                    describe('Participants', function () {
+                        it('should recognize changed age', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[2].originalData, ActivityMock.sed[2].newData);
+                            expect(activity[2]).toEqual('<li>Participant changes<ul><li>Age Range changed from 1-9 to 100+</li></ul></li>');
+                        });
+
+                        it('should recognize changed gender', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[2].originalData, ActivityMock.sed[2].newData);
+                            expect(activity[3]).toEqual('<li>Participant changes<ul><li>Gender changed from Male to Female</li></ul></li>');
+                        });
+                    });
                 });
             });
         });
