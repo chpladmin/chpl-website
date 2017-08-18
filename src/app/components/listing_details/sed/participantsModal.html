@@ -53,7 +53,7 @@
     </table>
   </div>
   <div class="modal-footer">
-    <div class="text-danger" ng-if="vm.participants.length < 10">At least 10 participants must be assigned</div>
+    <div class="text-danger" ng-if="vm.editMode && vm.participants.length < 10">At least 10 participants must be assigned</div>
     <span class="pull-left">
       <button class="btn btn-default" ng-if="!vm.editMode"
               ng-click="vm.cancel()">Close</button>

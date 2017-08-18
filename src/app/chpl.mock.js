@@ -2,9 +2,26 @@
 (function () {
     'use strict';
 
-    angular
-        .module('chpl.mock', [])
+    angular.module('chpl.mock', [])
+        .factory('ActivityMock', activityMock)
         .factory('Mock', mock);
+
+    function activityMock () {
+        var mock = {};
+
+        mock.sed = [
+            { // UCD Process changes
+                originalData:{testTasks:[],ucdProcesses:[{id:1,name:'A process',details:'some details',criteria:[{number:'170.315 (a)(1)'}]},{id:2,name:'A second',details:null,criteria:[{number:'170.315 (a)(1)'}]},{id:4,name:'Fourth',details:null,criteria:[{number:'170.315 (a)(1)'}]}]},
+                newData:{testTasks:[],ucdProcesses:[{id:1,name:'A process',details:'Changed details',criteria:[{number:'170.315 (a)(1)'}]},{id:3,name:'A third',details:null,criteria:[{number:'170.315 (a)(3)'}]},{id:4,name:'Fourth',details:null,criteria:[{number:'170.315 (a)(2)'}]}]},
+            },
+            { // Task changes
+                originalData:{ucdProcesses:[],testTasks:[{id:1,description:'A description that changes',criteria:[],testParticipants:[]},{id:2,description:'A removed task',criteria:[],testParticipants:[]},{id:3,description:'Added participant',criteria:[],testParticipants:[]},{id:4,description:'Removed participant',criteria:[],testParticipants:[{id:1}]},{id:10,description:'Adding criteria',criteria:[],testParticipants:[]},{id:11,description:'Removing criteria',criteria:[{id:1,number:'number'}],testParticipants:[]}]},
+                newData:{ucdProcesses:[],testTasks:[{id:1,description:'A description that changed',criteria:[],testParticipants:[]},{id:5,description:'An added task',criteria:[],testParticipants:[]},{id:3,description:'Added participant',criteria:[],testParticipants:[{id:43}]},{id:4,description:'Removed participant',criteria:[],testParticipants:[]},{id:10,description:'Adding criteria',criteria:[{id:1,number:'number'}],testParticipants:[]},{id:11,description:'Removing criteria',criteria:[],testParticipants:[]}]},
+            },
+        ];
+
+        return mock;
+    }
 
     function mock () {
         var mock = {};

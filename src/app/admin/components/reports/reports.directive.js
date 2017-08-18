@@ -47,7 +47,8 @@
         vm.validDates = validDates;
 
         // private function exposed for testing
-        vm.interpretCps = interpretCps;
+        vm._interpretCps = _interpretCps;
+        vm._compareSed = _compareSed;
 
         activate();
 
@@ -169,7 +170,7 @@
         function refreshCp () {
             networkService.getCertifiedProductActivity(dateAdjust(vm.activityRange.listing))
                 .then(function (data) {
-                    interpretCps(data);
+                    _interpretCps(data);
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                     vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
@@ -293,7 +294,7 @@
         function singleCp () {
             networkService.getSingleCertifiedProductActivity(vm.productId)
                 .then(function (data) {
-                    interpretCps(data);
+                    _interpretCps(data);
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                     vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
@@ -330,7 +331,7 @@
             };
         }
 
-        function interpretCps (data) {
+        function _interpretCps (data) {
             vm.loadedCpActivity = data;
             var simpleCpFields = [
                 {key: 'acbCertificationId', display: 'ACB Certification ID'},
@@ -463,6 +464,13 @@
                     var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
                     for (j = 0; j < qmsStandards.length; j++) {
                         activity.details.push('QMS Standard "' + qmsStandards[j].name + '" changes<ul>' + qmsStandards[j].changes.join('') + '</ul>');
+                    }
+                    if (data[i].originalData.sed &&
+                        data[i].newData.sed) {
+                        var sedChanges = _compareSed(data[i].originalData.sed, data[i].newData.sed);
+                        if (sedChanges) {
+                            activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
+                        }
                     }
                     var targetedUsersKeys = [];
                     var targetedUsers = compareArray(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, targetedUsersKeys, 'targetedUserName');
@@ -712,14 +720,18 @@
                 for (j = 0; j < testStandards.length; j++) {
                     obj.changes.push('<li>Test Standard Description "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul></li>');
                 }
-                var ucdProcessesKeys = [{key: 'ucdProcessDetails', display: 'UCD Process Details'}];
-                var ucdProcesses = compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
-                for (j = 0; j < ucdProcesses.length; j++) {
-                    obj.changes.push('<li>UCD Process Name "' + ucdProcesses[j].name + '" changes<ul>' + ucdProcesses[j].changes.join('') + '</ul></li>');
+                if (prev[i].ucdProcesses) {
+                    var ucdProcessesKeys = [{key: 'ucdProcessDetails', display: 'UCD Process Details'}];
+                    var ucdProcesses = compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
+                    for (j = 0; j < ucdProcesses.length; j++) {
+                        obj.changes.push('<li>UCD Process Name "' + ucdProcesses[j].name + '" changes<ul>' + ucdProcesses[j].changes.join('') + '</ul></li>');
+                    }
                 }
-                var testTasks = compareSedTasks(prev[i].testTasks, curr[i].testTasks);
-                for (j = 0; j < testTasks.length; j++) {
-                    obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
+                if (prev[i].testTasks) {
+                    var testTasks = compareSedTasks(prev[i].testTasks, curr[i].testTasks);
+                    for (j = 0; j < testTasks.length; j++) {
+                        obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
+                    }
                 }
                 if (obj.changes.length > 0) {
                     ret.push(obj);
@@ -752,6 +764,88 @@
                     ret.push(obj);
                 }
             }
+            return ret;
+        }
+
+        function _compareSed (prev, curr) {
+            var i, ret = [];
+
+            var ucdProcessesKeys = [{key: 'details', display: 'UCD Process Details'}];
+            var ucdProcessesNested = [
+                {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
+            ];
+            var ucdProcesses = compareArray(prev.ucdProcesses, curr.ucdProcesses, ucdProcessesKeys, 'name', ucdProcessesNested);
+            for (i = 0; i < ucdProcesses.length; i++) {
+                ret.push('<li>UCD Process Name "' + ucdProcesses[i].name + '" changes<ul>' + ucdProcesses[i].changes.join('') + '</ul></li>');
+            }
+
+            var taskKeys = [
+                {key: 'description', display: 'Description'},
+                {key: 'taskPathDeviationObserved', display: 'Path Deviation Observed'},
+                {key: 'taskPathDeviationOptimal', display: 'Path Deviation Optimal'},
+                {key: 'taskRating', display: 'Task Rating'},
+                {key: 'taskRatingStddev', display: 'Task Rating Standard Deviation'},
+                {key: 'taskRatingScale', display: 'Rating Scale'},
+                {key: 'taskTimeAvg', display: 'Time Average'},
+                {key: 'taskTimeDeviationObservedAvg', display: 'Time Deviation Observed Average'},
+                {key: 'taskTimeDeviationOptimalAvg', display: 'Time Deviation Optimal Average'},
+                {key: 'taskTimeStddev', display: 'Time Standard Deviation'},
+            ];
+            var taskNested = [
+                {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
+                {key: 'testParticipants', display: 'Test Participant', value: 'id', compareId: 'id', countOnly: true},
+            ];
+            var tasks = compareArray(prev.testTasks, curr.testTasks, taskKeys, 'id', taskNested, 'description');
+            for (i = 0; i < tasks.length; i++) {
+                ret.push('<li>Task Description "' + tasks[i].name + '" changes<ul>' + tasks[i].changes.join('') + '</ul></li>');
+            }
+            /*
+            var change;
+            var keys = ;
+            var i, j, k;
+            if (prev !== null) {
+                prev.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
+                curr.sort(function (a,b) {return (a.description > b.description) ? 1 : ((b.description > a.description) ? -1 : 0);} );
+                for (i = 0; i < prev.length; i++) {
+                    for (j = 0; j < curr.length; j++) {
+                        if (prev[i].description === curr[j].description) {
+                            var obj = { name: curr[j].description, changes: [] };
+                            for (k = 0; k < keys.length; k++) {
+                                change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display, keys[k].filter);
+                                if (change) { obj.changes.push('<li>' + change + '</li>'); }
+                            }
+                            var testParticipantKeys = [
+                                {key: 'ageRange', display: 'Age'},
+                                {key: 'assistiveTechnologyNeeds', display: 'Assistive Technology Needs'},
+                                {key: 'computerExperienceMonths', display: 'Computer Experience Months'},
+                                {key: 'educationTypeName', display: 'Education Type'},
+                                {key: 'gender', display: 'Gender'},
+                                {key: 'occupation', display: 'Occupation'},
+                                {key: 'productExperienceMonths', display: 'Product Experience (Months)'},
+                                {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'},
+                            ];
+                            var testParticipants = compareArray(prev[i].testParticipants, curr[j].testParticipants, testParticipantKeys, 'testParticipantId');
+                            for (k = 0; k < testParticipants.length; k++) {
+                                obj.changes.push('<li>Test Participant "' + testParticipants[k].name + '" changes<ul>' + testParticipants[k].changes.join('') + '</ul></li>');
+                            }
+                            if (obj.changes.length > 0) {
+                                ret.push(obj);
+                            }
+                            prev[i].evaluated = true;
+                            curr[j].evaluated = true;
+                        }
+                    }
+                    if (!prev[i].evaluated) {
+                        ret.push({ name: prev[i].description, changes: ['<li>Task removed</li>'] });
+                    }
+                }
+                for (i = 0; i < curr.length; i++) {
+                    if (!curr[i].evaluated) {
+                        ret.push({ name: curr[i].description, changes: ['<li>Task added</li>'] });
+                    }
+                }
+            }
+            */
             return ret;
         }
 
@@ -1211,17 +1305,42 @@
             }
         };
 
-        function compareArray (prev, curr, keys, root) {
+        function compareArray (prev, curr, keys, root, nested, altRoot) {
             var ret = [];
-            var change, i;
+            var change, i, j, k, l;
             if (prev !== null) {
                 for (i = 0; i < prev.length; i++) {
-                    for (var j = 0; j < curr.length; j++) {
-                        var obj = { name: curr[j][root], changes: [] };
+                    for (j = 0; j < curr.length; j++) {
+                        var obj = { name: curr[j][altRoot ? altRoot : root], changes: [] };
                         if (prev[i][root] === curr[j][root]) {
-                            for (var k = 0; k < keys.length; k++) {
+                            for (k = 0; k < keys.length; k++) {
                                 change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
                                 if (change) { obj.changes.push('<li>' + change + '</li>'); }
+                            }
+                            if (nested) {
+                                for (k = 0; k < nested.length; k++) {
+                                    nested[k].changes = utilService.arrayCompare(prev[i][nested[k].key],curr[i][nested[k].key],nested[k].compareId);
+                                    if (nested[k].changes.added.length > 0) {
+                                        if (nested[k].countOnly) { obj.changes.push('<li>Added ' + nested[k].changes.added.length + ' ' + nested[k].display + (nested[k].changes.added.length !== 1 ? 's' : '') + '</li>') }
+                                        else {
+                                            obj.changes.push('<li>Added ' + nested[k].display + ':<ul>');
+                                            for (l = 0; l < nested[k].changes.added.length; l++) {
+                                                obj.changes.push('<li>' + nested[k].changes.added[l][nested[k].value] + '</li>');
+                                            }
+                                            obj.changes.push('</ul></li>');
+                                        }
+                                    }
+                                    if (nested[k].changes.removed.length > 0) {
+                                        if (nested[k].countOnly) { obj.changes.push('<li>Removed ' + nested[k].changes.removed.length + ' ' + nested[k].display + (nested[k].changes.removed.length !== 1 ? 's' : '') + '</li>') }
+                                        else {
+                                            obj.changes.push('<li>Removed ' + nested[k].display + ':<ul>');
+                                            for (l = 0; l < nested[k].changes.removed.length; l++) {
+                                                obj.changes.push('<li>' + nested[k].changes.removed[l][nested[k].value] + '</li>');
+                                            }
+                                            obj.changes.push('</ul></li>');
+                                        }
+                                    }
+                                }
                             }
                             prev[i].evaluated = true;
                             curr[j].evaluated = true;
@@ -1231,12 +1350,12 @@
                         }
                     }
                     if (!prev[i].evaluated) {
-                        ret.push({ name: prev[i][root], changes: ['<li>' + prev[i][root] + ' removed</li>']});
+                        ret.push({ name: prev[i][altRoot ? altRoot : root], changes: ['<li>' + prev[i][altRoot ? altRoot : root] + ' removed</li>']});
                     }
                 }
                 for (i = 0; i < curr.length; i++) {
                     if (!curr[i].evaluated) {
-                        ret.push({ name: curr[i][root], changes: ['<li>' + curr[i][root] + ' added</li>']});
+                        ret.push({ name: curr[i][altRoot ? altRoot : root], changes: ['<li>' + curr[i][altRoot ? altRoot : root] + ' added</li>']});
                     }
                 }
             }
