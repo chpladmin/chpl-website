@@ -29,7 +29,6 @@
         function activate () {
             vm.cp = angular.copy(activeCP);
             vm.cp.certDate = new Date(vm.cp.certificationDate);
-            vm.cp.sedTestingEndDate = new Date(vm.cp.sedTestingEnd);
             vm.isAcbAdmin = isAcbAdmin;
             vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
@@ -130,7 +129,6 @@
                     vm.idFields.suffix;
             }
             vm.cp.certificationDate = vm.cp.certDate.getTime();
-            vm.cp.sedTestingEnd = vm.cp.sedTestingEndDate.getTime();
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
                 networkService.updateCP({

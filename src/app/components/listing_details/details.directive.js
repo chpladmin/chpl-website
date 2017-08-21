@@ -13,7 +13,7 @@
             templateUrl: 'app/components/listing_details/details.html',
             bindToController: {
                 cap: '=',
-                editMode: '=',
+                editMode: '=?',
                 initialPanel: '@?',
                 isConfirming: '=',
                 isEditing: '=?',
@@ -45,7 +45,6 @@
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
-            vm.showDetails = showDetails;
             vm.showPanel = showPanel;
 
             activate();
@@ -92,10 +91,7 @@
                 vm.countCerts = 0;
                 vm.countCqms = 0;
 
-                var changedTasks = [];
-                var changedParticipants = [];
-
-                var i,j,k,l;
+                var i,j;
 
                 for (i = 0; i < vm.certs.length; i++) {
                     if (vm.certs[i].success) {
@@ -112,65 +108,6 @@
                     }
                     if (vm.certs[i].sed === 'null') {
                         delete (vm.certs[i].sed);
-                    }
-                    if (vm.certs[i].sed && vm.certs[i].testTasks) {
-                        for (j = 0; j < vm.certs[i].testTasks.length; j++) {
-                            if (vm.certs[i].testTasks[j].changed) {
-                                changedTasks.push(vm.certs[i].testTasks[j]);
-                            }
-                            if (vm.certs[i].testTasks[j].testParticipants) {
-                                for (k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
-                                    if (vm.certs[i].testTasks[j].testParticipants[k].changed) {
-                                        changedParticipants.push(vm.certs[i].testTasks[j].testParticipants[k]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                for (i = 0; i < vm.certs.length; i++) {
-                    if (vm.certs[i].sed && vm.certs[i].testTasks) {
-                        for (j = 0; j < vm.certs[i].testTasks.length; j++) {
-                            for (k = 0; k < changedTasks.length; k++) {
-                                if (vm.certs[i].testTasks[j].testTaskId === changedTasks[k].testTaskId && !vm.certs[i].testTasks[j].changed && vm.certs[i].testTasks[j].testTaskId) {
-                                    vm.certs[i].testTasks[j].description = changedTasks[k].description;
-                                    vm.certs[i].testTasks[j].taskErrors = changedTasks[k].taskErrors;
-                                    vm.certs[i].testTasks[j].taskErrorsStddev = changedTasks[k].taskErrorsStddev;
-                                    vm.certs[i].testTasks[j].taskPathDeviationObserved = changedTasks[k].taskPathDeviationObserved;
-                                    vm.certs[i].testTasks[j].taskPathDeviationOptimal = changedTasks[k].taskPathDeviationOptimal;
-                                    vm.certs[i].testTasks[j].taskRating = changedTasks[k].taskRating;
-                                    vm.certs[i].testTasks[j].taskRatingStddev = changedTasks[k].taskRatingStddev;
-                                    vm.certs[i].testTasks[j].taskRatingScale = changedTasks[k].taskRatingScale;
-                                    vm.certs[i].testTasks[j].taskSuccessAverage = changedTasks[k].taskSuccessAverage;
-                                    vm.certs[i].testTasks[j].taskSuccessStddev = changedTasks[k].taskSuccessStddev;
-                                    vm.certs[i].testTasks[j].taskTimeAvg = changedTasks[k].taskTimeAvg;
-                                    vm.certs[i].testTasks[j].taskTimeDeviationObservedAvg = changedTasks[k].taskTimeDeviationObservedAvg;
-                                    vm.certs[i].testTasks[j].taskTimeDeviationOptimalAvg = changedTasks[k].taskTimeDeviationOptimalAvg;
-                                    vm.certs[i].testTasks[j].taskTimeStddev = changedTasks[k].taskTimeStddev;
-                                    vm.certs[i].testTasks[j].testTaskId = changedTasks[k].testTaskId;
-                                }
-                            }
-                            if (vm.certs[i].testTasks[j].testParticipants) {
-                                for (k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
-                                    for (l = 0; l < changedParticipants.length; l++) {
-                                        if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId && !vm.certs[i].testTasks[j].testParticipants[k].changed && vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {
-
-                                            vm.certs[i].testTasks[j].testParticipants[k].ageRange = changedParticipants[l].ageRange;
-                                            vm.certs[i].testTasks[j].testParticipants[k].ageRangeId = changedParticipants[l].ageRangeId;
-                                            vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;
-                                            vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;
-                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;
-                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;
-                                            vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;
-                                            vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;
-                                            vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;
-                                            vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;
-                                        }
-                                    }
-                                }
-                            }
-                        }
                     }
                 }
 
@@ -217,11 +154,6 @@
                 return ret;
             }
 
-            function showDetails (number) {
-                vm.certDetails = vm.certDetails === number ? '' : number;
-                vm.showSed = false;
-            }
-
             function showPanel (panel) {
                 if (vm.panelShown !== panel) {
                     switch (panel) {
@@ -239,6 +171,9 @@
                         break;
                     case 'g1g2':
                         $analytics.eventTrack('Viewed G1/G2 information', { category: 'Listing Details', label: vm.product.chplProductNumber});
+                        break;
+                    case 'sed':
+                        $analytics.eventTrack('Viewed SED information', { category: 'Listing Details', label: vm.product.chplProductNumber});
                         break;
                         // no default
                     }

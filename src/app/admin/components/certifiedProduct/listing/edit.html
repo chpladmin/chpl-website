@@ -199,26 +199,6 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="cpSedReportFileLoc">SED Report File Location</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.sedReportFileLocation" id="cpSedReportFileLoc" name="cpSedReportFileLoc" ng-maxlength="250"></input>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedReportFileLoc.$touched) && vm.editForm.cpSedReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedReportFileLoc.$touched) && vm.editForm.cpSedReportFileLoc.$error.maxlength">Field is too long</div>
-    </div>
-    <div class="form-group">
-      <label for="cpSedIntendedUserDescription">SED Intended User Description</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.sedIntendedUserDescription" id="cpSedIntendedUserDescription" name="cpSedIntendedUserDescription"></input>
-    </div>
-    <div class="form-group">
-      <label for="cpSedTestingEnd">SED End Date of Testing</label>
-      <div class="input-group">
-        <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.setTestingEndDate" is-open="vm.cp.sedTestingEndDatePicker" close-text="Close" id="cpSedTestingEnd" name="cpSedTestingEnd" ng-model-options="{ timezone: 'UTC' }">
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-ai btn-sm" ng-click="vm.surveillance.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
-        </span>
-      </div>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpSedTestingEnd.$touched) && vm.editForm.cpSedTestingEnd.$error.date">Improper format (mm/dd/yyyy)</div>
-    </div>
-    <div class="form-group">
       <label for="cpTestingLab">Testing Lab</label>
       <select class="input-sm form-control" ng-model="vm.cp.testingLab" id="cpTestingLab" name="cpTestingLab"
               ng-options="body as body.name for body in vm.testingLabs" required>
@@ -320,8 +300,6 @@
         <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.maxlength">Mandatory Disclosures URL is too long</li>
         <li ng-if="vm.editForm.cpReportFileLoc.$error.url">Report File Location URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpReportFileLoc.$error.maxlength">Report File Locaiton URL is too long</li>
-        <li ng-if="vm.editForm.cpSedReportFileLoc.$error.url">SED Report File Location URL is an invalid format (http://www.example.com)</li>
-        <li ng-if="vm.editForm.cpSedReportFileLoc.$error.maxlength">SED Report File Location URL is too long</li>
         <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</li>
       </ul>
     </div>

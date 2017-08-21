@@ -306,9 +306,9 @@
 
         function loadFamily () {
             if (vm.product && vm.product.productId) {
-                networkService.getFamilyOfListing(vm.product.productId)
+                networkService.getRelatedListings(vm.product.productId)
                     .then(function (family) {
-                        vm.resources.relatedListings = family.listings;
+                        vm.resources.relatedListings = family.filter(function (item) { return item.edition === '2015' });
                     });
             }
         }

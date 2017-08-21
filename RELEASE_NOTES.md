@@ -1,9 +1,17 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+## New features
+* Improved SED view/edit
+
+---
+
 ## Version 9.3.2
 _14 August 2017_
 
-### Bugs fixed
+### Bug fixed
 * Re-enabled CQM filter
 
 ---

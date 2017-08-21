@@ -77,7 +77,7 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-success pull-right" ng-click="vm.addRequirement()" ng-disabled="!vm.surveillance.type"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</button>
+        <button class="btn btn-ai-success pull-right" ng-click="vm.addRequirement()" ng-disabled="!vm.surveillance.type"><i class="fa fa-plus"></i><span class="sr-only">Add a requirement</button>
         <h5>Requirements</h5>
         <span ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">No Surveilled Requirements Found</span>
         <table class="table table-condensed" ng-if="vm.surveillance.requirements && vm.surveillance.requirements.length > 0">
@@ -104,7 +104,7 @@
                 <button class="btn btn-danger" ng-click="vm.deleteRequirement(req)"><i class="fa fa-trash"></i><span class="sr-only">Remove this requirement</button>
               </td>
               <td>
-                <button class="btn btn-success" ng-click="vm.editRequirement(req)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this requirement</button>
+                <button class="btn btn-ai-success" ng-click="vm.editRequirement(req)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this requirement</button>
               </td>
             </tr>
           </tbody>

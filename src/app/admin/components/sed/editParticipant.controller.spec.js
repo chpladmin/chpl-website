@@ -2,10 +2,11 @@
     'use strict';
 
     describe('the SED Participant Modal controller', function () {
-        var $log, $q, Mock, mock, networkService, scope, vm;
+        var $controller, $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
         mock.participant = {
+            id: 3,
             educationTypeName: 'edTypeName',
             educationTypeId: 'edTypeId',
             ageRange: 'ageRnge',
@@ -13,7 +14,7 @@
         };
 
         beforeEach(function () {
-            module('chpl', 'chpl.mock', 'chpl.templates', function ($provide) {
+            module('chpl', 'chpl.admin', 'chpl.mock', 'chpl.templates', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAgeRanges = jasmine.createSpy('getAgeRanges');
                     $delegate.getEducation = jasmine.createSpy('getEducation');
@@ -21,7 +22,8 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+                $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
@@ -31,7 +33,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('EditSedParticipantController', {
-                    participant: {participant: angular.copy(mock.participant)},
+                    participant: angular.copy(mock.participant),
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
@@ -57,37 +59,30 @@
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
-        it('should load Education and AgeRanges on load', function () {
-            expect(networkService.getAgeRanges).toHaveBeenCalled();
-            expect(networkService.getEducation).toHaveBeenCalled();
-            expect(vm.participant.education).toEqual({
-                name: mock.participant.educationTypeName,
-                id: mock.participant.educationTypeId,
-            });
-            expect(vm.participant.ageRangeObj).toEqual({
-                name: mock.participant.ageRange,
-                id: mock.participant.ageRangeId,
-            });
-        });
-
-        describe('with respect to changes', function () {
-            it('should not mark itself as changed if cancelled', function () {
-                vm.participant.changed = true;
-                vm.cancel();
-                expect(vm.participant.changed).toBeUndefined();
+        describe('on load', function () {
+            it('should load Education and AgeRanges', function () {
+                expect(networkService.getAgeRanges).toHaveBeenCalled();
+                expect(networkService.getEducation).toHaveBeenCalled();
+                expect(vm.participant.education).toEqual({
+                    name: mock.participant.educationTypeName,
+                    id: mock.participant.educationTypeId,
+                });
+                expect(vm.participant.ageRangeObj).toEqual({
+                    name: mock.participant.ageRange,
+                    id: mock.participant.ageRangeId,
+                });
             });
 
-            it('should be able to mark itself as changed when the participant has an id', function () {
-                vm.participant.testParticipantId = 1;
-                expect(vm.participant.changed).toBeUndefined();
-                vm.changed();
-                expect(vm.participant.changed).toBe(true);
-            });
-
-            it('should not mark itself as changed if the participant has no id', function () {
-                expect(vm.participant.changed).toBeUndefined();
-                vm.changed();
-                expect(vm.participant.changed).toBeUndefined();
+            it('should generate an id if one doesn\'t exist', function () {
+                var part = angular.copy(mock.participant);
+                part.id = undefined;
+                vm = $controller('EditSedParticipantController', {
+                    participant: angular.copy(part),
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(vm.participant.id).toEqual(jasmine.any(Number));
             });
         });
 
@@ -104,7 +99,7 @@
                         name: 'fake3',
                         id: 'fake4',
                     },
-                    testParticipantId: 1,
+                    id: 1,
                 };
             });
 
@@ -120,7 +115,7 @@
             it('should return the modal with the participant', function () {
                 vm.participant = aParticipant;
                 vm.save();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith(aParticipant);
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({participant: aParticipant});
             });
         });
 

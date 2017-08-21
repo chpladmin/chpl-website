@@ -52,7 +52,7 @@
         describe('surveillance titles', function () {
             it('should come up with correct titles when there were no NCs', function () {
                 var surv = {
-                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: []}],
                 };
                 expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: No Non-Conformities Were Found');
@@ -60,7 +60,7 @@
 
             it('should come up with correct titles when there was 1 open NC', function () {
                 var surv = {
-                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Open'}}]}],
                 };
                 expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open Non-Conformity Was Found');
@@ -68,7 +68,7 @@
 
             it('should come up with correct titles when there were multiple open NCs', function () {
                 var surv = {
-                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Open'}}]}, {nonconformities: [{status: {name: 'Open'}}]}],
                 };
                 expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Open Non-Conformities Were Found');
@@ -76,7 +76,7 @@
 
             it('should come up with correct titles when there was 1 closed NC', function () {
                 var surv = {
-                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Closed'}}]}],
                 };
                 expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Closed Non-Conformity Was Found');
@@ -84,7 +84,7 @@
 
             it('should come up with correct titles when there were multiple closed NCs', function () {
                 var surv = {
-                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Closed'}}]}, {nonconformities: [{status: {name: 'Closed'}}]}],
                 };
                 expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Closed Non-Conformities Were Found');
@@ -92,7 +92,7 @@
 
             it('should come up with correct titles when there were open and closed NCs', function () {
                 var surv = {
-                    endDate: new Date('Wed, 30 Mar 2016 00:00:00 GMT'),
+                    endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Open'}}]}, {nonconformities: [{status: {name: 'Closed'}}]}],
                 };
                 expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open and 1 Closed Non-Conformities Were Found');

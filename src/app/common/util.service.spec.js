@@ -91,12 +91,22 @@
             });
         });
 
-        it('should match to a model', function () {
-            var id = {id: 2};
-            var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
-            expect(id).not.toBe(array[1]);
-            id = util.findModel(id, array);
-            expect(id).toBe(array[1]);
+        describe('when connecting to a model', function () {
+            it('should match to a model', function () {
+                var id = {id: 2};
+                var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+                expect(id).not.toBe(array[1]);
+                id = util.findModel(id, array);
+                expect(id).toBe(array[1]);
+            });
+
+            it('should match with an optional key', function () {
+                var id = {name: 'name2'};
+                var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+                expect(id).not.toBe(array[1]);
+                id = util.findModel(id, array, 'name');
+                expect(id).toBe(array[1]);
+            });
         });
 
         describe('when sorting', function () {
@@ -106,6 +116,14 @@
                 expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
                 expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.315 (a)(10)'));
                 expect(util.sortCert('170.302 (a)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
+            });
+
+            it('should be able to sort cert objects by name', function () {
+                expect(util.sortCert({name: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({name: '170.314 (a)(10)'}));
+            });
+
+            it('should be able to sort cert objects by number', function () {
+                expect(util.sortCert({number: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({number: '170.314 (a)(10)'}));
             });
 
             it('should be able to sort cqms', function () {
@@ -173,6 +191,11 @@
                 expect(util.sortNonconformityTypes(criteria2015_g_4)).toBeLessThan(util.sortNonconformityTypes(criteria2015_g_10));
                 expect(util.sortNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortNonconformityTypes(transparency_k_2));
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
+            });
+
+            it('should be able to order arrays of arrays of certs by the first cert', function () {
+                expect(util.sortCertArray([])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
+                expect(util.sortCertArray(['170.314 (a)(2)'])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
             });
         });
 
@@ -253,6 +276,17 @@
             it('should call the FileSaver to output', function () {
                 util.makeCsv(data);
                 expect(FileSaver.saveAs).toHaveBeenCalledWith(jasmine.any(Object), 'filename');
+            });
+
+            it('should handle null and undefined cells to blank strings', function () {
+                data.values[1][0] = null;
+                data.values[1][1] = undefined;
+                expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n,,"String with ""both,omg""","String with\nnewline"');
+            });
+
+            it('should handle raw numbers', function () {
+                data.values[1] = [1,2,3,4];
+                expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n1,2,3,4');
             });
         });
 

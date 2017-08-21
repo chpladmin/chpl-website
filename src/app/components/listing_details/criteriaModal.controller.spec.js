@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Certification Criteria Edit controller', function () {
-        var $log, $uibModal, Mock, actualOptions, mock, scope, vm;
+        var $log, Mock, mock, scope, vm;
 
         mock = {};
         mock.resources = {
@@ -12,14 +12,9 @@
         beforeEach(function () {
             module('chpl.templates', 'chpl.mock', 'chpl');
 
-            inject(function ($controller, _$log_, $rootScope, _$uibModal_, _Mock_) {
+            inject(function ($controller, _$log_, $rootScope, _Mock_) {
                 $log = _$log_;
                 Mock = _Mock_;
-                $uibModal = _$uibModal_;
-                spyOn($uibModal, 'open').and.callFake(function (options) {
-                    actualOptions = options;
-                    return Mock.fakeModal;
-                });
 
                 scope = $rootScope.$new();
                 vm = $controller('EditCertificationCriteriaController', {
@@ -76,130 +71,6 @@
                 vm.cert = aCert;
                 vm.save();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith(aCert);
-            });
-        });
-
-        describe('when adding an SED Task', function () {
-            var modalOptions;
-            beforeEach(function () {
-                modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/taskModal.html',
-                    controller: 'EditSedTaskController',
-                    controllerAs: 'vm',
-                    animation: false,
-                    backdrop: 'static',
-                    keyboard: false,
-                    size: 'lg',
-                    resolve: {
-                        task: jasmine.any(Function),
-                    },
-                };
-            });
-
-            it('should create a modal instance', function () {
-                expect(vm.editUibModalInstance).toBeUndefined();
-                vm.addTask();
-                expect(vm.editUibModalInstance).toBeDefined();
-            });
-
-            it('should resolve elements', function () {
-                vm.addTask();
-                expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                expect(actualOptions.resolve.task()).toEqual({ task: {}});
-            });
-
-            it('should push the result to the list of tasks', function () {
-                vm.cert.testTasks = [];
-                vm.addTask();
-                vm.editUibModalInstance.close({});
-                expect(vm.cert.testTasks).toEqual([{}]);
-            });
-
-            it('should create an array of tasks if it is undefined', function () {
-                vm.addTask();
-                vm.editUibModalInstance.close({});
-                expect(vm.cert.testTasks).toEqual([{}]);
-            });
-
-            it('should create an array of tasks if it is null', function () {
-                vm.cert.testTasks = null;
-                vm.addTask();
-                vm.editUibModalInstance.close({});
-                expect(vm.cert.testTasks).toEqual([{}]);
-            });
-
-            it('should log a non-cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.addTask();
-                vm.editUibModalInstance.dismiss('not cancelled');
-                expect($log.info.logs.length).toBe(logCount + 1);
-            });
-
-            it('should not log a cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.addTask();
-                vm.editUibModalInstance.dismiss('cancelled');
-                expect($log.info.logs.length).toBe(logCount);
-            });
-        });
-
-        describe('when editing a Task', function () {
-            var modalOptions, task;
-            beforeEach(function () {
-                modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/taskModal.html',
-                    controller: 'EditSedTaskController',
-                    controllerAs: 'vm',
-                    animation: false,
-                    backdrop: 'static',
-                    keyboard: false,
-                    size: 'lg',
-                    resolve: {
-                        task: jasmine.any(Function),
-                    },
-                };
-                task = {};
-                vm.cert.testTasks = [{}];
-            });
-
-            it('should create a modal instance', function () {
-                expect(vm.editUibModalInstance).toBeUndefined();
-                vm.editTask(task, 0);
-                expect(vm.editUibModalInstance).toBeDefined();
-            });
-
-            it('should resolve elements', function () {
-                vm.editTask(task, 0);
-                expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                expect(actualOptions.resolve.task()).toEqual({ task: task});
-            });
-
-            it('should replace the task with the response', function () {
-                vm.editTask(task, 0);
-                vm.editUibModalInstance.close({name: 'new'});
-                expect(vm.cert.testTasks).toEqual([{name: 'new'}]);
-            });
-
-            it('should log a non-cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.editTask(task, 0);
-                vm.editUibModalInstance.dismiss('not cancelled');
-                expect($log.info.logs.length).toBe(logCount + 1);
-            });
-
-            it('should not log a cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.editTask(task, 0);
-                vm.editUibModalInstance.dismiss('cancelled');
-                expect($log.info.logs.length).toBe(logCount);
-            });
-        });
-
-        describe('when removing a task', function () {
-            it('should remove the indicated one', function () {
-                vm.cert.testTasks = [0, 1, 2];
-                vm.removeTask(1);
-                expect(vm.cert.testTasks).toEqual([0, 2]);
             });
         });
     });
