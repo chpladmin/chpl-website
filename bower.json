@@ -1,6 +1,10 @@
 {
   "name": "chpl",
-  "version": "9.3.0",
+  "license": "./LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git://git.github.com/chpladmin/chpl-website.git"
+  },
   "dependencies": {
     "AngularJS-Toaster": "angularjs-toaster#^2.1.0",
     "angular": "~1.5.11",

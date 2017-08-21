@@ -1,6 +1,8 @@
 {
   "name": "chpl",
-  "version": "9.3.0",
+  "version": "9.3.2",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": "chpladmin/chpl-website",
   "scripts": {
     "test": "gulp test"
   },
