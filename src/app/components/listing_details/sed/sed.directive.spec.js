@@ -244,7 +244,7 @@
                         });
 
                         it('should have an array of taskIds associated with each participant', function () {
-                            expect(vm.allParticipants[0].tasks).toEqual([1183, 1184, 1184, 1184, 1184, 1184, 1184, 1185, 1185, 1185, 1186]);
+                            expect(vm.allParticipants[0].tasks).toEqual([-1, -2, -2, -2, -2, -2, -2, -3, -3, -3, -4]);
                         });
 
                         it('should set the "id" to be a negative integer', function () {

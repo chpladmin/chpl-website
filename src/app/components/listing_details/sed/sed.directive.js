@@ -206,7 +206,7 @@
                 for (i = 0; i < vm.tasks.length; i++) {
                     task = vm.tasks[i];
                     if (!task.id) {
-                        task.id = task.uniqueId;
+                        task.id = i * -1 - 1;
                     }
                     task.criteria = $filter('orderBy')(task.criteria, vm.sortCert);
 
@@ -251,14 +251,25 @@
 
                 vm.taskCount = vm.tasks.length;
 
+                var partMap = {};
                 vm.allParticipants = [];
                 angular.forEach(object.participants, function (participant) {
                     var val = angular.copy(participant);
                     if (val.uniqueId) {
                         val.id = vm.allParticipants.length * -1 - 1;
+                        partMap[val.uniqueId] = val.id
                     }
                     vm.allParticipants.push(val);
                 });
+                for (i = 0; i < vm.tasks.length; i++) {
+                    task = vm.tasks[i];
+                    for (j = 0; j < task.testParticipants.length; j++) {
+                        participant = task.testParticipants[j];
+                        if (participant.uniqueId) {
+                            participant.id = partMap[participant.uniqueId];
+                        }
+                    }
+                }
 
                 vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
                     item.criteria = $filter('orderBy')(item.criteria, vm.sortCert);
