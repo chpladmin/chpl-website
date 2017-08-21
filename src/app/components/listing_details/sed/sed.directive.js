@@ -27,7 +27,7 @@
     }
 
     /** @ngInject */
-    function SedController ($filter, $log, $scope, $uibModal, utilService) {
+    function SedController ($filter, $log, $scope, $timeout, $uibModal, utilService) {
         var vm = this;
 
         vm.addTask = addTask;
@@ -44,7 +44,10 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            analyzeSed();
+            _analyzeSed();
+            $scope.$watch('vm.listing.sed', function () {
+                vm._analyzeSed();
+            });
         }
 
         function addTask () {
@@ -160,95 +163,106 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function analyzeSed () {
-            var csvRow, i, j, object, participant, task;
-            var TASK_START = 5;
-            var PART_START = TASK_START + 14;
-            var ROW_BASE = [
-                vm.listing.chplProductNumber,
-                vm.listing.developer.name,
-                vm.listing.product.name,
-                vm.listing.version.version,
-            ];
-            object = {
-                participants: {},
-            };
-            vm.csvData = {
-                name: vm.listing.chplProductNumber + '.sed.csv',
-                values: [[
-                    'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
-                    'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
-                    'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
-                ]],
-            };
+        vm._analyzeSed = _analyzeSed;
 
-            vm.sedCriteria = vm.listing.certificationResults
-                .filter(function (cert) { return cert.success && cert.sed; })
-                .map(function (cert) { cert.name = cert.number; return cert; });
-            vm.criteriaCount = vm.sedCriteria.length;
+        function _analyzeSed () {
+            if (!vm.listing.chplProductNumber ||
+                !vm.listing.developer ||
+                !vm.listing.product ||
+                !vm.listing.version ||
+                !vm.listing.certificationResults ||
+                !vm.listing.sed) {
+                $timeout(vm._analyzeSed, 500);
+            } else {
+                var csvRow, i, j, object, participant, task;
+                var TASK_START = 5;
+                var PART_START = TASK_START + 14;
+                var ROW_BASE = [
+                    vm.listing.chplProductNumber,
+                    vm.listing.developer.name,
+                    vm.listing.product.name,
+                    vm.listing.version.version,
+                ];
+                object = {
+                    participants: {},
+                };
+                vm.csvData = {
+                    name: vm.listing.chplProductNumber + '.sed.csv',
+                    values: [[
+                        'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
+                        'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
+                        'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
+                    ]],
+                };
 
-            csvRow = angular.copy(ROW_BASE);
+                vm.sedCriteria = vm.listing.certificationResults
+                    .filter(function (cert) { return cert.success && cert.sed; })
+                    .map(function (cert) { cert.name = cert.number; return cert; });
+                vm.criteriaCount = vm.sedCriteria.length;
 
-            vm.tasks = vm.listing.sed.testTasks;
-            for (i = 0; i < vm.tasks.length; i++) {
-                task = vm.tasks[i];
-                if (!task.id) {
-                    task.id = task.uniqueId;
-                }
-                task.criteria = $filter('orderBy')(task.criteria, vm.sortCert);
+                csvRow = angular.copy(ROW_BASE);
 
-                csvRow[4] = task.criteria.map(function (item) { return item.number; }).join(';');
-                csvRow[TASK_START + 0] = task.description;
-                csvRow[TASK_START + 1] = task.taskErrors;
-                csvRow[TASK_START + 2] = task.taskErrorsStddev;
-                csvRow[TASK_START + 3] = task.taskPathDeviationObserved;
-                csvRow[TASK_START + 4] = task.taskPathDeviationOptimal;
-                csvRow[TASK_START + 5] = task.taskRating;
-                csvRow[TASK_START + 6] = task.taskRatingStddev;
-                csvRow[TASK_START + 7] = task.taskRatingScale;
-                csvRow[TASK_START + 8] = task.taskSuccessAverage;
-                csvRow[TASK_START + 9] = task.taskSuccessStddev;
-                csvRow[TASK_START + 10] = task.taskTimeAvg;
-                csvRow[TASK_START + 11] = task.taskTimeDeviationObservedAvg;
-                csvRow[TASK_START + 12] = task.taskTimeDeviationOptimalAvg;
-                csvRow[TASK_START + 13] = task.taskTimeStddev;
-                for (j = 0; j < task.testParticipants.length; j++) {
-                    participant = task.testParticipants[j];
-                    if (!participant.id) {
-                        participant.id = participant.uniqueId;
+                vm.tasks = vm.listing.sed.testTasks;
+                for (i = 0; i < vm.tasks.length; i++) {
+                    task = vm.tasks[i];
+                    if (!task.id) {
+                        task.id = task.uniqueId;
                     }
+                    task.criteria = $filter('orderBy')(task.criteria, vm.sortCert);
 
-                    if (angular.isUndefined(object.participants[participant.id])) {
-                        object.participants[participant.id] = participant;
-                        object.participants[participant.id].tasks = [];
+                    csvRow[4] = task.criteria.map(function (item) { return item.number; }).join(';');
+                    csvRow[TASK_START + 0] = task.description;
+                    csvRow[TASK_START + 1] = task.taskErrors;
+                    csvRow[TASK_START + 2] = task.taskErrorsStddev;
+                    csvRow[TASK_START + 3] = task.taskPathDeviationObserved;
+                    csvRow[TASK_START + 4] = task.taskPathDeviationOptimal;
+                    csvRow[TASK_START + 5] = task.taskRating;
+                    csvRow[TASK_START + 6] = task.taskRatingStddev;
+                    csvRow[TASK_START + 7] = task.taskRatingScale;
+                    csvRow[TASK_START + 8] = task.taskSuccessAverage;
+                    csvRow[TASK_START + 9] = task.taskSuccessStddev;
+                    csvRow[TASK_START + 10] = task.taskTimeAvg;
+                    csvRow[TASK_START + 11] = task.taskTimeDeviationObservedAvg;
+                    csvRow[TASK_START + 12] = task.taskTimeDeviationOptimalAvg;
+                    csvRow[TASK_START + 13] = task.taskTimeStddev;
+                    for (j = 0; j < task.testParticipants.length; j++) {
+                        participant = task.testParticipants[j];
+                        if (!participant.id) {
+                            participant.id = participant.uniqueId;
+                        }
+
+                        if (angular.isUndefined(object.participants[participant.id])) {
+                            object.participants[participant.id] = participant;
+                            object.participants[participant.id].tasks = [];
+                        }
+                        object.participants[participant.id].tasks.push(task.id);
+                        csvRow[PART_START + 0] = participant.ageRange;
+                        csvRow[PART_START + 1] = participant.assistiveTechnologyNeeds;
+                        csvRow[PART_START + 2] = participant.computerExperienceMonths;
+                        csvRow[PART_START + 3] = participant.educationTypeName;
+                        csvRow[PART_START + 4] = participant.gender;
+                        csvRow[PART_START + 5] = participant.occupation;
+                        csvRow[PART_START + 6] = participant.productExperienceMonths;
+                        csvRow[PART_START + 7] = participant.professionalExperienceMonths;
+
+                        vm.csvData.values.push(angular.copy(csvRow));
                     }
-                    object.participants[participant.id].tasks.push(task.id);
-                    csvRow[PART_START + 0] = participant.ageRange;
-                    csvRow[PART_START + 1] = participant.assistiveTechnologyNeeds;
-                    csvRow[PART_START + 2] = participant.computerExperienceMonths;
-                    csvRow[PART_START + 3] = participant.educationTypeName;
-                    csvRow[PART_START + 4] = participant.gender;
-                    csvRow[PART_START + 5] = participant.occupation;
-                    csvRow[PART_START + 6] = participant.productExperienceMonths;
-                    csvRow[PART_START + 7] = participant.professionalExperienceMonths;
-
-                    vm.csvData.values.push(angular.copy(csvRow));
                 }
+
+                vm.taskCount = vm.tasks.length;
+
+                vm.allParticipants = [];
+                angular.forEach(object.participants, function (participant) {
+                    vm.allParticipants.push(participant);
+                });
+
+                vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
+                    item.criteria = $filter('orderBy')(item.criteria, vm.sortCert);
+                    return item;
+                });
+
+                vm.csvData.values = csvSort(vm.csvData.values);
             }
-
-            vm.taskCount = vm.tasks.length;
-
-            vm.allParticipants = [];
-            angular.forEach(object.participants, function (participant) {
-                vm.allParticipants.push(participant);
-            });
-
-            vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
-                item.criteria = $filter('orderBy')(item.criteria, vm.sortCert);
-                return item;
-            });
-
-            vm.csvData.values = csvSort(vm.csvData.values);
         }
 
         function csvSort (data) {

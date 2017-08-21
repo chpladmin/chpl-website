@@ -23,6 +23,7 @@
                 el = angular.element('<ai-certs product="product"></ai-certs>');
                 scope = $rootScope.$new();
                 scope.product = Mock.fullListings[1];
+                scope.product.sed = {testTasks: [], ucdProcesses: []};
                 $compile(el)(scope);
                 scope.$digest();
                 vm = el.isolateScope().vm;
