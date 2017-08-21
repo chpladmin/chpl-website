@@ -199,7 +199,7 @@
                         task.uniqueId = task.id;
                         delete task.id;
                         task.testParticipants = task.testParticipants.map(function (part) {
-                            part.uniqueId = part.id;
+                            part.uniqueId = 'id-' + part.id;
                             delete part.id;
                             return part;
                         });
@@ -244,7 +244,11 @@
                         });
 
                         it('should have an array of taskIds associated with each participant', function () {
-                            expect(vm.allParticipants[0].tasks).toEqual([1183, 1184, 1184, 1184, 1184, 1184, 1184, 1186, 1186]);
+                            expect(vm.allParticipants[0].tasks).toEqual([1183, 1184, 1184, 1184, 1184, 1184, 1184, 1185, 1185, 1185, 1186]);
+                        });
+
+                        it('should set the "id" to be a negative integer', function () {
+                            expect(vm.allParticipants[0].id).toBeLessThan(0);
                         });
                     });
 

@@ -74,7 +74,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -762,15 +764,25 @@
                     });
 
                     describe('Participants', function () {
+                        var activity, curr, prev;
+                        beforeEach(function () {
+                            prev = ActivityMock.sed[2].originalData;
+                            curr = ActivityMock.sed[2].newData
+                        });
+
+                        it('should dedupe participants', function () {
+                            vm._compareSed(prev, curr);
+                            expect(prev.allParticipants.length).toBe(3);
+                            expect(curr.allParticipants.length).toBe(3);
+                        });
+
                         it('should recognize changed age', function () {
-                            var activity;
-                            activity = vm._compareSed(ActivityMock.sed[2].originalData, ActivityMock.sed[2].newData);
+                            activity = vm._compareSed(prev, curr);
                             expect(activity[2]).toEqual('<li>Participant changes<ul><li>Age Range changed from 1-9 to 100+</li></ul></li>');
                         });
 
                         it('should recognize changed gender', function () {
-                            var activity;
-                            activity = vm._compareSed(ActivityMock.sed[2].originalData, ActivityMock.sed[2].newData);
+                            activity = vm._compareSed(prev, curr);
                             expect(activity[3]).toEqual('<li>Participant changes<ul><li>Gender changed from Male to Female</li></ul></li>');
                         });
                     });

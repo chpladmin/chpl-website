@@ -253,7 +253,11 @@
 
                 vm.allParticipants = [];
                 angular.forEach(object.participants, function (participant) {
-                    vm.allParticipants.push(participant);
+                    var val = angular.copy(participant);
+                    if (val.uniqueId) {
+                        val.id = vm.allParticipants.length * -1 - 1;
+                    }
+                    vm.allParticipants.push(val);
                 });
 
                 vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {

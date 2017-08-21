@@ -768,7 +768,7 @@
         }
 
         function _compareSed (prev, curr) {
-            var i, ret = [];
+            var i, j, k, ret = [];
 
             var ucdProcessesKeys = [{key: 'details', display: 'UCD Process Details'}];
             var ucdProcessesNested = [
@@ -804,18 +804,39 @@
                 ret.push('<li>Task Description "' + tasks[i].name + '" changes<ul>' + tasks[i].changes.join('') + '</ul></li>');
             }
 
-            prev.allParticipants = prev.testTasks.reduce(function (coll, test) {
-                coll = coll.concat(test.testParticipants.filter(function (part) {
-                    return !coll.includes(part);
-                }));
-                return coll;
-            },[]);
-            curr.allParticipants = curr.testTasks.reduce(function (coll, test) {
-                coll = coll.concat(test.testParticipants.filter(function (part) {
-                    return !coll.includes(part);
-                }));
-                return coll;
-            },[]);
+            var found, part, task;
+            prev.allParticipants = [];
+            for (i = 0; i < prev.testTasks.length; i++) {
+                task = prev.testTasks[i];
+                for (j = 0; j < task.testParticipants.length; j++) {
+                    part = task.testParticipants[j];
+                    found = false;
+                    for (k = 0; k < prev.allParticipants.length; k++) {
+                        if (part.id === prev.allParticipants[k].id) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        prev.allParticipants.push(part);
+                    }
+                }
+            }
+            curr.allParticipants = [];
+            for (i = 0; i < curr.testTasks.length; i++) {
+                task = curr.testTasks[i];
+                for (j = 0; j < task.testParticipants.length; j++) {
+                    part = task.testParticipants[j];
+                    found = false;
+                    for (k = 0; k < curr.allParticipants.length; k++) {
+                        if (part.id === curr.allParticipants[k].id) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        curr.allParticipants.push(part);
+                    }
+                }
+            }
 
             var testParticipantKeys = [
                 {key: 'ageRange', display: 'Age Range'},
