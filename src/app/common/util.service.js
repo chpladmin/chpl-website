@@ -15,6 +15,7 @@
             findModel: findModel,
             makeCsv: makeCsv,
             sortCert: sortCert,
+            sortCertArray: sortCertArray,
             sortCqm: sortCqm,
             sortNonconformityTypes: sortNonconformityTypes,
             sortRequirements: sortRequirements,
@@ -104,9 +105,10 @@
         function arrayToCsv (data) {
             return data.map(function (row) {
                 return row.map(function (cell) {
-                    if (cell.indexOf('"') > -1 ||
-                        cell.indexOf(',') > -1 ||
-                        cell.indexOf('\n') > -1) {
+                    if (typeof(cell) === 'string' &&
+                        (cell.indexOf('"') > -1 ||
+                         cell.indexOf(',') > -1 ||
+                         cell.indexOf('\n') > -1)) {
                         return '"' + cell.replace(/"/g,'""') + '"';
                     } else {
                         return cell;
@@ -127,14 +129,17 @@
             options.push({name: value});
         }
 
-        function findModel (id, array) {
-            for (var i = 0; i < array.length; i++) {
-                if (id.id === array[i].id) {
-                    id = array[i];
-                    return id;
+        function findModel (item, options, key) {
+            if (!key) {
+                key = 'id';
+            }
+            for (var i = 0; i < options.length; i++) {
+                if (item[key] === options[i][key]) {
+                    item = options[i];
+                    return item;
                 }
             }
-            return id;
+            return item;
         }
 
         function makeCsv (data) {
@@ -146,7 +151,7 @@
 
         function sortCert (cert) {
             if (angular.isObject(cert)) {
-                cert = cert.name;
+                cert = cert.name || cert.number;
             }
             var edition = parseInt(cert.substring(4,7));
             var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
@@ -154,6 +159,14 @@
             var ret = edition * 10000 +
                 letter * 100 +
                 number;
+            return ret;
+        }
+
+        function sortCertArray (array) {
+            var ret = Number.MIN_VALUE;
+            if (array.length > 0) {
+                ret = this.sortCert(array[0]);
+            }
             return ret;
         }
 

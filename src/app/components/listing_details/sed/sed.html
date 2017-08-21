@@ -1,0 +1,86 @@
+<div style="background: white">
+  <p ng-if="!vm.sedCriteria || vm.sedCriteria.length === 0">No Certification Criteria were tested for SED.</p>
+  <span ng-if="vm.sedCriteria && vm.sedCriteria.length > 0">
+    <span ng-if="vm.editMode">
+      <button class="btn btn-ai pull-right" ng-click="vm.editDetails()">Edit SED Details</button>
+    </span>
+    <span ng-if="vm.listing.sedReportFileLocation !== null">
+      <h4>Usability Report</h4>
+      <a ai-a ng-if="vm.listing.sedReportFileLocation" href="{{ vm.listing.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.listing.sedReportFileLocation }">{{ vm.listing.sedReportFileLocation }}</a>
+      <p ng-if="!vm.listing.sedReportFileLocation">No report on file</p>
+    </span>
+    <span ng-if="vm.listing.sedIntendedUserDescription">
+      <h4>SED Intended User Description</h4>
+      <p>{{ vm.listing.sedIntendedUserDescription ? vm.listing.sedIntendedUserDescription : 'N/A' }}</p>
+    </span>
+    <span ng-if="vm.listing.sedTestingEnd">
+      <h4>SED Testing Completion Date</h4>
+      <p ng-if="vm.listing.sedTestingEnd">{{ vm.listing.sedTestingEnd | date : 'mediumDate' : 'UTC' }}</p>
+      <p ng-if="!vm.listing.sedTestingEnd">N/A</p>
+    </span>
+    <span>
+      <h4>SED Tested Certification Criteria & Associated UCD Processes</h4>
+      <table class="table table-condensed nowrap" ng-if="vm.ucdProcesses && vm.ucdProcesses.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">Certification Criteria</th>
+            <th scope="col">UCD Process</th>
+            <th scope="col">UCD Process Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="process in vm.ucdProcesses | orderBy: [vm.sortProcesses]">
+            <td>
+              <ul>
+                <li ng-repeat="crit in process.criteria | orderBy:vm.sortCert">{{ crit.number }}</li>
+              </ul>
+            </td>
+            <td>{{ process.name }}</td>
+            <td>{{ process.details ? process.details : 'N/A'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </span>
+    <span ng-if="vm.listing.certificationEdition.name === '2015'">
+      <h4>SED Testing Tasks</h4>
+      <table class="table table-condensed nowrap" ng-if="vm.tasks && vm.tasks.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">Description</th>
+            <th scope="col">Associated Criteria</th>
+            <th scope="col">Participants</th>
+            <th scope="col"><span class="sr-only">View details</span></th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <td colspan="4">
+              <button class="btn btn-ai-success"
+                      ng-click="vm.getCsv()">
+                <i class="fa fa-cloud-download"></i> Download SED Task Information
+              </button>
+              <button class="btn btn-ai pull-right"
+                      ng-if="vm.editMode"
+                      ng-click="vm.addTask()">
+                <i class="fa fa-plus"></i> Add Task
+              </button>
+            </td>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr ng-repeat="task in vm.tasks | orderBy: [vm.sortTasks, 'description']">
+            <td>{{ task.description }}</td>
+            <td>
+              <ul>
+                <li ng-repeat="crit in task.criteria | orderBy:vm.sortCert">{{ crit.number }}</li>
+              </ul>
+            </td>
+            <td><button class="btn btn-ai" ng-click="vm.viewParticipants(task)"><i class="fa fa-users"></i> {{ task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
+            <td><button class="btn btn-ai-success" ng-click="vm.viewTask(task)"><i class="fa fa-eye"></i> Details</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <p ng-if="!vm.tasks || vm.tasks.length === 0">No SED Tasks are recorded.</p>
+    </span>
+  </span>
+</div>

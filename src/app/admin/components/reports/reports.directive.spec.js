@@ -3,7 +3,7 @@
 
     describe('the Admin Reports', function () {
 
-        var $compile, $log, $q, $uibModal, Mock, actualOptions, authService, el, networkService, scope, vm;
+        var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, authService, el, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
@@ -33,10 +33,11 @@
                 });
             });
 
-            inject(function (_$compile_, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_) {
+            inject(function (_$compile_, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _ActivityMock_, _Mock_, _authService_, _networkService_) {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                ActivityMock = _ActivityMock_;
                 Mock = _Mock_;
                 $uibModal = _$uibModal_;
                 spyOn($uibModal, 'open').and.callFake(function (options) {
@@ -73,7 +74,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -397,7 +400,7 @@
                     rawActivity.description = 'Something odd with a Listing';
                     expectedActivity.action = 'Something odd with a Listing';
 
-                    vm.interpretCps([rawActivity]);
+                    vm._interpretCps([rawActivity]);
                     expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                 });
 
@@ -423,7 +426,7 @@
                     });
 
                     it('should create an upload activity', function () {
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsUpload[0]).toEqual(expectedActivity);
                     });
                 });
@@ -455,7 +458,7 @@
                             id: 1,
                         };
                         expectedActivity.details = 'Certification Status changed from Retired to Active';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsStatus[0]).toEqual(expectedActivity);
 
                         expectedActivity.details = ['<span class="bg-danger"><strong>Certification Status changed from Retired to Active</strong></span>'];
@@ -467,7 +470,7 @@
                         rawActivity.newData.productAdditionalSoftware = 'Some new software';
                         expectedActivity.details = ['Product-wide Relied Upon Software added: Some new software'];
                         expectedActivity.csvDetails = 'Product-wide Relied Upon Software added: Some new software';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
@@ -485,7 +488,7 @@
                         expectedActivity.questionable = true;
 
                         // act
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
 
                         // assert
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
@@ -496,7 +499,7 @@
                         rawActivity.originalData.certifyingBody.name = 'ICSA Labs';
                         expectedActivity.details = ['Certifying Body changed from ICSA Labs to CCHIT'];
                         expectedActivity.csvDetails = 'Certifying Body changed from ICSA Labs to CCHIT';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
@@ -504,7 +507,7 @@
                         rawActivity.originalData.accessibilityStandards = [{accessibilityStandardName: 'a standard'}];
                         expectedActivity.details = ['Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>'];
                         expectedActivity.csvDetails = 'Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
@@ -513,7 +516,7 @@
                         expectedActivity.questionable = true;
                         expectedActivity.details = ['Certification "170.302 (a)" changes<ul><li class="bg-danger"><strong>Successful added: true</strong></li></ul>'];
                         expectedActivity.csvDetails = 'Certification "170.302 (a)" changes<ul><li class="bg-danger"><strong>Successful added: true</strong></li></ul>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
@@ -522,7 +525,7 @@
                         expectedActivity.questionable = true;
                         expectedActivity.details = ['CQM "null" changes<ul><li class="bg-danger"><strong>Success added: true</strong></li></ul>'];
                         expectedActivity.csvDetails = 'CQM "null" changes<ul><li class="bg-danger"><strong>Success added: true</strong></li></ul>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
@@ -531,7 +534,7 @@
                         rawActivity.newData.qmsStandards = [{qmsStandardName: 'a standard', qmsModification: 'no mods', applicableCriteria: 'all'}];
                         expectedActivity.details = ['QMS Standard "a standard" changes<ul><li>QMS Modification changed from a mod to no mods</li><li>Applicable Criteria changed from none to all</li></ul>'];
                         expectedActivity.csvDetails = 'QMS Standard "a standard" changes<ul><li>QMS Modification changed from a mod to no mods</li><li>Applicable Criteria changed from none to all</li></ul>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
@@ -540,7 +543,7 @@
                         rawActivity.newData.targetedUsers = [{targetedUserName: 'name 2'}];
                         expectedActivity.details = ['Targeted User "name 1" changes<ul><li>name 1 removed</li></ul>','Targeted User "name 2" changes<ul><li>name 2 added</li></ul>'];
                         expectedActivity.csvDetails = 'Targeted User "name 1" changes<ul><li>name 1 removed</li></ul>\nTargeted User "name 2" changes<ul><li>name 2 added</li></ul>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
                 });
@@ -572,7 +575,7 @@
                         expectedActivity.details = ['ICS Parent "ID" changes<ul><li>ID removed</li></ul>', 'ICS Parent "ID3" changes<ul><li>ID3 added</li></ul>'];
                         expectedActivity.csvDetails = 'ICS Parent "ID" changes<ul><li>ID removed</li></ul>\nICS Parent "ID3" changes<ul><li>ID3 added</li></ul>';
 
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
@@ -582,7 +585,7 @@
                         expectedActivity.details = ['ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>', 'ICS Child "ID" changes<ul><li>ID added</li></ul>'];
                         expectedActivity.csvDetails = 'ICS Child "ID3" changes<ul><li>ID3 removed</li></ul>\nICS Child "ID" changes<ul><li>ID added</li></ul>';
 
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
                 });
@@ -605,35 +608,35 @@
                     it('deletion should be recognized', function () {
                         rawActivity.description = 'Surveillance was deleted from CHP-1231';
                         expectedActivity.action = 'Surveillance was deleted from CHPL Product <a href="#/product/1480">CHP-009351</a>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
                     it('upload should be recognized', function () {
                         rawActivity.description = 'Surveillance upload';
                         expectedActivity.action = 'Surveillance was uploaded for CHPL Product <a href="#/product/1480">CHP-009351</a>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
                     it('addition shouls be recognized', function () {
                         rawActivity.description = 'Surveillance was added';
                         expectedActivity.action = 'Surveillance was added for CHPL Product <a href="#/product/1480">CHP-009351</a>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
                     it('strangeness should be handled', function () {
                         rawActivity.description = 'Surveillance was changed in a weird way';
                         expectedActivity.action = 'Surveillance was changed in a weird way<br /><a href="#/product/1480">CHP-009351</a>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
                     it('documentation upload should be reported', function () {
                         rawActivity.description = 'Documentation';
                         expectedActivity.action = 'Documentation was added to a nonconformity for <a href="#/product/1480">CHP-009351</a>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
 
                     });
@@ -641,7 +644,7 @@
                     it('documentation removal should be reported', function () {
                         rawActivity.description = 'A document was removed';
                         expectedActivity.action = 'Documentation was removed from a nonconformity for <a href="#/product/1480">CHP-009351</a>';
-                        vm.interpretCps([rawActivity]);
+                        vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
@@ -667,7 +670,7 @@
                                 oldS: rawActivity.originalData,
                                 newS: rawActivity.newData,
                             };
-                            vm.interpretCps([rawActivity]);
+                            vm._interpretCps([rawActivity]);
                             expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                         });
 
@@ -675,7 +678,7 @@
                             rawActivity.originalData.surveillance[0].randomizedSitesUsed = 4;
                             rawActivity.newData.surveillance[0].randomizedSitesUsed = 6;
                             expectedActivity.details = ['SURV01<ul><li>Number of sites surveilled changed from 4 to 6</li></ul>']
-                            vm.interpretCps([rawActivity]);
+                            vm._interpretCps([rawActivity]);
                             expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                         });
 
@@ -683,8 +686,104 @@
                             rawActivity.originalData.surveillance[0].type = { name: 'randomized' };
                             rawActivity.newData.surveillance[0].type = { name: 'reactive' };
                             expectedActivity.details = ['SURV01<ul><li>Certification Type changed from randomized to reactive</li></ul>']
-                            vm.interpretCps([rawActivity]);
+                            vm._interpretCps([rawActivity]);
                             expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
+                        });
+                    });
+                });
+
+                describe('SED', function () {
+                    describe('UCD Processes', function () {
+                        it('should recognize changed details', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
+                            expect(activity[0]).toEqual('<li>UCD Process Name "A process" changes<ul><li>UCD Process Details changed from some details to Changed details</li></ul></li>');
+                        });
+
+                        it('should recognize removed processes', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
+                            expect(activity[1]).toEqual('<li>UCD Process Name "A second" changes<ul><li>A second removed</li></ul></li>');
+                        });
+
+                        it('should recognize changed criteria', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
+                            expect(activity[2]).toEqual('<li>UCD Process Name "Fourth" changes<ul><li>Added Certification Criteria:<ul><li>170.315 (a)(2)</li></ul></li><li>Removed Certification Criteria:<ul><li>170.315 (a)(1)</li></ul></li></ul></li>');
+                        });
+
+                        it('should recognize added processes', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[0].originalData, ActivityMock.sed[0].newData);
+                            expect(activity[3]).toEqual('<li>UCD Process Name "A third" changes<ul><li>A third added</li></ul></li>');
+                        });
+                    });
+
+                    describe('Tasks', function () {
+                        it('should recognize changed elements', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            expect(activity[0]).toEqual('<li>Task Description "A description that changed" changes<ul><li>Description changed from A description that changes to A description that changed</li></ul></li>');
+                        });
+
+                        it('should recognize removed tasks', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            expect(activity[1]).toEqual('<li>Task Description "A removed task" changes<ul><li>A removed task removed</li></ul></li>');
+                        });
+
+                        it('should recognize added participants', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            expect(activity[2]).toEqual('<li>Task Description "Added participant" changes<ul><li>Added 1 Test Participant</li></ul></li>');
+                        });
+
+                        it('should recognize removed participants', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            expect(activity[3]).toEqual('<li>Task Description "Removed participant" changes<ul><li>Removed 1 Test Participant</li></ul></li>');
+                        });
+
+                        it('should recognize adding criteria', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            expect(activity[4]).toEqual('<li>Task Description "Adding criteria" changes<ul><li>Added Certification Criteria:<ul><li>number</li></ul></li></ul></li>');
+                        });
+
+                        it('should recognize removed criteria', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            expect(activity[5]).toEqual('<li>Task Description "Removing criteria" changes<ul><li>Removed Certification Criteria:<ul><li>number</li></ul></li></ul></li>');
+                        });
+
+                        it('should recognize added tasks', function () {
+                            var activity;
+                            activity = vm._compareSed(ActivityMock.sed[1].originalData, ActivityMock.sed[1].newData);
+                            expect(activity[6]).toEqual('<li>Task Description "An added task" changes<ul><li>An added task added</li></ul></li>');
+                        });
+                    });
+
+                    describe('Participants', function () {
+                        var activity, curr, prev;
+                        beforeEach(function () {
+                            prev = ActivityMock.sed[2].originalData;
+                            curr = ActivityMock.sed[2].newData
+                        });
+
+                        it('should dedupe participants', function () {
+                            vm._compareSed(prev, curr);
+                            expect(prev.allParticipants.length).toBe(3);
+                            expect(curr.allParticipants.length).toBe(3);
+                        });
+
+                        it('should recognize changed age', function () {
+                            activity = vm._compareSed(prev, curr);
+                            expect(activity[2]).toEqual('<li>Participant changes<ul><li>Age Range changed from 1-9 to 100+</li></ul></li>');
+                        });
+
+                        it('should recognize changed gender', function () {
+                            activity = vm._compareSed(prev, curr);
+                            expect(activity[3]).toEqual('<li>Participant changes<ul><li>Gender changed from Male to Female</li></ul></li>');
                         });
                     });
                 });

@@ -3,31 +3,27 @@
 
     describe('the Listing Details', function () {
 
-        var $compile, $log, el, networkService, scope, vm;
-
-        var mock = {};
-        mock.product = {
-            certificationResults: [],
-            cqms: [],
-        }
+        var $compile, $log, Mock, el, networkService, scope, vm;
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl', function ($provide) {
+            module('chpl.templates', 'chpl.mock', 'chpl', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
                     return $delegate;
                 });
             });
 
-            inject(function (_$compile_, _$log_, $q, $rootScope, _networkService_) {
+            inject(function (_$compile_, _$log_, $q, $rootScope, _Mock_, _networkService_) {
                 $compile = _$compile_;
                 $log = _$log_;
+                Mock = _Mock_;
                 networkService = _networkService_;
                 networkService.getSurveillanceLookups.and.returnValue($q.when({}));
 
                 el = angular.element('<ai-certs product="product"></ai-certs>');
                 scope = $rootScope.$new();
-                scope.product = mock.product;
+                scope.product = Mock.fullListings[1];
+                scope.product.sed = {testTasks: [], ucdProcesses: []};
                 $compile(el)(scope);
                 scope.$digest();
                 vm = el.isolateScope().vm;

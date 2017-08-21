@@ -1,0 +1,72 @@
+<div role="modal" aria-labeled-by="modalLabel">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close modal" ng-if="!vm.editMode"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <button type="button" class="close pull-right" aria-label="Cancel edits" ng-if="vm.editMode"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="modalLabel">SED Participants</h4>
+  </div>
+  <div class="modal-body">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Age</th>
+          <th scope="col">Assistive Technology Needs</th>
+          <th scope="col">Computer Experience (Months)</th>
+          <th scope="col">Education Type</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Occupation</th>
+          <th scope="col">Product Experience (Months)</th>
+          <th scope="col">Professional Experience (Months)</th>
+          <th scope="col" ng-if="vm.editMode">Assigned</th>
+          <th scope="col" ng-if="vm.editMode">Edit</th>
+        </tr>
+      </thead>
+      <tfoot ng-if="vm.editMode">
+        <tr>
+          <th colspan="10"><button class="btn btn-ai-success pull-right" ng-click="vm.addParticipant()"><i class="fa fa-plus"></i><span class="sr-only">Add Participant</span></button></td>
+        </tr>
+      </tfoot>
+      <tbody>
+        <tr ng-repeat="participant in vm.allParticipants track by participant.id" ng-if="vm.isAssigned(participant) || vm.editMode">
+          <td>{{ participant.ageRange }}</td>
+          <td>{{ participant.assistiveTechnologyNeeds }}</td>
+          <td>{{ participant.computerExperienceMonths }}</td>
+          <td>{{ participant.educationTypeName }}</td>
+          <td>{{ participant.gender }}</td>
+          <td>{{ participant.occupation }}</td>
+          <td>{{ participant.productExperienceMonths }}</td>
+          <td>{{ participant.professionalExperienceMonths }}</td>
+          <td ng-if="vm.editMode">
+            <button class="btn" ng-class="vm.isAssigned(participant) ? 'btn-ai-success' : 'btn-warning'" ng-click="vm.toggleParticipant(participant)">
+              <span class="sr-only">Toggle {{ vm.isAssigned(participant) ? 'off' : 'on' }}</span>
+              <i class="fa" ng-class="vm.isAssigned(participant) ? 'fa-check' : 'fa-times'"></i>
+            </button>
+          </td>
+          <td ng-if="vm.editMode"><button class="btn btn-ai" ng-click="vm.editParticipant(participant)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div class="text-danger" ng-if="vm.editMode && vm.participants.length < 10">At least 10 participants must be assigned</div>
+    <span class="pull-left">
+      <button class="btn btn-default" ng-if="!vm.editMode"
+              ng-click="vm.cancel()">Close</button>
+      <button class="btn btn-warning" ng-if="vm.editMode"
+              confirm="Are you sure you wish to cancel? Your changes will not be saved."
+              confirm-ok="Yes"
+              confirm-cancel="No"
+              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+              ng-click="vm.cancel()">Cancel</button>
+    </span>
+    <span class="pull-right" ng-if="vm.editMode">
+      <button ng-disabled="vm.participants.length < 10"
+              class="btn btn-ai-success" ng-click="vm.save()"><i class="fa fa-save"></i><span class="sr-only">Save</span></button>
+    </span>
+  </div>
+</div>

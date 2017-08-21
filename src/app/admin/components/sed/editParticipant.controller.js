@@ -1,17 +1,14 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.admin')
         .controller('EditSedParticipantController', EditSedParticipantController);
 
     /** @ngInject */
     function EditSedParticipantController ($uibModalInstance, networkService, participant) {
         var vm = this;
 
-        vm.participant = participant.participant;
-
         vm.cancel = cancel;
-        vm.changed = changed;
         vm.orderAges = orderAges;
         vm.save = save;
 
@@ -20,6 +17,11 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.participant = angular.copy(participant);
+            if (!vm.participant.id) {
+                vm.participant.id = (new Date()).getTime() * -1;
+            }
+
             networkService.getEducation()
                 .then(function (result) {
                     vm.education = result;
@@ -39,16 +41,7 @@
         }
 
         function cancel () {
-            if (vm.participant.changed) {
-                delete (vm.participant.changed);
-            }
             $uibModalInstance.dismiss('cancelled');
-        }
-
-        function changed () {
-            if (vm.participant.testParticipantId) {
-                vm.participant.changed = true;
-            }
         }
 
         function orderAges (ageRange) {
@@ -66,7 +59,9 @@
             vm.participant.educationTypeId = vm.participant.education.id;
             vm.participant.ageRange = vm.participant.ageRangeObj.name;
             vm.participant.ageRangeId = vm.participant.ageRangeObj.id;
-            $uibModalInstance.close(vm.participant);
+            $uibModalInstance.close({
+                participant: vm.participant,
+            });
         }
     }
 })();

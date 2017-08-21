@@ -12,11 +12,13 @@
 
         beforeEach(function () {
             module('chpl.cms-widget');
-            inject(function (_$compile_, _$httpBackend_, _$log_, _$rootScope_) {
+            inject(function (_$compile_, _$httpBackend_, $localStorage, _$log_, _$rootScope_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
                 $log = _$log_;
                 $httpBackend = _$httpBackend_;
+
+                delete $localStorage.cmsWidget;
 
                 el = angular.element('<ai-cms-widget></ai-cms-widget>');
 

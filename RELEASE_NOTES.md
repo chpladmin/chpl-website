@@ -3,6 +3,22 @@
 ## Version TBD
 _Date TBD_
 
+## New features
+* Improved SED view/edit
+
+---
+
+## Version 9.3.2
+_14 August 2017_
+
+### Bug fixed
+* Re-enabled CQM filter
+
+---
+
+## Version 9.3.1
+_14 August 2017_
+
 ### New features
 * Updated Products: Corrective Action Collection
 * Change ICS Code validation to require two digits
