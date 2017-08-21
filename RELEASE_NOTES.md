@@ -1,5 +1,10 @@
 # Release Notes
 
+## SED Changes
+* Improved SED view/edit
+
+---
+
 ## Version TBD
 _Date TBD_
 
