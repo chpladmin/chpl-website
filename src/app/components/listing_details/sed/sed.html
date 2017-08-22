@@ -35,7 +35,7 @@
                 <li ng-repeat="crit in process.criteria | orderBy:vm.sortCert">{{ crit.number }}</li>
               </ul>
             </td>
-            <td>{{ process.name }}</td>
+            <td>{{ process.name ? process.name : 'N/A' }}</td>
             <td>{{ process.details ? process.details : 'N/A'}}</td>
           </tr>
         </tbody>
