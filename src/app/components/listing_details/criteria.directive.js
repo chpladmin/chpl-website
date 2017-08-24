@@ -40,6 +40,7 @@
         var vm = this;
 
         vm.editCert = editCert;
+        vm.hasPhantomData = hasPhantomData;
         vm.saveEdits = saveEdits;
         vm.toggleCriteria = toggleCriteria;
 
@@ -72,6 +73,26 @@
                     $log.info('dismissed', result);
                 }
             });
+        }
+
+        function hasPhantomData () {
+            var ret =
+                (vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0) ||
+                (vm.cert.apiDocumentation && vm.cert.apiDocumentation.length > 0) ||
+                (vm.cert.g1MacraMeasures && vm.cert.g1MacraMeasures.length > 0) ||
+                (vm.cert.g1Success) ||
+                (vm.cert.g2MacraMeasures && vm.cert.g2MacraMeasures.length > 0) ||
+                (vm.cert.g2Success) ||
+                (vm.cert.gap) ||
+                (vm.cert.privacySecurityFramework && vm.cert.privacySecurityFramework.length > 0) ||
+                (vm.cert.sed) ||
+                (vm.cert.testDataUsed && vm.cert.testDataUsed.length > 0) ||
+                (vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0) ||
+                (vm.cert.testProcedures && vm.cert.testProcedures.length > 0) ||
+                (vm.cert.testStandards && vm.cert.testStandards.length > 0) ||
+                (vm.cert.testToolsUsed && vm.cert.testToolsUsed.length > 0) ||
+                false;
+            return ret;
         }
 
         /*
