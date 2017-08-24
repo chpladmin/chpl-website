@@ -15,23 +15,15 @@
                 cert: '=',
                 hasIcs: '=',
                 viewAll: '=',
+                hasEdited: '&',
                 isEditing: '=',
                 resources: '=',
                 accessibilityStandards: '=?',
                 qmsStandards: '=?',
-                save: '&',
             },
             scope: {},
             controllerAs: 'vm',
             controller: 'CertificationCriteriaController',
-            link: function (scope, element, attr, ctrl) {
-                var handler = ctrl.save({
-                    handler: function () {
-                        ctrl.saveEdits();
-                    },
-                });
-                scope.$on('$destroy', handler);
-            },
         };
     }
 
@@ -41,7 +33,6 @@
 
         vm.editCert = editCert;
         vm.hasPhantomData = hasPhantomData;
-        vm.saveEdits = saveEdits;
         vm.toggleCriteria = toggleCriteria;
 
         activate();
@@ -67,6 +58,7 @@
                 },
             });
             vm.editUibModalInstance.result.then(function (result) {
+                vm.hasEdited();
                 vm.cert = result;
             }, function (result) {
                 if (result !== 'cancelled') {
@@ -93,24 +85,6 @@
                 (vm.cert.testToolsUsed && vm.cert.testToolsUsed.length > 0) ||
                 false;
             return ret;
-        }
-
-        /*
-         * remove any keys where the select used 'vm.options' and the display was N/A
-         */
-        function saveEdits () {
-            if (vm.cert.gap === 'null') {
-                delete (vm.cert.gap);
-            }
-            if (vm.cert.g1Success === 'null') {
-                delete (vm.cert.g1Success);
-            }
-            if (vm.cert.g2Success === 'null') {
-                delete (vm.cert.g2Success);
-            }
-            if (vm.cert.sed === 'null') {
-                delete (vm.cert.sed);
-            }
         }
 
         function toggleCriteria () {

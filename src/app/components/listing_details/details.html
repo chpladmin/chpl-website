@@ -19,11 +19,11 @@
                                      view-all="vm.viewAllCerts"
                                      has-ics="vm.product.ics.inherits"
                                      cert="n"
+                                     has-edited="vm.hasEdited()"
                                      is-editing="vm.isEditing"
                                      resources="vm.resources"
                                      accessibility-standards="vm.product.accessibilityStandards"
-                                     qms-standards="vm.product.qmsStandards"
-                                     save="vm.registerCerts(handler)">
+                                     qms-standards="vm.product.qmsStandards">
           </ai-certification-criteria>
         </div>
       </div>
@@ -177,6 +177,7 @@
            criteria-count="vm.sedCriteriaCount"
            edit-mode="vm.isEditing"
            listing="vm.product"
+           refresh="vm.registerSed(handler)"
            resources="vm.resources"
            task-count="vm.sedTaskCount">
         </ai-sed>

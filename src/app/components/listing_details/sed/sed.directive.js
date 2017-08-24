@@ -13,11 +13,22 @@
                 criteriaCount: '=?',
                 editMode: '=?',
                 listing: '=',
+                refresh: '&?',
                 resources: '=?',
                 taskCount: '=?',
             },
             controller: 'SedController',
             controllerAs: 'vm',
+            link: function (scope, element, attr, ctrl) {
+                if (ctrl.refresh) {
+                    var handler = ctrl.refresh({
+                        handler: function () {
+                            ctrl._analyzeSed();
+                        },
+                    });
+                    scope.$on('$destroy', handler);
+                }
+            },
             replace: true,
             restrict: 'E',
             scope: {},
