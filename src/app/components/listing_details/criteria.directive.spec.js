@@ -219,6 +219,13 @@
                     expect(vm.cert).toEqual({name: 'new'});
                 });
 
+                it('should call the "has-edited" handler', function () {
+                    spyOn(vm, 'hasEdited');
+                    vm.editCert();
+                    vm.editUibModalInstance.close({name: 'new'});
+                    expect(vm.hasEdited).toHaveBeenCalled();
+                });
+
                 it('should log a non-cancelled modal', function () {
                     var logCount = $log.info.logs.length;
                     vm.editCert();
@@ -231,32 +238,6 @@
                     vm.editCert();
                     vm.editUibModalInstance.dismiss('cancelled');
                     expect($log.info.logs.length).toBe(logCount);
-                });
-            });
-
-            describe('when saving the cert edits', function () {
-                it('should remove N/A keys', function () {
-                    vm.cert.gap = 'null';
-                    vm.cert.g1Success = 'null';
-                    vm.cert.g2Success = 'null';
-                    vm.cert.sed = 'null';
-                    vm.saveEdits();
-                    expect(vm.cert.gap).toBeUndefined();
-                    expect(vm.cert.g1Success).toBeUndefined();
-                    expect(vm.cert.g2Success).toBeUndefined();
-                    expect(vm.cert.sed).toBeUndefined();
-                });
-
-                it('shouldn\'t remove valid keys', function () {
-                    vm.cert.gap = 'a thing';
-                    vm.cert.g1Success = 'a thing';
-                    vm.cert.g2Success = 'a thing';
-                    vm.cert.sed = 'a thing';
-                    vm.saveEdits();
-                    expect(vm.cert.gap).toBe('a thing');
-                    expect(vm.cert.g1Success).toBe('a thing');
-                    expect(vm.cert.g2Success).toBe('a thing');
-                    expect(vm.cert.sed).toBe('a thing');
                 });
             });
 

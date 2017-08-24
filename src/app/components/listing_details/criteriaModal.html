@@ -132,7 +132,7 @@
                   <label class="col-sm-6 control-label" for="testToolVersion{{ item.id }}">Test Tool Version</label>
                   <div class="col-sm-6">
                     <input type="text" class="form-control" ng-model="item.testToolVersion" id="testToolVersion{{ item.id }}" name="testToolVersion{{ item.id }}" ng-maxlength="50"></input>
-                    <div class="text-danger" ng-if="vm.editForm.testToolVersion{{ item.id }}.$error.maxlength">Field is too long</div>
+                    <div class="text-danger" ng-if="vm.editForm['testToolVersion' + item.id].$error.maxlength">Field is too long</div>
                   </div>
                 </div>
                 <div ng-if="item.retired">
@@ -160,7 +160,7 @@
                 <label class="col-sm-6 control-label" for="newTestToolVersion">Test Tool Version</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" ng-model="vm.newTestTool.testToolVersion" id="newTestToolVersion" id="newTestToolVersion" ng-maxlength="50"></input>
-                  <div class="text-danger" ng-if="vm.editForm.testToolVersion{{ item.id }}.$error.maxlength">Field is too long</div>
+                  <div class="text-danger" ng-if="vm.editForm.newTestToolVersion.$error.maxlength">Field is too long</div>
                 </div>
               </div>
             </div>
@@ -187,7 +187,10 @@
         </tr>
         <tr ng-if="vm.cert.sed !== null">
           <td><label class="control-label" for="data_sed{{ vm.cert.number }}">SED</label></td>
-          <td><select class="form-control input-sm" id="data_sed{{ vm.cert.number }}" name="data_sed" ng_model="vm.cert.sed" ng-options="b.value as b.name for b in vm.options" ng-disabled="vm.cert.certificationEdition.name === '2015'"></select></td>
+          <td>
+            <select class="form-control input-sm" id="data_sed{{ vm.cert.number }}" name="data_sed" ng_model="vm.cert.sed" ng-options="b.value as b.name for b in vm.options" ng-disabled="vm.cert.certificationEdition.name === '2015'"></select>
+            <div class="text-warning" ng-if="((vm.editForm.data.$dirty && vm.cert.success) || vm.editForm.data_sed.$dirty) && vm.cert.sed">Use the "Safety Enhanced Design (SED)" panel to edit SED information for this Criteria.</div>
+          </td>
         </tr>
       </tbody>
     </table>

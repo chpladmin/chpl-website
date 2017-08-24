@@ -40,7 +40,7 @@
         <label class="control-label col-sm-4" for="processName{{ $index }}">UCD Process {{ $index + 1 }} Name</label>
         <div class="col-sm-8">
           <div class="input-group">
-            <select class="form-control input-sm" ng-model="process.name" id="processName{{ $index }}" name="processName{{ $index }}" required
+            <select class="form-control input-sm" ng-model="process.name" id="processName{{ $index }}" name="processName{{ $index }}" ng-required="vm.listing.certificationEdition.name === '2015'"
                     ng-options="option.name as option.name for option in vm.resources.ucdProcesses.data | orderBy: 'name'">
             </select>
             <span class="input-group-btn">

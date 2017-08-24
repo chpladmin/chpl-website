@@ -41,7 +41,9 @@
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
+            vm.hasEdited = hasEdited;
             vm.prepCqms = prepCqms
+            vm.registerSed = registerSed;
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
@@ -52,6 +54,7 @@
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
+                vm.handlers = [];
                 if (angular.isUndefined(vm.isEditing)) {
                     vm.isEditing = false;
                 }
@@ -76,6 +79,12 @@
                     }}, true);
             }
 
+            function hasEdited () {
+                angular.forEach(vm.handlers, function (handler) {
+                    handler();
+                });
+            }
+
             function prepCqms () {
                 if (vm.cqms) {
                     for (var i = 0; i < vm.cqms.length; i++) {
@@ -85,6 +94,16 @@
                         }
                     }
                 }
+            }
+
+            function registerSed (handler) {
+                vm.handlers.push(handler);
+                var removeHandler = function () {
+                    vm.handlers = vm.handlers.filter(function (aHandler) {
+                        return aHandler !== handler;
+                    });
+                };
+                return removeHandler;
             }
 
             function saveEdits () {
