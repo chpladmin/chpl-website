@@ -294,7 +294,7 @@
                     networkService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
                     vm.save();
                     scope.$digest();
-                    expect(vm.errors).toEqual(['an error3']);
+                    expect(vm.warnings).toEqual(['an error3']);
                     expect(vm.isSaving).toBe(false);
                 });
 
