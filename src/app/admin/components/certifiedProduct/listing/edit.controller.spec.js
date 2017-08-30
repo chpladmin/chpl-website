@@ -6,6 +6,7 @@
 
         mock = {};
         mock.activeCP = {
+            certificationEdition: {name: '2015'},
             certificationStatus: [],
             certifyingBody: [],
             chplProductNumber: 'CHP-123123',
@@ -147,6 +148,60 @@
 
             it('should build an icsParents object if the Listing doesn\'t come with one', function () {
                 expect(vm.cp.ics.parents).toEqual([]);
+            });
+
+            it('should not load family if the listing is 2014', function () {
+                var callCount = networkService.getRelatedListings.calls.count();
+                var cp = angular.copy(mock.activeCP);
+                cp.certificationEdition = {name: '2014'};
+                vm = $controller('EditCertifiedProductController', {
+                    activeCP: cp,
+                    isAcbAdmin: true,
+                    isAcbStaff: true,
+                    isChplAdmin: true,
+                    resources: mock.resources,
+                    workType: 'manage',
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
+            });
+
+            it('should not load family if the product has no productId', function () {
+                var callCount = networkService.getRelatedListings.calls.count();
+                var cp = angular.copy(mock.activeCP);
+                cp.product = {productId: undefined};
+                vm = $controller('EditCertifiedProductController', {
+                    activeCP: cp,
+                    isAcbAdmin: true,
+                    isAcbStaff: true,
+                    isChplAdmin: true,
+                    resources: mock.resources,
+                    workType: 'manage',
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
+            });
+
+            it('should not load family if the product does not exist', function () {
+                var callCount = networkService.getRelatedListings.calls.count();
+                var cp = angular.copy(mock.activeCP);
+                cp.product = undefined;
+                vm = $controller('EditCertifiedProductController', {
+                    activeCP: cp,
+                    isAcbAdmin: true,
+                    isAcbStaff: true,
+                    isChplAdmin: true,
+                    resources: mock.resources,
+                    workType: 'manage',
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
             });
 
             describe('when disabling related options', function () {

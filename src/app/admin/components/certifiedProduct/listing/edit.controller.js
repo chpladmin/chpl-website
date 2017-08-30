@@ -183,10 +183,12 @@
         ////////////////////////////////////////////////////////////////////
 
         function loadFamily () {
-            networkService.getRelatedListings(vm.cp.product.productId)
-                .then(function (family) {
-                    vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
-                });
+            if (vm.cp.product && vm.cp.product.productId && vm.cp.certificationEdition.name === '2015') {
+                networkService.getRelatedListings(vm.cp.product.productId)
+                    .then(function (family) {
+                        vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
+                    });
+            }
         }
     }
 })();
