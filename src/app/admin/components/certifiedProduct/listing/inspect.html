@@ -9,25 +9,6 @@
     <h4 class="modal-title" id="inspectLabel">Inspect Certified Product ({{ vm.cp.chplProductNumber }})</h4>
   </div>
   <div class="modal-body">
-    <div class="row">
-      <div class="col-sm-12 lead">
-        <strong>
-          <div ng-if="vm.cp.errorMessages.length > 0">
-            <span class="text-danger">Error<span ng-if="vm.cp.errorMessages.length > 1">s</span>:</span>
-            <ul>
-              <li ng-repeat="error in vm.cp.errorMessages"><pre>{{ error }}</pre></li>
-            </ul>
-          </div>
-          <div ng-if="vm.cp.warningMessages.length > 0">
-            <span class="text-danger">Warning<span ng-if="vm.cp.warningMessages.length > 1">s</span>:</span>
-            <ul>
-              <li ng-repeat="error in vm.cp.warningMessages"><pre>{{ error }}</pre></li>
-            </ul>
-          </div>
-        </strong>
-      </div>
-    </div>
-
     <!-- Developer -->
     <div ng-if="vm.stage === 'dev'">
       <div class="row">
@@ -316,12 +297,26 @@
 
   </div>
   <div class="modal-footer">
-    <div ng-if="vm.errorMessages && vm.errorMessages.length !== 0" class="row">
+    <div class="row" ng-if="(vm.errorMessages && vm.errorMessages.length !== 0) || (vm.cp.errorMessages && vm.cp.errorMessages.length !== 0) || (vm.cp.warningMessages && vm.cp.warningMessages.length !== 0)">
       <div class="col-sm-12 text-left bg-danger">
-        Error in product confirmation
-        <ul>
-          <li ng-repeat="error in vm.errorMessages">{{ error }}</li>
-        </ul>
+        <div ng-if="vm.cp.errorMessages.length > 0">
+          Error<span ng-if="vm.cp.errorMessages.length > 1">s</span> in product upload
+          <ul>
+            <li ng-repeat="error in vm.cp.errorMessages | orderBy:'toString()'">{{ error }}</li>
+          </ul>
+        </div>
+        <div ng-if="vm.cp.warningMessages.length > 0">
+          Warning<span ng-if="vm.cp.warningMessages.length > 1">s</span> in product upload
+          <ul>
+            <li ng-repeat="error in vm.cp.warningMessages | orderBy:'toString()'">{{ error }}</li>
+          </ul>
+        </div>
+        <div ng-if="vm.errorMessages.length > 0">
+          Error<span ng-if="vm.errorMessages.length > 1">s</span> in product confirmation
+          <ul>
+            <li ng-repeat="error in vm.errorMessages | orderBy:'toString()'">{{ error }}</li>
+          </ul>
+        </div>
       </div>
     </div>
     <button class="btn btn-warning btn-large pull-left"
