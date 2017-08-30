@@ -5,6 +5,7 @@ _Date TBD_
 
 ## New features
 * Improved SED view/edit
+* Add indicator to criteria edit screen when "phantom" data exists
 
 ---
 

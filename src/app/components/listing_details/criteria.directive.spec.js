@@ -49,6 +49,133 @@
                 expect(vm).toEqual(jasmine.any(Object));
             });
 
+            describe('when asked about phantom data', function () {
+                it('should not indicate any if the cert has success=true', function () {
+                    vm.cert.success = true;
+                    expect(vm.hasPhantomData()).toBe(false);
+                });
+
+                describe('and the cert has success=false', function () {
+                    beforeEach(function () {
+                        vm.cert = {success: false};
+                    });
+
+                    it('should analyze additionalSoftware', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.additionalSoftware = [];
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.additionalSoftware = [1];
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze apiDocumentation', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.apiDocumentation = '';
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.apiDocumentation = 'something fake';
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze g1MacraMeasures', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.g1MacraMeasures = [];
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.g1MacraMeasures = [1];
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze g1Success', function () {
+                        vm.cert.g1Success = null;
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.g1Success = false;
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.g1Success = true;
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze g2MacraMeasures', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.g2MacraMeasures = [];
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.g2MacraMeasures = [1];
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze g2Success', function () {
+                        vm.cert.g2Success = null;
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.g2Success = false;
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.g2Success = true;
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze gap', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.gap = false;
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.gap = true;
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze privacySecurityFramework', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.privacySecurityFramework = '';
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.privacySecurityFramework = 'something fake';
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze sed', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.sed = false;
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.sed = true;
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze testDataUsed', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testDataUsed = [];
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testDataUsed = [1];
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze testFunctionality', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testFunctionality = [];
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testFunctionality = [1];
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze testProcedures', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testProcedures = [];
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testProcedures = [1];
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze testStandards', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testStandards = [];
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testStandards = [1];
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+
+                    it('should analyze testToolsUsed', function () {
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testToolsUsed = [];
+                        expect(vm.hasPhantomData()).toBe(false);
+                        vm.cert.testToolsUsed = [1];
+                        expect(vm.hasPhantomData()).toBe(true);
+                    });
+                });
+            });
+
             describe('when editing the certification', function () {
                 var modalOptions;
                 beforeEach(function () {
@@ -92,6 +219,13 @@
                     expect(vm.cert).toEqual({name: 'new'});
                 });
 
+                it('should call the "has-edited" handler', function () {
+                    spyOn(vm, 'hasEdited');
+                    vm.editCert();
+                    vm.editUibModalInstance.close({name: 'new'});
+                    expect(vm.hasEdited).toHaveBeenCalled();
+                });
+
                 it('should log a non-cancelled modal', function () {
                     var logCount = $log.info.logs.length;
                     vm.editCert();
@@ -104,32 +238,6 @@
                     vm.editCert();
                     vm.editUibModalInstance.dismiss('cancelled');
                     expect($log.info.logs.length).toBe(logCount);
-                });
-            });
-
-            describe('when saving the cert edits', function () {
-                it('should remove N/A keys', function () {
-                    vm.cert.gap = 'null';
-                    vm.cert.g1Success = 'null';
-                    vm.cert.g2Success = 'null';
-                    vm.cert.sed = 'null';
-                    vm.saveEdits();
-                    expect(vm.cert.gap).toBeUndefined();
-                    expect(vm.cert.g1Success).toBeUndefined();
-                    expect(vm.cert.g2Success).toBeUndefined();
-                    expect(vm.cert.sed).toBeUndefined();
-                });
-
-                it('shouldn\'t remove valid keys', function () {
-                    vm.cert.gap = 'a thing';
-                    vm.cert.g1Success = 'a thing';
-                    vm.cert.g2Success = 'a thing';
-                    vm.cert.sed = 'a thing';
-                    vm.saveEdits();
-                    expect(vm.cert.gap).toBe('a thing');
-                    expect(vm.cert.g1Success).toBe('a thing');
-                    expect(vm.cert.g2Success).toBe('a thing');
-                    expect(vm.cert.sed).toBe('a thing');
                 });
             });
 

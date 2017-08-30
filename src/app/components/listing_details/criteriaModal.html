@@ -132,7 +132,7 @@
                   <label class="col-sm-6 control-label" for="testToolVersion{{ item.id }}">Test Tool Version</label>
                   <div class="col-sm-6">
                     <input type="text" class="form-control" ng-model="item.testToolVersion" id="testToolVersion{{ item.id }}" name="testToolVersion{{ item.id }}" ng-maxlength="50"></input>
-                    <div class="text-danger" ng-if="vm.editForm.testToolVersion{{ item.id }}.$error.maxlength">Field is too long</div>
+                    <div class="text-danger" ng-if="vm.editForm['testToolVersion' + item.id].$error.maxlength">Field is too long</div>
                   </div>
                 </div>
                 <div ng-if="item.retired">
@@ -160,7 +160,7 @@
                 <label class="col-sm-6 control-label" for="newTestToolVersion">Test Tool Version</label>
                 <div class="col-sm-6">
                   <input type="text" class="form-control" ng-model="vm.newTestTool.testToolVersion" id="newTestToolVersion" id="newTestToolVersion" ng-maxlength="50"></input>
-                  <div class="text-danger" ng-if="vm.editForm.testToolVersion{{ item.id }}.$error.maxlength">Field is too long</div>
+                  <div class="text-danger" ng-if="vm.editForm.newTestToolVersion.$error.maxlength">Field is too long</div>
                 </div>
               </div>
             </div>
@@ -187,48 +187,9 @@
         </tr>
         <tr ng-if="vm.cert.sed !== null">
           <td><label class="control-label" for="data_sed{{ vm.cert.number }}">SED</label></td>
-          <td><select class="form-control input-sm" id="data_sed{{ vm.cert.number }}" name="data_sed" ng_model="vm.cert.sed" ng-options="b.value as b.name for b in vm.options" ng-disabled="vm.cert.certificationEdition.name === '2015'"></select></td>
-        </tr>
-        <tr ng-if="vm.cert.ucdProcesses !== null">
-          <td>UCD Process</td>
           <td>
-            <div class="form-horizontal">
-              <div class="form-group form-group-sm" ng-repeat="item in vm.cert.ucdProcesses track by $index">
-                <label class="col-sm-6 control-label" for="ucdProcess{{ item.id }}">UCD Process</label>
-                <div class="col-sm-6">
-                  <div class="input-group">
-                    <select class="form-control" ng-model="item.ucdProcessName" id="ucdProcess{{ item.id }}"
-                            ng-options="option.name as option.name for option in vm.resources.ucdProcesses.data | orderBy: 'name'">
-                    </select>
-                    <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cert.ucdProcesses.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
-                  </div>
-                </div>
-                <label class="col-sm-6 control-label" for="ucdProcessDetails{{ item.id }}">UCD Process Details</label>
-                <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="item.ucdProcessDetails" id="ucdProcessDetails{{ item.id }}"></input>
-                </div>
-              </div>
-              <div class="form-group form-group-sm">
-                <label class="col-sm-6 control-label" for="newUcdProcessItem">New UCD Process</label>
-                <div class="col-sm-6">
-                  <div class="input-group">
-                    <select class="form-control" ng-model="vm.newUcdProcess.ucdProcessName" id="newUcdProcessItem"
-                            ng-options="option.name as option.name for option in vm.resources.ucdProcesses.data | orderBy: 'name'">
-                    </select>
-                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cert.ucdProcesses, vm.newUcdProcess); vm.newUcdProcess = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
-                  </div>
-                </div>
-                <label class="col-sm-6 control-label" for="newUcdProcessExpandableName">Add new UCD Process to available options</label>
-                <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="vm.newUcdProcess.expandableName" id="newUcdProcessExpandableName" name="newUcdProcessExpandableName" ng-change="vm.extendSelect(vm.resources.ucdProcesses.data, vm.newUcdProcess.expandableName); vm.newUcdProcess.ucdProcessName = vm.newUcdProcess.expandableName" ng-maxlength="200"></input>
-                  <div class="text-danger" ng-if="vm.editForm.newUcdProcessExpandableName.$error.maxlength">Field is too long</div>
-                </div>
-                <label class="col-sm-6 control-label" for="newUcdProcessDetails">UCD Process Details</label>
-                <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="vm.newUcdProcess.ucdProcessDetails" id="newUcdProcessDetails"></input>
-                </div>
-              </div>
-            </div>
+            <select class="form-control input-sm" id="data_sed{{ vm.cert.number }}" name="data_sed" ng_model="vm.cert.sed" ng-options="b.value as b.name for b in vm.options" ng-disabled="vm.cert.certificationEdition.name === '2015'"></select>
+            <div class="text-warning" ng-if="((vm.editForm.data.$dirty && vm.cert.success) || vm.editForm.data_sed.$dirty) && vm.cert.sed">Use the "Safety Enhanced Design (SED)" panel to edit SED information for this Criteria.</div>
           </td>
         </tr>
       </tbody>

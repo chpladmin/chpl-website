@@ -303,15 +303,17 @@
         <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</li>
       </ul>
     </div>
-    <div class="text-left text-warning" ng-if="vm.showFormErrors && vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0">
-      The following warning should be fixed:
+    <div class="text-left text-warning" ng-if="(vm.showFormErrors && vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0) || vm.warnings">
+      The following warning(s) should be fixed:
       <ul>
         <li ng-if="vm.cp.ics.parents.length === 0">Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from</li>
+        <li ng-repeat="msg in vm.warnings | orderBy:'toString()' track by $index">{{ msg }}</li>
       </ul>
     </div>
     <div class="text-danger text-left" ng-if="vm.errors">
+      The following error(s) must be fixed:
       <ul>
-        <li ng-repeat="msg in vm.errors track by $index">{{ msg }}</li>
+        <li ng-repeat="msg in vm.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
       </ul>
     </div>
 <!--    <button ng-disabled="((vm.editForm.$invalid || (vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0)) && vm.showFormErrors) || vm.isSaving"-->

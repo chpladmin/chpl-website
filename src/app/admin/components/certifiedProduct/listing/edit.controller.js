@@ -143,6 +143,7 @@
                     }
                 },function (error) {
                     vm.errors = [];
+                    vm.warnings = [];
                     if (error.data) {
                         if (error.data.error && error.data.error.length > 0) {
                             vm.errors.push(error.data.error);
@@ -151,7 +152,7 @@
                             vm.errors = vm.errors.concat(error.data.errorMessages);
                         }
                         if (error.data.warningMessages && error.data.warningMessages.length > 0) {
-                            vm.errors = vm.errors.concat(error.data.warningMessages);
+                            vm.warnings = vm.warnings.concat(error.data.warningMessages);
                         }
                     }
                     vm.isSaving = false;
@@ -182,10 +183,12 @@
         ////////////////////////////////////////////////////////////////////
 
         function loadFamily () {
-            networkService.getRelatedListings(vm.cp.product.productId)
-                .then(function (family) {
-                    vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
-                });
+            if (vm.cp.product && vm.cp.product.productId && vm.cp.certificationEdition.name === '2015') {
+                networkService.getRelatedListings(vm.cp.product.productId)
+                    .then(function (family) {
+                        vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
+                    });
+            }
         }
     }
 })();

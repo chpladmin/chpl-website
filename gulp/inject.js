@@ -3,6 +3,7 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
+var argv = require('yargs').argv;
 
 var $ = require('gulp-load-plugins')();
 
@@ -10,6 +11,7 @@ var wiredep = require('wiredep').stream;
 var _ = require('lodash');
 
 var browserSync = require('browser-sync');
+var environment = argv.env || 'local';
 
 gulp.task('inject-reload', ['inject'], function() {
     browserSync.reload();
@@ -34,7 +36,11 @@ gulp.task('inject', ['scripts', 'styles'], function () {
         addRootSlash: false
     };
 
-    return gulp.src(path.join(conf.paths.src, '/*.html'))
+    var htmlFiles = [path.join(conf.paths.src, '/*.html')];
+    if (environment !== 'local') {
+        htmlFiles.push('!**/style.html');
+    }
+    return gulp.src(htmlFiles)
         .pipe($.inject(injectStyles, injectOptions))
         .pipe($.inject(injectScripts, injectOptions))
         .pipe(wiredep(_.extend({}, conf.wiredep)))

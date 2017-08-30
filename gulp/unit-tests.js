@@ -64,7 +64,7 @@ function runTests (singleRun, done) {
             }
         },
         superDotsReporter: {
-            nbDotsPerLine: 64,
+            nbDotsPerLine: 100,
             color: {
                 success: 'green',
                 failure: 'red',

@@ -13,11 +13,22 @@
                 criteriaCount: '=?',
                 editMode: '=?',
                 listing: '=',
+                refresh: '&?',
                 resources: '=?',
                 taskCount: '=?',
             },
             controller: 'SedController',
             controllerAs: 'vm',
+            link: function (scope, element, attr, ctrl) {
+                if (ctrl.refresh) {
+                    var handler = ctrl.refresh({
+                        handler: function () {
+                            ctrl._analyzeSed();
+                        },
+                    });
+                    scope.$on('$destroy', handler);
+                }
+            },
             replace: true,
             restrict: 'E',
             scope: {},
@@ -199,6 +210,7 @@
                     .filter(function (cert) { return cert.success && cert.sed; })
                     .map(function (cert) { cert.name = cert.number; return cert; });
                 vm.criteriaCount = vm.sedCriteria.length;
+                vm.sedCriteriaNumbers = vm.sedCriteria.map(function (cert) { return cert.number; });
 
                 csvRow = angular.copy(ROW_BASE);
 
@@ -208,7 +220,7 @@
                     if (!task.id) {
                         task.id = i * -1 - 1;
                     }
-                    task.criteria = $filter('orderBy')(task.criteria, vm.sortCert);
+                    task.criteria = $filter('orderBy')(task.criteria.filter(function (cert) { return vm.sedCriteriaNumbers.indexOf(cert.number) > -1; }), vm.sortCert);
 
                     csvRow[4] = task.criteria.map(function (item) { return item.number; }).join(';');
                     csvRow[TASK_START + 0] = task.description;
@@ -272,9 +284,10 @@
                 }
 
                 vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
-                    item.criteria = $filter('orderBy')(item.criteria, vm.sortCert);
+                    item.criteria = $filter('orderBy')(item.criteria.filter(function (cert) { return vm.sedCriteriaNumbers.indexOf(cert.number) > -1; }), vm.sortCert);
                     return item;
-                });
+                })
+                    .filter(function (item) { return item.criteria.length > 0; });
 
                 vm.csvData.values = csvSort(vm.csvData.values);
             }
