@@ -217,65 +217,6 @@
                             listing: function () { return vm.product; },
                         },
                     });
-                }, function () { //debugging code
-                    var family = [
-                        {
-                            id: 1,
-                            chplId: '15.07.07.1447.BE01.01.0.1.161014',
-                            certificationStatus: { name: 'Withdrawn by Developer' },
-                            parents: [],
-                            children: [
-                                {id: 2, chplId: '15.07.07.1447.BE01.02.1.1.161014'},
-                                {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
-                            ],
-                        },
-                        {
-                            id: 2,
-                            chplId: '15.07.07.1447.BE01.02.1.1.161014',
-                            certificationStatus: { name: 'Withdrawn by Developer' },
-                            parents: [
-                                {id: 1, chplId: '15.07.07.1447.BE01.01.0.1.161014'},
-                            ],
-                            children: [
-                                {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
-                            ],
-                        },
-                        {
-                            id: 3,
-                            chplId: '15.07.07.1447.BE01.03.2.1.161014',
-                            certificationStatus: { name: 'Active' },
-                            parents: [
-                                {id: 1, chplId: '15.07.07.1447.BE01.01.0.1.161014'},
-                                {id: 2, chplId: '15.07.07.1447.BE01.02.1.1.161014'},
-                            ],
-                            children: [
-                                {id: 4, chplId: '15.07.07.1447.BE01.04.3.1.161014'},
-                            ],
-                        },
-                        {
-                            id: 4,
-                            chplId: '15.07.07.1447.BE01.04.3.1.161014',
-                            certificationStatus: { name: 'Active' },
-                            parents: [
-                                {id: 3, chplId: '15.07.07.1447.BE01.03.2.1.161014'},
-                            ],
-                            children: [],
-                        },
-                    ];
-                    vm.product.id = 3;
-                    vm.uibModalInstance = $uibModal.open({
-                        templateUrl: 'app/components/listing_details/ics_family/icsFamilyModal.html',
-                        controller: 'IcsFamilyController',
-                        controllerAs: 'vm',
-                        animation: false,
-                        backdrop: 'static',
-                        keyboard: false,
-                        size: 'lg',
-                        resolve: {
-                            family: function () { return family; },
-                            listing: function () { return vm.product; },
-                        },
-                    });
                 });
             }
 

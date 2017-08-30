@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1542
+* Add visualization of ICS Inheritance relationships
+
+---
+
 ## Version TBD
 _Date TBD_
 
