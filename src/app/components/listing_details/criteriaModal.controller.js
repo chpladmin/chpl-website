@@ -8,7 +8,7 @@
     function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, cert, hasIcs, resources, utilService) {
         var vm = this;
 
-        vm.cert = cert;
+        vm.cert = angular.copy(cert);
 
         vm.addNewValue = utilService.addNewValue;
         vm.cancel = cancel;
