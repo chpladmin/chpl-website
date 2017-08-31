@@ -51,6 +51,8 @@
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
+            getJobTypes: getJobTypes,
+            getJobs: getJobs,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
@@ -331,6 +333,14 @@
 
         function getEducation () {
             return apiGET('/data/education_types');
+        }
+
+        function getJobTypes () {
+            return apiGET('/data/job_types');
+        }
+
+        function getJobs () {
+            return apiGET('/jobs');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {

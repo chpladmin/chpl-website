@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1737
+* Allow ONC Admin to view running Jobs
+
+---
+
 ## Version TBD
 _Date TBD_
 

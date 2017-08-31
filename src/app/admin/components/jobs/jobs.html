@@ -1,0 +1,43 @@
+<div>
+  <section class="row">
+    <div class="col-md-12 main-content">
+      <h2>Jobs Management</h2>
+      <p>View running jobs and job types</p>
+      <h3>Job Types</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Job Name</th>
+            <th scope="col">Job Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="type in vm.jobTypes | orderBy: 'name'">
+            <td>{{ type.name }}</td>
+            <td>{{ type.description }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Running and recently completed Jobs</h3>
+      <p ng-if="!vm.jobs || vm.jobs.length === 0">No jobs are currently in progress</p>
+      <table class="table" ng-if="vm.jobs && vm.jobs.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">Job Name</th>
+            <th scope="col">Initiator</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">End Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="job in vm.jobs | orderBy: '-startTime'">
+            <td>{{ job.type.name }}</td>
+            <td>{{ job.user.firstName }} {{ job.user.lastName }} ({{ job.user.email }})</td>
+            <td>{{ job.startTime | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ job.endTime | date : 'mediumDate' : 'UTC' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
