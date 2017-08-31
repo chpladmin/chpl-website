@@ -2,7 +2,23 @@
     'use strict';
 
     describe('the SED View Task Modal controller', function () {
-        var $log, $uibModal, Mock, actualOptions, scope, vm;
+        var $log, $uibModal, Mock, actualOptions, mock, scope, vm;
+        mock = {
+            task: {
+                testParticipants: [
+                    { occupation: 'Nurse', productExperienceMonths: 10 },
+                    { occupation: 'Nurse', productExperienceMonths: 10 },
+                    { occupation: 'Pharmacist', productExperienceMonths: 10 },
+                    { occupation: 'Pharmacist', productExperienceMonths: 10 },
+                    { occupation: 'Doc', productExperienceMonths: 10 },
+                    { occupation: 'Doc', productExperienceMonths: 20 },
+                    { occupation: 'PA', productExperienceMonths: 20 },
+                    { occupation: 'PA', productExperienceMonths: 20 },
+                    { occupation: 'RN', productExperienceMonths: 20 },
+                    { occupation: 'RN', productExperienceMonths: 20 },
+                ],
+            },
+        }
 
         beforeEach(function () {
             module('chpl', 'chpl.mock', 'chpl.templates');
@@ -20,7 +36,7 @@
                 vm = $controller('ViewSedTaskController', {
                     criteria: [],
                     editMode: false,
-                    task: {},
+                    task: angular.copy(mock.task),
                     participants: [],
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -47,6 +63,18 @@
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
+        describe('when parsing Participants', function () {
+            it('should know what the mean product experience is', function () {
+                expect(vm.meanProductExperience).toBe(15);
+            });
+
+            it('should have a list of occupations', function () {
+                expect(vm.occupations.length).toBe(5);
+                expect(vm.occupations[0].name).toBe('Nurse');
+                expect(vm.occupations[0].count).toBe(2);
+            });
+        });
+
         describe('when viewing Participants', function () {
             var modalOptions;
             beforeEach(function () {
@@ -65,7 +93,6 @@
                     },
                 };
                 vm.editMode = 'on';
-                vm.task.testParticipants = [1];
             });
 
             it('should create a modal instance', function () {
@@ -80,7 +107,7 @@
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.allParticipants()).toEqual([1,2]);
                 expect(actualOptions.resolve.editMode()).toBe('on');
-                expect(actualOptions.resolve.participants()).toEqual([1]);
+                expect(actualOptions.resolve.participants()).toEqual(mock.task.testParticipants);
             });
 
             it('should replace the task participant list with an edited one on close', function () {
@@ -135,7 +162,7 @@
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.criteria()).toEqual([3,4]);
                 expect(actualOptions.resolve.participants()).toEqual([1,2]);
-                expect(actualOptions.resolve.task()).toEqual({});
+                expect(actualOptions.resolve.task()).toEqual(mock.task);
             });
 
             it('should replace the task and participants with the response', function () {

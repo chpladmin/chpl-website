@@ -12,62 +12,18 @@
   </div>
   <div class="modal-body">
     <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Category</th>
+          <th scope="col">Description</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
       <tbody>
         <tr>
+          <th scope="rowgroup" rowspan="2">Summary</th>
           <th scope="row">Task Description</th>
           <td>{{ vm.task.description }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Task Errors</th>
-          <td>{{ vm.task.taskErrors }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Task Errors Standard Deviation</th>
-          <td>{{ vm.task.taskErrorsStddev }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Path Deviation Observed</th>
-          <td>{{ vm.task.taskPathDeviationObserved }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Path Deviation Optimal</th>
-          <td>{{ vm.task.taskPathDeviationOptimal }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Task Rating</th>
-          <td>{{ vm.task.taskRating }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Task Rating Standard Deviation</th>
-          <td>{{ vm.task.taskRatingStddev }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Rating Scale</th>
-          <td>{{ vm.task.taskRatingScale }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Task Success Average</th>
-          <td>{{ vm.task.taskSuccessAverage }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Task Success Standard Deviation</th>
-          <td>{{ vm.task.taskSuccessStddev }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Time Average</th>
-          <td>{{ vm.task.taskTimeAvg }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Time Deviation Observed Average</th>
-          <td>{{ vm.task.taskTimeDeviationObservedAvg }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Time Deviation Optimal Average</th>
-          <td>{{ vm.task.taskTimeDeviationOptimalAvg }}</td>
-        </tr>
-        <tr>
-          <th scope="row">Time Standard Deviation</th>
-          <td>{{ vm.task.taskTimeStddev }}</td>
         </tr>
         <tr>
           <th scope="row">Associated Certification Criteria</th>
@@ -78,8 +34,72 @@
           </td>
         </tr>
         <tr>
-          <th scope="row">Participants</th>
-          <td><button class="btn btn-ai-success" ng-click="vm.viewParticipants()"><i class="fa fa-users"></i> {{ vm.task.testParticipants.length }} <span class="sr-only">View participant details</span></button></td>
+          <th scope="rowgroup" rowspan="3">Rating</th>
+          <th scope="row">Rating Scale</th>
+          <td>{{ vm.task.taskRatingScale }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Rating</th>
+          <td>{{ vm.task.taskRating }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Rating - Standard Deviation</th>
+          <td>{{ vm.task.taskRatingStddev }}</td>
+        </tr>
+        <tr>
+          <th scope="rowgroup" rowspan="3">Task Time</th>
+          <th scope="row">Task Time - Mean (s)</th>
+          <td>{{ vm.task.taskTimeAvg }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Time - Standard Deviation (s)</th>
+          <td>{{ vm.task.taskTimeStddev }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Time Deviation - Observed/Optimal (s)</th>
+          <td>{{ vm.task.taskTimeDeviationObservedAvg }} / {{ vm.task.taskTimeDeviationOptimalAvg }}</td>
+        </tr>
+        <tr>
+          <th scope="rowgroup" rowspan="2">Task Success</th>
+          <th scope="row">Task Success - Mean (%)</th>
+          <td>{{ vm.task.taskSuccessAverage }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Success - Standard Deviation (%)</th>
+          <td>{{ vm.task.taskSuccessStddev }}</td>
+        </tr>
+        <tr>
+          <th scope="rowgroup" rowspan="3">Task Errors</th>
+          <th scope="row">Task Errors - Mean (%)</th>
+          <td>{{ vm.task.taskErrors }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Errors - Standard Deviation (%)</th>
+          <td>{{ vm.task.taskErrorsStddev }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Task Path Deviation - Observed/Optimal (# of Steps)</th>
+          <td>{{ vm.task.taskPathDeviationObserved }} / {{ vm.task.taskPathDeviationOptimal }}</td>
+        </tr>
+        <tr>
+          <th scope="rowgroup" rowspan="3">Participants<br />
+            <a href ng-click="vm.viewParticipants()"><i class="fa fa-eye"></i> View details</a>
+            <!--<button class="btn btn-ai-success" ng-click="vm.viewParticipants()"><i class="fa fa-users"></i><span class="sr-only">View participant details</span></button>-->
+          </th>
+          <th scope="row">Total Number of Participants</th>
+          <td>{{ vm.task.testParticipants.length }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Occupation Breakdown</th>
+          <td>
+            <ul>
+              <li ng-repeat="occ in vm.occupations | orderBy: 'name'">{{ occ.name }}: {{ occ.count }} / {{ vm.task.testParticipants.length }} ( {{ 100 * occ.count / vm.task.testParticipants.length | number }}%)</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Product Experience - Mean (Months)</th>
+          <td>{{ vm.meanProductExperience | number }}</td>
         </tr>
       </tbody>
     </table>
