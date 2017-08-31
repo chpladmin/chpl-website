@@ -164,8 +164,8 @@
                         expect(vm.csvData.name).toBe('15.04.04.2891.Alls.17.1.1.170512.sed.csv');
                         expect(vm.csvData.values[0]).toEqual([
                             'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
-                            'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
-                            'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
+                            'Task Description', 'Rating Scale', 'Task Rating', 'Task Rating - Standard Deviation', 'Task Time Mean (s)', 'Task Time - Standard Deviation (s)', 'Task Time Deviation - Observed (s)', 'Task Time Deviation - Optimal (s)', 'Task Success - Mean (%)', 'Task Success - Standard Deviation (%)', 'Task Errors - Mean (%)', 'Task Errors - Standard Deviation (%)', 'Task Path Deviation - Observed (# of Steps)', 'Task Path Deviation - Optimal (# of Steps)',
+                            'Occupation', 'Education Type', 'Product Experience (Months)', 'Professional Experience (Months)', 'Computer Experience (Months)', 'Age (Years)', 'Gender', 'Assistive Technology Needs',
                         ]);
                     });
 
@@ -173,8 +173,8 @@
                         expect(vm.csvData.values.length).toBe(127);
                         expect(vm.csvData.values[1]).toEqual([
                             '15.04.04.2891.Alls.17.1.1.170512', 'Allscripts', 'Allscripts TouchWorks EHR', '17.1 GA', '170.315 (a)(1)',
-                            'Order specific medication and then change the order based on the information provided.', 19, 2, 10, 8, 80, 1, 'System Usability Scale', 88.56, 8, 120, 17, 8, 10,
-                            '50-59', 'No', 250, 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 'Female', 'MD', 15, 200,
+                            'Order specific medication and then change the order based on the information provided.', 'System Usability Scale', 80, 1, 120, 10, 17, 8, 88.56, 8, 19, 2, 10, 8,
+                            'MD', 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 15, 200, 250, '50-59', 'Female', 'No',
                         ]);
                     });
 
@@ -185,8 +185,8 @@
                     it('should combine criteria under the same task', function () {
                         expect(vm.csvData.values[126]).toEqual([
                             '15.04.04.2891.Alls.17.1.1.170512', 'Allscripts', 'Allscripts TouchWorks EHR', '17.1 GA', '170.315 (a)(5);170.315 (a)(6);170.315 (a)(7);170.315 (a)(8);170.315 (a)(9);170.315 (a)(14)',
-                            'Task for (a)(5)', 12, 3, 7, 4, 86, 3, 'System Usability Scale', 66.12, 8, 133, 13, 9, 12,
-                            '30-39', 'Yes, used VoiceOver', 210, 'Associate degree', 'Male', 'RN', 14, 140,
+                            'Task for (a)(5)', 'System Usability Scale', 86, 3, 133, 12, 13, 9, 66.12, 8, 12, 3, 7, 4,
+                            'RN', 'Associate degree', 14, 140, 210, '30-39', 'Male', 'Yes, used VoiceOver',
                         ]);
                     });
                 });
@@ -267,8 +267,8 @@
                             expect(vm.csvData.name).toBe('15.07.07.1447.EI97.62.01.1.160402.sed.csv');
                             expect(vm.csvData.values[0]).toEqual([
                                 'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
-                                'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
-                                'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
+                                'Task Description', 'Rating Scale', 'Task Rating', 'Task Rating - Standard Deviation', 'Task Time Mean (s)', 'Task Time - Standard Deviation (s)', 'Task Time Deviation - Observed (s)', 'Task Time Deviation - Optimal (s)', 'Task Success - Mean (%)', 'Task Success - Standard Deviation (%)', 'Task Errors - Mean (%)', 'Task Errors - Standard Deviation (%)', 'Task Path Deviation - Observed (# of Steps)', 'Task Path Deviation - Optimal (# of Steps)',
+                                'Occupation', 'Education Type', 'Product Experience (Months)', 'Professional Experience (Months)', 'Computer Experience (Months)', 'Age (Years)', 'Gender', 'Assistive Technology Needs',
                             ]);
                         });
 
@@ -276,8 +276,8 @@
                             expect(vm.csvData.values.length).toBe(127);
                             expect(vm.csvData.values[1]).toEqual([
                                 '15.07.07.1447.EI97.62.01.1.160402', 'Epic Systems Corporation', 'EpicCare Inpatient - Core EMR', 'testV2', '170.315 (a)(1)',
-                                'Order specific medication and then change the order based on the information provided.', 19, 2, 10, 8, 80, 1, 'System Usability Scale', 88.56, 8, 120, 17, 8, 10,
-                                '50-59', 'No', 250, 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 'Female', 'MD', 15, 200,
+                                'Order specific medication and then change the order based on the information provided.', 'System Usability Scale', 80, 1, 120, 10, 17, 8, 88.56, 8, 19, 2, 10, 8,
+                                'MD', 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 15, 200, 250, '50-59', 'Female', 'No',
                             ]);
                         });
 
@@ -288,8 +288,8 @@
                         it('should combine criteria under the same task', function () {
                             expect(vm.csvData.values[126]).toEqual([
                                 '15.07.07.1447.EI97.62.01.1.160402', 'Epic Systems Corporation', 'EpicCare Inpatient - Core EMR', 'testV2', '170.315 (a)(5);170.315 (a)(6);170.315 (a)(7);170.315 (a)(8);170.315 (a)(9);170.315 (a)(14)',
-                                'Task for (a)(5)', 12, 3, 7, 4, 86, 3, 'System Usability Scale', 66.12, 8, 133, 13, 9, 12,
-                                '30-39', 'Yes, used VoiceOver', 210, 'Associate degree', 'Male', 'RN', 14, 140,
+                                'Task for (a)(5)', 'System Usability Scale', 86, 3, 133, 12, 13, 9, 66.12, 8, 12, 3, 7, 4,
+                                'RN', 'Associate degree', 14, 140, 210, '30-39', 'Male', 'Yes, used VoiceOver',
                             ]);
                         });
                     });
