@@ -67,7 +67,7 @@
           </tr>
         </tfoot>
         <tbody>
-          <tr ng-repeat="task in vm.tasks | orderBy: [vm.sortTasks, 'description']">
+          <tr ng-repeat="task in vm.tasks | orderBy: 'description'">
             <td>{{ task.description }}</td>
             <td>{{ task.taskRating }} ({{ task.taskRatingScale }})</td>
             <td><button class="btn btn-ai-success" ng-click="vm.viewTask(task)"><i class="fa fa-eye"></i> Details</button></td>
