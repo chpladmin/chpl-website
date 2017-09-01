@@ -468,7 +468,7 @@
         }
 
         function getUsers () {
-            return apiGET('/users');
+            return apiGET('/users/');
         }
 
         function getUsersAtAcb (acbId) {

@@ -18,7 +18,7 @@
         });
 
     /** @ngInject */
-    function CmsController ($log, API, FileUploader, authService, networkService) {
+    function CmsController ($location, $log, API, FileUploader, authService, networkService) {
         var vm = this;
 
         vm.getDownload = getDownload;
@@ -63,6 +63,7 @@
                 vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.meaningfulUseUsers.length + ' certified products out of ' + (response.errors.length + response.meaningfulUseUsers.length) + ' were updated with meaningful use user counts.';
                 vm.uploadErrors = response.errors;
                 vm.uploadSuccess = true;
+                $location.url('/admin/jobsManagement');
             };
             vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
                 $log.info('onCompleteItem', fileItem, response, status, headers);

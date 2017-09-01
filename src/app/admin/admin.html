@@ -54,7 +54,7 @@
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" class="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('jobsManagement')">Jobs Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" ng-if="vm.isChplAdmin() || vm.isOncStaff()"><a href="" class="" ng-click="vm.changeScreen('jobsManagement')">Jobs Management</a></li>
           </ul>
         </div>
       </div>
