@@ -84,7 +84,6 @@
         <tr>
           <th scope="rowgroup" rowspan="3">Participants<br />
             <a href ng-click="vm.viewParticipants()"><i class="fa fa-eye"></i> View details</a>
-            <!--<button class="btn btn-ai-success" ng-click="vm.viewParticipants()"><i class="fa fa-users"></i><span class="sr-only">View participant details</span></button>-->
           </th>
           <th scope="row">Total Number of Participants</th>
           <td>{{ vm.task.testParticipants.length }}</td>
@@ -93,7 +92,7 @@
           <th scope="row">Occupation Breakdown</th>
           <td>
             <ul>
-              <li ng-repeat="occ in vm.occupations | orderBy: 'name'">{{ occ.name }}: {{ occ.count }} / {{ vm.task.testParticipants.length }} ( {{ 100 * occ.count / vm.task.testParticipants.length | number }}%)</li>
+              <li ng-repeat="occ in vm.occupations | orderBy: ['-count', 'name']">{{ occ.name }}: {{ occ.count }} / {{ vm.task.testParticipants.length }} ( {{ 100 * occ.count / vm.task.testParticipants.length | number }}%)</li>
             </ul>
           </td>
         </tr>
