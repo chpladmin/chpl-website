@@ -23,8 +23,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="listing in vm.icsFamily | orderBy:'chplId'">
-              <td><a href="#/product/{{ listing.id }}/additional">{{ listing.chplId }}</a></td>
+            <tr ng-repeat="listing in vm.icsFamily | orderBy:'chplProductNumber'">
+              <td><a href="#/product/{{ listing.id }}/additional">{{ listing.chplProductNumber }}</a></td>
               <td>{{ listing.certificationStatus.name }}</td>
               <td><ul><li ng-repeat="parent in listing.parents | orderBy:'chplProductNumber'">{{ parent.chplProductNumber }}</li></ul></td>
               <td><ul><li ng-repeat="child in listing.children | orderBy:'chplProductNumber'">{{ child.chplProductNumber }}</li></ul></td>

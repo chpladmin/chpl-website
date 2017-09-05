@@ -124,8 +124,8 @@
                     group: 'nodes',
                     data: {
                         id: vm.icsFamily[i].id,
-                        chplId: vm.icsFamily[i].chplId,
-                        label: vm.icsFamily[i].chplId + '\n' + vm.icsFamily[i].certificationStatus.name,
+                        chplProductNumber: vm.icsFamily[i].chplProductNumber,
+                        label: vm.icsFamily[i].chplProductNumber + '\n' + vm.icsFamily[i].certificationStatus.name,
                         details: vm.icsFamily[i],
                     },
                 };
