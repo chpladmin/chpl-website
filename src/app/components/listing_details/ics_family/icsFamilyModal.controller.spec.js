@@ -122,6 +122,7 @@
                     id: mock.icsFamily[0].id,
                     chplId: mock.icsFamily[0].chplId,
                     label: mock.icsFamily[0].chplId + '\n' + mock.icsFamily[0].certificationStatus.name,
+                    details: mock.icsFamily[0],
                 });
             });
 

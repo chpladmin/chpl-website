@@ -2,7 +2,7 @@
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Close modal"
             ng-click="vm.close()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="modalLabel">ICS Family Tree</h4>
+    <h4 class="modal-title" id="modalLabel">ICS Relationship</h4>
   </div>
   <div class="modal-body">
     <figure>
@@ -10,24 +10,24 @@
                  graph-options="vm.icsOptions" graph-elements="vm.icsElements" graph-layout="vm.icsLayout" graph-style="vm.icsStyle" graph-ready="vm.icsCyGraphReady">
       </cytoscape>
       <figcaption class="sr-only">
-    	<h6>Overview</h6>
-    	<p>The image shows the ICS relationship between related Listings</p>
-    	<h6>Values</h6>
+    	<h5>Overview</h5>
+    	<p>The image shows the ICS relationship between related Products</p>
+    	<h5>Values</h5>
     	<table class="table table-condensed">
           <thead>
             <tr>
-              <th scope="col">Listing ID</th>
+              <th scope="col">Product ID</th>
               <th scope="col">Certification Status</th>
-              <th scope="col">Parent(s)</th>
-              <th scope="col">Child(ren)</th>
+              <th scope="col">Inherits from</th>
+              <th scope="col">Source for</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="listing in vm.icsFamily | orderBy:'chplId'">
-              <td>{{ listing.chplId }}</td>
+              <td><a href="#/product/{{ listing.id }}/additional">{{ listing.chplId }}</a></td>
               <td>{{ listing.certificationStatus.name }}</td>
-              <td><ul><li ng-repeat="parent in listing.parents | orderBy:'chplId'">{{ parent.chplId }}</li></ul></td>
-              <td><ul><li ng-repeat="child in listing.children | orderBy:'chplId'">{{ child.chplId }}</li></ul></td>
+              <td><ul><li ng-repeat="parent in listing.parents | orderBy:'chplProductNumber'">{{ parent.chplProductNumber }}</li></ul></td>
+              <td><ul><li ng-repeat="child in listing.children | orderBy:'chplProductNumber'">{{ child.chplProductNumber }}</li></ul></td>
             </tr>
           </tbody>
     	</table>
@@ -35,7 +35,7 @@
     </figure>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-ai-success pull-right" ng-click="vm.compare()">Compare all Listings</button>
+    <button class="btn btn-ai-success pull-right" ng-click="vm.compare()">Compare all Products</button>
     <button class="btn btn-default pull-left" ng-click="vm.close()">Close</button>
   </div>
 </div>

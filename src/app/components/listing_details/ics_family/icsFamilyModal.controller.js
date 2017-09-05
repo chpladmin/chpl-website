@@ -5,7 +5,7 @@
         .controller('IcsFamilyController', IcsFamilyController);
 
     /** @ngInject */
-    function IcsFamilyController ($location, $log, $scope, $uibModalInstance, cytoData, family, listing) {
+    function IcsFamilyController ($location, $log, $scope, $uibModal, $uibModalInstance, cytoData, family, listing) {
         var vm = this;
 
         vm.close = close;
@@ -36,7 +36,7 @@
 
         function prepareIcsGraph () {
             vm.icsOptions = {
-                //autoungrabify: true,
+                autoungrabify: true,
                 //userPanningEnabled: true,
                 //userZoomingEnabled: true,
                 minZoom: .3,
@@ -80,7 +80,7 @@
                 {
                     selector: 'node[?active]',
                     style: {
-                        'background-color': 'red',
+                        'background-color': 'green',
                     },
                 },
                 {
@@ -98,18 +98,25 @@
             $scope.$on('cy:node:click', function (ng, cy) {
                 var node = cy.cyTarget;
                 $log.info('click', cy, node.data());
-            });
-            /*
-            cytoData.getGraph('ics-cytoscape').then(function (graph) {
-                angular.forEach(vm.icsElements, function (ele) {
-                    if (ele.data.chplId) {
-                      ele.data.label = ele.data.chplId;
+                vm.uibModalInstance = $uibModal.open({
+                    templateUrl: 'app/components/listing_details/ics_family/icsFamilyDetail.html',
+                    controller: 'IcsFamilyDetailController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    size: 'sm',
+                    resolve: {
+                        active: function () { return node.data().active; },
+                        listing: function () { return node.data().details; },
+                    },
+                });
+                vm.uibModalInstance.result.then(function (result) {
+                    if (result === 'navigated') {
+                        $uibModalInstance.close('navigated');
                     }
                 });
-                vm.graphPng = graph.png();
-                vm.icsImageGenerated = true;
             });
-            */
 
             var edge, i, j, node;
             for (i = 0; i < vm.icsFamily.length; i++) {
@@ -119,6 +126,7 @@
                         id: vm.icsFamily[i].id,
                         chplId: vm.icsFamily[i].chplId,
                         label: vm.icsFamily[i].chplId + '\n' + vm.icsFamily[i].certificationStatus.name,
+                        details: vm.icsFamily[i],
                     },
                 };
                 if (node.data.id === vm.listing.id) {
