@@ -41,14 +41,14 @@
     <div ng-if="!vm.idFields">
       <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="vm.cp.certificationEdition.name === '2014'">
       <label for="cpPractice">Practice Type</label>
       <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice" name="cpPractice"
               ng-options="practice as practice.name for practice in vm.practices" required>
       </select>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpPractice.$touched) && vm.editForm.cpPractice.$error.required">Field is required</div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="vm.cp.certificationEdition.name === '2014'">
       <label for="cpClassification">Classification Type</label>
       <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cpClassification" name="cpClassification"
               ng-options="classification as classification.name for classification in vm.classifications" required>
@@ -135,7 +135,7 @@
           <div class="col-sm-6">
             <div class="input-group">
               <input type="text" class="form-control" ng-model="vm.newIcsParentOther.chplProductNumber" id="newIcsParentOther" name="newIcsParentOther"
-                     ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d\.[01]\.\d{6}$/">
+                     ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d{2}\.[01]\.\d{6}$/">
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.ics.parents, vm.newIcsParentOther); vm.newIcsParentOther = ''" ng-disabled="!vm.newIcsParentOther || vm.editForm.newIcsParentOther.$error.pattern"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.newIcsParentOther.$touched) && vm.editForm.newIcsParentOther.$error.pattern">Improper format</div>
@@ -194,7 +194,8 @@
     </div>
     <div class="form-group">
       <label for="cpReportFileLoc">Report File Location</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc" name="cpReportFileLoc" ng-maxlength="250"></input>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc" name="cpReportFileLoc" ng-maxlength="250" ng-required="vm.cp.certificationEdition.name === '2014'"></input>
+      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.maxlength">Field is too long</div>
     </div>
@@ -298,6 +299,7 @@
         <li ng-if="vm.editForm.cpAcbCertId.$error.maxlength">ACB Certification ID is too long</li>
         <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.url">Mandatory Disclosures URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.maxlength">Mandatory Disclosures URL is too long</li>
+        <li ng-if="vm.editForm.cpReportFileLoc.$error.required">Report File Location URL is required</li>
         <li ng-if="vm.editForm.cpReportFileLoc.$error.url">Report File Location URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpReportFileLoc.$error.maxlength">Report File Locaiton URL is too long</li>
         <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</li>

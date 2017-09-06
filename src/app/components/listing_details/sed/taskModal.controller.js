@@ -24,6 +24,7 @@
             vm.editMode = editMode;
             vm.participants = participants;
             vm.task = task;
+            parseParticipants();
         }
 
         function cancel () {
@@ -88,6 +89,28 @@
                 vm.task.testParticipants = result.participants;
                 vm.participants = result.allParticipants;
             });
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function parseParticipants () {
+            vm.occupations = [];
+            var prodExpTotal = 0;
+            var occupationObj = {};
+            angular.forEach(vm.task.testParticipants, function (part) {
+                prodExpTotal += part.productExperienceMonths;
+                if (angular.isUndefined(occupationObj[part.occupation])) {
+                    occupationObj[part.occupation] = 0;
+                }
+                occupationObj[part.occupation] += 1;
+            });
+            angular.forEach(occupationObj, function (value, key) {
+                vm.occupations.push({
+                    name: key,
+                    count: value,
+                });
+            });
+            vm.meanProductExperience = prodExpTotal / vm.task.testParticipants.length;
         }
     }
 })();

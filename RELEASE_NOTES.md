@@ -8,9 +8,12 @@
 ## Version TBD
 _Date TBD_
 
-## New features
+### New features
 * Improved SED view/edit
 * Add indicator to criteria edit screen when "phantom" data exists
+
+### Text changes
+* Added "date of last modification" for XSD files
 
 ---
 

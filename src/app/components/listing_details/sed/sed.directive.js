@@ -201,8 +201,8 @@
                     name: vm.listing.chplProductNumber + '.sed.csv',
                     values: [[
                         'Unique CHPL ID', 'Developer', 'Product', 'Version', 'Certification Criteria',
-                        'Task Description', 'Task Errors', 'Task Errors Standard Deviation', 'Path Deviation Observed', 'Path Deviation Optimal', 'Task Rating', 'Task Rating Standard Deviation', 'Rating Scale', 'Task Success Average', 'Task Success Standard Deviation', 'Time Average', 'Time Deviation Observed Average', 'Time Deviation Optimal Average', 'Time Standard Deviation',
-                        'Age', 'Assistive Technology Needs', 'Computer Experience (Months)', 'Education Type', 'Gender', 'Occupation', 'Product Experience (Months)', 'Professional Experience (Months)',
+                        'Task Description', 'Rating Scale', 'Task Rating', 'Task Rating - Standard Deviation', 'Task Time Mean (s)', 'Task Time - Standard Deviation (s)', 'Task Time Deviation - Observed (s)', 'Task Time Deviation - Optimal (s)', 'Task Success - Mean (%)', 'Task Success - Standard Deviation (%)', 'Task Errors - Mean (%)', 'Task Errors - Standard Deviation (%)', 'Task Path Deviation - Observed (# of Steps)', 'Task Path Deviation - Optimal (# of Steps)',
+                        'Occupation', 'Education Type', 'Product Experience (Months)', 'Professional Experience (Months)', 'Computer Experience (Months)', 'Age (Years)', 'Gender', 'Assistive Technology Needs',
                     ]],
                 };
 
@@ -224,19 +224,19 @@
 
                     csvRow[4] = task.criteria.map(function (item) { return item.number; }).join(';');
                     csvRow[TASK_START + 0] = task.description;
-                    csvRow[TASK_START + 1] = task.taskErrors;
-                    csvRow[TASK_START + 2] = task.taskErrorsStddev;
-                    csvRow[TASK_START + 3] = task.taskPathDeviationObserved;
-                    csvRow[TASK_START + 4] = task.taskPathDeviationOptimal;
-                    csvRow[TASK_START + 5] = task.taskRating;
-                    csvRow[TASK_START + 6] = task.taskRatingStddev;
-                    csvRow[TASK_START + 7] = task.taskRatingScale;
+                    csvRow[TASK_START + 1] = task.taskRatingScale;
+                    csvRow[TASK_START + 2] = task.taskRating;
+                    csvRow[TASK_START + 3] = task.taskRatingStddev;
+                    csvRow[TASK_START + 4] = task.taskTimeAvg;
+                    csvRow[TASK_START + 5] = task.taskTimeStddev;
+                    csvRow[TASK_START + 6] = task.taskTimeDeviationObservedAvg;
+                    csvRow[TASK_START + 7] = task.taskTimeDeviationOptimalAvg;
                     csvRow[TASK_START + 8] = task.taskSuccessAverage;
                     csvRow[TASK_START + 9] = task.taskSuccessStddev;
-                    csvRow[TASK_START + 10] = task.taskTimeAvg;
-                    csvRow[TASK_START + 11] = task.taskTimeDeviationObservedAvg;
-                    csvRow[TASK_START + 12] = task.taskTimeDeviationOptimalAvg;
-                    csvRow[TASK_START + 13] = task.taskTimeStddev;
+                    csvRow[TASK_START + 10] = task.taskErrors;
+                    csvRow[TASK_START + 11] = task.taskErrorsStddev;
+                    csvRow[TASK_START + 12] = task.taskPathDeviationObserved;
+                    csvRow[TASK_START + 13] = task.taskPathDeviationOptimal;
                     for (j = 0; j < task.testParticipants.length; j++) {
                         participant = task.testParticipants[j];
                         if (!participant.id) {
@@ -248,14 +248,14 @@
                             object.participants[participant.id].tasks = [];
                         }
                         object.participants[participant.id].tasks.push(task.id);
-                        csvRow[PART_START + 0] = participant.ageRange;
-                        csvRow[PART_START + 1] = participant.assistiveTechnologyNeeds;
-                        csvRow[PART_START + 2] = participant.computerExperienceMonths;
-                        csvRow[PART_START + 3] = participant.educationTypeName;
-                        csvRow[PART_START + 4] = participant.gender;
-                        csvRow[PART_START + 5] = participant.occupation;
-                        csvRow[PART_START + 6] = participant.productExperienceMonths;
-                        csvRow[PART_START + 7] = participant.professionalExperienceMonths;
+                        csvRow[PART_START + 0] = participant.occupation;
+                        csvRow[PART_START + 1] = participant.educationTypeName;
+                        csvRow[PART_START + 2] = participant.productExperienceMonths;
+                        csvRow[PART_START + 3] = participant.professionalExperienceMonths;
+                        csvRow[PART_START + 4] = participant.computerExperienceMonths;
+                        csvRow[PART_START + 5] = participant.ageRange;
+                        csvRow[PART_START + 6] = participant.gender;
+                        csvRow[PART_START + 7] = participant.assistiveTechnologyNeeds;
 
                         vm.csvData.values.push(angular.copy(csvRow));
                     }
