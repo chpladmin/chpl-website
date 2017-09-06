@@ -2,7 +2,14 @@
     'use strict';
 
     describe('the Jobs Management', function () {
-        var $compile, $log, $q, el, networkService, scope, vm;
+        var $compile, $log, $q, $timeout, el, mock, networkService, scope, vm;
+
+        mock = {
+            jobs: [
+                {id: 1, status: {status: 'In Progress'}},
+                {id: 2, status: {status: 'Complete'}},
+            ],
+        }
 
         beforeEach(function () {
             module('chpl.templates', 'chpl.admin', function ($provide) {
@@ -17,9 +24,10 @@
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
+                $timeout = _$timeout_;
                 networkService = _networkService_;
                 networkService.getJobTypes.and.returnValue($q.when([1,2]));
-                networkService.getJobs.and.returnValue($q.when({results: [1,2]}));
+                networkService.getJobs.and.returnValue($q.when({results: mock.jobs}));
 
                 el = angular.element('<ai-jobs-management></ai-jobs-management>');
 
@@ -64,6 +72,23 @@
 
             it('should load job types on load', function () {
                 expect(vm.jobTypes.length).toBe(2);
+            });
+
+            describe('when refreshing jobs', function () {
+                it('should refresh regularly', function () {
+                    expect(networkService.getJobs.calls.count()).toBe(1);
+                    $timeout.flush();
+                    expect(networkService.getJobs.calls.count()).toBe(2);
+                    $timeout.flush();
+                    expect(networkService.getJobs.calls.count()).toBe(3);
+                });
+
+                it('should cancel the timeout on scope destroy', function () {
+                    spyOn($timeout, 'cancel');
+                    expect($timeout.cancel).not.toHaveBeenCalled();
+                    el.isolateScope().$destroy();
+                    expect($timeout.cancel).toHaveBeenCalled();
+                });
             });
         });
     });

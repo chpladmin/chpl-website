@@ -18,7 +18,7 @@
         });
 
     /** @ngInject */
-    function CmsController ($location, $log, API, FileUploader, authService, networkService) {
+    function CmsController ($location, $log, $route, API, FileUploader, authService, networkService) {
         var vm = this;
 
         vm.getDownload = getDownload;
@@ -60,10 +60,11 @@
             });
             vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                 $log.info('onSuccessItem', fileItem, response, status, headers);
-                vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.meaningfulUseUsers.length + ' certified products out of ' + (response.errors.length + response.meaningfulUseUsers.length) + ' were updated with meaningful use user counts.';
-                vm.uploadErrors = response.errors;
-                vm.uploadSuccess = true;
-                $location.url('/admin/jobsManagement');
+                if ($location.url() !== '/admin/jobsManagement') {
+                    $location.url('/admin/jobsManagement');
+                } else {
+                    $route.reload();
+                }
             };
             vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
                 $log.info('onCompleteItem', fileItem, response, status, headers);

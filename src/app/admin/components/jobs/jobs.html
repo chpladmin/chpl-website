@@ -20,21 +20,31 @@
       </table>
       <h3>Running and recently completed Jobs</h3>
       <p ng-if="!vm.jobs || vm.jobs.length === 0">No jobs are currently in progress</p>
-      <table class="table" ng-if="vm.jobs && vm.jobs.length > 0">
+      <table class="table nowrap" ng-if="vm.jobs && vm.jobs.length > 0">
         <thead>
           <tr>
             <th scope="col">Job Name</th>
             <th scope="col">Initiator</th>
             <th scope="col">Start Time</th>
             <th scope="col">End Time</th>
+            <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="job in vm.jobs | orderBy: '-startTime'">
+          <tr ng-repeat="job in vm.jobs | orderBy: '-startTime' track by job.id">
             <td>{{ job.type.name }}</td>
             <td>{{ job.user.firstName }} {{ job.user.lastName }} ({{ job.user.email }})</td>
-            <td>{{ job.startTime | date : 'mediumDate' : 'UTC' }}</td>
-            <td>{{ job.endTime | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ job.startTime | date : 'medium' : 'UTC' }} UTC</td>
+            <td>{{ job.endTime | date : 'medium' : 'UTC' }} <span ng-if="job.endTime">UTC</span></td>
+            <td>
+              <uib-progressbar max="100" value="job.status.percentComplete" type="success"
+                               ng-class="job.status.status !== 'Complete' ? 'progress-striped active' : ''" title="Percentage Complete">
+                {{ job.status.percentComplete }}%
+              </uib-progressbar>
+              <ul>
+                <li ng-repeat="message in job.messages | orderBy:'toString()'">{{ message }}</li>
+              </ul>
+            </td>
           </tr>
         </tbody>
       </table>
