@@ -13,6 +13,12 @@
                 controllerAs: 'vm',
                 title: 'CHPL Administration',
             })
+            .when('/charts', {
+                controller: 'ChartsController',
+                controllerAs: 'vm',
+                templateUrl: 'app/charts/charts.html',
+                title: 'CHPL Charts',
+            })
             .when('/collections/apiDocumentation', {
                 controller: 'ApiDocumentationController',
                 controllerAs: 'vm',

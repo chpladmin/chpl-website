@@ -585,22 +585,6 @@
             $httpBackend.flush();
         });
 
-        it('should getSubscriptionRecipients', function () {
-            $httpBackend.expectGET(/notifications\/recipients/).respond(200, {data: 'response'});
-            networkService.getSubscriptionRecipients().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getSubscriptionReportTypes', function () {
-            $httpBackend.expectGET(/data\/notification_types/).respond(200, {data: 'response'});
-            networkService.getSubscriptionReportTypes().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should getPractices', function () {
             $httpBackend.expectGET(/data\/practice_types/).respond(200, {data: 'response'});
             networkService.getPractices().then(function (response) {
@@ -697,6 +681,38 @@
         it('should getSingleCertifiedProductActivity', function () {
             $httpBackend.expectGET(/activity\/certified_products\/payload/).respond(200, {data: 'response'});
             networkService.getSingleCertifiedProductActivity('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getStatisticTypes', function () {
+            $httpBackend.expectGET(/data\/statistic_types/).respond(200, {data: 'response'});
+            networkService.getStatisticTypes().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getStatistics', function () {
+            $httpBackend.expectGET(/statistics\/1/).respond(200, {data: 'response'});
+            networkService.getStatistics(1).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSubscriptionRecipients', function () {
+            $httpBackend.expectGET(/notifications\/recipients/).respond(200, {data: 'response'});
+            networkService.getSubscriptionRecipients().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSubscriptionReportTypes', function () {
+            $httpBackend.expectGET(/data\/notification_types/).respond(200, {data: 'response'});
+            networkService.getSubscriptionReportTypes().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
