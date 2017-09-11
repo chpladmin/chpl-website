@@ -2,7 +2,7 @@
     'use strict';
 
     describe('cms directive', function () {
-        var $log, $q, authService, commonService, el, vm;
+        var $log, $q, authService, el, networkService, vm;
 
         var mock = {};
         mock.muuAccurateAsOfDate = new Date('2017-01-13');
@@ -11,7 +11,7 @@
         beforeEach(function () {
             module('chpl.templates');
             module('chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCmsDownload = jasmine.createSpy('getCmsDownload');
                     $delegate.getMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('getMeaningfulUseUsersAccurateAsOfDate');
                     $delegate.setMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('setMeaningfulUseUsersAccurateAsOfDate');
@@ -27,13 +27,13 @@
                 });
             });
 
-            inject(function ($compile, _$log_, _$q_, $rootScope, _authService_, _commonService_) {
+            inject(function ($compile, _$log_, _$q_, $rootScope, _authService_, _networkService_) {
                 $q = _$q_;
                 $log = _$log_;
-                commonService = _commonService_;
-                commonService.getCmsDownload.and.returnValue($q.when({}));
-                commonService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.muuAccurateAsOfDate}));
-                commonService.setMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.newMuuAccurateDate}));
+                networkService = _networkService_;
+                networkService.getCmsDownload.and.returnValue($q.when({}));
+                networkService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.muuAccurateAsOfDate}));
+                networkService.setMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.newMuuAccurateDate}));
                 authService = _authService_;
                 authService.isAcbAdmin.and.returnValue(true);
                 authService.isOncStaff.and.returnValue(true);
@@ -71,7 +71,7 @@
             vm.muuAccurateAsOfDateObject = mock.newMuuAccurateDate;
             vm.setMeaningfulUseUsersAccurateAsOfDate();
             el.isolateScope().$digest();
-            expect(commonService.setMeaningfulUseUsersAccurateAsOfDate).toHaveBeenCalledWith({accurateAsOfDate: mock.newMuuAccurateDate.getTime()});
+            expect(networkService.setMeaningfulUseUsersAccurateAsOfDate).toHaveBeenCalledWith({accurateAsOfDate: mock.newMuuAccurateDate.getTime()});
             expect(vm.muuAccurateAsOf).toEqual(mock.newMuuAccurateDate);
         });
     });

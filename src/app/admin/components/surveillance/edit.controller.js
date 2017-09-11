@@ -5,7 +5,7 @@
         .controller('EditSurveillanceController', EditSurveillanceController);
 
     /** @ngInject */
-    function EditSurveillanceController ($log, $uibModal, $uibModalInstance, authService, commonService, surveillance, surveillanceTypes, utilService, workType) {
+    function EditSurveillanceController ($log, $uibModal, $uibModalInstance, authService, networkService, surveillance, surveillanceTypes, utilService, workType) {
         var vm = this;
 
         vm.addRequirement = addRequirement;
@@ -93,7 +93,7 @@
         }
 
         function deleteSurveillance () {
-            commonService.deleteSurveillance(vm.surveillance.id)
+            networkService.deleteSurveillance(vm.surveillance.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                         $uibModalInstance.close(response);
@@ -196,7 +196,7 @@
                     }
                 }
                 vm.surveillance.certifiedProduct.edition = vm.surveillance.certifiedProduct.certificationEdition.name;
-                commonService.initiateSurveillance(vm.surveillance)
+                networkService.initiateSurveillance(vm.surveillance)
                     .then(function (response) {
                         if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                             $uibModalInstance.close(response);
@@ -213,7 +213,7 @@
                         }
                     });
             } else if (vm.workType === 'edit') {
-                commonService.updateSurveillance(vm.surveillance)
+                networkService.updateSurveillance(vm.surveillance)
                     .then(function (response) {
                         if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                             $uibModalInstance.close(response);

@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, commonService, developers, inspectingCp, isAcbAdmin, isAcbStaff, isChplAdmin, resources) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isAcbStaff, isChplAdmin, networkService, resources) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -68,7 +68,7 @@
 
         function loadDev () {
             if (vm.cp.developer.developerId) {
-                commonService.getDeveloper(vm.cp.developer.developerId)
+                networkService.getDeveloper(vm.cp.developer.developerId)
                     .then(function (result) {
                         vm.developer = result;
                     });
@@ -96,7 +96,7 @@
             if (!dev.developer.address.country) {
                 dev.developer.address.country = 'USA';
             }
-            commonService.updateDeveloper(dev)
+            networkService.updateDeveloper(dev)
                 .then(function () {
                     vm.loadDev();
                 });
@@ -104,7 +104,7 @@
 
         function loadPrd () {
             if (vm.developer && vm.developer.developerId) {
-                commonService.getProductsByDeveloper(vm.developer.developerId)
+                networkService.getProductsByDeveloper(vm.developer.developerId)
                     .then(function (result) {
                         vm.products = result.products;
                     });
@@ -112,7 +112,7 @@
                 vm.productChoice = 'create';
             }
             if (vm.cp.product.productId) {
-                commonService.getSimpleProduct(vm.cp.product.productId)
+                networkService.getSimpleProduct(vm.cp.product.productId)
                     .then(function (result) {
                         vm.product = result;
                     });
@@ -133,7 +133,7 @@
                 productIds: [vm.cp.product.productId],
                 newDeveloperId: vm.cp.developer.developerId,
             };
-            commonService.updateProduct(prd)
+            networkService.updateProduct(prd)
                 .then(function () {
                     vm.loadPrd();
                 });
@@ -141,7 +141,7 @@
 
         function loadVer () {
             if (vm.product && vm.product.productId) {
-                commonService.getVersionsByProduct(vm.product.productId)
+                networkService.getVersionsByProduct(vm.product.productId)
                     .then(function (result) {
                         vm.versions = result;
                     });
@@ -149,7 +149,7 @@
                 vm.versionChoice = 'create';
             }
             if (vm.cp.version.versionId) {
-                commonService.getVersion(vm.cp.version.versionId)
+                networkService.getVersion(vm.cp.version.versionId)
                     .then(function (result) {
                         vm.version = result;
                     });
@@ -169,14 +169,14 @@
                 },
                 versionIds: [vm.cp.version.versionId],
             };
-            commonService.updateVersion(ver)
+            networkService.updateVersion(ver)
                 .then(function () {
                     vm.loadVer();
                 });
         }
 
         function confirm () {
-            commonService.confirmPendingCp(vm.cp)
+            networkService.confirmPendingCp(vm.cp)
                 .then(function (result) {
                     $uibModalInstance.close({status: 'confirmed', developerCreated: vm.developerChoice === 'create', developer: result.developer});
                 }, function (error) {
@@ -193,7 +193,7 @@
         }
 
         function reject () {
-            commonService.rejectPendingCp(vm.cp.id)
+            networkService.rejectPendingCp(vm.cp.id)
                 .then(function () {
                     $uibModalInstance.close({status: 'rejected'});
                 }, function (error) {
@@ -306,9 +306,9 @@
 
         function loadFamily () {
             if (vm.product && vm.product.productId) {
-                commonService.getFamilyOfListing(vm.product.productId)
+                networkService.getRelatedListings(vm.product.productId)
                     .then(function (family) {
-                        vm.resources.relatedListings = family.listings;
+                        vm.resources.relatedListings = family.filter(function (item) { return item.edition === '2015' });
                     });
             }
         }

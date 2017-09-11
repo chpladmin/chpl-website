@@ -1,9 +1,21 @@
 # Release Notes
 
+## Version 9.4.0
+_11 September 2017_
+
+### New features
+* Improved SED view/edit
+* Add indicator to criteria edit screen when "phantom" data exists
+
+### Text changes
+* Added "date of last modification" for XSD files
+
+---
+
 ## Version 9.3.2
 _14 August 2017_
 
-### Bugs fixed
+### Bug fixed
 * Re-enabled CQM filter
 
 ---

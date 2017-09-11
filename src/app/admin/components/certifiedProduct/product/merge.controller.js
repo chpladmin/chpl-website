@@ -5,7 +5,7 @@
         .controller('MergeProductController', MergeProductController);
 
     /** @ngInject */
-    function MergeProductController ($uibModalInstance, commonService, developerId, products) {
+    function MergeProductController ($uibModalInstance, developerId, networkService, products) {
         var vm = this;
 
         vm.addPreviousOwner = addPreviousOwner;
@@ -19,7 +19,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            commonService.getDevelopers(true).then(function (developers) {
+            networkService.getDevelopers(true).then(function (developers) {
                 vm.developers = developers.developers;
             });
             vm.products = angular.copy(products);
@@ -65,7 +65,7 @@
             for (var i = 0; i < vm.product.ownerHistory.length; i++) {
                 vm.product.ownerHistory[i].transferDate = vm.product.ownerHistory[i].transferDate.getTime();
             }
-            commonService.updateProduct(vm.updateProduct)
+            networkService.updateProduct(vm.updateProduct)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

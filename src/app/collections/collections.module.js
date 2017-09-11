@@ -3,7 +3,7 @@
 
     angular.module('chpl.collections', [
         'ngStorage',
-        'chpl.common',
+        'chpl.services',
         'chpl.constants',
     ]);
 })();

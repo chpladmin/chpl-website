@@ -2,11 +2,11 @@
     'use strict';
 
     describe('the Surveillance Inspection controller', function () {
-        var $log, $q, $uibModal, Mock, actualOptions, commonService, scope, utilService, vm;
+        var $log, $q, $uibModal, Mock, actualOptions, networkService, scope, utilService, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.confirmPendingSurveillance = jasmine.createSpy('confirmPendingSurveillance');
                     $delegate.rejectPendingSurveillance = jasmine.createSpy('rejectPendingSurveillance');
                     $delegate.getSurveillanceLookups = jasmine.createSpy('getSurveillanceLookups');
@@ -18,13 +18,13 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _commonService_, _utilService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _networkService_, _utilService_) {
                 $log = _$log_;
                 $q = _$q_;
-                commonService = _commonService_;
-                commonService.confirmPendingSurveillance.and.returnValue($q.when([]));
-                commonService.rejectPendingSurveillance.and.returnValue($q.when([]));
-                commonService.getSurveillanceLookups.and.returnValue($q.when([]));
+                networkService = _networkService_;
+                networkService.confirmPendingSurveillance.and.returnValue($q.when([]));
+                networkService.rejectPendingSurveillance.and.returnValue($q.when([]));
+                networkService.getSurveillanceLookups.and.returnValue($q.when([]));
                 utilService = _utilService_;
                 utilService.sortRequirements.and.returnValue(1);
                 Mock = _Mock_;
@@ -160,35 +160,35 @@
             });
 
             it('should not dismiss the modal if confirmation fails', function () {
-                commonService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+                networkService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
                 vm.confirm();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should not dismiss the modal if rejection fails', function () {
-                commonService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
+                networkService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
                 vm.reject();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should have error messages if confirmation fails', function () {
-                commonService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                networkService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
                 vm.confirm();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([1,2]);
             });
 
             it('should have error messages if rejection fails', function () {
-                commonService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                networkService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
                 vm.reject();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([1,2]);
             });
 
             it('should have error messages as statusText if confirmation fails', function () {
-                commonService.confirmPendingSurveillance.and.returnValue($q.reject({statusText: 'an error', data: {}}));
+                networkService.confirmPendingSurveillance.and.returnValue($q.reject({statusText: 'an error', data: {}}));
                 vm.confirm();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual(['an error']);
@@ -196,7 +196,7 @@
 
             it('should dismiss the modal with the contact if the pending surveillance was already resolved on confirm', function () {
                 var contact = {name: 'person'};
-                commonService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+                networkService.confirmPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
                 vm.confirm();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({
@@ -208,7 +208,7 @@
 
             it('should dismiss the modal with the contact if the pending surveillance was already resolved on reject', function () {
                 var contact = {name: 'person'};
-                commonService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+                networkService.rejectPendingSurveillance.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
                 vm.reject();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({

@@ -2,10 +2,11 @@
     'use strict';
 
     describe('the Certified Product Edit controller', function () {
-        var $controller, $log, $q, $timeout, Mock, commonService, mock, scope, utilService, vm;
+        var $controller, $log, $q, $timeout, Mock, mock, networkService, scope, utilService, vm;
 
         mock = {};
         mock.activeCP = {
+            certificationEdition: {name: '2015'},
             certificationStatus: [],
             certifyingBody: [],
             chplProductNumber: 'CHP-123123',
@@ -28,7 +29,7 @@
 
         beforeEach(function () {
             module('chpl.admin', 'chpl.mock', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
                     $delegate.updateCP = jasmine.createSpy('updateCP');
                     return $delegate;
@@ -39,14 +40,14 @@
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$timeout_, _Mock_, _commonService_, _utilService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$timeout_, _Mock_, _networkService_, _utilService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
                 $timeout = _$timeout_;
-                commonService = _commonService_;
-                commonService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
-                commonService.updateCP.and.returnValue($q.when(mock));
+                networkService = _networkService_;
+                networkService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
+                networkService.updateCP.and.returnValue($q.when(mock));
                 Mock = _Mock_;
                 utilService = _utilService_;
                 utilService.extendSelect.and.returnValue([]);
@@ -138,7 +139,7 @@
 
         describe('when deailing with ics family', function () {
             it('should call the common service to get related listings', function () {
-                expect(commonService.getRelatedListings).toHaveBeenCalled();
+                expect(networkService.getRelatedListings).toHaveBeenCalled();
             });
 
             it('should load the related listings on load, without the 2014 ones', function () {
@@ -147,6 +148,60 @@
 
             it('should build an icsParents object if the Listing doesn\'t come with one', function () {
                 expect(vm.cp.ics.parents).toEqual([]);
+            });
+
+            it('should not load family if the listing is 2014', function () {
+                var callCount = networkService.getRelatedListings.calls.count();
+                var cp = angular.copy(mock.activeCP);
+                cp.certificationEdition = {name: '2014'};
+                vm = $controller('EditCertifiedProductController', {
+                    activeCP: cp,
+                    isAcbAdmin: true,
+                    isAcbStaff: true,
+                    isChplAdmin: true,
+                    resources: mock.resources,
+                    workType: 'manage',
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
+            });
+
+            it('should not load family if the product has no productId', function () {
+                var callCount = networkService.getRelatedListings.calls.count();
+                var cp = angular.copy(mock.activeCP);
+                cp.product = {productId: undefined};
+                vm = $controller('EditCertifiedProductController', {
+                    activeCP: cp,
+                    isAcbAdmin: true,
+                    isAcbStaff: true,
+                    isChplAdmin: true,
+                    resources: mock.resources,
+                    workType: 'manage',
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
+            });
+
+            it('should not load family if the product does not exist', function () {
+                var callCount = networkService.getRelatedListings.calls.count();
+                var cp = angular.copy(mock.activeCP);
+                cp.product = undefined;
+                vm = $controller('EditCertifiedProductController', {
+                    activeCP: cp,
+                    isAcbAdmin: true,
+                    isAcbStaff: true,
+                    isChplAdmin: true,
+                    resources: mock.resources,
+                    workType: 'manage',
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(networkService.getRelatedListings.calls.count()).toBe(callCount)
             });
 
             describe('when disabling related options', function () {
@@ -260,14 +315,14 @@
                 });
 
                 it('should close it\'s modal on a successful update', function () {
-                    commonService.updateCP.and.returnValue($q.when({status: 200}));
+                    networkService.updateCP.and.returnValue($q.when({status: 200}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
 
                 it('should report errors and turn off the saving flag', function () {
-                    commonService.updateCP.and.returnValue($q.when({status: 400, error: 'an error'}));
+                    networkService.updateCP.and.returnValue($q.when({status: 400, error: 'an error'}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual(['an error']);
@@ -275,7 +330,7 @@
                 });
 
                 it('should report errors on server data.error', function () {
-                    commonService.updateCP.and.returnValue($q.reject({data: {error: 'an error'}}));
+                    networkService.updateCP.and.returnValue($q.reject({data: {error: 'an error'}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual(['an error']);
@@ -283,7 +338,7 @@
                 });
 
                 it('should report errors on server data.errorMessages', function () {
-                    commonService.updateCP.and.returnValue($q.reject({data: {errorMessages: ['an error2']}}));
+                    networkService.updateCP.and.returnValue($q.reject({data: {errorMessages: ['an error2']}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual(['an error2']);
@@ -291,15 +346,15 @@
                 });
 
                 it('should report errors on server data.warningMessages', function () {
-                    commonService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
+                    networkService.updateCP.and.returnValue($q.reject({data: {warningMessages: ['an error3']}}));
                     vm.save();
                     scope.$digest();
-                    expect(vm.errors).toEqual(['an error3']);
+                    expect(vm.warnings).toEqual(['an error3']);
                     expect(vm.isSaving).toBe(false);
                 });
 
                 it('should report no errors if none were returned', function () {
-                    commonService.updateCP.and.returnValue($q.reject({}));
+                    networkService.updateCP.and.returnValue($q.reject({}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errors).toEqual([]);

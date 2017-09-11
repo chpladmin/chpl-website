@@ -5,7 +5,7 @@
         .controller('EditNonconformityController', EditNonconformityController);
 
     /** @ngInject */
-    function EditNonconformityController ($log, $uibModalInstance, API, FileUploader, authService, commonService, disableValidation, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, utilService, workType) {
+    function EditNonconformityController ($log, $uibModalInstance, API, FileUploader, authService, disableValidation, networkService, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, utilService, workType) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -57,7 +57,7 @@
         }
 
         function deleteDoc (docId) {
-            commonService.deleteSurveillanceDocument(vm.surveillanceId, vm.nonconformity.id, docId)
+            networkService.deleteSurveillanceDocument(vm.surveillanceId, vm.nonconformity.id, docId)
                 .then(function () {
                     for (var i = 0; i < vm.nonconformity.documents.length; i++) {
                         if (vm.nonconformity.documents[i].id === docId) {

@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Nonconformity Edit controller', function () {
-        var $controller, $log, $q, Mock, authService, commonService, scope, vm;
+        var $controller, $log, $q, Mock, authService, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
@@ -11,13 +11,13 @@
                     $delegate.getToken = jasmine.createSpy('getToken');
                     return $delegate;
                 });
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.deleteSurveillanceDocument = jasmine.createSpy('deleteSurveillanceDocument');
                     return $delegate;
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _authService_, _commonService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _authService_, _networkService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
@@ -25,8 +25,8 @@
                 authService = _authService_;
                 authService.getApiKey.and.returnValue('api key');
                 authService.getToken.and.returnValue('token');
-                commonService = _commonService_;
-                commonService.deleteSurveillanceDocument.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.deleteSurveillanceDocument.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 vm = $controller('EditNonconformityController', {
@@ -170,7 +170,7 @@
             it('should call the common service', function () {
                 vm.deleteDoc(3);
                 scope.$digest();
-                expect(commonService.deleteSurveillanceDocument).toHaveBeenCalledWith(1,2,3);
+                expect(networkService.deleteSurveillanceDocument).toHaveBeenCalledWith(1,2,3);
             });
 
             it('should remove the deleted document from the list', function () {

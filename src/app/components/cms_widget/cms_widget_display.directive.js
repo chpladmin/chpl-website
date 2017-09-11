@@ -26,9 +26,6 @@
                 scope.removeProduct = function (id) {
                     widgetController.removeProduct(id);
                 };
-                scope.toggleProduct = function (id) {
-                    widgetController.toggleProduct(id);
-                };
             },
         };
     }

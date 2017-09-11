@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Developer Edit controller', function () {
-        var $controller, $log, $q, Mock, authService, commonService, mock, scope, vm;
+        var $controller, $log, $q, Mock, authService, mock, networkService, scope, utilService, vm;
 
         mock = {};
         mock.acbs = ['Drummond','ICSA','Infogard'];
@@ -13,20 +13,21 @@
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     return $delegate;
                 });
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.updateDeveloper = jasmine.createSpy('updateDeveloper');
                     return $delegate;
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _authService_, _commonService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _authService_, _networkService_, _utilService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
                 authService = _authService_;
                 authService.isChplAdmin.and.returnValue(true);
-                commonService = _commonService_;
-                commonService.updateDeveloper.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.updateDeveloper.and.returnValue($q.when({}));
+                utilService = _utilService_;
                 Mock = _Mock_;
                 mock.firstDev = angular.copy(Mock.developers[0]);
                 for (var i = 0; i < mock.firstDev.statusEvents.length; i++) {
@@ -80,10 +81,10 @@
             expect(vm.loadedAsInactiveByOnc).toBe(false);
         });
 
-        it('should farm out address checks to the common service', function () {
-            spyOn(commonService, 'addressRequired');
+        it('should farm out address checks to the utility service', function () {
+            spyOn(utilService, 'addressRequired');
             vm.addressRequired();
-            expect(commonService.addressRequired).toHaveBeenCalledWith(vm.developer.address);
+            expect(utilService.addressRequired).toHaveBeenCalledWith(vm.developer.address);
         });
 
         describe('when handling developer status history', function () {
@@ -230,12 +231,12 @@
             it('should call the common service to update the developer', function () {
                 vm.save();
                 scope.$digest();
-                expect(commonService.updateDeveloper).toHaveBeenCalled();
+                expect(networkService.updateDeveloper).toHaveBeenCalled();
             });
 
             it('should close the modal if status 200', function () {
                 var response = {status: 200}
-                commonService.updateDeveloper.and.returnValue($q.when(response));
+                networkService.updateDeveloper.and.returnValue($q.when(response));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith(response);
@@ -243,7 +244,7 @@
 
             it('should close the modal if status undefined', function () {
                 var response = {status: undefined}
-                commonService.updateDeveloper.and.returnValue($q.when(response));
+                networkService.updateDeveloper.and.returnValue($q.when(response));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith(response);
@@ -251,7 +252,7 @@
 
             it('should close the modal if status is an object', function () {
                 var response = {status: {messages: []}}
-                commonService.updateDeveloper.and.returnValue($q.when(response));
+                networkService.updateDeveloper.and.returnValue($q.when(response));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith(response);
@@ -259,7 +260,7 @@
 
             it('should dismiss the modal if bad status', function () {
                 var response = {status: 400}
-                commonService.updateDeveloper.and.returnValue($q.when(response));
+                networkService.updateDeveloper.and.returnValue($q.when(response));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
@@ -267,7 +268,7 @@
 
             it('should dismiss the modal if bad response', function () {
                 var response = {data: {error: 'An error occurred'}};
-                commonService.updateDeveloper.and.returnValue($q.reject(response));
+                networkService.updateDeveloper.and.returnValue($q.reject(response));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');

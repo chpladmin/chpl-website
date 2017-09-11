@@ -1,19 +1,21 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.common')
+    angular.module('chpl.services')
         .factory('utilService', utilService);
 
     /** @ngInject */
     function utilService ($log, Blob, FileSaver) {
         var service = {
             addNewValue: addNewValue,
+            addressRequired: addressRequired,
             arrayCompare: arrayCompare,
             arrayToCsv: arrayToCsv,
             extendSelect: extendSelect,
             findModel: findModel,
             makeCsv: makeCsv,
             sortCert: sortCert,
+            sortCertArray: sortCertArray,
             sortCqm: sortCqm,
             sortNonconformityTypes: sortNonconformityTypes,
             sortRequirements: sortRequirements,
@@ -31,6 +33,17 @@
                 array.push(angular.copy(object));
             }
             return array;
+        }
+
+        function addressRequired (address) {
+            if (!address) { return false; }
+            if (address.line1 && address.line1.length > 0) { return true; }
+            if (address.line2 && address.line2.length > 0) { return true; }
+            if (address.city && address.city.length > 0) { return true; }
+            if (address.state && address.state.length > 0) { return true; }
+            if (address.zipcode && address.zipcode.length > 0) { return true; }
+            if (address.country && address.country.length > 0) { return true; }
+            return false;
         }
 
         function arrayCompare (before, after, key) {
@@ -92,9 +105,10 @@
         function arrayToCsv (data) {
             return data.map(function (row) {
                 return row.map(function (cell) {
-                    if (cell.indexOf('"') > -1 ||
-                        cell.indexOf(',') > -1 ||
-                        cell.indexOf('\n') > -1) {
+                    if (typeof(cell) === 'string' &&
+                        (cell.indexOf('"') > -1 ||
+                         cell.indexOf(',') > -1 ||
+                         cell.indexOf('\n') > -1)) {
                         return '"' + cell.replace(/"/g,'""') + '"';
                     } else {
                         return cell;
@@ -107,28 +121,25 @@
         }
 
         function extendSelect (options, value) {
-            var newValue = { name: value };
-            var addingNew = true;
             for (var i = 0; i < options.length; i++) {
-                if (angular.isUndefined(options[i].id)) {
-                    options[i] = newValue;
-                    addingNew = false;
+                if (options[i].name === value) {
+                    return;
                 }
             }
-            if (addingNew) {
-                options.push(newValue);
-            }
-            return options;
+            options.push({name: value});
         }
 
-        function findModel (id, array) {
-            for (var i = 0; i < array.length; i++) {
-                if (id.id === array[i].id) {
-                    id = array[i];
-                    return id;
+        function findModel (item, options, key) {
+            if (!key) {
+                key = 'id';
+            }
+            for (var i = 0; i < options.length; i++) {
+                if (item[key] === options[i][key]) {
+                    item = options[i];
+                    return item;
                 }
             }
-            return id;
+            return item;
         }
 
         function makeCsv (data) {
@@ -140,7 +151,7 @@
 
         function sortCert (cert) {
             if (angular.isObject(cert)) {
-                cert = cert.name;
+                cert = cert.name || cert.number;
             }
             var edition = parseInt(cert.substring(4,7));
             var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
@@ -148,6 +159,14 @@
             var ret = edition * 10000 +
                 letter * 100 +
                 number;
+            return ret;
+        }
+
+        function sortCertArray (array) {
+            var ret = Number.MIN_VALUE;
+            if (array.length > 0) {
+                ret = this.sortCert(array[0]);
+            }
             return ret;
         }
 
@@ -167,8 +186,6 @@
         function sortNonconformityTypes (type) {
             if (type.name === 'Other Non-Conformity') {
                 return Number.MAX_VALUE;
-            } else if (type.name === 'Other Requirement') {
-                return 0;
             }
             return sortCert(type);
         }

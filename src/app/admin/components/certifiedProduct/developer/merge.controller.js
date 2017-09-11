@@ -5,7 +5,7 @@
         .controller('MergeDeveloperController', MergeDeveloperController);
 
     /** @ngInject */
-    function MergeDeveloperController ($filter, $log, $uibModalInstance, commonService, developers) {
+    function MergeDeveloperController ($filter, $log, $uibModalInstance, developers, networkService, utilService) {
         var vm = this;
 
         vm.addPreviousStatus = addPreviousStatus;
@@ -44,7 +44,7 @@
         }
 
         function addressRequired () {
-            return commonService.addressRequired(vm.developer.address);
+            return utilService.addressRequired(vm.developer.address);
         }
 
         function cancel () {
@@ -111,7 +111,7 @@
                 vm.developer.statusEvents[i].statusDate = vm.developer.statusEvents[i].statusDateObject.getTime();
             }
             vm.updateDeveloper.developer = vm.developer;
-            commonService.updateDeveloper(vm.updateDeveloper)
+            networkService.updateDeveloper(vm.updateDeveloper)
                 .then(function (response) {
                     if (!response.status || response.status === 200 || angular.isObject(response.status)) {
                         $uibModalInstance.close(response);

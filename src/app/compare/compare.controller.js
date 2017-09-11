@@ -5,7 +5,7 @@
         .controller('CompareController', CompareController);
 
     /** @ngInject */
-    function CompareController ($filter, $log, $routeParams, commonService, utilService) {
+    function CompareController ($filter, $log, $routeParams, networkService, utilService) {
         var vm = this;
 
         vm.fillInBlanks = fillInBlanks;
@@ -33,7 +33,7 @@
                 vm.compareIds = compareString.split('&');
 
                 for (var i = 0; i < vm.compareIds.length; i++) {
-                    commonService.getProduct(vm.compareIds[i])
+                    networkService.getProduct(vm.compareIds[i])
                         .then(function (product) {
                             vm.updateProductList(product);
                             vm.updateCerts(product);

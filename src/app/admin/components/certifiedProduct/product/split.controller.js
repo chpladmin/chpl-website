@@ -5,7 +5,7 @@
         .controller('SplitProductController', SplitProductController);
 
     /** @ngInject */
-    function SplitProductController ($log, $uibModalInstance, commonService, product, versions) {
+    function SplitProductController ($log, $uibModalInstance, networkService, product, versions) {
         var vm = this;
 
         vm.moveToNew = moveToNew;
@@ -52,7 +52,7 @@
         }
 
         function save () {
-            commonService.splitProduct(vm.splitProduct)
+            networkService.splitProduct(vm.splitProduct)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close({

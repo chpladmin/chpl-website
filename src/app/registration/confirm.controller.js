@@ -5,7 +5,7 @@
         .controller('ConfirmController', ConfirmController);
 
     /** @ngInject */
-    function ConfirmController ($location, $log, $routeParams, commonService) {
+    function ConfirmController ($location, $log, $routeParams, networkService) {
         var vm = this;
 
         vm.confirmUser = confirmUser;
@@ -21,7 +21,7 @@
         }
 
         function confirmUser () {
-            commonService.confirmUser(vm.userDetails)
+            networkService.confirmUser(vm.userDetails)
                 .then(function () {
                     vm.message.value = 'Thank you for confirming your account. You may now log in.';
                     vm.message.success = true;

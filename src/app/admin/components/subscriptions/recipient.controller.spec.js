@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.subscriptions.recipient.controller', function () {
-        var $log, $q, Mock, commonService, mock, scope, vm;
+        var $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
         mock.acbs = [
@@ -20,7 +20,7 @@
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.createRecipient = jasmine.createSpy('createRecipient');
                     $delegate.deleteRecipient = jasmine.createSpy('deleteRecipient');
                     $delegate.updateRecipient = jasmine.createSpy('updateRecipient');
@@ -29,14 +29,14 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
-                commonService = _commonService_;
-                commonService.createRecipient.and.returnValue($q.when(mock.newRecipient));
-                commonService.deleteRecipient.and.returnValue($q.when({status: 200}));
-                commonService.updateRecipient.and.returnValue($q.when(mock.newRecipient));
+                networkService = _networkService_;
+                networkService.createRecipient.and.returnValue($q.when(mock.newRecipient));
+                networkService.deleteRecipient.and.returnValue($q.when({status: 200}));
+                networkService.updateRecipient.and.returnValue($q.when(mock.newRecipient));
 
                 scope = $rootScope.$new();
                 vm = $controller('RecipientController', {
@@ -83,7 +83,7 @@
             it('should call the common service', function () {
                 vm.save();
                 scope.$digest();
-                expect(commonService.createRecipient).toHaveBeenCalledWith(vm.recipient);
+                expect(networkService.createRecipient).toHaveBeenCalledWith(vm.recipient);
             });
 
             it('should close the modal', function () {
@@ -93,14 +93,14 @@
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.createRecipient.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
+                networkService.createRecipient.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.createRecipient.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.createRecipient.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalledWith('bad thing');
@@ -116,7 +116,7 @@
             it('should call the common service', function () {
                 vm.save();
                 scope.$digest();
-                expect(commonService.updateRecipient).toHaveBeenCalledWith(vm.recipient);
+                expect(networkService.updateRecipient).toHaveBeenCalledWith(vm.recipient);
             });
 
             it('should close the modal', function () {
@@ -126,14 +126,14 @@
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.updateRecipient.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
+                networkService.updateRecipient.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.updateRecipient.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.updateRecipient.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalledWith('bad thing');
@@ -157,7 +157,7 @@
             it('should call the common service', function () {
                 vm.deleteRecipient();
                 scope.$digest();
-                expect(commonService.deleteRecipient).toHaveBeenCalledWith(vm.recipient);
+                expect(networkService.deleteRecipient).toHaveBeenCalledWith(vm.recipient);
             });
 
             it('should close the modal', function () {
@@ -167,14 +167,14 @@
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.deleteRecipient.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
+                networkService.deleteRecipient.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
                 vm.deleteRecipient();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.deleteRecipient.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.deleteRecipient.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.deleteRecipient();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalledWith('bad thing');

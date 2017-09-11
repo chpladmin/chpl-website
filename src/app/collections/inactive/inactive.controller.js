@@ -5,7 +5,7 @@
         .controller('InactiveCertificatesController', InactiveCertificatesController);
 
     /** @ngInject */
-    function InactiveCertificatesController (commonService) {
+    function InactiveCertificatesController (networkService) {
         var vm = this;
 
         vm.getMeaningfulUseUsersAccurateAsOfDate = getMeaningfulUseUsersAccurateAsOfDate;
@@ -45,7 +45,7 @@
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {
-            commonService.getMeaningfulUseUsersAccurateAsOfDate()
+            networkService.getMeaningfulUseUsersAccurateAsOfDate()
                 .then(function (response) {
                     vm.muuAccurateAsOf = response.accurateAsOfDate;
                 });

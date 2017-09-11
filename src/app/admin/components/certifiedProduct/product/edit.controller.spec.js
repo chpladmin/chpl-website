@@ -2,24 +2,24 @@
     'use strict';
 
     describe('chpl.admin.EditProductController.controller', function () {
-        var $log, $q, Mock, commonService, scope, vm;
+        var $log, $q, Mock, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     $delegate.updateProduct = jasmine.createSpy('updateProduct');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
-                commonService = _commonService_;
-                commonService.getDevelopers.and.returnValue($q.when({developers: Mock.developers}));
-                commonService.updateProduct.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.getDevelopers.and.returnValue($q.when({developers: Mock.developers}));
+                networkService.updateProduct.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 vm = $controller('EditProductController', {
@@ -80,7 +80,7 @@
                 var updateProduct = {product: vm.product, newDeveloperId: vm.product.developerId, productIds: [vm.product.productId]};
                 vm.save();
                 scope.$digest();
-                expect(commonService.updateProduct).toHaveBeenCalledWith(updateProduct);
+                expect(networkService.updateProduct).toHaveBeenCalledWith(updateProduct);
             });
 
             it('should close the modal', function () {
@@ -90,14 +90,14 @@
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.updateProduct.and.returnValue($q.when({status: 500}));
+                networkService.updateProduct.and.returnValue($q.when({status: 500}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.updateProduct.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.updateProduct.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('bad thing');
