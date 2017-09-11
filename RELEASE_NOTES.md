@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.4.0
+_11 September 2017_
 
 ### New features
 * Improved SED view/edit
