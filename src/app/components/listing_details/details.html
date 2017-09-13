@@ -105,7 +105,7 @@
         </span>
         <span ng-if="vm.product.ics !== null">
           <h4>Certification History</h4>
-          <p ng-if="vm.product.ics.inherits !== null"><strong>Inherited Certification Status:</strong> {{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
+          <p ng-if="vm.product.ics.inherits !== null"><strong>Inherited Certification Status (ICS):</strong> {{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
           <p ng-if="vm.product.ics.inherits === null">N/A</p>
         </span>
         <span ng-if="vm.product.ics.parents && vm.product.ics.parents.length > 0">
