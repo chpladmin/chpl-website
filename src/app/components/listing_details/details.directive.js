@@ -37,7 +37,7 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($analytics, $log, $scope, ACTIVE_CAP) {
+        function CertsController ($analytics, $log, $scope, $uibModal, ACTIVE_CAP, networkService) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
@@ -48,6 +48,7 @@
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
             vm.showPanel = showPanel;
+            vm.viewIcsFamily = viewIcsFamily;
 
             activate();
 
@@ -199,6 +200,24 @@
                 }
 
                 vm.panelShown = vm.panelShown === panel ? '' : panel;
+            }
+
+            function viewIcsFamily () {
+                networkService.getIcsFamily(vm.product.id).then(function (family) {
+                    vm.uibModalInstance = $uibModal.open({
+                        templateUrl: 'app/components/listing_details/ics_family/icsFamilyModal.html',
+                        controller: 'IcsFamilyController',
+                        controllerAs: 'vm',
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'lg',
+                        resolve: {
+                            family: function () { return family; },
+                            listing: function () { return vm.product; },
+                        },
+                    });
+                });
             }
 
             ////////////////////////////////////////////////////////////////////

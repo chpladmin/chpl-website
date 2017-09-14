@@ -26,6 +26,7 @@
             'ngAnimate',
             'ngAria',
             'ngCsv',
+            'ngCytoscape',
             'ngMessages',
             'ngResource',
             'ngRoute',
