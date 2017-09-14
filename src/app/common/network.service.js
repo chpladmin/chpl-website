@@ -51,6 +51,7 @@
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
+            getIcsFamily: getIcsFamily,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
@@ -331,6 +332,10 @@
 
         function getEducation () {
             return apiGET('/data/education_types');
+        }
+
+        function getIcsFamily (id) {
+            return apiGET('/certified_products/' + id + '/ics_relationships');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {
