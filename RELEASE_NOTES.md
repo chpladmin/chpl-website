@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Add visualization of ICS Inheritance relationships
+* Removed "All Products" from Download page options
 
 ---
 
