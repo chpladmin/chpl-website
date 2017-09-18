@@ -53,6 +53,7 @@
             getEducation: getEducation,
             getJobTypes: getJobTypes,
             getJobs: getJobs,
+            getIcsFamily: getIcsFamily,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
@@ -341,6 +342,10 @@
 
         function getJobs () {
             return apiGET('/jobs');
+        }
+
+        function getIcsFamily (id) {
+            return apiGET('/certified_products/' + id + '/ics_relationships');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {

@@ -9,6 +9,14 @@
 _Date TBD_
 
 ### New features
+* Add visualization of ICS Inheritance relationships
+
+---
+
+## Version 9.4.0
+_11 September 2017_
+
+### New features
 * Improved SED view/edit
 * Add indicator to criteria edit screen when "phantom" data exists
 
