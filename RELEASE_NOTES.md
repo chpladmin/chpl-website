@@ -1,16 +1,12 @@
 # Release Notes
 
-## OCD-1737
-* Allow ONC Admin to view running Jobs
-
----
-
 ## Version TBD
 _Date TBD_
 
 ### New features
 * Add visualization of ICS Inheritance relationships
 * Removed "All Products" from Download page options
+* Allow Authorized Users to view appropriate running Jobs
 
 ---
 
