@@ -577,6 +577,22 @@
             $httpBackend.flush();
         });
 
+        it('should getJobTypes', function () {
+            $httpBackend.expectGET(/data\/job_types/).respond(200, {data: 'response'});
+            networkService.getJobTypes().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getJobs', function () {
+            $httpBackend.expectGET(/jobs/).respond(200, {data: 'response'});
+            networkService.getJobs().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getIcsFamily', function () {
             $httpBackend.expectGET(/certified_products\/id\/ics_relationships/).respond(200, {data: 'response'});
             networkService.getIcsFamily('id').then(function (response) {

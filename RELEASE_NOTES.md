@@ -6,6 +6,7 @@ _Date TBD_
 ### New features
 * Add visualization of ICS Inheritance relationships
 * Removed "All Products" from Download page options
+* Allow Authorized Users to view appropriate running Jobs
 
 ---
 
