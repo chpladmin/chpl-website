@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Add visualization of ICS Inheritance relationships
+  * Improved "Confirm" workflow related to ICS Inheritance
 * Removed "All Products" from Download page options
 * Allow Authorized Users to view appropriate running Jobs
 
