@@ -305,6 +305,8 @@
             case 'decertifiedProducts':
             case 'inactiveCertificates':
                 return apiGET('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
+            case 'sed':
+                return apiGET('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
             case 'transparencyAttestations':
                 return apiGET('/collections/developers/');
                 //no default

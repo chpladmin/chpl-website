@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.collections.service', function () {
+    describe('the Collections Service', function () {
 
         beforeEach(module('chpl.collections', 'chpl.mock'));
 
@@ -21,7 +21,7 @@
             }
         });
 
-        describe('apiDocumentation translation', function () {
+        describe('when focused on apiDocumentation', function () {
             it('should filter on apiDocumentation', function () {
                 expect(service.translate('apiDocumentation', {results: Mock.allCps}).length).toBe(2);
             });
@@ -32,7 +32,7 @@
             });
         });
 
-        describe('bannedDevelopers translation', function () {
+        describe('when focused on bannedDevelopers', function () {
             it('should filter on bannedDevelopers', function () {
                 expect(service.translate('bannedDevelopers', Mock.decertifiedDevelopers).length).toBe(2);
             });
@@ -43,7 +43,7 @@
             });
         });
 
-        describe('correctiveAction translation', function () {
+        describe('when focused on correctiveAction', function () {
             var results;
             beforeEach(function () {
                 results = service.translate('correctiveAction', {results: Mock.allCps});
@@ -62,7 +62,7 @@
             });
         });
 
-        describe('decertifiedProducts translation', function () {
+        describe('when focused on decertifiedProducts', function () {
             it('should filter on decertifiedProducts', function () {
                 expect(service.translate('decertifiedProducts', {results: Mock.allCps}).length).toBe(1);
             });
@@ -73,7 +73,7 @@
             });
         });
 
-        describe('inactiveCertificates translation', function () {
+        describe('when focused on inactiveCertificates', function () {
             it('should filter on inactiveCertificates', function () {
                 expect(service.translate('inactiveCertificates', {results: Mock.allCps}).length).toBe(1);
             });
@@ -84,7 +84,18 @@
             });
         });
 
-        describe('transparencyAttestations translation', function () {
+        describe('when focused on sed', function () {
+            it('should filter on sed', function () {
+                expect(service.translate('sed', {results: Mock.allCps}).length).toBe(1);
+            });
+
+            it('should generate a mainSearch', function () {
+                var results = service.translate('sed', {results: Mock.allCps});
+                expect(results[0].mainSearch).toEqual('Healthland|Centriq Clinic|12|15.07.07.2751.CE03.01.00.1.170823');
+            });
+        });
+
+        describe('when focused on transparencyAttestations', function () {
             var results;
             beforeEach(function () {
                 results = service.translate('transparencyAttestations', Mock.collections.developers);
