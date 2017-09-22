@@ -126,7 +126,7 @@
             </li>
           </ul>
         </span>
-        <span ng-if="!vm.isConfirming && (vm.product.ics.parents && vm.product.ics.parents.length > 0) || (vm.product.ics.children && vm.product.ics.children.length > 0))">
+        <span ng-if="!vm.isConfirming && ((vm.product.ics.parents && vm.product.ics.parents.length > 0) || (vm.product.ics.children && vm.product.ics.children.length > 0))">
           <button class="btn btn-ai-success" ng-click="vm.viewIcsFamily()">View ICS Relationships</button>
         </span>
         <span ng-if="vm.product.otherAcb">
