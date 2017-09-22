@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the SED Collections controller', function () {
+    fdescribe('the SED Collections controller', function () {
 
         var $log, $uibModal, Mock, actualOptions, networkService, scope, vm;
 
@@ -76,7 +76,7 @@
             it('should resolve elements', function () {
                 vm.viewDetails(4);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                expect(actualOptions.resolve.id).toEqual(4);
+                expect(actualOptions.resolve.id()).toEqual(4);
             });
         });
     });

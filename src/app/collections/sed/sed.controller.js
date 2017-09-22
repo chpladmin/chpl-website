@@ -5,10 +5,15 @@
         .controller('SedCollectionController', SedCollectionController);
 
     /** @ngInject */
-    function SedCollectionController ($compile, $scope, $uibModal) {
+    function SedCollectionController ($compile, $log, $scope, $uibModal) {
         var vm = this;
 
         vm.viewDetails = viewDetails;
+        $scope.viewDetails = viewDetails;
+        vm.showMessage = function (m) {
+            alert(m);
+        }
+        vm.test ="<button ng-click='vm.showMessage(\"sed\")'>click me</button>";
 
         activate();
 
@@ -20,10 +25,15 @@
                 { predicate: 'product', display: 'Product', sortType: 'single' },
                 { predicate: 'version', display: 'Version', sortType: 'single' },
                 { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },
-                { predicate: 'id', display: 'Details', sortType: 'none', transformFn: vm._makeDetailsButton },
+                { predicate: 'id', display: 'Details', sortType: 'none', transformFn: _makeDetailsButton },
             ];
-            vm.filters = ['acb', 'edition', 'certificationStatus'];
+            vm.filters = ['acb', 'certificationStatus', 'edition'];
             vm.refineModel = {
+                acb: [
+                    { value: 'Drummond Group', selected: true },
+                    { value: 'ICSA Labs', selected: true },
+                    { value: 'InfoGard', selected: true },
+                ],
                 certificationStatus: [
                     { value: 'Active', selected: true },
                     { value: 'Suspended by ONC', selected: true },
@@ -34,10 +44,15 @@
                     { value: 'Withdrawn by ONC-ACB', selected: false },
                     { value: 'Terminated by ONC', selected: false },
                 ],
+                edition: [
+                    { value: '2014', selected: false },
+                    { value: '2015', selected: true },
+                ],
             };
         }
 
         function viewDetails (id) {
+            console.log(id);
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/collections/sed/sedModal.html',
                 controller: 'ViewSedModalController',
@@ -58,8 +73,9 @@
 
         function _makeDetailsButton (data) {
             var ret;
-            ret = '<button class="btn btn-primary" ng-click="vm.viewDetails(' + data + ')"><i class="fa fa-eye"></i> View Details</button>';
-            ret = $compile(ret)($scope)[0].outerHTML;
+            ret = /*angular.element(*/'<span><a class="btn btn-primary" ng-click="alert(3); vm.viewDetails(' + data + ')"><i class="fa fa-eye"></i> View Details (' + data + ')</a></span>';//);
+            ret = "<button ng-click='alert(\"message\")'>alert me</button><button ng-click='$parent.$parent.showMessage(\"repeat\")'>click me</button>";
+            //ret = $compile(ret)($scope)[0].outerHTML;
             return ret;
         }
     }

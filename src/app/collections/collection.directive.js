@@ -45,6 +45,12 @@
         //vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
 
+
+        vm.showMessage = function (m) {
+            alert(m);
+        }
+        vm.test ="<button ng-click='vm.showMessage(\"collection\")'>click me</button>";
+
         activate();
 
         ////////////////////////////////////////////////////////////////////

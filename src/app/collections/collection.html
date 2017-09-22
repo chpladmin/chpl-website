@@ -8,6 +8,7 @@
   <div class="main-content" id="mainContent" tabindex="-1" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
     <div class="row">
       <div class="col-sm-12">
+        <div ai-compile="vm.test"></div>
         <ng-transclude ng-transclude-slot="aiBodyText"></ng-transclude>
       </div>
     </div>
@@ -146,8 +147,7 @@
                     ng-attr-st-descending-first="{{ col.descendingFirst ? col.descendingFirst : undefined }}">
                   {{ col.display }}
                 </th>
-                <th
-                    ng-if="col.sortType === 'multi'"
+                <th ng-if="col.sortType === 'multi'"
                     scope="col" class="search-header"
                     ai-multi-sort="{{ col.predicate }}"
                     st-skip-natural="true" ng-attr-st-sort-default="{{ col.sortDefault ? col.sortDefault : undefined }}"
@@ -180,7 +180,7 @@
             </tfoot>
             <tbody>
               <tr ng-repeat="cp in vm.displayedCps">
-                <td ng-repeat="col in vm.columns" ng-bind-html="vm.parseDataElement(cp, col)"></td>
+                <td ng-repeat="col in vm.columns"><div ai-compile="vm.parseDataElement(cp, col)"></div></td>
               </tr>
             </tbody>
           </table>
