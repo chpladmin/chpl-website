@@ -1,4 +1,7 @@
-<div class="container">
+<div class="container" ng-if="!vm.loading && !vm.product">
+  <p class="lead">This listing does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
+</div>
+<div class="container" ng-if="!vm.loading && vm.product">
   <div class="row text-bottom">
     <div class="col-sm-8">
       <h1>{{ vm.product.product.name }}</h1>
