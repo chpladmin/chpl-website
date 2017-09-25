@@ -2,7 +2,17 @@
 
 ## Version TBD
 _Date TBD_
+
+### New features
 * Hide g1/g2 measures on 2014; g1/g2 boolean on 2015
+
+---
+
+## Version 9.5.1
+_25 September 2017_
+
+### Typos Fixed
+* Changed date of deprecation for XML file to 10 October
 
 ---
 
