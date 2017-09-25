@@ -1,12 +1,13 @@
 # Release Notes
 
-## OCD-1777 Bug fixed
+## Version TBD
+_Date TBD_
 * Hide g1/g2 measures on 2014; g1/g2 boolean on 2015
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 9.5.0
+_25 September 2017_
 
 ### New features
 * Add visualization of ICS Inheritance relationships
