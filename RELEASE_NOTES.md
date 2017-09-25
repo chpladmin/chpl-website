@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1777 Bug fixed
+* Hide g1/g2 measures on 2014; g1/g2 boolean on 2015
+
+---
+
 ## Version TBD
 _Date TBD_
 
