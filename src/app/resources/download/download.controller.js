@@ -19,7 +19,6 @@
         function activate () {
             vm.API = API;
             vm.API_KEY = authService.getApiKey();
-
             vm.downloadOptions = [
                 { value: vm.API + '/download?api_key=' + vm.API_KEY, label: 'Complete XML', display: 'Complete listing (xml)'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2015', label: '2015 XML', display: '2015 edition products (xml)'},

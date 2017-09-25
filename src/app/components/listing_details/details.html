@@ -93,7 +93,7 @@
     </div>
 
     <!-- Additional Information -->
-    <div class="panel panel-ai" ng-if="!vm.isEditing && !vm.isConfirming">
+    <div class="panel panel-ai" ng-if="!vm.isEditing">
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('additional')" aria-expanded="{{ vm.panelShown === 'additional' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
       </div>
@@ -105,24 +105,29 @@
         </span>
         <span ng-if="vm.product.ics !== null">
           <h4>Certification History</h4>
-          <p ng-if="vm.product.ics.inherits !== null"><strong>Inherited Certification Status:</strong> {{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
+          <p ng-if="vm.product.ics.inherits !== null"><strong>Inherited Certification Status (ICS):</strong> {{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
           <p ng-if="vm.product.ics.inherits === null">N/A</p>
         </span>
         <span ng-if="vm.product.ics.parents && vm.product.ics.parents.length > 0">
           <h5>Inherits from</h5>
           <ul>
-            <li ng-repeat="listing in vm.product.ics.parents | orderBy: 'certificationDate'">
-              <a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
+            <li ng-repeat="listing in vm.product.ics.parents | orderBy: ['certificationDate','chplProductNumber']">
+              <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
+              <span ng-if="listing.id"><a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
             </li>
           </ul>
         </span>
         <span ng-if="vm.product.ics.children && vm.product.ics.children.length > 0">
           <h5>ICS Source for</h5>
           <ul>
-            <li ng-repeat="listing in vm.product.ics.children | orderBy: 'certificationDate'">
-              <a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})
+            <li ng-repeat="listing in vm.product.ics.children | orderBy: ['certificationDate','chplProductNumber']">
+              <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
+              <span ng-if="listing.id"><a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
             </li>
           </ul>
+        </span>
+        <span ng-if="!vm.isConfirming && ((vm.product.ics.parents && vm.product.ics.parents.length > 0) || (vm.product.ics.children && vm.product.ics.children.length > 0))">
+          <button class="btn btn-ai-success" ng-click="vm.viewIcsFamily()">View ICS Relationships</button>
         </span>
         <span ng-if="vm.product.otherAcb">
           <h4>Other ACB</h4>

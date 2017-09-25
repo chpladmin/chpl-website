@@ -14,7 +14,7 @@ var _ = require('lodash');
 var postcss = require('gulp-postcss');
 var reporter = require('postcss-reporter');
 var stylelint = require('stylelint');
-var scss = require("postcss-scss");
+var scss = require('postcss-scss');
 
 gulp.task('styles-reload', ['styles'], function() {
     return buildStyles()

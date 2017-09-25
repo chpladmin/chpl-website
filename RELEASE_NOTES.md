@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 9.5.0
+_25 September 2017_
+
+### New features
+* Add visualization of ICS Inheritance relationships
+  * Improved "Confirm" workflow related to ICS Inheritance
+* Marked "Complete listing (xml)" as deprecated on Download page
+* Allow Authorized Users to view appropriate running Jobs
+
+---
+
 ## Version 9.4.0
 _11 September 2017_
 
