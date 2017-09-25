@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.5.0
+_25 September 2017_
 
 ### New features
 * Add visualization of ICS Inheritance relationships
