@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 9.5.1
+_25 September 2017_
+
+### Typos Fixed
+* Changed date of deprecation for XML file to 10 October
+
+---
+
 ## Version 9.5.0
 _25 September 2017_
 
