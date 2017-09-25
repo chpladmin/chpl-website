@@ -9,11 +9,6 @@
         var vm = this;
 
         vm.viewDetails = viewDetails;
-        $scope.viewDetails = viewDetails;
-        vm.showMessage = function (m) {
-            alert(m);
-        }
-        vm.test ="<button ng-click='vm.showMessage(\"sed\")'>click me</button>";
 
         activate();
 
@@ -52,7 +47,6 @@
         }
 
         function viewDetails (id) {
-            console.log(id);
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/collections/sed/sedModal.html',
                 controller: 'ViewSedModalController',
@@ -73,9 +67,7 @@
 
         function _makeDetailsButton (data) {
             var ret;
-            ret = /*angular.element(*/'<span><a class="btn btn-primary" ng-click="alert(3); vm.viewDetails(' + data + ')"><i class="fa fa-eye"></i> View Details (' + data + ')</a></span>';//);
-            ret = "<button ng-click='alert(\"message\")'>alert me</button><button ng-click='$parent.$parent.showMessage(\"repeat\")'>click me</button>";
-            //ret = $compile(ret)($scope)[0].outerHTML;
+            ret = '<button class="btn btn-ai" ng-click="vm.callFunction({id:' + data + '})"><i class="fa fa-eye"></i> View</button>';
             return ret;
         }
     }

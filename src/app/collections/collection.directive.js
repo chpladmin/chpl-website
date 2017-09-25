@@ -9,6 +9,7 @@
     function aiCollection () {
         return {
             bindToController: {
+                callFunction: '&?',
                 collectionKey: '@',
                 columns: '=',
                 filters: '=?',
@@ -44,12 +45,6 @@
         vm.triggerClearFilters = triggerClearFilters;
         //vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
-
-
-        vm.showMessage = function (m) {
-            alert(m);
-        }
-        vm.test ="<button ng-click='vm.showMessage(\"collection\")'>click me</button>";
 
         activate();
 

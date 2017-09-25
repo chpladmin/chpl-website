@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the SED Collections controller', function () {
+    describe('the SED Collections controller', function () {
 
         var $log, $uibModal, Mock, actualOptions, networkService, scope, vm;
 
@@ -46,7 +46,7 @@
         describe('when making Details popup buttons', function () {
             it('should create a button', function () {
                 var data = 34;
-                expect(vm._makeDetailsButton(data)).toBe('<button class="btn btn-primary ng-scope" ng-click="vm.viewDetails(34)"><i class="fa fa-eye"></i> View Details</button>');
+                expect(vm._makeDetailsButton(data)).toBe('<button class="btn btn-ai" ng-click="vm.callFunction({id:34})"><i class="fa fa-eye"></i> View</button>');
             });
         });
 
