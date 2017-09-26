@@ -16,6 +16,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.loading = true;
             vm.productId = $routeParams.id;
             if ($localStorage.previouslyViewed) {
                 vm.previouslyViewed = $localStorage.previouslyViewed;
@@ -43,8 +44,10 @@
         function loadProduct () {
             networkService.getProduct(vm.productId)
                 .then(function (data) {
+                    vm.loading = false;
                     vm.product = data;
                 }, function (error) {
+                    vm.loading = false;
                     $log.error(error);
                 });
             networkService.getSingleCertifiedProductActivity(vm.productId)

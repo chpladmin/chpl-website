@@ -4,7 +4,7 @@
 _Date TBD_
 
 ### New features
-* Hide g1/g2 measures on 2014; g1/g2 boolean on 2015
+* Show error message when 404 error on Details page
 
 ---
 

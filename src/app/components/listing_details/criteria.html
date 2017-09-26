@@ -38,11 +38,11 @@
             </td>
             <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.g1Success && vm.cert.number.substring(4,7) === '314'">
+          <tr ng-if="vm.cert.g1Success">
             <td>Measure Successfully Tested for G1</td>
             <td>True</td>
           </tr>
-          <tr ng-if="vm.cert.g1MacraMeasures && vm.cert.number.substring(4,7) === '315'">
+          <tr ng-if="vm.cert.g1MacraMeasures">
             <td>Measure<span ng-if="vm.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1</td>
             <td ng-if="vm.cert.g1MacraMeasures.length > 0">
               <ul>
@@ -51,11 +51,11 @@
               </td>
             <td ng-if="vm.cert.g1MacraMeasures.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.g2Success && vm.cert.number.substring(4,7) === '314'">
+          <tr ng-if="vm.cert.g2Success">
             <td>Measure Successfully Tested for G2</td>
             <td>True</td>
           </tr>
-          <tr ng-if="vm.cert.g2MacraMeasures && vm.cert.number.substring(4,7) === '315'">
+          <tr ng-if="vm.cert.g2MacraMeasures">
             <td>Measure<span ng-if="vm.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2</td>
             <td ng-if="vm.cert.g2MacraMeasures.length > 0">
               <ul>
