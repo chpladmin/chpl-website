@@ -11,7 +11,7 @@ var pathSrcHtml = [
 ];
 
 var pathSrcJs = [
-    path.join(conf.paths.src, '/**/!(*.spec|cap*|certid*|swagger*|st*).js')
+    path.join(conf.paths.src, '/**/!(*.spec|cap*|certid*|st*|swagger*|ngCytoscape*).js')
 ];
 
 function runTests (singleRun, done) {

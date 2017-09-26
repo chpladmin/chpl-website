@@ -51,6 +51,8 @@
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
+            getJobTypes: getJobTypes,
+            getJobs: getJobs,
             getIcsFamily: getIcsFamily,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
@@ -336,6 +338,14 @@
             return apiGET('/data/education_types');
         }
 
+        function getJobTypes () {
+            return apiGET('/data/job_types');
+        }
+
+        function getJobs () {
+            return apiGET('/jobs');
+        }
+
         function getIcsFamily (id) {
             return apiGET('/certified_products/' + id + '/ics_relationships');
         }
@@ -473,7 +483,7 @@
         }
 
         function getUsers () {
-            return apiGET('/users');
+            return apiGET('/users/');
         }
 
         function getUsersAtAcb (acbId) {

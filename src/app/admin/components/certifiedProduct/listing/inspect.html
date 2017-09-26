@@ -275,10 +275,6 @@
                 <ul>
                   <li ng-repeat="std in vm.cp.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
                 </ul>
-                <strong>Targeted Users:</strong> {{ vm.cp.targetedUsers.length > 0 ? 'True' : 'None' }} <br />
-                <ul>
-                  <li ng-repeat="user in vm.cp.targetedUsers">{{ user.targetedUserName }}</li>
-                </ul>
               </span>
               <br />
               <ai-certs ng-if="vm.cp !== ''"
