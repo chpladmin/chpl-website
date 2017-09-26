@@ -81,10 +81,11 @@
                 {date: 'Fri Jul 14 2017', value: 2439},
                 {date: 'Fri Jul 21 2017', value: 2439},
                 {date: 'Fri Jul 28 2017', value: 2443},
-                {date: 'Fri Aug 04 2017', value: 2443},
                 {date: 'Fri Aug 11 2017', value: 2443},
+                {date: 'Fri Aug 04 2017', value: 2443},
             ],
         };
+
         beforeEach(function () {
             module('chpl.charts', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
@@ -162,6 +163,49 @@
                 vm.endDate = new Date('Sat Aug 13 2016');
                 vm.applyFilter();
                 expect(vm.chart.data.rows.length).toBeLessThan(initLength);
+            });
+        });
+
+        describe('when toggling serieses', function () {
+            it('should do nothing if data points are clicked on', function () {
+                var orig = angular.copy(vm.chart);
+                vm.toggleSeries({row: 3, column: 1});
+                expect(vm.chart).toEqual(orig);
+            });
+
+            describe('from active', function () {
+                it('should modify the column to use a calculation function', function () {
+                    vm.toggleSeries({row: null, column: 1});
+                    expect(vm.chart.view.columns[1]).toEqual({
+                        label: jasmine.any(String),
+                        type: 'number',
+                        calc: jasmine.any(Function),
+                    });
+                });
+
+                it('should use the calc function to return null for all values', function () {
+                    vm.toggleSeries({row: null, column: 1});
+                    expect(vm.chart.view.columns[1].calc()).toEqual(null);
+                });
+
+                it('should make the newly inactive legend "grey"', function () {
+                    vm.toggleSeries({row: null, column: 1});
+                    expect(vm.chart.options.colors[0]).toBe('#ccc');
+                });
+            });
+
+            describe('to active', function () {
+                it('should set the column back to normal', function () {
+                    vm.toggleSeries({row: null, column: 1});
+                    vm.toggleSeries({row: null, column: 1});
+                    expect(vm.chart.view.columns[1]).toBe(1);
+                });
+
+                it('should restore the legend color to it\'s original state', function () {
+                    vm.toggleSeries({row: null, column: 1});
+                    vm.toggleSeries({row: null, column: 1});
+                    expect(vm.chart.options.colors[0]).toBe(vm.chart.options.defaultColors[0]);
+                });
             });
         });
     });
