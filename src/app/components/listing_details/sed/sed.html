@@ -14,7 +14,7 @@
       <p>{{ vm.listing.sedIntendedUserDescription ? vm.listing.sedIntendedUserDescription : 'N/A' }}</p>
     </span>
     <span ng-if="vm.listing.sedTestingEnd">
-      <h4>SED Testing Completion Date</h4>
+      <h4>Date SED Testing was Completed</h4>
       <p ng-if="vm.listing.sedTestingEnd">{{ vm.listing.sedTestingEnd | date : 'mediumDate' : 'UTC' }}</p>
       <p ng-if="!vm.listing.sedTestingEnd">N/A</p>
     </span>
