@@ -719,8 +719,8 @@
         });
 
         it('should getStatistics', function () {
-            $httpBackend.expectGET(/statistics\/1/).respond(200, {data: 'response'});
-            networkService.getStatistics(1).then(function (response) {
+            $httpBackend.expectGET(/data\/statistics/).respond(200, {data: 'response'});
+            networkService.getStatistics().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

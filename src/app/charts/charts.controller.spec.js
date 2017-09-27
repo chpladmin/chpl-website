@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Charts component controller', function () {
+    fdescribe('the Charts component controller', function () {
 
         var $controller, $log, $q, mock, networkService, scope, vm;
         mock = {
@@ -131,6 +131,11 @@
             it('should get all of the statistics', function () {
                 expect(networkService.getStatistics).toHaveBeenCalled();
                 expect(vm.statistics.length).toBe(mock.types.length);
+            });
+
+            it('should get all of the statistic types', function () {
+                expect(networkService.getStatisticTypes).toHaveBeenCalled();
+                expect(vm.statisticTypes.length).toBe(mock.types.length);
             });
 
             it('should build the columns', function () {

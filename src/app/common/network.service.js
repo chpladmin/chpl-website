@@ -411,8 +411,8 @@
             return apiGET('/data/statistic_types');
         }
 
-        function getStatistics (typeId) {
-            return apiGET('/statistics/' + typeId);
+        function getStatistics () {
+            return apiGET('/data/statistics');
         }
 
         function getSurveillanceLookups () {

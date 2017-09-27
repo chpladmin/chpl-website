@@ -17,6 +17,10 @@
 
         function activate () {
             vm.statistics = [];
+            vm.statisticTypes = [];
+            networkService.getStatisticTypes().then(function (types) {
+                vm.statisticTypes = types;
+            });
             networkService.getStatistics().then(function (stats) {
                 vm.statistics = stats;
                 _parseData();
