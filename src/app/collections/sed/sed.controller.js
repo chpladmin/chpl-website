@@ -19,7 +19,7 @@
                 { predicate: 'developer', display: 'Developer', sortType: 'single' },
                 { predicate: 'product', display: 'Product', sortType: 'single' },
                 { predicate: 'version', display: 'Version', sortType: 'single' },
-                { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },
+                { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true, initialPanel: 'sed' },
                 { predicate: 'id', display: 'Details', sortType: 'none', transformFn: _makeDetailsButton },
             ];
             vm.filters = ['acb', 'certificationStatus', 'edition'];
