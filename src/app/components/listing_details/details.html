@@ -7,6 +7,7 @@
       <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts"></input>
       <label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
     </p>
+    
     <!-- Certification Criteria -->
     <div class="panel panel-ai">
       <div class="panel-heading">
@@ -27,6 +28,7 @@
         </div>
       </div>
     </div>
+    
     <!-- CQMs -->
     <div class="panel panel-ai">
       <div class="panel-heading">
@@ -89,6 +91,7 @@
         </table>
       </div>
     </div>
+    
     <!-- SED -->
     <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name !== '2011'">
       <div class="panel-heading">
@@ -111,6 +114,7 @@
         </ai-sed>
       </div>
     </div>
+    
     <!-- G1/G2 Measures -->
     <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name === '2015'">
       <div class="panel-heading">
@@ -120,6 +124,7 @@
         <ai-g1g2 listing="vm.product"></ai-g1g2>
       </div>
     </div>
+    
     <!-- Surveillance -->
     <div class="panel panel-ai">
       <div class="panel-heading">
@@ -129,6 +134,7 @@
         <ai-surveillance certified-product="vm.product"></ai-surveillance>
       </div>
     </div>
+    
 	<!-- Additional Information -->
 	<div class="panel panel-ai" ng-if="!vm.isEditing">
       <div class="panel-heading">
@@ -182,6 +188,7 @@
         </span>
       </div>
     </div>
+    
     <!-- Corrective Action Plan (OBE) -->
     <div class="panel panel-ai" ng-if="vm.cap && vm.ACTIVE_CAP">
       <div class="panel-heading">
