@@ -214,8 +214,8 @@
         });
 
         it('should deleteSurveillanceDocument', function () {
-            $httpBackend.expectPOST(/surveillance\/1\/nonconformity\/2\/document\/3\/delete/).respond(200, {data: 'response'});
-            networkService.deleteSurveillanceDocument(1, 2, 3).then(function (response) {
+            $httpBackend.expectPOST(/surveillance\/1\/document\/3\/delete/).respond(200, {data: 'response'});
+            networkService.deleteSurveillanceDocument(1, 3).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

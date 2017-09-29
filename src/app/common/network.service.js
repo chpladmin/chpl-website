@@ -193,8 +193,8 @@
             return apiPOST('/surveillance/' + surveillanceId + '/delete', {});
         }
 
-        function deleteSurveillanceDocument (survId, nonconId, docId) {
-            return apiPOST('/surveillance/' + survId + '/nonconformity/' + nonconId + '/document/' + docId + '/delete', {});
+        function deleteSurveillanceDocument (survId, docId) {
+            return apiPOST('/surveillance/' + survId + '/document/' + docId + '/delete', {});
         }
 
         function deleteUser (userId) {
