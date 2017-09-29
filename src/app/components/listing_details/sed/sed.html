@@ -10,11 +10,11 @@
       <p ng-if="!vm.listing.sedReportFileLocation">No report on file</p>
     </span>
     <span ng-if="vm.listing.sedIntendedUserDescription">
-      <h4>SED Intended User Description</h4>
+      <h4>Description of Intended Users</h4>
       <p>{{ vm.listing.sedIntendedUserDescription ? vm.listing.sedIntendedUserDescription : 'N/A' }}</p>
     </span>
     <span ng-if="vm.listing.sedTestingEnd">
-      <h4>SED Testing Completion Date</h4>
+      <h4>Date SED Testing was Completed</h4>
       <p ng-if="vm.listing.sedTestingEnd">{{ vm.listing.sedTestingEnd | date : 'mediumDate' : 'UTC' }}</p>
       <p ng-if="!vm.listing.sedTestingEnd">N/A</p>
     </span>
@@ -32,7 +32,7 @@
           <tr ng-repeat="process in vm.ucdProcesses | orderBy: [vm.sortProcesses]">
             <td>
               <ul>
-                <li ng-repeat="crit in process.criteria | orderBy:vm.sortCert">{{ crit.number }}</li>
+                <li ng-repeat="crit in process.criteria | orderBy:vm.sortCert">{{ crit.number }}: {{ crit.title }}</li>
               </ul>
             </td>
             <td>{{ process.name ? process.name : 'N/A' }}</td>
@@ -56,7 +56,7 @@
             <td colspan="3">
               <button class="btn btn-ai-success"
                       ng-click="vm.getCsv()">
-                <i class="fa fa-cloud-download"></i> Download SED Task Information
+                <i class="fa fa-cloud-download"></i> Download SED Details
               </button>
               <button class="btn btn-ai pull-right"
                       ng-if="vm.editMode"
