@@ -6,6 +6,7 @@ _Date TBD_
 ### New features
 * Show error message when 404 error on Details page
 * Removed "All Products" from Download page options
+* Update to match standardized API modifications
 
 ---
 
