@@ -170,7 +170,7 @@
             it('should call the common service', function () {
                 vm.deleteDoc(3);
                 scope.$digest();
-                expect(networkService.deleteSurveillanceDocument).toHaveBeenCalledWith(1,2,3);
+                expect(networkService.deleteSurveillanceDocument).toHaveBeenCalledWith(1, 3);
             });
 
             it('should remove the deleted document from the list', function () {

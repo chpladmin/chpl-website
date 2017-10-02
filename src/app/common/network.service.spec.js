@@ -214,8 +214,8 @@
         });
 
         it('should deleteSurveillanceDocument', function () {
-            $httpBackend.expectPOST(/surveillance\/1\/nonconformity\/2\/document\/3\/delete/).respond(200, {data: 'response'});
-            networkService.deleteSurveillanceDocument(1, 2, 3).then(function (response) {
+            $httpBackend.expectPOST(/surveillance\/1\/document\/3\/delete/).respond(200, {data: 'response'});
+            networkService.deleteSurveillanceDocument(1, 3).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -254,12 +254,12 @@
         });
 
         it('should getAcbs', function () {
-            $httpBackend.expectGET(/acbs\/\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/acbs\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
             networkService.getAcbs(false).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/acbs\/\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/acbs\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
             networkService.getAcbs(false, true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -323,7 +323,7 @@
         });
 
         it('should getAnnouncements', function () {
-            $httpBackend.expectGET(/announcements\/\?future=payload/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/announcements\?future=payload/).respond(200, {data: 'response'});
             networkService.getAnnouncements('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -336,7 +336,7 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectPOST(/key\/activity\/\?pageNumber=1&pageSize=2&startDate=\d+&endDate=\d+&dateAscending=true&filter=!apiKeyFilter/).respond(200, {data: 'response'});
+            $httpBackend.expectPOST(/key\/activity\/\?pageNumber=1&pageSize=2&start=\d+&end=\d+&dateAscending=true&filter=!apiKeyFilter/).respond(200, {data: 'response'});
             networkService.getApiActivity({
                 pageNumber: 1,
                 pageSize: 2,
@@ -383,7 +383,7 @@
         });
 
         it('should getApiUsers', function () {
-            $httpBackend.expectGET(/key\//).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/key/).respond(200, {data: 'response'});
             networkService.getApiUsers().then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -415,12 +415,12 @@
         });
 
         it('should getAtls', function () {
-            $httpBackend.expectGET(/atls\/\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/atls\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
             networkService.getAtls(false).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/atls\/\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/atls\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
             networkService.getAtls(false, true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -428,7 +428,7 @@
         });
 
         it('should getCap', function () {
-            $httpBackend.expectGET(/corrective_action_plan\/\?certifiedProductId=payload/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/corrective_action_plan\?certifiedProductId=payload/).respond(200, {data: 'response'});
             networkService.getCap('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -476,7 +476,7 @@
         });
 
         it('should getCmsDownload', function () {
-            $httpBackend.expectGET(/certification_ids\//).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/certification_ids/).respond(200, {data: 'response'});
             networkService.getCmsDownload().then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -554,12 +554,12 @@
         });
 
         it('should getDevelopers', function () {
-            $httpBackend.expectGET(/developers\//).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/developers/).respond(200, {data: 'response'});
             networkService.getDevelopers().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/developers\/\?showDeleted=true/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/developers\?showDeleted=true/).respond(200, {data: 'response'});
             networkService.getDevelopers(true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -671,7 +671,7 @@
         });
 
         it('should getProductsByDeveloper', function () {
-            $httpBackend.expectGET(/products\/\?developerId=payload/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/products\?developerId=payload/).respond(200, {data: 'response'});
             networkService.getProductsByDeveloper('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -679,7 +679,7 @@
         });
 
         it('should getProductsByVersion', function () {
-            $httpBackend.expectGET(/certified_products\/\?versionId=payload&editable=p2/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/certified_products\?versionId=payload&editable=p2/).respond(200, {data: 'response'});
             networkService.getProductsByVersion('payload', 'p2').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -911,7 +911,7 @@
         });
 
         it('should getVersionsByProduct', function () {
-            $httpBackend.expectGET(/versions\/\?productId=payload/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/versions\?productId=payload/).respond(200, {data: 'response'});
             networkService.getVersionsByProduct('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
