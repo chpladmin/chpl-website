@@ -139,14 +139,14 @@
             });
 
             it('should build the columns', function () {
-                expect(vm.chart.data.cols.length).toBe(5);
-                expect(vm.chart.data.cols[0]).toEqual({label: 'Date', type: 'date' });
-                expect(vm.chart.data.cols[1]).toEqual({label: mock.types[0].dataType, type: 'number'});
+                expect(vm.charts.uniqueProducts.data.cols.length).toBe(5);
+                expect(vm.charts.uniqueProducts.data.cols[0]).toEqual({label: 'Date', type: 'date' });
+                expect(vm.charts.uniqueProducts.data.cols[1]).toEqual({label: mock.types[0].dataType, type: 'number'});
             });
 
             it('should build the rows', function () {
-                expect(vm.chart.data.rows.length).toBe(71);
-                expect(vm.chart.data.rows[0]).toEqual({c: [{v: new Date('Fri Apr 08 2016')},{v: 2302},{v: 2302},{v: 2302},{v: 2302}]});
+                expect(vm.charts.uniqueProducts.data.rows.length).toBe(71);
+                expect(vm.charts.uniqueProducts.data.rows[0]).toEqual({c: [{v: new Date('Fri Apr 08 2016')},{v: 2302},{v: 2302},{v: 2302},{v: 2302}]});
             });
         });
 
@@ -157,31 +157,31 @@
             });
 
             it('should reduce the data set when a start date is chosen', function () {
-                var initLength = vm.chart.data.rows.length;
+                var initLength = vm.charts.uniqueProducts.data.rows.length;
                 vm.startDate = new Date('Sat Aug 13 2016');
                 vm.applyFilter();
-                expect(vm.chart.data.rows.length).toBeLessThan(initLength);
+                expect(vm.charts.uniqueProducts.data.rows.length).toBeLessThan(initLength);
             });
 
             it('should reduce the data set when an end date is chosen', function () {
-                var initLength = vm.chart.data.rows.length;
+                var initLength = vm.charts.uniqueProducts.data.rows.length;
                 vm.endDate = new Date('Sat Aug 13 2016');
                 vm.applyFilter();
-                expect(vm.chart.data.rows.length).toBeLessThan(initLength);
+                expect(vm.charts.uniqueProducts.data.rows.length).toBeLessThan(initLength);
             });
         });
 
         describe('when toggling serieses', function () {
             it('should do nothing if data points are clicked on', function () {
-                var orig = angular.copy(vm.chart);
+                var orig = angular.copy(vm.charts.uniqueProducts);
                 vm.toggleSeries({row: 3, column: 1});
-                expect(vm.chart).toEqual(orig);
+                expect(vm.charts.uniqueProducts).toEqual(orig);
             });
 
             describe('from active', function () {
                 it('should modify the column to use a calculation function', function () {
                     vm.toggleSeries({row: null, column: 1});
-                    expect(vm.chart.view.columns[1]).toEqual({
+                    expect(vm.charts.uniqueProducts.view.columns[1]).toEqual({
                         label: jasmine.any(String),
                         type: 'number',
                         calc: jasmine.any(Function),
@@ -190,12 +190,12 @@
 
                 it('should use the calc function to return null for all values', function () {
                     vm.toggleSeries({row: null, column: 1});
-                    expect(vm.chart.view.columns[1].calc()).toEqual(null);
+                    expect(vm.charts.uniqueProducts.view.columns[1].calc()).toEqual(null);
                 });
 
                 it('should make the newly inactive legend "grey"', function () {
                     vm.toggleSeries({row: null, column: 1});
-                    expect(vm.chart.options.colors[0]).toBe('#ccc');
+                    expect(vm.charts.uniqueProducts.options.colors[0]).toBe('#ccc');
                 });
             });
 
@@ -203,13 +203,13 @@
                 it('should set the column back to normal', function () {
                     vm.toggleSeries({row: null, column: 1});
                     vm.toggleSeries({row: null, column: 1});
-                    expect(vm.chart.view.columns[1]).toBe(1);
+                    expect(vm.charts.uniqueProducts.view.columns[1]).toBe(1);
                 });
 
                 it('should restore the legend color to it\'s original state', function () {
                     vm.toggleSeries({row: null, column: 1});
                     vm.toggleSeries({row: null, column: 1});
-                    expect(vm.chart.options.colors[0]).toBe(vm.chart.options.defaultColors[0]);
+                    expect(vm.charts.uniqueProducts.options.colors[0]).toBe(vm.charts.uniqueProducts.options.defaultColors[0]);
                 });
             });
         });

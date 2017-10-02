@@ -4,11 +4,11 @@
       <h1>Charts</h1>
     </div>
   </div>
-  <div class="main-content" id="mainContent" tabindex="-1">
+  <div class="main-content" id="mainContent" tabindex="-1" ng-form="optionForm">
     <div class="row">
       <div class="col-sm-12">
-        <div google-chart chart="vm.chart" agc-on-select="vm.toggleSeries(selectedItem)" style="height:450px; width:100%;"></div>
-        <div class="form-horizontal" ng-form="dateForm">
+        <div google-chart chart="vm.charts.uniqueProducts" agc-on-select="vm.toggleSeries(selectedItem)" style="height:450px; width:100%;"></div>
+        <div class="form-horizontal">
           <div class="form-group">
             <label class="col-sm-1 col-sm-offset-2 control-label" for="start">From</label>
             <div class="col-sm-2">
@@ -24,6 +24,32 @@
             </div>
           </div>
         </div>
+        <div google-chart chart="vm.charts.criteria2011" style="height:450px; width:100%;"></div>
+        <div google-chart chart="vm.charts.criteria2014" style="height:450px; width:100%;"></div>
+        <div google-chart chart="vm.charts.criteria2015" style="height:450px; width:100%;"></div>
+        <div google-chart chart="vm.charts.qmsStandards" style="height:450px; width:100%;"></div>
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-1 col-sm-offset-2 control-label" for="qmsStandardSlice">QMS Standard Slice</label>
+            <div class="col-sm-2">
+              <input type="number" class="form-control input-sm"
+                     id="qmsStandardSlice" name="qmsStandardSlice"
+                     ng-model="vm.charts.qmsStandards.options.sliceVisibilityThreshold"></input>
+            </div>
+          </div>
+        </div>
+        <div google-chart chart="vm.charts.accessibilityStandards" style="height:450px; width:100%;"></div>
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-1 col-sm-offset-2 control-label" for="accessibilityStandardSlice">Accessibility Standard Slice</label>
+            <div class="col-sm-2">
+              <input type="number" class="form-control input-sm"
+                     id="accessibilityStandardSlice" name="accessibilityStandardSlice"
+                     ng-model="vm.charts.accessibilityStandards.options.sliceVisibilityThreshold"></input>
+            </div>
+          </div>
+        </div>
+        <div google-chart chart="vm.charts.cqms" style="height:450px; width:100%;"></div>
       </div>
     </div>
   </div>
