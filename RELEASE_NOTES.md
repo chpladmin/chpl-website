@@ -6,12 +6,13 @@ _Date TBD_
 ### New features
 * Show error message when 404 error on Details page
 * Removed "All Products" from Download page options
+* Update to match standardized API modifications
 * Change ordering of a listings details to Criteria, CQMs, SED, G1/G2, Surveillance, Additional Info
 * On SED Details page
- * Change 'SED Intended User Description' header to 'Description of Intended Users'
- * Change SED 'Testing Completion Date' header to 'Date SED Testing was Completed'
- * Change download button text to 'Download SED Details'
- * Add criteria title to criteria list
+  * Change 'SED Intended User Description' header to 'Description of Intended Users'
+  * Change SED 'Testing Completion Date' header to 'Date SED Testing was Completed'
+  * Change download button text to 'Download SED Details'
+  * Add criteria title to criteria list
 
 ---
 

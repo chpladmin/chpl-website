@@ -193,8 +193,8 @@
             return apiPOST('/surveillance/' + surveillanceId + '/delete', {});
         }
 
-        function deleteSurveillanceDocument (survId, nonconId, docId) {
-            return apiPOST('/surveillance/' + survId + '/nonconformity/' + nonconId + '/document/' + docId + '/delete', {});
+        function deleteSurveillanceDocument (survId, docId) {
+            return apiPOST('/surveillance/' + survId + '/document/' + docId + '/delete', {});
         }
 
         function deleteUser (userId) {
@@ -208,7 +208,7 @@
 
         function getAcbs (editable, deleted) {
             if (angular.isUndefined(deleted)) { deleted = false; }
-            return apiGET('/acbs/?editable=' + editable + '&showDeleted=' + deleted);
+            return apiGET('/acbs?editable=' + editable + '&showDeleted=' + deleted);
         }
 
         function getAccessibilityStandards () {
@@ -220,7 +220,7 @@
         }
 
         function getAll () {
-            return apiGET('/certified_products');
+            return apiGET('/collections/certified_products');
         }
 
         function getAnnouncement (announcementId) {
@@ -233,7 +233,7 @@
         }
 
         function getAnnouncements (pending) {
-            return apiGET('/announcements/?future=' + pending);
+            return apiGET('/announcements?future=' + pending);
         }
 
         function getApiActivity (options) {
@@ -241,8 +241,8 @@
             var queryParams = '';
             if (angular.isDefined(options.pageNumber)) { params.push('pageNumber=' + options.pageNumber); }
             if (options.pageSize) { params.push('pageSize=' + options.pageSize); }
-            if (options.startDate) { params.push('startDate=' + options.startDate.getTime()); }
-            if (options.endDate) { params.push('endDate=' + options.endDate.getTime()); }
+            if (options.startDate) { params.push('start=' + options.startDate.getTime()); }
+            if (options.endDate) { params.push('end=' + options.endDate.getTime()); }
             if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
             if (options.filter) {
                 var tmp = 'filter=';
@@ -260,7 +260,7 @@
         }
 
         function getApiUsers () {
-            return apiGET('/key/');
+            return apiGET('/key');
         }
 
         function getAtlActivity (activityRange) {
@@ -270,11 +270,11 @@
 
         function getAtls (editable, deleted) {
             if (angular.isUndefined(deleted)) { deleted = false; }
-            return apiGET('/atls/?editable=' + editable + '&showDeleted=' + deleted);
+            return apiGET('/atls?editable=' + editable + '&showDeleted=' + deleted);
         }
 
         function getCap (certifiedProductId) {
-            return apiGET('/corrective_action_plan/?certifiedProductId=' + certifiedProductId);
+            return apiGET('/corrective_action_plan?certifiedProductId=' + certifiedProductId);
         }
 
         function getCertBodies () {
@@ -291,22 +291,22 @@
         }
 
         function getCmsDownload () {
-            return apiGET('/certification_ids/');
+            return apiGET('/certification_ids');
         }
 
         function getCollection (type) {
             switch (type) {
             case 'apiDocumentation':
-                return apiGET('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
+                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
             case 'bannedDevelopers':
                 return apiGET('/decertifications/developers');
             case 'correctiveAction':
-                return apiGET('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
+                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
             case 'decertifiedProducts':
             case 'inactiveCertificates':
-                return apiGET('/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
+                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
             case 'transparencyAttestations':
-                return apiGET('/collections/developers/');
+                return apiGET('/collections/developers');
                 //no default
             }
         }
@@ -322,9 +322,9 @@
 
         function getDevelopers (showDeleted) {
             if (showDeleted) {
-                return apiGET('/developers/?showDeleted=true');
+                return apiGET('/developers?showDeleted=true');
             } else {
-                return apiGET('/developers/');
+                return apiGET('/developers');
             }
         }
 
@@ -374,11 +374,11 @@
         }
 
         function getProductsByDeveloper (developerId) {
-            return apiGET('/products/?developerId=' + developerId);
+            return apiGET('/products?developerId=' + developerId);
         }
 
         function getProductsByVersion (versionId, editable) {
-            return apiGET('/certified_products/?versionId=' + versionId + '&editable=' + editable);
+            return apiGET('/certified_products?versionId=' + versionId + '&editable=' + editable);
         }
 
         function getQmsStandards () {
@@ -473,7 +473,7 @@
         }
 
         function getUsers () {
-            return apiGET('/users/');
+            return apiGET('/users');
         }
 
         function getUsersAtAcb (acbId) {
@@ -494,7 +494,7 @@
         }
 
         function getVersionsByProduct (productId) {
-            return apiGET('/versions/?productId=' + productId);
+            return apiGET('/versions?productId=' + productId);
         }
 
         function initiateCap (cap) {
