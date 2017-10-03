@@ -22,7 +22,7 @@
                 { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true, initialPanel: 'sed' },
                 { predicate: 'id', display: 'Details', sortType: 'none', transformFn: _makeDetailsButton },
             ];
-            vm.filters = ['acb', 'certificationStatus', 'edition'];
+            vm.filters = ['acb', 'certificationStatus']; //, 'edition'];
             vm.refineModel = {
                 acb: [
                     { value: 'Drummond Group', selected: true },
