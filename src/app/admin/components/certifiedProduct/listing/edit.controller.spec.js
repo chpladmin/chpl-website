@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Certified Product Edit controller', function () {
-        var $controller, $log, $q, $timeout, Mock, mock, networkService, scope, utilService, vm;
+        var $controller, $log, $q, Mock, mock, networkService, scope, utilService, vm;
 
         mock = {};
         mock.activeCP = {
@@ -40,11 +40,10 @@
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$timeout_, _Mock_, _networkService_, _utilService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _networkService_, _utilService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
-                $timeout = _$timeout_;
                 networkService = _networkService_;
                 networkService.getRelatedListings.and.returnValue($q.when(mock.relatedListings));
                 networkService.updateCP.and.returnValue($q.when(mock));
@@ -377,40 +376,6 @@
                     vm.save();
                     expect($log.info.logs.length).toBe(logCount + 1);
                 });
-            });
-
-            it('should trigger saving from the cert directive', function () {
-                spyOn(vm, 'directCertsDirective');
-                spyOn(vm, 'save');
-                vm.prep();
-                expect(vm.directCertsDirective).toHaveBeenCalled();
-                $timeout.flush();
-                expect(vm.save).toHaveBeenCalled();
-            });
-
-            it('should trigger cert handlers when directed', function () {
-                var certSave = jasmine.createSpy('certSave');
-                vm.handlers = [certSave];
-                vm.directCertsDirective();
-                expect(certSave).toHaveBeenCalled();
-            });
-        });
-
-        describe('when registering cert save handlers', function () {
-            var certSave;
-            beforeEach(function () {
-                certSave = jasmine.createSpy('certSave');
-            });
-
-            it('should save them', function () {
-                vm.registerCerts(certSave);
-                expect(vm.handlers[0]).toBe(certSave);
-            });
-
-            it('should return a way to clear the handler', function () {
-                var clear = vm.registerCerts(certSave);
-                clear();
-                expect(vm.handlers[0]).toBeUndefined();
             });
         });
     });

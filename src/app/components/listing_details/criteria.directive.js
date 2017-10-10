@@ -15,7 +15,6 @@
                 cert: '=',
                 hasIcs: '=',
                 viewAll: '=',
-                hasEdited: '&',
                 isEditing: '=',
                 resources: '=',
                 accessibilityStandards: '=?',
@@ -43,6 +42,7 @@
         }
 
         function editCert () {
+            var backupCert = angular.copy(vm.cert);
             vm.editUibModalInstance = $uibModal.open({
                 templateUrl: 'app/components/listing_details/criteriaModal.html',
                 controller: 'EditCertificationCriteriaController',
@@ -57,13 +57,9 @@
                     resources: function () { return vm.resources; },
                 },
             });
-            vm.editUibModalInstance.result.then(function (result) {
-                vm.hasEdited();
-                vm.cert = result;
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.info('dismissed', result);
-                }
+            vm.editUibModalInstance.result.then(function () {
+            }, function () {
+                vm.cert = angular.copy(backupCert);
             });
         }
 

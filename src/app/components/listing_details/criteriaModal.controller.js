@@ -8,8 +8,6 @@
     function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, cert, hasIcs, resources, utilService) {
         var vm = this;
 
-        vm.cert = angular.copy(cert);
-
         vm.addNewValue = utilService.addNewValue;
         vm.cancel = cancel;
         vm.extendSelect = utilService.extendSelect;
@@ -21,6 +19,8 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.certSave = angular.copy(cert);
+            vm.cert = cert;
             vm.options = [
                 {name: 'True', value: true},
                 {name: 'False', value: false},
@@ -36,6 +36,7 @@
         }
 
         function cancel () {
+            vm.cert = angular.copy(vm.certSave);
             $uibModalInstance.dismiss('cancelled');
         }
 
@@ -44,7 +45,7 @@
         }
 
         function save () {
-            $uibModalInstance.close(vm.cert);
+            $uibModalInstance.close();
         }
     }
 })();
