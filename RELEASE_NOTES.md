@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.6.0
+_10 October 2017_
 
 ### New features
 * Show error message when 404 error on Details page
