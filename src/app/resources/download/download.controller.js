@@ -19,8 +19,8 @@
         function activate () {
             vm.API = API;
             vm.API_KEY = authService.getApiKey();
+
             vm.downloadOptions = [
-                { value: vm.API + '/download?api_key=' + vm.API_KEY, label: 'Complete XML', display: 'Complete listing (xml)'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2015', label: '2015 XML', display: '2015 edition products (xml)'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2014', label: '2014 XML', display: '2014 edition products (xml)'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2011', label: '2011 XML', display: '2011 edition products (xml)'},
@@ -30,7 +30,6 @@
                 { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY, label: 'Non-Conformities', display: 'Non-Conformities'},
             ]
             vm.definitionOptions = [
-                { value: vm.API + '/download?api_key=' + vm.API_KEY + '&definition=true', label: 'Complete XML', display: 'Complete listing (xml) Definition File'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2015&definition=true', label: '2015 XML', display: '2015 edition products (xml) Definition File'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2014&definition=true', label: '2014 XML', display: '2014 edition products (xml) Definition File'},
                 { value: vm.API + '/download?api_key=' + vm.API_KEY + '&edition=2011&definition=true', label: '2011 XML', display: '2011 edition products (xml) Definition File'},
@@ -41,8 +40,8 @@
             ]
 
             if (vm.showRestricted()) {
-                vm.downloadOptions.splice(7, 0, { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY + '&type=basic&authorization=Bearer%20' + vm.getToken(), label: 'Surveillance (Basic)', display: 'Surveillance (Basic)'});
-                vm.definitionOptions.splice(7, 0, { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY + '&type=basic&definition=true&authorization=Bearer%20' + vm.getToken(), label: 'Surveillance (Basic)', display: 'Surveillance (Basic) Definition File'});
+                vm.downloadOptions.splice(6, 0, { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY + '&type=basic&authorization=Bearer%20' + vm.getToken(), label: 'Surveillance (Basic)', display: 'Surveillance (Basic)'});
+                vm.definitionOptions.splice(6, 0, { value: vm.API + '/surveillance/download?api_key=' + vm.API_KEY + '&type=basic&definition=true&authorization=Bearer%20' + vm.getToken(), label: 'Surveillance (Basic)', display: 'Surveillance (Basic) Definition File'});
             }
 
             vm.downloadOption = vm.downloadOptions[0];
