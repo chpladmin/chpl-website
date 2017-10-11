@@ -14,17 +14,17 @@
         <a href="" ng-click="vm.showPanel('cert')" aria-expanded="{{ vm.panelShown === 'cert' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
-        <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
+        <div ng-repeat="n in vm.product.certificationResults | orderBy:vm.sortCerts">
           <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
                                      view-all="vm.viewAllCerts"
                                      has-ics="vm.product.ics.inherits"
                                      cert="n"
-                                     has-edited="vm.hasEdited()"
                                      is-editing="vm.isEditing"
                                      resources="vm.resources"
                                      accessibility-standards="vm.product.accessibilityStandards"
                                      qms-standards="vm.product.qmsStandards">
           </ai-certification-criteria>
+<!--                                     has-edited="vm.hasEdited()"-->
         </div>
       </div>
     </div>

@@ -19,20 +19,20 @@
                 isEditing: '=?',
                 product: '=',
                 resources: '=',
-                save: '&',
+//                save: '&',
                 viewAllCerts: '=?defaultAll',
             },
             scope: {},
             controllerAs: 'vm',
             controller: CertsController,
-            link: function (scope, element, attr, ctrl) {
+/*            link: function (scope, element, attr, ctrl) {
                 var handler = ctrl.save({
                     handler: function () {
                         ctrl.saveEdits();
                     },
                 });
                 scope.$on('$destroy', handler);
-            },
+            },*/
         };
         return directive;
 
@@ -72,7 +72,7 @@
                 $scope.$watch('vm.product', function (product) {
                     if (product) {
                         vm.product = product;
-                        vm.certs = vm.product.certificationResults;
+                        //vm.certs = vm.product.certificationResults;
                         vm.countCerts = vm.product.countCerts;
                         vm.countCqms = vm.product.countCqms;
                         vm.cqms = vm.product.cqmResults;
@@ -81,6 +81,7 @@
             }
 
             function hasEdited () {
+//                vm.product.certificationResults = vm.certs;
                 angular.forEach(vm.handlers, function (handler) {
                     handler();
                 });
@@ -113,21 +114,21 @@
 
                 var i,j;
 
-                for (i = 0; i < vm.certs.length; i++) {
-                    if (vm.certs[i].success) {
+                for (i = 0; i < vm.product.certificationResults.length; i++) {
+                    if (vm.product.certificationResults[i].success) {
                         vm.countCerts += 1;
                     }
-                    if (vm.certs[i].gap === 'null') {
-                        delete (vm.certs[i].gap);
+                    if (vm.product.certificationResults[i].gap === 'null') {
+                        delete (vm.product.certificationResults[i].gap);
                     }
-                    if (vm.certs[i].g1Success === 'null') {
-                        delete (vm.certs[i].g1Success);
+                    if (vm.product.certificationResults[i].g1Success === 'null') {
+                        delete (vm.product.certificationResults[i].g1Success);
                     }
-                    if (vm.certs[i].g2Success === 'null') {
-                        delete (vm.certs[i].g2Success);
+                    if (vm.product.certificationResults[i].g2Success === 'null') {
+                        delete (vm.product.certificationResults[i].g2Success);
                     }
-                    if (vm.certs[i].sed === 'null') {
-                        delete (vm.certs[i].sed);
+                    if (vm.product.certificationResults[i].sed === 'null') {
+                        delete (vm.product.certificationResults[i].sed);
                     }
                 }
 
