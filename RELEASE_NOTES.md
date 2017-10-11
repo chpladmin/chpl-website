@@ -3,6 +3,14 @@
 ## Version TBD
 _Date TBD_
 
+### Bugs fixed
+* Allow editing of Certification Criteria details
+
+---
+
+## Version 9.6.0
+_10 October 2017_
+
 ### New features
 * Show error message when 404 error on Details page
 * Removed "All Products" from Download page options

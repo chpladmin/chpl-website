@@ -5,7 +5,7 @@
         var $analytics, $compile, $log, $uibModal, Mock, actualOptions, el, mock, scope, vm;
 
         mock = {};
-        mock.cert = {};
+        mock.cert = {id: 1, name: 'initial cert'};
 
         beforeEach(function () {
             module('chpl.templates', 'chpl.mock', 'chpl');
@@ -213,31 +213,11 @@
                     expect(actualOptions.resolve.resources()).toEqual(resources);
                 });
 
-                it('should replace the cert with the response', function () {
+                it('should restore the cert if cancelled', function () {
                     vm.editCert();
-                    vm.editUibModalInstance.close({name: 'new'});
-                    expect(vm.cert).toEqual({name: 'new'});
-                });
-
-                it('should call the "has-edited" handler', function () {
-                    spyOn(vm, 'hasEdited');
-                    vm.editCert();
-                    vm.editUibModalInstance.close({name: 'new'});
-                    expect(vm.hasEdited).toHaveBeenCalled();
-                });
-
-                it('should log a non-cancelled modal', function () {
-                    var logCount = $log.info.logs.length;
-                    vm.editCert();
-                    vm.editUibModalInstance.dismiss('not cancelled');
-                    expect($log.info.logs.length).toBe(logCount + 1);
-                });
-
-                it('should not log a cancelled modal', function () {
-                    var logCount = $log.info.logs.length;
-                    vm.editCert();
-                    vm.editUibModalInstance.dismiss('cancelled');
-                    expect($log.info.logs.length).toBe(logCount);
+                    vm.cert = {id: 2, name: 'an edited cert'};
+                    vm.editUibModalInstance.dismiss();
+                    expect(vm.cert).toEqual(mock.cert);
                 });
             });
 
