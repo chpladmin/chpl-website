@@ -5,6 +5,7 @@ _Date TBD_
 
 ### Bugs fixed
 * Allow editing of Certification Criteria details
+* Allow creation of SED Task during upload/confirm
 
 ---
 
