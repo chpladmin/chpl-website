@@ -21,7 +21,7 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($log, $uibModal, API, FileUploader, authService, networkService) {
+    function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService) {
         var vm = this;
 
         vm.doWork = doWork;
@@ -88,6 +88,7 @@
                 vm.refreshPending();
                 vm.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
+                    //method: 'PUT',
                     removeAfterUpload: true,
                     headers: {
                         Authorization: 'Bearer ' + authService.getToken(),
@@ -105,24 +106,43 @@
                     },
                 });
                 vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
-                    $log.info('onSuccessItem', fileItem, response, status, headers);
                     vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
+                    if (headers.warning === '299 - "Deprecated upload template"') {
+                        vm.uploadWarnings = ['The version of the upload file you used has been deprecated. It will be removed as a valid format in the future'];
+                    }
+                    vm.preformattedUploadErrors = '';
                     vm.uploadErrors = [];
                     vm.uploadSuccess = true;
                 };
-                vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
-                    $log.info('onCompleteItem', fileItem, response, status, headers);
+                vm.uploader.onCompleteItem = function () {
                     vm.refreshPending();
                 };
-                vm.uploader.onErrorItem = function (fileItem, response, status, headers) {
-                    $log.info('onErrorItem', fileItem, response, status, headers);
+                vm.uploader.onErrorItem = function (fileItem, response) {
                     vm.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
-                    vm.uploadErrors = response.errorMessages;
+                    if (response.errorMessages
+                        && response.errorMessages.length === 1
+                        && response.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
+                        vm.uploadMessage += ' The CSV header row does not match any of the headers in the system.';
+                        vm.preformattedUploadErrors = 'The header that was uploaded was:\n' +
+                            response.errorMessages[0].split(':')[1].trim();
+                        networkService.getUploadTemplateVersions().then(function (response) {
+                            vm.preformattedUploadErrors += '\nAvailable templates:\n'
+                            vm.preformattedUploadErrors += response.data.map(function (item) {
+                                var ret = item.name + ', available as of: '
+                                    + $filter('date')(item.availableAsOf, 'mediumDate', 'UTC')
+                                    + (item.deprecated ? ' (deprecated)' : ' (active)');
+                                return ret;
+                            }).join('\n');
+                        });
+                    } else {
+                        vm.uploadErrors = response.errorMessages;
+                    }
+                    vm.uploadWarnings = [];
                     vm.uploadSuccess = false;
                 };
-                vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
+                /*vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
                     $log.info('onCancelItem', fileItem, response, status, headers);
-                };
+                };*/
 
                 vm.surveillanceUploader = new FileUploader({
                     url: API + '/surveillance/upload',
@@ -142,25 +162,21 @@
                         return '|csv|'.indexOf(extension) !== -1;
                     },
                 });
-                vm.surveillanceUploader.onSuccessItem = function (fileItem, response, status, headers) {
-                    $log.info('onSuccessItem', fileItem, response, status, headers);
+                vm.surveillanceUploader.onSuccessItem = function (fileItem, response) {
                     vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
                     vm.surveillanceUploadErrors = [];
                     vm.surveillanceUploadSuccess = true;
                 };
-                vm.surveillanceUploader.onCompleteItem = function (fileItem, response, status, headers) {
-                    $log.info('onCompleteItem', fileItem, response, status, headers);
+                vm.surveillanceUploader.onCompleteItem = function () {
                     vm.refreshPending();
                 };
-                vm.surveillanceUploader.onErrorItem = function (fileItem, response, status, headers) {
-                    $log.info('onErrorItem', fileItem, response, status, headers);
+                vm.surveillanceUploader.onErrorItem = function (fileItem, response) {
                     vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
                     vm.surveillanceUploadErrors = response.errorMessages;
                     vm.surveillanceUploadSuccess = false;
                 };
-                vm.surveillanceUploader.onCancelItem = function (fileItem, response, status, headers) {
-                    $log.info('onCancelItem', fileItem, response, status, headers);
-                };
+                /*vm.surveillanceUploader.onCancelItem = function (fileItem, response, status, headers) {
+                };*/
             }
 
             getResources();
