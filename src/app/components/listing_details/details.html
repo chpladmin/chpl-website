@@ -1,0 +1,206 @@
+<div class="row">
+  <div class="col-sm-12" ng-if="!vm.product">
+    Loading...<i class="fa fa-spin fa-spinner"></i>
+  </div>
+  <div class="col-sm-12" ng-if="vm.product">
+    <p class="">
+      <input type="checkbox" ng-model="vm.viewAllCerts" id="viewAllCerts"></input>
+      <label for="viewAllCerts">See all Certification Criteria / Clinical Quality Measures</label>
+    </p>
+
+    <!-- Certification Criteria -->
+    <div class="panel panel-ai">
+      <div class="panel-heading">
+        <a href="" ng-click="vm.showPanel('cert')" aria-expanded="{{ vm.panelShown === 'cert' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
+        <div ng-repeat="n in vm.product.certificationResults | orderBy:vm.sortCerts">
+          <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
+                                     view-all="vm.viewAllCerts"
+                                     has-ics="vm.product.ics.inherits"
+                                     cert="n"
+                                     is-editing="vm.isEditing"
+                                     resources="vm.resources"
+                                     accessibility-standards="vm.product.accessibilityStandards"
+                                     qms-standards="vm.product.qmsStandards">
+          </ai-certification-criteria>
+<!--                                     has-edited="vm.hasEdited()"-->
+        </div>
+      </div>
+    </div>
+
+    <!-- CQMs -->
+    <div class="panel panel-ai">
+      <div class="panel-heading">
+        <a href="" ng-click="vm.showPanel('cqm')" aria-expanded="{{ vm.panelShown === 'cqm' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="cols">{{ vm.product.certificationEdition.name === '2011' ? 'Meets' : 'Version' }}</th>
+              <th scope="cols">Quality Measure</th>
+              <th scope="cols" ng-if="vm.product.certificationEdition.name === '2015'" class="no-br">170.315 (c)(1)</th>
+              <th scope="cols" ng-if="vm.product.certificationEdition.name === '2015'" class="no-br">170.315 (c)(2)</th>
+              <th scope="cols" ng-if="vm.product.certificationEdition.name === '2015'" class="no-br">170.315 (c)(3)</th>
+              <th scope="cols" ng-if="vm.product.certificationEdition.name === '2015'" class="no-br">170.315 (c)(4)</th>
+            </tr>
+          </thead>
+          <tbody ng-if="!vm.isEditing">
+            <tr ng-if="vm.viewAllCerts || n.success" ng-repeat="n in vm.cqms | orderBy:vm.sortCqms track by $index">
+              <td class="text-center">
+                <i class="fa fa-lg" ng-class="{'fa-check-square-o': n.success && !n.cmsId, 'fa-square-o': !n.success && n.successVersions.length === 0}"></i>
+                <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
+                <b ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</b>
+              </td>
+              <td><a href uib-tooltip="{{ n.description }}" tooltip-trigger="mouseenter focus click"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</a></td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC1 ? 'meets' : 'does not meet'}} 170.317 (c)(1)</span><i class="fa fa-lg" ng-class="n.hasC1 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC2 ? 'meets' : 'does not meet'}} 170.317 (c)(2)</span><i class="fa fa-lg" ng-class="n.hasC2 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC3 ? 'meets' : 'does not meet'}} 170.317 (c)(3)</span><i class="fa fa-lg" ng-class="n.hasC3 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC4 ? 'meets' : 'does not meet'}} 170.317 (c)(4)</span><i class="fa fa-lg" ng-class="n.hasC4 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
+            </tr>
+          </tbody>
+          <tbody ng-if="vm.isEditing">
+            <tr ng-if="vm.viewAllCerts || n.success" ng-repeat="n in vm.cqms | orderBy:vm.sortCqms track by $index">
+              <td class="text-center">
+                <input type="checkbox" ng-model="n.success" ng-if="!n.cmsId" id="data_{{n.id}}"></input>
+                <span class="cert-bloc" ng-if="n.cmsId">
+                  <select ng-model="n.successVersions" multiple data-ng-attr-size="{{ n.allVersions.length + 1 }}" id="data_{{n.id}}"
+                          ng-options="version for version in n.allVersions | orderBy : 'toString()'">
+                    <option value=""></option>
+                  </select>
+                </span>
+              </td>
+              <td>
+                <label for="data_{{n.id}}"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</label>
+              </td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center">
+                <input type="checkbox" ng-model="n.hasC1" id="data_c1_{{n.id}}" ng-disabled="n.successVersions.length < 1"></input>
+              </td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center">
+                <input type="checkbox" ng-model="n.hasC2" id="data_c2_{{n.id}}" ng-disabled="n.successVersions.length < 1"></input>
+              </td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center">
+                <input type="checkbox" ng-model="n.hasC3" id="data_c3_{{n.id}}" ng-disabled="n.successVersions.length < 1"></input>
+              </td>
+              <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center">
+                <input type="checkbox" ng-model="n.hasC4" id="data_c4_{{n.id}}" ng-disabled="n.successVersions.length < 1"></input>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SED -->
+    <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name !== '2011'">
+      <div class="panel-heading">
+        <a href ng-click="vm.showPanel('sed')" aria-expanded="{{ vm.panelShown === 'sed' }}">
+          <i class="fa fa-lg" ng-class="vm.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-right'"></i>
+          Safety Enhanced Design (SED)
+          <span class="pull-right">
+            ({{ vm.sedCriteriaCount ? vm.sedCriteriaCount : 0 }} Certification Criteria<span ng-if="vm.product.certificationEdition.name === '2015'"> / {{ vm.sedTaskCount ? vm.sedTaskCount : 0 }} Testing Task<span ng-if="vm.sedTaskCount !== 1">s</span></span>)
+          </span>
+        </a>
+      </div>
+      <div class="panel-body animate-if" ng-show="vm.panelShown === 'sed'">
+        <ai-sed
+           criteria-count="vm.sedCriteriaCount"
+           edit-mode="vm.isEditing"
+           listing="vm.product"
+           refresh="vm.registerSed(handler)"
+           resources="vm.resources"
+           task-count="vm.sedTaskCount">
+        </ai-sed>
+      </div>
+    </div>
+
+    <!-- G1/G2 Measures -->
+    <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name === '2015'">
+      <div class="panel-heading">
+        <a href ng-click="vm.showPanel('g1g2')" aria-expanded="{{ vm.panelShown === 'g1g2' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-right'"></i> Successfully Tested G1/G2 Measures</a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'g1g2'">
+        <ai-g1g2 listing="vm.product"></ai-g1g2>
+      </div>
+    </div>
+
+    <!-- Surveillance -->
+    <div class="panel panel-ai">
+      <div class="panel-heading">
+        <a href ng-click="vm.showPanel('surveillance')" aria-expanded="{{ vm.panelShown === 'surveillance' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-right'"></i> Surveillance Activities<span class="pull-right">({{ vm.product.surveillance && vm.product.surveillance.length ? vm.product.surveillance.length : 0 }} found)</span></a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'surveillance'">
+        <ai-surveillance certified-product="vm.product"></ai-surveillance>
+      </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="panel panel-ai" ng-if="!vm.isEditing">
+      <div class="panel-heading">
+        <a href="" ng-click="vm.showPanel('additional')" aria-expanded="{{ vm.panelShown === 'additional' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'">
+        <span ng-if="vm.product.certificationEdition.name === '2014'">
+          <h4>Test Results Summary</h4>
+          <a ai-a ng-if="vm.product.reportFileLocation" href="{{ vm.product.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.product.reportFileLocation }">{{ vm.product.reportFileLocation }}</a>
+          <p ng-if="!vm.product.reportFileLocation">No report on file</p>
+        </span>
+        <span ng-if="vm.product.ics !== null">
+          <h4>Certification History</h4>
+          <p ng-if="vm.product.ics.inherits !== null"><strong>Inherited Certification Status (ICS):</strong> {{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
+          <p ng-if="vm.product.ics.inherits === null">N/A</p>
+        </span>
+        <span ng-if="vm.product.ics.parents && vm.product.ics.parents.length > 0">
+          <h5>Inherits from</h5>
+          <ul>
+            <li ng-repeat="listing in vm.product.ics.parents | orderBy: ['certificationDate','chplProductNumber']">
+              <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
+              <span ng-if="listing.id"><a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
+            </li>
+          </ul>
+        </span>
+        <span ng-if="vm.product.ics.children && vm.product.ics.children.length > 0">
+          <h5>ICS Source for</h5>
+          <ul>
+            <li ng-repeat="listing in vm.product.ics.children | orderBy: ['certificationDate','chplProductNumber']">
+              <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
+              <span ng-if="listing.id"><a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
+            </li>
+          </ul>
+        </span>
+        <span ng-if="!vm.isConfirming && ((vm.product.ics.parents && vm.product.ics.parents.length > 0) || (vm.product.ics.children && vm.product.ics.children.length > 0))">
+          <button class="btn btn-ai-success" ng-click="vm.viewIcsFamily()">View ICS Relationships</button>
+        </span>
+        <span ng-if="vm.product.otherAcb">
+          <h4>Other ACB</h4>
+          <p>{{ vm.product.otherAcb }}</p>
+        </span>
+        <span ng-if="vm.product.targetedUsers && vm.product.targetedUsers.length > 0">
+          <h4>Developer Identified Targeted User<span ng-if="vm.product.targetedUsers.length > 1">s</span></h4>
+          <ul>
+            <li ng-repeat="user in vm.product.targetedUsers">{{ user.targetedUserName }}</li>
+          </ul>
+        </span>
+        <span ng-if="vm.product.numMeaningfulUse">
+          <h4>Estimated Number of Meaningful Use Users</h4>
+          <p>{{ vm.product.numMeaningfulUse }}</p>
+        </span>
+      </div>
+    </div>
+
+    <!-- Corrective Action Plan (OBE) -->
+    <div class="panel panel-ai" ng-if="vm.cap && vm.ACTIVE_CAP">
+      <div class="panel-heading">
+        <a href="" ng-click="vm.showPanel('cap')" aria-expanded="{{ vm.panelShown === 'cap' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cap' ? 'fa-caret-down' : 'fa-caret-right'"></i> Non-conformities<span class="pull-right">({{ vm.cap.length && vm.cap.length > 0 ? vm.cap.length : 0 }} found)</span></a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cap'">
+        <ai-corrective-action-plan
+           corrective-action-plan="vm.cap"
+           certified-product-id="vm.product.id"
+           certification-results="vm.product.certificationResults"
+           is-admin="false"></ai-corrective-action-plan>
+      </div>
+    </div>
+  </div>
+</div>

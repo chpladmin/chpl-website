@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Download the CHPL</h1>
+    </div>
+  </div>
+  <div class="main-content" id="mainContent" tabindex="-1">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2>Download the latest Certified Health IT Product List</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <p>
+          To download a list of certified health IT products or surveillance activities listed on the CHPL, please select one of the following, and then click the download button:
+          <ul>
+            <li>Certified Health IT Products
+              <ul>
+                <li><strong>2011/2014/2015 Edition Products:</strong> Entire collection of a specified certification edition's certified products, including all data elements. Available as an XML file.</li>
+                <li><strong>2014/2015 Edition Summary:</strong> Entire collection of a specified certification edition's certified products, with only a subset of data elements included. Data elements included are: Certification edition, CHPL ID, ONC-ACB Certification ID, Certification Date, ONC-ACB Name, Developer Name, Product Name, Version, Practice Type (only for 2014 Edition products), Certification Status, Previous Certifying ACB, Total Number of Corrective Action Plans Over Time, Count of Currently Open Corrective Action Plans, and Certification Criteria to which that Certified Product attests. Available as a CSV file.</li>
+              </ul>
+            </li>
+            <li>Surveillance
+              <ul>
+                <li><strong>Surveillance Activity:</strong> Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.</li>
+                <li ng-if="vm.showRestricted()"><strong>Surveillance (Basic):</strong> Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.</li>
+                <li><strong>Non-Conformities:</strong> Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.</li>
+              </ul>
+            </li>
+          </ul>
+        </p>
+      </div>
+      <div class="col-sm-4" ng-form="vm.downloadForm">
+        <div class="input-group">
+          <label class="sr-only" for="downloadSelect">Select which set of products to download</label>
+          <select id="downloadSelect" name="downloadSelect" ng-model="vm.downloadOption" class="form-control"
+                  ng-change="vm.changeDownload()"
+                  ng-options="o as o.display for o in vm.downloadOptions">
+          </select>
+          <span class="input-group-btn">
+            <a type="button" class="btn btn-ai-success" href="{{ vm.downloadOption.value }}"
+               analytics-on="click" analytics-event="Download CHPL" analytics-properties="{ category: 'Download CHPL', label: vm.downloadOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
+          </span>
+        </div>
+        <div class="input-group">
+          <label class="sr-only" for="definitionSelect">Select which download defintion file to download</label>
+          <select id="definitionSelect" ng-model="vm.definitionOption" class="form-control"
+                  ng-options="o as o.display for o in vm.definitionOptions">
+          </select>
+          <span class="input-group-btn">
+            <a type="button" class="btn btn-ai-success" href="{{ vm.definitionOption.value }}"
+               analytics-on="click" analytics-event="Download CHPL Defintion" analytics-properties="{ category: 'Download CHPL', label: vm.definitionOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Definition</span></a>
+          </span>
+        </div>
+        <small>The XML definition files were last modified on September 11, 2017.</small>
+      </div>
+    </div>
+  </div>
+</div>

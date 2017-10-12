@@ -1,0 +1,36 @@
+.nav {
+
+    .dropdown-menu {
+        padding: 10px;
+        border: 3px solid #0070c9;
+
+        p {
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        li a {
+            font-weight: bold;
+        }
+
+        &#admin {
+            width: $screen-xs * 2 / 3;
+        }
+
+        &#widget-dropdown,
+        &#compare-widget-dropdown {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+    }
+}
+
+footer {
+    @media (min-width: 768px) {
+
+        .navbar-right {
+            margin-right: 0;
+        }
+    }
+}

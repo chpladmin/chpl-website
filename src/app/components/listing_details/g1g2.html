@@ -1,0 +1,21 @@
+<div style="background: white">
+  <table class="table table-condensed nowrap" ng-if="vm.measures && vm.measures.length > 0">
+    <thead>
+      <tr>
+        <th scope="col">Measure Name</th>
+        <th scope="col">Required Test</th>
+        <th scope="col">G1/G2?</th>
+        <th scope="col">Associated Criteria</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="measure in vm.measures | orderBy: ['g', 'name']">
+        <td>{{ measure.name }}</td>
+        <td>{{ measure.description }}</td>
+        <td>{{ measure.g }}</td>
+        <td>{{ measure.criteria.join('; ') }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <p ng-if="!vm.measures || vm.measures.length === 0">No measures tested for G1/G2.</p>
+</div>

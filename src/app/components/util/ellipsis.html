@@ -1,0 +1,3 @@
+<span>
+  {{ vm.isShortened ? vm.displayText : vm.text }} <span ng-if="vm.isShortened"><a href uib-tooltip="{{ vm.text }}" ng-click="vm.isShortened = false; vm.canExpand = true"><i class="fa fa-ellipsis-h"></i><span class="sr-only">Expand description<span></a></span><a href ng-click="vm.isShortened = true" ng-if="!vm.isShortened && vm.canExpand"><i class="fa fa-arrow-left"></i><span class="sr-only">Minimize description</span></a>
+</span>

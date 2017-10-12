@@ -1,0 +1,13 @@
+{
+    'ACTIVE_CAP': false,
+    'API': '/rest',
+    'CACHE_TIMEOUT': 60,
+    'CACHE_REFRESH_TIMEOUT': 300,
+    'DEVELOPER_MODE': true,
+    'ENABLE_LOGGING': true,
+    'MINUTES_BETWEEN_KEEPALIVE': 5,
+    'MINUTES_UNTIL_IDLE': 20,
+    'RELOAD_TIMEOUT': 3000,
+    'SPLIT_PRIMARY': '☺',
+    'SPLIT_SECONDARY': '☹'
+}

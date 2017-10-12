@@ -8,28 +8,44 @@ The web UI for chpl
 
 ## Prerequisites
 
-Git and node.js are required to install and test this project.
+Git, Node.js, npm, and gulp are required to install and test this project.
 
- * Git: [http://git-scm.com/](http://git-scm.com/)
- * Node.js: [http://nodejs.org/](http://nodejs.org/)
+ * Git: [git][git]
+ * Node.js: [nodejs][nodejs]
+ * NPM: [npm][npm]
+ * Gulp: [gulp][gulp]
 
 ## Getting Started
 
 Clone the repository using [git][git]:
 
-### Install Dependencies
+### Install Node.js
+
+See installation instructions here: [nodejs][nodejs]
+
+### Install npm & gulp
 
 ```
+npm install -g npm
+npm install gulp
+npm install bower
 npm install
+bower install
 ```
 
 ### Run the Application
 
 ```
-npm start
+gulp serve
+OR
+gulp seve:dist //to serve distribution ready files (minified, uglified, etc.)
 ```
 
-The website is running at: [http://localhost:8000/app/](http://localhost:8000/app/)
+The website will be running at: [http://localhost:3000/](http://localhost:3000/)
+
+If you run into errors that say something like `gulp-concat` was not found, it's likely you're hitting an issue where npm didn't install all of the dependencies of the projects in `packages.json`. That can be checked by looking in `node_modules/`. There should be ~900 directories there; if there are closer to 50, then that's the issue. Try running `npm install gulp-concat`, and `gulp serve` again. It should give you the next package that's missing. Repeat.
+
+Alternatively, update npm to at least version 4.0.5 and try running `npm install` again. See https://stackoverflow.com/questions/6237295/how-can-i-update-node-js-and-npm-to-the-next-versions for instructions on updating npm
 
 ## Testing
 
@@ -38,26 +54,24 @@ The website is running at: [http://localhost:8000/app/](http://localhost:8000/ap
 This will start a service that watches the files under test, and when any of them are changed, immediately re-run the tests, quickly showing all results.
 
 ```
-npm test
+gulp test:auto
 ```
 
 ### End to end testing
 
-Set it up first by installing the webdriver.
-
 ```
-npm run update-webdriver
+gulp e2e
 ```
 
-To do end to end testing, first start the node server, then run the tests
+## Simplify development
+
+Run the server and the tests at the same time, where the system watches changes to files and automatically updates the browser and re-runs all of the tests on any change
 
 ```
-npm start &
-npm run protractor
+gulp live
 ```
-
-# Production deployment
-
-Edit chpl-website/app/common/commonModule.js and set the API url to be the location of the tomcat server running the CHPL API
 
 [git]: http://git-scm.com/
+[nodejs]: https://nodejs.org/en/download/
+[npm]: https://www.npmjs.com/
+[gulp]: http://gulpjs.com/

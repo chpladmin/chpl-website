@@ -1,0 +1,25 @@
+<li class="text-center">
+  <label ng-class="{ 'emphasis' : vm.query.nonconformities.matchAll }">
+    <input type="checkbox" ng-model="vm.query.nonconformities.matchAll" id="filter-match-all" ng-change="vm.filterChanged()" ng-show="false">
+    Matching <u>{{ vm.query.nonconformities.matchAll ? 'all' : 'any' }}</u>
+  </label>
+</li>
+<li>
+  <label for="filter-open-nonconformity">
+    &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.nonconformities.open" id="filter-open-nonconformity" ng-change="vm.filterChanged()">
+    <span ng-class="{ 'emphasis' : vm.query.nonconformities.open }">Open Nonconformity</span>
+  </label>
+</li>
+<li>
+  <label for="filter-closed-nonconformity">
+    &nbsp;&nbsp;&nbsp;<input type="checkbox" ng-model="vm.query.nonconformities.closed" id="filter-closed-nonconformity" ng-change="vm.filterChanged()">
+    <span ng-class="{ 'emphasis' : vm.query.nonconformities.closed }">Closed Nonconformity</span>
+  </label>
+</li>
+<li class="text-center" ng-if="vm.hasChanges">
+  <span>
+    <a href ng-click="vm.clearFilter(); $event.stopPropagation();">
+      Clear Nonconformitiy Filter
+    </a>
+  </span>
+</li>

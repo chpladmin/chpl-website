@@ -1,0 +1,49 @@
+<span>
+  <span ng-if="vm.isEditing">
+    <div class="form-group">
+      <label ng-class="{ 'col-md-4' : vm.formHorizontal }" class="control-label" for="contactFirst">First Name <span class="text-danger" ng-if="vm.valuesRequired()">*</span></label>
+      <div ng-class="{ 'col-md-8' : vm.formHorizontal }">
+        <input class="input-sm form-control" type="text" ng-required="vm.valuesRequired()" ng-model="vm.contact.firstName" id="contactFirst" name="contactFirst" ng-change="vm.updateErrors()" ng-maxlength="250"></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.form.contactFirst.$touched) && vm.form.contactFirst.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.form.contactFirst.$touched) && vm.form.contactFirst.$error.maxlength">Field is too long</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label ng-class="{ 'col-md-4' : vm.formHorizontal }" class="control-label" for="contactLast">Last Name <span class="text-danger" ng-if="vm.valuesRequired()">*</span></label>
+      <div ng-class="{ 'col-md-8' : vm.formHorizontal }">
+        <input class="input-sm form-control" type="text" ng-required="vm.valuesRequired()" ng-model="vm.contact.lastName" id="contactLast" name="contactLast" ng-change="vm.updateErrors()" ng-maxlength="250"></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.form.contactLast.$touched) && vm.form.contactLast.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.form.contactLast.$touched) && vm.form.contactLast.$error.maxlength">Field is too long</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label ng-class="{ 'col-md-4' : vm.formHorizontal }" class="control-label" for="contactTitle">Title</label>
+      <div ng-class="{ 'col-md-8' : vm.formHorizontal }">
+        <input class="input-sm form-control" type="text" ng-model="vm.contact.title" id="contactTitle" name="contactTitle"></input>
+      </div>
+    </div>
+    <div class="form-group">
+      <label ng-class="{ 'col-md-4' : vm.formHorizontal }" class="control-label" for="contactEmail">Email <span class="text-danger" ng-if="vm.valuesRequired()">*</span></label>
+      <div ng-class="{ 'col-md-8' : vm.formHorizontal }">
+        <input class="input-sm form-control" type="text" ng-required="vm.valuesRequired()" ng-model="vm.contact.email" id="contactEmail" name="contactEmail" ng-change="vm.updateErrors()" ng-maxlength="250"></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.form.contactEmail.$touched) && vm.form.contactEmail.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.form.contactEmail.$touched) && vm.form.contactEmail.$error.maxlength">Field is too long</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label ng-class="{ 'col-md-4' : vm.formHorizontal }" class="control-label" for="contactPhoneNumber">Phone <span class="text-danger" ng-if="vm.valuesRequired()">*</span></label>
+      <div ng-class="{ 'col-md-8' : vm.formHorizontal }">
+        <input class="input-sm form-control" type="text" ng-required="vm.valuesRequired()" ng-model="vm.contact.phoneNumber" id="contactPhoneNumber" name="contactPhoneNumber" ng-change="vm.updateErrors()" ng-maxlength="100"></input>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.form.contactPhoneNumber.$touched) && vm.form.contactPhoneNumber.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.form.contactPhoneNumber.$touched) && vm.form.contactPhoneNumber.$error.required">Field is too long</div>
+      </div>
+    </div>
+  </span>
+  <span ng-if="!vm.isEditing">
+    First name: {{ vm.contact.firstName }}<br />
+    Last name: {{ vm.contact.lastName }}<br />
+    Title: {{ vm.contact.title }}<br />
+    Email: {{ vm.contact.email }}<br />
+    Phone: {{ vm.contact.phoneNumber }}
+  </span>
+</span>

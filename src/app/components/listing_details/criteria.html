@@ -1,0 +1,134 @@
+<div class="col-sm-12" ng-form="vm.editForm">
+  <div ng-if="vm.isEditing || vm.cert.success || vm.viewAll">
+    <i class="fa fa-lg" ng-class="{'fa-check-square-o': vm.cert.success && !vm.cert.hasVersion, 'fa-square-o': !vm.cert.success}"></i>
+    <span class="sr-only">{{ vm.cert.success ? 'meets' : 'does not meet'}}</span>
+    {{ vm.cert.number }}: {{ vm.cert.title }}
+    <span class="pull-right">
+      <a href ng-click="vm.toggleCriteria()" aria-expanded="{{ vm.showDetails }}" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ vm.cert.number }}</span></a>
+      <span ng-if="vm.isEditing">
+        <a href uib-tooltip="Criteria has phantom data" tooltip-trigger="mouseenter focus click"><span ng-if="!vm.cert.success && vm.hasPhantomData()"><i class="fa fa-exclamation-triangle status-warning"></i></span></a>
+        <button class="btn btn-ai-success btn-sm" ng-click="vm.editCert()"><i class="fa fa-pencil-square-o"> Edit</i></button>
+      </span>
+    </span>
+    <div ng-if="vm.showDetails">
+      <div ng-if="vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0">
+        <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="false"></ai-additional-software>
+      </div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Attribute</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-if="vm.cert.gap !== null">
+            <td>GAP</td>
+            <td>{{ vm.cert.gap ? 'True' : 'False' }}</td>
+          </tr>
+          <tr ng-if="vm.cert.testStandards !== null">
+            <td>Standard</td>
+            <td ng-if="vm.cert.testStandards && vm.cert.testStandards.length > 0">
+              <ul>
+                <li ng-repeat="m in vm.cert.testStandards">
+                  <span ng-if="m.testStandardDescription"><ai-ellipsis text="{{ m.testStandardDescription }}" max-length="100" word-boundaries="true"></ai-ellipsis></span>
+                  <span ng-if="!m.testStandardDescription">{{ m.testStandardName }}</span>
+                </li>
+              </ul>
+            </td>
+            <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.g1Success">
+            <td>Measure Successfully Tested for G1</td>
+            <td>True</td>
+          </tr>
+          <tr ng-if="vm.cert.g1MacraMeasures">
+            <td>Measure<span ng-if="vm.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1</td>
+            <td ng-if="vm.cert.g1MacraMeasures.length > 0">
+              <ul>
+                <li ng-repeat="meas in vm.cert.g1MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="mouseenter focus click">{{ meas.name }}</a></li>
+              </ul>
+              </td>
+            <td ng-if="vm.cert.g1MacraMeasures.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.g2Success">
+            <td>Measure Successfully Tested for G2</td>
+            <td>True</td>
+          </tr>
+          <tr ng-if="vm.cert.g2MacraMeasures">
+            <td>Measure<span ng-if="vm.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2</td>
+            <td ng-if="vm.cert.g2MacraMeasures.length > 0">
+              <ul>
+                <li ng-repeat="meas in vm.cert.g2MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="mouseenter focus click">{{ meas.name }}</a></li>
+              </ul>
+              </td>
+            <td ng-if="vm.cert.g2MacraMeasures.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.testFunctionality !== null">
+            <td>Functionality Tested</td>
+            <td ng-if="vm.cert.testFunctionality && vm.cert.testFunctionality.length > 0">
+              <ul>
+                <li ng-repeat="m in vm.cert.testFunctionality">
+                  <span ng-if="!m.description">{{ m.name }}</span>
+                  <ai-ellipsis ng-if="m.description" text="{{ m.description }}" max-length="100" word-boundaries="true"></ai-ellipsis>
+                  <span ng-if="m.testFunctionalityId === null" class="bg-danger"> Warning: Functionality tested not found in system, it will not be saved</span>
+                </li>
+              </ul>
+            </td>
+            <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.testProcedures !== null">
+            <td>Test procedure version</td>
+            <td ng-if="vm.cert.testProcedures && vm.cert.testProcedures.length > 0"><div ng-repeat="m in vm.cert.testProcedures">{{ m.testProcedureVersion }}</div></td>
+            <td ng-if="!vm.cert.testProcedures || vm.cert.testProcedures.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.number === '170.315 (g)(4)'">
+            <td>Quality Management System</td>
+            <td>
+              <ul class="list-unstyled">
+                <li ng-repeat="qms in vm.qmsStandards">
+                  <strong>Standard: </strong>{{ qms.qmsStandardName }}<br />
+                  <strong>Description: </strong><span ng-if="!qms.qmsModification">N/A</span><ai-ellipsis ng-if="qms.qmsModification" text="{{ qms.qmsModification }}" max-length="32" word-boundaries="true"></ai-ellipsis><br />
+                  <strong>Applicable Criteria: </strong>{{ qms.applicableCriteria ? qms.applicableCriteria : 'N/A' }}
+                </li>
+              </ul>
+              <span ng-if="!vm.qmsStandards || vm.qmsStandards.length === 0">N/A</span>
+            </td>
+          </tr>
+          <tr ng-if="vm.cert.number === '170.315 (g)(5)'">
+            <td>Accessibility Standard<span ng-if="vm.accessibilityStandards.length > 1">s</span></td>
+            <td>
+              <ul class="list-unstyled">
+                <li ng-repeat="std in vm.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
+              </ul>
+              <span ng-if="!vm.accessibilityStandards || vm.accessibilityStandards.length === 0">N/A</span>
+            </td>
+          </tr>
+          <tr ng-if="vm.cert.testToolsUsed !== null">
+            <td>Test tool</td>
+            <td ng-if="vm.cert.testToolsUsed && vm.cert.testToolsUsed.length > 0"><div ng-repeat="m in vm.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testToolId === null}">Tool: {{ m.testToolName }}; Version: {{ m.testToolVersion ? m.testToolVersion : 'N/A' }}<span ng-if="m.testToolId === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
+            <td ng-if="!vm.cert.testToolsUsed || vm.cert.testToolsUsed.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.testDataUsed !== null">
+            <td>Test data used</td>
+            <td ng-if="vm.cert.testDataUsed && vm.cert.testDataUsed.length > 0"><div ng-repeat="m in vm.cert.testDataUsed">Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
+            <td ng-if="!vm.cert.testDataUsed || vm.cert.testDataUsed.length === 0">None</td>
+          </tr>
+          <tr ng-if="vm.cert.apiDocumentation !== null">
+            <td>API Documentation</td>
+            <td ng-if="vm.cert.apiDocumentation"><a ai-a href="{{ vm.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: vm.cert.apiDocumentation }">{{ vm.cert.apiDocumentation }}</a></td>
+            <td ng-if="!vm.cert.apiDocumentation">None</td>
+          </tr>
+          <tr ng-if="vm.cert.privacySecurityFramework !== null">
+            <td>Privacy &amp; Security Framework</td>
+            <td>{{ vm.cert.privacySecurityFramework }}</td>
+          </tr>
+          <tr ng-if="vm.cert.sed !== null">
+            <td>SED</td>
+            <td>{{ vm.cert.sed ? 'True' : 'False' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
