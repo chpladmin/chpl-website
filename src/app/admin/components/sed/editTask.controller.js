@@ -24,6 +24,9 @@
             if (!vm.task.uniqueId) {
                 vm.task.uniqueId = (new Date()).getTime() * -1;
             }
+            if (!vm.task.id) {
+                vm.task.id = (new Date()).getTime() * -1;
+            }
             if (!vm.task.testParticipants) {
                 vm.task.testParticipants = [];
             }
