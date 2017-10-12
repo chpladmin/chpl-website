@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Bugs fixed
+* Allow editing of Certification Criteria details
+* Allow creation of SED Task during upload/confirm
+
+---
+
 ## Version 9.6.0
 _10 October 2017_
 
