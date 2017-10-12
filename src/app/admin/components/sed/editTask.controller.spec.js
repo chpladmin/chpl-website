@@ -23,6 +23,7 @@
                     participants: [],
                     task: {
                         id: 3,
+                        uniqueId: 4,
                         testParticipants: [],
                     },
                     $uibModalInstance: Mock.modalInstance,
@@ -51,6 +52,18 @@
         });
 
         describe('on load', function () {
+            it('should generate an id if one doesn\'t exist', function () {
+                vm = $controller('EditSedTaskController', {
+                    criteria: [],
+                    participants: [],
+                    task: {},
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(vm.task.id).toEqual(jasmine.any(Number));
+            });
+
             it('should generate a uniqueId if one doesn\'t exist', function () {
                 vm = $controller('EditSedTaskController', {
                     criteria: [],
