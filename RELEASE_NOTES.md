@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### New features
+* Incorporate upload-template-version errors & warnings
+
+---
+
 ## Version 9.6.1
 _12 October 2017_
 
@@ -603,13 +611,6 @@ _20 April 2016_
 
 ## Version 1.1.0
 _12 April 2016_
-
-### New Features
-* Added EHR Certification ID widget to fold out on Search page
-* Added 'Cert ID' button to product search result rows
-
-## Next version
-_Date TBD_
 
 ### New features
 * Allow editing of new style CHPL Product Number

@@ -108,9 +108,8 @@
                 vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                     vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingCertifiedProducts.length + ' pending products are ready for confirmation.';
                     if (headers.warning === '299 - "Deprecated upload template"') {
-                        vm.uploadWarnings = ['The version of the upload file you used has been deprecated. It will be removed as a valid format in the future'];
+                        vm.uploadWarnings = ['The version of the upload file you used is still valid, but has been deprecated. It will be removed as a valid format in the future. A newer version of the upload file is available.'];
                     }
-                    vm.preformattedUploadErrors = '';
                     vm.uploadErrors = [];
                     vm.uploadSuccess = true;
                 };
@@ -122,17 +121,14 @@
                     if (response.errorMessages
                         && response.errorMessages.length === 1
                         && response.errorMessages[0].startsWith('The header row in the uploaded file does not match')) {
-                        vm.uploadMessage += ' The CSV header row does not match any of the headers in the system.';
-                        vm.preformattedUploadErrors = 'The header that was uploaded was:\n' +
-                            response.errorMessages[0].split(':')[1].trim();
+                        vm.uploadMessage += ' The CSV header row does not match any of the headers in the system. Available templates are:';
                         networkService.getUploadTemplateVersions().then(function (response) {
-                            vm.preformattedUploadErrors += '\nAvailable templates:\n'
-                            vm.preformattedUploadErrors += response.data.map(function (item) {
+                            vm.uploadErrors = response.data.map(function (item) {
                                 var ret = item.name + ', available as of: '
                                     + $filter('date')(item.availableAsOf, 'mediumDate', 'UTC')
                                     + (item.deprecated ? ' (deprecated)' : ' (active)');
                                 return ret;
-                            }).join('\n');
+                            });
                         });
                     } else {
                         vm.uploadErrors = response.errorMessages;

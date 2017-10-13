@@ -21,7 +21,6 @@
           <ul ng-if="vm.uploadErrors.length > 0">
             <li ng-repeat="error in vm.uploadErrors">{{ error }}</li>
           </ul>
-          <pre ng-if="vm.preformattedUploadErrors.length > 0">{{ vm.preformattedUploadErrors }}</pre>
           <ul ng-if="vm.uploadWarnings.length > 0" class="bg-warning list-unstyled">
             <li ng-repeat="warning in vm.uploadWarnings">{{ warning }}</li>
           </ul>
