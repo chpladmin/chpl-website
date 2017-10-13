@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.6.1
+_12 October 2017_
 
 ### Bugs fixed
 * Allow editing of Certification Criteria details
