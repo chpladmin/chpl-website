@@ -31,9 +31,10 @@
     }
 
     /** @ngInject */
-    function CollectionController ($filter, $localStorage, $log, $timeout, RELOAD_TIMEOUT, collectionsService, networkService) {
+    function CollectionController ($filter, $localStorage, $log, $timeout, API, authService, collectionsService, networkService, RELOAD_TIMEOUT) {
         var vm = this;
 
+        vm.getCsv = networkService.getSedCsv;
         vm.hasResults = hasResults;
         vm.isCategoryChanged = isCategoryChanged;
         vm.isFilterActive = isFilterActive;
@@ -45,12 +46,14 @@
         vm.triggerClearFilters = triggerClearFilters;
         //vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
-
+        vm.sedDownloadAllButton = isSEDButtonDisplayed;
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.API = API;
+            vm.API_KEY = authService.getApiKey();
             vm.categoryChanged = {};
             vm.clearFilterHs = [];
             //vm.restoreStateHs = [];
@@ -66,6 +69,10 @@
 
         function hasResults () {
             return angular.isDefined(vm.allCps);
+        }
+
+        function isSEDButtonDisplayed () {
+            return vm.collectionKey === 'sed';
         }
 
         function isCategoryChanged () {
