@@ -75,6 +75,7 @@
             getUcdProcesses: getUcdProcesses,
             getUploadingCps: getUploadingCps,
             getUploadingSurveillances: getUploadingSurveillances,
+            getUploadTemplateVersions: getUploadTemplateVersions,
             getUserActivities: getUserActivities,
             getUserActivity: getUserActivity,
             getUsers: getUsers,
@@ -462,6 +463,10 @@
 
         function getUploadingSurveillances () {
             return apiGET('/surveillance/pending');
+        }
+
+        function getUploadTemplateVersions () {
+            return apiGET('/data/upload_template_versions');
         }
 
         function getUserActivities (activityRange) {

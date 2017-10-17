@@ -806,6 +806,14 @@
             $httpBackend.flush();
         });
 
+        it('should getUploadTemplateVersions', function () {
+            $httpBackend.expectGET(/data\/upload_template_versions/).respond(200, {data: 'response'});
+            networkService.getUploadTemplateVersions().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getUserActivitiesActivity', function () {
             var aDate = new Date();
             $httpBackend.expectGET(/activity\/user_activities/).respond(200, {data: 'response'});
