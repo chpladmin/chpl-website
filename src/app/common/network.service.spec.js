@@ -509,6 +509,11 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet/).respond(200, {data: 'response'});
+            networkService.getCollection('sed').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
             $httpBackend.expectGET(/collections\/developers/).respond(200, {data: 'response'});
             networkService.getCollection('transparencyAttestations').then(function (response) {
                 expect(response.data).toEqual('response');

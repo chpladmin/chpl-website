@@ -9,6 +9,7 @@
     function aiCollection () {
         return {
             bindToController: {
+                callFunction: '&?',
                 collectionKey: '@',
                 columns: '=',
                 filters: '=?',

@@ -5,6 +5,7 @@ _Date TBD_
 
 ### New features
 * Incorporate upload-template-version errors & warnings
+* Add "2015 SED Products" Collection to shortcuts
 
 ---
 
