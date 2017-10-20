@@ -124,11 +124,6 @@
           <a href ng-click="vm.triggerClearFilters()" ng-if="vm.isCategoryChanged()">Clear Filters</a>
         </div>
       </div> <!-- #filters -->
-      <div class="form group" ng-if="vm.sedDownloadAllButton()">
-        <div class="col-sm-4">
-          <a type="button" class="btn btn-sm btn-ai-success" href="{{ vm.API }}/certified_products/sed_details?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i><span class="sr-only">Download All SED Details</span>Download All SED Details</a>
-        </div>
-      </div>
     </div><!-- filter form -->
 
     <div aria-live="polite">
