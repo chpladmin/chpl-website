@@ -5,7 +5,7 @@
         .controller('SedCollectionController', SedCollectionController);
 
     /** @ngInject */
-    function SedCollectionController ($compile, $log, $scope, $uibModal) {
+    function SedCollectionController ($compile, $log, $scope, $uibModal, API, authService) {
         var vm = this;
 
         vm.viewDetails = viewDetails;
@@ -15,6 +15,8 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.API = API;
+            vm.API_KEY = authService.getApiKey();
             vm.columnSet = [
                 { predicate: 'developer', display: 'Developer', sortType: 'single' },
                 { predicate: 'product', display: 'Product', sortType: 'single' },
