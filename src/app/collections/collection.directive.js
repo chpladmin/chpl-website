@@ -45,6 +45,7 @@
         vm.triggerClearFilters = triggerClearFilters;
         //vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////
