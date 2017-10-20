@@ -83,13 +83,15 @@
         function saveInspectingDeveloper () {
             var dev = {
                 developer: {
+                    address: vm.cp.developer.address,
+                    contact: vm.cp.developer.contact,
+                    developerCode: vm.developer.developerCode,
+                    developerId: vm.cp.developer.developerId,
                     name: vm.cp.developer.name,
                     status: vm.developer.status,
-                    website: vm.cp.developer.website,
-                    address: vm.cp.developer.address,
+                    statusEvents: vm.developer.statusEvents,
                     transparencyAttestations: [{acbId: vm.cp.certifyingBody.id, acbName: vm.cp.certifyingBody.name, attestation: vm.cp.transparencyAttestation}],
-                    contact: vm.cp.developer.contact,
-                    developerId: vm.cp.developer.developerId,
+                    website: vm.cp.developer.website,
                 },
                 developerIds: [vm.cp.developer.developerId],
             };
