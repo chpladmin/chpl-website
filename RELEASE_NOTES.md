@@ -1,11 +1,10 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.7.0
+_23 October 2017_
 
 ### New features
 * Incorporate upload-template-version errors & warnings
-* Add "2015 SED Products" Collection to shortcuts
 
 ### Bug fixed
 * Fixed "Save as Developer Information" to work again
