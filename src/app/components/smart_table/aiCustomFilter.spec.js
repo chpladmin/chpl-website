@@ -37,7 +37,7 @@
         });
 
         it('should allow matching any', function () {
-            expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {all: false, items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(2);
+            expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {all: false, items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(3);
         });
 
         describe('surveillance section', function () {

@@ -75,6 +75,7 @@
             getUcdProcesses: getUcdProcesses,
             getUploadingCps: getUploadingCps,
             getUploadingSurveillances: getUploadingSurveillances,
+            getUploadTemplateVersions: getUploadTemplateVersions,
             getUserActivities: getUserActivities,
             getUserActivity: getUserActivity,
             getUsers: getUsers,
@@ -305,6 +306,8 @@
             case 'decertifiedProducts':
             case 'inactiveCertificates':
                 return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
+            case 'sed':
+                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
             case 'transparencyAttestations':
                 return apiGET('/collections/developers');
                 //no default
@@ -460,6 +463,10 @@
 
         function getUploadingSurveillances () {
             return apiGET('/surveillance/pending');
+        }
+
+        function getUploadTemplateVersions () {
+            return apiGET('/data/upload_template_versions');
         }
 
         function getUserActivities (activityRange) {

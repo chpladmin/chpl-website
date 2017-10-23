@@ -509,6 +509,11 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet/).respond(200, {data: 'response'});
+            networkService.getCollection('sed').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
             $httpBackend.expectGET(/collections\/developers/).respond(200, {data: 'response'});
             networkService.getCollection('transparencyAttestations').then(function (response) {
                 expect(response.data).toEqual('response');
@@ -796,6 +801,14 @@
         it('should getUploadingSurveillances', function () {
             $httpBackend.expectGET(/surveillance\/pending/).respond(200, {data: 'response'});
             networkService.getUploadingSurveillances().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getUploadTemplateVersions', function () {
+            $httpBackend.expectGET(/data\/upload_template_versions/).respond(200, {data: 'response'});
+            networkService.getUploadTemplateVersions().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

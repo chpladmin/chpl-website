@@ -1,5 +1,25 @@
 # Release Notes
 
+## Version 9.7.0
+_23 October 2017_
+
+### New features
+* Incorporate upload-template-version errors & warnings
+
+### Bug fixed
+* Fixed "Save as Developer Information" to work again
+
+---
+
+## Version 9.6.1
+_12 October 2017_
+
+### Bugs fixed
+* Allow editing of Certification Criteria details
+* Allow creation of SED Task during upload/confirm
+
+---
+
 ## Version 9.6.0
 _10 October 2017_
 
@@ -594,13 +614,6 @@ _20 April 2016_
 
 ## Version 1.1.0
 _12 April 2016_
-
-### New Features
-* Added EHR Certification ID widget to fold out on Search page
-* Added 'Cert ID' button to product search result rows
-
-## Next version
-_Date TBD_
 
 ### New features
 * Allow editing of new style CHPL Product Number

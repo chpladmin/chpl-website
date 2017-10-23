@@ -2,9 +2,10 @@
     'use strict';
 
     describe('the Certification Criteria Edit controller', function () {
-        var $log, Mock, mock, scope, vm;
+        var $controller, $log, Mock, mock, scope, vm;
 
         mock = {};
+        mock.cert = {id: 1, name: 'init cert'};
         mock.resources = {
             testTools: {'expandable': false,'data': [{'id': 1,'name': 'ePrescribing Validation Tool','description': null,'retired': false},{'id': 15,'name': 'Transport Test Tool','description': null,'retired': true},{'id': 5,'name': 'HL7 v2 Laboratory Results Interface (LRI) Validation Tool','description': null,'retired': false},{'id': 11,'name': 'HL7v2 Syndromic Surveillance Test Suite','description': null,'retired': false},{'id': 9,'name': 'Direct Certificate Discovery Tool','description': null,'retired': false},{'id': 3,'name': 'HL7 v2 Electronic Laboratory Reporting (ELR) Validation Tool','description': null,'retired': false},{'id': 13,'name': 'Electronic Prescribing','description': null,'retired': false},{'id': 16,'name': 'Edge Test Tool','description': null,'retired': false},{'id': 7,'name': 'Transport Testing Tool','description': null,'retired': true},{'id': 17,'name': '2015 Direct Certificate Discovery Tool','description': null,'retired': false},{'id': 10,'name': 'HL7v2 Immunization Test Suite','description': null,'retired': false},{'id': 4,'name': 'HL7 v2 Immunization Information System (IIS) Reporting Validation Tool','description': null,'retired': false},{'id': 12,'name': 'HL7v2 Electronic Laboratory Reporting Validation Tool','description': null,'retired': false},{'id': 20,'name': 'HL7v2 Electronic Laboratory Reporting Validation Tool','description': null,'retired': false},{'id': 6,'name': 'HL7 v2 Syndromic Surveillance Reporting Validation Tool','description': null,'retired': false},{'id': 8,'name': 'Cypress','description': null,'retired': false},{'id': 14,'name': 'HL7 CDA National Health Care Surveys Validator','description': null,'retired': false},{'id': 2,'name': 'HL7 CDA Cancer Registry Reporting Validation Tool','description': null,'retired': false}]},
         };
@@ -12,13 +13,14 @@
         beforeEach(function () {
             module('chpl.templates', 'chpl.mock', 'chpl');
 
-            inject(function ($controller, _$log_, $rootScope, _Mock_) {
+            inject(function (_$controller_, _$log_, $rootScope, _Mock_) {
+                $controller = _$controller_;
                 $log = _$log_;
                 Mock = _Mock_;
 
                 scope = $rootScope.$new();
                 vm = $controller('EditCertificationCriteriaController', {
-                    cert: {},
+                    cert: mock.cert,
                     resources: mock.resources,
                     hasIcs: false,
                     $uibModalInstance: Mock.modalInstance,
@@ -66,11 +68,38 @@
         });
 
         describe('when saving the certification', function () {
-            it('should return the modal with the cert', function () {
-                var aCert = {id: 1};
-                vm.cert = aCert;
+            it('should close the modal', function () {
                 vm.save();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith(aCert);
+                expect(Mock.modalInstance.close).toHaveBeenCalled();
+            });
+        });
+
+        describe('when cancelling edits', function () {
+            it('should restore the cert', function () {
+                var editedCert = {id: 2, name: 'an edited cert'};
+                vm.cert = editedCert;
+                vm.cancel();
+                expect(vm.cert).not.toEqual(editedCert);
+                expect(vm.cert).toEqual(mock.cert);
+            });
+        });
+
+        describe('related to additional software', function () {
+            it('should know when it was not met via additional software', function () {
+                expect(vm.cert.metViaAdditionalSoftware).toBeFalsy();
+            });
+
+            it('should know when it was met via additional software', function () {
+                var certMet = { additionalSoftware: [1] };
+                vm = $controller('EditCertificationCriteriaController', {
+                    cert: certMet,
+                    resources: mock.resources,
+                    hasIcs: false,
+                    $uibModalInstance: Mock.modalInstance,
+                    $scope: scope,
+                });
+                scope.$digest();
+                expect(vm.cert.metViaAdditionalSoftware).toBe(true);
             });
         });
     });
