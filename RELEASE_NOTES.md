@@ -4,9 +4,16 @@
 _Date TBD_
 
 ### New features
-* Incorporate upload-template-version errors & warnings
 * Add "2015 SED Products" Collection to shortcuts
 * Add download all SED details button to SED collection page
+
+---
+
+## Version 9.7.0
+_23 October 2017_
+
+### New features
+* Incorporate upload-template-version errors & warnings
 
 ### Bug fixed
 * Fixed "Save as Developer Information" to work again
