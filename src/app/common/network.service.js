@@ -67,6 +67,8 @@
             getSearchOptions: getSearchOptions,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
+            getStatisticTypes: getStatisticTypes,
+            getStatistics: getStatistics,
             getSurveillanceLookups: getSurveillanceLookups,
             getTargetedUsers: getTargetedUsers,
             getTestFunctionality: getTestFunctionality,
@@ -406,6 +408,14 @@
 
         function getSingleCertifiedProductActivity (productId) {
             return apiGET('/activity/certified_products/' + productId);
+        }
+
+        function getStatisticTypes () {
+            return apiGET('/data/statistic_types');
+        }
+
+        function getStatistics () {
+            return apiGET('/data/statistics');
         }
 
         function getSurveillanceLookups () {
