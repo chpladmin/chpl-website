@@ -52,11 +52,11 @@
                     view: {columns: [0, 1, 2, 3, 4]},
                 },
                 criteria2011: {
-                    type: 'BarChart',
+                    type: 'ColumnChart',
                     data: {
                         cols: [
                             { label: 'Criteria', type: 'string'},
-                            { label: 'Number of Listings', type: 'number'},
+                            { label: 'Number of Products', type: 'number'},
                         ],
                         rows: [
                             {c: [{v: '170.302 (a)'},{v: 2963}]},
@@ -107,7 +107,7 @@
                         ],
                     },
                     options: {
-                        title: 'Count of 2011 Listings attesting to Criteria',
+                        title: 'Count of 2011 Products attesting to Criteria',
                     },
                 },
                 criteria2014: {
@@ -115,7 +115,7 @@
                     data: {
                         cols: [
                             { label: 'Criteria', type: 'string'},
-                            { label: 'Number of Listings', type: 'number'},
+                            { label: 'Number of Products', type: 'number'},
                         ],
                         rows: [
                             {c: [{v: '170.314 (a)(1)'},{v: 2255}]},
@@ -180,7 +180,7 @@
                         ],
                     },
                     options: {
-                        title: 'Count of 2014 Listings attesting to Criteria',
+                        title: 'Count of 2014 Products attesting to Criteria',
                     },
                 },
                 criteria2015: {
@@ -188,7 +188,7 @@
                     data: {
                         cols: [
                             { label: 'Criteria', type: 'string'},
-                            { label: 'Number of Listings', type: 'number'},
+                            { label: 'Number of Products', type: 'number'},
                         ],
                         rows: [
                             {c: [{v: '170.315 (a)(1)'},{v: 40}]},
@@ -253,15 +253,15 @@
                         ],
                     },
                     options: {
-                        title: 'Count of 2015 Listings attesting to Criteria',
+                        title: 'Count of 2015 Products attesting to Criteria',
                     },
                 },
                 qmsStandards: {
-                    type: 'PieChart',
+                    type: 'ColumnChart',
                     data: {
                         cols: [
                             { label: 'QMS Standard', type: 'string'},
-                            { label: 'Number of Listings', type: 'number'},
+                            { label: 'Number of Products', type: 'number'},
                         ],
                         rows: [
                             {c: [{v: '(Deming) PDCA Cycle'},{v: 1}]},
@@ -310,16 +310,18 @@
                         ],
                     },
                     options: {
-                        title: 'Number of Listings using a given QMS Standard',
-                        sliceVisibilityThreshold: 0.01,
+                        title: 'Number of Products using a given QMS Standard',
+                        vAxis: {
+                            logScale: true,
+                        },
                     },
                 },
                 accessibilityStandards: {
-                    type: 'PieChart',
+                    type: 'ColumnChart',
                     data: {
                         cols: [
                             { label: 'Accessibility Standard', type: 'string'},
-                            { label: 'Number of Listings', type: 'number'},
+                            { label: 'Number of Products', type: 'number'},
                         ],
                         rows: [
                             {c: [{v: '0'},{v: 1}]},
@@ -348,8 +350,10 @@
                         ],
                     },
                     options: {
-                        title: 'Number of Listings using a given Accessibility Standard',
-                        sliceVisibilityThreshold: 0.01,
+                        title: 'Number of Products using a given Accessibility Standard',
+                        vAxis: {
+                            logScale: true,
+                        },
                     },
                 },
                 cqms: {
@@ -357,7 +361,7 @@
                     data: {
                         cols: [
                             { label: 'CQM', type: 'string'},
-                            { label: 'Number of Listings', type: 'number'},
+                            { label: 'Number of Products', type: 'number'},
                         ],
                         rows: [
                             {c: [{v: 'CMS2'},{v: 770}]},
@@ -456,7 +460,7 @@
                         ],
                     },
                     options: {
-                        title: 'Number of Listings with a given CQM',
+                        title: 'Number of Products with a given CQM',
                     },
                 },
             };
