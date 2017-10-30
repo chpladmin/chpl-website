@@ -57,7 +57,7 @@
         }
 
         function deleteDoc (docId) {
-            networkService.deleteSurveillanceDocument(vm.surveillanceId, vm.nonconformity.id, docId)
+            networkService.deleteSurveillanceDocument(vm.surveillanceId, docId)
                 .then(function () {
                     for (var i = 0; i < vm.nonconformity.documents.length; i++) {
                         if (vm.nonconformity.documents[i].id === docId) {

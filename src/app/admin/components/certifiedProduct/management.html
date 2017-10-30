@@ -12,7 +12,7 @@
       &nbsp;
     </div>
     <div class="row" ng-if="vm.workType === 'upload'">
-      <div class="col-sm-6" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
+      <div class="col-sm-12" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
         <h3>Upload Certified Products</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
@@ -20,6 +20,9 @@
           {{ vm.uploadMessage }}
           <ul ng-if="vm.uploadErrors.length > 0">
             <li ng-repeat="error in vm.uploadErrors">{{ error }}</li>
+          </ul>
+          <ul ng-if="vm.uploadWarnings.length > 0" class="bg-warning list-unstyled">
+            <li ng-repeat="warning in vm.uploadWarnings">{{ warning }}</li>
           </ul>
         </div>
         <table class="table" ng-if="vm.uploader.queue.length > 0">
@@ -55,7 +58,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-sm-6" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
+      <div class="col-sm-12" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
         <h3>Upload Surveillance Activities</h3>
         <p ng-if="vm.surveillanceUploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.surveillanceUploader" />

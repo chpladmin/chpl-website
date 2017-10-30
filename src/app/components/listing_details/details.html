@@ -14,17 +14,17 @@
         <a href="" ng-click="vm.showPanel('cert')" aria-expanded="{{ vm.panelShown === 'cert' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
-        <div ng-repeat="n in vm.certs | orderBy:vm.sortCerts">
+        <div ng-repeat="n in vm.product.certificationResults | orderBy:vm.sortCerts">
           <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
                                      view-all="vm.viewAllCerts"
                                      has-ics="vm.product.ics.inherits"
                                      cert="n"
-                                     has-edited="vm.hasEdited()"
                                      is-editing="vm.isEditing"
                                      resources="vm.resources"
                                      accessibility-standards="vm.product.accessibilityStandards"
                                      qms-standards="vm.product.qmsStandards">
           </ai-certification-criteria>
+<!--                                     has-edited="vm.hasEdited()"-->
         </div>
       </div>
     </div>
@@ -92,6 +92,49 @@
       </div>
     </div>
 
+    <!-- SED -->
+    <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name !== '2011'">
+      <div class="panel-heading">
+        <a href ng-click="vm.showPanel('sed')" aria-expanded="{{ vm.panelShown === 'sed' }}">
+          <i class="fa fa-lg" ng-class="vm.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-right'"></i>
+          Safety Enhanced Design (SED)
+          <span class="pull-right">
+            ({{ vm.sedCriteriaCount ? vm.sedCriteriaCount : 0 }} Certification Criteria<span ng-if="vm.product.certificationEdition.name === '2015'"> / {{ vm.sedTaskCount ? vm.sedTaskCount : 0 }} Testing Task<span ng-if="vm.sedTaskCount !== 1">s</span></span>)
+          </span>
+        </a>
+      </div>
+      <div class="panel-body animate-if" ng-show="vm.panelShown === 'sed'">
+        <ai-sed
+           criteria-count="vm.sedCriteriaCount"
+           edit-mode="vm.isEditing"
+           listing="vm.product"
+           refresh="vm.registerSed(handler)"
+           resources="vm.resources"
+           task-count="vm.sedTaskCount">
+        </ai-sed>
+      </div>
+    </div>
+
+    <!-- G1/G2 Measures -->
+    <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name === '2015'">
+      <div class="panel-heading">
+        <a href ng-click="vm.showPanel('g1g2')" aria-expanded="{{ vm.panelShown === 'g1g2' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-right'"></i> Successfully Tested G1/G2 Measures</a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'g1g2'">
+        <ai-g1g2 listing="vm.product"></ai-g1g2>
+      </div>
+    </div>
+
+    <!-- Surveillance -->
+    <div class="panel panel-ai">
+      <div class="panel-heading">
+        <a href ng-click="vm.showPanel('surveillance')" aria-expanded="{{ vm.panelShown === 'surveillance' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-right'"></i> Surveillance Activities<span class="pull-right">({{ vm.product.surveillance && vm.product.surveillance.length ? vm.product.surveillance.length : 0 }} found)</span></a>
+      </div>
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'surveillance'">
+        <ai-surveillance certified-product="vm.product"></ai-surveillance>
+      </div>
+    </div>
+
     <!-- Additional Information -->
     <div class="panel panel-ai" ng-if="!vm.isEditing">
       <div class="panel-heading">
@@ -143,49 +186,6 @@
           <h4>Estimated Number of Meaningful Use Users</h4>
           <p>{{ vm.product.numMeaningfulUse }}</p>
         </span>
-      </div>
-    </div>
-
-    <!-- Surveillance -->
-    <div class="panel panel-ai">
-      <div class="panel-heading">
-        <a href ng-click="vm.showPanel('surveillance')" aria-expanded="{{ vm.panelShown === 'surveillance' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-right'"></i> Surveillance Activities<span class="pull-right">({{ vm.product.surveillance && vm.product.surveillance.length ? vm.product.surveillance.length : 0 }} found)</span></a>
-      </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'surveillance'">
-        <ai-surveillance certified-product="vm.product"></ai-surveillance>
-      </div>
-    </div>
-
-    <!-- G1/G2 Measures -->
-    <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name === '2015'">
-      <div class="panel-heading">
-        <a href ng-click="vm.showPanel('g1g2')" aria-expanded="{{ vm.panelShown === 'g1g2' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-right'"></i> Successfully Tested G1/G2 Measures</a>
-      </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'g1g2'">
-        <ai-g1g2 listing="vm.product"></ai-g1g2>
-      </div>
-    </div>
-
-    <!-- SED -->
-    <div class="panel panel-ai" ng-if="vm.product.certificationEdition.name !== '2011'">
-      <div class="panel-heading">
-        <a href ng-click="vm.showPanel('sed')" aria-expanded="{{ vm.panelShown === 'sed' }}">
-          <i class="fa fa-lg" ng-class="vm.panelShown === 'sed' ? 'fa-caret-down' : 'fa-caret-right'"></i>
-          Safety Enhanced Design (SED)
-          <span class="pull-right">
-            ({{ vm.sedCriteriaCount ? vm.sedCriteriaCount : 0 }} Certification Criteria<span ng-if="vm.product.certificationEdition.name === '2015'"> / {{ vm.sedTaskCount ? vm.sedTaskCount : 0 }} Testing Task<span ng-if="vm.sedTaskCount !== 1">s</span></span>)
-          </span>
-        </a>
-      </div>
-      <div class="panel-body animate-if" ng-show="vm.panelShown === 'sed'">
-        <ai-sed
-           criteria-count="vm.sedCriteriaCount"
-           edit-mode="vm.isEditing"
-           listing="vm.product"
-           refresh="vm.registerSed(handler)"
-           resources="vm.resources"
-           task-count="vm.sedTaskCount">
-        </ai-sed>
       </div>
     </div>
 

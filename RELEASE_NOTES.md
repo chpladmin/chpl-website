@@ -4,7 +4,44 @@
 _Date TBD_
 
 ### New features
-* Hide g1/g2 measures on 2014; g1/g2 boolean on 2015
+* Add "2015 SED Products" Collection to shortcuts
+* Add download all SED details button to SED collection page
+
+---
+
+## Version 9.7.0
+_23 October 2017_
+
+### New features
+* Incorporate upload-template-version errors & warnings
+
+### Bug fixed
+* Fixed "Save as Developer Information" to work again
+
+---
+
+## Version 9.6.1
+_12 October 2017_
+
+### Bugs fixed
+* Allow editing of Certification Criteria details
+* Allow creation of SED Task during upload/confirm
+
+---
+
+## Version 9.6.0
+_10 October 2017_
+
+### New features
+* Show error message when 404 error on Details page
+* Removed "All Products" from Download page options
+* Update to match standardized API modifications
+* Change ordering of a listings details to Criteria, CQMs, SED, G1/G2, Surveillance, Additional Info
+* On SED Details page
+  * Change 'SED Intended User Description' header to 'Description of Intended Users'
+  * Change SED 'Testing Completion Date' header to 'Date SED Testing was Completed'
+  * Change download button text to 'Download SED Details'
+  * Add criteria title to criteria list
 
 ---
 
@@ -586,13 +623,6 @@ _20 April 2016_
 
 ## Version 1.1.0
 _12 April 2016_
-
-### New Features
-* Added EHR Certification ID widget to fold out on Search page
-* Added 'Cert ID' button to product search result rows
-
-## Next version
-_Date TBD_
 
 ### New features
 * Allow editing of new style CHPL Product Number
