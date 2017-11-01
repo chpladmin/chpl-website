@@ -5,7 +5,7 @@
       <button class="btn btn-ai pull-right" ng-click="vm.editDetails()">Edit SED Details</button>
     </span>
     <span ng-if="vm.listing.sedReportFileLocation !== null">
-      <h4>Usability Report</h4>
+      <h4>Full Usability Report</h4>
       <a ai-a ng-if="vm.listing.sedReportFileLocation" href="{{ vm.listing.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.listing.sedReportFileLocation }">{{ vm.listing.sedReportFileLocation }}</a>
       <p ng-if="!vm.listing.sedReportFileLocation">No report on file</p>
     </span>
