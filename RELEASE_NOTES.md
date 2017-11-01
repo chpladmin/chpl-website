@@ -5,7 +5,10 @@ _Date TBD_
 
 ### New features
 * Add "2015 SED Products" Collection to shortcuts
-* Add download all SED details button to SED collection page
+* Includes download all SED details button
+
+### Text changes
+* Usability Report -> Full Usability Report
 
 ---
 
