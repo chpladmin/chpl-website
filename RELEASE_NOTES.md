@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.8.0
+_6 November 2017_
 
 ### New features
 * Add "2015 SED Products" Collection to shortcuts
