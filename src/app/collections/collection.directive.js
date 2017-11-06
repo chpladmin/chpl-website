@@ -9,6 +9,7 @@
     function aiCollection () {
         return {
             bindToController: {
+                callFunction: '&?',
                 collectionKey: '@',
                 columns: '=',
                 filters: '=?',
@@ -30,7 +31,7 @@
     }
 
     /** @ngInject */
-    function CollectionController ($filter, $localStorage, $log, $timeout, RELOAD_TIMEOUT, collectionsService, commonService) {
+    function CollectionController ($filter, $localStorage, $log, $timeout, RELOAD_TIMEOUT, collectionsService, networkService) {
         var vm = this;
 
         vm.hasResults = hasResults;
@@ -80,7 +81,7 @@
         }
 
         function loadResults () {
-            commonService.getCollection(vm.collectionKey).then(function (response) {
+            networkService.getCollection(vm.collectionKey).then(function (response) {
                 vm.allCps = collectionsService.translate(vm.collectionKey, response);
                 vm.isPreLoading = false;
             }, function (error) {

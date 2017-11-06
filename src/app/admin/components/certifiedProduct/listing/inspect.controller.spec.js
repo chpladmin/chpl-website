@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Listing Inspection controller', function () {
-        var $log, $q, Mock, commonService, mock, scope, vm;
+        var $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
         mock.inspectingCp = {
@@ -21,7 +21,7 @@
 
         beforeEach(function () {
             module('chpl.admin', 'chpl.mock', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
                     $delegate.rejectPendingCp = jasmine.createSpy('rejectPendingCp');
@@ -30,14 +30,14 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
-                commonService = _commonService_;
-                commonService.confirmPendingCp.and.returnValue($q.when({}));
-                commonService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
-                commonService.rejectPendingCp.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.confirmPendingCp.and.returnValue($q.when({}));
+                networkService.getDeveloper.and.returnValue($q.when(Mock.developers[0]));
+                networkService.rejectPendingCp.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 vm = $controller('InspectController', {
@@ -88,28 +88,28 @@
             });
 
             it('should not dismiss the modal if confirmation fails', function () {
-                commonService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
+                networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
                 vm.confirm();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should not dismiss the modal if rejection fails', function () {
-                commonService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
+                networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: []}}));
                 vm.reject();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should have error messages if confirmation fails', function () {
-                commonService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
                 vm.confirm();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([1,2]);
             });
 
             it('should have error messages if rejection fails', function () {
-                commonService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
+                networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2]}}));
                 vm.reject();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([1,2]);
@@ -117,7 +117,7 @@
 
             it('should dismiss the modal with the contact if the pending listing was already resolved on confirmation', function () {
                 var contact = {name: 'person'};
-                commonService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+                networkService.confirmPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
                 vm.confirm();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({
@@ -129,7 +129,7 @@
 
             it('should dismiss the modal with the contact if the pending listing was already resolved on rejection', function () {
                 var contact = {name: 'person'};
-                commonService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
+                networkService.rejectPendingCp.and.returnValue($q.reject({data: {errorMessages: [1,2], contact: contact, objectId: 1}}));
                 vm.reject();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({

@@ -8,22 +8,19 @@
     function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, cert, hasIcs, resources, utilService) {
         var vm = this;
 
-        vm.cert = cert;
-
         vm.addNewValue = utilService.addNewValue;
-        vm.addTask = addTask;
         vm.cancel = cancel;
-        vm.editTask = editTask;
         vm.extendSelect = utilService.extendSelect;
         vm.isToolAvailable = isToolAvailable;
         vm.save = save;
-        vm.removeTask = removeTask;
 
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.certSave = angular.copy(cert);
+            vm.cert = cert;
             vm.options = [
                 {name: 'True', value: true},
                 {name: 'False', value: false},
@@ -38,67 +35,17 @@
             vm.resources = resources;
         }
 
-        function addTask () {
-            vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/taskModal.html',
-                controller: 'EditSedTaskController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    task: function () { return { task: {} }; },
-                },
-            });
-            vm.editUibModalInstance.result.then(function (result) {
-                if (!vm.cert.testTasks || vm.cert.testTasks === null) {
-                    vm.cert.testTasks = [];
-                }
-                vm.cert.testTasks.push(result);
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.info('dismissed', result);
-                }
-            });
-        }
-
         function cancel () {
+            vm.cert = angular.copy(vm.certSave);
             $uibModalInstance.dismiss('cancelled');
-        }
-
-        function editTask (task, idx) {
-            vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/taskModal.html',
-                controller: 'EditSedTaskController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    task: function () { return {'task': task}; },
-                },
-            });
-            vm.editUibModalInstance.result.then(function (result) {
-                vm.cert.testTasks[idx] = result;
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.info('dismissed', result);
-                }
-            });
         }
 
         function isToolAvailable (tool) {
             return vm.hasIcs || !tool.retired;
         }
 
-        function removeTask (idx) {
-            vm.cert.testTasks.splice(idx,1);
-        }
-
         function save () {
-            $uibModalInstance.close(vm.cert);
+            $uibModalInstance.close();
         }
     }
 })();

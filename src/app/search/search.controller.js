@@ -5,7 +5,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, commonService, utilService) {
+    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, networkService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -139,7 +139,7 @@
         }
 
         function loadResults () {
-            commonService.getAll().then(function (response) {
+            networkService.getAll().then(function (response) {
                 var results = response.results;
                 vm.allCps = [];
                 incrementTable(parseAllResults(results));
@@ -151,7 +151,7 @@
         }
 
         function refreshResults () {
-            commonService.getAll().then(function (response) {
+            networkService.getAll().then(function (response) {
                 var results = response.results;
                 vm.allCps = parseAllResults(results);
             }, function (error) {
@@ -404,7 +404,7 @@
 
         function populateSearchOptions () {
             vm.lookaheadSource = {all: [], developers: [], products: []};
-            commonService.getSearchOptions(true)
+            networkService.getSearchOptions(true)
                 .then(function (options) {
                     vm.searchOptions = options;
                     var i;

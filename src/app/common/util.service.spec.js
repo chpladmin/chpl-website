@@ -2,12 +2,9 @@
     'use strict';
 
     describe('the Utility service', function () {
+        var $log, FileSaver, mock, util;
 
-        beforeEach(module('chpl.common'));
-
-        var $log, mock, util;
         mock = {
-            newValue: 'fake',
             objects: [
                 {key: 'key', value: 'zeroeth'},
                 {key: 'key', value: 'first'},
@@ -18,35 +15,30 @@
                 {key: 'key', value: 'sixth', specialKey: 2},
                 {key: 'key', value: 'seventh', specialKey: 2},
             ],
-            options: [],
-            secondValue: 'a second value',
         };
 
-        beforeEach(inject(function (_$log_, _utilService_) {
-            $log = _$log_;
-            util = _utilService_;
-        }));
+        beforeEach(function () {
+            module('chpl.services', function ($provide) {
+                $provide.decorator('FileSaver', function ($delegate) {
+                    $delegate.saveAs = jasmine.createSpy('saveAs');
+                    return $delegate;
+                });
+            });
+
+            inject(function (_$log_, _FileSaver_, _utilService_) {
+                $log = _$log_;
+                FileSaver = _FileSaver_;
+                FileSaver.saveAs.and.returnValue();
+                util = _utilService_;
+            })
+        });
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log("\n Debug: " + $log.debug.logs.join("\n Debug: "));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
-        });
-
-        it('should have a function to add an option to a select', function () {
-            expect(util.extendSelect).toBeDefined();
-        });
-
-        it('should update the options when a new item is changed', function () {
-            var options = util.extendSelect(mock.options, mock.newValue);
-            expect(options).toEqual([{name: mock.newValue}]);
-        });
-
-        it('shouldn\'t add a new object if one was already added', function () {
-            var options = util.extendSelect(mock.options, mock.newValue);
-            options = util.extendSelect(mock.options, mock.secondValue);
-            expect(options).toEqual([{name: mock.secondValue}]);
-            expect(options.length).toBe(1);
         });
 
         it('should get the right icon for various statuses', function () {
@@ -58,6 +50,26 @@
             expect(util.statusFont('Withdrawn by Developer Under Surveillance/Review')).toBe('fa-exclamation-circle status-bad');
             expect(util.statusFont('Withdrawn by Developer')).toBe('fa-stop-circle status-neutral');
             expect(util.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
+        });
+
+        describe('when extending a select element using just a name', function () {
+            it('should be able to add an option to a select', function () {
+                expect(util.extendSelect).toBeDefined();
+            });
+
+            it('should update the options when a new item is added', function () {
+                var options = [];
+                util.extendSelect(options, 'fake');
+                expect(options).toEqual([{name: 'fake'}]);
+            });
+
+            it('shouldn\'t add a new object if the name is a duplicate', function () {
+                var options = [];
+                util.extendSelect(options, 'name1');
+                util.extendSelect(options, 'name2');
+                util.extendSelect(options, 'name1');
+                expect(options.length).toBe(2);
+            });
         });
 
         describe('when adding a value to an array', function () {
@@ -79,21 +91,39 @@
             });
         });
 
-        it('should match to a model', function () {
-            var id = {id: 2};
-            var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
-            expect(id).not.toBe(array[1]);
-            id = util.findModel(id, array);
-            expect(id).toBe(array[1]);
+        describe('when connecting to a model', function () {
+            it('should match to a model', function () {
+                var id = {id: 2};
+                var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+                expect(id).not.toBe(array[1]);
+                id = util.findModel(id, array);
+                expect(id).toBe(array[1]);
+            });
+
+            it('should match with an optional key', function () {
+                var id = {name: 'name2'};
+                var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
+                expect(id).not.toBe(array[1]);
+                id = util.findModel(id, array, 'name');
+                expect(id).toBe(array[1]);
+            });
         });
 
-        describe('sorting', function () {
+        describe('when sorting', function () {
 
             it('should be able to sort certs', function () {
                 expect(util.sortCert('170.314 (a)(1)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
                 expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
                 expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.315 (a)(10)'));
                 expect(util.sortCert('170.302 (a)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
+            });
+
+            it('should be able to sort cert objects by name', function () {
+                expect(util.sortCert({name: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({name: '170.314 (a)(10)'}));
+            });
+
+            it('should be able to sort cert objects by number', function () {
+                expect(util.sortCert({number: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({number: '170.314 (a)(10)'}));
             });
 
             it('should be able to sort cqms', function () {
@@ -142,6 +172,7 @@
                 expect(util.sortRequirements(criteria2015_g_4)).toBeLessThan(util.sortRequirements(criteria2015_g_10));
                 expect(util.sortRequirements(criteria2015_g_10)).toBeLessThan(util.sortRequirements(transparency_requirement));
                 expect(util.sortRequirements(transparency_requirement)).toBeLessThan(util.sortRequirements(other_requirement));
+                expect(util.sortRequirements('170.302 (a)')).toBeLessThan(util.sortRequirements(criteria2014));
             });
 
             it('should be able to sort nonconformity types', function () {
@@ -161,9 +192,14 @@
                 expect(util.sortNonconformityTypes(criteria2015_g_10)).toBeLessThan(util.sortNonconformityTypes(transparency_k_2));
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
             });
+
+            it('should be able to order arrays of arrays of certs by the first cert', function () {
+                expect(util.sortCertArray([])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
+                expect(util.sortCertArray(['170.314 (a)(2)'])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
+            });
         });
 
-        describe('array comparison', function () {
+        describe('when comparing arrays', function () {
             var ret;
             beforeEach(function () {
                 ret = { added: [], edited: [], removed: [] };
@@ -220,18 +256,93 @@
             });
         });
 
-        describe('array to CSV', function () {
+        describe('when converting an array to CSV', function () {
             var data;
 
             beforeEach(function () {
-                data = [
-                    ['header 1', 'header 2', 'header 3', 'header 4'],
-                    ['String with "quotes"', 'String with ,commas,', 'String with "both,omg"', 'String with\nnewline'],
-                ];
+                data = {
+                    name: 'filename',
+                    values: [
+                        ['header 1', 'header 2', 'header 3', 'header 4'],
+                        ['String with "quotes"', 'String with ,commas,', 'String with "both,omg"', 'String with\nnewline'],
+                    ],
+                };
             });
 
             it('should convert arrays', function () {
-                expect(util.arrayToCsv(data)).toEqual('header 1,header 2,header 3,header 4\n"String with ""quotes""","String with ,commas,","String with ""both,omg""","String with\nnewline"');
+                expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n"String with ""quotes""","String with ,commas,","String with ""both,omg""","String with\nnewline"');
+            });
+
+            it('should call the FileSaver to output', function () {
+                util.makeCsv(data);
+                expect(FileSaver.saveAs).toHaveBeenCalledWith(jasmine.any(Object), 'filename');
+            });
+
+            it('should handle null and undefined cells to blank strings', function () {
+                data.values[1][0] = null;
+                data.values[1][1] = undefined;
+                expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n,,"String with ""both,omg""","String with\nnewline"');
+            });
+
+            it('should handle raw numbers', function () {
+                data.values[1] = [1,2,3,4];
+                expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n1,2,3,4');
+            });
+        });
+
+        describe('when determining if an address is required', function () {
+            var address;
+            it('should not be required if there is no data', function () {
+                address = {};
+                expect(util.addressRequired(address)).toBe(false);
+                expect(util.addressRequired()).toBe(false);
+            });
+
+            it('should be required if there are any fields that have data', function () {
+                address = {
+                    line1: undefined,
+                    line2: undefined,
+                    city: undefined,
+                    state: undefined,
+                    zipcode: undefined,
+                    country: undefined,
+                }
+                expect(util.addressRequired(address)).toBe(false);
+                address.country = '';
+                expect(util.addressRequired(address)).toBe(false);
+                address.country = 'USA';
+                expect(util.addressRequired(address)).toBe(true);
+                address.country = undefined;
+
+                address.zipcode = '';
+                expect(util.addressRequired(address)).toBe(false);
+                address.zipcode = 'USA';
+                expect(util.addressRequired(address)).toBe(true);
+                address.zipcode = undefined;
+
+                address.state = '';
+                expect(util.addressRequired(address)).toBe(false);
+                address.state = 'USA';
+                expect(util.addressRequired(address)).toBe(true);
+                address.state = undefined;
+
+                address.city = '';
+                expect(util.addressRequired(address)).toBe(false);
+                address.city = 'USA';
+                expect(util.addressRequired(address)).toBe(true);
+                address.city = undefined;
+
+                address.line2 = '';
+                expect(util.addressRequired(address)).toBe(false);
+                address.line2 = 'USA';
+                expect(util.addressRequired(address)).toBe(true);
+                address.line2 = undefined;
+
+                address.line1 = '';
+                expect(util.addressRequired(address)).toBe(false);
+                address.line1 = 'USA';
+                expect(util.addressRequired(address)).toBe(true);
+                address.line1 = undefined;
             });
         });
     });

@@ -3,22 +3,22 @@
 
     describe('the Transparency Attestation Collection controller', function () {
 
-        var $log, commonService, scope, vm;
+        var $log, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.collections', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, $rootScope, _commonService_) {
+            inject(function ($controller, _$log_, $rootScope, _networkService_) {
                 $log = _$log_;
-                commonService = _commonService_;
+                networkService = _networkService_;
 
                 scope = $rootScope.$new();
                 vm = $controller('TransparencyAttestationsController', {
-                    commonService: commonService,
+                    networkService: networkService,
                     $scope: scope,
                 });
                 scope.$digest();
@@ -49,14 +49,7 @@
             it('should wrap the data in link text', function () {
                 data = ['link'];
                 expect(vm._urlTransform(data)).toBe(
-                    '<ul>' +
-                        '<li><a href="link">link' +
-                        '<a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" class="pull-right">' +
-                        '<i class="fa fa-external-link"></i>' +
-                        '<span class="sr-only">Web Site Disclaimers</span>' +
-                        '</a>' +
-                        '</a></li>' +
-                        '</ul>'
+                    '<ul class="list-unstyled"><li class="ng-scope"><a ai-a="" href="link">link</a></li></ul>'
                 );
             });
         });

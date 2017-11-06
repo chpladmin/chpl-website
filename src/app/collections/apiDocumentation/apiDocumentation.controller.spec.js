@@ -3,23 +3,23 @@
 
     describe('chpl.collections.apiDocumentation.controller', function () {
 
-        var $log, commonService, scope, vm;
+        var $log, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.collections', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, $rootScope, _commonService_) {
+            inject(function ($controller, _$log_, $rootScope, _networkService_) {
                 $log = _$log_;
-                commonService = _commonService_;
+                networkService = _networkService_;
 
                 scope = $rootScope.$new();
                 vm = $controller('ApiDocumentationController', {
                     $scope: scope,
-                    commonService: commonService,
+                    networkService: networkService,
                 });
                 scope.$digest();
             });

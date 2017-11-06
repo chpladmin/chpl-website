@@ -2,5 +2,5 @@
     'use strict';
 
     angular
-        .module('chpl.overview', ['chpl.common']);
+        .module('chpl.overview', ['chpl.services']);
 })();

@@ -1,8 +1,24 @@
 (function () {
     'use strict';
 
-    describe('the SED Task Modal controller', function () {
-        var $log, $uibModal, Mock, actualOptions, scope, vm;
+    describe('the SED View Task Modal controller', function () {
+        var $log, $uibModal, Mock, actualOptions, mock, scope, vm;
+        mock = {
+            task: {
+                testParticipants: [
+                    { occupation: 'Nurse', productExperienceMonths: 10 },
+                    { occupation: 'Nurse', productExperienceMonths: 10 },
+                    { occupation: 'Pharmacist', productExperienceMonths: 10 },
+                    { occupation: 'Pharmacist', productExperienceMonths: 10 },
+                    { occupation: 'Doc', productExperienceMonths: 10 },
+                    { occupation: 'Doc', productExperienceMonths: 20 },
+                    { occupation: 'PA', productExperienceMonths: 20 },
+                    { occupation: 'PA', productExperienceMonths: 20 },
+                    { occupation: 'RN', productExperienceMonths: 20 },
+                    { occupation: 'RN', productExperienceMonths: 20 },
+                ],
+            },
+        }
 
         beforeEach(function () {
             module('chpl', 'chpl.mock', 'chpl.templates');
@@ -17,8 +33,11 @@
                 });
 
                 scope = $rootScope.$new();
-                vm = $controller('EditSedTaskController', {
-                    task: {task: {}},
+                vm = $controller('ViewSedTaskController', {
+                    criteria: [],
+                    editMode: false,
+                    task: angular.copy(mock.task),
+                    participants: [],
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
                 });
@@ -44,155 +63,149 @@
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
-        describe('with respect to changes', function () {
-            it('should not mark itself as changed if cancelled', function () {
-                vm.task.changed = true;
-                vm.cancel();
-                expect(vm.task.changed).toBeUndefined();
+        describe('when parsing Participants', function () {
+            it('should know what the mean product experience is', function () {
+                expect(vm.meanProductExperience).toBe(15);
             });
 
-            it('should be able to mark itself as changed when the task has an id', function () {
-                vm.task.id = 1;
-                expect(vm.task.changed).toBeUndefined();
-                vm.changed();
-                expect(vm.task.changed).toBe(true);
-            });
-
-            it('should not mark itself as changed if the task has no idea', function () {
-                expect(vm.task.changed).toBeUndefined();
-                vm.changed();
-                expect(vm.task.changed).toBeUndefined();
+            it('should have a list of occupations', function () {
+                expect(vm.occupations.length).toBe(5);
+                expect(vm.occupations[0].name).toBe('Nurse');
+                expect(vm.occupations[0].count).toBe(2);
             });
         });
 
-        describe('when saving the task', function () {
-            it('should return the modal with the task', function () {
-                var aTask = {id: 1};
-                vm.task = aTask;
-                vm.save();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith(aTask);
-            });
-        });
-
-        describe('when adding a Participant', function () {
+        describe('when viewing Participants', function () {
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/participantModal.html',
-                    controller: 'EditSedParticipantController',
+                    templateUrl: 'app/components/listing_details/sed/participantsModal.html',
+                    controller: 'ViewSedParticipantsController',
                     controllerAs: 'vm',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'lg',
                     resolve: {
-                        participant: jasmine.any(Function),
+                        allParticipants: jasmine.any(Function),
+                        editMode: jasmine.any(Function),
+                        participants: jasmine.any(Function),
                     },
                 };
+                vm.editMode = 'on';
             });
 
             it('should create a modal instance', function () {
-                expect(vm.editModalInstance).toBeUndefined();
-                vm.addParticipant();
-                expect(vm.editModalInstance).toBeDefined();
+                expect(vm.modalInstance).toBeUndefined();
+                vm.viewParticipants();
+                expect(vm.modalInstance).toBeDefined();
             });
 
             it('should resolve elements', function () {
-                vm.addParticipant();
+                vm.participants = [1,2];
+                vm.viewParticipants();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                expect(actualOptions.resolve.participant()).toEqual({ participant: {}});
+                expect(actualOptions.resolve.allParticipants()).toEqual([1,2]);
+                expect(actualOptions.resolve.editMode()).toBe('on');
+                expect(actualOptions.resolve.participants()).toEqual(mock.task.testParticipants);
             });
 
-            it('should push the result to the list of participants', function () {
-                vm.addParticipant();
-                vm.task.testParticipants = [];
-                vm.editModalInstance.close({});
-                expect(vm.task.testParticipants).toEqual([{}]);
+            it('should replace the task participant list with an edited one on close', function () {
+                var newParticipants = [1,2,3];
+                vm.viewParticipants();
+                vm.modalInstance.close({
+                    participants: newParticipants,
+                });
+                expect(vm.task.testParticipants).toEqual(newParticipants);
             });
 
-            it('should create an array of participants if it doesn\'t exist', function () {
-                vm.addParticipant();
-                vm.editModalInstance.close({});
-                expect(vm.task.testParticipants).toEqual([{}]);
-            });
-
-            it('should create an array of participants if it doesn\'t exist', function () {
-                vm.addParticipant();
-                vm.task.testParticipants = null;
-                vm.editModalInstance.close({});
-                expect(vm.task.testParticipants).toEqual([{}]);
-            });
-
-            it('should log a non-cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.addParticipant();
-                vm.editModalInstance.dismiss('not cancelled');
-                expect($log.info.logs.length).toBe(logCount + 1);
-            });
-
-            it('should not log a cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.addParticipant();
-                vm.editModalInstance.dismiss('cancelled');
-                expect($log.info.logs.length).toBe(logCount);
+            it('should replace the "all participants" list with an edited one on close', function () {
+                var newParticipants = [1,2,3];
+                vm.participants = [1,2];
+                vm.viewParticipants();
+                vm.modalInstance.close({
+                    allParticipants: newParticipants,
+                });
+                expect(vm.participants).toEqual(newParticipants);
             });
         });
 
-        describe('when editing a Participant', function () {
-            var modalOptions, participant;
+        describe('when editing the Task', function () {
+            var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/participantModal.html',
-                    controller: 'EditSedParticipantController',
+                    templateUrl: 'app/admin/components/sed/editTask.html',
+                    controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
+                    size: 'lg',
                     resolve: {
-                        participant: jasmine.any(Function),
+                        criteria: jasmine.any(Function),
+                        participants: jasmine.any(Function),
+                        task: jasmine.any(Function),
                     },
                 };
-                participant = {};
-                vm.task.testParticipants = [{}];
             });
 
             it('should create a modal instance', function () {
-                expect(vm.editModalInstance).toBeUndefined();
-                vm.editParticipant(participant, 0);
-                expect(vm.editModalInstance).toBeDefined();
+                expect(vm.modalInstance).toBeUndefined();
+                vm.editTask();
+                expect(vm.modalInstance).toBeDefined();
             });
 
             it('should resolve elements', function () {
-                vm.editParticipant(participant, 0);
+                vm.participants = [1,2];
+                vm.criteria = [3,4];
+                vm.editTask();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                expect(actualOptions.resolve.participant()).toEqual({ participant: participant});
+                expect(actualOptions.resolve.criteria()).toEqual([3,4]);
+                expect(actualOptions.resolve.participants()).toEqual([1,2]);
+                expect(actualOptions.resolve.task()).toEqual(mock.task);
             });
 
-            it('should replace the participant with the response', function () {
-                vm.editParticipant(participant, 0);
-                vm.editModalInstance.close({name: 'new'});
-                expect(vm.task.testParticipants).toEqual([{name: 'new'}]);
+            it('should replace the task and participants with the response', function () {
+                vm.editTask();
+                vm.modalInstance.close({task: 'new', participants: [2,3]});
+                expect(vm.task).toEqual('new');
+                expect(vm.participants).toEqual([2,3]);
             });
 
             it('should log a non-cancelled modal', function () {
                 var logCount = $log.info.logs.length;
-                vm.editParticipant(participant, 0);
-                vm.editModalInstance.dismiss('not cancelled');
+                vm.editTask();
+                vm.modalInstance.dismiss('not cancelled');
                 expect($log.info.logs.length).toBe(logCount + 1);
             });
 
             it('should not log a cancelled modal', function () {
                 var logCount = $log.info.logs.length;
-                vm.editParticipant(participant, 0);
-                vm.editModalInstance.dismiss('cancelled');
+                vm.editTask();
+                vm.modalInstance.dismiss('cancelled');
                 expect($log.info.logs.length).toBe(logCount);
+            });
+
+            it('should have a way to save the changed task', function () {
+                expect(vm.save).toBeDefined();
+                vm.save();
+                expect(Mock.modalInstance.close).toHaveBeenCalled();
             });
         });
 
-        describe('when removing a participant', function () {
-            it('should remove the indicated one', function () {
-                vm.task.testParticipants = [0, 1, 2];
-                vm.removeParticipant(1);
-                expect(vm.task.testParticipants).toEqual([0, 2]);
+        describe('when deleting the Task', function () {
+            it('should close it\'s modal', function () {
+                vm.deleteTask();
+                expect(Mock.modalInstance.close).toHaveBeenCalled();
+            });
+
+            it('should pass back a message and the participants', function () {
+                vm.participants = [1,2]
+                vm.deleteTask();
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    deleted: true,
+                    participants: [1,2],
+                });
             });
         });
     });

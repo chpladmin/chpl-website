@@ -21,7 +21,7 @@
     }
 
     /** @ngInject */
-    function SubscriptionRecipientsController ($log, $uibModal, commonService) {
+    function SubscriptionRecipientsController ($log, $uibModal, networkService) {
         var vm = this;
 
         vm.createRecipient = createRecipient;
@@ -101,7 +101,7 @@
         }
 
         function loadSubscriptionReportTypes () {
-            commonService.getSubscriptionReportTypes()
+            networkService.getSubscriptionReportTypes()
                 .then(function (result) {
                     vm.subscriptionReportTypes = result;
                 }, function (error) {
@@ -111,7 +111,7 @@
 
         function loadRecipients () {
             vm.recipients = [];
-            commonService.getSubscriptionRecipients()
+            networkService.getSubscriptionRecipients()
                 .then(function (result) {
                     vm.recipients = result.results;
                 }, function (error) {

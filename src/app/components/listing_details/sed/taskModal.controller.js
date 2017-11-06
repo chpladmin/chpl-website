@@ -2,79 +2,60 @@
     'use strict';
 
     angular.module('chpl')
-        .controller('EditSedTaskController', EditSedTaskController);
+        .controller('ViewSedTaskController', ViewSedTaskController);
 
     /** @ngInject */
-    function EditSedTaskController ($log, $uibModal, $uibModalInstance, task) {
+    function ViewSedTaskController ($log, $uibModal, $uibModalInstance, criteria, editMode, participants, task, utilService) {
         var vm = this;
 
-        vm.task = task.task;
-
-        vm.addParticipant = addParticipant;
         vm.cancel = cancel;
-        vm.changed = changed;
-        vm.editParticipant = editParticipant;
-        vm.removeParticipant = removeParticipant
+        vm.deleteTask = deleteTask;
+        vm.editTask = editTask;
         vm.save = save;
+        vm.sortCert = utilService.sortCert;
+        vm.viewParticipants = viewParticipants;
 
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-        }
-
-        function addParticipant () {
-            vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/participantModal.html',
-                controller: 'EditSedParticipantController',
-                controllerAs: 'vm',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                resolve: {
-                    participant: function () { return { participant: {} }; },
-                },
-            });
-            vm.editModalInstance.result.then(function (result) {
-                if (vm.task.testParticipants === null || angular.isUndefined(vm.task.testParticipants)) {
-                    vm.task.testParticipants = [];
-                }
-                vm.task.testParticipants.push(result);
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.info('dismissed', result);
-                }
-            });
+            vm.criteria = criteria;
+            vm.editMode = editMode;
+            vm.participants = participants;
+            vm.task = task;
+            parseParticipants();
         }
 
         function cancel () {
-            if (vm.task.changed) {
-                delete (vm.task.changed);
-            }
             $uibModalInstance.dismiss('cancelled');
         }
 
-        function changed () {
-            if (vm.task.id) {
-                vm.task.changed = true;
-            }
+        function deleteTask () {
+            $uibModalInstance.close({
+                deleted: true,
+                participants: vm.participants,
+            });
         }
 
-        function editParticipant (participant, idx) {
-            vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/participantModal.html',
-                controller: 'EditSedParticipantController',
+        function editTask () {
+            vm.modalInstance = $uibModal.open({
+                templateUrl: 'app/admin/components/sed/editTask.html',
+                controller: 'EditSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
+                size: 'lg',
                 resolve: {
-                    participant: function () { return {'participant': participant}; },
+                    criteria: function () { return vm.criteria; },
+                    participants: function () { return vm.participants; },
+                    task: function () { return vm.task; },
                 },
             });
-            vm.editModalInstance.result.then(function (result) {
-                vm.task.testParticipants[idx] = result;
+            vm.modalInstance.result.then(function (result) {
+                vm.participants = result.participants;
+                vm.task = result.task;
             }, function (result) {
                 if (result !== 'cancelled') {
                     $log.info('dismissed', result);
@@ -82,12 +63,54 @@
             });
         }
 
-        function removeParticipant (idx) {
-            vm.task.testParticipants.splice(idx,1);
+        function save () {
+            $uibModalInstance.close({
+                task: vm.task,
+                participants: vm.participants,
+            });
         }
 
-        function save () {
-            $uibModalInstance.close(vm.task);
+        function viewParticipants () {
+            vm.modalInstance = $uibModal.open({
+                templateUrl: 'app/components/listing_details/sed/participantsModal.html',
+                controller: 'ViewSedParticipantsController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    allParticipants: function () { return vm.participants; },
+                    editMode: function () { return vm.editMode; },
+                    participants: function () { return vm.task.testParticipants; },
+                },
+            });
+            vm.modalInstance.result.then(function (result) {
+                vm.task.testParticipants = result.participants;
+                vm.participants = result.allParticipants;
+            });
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function parseParticipants () {
+            vm.occupations = [];
+            var prodExpTotal = 0;
+            var occupationObj = {};
+            angular.forEach(vm.task.testParticipants, function (part) {
+                prodExpTotal += part.productExperienceMonths;
+                if (angular.isUndefined(occupationObj[part.occupation])) {
+                    occupationObj[part.occupation] = 0;
+                }
+                occupationObj[part.occupation] += 1;
+            });
+            angular.forEach(occupationObj, function (value, key) {
+                vm.occupations.push({
+                    name: key,
+                    count: value,
+                });
+            });
+            vm.meanProductExperience = prodExpTotal / vm.task.testParticipants.length;
         }
     }
 })();

@@ -13,46 +13,49 @@
             templateUrl: 'app/components/listing_details/details.html',
             bindToController: {
                 cap: '=',
-                editMode: '=',
+                editMode: '=?',
                 initialPanel: '@?',
                 isConfirming: '=',
                 isEditing: '=?',
                 product: '=',
                 resources: '=',
-                save: '&',
+//                save: '&',
                 viewAllCerts: '=?defaultAll',
             },
             scope: {},
             controllerAs: 'vm',
             controller: CertsController,
-            link: function (scope, element, attr, ctrl) {
+/*            link: function (scope, element, attr, ctrl) {
                 var handler = ctrl.save({
                     handler: function () {
                         ctrl.saveEdits();
                     },
                 });
                 scope.$on('$destroy', handler);
-            },
+            },*/
         };
         return directive;
 
         /** @ngInject */
-        function CertsController ($analytics, $log, $scope, ACTIVE_CAP) {
+        function CertsController ($analytics, $log, $scope, $uibModal, ACTIVE_CAP, networkService) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
+            vm.hasEdited = hasEdited;
             vm.prepCqms = prepCqms
+            vm.registerSed = registerSed;
             vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
-            vm.showDetails = showDetails;
             vm.showPanel = showPanel;
+            vm.viewIcsFamily = viewIcsFamily;
 
             activate();
 
             ////////////////////////////////////////////////////////////////////
 
             function activate () {
+                vm.handlers = [];
                 if (angular.isUndefined(vm.isEditing)) {
                     vm.isEditing = false;
                 }
@@ -69,12 +72,19 @@
                 $scope.$watch('vm.product', function (product) {
                     if (product) {
                         vm.product = product;
-                        vm.certs = vm.product.certificationResults;
+                        //vm.certs = vm.product.certificationResults;
                         vm.countCerts = vm.product.countCerts;
                         vm.countCqms = vm.product.countCqms;
                         vm.cqms = vm.product.cqmResults;
                         vm.prepCqms();
                     }}, true);
+            }
+
+            function hasEdited () {
+//                vm.product.certificationResults = vm.certs;
+                angular.forEach(vm.handlers, function (handler) {
+                    handler();
+                });
             }
 
             function prepCqms () {
@@ -88,89 +98,37 @@
                 }
             }
 
+            function registerSed (handler) {
+                vm.handlers.push(handler);
+                var removeHandler = function () {
+                    vm.handlers = vm.handlers.filter(function (aHandler) {
+                        return aHandler !== handler;
+                    });
+                };
+                return removeHandler;
+            }
+
             function saveEdits () {
                 vm.countCerts = 0;
                 vm.countCqms = 0;
 
-                var changedTasks = [];
-                var changedParticipants = [];
+                var i,j;
 
-                var i,j,k,l;
-
-                for (i = 0; i < vm.certs.length; i++) {
-                    if (vm.certs[i].success) {
+                for (i = 0; i < vm.product.certificationResults.length; i++) {
+                    if (vm.product.certificationResults[i].success) {
                         vm.countCerts += 1;
                     }
-                    if (vm.certs[i].gap === 'null') {
-                        delete (vm.certs[i].gap);
+                    if (vm.product.certificationResults[i].gap === 'null') {
+                        delete (vm.product.certificationResults[i].gap);
                     }
-                    if (vm.certs[i].g1Success === 'null') {
-                        delete (vm.certs[i].g1Success);
+                    if (vm.product.certificationResults[i].g1Success === 'null') {
+                        delete (vm.product.certificationResults[i].g1Success);
                     }
-                    if (vm.certs[i].g2Success === 'null') {
-                        delete (vm.certs[i].g2Success);
+                    if (vm.product.certificationResults[i].g2Success === 'null') {
+                        delete (vm.product.certificationResults[i].g2Success);
                     }
-                    if (vm.certs[i].sed === 'null') {
-                        delete (vm.certs[i].sed);
-                    }
-                    if (vm.certs[i].sed && vm.certs[i].testTasks) {
-                        for (j = 0; j < vm.certs[i].testTasks.length; j++) {
-                            if (vm.certs[i].testTasks[j].changed) {
-                                changedTasks.push(vm.certs[i].testTasks[j]);
-                            }
-                            if (vm.certs[i].testTasks[j].testParticipants) {
-                                for (k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
-                                    if (vm.certs[i].testTasks[j].testParticipants[k].changed) {
-                                        changedParticipants.push(vm.certs[i].testTasks[j].testParticipants[k]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                for (i = 0; i < vm.certs.length; i++) {
-                    if (vm.certs[i].sed && vm.certs[i].testTasks) {
-                        for (j = 0; j < vm.certs[i].testTasks.length; j++) {
-                            for (k = 0; k < changedTasks.length; k++) {
-                                if (vm.certs[i].testTasks[j].testTaskId === changedTasks[k].testTaskId && !vm.certs[i].testTasks[j].changed && vm.certs[i].testTasks[j].testTaskId) {
-                                    vm.certs[i].testTasks[j].description = changedTasks[k].description;
-                                    vm.certs[i].testTasks[j].taskErrors = changedTasks[k].taskErrors;
-                                    vm.certs[i].testTasks[j].taskErrorsStddev = changedTasks[k].taskErrorsStddev;
-                                    vm.certs[i].testTasks[j].taskPathDeviationObserved = changedTasks[k].taskPathDeviationObserved;
-                                    vm.certs[i].testTasks[j].taskPathDeviationOptimal = changedTasks[k].taskPathDeviationOptimal;
-                                    vm.certs[i].testTasks[j].taskRating = changedTasks[k].taskRating;
-                                    vm.certs[i].testTasks[j].taskRatingStddev = changedTasks[k].taskRatingStddev;
-                                    vm.certs[i].testTasks[j].taskRatingScale = changedTasks[k].taskRatingScale;
-                                    vm.certs[i].testTasks[j].taskSuccessAverage = changedTasks[k].taskSuccessAverage;
-                                    vm.certs[i].testTasks[j].taskSuccessStddev = changedTasks[k].taskSuccessStddev;
-                                    vm.certs[i].testTasks[j].taskTimeAvg = changedTasks[k].taskTimeAvg;
-                                    vm.certs[i].testTasks[j].taskTimeDeviationObservedAvg = changedTasks[k].taskTimeDeviationObservedAvg;
-                                    vm.certs[i].testTasks[j].taskTimeDeviationOptimalAvg = changedTasks[k].taskTimeDeviationOptimalAvg;
-                                    vm.certs[i].testTasks[j].taskTimeStddev = changedTasks[k].taskTimeStddev;
-                                    vm.certs[i].testTasks[j].testTaskId = changedTasks[k].testTaskId;
-                                }
-                            }
-                            if (vm.certs[i].testTasks[j].testParticipants) {
-                                for (k = 0; k < vm.certs[i].testTasks[j].testParticipants.length; k++) {
-                                    for (l = 0; l < changedParticipants.length; l++) {
-                                        if (vm.certs[i].testTasks[j].testParticipants[k].testParticipantId === changedParticipants[l].testParticipantId && !vm.certs[i].testTasks[j].testParticipants[k].changed && vm.certs[i].testTasks[j].testParticipants[k].testParticipantId) {
-
-                                            vm.certs[i].testTasks[j].testParticipants[k].ageRange = changedParticipants[l].ageRange;
-                                            vm.certs[i].testTasks[j].testParticipants[k].ageRangeId = changedParticipants[l].ageRangeId;
-                                            vm.certs[i].testTasks[j].testParticipants[k].assistiveTechnologyNeeds = changedParticipants[l].assistiveTechnologyNeeds;
-                                            vm.certs[i].testTasks[j].testParticipants[k].computerExperienceMonths = changedParticipants[l].computerExperienceMonths;
-                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeId = changedParticipants[l].educationTypeId;
-                                            vm.certs[i].testTasks[j].testParticipants[k].educationTypeName = changedParticipants[l].educationTypeName;
-                                            vm.certs[i].testTasks[j].testParticipants[k].gender = changedParticipants[l].gender;
-                                            vm.certs[i].testTasks[j].testParticipants[k].occupation = changedParticipants[l].occupation;
-                                            vm.certs[i].testTasks[j].testParticipants[k].productExperienceMonths = changedParticipants[l].productExperienceMonths;
-                                            vm.certs[i].testTasks[j].testParticipants[k].professionalExperienceMonths = changedParticipants[l].professionalExperienceMonths;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (vm.product.certificationResults[i].sed === 'null') {
+                        delete (vm.product.certificationResults[i].sed);
                     }
                 }
 
@@ -217,11 +175,6 @@
                 return ret;
             }
 
-            function showDetails (number) {
-                vm.certDetails = vm.certDetails === number ? '' : number;
-                vm.showSed = false;
-            }
-
             function showPanel (panel) {
                 if (vm.panelShown !== panel) {
                     switch (panel) {
@@ -240,11 +193,32 @@
                     case 'g1g2':
                         $analytics.eventTrack('Viewed G1/G2 information', { category: 'Listing Details', label: vm.product.chplProductNumber});
                         break;
+                    case 'sed':
+                        $analytics.eventTrack('Viewed SED information', { category: 'Listing Details', label: vm.product.chplProductNumber});
+                        break;
                         // no default
                     }
                 }
 
                 vm.panelShown = vm.panelShown === panel ? '' : panel;
+            }
+
+            function viewIcsFamily () {
+                networkService.getIcsFamily(vm.product.id).then(function (family) {
+                    vm.uibModalInstance = $uibModal.open({
+                        templateUrl: 'app/components/listing_details/ics_family/icsFamilyModal.html',
+                        controller: 'IcsFamilyController',
+                        controllerAs: 'vm',
+                        animation: false,
+                        backdrop: 'static',
+                        keyboard: false,
+                        size: 'lg',
+                        resolve: {
+                            family: function () { return family; },
+                            listing: function () { return vm.product; },
+                        },
+                    });
+                });
             }
 
             ////////////////////////////////////////////////////////////////////

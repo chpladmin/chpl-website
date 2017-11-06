@@ -5,7 +5,7 @@
         .controller('SurveillanceInspectController', SurveillanceInspectController);
 
     /** @ngInject */
-    function SurveillanceInspectController ($log, $uibModal, $uibModalInstance, commonService, surveillance, utilService) {
+    function SurveillanceInspectController ($log, $uibModal, $uibModalInstance, networkService, surveillance, utilService) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -22,7 +22,7 @@
         function activate () {
             vm.surveillance = angular.copy(surveillance);
             vm.errorMessages = [];
-            vm.surveillanceTypes = commonService.getSurveillanceLookups();
+            vm.surveillanceTypes = networkService.getSurveillanceLookups();
         }
 
         function cancel () {
@@ -30,7 +30,7 @@
         }
 
         function confirm () {
-            commonService.confirmPendingSurveillance(vm.surveillance)
+            networkService.confirmPendingSurveillance(vm.surveillance)
                 .then(function () {
                     $uibModalInstance.close({status: 'confirmed'});
                 }, function (error) {
@@ -96,7 +96,7 @@
         }
 
         function reject () {
-            commonService.rejectPendingSurveillance(vm.surveillance.id)
+            networkService.rejectPendingSurveillance(vm.surveillance.id)
                 .then(function () {
                     $uibModalInstance.close({status: 'rejected'});
                 },function (error) {

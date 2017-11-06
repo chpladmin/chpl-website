@@ -5,7 +5,7 @@
         .controller('MergeVersionController', MergeVersionController);
 
     /** @ngInject */
-    function MergeVersionController ($uibModalInstance, commonService, productId, versions) {
+    function MergeVersionController ($uibModalInstance, networkService, productId, versions) {
         var vm = this;
 
         vm.save = save;
@@ -31,7 +31,7 @@
 
         function save () {
             vm.updateVersion.version = vm.version;
-            commonService.updateVersion(vm.updateVersion)
+            networkService.updateVersion(vm.updateVersion)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

@@ -5,7 +5,7 @@
         .controller('EditAtlController', EditAtlController);
 
     /** @ngInject */
-    function EditAtlController ($uibModalInstance, action, atl, commonService, isChplAdmin) {
+    function EditAtlController ($uibModalInstance, action, atl, isChplAdmin, networkService) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -32,7 +32,7 @@
         }
 
         function create () {
-            commonService.createATL(vm.atl)
+            networkService.createATL(vm.atl)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
@@ -45,7 +45,7 @@
         }
 
         function deleteAtl () {
-            commonService.deleteATL(vm.atl.id)
+            networkService.deleteATL(vm.atl.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close('deleted');
@@ -58,7 +58,7 @@
         }
 
         function save () {
-            commonService.modifyATL(vm.atl)
+            networkService.modifyATL(vm.atl)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
@@ -71,7 +71,7 @@
         }
 
         function undeleteAtl () {
-            commonService.undeleteATL(vm.atl.id)
+            networkService.undeleteATL(vm.atl.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

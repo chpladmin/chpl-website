@@ -3,29 +3,29 @@
 
     describe('chpl.collections.products.controller', function () {
 
-        var $log, $q, commonService, mock, scope, vm;
+        var $log, $q, mock, networkService, scope, vm;
         mock = {
             muuAccurateAsOfDate: (new Date('2017-01-13')).getTime(),
         };
 
         beforeEach(function () {
             module('chpl.collections', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('getMeaningfulUseUsersAccurateAsOfDate');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
-                commonService = _commonService_;
-                commonService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.muuAccurateAsOfDate}));
+                networkService = _networkService_;
+                networkService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.muuAccurateAsOfDate}));
 
                 scope = $rootScope.$new();
                 vm = $controller('DecertifiedProductsController', {
                     $scope: scope,
-                    commonService: commonService,
+                    networkService: networkService,
                 });
                 scope.$digest();
             });

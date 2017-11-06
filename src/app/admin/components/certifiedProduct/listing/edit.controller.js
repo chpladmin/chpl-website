@@ -5,20 +5,17 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, commonService, isAcbAdmin, isAcbStaff, isChplAdmin, resources, utilService, workType) {
+    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isAcbStaff, isChplAdmin, networkService, resources, utilService, workType) {
 
         var vm = this;
 
         vm.addNewValue = utilService.addNewValue;
         vm.attachModel = attachModel;
         vm.cancel = cancel;
-        vm.directCertsDirective = directCertsDirective;
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
         vm.extendSelect = utilService.extendSelect;
-        vm.prep = prep;
         vm.requiredIcsCode = requiredIcsCode;
-        vm.registerCerts = registerCerts;
         vm.save = save;
         vm.willCauseSuspension = willCauseSuspension;
 
@@ -29,7 +26,6 @@
         function activate () {
             vm.cp = angular.copy(activeCP);
             vm.cp.certDate = new Date(vm.cp.certificationDate);
-            vm.cp.sedTestingEndDate = new Date(vm.cp.sedTestingEnd);
             vm.isAcbAdmin = isAcbAdmin;
             vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
@@ -78,12 +74,6 @@
             $uibModalInstance.dismiss('cancelled');
         }
 
-        function directCertsDirective () {
-            angular.forEach(vm.handlers, function (handler) {
-                handler();
-            });
-        }
-
         function disabledParent (listing) {
             var ret = false;
             ret = ret || vm.cp.chplProductNumber === listing.chplProductNumber;
@@ -97,28 +87,12 @@
             return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
         }
 
-        function prep () {
-            vm.directCertsDirective();
-            $timeout(vm.save, 1000);
-        }
-
         function requiredIcsCode () {
-            var code = -1;
-            for (var i = 0; i < vm.cp.ics.parents.length; i++) {
-                code = Math.max(code, parseInt(vm.cp.ics.parents[i].chplProductNumber.split('.')[6], 10));
-            }
-            code = code + 1;
+            var code = vm.cp.ics.parents
+                .map(function (item) { return parseInt(item.chplProductNumber.split('.')[6], 10); })
+                .reduce(function (max, cur) { return Math.max(max, cur); }, -1)
+                + 1;
             return (code > 9 || code < 0) ? '' + code : '0' + code;
-        }
-
-        function registerCerts (handler) {
-            vm.handlers.push(handler);
-            var removeHandler = function () {
-                vm.handlers = vm.handlers.filter(function (aHandler) {
-                    return aHandler !== handler;
-                });
-            };
-            return removeHandler;
         }
 
         function save () {
@@ -131,10 +105,9 @@
                     vm.idFields.suffix;
             }
             vm.cp.certificationDate = vm.cp.certDate.getTime();
-            vm.cp.sedTestingEnd = vm.cp.sedTestingEndDate.getTime();
             if (vm.workType === 'manage') {
                 vm.isSaving = true;
-                commonService.updateCP({
+                networkService.updateCP({
                     listing: vm.cp,
                     banDeveloper: vm.banDeveloper,
                 }).then(function (response) {
@@ -146,6 +119,7 @@
                     }
                 },function (error) {
                     vm.errors = [];
+                    vm.warnings = [];
                     if (error.data) {
                         if (error.data.error && error.data.error.length > 0) {
                             vm.errors.push(error.data.error);
@@ -154,7 +128,7 @@
                             vm.errors = vm.errors.concat(error.data.errorMessages);
                         }
                         if (error.data.warningMessages && error.data.warningMessages.length > 0) {
-                            vm.errors = vm.errors.concat(error.data.warningMessages);
+                            vm.warnings = vm.warnings.concat(error.data.warningMessages);
                         }
                     }
                     vm.isSaving = false;
@@ -185,10 +159,12 @@
         ////////////////////////////////////////////////////////////////////
 
         function loadFamily () {
-            commonService.getRelatedListings(vm.cp.product.productId)
-                .then(function (family) {
-                    vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
-                });
+            if (vm.cp.product && vm.cp.product.productId && vm.cp.certificationEdition.name === '2015') {
+                networkService.getRelatedListings(vm.cp.product.productId)
+                    .then(function (family) {
+                        vm.relatedListings = family.filter(function (item) { return item.edition === '2015' });
+                    });
+            }
         }
     }
 })();

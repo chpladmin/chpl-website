@@ -25,6 +25,8 @@
                 return decertifiedProducts(array.results);
             case 'inactiveCertificates':
                 return inactiveCertificates(array.results);
+            case 'sed':
+                return sed(array.results);
             case 'transparencyAttestations':
                 return transparencyAttestations(array);
                 // no default
@@ -149,6 +151,28 @@
             for (var i = 0; i < array.length; i ++) {
                 cp = array[i];
                 if (cp.edition !== '2011' && statuses.indexOf(cp.certificationStatus) > -1) {
+
+                    cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
+
+                    ret.push(cp);
+                }
+            }
+            return ret;
+        }
+
+        /*
+         * Listings are part of this collection if:
+         * - 2014 or 2015 Edition and
+         * - at least one of:
+         *   - 170.314 (g)(3)
+         *   - 170.315 (g)(3)
+         */
+        function sed (array) {
+            var ret = [];
+            var cp;
+            for (var i = 0; i < array.length; i ++) {
+                cp = array[i];
+                if ((/*cp.edition === '2014' || */cp.edition === '2015') && (cp.criteriaMet.indexOf('170.314 (g)(3)') > -1 || cp.criteriaMet.indexOf('170.315 (g)(3)') > -1)) {
 
                     cp.mainSearch = [cp.developer, cp.product, cp.version, cp.chplProductNumber].join('|');
 

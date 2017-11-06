@@ -5,7 +5,7 @@
         .controller('RecipientController', RecipientController);
 
     /** @ngInject */
-    function RecipientController ($log, $uibModalInstance, acbs, commonService, recipient, reportTypes) {
+    function RecipientController ($log, $uibModalInstance, acbs, networkService, recipient, reportTypes) {
         var vm = this;
 
         vm.addSubscription = addSubscription;
@@ -58,7 +58,7 @@
         }
 
         function deleteRecipient () {
-            commonService.deleteRecipient(vm.recipient)
+            networkService.deleteRecipient(vm.recipient)
                 .then(function (response) {
                     if (response.status === 200) {
                         $uibModalInstance.close({
@@ -78,7 +78,7 @@
 
         function save () {
             if (vm.recipient.id) {
-                commonService.updateRecipient(vm.recipient)
+                networkService.updateRecipient(vm.recipient)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close({
@@ -92,7 +92,7 @@
                         vm.errorMessage = error.data.error;
                     });
             } else {
-                commonService.createRecipient(vm.recipient)
+                networkService.createRecipient(vm.recipient)
                     .then(function (response) {
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close({

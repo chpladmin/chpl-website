@@ -2,22 +2,22 @@
     'use strict';
 
     describe('chpl.admin.SplitProductController.controller', function () {
-        var $log, $q, Mock, commonService, scope, vm;
+        var $log, $q, Mock, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.splitProduct = jasmine.createSpy('splitProduct');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
-                commonService = _commonService_;
-                commonService.splitProduct.and.returnValue($q.when({
+                networkService = _networkService_;
+                networkService.splitProduct.and.returnValue($q.when({
                     oldProduct: 'a product',
                     newProduct: 'new product',
                 }));
@@ -59,7 +59,7 @@
                 vm.splitProduct.newVersions = [3];
                 vm.save();
                 scope.$digest();
-                expect(commonService.splitProduct).toHaveBeenCalledWith(splitProduct);
+                expect(networkService.splitProduct).toHaveBeenCalledWith(splitProduct);
             });
 
             it('should close the modal', function () {
@@ -74,14 +74,14 @@
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.splitProduct.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
+                networkService.splitProduct.and.returnValue($q.when({status: 500, data: {error: 'an error'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalled();
             });
 
             it('should not dismiss the modal on error', function () {
-                commonService.splitProduct.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.splitProduct.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).not.toHaveBeenCalledWith('bad thing');

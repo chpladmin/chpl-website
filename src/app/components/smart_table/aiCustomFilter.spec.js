@@ -11,7 +11,7 @@
             /* eslint-enable quotes, key-spacing */
         };
         beforeEach(function () {
-            module('chpl.common', 'chpl.mock');
+            module('chpl.services', 'chpl.mock');
 
             inject(function (_$log_, _Mock_, _customFilterFilter_) {
                 aiCustomFilter = _customFilterFilter_;
@@ -37,7 +37,7 @@
         });
 
         it('should allow matching any', function () {
-            expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {all: false, items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(2);
+            expect(aiCustomFilter(Mock.allCps, {criteriaMet: {matchAny: {all: false, items: ['170.315 (d)(1)','170.315 (d)(10)']}}}).length).toBe(3);
         });
 
         describe('surveillance section', function () {

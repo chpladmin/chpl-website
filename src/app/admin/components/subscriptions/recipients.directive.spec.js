@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.subscriptions.recipients.directive', function () {
-        var $log, $q, $uibModal, Mock, actualOptions, commonService, el, mock, scope, vm;
+        var $log, $q, $uibModal, Mock, actualOptions, el, mock, networkService, scope, vm;
 
         mock = {
             acbs: [{id: 1, name: 'fake'}],
@@ -24,7 +24,7 @@
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.getSubscriptionReportTypes = jasmine.createSpy('getSubscriptionReportTypes');
                     $delegate.getSubscriptionRecipients = jasmine.createSpy('getSubscriptionRecipients');
 
@@ -32,7 +32,7 @@
                 });
             });
 
-            inject(function ($compile, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _commonService_) {
+            inject(function ($compile, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
@@ -41,9 +41,9 @@
                     actualOptions = options;
                     return Mock.fakeModal;
                 });
-                commonService = _commonService_;
-                commonService.getSubscriptionReportTypes.and.returnValue($q.when(Mock.subscriptionReportTypes));
-                commonService.getSubscriptionRecipients.and.returnValue($q.when({results: Mock.recipients}));
+                networkService = _networkService_;
+                networkService.getSubscriptionReportTypes.and.returnValue($q.when(Mock.subscriptionReportTypes));
+                networkService.getSubscriptionRecipients.and.returnValue($q.when({results: Mock.recipients}));
 
                 el = angular.element('<ai-subscription-recipients acbs="acbs"></ai-subscription-recipients>');
 
@@ -81,12 +81,12 @@
             it('should have the subscription recipients', function () {
                 expect(vm.recipients).toBeDefined();
                 expect(vm.recipients).toEqual(Mock.recipients);
-                expect(commonService.getSubscriptionRecipients).toHaveBeenCalled();
+                expect(networkService.getSubscriptionRecipients).toHaveBeenCalled();
             });
 
             it('should have a warning message if loading emails fails', function () {
                 var initCount = $log.warn.logs.length;
-                commonService.getSubscriptionRecipients.and.returnValue($q.reject('an error'));
+                networkService.getSubscriptionRecipients.and.returnValue($q.reject('an error'));
                 vm.loadRecipients();
                 scope.$digest();
                 expect($log.warn.logs.length).toBe(initCount + 1);
@@ -95,12 +95,12 @@
             it('should have the subscription report types', function () {
                 expect(vm.subscriptionReportTypes).toBeDefined();
                 expect(vm.subscriptionReportTypes).toEqual(Mock.subscriptionReportTypes);
-                expect(commonService.getSubscriptionReportTypes).toHaveBeenCalled();
+                expect(networkService.getSubscriptionReportTypes).toHaveBeenCalled();
             });
 
             it('should have a warning message if loading report types fails', function () {
                 var initCount = $log.warn.logs.length;
-                commonService.getSubscriptionReportTypes.and.returnValue($q.reject('an error'));
+                networkService.getSubscriptionReportTypes.and.returnValue($q.reject('an error'));
                 vm.loadSubscriptionReportTypes();
                 scope.$digest();
                 expect($log.warn.logs.length).toBe(initCount + 1);
@@ -179,10 +179,10 @@
             });
 
             it('should refresh the recipients if it was updated', function () {
-                var serviceCallCount = commonService.getSubscriptionRecipients.calls.count();
+                var serviceCallCount = networkService.getSubscriptionRecipients.calls.count();
                 vm.editRecipient(Mock.recipients[0]);
                 vm.editRecipientInstance.close({status: 'updated'});
-                expect(commonService.getSubscriptionRecipients.calls.count()).toBe(serviceCallCount + 1);
+                expect(networkService.getSubscriptionRecipients.calls.count()).toBe(serviceCallCount + 1);
             });
 
             it('should log a message if the modal is closed in an unknown state', function () {

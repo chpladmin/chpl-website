@@ -21,7 +21,7 @@
     }
 
     /** @ngInject */
-    function ApiKeyController ($log, commonService) {
+    function ApiKeyController ($log, networkService) {
         var vm = this;
 
         vm.loadUsers = loadUsers;
@@ -41,7 +41,7 @@
         }
 
         function loadUsers () {
-            commonService.getApiUsers()
+            networkService.getApiUsers()
                 .then(function (result) {
                     vm.users = result;
                 }, function (error) {
@@ -51,7 +51,7 @@
 
         function register () {
             if (vm.user.name && vm.user.email) {
-                commonService.registerApi(vm.user)
+                networkService.registerApi(vm.user)
                     .then(function (result) {
                         vm.key = result.keyRegistered;
                         vm.hasKey = true;
@@ -63,7 +63,7 @@
 
         function revoke (user) {
             if (user.name && user.email) {
-                commonService.revokeApi(user)
+                networkService.revokeApi(user)
                     .then(function () {
                         vm.loadUsers();
                     }, function (error) {

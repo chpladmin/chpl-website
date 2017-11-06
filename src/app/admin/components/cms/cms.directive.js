@@ -18,7 +18,7 @@
         });
 
     /** @ngInject */
-    function CmsController ($log, API, FileUploader, authService, commonService) {
+    function CmsController ($location, $log, $route, API, FileUploader, authService, networkService) {
         var vm = this;
 
         vm.getDownload = getDownload;
@@ -33,7 +33,7 @@
             vm.isOncStaff = authService.isOncStaff();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.muuAccurateAsOfDateObject = new Date();
-            commonService.getMeaningfulUseUsersAccurateAsOfDate()
+            networkService.getMeaningfulUseUsersAccurateAsOfDate()
                 .then(function (data) {
                     vm.muuAccurateAsOf = data.accurateAsOfDate;
                     vm.muuAccurateAsOfDateObject = new Date(vm.muuAccurateAsOf);
@@ -60,9 +60,11 @@
             });
             vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
                 $log.info('onSuccessItem', fileItem, response, status, headers);
-                vm.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.meaningfulUseUsers.length + ' certified products out of ' + (response.errors.length + response.meaningfulUseUsers.length) + ' were updated with meaningful use user counts.';
-                vm.uploadErrors = response.errors;
-                vm.uploadSuccess = true;
+                if ($location.url() !== '/admin/jobsManagement') {
+                    $location.url('/admin/jobsManagement');
+                } else {
+                    $route.reload();
+                }
             };
             vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
                 $log.info('onCompleteItem', fileItem, response, status, headers);
@@ -89,7 +91,7 @@
         }
 
         function getDownload () {
-            commonService.getCmsDownload()
+            networkService.getCmsDownload()
                 .then(function (result) {
                     for (var i = 0; i < result.length; i++) {
                         result[i].created = new Date(result[i].created).toISOString().substring(0, 10);
@@ -102,7 +104,7 @@
         }
 
         function setMeaningfulUseUsersAccurateAsOfDate () {
-            commonService.setMeaningfulUseUsersAccurateAsOfDate({accurateAsOfDate: vm.muuAccurateAsOfDateObject.getTime()})
+            networkService.setMeaningfulUseUsersAccurateAsOfDate({accurateAsOfDate: vm.muuAccurateAsOfDateObject.getTime()})
                 .then(function (data) {
                     vm.muuAccurateAsOf = data.accurateAsOfDate;
                     vm.muuAccurateAsOfDateObject = new Date(vm.muuAccurateAsOf);

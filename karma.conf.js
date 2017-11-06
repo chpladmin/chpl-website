@@ -43,30 +43,19 @@ module.exports = function(config) {
 
     var configuration = {
         files: listFiles(),
-
-        singleRun: true,
-
-        autoWatch: false,
-
         browserDisconnectTimeout: 60000,
         browserNoActivityTimeout: 60000,
         browserDisconnectTolerance: 10,
-
         ngHtml2JsPreprocessor: {
             stripPrefix: conf.paths.src + '/',
             moduleName: 'chpl.templates'
         },
-
         logLevel: 'WARN',
-
         frameworks: ['phantomjs-shim', 'jasmine', 'angular-filesort'],
-
         angularFilesort: {
             whitelist: [path.join(conf.paths.src, '/**/!(*.html|*.spec|*.mock).js')]
         },
-
         browsers : ['PhantomJS'],
-
         plugins : [
             'karma-phantomjs-launcher',
             'karma-angular-filesort',
@@ -76,9 +65,10 @@ module.exports = function(config) {
             'karma-junit-reporter',
             'karma-growl-reporter',
             'karma-htmlfile-reporter',
+            'karma-mocha-reporter',
+            'karma-super-dots-reporter',
             'karma-ng-html2js-preprocessor'
         ],
-
         proxies: {
             '/assets/': path.join('/base/', conf.paths.src, '/assets/')
         }

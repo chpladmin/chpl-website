@@ -1,28 +1,39 @@
 (function () {
     'use strict';
 
-    describe('chpl.aiCmsWidgetButton', function () {
-        var $compile, $log, $rootScope, el, vm;
+    describe('the CMS Widget Button directive', function () {
+        var $compile, $log, $rootScope, el, mock;
+        mock = {};
 
         beforeEach(function () {
-            module('chpl.templates');
-            module('chpl.cms-widget');
-            inject(function (_$compile_, _$log_, _$rootScope_) {
+            module('chpl.templates', 'chpl.cms-widget');
+            inject(function (_$compile_, _$log_, _$rootScope_, aiCmsWidgetDirective) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
                 $log = _$log_;
+
+                // replace ai-cms-widget controller with mock version
+                var aiCmsWidgetDefinition = aiCmsWidgetDirective[0];
+                aiCmsWidgetDefinition.link = angular.noop;
+                mock.isInList = jasmine.createSpy('isInList');
+                mock.toggleProduct = jasmine.createSpy('toggleProduct');
+                aiCmsWidgetDefinition.controller = function () {
+                    this.isInList = mock.isInList;
+                    this.toggleProduct = mock.toggleProduct;
+                }
 
                 el = angular.element('<ai-cms-widget><ai-cms-widget-button product-id="3" product-name="test"></ai-cms-widget-button></ai-cms-widget>');
 
                 $compile(el)($rootScope.$new());
                 $rootScope.$digest();
-                vm = el.isolateScope().vm;
             });
         });
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug("\n Debug: " + $log.debug.logs.join("\n Debug: "));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -30,8 +41,13 @@
             expect(el.html()).not.toEqual(null);
         });
 
-        it('should have isolate scope object with instanciate members', function () {
-            expect(vm).toEqual(jasmine.any(Object));
+        it('should call the parent controller on click', function () {
+            el.find('button').triggerHandler('click');
+            expect(mock.toggleProduct).toHaveBeenCalledWith('3');
+        });
+
+        it('should call the parent controller when being compiled to know if the product is in the list', function () {
+            expect(mock.isInList).toHaveBeenCalledWith('3');
         });
     });
 })();

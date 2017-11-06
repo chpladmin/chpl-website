@@ -11,7 +11,7 @@
 
             module('chpl.admin', function ($provide) {
                 $provide.value('authService', mockAuthService);
-                $provide.value('commonService', mockCommonService);
+                $provide.value('networkService', mockCommonService);
             });
 
             inject(function ($q) {
@@ -27,12 +27,12 @@
 
         describe('controller', function () {
 
-            beforeEach(inject(function ($controller, _$log_, $rootScope, _authService_, _commonService_) {
+            beforeEach(inject(function ($controller, _$log_, $rootScope, _authService_, _networkService_) {
                 $log = _$log_;
                 scope = $rootScope.$new();
                 ctrl = $controller('AdminController', {
                     authService: _authService_,
-                    commonService: _commonService_,
+                    networkService: _networkService_,
                 });
                 scope.$digest();
             }));

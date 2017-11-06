@@ -36,7 +36,7 @@
     }
 
     /** @ngInject */
-    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, commonService) {
+    function NavigationController ($localStorage, $location, $log, $rootScope, $scope, authService, networkService) {
         var vm = this;
 
         vm.clear = clear;
@@ -121,7 +121,7 @@
         }
 
         function loadAnnouncements () {
-            commonService.getAnnouncements(false)
+            networkService.getAnnouncements(false)
                 .then(function (result) {
                     vm.announcements = result.announcements;
                 });

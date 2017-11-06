@@ -22,7 +22,7 @@
     }
 
     /** @ngInclude **/
-    function SurveillanceController ($filter, $log, $scope, $uibModal, API, authService, commonService, utilService) {
+    function SurveillanceController ($filter, $log, $scope, $uibModal, API, authService, networkService, utilService) {
         var vm = this;
 
         vm.editSurveillance = editSurveillance;
@@ -39,7 +39,7 @@
         function activate () {
             vm.API = API;
             vm.API_KEY = authService.getApiKey();
-            vm.surveillanceTypes = commonService.getSurveillanceLookups();
+            vm.surveillanceTypes = networkService.getSurveillanceLookups();
         }
 
         function editSurveillance (surveillance) {
@@ -59,7 +59,7 @@
                 },
             });
             vm.uibModalInstance.result.then(function () {
-                commonService.getProduct(vm.certifiedProduct.id)
+                networkService.getProduct(vm.certifiedProduct.id)
                     .then(function (result) {
                         vm.certifiedProduct = result;
                     });
@@ -123,7 +123,7 @@
                 },
             });
             vm.uibModalInstance.result.then(function () {
-                commonService.getProduct(vm.certifiedProduct.id)
+                networkService.getProduct(vm.certifiedProduct.id)
                     .then(function (result) {
                         vm.certifiedProduct = result;
                     });

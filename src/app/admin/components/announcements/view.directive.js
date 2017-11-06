@@ -18,7 +18,7 @@
     }
 
     /** @ngInject */
-    function AnnouncementsController ($log, $uibModal, commonService) {
+    function AnnouncementsController ($log, $uibModal, networkService) {
         var vm = this;
 
         vm.create = create;
@@ -89,7 +89,7 @@
         }
 
         function loadAnnouncements () {
-            commonService.getAnnouncements(true)
+            networkService.getAnnouncements(true)
                 .then(function (result) {
                     vm.announcements = result.announcements;
                 }, function (error) {

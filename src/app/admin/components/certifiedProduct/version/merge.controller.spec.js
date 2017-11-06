@@ -2,7 +2,7 @@
     'use strict';
 
     describe('chpl.admin.MergeVersionController.controller', function () {
-        var $log, $q, Mock, commonService, mock, scope, vm;
+        var $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {
             versions: [{versionId: 1},{versionId: 2}],
@@ -11,18 +11,18 @@
 
         beforeEach(function () {
             module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('commonService', function ($delegate) {
+                $provide.decorator('networkService', function ($delegate) {
                     $delegate.updateVersion = jasmine.createSpy('updateVersion');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _commonService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;
-                commonService = _commonService_;
-                commonService.updateVersion.and.returnValue($q.when({}));
+                networkService = _networkService_;
+                networkService.updateVersion.and.returnValue($q.when({}));
 
                 scope = $rootScope.$new();
                 vm = $controller('MergeVersionController', {
@@ -62,7 +62,7 @@
                 updateVersion.version = vm.version;
                 vm.save();
                 scope.$digest();
-                expect(commonService.updateVersion).toHaveBeenCalledWith(updateVersion);
+                expect(networkService.updateVersion).toHaveBeenCalledWith(updateVersion);
             });
 
             it('should close the modal', function () {
@@ -72,14 +72,14 @@
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.updateVersion.and.returnValue($q.when({status: 500}));
+                networkService.updateVersion.and.returnValue($q.when({status: 500}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
             });
 
             it('should dismiss the modal on error', function () {
-                commonService.updateVersion.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                networkService.updateVersion.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.save();
                 scope.$digest();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('bad thing');

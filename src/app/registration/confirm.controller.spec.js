@@ -9,12 +9,12 @@
 
         describe('controller', function () {
 
-            var $location, $log, commonService, ctrl, mockCommonService, scope;
+            var $location, $log, ctrl, mockCommonService, networkService, scope;
 
             beforeEach(function () {
                 mockCommonService = {};
                 module('chpl.registration', function ($provide) {
-                    $provide.value('commonService', mockCommonService);
+                    $provide.value('networkService', mockCommonService);
                 });
 
                 inject(function ($q) {
@@ -26,15 +26,15 @@
                 });
             });
 
-            beforeEach(inject(function ($controller, _$location_, _$log_, $rootScope, _commonService_) {
+            beforeEach(inject(function ($controller, _$location_, _$log_, $rootScope, _networkService_) {
                 $log = _$log_;
                 scope = $rootScope.$new();
-                commonService = _commonService_;
+                networkService = _networkService_;
                 $location = _$location_;
                 ctrl = $controller('ConfirmController', {
                     $scope: scope,
                     $routeParams: {hash: 'fakehash'},
-                    commonService: commonService,
+                    networkService: networkService,
                     $location: $location,
                 });
                 scope.$digest();

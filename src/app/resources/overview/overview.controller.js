@@ -6,7 +6,7 @@
         .controller('OverviewController', OverviewController);
 
     /** @ngInject */
-    function OverviewController ($anchorScroll, $location, $log, commonService) {
+    function OverviewController ($anchorScroll, $location, $log, networkService) {
         var vm = this;
 
         vm.loadAcbs = loadAcbs;
@@ -25,7 +25,7 @@
         }
 
         function loadAnnouncements () {
-            commonService.getAnnouncements(false)
+            networkService.getAnnouncements(false)
                 .then(function (result) {
                     vm.announcements = result.announcements;
                 }, function (error) {
@@ -34,7 +34,7 @@
         }
 
         function loadAcbs () {
-            commonService.getAcbs(false)
+            networkService.getAcbs(false)
                 .then(function (result) {
                     vm.acbs = result.acbs;
                 }, function (error) {
@@ -43,7 +43,7 @@
         }
 
         function loadAtls () {
-            commonService.getAtls(false)
+            networkService.getAtls(false)
                 .then(function (result) {
                     vm.atls = result.atls;
                 }, function (error) {

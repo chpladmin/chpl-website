@@ -11,7 +11,7 @@
         mock.token = 'a token here';
 
         beforeEach(function () {
-            module('chpl.loginServices', 'chpl.download', function ($provide) {
+            module('chpl.services', 'chpl.download', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');

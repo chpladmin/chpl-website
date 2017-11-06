@@ -5,7 +5,7 @@
         .controller('EditVersionController', EditVersionController);
 
     /** @ngInject */
-    function EditVersionController ($uibModalInstance, activeVersion, commonService) {
+    function EditVersionController ($uibModalInstance, activeVersion, networkService) {
         var vm = this;
 
         vm.save = save;
@@ -22,7 +22,7 @@
 
         function save () {
             vm.updateVersion.version = vm.version;
-            commonService.updateVersion(vm.updateVersion)
+            networkService.updateVersion(vm.updateVersion)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         response.Id = vm.version.productId;

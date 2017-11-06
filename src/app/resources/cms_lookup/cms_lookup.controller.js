@@ -5,7 +5,7 @@
         .controller('CmsLookupController', CmsLookupController);
 
     /** @ngInject */
-    function CmsLookupController ($localStorage, $log, commonService, utilService) {
+    function CmsLookupController ($localStorage, $log, networkService, utilService) {
         var vm = this;
 
         vm.getCsv = getCsv;
@@ -70,7 +70,7 @@
                                 vm.lookupProductsFormatInvalidIds.push(id);
                             } else {
                                 // Valid ID format
-                                commonService.lookupCertificationId(id)
+                                networkService.lookupCertificationId(id)
                                     .then(function (data) {
 
                                         if (vm.lookupProducts === null) {

@@ -27,7 +27,7 @@
         });
 
     /** @ngInject */
-    function ReportController ($filter, $log, $uibModal, authService, commonService, utilService) {
+    function ReportController ($filter, $log, $uibModal, authService, networkService, utilService) {
         var vm = this;
 
         vm.clearApiKeyFilter = clearApiKeyFilter;
@@ -47,7 +47,8 @@
         vm.validDates = validDates;
 
         // private function exposed for testing
-        vm.interpretCps = interpretCps;
+        vm._interpretCps = _interpretCps;
+        vm._compareSed = _compareSed;
 
         activate();
 
@@ -167,9 +168,9 @@
         }
 
         function refreshCp () {
-            commonService.getCertifiedProductActivity(dateAdjust(vm.activityRange.listing))
+            networkService.getCertifiedProductActivity(dateAdjust(vm.activityRange.listing))
                 .then(function (data) {
-                    interpretCps(data);
+                    _interpretCps(data);
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                     vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
@@ -180,7 +181,7 @@
         }
 
         function refreshDeveloper () {
-            commonService.getDeveloperActivity(dateAdjust(vm.activityRange.developer))
+            networkService.getDeveloperActivity(dateAdjust(vm.activityRange.developer))
                 .then(function (data) {
                     vm.searchedDevelopers = interpretDevelopers(data);
                     vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
@@ -188,12 +189,12 @@
         }
 
         function refreshProduct () {
-            commonService.getProductActivity(dateAdjust(vm.activityRange.product))
+            networkService.getProductActivity(dateAdjust(vm.activityRange.product))
                 .then(function (data) {
                     vm.searchedProducts = interpretProducts(data);
                     vm.displayedProducts = [].concat(vm.searchedProducts);
                 });
-            commonService.getVersionActivity(dateAdjust(vm.activityRange.product))
+            networkService.getVersionActivity(dateAdjust(vm.activityRange.product))
                 .then(function (data) {
                     vm.searchedVersions = vm.interpretVersions(data);
                     vm.displayedVersions = [].concat(vm.searchedVersions);
@@ -201,7 +202,7 @@
         }
 
         function refreshAcb () {
-            commonService.getAcbActivity(dateAdjust(vm.activityRange.acb))
+            networkService.getAcbActivity(dateAdjust(vm.activityRange.acb))
                 .then(function (data) {
                     vm.searchedACBs = vm.interpretAcbs(data);
                     vm.displayedACBs = [].concat(vm.searchedACBs);
@@ -209,7 +210,7 @@
         }
 
         function refreshAtl () {
-            commonService.getAtlActivity(dateAdjust(vm.activityRange.atl))
+            networkService.getAtlActivity(dateAdjust(vm.activityRange.atl))
                 .then(function (data) {
                     vm.searchedATLs = vm.interpretAtls(data);
                     vm.displayedATLs = [].concat(vm.searchedATLs);
@@ -217,7 +218,7 @@
         }
 
         function refreshAnnouncement () {
-            commonService.getAnnouncementActivity(dateAdjust(vm.activityRange.announcement))
+            networkService.getAnnouncementActivity(dateAdjust(vm.activityRange.announcement))
                 .then(function (data) {
                     vm.searchedAnnouncements = vm.interpretAnnouncements(data);
                     vm.displayedAnnouncements = [].concat(vm.searchedAnnouncements);
@@ -226,12 +227,12 @@
 
         function refreshUser () {
             if (vm.isChplAdmin || vm.isOncStaff) {
-                commonService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
+                networkService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
                     .then(function (data) {
                         vm.searchedUsers = vm.interpretUsers(data);
                         vm.displayedUsers = [].concat(vm.searchedUsers);
                     });
-                commonService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
+                networkService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
                     .then(function (data) {
                         vm.searchedUserActivities = vm.interpretUserActivities(data);
                         vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
@@ -241,7 +242,7 @@
 
         function refreshApi () {
             if (vm.isChplAdmin || vm.isOncStaff) {
-                commonService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
+                networkService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
                     .then(function (data) {
                         vm.searchedApiActivity = data;
                         vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
@@ -251,7 +252,7 @@
         function refreshApiKeyUsage () {
             if (vm.isChplAdmin || vm.isOncStaff) {
                 vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
-                commonService.getApiActivity(dateAdjust(vm.apiKey))
+                networkService.getApiActivity(dateAdjust(vm.apiKey))
                     .then(function (data) {
                         vm.searchedApi = data;
                     });
@@ -284,16 +285,16 @@
         }
 
         function loadApiKeys () {
-            commonService.getApiUsers()
+            networkService.getApiUsers()
                 .then(function (result) {
                     vm.apiKeys = result;
                 });
         }
 
         function singleCp () {
-            commonService.getSingleCertifiedProductActivity(vm.productId)
+            networkService.getSingleCertifiedProductActivity(vm.productId)
                 .then(function (data) {
-                    interpretCps(data);
+                    _interpretCps(data);
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                     vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
@@ -330,7 +331,7 @@
             };
         }
 
-        function interpretCps (data) {
+        function _interpretCps (data) {
             vm.loadedCpActivity = data;
             var simpleCpFields = [
                 {key: 'acbCertificationId', display: 'ACB Certification ID'},
@@ -463,6 +464,13 @@
                     var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
                     for (j = 0; j < qmsStandards.length; j++) {
                         activity.details.push('QMS Standard "' + qmsStandards[j].name + '" changes<ul>' + qmsStandards[j].changes.join('') + '</ul>');
+                    }
+                    if (data[i].originalData.sed &&
+                        data[i].newData.sed) {
+                        var sedChanges = _compareSed(data[i].originalData.sed, data[i].newData.sed);
+                        if (sedChanges) {
+                            activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
+                        }
                     }
                     var targetedUsersKeys = [];
                     var targetedUsers = compareArray(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, targetedUsersKeys, 'targetedUserName');
@@ -712,14 +720,18 @@
                 for (j = 0; j < testStandards.length; j++) {
                     obj.changes.push('<li>Test Standard Description "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul></li>');
                 }
-                var ucdProcessesKeys = [{key: 'ucdProcessDetails', display: 'UCD Process Details'}];
-                var ucdProcesses = compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
-                for (j = 0; j < ucdProcesses.length; j++) {
-                    obj.changes.push('<li>UCD Process Name "' + ucdProcesses[j].name + '" changes<ul>' + ucdProcesses[j].changes.join('') + '</ul></li>');
+                if (prev[i].ucdProcesses) {
+                    var ucdProcessesKeys = [{key: 'ucdProcessDetails', display: 'UCD Process Details'}];
+                    var ucdProcesses = compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
+                    for (j = 0; j < ucdProcesses.length; j++) {
+                        obj.changes.push('<li>UCD Process Name "' + ucdProcesses[j].name + '" changes<ul>' + ucdProcesses[j].changes.join('') + '</ul></li>');
+                    }
                 }
-                var testTasks = compareSedTasks(prev[i].testTasks, curr[i].testTasks);
-                for (j = 0; j < testTasks.length; j++) {
-                    obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
+                if (prev[i].testTasks) {
+                    var testTasks = compareSedTasks(prev[i].testTasks, curr[i].testTasks);
+                    for (j = 0; j < testTasks.length; j++) {
+                        obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
+                    }
                 }
                 if (obj.changes.length > 0) {
                     ret.push(obj);
@@ -751,6 +763,94 @@
                 if (obj.changes.length > 0) {
                     ret.push(obj);
                 }
+            }
+            return ret;
+        }
+
+        function _compareSed (prev, curr) {
+            var i, j, k, ret = [];
+
+            var ucdProcessesKeys = [{key: 'details', display: 'UCD Process Details'}];
+            var ucdProcessesNested = [
+                {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
+            ];
+            var ucdProcesses = compareArray(prev.ucdProcesses, curr.ucdProcesses, ucdProcessesKeys, 'name', ucdProcessesNested);
+            for (i = 0; i < ucdProcesses.length; i++) {
+                ret.push('<li>UCD Process Name "' + ucdProcesses[i].name + '" changes<ul>' + ucdProcesses[i].changes.join('') + '</ul></li>');
+            }
+
+            var taskKeys = [
+                {key: 'description', display: 'Description'},
+                {key: 'taskErrors', display: 'Task Errors'},
+                {key: 'taskErrorsStddev', display: 'Task Errors Standard Deviation'},
+                {key: 'taskPathDeviationObserved', display: 'Task Path Deviation Observed'},
+                {key: 'taskPathDeviationOptimal', display: 'Task Path Deviation Optimal'},
+                {key: 'taskRating', display: 'Task Rating'},
+                {key: 'taskRatingScale', display: 'Task Rating Scale'},
+                {key: 'taskRatingStddev', display: 'Task Rating Standard Deviation'},
+                {key: 'taskSuccessAverage', display: 'Task Success Average'},
+                {key: 'taskSuccessStddev', display: 'Task Success Standard Deviation'},
+                {key: 'taskTimeAvg', display: 'Task Time Average'},
+                {key: 'taskTimeDeviationObservedAvg', display: 'Task Time Deviation Observed Average'},
+                {key: 'taskTimeDeviationOptimalAvg', display: 'Task Time Deviation Optimal Average'},
+                {key: 'taskTimeStddev', display: 'Task Time Standard Deviation'},
+            ];
+            var taskNested = [
+                {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
+                {key: 'testParticipants', display: 'Test Participant', value: 'id', compareId: 'id', countOnly: true},
+            ];
+            var tasks = compareArray(prev.testTasks, curr.testTasks, taskKeys, 'id', taskNested, 'description');
+            for (i = 0; i < tasks.length; i++) {
+                ret.push('<li>Task Description "' + tasks[i].name + '" changes<ul>' + tasks[i].changes.join('') + '</ul></li>');
+            }
+
+            var found, part, task;
+            prev.allParticipants = [];
+            for (i = 0; i < prev.testTasks.length; i++) {
+                task = prev.testTasks[i];
+                for (j = 0; j < task.testParticipants.length; j++) {
+                    part = task.testParticipants[j];
+                    found = false;
+                    for (k = 0; k < prev.allParticipants.length; k++) {
+                        if (part.id === prev.allParticipants[k].id) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        prev.allParticipants.push(part);
+                    }
+                }
+            }
+            curr.allParticipants = [];
+            for (i = 0; i < curr.testTasks.length; i++) {
+                task = curr.testTasks[i];
+                for (j = 0; j < task.testParticipants.length; j++) {
+                    part = task.testParticipants[j];
+                    found = false;
+                    for (k = 0; k < curr.allParticipants.length; k++) {
+                        if (part.id === curr.allParticipants[k].id) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        curr.allParticipants.push(part);
+                    }
+                }
+            }
+
+            var testParticipantKeys = [
+                {key: 'ageRange', display: 'Age Range'},
+                {key: 'assistiveTechnologyNeeds', display: 'Assistive Technology Needs'},
+                {key: 'computerExperienceMonths', display: 'Computer Experience Months'},
+                {key: 'educationTypeName', display: 'Education Type'},
+                {key: 'gender', display: 'Gender'},
+                {key: 'occupation', display: 'Occupation'},
+                {key: 'productExperienceMonths', display: 'Product Experience (Months)'},
+                {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'},
+            ];
+            var participants = compareArray(prev.allParticipants, curr.allParticipants, testParticipantKeys, 'id');
+            for (i = 0; i < participants.length; i++) {
+                ret.push('<li>Participant changes<ul>' + participants[i].changes.join('') + '</ul></li>');
             }
             return ret;
         }
@@ -1211,17 +1311,42 @@
             }
         };
 
-        function compareArray (prev, curr, keys, root) {
+        function compareArray (prev, curr, keys, root, nested, altRoot) {
             var ret = [];
-            var change, i;
+            var change, i, j, k, l;
             if (prev !== null) {
                 for (i = 0; i < prev.length; i++) {
-                    for (var j = 0; j < curr.length; j++) {
-                        var obj = { name: curr[j][root], changes: [] };
+                    for (j = 0; j < curr.length; j++) {
+                        var obj = { name: curr[j][altRoot ? altRoot : root], changes: [] };
                         if (prev[i][root] === curr[j][root]) {
-                            for (var k = 0; k < keys.length; k++) {
+                            for (k = 0; k < keys.length; k++) {
                                 change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
                                 if (change) { obj.changes.push('<li>' + change + '</li>'); }
+                            }
+                            if (nested) {
+                                for (k = 0; k < nested.length; k++) {
+                                    nested[k].changes = utilService.arrayCompare(prev[i][nested[k].key],curr[j][nested[k].key],nested[k].compareId);
+                                    if (nested[k].changes.added.length > 0) {
+                                        if (nested[k].countOnly) { obj.changes.push('<li>Added ' + nested[k].changes.added.length + ' ' + nested[k].display + (nested[k].changes.added.length !== 1 ? 's' : '') + '</li>') }
+                                        else {
+                                            obj.changes.push('<li>Added ' + nested[k].display + ':<ul>');
+                                            for (l = 0; l < nested[k].changes.added.length; l++) {
+                                                obj.changes.push('<li>' + nested[k].changes.added[l][nested[k].value] + '</li>');
+                                            }
+                                            obj.changes.push('</ul></li>');
+                                        }
+                                    }
+                                    if (nested[k].changes.removed.length > 0) {
+                                        if (nested[k].countOnly) { obj.changes.push('<li>Removed ' + nested[k].changes.removed.length + ' ' + nested[k].display + (nested[k].changes.removed.length !== 1 ? 's' : '') + '</li>') }
+                                        else {
+                                            obj.changes.push('<li>Removed ' + nested[k].display + ':<ul>');
+                                            for (l = 0; l < nested[k].changes.removed.length; l++) {
+                                                obj.changes.push('<li>' + nested[k].changes.removed[l][nested[k].value] + '</li>');
+                                            }
+                                            obj.changes.push('</ul></li>');
+                                        }
+                                    }
+                                }
                             }
                             prev[i].evaluated = true;
                             curr[j].evaluated = true;
@@ -1231,12 +1356,12 @@
                         }
                     }
                     if (!prev[i].evaluated) {
-                        ret.push({ name: prev[i][root], changes: ['<li>' + prev[i][root] + ' removed</li>']});
+                        ret.push({ name: prev[i][altRoot ? altRoot : root], changes: ['<li>' + prev[i][altRoot ? altRoot : root] + ' removed</li>']});
                     }
                 }
                 for (i = 0; i < curr.length; i++) {
                     if (!curr[i].evaluated) {
-                        ret.push({ name: curr[i][root], changes: ['<li>' + curr[i][root] + ' added</li>']});
+                        ret.push({ name: curr[i][altRoot ? altRoot : root], changes: ['<li>' + curr[i][altRoot ? altRoot : root] + ' added</li>']});
                     }
                 }
             }

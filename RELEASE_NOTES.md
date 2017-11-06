@@ -1,5 +1,92 @@
 # Release Notes
 
+## Version 9.8.0
+_6 November 2017_
+
+### New features
+* Add "2015 SED Products" Collection to shortcuts
+* Includes download all SED details button
+
+### Text changes
+* Usability Report -> Full Usability Report
+
+---
+
+## Version 9.7.0
+_23 October 2017_
+
+### New features
+* Incorporate upload-template-version errors & warnings
+
+### Bug fixed
+* Fixed "Save as Developer Information" to work again
+
+---
+
+## Version 9.6.1
+_12 October 2017_
+
+### Bugs fixed
+* Allow editing of Certification Criteria details
+* Allow creation of SED Task during upload/confirm
+
+---
+
+## Version 9.6.0
+_10 October 2017_
+
+### New features
+* Show error message when 404 error on Details page
+* Removed "All Products" from Download page options
+* Update to match standardized API modifications
+* Change ordering of a listings details to Criteria, CQMs, SED, G1/G2, Surveillance, Additional Info
+* On SED Details page
+  * Change 'SED Intended User Description' header to 'Description of Intended Users'
+  * Change SED 'Testing Completion Date' header to 'Date SED Testing was Completed'
+  * Change download button text to 'Download SED Details'
+  * Add criteria title to criteria list
+
+---
+
+## Version 9.5.1
+_25 September 2017_
+
+### Typos Fixed
+* Changed date of deprecation for XML file to 10 October
+
+---
+
+## Version 9.5.0
+_25 September 2017_
+
+### New features
+* Add visualization of ICS Inheritance relationships
+  * Improved "Confirm" workflow related to ICS Inheritance
+* Marked "Complete listing (xml)" as deprecated on Download page
+* Allow Authorized Users to view appropriate running Jobs
+
+---
+
+## Version 9.4.0
+_11 September 2017_
+
+### New features
+* Improved SED view/edit
+* Add indicator to criteria edit screen when "phantom" data exists
+
+### Text changes
+* Added "date of last modification" for XSD files
+
+---
+
+## Version 9.3.2
+_14 August 2017_
+
+### Bug fixed
+* Re-enabled CQM filter
+
+---
+
 ## Version 9.3.1
 _14 August 2017_
 
@@ -539,13 +626,6 @@ _20 April 2016_
 
 ## Version 1.1.0
 _12 April 2016_
-
-### New Features
-* Added EHR Certification ID widget to fold out on Search page
-* Added 'Cert ID' button to product search result rows
-
-## Next version
-_Date TBD_
 
 ### New features
 * Allow editing of new style CHPL Product Number
