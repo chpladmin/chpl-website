@@ -316,7 +316,6 @@
                 vm.activityRange[key].startDate.getDate()
             );
             var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
-            $log.debug(new Date(utcStart), new Date(utcEnd), diffDays);
             if (key === 'listing' && vm.productId) {
                 return (utcStart < utcEnd);
             }
