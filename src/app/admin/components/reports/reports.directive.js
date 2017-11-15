@@ -305,9 +305,19 @@
         }
 
         function validDates (key) {
-            var diffDays = Math.ceil((vm.activityRange[key].endDate.getTime() - vm.activityRange[key].startDate.getTime()) / (1000 * 60 * 60 * 24));
+            var utcEnd = Date.UTC(
+                vm.activityRange[key].endDate.getFullYear(),
+                vm.activityRange[key].endDate.getMonth(),
+                vm.activityRange[key].endDate.getDate()
+            );
+            var utcStart = Date.UTC(
+                vm.activityRange[key].startDate.getFullYear(),
+                vm.activityRange[key].startDate.getMonth(),
+                vm.activityRange[key].startDate.getDate()
+            );
+            var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
             if (key === 'listing' && vm.productId) {
-                return (vm.activityRange.listing.startDate.getTime() < vm.activityRange.listing.endDate.getTime());
+                return (utcStart < utcEnd);
             }
             return (0 <= diffDays && diffDays < vm.activityRange.range);
         }
