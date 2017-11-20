@@ -133,7 +133,6 @@
                 case 'cp-surveillance':
                 case 'cp-cap':
                 case 'cp-other':
-                case 'cp-questionable':
                     if (vm.productId) {
                         vm.singleCp();
                     } else {
@@ -406,10 +405,6 @@
                         statusActivity.details = statusChange;
                         output.status.push(statusActivity);
 
-                        activity.details.push('<span class="bg-danger"><strong>' + statusChange + '</strong></span>');
-                    }
-                    if (data[i].newData.certificationEdition.name === '2011') {
-                        activity.action = '<span class="bg-danger">' + activity.action + '</span>';
                     }
                     for (j = 0; j < simpleCpFields.length; j++) {
                         change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
