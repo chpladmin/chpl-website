@@ -8,6 +8,7 @@
             'angulartics',
             'angulartics.google.tagmanager',
             'chpl.admin',
+            'chpl.charts',
             'chpl.chpl_api',
             'chpl.cms_lookup',
             'chpl.collections',

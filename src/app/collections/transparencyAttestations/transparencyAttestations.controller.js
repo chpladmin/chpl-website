@@ -5,7 +5,7 @@
         .controller('TransparencyAttestationsController', TransparencyAttestationsController);
 
     /** @ngInject */
-    function TransparencyAttestationsController () {
+    function TransparencyAttestationsController ($compile, $scope) {
         var vm = this;
 
         vm._urlTransform = urlTransform;
@@ -41,15 +41,11 @@
         function urlTransform (data) {
             var ret;
             if (data && data.length > 0) {
-                ret ='<ul>' +
+                ret = '<ul class="list-unstyled">' +
                     data.map(function (item) {
-                        return '<li><a href="' + item + '">' + item +
-                            '<a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" class="pull-right">' +
-                            '<i class="fa fa-external-link"></i>' +
-                            '<span class="sr-only">Web Site Disclaimers</span>' +
-                            '</a>' +
-                            '</a></li>';
-                    }) + '</ul>';
+                        return $compile('<li><a ai-a href="' + item + '">' + item + '</a></li>')($scope)[0].outerHTML;
+                    })
+                    + '</ul>';
             } else {
                 ret = 'Not available';
             }

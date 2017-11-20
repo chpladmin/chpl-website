@@ -67,6 +67,8 @@
             getSearchOptions: getSearchOptions,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
+            getStatisticTypes: getStatisticTypes,
+            getStatistics: getStatistics,
             getSurveillanceLookups: getSurveillanceLookups,
             getTargetedUsers: getTargetedUsers,
             getTestFunctionality: getTestFunctionality,
@@ -75,6 +77,7 @@
             getUcdProcesses: getUcdProcesses,
             getUploadingCps: getUploadingCps,
             getUploadingSurveillances: getUploadingSurveillances,
+            getUploadTemplateVersions: getUploadTemplateVersions,
             getUserActivities: getUserActivities,
             getUserActivity: getUserActivity,
             getUsers: getUsers,
@@ -305,6 +308,8 @@
             case 'decertifiedProducts':
             case 'inactiveCertificates':
                 return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
+            case 'sed':
+                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
             case 'transparencyAttestations':
                 return apiGET('/collections/developers');
                 //no default
@@ -405,6 +410,14 @@
             return apiGET('/activity/certified_products/' + productId);
         }
 
+        function getStatisticTypes () {
+            return apiGET('/data/statistic_types');
+        }
+
+        function getStatistics () {
+            return apiGET('/data/statistics');
+        }
+
         function getSurveillanceLookups () {
             var data = {};
             apiGET('/data/surveillance_types')
@@ -460,6 +473,10 @@
 
         function getUploadingSurveillances () {
             return apiGET('/surveillance/pending');
+        }
+
+        function getUploadTemplateVersions () {
+            return apiGET('/data/upload_template_versions');
         }
 
         function getUserActivities (activityRange) {

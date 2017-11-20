@@ -509,6 +509,11 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet/).respond(200, {data: 'response'});
+            networkService.getCollection('sed').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
             $httpBackend.expectGET(/collections\/developers/).respond(200, {data: 'response'});
             networkService.getCollection('transparencyAttestations').then(function (response) {
                 expect(response.data).toEqual('response');
@@ -604,22 +609,6 @@
         it('should getMeaningfulUseUsersAccurateAsOfDate', function () {
             $httpBackend.expectGET(/meaningful_use\/accurate_as_of/).respond(200, {data: 'response'});
             networkService.getMeaningfulUseUsersAccurateAsOfDate().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getSubscriptionRecipients', function () {
-            $httpBackend.expectGET(/notifications\/recipients/).respond(200, {data: 'response'});
-            networkService.getSubscriptionRecipients().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getSubscriptionReportTypes', function () {
-            $httpBackend.expectGET(/data\/notification_types/).respond(200, {data: 'response'});
-            networkService.getSubscriptionReportTypes().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -726,6 +715,38 @@
             $httpBackend.flush();
         });
 
+        it('should getStatisticTypes', function () {
+            $httpBackend.expectGET(/data\/statistic_types/).respond(200, {data: 'response'});
+            networkService.getStatisticTypes().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getStatistics', function () {
+            $httpBackend.expectGET(/data\/statistics/).respond(200, {data: 'response'});
+            networkService.getStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSubscriptionRecipients', function () {
+            $httpBackend.expectGET(/notifications\/recipients/).respond(200, {data: 'response'});
+            networkService.getSubscriptionRecipients().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getSubscriptionReportTypes', function () {
+            $httpBackend.expectGET(/data\/notification_types/).respond(200, {data: 'response'});
+            networkService.getSubscriptionReportTypes().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getSurveillanceLookups', function () {
             $httpBackend.expectGET(/data\/surveillance_types/).respond(200, {data: 'surveillance_types'});
             $httpBackend.expectGET(/data\/surveillance_requirement_types/).respond(200, {data: 'surveillance_requirement_types'});
@@ -796,6 +817,14 @@
         it('should getUploadingSurveillances', function () {
             $httpBackend.expectGET(/surveillance\/pending/).respond(200, {data: 'response'});
             networkService.getUploadingSurveillances().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getUploadTemplateVersions', function () {
+            $httpBackend.expectGET(/data\/upload_template_versions/).respond(200, {data: 'response'});
+            networkService.getUploadTemplateVersions().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

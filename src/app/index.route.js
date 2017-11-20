@@ -13,6 +13,12 @@
                 controllerAs: 'vm',
                 title: 'CHPL Administration',
             })
+            .when('/charts', {
+                controller: 'ChartsController',
+                controllerAs: 'vm',
+                templateUrl: 'app/charts/charts.html',
+                title: 'CHPL Charts',
+            })
             .when('/collections/apiDocumentation', {
                 controller: 'ApiDocumentationController',
                 controllerAs: 'vm',
@@ -42,6 +48,12 @@
                 controllerAs: 'vm',
                 templateUrl: 'app/collections/products/products.html',
                 title: 'Decertified Products',
+            })
+            .when('/collections/sed', {
+                controller: 'SedCollectionController',
+                controllerAs: 'vm',
+                templateUrl: 'app/collections/sed/sed.html',
+                title: 'SED Information for 2014 &amp; 2015 Edition Products',
             })
             .when('/collections/transparencyAttestations', {
                 controller: 'TransparencyAttestationsController',

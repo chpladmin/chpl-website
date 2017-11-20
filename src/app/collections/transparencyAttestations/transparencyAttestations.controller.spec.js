@@ -49,14 +49,7 @@
             it('should wrap the data in link text', function () {
                 data = ['link'];
                 expect(vm._urlTransform(data)).toBe(
-                    '<ul>' +
-                        '<li><a href="link">link' +
-                        '<a href="http://www.hhs.gov/disclaimer.html" title="Web Site Disclaimers" class="pull-right">' +
-                        '<i class="fa fa-external-link"></i>' +
-                        '<span class="sr-only">Web Site Disclaimers</span>' +
-                        '</a>' +
-                        '</a></li>' +
-                        '</ul>'
+                    '<ul class="list-unstyled"><li class="ng-scope"><a ai-a="" href="link">link</a></li></ul>'
                 );
             });
         });
