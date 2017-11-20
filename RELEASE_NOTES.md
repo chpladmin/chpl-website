@@ -3,6 +3,9 @@
 Version TBD
 _Date TBD_
 
+### New Features
+* Take out Questionable Activity Certified Products reports page
+
 ### Bugs fixed
 * Fixed issue with Report activity date range spanning DST boundaries
 
