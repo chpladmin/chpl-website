@@ -133,6 +133,13 @@
                 case 'cp-surveillance':
                 case 'cp-cap':
                 case 'cp-other':
+                case 'cp-questionable':
+                    if (vm.productId) {
+                        vm.singleCp();
+                    } else {
+                        vm.refreshCp();
+                    }
+                    break;
                 case 'dev':
                     vm.refreshDeveloper();
                     break;
@@ -398,6 +405,8 @@
                         var statusActivity = angular.copy(activity);
                         statusActivity.details = statusChange;
                         output.status.push(statusActivity);
+
+                        activity.details.push('<span class="bg-danger"><strong>' + statusChange + '</strong></span>');
                     }
                     if (data[i].newData.certificationEdition.name === '2011') {
                         activity.action = '<span class="bg-danger">' + activity.action + '</span>';
@@ -611,6 +620,8 @@
             var change;
             var certKeys = [
                 {key: 'apiDocumentation', display: 'API Documentation'},
+                {key: 'g1Success', display: 'Certified to G1'},
+                {key: 'g2Success', display: 'Certified to G2'},
                 {key: 'gap', display: 'GAP Tested'},
                 {key: 'privacySecurityFramework', display: 'Privacy &amp; Security Framework'},
                 {key: 'sed', display: 'SED tested'},
