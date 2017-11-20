@@ -415,7 +415,6 @@
                         date: 1492429771059,
                         friendlyActivityDate: '2017-04-17',
                         newId: 17497,
-                        questionable: false,
                     };
                     rawActivity = angular.copy(Mock.listingActivity[1]);
                     rawActivity.description = 'Something odd with a Listing';
@@ -441,7 +440,6 @@
                             id: 1480,
                             newId: 17497,
                             product: 'EpicCare Ambulatory - Core EMR 2',
-                            questionable: false,
                         };
                         rawActivity = angular.copy(Mock.listingActivity[1]);
                     });
@@ -468,7 +466,6 @@
                             id: 1480,
                             newId: 17497,
                             product: 'EpicCare Ambulatory - Core EMR 2',
-                            questionable: false,
                         };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
@@ -481,10 +478,6 @@
                         expectedActivity.details = 'Certification Status changed from Retired to Active';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsStatus[0]).toEqual(expectedActivity);
-
-                        expectedActivity.details = ['<span class="bg-danger"><strong>Certification Status changed from Retired to Active</strong></span>'];
-                        expectedActivity.questionable = true;
-                        expect(vm.searchedCertifiedProductsQuestionable[0]).toEqual(expectedActivity);
                     });
 
                     it('should interpret basic field changes', function () {
@@ -493,27 +486,6 @@
                         expectedActivity.csvDetails = 'Product-wide Relied Upon Software added: Some new software';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
-                    });
-
-                    it('should mark 2011 changes as questionable', function () {
-                        // set raw data
-                        rawActivity.newData.certificationEdition.name = '2011';
-                        rawActivity.newData.productAdditionalSoftware = 'Some new software';
-                        rawActivity.originalData.certificationEdition.name = '2011';
-
-                        // set expected result
-                        expectedActivity.action = '<span class="bg-danger">undefined</span>';
-                        expectedActivity.csvDetails = 'Product-wide Relied Upon Software added: Some new software';
-                        expectedActivity.details = ['Product-wide Relied Upon Software added: Some new software'];
-                        expectedActivity.certificationEdition = '2011';
-                        expectedActivity.questionable = true;
-
-                        // act
-                        vm._interpretCps([rawActivity]);
-
-                        // assert
-                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
-                        expect(vm.searchedCertifiedProductsQuestionable[0]).toEqual(expectedActivity);
                     });
 
                     it('should interpret nested field changes', function () {
@@ -528,24 +500,6 @@
                         rawActivity.originalData.accessibilityStandards = [{accessibilityStandardName: 'a standard'}];
                         expectedActivity.details = ['Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>'];
                         expectedActivity.csvDetails = 'Accessibility Standard "a standard" changes<ul><li>a standard removed</li></ul>';
-                        vm._interpretCps([rawActivity]);
-                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
-                    });
-
-                    it('should handle criteria addition', function () {
-                        rawActivity.originalData.certificationResults[0].success = false;
-                        expectedActivity.questionable = true;
-                        expectedActivity.details = ['Certification "170.302 (a)" changes<ul><li class="bg-danger"><strong>Successful added: true</strong></li></ul>'];
-                        expectedActivity.csvDetails = 'Certification "170.302 (a)" changes<ul><li class="bg-danger"><strong>Successful added: true</strong></li></ul>';
-                        vm._interpretCps([rawActivity]);
-                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
-                    });
-
-                    it('should handle cqm addition', function () {
-                        rawActivity.originalData.cqmResults[0].success = false;
-                        expectedActivity.questionable = true;
-                        expectedActivity.details = ['CQM "null" changes<ul><li class="bg-danger"><strong>Success added: true</strong></li></ul>'];
-                        expectedActivity.csvDetails = 'CQM "null" changes<ul><li class="bg-danger"><strong>Success added: true</strong></li></ul>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
@@ -585,7 +539,6 @@
                             id: 1480,
                             newId: 17497,
                             product: 'EpicCare Ambulatory - Core EMR 2',
-                            questionable: false,
                         };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
@@ -621,7 +574,6 @@
                             details: ['N/A'],
                             friendlyActivityDate: '2017-04-17',
                             newId: 17497,
-                            questionable: false,
                         };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
@@ -677,7 +629,6 @@
                                 details: [],
                                 friendlyActivityDate: '2017-04-17',
                                 newId: 17497,
-                                questionable: false,
                                 action: 'Surveillance was updated for CHPL Product <a href="#/product/1480">CHP-009351</a>',
                             };
                             rawActivity = angular.copy(Mock.listingActivity[0]);
