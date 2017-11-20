@@ -405,6 +405,7 @@
                         statusActivity.details = statusChange;
                         output.status.push(statusActivity);
 
+                        activity.details.push(statusChange);
                     }
                     for (j = 0; j < simpleCpFields.length; j++) {
                         change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
