@@ -1,7 +1,7 @@
 # Release Notes
 
-Version TBD
-_Date TBD_
+Version 9.8.1
+_20 November 2017_
 
 ### Bugs fixed
 * Fixed issue with Report activity date range spanning DST boundaries
