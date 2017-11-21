@@ -46,7 +46,6 @@
                     developers: Mock.developers,
                     inspectingCp: mock.inspectingCp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                 });

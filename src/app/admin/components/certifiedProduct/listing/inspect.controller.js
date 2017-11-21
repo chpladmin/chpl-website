@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isAcbStaff, isChplAdmin, networkService, resources) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -51,7 +51,6 @@
 
             vm.errorMessages = [];
             vm.isAcbAdmin = isAcbAdmin;
-            vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
             vm.resources = resources;
             vm.statuses = resources.statuses;
@@ -223,7 +222,6 @@
                 resolve: {
                     activeCP: function () { return vm.cp; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return vm.resources; },
                     workType: function () { return 'confirm'; },

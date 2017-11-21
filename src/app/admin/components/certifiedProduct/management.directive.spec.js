@@ -36,7 +36,6 @@
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
                     $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isAcbStaff = jasmine.createSpy('isAcbStaff');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
 
@@ -86,7 +85,6 @@
                 authService.getApiKey.and.returnValue($q.when('fake api key'));
                 authService.getToken.and.returnValue($q.when('fake token'));
                 authService.isAcbAdmin.and.returnValue($q.when(true));
-                authService.isAcbStaff.and.returnValue($q.when(true));
                 authService.isChplAdmin.and.returnValue($q.when(true));
                 authService.isOncStaff.and.returnValue($q.when(true));
                 networkService = _networkService_;
@@ -250,7 +248,6 @@
                     resolve: {
                         activeCP: jasmine.any(Function),
                         isAcbAdmin: jasmine.any(Function),
-                        isAcbStaff: jasmine.any(Function),
                         isChplAdmin: jasmine.any(Function),
                         resources: jasmine.any(Function),
                         workType: jasmine.any(Function),
@@ -269,7 +266,6 @@
                 expect($uibModal.open).toHaveBeenCalledWith(listingEditOptions);
                 expect(actualOptions.resolve.activeCP()).toEqual('');
                 actualOptions.resolve.isAcbAdmin().then(function (result) { expect(result).toEqual(true); });
-                actualOptions.resolve.isAcbStaff().then(function (result) { expect(result).toEqual(true); });
                 actualOptions.resolve.isChplAdmin().then(function (result) { expect(result).toEqual(true); });
                 expect(actualOptions.resolve.resources()).toEqual(vm.resources);
                 expect(actualOptions.resolve.workType()).toEqual(vm.workType);

@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version TBD
+
+### Minor Changes
+* Change ROLE_ACB_ADMIN to ROLE_ACB
+* Change ROLE_ATL_ADMIN to ROLE_ATL
+* Remove ROLE_ACB_STAFF
+* Remove ROLE_ATL_STAFF
+
 Version 9.8.1
 _20 November 2017_
 
