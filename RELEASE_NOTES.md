@@ -1,10 +1,11 @@
 # Release Notes
 
-Version TBD
+## Version TBD
 _Date TBD_
 
 ### Bugs fixed
 * Fixed issue with Report activity date range spanning DST boundaries
+* Re-enabled SED Task / Participant editing when criteria added with SED
 
 ---
 
