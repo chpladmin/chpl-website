@@ -3,6 +3,10 @@
 ## Version TBD
 _Date TBD_
 
+### New features
+* Display / edit Test Data & Test Procedures
+  * Updated activity reports to parse TD & TP as well
+
 ### Bugs fixed
 * Re-enabled SED Task / Participant editing when criteria added with SED
 
