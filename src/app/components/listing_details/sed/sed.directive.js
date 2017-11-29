@@ -56,9 +56,6 @@
 
         function activate () {
             _analyzeSed();
-            $scope.$watch('vm.listing.sed', function () {
-                vm._analyzeSed();
-            });
         }
 
         function addTask () {
@@ -83,6 +80,7 @@
         }
 
         function editDetails () {
+            _analyzeSed();
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/sed/editDetails.html',
                 controller: 'EditSedDetailsController',

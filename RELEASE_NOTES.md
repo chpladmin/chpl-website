@@ -1,11 +1,19 @@
 # Release Notes
 
-Version 9.8.1
-_20 November 2017_
+## Version TBD
+_Date TBD_
 
 ### New features
 * Display / edit Test Data & Test Procedures
   * Updated activity reports to parse TD & TP as well
+
+### Bugs fixed
+* Re-enabled SED Task / Participant editing when criteria added with SED
+
+---
+
+## Version 9.8.1
+_20 November 2017_
 
 ### Bugs fixed
 * Fixed issue with Report activity date range spanning DST boundaries

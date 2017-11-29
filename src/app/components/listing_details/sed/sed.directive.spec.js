@@ -63,38 +63,31 @@
                 expect(vm.listing).toBeDefined();
             });
 
-            it('should watch "sed" and reanalyze if it changes', function () {
-                spyOn(vm, '_analyzeSed');
-                vm.listing.sed = {testTasks: [], ucdProcesses: []};
-                scope.$digest();
-                expect(vm._analyzeSed).toHaveBeenCalled();
-            });
-
             it('should not analyze unless all the pieces are there', function () {
                 spyOn(vm, '_analyzeSed').and.callThrough();
                 vm.listing = {};
                 vm._analyzeSed();
                 expect(vm._analyzeSed.calls.count()).toBe(1);
                 $timeout.flush();
-                expect(vm._analyzeSed.calls.count()).toBe(3);
+                expect(vm._analyzeSed.calls.count()).toBe(2);
                 vm.listing.chplProductNumber = 'fake';
                 $timeout.flush();
-                expect(vm._analyzeSed.calls.count()).toBe(5);
+                expect(vm._analyzeSed.calls.count()).toBe(3);
                 vm.listing.developer = {name: 'fake'};
                 $timeout.flush();
-                expect(vm._analyzeSed.calls.count()).toBe(7);
+                expect(vm._analyzeSed.calls.count()).toBe(4);
                 vm.listing.product = {name: 'fake'};
                 $timeout.flush();
-                expect(vm._analyzeSed.calls.count()).toBe(9);
+                expect(vm._analyzeSed.calls.count()).toBe(5);
                 vm.listing.version = {version: 'fake'};
                 $timeout.flush();
-                expect(vm._analyzeSed.calls.count()).toBe(11);
+                expect(vm._analyzeSed.calls.count()).toBe(6);
                 vm.listing.certificationResults = [];
                 $timeout.flush();
-                expect(vm._analyzeSed.calls.count()).toBe(13);
+                expect(vm._analyzeSed.calls.count()).toBe(7);
                 vm.listing.sed = {testTasks: [], ucdProcesses: []};
                 $timeout.flush();
-                expect(vm._analyzeSed.calls.count()).toBe(16);
+                expect(vm._analyzeSed.calls.count()).toBe(8);
             });
 
             describe('should use the util service', function () {
