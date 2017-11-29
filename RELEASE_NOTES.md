@@ -3,6 +3,10 @@
 Version 9.8.1
 _20 November 2017_
 
+### New features
+* Display / edit Test Data & Test Procedures
+  * Updated activity reports to parse TD & TP as well
+
 ### Bugs fixed
 * Fixed issue with Report activity date range spanning DST boundaries
 
