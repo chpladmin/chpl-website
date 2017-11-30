@@ -55,7 +55,6 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: mock.activeCP,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',
@@ -102,7 +101,6 @@
             vm = $controller('EditCertifiedProductController', {
                 activeCP: cp,
                 isAcbAdmin: true,
-                isAcbStaff: true,
                 isChplAdmin: true,
                 resources: mock.resources,
                 workType: 'manage',
@@ -119,7 +117,6 @@
             vm = $controller('EditCertifiedProductController', {
                 activeCP: cp,
                 isAcbAdmin: true,
-                isAcbStaff: true,
                 isChplAdmin: true,
                 resources: mock.resources,
                 workType: 'manage',
@@ -156,7 +153,6 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',
@@ -174,7 +170,6 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',
@@ -192,7 +187,6 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',
