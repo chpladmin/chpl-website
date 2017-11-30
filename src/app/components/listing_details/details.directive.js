@@ -19,20 +19,11 @@
                 isEditing: '=?',
                 product: '=',
                 resources: '=',
-//                save: '&',
                 viewAllCerts: '=?defaultAll',
             },
             scope: {},
             controllerAs: 'vm',
             controller: CertsController,
-/*            link: function (scope, element, attr, ctrl) {
-                var handler = ctrl.save({
-                    handler: function () {
-                        ctrl.saveEdits();
-                    },
-                });
-                scope.$on('$destroy', handler);
-            },*/
         };
         return directive;
 
@@ -72,7 +63,6 @@
                 $scope.$watch('vm.product', function (product) {
                     if (product) {
                         vm.product = product;
-                        //vm.certs = vm.product.certificationResults;
                         vm.countCerts = vm.product.countCerts;
                         vm.countCqms = vm.product.countCqms;
                         vm.cqms = vm.product.cqmResults;
@@ -81,7 +71,6 @@
             }
 
             function hasEdited () {
-//                vm.product.certificationResults = vm.certs;
                 angular.forEach(vm.handlers, function (handler) {
                     handler();
                 });

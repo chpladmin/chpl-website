@@ -56,7 +56,9 @@
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getTargetedUsers = jasmine.createSpy('getTargetedUsers');
+                    $delegate.getTestData = jasmine.createSpy('getTestData');
                     $delegate.getTestFunctionality = jasmine.createSpy('getTestFunctionality');
+                    $delegate.getTestProcedures = jasmine.createSpy('getTestProcedures');
                     $delegate.getTestStandards = jasmine.createSpy('getTestStandards');
                     $delegate.getTestTools = jasmine.createSpy('getTestTools');
                     $delegate.getUcdProcesses = jasmine.createSpy('getUcdProcesses');
@@ -101,7 +103,9 @@
                 networkService.getQmsStandards.and.returnValue($q.when([]));
                 networkService.getSearchOptions.and.returnValue($q.when({}));
                 networkService.getTargetedUsers.and.returnValue($q.when([]));
+                networkService.getTestData.and.returnValue($q.when({data: []}));
                 networkService.getTestFunctionality.and.returnValue($q.when({data: []}));
+                networkService.getTestProcedures.and.returnValue($q.when({data: []}));
                 networkService.getTestStandards.and.returnValue($q.when({data: []}));
                 networkService.getTestTools.and.returnValue($q.when([]));
                 networkService.getUcdProcesses.and.returnValue($q.when([]));
