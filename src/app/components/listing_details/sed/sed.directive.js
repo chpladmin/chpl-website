@@ -96,7 +96,9 @@
                 },
             });
             vm.modalInstance.result.then(function (result) {
-                vm.listing = result.listing;
+                vm.listing.sedReportFileLocation = result.listing.sedReportFileLocation;
+                vm.listing.sedIntendedUserDescription = result.listing.sedIntendedUserDescription;
+                vm.listing.sedTestingEndDate = result.listing.sedTestingEndDate;
                 vm.listing.sed.ucdProcesses = result.ucdProcesses;
                 vm.ucdProcesses = result.ucdProcesses;
             });
@@ -181,7 +183,7 @@
                 !vm.listing.version ||
                 !vm.listing.certificationResults ||
                 !vm.listing.sed) {
-                $timeout(vm._analyzeSed, 500);
+                $timeout(_analyzeSed, 500);
             } else {
                 var csvRow, i, j, object, participant, task;
                 var TASK_START = 5;
