@@ -865,12 +865,16 @@
                 prev.testProcedures.forEach(function (pre) {
                     if (pre.testProcedure) {
                         curr.testProcedures.forEach(function (cur) {
-                            if (!cur.found && pre.testProcedure.name === cur.testProcedure.name) {
+                            if (!cur.found && !pre.found &&
+                                pre.testProcedure.name === cur.testProcedure.name &&
+                                pre.testProcedureVersion === cur.testProcedureVersion ) {
                                 pre.found = true;
                                 cur.found = true;
-                                if (pre.testProcedureVersion !== cur.testProcedureVersion) {
-                                    ret.push('<li>Test Procedure "' + pre.testProcedure.name + '" version changed from "' + pre.testProcedureVersion + '" to "' + cur.testProcedureVersion + '"</li>');
-                                }
+                            }
+                            if (!cur.found && !pre.found && pre.testProcedure.name === cur.testProcedure.name ) {
+                                pre.found = true;
+                                cur.found = true;
+                                ret.push('<li>Test Procedure "' + pre.testProcedure.name + '" version changed from "' + pre.testProcedureVersion + '" to "' + cur.testProcedureVersion + '"</li>');
                             }
                         })
                         if (!pre.found) {
@@ -890,7 +894,15 @@
                 prev.testDataUsed.forEach(function (pre) {
                     if (pre.testData) {
                         curr.testDataUsed.forEach(function (cur) {
-                            if (!cur.found && pre.testData.name === cur.testData.name) {
+                            if (!cur.found && !pre.found &&
+                                pre.testData.name === cur.testData.name &&
+                                pre.version === cur.version &&
+                                pre.alteration === cur.alteration) {
+                                pre.found = true;
+                                cur.found = true;
+                            }
+                            if (!cur.found && !pre.found &&
+                                pre.testData.name === cur.testData.name) {
                                 pre.found = true;
                                 cur.found = true;
                                 if (pre.version !== cur.version) {

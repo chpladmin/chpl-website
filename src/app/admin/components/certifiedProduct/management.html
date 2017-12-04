@@ -193,6 +193,8 @@
             <tr>
               <th colspan="8">&nbsp;</th>
               <th>
+                <button class="btn btn-warning btn-block"
+                        ng-click="vm.selectAllPendingSurveillance()"><i class="fa fa-check"></i> Select all</button>
                 <button class="btn btn-danger btn-block"
                         ng-disabled="vm.getNumberOfSurveillanceToReject() < 1"
                         confirm="Are you sure you wish to remove {{ vm.getNumberOfSurveillanceToReject() }} surveillance{{ vm.getNumberOfSurveillanceToReject() > 1 ? 's' : '' }} from the queue?"

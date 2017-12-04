@@ -50,6 +50,7 @@
         vm.rejectCp = rejectCp;
         vm.rejectSurveillance = rejectSurveillance;
         vm.searchForSurveillance = searchForSurveillance;
+        vm.selectAllPendingSurveillance = selectAllPendingSurveillance;
         vm.selectCp = selectCp;
         vm.selectDeveloper = selectDeveloper;
         vm.selectProduct = selectProduct;
@@ -460,6 +461,13 @@
                 }
             });
             return ret;
+        }
+
+        function selectAllPendingSurveillance () {
+            vm.massRejectSurveillance = {};
+            vm.uploadingSurveillances.forEach(function (surv) {
+                vm.massRejectSurveillance[surv.id] = true;
+            });
         }
 
         function selectCp () {
