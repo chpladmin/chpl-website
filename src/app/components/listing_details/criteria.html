@@ -79,7 +79,9 @@
           </tr>
           <tr ng-if="vm.cert.testProcedures !== null">
             <td>Test procedure</td>
-            <td ng-if="vm.cert.testProcedures && vm.cert.testProcedures.length > 0"><div ng-repeat="m in vm.cert.testProcedures">Name: {{ m.testProcedure.name }}; Version: {{ m.testProcedureVersion }}</div></td>
+            <td ng-if="vm.cert.testProcedures && vm.cert.testProcedures.length > 0">
+              <div ng-repeat="m in vm.cert.testProcedures">Name: {{ m.testProcedure.name }}; Version: {{ m.testProcedureVersion }}<pre>{{ m | json }}</pre></div>
+            </td>
             <td ng-if="!vm.cert.testProcedures || vm.cert.testProcedures.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.number === '170.315 (g)(4)'">
