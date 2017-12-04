@@ -871,6 +871,12 @@
                                 pre.found = true;
                                 cur.found = true;
                             }
+                        });
+                    }
+                });
+                prev.testProcedures.forEach(function (pre) {
+                    if (pre.testProcedure) {
+                        curr.testProcedures.forEach(function (cur) {
                             if (!cur.found && !pre.found && pre.testProcedure.name === cur.testProcedure.name ) {
                                 pre.found = true;
                                 cur.found = true;
@@ -901,6 +907,12 @@
                                 pre.found = true;
                                 cur.found = true;
                             }
+                        });
+                    }
+                });
+                prev.testDataUsed.forEach(function (pre) {
+                    if (pre.testData) {
+                        curr.testDataUsed.forEach(function (cur) {
                             if (!cur.found && !pre.found &&
                                 pre.testData.name === cur.testData.name) {
                                 pre.found = true;
