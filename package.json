@@ -1,6 +1,6 @@
 {
   "name": "chpl",
-  "version": "9.8.1",
+  "version": "9.9.0",
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
