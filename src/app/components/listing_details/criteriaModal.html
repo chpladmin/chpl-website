@@ -206,7 +206,7 @@
             </div>
           </td>
         </tr>
-        <tr ng-if="vm.cert.testData !== null && vm.availableTestData && vm.availableTestData.length > 0">
+        <tr ng-if="vm.cert.testDataUsed !== null && vm.availableTestData && vm.availableTestData.length > 0">
           <td>Test data</td>
           <td>
             <div class="form-horizontal">
@@ -239,7 +239,7 @@
                     <select class="form-control" ng-model="vm.newTestData.testData" id="newTestDataItem"
                             ng-options="option as option.name for option in vm.availableTestData | orderBy: 'name'">
                     </select>
-                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.cert.testDataUsed = vm.addNewValue(vm.cert.testDataUsed, vm.newTestData); vm.newTestData = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cert.testDataUsed, vm.newTestData); vm.newTestData = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
                   </div>
                 </div>
                 <label class="col-sm-6 control-label" for="newTestDataVersion">Version</label>
