@@ -57,8 +57,8 @@
                     return procedure.criteria.number === vm.cert.number;
                 });
             vm.availableTestData = vm.resources.testData.data
-                .filter(function (procedure) {
-                    return procedure.criteria.number === vm.cert.number;
+                .filter(function (data) {
+                    return data.criteria.number === vm.cert.number;
                 });
         }
     }
