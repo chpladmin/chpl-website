@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.9.0
+_5 December 2017_
 
 ### New features
 * Display / edit Test Data & Test Procedures
