@@ -206,7 +206,7 @@
             </div>
           </td>
         </tr>
-        <tr ng-if="vm.cert.testData !== null">
+        <tr ng-if="vm.cert.testData !== null && vm.availableTestData && vm.availableTestData.length > 0">
           <td>Test data</td>
           <td>
             <div class="form-horizontal">
