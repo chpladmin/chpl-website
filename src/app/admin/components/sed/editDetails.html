@@ -10,7 +10,7 @@
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
-      <label class="control-label col-sm-4" for="cpSedReportFileLoc">Usability Report</label>
+      <label class="control-label col-sm-4" for="cpSedReportFileLoc">Full Usability Report</label>
       <div class="col-sm-8">
         <input class="input-sm form-control" type="url" ng-model="vm.listing.sedReportFileLocation" id="cpSedReportFileLoc" name="cpSedReportFileLoc" ng-maxlength="250">
         <div class="text-danger" ng-if="vm.editForm.cpSedReportFileLoc.$touched && vm.editForm.cpSedReportFileLoc.$error.url">Improper format (http://www.example.com)</div>

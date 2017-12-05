@@ -78,8 +78,10 @@
             <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.testProcedures !== null">
-            <td>Test procedure version</td>
-            <td ng-if="vm.cert.testProcedures && vm.cert.testProcedures.length > 0"><div ng-repeat="m in vm.cert.testProcedures">{{ m.testProcedureVersion }}</div></td>
+            <td>Test procedure</td>
+            <td ng-if="vm.cert.testProcedures && vm.cert.testProcedures.length > 0">
+              <div ng-repeat="m in vm.cert.testProcedures">Name: {{ m.testProcedure.name }}; Version: {{ m.testProcedureVersion }}</div>
+            </td>
             <td ng-if="!vm.cert.testProcedures || vm.cert.testProcedures.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.number === '170.315 (g)(4)'">
@@ -111,7 +113,7 @@
           </tr>
           <tr ng-if="vm.cert.testDataUsed !== null">
             <td>Test data used</td>
-            <td ng-if="vm.cert.testDataUsed && vm.cert.testDataUsed.length > 0"><div ng-repeat="m in vm.cert.testDataUsed">Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
+            <td ng-if="vm.cert.testDataUsed && vm.cert.testDataUsed.length > 0"><div ng-repeat="m in vm.cert.testDataUsed">Name: {{ m.testData.name ? m.testData.name : 'N/A' }}; Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
             <td ng-if="!vm.cert.testDataUsed || vm.cert.testDataUsed.length === 0">None</td>
           </tr>
           <tr ng-if="vm.cert.apiDocumentation !== null">

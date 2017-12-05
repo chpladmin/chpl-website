@@ -1,5 +1,37 @@
 # Release Notes
 
+## Version 9.9.0
+_5 December 2017_
+
+### New features
+* Display / edit Test Data & Test Procedures
+  * Updated activity reports to parse TD & TP as well
+
+### Bugs fixed
+* Re-enabled SED Task / Participant editing when criteria added with SED
+
+---
+
+## Version 9.8.1
+_20 November 2017_
+
+### Bugs fixed
+* Fixed issue with Report activity date range spanning DST boundaries
+
+---
+
+## Version 9.8.0
+_6 November 2017_
+
+### New features
+* Add "2015 SED Products" Collection to shortcuts
+* Includes download all SED details button
+
+### Text changes
+* Usability Report -> Full Usability Report
+
+---
+
 ## Version 9.7.0
 _23 October 2017_
 

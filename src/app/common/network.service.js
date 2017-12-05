@@ -67,9 +67,13 @@
             getSearchOptions: getSearchOptions,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
+            getStatisticTypes: getStatisticTypes,
+            getStatistics: getStatistics,
             getSurveillanceLookups: getSurveillanceLookups,
             getTargetedUsers: getTargetedUsers,
+            getTestData: getTestData,
             getTestFunctionality: getTestFunctionality,
+            getTestProcedures: getTestProcedures,
             getTestStandards: getTestStandards,
             getTestTools: getTestTools,
             getUcdProcesses: getUcdProcesses,
@@ -408,6 +412,14 @@
             return apiGET('/activity/certified_products/' + productId);
         }
 
+        function getStatisticTypes () {
+            return apiGET('/data/statistic_types');
+        }
+
+        function getStatistics () {
+            return apiGET('/data/statistics');
+        }
+
         function getSurveillanceLookups () {
             var data = {};
             apiGET('/data/surveillance_types')
@@ -441,8 +453,16 @@
             return apiGET('/data/targeted_users');
         }
 
+        function getTestData () {
+            return apiGET('/data/test_data');
+        }
+
         function getTestFunctionality () {
             return apiGET('/data/test_functionality');
+        }
+
+        function getTestProcedures () {
+            return apiGET('/data/test_procedures');
         }
 
         function getTestStandards () {

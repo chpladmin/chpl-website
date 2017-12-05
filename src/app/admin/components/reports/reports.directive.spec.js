@@ -383,6 +383,27 @@
                         vm.activityRange.listing.startDate = new Date('3/15/2017');
                         expect(vm.validDates('listing')).toBe(false);
                     });
+
+                    it('should correctly validate dates crossing DST', function () {
+                        vm.activityRange = {
+                            range: 60,
+                            badDst: {
+                                startDate: new Date('9/17/2017'),
+                                endDate: new Date('11/16/2017'),
+                            },
+                            notDst: {
+                                startDate: new Date('9/06/2017'),
+                                endDate: new Date('11/04/2017'),
+                            },
+                            badNotDst: {
+                                startDate: new Date('9/06/2017'),
+                                endDate: new Date('11/05/2017'),
+                            },
+                        };
+                        expect(vm.validDates('badDst')).toBe(false);
+                        expect(vm.validDates('notDst')).toBe(true);
+                        expect(vm.validDates('badNotDst')).toBe(false);
+                    });
                 });
             });
 

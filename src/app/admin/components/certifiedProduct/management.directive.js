@@ -50,6 +50,7 @@
         vm.rejectCp = rejectCp;
         vm.rejectSurveillance = rejectSurveillance;
         vm.searchForSurveillance = searchForSurveillance;
+        vm.selectAllPendingSurveillance = selectAllPendingSurveillance;
         vm.selectCp = selectCp;
         vm.selectDeveloper = selectDeveloper;
         vm.selectProduct = selectProduct;
@@ -462,6 +463,13 @@
             return ret;
         }
 
+        function selectAllPendingSurveillance () {
+            vm.massRejectSurveillance = {};
+            vm.uploadingSurveillances.forEach(function (surv) {
+                vm.massRejectSurveillance[surv.id] = true;
+            });
+        }
+
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -832,14 +840,24 @@
                     vm.resources.accessibilityStandards = response;
                 });
 
-            networkService.getTestStandards()
-                .then(function (response) {
-                    vm.resources.testStandards = response;
-                });
-
             networkService.getUcdProcesses()
                 .then(function (response) {
                     vm.resources.ucdProcesses = response;
+                });
+
+            networkService.getTestProcedures()
+                .then(function (response) {
+                    vm.resources.testProcedures = response;
+                });
+
+            networkService.getTestData()
+                .then(function (response) {
+                    vm.resources.testData = response;
+                });
+
+            networkService.getTestStandards()
+                .then(function (response) {
+                    vm.resources.testStandards = response;
                 });
 
             networkService.getTestFunctionality()
