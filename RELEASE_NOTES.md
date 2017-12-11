@@ -4,9 +4,12 @@
 _Date TBD_
 
 ### New features
-* Change ROLE_ATL_ADMIN to ROLE_ATL
-* Remove ROLE_ACB_STAFF
-* Remove ROLE_ATL_STAFF
+* ROLE management
+  * Change ROLE_ACB_ADMIN to ROLE_ACB
+  * Change ROLE_ATL_ADMIN to ROLE_ATL
+  * Remove ROLE_ACB_STAFF
+  * Remove ROLE_ATL_STAFF
+* Removed "Reports" from navigation for ROLE_ATL
 
 ---
 

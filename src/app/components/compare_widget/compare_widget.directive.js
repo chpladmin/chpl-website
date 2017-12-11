@@ -13,7 +13,6 @@
             },
             controller: 'CompareWidgetController',
             controllerAs: 'vm',
-            restrict: 'EA',
             scope: {},
         };
     }

@@ -107,7 +107,9 @@
                 endDate: angular.copy(vm.activityRange.endDate),
             };
             vm.refreshActivity(true);
-            vm.loadApiKeys();
+            if (vm.isChplAdmin || vm.isOncStaff) {
+                vm.loadApiKeys();
+            }
             vm.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
@@ -122,10 +124,12 @@
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshAtl();
-                vm.refreshAnnouncement();
-                vm.refreshUser();
-                vm.refreshApi();
-                vm.refreshApiKeyUsage();
+                if (vm.isChplAdmin || vm.isOncStaff) {
+                    vm.refreshAnnouncement();
+                    vm.refreshUser();
+                    vm.refreshApi();
+                    vm.refreshApiKeyUsage();
+                }
             } else {
                 switch (vm.workType) {
                 case '':
