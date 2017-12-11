@@ -17,7 +17,7 @@
     "chalk": "~1.1.1",
     "cucumber": "^2.0.0-rc.9",
     "del": "~2.0.2",
-    "eslint-plugin-angular": "~2.4.0",
+    "eslint-plugin-angular": "^3.1.1",
     "estraverse": "~4.1.0",
     "gulp": "~3.9.0",
     "gulp-angular-filesort": "~1.1.1",
