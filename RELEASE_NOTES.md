@@ -11,6 +11,9 @@ _Date TBD_
   * Remove ROLE_ATL_STAFF
 * Removed "Reports" from navigation for ROLE_ATL
 
+### Bugs fixed
+* Editing UCD Processes works
+
 ---
 
 ## Version 9.9.0

@@ -41,7 +41,8 @@
         <div class="col-sm-8">
           <div class="input-group">
             <select class="form-control input-sm" ng-model="process.name" id="processName{{ $index }}" name="processName{{ $index }}" ng-required="vm.listing.certificationEdition.name === '2015'"
-                    ng-options="option.name as option.name for option in vm.resources.ucdProcesses.data | orderBy: 'name'">
+                    ng-options="option.name as option.name for option in vm.resources.ucdProcesses.data | orderBy: 'name'"
+                    ng-change="process.id = ''">
             </select>
             <span class="input-group-btn">
               <button class="btn btn-danger btn-sm" ng-click="vm.ucdProcesses.splice($index, 1)"><i class="fa fa-trash"></i><span class="sr-only">Remove UCD Process {{ $index + 1 }}</span></button>
