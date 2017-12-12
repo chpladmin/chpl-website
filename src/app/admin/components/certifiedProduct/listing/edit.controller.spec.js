@@ -14,6 +14,7 @@
             ics: { inherits: false },
             practiceType: [],
             product: { productId: 1 },
+            qmsStandards: [],
             targetedUsers: [],
         };
         mock.resources = {
@@ -21,7 +22,7 @@
             bodies: [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}],
             classifications: [{id: 1, name: 'name1'}],
             practices: [{id: 1, name: 'name1'}],
-            qmsStandards: [{id: 1, name: 'name1'}],
+            qmsStandards: {data: [{id: 1, name: 'name1'}]},
             statuses: [{id: 1, name: 'name1'}],
             testingLabs: [{id: 1, name: 'name1'}],
         }
