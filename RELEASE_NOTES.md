@@ -13,6 +13,9 @@ _Date TBD_
 
 ### Bugs fixed
 * Editing UCD Processes works
+* Allow confirmation of "new" Values during Confirm
+  * QMS Standards
+  * UCD Processes
 
 ---
 
