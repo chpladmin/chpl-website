@@ -11,6 +11,12 @@ _Date TBD_
   * Remove ROLE_ATL_STAFF
 * Removed "Reports" from navigation for ROLE_ATL
 
+### Bugs fixed
+* Editing UCD Processes works
+* Allow confirmation of "new" Values during Confirm
+  * QMS Standards
+  * UCD Processes
+
 ---
 
 ## Version 9.9.0

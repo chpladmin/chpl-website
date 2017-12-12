@@ -32,6 +32,11 @@
             vm.accessibilityStandards = resources.accessibilityStandards;
             vm.classifications = resources.classifications;
             vm.practices = resources.practices;
+            resources.qmsStandards.data = resources.qmsStandards.data
+                .concat(vm.cp.qmsStandards.filter(function (standard) { return !standard.id }).map(function (standard) {
+                    standard.name = standard.qmsStandardName;
+                    return standard;
+                }));
             vm.qmsStandards = resources.qmsStandards;
             vm.statuses = resources.statuses;
             vm.targetedUsers = resources.targetedUsers;
