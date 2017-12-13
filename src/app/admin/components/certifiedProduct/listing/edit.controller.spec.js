@@ -14,7 +14,10 @@
             ics: { inherits: false },
             practiceType: [],
             product: { productId: 1 },
-            qmsStandards: [],
+            qmsStandards: [
+                {id: 1, qmsStandardName: 'name1'},
+                {id: null, qmsStandardName: 'nullname'},
+            ],
             targetedUsers: [],
         };
         mock.resources = {
@@ -22,7 +25,10 @@
             bodies: [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}],
             classifications: [{id: 1, name: 'name1'}],
             practices: [{id: 1, name: 'name1'}],
-            qmsStandards: {data: [{id: 1, name: 'name1'}]},
+            qmsStandards: {data: [
+                {id: 1, name: 'name1'},
+                {id: 2, name: 'name2'},
+            ]},
             statuses: [{id: 1, name: 'name1'}],
             testingLabs: [{id: 1, name: 'name1'}],
         }
@@ -57,7 +63,7 @@
                     activeCP: mock.activeCP,
                     isAcbAdmin: true,
                     isChplAdmin: true,
-                    resources: mock.resources,
+                    resources: angular.copy(mock.resources),
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -103,7 +109,7 @@
                 activeCP: cp,
                 isAcbAdmin: true,
                 isChplAdmin: true,
-                resources: mock.resources,
+                resources: angular.copy(mock.resources),
                 workType: 'manage',
                 $uibModalInstance: Mock.modalInstance,
                 $scope: scope,
@@ -119,7 +125,7 @@
                 activeCP: cp,
                 isAcbAdmin: true,
                 isChplAdmin: true,
-                resources: mock.resources,
+                resources: angular.copy(mock.resources),
                 workType: 'manage',
                 $uibModalInstance: Mock.modalInstance,
                 $scope: scope,
@@ -132,6 +138,14 @@
                 ics: '00',
                 suffix: '1.170331',
             });
+        });
+
+        it('should add QMS standards in the cp to the available standards on load', function () {
+            expect(vm.qmsStandards.data).toEqual([
+                {id: 1, name: 'name1'},
+                {id: 2, name: 'name2'},
+                {id: null, qmsStandardName: 'nullname', name: 'nullname'},
+            ]);
         });
 
         describe('when deailing with ics family', function () {
@@ -155,7 +169,7 @@
                     activeCP: cp,
                     isAcbAdmin: true,
                     isChplAdmin: true,
-                    resources: mock.resources,
+                    resources: angular.copy(mock.resources),
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -172,7 +186,7 @@
                     activeCP: cp,
                     isAcbAdmin: true,
                     isChplAdmin: true,
-                    resources: mock.resources,
+                    resources: angular.copy(mock.resources),
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -189,7 +203,7 @@
                     activeCP: cp,
                     isAcbAdmin: true,
                     isChplAdmin: true,
-                    resources: mock.resources,
+                    resources: angular.copy(mock.resources),
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -261,6 +275,34 @@
                     expect(vm.requiredIcsCode()).toBe('18');
                 });
             });
+
+            describe('with respect to missing ICS source', function () {
+                it('should not require ics source for 2014 listings', function () {
+                    vm.cp.certificationEdition.name = '2015';
+                    expect(vm.missingIcsSource()).toBe(false);
+                });
+
+                it('should not require ics source if the listing does not inherit', function () {
+                    expect(vm.missingIcsSource()).toBe(false);
+                });
+
+                it('should require ics source if the listing inherits without parents', function () {
+                    vm.cp.ics.inherits = true;
+                    expect(vm.missingIcsSource()).toBe(true);
+                });
+
+                it('should require ics source if the listing inherits without parents and without space for parents', function () {
+                    vm.cp.ics.inherits = true;
+                    vm.cp.ics.parents = [];
+                    expect(vm.missingIcsSource()).toBe(true);
+                });
+
+                it('should not require ics source if the listing inherits and has parents', function () {
+                    vm.cp.ics.inherits = true;
+                    vm.cp.ics.parents = [1, 2];
+                    expect(vm.missingIcsSource()).toBe(false);
+                });
+            });
         });
 
         it('should know which statuses should be disabled', function () {
@@ -278,14 +320,14 @@
             vm.cp.certifyingBody = {id: 2};
             vm.cp.certificationStatus = {id: 1};
             vm.attachModel();
-            expect(vm.cp.practiceType).toBe(mock.resources.practices[0]);
-            expect(vm.cp.classificationType).toBe(mock.resources.classifications[0]);
-            expect(vm.cp.certifyingBody).toBe(mock.resources.bodies[1]);
-            expect(vm.cp.certificationStatus).toBe(mock.resources.statuses[0]);
-            expect(vm.cp.testingLab).not.toBe(mock.resources.testingLabs[0]);
+            expect(vm.cp.practiceType).toEqual(mock.resources.practices[0]);
+            expect(vm.cp.classificationType).toEqual(mock.resources.classifications[0]);
+            expect(vm.cp.certifyingBody).toEqual(mock.resources.bodies[1]);
+            expect(vm.cp.certificationStatus).toEqual(mock.resources.statuses[0]);
+            expect(vm.cp.testingLab).not.toEqual(mock.resources.testingLabs[0]);
             vm.cp.testingLab = {id: 1};
             vm.attachModel();
-            expect(vm.cp.testingLab).toBe(mock.resources.testingLabs[0]);
+            expect(vm.cp.testingLab).toEqual(mock.resources.testingLabs[0]);
         });
 
         describe('when saving a Listing', function () {
