@@ -1,10 +1,14 @@
 # Release Notes
 
+## OCD-1830: QA History
+* Take out Questionable Activity Certified Products reports page
+
+---
+
 ## Version TBD
 _Date TBD_
 
 ### New Features
-* Take out Questionable Activity Certified Products reports page
 * ROLE management
   * Change ROLE_ACB_ADMIN to ROLE_ACB
   * Change ROLE_ATL_ADMIN to ROLE_ATL
