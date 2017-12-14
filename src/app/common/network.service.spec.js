@@ -774,9 +774,25 @@
             $httpBackend.flush();
         });
 
+        it('should getTestData', function () {
+            $httpBackend.expectGET(/data\/test_data/).respond(200, {data: 'response'});
+            networkService.getTestData().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getTestFunctionality', function () {
             $httpBackend.expectGET(/data\/test_functionality/).respond(200, {data: 'response'});
             networkService.getTestFunctionality().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getTestProcedures', function () {
+            $httpBackend.expectGET(/data\/test_procedures/).respond(200, {data: 'response'});
+            networkService.getTestProcedures().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

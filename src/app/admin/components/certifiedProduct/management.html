@@ -12,7 +12,7 @@
       &nbsp;
     </div>
     <div class="row" ng-if="vm.workType === 'upload'">
-      <div class="col-sm-12" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
+      <div class="col-sm-12" ng-if="vm.isAcbAdmin">
         <h3>Upload Certified Products</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
@@ -58,7 +58,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-sm-12" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
+      <div class="col-sm-12" ng-if="vm.isAcbAdmin">
         <h3>Upload Surveillance Activities</h3>
         <p ng-if="vm.surveillanceUploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.surveillanceUploader" />
@@ -103,7 +103,7 @@
       </div>
     </div> <!-- end upload certified products &amp; surveillance activities -->
 
-    <div class="row" ng-if="(vm.isAcbAdmin || vm.isAcbStaff) && vm.workType === 'confirm'">
+    <div class="row" ng-if="(vm.isAcbAdmin) && vm.workType === 'confirm'">
       <div class="col-sm-12">
         <h3>View Products in the process of upload</h3>
         <p ng-if="vm.uploadingCps.length === 0">No products currently in queue</p>
@@ -167,7 +167,7 @@
       </div>
     </div> <!-- end of upload process table -->
 
-    <div class="row" ng-if="(vm.isAcbAdmin || vm.isAcbStaff) && vm.workType === 'confirmSurveillance'">
+    <div class="row" ng-if="(vm.isAcbAdmin) && vm.workType === 'confirmSurveillance'">
       <div class="col-sm-12">
         <h3>View Surveillance Activity in the process of upload</h3>
         <p ng-if="vm.uploadingSurveillances.length === 0">No activities currently in queue</p>
@@ -193,6 +193,8 @@
             <tr>
               <th colspan="8">&nbsp;</th>
               <th>
+                <button class="btn btn-warning btn-block"
+                        ng-click="vm.selectAllPendingSurveillance()"><i class="fa fa-check"></i> Select all</button>
                 <button class="btn btn-danger btn-block"
                         ng-disabled="vm.getNumberOfSurveillanceToReject() < 1"
                         confirm="Are you sure you wish to remove {{ vm.getNumberOfSurveillanceToReject() }} surveillance{{ vm.getNumberOfSurveillanceToReject() > 1 ? 's' : '' }} from the queue?"
@@ -600,14 +602,17 @@
             <div class="panel panel-ai panel-admin">
               <div class="panel-heading">
                 <span>Active Listing</span>
-                <span class="pull-right">
+                <span class="pull-right" ng-if="vm.activeCP.id">
                   <a href="#/admin/reports/{{ vm.activeCP.id}}"><i class="fa fa-calendar"></i> View Listing History</a> |
                   <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
                   <span ng-if="vm.isProductEditable(vm.activeCP)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
                 </span>
               </div>
-              <div class="panel-body">
+              <div class="panel-body" ng-if="!vm.activeCP.id">
+                Loading <i class="fa fa-spin fa-spinner"></i>
+              </div>
+              <div class="panel-body" ng-if="vm.activeCP.id">
                 <span>
                   <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em><br />
                   <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />

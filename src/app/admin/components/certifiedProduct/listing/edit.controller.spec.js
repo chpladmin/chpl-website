@@ -14,6 +14,7 @@
             ics: { inherits: false },
             practiceType: [],
             product: { productId: 1 },
+            qmsStandards: [],
             targetedUsers: [],
         };
         mock.resources = {
@@ -21,7 +22,7 @@
             bodies: [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}],
             classifications: [{id: 1, name: 'name1'}],
             practices: [{id: 1, name: 'name1'}],
-            qmsStandards: [{id: 1, name: 'name1'}],
+            qmsStandards: {data: [{id: 1, name: 'name1'}]},
             statuses: [{id: 1, name: 'name1'}],
             testingLabs: [{id: 1, name: 'name1'}],
         }
@@ -55,7 +56,6 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: mock.activeCP,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',
@@ -102,7 +102,6 @@
             vm = $controller('EditCertifiedProductController', {
                 activeCP: cp,
                 isAcbAdmin: true,
-                isAcbStaff: true,
                 isChplAdmin: true,
                 resources: mock.resources,
                 workType: 'manage',
@@ -119,7 +118,6 @@
             vm = $controller('EditCertifiedProductController', {
                 activeCP: cp,
                 isAcbAdmin: true,
-                isAcbStaff: true,
                 isChplAdmin: true,
                 resources: mock.resources,
                 workType: 'manage',
@@ -156,7 +154,6 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',
@@ -174,7 +171,6 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',
@@ -192,7 +188,6 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
                     resources: mock.resources,
                     workType: 'manage',

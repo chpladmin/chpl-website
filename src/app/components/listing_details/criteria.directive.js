@@ -12,13 +12,14 @@
             replace: true,
             templateUrl: 'app/components/listing_details/criteria.html',
             bindToController: {
+                accessibilityStandards: '=?',
                 cert: '=',
                 hasIcs: '=',
-                viewAll: '=',
                 isEditing: '=',
-                resources: '=',
-                accessibilityStandards: '=?',
                 qmsStandards: '=?',
+                refreshSed: '&?',
+                resources: '=',
+                viewAll: '=',
             },
             scope: {},
             controllerAs: 'vm',
@@ -58,6 +59,7 @@
                 },
             });
             vm.editUibModalInstance.result.then(function () {
+                vm.refreshSed();
             }, function () {
                 vm.cert = angular.copy(backupCert);
             });

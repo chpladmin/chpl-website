@@ -85,36 +85,18 @@
                 expect(auth.isAcbAdmin()).toBe(false);
                 auth.saveToken(buildToken(user));
                 expect(auth.isAcbAdmin()).toBe(false);
-                user.Authorities = ['ROLE_ACB_ADMIN'];
+                user.Authorities = ['ROLE_ACB'];
                 auth.saveToken(buildToken(user));
                 expect(auth.isAcbAdmin()).toBe(true);
-            });
-
-            it('should handle ACB Staff', function () {
-                expect(auth.isAcbStaff()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isAcbStaff()).toBe(false);
-                user.Authorities = ['ROLE_ACB_STAFF'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isAcbStaff()).toBe(true);
             });
 
             it('should handle ATL Admin', function () {
                 expect(auth.isAtlAdmin()).toBe(false);
                 auth.saveToken(buildToken(user));
                 expect(auth.isAtlAdmin()).toBe(false);
-                user.Authorities = ['ROLE_ATL_ADMIN'];
+                user.Authorities = ['ROLE_ATL'];
                 auth.saveToken(buildToken(user));
                 expect(auth.isAtlAdmin()).toBe(true);
-            });
-
-            it('should handle ATL Staff', function () {
-                expect(auth.isAtlStaff()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isAtlStaff()).toBe(false);
-                user.Authorities = ['ROLE_ATL_STAFF'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isAtlStaff()).toBe(true);
             });
 
             it('should handle CHPL Admin', function () {

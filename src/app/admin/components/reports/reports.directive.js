@@ -106,7 +106,9 @@
                 endDate: angular.copy(vm.activityRange.endDate),
             };
             vm.refreshActivity(true);
-            vm.loadApiKeys();
+            if (vm.isChplAdmin || vm.isOncStaff) {
+                vm.loadApiKeys();
+            }
             vm.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
@@ -121,10 +123,12 @@
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshAtl();
-                vm.refreshAnnouncement();
-                vm.refreshUser();
-                vm.refreshApi();
-                vm.refreshApiKeyUsage();
+                if (vm.isChplAdmin || vm.isOncStaff) {
+                    vm.refreshAnnouncement();
+                    vm.refreshUser();
+                    vm.refreshApi();
+                    vm.refreshApiKeyUsage();
+                }
             } else {
                 switch (vm.workType) {
                 case '':
@@ -457,7 +461,7 @@
                     if (data[i].originalData.sed &&
                         data[i].newData.sed) {
                         var sedChanges = _compareSed(data[i].originalData.sed, data[i].newData.sed);
-                        if (sedChanges) {
+                        if (sedChanges && sedChanges.length > 0) {
                             activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
                         }
                     }
@@ -674,15 +678,9 @@
                 for (j = 0; j < addlSw.length; j++) {
                     obj.changes.push('<li>Relied Upon Software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul></li>');
                 }
-                var testProceduresKeys = [];
-                var testProcedures = compareArray(prev[i].testProcedures, curr[i].testProcedures, testProceduresKeys, 'testProcedureVersion');
-                for (j = 0; j < testProcedures.length; j++) {
-                    obj.changes.push('<li>Test Procedure Version "' + testProcedures[j].name + '" changes<ul>' + testProcedures[j].changes.join('') + '</ul></li>');
-                }
-                var testDataUsedKeys = [{key: 'alteration', display: 'Data Alteration'}];
-                var testDataUsed = compareArray(prev[i].testDataUsed, curr[i].testDataUsed, testDataUsedKeys, 'version');
-                for (j = 0; j < testDataUsed.length; j++) {
-                    obj.changes.push('<li>Test Data Version "' + testDataUsed[j].name + '" changes<ul>' + testDataUsed[j].changes.join('') + '</ul></li>');
+                var testChanges = _compareTestStuff(prev[i], curr[i]);
+                if (testChanges) {
+                    obj.changes = obj.changes.concat(testChanges);
                 }
                 var testFunctionalityKeys = [];
                 var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'number');
@@ -830,6 +828,88 @@
             var participants = compareArray(prev.allParticipants, curr.allParticipants, testParticipantKeys, 'id');
             for (i = 0; i < participants.length; i++) {
                 ret.push('<li>Participant changes<ul>' + participants[i].changes.join('') + '</ul></li>');
+            }
+            return ret;
+        }
+
+        function _compareTestStuff (prev, curr) {
+            var ret = [];
+            if (prev.testProcedures && curr.testProcedures) {
+                prev.testProcedures.forEach(function (pre) {
+                    if (pre.testProcedure) {
+                        curr.testProcedures.forEach(function (cur) {
+                            if (!cur.found && !pre.found &&
+                                pre.testProcedure.name === cur.testProcedure.name &&
+                                pre.testProcedureVersion === cur.testProcedureVersion ) {
+                                pre.found = true;
+                                cur.found = true;
+                            }
+                        });
+                    }
+                });
+                prev.testProcedures.forEach(function (pre) {
+                    if (pre.testProcedure) {
+                        curr.testProcedures.forEach(function (cur) {
+                            if (!cur.found && !pre.found && pre.testProcedure.name === cur.testProcedure.name ) {
+                                pre.found = true;
+                                cur.found = true;
+                                ret.push('<li>Test Procedure "' + pre.testProcedure.name + '" version changed from "' + pre.testProcedureVersion + '" to "' + cur.testProcedureVersion + '"</li>');
+                            }
+                        })
+                        if (!pre.found) {
+                            ret.push('<li>Test Procedure "' + pre.testProcedure.name + '" was removed</li>');
+                        }
+                    }
+                });
+                curr.testProcedures.forEach(function (cur) {
+                    if (cur.testProcedure) {
+                        if (!cur.found) {
+                            ret.push('<li>Test Procedure "' + cur.testProcedure.name + '" was added</li>');
+                        }
+                    }
+                });
+            }
+            if (prev.testDataUsed && curr.testDataUsed) {
+                prev.testDataUsed.forEach(function (pre) {
+                    if (pre.testData) {
+                        curr.testDataUsed.forEach(function (cur) {
+                            if (!cur.found && !pre.found &&
+                                pre.testData.name === cur.testData.name &&
+                                pre.version === cur.version &&
+                                pre.alteration === cur.alteration) {
+                                pre.found = true;
+                                cur.found = true;
+                            }
+                        });
+                    }
+                });
+                prev.testDataUsed.forEach(function (pre) {
+                    if (pre.testData) {
+                        curr.testDataUsed.forEach(function (cur) {
+                            if (!cur.found && !pre.found &&
+                                pre.testData.name === cur.testData.name) {
+                                pre.found = true;
+                                cur.found = true;
+                                if (pre.version !== cur.version) {
+                                    ret.push('<li>Test Data "' + pre.testData.name + '" version changed from "' + pre.version + '" to "' + cur.version + '"</li>');
+                                }
+                                if (pre.alteration !== cur.alteration) {
+                                    ret.push('<li>Test Data "' + pre.testData.name + '" alteration changed from "' + pre.alteration + '" to "' + cur.alteration + '"</li>');
+                                }
+                            }
+                        })
+                        if (!pre.found) {
+                            ret.push('<li>Test Data "' + pre.testData.name + '" was removed</li>');
+                        }
+                    }
+                });
+                curr.testDataUsed.forEach(function (cur) {
+                    if (cur.testData) {
+                        if (!cur.found) {
+                            ret.push('<li>Test Data "' + cur.testData.name + '" was added</li>');
+                        }
+                    }
+                });
             }
             return ret;
         }

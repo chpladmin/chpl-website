@@ -50,6 +50,7 @@
         vm.rejectCp = rejectCp;
         vm.rejectSurveillance = rejectSurveillance;
         vm.searchForSurveillance = searchForSurveillance;
+        vm.selectAllPendingSurveillance = selectAllPendingSurveillance;
         vm.selectCp = selectCp;
         vm.selectDeveloper = selectDeveloper;
         vm.selectProduct = selectProduct;
@@ -68,7 +69,6 @@
             vm.activeCP = '';
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.isAcbStaff = authService.isAcbStaff();
             vm.uploadingCps = [];
             vm.uploadingSurveillances = [];
             if (angular.isUndefined(vm.workType)) {
@@ -84,7 +84,7 @@
             vm.resources = {};
             vm.refreshDevelopers();
 
-            if (vm.isAcbAdmin || vm.isAcbStaff) {
+            if (vm.isAcbAdmin) {
                 vm.refreshPending();
                 vm.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
@@ -462,6 +462,13 @@
             return ret;
         }
 
+        function selectAllPendingSurveillance () {
+            vm.massRejectSurveillance = {};
+            vm.uploadingSurveillances.forEach(function (surv) {
+                vm.massRejectSurveillance[surv.id] = true;
+            });
+        }
+
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -501,7 +508,6 @@
                 resolve: {
                     activeCP: function () { return vm.activeCP; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return resources; },
                     workType: function () { return vm.workType; },
@@ -541,7 +547,6 @@
                     developers: function () { return vm.developers; },
                     inspectingCp: function () { return cp; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return vm.resources; },
                     workType: function () { return vm.workType; },
@@ -832,14 +837,24 @@
                     vm.resources.accessibilityStandards = response;
                 });
 
-            networkService.getTestStandards()
-                .then(function (response) {
-                    vm.resources.testStandards = response;
-                });
-
             networkService.getUcdProcesses()
                 .then(function (response) {
                     vm.resources.ucdProcesses = response;
+                });
+
+            networkService.getTestProcedures()
+                .then(function (response) {
+                    vm.resources.testProcedures = response;
+                });
+
+            networkService.getTestData()
+                .then(function (response) {
+                    vm.resources.testData = response;
+                });
+
+            networkService.getTestStandards()
+                .then(function (response) {
+                    vm.resources.testStandards = response;
                 });
 
             networkService.getTestFunctionality()

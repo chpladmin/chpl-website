@@ -33,6 +33,7 @@
             vm.cert.metViaAdditionalSoftware = vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0;
             vm.hasIcs = hasIcs;
             vm.resources = resources;
+            _getAvailableTestOptions();
         }
 
         function cancel () {
@@ -46,6 +47,19 @@
 
         function save () {
             $uibModalInstance.close();
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function _getAvailableTestOptions () {
+            vm.availableTestProcedures = vm.resources.testProcedures.data
+                .filter(function (procedure) {
+                    return procedure.criteria.number === vm.cert.number;
+                });
+            vm.availableTestData = vm.resources.testData.data
+                .filter(function (data) {
+                    return data.criteria.number === vm.cert.number;
+                });
         }
     }
 })();

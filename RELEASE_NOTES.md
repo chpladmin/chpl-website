@@ -1,17 +1,46 @@
 # Release Notes
 
-Version TBD
+## Version TBD
 _Date TBD_
 
 ### New Features
 * Take out Questionable Activity Certified Products reports page
+* ROLE management
+  * Change ROLE_ACB_ADMIN to ROLE_ACB
+  * Change ROLE_ATL_ADMIN to ROLE_ATL
+  * Remove ROLE_ACB_STAFF
+  * Remove ROLE_ATL_STAFF
+* Removed "Reports" from navigation for ROLE_ATL
+
+### Bugs fixed
+* Editing UCD Processes works
+* Allow confirmation of "new" Values during Confirm
+  * QMS Standards
+  * UCD Processes
+
+---
+
+## Version 9.9.0
+_5 December 2017_
+
+### New features
+* Display / edit Test Data & Test Procedures
+  * Updated activity reports to parse TD & TP as well
+
+### Bugs fixed
+* Re-enabled SED Task / Participant editing when criteria added with SED
+
+---
+
+## Version 9.8.1
+_20 November 2017_
 
 ### Bugs fixed
 * Fixed issue with Report activity date range spanning DST boundaries
 
 ---
 
-## Version 9.8.0
+##Version 9.8.0
 _6 November 2017_
 
 ### New features

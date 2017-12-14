@@ -9,7 +9,6 @@
             module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isAcbStaff = jasmine.createSpy('isAcbStaff');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
                     return $delegate;
@@ -46,7 +45,6 @@
                 });
                 authService = _authService_;
                 authService.isAcbAdmin.and.returnValue($q.when(true));
-                authService.isAcbStaff.and.returnValue($q.when(true));
                 authService.isChplAdmin.and.returnValue($q.when(true));
                 authService.isOncStaff.and.returnValue($q.when(true));
                 networkService = _networkService_;

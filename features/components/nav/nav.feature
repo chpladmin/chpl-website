@@ -8,7 +8,7 @@ Feature: CHPL Admin Navigation
 
   Scenario: Getting ACB admin navigation options
     Given I am on the CHPL
-    And I am logged in as "ROLE_ACB_ADMIN"
+    And I am logged in as "ROLE_ACB"
     Then the admin navigation should have 5 elements
 
   Scenario: Seeing my name on the navigation toggle

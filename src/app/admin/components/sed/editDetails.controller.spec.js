@@ -22,7 +22,11 @@
                 vm = $controller('EditSedDetailsController', {
                     criteria: [],
                     listing: mock.listing,
-                    resources: {},
+                    resources: {
+                        ucdProcesses: {
+                            data: [],
+                        },
+                    },
                     ucdProcesses: [],
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -57,7 +61,11 @@
             vm = $controller('EditSedDetailsController', {
                 criteria: [],
                 listing: {},
-                resources: {},
+                resources: {
+                    ucdProcesses: {
+                        data: [],
+                    },
+                },
                 ucdProcesses: [],
                 $uibModalInstance: Mock.modalInstance,
                 $scope: scope,
