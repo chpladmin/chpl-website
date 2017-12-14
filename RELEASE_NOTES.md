@@ -1,5 +1,8 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
 ## OCD-1830: QA History
 * Take out Questionable Activity Certified Products reports page
 
