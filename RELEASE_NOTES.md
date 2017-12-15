@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1941: AQA support
+* Added ids to some buttons/links
+
+---
+
 ## Version TBD
 _Date TBD_
 
