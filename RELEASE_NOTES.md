@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.10.0
+_18 December 2017_
 
 ### New features
 * ROLE management
