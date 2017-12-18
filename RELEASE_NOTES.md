@@ -1,12 +1,15 @@
 # Release Notes
 
-## OCD-1941: AQA support
+## Version TBD
+_Date TBD_
+
+## Minor features
 * Added ids to some buttons/links
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 9.10.0
+_18 December 2017_
 
 ### New features
 * ROLE management
