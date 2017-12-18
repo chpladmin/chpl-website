@@ -3,15 +3,16 @@
 ## Version TBD
 _Date TBD_
 
-## OCD-1830: QA History
+### Minor features
+* Added ids to some buttons/links
 * Take out Questionable Activity Certified Products reports page
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 9.10.0
+_18 December 2017_
 
-### New Features
+### New features
 * ROLE management
   * Change ROLE_ACB_ADMIN to ROLE_ACB
   * Change ROLE_ATL_ADMIN to ROLE_ATL
