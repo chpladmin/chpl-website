@@ -69,7 +69,6 @@
             vm.activeCP = '';
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.isAcbStaff = authService.isAcbStaff();
             vm.uploadingCps = [];
             vm.uploadingSurveillances = [];
             if (angular.isUndefined(vm.workType)) {
@@ -85,7 +84,7 @@
             vm.resources = {};
             vm.refreshDevelopers();
 
-            if (vm.isAcbAdmin || vm.isAcbStaff) {
+            if (vm.isAcbAdmin) {
                 vm.refreshPending();
                 vm.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
@@ -509,7 +508,6 @@
                 resolve: {
                     activeCP: function () { return vm.activeCP; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return resources; },
                     workType: function () { return vm.workType; },
@@ -549,7 +547,6 @@
                     developers: function () { return vm.developers; },
                     inspectingCp: function () { return cp; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return vm.resources; },
                     workType: function () { return vm.workType; },

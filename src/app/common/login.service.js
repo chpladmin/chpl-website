@@ -11,9 +11,7 @@
             getToken: getToken,
             getUsername: getUsername,
             isAcbAdmin: isAcbAdmin,
-            isAcbStaff: isAcbStaff,
             isAtlAdmin: isAtlAdmin,
-            isAtlStaff: isAtlStaff,
             isAuthed: isAuthed,
             isChplAdmin: isChplAdmin,
             isCmsStaff: isCmsStaff,
@@ -60,18 +58,7 @@
             if (token) {
                 var authorities = parseJwt(token).Authorities;
                 if (authorities) {
-                    return authorities.indexOf('ROLE_ACB_ADMIN') > -1
-                }
-            }
-            return false;
-        }
-
-        function isAcbStaff () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ACB_STAFF') > -1
+                    return authorities.indexOf('ROLE_ACB') > -1
                 }
             }
             return false;
@@ -82,18 +69,7 @@
             if (token) {
                 var authorities = parseJwt(token).Authorities;
                 if (authorities) {
-                    return authorities.indexOf('ROLE_ATL_ADMIN') > -1
-                }
-            }
-            return false;
-        }
-
-        function isAtlStaff () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ATL_STAFF') > -1
+                    return authorities.indexOf('ROLE_ATL') > -1
                 }
             }
             return false;

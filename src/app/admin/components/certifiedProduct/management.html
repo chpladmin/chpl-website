@@ -12,7 +12,7 @@
       &nbsp;
     </div>
     <div class="row" ng-if="vm.workType === 'upload'">
-      <div class="col-sm-12" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
+      <div class="col-sm-12" ng-if="vm.isAcbAdmin">
         <h3>Upload Certified Products</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.uploader" />
@@ -58,7 +58,7 @@
           </tbody>
         </table>
       </div>
-      <div class="col-sm-12" ng-if="vm.isAcbAdmin || vm.isAcbStaff">
+      <div class="col-sm-12" ng-if="vm.isAcbAdmin">
         <h3>Upload Surveillance Activities</h3>
         <p ng-if="vm.surveillanceUploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.surveillanceUploader" />
@@ -103,7 +103,7 @@
       </div>
     </div> <!-- end upload certified products &amp; surveillance activities -->
 
-    <div class="row" ng-if="(vm.isAcbAdmin || vm.isAcbStaff) && vm.workType === 'confirm'">
+    <div class="row" ng-if="(vm.isAcbAdmin) && vm.workType === 'confirm'">
       <div class="col-sm-12">
         <h3>View Products in the process of upload</h3>
         <p ng-if="vm.uploadingCps.length === 0">No products currently in queue</p>
@@ -167,7 +167,7 @@
       </div>
     </div> <!-- end of upload process table -->
 
-    <div class="row" ng-if="(vm.isAcbAdmin || vm.isAcbStaff) && vm.workType === 'confirmSurveillance'">
+    <div class="row" ng-if="(vm.isAcbAdmin) && vm.workType === 'confirmSurveillance'">
       <div class="col-sm-12">
         <h3>View Surveillance Activity in the process of upload</h3>
         <p ng-if="vm.uploadingSurveillances.length === 0">No activities currently in queue</p>

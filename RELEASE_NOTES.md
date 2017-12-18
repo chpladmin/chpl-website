@@ -1,5 +1,24 @@
 # Release Notes
 
+## Version 9.10.0
+_18 December 2017_
+
+### New features
+* ROLE management
+  * Change ROLE_ACB_ADMIN to ROLE_ACB
+  * Change ROLE_ATL_ADMIN to ROLE_ATL
+  * Remove ROLE_ACB_STAFF
+  * Remove ROLE_ATL_STAFF
+* Removed "Reports" from navigation for ROLE_ATL
+
+### Bugs fixed
+* Editing UCD Processes works
+* Allow confirmation of "new" Values during Confirm
+  * QMS Standards
+  * UCD Processes
+
+---
+
 ## Version 9.9.0
 _5 December 2017_
 
@@ -20,7 +39,7 @@ _20 November 2017_
 
 ---
 
-## Version 9.8.0
+##Version 9.8.0
 _6 November 2017_
 
 ### New features

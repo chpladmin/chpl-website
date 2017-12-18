@@ -5,7 +5,7 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isAcbStaff, isChplAdmin, networkService, resources, utilService, workType) {
+    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
 
         var vm = this;
 
@@ -27,12 +27,16 @@
             vm.cp = angular.copy(activeCP);
             vm.cp.certDate = new Date(vm.cp.certificationDate);
             vm.isAcbAdmin = isAcbAdmin;
-            vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
             vm.bodies = resources.bodies;
             vm.accessibilityStandards = resources.accessibilityStandards;
             vm.classifications = resources.classifications;
             vm.practices = resources.practices;
+            resources.qmsStandards.data = resources.qmsStandards.data
+                .concat(vm.cp.qmsStandards.filter(function (standard) { return !standard.id }).map(function (standard) {
+                    standard.name = standard.qmsStandardName;
+                    return standard;
+                }));
             vm.qmsStandards = resources.qmsStandards;
             vm.statuses = resources.statuses;
             vm.targetedUsers = resources.targetedUsers;

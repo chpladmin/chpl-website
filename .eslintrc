@@ -40,5 +40,6 @@
         "angular/di-order": ["error"],
         "angular/file-name": ["off"],
         "angular/function-type": ["off"],
+        "angular/service-name": ["off"],
     }
 }

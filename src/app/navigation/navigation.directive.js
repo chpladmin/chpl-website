@@ -42,7 +42,6 @@
         vm.clear = clear;
         vm.getUsername = getUsername;
         vm.isAcbAdmin = isAcbAdmin;
-        vm.isAcbStaff = isAcbStaff;
         vm.isActive = isActive;
         vm.isAtlAdmin = isAtlAdmin;
         vm.isAuthed = isAuthed;
@@ -88,10 +87,6 @@
 
         function isAcbAdmin () {
             return authService.isAcbAdmin();
-        }
-
-        function isAcbStaff () {
-            return authService.isAcbStaff();
         }
 
         function isActive (route) {
