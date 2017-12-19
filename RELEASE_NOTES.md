@@ -3,9 +3,12 @@
 ## Version TBD
 _Date TBD_
 
-## Minor features
+### Minor features
 * Added ids to some buttons/links
 * Require ICS Source for 2015 Listings with ICS=true during edit
+
+### Bugs fixed
+* Removed duplicate 'external link' disclaimer from Transparency Attestation collection
 
 ---
 
