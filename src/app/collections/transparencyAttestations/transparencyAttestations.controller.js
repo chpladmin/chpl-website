@@ -5,7 +5,7 @@
         .controller('TransparencyAttestationsController', TransparencyAttestationsController);
 
     /** @ngInject */
-    function TransparencyAttestationsController ($compile, $scope) {
+    function TransparencyAttestationsController () {
         var vm = this;
 
         vm._urlTransform = urlTransform;
@@ -43,7 +43,7 @@
             if (data && data.length > 0) {
                 ret = '<ul class="list-unstyled">' +
                     data.map(function (item) {
-                        return $compile('<li><a ai-a href="' + item + '">' + item + '</a></li>')($scope)[0].outerHTML;
+                        return '<li><a ai-a href="' + item + '">' + item + '</a></li>';
                     })
                     + '</ul>';
             } else {

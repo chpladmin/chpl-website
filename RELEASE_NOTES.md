@@ -8,6 +8,9 @@ _Date TBD_
 * Take out Questionable Activity Certified Products reports page
 * Require ICS Source for 2015 Listings with ICS=true during edit
 
+### Bugs fixed
+* Removed duplicate 'external link' disclaimer from Transparency Attestation collection
+
 ---
 
 ## Version 9.10.0
