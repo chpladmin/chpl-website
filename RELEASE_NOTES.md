@@ -18,6 +18,7 @@ _18 December 2017_
   * Remove ROLE_ACB_STAFF
   * Remove ROLE_ATL_STAFF
 * Removed "Reports" from navigation for ROLE_ATL
+* Require ICS Source for 2015 Listings with ICS=true during edit
 
 ### Bugs fixed
 * Editing UCD Processes works
