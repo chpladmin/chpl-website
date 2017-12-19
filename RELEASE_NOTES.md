@@ -6,6 +6,7 @@ _Date TBD_
 ### Minor features
 * Added ids to some buttons/links
 * Take out Questionable Activity Certified Products reports page
+* Require ICS Source for 2015 Listings with ICS=true during edit
 
 ---
 
