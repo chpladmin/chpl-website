@@ -13,7 +13,7 @@
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cert')" aria-expanded="{{ vm.panelShown === 'cert' }}" id="details-certification-criteria"><i class="fa fa-lg" ng-class="vm.panelShown === 'cert' ? 'fa-caret-down' : 'fa-caret-right'"></i> Certification Criteria<span class="pull-right">({{ vm.countCerts }} met)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cert'" id="panel-certification-criteria">
         <div ng-repeat="n in vm.product.certificationResults | orderBy:vm.sortCerts">
           <ai-certification-criteria ng-if="vm.viewAllCerts || n.success"
                                      view-all="vm.viewAllCerts"
@@ -34,7 +34,7 @@
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('cqm')" aria-expanded="{{ vm.panelShown === 'cqm' }}" id="details-cqm"><i class="fa fa-lg" ng-class="vm.panelShown === 'cqm' ? 'fa-caret-down' : 'fa-caret-right'"></i> Clinical Quality Measures<span class="pull-right">({{ vm.countCqms }} met)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cqm'" id="panel-cqm">
         <table class="table">
           <thead>
             <tr>
@@ -103,7 +103,7 @@
           </span>
         </a>
       </div>
-      <div class="panel-body animate-if" ng-show="vm.panelShown === 'sed'">
+      <div class="panel-body animate-if" ng-show="vm.panelShown === 'sed'" id="panel-sed">
         <ai-sed
            criteria-count="vm.sedCriteriaCount"
            edit-mode="vm.isEditing"
@@ -120,7 +120,7 @@
       <div class="panel-heading">
         <a href ng-click="vm.showPanel('g1g2')" aria-expanded="{{ vm.panelShown === 'g1g2' }}" id="details-g1g2"><i class="fa fa-lg" ng-class="vm.panelShown === 'g1g2' ? 'fa-caret-down' : 'fa-caret-right'"></i> Successfully Tested G1/G2 Measures</a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'g1g2'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'g1g2'" id="panel-g1g2">
         <ai-g1g2 listing="vm.product"></ai-g1g2>
       </div>
     </div>
@@ -130,7 +130,7 @@
       <div class="panel-heading">
         <a href ng-click="vm.showPanel('surveillance')" aria-expanded="{{ vm.panelShown === 'surveillance' }}" id="details-surveillance-activities"><i class="fa fa-lg" ng-class="vm.panelShown === 'surveillance' ? 'fa-caret-down' : 'fa-caret-right'"></i> Surveillance Activities<span class="pull-right">({{ vm.product.surveillance && vm.product.surveillance.length ? vm.product.surveillance.length : 0 }} found)</span></a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'surveillance'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'surveillance'" id="panel-surveillance-activities">
         <ai-surveillance certified-product="vm.product"></ai-surveillance>
       </div>
     </div>
@@ -140,7 +140,7 @@
       <div class="panel-heading">
         <a href="" ng-click="vm.showPanel('additional')" aria-expanded="{{ vm.panelShown === 'additional' }}" id="details-additional-information"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
       </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'">
+      <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'" id="panel-additional-information">
         <span ng-if="vm.product.certificationEdition.name === '2014'">
           <h4>Test Results Summary</h4>
           <a ai-a ng-if="vm.product.reportFileLocation" href="{{ vm.product.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.product.reportFileLocation }">{{ vm.product.reportFileLocation }}</a>
