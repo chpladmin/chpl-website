@@ -79,8 +79,68 @@
       <label for="cpAdditionalSoftware">Product wide Relied Upon Software</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cpAdditionalSoftware"></input>
     </div>
+
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Status History</th>
+          <th scope="col">Effective date</th>
+          <th scope="col">Reason for status change</th>
+          <th scope="col"><span class="sr-only">Event Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td><button class="btn btn-sm btn-block btn-ai-success" ng-click="vm.addPreviousStatus()"><i class="fa fa-plus"></i><span class="sr-only"> Add status</span></button></td>
+        </tr>
+        <tr ng-repeat="statusEvent in vm.cp.certificationEvents | orderBy:'-eventDate' track by $index">
+          <td>
+            <div class="form-group">
+              <label for="certificationStatus{{ $index }}" class="sr-only"><span ng-if="$first">Current </span>Certification Status <span class="text-danger">*</span></label>
+              <select ng-model="statusEvent.certificationStatusName" required
+                      ng-options="status.name as status.name disable when vm.disabledStatus(status.name) for status in vm.statuses | orderBy:'name'"
+                      id="certificationStatus{{ $index }}" name="certificationStatus{{ $index }}" class="input-sm form-control">
+              </select>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.editForm['certificationStatus' + $index].$error.required">Certification Status is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.matchesPreviousStatus(statusEvent)">Certification Status must differ from previous Status</div>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <label for="statusDate{{ $index }}" class="sr-only">Change Date <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="statusEvent.statusDateObject" is-open="statusEvent.statusDatePicker" close-text="Close" id="statusDate{{ $index }}" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-ai btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
+                </span>
+              </div>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.editForm['statusDate' + $index].$error.required">Change date is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.matchesPreviousDate(statusEvent)">Only one change of status allowed per day</div>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <label for="reasonForChange{{ $index }}" class="sr-only">Reason for Change <span ng-if="statusEvent.certificationStatusName === 'Withdrawn by ONC-ACB'" class="text-danger">*</span></label>
+              <input class="input-sm form-control" type="text"  ng-model="statusEvent.reasonForChange"
+                     ng-required="statusEvent.certificationStatusName === 'Withdrawn by ONC-ACB'" ng-maxlength="500"
+                      id="reasonForChange{{ $index }}" name="reasonForChange{{ $index }}">
+              </select>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['reasonForChange' + $index].$touched) && vm.editForm['reasonForChange' + $index].$error.required">Reason for Change is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['reasonForChange' + $index].$touched) && vm.editForm['reasonForChange' + $index].$error.maxlength">Field is too long</div>
+            </div>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-block btn-danger" ng-click="vm.removePreviousStatus(vm.cp.certificationEvents.indexOf(status))"><i class="fa fa-trash"></i><span class="sr-only"> Remove status</span></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
     <div class="form-group">
-      <label for="cpStatus">Status</label>
+      <label for="cpStatus">Certification Status</label>
       <select class="input-sm form-control" ng-model="vm.cp.certificationStatus" id="cpStatus"
               ng-options="status as status.name disable when vm.disabledStatus(status.name) for status in vm.statuses | orderBy:'name'" required>
       </select>
@@ -92,6 +152,7 @@
       <label for="banDeveloper">I want to trigger a certification ban for this status change</label>
       <input class="" type="checkbox" ng-model="vm.banDeveloper" id="banDeveloper"></input>
     </div>
+
     <div class="form-group">
       <label for="cpAcbCertId">ACB Certification Id</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.acbCertificationId" id="cpAcbCertId" name="cpAcbCertId" ng-maxlength="250"></input>
@@ -283,7 +344,8 @@
     </ai-certs>
   </div>
   <div class="modal-footer">
-    <div class="text-left text-danger" ng-if="vm.showFormErrors && (vm.editForm.$invalid || (vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0) || vm.missingIcsSource())">
+    <div class="text-left text-danger"
+         ng-if="vm.showFormErrors && (vm.editForm.$invalid || (vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0) || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches())">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.idProd && !vm.editForm.idProd.$error.required && !vm.editForm.idProd.$valid">CHPL Product Number Product Code must consist of letters, numbers and/or "_", and be 4 characters long</li>
@@ -297,6 +359,8 @@
         <li ng-if="vm.editForm.cpBody.$error.required">Certification Body is required</li>
         <li ng-if="vm.editForm.cpCertDate.$error.required">Certification Date is required</li>
         <li ng-if="vm.editForm.cpCertDate.$error.date">Certification Date is an invalid format (mm/dd/yyyy)</li>
+        <li ng-if="vm.hasStatusMatches()">Certification status must not repeat</li>
+        <li ng-if="vm.hasDateMatches()">Only one change of certification status allowed per day</li>
         <li ng-if="vm.editForm.cpAcbCertId.$error.maxlength">ACB Certification ID is too long</li>
         <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.url">Mandatory Disclosures URL is an invalid format (http://www.example.com)</li>
         <li ng-if="vm.editForm.cpTransparencyAttUrl.$error.maxlength">Mandatory Disclosures URL is too long</li>
@@ -319,7 +383,7 @@
         <li ng-repeat="msg in vm.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
       </ul>
     </div>
-    <button ng-disabled="((vm.editForm.$invalid || vm.missingIcsSource()) && vm.showFormErrors) || vm.isSaving"
+    <button ng-disabled="((vm.editForm.$invalid || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches()) && vm.showFormErrors) || vm.isSaving"
             class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()">Save Certified Product</button>

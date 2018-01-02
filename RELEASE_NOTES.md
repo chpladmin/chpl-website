@@ -3,6 +3,10 @@
 ## OCD-1933
 * Update messaging wrt surveillance activity upload
 
+## OCD-1966
+* Allow editing of certfication status history
+  * Including "Reason for Status Change"
+
 ---
 
 ## Version TBD

@@ -5,17 +5,22 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
-
+    function EditCertifiedProductController ($filter, $log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
         var vm = this;
 
+        vm.addPreviousStatus = addPreviousStatus;
         vm.addNewValue = utilService.addNewValue;
         vm.attachModel = attachModel;
         vm.cancel = cancel;
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
         vm.extendSelect = utilService.extendSelect;
+        vm.hasDateMatches = hasDateMatches;
+        vm.hasStatusMatches = hasStatusMatches;
+        vm.matchesPreviousDate = matchesPreviousDate;
+        vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.missingIcsSource = missingIcsSource;
+        vm.removePreviousStatus = removePreviousStatus;
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
         vm.willCauseSuspension = willCauseSuspension;
@@ -59,10 +64,17 @@
                     suffix: idFields[7] + '.' + idFields[8],
                 };
             }
+            for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
+                vm.cp.certificationEvents[i].statusDateObject = new Date(vm.cp.certificationEvents[i].eventDate);
+            }
 
             vm.handlers = [];
             vm.attachModel();
             loadFamily();
+        }
+
+        function addPreviousStatus () {
+            vm.cp.certificationEvents.push({statusDateObject: new Date()});
         }
 
         function attachModel () {
@@ -92,8 +104,46 @@
             return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
         }
 
+        function hasDateMatches () {
+            var ret = false;
+            for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
+                ret = ret || vm.matchesPreviousDate(vm.cp.certificationEvents[i]);
+            }
+            return ret;
+        }
+
+        function hasStatusMatches () {
+            var ret = false;
+            for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
+                ret = ret || vm.matchesPreviousStatus(vm.cp.certificationEvents[i]);
+            }
+            return ret;
+        }
+
+        function matchesPreviousDate (status) {
+            var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
+            var statusLoc = orderedStatus.indexOf(status);
+            if (statusLoc > 0) {
+                return ($filter('date')(status.statusDateObject, 'mediumDate', 'UTC') === $filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC'));
+            }
+            return false;
+        }
+
+        function matchesPreviousStatus (status) {
+            var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
+            var statusLoc = orderedStatus.indexOf(status);
+            if (statusLoc > 0) {
+                return (status.certificationStatusName === orderedStatus[statusLoc - 1].certificationStatusName);
+            }
+            return false;
+        }
+
         function missingIcsSource () {
             return vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0;
+        }
+
+        function removePreviousStatus (idx) {
+            vm.cp.certificationEvents.splice(idx, 1);
         }
 
         function requiredIcsCode () {
@@ -105,6 +155,9 @@
         }
 
         function save () {
+            for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
+                vm.cp.certificationEvents[i].eventDate = vm.cp.certificationEvents[i].statusDateObject.getTime();
+            }
             if (vm.cp.chplProductNumber.length > 12) {
                 vm.cp.chplProductNumber =
                     vm.idFields.prefix + '.' +
