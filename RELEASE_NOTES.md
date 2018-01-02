@@ -1,5 +1,10 @@
 # Release Notes
 
+## OCD-1933
+* Update messaging wrt surveillance activity upload
+
+---
+
 ## Version TBD
 _Date TBD_
 
