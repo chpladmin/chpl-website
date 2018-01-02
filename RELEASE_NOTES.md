@@ -1,12 +1,15 @@
 # Release Notes
 
-## OCD-1933
+## Version TBD
+_Date TBD_
+
+### Minor features
 * Update messaging wrt surveillance activity upload
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 9.11.0
+_2 January 2018_
 
 ### Minor features
 * Added ids to some buttons/links
