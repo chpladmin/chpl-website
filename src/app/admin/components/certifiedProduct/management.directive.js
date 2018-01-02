@@ -159,9 +159,15 @@
                     },
                 });
                 vm.surveillanceUploader.onSuccessItem = function (fileItem, response) {
-                    vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
-                    vm.surveillanceUploadErrors = [];
-                    vm.surveillanceUploadSuccess = true;
+                    if (response.pendingSurveillance) {
+                        vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
+                        vm.surveillanceUploadErrors = [];
+                        vm.surveillanceUploadSuccess = true;
+                    } else {
+                        vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. The file will be processed and an email will be sent to ' + response.user.email + ' when processing is complete.';
+                        vm.surveillanceUploadErrors = [];
+                        vm.surveillanceUploadSuccess = true;
+                    }
                 };
                 vm.surveillanceUploader.onCompleteItem = function () {
                     vm.refreshPending();
