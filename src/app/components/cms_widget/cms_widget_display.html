@@ -23,8 +23,8 @@
     <br/>* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.
   </p>
   <div ng-if="widget.searchResult.products">
-    <button ng-click="create()" class="btn btn-ai-certid btn-sm btn-block" ng-if="!widget.createResponse" ng-disabled="!widget.searchResult.isValid">Get {{ widget.searchResult.year }} EHR Certification ID</button>
-    <button ng-click="generatePdf()" class="btn btn-ai-certid btn-sm btn-block" ng-if="widget.createResponse">Download PDF</button>
+    <button ng-click="create()" class="btn btn-ai-certid btn-sm btn-block" ng-if="!widget.createResponse" ng-disabled="!widget.searchResult.isValid" id="get-ehr-cert-id">Get {{ widget.searchResult.year }} EHR Certification ID</button>
+    <button ng-click="generatePdf()" class="btn btn-ai-certid btn-sm btn-block" ng-if="widget.createResponse" id="download-ehr-cert">Download PDF</button>
   </div>
   <div ng-if="widget.searchResult.products && widget.searchResult.products.length> 0" class="text-center">
     <a href ng-click="clearProducts();">Remove all products</a>

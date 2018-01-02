@@ -15,6 +15,7 @@
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
         vm.extendSelect = utilService.extendSelect;
+        vm.missingIcsSource = missingIcsSource;
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
         vm.willCauseSuspension = willCauseSuspension;
@@ -89,6 +90,10 @@
 
         function disabledStatus (name) {
             return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
+        }
+
+        function missingIcsSource () {
+            return vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0;
         }
 
         function requiredIcsCode () {

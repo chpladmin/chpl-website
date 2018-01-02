@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 9.11.0
+_2 January 2018_
+
+### Minor features
+* Added ids to some buttons/links
+* Take out Questionable Activity Certified Products reports page
+* Require ICS Source for 2015 Listings with ICS=true during edit
+
+### Bugs fixed
+* Removed duplicate 'external link' disclaimer from Transparency Attestation collection
+
+---
+
 ## Version 9.10.0
 _18 December 2017_
 

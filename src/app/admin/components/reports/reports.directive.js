@@ -61,7 +61,6 @@
             vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
             vm.activityRange = { range: 60 };
-            vm.questionableRange = 0;
             var start = new Date();
             var end = new Date();
             start.setDate(end.getDate() - vm.activityRange.range + 1); // offset to account for inclusion of endDate in range
@@ -138,7 +137,6 @@
                 case 'cp-surveillance':
                 case 'cp-cap':
                 case 'cp-other':
-                case 'cp-questionable':
                     if (vm.productId) {
                         vm.singleCp();
                     } else {
@@ -180,7 +178,6 @@
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
                     vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                     vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
-                    vm.displayedCertifiedProductsQuestionable = [].concat(vm.searchedCertifiedProductsQuestionable);
                 });
         }
 
@@ -304,7 +301,6 @@
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
                     vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                     vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
-                    vm.displayedCertifiedProductsQuestionable = [].concat(vm.searchedCertifiedProductsQuestionable);
                 });
         }
 
@@ -376,10 +372,8 @@
                 surveillance: [],
                 cap: [],
                 other: [],
-                questionable: [],
             };
             var change;
-            var questionable;
 
             var certChanges, chplNum, cpId, cpNum, i, j, k, link;
             for (i = 0; i < data.length; i++) {
@@ -387,7 +381,6 @@
                     date: data[i].activityDate,
                     newId: data[i].id,
                     acb: '',
-                    questionable: false,
                 };
                 activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                 if (data[i].description === 'Created a certified product') {
@@ -409,7 +402,6 @@
                     activity.certificationEdition = data[i].newData.certificationEdition.name;
                     activity.certificationDate = data[i].newData.certificationDate;
                     activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
-                    questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
                     activity.details = [];
                     var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
                     if (statusChange) {
@@ -417,13 +409,7 @@
                         statusActivity.details = statusChange;
                         output.status.push(statusActivity);
 
-                        // count status change as questionable
-                        activity.details.push('<span class="bg-danger"><strong>' + statusChange + '</strong></span>');
-                        activity.questionable = true;
-                    }
-                    if (data[i].newData.certificationEdition.name === '2011') {
-                        activity.action = '<span class="bg-danger">' + activity.action + '</span>';
-                        activity.questionable = true;
+                        activity.details.push(statusChange);
                     }
                     for (j = 0; j < simpleCpFields.length; j++) {
                         change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
@@ -432,12 +418,7 @@
                     for (j = 0; j < nestedKeys.length; j++) {
                         change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
                         if (change) {
-                            if (nestedKeys[j].questionable && questionable) {
-                                activity.questionable = true;
-                                activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
-                            } else {
-                                activity.details.push(change);
-                            }
+                            activity.details.push(change);
                         }
                     }
                     var accessibilityStandardsKeys = [];
@@ -445,14 +426,12 @@
                     for (j = 0; j < accessibilityStandards.length; j++) {
                         activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
                     }
-                    certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
+                    certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
                     for (j = 0; j < certChanges.length; j++) {
-                        if (certChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                     }
-                    var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
+                    var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults);
                     for (j = 0; j < cqmChanges.length; j++) {
-                        if (cqmChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                     }
                     if (typeof(data[i].originalData.ics) === 'object' &&
@@ -628,30 +607,25 @@
                     activity.action = data[i].description;
                     output.other.push(activity);
                 }
-
-                if (activity.questionable) {
-                    output.questionable.push(activity);
-                }
             }
             vm.searchedCertifiedProductsUpload = output.upload;
             vm.searchedCertifiedProductsStatus = output.status;
             vm.searchedCertifiedProductsSurveillance = output.surveillance;
             vm.searchedCertifiedProductsCAP = output.cap;
             vm.searchedCertifiedProducts = output.other;
-            vm.searchedCertifiedProductsQuestionable = output.questionable;
         }
 
-        function compareCerts (prev, curr, questionable) {
+        function compareCerts (prev, curr) {
             var ret = [];
             var change;
             var certKeys = [
                 {key: 'apiDocumentation', display: 'API Documentation'},
-                {key: 'g1Success', display: 'Certified to G1', questionable: true},
-                {key: 'g2Success', display: 'Certified to G2', questionable: true},
-                {key: 'gap', display: 'GAP Tested', questionable: true},
+                {key: 'g1Success', display: 'Certified to G1'},
+                {key: 'g2Success', display: 'Certified to G2'},
+                {key: 'gap', display: 'GAP Tested'},
                 {key: 'privacySecurityFramework', display: 'Privacy &amp; Security Framework'},
                 {key: 'sed', display: 'SED tested'},
-                {key: 'success', display: 'Successful', questionable: true},
+                {key: 'success', display: 'Successful'},
             ];
             var i, j;
             prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
@@ -661,12 +635,7 @@
                 for (j = 0; j < certKeys.length; j++) {
                     change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
                     if (change) {
-                        if (certKeys[j].questionable && questionable) {
-                            obj.questionable = true;
-                            obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
-                        } else {
-                            obj.changes.push('<li>' + change + '</li>');
-                        }
+                        obj.changes.push('<li>' + change + '</li>');
                     }
                 }
                 var measures = utilService.arrayCompare(prev[i].g1MacraMeasures,curr[i].g1MacraMeasures);
@@ -1005,7 +974,7 @@
             return ret;
         }
 
-        function compareCqms (prev, curr, questionable) {
+        function compareCqms (prev, curr) {
             var ret = [];
             var change;
             prev.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
@@ -1015,12 +984,7 @@
                 var obj = { cmsId: curr[i].cmsId, changes: [] };
                 change = compareItem(prev[i], curr[i], 'success', 'Success');
                 if (change) {
-                    if (questionable) {
-                        obj.questionable = true;
-                        obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
-                    } else {
-                        obj.changes.push('<li>' + change + '</li>');
-                    }
+                    obj.changes.push('<li>' + change + '</li>');
                 }
                 for (j = 0; j < prev[i].allVersions.length; j++) {
                     if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) < 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0) {
