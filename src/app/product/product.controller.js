@@ -5,9 +5,10 @@
         .controller('ProductController', ProductController);
 
     /** @ngInclude */
-    function ProductController ($localStorage, $log, $routeParams, $uibModal, authService, networkService) {
+    function ProductController ($localStorage, $log, $routeParams, $uibModal, authService, networkService, utilService) {
         var vm = this;
 
+        vm.certificationStatus = utilService.certificationStatus;
         vm.loadProduct = loadProduct;
         vm.viewProductHistory = viewProductHistory;
 

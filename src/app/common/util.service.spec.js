@@ -345,5 +345,36 @@
                 address.line1 = undefined;
             });
         });
+
+        describe('when deriving the current certification status', function () {
+            xit('should use the most recent status as "current"', function () {
+                var cp = {
+                    certificationEvents: [
+                        { status: { status: 'Active' }, eventDate: 4 },
+                        { status: { status: 'Inactive' }, eventDate: 6 },
+                        { status: { status: 'Closed' }, eventDate: 2 },
+                    ],
+                }
+                expect(util.certificationStatus(cp)).toBe('Inactive');
+                cp.certificationEvents[1].eventDate = 1;
+                expect(util.certificationStatus(cp)).toBe('Active');
+            });
+
+            it('should return "" if no events exist', function () {
+                var cp = {
+                    certificationEvents: [],
+                }
+                expect(util.certificationStatus(cp)).toBe('');
+            });
+
+            it('should return "" if the field is null/undefined/missing', function () {
+                var cp = {};
+                expect(util.certificationStatus(cp)).toBe('');
+                cp.certificationEvents = undefined;
+                expect(util.certificationStatus(cp)).toBe('');
+                cp.certificationEvents = [];
+                expect(util.certificationStatus(cp)).toBe('');
+            });
+        });
     });
 })();

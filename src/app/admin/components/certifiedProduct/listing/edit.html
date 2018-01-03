@@ -79,7 +79,6 @@
       <label for="cpAdditionalSoftware">Product wide Relied Upon Software</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cpAdditionalSoftware"></input>
     </div>
-
     <table class="table table-condensed">
       <thead>
         <tr>
@@ -100,12 +99,19 @@
           <td>
             <div class="form-group">
               <label for="certificationStatus{{ $index }}" class="sr-only"><span ng-if="$first">Current </span>Certification Status <span class="text-danger">*</span></label>
-              <select ng-model="statusEvent.certificationStatusName" required
-                      ng-options="status.name as status.name disable when vm.disabledStatus(status.name) for status in vm.statuses | orderBy:'name'"
+              <select ng-model="statusEvent.status" required
+                      ng-options="status as status.name disable when vm.disabledStatus(status.name) for status in vm.statuses | orderBy:'name'"
                       id="certificationStatus{{ $index }}" name="certificationStatus{{ $index }}" class="input-sm form-control">
               </select>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.editForm['certificationStatus' + $index].$error.required">Certification Status is required</div>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.matchesPreviousStatus(statusEvent)">Certification Status must differ from previous Status</div>
+              <div class="text-danger" ng-if="$first && vm.willCauseSuspension(vm.certificationStatus(vm.cp)) && (vm.cp.banDeveloper || vm.certificationStatus(vm.cp) === 'Terminated by ONC')">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
+              <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp) ==='Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
+              <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp) ==='Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
+            </div>
+            <div class="form-group" ng-if="vm.certificationStatus(vm.cp) === 'Withdrawn by Developer Under Surveillance/Review'">
+              <label for="banDeveloper">I want to trigger a certification ban for this status change</label>
+              <input class="" type="checkbox" ng-model="vm.banDeveloper" id="banDeveloper"></input>
             </div>
           </td>
           <td>
@@ -123,9 +129,9 @@
           </td>
           <td>
             <div class="form-group">
-              <label for="reasonForChange{{ $index }}" class="sr-only">Reason for Change <span ng-if="statusEvent.certificationStatusName === 'Withdrawn by ONC-ACB'" class="text-danger">*</span></label>
+              <label for="reasonForChange{{ $index }}" class="sr-only">Reason for Change <span ng-if="statusEvent.status.status === 'Withdrawn by ONC-ACB'" class="text-danger">*</span></label>
               <input class="input-sm form-control" type="text"  ng-model="statusEvent.reasonForChange"
-                     ng-required="statusEvent.certificationStatusName === 'Withdrawn by ONC-ACB'" ng-maxlength="500"
+                     ng-required="statusEvent.status.status === 'Withdrawn by ONC-ACB'" ng-maxlength="500"
                       id="reasonForChange{{ $index }}" name="reasonForChange{{ $index }}">
               </select>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['reasonForChange' + $index].$touched) && vm.editForm['reasonForChange' + $index].$error.required">Reason for Change is required</div>
@@ -138,21 +144,6 @@
         </tr>
       </tbody>
     </table>
-
-    <div class="form-group">
-      <label for="cpStatus">Certification Status</label>
-      <select class="input-sm form-control" ng-model="vm.cp.certificationStatus" id="cpStatus"
-              ng-options="status as status.name disable when vm.disabledStatus(status.name) for status in vm.statuses | orderBy:'name'" required>
-      </select>
-      <div class="text-danger" ng-if="vm.willCauseSuspension(vm.cp.certificationStatus.name) && (vm.cp.banDeveloper || vm.cp.certificationStatus.name === 'Terminated by ONC')">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
-      <div class="text-danger" ng-if="vm.cp.certificationStatus.name ==='Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
-      <div class="text-danger" ng-if="vm.cp.certificationStatus.name ==='Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
-    </div>
-    <div class="form-group" ng-if="vm.cp.certificationStatus.name === 'Withdrawn by Developer Under Surveillance/Review'">
-      <label for="banDeveloper">I want to trigger a certification ban for this status change</label>
-      <input class="" type="checkbox" ng-model="vm.banDeveloper" id="banDeveloper"></input>
-    </div>
-
     <div class="form-group">
       <label for="cpAcbCertId">ACB Certification Id</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.acbCertificationId" id="cpAcbCertId" name="cpAcbCertId" ng-maxlength="250"></input>

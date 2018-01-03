@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources, utilService) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -30,6 +30,8 @@
 
         vm.cancel = cancel;
         vm.ternaryFilter = ternaryFilter;
+
+        vm.certificationStatus = utilService.certificationStatus;
 
         activate();
 

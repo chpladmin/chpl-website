@@ -8,9 +8,8 @@
         mock.activeCP = {
             certificationEdition: {name: '2015'},
             certificationEvents: [
-                { eventDate: 1498622400000, certificationStatusId: 1, certificationStatusName: 'Active' },
+                { eventDate: 1498622400000, certificationStatusId: 1, status: { status: 'Active' }},
             ],
-            certificationStatus: [],
             certifyingBody: [],
             chplProductNumber: 'CHP-123123',
             classificationType: [],
@@ -326,7 +325,6 @@
             expect(vm.cp.practiceType).toEqual(mock.resources.practices[0]);
             expect(vm.cp.classificationType).toEqual(mock.resources.classifications[0]);
             expect(vm.cp.certifyingBody).toEqual(mock.resources.bodies[1]);
-            expect(vm.cp.certificationStatus).toEqual(mock.resources.statuses[0]);
             expect(vm.cp.testingLab).not.toEqual(mock.resources.testingLabs[0]);
             vm.cp.testingLab = {id: 1};
             vm.attachModel();
@@ -455,10 +453,10 @@
             it('should know when two status events were on the same day', function () {
                 vm.cp.certificationEvents = [
                     {
-                        certificationStatusName: 'Active',
+                        status: {status: 'Active'},
                         statusDateObject: new Date('1/1/2009'),
                     },{
-                        certificationStatusName: 'Suspended by ONC',
+                        status: {status: 'Suspended by ONC'},
                         statusDateObject: new Date('1/1/2009'),
                     },
                 ];
@@ -470,15 +468,15 @@
             it('should know when two status events are the same and consecutive', function () {
                 vm.cp.certificationEvents = [
                     {
-                        certificationStatusName: 'Active',
+                        status: {status: 'Active'},
                         statusDateObject: new Date('1/1/2009'),
                     },{
-                        certificationStatusName: 'Active',
+                        status: {status: 'Active'},
                         statusDateObject: new Date('2/2/2009'),
                     },
                 ];
                 expect(vm.hasStatusMatches()).toBe(true);
-                vm.cp.certificationEvents[0].certificationStatusName = 'Suspended by ONC'
+                vm.cp.certificationEvents[0].status.status = 'Suspended by ONC'
                 expect(vm.hasStatusMatches()).toBe(false);
             });
         });

@@ -12,6 +12,7 @@
         vm.addNewValue = utilService.addNewValue;
         vm.attachModel = attachModel;
         vm.cancel = cancel;
+        vm.certificationStatus = utilService.certificationStatus;
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
         vm.extendSelect = utilService.extendSelect;
@@ -84,7 +85,12 @@
             if (vm.cp.testingLab) {
                 vm.cp.testingLab = utilService.findModel(vm.cp.testingLab, vm.testingLabs);
             }
-            vm.cp.certificationStatus = utilService.findModel(vm.cp.certificationStatus, vm.statuses);
+            /*
+            vm.cp.certificationEvents = vm.cp.certificationEvents.map(function (ce) {
+                $log.debug('map', ce);
+                return utilService.findModel(ce.status, vm.statuses);
+            });
+             */
         }
 
         function cancel () {
@@ -133,7 +139,7 @@
             var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
             var statusLoc = orderedStatus.indexOf(status);
             if (statusLoc > 0) {
-                return (status.certificationStatusName === orderedStatus[statusLoc - 1].certificationStatusName);
+                return (status.status.status === orderedStatus[statusLoc - 1].status.status);
             }
             return false;
         }
