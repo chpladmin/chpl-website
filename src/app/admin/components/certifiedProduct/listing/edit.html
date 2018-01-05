@@ -129,9 +129,9 @@
           </td>
           <td>
             <div class="form-group">
-              <label for="reasonForChange{{ $index }}" class="sr-only">Reason for Change <span ng-if="statusEvent.status.status === 'Withdrawn by ONC-ACB'" class="text-danger">*</span></label>
-              <input class="input-sm form-control" type="text"  ng-model="statusEvent.reasonForChange"
-                     ng-required="statusEvent.status.status === 'Withdrawn by ONC-ACB'" ng-maxlength="500"
+              <label for="reasonForChange{{ $index }}" class="sr-only">Reason for Change <span ng-if="statusEvent.status.name === 'Withdrawn by ONC-ACB'" class="text-danger">*</span></label>
+              <input class="input-sm form-control" type="text"  ng-model="statusEvent.reason"
+                     ng-required="statusEvent.status.name === 'Withdrawn by ONC-ACB'" ng-maxlength="500"
                       id="reasonForChange{{ $index }}" name="reasonForChange{{ $index }}">
               </select>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['reasonForChange' + $index].$touched) && vm.editForm['reasonForChange' + $index].$error.required">Reason for Change is required</div>
@@ -360,6 +360,7 @@
         <li ng-if="vm.editForm.cpReportFileLoc.$error.maxlength">Report File Locaiton URL is too long</li>
         <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</li>
         <li ng-if="vm.missingIcsSource()">Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from</li>
+        <li ng-if="vm.reasonRequired()">The Reson for Change is required when a Certification Status is set to "Withdrawn by ONC-ACB"</li>
       </ul>
     </div>
     <div class="text-left text-warning" ng-if="vm.warnings && vm.warnings.length > 0">

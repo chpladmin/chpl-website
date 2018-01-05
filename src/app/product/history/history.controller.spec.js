@@ -84,7 +84,7 @@
                 expect(vm.activity[4].change).toEqual(['Added certification criteria:<ul><li>170.315 (g)(7)</li><li>170.315 (g)(8)</li><li>170.315 (g)(9)</li></ul>']);
             });
 
-            xit('should have an item for certification status changing', function () {
+            it('should have an item for certification status changing', function () {
                 expect(vm.activity[5].change).toEqual(['Certification Status became "Active"']);
             });
         });

@@ -123,8 +123,7 @@
 
         function certificationStatus (listing) {
             if (listing.certificationEvents && listing.certificationEvents.length > 0) {
-                //return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.status;
-                return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].certificationStatusName;
+                return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
             }
             return '';
         }

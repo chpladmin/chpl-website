@@ -83,8 +83,11 @@
             var ce = (vm.activity[vm.activity.length - 1]).newData.certificationEvents;
             vm.activity = vm.activity.concat(ce.map(function (e) {
                 e.activityDate = e.eventDate;
-                //e.change = ['Certification Status became "' + e.status.status + '"'];
-                e.change = ['Certification Status became "' + e.certificationStatusName + '"'];
+                if (e.certificationStatusName) {
+                    e.change = ['Certification Status became "' + e.certificationStatusName + '"'];
+                } else {
+                    e.change = ['Certification Status became "' + e.status.name + '"'];
+                }
                 return e;
             }));
         }

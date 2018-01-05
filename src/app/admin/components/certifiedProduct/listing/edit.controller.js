@@ -21,6 +21,7 @@
         vm.matchesPreviousDate = matchesPreviousDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.missingIcsSource = missingIcsSource;
+        vm.reasonRequired = reasonRequired;
         vm.removePreviousStatus = removePreviousStatus;
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
@@ -75,7 +76,10 @@
         }
 
         function addPreviousStatus () {
-            vm.cp.certificationEvents.push({statusDateObject: new Date()});
+            vm.cp.certificationEvents.push({
+                statusDateObject: new Date(),
+                status: {},
+            });
         }
 
         function attachModel () {
@@ -85,12 +89,9 @@
             if (vm.cp.testingLab) {
                 vm.cp.testingLab = utilService.findModel(vm.cp.testingLab, vm.testingLabs);
             }
-            /*
-            vm.cp.certificationEvents = vm.cp.certificationEvents.map(function (ce) {
-                $log.debug('map', ce);
-                return utilService.findModel(ce.status, vm.statuses);
+            vm.cp.certificationEvents.forEach(function (ce) {
+                ce.status = utilService.findModel(ce.status, vm.statuses);
             });
-             */
         }
 
         function cancel () {
@@ -126,26 +127,33 @@
             return ret;
         }
 
-        function matchesPreviousDate (status) {
+        function matchesPreviousDate (event) {
             var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
-            var statusLoc = orderedStatus.indexOf(status);
+            var statusLoc = orderedStatus.indexOf(event);
             if (statusLoc > 0) {
-                return ($filter('date')(status.statusDateObject, 'mediumDate', 'UTC') === $filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC'));
+                return ($filter('date')(event.statusDateObject, 'mediumDate', 'UTC') === $filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC'));
             }
             return false;
         }
 
-        function matchesPreviousStatus (status) {
+        function matchesPreviousStatus (event) {
             var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
-            var statusLoc = orderedStatus.indexOf(status);
+            var statusLoc = orderedStatus.indexOf(event);
             if (statusLoc > 0) {
-                return (status.status.status === orderedStatus[statusLoc - 1].status.status);
+                return (event.status.name === orderedStatus[statusLoc - 1].status.name);
             }
             return false;
         }
 
         function missingIcsSource () {
             return vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0;
+        }
+
+        function reasonRequired () {
+            return vm.cp.certificationEvents.reduce(function (ret, ce) {
+                return ret || (ce.status.name === 'Withdrawn by ONC-ACB' &&
+                              (!ce.reason || ce.reason === ''));
+            }, false);
         }
 
         function removePreviousStatus (idx) {

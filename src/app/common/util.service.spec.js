@@ -347,12 +347,12 @@
         });
 
         describe('when deriving the current certification status', function () {
-            xit('should use the most recent status as "current"', function () {
+            it('should use the most recent status as "current"', function () {
                 var cp = {
                     certificationEvents: [
-                        { status: { status: 'Active' }, eventDate: 4 },
-                        { status: { status: 'Inactive' }, eventDate: 6 },
-                        { status: { status: 'Closed' }, eventDate: 2 },
+                        { status: { name: 'Active' }, eventDate: 4 },
+                        { status: { name: 'Inactive' }, eventDate: 6 },
+                        { status: { name: 'Closed' }, eventDate: 2 },
                     ],
                 }
                 expect(util.certificationStatus(cp)).toBe('Inactive');
