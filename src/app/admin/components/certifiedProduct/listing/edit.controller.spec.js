@@ -7,7 +7,9 @@
         mock = {};
         mock.activeCP = {
             certificationEdition: {name: '2015'},
-            certificationStatus: [],
+            certificationEvents: [
+                { eventDate: 1498622400000, certificationStatusId: 1, status: { name: 'Active' }},
+            ],
             certifyingBody: [],
             chplProductNumber: 'CHP-123123',
             classificationType: [],
@@ -323,7 +325,6 @@
             expect(vm.cp.practiceType).toEqual(mock.resources.practices[0]);
             expect(vm.cp.classificationType).toEqual(mock.resources.classifications[0]);
             expect(vm.cp.certifyingBody).toEqual(mock.resources.bodies[1]);
-            expect(vm.cp.certificationStatus).toEqual(mock.resources.statuses[0]);
             expect(vm.cp.testingLab).not.toEqual(mock.resources.testingLabs[0]);
             vm.cp.testingLab = {id: 1};
             vm.attachModel();
@@ -342,6 +343,19 @@
                 };
                 vm.save();
                 expect(vm.cp.chplProductNumber).toBe('14.03.03.2879.prod.vr.02.0.140303');
+            });
+
+            it('should add date longs from the date objects', function () {
+                var aDate = new Date('1/1/2009');
+                var dateValue = aDate.getTime();
+                vm.cp.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: aDate,
+                    },
+                ];
+                vm.save();
+                expect(vm.cp.certificationEvents[0].eventDate).toBe(dateValue);
             });
 
             describe('that is active', function () {
@@ -413,6 +427,73 @@
                     vm.save();
                     expect($log.info.logs.length).toBe(logCount + 1);
                 });
+            });
+        });
+
+        describe('when handling certification status history', function () {
+            it('should add statusEventObjects for each statusDate in history', function () {
+                expect(vm.cp.certificationEvents[0].statusDateObject).toEqual(new Date(vm.cp.certificationEvents[0].eventDate));
+            });
+
+            it('should remove previous statuses', function () {
+                var initLength = vm.cp.certificationEvents.length;
+                vm.removePreviousStatus(0);
+                expect(vm.cp.certificationEvents.length).toBe(initLength - 1);
+            });
+
+            it('should add an empty status', function () {
+                var initLength = vm.cp.certificationEvents.length;
+                vm.addPreviousStatus();
+                expect(vm.cp.certificationEvents.length).toBe(initLength + 1);
+                expect(vm.cp.certificationEvents[vm.cp.certificationEvents.length - 1].statusDateObject).toBeDefined();
+            });
+        });
+
+        describe('when validating the form', function () {
+            it('should know when two status events were on the same day', function () {
+                vm.cp.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },{
+                        status: {name: 'Suspended by ONC'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },
+                ];
+                expect(vm.hasDateMatches()).toBe(true);
+                vm.cp.certificationEvents[0].statusDateObject = new Date('2/2/2002');
+                expect(vm.hasDateMatches()).toBe(false);
+            });
+
+            it('should know when two status events are the same and consecutive', function () {
+                vm.cp.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },{
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('2/2/2009'),
+                    },
+                ];
+                expect(vm.hasStatusMatches()).toBe(true);
+                vm.cp.certificationEvents[0].status.name = 'Suspended by ONC';
+                expect(vm.hasStatusMatches()).toBe(false);
+            });
+
+            it('should know when there is a required "reason for change"', function () {
+                vm.cp.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },
+                ];
+                expect(vm.reasonRequired()).toBe(false);
+                vm.cp.certificationEvents[0].status.name = 'Withdrawn by ONC-ACB';
+                expect(vm.reasonRequired()).toBe(true);
+                vm.cp.certificationEvents[0].reason = '';
+                expect(vm.reasonRequired()).toBe(true);
+                vm.cp.certificationEvents[0].reason = 'something';
+                expect(vm.reasonRequired()).toBe(false);
             });
         });
     });

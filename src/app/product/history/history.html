@@ -17,8 +17,7 @@
         <tr ng-repeat="activity in vm.activity | orderBy:'activityDate':true">
           <td>{{ activity.activityDate | date : 'medium' : 'UTC' }} GMT</td>
           <td>
-            <span ng-if="!activity.change || activity.change.length === 0">Certified Product details have changed</span>
-            <ul class="list-unstyled" ng-if="activity.change && activity.change.length > 0">
+            <ul class="list-unstyled">
               <li ng-repeat="change in activity.change | orderBy:'toString()'" ng-bind-html="change"></li>
             </ul>
           </td>

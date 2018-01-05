@@ -5,12 +5,13 @@
         .factory('utilService', utilService);
 
     /** @ngInject */
-    function utilService ($log, Blob, FileSaver) {
+    function utilService ($filter, $log, Blob, FileSaver) {
         var service = {
             addNewValue: addNewValue,
             addressRequired: addressRequired,
             arrayCompare: arrayCompare,
             arrayToCsv: arrayToCsv,
+            certificationStatus: certificationStatus,
             extendSelect: extendSelect,
             findModel: findModel,
             makeCsv: makeCsv,
@@ -118,6 +119,13 @@
             })
                 .join('\n');
 
+        }
+
+        function certificationStatus (listing) {
+            if (listing.certificationEvents && listing.certificationEvents.length > 0) {
+                return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
+            }
+            return '';
         }
 
         function extendSelect (options, value) {

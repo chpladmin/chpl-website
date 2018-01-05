@@ -21,9 +21,10 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService) {
+    function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService, utilService) {
         var vm = this;
 
+        vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
         vm.editDeveloper = editDeveloper;
@@ -618,8 +619,8 @@
         }
 
         function isProductEditable (cp) {
-            if (cp.certificationStatus) {
-                return (vm.isChplAdmin || (cp.certificationStatus.name !== 'Suspended by ONC' && cp.certificationStatus.name !== 'Terminated by ONC')) &&
+            if (cp.certificationEvents) {
+                return (vm.isChplAdmin || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
                     vm.isDeveloperMergeable(vm.activeDeveloper);
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);

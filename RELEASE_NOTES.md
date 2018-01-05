@@ -6,6 +6,10 @@ _Date TBD_
 ### Minor features
 * Update messaging wrt surveillance activity upload
 
+## OCD-1966
+* Allow editing of certfication status history
+  * Including "Reason for Status Change"
+
 ---
 
 ## Version 9.11.0
