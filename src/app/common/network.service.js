@@ -51,6 +51,7 @@
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
+            getFuzzyTypes: getFuzzyTypes,
             getJobTypes: getJobTypes,
             getJobs: getJobs,
             getIcsFamily: getIcsFamily,
@@ -116,6 +117,7 @@
             updateCP: updateCP,
             updateCap: updateCap,
             updateDeveloper: updateDeveloper,
+            updateFuzzyType: updateFuzzyType,
             updateProduct: updateProduct,
             updateRecipient: updateRecipient,
             updateSurveillance: updateSurveillance,
@@ -341,6 +343,10 @@
 
         function getEducation () {
             return apiGET('/data/education_types');
+        }
+
+        function getFuzzyTypes () {
+            return apiGET('/data/fuzzy_choices');
         }
 
         function getJobTypes () {
@@ -634,6 +640,10 @@
 
         function updateDeveloper (developerObject) {
             return apiPOST('/developers/update', developerObject);
+        }
+
+        function updateFuzzyType (fuzzyType) {
+            return apiPOST('/data\/fuzzy_choices\/update', fuzzyType);
         }
 
         function updateProduct (productObject) {

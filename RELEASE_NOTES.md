@@ -1,5 +1,10 @@
 # Release Notes
 
+### OCD-1943
+* Allow view/edit of fuzzy matching choices
+
+---
+
 ## Version TBD
 _Date TBD_
 

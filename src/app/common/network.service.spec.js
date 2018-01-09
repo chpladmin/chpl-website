@@ -582,6 +582,14 @@
             $httpBackend.flush();
         });
 
+        it('should getFuzzyTypes', function () {
+            $httpBackend.expectGET(/data\/fuzzy_choices/).respond(200, {data: 'response'});
+            networkService.getFuzzyTypes().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getJobTypes', function () {
             $httpBackend.expectGET(/data\/job_types/).respond(200, {data: 'response'});
             networkService.getJobTypes().then(function (response) {
@@ -1177,6 +1185,14 @@
         it('should updateDeveloper', function () {
             $httpBackend.expectPOST(/developers\/update/).respond(200, {data: 'response'});
             networkService.updateDeveloper('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateFuzzyType', function () {
+            $httpBackend.expectPOST(/data\/fuzzy_choices\/update/).respond(200, {data: 'response'});
+            networkService.updateFuzzyType('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
