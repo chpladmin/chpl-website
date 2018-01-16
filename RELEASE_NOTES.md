@@ -7,7 +7,7 @@ _Date TBD_
 * Update messaging wrt surveillance activity upload
 * Allow editing of certfication status history
   * Including "Reason for Status Change"
-* Tweaking of text on "Banned Developers" collection page
+* Tweaking of text on "Banned Developers / Decertified Products" collection pages
 
 ---
 
