@@ -333,6 +333,17 @@
               resources="vm.resources">
 <!--              save="vm.registerCerts(handler)">-->
     </ai-certs>
+    <div class="form-group">
+      <label for="reasonForChange">Reason for Change</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.reason" id="reasonForChange" name="reasonForChange"></input>
+      If changes are made in any of the following ways, a Reason for Change is required:
+      <ul>
+        <li>Clinical Quality Measure Removed</li>
+        <li>Certification Criteria Removed</li>
+        <li>Editing of a 2011 Edition Certified Product</li>
+        <li>Certification Status Changed from anything to "Active"</li>
+      </ul>
+    </div>
   </div>
   <div class="modal-footer">
     <div class="text-left text-danger"

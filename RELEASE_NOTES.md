@@ -1,12 +1,15 @@
 # Release Notes
 
+OCD-1998:
+* Added "Reason for Change" fields when Questionable Activity happens
+
+---
+
 ## Version TBD
 _Date TBD_
 
 ### Minor features
 * Update messaging wrt surveillance activity upload
-
-## OCD-1966
 * Allow editing of certfication status history
   * Including "Reason for Status Change"
 
