@@ -21,9 +21,10 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService) {
+    function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService, utilService) {
         var vm = this;
 
+        vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
         vm.editDeveloper = editDeveloper;
@@ -159,9 +160,15 @@
                     },
                 });
                 vm.surveillanceUploader.onSuccessItem = function (fileItem, response) {
-                    vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
-                    vm.surveillanceUploadErrors = [];
-                    vm.surveillanceUploadSuccess = true;
+                    if (response.pendingSurveillance) {
+                        vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
+                        vm.surveillanceUploadErrors = [];
+                        vm.surveillanceUploadSuccess = true;
+                    } else {
+                        vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. The file will be processed and an email will be sent to ' + response.user.email + ' when processing is complete.';
+                        vm.surveillanceUploadErrors = [];
+                        vm.surveillanceUploadSuccess = true;
+                    }
                 };
                 vm.surveillanceUploader.onCompleteItem = function () {
                     vm.refreshPending();
@@ -612,8 +619,8 @@
         }
 
         function isProductEditable (cp) {
-            if (cp.certificationStatus) {
-                return (vm.isChplAdmin || (cp.certificationStatus.name !== 'Suspended by ONC' && cp.certificationStatus.name !== 'Terminated by ONC')) &&
+            if (cp.certificationEvents) {
+                return (vm.isChplAdmin || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
                     vm.isDeveloperMergeable(vm.activeDeveloper);
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);

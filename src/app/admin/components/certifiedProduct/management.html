@@ -269,7 +269,7 @@
                   <td>{{ res.certifyingBody.name }}</td>
                   <td>{{ res.certificationEdition.name }}</td>
                   <td>{{ res.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                  <td>{{ res.certificationStatus.name }}</td>
+                  <td>{{ vm.certificationStatus(res) }}</td>
                 </tr>
               </tbody>
             </table>
@@ -287,7 +287,7 @@
               </tr>
               <tr>
                 <th scope="row">Certification Status</th>
-                <td>{{ vm.surveillanceProduct.certificationStatus.name }}</td>
+                <td>{{ vm.certificationStatus(vm.surveillanceProduct) }}</td>
               </tr>
               <tr>
                 <th scope="row">Developer</th>
@@ -621,7 +621,7 @@
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
                   <strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
-                  <strong>Status:</strong> {{ vm.activeCP.certificationStatus.name }}<br />
+                  <strong>Status:</strong> {{ vm.certificationStatus(vm.activeCP) }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
                   <strong>Transparency Attestation:</strong> {{ vm.activeCP.transparencyAttestation ? vm.activeCP.transparencyAttestation : 'None' }} <br />

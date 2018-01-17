@@ -6,7 +6,7 @@
         .controller('ProductHistoryController', ProductHistoryController);
 
     /** @ngInject */
-    function ProductHistoryController ($location, $log, $uibModalInstance, activity) {
+    function ProductHistoryController ($filter, $location, $log, $uibModalInstance, activity) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -19,6 +19,7 @@
         function activate () {
             vm.activity = activity;
             interpretActivity();
+            vm.activity = vm.activity.filter(function (a) { return a.change && a.change.length > 0; });
         }
 
         function cancel () {
@@ -41,10 +42,6 @@
                 curr = activity.newData;
                 if (prev && curr) {
                     vm.listingId = prev.id;
-                    if (prev.certificationStatus.name !== curr.certificationStatus.name) {
-                        activity.change.push('Certification Status changed from "' + prev.certificationStatus.name + '" to "' + curr.certificationStatus.name + '"');
-                    }
-
                     if (activity.description.startsWith('Updated certified product')) {
                         var changeCC = false;
                         var criteria = [];
@@ -82,6 +79,17 @@
                     activity.change.push('Certified product was uploaded to the CHPL');
                 }
             }
+
+            var ce = (vm.activity[vm.activity.length - 1]).newData.certificationEvents;
+            vm.activity = vm.activity.concat(ce.map(function (e) {
+                e.activityDate = e.eventDate;
+                if (e.certificationStatusName) {
+                    e.change = ['Certification Status became "' + e.certificationStatusName + '"'];
+                } else {
+                    e.change = ['Certification Status became "' + e.status.name + '"'];
+                }
+                return e;
+            }));
         }
     }
 })();

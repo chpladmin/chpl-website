@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 9.12.0
+_17 January 2018_
+
+### Minor features
+* Update messaging wrt surveillance activity upload
+* Allow editing of certfication status history
+  * Including "Reason for Status Change"
+* Tweaking of text on "Banned Developers / Decertified Products" collection pages
+
+---
+
 ## Version 9.11.0
 _2 January 2018_
 
