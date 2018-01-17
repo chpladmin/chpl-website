@@ -89,16 +89,18 @@
         }
 
         function deleteSurveillance () {
-            networkService.deleteSurveillance(vm.surveillance.id)
-                .then(function (response) {
-                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                        $uibModalInstance.close(response);
-                    } else {
-                        vm.errorMessages = [response];
-                    }
-                },function (error) {
-                    vm.errorMessages = [error.statusText];
-                });
+            if (vm.reason) {
+                networkService.deleteSurveillance(vm.surveillance.id, vm.reason)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                            $uibModalInstance.close(response);
+                        } else {
+                            vm.errorMessages = [response];
+                        }
+                    },function (error) {
+                        vm.errorMessages = [error.statusText];
+                    });
+            }
         }
 
         function editRequirement (req) {

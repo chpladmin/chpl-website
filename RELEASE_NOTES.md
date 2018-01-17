@@ -1,5 +1,10 @@
 # Release Notes
 
+OCD-1998:
+* Added "Reason for Change" fields when Questionable Activity happens
+
+---
+
 ## Version TBD
 _Date TBD_
 
