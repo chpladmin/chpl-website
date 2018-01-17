@@ -1,15 +1,18 @@
 # Release Notes
 
-### OCD-1943
+## Version TBD
+_Date TBD_
+
+### Major features
 * Allow view/edit of fuzzy matching choices
 
-### OCD-1998
+### Minor features
 * Added "Reason for Change" fields when Questionable Activity happens
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 9.12.0
+_17 January 2018_
 
 ### Minor features
 * Update messaging wrt surveillance activity upload
