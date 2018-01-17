@@ -3,6 +3,9 @@
 ### OCD-1943
 * Allow view/edit of fuzzy matching choices
 
+### OCD-1998
+* Added "Reason for Change" fields when Questionable Activity happens
+
 ---
 
 ## Version TBD
@@ -10,10 +13,9 @@ _Date TBD_
 
 ### Minor features
 * Update messaging wrt surveillance activity upload
-
-## OCD-1966
 * Allow editing of certfication status history
   * Including "Reason for Status Change"
+* Tweaking of text on "Banned Developers / Decertified Products" collection pages
 
 ---
 

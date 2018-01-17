@@ -196,8 +196,10 @@
             return apiPOST('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
         }
 
-        function deleteSurveillance (surveillanceId) {
-            return apiPOST('/surveillance/' + surveillanceId + '/delete', {});
+        function deleteSurveillance (surveillanceId, reason) {
+            return apiPOST('/surveillance/' + surveillanceId + '/delete', {
+                reason: reason,
+            });
         }
 
         function deleteSurveillanceDocument (survId, docId) {

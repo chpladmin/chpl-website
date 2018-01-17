@@ -207,7 +207,7 @@
 
         it('should deleteSurveillance', function () {
             $httpBackend.expectPOST(/surveillance\/1\/delete/).respond(200, {data: 'response'});
-            networkService.deleteSurveillance(1).then(function (response) {
+            networkService.deleteSurveillance(1,'changeReason').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
