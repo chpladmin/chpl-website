@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.12.0
+_17 January 2018_
 
 ### Minor features
 * Update messaging wrt surveillance activity upload
