@@ -54,6 +54,7 @@
             <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" class="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" ng-if="vm.isChplAdmin() || vm.isOncStaff() || vm.isAcbAdmin()"><a href="" class="" ng-click="vm.changeScreen('jobsManagement')">Jobs Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'fuzzyManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('fuzzyManagement')">Fuzzy Matching Management</a></li>
           </ul>
         </div>
       </div>
@@ -80,6 +81,7 @@
         <ai-announcements-management ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
         <ai-cms-management admin="true" ng-if="vm.navState.screen === 'cmsManagement'"></ai-cms-management>
         <ai-jobs-management ng-if="vm.navState.screen === 'jobsManagement'"></ai-jobs-management>
+        <ai-fuzzy-management ng-if="vm.navState.screen === 'fuzzyManagement'"></ai-fuzzy-management>
       </div>
     </div>
   </section> <!-- end authenticated user section -->

@@ -1,6 +1,9 @@
 # Release Notes
 
-OCD-1998:
+### OCD-1943
+* Allow view/edit of fuzzy matching choices
+
+### OCD-1998
 * Added "Reason for Change" fields when Questionable Activity happens
 
 ---
