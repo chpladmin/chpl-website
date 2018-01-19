@@ -1,17 +1,24 @@
 # Release Notes
 
-OCD-1998:
+## Version TBD
+_Date TBD_
+
+### Major features
+* Allow view/edit of fuzzy matching choices
+
+### Minor features
 * Added "Reason for Change" fields when Questionable Activity happens
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 9.12.0
+_17 January 2018_
 
 ### Minor features
 * Update messaging wrt surveillance activity upload
 * Allow editing of certfication status history
   * Including "Reason for Status Change"
+* Tweaking of text on "Banned Developers / Decertified Products" collection pages
 
 ---
 
