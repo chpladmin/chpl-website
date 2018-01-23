@@ -18,6 +18,7 @@
         vm.extendSelect = utilService.extendSelect;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
+        vm.improperFirstStatus = improperFirstStatus;
         vm.matchesPreviousDate = matchesPreviousDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.missingIcsSource = missingIcsSource;
@@ -125,6 +126,10 @@
                 ret = ret || vm.matchesPreviousStatus(vm.cp.certificationEvents[i]);
             }
             return ret;
+        }
+
+        function improperFirstStatus () {
+            return $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
         }
 
         function matchesPreviousDate (event) {

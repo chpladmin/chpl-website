@@ -447,6 +447,16 @@
                 expect(vm.cp.certificationEvents.length).toBe(initLength + 1);
                 expect(vm.cp.certificationEvents[vm.cp.certificationEvents.length - 1].statusDateObject).toBeDefined();
             });
+
+            it('should know when the "earliest" status is not "Active"', function () {
+                vm.cp.certificationEvents = [
+                    { statusDateObject: new Date('1/1/2018'), status: { name: 'Withdrawn by Developer' } },
+                    { statusDateObject: new Date('2/2/2018'), status: { name: 'Active' } },
+                ];
+                expect(vm.improperFirstStatus()).toBe(true);
+                vm.cp.certificationEvents[1].statusDateObject = new Date('1/1/2017');
+                expect(vm.improperFirstStatus()).toBe(false);
+            });
         });
 
         describe('when validating the form', function () {

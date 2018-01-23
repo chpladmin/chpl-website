@@ -15,8 +15,8 @@ var pathSrcJs = [
 ];
 
 function runTests (singleRun, done) {
-    //var reporters = ['dots', 'junit', 'growl', 'html', 'coverage'];
-    var reporters = ['mocha', 'junit', 'growl', 'html', 'coverage'];
+    //var reporters = ['dots', 'junit', 'html', 'coverage'];
+    var reporters = ['mocha', 'junit', 'html', 'coverage'];
     if (!singleRun) { reporters.push('super-dots'); }
     var preprocessors = {};
 
@@ -43,7 +43,6 @@ function runTests (singleRun, done) {
                 { type: 'text-summary' }
             ]
         },
-        growlReporter: { prefix: 'CHPL Unit Tests\n' },
         htmlReporter: {
             groupSuites: true,
             outputFile: 'test_reports/units.html',
