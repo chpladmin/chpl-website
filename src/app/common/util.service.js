@@ -121,8 +121,13 @@
 
         }
 
-        function certificationStatus (listing) {
+        function certificationStatus (listing, options) {
             if (listing.certificationEvents && listing.certificationEvents.length > 0) {
+                if (options) {
+                    if (options.editing) {
+                        return $filter('orderBy')(listing.certificationEvents.map(function (event) { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
+                    }
+                }
                 return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
             }
             return '';

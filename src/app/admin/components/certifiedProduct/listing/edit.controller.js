@@ -161,8 +161,10 @@
             }, false);
         }
 
-        function removePreviousStatus (idx) {
-            vm.cp.certificationEvents.splice(idx, 1);
+        function removePreviousStatus (statusDateObject) {
+            vm.cp.certificationEvents = vm.cp.certificationEvents.filter(function (event) {
+                return event.statusDateObject.getTime() !== statusDateObject.getTime();
+            });
         }
 
         function requiredIcsCode () {

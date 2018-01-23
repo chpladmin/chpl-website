@@ -436,8 +436,11 @@
             });
 
             it('should remove previous statuses', function () {
+                vm.addPreviousStatus();
+                vm.addPreviousStatus();
+                vm.addPreviousStatus();
                 var initLength = vm.cp.certificationEvents.length;
-                vm.removePreviousStatus(0);
+                vm.removePreviousStatus(vm.cp.certificationEvents[0].statusDateObject);
                 expect(vm.cp.certificationEvents.length).toBe(initLength - 1);
             });
 
