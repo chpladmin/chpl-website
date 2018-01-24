@@ -337,7 +337,7 @@
   </div>
   <div class="modal-footer">
     <div class="text-left text-danger"
-         ng-if="vm.showFormErrors && (vm.editForm.$invalid || (vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0) || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches())">
+         ng-if="vm.showFormErrors && (vm.editForm.$invalid || (vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0) || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches() || vm.improperFirstStatus())">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.idProd && !vm.editForm.idProd.$error.required && !vm.editForm.idProd.$valid">CHPL Product Number Product Code must consist of letters, numbers and/or "_", and be 4 characters long</li>
