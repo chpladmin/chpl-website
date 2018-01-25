@@ -375,6 +375,19 @@
                 cp.certificationEvents = [];
                 expect(util.certificationStatus(cp)).toBe('');
             });
+
+            it('should use the most recent status as "current" when editing', function () {
+                var cp = {
+                    certificationEvents: [
+                        { status: { name: 'Active' }, statusDateObject: new Date('1/1/2018') },
+                        { status: { name: 'Inactive' }, statusDateObject: new Date('2/2/2018') },
+                        { status: { name: 'Closed' }, statusDateObject: new Date('3/3/2018') },
+                    ],
+                }
+                expect(util.certificationStatus(cp, {editing: true})).toBe('Closed');
+                cp.certificationEvents[0].statusDateObject = new Date('4/4/2018');
+                expect(util.certificationStatus(cp, {editing: true})).toBe('Active');
+            });
         });
     });
 })();
