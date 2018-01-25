@@ -436,8 +436,11 @@
             });
 
             it('should remove previous statuses', function () {
+                vm.addPreviousStatus();
+                vm.addPreviousStatus();
+                vm.addPreviousStatus();
                 var initLength = vm.cp.certificationEvents.length;
-                vm.removePreviousStatus(0);
+                vm.removePreviousStatus(vm.cp.certificationEvents[0].statusDateObject);
                 expect(vm.cp.certificationEvents.length).toBe(initLength - 1);
             });
 
@@ -446,6 +449,16 @@
                 vm.addPreviousStatus();
                 expect(vm.cp.certificationEvents.length).toBe(initLength + 1);
                 expect(vm.cp.certificationEvents[vm.cp.certificationEvents.length - 1].statusDateObject).toBeDefined();
+            });
+
+            it('should know when the "earliest" status is not "Active"', function () {
+                vm.cp.certificationEvents = [
+                    { statusDateObject: new Date('1/1/2018'), status: { name: 'Withdrawn by Developer' } },
+                    { statusDateObject: new Date('2/2/2018'), status: { name: 'Active' } },
+                ];
+                expect(vm.improperFirstStatus()).toBe(true);
+                vm.cp.certificationEvents[1].statusDateObject = new Date('1/1/2017');
+                expect(vm.improperFirstStatus()).toBe(false);
             });
         });
 

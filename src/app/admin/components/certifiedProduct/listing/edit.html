@@ -95,7 +95,7 @@
           <td>&nbsp;</td>
           <td><button class="btn btn-sm btn-block btn-ai-success" ng-click="vm.addPreviousStatus()"><i class="fa fa-plus"></i><span class="sr-only"> Add status</span></button></td>
         </tr>
-        <tr ng-repeat="statusEvent in vm.cp.certificationEvents | orderBy:'-eventDate' track by $index">
+        <tr ng-repeat="statusEvent in vm.cp.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
           <td>
             <div class="form-group">
               <label for="certificationStatus{{ $index }}" class="sr-only"><span ng-if="$first">Current </span>Certification Status <span class="text-danger">*</span></label>
@@ -105,11 +105,12 @@
               </select>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.editForm['certificationStatus' + $index].$error.required">Certification Status is required</div>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.matchesPreviousStatus(statusEvent)">Certification Status must differ from previous Status</div>
-              <div class="text-danger" ng-if="$first && vm.willCauseSuspension(vm.certificationStatus(vm.cp)) && (vm.cp.banDeveloper || vm.certificationStatus(vm.cp) === 'Terminated by ONC')">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
-              <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp) ==='Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
-              <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp) ==='Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
+              <div class="text-danger" ng-if="$first && vm.willCauseSuspension(vm.certificationStatus(vm.cp, {editing: true})) && (vm.cp.banDeveloper || vm.certificationStatus(vm.cp, {editing: true}) === 'Terminated by ONC')">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
+              <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
+              <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
+              <div class="text-danger" ng-if="$last && vm.improperFirstStatus()">The earliest status of this product must be "Active"</div>
             </div>
-            <div class="form-group" ng-if="vm.certificationStatus(vm.cp) === 'Withdrawn by Developer Under Surveillance/Review'">
+            <div class="form-group" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Withdrawn by Developer Under Surveillance/Review'">
               <label for="banDeveloper">I want to trigger a certification ban for this status change</label>
               <input class="" type="checkbox" ng-model="vm.banDeveloper" id="banDeveloper"></input>
             </div>
@@ -139,7 +140,7 @@
             </div>
           </td>
           <td>
-            <button class="btn btn-sm btn-block btn-danger" ng-click="vm.removePreviousStatus(vm.cp.certificationEvents.indexOf(status))"><i class="fa fa-trash"></i><span class="sr-only"> Remove status</span></button>
+            <button class="btn btn-sm btn-block btn-danger" ng-click="vm.removePreviousStatus(statusEvent.statusDateObject)"><i class="fa fa-trash"></i><span class="sr-only"> Remove status</span></button>
           </td>
         </tr>
       </tbody>
@@ -336,7 +337,7 @@
   </div>
   <div class="modal-footer">
     <div class="text-left text-danger"
-         ng-if="vm.showFormErrors && (vm.editForm.$invalid || (vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0) || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches())">
+         ng-if="vm.showFormErrors && (vm.editForm.$invalid || (vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0) || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches() || vm.improperFirstStatus())">
       The following error(s) must be fixed:
       <ul>
         <li ng-if="vm.editForm.idProd && !vm.editForm.idProd.$error.required && !vm.editForm.idProd.$valid">CHPL Product Number Product Code must consist of letters, numbers and/or "_", and be 4 characters long</li>
@@ -361,6 +362,7 @@
         <li ng-if="vm.idFields.ics !== vm.requiredIcsCode() && vm.requiredIcsCode() > 0 && vm.cp.ics.parents.length > 0">ICS Code must be exactly one more than highest ICS code of all of this Listing's ICS parents; it should be "{{ vm.requiredIcsCode() }}"</li>
         <li ng-if="vm.missingIcsSource()">Listing is marked as having Inherited Certification Status but does not have references to the Listing(s) it inherited from</li>
         <li ng-if="vm.reasonRequired()">The Reson for Change is required when a Certification Status is set to "Withdrawn by ONC-ACB"</li>
+        <li ng-if="vm.improperFirstStatus()">The earliest status of this product must be "Active"</li>
       </ul>
     </div>
     <div class="text-left text-warning" ng-if="vm.warnings && vm.warnings.length > 0">
@@ -375,7 +377,7 @@
         <li ng-repeat="msg in vm.errors | orderBy:'toString()' track by $index">{{ msg }}</li>
       </ul>
     </div>
-    <button ng-disabled="((vm.editForm.$invalid || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches()) && vm.showFormErrors) || vm.isSaving"
+    <button ng-disabled="((vm.editForm.$invalid || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches() || vm.improperFirstStatus()) && vm.showFormErrors) || vm.isSaving"
             class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()">Save Certified Product</button>

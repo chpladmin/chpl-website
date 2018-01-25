@@ -18,6 +18,7 @@
         vm.extendSelect = utilService.extendSelect;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
+        vm.improperFirstStatus = improperFirstStatus;
         vm.matchesPreviousDate = matchesPreviousDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.missingIcsSource = missingIcsSource;
@@ -127,6 +128,10 @@
             return ret;
         }
 
+        function improperFirstStatus () {
+            return $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
+        }
+
         function matchesPreviousDate (event) {
             var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
             var statusLoc = orderedStatus.indexOf(event);
@@ -156,8 +161,10 @@
             }, false);
         }
 
-        function removePreviousStatus (idx) {
-            vm.cp.certificationEvents.splice(idx, 1);
+        function removePreviousStatus (statusDateObject) {
+            vm.cp.certificationEvents = vm.cp.certificationEvents.filter(function (event) {
+                return event.statusDateObject.getTime() !== statusDateObject.getTime();
+            });
         }
 
         function requiredIcsCode () {
