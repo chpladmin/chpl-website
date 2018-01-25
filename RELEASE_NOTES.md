@@ -1,7 +1,7 @@
 # Release Notes
 
 ## Version 9.12.1
-_Date TBD_
+_25 January 2018_
 
 ### Bug fixed
 * Require "earliest" status of CHPL Listing to be "Active"
