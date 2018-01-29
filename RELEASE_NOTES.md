@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 9.12.2
+_29 January 2018_
+
+### Text changes
+* Update notice for XML file definition "as-of" date
+
+---
+
 ## Version 9.12.1
 _25 January 2018_
 
