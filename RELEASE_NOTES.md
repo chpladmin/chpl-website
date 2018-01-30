@@ -5,6 +5,7 @@ _Date TBD_
 
 ### Administration modifications
 * Make "Reason for status change" not required in all cases
+* Update SED display to show criteria tested for SED without UCD Processes
 
 ---
 

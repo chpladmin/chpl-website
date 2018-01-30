@@ -284,10 +284,20 @@
                 }
 
                 vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
-                    item.criteria = $filter('orderBy')(item.criteria.filter(function (cert) { return vm.sedCriteriaNumbers.indexOf(cert.number) > -1; }), vm.sortCert);
+                    item.criteria = $filter('orderBy')(item.criteria.filter(function (cert) {
+                        var loc = vm.sedCriteriaNumbers.indexOf(cert.number);
+                        if (loc > -1) {
+                            vm.sedCriteria[loc].found = true;
+                            return true;
+                        }
+                        return false;
+                    }), vm.sortCert);
                     return item;
-                })
-                    .filter(function (item) { return item.criteria.length > 0; });
+                }).concat([{
+                    name: undefined,
+                    details: undefined,
+                    criteria: $filter('orderBy')(vm.sedCriteria.filter(function (cert) { return !cert.found; }), vm.sortCert),
+                }]).filter(function (item) { return item.criteria.length > 0; });
 
                 vm.csvData.values = csvSort(vm.csvData.values);
             }
