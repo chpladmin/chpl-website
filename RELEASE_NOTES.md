@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Administration modifications
+* Make "Reason for status change" not required in all cases
+
+---
+
 ## Version 9.12.2
 _29 January 2018_
 
