@@ -116,11 +116,19 @@
 
                 describe('with respect to ucd processes', function () {
                     it('should have an array of ucd processes that were used', function () {
-                        expect(vm.ucdProcesses.length).toBe(1);
+                        expect(vm.ucdProcesses.length).toBe(2);
                     });
 
                     it('should associate the UCD Processes with multiple criteria', function () {
-                        expect(vm.ucdProcesses[0].criteria[0].number).toEqual('170.315 (a)(1)');
+                        expect(vm.ucdProcesses[0].criteria[0].number).toBe('170.315 (a)(1)');
+                        expect(vm.ucdProcesses[0].criteria.length).toBe(11);
+                    });
+
+                    it('should associate criteria with no UCD process with a "None" process', function () {
+                        expect(vm.ucdProcesses[1].name).toBeUndefined();
+                        expect(vm.ucdProcesses[1].details).toBeUndefined();
+                        expect(vm.ucdProcesses[1].criteria[0].number).toBe('170.315 (b)(2)');
+                        expect(vm.ucdProcesses[1].criteria.length).toBe(1);
                     });
                 });
 

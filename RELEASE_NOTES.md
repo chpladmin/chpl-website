@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 9.13.0
+_1 February 2018_
+
+### Administration modifications
+* Make "Reason for status change" not required in all cases
+* Update SED display to show criteria tested for SED without UCD Processes
+
+---
+
 ## Version 9.12.2
 _29 January 2018_
 
