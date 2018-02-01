@@ -22,7 +22,6 @@
         vm.matchesPreviousDate = matchesPreviousDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.missingIcsSource = missingIcsSource;
-        vm.reasonRequired = reasonRequired;
         vm.removePreviousStatus = removePreviousStatus;
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
@@ -152,13 +151,6 @@
 
         function missingIcsSource () {
             return vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0;
-        }
-
-        function reasonRequired () {
-            return vm.cp.certificationEvents.reduce(function (ret, ce) {
-                return ret || (ce.status.name === 'Withdrawn by ONC-ACB' &&
-                              (!ce.reason || ce.reason === ''));
-            }, false);
         }
 
         function removePreviousStatus (statusDateObject) {
