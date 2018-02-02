@@ -4,7 +4,7 @@
 <div class="container" ng-if="!vm.loading && vm.product">
   <div class="row text-bottom">
     <div class="col-sm-8">
-      <h1>{{ vm.product.product.name }}</h1>
+      <h1 id="listingName">{{ vm.product.product.name }}</h1>
     </div>
     <div class="col-sm-4 text-right">
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
