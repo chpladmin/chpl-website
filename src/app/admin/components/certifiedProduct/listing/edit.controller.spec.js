@@ -492,22 +492,6 @@
                 vm.cp.certificationEvents[0].status.name = 'Suspended by ONC';
                 expect(vm.hasStatusMatches()).toBe(false);
             });
-
-            it('should know when there is a required "reason for change"', function () {
-                vm.cp.certificationEvents = [
-                    {
-                        status: {name: 'Active'},
-                        statusDateObject: new Date('1/1/2009'),
-                    },
-                ];
-                expect(vm.reasonRequired()).toBe(false);
-                vm.cp.certificationEvents[0].status.name = 'Withdrawn by ONC-ACB';
-                expect(vm.reasonRequired()).toBe(true);
-                vm.cp.certificationEvents[0].reason = '';
-                expect(vm.reasonRequired()).toBe(true);
-                vm.cp.certificationEvents[0].reason = 'something';
-                expect(vm.reasonRequired()).toBe(false);
-            });
         });
     });
 })();
