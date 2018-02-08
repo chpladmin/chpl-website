@@ -48,6 +48,7 @@
 
         // private function exposed for testing
         vm._interpretCps = _interpretCps;
+        vm._compareCertificationEvents = _compareCertificationEvents;
         vm._compareSed = _compareSed;
 
         activate();
@@ -60,7 +61,7 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
-            vm.activityRange = { range: 60 };
+            vm.activityRange = { range: 30 };
             var start = new Date();
             var end = new Date();
             start.setDate(end.getDate() - vm.activityRange.range + 1); // offset to account for inclusion of endDate in range
@@ -403,14 +404,24 @@
                     activity.certificationDate = data[i].newData.certificationDate;
                     activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
                     activity.details = [];
-                    var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
-                    if (statusChange) {
-                        var statusActivity = angular.copy(activity);
-                        statusActivity.details = statusChange;
-                        output.status.push(statusActivity);
-
-                        activity.details.push(statusChange);
+                    if (data[i].newData.certificationStatus) {
+                        var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
+                        if (statusChange) {
+                            var statusActivity = angular.copy(activity);
+                            statusActivity.details = statusChange;
+                            output.status.push(statusActivity);
+                            activity.details.push(statusChange);
+                        }
+                    } else {
+                        var statusChange = _compareCertificationEvents(data[i].originalData.certificationEvents, data[i].newData.certificationEvents);
+                        if (statusChange && statusChange.length > 0) {
+                            var statusActivity = angular.copy(activity);
+                            statusActivity.details = ('<ul>' + statusChange.map(function (s) { return '<li>' + s + '</li>';}).join('') + '</ul>');
+                            output.status.push(statusActivity);
+                            //activity.details.push(statusChange);
+                        }
                     }
+
                     for (j = 0; j < simpleCpFields.length; j++) {
                         change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
                         if (change) { activity.details.push(change); }
@@ -740,6 +751,77 @@
                 if (obj.changes.length > 0) {
                     ret.push(obj);
                 }
+            }
+            return ret;
+        }
+
+        function _compareCertificationEvents (prev, curr) {
+            var c = 0, item, p = 0, ret = [];
+            prev = $filter('orderBy')(prev.map(function (e) { if (!e.certificationStatusName) { e.certificationStatusName = e.status.name; } return e; }), 'eventDate');
+            curr = $filter('orderBy')(curr.map(function (e) { if (!e.certificationStatusName) { e.certificationStatusName = e.status.name; } return e; }), 'eventDate');
+
+            while (p < prev.length && c < curr.length) {
+                item = '';
+                if (prev[p].eventDate < curr[c].eventDate) {
+                    if (prev[p].certificationStatusName === curr[c].certificationStatusName) {
+                        item = '"' + prev[p].certificationStatusName + '" status changed effective date to ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        if (curr[c].reason) {
+                            item += ' with reason: "' + curr[c].reason + '"';
+                        }
+                        p += 1;
+                        c += 1;
+                    } else {
+                        item = 'Removed "' + prev[p].certificationStatusName + '" status at ' + $filter('date')(prev[p].eventDate,'mediumDate','UTC');
+                        if (prev[p].reason) {
+                            item += ' with reason: "' + prev[p].reason + '"';
+                        }
+                        p += 1;
+                    }
+                } else if (prev[p].eventDate > curr[c].eventDate) {
+                    if (prev[p].certificationStatusName === curr[c].certificationStatusName) {
+                        item = '"' + prev[p].certificationStatusName + '" status changed effective date to ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        if (curr[c].reason) {
+                            item += ' with reason: "' + curr[c].reason + '"';
+                        }
+                        p += 1;
+                        c += 1;
+                    } else {
+                        item = 'Added "' + curr[c].certificationStatusName + '" status at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        if (curr[c].reason) {
+                            item += ' with reason: "' + curr[c].reason + '"';
+                        }
+                        c += 1;
+                    }
+                } else if (prev[p].certificationStatusName !== curr[c].certificationStatusName) {
+                    item = '"' + prev[p].certificationStatusName + '" status became "' + curr[c].certificationStatusName + '" at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                    if (curr[c].reason) {
+                        item += ' with reason: "' + curr[c].reason + '"';
+                    }
+                    p += 1;
+                    c += 1;
+                } else {
+                    p += 1;
+                    c += 1;
+                }
+                if (item) {
+                    ret.push(item);
+                }
+            }
+            while (p < prev.length) {
+                item = 'Removed "' + prev[p].certificationStatusName + '" status at ' + $filter('date')(prev[p].eventDate,'mediumDate','UTC');
+                if (prev[p].reason) {
+                    item += ' with reason: "' + prev[p].reason + '"';
+                }
+                ret.push(item);
+                p += 1;
+            }
+            while (c < curr.length) {
+                item = 'Added "' + curr[c].certificationStatusName + '" status at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                if (curr[c].reason) {
+                    item += ' with reason: "' + curr[c].reason + '"';
+                }
+                ret.push(item);
+                c += 1;
             }
             return ret;
         }

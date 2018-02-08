@@ -8,6 +8,7 @@ _Date TBD_
 
 ### Minor features
 * Added "Reason for Change" fields when Questionable Activity happens
+* Display "Reason for Status Change" in Reports
 
 ---
 
