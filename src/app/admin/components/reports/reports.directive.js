@@ -404,18 +404,19 @@
                     activity.certificationDate = data[i].newData.certificationDate;
                     activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
                     activity.details = [];
+                    var statusActivity, statusChange;
                     if (data[i].newData.certificationStatus) {
-                        var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
+                        statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
                         if (statusChange) {
-                            var statusActivity = angular.copy(activity);
+                            statusActivity = angular.copy(activity);
                             statusActivity.details = statusChange;
                             output.status.push(statusActivity);
                             activity.details.push(statusChange);
                         }
                     } else {
-                        var statusChange = _compareCertificationEvents(data[i].originalData.certificationEvents, data[i].newData.certificationEvents);
+                        statusChange = _compareCertificationEvents(data[i].originalData.certificationEvents, data[i].newData.certificationEvents);
                         if (statusChange && statusChange.length > 0) {
-                            var statusActivity = angular.copy(activity);
+                            statusActivity = angular.copy(activity);
                             statusActivity.details = ('<ul>' + statusChange.map(function (s) { return '<li>' + s + '</li>';}).join('') + '</ul>');
                             output.status.push(statusActivity);
                             //activity.details.push(statusChange);

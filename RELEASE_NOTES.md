@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.14.0
+_12 February 2018_
 
 ### Major features
 * Allow view/edit of fuzzy matching choices

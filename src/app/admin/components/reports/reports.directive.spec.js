@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Admin Reports', function () {
+    describe('the Admin Reports', function () {
 
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, authService, el, networkService, scope, vm;
 
@@ -774,7 +774,7 @@
                     });
                 });
 
-                fdescribe('certification event history', function () {
+                describe('certification event history', function () {
                     describe('in the old style', function () {
                         it('should recognize when nothing changed', function () {
                             var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
