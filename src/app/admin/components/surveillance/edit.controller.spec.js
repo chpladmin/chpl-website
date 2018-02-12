@@ -175,6 +175,10 @@
         });
 
         describe('when deleting the surveillance', function () {
+            beforeEach(function () {
+                vm.reason = 'a reason';
+            });
+
             it('should close it\'s own modal on a status:200 response', function () {
                 networkService.deleteSurveillance.and.returnValue($q.when({status: 200}));
                 vm.deleteSurveillance();
@@ -208,6 +212,19 @@
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual(['errors']);
+            });
+
+            it('should not allow deleting a surveillance without a Reason for Change', function () {
+                var callCount = networkService.deleteSurveillance.calls.count();
+                vm.reason = undefined;
+                vm.deleteSurveillance();
+                scope.$digest();
+                expect(networkService.deleteSurveillance.calls.count()).toBe(callCount);
+            });
+
+            it('should pass the Reason for Change to the network service', function () {
+                vm.deleteSurveillance();
+                expect(networkService.deleteSurveillance).toHaveBeenCalledWith(vm.surveillance.id, 'a reason');
             });
         });
 

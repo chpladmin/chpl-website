@@ -185,6 +185,7 @@
                 networkService.updateCP({
                     listing: vm.cp,
                     banDeveloper: vm.banDeveloper,
+                    reason: vm.reason,
                 }).then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

@@ -51,6 +51,7 @@
             getDevelopers: getDevelopers,
             getEditions: getEditions,
             getEducation: getEducation,
+            getFuzzyTypes: getFuzzyTypes,
             getJobTypes: getJobTypes,
             getJobs: getJobs,
             getIcsFamily: getIcsFamily,
@@ -116,6 +117,7 @@
             updateCP: updateCP,
             updateCap: updateCap,
             updateDeveloper: updateDeveloper,
+            updateFuzzyType: updateFuzzyType,
             updateProduct: updateProduct,
             updateRecipient: updateRecipient,
             updateSurveillance: updateSurveillance,
@@ -194,8 +196,10 @@
             return apiPOST('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
         }
 
-        function deleteSurveillance (surveillanceId) {
-            return apiPOST('/surveillance/' + surveillanceId + '/delete', {});
+        function deleteSurveillance (surveillanceId, reason) {
+            return apiPOST('/surveillance/' + surveillanceId + '/delete', {
+                reason: reason,
+            });
         }
 
         function deleteSurveillanceDocument (survId, docId) {
@@ -341,6 +345,10 @@
 
         function getEducation () {
             return apiGET('/data/education_types');
+        }
+
+        function getFuzzyTypes () {
+            return apiGET('/data/fuzzy_choices');
         }
 
         function getJobTypes () {
@@ -634,6 +642,10 @@
 
         function updateDeveloper (developerObject) {
             return apiPOST('/developers/update', developerObject);
+        }
+
+        function updateFuzzyType (fuzzyType) {
+            return apiPOST('/data\/fuzzy_choices\/update', fuzzyType);
         }
 
         function updateProduct (productObject) {

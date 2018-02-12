@@ -54,7 +54,7 @@
             <tr ng-if="vm.displayedCertifiedProductsUpload.length === 0">
               <td colspan="7">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsUpload" ng-if="vm.displayedCertifiedProductsUpload.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProductsUpload" ng-if="vm.displayedCertifiedProductsUpload.length > 0">
               <td>{{ activity.acb }}</td>
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
@@ -64,7 +64,7 @@
                 <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
               </td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -127,7 +127,7 @@
             <tr ng-if="vm.displayedCertifiedProductsStatus.length === 0">
               <td colspan="8">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsStatus" ng-if="vm.displayedCertifiedProductsStatus.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProductsStatus" ng-if="vm.displayedCertifiedProductsStatus.length > 0">
               <td>{{ activity.acb }}</td>
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
@@ -137,8 +137,8 @@
                 <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
               </td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td>{{ activity.details }}</td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td ng-bind-html="activity.details"></td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -193,7 +193,7 @@
             <tr ng-if="vm.displayedCertifiedProductsSurveillance.length === 0">
               <td colspan="8">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsSurveillance" ng-if="vm.displayedCertifiedProductsSurveillance.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProductsSurveillance" ng-if="vm.displayedCertifiedProductsSurveillance.length > 0">
               <td>{{ activity.acb }}</td>
               <td ng-bind-html="activity.action"></td>
               <td>
@@ -202,7 +202,7 @@
                 </ul>
                 <button class="btn btn-sm btn-ai-success" ng-click="vm.compareSurveillances(activity.source.oldS,activity.source.newS)" ng-if="activity.source"><i class="fa fa-search"></i>View Details</button>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -257,7 +257,7 @@
             <tr ng-if="vm.displayedCertifiedProductsCAP.length === 0">
               <td colspan="8">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsCAP" ng-if="vm.displayedCertifiedProductsCAP.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProductsCAP" ng-if="vm.displayedCertifiedProductsCAP.length > 0">
               <td>{{ activity.acb }}</td>
               <td ng-bind-html="activity.action"></td>
               <td>
@@ -265,7 +265,7 @@
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -328,7 +328,7 @@
             <tr ng-if="vm.displayedCertifiedProducts.length === 0">
               <td colspan="8">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProducts" ng-if="vm.displayedCertifiedProducts.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProducts" ng-if="vm.displayedCertifiedProducts.length > 0">
               <td>{{ activity.acb }}</td>
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
@@ -343,7 +343,7 @@
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -400,7 +400,7 @@
             <tr ng-if="vm.displayedDevelopers.length === 0">
               <td colspan="5">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedDevelopers" ng-if="vm.displayedDevelopers.length > 0">
+            <tr ng-repeat="activity in vm.displayedDevelopers" ng-if="vm.displayedDevelopers.length > 0">
               <td>{{ activity.developer }}</td>
               <td>{{ activity.developerCode }}</td>
               <td>{{ activity.responsibleUser }}</td>
@@ -410,7 +410,7 @@
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -467,14 +467,14 @@
             <tr ng-if="vm.displayedProducts.length === 0">
               <td colspan="5">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedProducts" ng-if="vm.displayedProducts.length > 0">
+            <tr ng-repeat="activity in vm.displayedProducts" ng-if="vm.displayedProducts.length > 0">
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
               <td>{{ activity.responsibleUser }}</td>
               <td>
                 <span ng-bind-html="activity.action"></span>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -492,11 +492,11 @@
             <tr ng-if="vm.displayedVersions.length === 0">
               <td colspan="4">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedVersions" ng-if="vm.displayedVersions.length > 0">
-		      <td class="">{{ activity.product }}</td>
-		      <td class="">{{ activity.name }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedVersions" ng-if="vm.displayedVersions.length > 0">
+              <td class="">{{ activity.product }}</td>
+              <td class="">{{ activity.name }}</td>
+              <td class=""><span ng-bind-html="activity.action"></span></td>
+              <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -532,10 +532,10 @@
             <tr ng-if="vm.displayedACBs.length === 0">
               <td colspan="3">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedACBs" ng-if="vm.displayedACBs.length > 0">
-		      <td class="">{{ activity.name }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedACBs" ng-if="vm.displayedACBs.length > 0">
+              <td class="">{{ activity.name }}</td>
+              <td class=""><span ng-bind-html="activity.action"></span></td>
+              <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -571,10 +571,10 @@
             <tr ng-if="vm.displayedATLs.length === 0">
               <td colspan="3">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedATLs" ng-if="vm.displayedATLs.length > 0">
-		      <td class="">{{ activity.name }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedATLs" ng-if="vm.displayedATLs.length > 0">
+              <td class="">{{ activity.name }}</td>
+              <td class=""><span ng-bind-html="activity.action"></span></td>
+              <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -609,9 +609,9 @@
             <tr ng-if="vm.displayedAnnouncements.length === 0">
               <td colspan="2">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedAnnouncements" ng-if="vm.displayedAnnouncements.length > 0">
-		      <td class="">{{ activity.description }}</td>
-		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedAnnouncements" ng-if="vm.displayedAnnouncements.length > 0">
+              <td class="">{{ activity.description }}</td>
+              <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -646,9 +646,9 @@
             <tr ng-if="vm.displayedUsers.length === 0">
               <td colspan="2">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedUsers" ng-if="vm.displayedUsers.length > 0">
-		      <td class=""><span ng-bind-html="activity.description"></span></td>
-		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedUsers" ng-if="vm.displayedUsers.length > 0">
+              <td class=""><span ng-bind-html="activity.description"></span></td>
+              <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -665,8 +665,8 @@
             <tr ng-if="vm.displayedUserActivities.length === 0">
               <td colspan="3">No activity found</td>
             </tr>
-	        <tr ng-repeat-start="activity in vm.displayedUserActivities" ng-if="vm.displayedUserActivities.length > 0">
-		      <td class="" rowspan="{{ activity.events.length }}">{{ activity.user.firstName }}&nbsp;{{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
+            <tr ng-repeat-start="activity in vm.displayedUserActivities" ng-if="vm.displayedUserActivities.length > 0">
+              <td class="" rowspan="{{ activity.events.length }}">{{ activity.user.firstName }}&nbsp;{{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
               <td>{{ activity.events[0].description }}</td>
               <td>{{ activity.events[0].activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
@@ -707,9 +707,9 @@
             <tr ng-if="vm.displayedApiActivity.length === 0">
               <td colspan="2">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedApiActivity" ng-if="vm.displayedApiActivity.length > 0">
-		      <td class=""><span ng-bind-html="activity.description"></span></td>
-		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedApiActivity" ng-if="vm.displayedApiActivity.length > 0">
+              <td class=""><span ng-bind-html="activity.description"></span></td>
+              <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -729,9 +729,9 @@
             <div class="col-sm-3">
               <input type="date" class="form-control" ng-model="vm.apiKey.endDate" name="apiKeyEndDate" id="apiKeyEndDate">
             </div>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="vm.refreshApiKeyUsage()">Search <i class="fa fa-search"></i></button>
-          </div>
+            <div class="col-sm-2">
+              <button class="btn btn-primary" ng-click="vm.refreshApiKeyUsage()">Search <i class="fa fa-search"></i></button>
+            </div>
           </div>
           <div class="formGroup">
             <label for="apiKeyDateAscending" class="col-sm-2 control-label">Oldest first</label>
@@ -767,12 +767,12 @@
             <tr ng-if="vm.searchedApi.length === 0">
               <td colspan="5">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.searchedApi" ng-if="vm.searchedApi.length > 0">
-		      <td class="">{{ activity.apiKey }}</td>
-		      <td class="">{{ activity.email }}</td>
-		      <td class="">{{ activity.name }}</td>
-		      <td class="">{{ activity.apiCallPath }}</td>
-		      <td class="">{{ activity.creationDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.searchedApi" ng-if="vm.searchedApi.length > 0">
+              <td class="">{{ activity.apiKey }}</td>
+              <td class="">{{ activity.email }}</td>
+              <td class="">{{ activity.name }}</td>
+              <td class="">{{ activity.apiCallPath }}</td>
+              <td class="">{{ activity.creationDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>

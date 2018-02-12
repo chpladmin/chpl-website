@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 9.14.0
+_12 February 2018_
+
+### Major features
+* Allow view/edit of fuzzy matching choices
+
+### Minor features
+* Added "Reason for Change" fields when Questionable Activity happens
+* Display "Reason for Status Change" in Reports
+
+---
+
 ## Version 9.13.0
 _1 February 2018_
 

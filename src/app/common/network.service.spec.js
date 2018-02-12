@@ -207,7 +207,7 @@
 
         it('should deleteSurveillance', function () {
             $httpBackend.expectPOST(/surveillance\/1\/delete/).respond(200, {data: 'response'});
-            networkService.deleteSurveillance(1).then(function (response) {
+            networkService.deleteSurveillance(1,'changeReason').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -577,6 +577,14 @@
         it('should getEducation', function () {
             $httpBackend.expectGET(/data\/education_types/).respond(200, {data: 'response'});
             networkService.getEducation().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getFuzzyTypes', function () {
+            $httpBackend.expectGET(/data\/fuzzy_choices/).respond(200, {data: 'response'});
+            networkService.getFuzzyTypes().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1177,6 +1185,14 @@
         it('should updateDeveloper', function () {
             $httpBackend.expectPOST(/developers\/update/).respond(200, {data: 'response'});
             networkService.updateDeveloper('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateFuzzyType', function () {
+            $httpBackend.expectPOST(/data\/fuzzy_choices\/update/).respond(200, {data: 'response'});
+            networkService.updateFuzzyType('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
