@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-      <h1>Download the CHPL</h1>
+      <h1 id="pageTitle">Download the CHPL</h1>
     </div>
   </div>
   <div class="main-content" id="mainContent" tabindex="-1">
@@ -39,7 +39,7 @@
                   ng-options="o as o.display for o in vm.downloadOptions">
           </select>
           <span class="input-group-btn">
-            <a type="button" class="btn btn-ai-success" href="{{ vm.downloadOption.value }}"
+            <a type="button" class="btn btn-ai-success" href="{{ vm.downloadOption.value }}" id="downloadChplLink"
                analytics-on="click" analytics-event="Download CHPL" analytics-properties="{ category: 'Download CHPL', label: vm.downloadOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
           </span>
         </div>
@@ -49,7 +49,7 @@
                   ng-options="o as o.display for o in vm.definitionOptions">
           </select>
           <span class="input-group-btn">
-            <a type="button" class="btn btn-ai-success" href="{{ vm.definitionOption.value }}"
+            <a type="button" class="btn btn-ai-success" href="{{ vm.definitionOption.value }}" id="downloadChplDefinitionLink"
                analytics-on="click" analytics-event="Download CHPL Defintion" analytics-properties="{ category: 'Download CHPL', label: vm.definitionOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Definition</span></a>
           </span>
         </div>
