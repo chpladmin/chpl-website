@@ -1,7 +1,7 @@
 # Release Notes
 
 ## Version 9.14.1
-_Date TBD_
+_22 February 2018_
 
 ### Bug fixed
 * Enable editing of CQM-Criteria relationships for 2015 Edition Listings
