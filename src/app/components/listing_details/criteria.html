@@ -1,10 +1,10 @@
 <div class="col-sm-12" ng-form="vm.editForm">
-  <div ng-if="vm.isEditing || vm.cert.success || vm.viewAll">
+  <div ng-if="vm.isEditing || vm.cert.success || vm.viewAll" id="criteria_{{ vm.cert.number }}_details_header">
     <i class="fa fa-lg" ng-class="{'fa-check-square-o': vm.cert.success && !vm.cert.hasVersion, 'fa-square-o': !vm.cert.success}"></i>
     <span class="sr-only">{{ vm.cert.success ? 'meets' : 'does not meet'}}</span>
     {{ vm.cert.number }}: {{ vm.cert.title }}
     <span class="pull-right">
-      <a href ng-click="vm.toggleCriteria()" aria-expanded="{{ vm.showDetails }}" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null">{{ vm.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ vm.cert.number }}</span></a>
+      <a href ng-click="vm.toggleCriteria()" aria-expanded="{{ vm.showDetails }}" ng-if="vm.cert.success && vm.cert.additionalSoftware !== null" id="criteria_{{ vm.cert.number }}_details_link">{{ vm.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ vm.cert.number }}</span></a>
       <span ng-if="vm.isEditing">
         <a href uib-tooltip="Criteria has phantom data" tooltip-trigger="mouseenter focus click"><span ng-if="!vm.cert.success && vm.hasPhantomData()"><i class="fa fa-exclamation-triangle status-warning"></i></span></a>
         <button class="btn btn-ai-success btn-sm" ng-click="vm.editCert()"><i class="fa fa-pencil-square-o"> Edit</i></button>
