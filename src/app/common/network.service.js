@@ -66,6 +66,7 @@
             getQmsStandards: getQmsStandards,
             getRelatedListings: getRelatedListings,
             getSearchOptions: getSearchOptions,
+            getSedParticipantStatisticsCount: getSedParticipantStatisticsCount,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
             getStatisticTypes: getStatisticTypes,
@@ -412,7 +413,10 @@
             }
         }
 
-        function getSimpleProduct (productId) {
+        function getSedParticipantStatisticsCount() {
+            return apiGET('/statistics/sed_participant_count')
+        }
+                function getSimpleProduct (productId) {
             return apiGET('/products/' + productId);
         }
 
