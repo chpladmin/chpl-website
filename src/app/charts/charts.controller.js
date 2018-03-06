@@ -8,43 +8,43 @@
     function ChartsController ($log, networkService) {
         var vm = this;
 
-        prepareSedParticipantCountChart();
+        activate();
 
         ////////////////////////////////////////////////////////////////////
 
-        function prepareSedParticipantCountChart() {
+        function activate () {
             networkService.getSedParticipantStatisticsCount().then(function (data) {
                 vm.charts = {
                     sedParticipantCounts: {
-                        type: "ColumnChart",
+                        type: 'ColumnChart',
                         data: {
                             cols: [
                                 { label: 'Participants', type: 'number'},
                                 { label: 'SED Count', type: 'number'},
                             ],
-                            rows: getSedParticipantCountDataInChartFormat(data),
+                            rows: _getSedParticipantCountDataInChartFormat(data),
                         },
                         options: {
                             title: 'SED Count by Participant Count',
                             hAxis: {
                                 title: 'Participant Count',
-                                minValue: 0
-                              },
+                                minValue: 0,
+                            },
                             vAxis: {
                                 scaleType: 'mirrorLog',
-                                title: 'SED Count'
-                             }
-                        }
-                    }
+                                title: 'SED Count',
+                            },
+                        },
+                    },
                 }
             });
         }
 
-        function getSedParticipantCountDataInChartFormat(data) {
-            data.sedParticipantStatisticsCounts.sort(function(a, b) {
-                return parseInt(a.participantCount) - parseInt(b.participantCount);
+        function _getSedParticipantCountDataInChartFormat (data) {
+            data.sedParticipantStatisticsCounts.sort(function (a, b) {
+                return parseInt(a.participantCount, 10) - parseInt(b.participantCount, 10);
             });
-            return data.sedParticipantStatisticsCounts.map(obj =>  {
+            return data.sedParticipantStatisticsCounts.map(function (obj) {
                 return {c: [{ v: obj.participantCount},{v: obj.sedCount}]};
             });
         }
