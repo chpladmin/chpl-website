@@ -19,20 +19,20 @@
                         type: 'ColumnChart',
                         data: {
                             cols: [
-                                { label: 'Participants', type: 'number'},
-                                { label: 'SED Count', type: 'number'},
+                                { label: 'Number of SED Test Participants Used', type: 'number'},
+                                { label: 'Number of 2015 Edition CHPL Listings', type: 'number'},
                             ],
                             rows: _getSedParticipantCountDataInChartFormat(data),
                         },
                         options: {
-                            title: 'SED Count by Participant Count',
+                            title: 'Number of Safety Enhanced Design Test Participant',
                             hAxis: {
-                                title: 'Participant Count',
+                                title: 'Number of SED Test Participants Used',
                                 minValue: 0,
                             },
                             vAxis: {
                                 scaleType: 'mirrorLog',
-                                title: 'SED Count',
+                                title: 'Number of 2015 Edition CHPL Listings',
                             },
                         },
                     },

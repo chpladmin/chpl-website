@@ -52,12 +52,12 @@
                 });
             });
 
-            /*
+            
             mock.statistics = [];
             for (var i = 0; i < mock.types.length; i++) {
                 mock.statistics.push({type: angular.copy(mock.types[i]), statistics: angular.copy(mock.stats)});
             }
-            */
+            
 
             inject(function (_$controller_, _$log_, _$q_, $rootScope, _networkService_) {
                 $controller = _$controller_;
@@ -83,12 +83,12 @@
             }
         });
 
-        /*
-        it('should exist', function () {
+        
+        xit('should exist', function () {
             expect(vm).toBeDefined();
         });
 
-        describe('during load', function () {
+        xdescribe('during load', function () {
             it('should get all of the sedParticipantStatisticsCounts', function () {
                 expect(networkService.sedParticipantStatisticsCounts).toHaveBeenCalled();
                 expect(vm.sedParticipantStatisticsCounts.length).toBe(mock.sedParticipantStatisticsCounts.length);
@@ -105,6 +105,6 @@
                 expect(vm.charts.uniqueProducts.data.rows[0]).toEqual({c: [{v: new Date('Fri Apr 08 2016')},{v: 2302},{v: 2302},{v: 2302},{v: 2302}]});
             });
         });
-        */
+        
     });
 })();
