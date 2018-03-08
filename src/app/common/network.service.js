@@ -66,10 +66,9 @@
             getQmsStandards: getQmsStandards,
             getRelatedListings: getRelatedListings,
             getSearchOptions: getSearchOptions,
+            getSedParticipantStatisticsCount: getSedParticipantStatisticsCount,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
-            getStatisticTypes: getStatisticTypes,
-            getStatistics: getStatistics,
             getSurveillanceLookups: getSurveillanceLookups,
             getTargetedUsers: getTargetedUsers,
             getTestData: getTestData,
@@ -412,20 +411,16 @@
             }
         }
 
+        function getSedParticipantStatisticsCount () {
+            return apiGET('/statistics/sed_participant_count');
+        }
+
         function getSimpleProduct (productId) {
             return apiGET('/products/' + productId);
         }
 
         function getSingleCertifiedProductActivity (productId) {
             return apiGET('/activity/certified_products/' + productId);
-        }
-
-        function getStatisticTypes () {
-            return apiGET('/data/statistic_types');
-        }
-
-        function getStatistics () {
-            return apiGET('/data/statistics');
         }
 
         function getSurveillanceLookups () {
