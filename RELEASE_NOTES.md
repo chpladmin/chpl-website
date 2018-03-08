@@ -8,6 +8,14 @@ _Date TBD_
 
 ---
 
+## Version 9.14.1
+_22 February 2018_
+
+### Bug fixed
+* Enable editing of CQM-Criteria relationships for 2015 Edition Listings
+
+---
+
 ## Version 9.14.0
 _12 February 2018_
 
