@@ -723,17 +723,9 @@
             $httpBackend.flush();
         });
 
-        it('should getStatisticTypes', function () {
-            $httpBackend.expectGET(/data\/statistic_types/).respond(200, {data: 'response'});
-            networkService.getStatisticTypes().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getStatistics', function () {
-            $httpBackend.expectGET(/data\/statistics/).respond(200, {data: 'response'});
-            networkService.getStatistics().then(function (response) {
+        it('should getSedParticipantStatisticsCount', function () {
+            $httpBackend.expectGET(/statistics\/sed_participant_count/).respond(200, {data: 'response'});
+            networkService.getSedParticipantStatisticsCount().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
