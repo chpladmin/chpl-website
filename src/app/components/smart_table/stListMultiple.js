@@ -172,6 +172,7 @@
         vm.allowAll = allowAll;
         vm.clearFilter = clearFilter;
         vm.filterChanged = filterChanged;
+        vm.getId = getId;
         vm.isNotDefault = isNotDefault;
         vm.restoreState = restoreState;
         vm.selectAll = selectAll;
@@ -217,6 +218,10 @@
             vm.matchAll = false;
             vm.filterChanged();
             vm.storeState();
+        }
+
+        function getId (value) {
+            return 'filter-list-' + value.replace(/\s/g, '_');
         }
 
         function filterChanged () {

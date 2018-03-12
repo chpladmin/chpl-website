@@ -17,7 +17,7 @@
       <tr ng-if="widget.searchResult.year === '2014'"><th scope="row">Ambulatory CQMs</th><td class="text-right">{{ widget.searchResult.metPercentages.cqmsAmbulatory }}%</td></tr>
     </table>
   </div>
-  <p class="text-center" ng-if="widget.createResponse">
+  <p class="text-center" ng-if="widget.createResponse && widget.createResponse.ehrCertificationId">
     Your CMS EHR Certification ID<br />
     <strong>{{ widget.createResponse.ehrCertificationId }}</strong>
     <br/>* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.

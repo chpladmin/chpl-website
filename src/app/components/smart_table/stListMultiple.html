@@ -13,6 +13,7 @@
     <label ng-class="{ 'emphasis' : vm.isNotDefault(item) }">
       <input type="checkbox"
              value="{{ item.value }}"
+             id="{{ vm.getId(item.value) }}"
              ng-model="item.isSelected"
              ng-change="vm.toggleSelection(item)">{{ item.display ? item.display : item.value }}
     </label>

@@ -1,5 +1,5 @@
 <div id="search-page">
-  <div class="pending" ng-show="vm.isPreLoading"></div>
+  <div class="pending" id="pendingMask" ng-show="vm.isPreLoading"></div>
   <div class="search-unsearched" ng-if="!vm.activeSearch && vm.searchForm.$pristine"></div>
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
     <st-manage register-search="vm.registerSearch(search)" name-space="searchTableState" />
