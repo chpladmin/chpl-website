@@ -1,9 +1,9 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version  9.15.0
+_12 March 2018_
 
-### Major features
+### Minor features
 * Added /charts page that displays the SED/Participant count chart
 
 ---
