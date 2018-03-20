@@ -238,7 +238,6 @@
                 var count = value.participantCount;
                 //if (experienceMap.has(value.experienceYears)) {
                 if (value.experienceYears in experienceMap) {
-                    experienceMap
                     count = experienceMap[value.experienceYears] + count;
                 }
                 experienceMap[value.experienceYears] = count;
