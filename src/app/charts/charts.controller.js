@@ -34,7 +34,7 @@
                         rows: _getSedParticipantCountDataInChartFormat(data),
                     },
                     options: {
-                        title: 'Number of Safety Enhanced Design Test Participant',
+                        title: 'Number of Safety Enhanced Design Test Participants',
                         hAxis: {
                             title: 'Number of SED Test Participants Used',
                             minValue: 0,
@@ -70,14 +70,18 @@
                     },
                     options: {
                         title: 'Safety Enhanced Design Test Participants by Gender',
+                        sliceVisibilityThreshold: 0,
                     },
                 }
             });
         }
 
         function _getParticipantGenderCountDataInChartFormat (data) {
-            var genderData = [{c: [{ v: 'Male'},{v: data.maleCount}]}, {c: [{ v: 'Female'},{v: data.femaleCount}]}];
-            //console.log(data);
+            var genderData = [
+                {c: [{ v: 'Male'},{v: data.maleCount}]}, 
+                {c: [{ v: 'Female'},{v: data.femaleCount}]},
+                {c: [{ v: 'Unknown'},{v: data.unknownCOunt}]},
+            ];
             return genderData;
         }
 
@@ -96,7 +100,6 @@
                         title: 'Safety Enhanced Design Test Participants by Age',
                     },
                 }
-                //console.log(vm.participantAgeCounts);
             });
         }
 
@@ -124,7 +127,6 @@
                         title: 'Safety Enhanced Design Test Participants by Education Level',
                     },
                 }
-                //console.log(vm.participantEducationCounts);
             });
         }
 
