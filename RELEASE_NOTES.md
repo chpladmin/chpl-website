@@ -1,7 +1,7 @@
 # Release Notes
 
-## Vertion TBD
-_Date TBD_
+## Vertion 9.16.0
+_26 March 2018_
 
 ### Minor features
 * Added Participant/Age chart to /charts page
@@ -10,6 +10,8 @@ _Date TBD_
 * Added Participant/Professional Experience chart to /charts page
 * Added Participant/Product Experience chart to /charts page
 * Added Participant/Computer Experience chart to /charts page
+
+---
 
 ## Version  9.15.0
 _12 March 2018_
