@@ -80,7 +80,7 @@
             var genderData = [
                 {c: [{ v: 'Male'},{v: data.maleCount}]}, 
                 {c: [{ v: 'Female'},{v: data.femaleCount}]},
-                {c: [{ v: 'Unknown'},{v: data.unknownCOunt}]},
+                {c: [{ v: 'Unknown'},{v: data.unknownCount}]},
             ];
             return genderData;
         }
