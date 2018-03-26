@@ -465,6 +465,13 @@
                             }
                         }
                     }
+                    if (data[i].originalData.testingLabs) {
+                        var testingLabsKeys = [];
+                        var testingLabs = compareArray(data[i].originalData.testingLabs, data[i].newData.testingLabs, testingLabsKeys, 'testingLabName');
+                        for (j = 0; j < testingLabs.length; j++) {
+                            activity.details.push('Testing Lab "' + testingLabs[j].name + '" changes<ul>' + testingLabs[j].changes.join('') + '</ul>');
+                        }
+                    }
                     var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
                     var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
                     for (j = 0; j < qmsStandards.length; j++) {
