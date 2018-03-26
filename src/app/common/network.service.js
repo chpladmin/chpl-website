@@ -58,6 +58,12 @@
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
+            getParticipantAgeStatistics: getParticipantAgeStatistics,
+            getParticipantComputerExperienceStatistics: getParticipantComputerExperienceStatistics,
+            getParticipantEducationStatistics: getParticipantEducationStatistics,
+            getParticipantGenderStatistics: getParticipantGenderStatistics,
+            getParticipantProductExperienceStatistics: getParticipantProductExperienceStatistics,
+            getParticipantProfessionalExperienceStatistics: getParticipantProfessionalExperienceStatistics,
             getPractices: getPractices,
             getProduct: getProduct,
             getProductActivity: getProductActivity,
@@ -372,6 +378,30 @@
 
         function getSubscriptionReportTypes () {
             return apiGET('/data/notification_types');
+        }
+
+        function getParticipantAgeStatistics () {
+            return apiGET('/statistics/participant_age_count');
+        }
+
+        function getParticipantComputerExperienceStatistics () {
+            return apiGET('/statistics/participant_computer_experience_count');
+        }
+
+        function getParticipantEducationStatistics () {
+            return apiGET('/statistics/participant_education_count');
+        }
+
+        function getParticipantGenderStatistics () {
+            return apiGET('/statistics/participant_gender_count');
+        }
+
+        function getParticipantProductExperienceStatistics () {
+            return apiGET('/statistics/participant_product_experience_count');
+        }
+
+        function getParticipantProfessionalExperienceStatistics () {
+            return apiGET('/statistics/participant_professional_experience_count');
         }
 
         function getPractices () {
