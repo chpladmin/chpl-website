@@ -1,6 +1,14 @@
 # Release Notes
 
-## Vertion 9.16.0
+## Version 9.16.1
+_27 March 2018_
+
+### Text tweaks
+Added "disclaimer" regarding beta status of Charts page
+
+---
+
+## Version 9.16.0
 _26 March 2018_
 
 ### Minor features
@@ -13,7 +21,7 @@ _26 March 2018_
 
 ---
 
-## Version  9.15.0
+## Version 9.15.0
 _12 March 2018_
 
 ### Minor features
