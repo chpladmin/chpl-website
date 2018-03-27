@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Minor Features
+* Add SLI to the default options in main & collections pages
+
+---
+
 ## Version 9.16.1
 _27 March 2018_
 
@@ -8,7 +16,7 @@ Added "disclaimer" regarding beta status of Charts page
 
 ---
 
-## Version 9.16.0
+## Vertion 9.16.0
 _26 March 2018_
 
 ### Minor features
