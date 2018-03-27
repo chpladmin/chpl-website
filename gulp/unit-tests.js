@@ -84,7 +84,7 @@ function runTests (singleRun, done) {
     server.start();
 }
 
-gulp.task('test', ['scripts'], function(done) {
+gulp.task('test', ['scripts', 'lint-html'], function(done) {
     runTests(true, done);
 });
 
