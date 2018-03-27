@@ -67,7 +67,7 @@
         vm.defaultRefineModel = {
             acb: {
                 'CCHIT': false,
-                'SLI Global': false,
+                'SLI Compliance': true,
                 'Surescripts LLC': false,
                 'Drummond Group': true,
                 'ICSA Labs': true,
@@ -89,6 +89,7 @@
                 'Terminated by ONC': false,
             },
         };
+
         vm.retired = {
             acb: {'CCHIT': true, 'SLI Global': true, 'Surescripts LLC': true},
             edition: { '2011': true },
