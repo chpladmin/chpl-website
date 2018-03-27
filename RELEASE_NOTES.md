@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Minor Features
+* Add SLI to the default options in main & collections pages
+	
+---
+
 ## Vertion 9.16.0
 _26 March 2018_
 
