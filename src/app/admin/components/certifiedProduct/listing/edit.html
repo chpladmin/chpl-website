@@ -15,16 +15,19 @@
           <strong>CHPL Product Number:</strong>{{ vm.idFields.prefix }}
         </span>
         <div class="form-group">
-          <label for="idProd" class="sr-only">Product Code:</label>
-          <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" required></input>
+          <label for="idProd" class="sr-only">Product Code:
+            <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" required>
+          </label>
         </div>
         <div class="form-group">
-          <label for="idVer" class="sr-only">Version Code:</label>
-          <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" required></input>
+          <label for="idVer" class="sr-only">Version Code:
+            <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" required>
+          </label>
         </div>
         <div class="form-group">
-          <label for="idIcs" class="sr-only">ICS Code:</label>
-          <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required></input>
+          <label for="idIcs" class="sr-only">ICS Code:
+            <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required>
+          </label>
         </div>
         <span class="form-control-static">
           {{ vm.idFields.suffix }}
@@ -76,8 +79,9 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
     <div class="form-group">
-      <label for="cpAdditionalSoftware">Product wide Relied Upon Software</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cpAdditionalSoftware"></input>
+      <label for="cpAdditionalSoftware">Product wide Relied Upon Software
+        <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cpAdditionalSoftware">
+      </label>
     </div>
     <table class="table table-condensed">
       <thead>
@@ -111,8 +115,9 @@
               <div class="text-danger" ng-if="$last && vm.improperFirstStatus()">The earliest status of this product must be "Active"</div>
             </div>
             <div class="form-group" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Withdrawn by Developer Under Surveillance/Review'">
-              <label for="banDeveloper">I want to trigger a certification ban for this status change</label>
-              <input class="" type="checkbox" ng-model="vm.banDeveloper" id="banDeveloper"></input>
+              <label for="banDeveloper">I want to trigger a certification ban for this status change
+                <input class="" type="checkbox" ng-model="vm.banDeveloper" id="banDeveloper">
+              </label>
             </div>
           </td>
           <td>
@@ -144,23 +149,27 @@
       </tbody>
     </table>
     <div class="form-group">
-      <label for="cpAcbCertId">ACB Certification Id</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.acbCertificationId" id="cpAcbCertId" name="cpAcbCertId" ng-maxlength="250"></input>
+      <label for="cpAcbCertId">ACB Certification Id
+        <input class="input-sm form-control" type="text" ng-model="vm.cp.acbCertificationId" id="cpAcbCertId" name="cpAcbCertId" ng-maxlength="250">
+      </label>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpAcbCertId.$touched) && vm.editForm.cpAcbCertId.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="cpOtherAcb">Other ACB</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cpOtherAcb"></input>
+      <label for="cpOtherAcb">Other ACB
+        <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cpOtherAcb">
+      </label>
     </div>
     <div class="form-group">
-      <label for="cpTransparencyUrl">Mandatory Disclosures URL</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cpTransparencyAttUrl" name="cpTransparencyAttUrl" ng-maxlength="1024"></input>
+      <label for="cpTransparencyUrl">Mandatory Disclosures URL
+        <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cpTransparencyAttUrl" name="cpTransparencyAttUrl" ng-maxlength="1024">
+      </label>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.url">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="cpIcs">Inherited Certification Status</label>
-      <input class="" type="checkbox" ng-model="vm.cp.ics.inherits" id="cpIcs"></input>
+      <label for="cpIcs">Inherited Certification Status
+        <input class="" type="checkbox" ng-model="vm.cp.ics.inherits" id="cpIcs">
+      </label>
     </div>
     <div ng-if="vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits">
       Inherited Certification Management
@@ -211,11 +220,11 @@
           </div>
           <label class="col-sm-6 control-label" for="qmsModification{{ qms.id }}">QMS Modification</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="qms.qmsModification" id="qmsModification{{ qms.id }}"></input>
+            <input type="text" class="form-control" ng-model="qms.qmsModification" id="qmsModification{{ qms.id }}">
           </div>
           <label class="col-sm-6 control-label" for="qmsApplicableCriteria{{ qms.id }}">QMS Applicable Criteria</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="qms.applicableCriteria" id="qmsApplicableCriteria{{ qms.id }}"></input>
+            <input type="text" class="form-control" ng-model="qms.applicableCriteria" id="qmsApplicableCriteria{{ qms.id }}">
           </div>
         </div>
         <div class="form-group form-group-sm">
@@ -230,23 +239,24 @@
           </div>
           <label class="col-sm-6 control-label" for="newQmsStandardExpandableName">Add new QMS Standard to available options</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newQmsStandard.expandableName" id="newQmsStandardExpandableName" name="newQmsStandardExpandableName" ng-change="vm.extendSelect(vm.qmsStandards.data, vm.newQmsStandard.expandableName); vm.newQmsStandard.qmsStandardName = vm.newQmsStandard.expandableName" ng-maxlength="255"></input>
+            <input type="text" class="form-control" ng-model="vm.newQmsStandard.expandableName" id="newQmsStandardExpandableName" name="newQmsStandardExpandableName" ng-change="vm.extendSelect(vm.qmsStandards.data, vm.newQmsStandard.expandableName); vm.newQmsStandard.qmsStandardName = vm.newQmsStandard.expandableName" ng-maxlength="255">
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.newQmsStandardExpandableName.$touched) && vm.editForm.newQmsStandardExpandableName.$error.maxlength">Field is too long</div>
           </div>
           <label class="col-sm-6 control-label" for="newQmsStandardModification">QMS Modification</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newQmsStandard.qmsModification" id="newQmsStandardModification"></input>
+            <input type="text" class="form-control" ng-model="vm.newQmsStandard.qmsModification" id="newQmsStandardModification">
           </div>
           <label class="col-sm-6 control-label" for="newQmsStandardApplicableCriteria">QMS Applicable Criteria</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newQmsStandard.applicableCriteria" id="newQmsStandardApplicableCriteria"></input>
+            <input type="text" class="form-control" ng-model="vm.newQmsStandard.applicableCriteria" id="newQmsStandardApplicableCriteria">
           </div>
         </div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cpReportFileLoc">Report File Location</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc" name="cpReportFileLoc" ng-maxlength="250" ng-required="vm.cp.certificationEdition.name === '2014'"></input>
+      <label for="cpReportFileLoc">Report File Location
+        <input class="input-sm form-control" type="url" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc" name="cpReportFileLoc" ng-maxlength="250" ng-required="vm.cp.certificationEdition.name === '2014'">
+      </label>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.maxlength">Field is too long</div>
@@ -306,7 +316,7 @@
           </div>
           <label class="col-sm-6 control-label" for="newAccessibilityStandardExpandableName">Add new Accessibility Standard to available options</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newAccessibilityStandard.expandableName" id="newAccessibilityStandardExpandableName" ng-change="vm.extendSelect(vm.accessibilityStandards.data, vm.newAccessibilityStandard.expandableName); vm.newAccessibilityStandard.accessibilityStandardName = vm.newAccessibilityStandard.expandableName" ng-maxlength="500"></input>
+            <input type="text" class="form-control" ng-model="vm.newAccessibilityStandard.expandableName" id="newAccessibilityStandardExpandableName" ng-change="vm.extendSelect(vm.accessibilityStandards.data, vm.newAccessibilityStandard.expandableName); vm.newAccessibilityStandard.accessibilityStandardName = vm.newAccessibilityStandard.expandableName" ng-maxlength="500">
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.newAccessibilityStandardExpandableName.$touched) && vm.editForm.newAccessibilityStandardExpandableName.$error.maxlength">Field is too long</div>
           </div>
         </div>
@@ -339,7 +349,7 @@
           </div>
           <label class="col-sm-6 control-label" for="newTargetedUserExpandableName">Add new Targeted User to available options</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newTargetedUser.expandableName" id="newTargetedUserExpandableName" ng-change="vm.extendSelect(vm.targetedUsers.data, vm.newTargetedUser.expandableName); vm.newTargetedUser.targetedUserName = vm.newTargetedUser.expandableName"></input>
+            <input type="text" class="form-control" ng-model="vm.newTargetedUser.expandableName" id="newTargetedUserExpandableName" ng-change="vm.extendSelect(vm.targetedUsers.data, vm.newTargetedUser.expandableName); vm.newTargetedUser.targetedUserName = vm.newTargetedUser.expandableName">
           </div>
         </div>
       </div>
@@ -355,7 +365,7 @@
     </ai-certs>
     <div class="form-group">
       <label for="reasonForChange">Reason for Change</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.reason" id="reasonForChange" name="reasonForChange"></input>
+      <input class="input-sm form-control" type="text" ng-model="vm.reason" id="reasonForChange" name="reasonForChange">
       If changes are made in any of the following ways, a Reason for Change is required:
       <ul>
         <li>Clinical Quality Measure Removed</li>
