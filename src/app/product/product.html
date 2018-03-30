@@ -90,6 +90,10 @@
           <h2 class="product-heading">ONC-Authorized Certification Body</h2>
           <p>{{ vm.product.certifyingBody.name }}</p>
         </div>
+        <div class="product-element" ng-if="vm.product.testingLabs && vm.product.testingLabs.length !== 0">
+          <h2 class="product-heading">ONC-Accredited Testing Laborator{{ vm.product.testingLabs.length === 1 ? 'y' : 'ies' }}</h2>
+          <p ng-repeat="atl in vm.product.testingLabs | orderBy:'toString'">{{ atl.testingLabName }}</p>
+        </div>
         <div class="product-element" ng-if="vm.product.productAdditionalSoftware">
           <h2 class="product-heading">Relied Upon Software</h2>
           <p>{{ vm.product.productAdditionalSoftware }}</p>
