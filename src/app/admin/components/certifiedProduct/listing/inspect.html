@@ -28,8 +28,8 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li><label><input type="radio" ng-model="vm.developerChoice" value="choose" id="rdDevChoose"> Select existing developer</label></li>
-                  <li><label><input type="radio" ng-model="vm.developerChoice" value="create" id="rdDevCreate"> Create new developer</label></li>
+                  <li><label><input type="radio" ng-model="vm.developerChoice" value="choose"> Select existing developer</label></li>
+                  <li><label><input type="radio" ng-model="vm.developerChoice" value="create"> Create new developer</label></li>
                 </ul>
               </div>
               <div ng-if="vm.developerChoice === 'choose'">
@@ -121,8 +121,8 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li ng-if="vm.developer"><label><input type="radio" ng-model="vm.productChoice" value="choose" id="rdPrdChoose"> Select existing product</label></li>
-                  <li><label><input type="radio" ng-model="vm.productChoice" value="create" id="rdPrdCreate"> Create new product</label></li>
+                  <li ng-if="vm.developer"><label><input type="radio" ng-model="vm.productChoice" value="choose"> Select existing product</label></li>
+                  <li><label><input type="radio" ng-model="vm.productChoice" value="create"> Create new product</label></li>
                 </ul>
               </div>
               <div ng-if="vm.productChoice === 'choose'">
@@ -189,8 +189,8 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li ng-if="vm.product"><label><input type="radio" ng-model="vm.versionChoice" value="choose" id="rdVerChoose"> Select existing version</label></li>
-                  <li><label><input type="radio" ng-model="vm.versionChoice" value="create" id="rdVerCreate"> Create new version</label></li>
+                  <li ng-if="vm.product"><label><input type="radio" ng-model="vm.versionChoice" value="choose"> Select existing version</label></li>
+                  <li><label><input type="radio" ng-model="vm.versionChoice" value="create"> Create new version</label></li>
                 </ul>
               </div>
               <div ng-if="vm.versionChoice === 'choose'">
