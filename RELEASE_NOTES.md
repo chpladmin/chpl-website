@@ -5,6 +5,7 @@ _Date TBD_
 
 ### Minor Features
 * Add SLI to the default options in main & collections pages
+* Add ability to add G1/G2 measures for non-attested criteria
 
 ---
 

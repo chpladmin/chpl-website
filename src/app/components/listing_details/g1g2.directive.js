@@ -41,7 +41,7 @@
             vm.measures = [];
             for (i = 0; i < vm.listing.certificationResults.length; i++) {
                 cert = vm.listing.certificationResults[i];
-                if (cert.success && (cert.g1MacraMeasures || cert.g2MacraMeasures)) {
+                if (cert.g1MacraMeasures || cert.g2MacraMeasures) {
                     for (j = 0; j < cert.g1MacraMeasures.length; j++) {
                         appending = true;
                         for (k = 0; k < vm.measures.length; k++) {
