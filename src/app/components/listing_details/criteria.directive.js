@@ -33,6 +33,7 @@
 
         vm.editCert = editCert;
         vm.hasPhantomData = hasPhantomData;
+        vm.showViewDetailsLink = showViewDetailsLink;
         vm.toggleCriteria = toggleCriteria;
 
         activate();
@@ -69,10 +70,6 @@
             var ret =
                 (vm.cert.additionalSoftware && vm.cert.additionalSoftware.length > 0) ||
                 (vm.cert.apiDocumentation && vm.cert.apiDocumentation.length > 0) ||
-                (vm.cert.g1MacraMeasures && vm.cert.g1MacraMeasures.length > 0) ||
-                (vm.cert.g1Success) ||
-                (vm.cert.g2MacraMeasures && vm.cert.g2MacraMeasures.length > 0) ||
-                (vm.cert.g2Success) ||
                 (vm.cert.gap) ||
                 (vm.cert.privacySecurityFramework && vm.cert.privacySecurityFramework.length > 0) ||
                 (vm.cert.sed) ||
@@ -83,6 +80,15 @@
                 (vm.cert.testToolsUsed && vm.cert.testToolsUsed.length > 0) ||
                 false;
             return ret;
+        }
+
+        function showViewDetailsLink () {
+            return (vm.cert.success && vm.cert.additionalSoftware !== null) ||
+                ((!vm.cert.success) &&
+                ((vm.cert.g1MacraMeasures && vm.cert.g1MacraMeasures.length > 0) ||
+                    (vm.cert.g2MacraMeasures && vm.cert.g2MacraMeasures.length > 0)) ||
+                    vm.cert.g1Success !== null ||
+                    vm.cert.g2Success !== null);
         }
 
         function toggleCriteria () {
