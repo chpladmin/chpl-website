@@ -33,8 +33,8 @@ gulp.task('watch', ['inject'], function () {
         }
     });
 
-//    gulp.watch(path.join(conf.paths.src, '/app/**/*.html'), function(event) {
+    gulp.watch(path.join(conf.paths.src, '/app/**/*.html'), function(event) {
 //        gulp.start('lint-html');
-//        browserSync.reload(event.path);
-//    });
+        browserSync.reload(event.path);
+    });
 });
