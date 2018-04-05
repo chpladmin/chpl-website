@@ -3,9 +3,9 @@
     <div class="row admin-label-spaced lead text-center" ng-if="vm.workType==='merge'">
       <ul class="list-inline">
         <li><strong>What would you like to merge?</strong></li>
-        <li><input type="radio" ng-model="vm.mergeType" value="developer" id="rdDev"></input><label for="rdDev">Developers</label></li>
-        <li><input type="radio" ng-model="vm.mergeType" value="product" id="rdPrd"></input><label for="rdPrd">Products</label></li>
-        <li><input type="radio" ng-model="vm.mergeType" value="version" id="rdVer"></input><label for="rdVer">Versions</label></li>
+        <li><label><input type="radio" ng-model="vm.mergeType" value="developer"> Developers</label></li>
+        <li><label><input type="radio" ng-model="vm.mergeType" value="product"> Products</label></li>
+        <li><label><input type="radio" ng-model="vm.mergeType" value="version"> Versions</label></li>
       </ul>
     </div>
     <div class="row" ng-if="vm.workType==='manage'">
@@ -639,7 +639,10 @@
                   <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
                   <strong>SED Intended Users:</strong> {{ vm.activeCP.sedIntendedUserDescription ? vm.activeCP.sedIntendedUserDescription : 'None' }} <br />
                   <strong>SED End Date of Testing:</strong> {{ vm.activeCP.sedTestingEnd | date : 'mediumDate' : 'UTC' }} <br />
-                  <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
+                  <strong>Testing Lab<span ng-if="vm.activeCP.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!vm.activeCP.testingLabs || vm.activeCP.testingLabs.length === 0">None<br /></span>
+                  <ul ng-if="vm.activeCP.testingLabs && vm.activeCP.testingLabs.length !== 0">
+                    <li ng-repeat="atl in vm.activeCP.testingLabs">{{ atl.testingLabName }}</li>
+                  </ul>
                   <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />
                   <ul>
                     <li ng-repeat="std in vm.activeCP.accessibilityStandards">{{ std.accessibilityStandardName }}</li>

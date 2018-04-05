@@ -1,5 +1,14 @@
 # Release Notes
 
+### OCD-1899
+* Support for multiple ATLs per Listing
+  * Display of ATLs on Listing Details page
+  * Upload/confirm of multiple ATLs
+  * Edit of Listings to support multiple ATLs
+  * Reports updated to display changes in ATLs
+
+---
+
 ## Version TBD
 _Date TBD_
 
