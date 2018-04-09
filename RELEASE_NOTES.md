@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 9.17.0
+_9 April 2018_
+
+### Minor Features
+* Add SLI to the default options in main & collections pages
+* Add ability to add G1/G2 measures for non-attested criteria
+
+---
+
 ## Version 9.16.1
 _27 March 2018_
 
@@ -8,7 +17,7 @@ Added "disclaimer" regarding beta status of Charts page
 
 ---
 
-## Version 9.16.0
+## Vertion 9.16.0
 _26 March 2018_
 
 ### Minor features

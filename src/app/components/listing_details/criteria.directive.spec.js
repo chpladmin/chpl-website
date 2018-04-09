@@ -81,7 +81,7 @@
                         vm.cert.g1MacraMeasures = [];
                         expect(vm.hasPhantomData()).toBe(false);
                         vm.cert.g1MacraMeasures = [1];
-                        expect(vm.hasPhantomData()).toBe(true);
+                        expect(vm.hasPhantomData()).toBe(false);
                     });
 
                     it('should analyze g1Success', function () {
@@ -90,7 +90,7 @@
                         vm.cert.g1Success = false;
                         expect(vm.hasPhantomData()).toBe(false);
                         vm.cert.g1Success = true;
-                        expect(vm.hasPhantomData()).toBe(true);
+                        expect(vm.hasPhantomData()).toBe(false);
                     });
 
                     it('should analyze g2MacraMeasures', function () {
@@ -98,7 +98,7 @@
                         vm.cert.g2MacraMeasures = [];
                         expect(vm.hasPhantomData()).toBe(false);
                         vm.cert.g2MacraMeasures = [1];
-                        expect(vm.hasPhantomData()).toBe(true);
+                        expect(vm.hasPhantomData()).toBe(false);
                     });
 
                     it('should analyze g2Success', function () {
@@ -107,7 +107,7 @@
                         vm.cert.g2Success = false;
                         expect(vm.hasPhantomData()).toBe(false);
                         vm.cert.g2Success = true;
-                        expect(vm.hasPhantomData()).toBe(true);
+                        expect(vm.hasPhantomData()).toBe(false);
                     });
 
                     it('should analyze gap', function () {
