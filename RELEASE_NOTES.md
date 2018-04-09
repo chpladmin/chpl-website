@@ -1,7 +1,7 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.17.0
+_9 April 2018_
 
 ### Minor Features
 * Add SLI to the default options in main & collections pages
