@@ -1,6 +1,8 @@
 # Release Notes
 
-### OCD-1899
+## Version TBD
+_Date TBD_
+
 * Support for multiple ATLs per Listing
   * Display of ATLs on Listing Details page
   * Upload/confirm of multiple ATLs
@@ -9,8 +11,8 @@
 
 ---
 
-## Version TBD
-_Date TBD_
+## Version 9.17.0
+_9 April 2018_
 
 ### Minor Features
 * Add SLI to the default options in main & collections pages
