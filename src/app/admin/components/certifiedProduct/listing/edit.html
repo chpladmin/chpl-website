@@ -263,8 +263,7 @@
           <div class="col-sm-6">
             <div class="input-group">
               <select class="form-control" ng-model="item.testingLabName" id="testingLab{{ item.id }}"
-                      ng-options="option.name as option.name for option in vm.testingLabs | orderBy:'name'"
-                      ng-change="item.testingLabId = option.id">
+                      ng-options="option.name as option.name for option in vm.testingLabs | orderBy:'name'">
               </select>
               <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cp.testingLabs.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
             </div>
