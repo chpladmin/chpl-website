@@ -15,19 +15,16 @@
           <strong>CHPL Product Number:</strong>{{ vm.idFields.prefix }}
         </span>
         <div class="form-group">
-          <label for="idProd" class="sr-only">Product Code:
-            <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" required>
-          </label>
+          <label for="idProd" class="sr-only">Product Code:</label>
+          <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" required>
         </div>
         <div class="form-group">
-          <label for="idVer" class="sr-only">Version Code:
-            <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" required>
-          </label>
+          <label for="idVer" class="sr-only">Version Code:</label>
+          <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" required>
         </div>
         <div class="form-group">
-          <label for="idIcs" class="sr-only">ICS Code:
-            <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required>
-          </label>
+          <label for="idIcs" class="sr-only">ICS Code:</label>
+          <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required>
         </div>
         <span class="form-control-static">
           {{ vm.idFields.suffix }}
