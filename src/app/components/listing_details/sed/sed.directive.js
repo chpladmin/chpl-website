@@ -76,6 +76,7 @@
             vm.modalInstance.result.then(function (result) {
                 vm.allParticipants = result.participants;
                 vm.tasks.push(result.task);
+                vm.taskCount = vm.tasks.length;
             });
         }
 
