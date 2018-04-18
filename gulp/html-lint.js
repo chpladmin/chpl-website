@@ -41,6 +41,7 @@ var rules = {
 
 var lintHtml = function () {
     return gulp.src([
+        path.join(conf.paths.src, '/*.html'),
         path.join(conf.paths.src, '/app/**/*.html')
     ])
         .pipe(htmllint({rules: rules}, htmllintReporter));
