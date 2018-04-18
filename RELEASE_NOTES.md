@@ -8,6 +8,7 @@ _Date TBD_
   * Upload/confirm of multiple ATLs
   * Edit of Listings to support multiple ATLs
   * Reports updated to display changes in ATLs
+  * Fixed bug on cp inspection that looked for qms standards length instead of qms boolean value
 
 ---
 
