@@ -29,6 +29,7 @@ var rules = {
     "indent-width": 2,
     "indent-width-cont": true,
     "input-req-label": true,
+    "label-req-for": false,
     "line-no-trailing-whitespace": true,
 //    "raw-ignore-regex": "{{.*?}}",
     "spec-char-escape": false,
@@ -41,6 +42,7 @@ var rules = {
 
 var lintHtml = function () {
     return gulp.src([
+        path.join(conf.paths.src, '/*.html'),
         path.join(conf.paths.src, '/app/**/*.html')
     ])
         .pipe(htmllint({rules: rules}, htmllintReporter));

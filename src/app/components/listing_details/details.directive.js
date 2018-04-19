@@ -22,8 +22,8 @@
                 viewAllCerts: '=?defaultAll',
             },
             scope: {},
-            controllerAs: 'vm',
             controller: CertsController,
+            controllerAs: 'vm',
         };
         return directive;
 
