@@ -1,20 +1,5 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
-
-### Major Feature
-* Support for multiple ATLs per Listing
-  * Display of ATLs on Listing Details page
-  * Upload/confirm of multiple ATLs
-  * Edit of Listings to support multiple ATLs
-  * Reports updated to display changes in ATLs
-
-### Bug Fix
-* Fix display of SED editing during confirm workflow
-
----
-
 ## Version 9.17.0
 _9 April 2018_
 
