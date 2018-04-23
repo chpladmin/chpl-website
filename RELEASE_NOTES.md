@@ -1,5 +1,12 @@
 # Release Notes
 
+## Version TBD
+_Date TBD_
+
+### Minor Features
+* Fix bug that incorrectly showed qms boolean
+
+
 ## Version 9.18.0
 _23 April 2018_
 
