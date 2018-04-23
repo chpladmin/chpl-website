@@ -1,4 +1,4 @@
-<div style="background: white">
+<div>
   <p ng-if="!vm.sedCriteria || vm.sedCriteria.length === 0">No Certification Criteria were tested for SED.</p>
   <span ng-if="vm.sedCriteria && vm.sedCriteria.length > 0">
     <span ng-if="vm.editMode">
@@ -6,7 +6,7 @@
     </span>
     <span ng-if="vm.listing.sedReportFileLocation !== null">
       <h4>Full Usability Report</h4>
-      <a ai-a ng-if="vm.listing.sedReportFileLocation" href="{{ vm.listing.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.listing.sedReportFileLocation }">{{ vm.listing.sedReportFileLocation }}</a>
+      <a ai-a="" ng-if="vm.listing.sedReportFileLocation" href="{{ vm.listing.sedReportFileLocation }}" analytics-on="click" analytics-event="Usability Report" analytics-properties="{ category: 'Download Details', label: vm.listing.sedReportFileLocation }">{{ vm.listing.sedReportFileLocation }}</a>
       <p ng-if="!vm.listing.sedReportFileLocation">No report on file</p>
     </span>
     <span ng-if="vm.listing.sedIntendedUserDescription">
@@ -29,7 +29,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="process in vm.ucdProcesses | orderBy: [vm.sortProcesses]">
+          <tr ng-repeat="process in vm.listing.sed.ucdProcesses | orderBy: [vm.sortProcesses]">
             <td>
               <ul>
                 <li ng-repeat="crit in process.criteria | orderBy:vm.sortCert">{{ crit.number }}: {{ crit.title }}</li>
@@ -63,7 +63,7 @@
           </tr>
         </tfoot>
         <tbody>
-          <tr ng-repeat="task in vm.tasks | orderBy: 'description'">
+          <tr ng-repeat="task in vm.listing.sed.testTasks | orderBy: 'description'">
             <td>{{ task.description }}</td>
             <td>{{ task.taskRating }} ({{ task.taskRatingScale }})</td>
             <td><button class="btn btn-ai-success" ng-click="vm.viewTask(task)"><i class="fa fa-eye"></i> Details</button></td>
