@@ -262,14 +262,14 @@
               </thead>
               <tbody>
                 <tr ng-repeat="res in vm.surveillanceSearch.results">
-                  <td><a href ng-click="vm.productId = res.id; vm.surveillanceSearch.results = null; vm.loadSurveillance()">{{ res.chplProductNumber }}</a></td>
-                  <td>{{ res.developer.name }}</td>
-                  <td>{{ res.product.name }}</td>
-                  <td>{{ res.product.version }}</td>
-                  <td>{{ res.certifyingBody.name }}</td>
-                  <td>{{ res.certificationEdition.name }}</td>
+                  <td><button class="btn btn-default" ng-click="vm.productId = res.id; vm.surveillanceSearch.results = null; vm.loadSurveillance()">{{ res.chplProductNumber }}</button></td>
+                  <td>{{ res.developer }}</td>
+                  <td>{{ res.product }}</td>
+                  <td>{{ res.product }}</td>
+                  <td>{{ res.acb }}</td>
+                  <td>{{ res.edition }}</td>
                   <td>{{ res.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                  <td>{{ vm.certificationStatus(res) }}</td>
+                  <td>{{ res.certificationStatus }}</td>
                 </tr>
               </tbody>
             </table>
