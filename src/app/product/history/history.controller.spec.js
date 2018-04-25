@@ -63,7 +63,7 @@
             });
         });
 
-        describe('when interpreting the report', function () {
+        fdescribe('when interpreting the report', function () {
             it('should have an item for surveillance being added', function () {
                 expect(vm.activity[0].change).toEqual(['Surveillance activity was added']);
             });
@@ -86,6 +86,10 @@
 
             it('should have an item for certification status changing', function () {
                 expect(vm.activity[5].change).toEqual(['Certification Status became "Active"']);
+            });
+
+            it('should have an item for when the product was certified', function () {
+                expect(vm.activity[6].change).toEqual(['Certified product was uploaded to the CHPL']);
             });
         });
     });
