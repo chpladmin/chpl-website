@@ -81,15 +81,20 @@
             }
 
             var ce = (vm.activity[vm.activity.length - 1]).newData.certificationEvents;
-            vm.activity = vm.activity.concat(ce.map(function (e) {
-                e.activityDate = e.eventDate;
-                if (e.certificationStatusName) {
-                    e.change = ['Certification Status became "' + e.certificationStatusName + '"'];
-                } else {
-                    e.change = ['Certification Status became "' + e.status.name + '"'];
-                }
-                return e;
-            }));
+            vm.activity = vm.activity.concat(
+                ce.filter(function (e) {
+                    return !e.eventTypeId;
+                }).map(function (e) {
+                    e.activityDate = e.eventDate;
+                    if (e.certificationStatusName) {
+                        e.change = ['Certification Status became "' + e.certificationStatusName + '"'];
+                    } else if (e.status) {
+                        e.change = ['Certification Status became "' + e.status.name + '"'];
+                    } else {
+                        e.change = ['Undetermined change'];
+                    }
+                    return e;
+                }));
         }
     }
 })();

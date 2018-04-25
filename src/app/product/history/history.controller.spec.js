@@ -64,32 +64,32 @@
         });
 
         fdescribe('when interpreting the report', function () {
+            it('should have an item for when the product was certified but not edited', function () {
+                expect(vm.activity[0].change).toEqual(['Certified product was uploaded to the CHPL']);
+            });
+
+            it('should have an item for when the product was certified and later had a status change', function () {
+                expect(vm.activity[1].change).toEqual(['Certified product was uploaded to the CHPL']);
+            });
+
             it('should have an item for surveillance being added', function () {
-                expect(vm.activity[0].change).toEqual(['Surveillance activity was added']);
+                expect(vm.activity[2].change).toEqual(['Surveillance activity was added']);
             });
 
             it('should have an item for surveillance being updated', function () {
-                expect(vm.activity[1].change).toEqual(['Surveillance activity was updated']);
-            });
-
-            it('should have an item for when the product was certified', function () {
-                expect(vm.activity[2].change).toEqual(['Certified product was uploaded to the CHPL']);
+                expect(vm.activity[3].change).toEqual(['Surveillance activity was updated']);
             });
 
             it('should have an item for surveillance being deleted', function () {
-                expect(vm.activity[3].change).toEqual(['Surveillance activity was deleted']);
+                expect(vm.activity[4].change).toEqual(['Surveillance activity was deleted']);
             });
 
             it('should have an item for certification criteria being added', function () {
-                expect(vm.activity[4].change).toEqual(['Added certification criteria:<ul><li>170.315 (g)(7)</li><li>170.315 (g)(8)</li><li>170.315 (g)(9)</li></ul>']);
+                expect(vm.activity[5].change).toEqual(['Added certification criteria:<ul><li>170.315 (g)(7)</li><li>170.315 (g)(8)</li><li>170.315 (g)(9)</li></ul>']);
             });
 
             it('should have an item for certification status changing', function () {
-                expect(vm.activity[5].change).toEqual(['Certification Status became "Active"']);
-            });
-
-            it('should have an item for when the product was certified', function () {
-                expect(vm.activity[6].change).toEqual(['Certified product was uploaded to the CHPL']);
+                expect(vm.activity[6].change).toEqual(['Certification Status became "Active"']);
             });
         });
     });
