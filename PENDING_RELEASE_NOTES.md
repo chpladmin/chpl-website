@@ -10,5 +10,7 @@ _Date TBD_
 ### Bug Fixes
 * Show Listing information in "manage surveillance" search results
 * Fix bug that incorrectly showed qms boolean
+* Fixed bug that didnt allow all listings to show history when eye was clicked
 
 ---
+
