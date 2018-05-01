@@ -58,6 +58,12 @@
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
+            getParticipantAgeStatistics: getParticipantAgeStatistics,
+            getParticipantComputerExperienceStatistics: getParticipantComputerExperienceStatistics,
+            getParticipantEducationStatistics: getParticipantEducationStatistics,
+            getParticipantGenderStatistics: getParticipantGenderStatistics,
+            getParticipantProductExperienceStatistics: getParticipantProductExperienceStatistics,
+            getParticipantProfessionalExperienceStatistics: getParticipantProfessionalExperienceStatistics,
             getPractices: getPractices,
             getProduct: getProduct,
             getProductActivity: getProductActivity,
@@ -66,10 +72,9 @@
             getQmsStandards: getQmsStandards,
             getRelatedListings: getRelatedListings,
             getSearchOptions: getSearchOptions,
+            getSedParticipantStatisticsCount: getSedParticipantStatisticsCount,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
-            getStatisticTypes: getStatisticTypes,
-            getStatistics: getStatistics,
             getSurveillanceLookups: getSurveillanceLookups,
             getTargetedUsers: getTargetedUsers,
             getTestData: getTestData,
@@ -375,6 +380,30 @@
             return apiGET('/data/notification_types');
         }
 
+        function getParticipantAgeStatistics () {
+            return apiGET('/statistics/participant_age_count');
+        }
+
+        function getParticipantComputerExperienceStatistics () {
+            return apiGET('/statistics/participant_computer_experience_count');
+        }
+
+        function getParticipantEducationStatistics () {
+            return apiGET('/statistics/participant_education_count');
+        }
+
+        function getParticipantGenderStatistics () {
+            return apiGET('/statistics/participant_gender_count');
+        }
+
+        function getParticipantProductExperienceStatistics () {
+            return apiGET('/statistics/participant_product_experience_count');
+        }
+
+        function getParticipantProfessionalExperienceStatistics () {
+            return apiGET('/statistics/participant_professional_experience_count');
+        }
+
         function getPractices () {
             return apiGET('/data/practice_types');
         }
@@ -412,20 +441,16 @@
             }
         }
 
+        function getSedParticipantStatisticsCount () {
+            return apiGET('/statistics/sed_participant_count');
+        }
+
         function getSimpleProduct (productId) {
             return apiGET('/products/' + productId);
         }
 
         function getSingleCertifiedProductActivity (productId) {
             return apiGET('/activity/certified_products/' + productId);
-        }
-
-        function getStatisticTypes () {
-            return apiGET('/data/statistic_types');
-        }
-
-        function getStatistics () {
-            return apiGET('/data/statistics');
         }
 
         function getSurveillanceLookups () {

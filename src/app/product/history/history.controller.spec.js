@@ -59,33 +59,47 @@
 
         describe('when loading', function () {
             it('should know what the Listing id is', function () {
-                expect(vm.listingId).toBe(6993);
+                expect(vm.listingId).toBe(7981);
             });
         });
 
         describe('when interpreting the report', function () {
+            it('should have an item for when the product was certified but not edited', function () {
+                expect(vm.activity[0].change).toEqual(['Certified product was uploaded to the CHPL']);
+            });
+
+            it('should have an item for when the product was certified and later had a status change', function () {
+                expect(vm.activity[1].change).toEqual(['Certified product was uploaded to the CHPL']);
+            });
+
             it('should have an item for surveillance being added', function () {
-                expect(vm.activity[0].change).toEqual(['Surveillance activity was added']);
+                expect(vm.activity[2].change).toEqual(['Surveillance activity was added']);
             });
 
             it('should have an item for surveillance being updated', function () {
-                expect(vm.activity[1].change).toEqual(['Surveillance activity was updated']);
-            });
-
-            it('should have an item for when the product was certified', function () {
-                expect(vm.activity[2].change).toEqual(['Certified product was uploaded to the CHPL']);
+                expect(vm.activity[3].change).toEqual(['Surveillance activity was updated']);
             });
 
             it('should have an item for surveillance being deleted', function () {
-                expect(vm.activity[3].change).toEqual(['Surveillance activity was deleted']);
+                expect(vm.activity[4].change).toEqual(['Surveillance activity was deleted']);
             });
 
-            it('should have an item for certification criteria being added', function () {
-                expect(vm.activity[4].change).toEqual(['Added certification criteria:<ul><li>170.315 (g)(7)</li><li>170.315 (g)(8)</li><li>170.315 (g)(9)</li></ul>']);
+            it('should have items for certification criteria being added and g1/g2 success changing', function () {
+                expect(vm.activity[5].change[0]).toEqual('170.315 (b)(3) changes:<ul><li>Added G2 MACRA Measure:<ul><li>another1</li></ul></li></ul>');
+                expect(vm.activity[5].change[1]).toEqual('170.315 (e)(1) changes:<ul><li>Removed G1 MACRA Measure:<ul><li>abbr</li></ul></li></ul>');
+                expect(vm.activity[5].change[2]).toEqual('170.315 (e)(2) changes:<ul><li>Added G1 MACRA Measure:<ul><li>an abr</li></ul></li></ul>');
+                expect(vm.activity[5].change[3]).toEqual('170.315 (g)(7) changes:<ul><li>Certification Criteria was added</li><li>Certification Criteria became Certified to G1</li></ul>');
+                expect(vm.activity[5].change[4]).toEqual('170.315 (g)(8) changes:<ul><li>Certification Criteria was added</li></ul>');
+                expect(vm.activity[5].change[5]).toEqual('170.315 (g)(9) changes:<ul><li>Certification Criteria was added</li><li>Removed G2 MACRA Measure:<ul><li>abbrevie</li></ul></li></ul>');
+            });
+
+            it('should have items for CQMs changing', function () {
+                expect(vm.activity[5].change[6]).toEqual('CMS122 changes:<ul><li>CQM became "False"</li><li>v1 removed</li><li>Certification Criteria "a criteria" changes<ul><li>a criteria removed</li></ul></li></ul>');
+                expect(vm.activity[5].change[7]).toEqual('CMS82 changes:<ul><li>CQM became "True"</li><li>v3 added</li><li>Certification Criteria "random criteria" changes<ul><li>random criteria added</li></ul></li></ul>');
             });
 
             it('should have an item for certification status changing', function () {
-                expect(vm.activity[5].change).toEqual(['Certification Status became "Active"']);
+                expect(vm.activity[6].change).toEqual(['Certification Status became "Active"']);
             });
         });
     });

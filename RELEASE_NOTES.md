@@ -1,13 +1,78 @@
 # Release Notes
 
-## Version TBD
-_Date TBD_
+## Version 9.18.0
+_23 April 2018_
+
+### Major Feature
+* Support for multiple ATLs per Listing
+  * Display of ATLs on Listing Details page
+  * Upload/confirm of multiple ATLs
+  * Edit of Listings to support multiple ATLs
+  * Reports updated to display changes in ATLs
+
+### Minor Feature
+* Added "error" page to use during deployments
+
+### Bug Fix
+* Fix display of SED editing during confirm workflow
+
+---
+
+## Version 9.17.0
+_9 April 2018_
+
+### Minor Features
+* Add SLI to the default options in main & collections pages
+* Add ability to add G1/G2 measures for non-attested criteria
+
+---
+
+## Version 9.16.1
+_27 March 2018_
+
+### Text tweaks
+Added "disclaimer" regarding beta status of Charts page
+
+---
+
+## Vertion 9.16.0
+_26 March 2018_
+
+### Minor features
+* Added Participant/Age chart to /charts page
+* Added Participant/Education chart to /charts page
+* Added Participant/Gender chart to /charts page
+* Added Participant/Professional Experience chart to /charts page
+* Added Participant/Product Experience chart to /charts page
+* Added Participant/Computer Experience chart to /charts page
+
+---
+
+## Version 9.15.0
+_12 March 2018_
+
+### Minor features
+* Added /charts page that displays the SED/Participant count chart
+
+---
+
+## Version 9.14.1
+_22 February 2018_
+
+### Bug fixed
+* Enable editing of CQM-Criteria relationships for 2015 Edition Listings
+
+---
+
+## Version 9.14.0
+_12 February 2018_
 
 ### Major features
 * Allow view/edit of fuzzy matching choices
 
 ### Minor features
 * Added "Reason for Change" fields when Questionable Activity happens
+* Display "Reason for Status Change" in Reports
 
 ---
 

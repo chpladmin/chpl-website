@@ -622,6 +622,54 @@
             $httpBackend.flush();
         });
 
+        it('should getParticipantAgeStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_age_count/).respond(200, {data: 'response'});
+            networkService.getParticipantAgeStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantComputerExperienceStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_computer_experience_count/).respond(200, {data: 'response'});
+            networkService.getParticipantComputerExperienceStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantEducationStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_education_count/).respond(200, {data: 'response'});
+            networkService.getParticipantEducationStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantGenderStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_gender_count/).respond(200, {data: 'response'});
+            networkService.getParticipantGenderStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantProductExperienceStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_product_experience_count/).respond(200, {data: 'response'});
+            networkService.getParticipantProductExperienceStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantProfessionalExperienceStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_professional_experience_count/).respond(200, {data: 'response'});
+            networkService.getParticipantProfessionalExperienceStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getPractices', function () {
             $httpBackend.expectGET(/data\/practice_types/).respond(200, {data: 'response'});
             networkService.getPractices().then(function (response) {
@@ -723,17 +771,9 @@
             $httpBackend.flush();
         });
 
-        it('should getStatisticTypes', function () {
-            $httpBackend.expectGET(/data\/statistic_types/).respond(200, {data: 'response'});
-            networkService.getStatisticTypes().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getStatistics', function () {
-            $httpBackend.expectGET(/data\/statistics/).respond(200, {data: 'response'});
-            networkService.getStatistics().then(function (response) {
+        it('should getSedParticipantStatisticsCount', function () {
+            $httpBackend.expectGET(/statistics\/sed_participant_count/).respond(200, {data: 'response'});
+            networkService.getSedParticipantStatisticsCount().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

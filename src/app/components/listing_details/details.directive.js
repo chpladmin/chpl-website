@@ -22,8 +22,8 @@
                 viewAllCerts: '=?defaultAll',
             },
             scope: {},
-            controllerAs: 'vm',
             controller: CertsController,
+            controllerAs: 'vm',
         };
         return directive;
 
@@ -35,10 +35,10 @@
             vm.hasEdited = hasEdited;
             vm.prepCqms = prepCqms
             vm.registerSed = registerSed;
-            vm.saveEdits = saveEdits;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
             vm.showPanel = showPanel;
+            vm.updateCs = updateCs;
             vm.viewIcsFamily = viewIcsFamily;
 
             activate();
@@ -97,43 +97,6 @@
                 return removeHandler;
             }
 
-            function saveEdits () {
-                vm.countCerts = 0;
-                vm.countCqms = 0;
-
-                var i,j;
-
-                for (i = 0; i < vm.product.certificationResults.length; i++) {
-                    if (vm.product.certificationResults[i].success) {
-                        vm.countCerts += 1;
-                    }
-                    if (vm.product.certificationResults[i].gap === 'null') {
-                        delete (vm.product.certificationResults[i].gap);
-                    }
-                    if (vm.product.certificationResults[i].g1Success === 'null') {
-                        delete (vm.product.certificationResults[i].g1Success);
-                    }
-                    if (vm.product.certificationResults[i].g2Success === 'null') {
-                        delete (vm.product.certificationResults[i].g2Success);
-                    }
-                    if (vm.product.certificationResults[i].sed === 'null') {
-                        delete (vm.product.certificationResults[i].sed);
-                    }
-                }
-
-                for (i = 0; i < vm.cqms.length; i++) {
-                    vm.cqms[i].criteria = [];
-                    if (vm.cqms[i].success || vm.cqms[i].successVersions.length > 0) {
-                        vm.countCqms += 1;
-                        for (j = 1; j < 5; j++) {
-                            if (vm.cqms[i]['hasC' + j]) {
-                                vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(' + j + ')'});
-                            }
-                        }
-                    }
-                }
-            }
-
             function sortCerts (cert) {
                 var ret = 0;
                 if (cert.number) {
@@ -190,6 +153,19 @@
                 }
 
                 vm.panelShown = vm.panelShown === panel ? '' : panel;
+            }
+
+            function updateCs () {
+                for (var i = 0; i < vm.cqms.length; i++) {
+                    vm.cqms[i].criteria = [];
+                    if (vm.cqms[i].success || vm.cqms[i].successVersions.length > 0) {
+                        for (var j = 1; j < 5; j++) {
+                            if (vm.cqms[i]['hasC' + j]) {
+                                vm.cqms[i].criteria.push({certificationNumber: '170.315 (c)(' + j + ')'});
+                            }
+                        }
+                    }
+                }
             }
 
             function viewIcsFamily () {

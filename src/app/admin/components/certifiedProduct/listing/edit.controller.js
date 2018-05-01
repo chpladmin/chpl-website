@@ -70,7 +70,6 @@
                 vm.cp.certificationEvents[i].statusDateObject = new Date(vm.cp.certificationEvents[i].eventDate);
             }
 
-            vm.handlers = [];
             vm.attachModel();
             loadFamily();
         }
@@ -128,7 +127,7 @@
         }
 
         function improperFirstStatus () {
-            return $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
+            return vm.workType === 'confirm' ? false : $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
         }
 
         function matchesPreviousDate (event) {
