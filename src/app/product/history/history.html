@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="activity in vm.activity | orderBy:'activityDate':true">
+        <tr ng-repeat="activity in vm.activity | orderBy:'-activityDate'">
           <td>{{ activity.activityDate | date : 'medium' : 'UTC' }} GMT</td>
           <td>
             <ul class="list-unstyled">

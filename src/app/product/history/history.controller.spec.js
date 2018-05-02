@@ -98,8 +98,29 @@
                 expect(vm.activity[5].change[7]).toEqual('CMS82 changes:<ul><li>CQM became "True"</li><li>v3 added</li><li>Certification Criteria "random criteria" changes<ul><li>random criteria added</li></ul></li></ul>');
             });
 
-            it('should have an item for certification status changing', function () {
-                expect(vm.activity[6].change).toEqual(['Certification Status became "Active"']);
+            describe('when dealing with certification events', function () {
+                beforeEach(function () {
+                    vm.activity = [];
+                });
+
+                it('should have an item for certification status becoming active during confirmation', function () {
+                    vm._interpretCertificationStatusChanges(mock.activity[0]);
+                    expect(vm.activity.length).toBe(1);
+                    expect(vm.activity[0].change).toEqual(['Certification Status became "Active"']);
+                });
+
+                it('should have an item for certification status changing', function () {
+                    vm._interpretCertificationStatusChanges(mock.activity[4]);
+                    expect(vm.activity.length).toBe(2);
+                    expect(vm.activity[0].change).toEqual(['Certification Status became "Active"']);
+                    expect(vm.activity[1].change).toEqual(['Certification Status became "Suspended by ONC"']);
+                });
+
+                it('should have an item for certification status changing after confirmation', function () {
+                    vm._interpretCertificationStatusChanges(mock.activity[6]);
+                    expect(vm.activity.length).toBe(1);
+                    expect(vm.activity[0].change).toEqual(['Certification Status became "Active"']);
+                });
             });
         });
     });
