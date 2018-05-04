@@ -59,7 +59,7 @@
 
         describe('when loading', function () {
             it('should know what the Listing id is', function () {
-                expect(vm.listingId).toBe(7981);
+                expect(vm.listingId).toBe(33);
             });
         });
 
@@ -96,6 +96,9 @@
             it('should have items for CQMs changing', function () {
                 expect(vm.activity[5].change[6]).toEqual('CMS122 changes:<ul><li>CQM became "False"</li><li>v1 removed</li><li>Certification Criteria "a criteria" changes<ul><li>a criteria removed</li></ul></li></ul>');
                 expect(vm.activity[5].change[7]).toEqual('CMS82 changes:<ul><li>CQM became "True"</li><li>v3 added</li><li>Certification Criteria "random criteria" changes<ul><li>random criteria added</li></ul></li></ul>');
+            });
+
+            it('should handle when the last activity isn\'t "regular"', function () {
             });
 
             describe('when dealing with certification events', function () {

@@ -37,7 +37,8 @@
         vm._interpretCertificationStatusChanges = _interpretCertificationStatusChanges;
 
         function _interpretActivity () {
-            var activity, curr, prev;
+            var activity, curr, prev, statusIndex;
+            statusIndex = -1;
             for (var i = 0; i < vm.activity.length; i++) {
                 activity = vm.activity[i];
                 activity.change = [];
@@ -49,19 +50,26 @@
                     vm.listingId = curr.id;
                 }
                 if (activity.description.startsWith('Updated certified product')) {
+                    statusIndex = i;
                     _interpretCertificationCriteria(prev, curr, activity);
                     _interpretCqms(prev, curr, activity);
                 } else if (activity.description === 'Created a certified product') {
+                    statusIndex = i;
                     activity.change.push('Certified product was uploaded to the CHPL');
                 } else if (activity.description.startsWith('Surveillance was added')) {
+                    statusIndex = i;
                     activity.change.push('Surveillance activity was added');
                 } else if (activity.description.startsWith('Surveillance was updated')) {
+                    statusIndex = i;
                     activity.change.push('Surveillance activity was updated');
                 } else if (activity.description.startsWith('Surveillance was delete')) {
+                    statusIndex = i;
                     activity.change.push('Surveillance activity was deleted');
                 }
             }
-            _interpretCertificationStatusChanges(vm.activity[vm.activity.length - 1]);
+            if (statusIndex !== -1) {
+                _interpretCertificationStatusChanges(vm.activity[statusIndex]);
+            }
         }
 
         function _interpretCertificationCriteria (prev, curr, activity) {
