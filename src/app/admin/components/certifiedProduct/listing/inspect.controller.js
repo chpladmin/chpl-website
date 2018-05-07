@@ -30,6 +30,7 @@
 
         vm.cancel = cancel;
         vm.ternaryFilter = ternaryFilter;
+        vm.checkQmsBoolean = checkQmsBoolean;
 
         vm.certificationStatus = utilService.certificationStatus;
 
@@ -301,6 +302,14 @@
                 return 'N/A';
             } else {
                 return field ? 'True' : 'False';
+            }
+        }
+
+        function checkQmsBoolean (qms) {
+            if (qms === null) {
+                return vm.cp.qmsStandards.length > 0 ? 'True' : 'False';
+            } else {
+                return vm.cp.hasQms ? 'True' : 'False';
             }
         }
 

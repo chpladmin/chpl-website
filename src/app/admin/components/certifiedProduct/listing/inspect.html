@@ -262,7 +262,7 @@
                 <strong>Other ACB:</strong> {{ vm.cp.otherAcb ? vm.cp.otherAcb : 'N/A' }} <br />
                 <strong>Transparency URL:</strong> {{ vm.cp.transparencyAttestationUrl ? vm.cp.transparencyAttestationUrl : 'None' }} <br />
                 <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics.inherits) }} <br />
-                <strong>QMS:</strong> {{ vm.cp.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
+                <strong>QMS:</strong> {{ vm.checkQmsBoolean(vm.cp.hasQms) }} <br />
                 <ul>
                   <li ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }}<span ng-if="qms.qmsModification">, {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria">, {{ qms.applicableCriteria }}</span></li>
                 </ul>
