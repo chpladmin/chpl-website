@@ -10,3 +10,4 @@ src/app/index.constants.js
 .settings/
 /features/components/nav/nav.login.steps.js
 prod-website.sh
+thaw-website.sh
