@@ -18,7 +18,7 @@
 
         function activate () {
             vm.activity = activity;
-            interpretActivity();
+            _interpretActivity();
             vm.activity = vm.activity.filter(function (a) { return a.change && a.change.length > 0; });
         }
 
@@ -33,8 +33,12 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function interpretActivity () {
-            var activity, curr, prev;
+        // Exposing helper functions for testing purposes
+        vm._interpretCertificationStatusChanges = _interpretCertificationStatusChanges;
+
+        function _interpretActivity () {
+            var activity, curr, prev, statusIndex;
+            statusIndex = -1;
             for (var i = 0; i < vm.activity.length; i++) {
                 activity = vm.activity[i];
                 activity.change = [];
@@ -46,20 +50,27 @@
                     vm.listingId = curr.id;
                 }
                 if (activity.description.startsWith('Updated certified product')) {
+                    statusIndex = i;
                     _interpretCertificationCriteria(prev, curr, activity);
                     _interpretCqms(prev, curr, activity);
                 } else if (activity.description === 'Created a certified product') {
+                    statusIndex = i;
                     activity.change.push('Certified product was uploaded to the CHPL');
                 } else if (activity.description.startsWith('Surveillance was added')) {
+                    statusIndex = i;
                     activity.change.push('Surveillance activity was added');
                 } else if (activity.description.startsWith('Surveillance was updated')) {
+                    statusIndex = i;
                     activity.change.push('Surveillance activity was updated');
                 } else if (activity.description.startsWith('Surveillance was delete')) {
+                    statusIndex = i;
                     activity.change.push('Surveillance activity was deleted');
                 }
             }
+            if (statusIndex !== -1) {
+                _interpretCertificationStatusChanges(vm.activity[statusIndex]);
+            }
         }
-        _interpretCertificationStatusChanges(vm.activity[vm.activity.length - 1]);
 
         function _interpretCertificationCriteria (prev, curr, activity) {
             var pCC = prev.certificationResults;
@@ -126,10 +137,12 @@
             var ce = activity.newData.certificationEvents;
             vm.activity = vm.activity.concat(
                 ce.filter(function (e) {
-                    return !e.eventTypeId;
+                    return !e.eventTypeId || e.eventTypeId === 1;
                 }).map(function (e) {
-                    e.activityDate = e.eventDate;
-                    if (e.certificationStatusName) {
+                    e.activityDate = parseInt(e.eventDate, 10);
+                    if (e.eventTypeId && e.eventTypeId === 1) {
+                        e.change = ['Certification Status became "Active"'];
+                    } else if (e.certificationStatusName) {
                         e.change = ['Certification Status became "' + e.certificationStatusName + '"'];
                     } else if (e.status) {
                         e.change = ['Certification Status became "' + e.status.name + '"'];
