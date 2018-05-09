@@ -5,7 +5,7 @@
         .controller('ChartsController', ChartsController);
 
     /** @ngInclude */
-    function ChartsController ($log, networkService) {
+    function ChartsController ($log, networkService, utilService) {
         var vm = this;
 
         activate();
@@ -13,6 +13,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            _createCriterionProductCountChart();
             _createSedParticipantCountChart();
             _createParticipantGenderCountChart();
             _createParticipantAgeCountChart();
@@ -20,6 +21,63 @@
             _createParticipantProfessionalExperienceCountChart();
             _createParticipantComputerExperienceCountChart();
             _createParticipantProductExperienceCountChart();
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function _createCriterionProductCountChart () {
+            networkService.getCriterionProductStatistics().then(function (data) {
+                vm.criterionProductCounts = {
+                    2014: {
+                        type: 'BarChart',
+                        data: {
+                            cols: [
+                                { label: 'Certification Criteria', type: 'string'},
+                                { label: 'Number of Unique Products', type: 'number'},
+                            ],
+                            rows: _getCriterionProductCountDataInChartFormat(data, 2014),
+                        },
+                        options: {
+                            title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
+                            hAxis: {
+                                title: 'Number of Unique Products',
+                            },
+                            vAxis: {
+                                title: 'Certification Criteria',
+                            },
+                        },
+                    },
+                    2015: {
+                        type: 'BarChart',
+                        data: {
+                            cols: [
+                                { label: 'Certification Criteria', type: 'string'},
+                                { label: 'Number of Unique Products', type: 'number'},
+                            ],
+                            rows: _getCriterionProductCountDataInChartFormat(data, 2015),
+                        },
+                        options: {
+                            title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
+                            hAxis: {
+                                title: 'Number of Unique Products',
+                            },
+                            vAxis: {
+                                title: 'Certification Criteria',
+                            },
+                        },
+                    },
+                }
+            });
+        }
+
+        function _getCriterionProductCountDataInChartFormat (data, edition) {
+            return data.criterionProductStatisticsResult.filter(function (obj) {
+                return obj.criterion.indexOf('170.3' + (edition + '').substring(2)) >= 0;
+            }).sort(function (a, b) {
+                return utilService.sortCert(a.criterion) - utilService.sortCert(b.criterion);
+            }).map(function (obj) {
+                return {c: [{ v: obj.criterion},{v: obj.productCount}]};
+            });
         }
 
         function _createSedParticipantCountChart () {
