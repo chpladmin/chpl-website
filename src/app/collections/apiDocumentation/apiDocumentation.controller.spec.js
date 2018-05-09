@@ -67,7 +67,7 @@
 
             it('should a link for the data', function () {
                 var data = 'http://example.com';
-                expect(vm.disclosuresTransform(data)).toBe('<a ai-a="" href="http://example.com" class="ng-scope">http://example.com</a>');
+                expect(vm.disclosuresTransform(data)).toBe('<a ai-a href="http://example.com">http://example.com</a>');
             });
         });
     });
