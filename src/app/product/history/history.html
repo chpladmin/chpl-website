@@ -1,12 +1,12 @@
-<div class="product-history" role="modal" aria-labeled-by="titleLabel">
+<div class="product-history" role="modal" aria-labeled-by="title-label" id="product-history-modal">
   <div class="modal-header">
     <button class="btn btn-default pull-right" aria-label="Cancel history"
             ng-click="vm.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close modal</span></button>
-    <h2 class="modal-title" id="titleLabel">Product History</h2>
+    <h2 class="modal-title" id="title-label">Product History</h2>
   </div>
   <div class="modal-body">
     <span ng-if="!vm.activity || vm.activity.length === 0">No changes have been made to this Certified Product</span>
-    <table class="table table-condensed" ng-if="vm.activity && vm.activity.length > 0">
+    <table class="table table-condensed" ng-if="vm.activity && vm.activity.length > 0" id="product-history-table">
       <thead>
         <tr>
           <th scope="col">Date</th>
@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="activity in vm.activity | orderBy:'activityDate':true">
+        <tr ng-repeat="activity in vm.activity | orderBy:'-activityDate'">
           <td>{{ activity.activityDate | date : 'medium' : 'UTC' }} GMT</td>
           <td>
             <ul class="list-unstyled">
@@ -26,6 +26,7 @@
     </table>
   </div>
   <div class="modal-footer">
-    This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the <code>/activity/certified_products/{{ vm.listingId }}</code> API call described on the <a href ng-click="vm.goToApi()">CHPL API page</a>
+    <button class="btn btn-primary pull-right" ng-click="vm.goToApi()">Go to API</button>
+    This module gives a basic overview of modifications made to the listing. For a more detailed history, please use the <code>/activity/certified_products/{{ vm.listingId }}</code> API call described on the CHPL API page.
   </div>
 </div>

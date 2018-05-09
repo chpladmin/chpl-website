@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 9.19.0
+_7 May 2018_
+
+### Minor Features
+* Add more information to "eye" display
+  * CQM changes
+  * g1/g2 success & macra measure changes
+
+### Bug Fixes
+* Show Listing information in "manage surveillance" search results
+* Fix bug that incorrectly showed qms boolean
+* Fixed bug where some Listings didn't show history when eye was clicked
+
+---
+
 ## Version 9.18.0
 _23 April 2018_
 
