@@ -106,6 +106,7 @@
                         vAxis: {
                             scaleType: 'mirrorLog',
                             title: 'Number of 2015 Edition CHPL Listings',
+                            minValue: 0,
                         },
                     },
                 }
@@ -134,7 +135,6 @@
                     },
                     options: {
                         title: 'Safety Enhanced Design Test Participants by Gender',
-                        sliceVisibilityThreshold: 0,
                     },
                 }
             });
