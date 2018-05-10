@@ -13,6 +13,10 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.chartState = {
+                tab: 'product',
+                productEdition: 2014,
+            };
             _createCriterionProductCountChart();
             _createSedParticipantCountChart();
             _createParticipantGenderCountChart();
@@ -38,6 +42,7 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
+                            chartArea: { top: 64 },
                             title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
                             hAxis: {
                                 title: 'Number of Unique Products',
@@ -57,6 +62,7 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
+                            chartArea: { top: 64 },
                             title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
                             hAxis: {
                                 title: 'Number of Unique Products',
