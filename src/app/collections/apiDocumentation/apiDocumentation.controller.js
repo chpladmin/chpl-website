@@ -63,7 +63,6 @@
                     ret += '<dt>' + value.join(', ') + '</dt><dd>' + '<a ai-a href="' + key + '">' + key + '</a></dd>';
                 });
                 ret += '</dl>';
-                ret = $compile(ret)($scope)[0].outerHTML;
             }
             return ret;
         }
@@ -72,7 +71,6 @@
             var ret = 'Unknown';
             if (data) {
                 ret = '<a ai-a href="' + data + '">' + data + '</a>';
-                ret = $compile(ret)($scope)[0].outerHTML;
             }
             return ret;
         }
