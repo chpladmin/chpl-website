@@ -44,6 +44,7 @@
             getCertBodies: getCertBodies,
             getCertificationStatuses: getCertificationStatuses,
             getCertifiedProductActivity: getCertifiedProductActivity,
+            getCriterionProductStatistics: getCriterionProductStatistics,
             getCmsDownload: getCmsDownload,
             getCollection: getCollection,
             getDeveloper: getDeveloper,
@@ -302,6 +303,10 @@
         function getCertifiedProductActivity (activityRange) {
             var call = '/activity/certified_products';
             return getActivity(call, activityRange);
+        }
+
+        function getCriterionProductStatistics () {
+            return apiGET('/statistics/criterion_product');
         }
 
         function getCmsDownload () {
