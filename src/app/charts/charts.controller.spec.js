@@ -6,9 +6,12 @@
         var $controller, $log, $q, mock, networkService, scope, vm;
         mock = {
             criterionProductStatisticsResult: [
-                {id: 23, productCount: 2, certificationCriterionId: 74, criterion: '170.314 (a)(14)', creationDate: 1525888928985, deleted: false, lastModifiedDate: 1525888928985, lastModifiedUser: -3},
-                {id: 24, productCount: 5, certificationCriterionId: 38, criterion: '170.315 (d)(10)', creationDate: 1525888929768, deleted: false, lastModifiedDate: 1525888929768, lastModifiedUser: -3},
-                {id: 25, productCount: 18, certificationCriterionId: 37, criterion: '170.315 (d)(9)', creationDate: 1525888929814, deleted: false, lastModifiedDate: 1525888929814, lastModifiedUser: -3},
+                {id: 144, productCount: 928, certificationCriterionId: 63, criterion: {id: 63, number: '170.314 (a)(3)', title: 'Demographics', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448277, deleted: false, lastModifiedDate: 1525902448277, lastModifiedUser: -3},
+                {id: 208, productCount: 138, certificationCriterionId: 1, criterion: {id: 1, number: '170.315 (a)(1)', title: 'Computerized Provider Order Entry (CPOE) - Medications', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448482, deleted: false, lastModifiedDate: 1525902448482, lastModifiedUser: -3},
+                {id: 176, productCount: 138, certificationCriterionId: 3, criterion: {id: 3, number: '170.315 (a)(3)', title: 'CPOE - Diagnostic Imaging', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448382, deleted: false, lastModifiedDate: 1525902448382, lastModifiedUser: -3},
+                {id: 160, productCount: 847, certificationCriterionId: 62, criterion: {id: 62, number: '170.314 (a)(2)', title: 'Drug-drug, drug-allergy interactions checks', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448328, deleted: false, lastModifiedDate: 1525902448328, lastModifiedUser: -3},
+                {id: 161, productCount: 138, certificationCriterionId: 2, criterion: {id: 2, number: '170.315 (a)(2)', title: 'CPOE - Laboratory', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448330, deleted: false, lastModifiedDate: 1525902448330, lastModifiedUser: -3},
+                {id: 131, productCount: 906, certificationCriterionId: 64, criterion: {id: 64, number: '170.314 (a)(4)', title: 'Vital signs, body mass index, and growth Charts', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448257, deleted: false, lastModifiedDate: 1525902448257, lastModifiedUser: -3},
             ],
             sedParticipantStatisticsCounts: [
                 {id: 187, sedCount: 7, participantCount: 130, creationDate: 1520357057186, deleted: false, lastModifiedDate: 1520357057186, lastModifiedUser: -3},
@@ -121,12 +124,12 @@
                 });
 
                 it('should filter the results by edition', function () {
-                    expect(vm.criterionProductCounts[2014].data.rows.length).toBe(1);
-                    expect(vm.criterionProductCounts[2015].data.rows.length).toBe(2);
+                    expect(vm.criterionProductCounts[2014].data.rows.length).toBe(3);
+                    expect(vm.criterionProductCounts[2015].data.rows.length).toBe(3);
                 });
 
                 it('should sort the results by criterion', function () {
-                    expect(vm.criterionProductCounts[2015].data.rows[0].c[0].v).toBe('170.315 (d)(9)');
+                    expect(vm.criterionProductCounts[2015].data.rows[0].c[0].v).toBe('170.315 (a)(1)');
                 });
             });
         });

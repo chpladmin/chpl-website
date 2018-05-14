@@ -42,14 +42,8 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
-                            chartArea: { top: 64 },
+                            chartArea: { top: 64, height: '100%' },
                             title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
-                            hAxis: {
-                                title: 'Number of Unique Products',
-                            },
-                            vAxis: {
-                                title: 'Certification Criteria',
-                            },
                         },
                     },
                     2015: {
@@ -62,14 +56,8 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
-                            chartArea: { top: 64 },
+                            chartArea: { top: 64, height: '100%' },
                             title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
-                            hAxis: {
-                                title: 'Number of Unique Products',
-                            },
-                            vAxis: {
-                                title: 'Certification Criteria',
-                            },
                         },
                     },
                 }
@@ -78,11 +66,11 @@
 
         function _getCriterionProductCountDataInChartFormat (data, edition) {
             return data.criterionProductStatisticsResult.filter(function (obj) {
-                return obj.criterion.indexOf('170.3' + (edition + '').substring(2)) >= 0;
+                return obj.criterion.number.indexOf('170.3' + (edition + '').substring(2)) >= 0;
             }).sort(function (a, b) {
-                return utilService.sortCert(a.criterion) - utilService.sortCert(b.criterion);
+                return utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number);
             }).map(function (obj) {
-                return {c: [{ v: obj.criterion},{v: obj.productCount}]};
+                return {c: [{ v: obj.criterion.number},{v: obj.productCount}]};
             });
         }
 
