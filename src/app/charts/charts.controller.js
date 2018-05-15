@@ -42,7 +42,7 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
-                            chartArea: { top: 64, height: '100%' },
+                            chartArea: { top: 64, height: '90%' },
                             title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
                         },
                     },
@@ -56,7 +56,7 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
-                            chartArea: { top: 64, height: '100%' },
+                            chartArea: { top: 64, height: '90%' },
                             title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
                         },
                     },
