@@ -8,37 +8,55 @@
     <div class="row">
       <div class="col-sm-12">
         <p>This is a beta release for charts related to safety-enhanced design data in the CHPL. We will be working on iterating this charts over the coming months. Please send any questions or comments to <a href="mailto:ONC_CHPL@hhs.gov">ONC_CHPL@hhs.gov</a></p>
+        <ul class="nav nav-tabs">
+          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'product'}"><a ng-click="vm.chartState.tab = 'product'">Unique Product charts</a></li>
+          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'sed'}"><a ng-click="vm.chartState.tab = 'sed'">SED Participant charts</a></li>
+        </ul>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div google-chart chart="vm.sedParticipantCounts" style="height:450px; width:100%;"></div>
+    <div ng-if="vm.chartState.tab === 'product'">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="nav nav-tabs">
+            <li role="presentation" ng-class="{'active': vm.chartState.productEdition === 2014}"><a ng-click="vm.chartState.productEdition = 2014">2014 Edition</a></li>
+            <li role="presentation" ng-class="{'active': vm.chartState.productEdition === 2015}"><a ng-click="vm.chartState.productEdition = 2015">2015 Edition</a></li>
+          </ul>
+          <div ng-if="vm.chartState.productEdition === 2014" google-chart="" chart="vm.criterionProductCounts[2014]" class="bar-chart"></div>
+          <div ng-if="vm.chartState.productEdition === 2015" google-chart="" chart="vm.criterionProductCounts[2015]" class="bar-chart"></div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-4">
-        <div google-chart chart="vm.participantGenderCounts" style="height:450px;"></div>
+    <div ng-if="vm.chartState.tab === 'sed'">
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.sedParticipantCounts" class="column-chart"></div>
+        </div>
       </div>
-      <div class="col-sm-4">
-        <div google-chart chart="vm.participantAgeCounts" style="height:450px;"></div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div google-chart="" chart="vm.participantGenderCounts" class="pie-chart"></div>
+        </div>
+        <div class="col-sm-4">
+          <div google-chart="" chart="vm.participantAgeCounts" class="pie-chart"></div>
+        </div>
+        <div class="col-sm-4">
+          <div google-chart="" chart="vm.participantEducationCounts" class="pie-chart"></div>
+        </div>
       </div>
-      <div class="col-sm-4">
-        <div google-chart chart="vm.participantEducationCounts" style="height:450px;"></div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.participantProfessionalExperienceCounts" class="column-chart"></div>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div google-chart chart="vm.participantProfessionalExperienceCounts" style="height:450px; width:100%;"></div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.participantComputerExperienceCounts" class="column-chart"></div>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div google-chart chart="vm.participantComputerExperienceCounts" style="height:450px; width:100%;"></div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div google-chart chart="vm.participantProductExperienceCounts" style="height:450px; width:100%;"></div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.participantProductExperienceCounts" class="column-chart"></div>
+        </div>
       </div>
     </div>
   </div>

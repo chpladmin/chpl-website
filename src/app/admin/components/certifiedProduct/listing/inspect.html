@@ -269,7 +269,7 @@
                 <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation ? vm.cp.reportFileLocation : 'N/A' }} <br />
                 <strong>SED Report File Location:</strong> {{ vm.cp.sedReportFileLocation ? vm.cp.sedReportFileLocation : 'N/A' }} <br />
                 <strong>SED Intended Users:</strong> {{ vm.cp.sedIntendedUserDescription ? vm.cp.sedIntendedUserDescription : 'None' }} <br />
-                <strong>SED End Date of Testing:</strong> {{ vm.cp.sedTestingEnd | date : 'mediumDate' : 'UTC' }} <br />
+                <strong>SED End Date of Testing:</strong> {{ vm.cp.sedTestingEndDate | date : 'mediumDate' : 'UTC' }} <br />
                 <strong>Testing Lab<span ng-if="vm.cp.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!vm.cp.testingLabs || vm.cp.testingLabs.length === 0">None<br /></span>
                 <ul ng-if="vm.cp.testingLabs && vm.cp.testingLabs.length !== 0">
                   <li ng-repeat="atl in vm.cp.testingLabs">{{ atl.testingLabName }}</li>

@@ -475,6 +475,14 @@
             $httpBackend.flush();
         });
 
+        it('should getCriterionProductStatistics', function () {
+            $httpBackend.expectGET(/statistics\/criterion_product/).respond(200, {data: 'response'});
+            networkService.getCriterionProductStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getCmsDownload', function () {
             $httpBackend.expectGET(/certification_ids/).respond(200, {data: 'response'});
             networkService.getCmsDownload().then(function (response) {
