@@ -598,6 +598,14 @@
             $httpBackend.flush();
         });
 
+        it('should getIncumbentDeveloperStatistics', function () {
+            $httpBackend.expectGET(/statistics\/incumbent_developers/).respond(200, {data: 'response'});
+            networkService.getIncumbentDevelopersStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getJobTypes', function () {
             $httpBackend.expectGET(/data\/job_types/).respond(200, {data: 'response'});
             networkService.getJobTypes().then(function (response) {

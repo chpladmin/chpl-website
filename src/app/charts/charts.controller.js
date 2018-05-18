@@ -18,6 +18,7 @@
                 productEdition: 2014,
             };
             _createCriterionProductCountChart();
+            _createIncumbentDevelopersCountChart();
             _createSedParticipantCountChart();
             _createParticipantGenderCountChart();
             _createParticipantAgeCountChart();
@@ -72,6 +73,60 @@
             }).map(function (obj) {
                 return {c: [{ v: obj.criterion.number},{v: obj.productCount}]};
             });
+        }
+
+        function _createIncumbentDevelopersCountChart () {
+            networkService.getIncumbentDevelopersStatistics().then(function (data) {
+                vm.incumbentDevelopersCounts = {
+                    from2011to2014: {
+                        type: 'PieChart',
+                        data: {
+                            cols: [
+                                { label: 'Developers', type: 'string'},
+                                { label: 'Counts', type: 'number'},
+                            ],
+                            rows: _getIncumbentDevelopersCountDataInChartFormat(data.new2011To2014, data.incumbent2011To2014),
+                        },
+                        options: {
+                            title: 'New vs. Incumbent Developers by Edition, 2011 to 2014',
+                        },
+                    },
+                    from2011to2015: {
+                        type: 'PieChart',
+                        data: {
+                            cols: [
+                                { label: 'Developers', type: 'string'},
+                                { label: 'Counts', type: 'number'},
+                            ],
+                            rows: _getIncumbentDevelopersCountDataInChartFormat(data.new2011To2015, data.incumbent2011To2015),
+                        },
+                        options: {
+                            title: 'New vs. Incumbent Developers by Edition, 2011 to 2015',
+                        },
+                    },
+                    from2014to2015: {
+                        type: 'PieChart',
+                        data: {
+                            cols: [
+                                { label: 'Developers', type: 'string'},
+                                { label: 'Counts', type: 'number'},
+                            ],
+                            rows: _getIncumbentDevelopersCountDataInChartFormat(data.new2014To2015, data.incumbent2014To2015),
+                        },
+                        options: {
+                            title: 'New vs. Incumbent Developers by Edition, 2014 to 2015',
+                        },
+                    },
+                }
+            });
+        }
+
+        function _getIncumbentDevelopersCountDataInChartFormat (newDev, incumbentDev) {
+            var data = [
+                {c: [{ v: 'New Developers'}, {v: newDev}]},
+                {c: [{ v: 'Incumbent Developers'}, {v: incumbentDev}]},
+            ];
+            return data;
         }
 
         function _createSedParticipantCountChart () {
