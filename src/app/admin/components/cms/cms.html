@@ -20,10 +20,10 @@
           <li ng-repeat="error in vm.uploadErrors">{{ error.error }}</li>
         </ul>
       </div>
-      <table class="table table-responsive" ng-if="vm.uploader.queue.length > 0" id="meaningfulUseUploadTable">
+      <table class="table table-responsive" ng-if="vm.uploader.queue.length > 0" id="meaningful-use-upload-table">
         <thead>
           <tr>
-            <th scope="col" width="50%">Name</th>
+            <th scope="col">Name</th>
             <th scope="col" ng-show="vm.uploader.isHTML5">Size</th>
             <th scope="col" ng-show="vm.uploader.isHTML5">Progress</th>
             <th scope="col">Actions</th>
@@ -34,7 +34,7 @@
             <td><strong>{{ item.file.name }}</strong></td>
             <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
             <td ng-show="vm.uploader.isHTML5">
-              <div class="progress" style="margin-bottom: 0;">
+              <div class="progress">
                 <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
               </div>
             </td>
@@ -55,10 +55,10 @@
       <p>Meaningful Use Users information is accurate as of: {{ vm.muuAccurateAsOf | date : 'mediumDate' : 'UTC' }}</p>
       <form class="form form-horizontal" name="vm.muuForm">
         <div class="form-group">
-          <label for="newMuuDate" class="col-sm-4">Set new Meaningful Use Users Accurate As Of Date</label>
+          <label for="new-muu-date" class="col-sm-4">Set new Meaningful Use Users Accurate As Of Date</label>
           <div class="col-sm-4">
             <div class="input-group">
-              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.muuAccurateAsOfDateObject" is-open="vm.muuAccurateAsOfPicker" close-text="Close" id="newMuuDate" name="newMuuDate" ng-model-options="{ timezone: 'UTC' }" required>
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.muuAccurateAsOfDateObject" is-open="vm.muuAccurateAsOfPicker" close-text="Close" id="new-muu-date" name="newMuuDate" ng-model-options="{ timezone: 'UTC' }" required>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-ai btn-sm" ng-click="vm.muuAccurateAsOfPicker = true"><i class="fa fa-calendar"></i></button>
               </span>

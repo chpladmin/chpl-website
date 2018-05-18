@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="inspectLabel">
+<div role="modal" aria-labeled-by="inspect-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="inspectLabel">Inspect Certified Product ({{ vm.cp.chplProductNumber }})</h4>
+    <h4 class="modal-title" id="inspect-label">Inspect Certified Product ({{ vm.cp.chplProductNumber }})</h4>
   </div>
   <div class="modal-body">
     <!-- Developer -->
@@ -28,14 +28,14 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li><label><input type="radio" ng-model="vm.developerChoice" value="choose"> Select existing developer</label></li>
-                  <li><label><input type="radio" ng-model="vm.developerChoice" value="create"> Create new developer</label></li>
+                  <li><label><input type="radio" name="developer-choice" ng-model="vm.developerChoice" value="choose"> Select existing developer</label></li>
+                  <li><label><input type="radio" name="developer-choice" ng-model="vm.developerChoice" value="create"> Create new developer</label></li>
                 </ul>
               </div>
               <div ng-if="vm.developerChoice === 'choose'">
-                <label for="developerSelect" class="control-label admin-label-spaced">Select a developer</label>
+                <label for="developer-select" class="control-label admin-label-spaced">Select a developer</label>
                 <select ng-model="vm.developerSelect"
-                        id="developerSelect" class="input-sm form-control"
+                        id="developer-select" class="input-sm form-control"
                         ng-options="v.name for v in vm.developers | orderBy: 'name'">
                 </select>
                 <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingDeveloper()">Select Developer</button></p>
@@ -121,14 +121,14 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li ng-if="vm.developer"><label><input type="radio" ng-model="vm.productChoice" value="choose"> Select existing product</label></li>
-                  <li><label><input type="radio" ng-model="vm.productChoice" value="create"> Create new product</label></li>
+                  <li ng-if="vm.developer"><label><input type="radio" name="product-choice" ng-model="vm.productChoice" value="choose"> Select existing product</label></li>
+                  <li><label><input type="radio" name="product-choice" ng-model="vm.productChoice" value="create"> Create new product</label></li>
                 </ul>
               </div>
               <div ng-if="vm.productChoice === 'choose'">
-                <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
+                <label for="product-select" class="control-label admin-label-spaced">Select a product</label>
                 <select ng-model="vm.productSelect"
-                        id="productSelect" class="input-sm form-control"
+                        id="product-select" class="input-sm form-control"
                         ng-options="p.name for p in vm.products | orderBy: 'name'">
                 </select>
                 <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
@@ -189,14 +189,14 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li ng-if="vm.product"><label><input type="radio" ng-model="vm.versionChoice" value="choose"> Select existing version</label></li>
-                  <li><label><input type="radio" ng-model="vm.versionChoice" value="create"> Create new version</label></li>
+                  <li ng-if="vm.product"><label><input type="radio" name="version-choice" ng-model="vm.versionChoice" value="choose"> Select existing version</label></li>
+                  <li><label><input type="radio" name="version-choice" ng-model="vm.versionChoice" value="create"> Create new version</label></li>
                 </ul>
               </div>
               <div ng-if="vm.versionChoice === 'choose'">
-                <label for="versionSelect" class="control-label admin-label-spaced">Select a version</label>
+                <label for="version-select" class="control-label admin-label-spaced">Select a version</label>
                 <select ng-model="vm.versionSelect"
-                        id="versionSelect" class="input-sm form-control"
+                        id="version-select" class="input-sm form-control"
                         ng-options="v.version for v in vm.versions | orderBy: 'version'">
                 </select>
                 <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVersion()">Select Version</button></p>

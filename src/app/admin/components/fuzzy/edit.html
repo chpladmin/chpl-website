@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="modalLabel">
+<div role="modal" aria-labeled-by="modal-label">
   <div class="modal-header">
     <button class="btn btn-default pull-right" aria-label="Close modal"
             confirm="Are you sure you wish to cancel? Your changes will not be saved."
@@ -6,15 +6,15 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><i class="fa fa-close"></i><span class="sr-only">Close modal</span></button>
-    <h2 class="modal-title" id="modalLabel">Edit Fuzzy Type</h2>
+    <h2 class="modal-title" id="modal-label">Edit Fuzzy Type</h2>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <h2>{{ vm.fuzzyType.fuzzyType }}</h2>
     <div class="form-group" ng-repeat="choice in vm.fuzzyType.choices track by $index">
-      <label class="control-label col-md-4" for="choice{{ $index }}">Choice {{ $index + 1 }}<span class="text-danger">*</span></label>
+      <label class="control-label col-md-4" for="choice-{{ $index }}">Choice {{ $index + 1 }}<span class="text-danger">*</span></label>
       <div class="col-md-8">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" required ng-model="vm.fuzzyType.choices[$index]" id="choice{{ $index }}" name="choice{{ $index }}"></input>
+          <input class="input-sm form-control" type="text" required ng-model="vm.fuzzyType.choices[$index]" id="choice-{{ $index }}" name="choice{{ $index }}"></input>
           <span class="input-group-btn">
             <button type="button" class="btn btn-danger btn-sm" ng-click="vm.fuzzyType.choices.splice($index, 1)"><i class="fa fa-trash"></i></button>
           </span>
