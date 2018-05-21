@@ -24,8 +24,8 @@
             vm.ucdProcesses = angular.copy(ucdProcesses);
             vm.resources.ucdProcesses.data = vm.resources.ucdProcesses.data
                 .concat(ucdProcesses.filter(function (process) { return !process.id }));
-            if (vm.listing.sedTestingEnd) {
-                vm.listing.sedTestingEndDate = new Date(vm.listing.sedTestingEnd);
+            if (vm.listing.sedTestingEndDate) {
+                vm.sedDate = new Date(vm.listing.sedTestingEndDate);
             }
         }
 
@@ -34,18 +34,18 @@
         }
 
         function save () {
-            if (vm.listing.sedTestingEndDate) {
-                switch (typeof(vm.listing.sedTestingEndDate)) {
+            if (vm.sedDate) {
+                switch (typeof(vm.sedDate)) {
                 case 'string':
-                    vm.listing.sedTestingEnd = vm.listing.sedTestingEndDate;
+                    vm.listing.sedTestingEndDate = new Date(vm.sedDate).getTime();
                     break;
                 case 'object':
-                    vm.listing.sedTestingEnd = vm.listing.sedTestingEndDate.getTime();
+                    vm.listing.sedTestingEndDate = vm.sedDate.getTime();
                     break;
                     //no default
                 }
             } else {
-                vm.listing.sedTestingEnd = undefined;
+                vm.listing.sedTestingEndDate = undefined;
             }
             $uibModalInstance.close({
                 listing: vm.listing,
