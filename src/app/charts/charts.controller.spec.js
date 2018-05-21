@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Charts component controller', function () {
+    describe('the Charts component controller', function () {
 
         var $controller, $log, $q, mock, networkService, scope, vm;
         mock = {
