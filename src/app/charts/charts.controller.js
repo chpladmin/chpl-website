@@ -5,7 +5,7 @@
         .controller('ChartsController', ChartsController);
 
     /** @ngInclude */
-    function ChartsController ($log, networkService) {
+    function ChartsController ($log, networkService, utilService) {
         var vm = this;
 
         activate();
@@ -13,6 +13,11 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.chartState = {
+                tab: 'product',
+                productEdition: 2014,
+            };
+            _createCriterionProductCountChart();
             _createSedParticipantCountChart();
             _createParticipantGenderCountChart();
             _createParticipantAgeCountChart();
@@ -20,6 +25,53 @@
             _createParticipantProfessionalExperienceCountChart();
             _createParticipantComputerExperienceCountChart();
             _createParticipantProductExperienceCountChart();
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function _createCriterionProductCountChart () {
+            networkService.getCriterionProductStatistics().then(function (data) {
+                vm.criterionProductCounts = {
+                    2014: {
+                        type: 'BarChart',
+                        data: {
+                            cols: [
+                                { label: 'Certification Criteria', type: 'string'},
+                                { label: 'Number of Unique Products', type: 'number'},
+                            ],
+                            rows: _getCriterionProductCountDataInChartFormat(data, 2014),
+                        },
+                        options: {
+                            chartArea: { top: 64, height: '90%' },
+                            title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
+                        },
+                    },
+                    2015: {
+                        type: 'BarChart',
+                        data: {
+                            cols: [
+                                { label: 'Certification Criteria', type: 'string'},
+                                { label: 'Number of Unique Products', type: 'number'},
+                            ],
+                            rows: _getCriterionProductCountDataInChartFormat(data, 2015),
+                        },
+                        options: {
+                            chartArea: { top: 64, height: '90%' },
+                            title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
+                        },
+                    },
+                }
+            });
+        }
+
+        function _getCriterionProductCountDataInChartFormat (data, edition) {
+            return data.criterionProductStatisticsResult.filter(function (obj) {
+                return obj.criterion.number.indexOf('170.3' + (edition + '').substring(2)) >= 0;
+            }).sort(function (a, b) {
+                return utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number);
+            }).map(function (obj) {
+                return {c: [{ v: obj.criterion.number},{v: obj.productCount}]};
+            });
         }
 
         function _createSedParticipantCountChart () {
@@ -42,6 +94,7 @@
                         vAxis: {
                             scaleType: 'mirrorLog',
                             title: 'Number of 2015 Edition CHPL Listings',
+                            minValue: 0,
                         },
                     },
                 }
@@ -70,7 +123,6 @@
                     },
                     options: {
                         title: 'Safety Enhanced Design Test Participants by Gender',
-                        sliceVisibilityThreshold: 0,
                     },
                 }
             });

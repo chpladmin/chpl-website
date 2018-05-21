@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 9.20.0
+_21 May 2018_
+
+### New Features
+* Added "Criterion / Product" chart to Charts! page
+
+### Bug Fixes
+* Fixed bug that did not show SED End Testing Date on inspect or management
+* Fixed bug that showed two web site disclaimers on api documentation collection
+
+---
+
 ## Version 9.19.0
 _7 May 2018_
 
@@ -14,7 +26,6 @@ _7 May 2018_
 * Fixed bug where some Listings didn't show history when eye was clicked
 
 ---
-
 
 ## Version 9.18.0
 _23 April 2018_
