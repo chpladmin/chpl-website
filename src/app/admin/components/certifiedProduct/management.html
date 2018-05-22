@@ -3,9 +3,9 @@
     <div class="row admin-label-spaced lead text-center" ng-if="vm.workType==='merge'">
       <ul class="list-inline">
         <li><strong>What would you like to merge?</strong></li>
-        <li><label><input type="radio" ng-model="vm.mergeType" value="developer"> Developers</label></li>
-        <li><label><input type="radio" ng-model="vm.mergeType" value="product"> Products</label></li>
-        <li><label><input type="radio" ng-model="vm.mergeType" value="version"> Versions</label></li>
+        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="developer"> Developers</label></li>
+        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="product"> Products</label></li>
+        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="version"> Versions</label></li>
       </ul>
     </div>
     <div class="row" ng-if="vm.workType==='manage'">
@@ -28,7 +28,7 @@
         <table class="table" ng-if="vm.uploader.queue.length > 0">
           <thead>
             <tr>
-              <th scope="col" width="50%">Name</th>
+              <th scope="col">Name</th>
               <th scope="col" ng-show="vm.uploader.isHTML5">Size</th>
               <th scope="col" ng-show="vm.uploader.isHTML5">Progress</th>
               <th scope="col">Actions</th>
@@ -39,7 +39,7 @@
               <td><strong>{{ item.file.name }}</strong></td>
               <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
               <td ng-show="vm.uploader.isHTML5">
-                <div class="progress" style="margin-bottom: 0;">
+                <div class="progress">
                   <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
                 </div>
               </td>
@@ -71,7 +71,7 @@
         <table class="table" ng-if="vm.surveillanceUploader.queue.length > 0">
           <thead>
             <tr>
-              <th scope="col" width="50%">Name</th>
+              <th scope="col">Name</th>
               <th scope="col" ng-show="vm.surveillanceUploader.isHTML5">Size</th>
               <th scope="col" ng-show="vm.surveillanceUploader.isHTML5">Progress</th>
               <th scope="col">Actions</th>
@@ -82,7 +82,7 @@
               <td><strong>{{ item.file.name }}</strong></td>
               <td ng-show="vm.surveillanceUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
               <td ng-show="vm.surveillanceUploader.isHTML5">
-                <div class="progress" style="margin-bottom: 0;">
+                <div class="progress">
                   <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
                 </div>
               </td>
@@ -232,9 +232,9 @@
     <div class="row" ng-if="vm.workType === 'manageSurveillance'">
       <div class="col-sm-12">
         <h3>Manage Surveillance Activity</h3>
-        <label for="surveillanceSearch" class="control-label sr-only">Search by ACB or CHPL ID</label>
+        <label for="surveillance-search" class="control-label sr-only">Search by ACB or CHPL ID</label>
         <div class="input-group">
-          <input type="text" class="form-control" id="surveillanceSearch" placeholder="Search by ACB or CHPL ID" ng-model="vm.surveillanceSearch.query"
+          <input type="text" class="form-control" id="surveillance-search" placeholder="Search by ACB or CHPL ID" ng-model="vm.surveillanceSearch.query"
                  ng-keyup="$event.keyCode === 13 && vm.searchForSurveillance()">
           <span class="input-group-btn">
             <button type="button" class="btn btn-ai" id="surveillance-search-button" ng-click="vm.searchForSurveillance()"><i class="fa fa-search"></i><span class="sr-only">Search</span></button>
@@ -280,6 +280,12 @@
             <a href="#/product/{{ vm.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
           </span>
           <table class="table">
+            <thead class="sr-only">
+              <tr>
+                <th scope="col">Surveillance Listing Data Type</th>
+                <th scope="col">Surveillance Listing Data Value</th>
+              </tr>
+            </thead>
             <tbody>
               <tr>
                 <th scope="row">CHPL Product Number</th>
@@ -345,11 +351,11 @@
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="developerSelect" class="control-label">Developer</label>
+                <label for="developer-select" class="control-label">Developer</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.developerSelect"
-                        id="developerSelect" class="form-control col-sm-8"
+                        id="developer-select" class="form-control col-sm-8"
                         ng-options="v.name for v in vm.developers | orderBy: 'name'">
                   <option value="" selected disabled>Select a developer</option>
                 </select>
@@ -361,9 +367,9 @@
           </div>
         </div>
         <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'developer'">
-          <label for="developerMergeSelect" class="control-label admin-label-spaced">Select developers to merge</label>
+          <label for="developer-merge-select" class="control-label admin-label-spaced">Select developers to merge</label>
           <select ng-model="vm.mergingDevelopers" multiple="true"
-                  id="developerMergeSelect" class="input-sm form-control"
+                  id="developer-merge-select" class="input-sm form-control"
                   size="12" ng-options="v.name disable when !vm.isDeveloperMergeable(v) for v in vm.developers | orderBy: 'name'">
           </select>
           <p><button ng-disabled="vm.mergingDevelopers.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
@@ -460,11 +466,11 @@
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="productSelect" class="control-label admin-label-spaced">Product</label>
+                <label for="product-select" class="control-label admin-label-spaced">Product</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.productSelect"
-                        id="productSelect" class="form-control"
+                        id="product-select" class="form-control"
                         ng-options="p.name for p in vm.products | orderBy: 'name'">
                   <option value="" selected disabled>Select a product</option>
                 </select>
@@ -476,9 +482,9 @@
           </div>
         </div>
         <div class="col-sm-12" ng-if="vm.mergeType === 'product' && vm.products.length > 1">
-          <label for="productMergeSelect" class="control-label admin-label-spaced">Select products to merge</label>
+          <label for="product-merge-select" class="control-label admin-label-spaced">Select products to merge</label>
           <select ng-model="vm.mergingProducts" multiple="true"
-                  id="productMergeSelect" class="input-sm form-control"
+                  id="product-merge-select" class="input-sm form-control"
                   size="12" ng-options="p.name for p in vm.products | orderBy: 'name'">
           </select>
           <p><button ng-disabled="vm.mergingProducts.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeProducts()">Choose Products</button></p>
@@ -530,11 +536,11 @@
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="versionSelect" class="control-label admin-label-spaced">Version</label>
+                <label for="version-select" class="control-label admin-label-spaced">Version</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.versionSelect"
-                        id="versionSelect" class="form-control"
+                        id="version-select" class="form-control"
                         ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
                   <option value="" selected disabled>Select a version</option>
                 </select>
@@ -546,9 +552,9 @@
           </div>
         </div>
         <div class="col-sm-12" ng-if="vm.mergeType === 'version' && vm.versions.length > 1">
-          <label for="versionMergeSelect" class="control-label admin-label-spaced">Select versions to merge</label>
+          <label for="version-merge-select" class="control-label admin-label-spaced">Select versions to merge</label>
           <select ng-model="vm.mergingVersions" multiple="true"
-                  id="versionMergeSelect" class="input-sm form-control"
+                  id="version-merge-select" class="input-sm form-control"
                   size="12" ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
           </select>
           <p><button ng-disabled="vm.mergingVersions.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeVersions()">Choose Versions</button></p>
@@ -581,10 +587,10 @@
             <div class="form-group admin-label-spaced">
               <span ng-if="vm.cps.length > 0">
                 <div class="col-sm-3">
-                  <label for="cpSelect" class="control-label admin-label-spaced">Certified Product</label>
+                  <label for="cp-select" class="control-label admin-label-spaced">Certified Product</label>
                 </div>
                 <div class="col-sm-7">
-                  <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
+                  <select ng-model="vm.cpSelect" id="cp-select" class="input-sm form-control">
                     <option value="" selected disabled>Select a Certified Product</option>
                     <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</option>
                   </select>

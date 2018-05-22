@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="editProductLabel">
+<div role="modal" aria-labeled-by="edit-product-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,23 +6,23 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editProductLabel">Edit Product</h4>
+    <h4 class="modal-title" id="edit-product-label">Edit Product</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
-      <label class="col-md-4 control-label" for="productName">Product Name</label>
+      <label class="col-md-4 control-label" for="product-name">Product Name</label>
       <div class="col-md-8">
-        <input class="input-sm form-control" type="text" ng-model="vm.product.name" id="productName" name="productName" required ng-maxlength="300"></input>
+        <input class="input-sm form-control" type="text" ng-model="vm.product.name" id="product-name" name="productName" required ng-maxlength="300"></input>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.productName.$touched) && vm.editForm.productName.$error.required">Product name is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.productName.$touched) && vm.editForm.productName.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="col-md-4 control-label" for="productOwner">Current Product owner</label>
+      <label class="col-md-4 control-label" for="product-owner">Current Product owner</label>
       <div class="col-md-8">
         <select ng-model="vm.product.developerId" required
                 ng-change="vm.changeCurrent({{ vm.product.developerId }})"
-                id="productOwner" name="productOwner" class="input-sm form-control"
+                id="product-owner" name="productOwner" class="input-sm form-control"
                 ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.productOwner.$touched) && vm.editForm.productOwner.$error.required">Product owner is required</div>
@@ -30,20 +30,20 @@
     </div>
     <div ng-repeat="prevOwner in vm.product.ownerHistory | orderBy:'transferDate' track by $index">
       <div class="form-group">
-        <label class="col-md-4 control-label" for="productOwner{{ $index }}">Previous Product owner</label>
+        <label class="col-md-4 control-label" for="product-owner{{ $index }}">Previous Product owner</label>
         <div class="col-md-8">
           <select ng-model="prevOwner.developer.developerId" required
-                  id="productOwner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
+                  id="product-owner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
                   ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
           </select>
           <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['productOwner' + $index].$touched) && vm.editForm['productOwner' + $index].$error.required">Product owner is required</div>
         </div>
       </div>
       <div class="form-group">
-        <label class="col-md-4 control-label" for="transferDate{{ $index }}">Transfer Date</label>
+        <label class="col-md-4 control-label" for="transfer-date{{ $index }}">Transfer Date</label>
         <div class="col-md-4">
           <div class="input-group">
-            <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transferDate{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+            <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transfer-date{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
             <span class="input-group-btn">
               <button type="button" class="btn btn-ai btn-sm" ng-click="prevOwner.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
             </span>

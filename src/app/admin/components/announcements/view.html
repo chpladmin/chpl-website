@@ -2,17 +2,17 @@
   <div class="col-md-12 main-content">
     <h2>Announcement Management</h2>
     <p ng-if="vm.errorMessage" class="bg-danger">{{ vm.errorMessage }}</p>
-	<table class="table table-striped">
-	  <thead>
-		<tr>
-		  <th scope="col">Title</th>
-		  <th scope="col">Announcement</th>
-		  <th scope="col">Start Date</th>
-		  <th scope="col">End Date</th>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Announcement</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
           <th scope="col">Public</th>
           <th scope="col"><span class="sr-only">Action</span></th>
-		</tr>
-	  </thead>
+        </tr>
+      </thead>
       <tfoot>
         <tr>
           <td colspan="6">
@@ -20,16 +20,16 @@
           </td>
         </tr>
       </tfoot>
-	  <tbody>
-		<tr ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
-		  <td>{{ announcement.title }}</td>
-		  <td>{{ announcement.text }}</td>
-		  <td>{{ announcement.startDate | date : 'MM/dd/yyyy' : 'UTC'}}</td>
-		  <td>{{ announcement.endDate | date : 'MM/dd/yyyy' : 'UTC'}}</td>
-		  <td>{{ announcement.isPublic ? 'Yes' : 'No' }}</td>
-		  <td><button class="btn btn-default btn-block" ng-click="vm.edit(announcement,$index)">Edit</button></td>
-		</tr>
-	  </tbody>
-	</table>
+      <tbody>
+        <tr ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
+          <td>{{ announcement.title }}</td>
+          <td>{{ announcement.text }}</td>
+          <td>{{ announcement.startDate | date : 'MM/dd/yyyy' : 'UTC'}}</td>
+          <td>{{ announcement.endDate | date : 'MM/dd/yyyy' : 'UTC'}}</td>
+          <td>{{ announcement.isPublic ? 'Yes' : 'No' }}</td>
+          <td><button class="btn btn-default btn-block" ng-click="vm.edit(announcement,$index)">Edit</button></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>

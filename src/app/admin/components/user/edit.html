@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="editLabel">
+<div role="modal" aria-labeled-by="edit-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,8 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" ng-if="vm.action === 'edit'" id="editLabel">Edit User</h4>
-    <h4 class="modal-title" ng-if="vm.action === 'invite'" id="editLabel">Invite User</h4>
+    <h4 class="modal-title" id="edit-label">{{ vm.action === 'edit' ? 'Edit' : 'Invite'}} User</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
     <p ng-if="vm.message" class="bg-danger">{{ vm.message }}</p>
@@ -19,12 +18,12 @@
       </div>
       <ai-contact contact="vm.user.user" error-messages="vm.contactErrorMessages" form="vm.editForm" is-editing="true" is-required="true" show-form-errors="vm.showFormErrors"></ai-contact>
       <div class="form-group">
-        <label for="isLocked">Locked</label>
-        <input type="checkbox" ng-model="vm.user.user.accountLocked" id="isLocked"></input>
+        <label for="is-locked">Locked</label>
+        <input type="checkbox" ng-model="vm.user.user.accountLocked" id="is-locked"></input>
       </div>
       <div class="form-group">
-        <label for="isEnabled">Enabled</label>
-        <input type="checkbox" ng-model="vm.user.user.accountEnabled" id="isEnabled"></input>
+        <label for="is-enabled">Enabled</label>
+        <input type="checkbox" ng-model="vm.user.user.accountEnabled" id="is-enabled"></input>
       </div>
       <div class="form-group">
         <label for="roles">User Role(s) <span class="text-danger">*</span></label>
@@ -34,14 +33,14 @@
     </div>
     <div ng-if="vm.action === 'invite'">
       <div class="form-group">
-        <label for="inviteEmail" class="control-label">Email <span class="text-danger">*</span></label>
-        <input type="email" id="inviteEmail" name="inviteEmail" ng-model="vm.userInvitation.emailAddress" class="form-control" required />
+        <label for="invite-email" class="control-label">Email <span class="text-danger">*</span></label>
+        <input type="email" id="invite-email" name="inviteEmail" ng-model="vm.userInvitation.emailAddress" class="form-control" required />
         <div class="text-danger" ng-if="vm.editForm.inviteEmail.$touched && vm.editForm.inviteEmail.$error.required">Email is required</div>
         <div class="text-danger" ng-if="vm.editForm.inviteEmail.$touched && vm.editForm.inviteEmail.$error.email">Invalid email</div>
       </div>
       <div class="form-group">
-        <label for="newRoles" class="control-label">User Role(s) <span class="text-danger">*</span></label>
-        <select id="newRoles" name="newRoles" ng-options="role as role for role in vm.roles" ng-model="vm.userInvitation.permissions" class="form-control" multiple required data-ng-attr-size="{{ vm.roles.length }}"></select>
+        <label for="new-roles" class="control-label">User Role(s) <span class="text-danger">*</span></label>
+        <select id="new-roles" name="newRoles" ng-options="role as role for role in vm.roles" ng-model="vm.userInvitation.permissions" class="form-control" multiple required data-ng-attr-size="{{ vm.roles.length }}"></select>
         <div class="text-danger" ng-if="vm.editForm.newRoles.$touched && vm.editForm.newRoles.$error.required">At least one role is required</div>
       </div>
     </div>
