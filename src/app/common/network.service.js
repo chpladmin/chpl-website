@@ -44,6 +44,7 @@
             getCertBodies: getCertBodies,
             getCertificationStatuses: getCertificationStatuses,
             getCertifiedProductActivity: getCertifiedProductActivity,
+            getCorrectiveActionPlanActivity: getCorrectiveActionPlanActivity,
             getCriterionProductStatistics: getCriterionProductStatistics,
             getCmsDownload: getCmsDownload,
             getCollection: getCollection,
@@ -331,6 +332,11 @@
                 return apiGET('/collections/developers');
                 //no default
             }
+        }
+
+        function getCorrectiveActionPlanActivity (activityRange) {
+            var call = '/activity/corrective_action_plans';
+            return getActivity(call, activityRange);
         }
 
         function getDeveloper (developerId) {

@@ -209,22 +209,22 @@
       </div>
     </div>
 
-    <div class="row" ng-if="vm.workType === 'cp-cap' || (vm.workType === '' && vm.productId)">
+    <div class="row" ng-if="vm.workType === 'cap' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
         <h3>Corrective Action Plans</h3>
         <div>
           <label for="activity-start-cap" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartCap" id="activity-start-cap" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.cap.startDate" name="activityStartCap" id="activity-start-cap" placeholder="yyyy-MM-dd">
           </div>
           <label for="activity-end-cap" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndCap" id="activity-end-cap" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.cap.endDate" name="activityEndCap" id="activity-end-cap" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('listing')">Search <i class="fa fa-search"></i></button>
+            <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('cap')">Search <i class="fa fa-search"></i></button>
           </div>
-          <div class="col-sm-12 text-danger" ng-if="!vm.validDates('listing')">Start date must be before end date, and no more than {{ vm.activityRange.range }} days apart</div>
+          <div class="col-sm-12 text-danger" ng-if="!vm.validDates('cap')">Start date must be before end date, and no more than {{ vm.activityRange.range }} days apart</div>
         </div>
         <table st-table="vm.displayedCertifiedProductsCAP" st-safe-src="vm.searchedCertifiedProductsCAP" class="table table-striped">
           <thead>

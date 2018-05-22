@@ -3,6 +3,7 @@
 _Date TBD_
 
 ### New Features
+* Changed corrective action plan report to pull from new API endpoint
 * Added "New vs. Incumbent Developer" charts to Charts! page
 
 ### Bug Fixes

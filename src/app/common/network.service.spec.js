@@ -475,6 +475,30 @@
             $httpBackend.flush();
         });
 
+        it('should getCorrectiveActionPlanActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/corrective_action_plans/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?start=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?end=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+        
         it('should getCriterionProductStatistics', function () {
             $httpBackend.expectGET(/statistics\/criterion_product/).respond(200, {data: 'response'});
             networkService.getCriterionProductStatistics().then(function (response) {
