@@ -18,6 +18,7 @@
                 productEdition: 2014,
             };
             _createCriterionProductCountChart();
+            _createIncumbentDevelopersCountChart();
             _createSedParticipantCountChart();
             _createParticipantGenderCountChart();
             _createParticipantAgeCountChart();
@@ -72,6 +73,37 @@
             }).map(function (obj) {
                 return {c: [{ v: obj.criterion.number},{v: obj.productCount}]};
             });
+        }
+
+        function _createIncumbentDevelopersCountChart () {
+            networkService.getIncumbentDevelopersStatistics().then(function (data) {
+                vm.incumbentDevelopersCounts =
+                    data.incumbentDevelopersStatisticsResult.sort(function (a, b) {
+                        if (a.oldCertificationEdition.certificationEditionId === b.oldCertificationEdition.certificationEditionId) {
+                            return a.newCertificationEdition.certificationEditionId - b.newCertificationEdition.certificationEditionId;
+                        } else {
+                            return a.oldCertificationEdition.certificationEditionId - b.oldCertificationEdition.certificationEditionId;
+                        }
+                    }).map(function (obj) {
+                        var chart = {
+                            type: 'PieChart',
+                            data: {
+                                cols: [
+                                    { label: 'Developers', type: 'string'},
+                                    { label: 'Counts', type: 'number'},
+                                ],
+                                rows: [
+                                    {c: [{ v: 'New Developers'}, {v: obj.newCount}]},
+                                    {c: [{ v: 'Incumbent Developers'}, {v: obj.incumbentCount}]},
+                                ],
+                            },
+                            options: {
+                                title: 'New vs. Incumbent Developers by Edition, ' + obj.oldCertificationEdition.year + ' to ' + obj.newCertificationEdition.year,
+                            },
+                        };
+                        return chart;
+                    });
+            })
         }
 
         function _createSedParticipantCountChart () {

@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="editVersionLabel">
+<div role="modal" aria-labeled-by="edit-version-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,12 +6,12 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editVersionLabel">Edit Version</h4>
+    <h4 class="modal-title" id="edit-version-label">Edit Version</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
-      <label for="versionName">Version</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.version.version" id="versionName" name="versionName" required ng-maxlength="250"></input>
+      <label for="version-name">Version</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.version.version" id="version-name" name="versionName" required ng-maxlength="250"></input>
       <div class="text-danger" ng-if="vm.editForm.versionName.$touched && vm.editForm.versionName.$error.required">Version is required</div>
       <div class="text-danger" ng-if="vm.editForm.versionName.$touched && vm.editForm.versionName.$error.required">Field is too long</div>
     </div>

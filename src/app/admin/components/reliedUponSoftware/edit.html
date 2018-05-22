@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="additionalSoftwareLabel">
+<div role="modal" aria-labeled-by="additional-software-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,28 +6,28 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="additionalSoftwareLabel">Relied Upon Software</h4>
+    <h4 class="modal-title" id="additional-software-label">Relied Upon Software</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
-      <label for="swName">Relied Upon Software <span ng-if="vm.sw.version && !vm.sw.certifiedProductNumber" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.sw.version && !vm.sw.certifiedProductNumber" ng-disabled="vm.sw.certifiedProductNumber" ng-model="vm.sw.name" id="swName" name="swName" ng-maxlength="500"></input>
+      <label for="sw-name">Relied Upon Software <span ng-if="vm.sw.version && !vm.sw.certifiedProductNumber" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.sw.version && !vm.sw.certifiedProductNumber" ng-disabled="vm.sw.certifiedProductNumber" ng-model="vm.sw.name" id="sw-name" name="swName" ng-maxlength="500"></input>
       <div class="text-danger" ng-if="vm.editForm.swName.$touched && vm.editForm.swName.$error.required">Software name is required</div>
       <div class="text-danger" ng-if="vm.editForm.swName.$touched && vm.editForm.swName.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="swVersion">Version</label>
-      <input class="input-sm form-control" type="text" ng-disabled="vm.sw.certifiedProductNumber" ng-model="vm.sw.version" id="swVersion" name="swVersion" ng-maxlength="250"></input>
+      <label for="sw-version">Version</label>
+      <input class="input-sm form-control" type="text" ng-disabled="vm.sw.certifiedProductNumber" ng-model="vm.sw.version" id="sw-version" name="swVersion" ng-maxlength="250"></input>
       <div class="text-danger" ng-if="vm.editForm.swVersion.$touched && vm.editForm.swVersion.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="swChplId">CHPL Id <span ng-if="!vm.sw.name && !vm.sw.version" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="!vm.sw.name && !vm.sw.version" ng-disabled="vm.sw.name || vm.sw.version" ng-model="vm.sw.certifiedProductNumber" id="swChplId" name="swNumber"></input>
+      <label for="sw-chpl-id">CHPL Id <span ng-if="!vm.sw.name && !vm.sw.version" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="!vm.sw.name && !vm.sw.version" ng-disabled="vm.sw.name || vm.sw.version" ng-model="vm.sw.certifiedProductNumber" id="sw-chpl-id" name="swNumber"></input>
       <div class="text-danger" ng-if="vm.editForm.swNumber.$touched && vm.editForm.swNumber.$error.required">CHPL Product ID is required</div>
     </div>
     <div class="form-group">
-      <label for="swGroup">Group</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.sw.grouping" id="swGroup" name="swGroup"></input>
+      <label for="sw-group">Group</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.sw.grouping" id="sw-group" name="swGroup"></input>
     </div>
   </div>
   <div class="modal-footer">

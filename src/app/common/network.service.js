@@ -54,6 +54,7 @@
             getEditions: getEditions,
             getEducation: getEducation,
             getFuzzyTypes: getFuzzyTypes,
+            getIncumbentDevelopersStatistics: getIncumbentDevelopersStatistics,
             getJobTypes: getJobTypes,
             getJobs: getJobs,
             getIcsFamily: getIcsFamily,
@@ -365,6 +366,10 @@
 
         function getFuzzyTypes () {
             return apiGET('/data/fuzzy_choices');
+        }
+
+        function getIncumbentDevelopersStatistics () {
+            return apiGET('/statistics/incumbent_developers');
         }
 
         function getJobTypes () {
