@@ -62,7 +62,7 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
-            vm.activityRange = { range: 2 };
+            vm.activityRange = { range: 30 };
             var start = new Date();
             var end = new Date();
             start.setDate(end.getDate() - vm.activityRange.range + 1); // offset to account for inclusion of endDate in range
