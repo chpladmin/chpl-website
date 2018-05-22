@@ -29,14 +29,8 @@
     </div>
     <div ng-if="vm.chartState.tab === 'developer'">
       <div class="row">
-        <div class="col-sm-4">
-          <div google-chart="" chart="vm.incumbentDevelopersCounts.from2011to2014" class="pie-chart"></div>
-        </div>
-        <div class="col-sm-4">
-          <div google-chart="" chart="vm.incumbentDevelopersCounts.from2011to2015" class="pie-chart"></div>
-        </div>
-        <div class="col-sm-4">
-          <div google-chart="" chart="vm.incumbentDevelopersCounts.from2014to2015" class="pie-chart"></div>
+        <div class="col-sm-4" ng-repeat="chart in vm.incumbentDevelopersCounts">
+          <div google-chart="" chart="chart" class="pie-chart"></div>
         </div>
       </div>
     </div>

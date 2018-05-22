@@ -13,19 +13,11 @@
                 {id: 161, productCount: 138, certificationCriterionId: 2, criterion: {id: 2, number: '170.315 (a)(2)', title: 'CPOE - Laboratory', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448330, deleted: false, lastModifiedDate: 1525902448330, lastModifiedUser: -3},
                 {id: 131, productCount: 906, certificationCriterionId: 64, criterion: {id: 64, number: '170.314 (a)(4)', title: 'Vital signs, body mass index, and growth Charts', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448257, deleted: false, lastModifiedDate: 1525902448257, lastModifiedUser: -3},
             ],
-            incumbentDevelopersMockData: {
-                id: 1,
-                new2011To2014: 36,
-                new2011To2015: 35,
-                new2014To2015: 37,
-                incumbent2011To2014: 2,
-                incumbent2011To2015: 3,
-                incumbent2014To2015: 1,
-                creationDate: 1526667394053,
-                deleted: false,
-                lastModifiedDate: 1526667394053,
-                lastModifiedUser: -3,
-            },
+            incumbentDevelopersStatisticsResult: [
+                {id: 2, newCount: 82, incumbentCount: 108, oldCertificationEdition: {certificationEditionId: 1, year: '2011', retired: true}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
+                {id: 3, newCount: 43, incumbentCount: 147, oldCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
+                {id: 4, newCount: 340, incumbentCount: 537, oldCertificationEdition: {certificationEditionId: 1, year: '2011', retired: true}, newCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}},
+            ],
             sedParticipantStatisticsCounts: [
                 {id: 187, sedCount: 7, participantCount: 130, creationDate: 1520357057186, deleted: false, lastModifiedDate: 1520357057186, lastModifiedUser: -3},
                 {id: 188, sedCount: 2, participantCount: 67, creationDate: 1520357057200, deleted: false, lastModifiedDate: 1520357057200, lastModifiedUser: -3},
@@ -91,7 +83,7 @@
                 $q = _$q_;
                 networkService = _networkService_;
                 networkService.getCriterionProductStatistics.and.returnValue($q.when(mock));
-                networkService.getIncumbentDevelopersStatistics.and.returnValue($q.when(mock.incumbentDevelopersMockData));
+                networkService.getIncumbentDevelopersStatistics.and.returnValue($q.when(mock));
                 networkService.getSedParticipantStatisticsCount.and.returnValue($q.when(mock));
                 networkService.getParticipantGenderStatistics.and.returnValue($q.when(mock));
                 networkService.getParticipantAgeStatistics.and.returnValue($q.when(mock));
@@ -153,19 +145,29 @@
                     expect(networkService.getIncumbentDevelopersStatistics).toHaveBeenCalled();
                 });
 
+                it('should generate three charts', function () {
+                    expect(vm.incumbentDevelopersCounts.length).toBe(3);
+                });
+
+                it('should sort the charts and generate titles', function () {
+                    expect(vm.incumbentDevelopersCounts[0].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2014');
+                    expect(vm.incumbentDevelopersCounts[1].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2015');
+                    expect(vm.incumbentDevelopersCounts[2].options.title).toBe('New vs. Incumbent Developers by Edition, 2014 to 2015');
+                });
+
                 it('should generate the 2011 to 2014 data', function () {
-                    expect(vm.incumbentDevelopersCounts.from2011to2014.data.rows[0].c[1].v).toBe(36);
-                    expect(vm.incumbentDevelopersCounts.from2011to2014.data.rows[1].c[1].v).toBe(2);
+                    expect(vm.incumbentDevelopersCounts[0].data.rows[0].c[1].v).toBe(340);
+                    expect(vm.incumbentDevelopersCounts[0].data.rows[1].c[1].v).toBe(537);
                 });
 
                 it('should generate the 2011 to 2015 data', function () {
-                    expect(vm.incumbentDevelopersCounts.from2011to2015.data.rows[0].c[1].v).toBe(35);
-                    expect(vm.incumbentDevelopersCounts.from2011to2015.data.rows[1].c[1].v).toBe(3);
+                    expect(vm.incumbentDevelopersCounts[1].data.rows[0].c[1].v).toBe(82);
+                    expect(vm.incumbentDevelopersCounts[1].data.rows[1].c[1].v).toBe(108);
                 });
 
                 it('should generate the 2014 to 2015 data', function () {
-                    expect(vm.incumbentDevelopersCounts.from2014to2015.data.rows[0].c[1].v).toBe(37);
-                    expect(vm.incumbentDevelopersCounts.from2014to2015.data.rows[1].c[1].v).toBe(1);
+                    expect(vm.incumbentDevelopersCounts[2].data.rows[0].c[1].v).toBe(43);
+                    expect(vm.incumbentDevelopersCounts[2].data.rows[1].c[1].v).toBe(147);
                 });
             });
         });
