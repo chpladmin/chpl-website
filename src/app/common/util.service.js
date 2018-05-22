@@ -21,6 +21,7 @@
             sortNonconformityTypes: sortNonconformityTypes,
             sortRequirements: sortRequirements,
             statusFont: statusFont,
+            ternaryFilter: ternaryFilter,
         }
         return service;
 
@@ -249,6 +250,14 @@
                 // no default
             }
             return ret;
+        }
+
+        function ternaryFilter (field) {
+            if (field === null) {
+                return 'N/A';
+            } else {
+                return field ? 'True' : 'False';
+            }
         }
     }
 })();

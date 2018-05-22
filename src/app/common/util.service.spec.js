@@ -389,5 +389,19 @@
                 expect(util.certificationStatus(cp, {editing: true})).toBe('Active');
             });
         });
+
+        describe('when dealing with booleans', function () {
+            it('should return "N/A" if null', function () {
+                expect(util.ternaryFilter(null)).toBe('N/A');
+            });
+
+            it('should return "True" if true', function () {
+                expect(util.ternaryFilter(true)).toBe('True');
+            });
+
+            it('should return "False" if false', function () {
+                expect(util.ternaryFilter(false)).toBe('False');
+            });
+        });
     });
 })();

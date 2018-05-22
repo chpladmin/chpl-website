@@ -24,7 +24,6 @@
             vm.options = [
                 {name: 'True', value: true},
                 {name: 'False', value: false},
-                {name: 'N/A', value: null},
             ];
             vm.allMeasures = [
                 {abbreviation: 'MD'},
