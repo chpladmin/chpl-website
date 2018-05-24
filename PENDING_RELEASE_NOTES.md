@@ -9,5 +9,5 @@ _Date TBD_
 
 ### Bug Fixes
 * Remove "N/A" from editing possibilities where N/A
-
+* Widen datepicker dropdown for collections pages
 ---
