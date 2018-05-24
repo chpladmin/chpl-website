@@ -18,6 +18,13 @@
                 {id: 3, newCount: 43, incumbentCount: 147, oldCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
                 {id: 4, newCount: 340, incumbentCount: 537, oldCertificationEdition: {certificationEditionId: 1, year: '2011', retired: true}, newCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}},
             ],
+            statisticsResult: [
+                {id: 12, developerCount: 724, productCount: 725, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 1, name: 'Active'}},
+                {id: 13, developerCount: 45, productCount: 46, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 4, name: 'Withdrawn by ONC-ACB'}},
+                {id: 14, developerCount: 195, productCount: 196, certificationEdition: {certificationEditionId: 3, year: '2015', retired: false}, certificationStatus: {id: 1, name: 'Active'}},
+                {id: 15, developerCount: 274, productCount: 275, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 3, name: 'Withdrawn by Developer'}},
+                {id: 16, developerCount: 10, productCount: 11, certificationEdition: {certificationEditionId: 3, year: '2015', retired: false}, certificationStatus: {id: 3, name: 'Withdrawn by Developer'}},
+            ],
             sedParticipantStatisticsCounts: [
                 {id: 187, sedCount: 7, participantCount: 130, creationDate: 1520357057186, deleted: false, lastModifiedDate: 1520357057186, lastModifiedUser: -3},
                 {id: 188, sedCount: 2, participantCount: 67, creationDate: 1520357057200, deleted: false, lastModifiedDate: 1520357057200, lastModifiedUser: -3},
@@ -66,6 +73,7 @@
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCriterionProductStatistics = jasmine.createSpy('getCriterionProductStatistics');
                     $delegate.getIncumbentDevelopersStatistics = jasmine.createSpy('getIncumbentDevelopersStatistics');
+                    $delegate.getListingCountStatistics = jasmine.createSpy('getListingCountStatistics');
                     $delegate.getSedParticipantStatisticsCount = jasmine.createSpy('getSedParticipantStatisticsCount');
                     $delegate.getParticipantGenderStatistics = jasmine.createSpy('getParticipantGenderStatistics');
                     $delegate.getParticipantAgeStatistics = jasmine.createSpy('getParticipantAgeStatistics');
@@ -84,6 +92,7 @@
                 networkService = _networkService_;
                 networkService.getCriterionProductStatistics.and.returnValue($q.when(mock));
                 networkService.getIncumbentDevelopersStatistics.and.returnValue($q.when(mock));
+                networkService.getListingCountStatistics.and.returnValue($q.when(mock));
                 networkService.getSedParticipantStatisticsCount.and.returnValue($q.when(mock));
                 networkService.getParticipantGenderStatistics.and.returnValue($q.when(mock));
                 networkService.getParticipantAgeStatistics.and.returnValue($q.when(mock));
@@ -114,8 +123,9 @@
 
         it('should default to product charts, and 2014 edition', function () {
             expect(vm.chartState).toEqual({
-                tab: 'product',
+                listingCountType: '1',
                 productEdition: 2014,
+                tab: 'product',
             });
         });
 
@@ -168,6 +178,24 @@
                 it('should generate the 2014 to 2015 data', function () {
                     expect(vm.incumbentDevelopersCounts[2].data.rows[0].c[1].v).toBe(43);
                     expect(vm.incumbentDevelopersCounts[2].data.rows[1].c[1].v).toBe(147);
+                });
+            });
+
+            describe('of the listing count statistics', function () {
+                it('should call the network service', function () {
+                    expect(networkService.getListingCountStatistics).toHaveBeenCalled();
+                });
+
+                it('should generate a chart object', function () {
+                    expect(vm.listingCount).toBeDefined();
+                });
+
+                it('should have three options', function () {
+                    expect(vm.listingCountTypes.length).toBe(3);
+                });
+
+                it('should have data for active 2014 products', function () {
+                    expect(vm.listingCount['1'].chart.data.rows[0].c[2].v).toBe(725);
                 });
             });
         });

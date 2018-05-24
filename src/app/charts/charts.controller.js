@@ -14,11 +14,13 @@
 
         function activate () {
             vm.chartState = {
-                tab: 'product',
+                listingCountType: '1',
                 productEdition: 2014,
+                tab: 'product',
             };
             _createCriterionProductCountChart();
             _createIncumbentDevelopersCountChart();
+            _createListingCountCharts();
             _createSedParticipantCountChart();
             _createParticipantGenderCountChart();
             _createParticipantAgeCountChart();
@@ -43,6 +45,11 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
+                            animation: {
+                                duration: 1000,
+                                easing: 'inAndOut',
+                                startup: true,
+                            },
                             chartArea: { top: 64, height: '90%' },
                             title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
                         },
@@ -57,6 +64,11 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
+                            animation: {
+                                duration: 1000,
+                                easing: 'inAndOut',
+                                startup: true,
+                            },
                             chartArea: { top: 64, height: '90%' },
                             title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
                         },
@@ -106,6 +118,65 @@
             })
         }
 
+        function _createListingCountCharts () {
+            networkService.getListingCountStatistics().then(function (data) {
+                vm.listingCount = {};
+                data.statisticsResult.forEach(function (obj) {
+                    vm.listingCount['' + obj.certificationStatus.id] = {
+                        name: obj.certificationStatus.name,
+                        chart: _createListingCountChart(data, obj.certificationStatus.name),
+                    };
+                });
+                vm.listingCountTypes = Object.keys(vm.listingCount)
+                    .map(function (key) {
+                        return {
+                            id: key,
+                            name: vm.listingCount[key].name,
+                        }
+                    });
+            });
+        }
+
+        function _createListingCountChart (data, status) {
+            return {
+                type: 'ColumnChart',
+                data: {
+                    cols: [
+                        { label: 'Certification Edition', type: 'string'},
+                        { label: 'Number of Developers with "' + status + '" Listings', type: 'number'},
+                        { label: 'Number of Products with "' + status + '" Listings', type: 'number'},
+                    ],
+                    rows: _getListingCountChartData(data, status),
+                },
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'inAndOut',
+                        startup: true,
+                    },
+                    title: 'Number of Developers and Products with "' + status + '" Listings',
+                    hAxis: {
+                        title: 'Certification Edition',
+                    },
+                    vAxis: {
+                        title: 'Number of Developers and Products with "' + status + '" Listings',
+                    },
+                },
+            }
+        }
+
+        function _getListingCountChartData (data, status) {
+            return data.statisticsResult.filter(function (a) {
+                return a.certificationStatus.name === status;
+            }).map(function (obj) {
+                return {c: [
+                    { v: obj.certificationEdition.year },
+                    { v: obj.developerCount },
+                    { v: obj.productCount},
+                ]};
+            });
+        }
+
         function _createSedParticipantCountChart () {
             networkService.getSedParticipantStatisticsCount().then(function (data) {
                 vm.sedParticipantCounts = {
@@ -118,6 +189,11 @@
                         rows: _getSedParticipantCountDataInChartFormat(data),
                     },
                     options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
                         title: 'Number of Safety Enhanced Design Test Participants',
                         hAxis: {
                             title: 'Number of SED Test Participants Used',
@@ -235,6 +311,11 @@
                         rows: _getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
                         title: 'Years of Professional Experience for Safety Enhanced Design Test Participants',
                         vAxis: {
                             title: 'Number of SED Test Participants',
@@ -264,6 +345,11 @@
                         rows: _getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
                         title: 'Years of Computer Experience for Safety Enhanced Design Test Participants',
                         vAxis: {
                             title: 'Number of SED Test Participants',
@@ -293,6 +379,11 @@
                         rows: _getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
                         title: 'Years of Product Experience for Safety Enhanced Design Test Participants',
                         vAxis: {
                             title: 'Number of SED Test Participants',

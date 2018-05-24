@@ -654,6 +654,14 @@
             $httpBackend.flush();
         });
 
+        it('should getListingCountStatistics', function () {
+            $httpBackend.expectGET(/statistics\/listing_count/).respond(200, {data: 'response'});
+            networkService.getListingCountStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getMeaningfulUseUsersAccurateAsOfDate', function () {
             $httpBackend.expectGET(/meaningful_use\/accurate_as_of/).respond(200, {data: 'response'});
             networkService.getMeaningfulUseUsersAccurateAsOfDate().then(function (response) {
