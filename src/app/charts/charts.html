@@ -33,6 +33,18 @@
           <div google-chart="" chart="chart" class="pie-chart"></div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.listingCount['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
+          <label>
+            View the number of Developers and Products with Certification Status:
+            <select ng-model="vm.chartState.listingCountType"
+                    ng-options="option.id as option.name for option in vm.listingCountTypes | orderBy: 'name'">
+            </select>
+            by Certification Edition
+          </label>
+        </div>
+      </div>
     </div>
     <div ng-if="vm.chartState.tab === 'sed'">
       <div class="row">

@@ -58,6 +58,7 @@
             getJobTypes: getJobTypes,
             getJobs: getJobs,
             getIcsFamily: getIcsFamily,
+            getListingCountStatistics: getListingCountStatistics,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
@@ -382,6 +383,10 @@
 
         function getIcsFamily (id) {
             return apiGET('/certified_products/' + id + '/ics_relationships');
+        }
+
+        function getListingCountStatistics () {
+            return apiGET('/statistics/listing_count');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {
