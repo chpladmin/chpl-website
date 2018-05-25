@@ -123,9 +123,19 @@
 
         it('should default to product charts, and 2014 edition', function () {
             expect(vm.chartState).toEqual({
+                isStacked: 'false',
                 listingCountType: '1',
                 productEdition: 2014,
                 tab: 'product',
+            });
+        });
+
+        describe('chart state', function () {
+            it('should update stacking type', function () {
+                expect(vm.listingCountTwist['1'].chart.options.isStacked).toBe('false');
+                vm.chartState.isStacked = 'fake';
+                vm.updateChartStack();
+                expect(vm.listingCountTwist['1'].chart.options.isStacked).toBe('fake');
             });
         });
 

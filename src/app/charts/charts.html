@@ -36,6 +36,10 @@
       <div class="row">
         <div class="col-sm-12">
           <div google-chart="" chart="vm.listingCount['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
           <label>
             View the number of Developers and Products with Certification Status:
             <select ng-model="vm.chartState.listingCountType"
@@ -43,6 +47,20 @@
             </select>
             by Certification Edition
           </label>
+          <br />
+          <label>
+            Stacking type:
+            <select ng-model="vm.chartState.isStacked" ng-change="vm.updateChartStack()">
+              <option value="percent">Percent</option>
+              <option value="absolute">Absolute</option>
+              <option value="false">Not</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.listingCountTwist['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
         </div>
       </div>
     </div>
