@@ -8,12 +8,15 @@
     function ChartsController ($log, networkService, utilService) {
         var vm = this;
 
+        vm.updateChartStack = updateChartStack;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
             vm.chartState = {
+                isStacked: 'false',
                 listingCountType: '1',
                 productEdition: 2014,
                 tab: 'product',
@@ -28,6 +31,15 @@
             _createParticipantProfessionalExperienceCountChart();
             _createParticipantComputerExperienceCountChart();
             _createParticipantProductExperienceCountChart();
+        }
+
+        function updateChartStack () {
+            Object.keys(vm.listingCount).forEach(function (key) {
+                vm.listingCount[key].chart.options.isStacked = vm.chartState.isStacked;
+            });
+            Object.keys(vm.listingCountTwist).forEach(function (key) {
+                vm.listingCountTwist[key].chart.options.isStacked = vm.chartState.isStacked;
+            });
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -121,10 +133,15 @@
         function _createListingCountCharts () {
             networkService.getListingCountStatistics().then(function (data) {
                 vm.listingCount = {};
+                vm.listingCountTwist = {};
                 data.statisticsResult.forEach(function (obj) {
                     vm.listingCount['' + obj.certificationStatus.id] = {
                         name: obj.certificationStatus.name,
                         chart: _createListingCountChart(data, obj.certificationStatus.name),
+                    };
+                    vm.listingCountTwist['' + obj.certificationStatus.id] = {
+                        name: obj.certificationStatus.name,
+                        chart: _createTwistListingCountChart(data, obj.certificationStatus.name),
                     };
                 });
                 vm.listingCountTypes = Object.keys(vm.listingCount)
@@ -165,6 +182,35 @@
             }
         }
 
+        function _createTwistListingCountChart (data, status) {
+            return {
+                type: 'ColumnChart',
+                data: {
+                    cols: [
+                        { label: 'Number of Developers and Products with "' + status + '" Listings', type: 'string'},
+                        { label: 'Certification Edition 2014', type: 'number'},
+                        { label: 'Certification Edition 2015', type: 'number'},
+                    ],
+                    rows: _getTwistListingCountChartData(data, status),
+                },
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'inAndOut',
+                        startup: true,
+                    },
+                    title: 'Number of Developers and Products with "' + status + '" Listings',
+                    isStacked: 'false',
+                    hAxis: {
+                        title: 'Developer / Product',
+                    },
+                    vAxis: {
+                        title: 'Number of Developers and Products with "' + status + '" Listings',
+                    },
+                },
+            }
+        }
+
         function _getListingCountChartData (data, status) {
             return data.statisticsResult.filter(function (a) {
                 return a.certificationStatus.name === status;
@@ -175,6 +221,39 @@
                     { v: obj.productCount},
                 ]};
             });
+        }
+
+        function _getTwistListingCountChartData (data, status) {
+            var filteredData = data.statisticsResult.filter(function (a) {
+                return a.certificationStatus.name === status;
+            });
+            var transformedData = {
+                developer: {},
+                product: {},
+            };
+            filteredData.forEach(function (obj) {
+                transformedData.developer[obj.certificationEdition.year] = obj.developerCount;
+                transformedData.product[obj.certificationEdition.year] = obj.productCount;
+            });
+            return [{
+                c: [{ v: 'Developer' }]
+                    .concat(
+                        Object.keys(transformedData.developer)
+                            .sort()
+                            .map(function (key) {
+                                return { v: transformedData.developer[key]}
+                            })
+                    ),
+            },{
+                c: [{ v: 'Product' }]
+                    .concat(
+                        Object.keys(transformedData.product)
+                            .sort()
+                            .map(function (key) {
+                                return { v: transformedData.product[key]}
+                            })
+                    ),
+            }];
         }
 
         function _createSedParticipantCountChart () {
