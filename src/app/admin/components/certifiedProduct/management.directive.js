@@ -34,6 +34,9 @@
         vm.getNumberOfSurveillanceToReject = getNumberOfSurveillanceToReject;
         vm.inspectCp = inspectCp;
         vm.inspectSurveillance = inspectSurveillance;
+
+        vm.isArray = angular.isArray;
+
         vm.isDeveloperEditable = isDeveloperEditable;
         vm.isDeveloperMergeable = isDeveloperMergeable;
         vm.isProductEditable = isProductEditable;
@@ -352,6 +355,7 @@
                     activeProduct: function () { return vm.activeProduct; },
                 },
             });
+            vm.productMessage = null;
             vm.modalInstance.result.then(function (result) {
                 vm.activeProduct = result;
             }, function (result) {
