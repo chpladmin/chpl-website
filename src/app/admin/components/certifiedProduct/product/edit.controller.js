@@ -84,7 +84,15 @@
                         $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
+                    var errorMessage = '';
+                    if (error.data.error) {
+                        errorMessage = error.data.error;
+                    } else if (error.data.errorMessages) {
+                        errorMessage = error.data.errorMessages
+                    } else {
+                        errorMessage = 'An error occurred';
+                    }
+                    $uibModalInstance.dismiss(errorMessage);
                 });
         }
 

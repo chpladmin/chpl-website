@@ -180,9 +180,9 @@
         <li ng-repeat="error in vm.contactErrorMessages">{{ error }}</li>
       </ul>
     </div>
-    <div ng-if="vm.errorMessage && vm.errorMessage.length !== 0" class="row">
-      <div class="col-sm-12 text-left bg-danger">
-        Error in developer merge: {{ vm.errorMessage }}
+    <div ng-if="vm.isArray(vm.errorMessage) && vm.errorMessage.length !== 0" class="row">
+      <div ng-repeat="msg in vm.errorMessage" class="col-sm-12 text-left bg-danger">
+        {{ msg }}
       </div>
     </div>
     <button ng-disabled="(vm.showFormErrors || (!vm.developer.statusEvents || vm.developer.statusEvents.length === 0)) && vm.mergeForm.$invalid" class="btn btn-ai-success btn-block"
