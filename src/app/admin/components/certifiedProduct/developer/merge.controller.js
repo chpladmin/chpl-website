@@ -13,7 +13,6 @@
         vm.cancel = cancel;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
-        vm.isArray = angular.isArray;
         vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
         vm.isMissingRequiredFields = isMissingRequiredFields;
         vm.matchesPreviousDate = matchesPreviousDate;

@@ -84,13 +84,13 @@
                         $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    var errorMessage = '';
+                    var errorMessage = [];
                     if (error.data.error) {
-                        errorMessage = error.data.error;
+                        errorMessage.push(error.data.error);
                     } else if (error.data.errorMessages) {
                         errorMessage = error.data.errorMessages
                     } else {
-                        errorMessage = 'An error occurred';
+                        errorMessage.push('An error occurred');
                     }
                     $uibModalInstance.dismiss(errorMessage);
                 });
