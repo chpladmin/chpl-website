@@ -132,10 +132,10 @@
 
         describe('chart state', function () {
             it('should update stacking type', function () {
-                expect(vm.listingCountTwist['1'].chart.options.isStacked).toBe('false');
+                expect(vm.listingCount.class['1'].chart.options.isStacked).toBeUndefined();
                 vm.chartState.isStacked = 'fake';
                 vm.updateChartStack();
-                expect(vm.listingCountTwist['1'].chart.options.isStacked).toBe('fake');
+                expect(vm.listingCount.class['1'].chart.options.isStacked).toBe('fake');
             });
         });
 
@@ -205,7 +205,7 @@
                 });
 
                 it('should have data for active 2014 products', function () {
-                    expect(vm.listingCount['1'].chart.data.rows[0].c[2].v).toBe(725);
+                    expect(vm.listingCount.edition['1'].chart.data.rows[0].c[2].v).toBe(725);
                 });
             });
         });

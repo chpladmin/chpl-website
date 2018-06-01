@@ -34,8 +34,11 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-12">
-          <div google-chart="" chart="vm.listingCount['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
+        <div class="col-sm-6">
+          <div google-chart="" chart="vm.listingCount.edition['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
+        </div>
+        <div class="col-sm-6">
+          <div google-chart="" chart="vm.listingCount.class['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
         </div>
       </div>
       <div class="row">
@@ -45,7 +48,6 @@
             <select ng-model="vm.chartState.listingCountType"
                     ng-options="option.id as option.name for option in vm.listingCountTypes | orderBy: 'name'">
             </select>
-            by Certification Edition
           </label>
           <br />
           <label>
@@ -53,14 +55,9 @@
             <select ng-model="vm.chartState.isStacked" ng-change="vm.updateChartStack()">
               <option value="percent">Percent</option>
               <option value="absolute">Absolute</option>
-              <option value="false">Not</option>
+              <option value="false">None</option>
             </select>
           </label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12">
-          <div google-chart="" chart="vm.listingCountTwist['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
         </div>
       </div>
     </div>
