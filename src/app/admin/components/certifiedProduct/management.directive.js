@@ -352,6 +352,7 @@
                     activeProduct: function () { return vm.activeProduct; },
                 },
             });
+            vm.productMessage = null;
             vm.modalInstance.result.then(function (result) {
                 vm.activeProduct = result;
             }, function (result) {

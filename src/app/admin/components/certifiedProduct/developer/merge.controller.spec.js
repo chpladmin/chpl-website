@@ -226,7 +226,7 @@
                 networkService.updateDeveloper.and.returnValue($q.reject(response));
                 vm.save();
                 scope.$digest();
-                expect(vm.errorMessage).toBe('An error occurred');
+                expect(vm.errorMessage[0]).toBe('An error occurred');
             });
         });
     });
