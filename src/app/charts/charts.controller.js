@@ -34,11 +34,11 @@
         }
 
         function updateChartStack () {
-            Object.keys(vm.listingCount).forEach(function (key) {
-                vm.listingCount[key].chart.options.isStacked = vm.chartState.isStacked;
+            Object.keys(vm.listingCount.edition).forEach(function (key) {
+                vm.listingCount.edition[key].chart.options.isStacked = vm.chartState.isStacked;
             });
-            Object.keys(vm.listingCountTwist).forEach(function (key) {
-                vm.listingCountTwist[key].chart.options.isStacked = vm.chartState.isStacked;
+            Object.keys(vm.listingCount.class).forEach(function (key) {
+                vm.listingCount.class[key].chart.options.isStacked = vm.chartState.isStacked;
             });
         }
 
@@ -132,29 +132,31 @@
 
         function _createListingCountCharts () {
             networkService.getListingCountStatistics().then(function (data) {
-                vm.listingCount = {};
-                vm.listingCountTwist = {};
+                vm.listingCount = {
+                    edition: {},
+                    class: {},
+                };
                 data.statisticsResult.forEach(function (obj) {
-                    vm.listingCount['' + obj.certificationStatus.id] = {
+                    vm.listingCount.edition['' + obj.certificationStatus.id] = {
                         name: obj.certificationStatus.name,
-                        chart: _createListingCountChart(data, obj.certificationStatus.name),
+                        chart: _createListingCountChartEdition(data, obj.certificationStatus.name),
                     };
-                    vm.listingCountTwist['' + obj.certificationStatus.id] = {
+                    vm.listingCount.class['' + obj.certificationStatus.id] = {
                         name: obj.certificationStatus.name,
-                        chart: _createTwistListingCountChart(data, obj.certificationStatus.name),
+                        chart: _createListingCountChartClass(data, obj.certificationStatus.name),
                     };
                 });
-                vm.listingCountTypes = Object.keys(vm.listingCount)
+                vm.listingCountTypes = Object.keys(vm.listingCount.edition)
                     .map(function (key) {
                         return {
                             id: key,
-                            name: vm.listingCount[key].name,
+                            name: vm.listingCount.edition[key].name,
                         }
                     });
             });
         }
 
-        function _createListingCountChart (data, status) {
+        function _createListingCountChartEdition (data, status) {
             return {
                 type: 'ColumnChart',
                 data: {
@@ -163,7 +165,7 @@
                         { label: 'Number of Developers with "' + status + '" Listings', type: 'number'},
                         { label: 'Number of Products with "' + status + '" Listings', type: 'number'},
                     ],
-                    rows: _getListingCountChartData(data, status),
+                    rows: _getListingCountChartEditionData(data, status),
                 },
                 options: {
                     animation: {
@@ -177,12 +179,13 @@
                     },
                     vAxis: {
                         title: 'Number of Developers and Products with "' + status + '" Listings',
+                        minValue: 0,
                     },
                 },
             }
         }
 
-        function _createTwistListingCountChart (data, status) {
+        function _createListingCountChartClass (data, status) {
             return {
                 type: 'ColumnChart',
                 data: {
@@ -191,7 +194,7 @@
                         { label: 'Certification Edition 2014', type: 'number'},
                         { label: 'Certification Edition 2015', type: 'number'},
                     ],
-                    rows: _getTwistListingCountChartData(data, status),
+                    rows: _getListingCountChartClassData(data, status),
                 },
                 options: {
                     animation: {
@@ -200,18 +203,18 @@
                         startup: true,
                     },
                     title: 'Number of Developers and Products with "' + status + '" Listings',
-                    isStacked: 'false',
                     hAxis: {
                         title: 'Developer / Product',
                     },
                     vAxis: {
                         title: 'Number of Developers and Products with "' + status + '" Listings',
+                        minValue: 0,
                     },
                 },
             }
         }
 
-        function _getListingCountChartData (data, status) {
+        function _getListingCountChartEditionData (data, status) {
             return data.statisticsResult.filter(function (a) {
                 return a.certificationStatus.name === status;
             }).map(function (obj) {
@@ -223,15 +226,14 @@
             });
         }
 
-        function _getTwistListingCountChartData (data, status) {
-            var filteredData = data.statisticsResult.filter(function (a) {
-                return a.certificationStatus.name === status;
-            });
+        function _getListingCountChartClassData (data, status) {
             var transformedData = {
                 developer: {},
                 product: {},
             };
-            filteredData.forEach(function (obj) {
+            data.statisticsResult.filter(function (a) {
+                return a.certificationStatus.name === status;
+            }).forEach(function (obj) {
                 transformedData.developer[obj.certificationEdition.year] = obj.developerCount;
                 transformedData.product[obj.certificationEdition.year] = obj.productCount;
             });
