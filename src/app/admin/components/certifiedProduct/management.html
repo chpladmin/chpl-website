@@ -515,7 +515,7 @@
                 <strong>Contact information</strong><br />
                 <ai-contact contact="vm.activeProduct.contact"></ai-contact>
               </span>
-              <p ng-if="vm.productMessage !== undefined" class="bg-danger">{{ vm.productMessage }}</p>
+              <p ng-if="vm.productMessage !== undefined" ng-repeat="msg in vm.productMessage | orderBy:'toString()'" class="bg-danger">{{ msg }}</p>
             </div>
           </div>
         </div> <!-- end system product -->
