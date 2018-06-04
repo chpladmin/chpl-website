@@ -803,6 +803,14 @@
             $httpBackend.flush();
         });
 
+        it('should getScheduleTriggers', function () {
+            $httpBackend.expectGET(/schedules\/triggers/).respond(200, {data: 'response'});
+            networkService.getScheduleTriggers().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getSimpleProduct', function () {
             $httpBackend.expectGET(/products\/payload/).respond(200, {data: 'response'});
             networkService.getSimpleProduct('payload').then(function (response) {

@@ -60,6 +60,7 @@
             getIcsFamily: getIcsFamily,
             getListingCountStatistics: getListingCountStatistics,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
+            getScheduleTriggers: getScheduleTriggers,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
             getParticipantAgeStatistics: getParticipantAgeStatistics,
@@ -391,6 +392,10 @@
 
         function getMeaningfulUseUsersAccurateAsOfDate () {
             return apiGET('/meaningful_use/accurate_as_of');
+        }
+
+        function getScheduleTriggers () {
+            return apiGET('/schedules/triggers');
         }
 
         function getSubscriptionRecipients () {
