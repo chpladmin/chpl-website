@@ -4,10 +4,10 @@
       <div class="col-sm-12">
         <ul class="list-inline">
           <li><strong>What would you like to manage?</strong></li>
-          <li><input type="radio" ng-model="vm.workType" value="acb" id="rdAcb"></input><label for="rdAcb">ONC-ACB</label></li>
-          <li><input type="radio" ng-model="vm.workType" value="user" id="rdUsr"></input><label for="rdUsr">Users</label></li>
+          <li><input type="radio" name="manage-type" ng-model="vm.workType" value="acb" id="rd-acb"></input><label for="rd-acb">ONC-ACB</label></li>
+          <li><input type="radio" name="manage-type" ng-model="vm.workType" value="user" id="rd-usr"></input><label for="rd-usr">Users</label></li>
         </ul>
-        <span ng-if="vm.isChplAdmin">Or <a href="" class="" ng-click="vm.createAcb()">Create a new ONC-ACB</a></span>
+        <span ng-if="vm.isChplAdmin">Or <button class="btn btn-default" ng-click="vm.createAcb()">Create a new ONC-ACB</button></span>
       </div>
     </div>
     <div class="row">

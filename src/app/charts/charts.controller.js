@@ -8,16 +8,22 @@
     function ChartsController ($log, networkService, utilService) {
         var vm = this;
 
+        vm.updateChartStack = updateChartStack;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
             vm.chartState = {
-                tab: 'product',
+                isStacked: 'false',
+                listingCountType: '1',
                 productEdition: 2014,
+                tab: 'product',
             };
             _createCriterionProductCountChart();
+            _createIncumbentDevelopersCountChart();
+            _createListingCountCharts();
             _createSedParticipantCountChart();
             _createParticipantGenderCountChart();
             _createParticipantAgeCountChart();
@@ -25,6 +31,15 @@
             _createParticipantProfessionalExperienceCountChart();
             _createParticipantComputerExperienceCountChart();
             _createParticipantProductExperienceCountChart();
+        }
+
+        function updateChartStack () {
+            Object.keys(vm.listingCount.edition).forEach(function (key) {
+                vm.listingCount.edition[key].chart.options.isStacked = vm.chartState.isStacked;
+            });
+            Object.keys(vm.listingCount.class).forEach(function (key) {
+                vm.listingCount.class[key].chart.options.isStacked = vm.chartState.isStacked;
+            });
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -42,6 +57,11 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
+                            animation: {
+                                duration: 1000,
+                                easing: 'inAndOut',
+                                startup: true,
+                            },
                             chartArea: { top: 64, height: '90%' },
                             title: 'Number of 2014 Edition Unique Products certified to specific Certification Criteria',
                         },
@@ -56,6 +76,11 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
+                            animation: {
+                                duration: 1000,
+                                easing: 'inAndOut',
+                                startup: true,
+                            },
                             chartArea: { top: 64, height: '90%' },
                             title: 'Number of 2015 Edition Unique Products certified to specific Certification Criteria',
                         },
@@ -74,6 +99,165 @@
             });
         }
 
+        function _createIncumbentDevelopersCountChart () {
+            networkService.getIncumbentDevelopersStatistics().then(function (data) {
+                vm.incumbentDevelopersCounts =
+                    data.incumbentDevelopersStatisticsResult.sort(function (a, b) {
+                        if (a.oldCertificationEdition.certificationEditionId === b.oldCertificationEdition.certificationEditionId) {
+                            return a.newCertificationEdition.certificationEditionId - b.newCertificationEdition.certificationEditionId;
+                        } else {
+                            return a.oldCertificationEdition.certificationEditionId - b.oldCertificationEdition.certificationEditionId;
+                        }
+                    }).map(function (obj) {
+                        var chart = {
+                            type: 'PieChart',
+                            data: {
+                                cols: [
+                                    { label: 'Developers', type: 'string'},
+                                    { label: 'Counts', type: 'number'},
+                                ],
+                                rows: [
+                                    {c: [{ v: 'New Developers'}, {v: obj.newCount}]},
+                                    {c: [{ v: 'Incumbent Developers'}, {v: obj.incumbentCount}]},
+                                ],
+                            },
+                            options: {
+                                title: 'New vs. Incumbent Developers by Edition, ' + obj.oldCertificationEdition.year + ' to ' + obj.newCertificationEdition.year,
+                            },
+                        };
+                        return chart;
+                    });
+            })
+        }
+
+        function _createListingCountCharts () {
+            networkService.getListingCountStatistics().then(function (data) {
+                vm.listingCount = {
+                    edition: {},
+                    class: {},
+                };
+                data.statisticsResult.forEach(function (obj) {
+                    vm.listingCount.edition['' + obj.certificationStatus.id] = {
+                        name: obj.certificationStatus.name,
+                        chart: _createListingCountChartEdition(data, obj.certificationStatus.name),
+                    };
+                    vm.listingCount.class['' + obj.certificationStatus.id] = {
+                        name: obj.certificationStatus.name,
+                        chart: _createListingCountChartClass(data, obj.certificationStatus.name),
+                    };
+                });
+                vm.listingCountTypes = Object.keys(vm.listingCount.edition)
+                    .map(function (key) {
+                        return {
+                            id: key,
+                            name: vm.listingCount.edition[key].name,
+                        }
+                    });
+            });
+        }
+
+        function _createListingCountChartEdition (data, status) {
+            return {
+                type: 'ColumnChart',
+                data: {
+                    cols: [
+                        { label: 'Certification Edition', type: 'string'},
+                        { label: 'Number of Developers with "' + status + '" Listings', type: 'number'},
+                        { label: 'Number of Products with "' + status + '" Listings', type: 'number'},
+                    ],
+                    rows: _getListingCountChartEditionData(data, status),
+                },
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'inAndOut',
+                        startup: true,
+                    },
+                    title: 'Number of Developers and Products with "' + status + '" Listings',
+                    hAxis: {
+                        title: 'Certification Edition',
+                    },
+                    vAxis: {
+                        title: 'Number of Developers and Products with "' + status + '" Listings',
+                        minValue: 0,
+                    },
+                },
+            }
+        }
+
+        function _createListingCountChartClass (data, status) {
+            return {
+                type: 'ColumnChart',
+                data: {
+                    cols: [
+                        { label: 'Number of Developers and Products with "' + status + '" Listings', type: 'string'},
+                        { label: 'Certification Edition 2014', type: 'number'},
+                        { label: 'Certification Edition 2015', type: 'number'},
+                    ],
+                    rows: _getListingCountChartClassData(data, status),
+                },
+                options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'inAndOut',
+                        startup: true,
+                    },
+                    title: 'Number of Developers and Products with "' + status + '" Listings',
+                    hAxis: {
+                        title: 'Developer / Product',
+                    },
+                    vAxis: {
+                        title: 'Number of Developers and Products with "' + status + '" Listings',
+                        minValue: 0,
+                    },
+                },
+            }
+        }
+
+        function _getListingCountChartEditionData (data, status) {
+            return data.statisticsResult.filter(function (a) {
+                return a.certificationStatus.name === status;
+            }).map(function (obj) {
+                return {c: [
+                    { v: obj.certificationEdition.year },
+                    { v: obj.developerCount },
+                    { v: obj.productCount},
+                ]};
+            });
+        }
+
+        function _getListingCountChartClassData (data, status) {
+            var transformedData = {
+                developer: {},
+                product: {},
+            };
+            data.statisticsResult.filter(function (a) {
+                return a.certificationStatus.name === status;
+            }).forEach(function (obj) {
+                transformedData.developer[obj.certificationEdition.year] = obj.developerCount;
+                transformedData.product[obj.certificationEdition.year] = obj.productCount;
+            });
+            return [{
+                c: [{ v: 'Developer' }]
+                    .concat(
+                        Object.keys(transformedData.developer)
+                            .sort()
+                            .map(function (key) {
+                                return { v: transformedData.developer[key]}
+                            })
+                    ),
+            },{
+                c: [{ v: 'Product' }]
+                    .concat(
+                        Object.keys(transformedData.product)
+                            .sort()
+                            .map(function (key) {
+                                return { v: transformedData.product[key]}
+                            })
+                    ),
+            }];
+        }
+
         function _createSedParticipantCountChart () {
             networkService.getSedParticipantStatisticsCount().then(function (data) {
                 vm.sedParticipantCounts = {
@@ -86,6 +270,11 @@
                         rows: _getSedParticipantCountDataInChartFormat(data),
                     },
                     options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
                         title: 'Number of Safety Enhanced Design Test Participants',
                         hAxis: {
                             title: 'Number of SED Test Participants Used',
@@ -203,6 +392,11 @@
                         rows: _getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
                         title: 'Years of Professional Experience for Safety Enhanced Design Test Participants',
                         vAxis: {
                             title: 'Number of SED Test Participants',
@@ -232,6 +426,11 @@
                         rows: _getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
                         title: 'Years of Computer Experience for Safety Enhanced Design Test Participants',
                         vAxis: {
                             title: 'Number of SED Test Participants',
@@ -261,6 +460,11 @@
                         rows: _getParticipantExperienceCountDataInChartFormat(data),
                     },
                     options: {
+                        animation: {
+                            duration: 1000,
+                            easing: 'inAndOut',
+                            startup: true,
+                        },
                         title: 'Years of Product Experience for Safety Enhanced Design Test Participants',
                         vAxis: {
                             title: 'Number of SED Test Participants',

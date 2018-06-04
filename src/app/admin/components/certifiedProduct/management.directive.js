@@ -57,7 +57,7 @@
         vm.selectProduct = selectProduct;
         vm.selectVersion = selectVersion;
         vm.splitProduct = splitProduct;
-        vm.ternaryFilter = ternaryFilter;
+        vm.ternaryFilter = utilService.ternaryFilter;
 
         activate();
 
@@ -789,14 +789,6 @@
                     $log.info('split cancelled');
                 }
             });
-        }
-
-        function ternaryFilter (field) {
-            if (field === null) {
-                return 'N/A';
-            } else {
-                return field ? 'True' : 'False';
-            }
         }
 
         ////////////////////////////////////////////////////////////////////

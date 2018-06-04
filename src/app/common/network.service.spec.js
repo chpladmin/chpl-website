@@ -475,6 +475,30 @@
             $httpBackend.flush();
         });
 
+        it('should getCorrectiveActionPlanActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/corrective_action_plans/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?start=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?end=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getCriterionProductStatistics', function () {
             $httpBackend.expectGET(/statistics\/criterion_product/).respond(200, {data: 'response'});
             networkService.getCriterionProductStatistics().then(function (response) {
@@ -598,6 +622,14 @@
             $httpBackend.flush();
         });
 
+        it('should getIncumbentDeveloperStatistics', function () {
+            $httpBackend.expectGET(/statistics\/incumbent_developers/).respond(200, {data: 'response'});
+            networkService.getIncumbentDevelopersStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getJobTypes', function () {
             $httpBackend.expectGET(/data\/job_types/).respond(200, {data: 'response'});
             networkService.getJobTypes().then(function (response) {
@@ -617,6 +649,14 @@
         it('should getIcsFamily', function () {
             $httpBackend.expectGET(/certified_products\/id\/ics_relationships/).respond(200, {data: 'response'});
             networkService.getIcsFamily('id').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getListingCountStatistics', function () {
+            $httpBackend.expectGET(/statistics\/listing_count/).respond(200, {data: 'response'});
+            networkService.getListingCountStatistics().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

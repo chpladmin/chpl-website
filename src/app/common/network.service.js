@@ -44,6 +44,7 @@
             getCertBodies: getCertBodies,
             getCertificationStatuses: getCertificationStatuses,
             getCertifiedProductActivity: getCertifiedProductActivity,
+            getCorrectiveActionPlanActivity: getCorrectiveActionPlanActivity,
             getCriterionProductStatistics: getCriterionProductStatistics,
             getCmsDownload: getCmsDownload,
             getCollection: getCollection,
@@ -53,9 +54,11 @@
             getEditions: getEditions,
             getEducation: getEducation,
             getFuzzyTypes: getFuzzyTypes,
+            getIncumbentDevelopersStatistics: getIncumbentDevelopersStatistics,
             getJobTypes: getJobTypes,
             getJobs: getJobs,
             getIcsFamily: getIcsFamily,
+            getListingCountStatistics: getListingCountStatistics,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
@@ -332,6 +335,11 @@
             }
         }
 
+        function getCorrectiveActionPlanActivity (activityRange) {
+            var call = '/activity/corrective_action_plans';
+            return getActivity(call, activityRange);
+        }
+
         function getDeveloper (developerId) {
             return apiGET('/developers/' + developerId);
         }
@@ -361,6 +369,10 @@
             return apiGET('/data/fuzzy_choices');
         }
 
+        function getIncumbentDevelopersStatistics () {
+            return apiGET('/statistics/incumbent_developers');
+        }
+
         function getJobTypes () {
             return apiGET('/data/job_types');
         }
@@ -371,6 +383,10 @@
 
         function getIcsFamily (id) {
             return apiGET('/certified_products/' + id + '/ics_relationships');
+        }
+
+        function getListingCountStatistics () {
+            return apiGET('/statistics/listing_count');
         }
 
         function getMeaningfulUseUsersAccurateAsOfDate () {

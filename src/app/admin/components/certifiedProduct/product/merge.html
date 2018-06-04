@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="mergeProductLabel">
+<div role="modal" aria-labeled-by="merge-product-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="mergeProductLabel">Merge Products</h4>
+    <h4 class="modal-title" id="merge-product-label">Merge Products</h4>
   </div>
   <div class="modal-body" ng-form="vm.mergeForm">
     <div class="row">
@@ -37,24 +37,24 @@
       <div class="col-md-6">
         <h4>To form this one</h4>
         <div class="form-group">
-          <label for="productName">Product Name <span class="text-danger">*</span></label>
-          <input class="input-sm form-control" type="text" required ng-model="vm.product.name" id="productName" name="productName" ng-maxlength="300"></input>
+          <label for="product-name">Product Name <span class="text-danger">*</span></label>
+          <input class="input-sm form-control" type="text" required ng-model="vm.product.name" id="product-name" name="productName" ng-maxlength="300"></input>
           <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm.productName.$touched) && vm.mergeForm.productName.$error.required">Product name is required</div>
           <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm.productName.$touched) && vm.mergeForm.productName.$error.maxlength">Field is too long</div>
         </div>
         <div ng-repeat="prevOwner in vm.product.ownerHistory | orderBy:'transferDate' track by $index">
           <div class="form-group">
-            <label for="productOwner{{ $index }}">Previous Product owner <span class="text-danger">*</span></label>
+            <label for="product-owner{{ $index }}">Previous Product owner <span class="text-danger">*</span></label>
             <select ng-model="prevOwner.developer.developerId" required
-                    id="productOwner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
+                    id="product-owner{{ $index }}" name="productOwner{{ $index }}" class="input-sm form-control"
                     ng-options="v.developerId as (v.name + (v.deleted ? ' - deleted' : ' - active')) for v in vm.developers | orderBy: 'name'">
             </select>
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.mergeForm['productOwner' + $index].$touched) && vm.mergeForm['productOwner' + $index].$error.required">Product owner is required</div>
           </div>
           <div class="form-group">
-            <label for="transferDate{{ $index }}">Transfer Date <span class="text-danger">*</span></label>
+            <label for="transfer-date{{ $index }}">Transfer Date <span class="text-danger">*</span></label>
             <div class="input-group">
-              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transferDate{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="prevOwner.transferDate" is-open="prevOwner.transferDatePicker" close-text="Close" id="transfer-date{{ $index }}" name="transferDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-ai btn-sm" ng-click="prevOwner.transferDatePicker = true"><i class="fa fa-calendar"></i></button>
               </span>
