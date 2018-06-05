@@ -1,0 +1,73 @@
+(function () {
+    'use strict';
+
+    angular.module('chpl.admin')
+        .controller('ScheduleController', ScheduleController);
+
+    /** @ngInject */
+    function ScheduleController ($log, $uibModalInstance, networkService, trigger) {
+        var vm = this;
+
+        vm.cancel = cancel;
+        vm.deleteTrigger = deleteTrigger;
+        vm.save = save;
+
+        activate();
+
+        ////////////////////////////////////////////////////////////////////
+
+        function activate () {
+            vm.trigger = angular.copy(trigger);
+        }
+
+        function cancel () {
+            $uibModalInstance.dismiss('cancelled');
+        }
+
+        function deleteTrigger () {
+            networkService.deleteScheduleTrigger(vm.trigger)
+                .then(function (response) {
+                    if (response.status === 200) {
+                        $uibModalInstance.close({
+                            status: 'deleted',
+                        });
+                    } else {
+                        vm.errorMessage = response.data.error;
+                    }
+                },function (error) {
+                    vm.errorMessage = error.data.error;
+                });
+        }
+
+        function save () {
+            if (vm.trigger.name) {
+                networkService.updateScheduleTrigger(vm.trigger)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            $uibModalInstance.close({
+                                trigger: response,
+                                status: 'updated',
+                            });
+                        } else {
+                            vm.errorMessage = response.data.error;
+                        }
+                    },function (error) {
+                        vm.errorMessage = error.data.error;
+                    });
+            } else {
+                networkService.createScheduleTrigger(vm.trigger)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200) {
+                            $uibModalInstance.close({
+                                trigger: response,
+                            });
+                        } else {
+                            vm.errorMessage = response.data.error;
+                        }
+                    },function (error) {
+                        vm.errorMessage = error.data.error;
+                    });
+            }
+        }
+    }
+})();

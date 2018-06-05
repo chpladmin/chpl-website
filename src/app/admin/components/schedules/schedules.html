@@ -1,7 +1,7 @@
 <section class="row">
   <div class="col-sm-12 admin-inner-tab main-content form-horizontal">
     <h3>Scheduled Jobs</h3>
-    <table class="table table-condensed" st-table="vm.displayedScheduledTriggers" st-safe-src="vm.scheduledTriggers">
+    <table class="table table-condensed" st-table="vm.displayedTriggers" st-safe-src="vm.scheduledTriggers">
       <thead>
         <tr>
           <th scope="col" class="search-header" st-sort="email" st-skip-natural="true" st-sort-default="true">Email</th>
@@ -12,18 +12,18 @@
       <tfoot>
         <tr>
           <td colspan="2">&nbsp;</td>
-          <td><button class="btn btn-primary" ng-click="vm.createRecipient()"><i class="fa fa-plus"></i><span class="sr-only">Create recipient</span></button></td>
+          <td><button class="btn btn-primary" ng-click="vm.createTrigger()"><i class="fa fa-plus"></i><span class="sr-only">Create new job</span></button></td>
         </tr>
       </tfoot>
       <tbody>
-        <tr ng-repeat="schedule in vm.displayedScheduledTriggers track by schedule.id">
-          <td>{{ schedule.email }}</td>
+        <tr ng-repeat="trigger in vm.displayedTriggers track by schedule.id">
+          <td>{{ trigger.email }}</td>
           <td>
             <ul class="list-unstyled">
-              <li ng-repeat="detail in schedule.details | orderBy:'detail'">{{ detail }}</li>
+              <li ng-repeat="detail in trigger.details | orderBy:'detail'">{{ detail }}</li>
             </ul>
           </td>
-          <td><button class="btn btn-ai-success" ng-click="vm.editSchedule(schedule)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit job for {{ schedule.email }}</span></button></td>
+          <td><button class="btn btn-ai-success" ng-click="vm.editTrigger(trigger)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit job for {{ trigger.email }}</span></button></td>
         </tr>
       </tbody>
     </table>

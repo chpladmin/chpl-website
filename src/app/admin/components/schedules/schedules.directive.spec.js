@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Scheduled Jobs directive', function () {
+    describe('the Scheduled Jobs directive', function () {
         var $log, $q, $uibModal, Mock, actualOptions, el, mock, networkService, scope, vm;
 
         mock = {
@@ -25,9 +25,7 @@
             keyboard: false,
             size: 'md',
             resolve: {
-                acbs: jasmine.any(Function),
-                recipient: jasmine.any(Function),
-                reportTypes: jasmine.any(Function),
+                trigger: jasmine.any(Function),
             },
         };
 
@@ -78,10 +76,6 @@
             it('should exist', function () {
                 expect(vm).toBeDefined();
             });
-
-            it('should have a list of acbs', function () {
-                expect(vm.acbs).toEqual(mock.acbs);
-            });
         });
 
         describe('wrt service interactions', function () {
@@ -100,90 +94,55 @@
             });
         });
 
-        xdescribe('creating a new recipient', function () {
+        describe('editing a trigger', function () {
             it('should create a modal instance', function () {
-                expect(vm.createRecipientInstance).toBeUndefined();
-                vm.createRecipient();
-                expect(vm.createRecipientInstance).toBeDefined();
+                expect(vm.editTriggerInstance).toBeUndefined();
+                vm.editTrigger(vm.scheduledTriggers[0]);
+                expect(vm.editTriggerInstance).toBeDefined();
             });
 
-            it('should resolve the acbs and report types on create', function () {
-                vm.createRecipient();
+            it('should resolve the trigger on edit', function () {
+                vm.editTrigger(vm.scheduledTriggers[0]);
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.acbs()).toEqual(mock.acbs);
-                expect(actualOptions.resolve.recipient()).toEqual({});
-                expect(actualOptions.resolve.reportTypes()).toEqual(Mock.subscriptionReportTypes);
+                expect(actualOptions.resolve.trigger()).toEqual(vm.scheduledTriggers[0]);
             });
 
-            it('should add the created recipient to the active list on close', function () {
-                var newRecipient = {email: 'fake@sample.com', subscriptions: []};
-                vm.createRecipient();
-                vm.createRecipientInstance.close({recipient: newRecipient});
-                expect(vm.recipients[vm.recipients.length - 1]).toEqual(newRecipient);
+            it('should remove the trigger if it was deleted', function () {
+                var triggerLength = vm.scheduledTriggers.length;
+                vm.editTrigger(vm.scheduledTriggers[0]);
+                vm.editTriggerInstance.close({status: 'deleted'});
+                expect(vm.scheduledTriggers.length).toBe(triggerLength - 1);
             });
 
-            it('should log a cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.createRecipient();
-                vm.createRecipientInstance.dismiss('Cancelled');
-                expect($log.info.logs.length).toBe(logCount + 1);
-            });
-
-            it('should report messages if they were sent back', function () {
-                vm.createRecipient();
-                vm.createRecipientInstance.dismiss('message');
-                expect(vm.createMessage).toBe('message');
+            it('should refresh the triggers if it was updated', function () {
+                var serviceCallCount = networkService.getScheduleTriggers.calls.count();
+                vm.editTrigger(vm.scheduledTriggers[0]);
+                vm.editTriggerInstance.close({status: 'updated'});
+                expect(networkService.getScheduleTriggers.calls.count()).toBe(serviceCallCount + 1);
             });
         });
 
-        xdescribe('editing a recipient', function () {
-            it('should edit a modal instance', function () {
-                expect(vm.editRecipientInstance).toBeUndefined();
-                vm.editRecipient(Mock.recipients[0]);
-                expect(vm.editRecipientInstance).toBeDefined();
+        describe('create a trigger', function () {
+            it('should create a modal instance', function () {
+                expect(vm.editTriggerInstance).toBeUndefined();
+                vm.createTrigger();
+                expect(vm.editTriggerInstance).toBeDefined();
             });
 
-            it('should resolve the acbs and report types on edit', function () {
-                vm.editRecipient(Mock.recipients[0]);
+            it('should resolve the trigger on create', function () {
+                vm.createTrigger();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.acbs()).toEqual(mock.acbs);
-                expect(actualOptions.resolve.recipient()).toEqual(Mock.recipients[0]);
-                expect(actualOptions.resolve.reportTypes()).toEqual(Mock.subscriptionReportTypes);
+                expect(actualOptions.resolve.trigger()).toEqual({
+                    scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                });
             });
 
-            it('should log a cancelled modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.editRecipient(Mock.recipients[0]);
-                vm.editRecipientInstance.dismiss('Cancelled');
-                expect($log.info.logs.length).toBe(logCount + 1);
+            it('should refresh the triggers if it was updated', function () {
+                var serviceCallCount = networkService.getScheduleTriggers.calls.count();
+                vm.createTrigger();
+                vm.editTriggerInstance.close({status: 'created'});
+                expect(networkService.getScheduleTriggers.calls.count()).toBe(serviceCallCount + 1);
             });
-
-            it('should report messages if they were sent back', function () {
-                vm.editRecipient(Mock.recipients[0]);
-                vm.editRecipientInstance.dismiss('message');
-                expect(vm.editMessage).toBe('message');
-            });
-
-            it('should remove the recipient if it was deleted', function () {
-                var recipientLength = Mock.recipients.length;
-                vm.editRecipient(Mock.recipients[1]);
-                vm.editRecipientInstance.close({status: 'deleted'});
-                expect(Mock.recipients.length).toBe(recipientLength - 1);
-            });
-
-            it('should refresh the recipients if it was updated', function () {
-                var serviceCallCount = networkService.getSubscriptionRecipients.calls.count();
-                vm.editRecipient(Mock.recipients[0]);
-                vm.editRecipientInstance.close({status: 'updated'});
-                expect(networkService.getSubscriptionRecipients.calls.count()).toBe(serviceCallCount + 1);
-            });
-
-            it('should log a message if the modal is closed in an unknown state', function () {
-                var logCount = $log.info.logs.length;
-                vm.editRecipient(Mock.recipients[0]);
-                vm.editRecipientInstance.close({});
-                expect($log.info.logs.length).toBe(logCount + 1);
-            });
-        });
+        })
     });
 })();

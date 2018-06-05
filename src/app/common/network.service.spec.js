@@ -157,6 +157,14 @@
             $httpBackend.flush();
         });
 
+        it('should createScheduleTrigger', function () {
+            $httpBackend.expectPOST(/schedules\/triggers/).respond(200, {data: 'response'});
+            networkService.createScheduleTrigger({email: 'something'}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should deleteACB', function () {
             $httpBackend.expectPOST(/acbs\/1\/delete/).respond(200, {data: 'response'});
             networkService.deleteACB(1).then(function (response) {
@@ -200,6 +208,14 @@
         it('should deleteRecipient', function () { // TODO; change API, this is the only endpoint that responds this way
             $httpBackend.expectPOST(/notifications\/recipients\/1\/delete/).respond(200, 'response');
             networkService.deleteRecipient({id: 1}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should deleteScheduleTrigger', function () {
+            $httpBackend.expectDELETE(/schedules\/triggers\/something/).respond(200, {data: 'response'});
+            networkService.deleteScheduleTrigger({name: 'something'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1305,6 +1321,14 @@
         it('should updateRecipient', function () {
             $httpBackend.expectPOST(/notifications\/recipients\/1\/update/).respond(200, {data: 'response'});
             networkService.updateRecipient({id: 1}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateScheduleTrigger', function () {
+            $httpBackend.expectPUT(/schedules\/triggers\/something/).respond(200, {data: 'response'});
+            networkService.updateScheduleTrigger({name: 'something'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
