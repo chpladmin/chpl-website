@@ -60,6 +60,7 @@
                         if (!response.status || response.status === 200) {
                             $uibModalInstance.close({
                                 trigger: response,
+                                status: 'created',
                             });
                         } else {
                             vm.errorMessage = response.data.error;

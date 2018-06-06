@@ -16,7 +16,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <tr ng-repeat="trigger in vm.displayedTriggers track by schedule.id">
+        <tr ng-repeat="trigger in vm.displayedTriggers track by $index">
           <td>{{ trigger.email }}</td>
           <td>
             <ul class="list-unstyled">

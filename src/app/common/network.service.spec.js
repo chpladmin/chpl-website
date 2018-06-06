@@ -69,6 +69,19 @@
             $httpBackend.flush();
         });
 
+        it('should return a promise with the data if a DELETE responds with a failure', function () {
+            $httpBackend.expectDELETE(/schedules\/triggers\/CACHE_STATUS_AGE_NOTIFICATION\/something/).respond(500, 'response');
+            networkService.deleteScheduleTrigger({
+                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                name: 'something',
+            }).then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            });
+            $httpBackend.flush();
+        });
+
         it('should addRole', function () {
             $httpBackend.expectPOST(/users\/grant_role/, 'payload').respond(200, {data: 'response'});
             networkService.addRole('payload').then(function (response) {
@@ -214,9 +227,12 @@
         });
 
         it('should deleteScheduleTrigger', function () {
-            $httpBackend.expectDELETE(/schedules\/triggers\/something/).respond(200, {data: 'response'});
-            networkService.deleteScheduleTrigger({name: 'something'}).then(function (response) {
-                expect(response.data).toEqual('response');
+            $httpBackend.expectDELETE(/schedules\/triggers\/CACHE_STATUS_AGE_NOTIFICATION\/something/).respond(200);
+            networkService.deleteScheduleTrigger({
+                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                name: 'something',
+            }).then(function (response) {
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1327,7 +1343,7 @@
         });
 
         it('should updateScheduleTrigger', function () {
-            $httpBackend.expectPUT(/schedules\/triggers\/something/).respond(200, {data: 'response'});
+            $httpBackend.expectPUT(/schedules\/triggers/).respond(200, {data: 'response'});
             networkService.updateScheduleTrigger({name: 'something'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });

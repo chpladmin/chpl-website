@@ -214,7 +214,7 @@
         }
 
         function deleteScheduleTrigger (trigger) {
-            return apiDELETE('/schedules/triggers/' + trigger.name);
+            return apiDELETE('/schedules/triggers/' + trigger.scheduleType + '/' + trigger.name);
         }
 
         function deleteSurveillance (surveillanceId, reason) {
@@ -719,7 +719,7 @@
         }
 
         function updateScheduleTrigger (trigger) {
-            return apiPUT('/schedules/triggers/' + trigger.name, trigger);
+            return apiPUT('/schedules/triggers', trigger);
         }
 
         function updateSurveillance (surveillance) {
@@ -739,11 +739,7 @@
         function apiDELETE (endpoint) {
             return $http.delete(API + endpoint)
                 .then(function (response) {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return $q.reject(response);
-                    }
+                    return response;
                 }, function (response) {
                     return $q.reject(response);
                 });

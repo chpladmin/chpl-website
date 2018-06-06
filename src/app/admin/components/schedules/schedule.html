@@ -12,7 +12,7 @@
     <div class="form-group">
       <label class="col-md-4" for="email">Recipient email</label>
       <div class="col-md-8">
-        <input class="input-sm form-control" type="email" ng-model="vm.trigger.email" id="email" name="email" required></input>
+        <input class="input-sm form-control" type="email" ng-model="vm.trigger.email" id="email" name="email" ng-disabled="vm.trigger.name" required></input>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.triggerForm.email.$touched) && vm.triggerForm.email.$error.required">Email is required</div>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.triggerForm.email.$touched) && vm.triggerForm.email.$error.email">Email format is invalid</div>
       </div>

@@ -74,7 +74,10 @@
             it('should close the modal', function () {
                 vm.save();
                 scope.$digest();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith({trigger: mock.newScheduleTrigger});
+                expect(Mock.modalInstance.close).toHaveBeenCalledWith({
+                    trigger: mock.newScheduleTrigger,
+                    status: 'created',
+                });
             });
 
             it('should not dismiss the modal on error', function () {
