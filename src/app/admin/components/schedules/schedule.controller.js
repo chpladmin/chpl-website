@@ -18,6 +18,13 @@
 
         function activate () {
             vm.trigger = angular.copy(trigger);
+            vm.cronConfig = {
+                allowMultiple: false,
+                quartz: true,
+                options: {
+                    allowMinute: false,
+                },
+            };
         }
 
         function cancel () {

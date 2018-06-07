@@ -2,6 +2,7 @@
     'use strict';
 
     angular.module('chpl.admin', [
+        'angular-cron-jobs',
         'angular-confirm',
         'angularFileUpload',
         'chpl.constants',
