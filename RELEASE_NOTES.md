@@ -1,5 +1,20 @@
 # Release Notes
 
+## Version 9.21.0
+_4 June 2018_
+
+### New Features
+* Changed corrective action plan report to pull from new API endpoint
+* Added "New vs. Incumbent Developer" charts to Charts! page
+* Added "Count of Developers & Products" charts to Charts! page
+
+### Bug Fixes
+* Remove "N/A" from editing possibilities where N/A
+* Change error message for system down for maintenance page
+* Widen datepicker dropdown for collections pages
+
+---
+
 ## Version 9.20.0
 _21 May 2018_
 
