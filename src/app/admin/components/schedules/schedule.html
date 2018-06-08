@@ -20,11 +20,7 @@
     <div class="row">
       <div class="col-md-12">
         <cron-selection ng-model="vm.trigger.cronSchedule" config="vm.cronConfig"></cron-selection>
-    <div class="form-group">
-      <label class="col-md-4" for="cron">Cron Schedule</label>
-      <div class="col-md-8">
-        <input class="input-sm form-control" type="text" ng-model="vm.trigger.cronSchedule" id="croncron" name="cron" required></input>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.triggerForm.cron.$touched) && vm.triggerForm.cron.$error.required">Schedule is required</div>
+        <p><strong>Schedule, in cron format: {{ vm.trigger.cronSchedule }}</strong></p>
       </div>
     </div>
   </div>
