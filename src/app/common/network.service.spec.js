@@ -69,6 +69,19 @@
             $httpBackend.flush();
         });
 
+        it('should return a promise with the data if a DELETE responds with a failure', function () {
+            $httpBackend.expectDELETE(/schedules\/triggers\/CACHE_STATUS_AGE_NOTIFICATION\/something/).respond(500, 'response');
+            networkService.deleteScheduleTrigger({
+                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                name: 'something',
+            }).then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            });
+            $httpBackend.flush();
+        });
+
         it('should addRole', function () {
             $httpBackend.expectPOST(/users\/grant_role/, 'payload').respond(200, {data: 'response'});
             networkService.addRole('payload').then(function (response) {
@@ -157,6 +170,14 @@
             $httpBackend.flush();
         });
 
+        it('should createScheduleTrigger', function () {
+            $httpBackend.expectPOST(/schedules\/triggers/).respond(200, {data: 'response'});
+            networkService.createScheduleTrigger({email: 'something'}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should deleteACB', function () {
             $httpBackend.expectPOST(/acbs\/1\/delete/).respond(200, {data: 'response'});
             networkService.deleteACB(1).then(function (response) {
@@ -201,6 +222,17 @@
             $httpBackend.expectPOST(/notifications\/recipients\/1\/delete/).respond(200, 'response');
             networkService.deleteRecipient({id: 1}).then(function (response) {
                 expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should deleteScheduleTrigger', function () {
+            $httpBackend.expectDELETE(/schedules\/triggers\/CACHE_STATUS_AGE_NOTIFICATION\/something/).respond(200);
+            networkService.deleteScheduleTrigger({
+                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                name: 'something',
+            }).then(function (response) {
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -803,6 +835,14 @@
             $httpBackend.flush();
         });
 
+        it('should getScheduleTriggers', function () {
+            $httpBackend.expectGET(/schedules\/triggers/).respond(200, {data: 'response'});
+            networkService.getScheduleTriggers().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getSimpleProduct', function () {
             $httpBackend.expectGET(/products\/payload/).respond(200, {data: 'response'});
             networkService.getSimpleProduct('payload').then(function (response) {
@@ -1297,6 +1337,14 @@
         it('should updateRecipient', function () {
             $httpBackend.expectPOST(/notifications\/recipients\/1\/update/).respond(200, {data: 'response'});
             networkService.updateRecipient({id: 1}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateScheduleTrigger', function () {
+            $httpBackend.expectPUT(/schedules\/triggers/).respond(200, {data: 'response'});
+            networkService.updateScheduleTrigger({name: 'something'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
