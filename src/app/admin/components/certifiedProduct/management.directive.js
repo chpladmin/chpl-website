@@ -498,7 +498,8 @@
         function editCertifiedProduct () {
             var resources = angular.copy(vm.resources);
             var filteredFunctionality = resources.testFunctionalities.data.filter(function (item) {
-                return !item.year || item.year === vm.activeCP.certificationEdition.name;
+                return (!item.year || item.year === vm.activeCP.certificationEdition.name)
+                        && (!item.practiceType || item.practiceType.id === vm.activeCP.practiceType.id);
             });
             resources.testFunctionalities.data = filteredFunctionality;
             var filteredTestStandards = resources.testStandards.data.filter(function (item) {
