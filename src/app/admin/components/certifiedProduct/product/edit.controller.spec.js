@@ -100,7 +100,7 @@
                 networkService.updateProduct.and.returnValue($q.reject({data: {error: 'bad thing'}}));
                 vm.save();
                 scope.$digest();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith(['bad thing']);
+                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('bad thing');
             });
         });
 
