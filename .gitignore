@@ -9,5 +9,5 @@ src/app/index.constants.js
 .project
 .settings/
 /features/components/nav/nav.login.steps.js
-prod-website.sh
-thaw-website.sh
+*-website.sh
+push-*.sh
