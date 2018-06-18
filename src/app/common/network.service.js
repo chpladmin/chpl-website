@@ -18,12 +18,14 @@
             createAnnouncement: createAnnouncement,
             createInvitedUser: createInvitedUser,
             createRecipient: createRecipient,
+            createScheduleTrigger: createScheduleTrigger,
             deleteACB: deleteACB,
             deleteATL: deleteATL,
             deleteAnnouncement: deleteAnnouncement,
             deleteCap: deleteCap,
             deleteDoc: deleteDoc,
             deleteRecipient: deleteRecipient,
+            deleteScheduleTrigger: deleteScheduleTrigger,
             deleteSurveillance: deleteSurveillance,
             deleteSurveillanceDocument: deleteSurveillanceDocument,
             deleteUser: deleteUser,
@@ -60,6 +62,7 @@
             getIcsFamily: getIcsFamily,
             getListingCountStatistics: getListingCountStatistics,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
+            getScheduleTriggers: getScheduleTriggers,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
             getParticipantAgeStatistics: getParticipantAgeStatistics,
@@ -129,6 +132,7 @@
             updateFuzzyType: updateFuzzyType,
             updateProduct: updateProduct,
             updateRecipient: updateRecipient,
+            updateScheduleTrigger: updateScheduleTrigger,
             updateSurveillance: updateSurveillance,
             updateUser: updateUser,
             updateVersion: updateVersion,
@@ -181,6 +185,10 @@
             return apiPOST('/notifications/recipients/create', recipient);
         }
 
+        function createScheduleTrigger (trigger) {
+            return apiPOST('/schedules/triggers', trigger);
+        }
+
         function deleteACB (acbId) {
             return apiPOST('/acbs/' + acbId + '/delete', {});
         }
@@ -203,6 +211,10 @@
 
         function deleteRecipient (recipient) {
             return apiPOST('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
+        }
+
+        function deleteScheduleTrigger (trigger) {
+            return apiDELETE('/schedules/triggers/' + trigger.scheduleType + '/' + trigger.name);
         }
 
         function deleteSurveillance (surveillanceId, reason) {
@@ -391,6 +403,10 @@
 
         function getMeaningfulUseUsersAccurateAsOfDate () {
             return apiGET('/meaningful_use/accurate_as_of');
+        }
+
+        function getScheduleTriggers () {
+            return apiGET('/schedules/triggers');
         }
 
         function getSubscriptionRecipients () {
@@ -702,6 +718,10 @@
             return apiPOST('/notifications/recipients/' + recipient.id + '/update', recipient);
         }
 
+        function updateScheduleTrigger (trigger) {
+            return apiPUT('/schedules/triggers', trigger);
+        }
+
         function updateSurveillance (surveillance) {
             return apiPOST('/surveillance/update', surveillance);
         }
@@ -715,6 +735,15 @@
         }
 
         ////////////////////////////////////////////////////////////////////
+
+        function apiDELETE (endpoint) {
+            return $http.delete(API + endpoint)
+                .then(function (response) {
+                    return response;
+                }, function (response) {
+                    return $q.reject(response);
+                });
+        }
 
         function apiGET (endpoint) {
             return $http.get(API + endpoint)
@@ -731,6 +760,23 @@
 
         function apiPOST (endpoint, postObject, allowEmptyResponse) {
             return $http.post(API + endpoint, postObject)
+                .then(function (response) {
+                    if (angular.isObject(response.data)) {
+                        return response.data;
+                    } else {
+                        if (allowEmptyResponse) {
+                            return response;
+                        } else {
+                            return $q.reject(response);
+                        }
+                    }
+                }, function (response) {
+                    return $q.reject(response);
+                });
+        }
+
+        function apiPUT (endpoint, postObject, allowEmptyResponse) {
+            return $http.put(API + endpoint, postObject)
                 .then(function (response) {
                     if (angular.isObject(response.data)) {
                         return response.data;

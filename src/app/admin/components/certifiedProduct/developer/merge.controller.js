@@ -119,7 +119,14 @@
                         vm.errorMessage = response.error;
                     }
                 },function (error) {
-                    vm.errorMessage = error.data.error;
+                    vm.errorMessage = [];
+                    if (error.data.error) {
+                        vm.errorMessage.push(error.data.error);
+                    } else if (error.data.errorMessages) {
+                        vm.errorMessage = error.data.errorMessages
+                    } else {
+                        vm.errorMessage.push('An error occurred');
+                    }
                 });
         }
 
