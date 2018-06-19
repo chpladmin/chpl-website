@@ -7,5 +7,6 @@ _Date TBD_
 * Updated display of error messages when merging a developer to support multiple error messages
 * Show QMS standards under (g)(4) criteria details
 * Add "Scheduled Jobs" section for Quartz jobs
+* Add http:// to external urls so that they can be followed
 
 ---
