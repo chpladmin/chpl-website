@@ -28,13 +28,14 @@
     }
 
     /** @ngInject */
-    function CertificationCriteriaController ($analytics, $log, $uibModal) {
+    function CertificationCriteriaController ($analytics, $log, $uibModal, utilService) {
         var vm = this;
 
         vm.editCert = editCert;
         vm.hasPhantomData = hasPhantomData;
         vm.showViewDetailsLink = showViewDetailsLink;
         vm.toggleCriteria = toggleCriteria;
+        vm.checkHttp = utilService.checkHttp;
 
         activate();
 

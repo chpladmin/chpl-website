@@ -22,6 +22,7 @@
             sortRequirements: sortRequirements,
             statusFont: statusFont,
             ternaryFilter: ternaryFilter,
+            checkHttp: checkHttp,
         }
         return service;
 
@@ -257,6 +258,14 @@
                 return 'N/A';
             } else {
                 return field ? 'True' : 'False';
+            }
+        }
+
+        function checkHttp (url) {
+            if (url.substring(0,7) === 'http://' || url.substring(0,8) === 'https://') {
+                return url;
+            } else {
+                return 'http://' + url;
             }
         }
     }

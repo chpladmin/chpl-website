@@ -22,11 +22,12 @@
     }
 
     /** @ngInject */
-    function AtlManagementController ($log, $uibModal, authService) {
+    function AtlManagementController ($log, $uibModal, authService, utilService) {
         var vm = this;
 
         vm.createAtl = createAtl;
         vm.editAtl = editAtl;
+        vm.checkHttp = utilService.checkHttp;
 
         activate();
 

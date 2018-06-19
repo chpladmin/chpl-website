@@ -11,6 +11,7 @@
         vm.certificationStatus = utilService.certificationStatus;
         vm.loadProduct = loadProduct;
         vm.viewProductHistory = viewProductHistory;
+        vm.checkHttp = utilService.checkHttp;
 
         activate();
 

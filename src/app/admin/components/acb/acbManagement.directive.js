@@ -22,11 +22,12 @@
     }
 
     /** @ngInject */
-    function AcbManagementController ($log, $uibModal, authService) {
+    function AcbManagementController ($log, $uibModal, authService, utilService) {
         var vm = this;
 
         vm.createAcb = createAcb;
         vm.editAcb = editAcb;
+        vm.checkHttp = utilService.checkHttp;
 
         activate();
 

@@ -58,6 +58,7 @@
         vm.selectVersion = selectVersion;
         vm.splitProduct = splitProduct;
         vm.ternaryFilter = utilService.ternaryFilter;
+        vm.checkHttp = utilService.checkHttp;
 
         activate();
 

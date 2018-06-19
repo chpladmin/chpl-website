@@ -5,10 +5,11 @@
         .controller('TransparencyAttestationsController', TransparencyAttestationsController);
 
     /** @ngInject */
-    function TransparencyAttestationsController () {
+    function TransparencyAttestationsController (utilService) {
         var vm = this;
 
         vm._urlTransform = urlTransform;
+        vm.checkHttp = utilService.checkHttp;
 
         activate();
 
@@ -44,7 +45,7 @@
             if (data && data.length > 0) {
                 ret = '<ul class="list-unstyled">' +
                     data.map(function (item) {
-                        return '<li><a ai-a href="' + item + '">' + item + '</a></li>';
+                        return '<li><a ai-a href="' + vm.checkHttp(item) + '">' + vm.checkHttp(item) + '</a></li>';
                     })
                     + '</ul>';
             } else {
