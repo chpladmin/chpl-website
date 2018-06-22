@@ -8,6 +8,12 @@
         return {
             template: aiATemplate,
             restrict: 'A',
+            link: function (scope, element, attr) {
+                var link = attr['href'];
+                scope.$watch(link, function () {
+                    attr['$$element'][0].href = checkHttp(link);
+                });
+            },
         }
     }
 
@@ -17,5 +23,13 @@
                 '<i class="fa fa-external-link"></i>' +
                 '<span class="sr-only">Web Site Disclaimers</span>' +
                 '</a>');
+    }
+
+    function checkHttp (url) {
+        if (url.substring(0,7) === 'http://' || url.substring(0,8) === 'https://') {
+            return url;
+        } else {
+            return 'http://' + url;
+        }
     }
 })();

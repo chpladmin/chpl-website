@@ -143,7 +143,7 @@
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'" id="panel-additional-information">
         <span ng-if="vm.product.certificationEdition.name === '2014'">
           <h4>Test Results Summary</h4>
-          <a ai-a ng-if="vm.product.reportFileLocation" href="{{ vm.checkHttp(vm.product.reportFileLocation) }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.product.reportFileLocation }">{{ vm.checkHttp(vm.product.reportFileLocation) }}</a>
+          <a ai-a ng-if="vm.product.reportFileLocation" href="{{ vm.product.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.product.reportFileLocation }">{{ vm.product.reportFileLocation }}</a>
           <p ng-if="!vm.product.reportFileLocation">No report on file</p>
         </span>
         <span ng-if="vm.product.ics !== null">

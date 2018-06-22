@@ -6,14 +6,13 @@
         .controller('OverviewController', OverviewController);
 
     /** @ngInject */
-    function OverviewController ($anchorScroll, $location, $log, networkService, utilService) {
+    function OverviewController ($anchorScroll, $location, $log, networkService) {
         var vm = this;
 
         vm.loadAcbs = loadAcbs;
         vm.loadAtls = loadAtls;
         vm.loadAnnouncements = loadAnnouncements;
         vm.toTop = toTop;
-        vm.checkHttp = utilService.checkHttp;
 
         activate();
 

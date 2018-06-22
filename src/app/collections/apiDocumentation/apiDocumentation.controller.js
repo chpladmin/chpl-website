@@ -5,12 +5,11 @@
         .controller('ApiDocumentationController', ApiDocumentationController);
 
     /** @ngInject */
-    function ApiDocumentationController ($compile, $scope, SPLIT_PRIMARY, SPLIT_SECONDARY, utilService) {
+    function ApiDocumentationController ($compile, $scope, SPLIT_PRIMARY, SPLIT_SECONDARY) {
         var vm = this;
 
         vm.apiTransform = apiTransform;
         vm.disclosuresTransform = disclosuresTransform;
-        vm.checkHttp = utilService.checkHttp;
 
         activate();
 
@@ -61,7 +60,7 @@
                 }
                 ret = '<dl>';
                 angular.forEach(apis, function (value, key) {
-                    ret += '<dt>' + value.join(', ') + '</dt><dd>' + '<a ai-a href="' + vm.checkHttp(key) + '">' + vm.checkHttp(key) + '</a></dd>';
+                    ret += '<dt>' + value.join(', ') + '</dt><dd>' + '<a ai-a href="' + key + '">' + key + '</a></dd>';
                 });
                 ret += '</dl>';
             }
@@ -71,7 +70,7 @@
         function disclosuresTransform (data) {
             var ret = 'Unknown';
             if (data) {
-                ret = '<a ai-a href="' + vm.checkHttp(data) + '">' + vm.checkHttp(data) + '</a>';
+                ret = '<a ai-a href="' + data + '">' + data + '</a>';
             }
             return ret;
         }
