@@ -437,7 +437,7 @@
                 State: {{ vm.activeDeveloper.address.state }}<br />
                 Zip: {{ vm.activeDeveloper.address.zipcode }}<br />
                 Country: {{ vm.activeDeveloper.address.country }}<br />
-                Website: <span ng-if="vm.activeDeveloper.website"><a ai-a href="{{vm.activeDeveloper.website)}}">{{ vm.activeDeveloper.website }}</a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
+                Website: <span ng-if="vm.activeDeveloper.website"><a ai-a href="{{vm.activeDeveloper.website}}">{{ vm.activeDeveloper.website }}</a></span><span ng-if="!vm.activeDeveloper.website">None</span><br />
                 Transparency Attestation:<br />
                 <ul>
                   <li ng-repeat="trans in vm.activeDeveloper.transparencyAttestations">{{ trans.acbName }}: {{ trans.attestation ? trans.attestation : 'None' }}</li>
