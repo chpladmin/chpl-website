@@ -3,7 +3,6 @@
 // other global deps
 
 import angular from 'angular';
-// other angular deps
 //import angular-confirm from 'angular-confirm';
 import 'angular-loading-bar';
 //import angulartics from 'angulartics';
@@ -19,8 +18,8 @@ import ngRoute from 'angular-route';
 //import ngSanitize from 'ngSanitize';
 //import ngTouch from 'ngTouch';
 //import swaggerUi from 'swaggerUi';
-//import toaster from 'toaster';
-//import ui.bootstrap from 'ui.bootstrap';
+import toaster from 'angularjs-toaster';
+import uiBoostrap from 'angular-ui-bootstrap';
 //import ui.bootstrap.fontawesome from 'ui.bootstrap.fontawesome';
 import ngFileSaver from 'angular-file-saver';
 import ngStorage from 'ngstorage';
@@ -35,7 +34,7 @@ import ngStorage from 'ngstorage';
 //import compare-widgetModule from './compare-widget/index';
 //import constantsModule from './common/index';
 //import downloadModule from './resources/download/index';
-//import navigationModule from './navigation/index';
+import navigationModule from './navigation/index';
 import overviewModule from './resources/overview/index';
 //import productModule from './product/index';
 //import registrationModule from './registration/index';
@@ -57,7 +56,7 @@ const dependencies = [
     //    'chpl.compare-widget',
     'chpl.constants',
     //    'chpl.download',
-    //    'chpl.navigation',
+    'chpl.navigation',
     'chpl.overview',
     //    'chpl.product',
     //    'chpl.registration',
@@ -70,34 +69,23 @@ const dependencies = [
     //    'ngCytoscape',
     //    'ngMessages',
     //    'ngResource',
+    'ui.bootstrap',
     'ngRoute',
     'ngFileSaver',
     'ngStorage',
     //    'ngSanitize',
     //    'ngTouch',
     //    'swaggerUi',
-    //    'toaster',
+    'toaster',
     //    'ui.bootstrap',
     //    'ui.bootstrap.fontawesome',
 ];
-
-function routeConfig ($routeProvider) {
-    $routeProvider
-        .when('/resources/overview', {
-            templateUrl: 'src/app/overview/overview.html',
-            controller: 'OverviewController',
-            controllerAs: 'vm',
-            title: 'CHPL Overview',
-        })
-        .otherwise({
-            redirectTo: '/resources/overview',
-        });
-}
 
 const appModule = angular
           .module('chpl', dependencies);
 
 require('./index.route');
+require('./index.run');
 require('./templates');
 
 export default appModule;

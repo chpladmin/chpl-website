@@ -11,7 +11,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/navigation/navigation-top.html',
+            templateUrl: 'chpl.navigation/navigation-top.html',
             bindToController: {
                 widget: '=?',
                 compareWidget: '=?',
@@ -27,7 +27,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/navigation/navigation-bottom.html',
+            templateUrl: 'chpl.navigation/navigation-bottom.html',
             bindToController: { },
             scope: { },
             controllerAs: 'vm',

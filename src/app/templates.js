@@ -1,4 +1,5 @@
 const ctxs = [];
+ctxs.push({module: 'chpl.navigation', ctx: require.context('./navigation/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.overview', ctx: require.context('./resources/overview/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.services', ctx: require.context('./services/', true, /.*\.html$/)});
 
@@ -8,6 +9,7 @@ ctxs.forEach(obj => {
         function($templateCache) {
             obj.ctx.keys().forEach(key => {
                 $templateCache.put(key.replace('./', `${obj.module}/`), obj.ctx(key));
+                console.log(key.replace('./', `${obj.module}/`));
             });
         }
     ]);
