@@ -46,17 +46,10 @@
                 expect(vm._urlTransform(data)).toBe('Not available');
             });
 
-            it('should wrap the data in link text and not add http://', function () {
-                data = ['http://link'];
-                expect(vm._urlTransform(data)).toBe(
-                    '<ul class="list-unstyled"><li><a ai-a href="http://link">http://link</a></li></ul>'
-                );
-            });
-
-            it('should wrap the data in link text and add http://', function () {
+            it('should wrap the data in link text', function () {
                 data = ['link'];
                 expect(vm._urlTransform(data)).toBe(
-                    '<ul class="list-unstyled"><li><a ai-a href="http://link">http://link</a></li></ul>'
+                    '<ul class="list-unstyled"><li><a ai-a href="link">link</a></li></ul>'
                 );
             });
         });
