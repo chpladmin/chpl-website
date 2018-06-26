@@ -73,6 +73,10 @@
                 vm.showCompareWidget(false);
             });
             $scope.$on('$destroy', hideCompareWidget);
+
+            $scope.$on('loginAnnouncements', function (event, data) {
+                vm.announcements = data;
+            })
         }
 
         function clear () {

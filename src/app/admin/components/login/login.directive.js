@@ -23,7 +23,7 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $scope, Idle, Keepalive, authService, networkService) {
+    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService) {
         var vm = this;
 
         vm.activate = activate;
@@ -109,13 +109,12 @@
         function loadAnnouncements () {
             networkService.getAnnouncements(false)
                 .then(function (result) {
-                    vm.announcements = result.announcements;
+                    $rootScope.$broadcast('loginAnnouncements', result.announcements);
                 });
         }
 
         function login () {
             vm.message = '';
-            vm.loadAnnouncements();
             networkService.login({userName: vm.userName, password: vm.password})
                 .then(function () {
                     Idle.watch();
@@ -124,6 +123,9 @@
                 }, function (error) {
                     vm.messageClass = vm.pClassFail;
                     vm.message = error.data.error;
+                })
+                .then(function () {
+                    loadAnnouncements();
                 });
         }
 
