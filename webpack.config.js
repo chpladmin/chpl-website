@@ -9,16 +9,16 @@ module.exports = function(env = {}) {
     plugins.push(
         new HtmlWebpackPlugin({
             chunks: ['app'],
-            filename: './index.html',
+            filename: path.resolve(__dirname, './src/index.html'),//'../../src/index.html',
             hash: true,
             inject: 'body',
-            template: './src/index.hbs',
+            template: path.resolve(__dirname, '.src/index.hbs'),//'./src/index.hbs',
         })
     );
 
     return {
         context: path.resolve(__dirname, '.'),
-        devServer: {
+/*        devServer: {
             port: 3000,
             proxy: {
                 '/rest': {
@@ -26,10 +26,10 @@ module.exports = function(env = {}) {
                     pathRewrite: {'^/rest': ''},
                 },
             },
-        },
+        },*/
         devtool: isProd ? 'source-map' : 'eval-source-map',
         entry: {
-            app: './src/app/index.js',
+            app: path.resolve(__dirname, './src/app/index.js'),//'./src/app/index.js',
             // other entries
         },
         module: {
@@ -76,7 +76,8 @@ module.exports = function(env = {}) {
         },
         output: {
             filename: '[name].js',
-            path: path.resolve(__dirname, 'dist'),
+            //path: path.resolve(__dirname, 'dist'),
+            path: isProd ? path.resolve(__dirname, 'dist/') : path.resolve(__dirname, '.tmp/serve/'),
         },
         plugins: plugins,
     };

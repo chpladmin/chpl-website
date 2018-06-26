@@ -116,7 +116,8 @@
                 title: 'CHPL Search',
             })
             .otherwise({
-                redirectTo: '/search',
+                //redirectTo: '/search',
+                redirectTo: '/resources/overview',
             });
     }
 })();

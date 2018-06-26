@@ -1,6 +1,7 @@
 <!doctype html>
 <html ng-app="chpl">
   <head>
+    <base href="/">
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -12,6 +13,17 @@
     <title ng-bind="title">Certified Health IT Product List (CHPL)</title>
     <meta name="description" content="Certified Health IT Product List (CHPL) website">
     <meta name="viewport" content="width=device-width">
+    <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- run `gulp inject` to automatically populate bower styles dependencies -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css({.tmp/serve,src}) styles/app.css -->
+    <!-- inject:css -->
+    <!-- css files will be automatically insert here -->
+    <!-- endinject -->
+    <!-- endbuild -->
   </head>
   <!--  <body ai-cms-widget="" widget="mainWidget">-->
   <body>
