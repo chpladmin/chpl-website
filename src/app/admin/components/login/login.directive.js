@@ -30,6 +30,7 @@
         vm.changePassword = changePassword;
         vm.clear = clear;
         vm.isAuthed = authService.isAuthed;
+        vm.loadAnnouncements = loadAnnouncements;
         vm.login = login;
         vm.logout = logout;
         vm.misMatchPasswords = misMatchPasswords;
@@ -105,8 +106,16 @@
             }
         }
 
+        function loadAnnouncements () {
+            networkService.getAnnouncements(false)
+                .then(function (result) {
+                    vm.announcements = result.announcements;
+                });
+        }
+
         function login () {
             vm.message = '';
+            vm.loadAnnouncements();
             networkService.login({userName: vm.userName, password: vm.password})
                 .then(function () {
                     Idle.watch();
