@@ -30,7 +30,6 @@
         vm.changePassword = changePassword;
         vm.clear = clear;
         vm.isAuthed = authService.isAuthed;
-        vm.loadAnnouncements = loadAnnouncements;
         vm.login = login;
         vm.logout = logout;
         vm.misMatchPasswords = misMatchPasswords;
@@ -106,11 +105,8 @@
             }
         }
 
-        function loadAnnouncements () {
-            networkService.getAnnouncements(false)
-                .then(function (result) {
-                    $rootScope.$broadcast('loginAnnouncements', result.announcements);
-                });
+        function broadcastLogin () {
+            $rootScope.$broadcast('loggedIn');
         }
 
         function login () {
@@ -125,7 +121,7 @@
                     vm.message = error.data.error;
                 })
                 .then(function () {
-                    loadAnnouncements();
+                    broadcastLogin();
                 });
         }
 

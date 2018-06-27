@@ -74,8 +74,8 @@
             });
             $scope.$on('$destroy', hideCompareWidget);
 
-            $scope.$on('loginAnnouncements', function (event, data) {
-                vm.announcements = data;
+            $scope.$on('loggedIn', function (event) {
+                loadAnnouncements();
             })
         }
 
