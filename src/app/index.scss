@@ -643,6 +643,63 @@ option[disabled] {
     width: 100%;
     background: #ccc;
 }
+
+
+/* The alert message box */
+.selected-item {
+    padding: 5px;
+    background-color: #dff0d8;
+    border-color: #d0e9c6;
+    color: #3c763d;
+    margin-bottom: 5px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.selected-item  label {
+    font-weight: normal !important;;
+}
+
+.selected-item  input {
+    color: black !important;
+}
+
+.additional-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #777777;
+}
+.additional-input::-moz-placeholder { /* Firefox 19+ */
+    color: #777777;
+}
+.additional-input:-ms-input-placeholder { /* IE 10+ */
+    color: #777777;
+}
+.additional-input:-moz-placeholder { /* Firefox 18- */
+    color: #777777;
+}
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: #3c763d;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+
+.fade-in {
+    animation:opac 0.3s}
+    @keyframes opac{from{opacity:0} to{opacity:1}
+}
+
+
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically
