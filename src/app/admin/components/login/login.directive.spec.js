@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Login', function () {
-        var $compile, $log, $q, Idle, Keepalive, authService, el, networkService, scope, vm;
+        var $compile, $log, $q, Idle, Keepalive, authService, el, navigationDirective, networkService, scope, vm;
 
         beforeEach(function () {
             module('chpl.templates', 'chpl.admin', function ($provide) {
@@ -19,9 +19,13 @@
                     $delegate.resetPassword = jasmine.createSpy('resetPassword');
                     return $delegate;
                 });
+                $provide.decorator('navigationDirective', function ($delegate) {
+                    $delegate.loadAnnouncements = jasmine.createSpy('loadAnnouncements');
+                    return $delegate;
+                });
             });
 
-            inject(function (_$compile_, _$log_, _$q_, $rootScope, _Idle_, _Keepalive_, _authService_, _networkService_) {
+            inject(function (_$compile_, _$log_, _$q_, $rootScope, _Idle_, _Keepalive_, _authService_, _navigationDirective_, _networkService_) {
                 $compile = _$compile_;
                 $q = _$q_;
                 $log = _$log_;
@@ -30,6 +34,8 @@
                 authService = _authService_;
                 authService.isAuthed.and.returnValue(true);
                 authService.saveToken.and.returnValue({});
+                navigationDirective = _navigationDirective_;
+                navigationDirective.loadAnnouncements.and.returnValue({});
                 networkService = _networkService_;
                 networkService.changePassword.and.returnValue($q.when({}));
                 networkService.keepalive.and.returnValue($q.when({}));
@@ -239,6 +245,11 @@
                     vm.password = 'password';
                     vm.login();
                     expect(networkService.login).toHaveBeenCalledWith({userName: 'test', password: 'password'});
+                });
+
+                fit('should broadcast that someone has logged in', function () {
+                    vm.login();
+                    expect(navigationDirective.loadAnnouncements).toHaveBeenCalled();
                 });
 
                 it('should start Idle, Keepalive, and clear the form on success', function () {
