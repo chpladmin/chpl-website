@@ -7,16 +7,15 @@
     /** @ngInject */
     function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, cert, hasIcs, resources, utilService) {
         var vm = this;
-
         vm.addNewValue = utilService.addNewValue;
         vm.cancel = cancel;
         vm.extendSelect = utilService.extendSelect;
+        vm.isTestToolDisabled = isTestToolDisabled;
         vm.isToolAvailable = isToolAvailable;
         vm.save = save;
-        vm.testFunctionalityOnChnage = testFunctionalityOnChnage;
+        vm.testFunctionalityOnChange = testFunctionalityOnChange;
         vm.testProceduresOnChange = testProceduresOnChange;
         vm.testToolsOnChange = testToolsOnChange;
-        vm.isTestToolDisabled = isTestToolDisabled;
         vm.testDataOnChange = testDataOnChange;
         vm.testStandardOnChange = testStandardOnChange;
         activate();
@@ -38,18 +37,20 @@
             vm.hasIcs = hasIcs;
             vm.resources = resources;
 
-            vm.selectedTestFunctionalityKeys = getSelectedTestFunctionalityKeys();
-            vm.selectedTestToolKeys = getSelectedTestToolKeys();
-            vm.selectedTestProcedureKeys = getSelectedTestProcedureKeys();
-            vm.selectedTestDataKeys = getSelectedTestDataKeys();
-            vm.selectedTestStandardKeys = getSelectedTestStandardKeys();
-
-            _getAvailableTestOptions();
+            vm.selectedTestFunctionalityKeys = _getSelectedTestFunctionalityKeys();
+            vm.selectedTestToolKeys = _getSelectedTestToolKeys();
+            vm.selectedTestProcedureKeys = _getSelectedTestProcedureKeys();
+            vm.selectedTestDataKeys = _getSelectedTestDataKeys();
+            vm.selectedTestStandardKeys = _getSelectedTestStandardKeys();
         }
 
         function cancel () {
             vm.cert = angular.copy(vm.certSave);
             $uibModalInstance.dismiss('cancelled');
+        }
+
+        function isTestToolDisabled (testTool) {
+            return testTool.retired;
         }
 
         function isToolAvailable (tool) {
@@ -61,65 +62,81 @@
         }
 
         function testDataOnChange (action) {
-            if (action.action === 'Remove') {
-                testDataRemoveItem(action.item);
-            } else if (action.action === 'Add') {
-                testDataAddItem(action.item);
-            } else if (action.action === 'Edit') {
-                testDataEditItem(action.item)
+            switch (action.action) {
+            case 'Remove':
+                _testDataRemoveItem(action.item);
+                break;
+            case 'Add':
+                _testDataAddItem(action.item);
+                break;
+            case 'Edit':
+                _testDataEditItem(action.item)
+                break;
+            default:
             }
         }
 
-        function testFunctionalityOnChnage (action) {
-            if (action.action === 'Remove') {
-                testFunctionalityRemoveItem(action.item);
-            } else if (action.action === 'Add') {
-                testFunctionalityAddItem(action.item);
+        function testFunctionalityOnChange (action) {
+            switch (action.action) {
+            case 'Remove':
+                _testFunctionalityRemoveItem(action.item);
+                break;
+            case 'Add':
+                _testFunctionalityAddItem(action.item);
+                break;
+            default:
             }
         }
 
         function testStandardOnChange (action) {
-            if (action.action === 'Remove') {
-                testStandardRemoveItem(action.item);
-            } else if (action.action === 'Add') {
-                testStandardAddItem(action.item);
+            switch (action.action) {
+            case 'Remove':
+                _testStandardRemoveItem(action.item);
+                break;
+            case 'Add':
+                _testStandardAddItem(action.item);
+                break;
+            default:
             }
         }
 
         function testToolsOnChange (action) {
-            if (action.action === 'Remove') {
-                testToolsRemoveItem(action.item);
-            } else if (action.action === 'Add') {
-                testToolsAddItem(action.item);
-            } else if (action.action === 'Edit') {
-                testToolsEditItem(action.item)
+            switch (action.action) {
+            case 'Remove':
+                _testToolsRemoveItem(action.item);
+                break;
+            case 'Add':
+                _testToolsAddItem(action.item);
+                break;
+            case 'Edit':
+                _testToolsEditItem(action.item)
+                break;
+            default:
             }
         }
 
         function testProceduresOnChange (action) {
-            if (action.action === 'Remove') {
-                testProceduresRemoveItem(action.item);
-            } else if (action.action === 'Add') {
-                testProceduresAddItem(action.item);
-            } else if (action.action === 'Edit') {
-                testProceduresEditItem(action.item)
+            switch (action.action) {
+            case 'Remove':
+                _testProceduresRemoveItem(action.item);
+                break;
+            case 'Add':
+                _testProceduresAddItem(action.item);
+                break;
+            case 'Edit':
+                _testProceduresEditItem(action.item)
+                break;
+            default:
             }
         }
         ////////////////////////////////////////////////////////////////////
 
-        function _getAvailableTestOptions () {
-            vm.availableTestProcedures = vm.resources.testProcedures.data
-                .filter(function (procedure) {
-                    return procedure.criteria.number === vm.cert.number;
-                });
+        function _getSelectedTestDataKeys () {
+            var tdKeys = [];
             vm.availableTestData = vm.resources.testData.data
                 .filter(function (data) {
                     return data.criteria.number === vm.cert.number;
                 });
-        }
-
-        function getSelectedTestDataKeys () {
-            var tdKeys = [];
             angular.forEach(vm.cert.testDataUsed, function (td) {
                 tdKeys.push({
                     'key': td.testData.id,
@@ -130,7 +147,7 @@
             return tdKeys;
         }
 
-        function getSelectedTestFunctionalityKeys () {
+        function _getSelectedTestFunctionalityKeys () {
             var tfKeys = [];
             angular.forEach(vm.cert.testFunctionality, function (tf) {
                 tfKeys.push({'key': tf.testFunctionalityId});
@@ -138,15 +155,20 @@
             return tfKeys;
         }
 
-        function getSelectedTestProcedureKeys () {
+        function _getSelectedTestProcedureKeys () {
             var tpKeys = [];
+            vm.availableTestProcedures = vm.resources.testProcedures.data
+                .filter(function (procedure) {
+                    return procedure.criteria.number === vm.cert.number;
+                });
+
             angular.forEach(vm.cert.testProcedures, function (tp) {
                 tpKeys.push({'key': tp.testProcedure.id, 'additionalInputValue': tp.testProcedureVersion});
             });
             return tpKeys;
         }
 
-        function getSelectedTestStandardKeys () {
+        function _getSelectedTestStandardKeys () {
             var tsKeys = [];
             angular.forEach(vm.cert.testStandards, function (ts) {
                 tsKeys.push({'key': ts.testStandardId});
@@ -154,7 +176,7 @@
             return tsKeys;
         }
 
-        function getSelectedTestToolKeys () {
+        function _getSelectedTestToolKeys () {
             var ttKeys = [];
             angular.forEach(vm.cert.testToolsUsed, function (tt) {
                 ttKeys.push({'key': tt.testToolId, 'additionalInputValue': tt.testToolVersion});
@@ -162,11 +184,7 @@
             return ttKeys;
         }
 
-        function isTestToolDisabled (testTool) {
-            return testTool.retired;
-        }
-
-        function testDataAddItem (testData) {
+        function _testDataAddItem (testData) {
             var crtd = {
                 'testData': testData.item,
                 'version': testData.additionalInputValue,
@@ -175,7 +193,7 @@
             vm.cert.testDataUsed.push(crtd);
         }
 
-        function testDataEditItem (testData) {
+        function _testDataEditItem (testData) {
             var crtds = vm.cert.testDataUsed.filter(function (crtd) {
                 return crtd.testData.id === testData.item.id;
             });
@@ -185,14 +203,14 @@
             }
         }
 
-        function testDataRemoveItem (testData) {
+        function _testDataRemoveItem (testData) {
             var remaining = vm.cert.testDataUsed.filter( function (crtd) {
                 return crtd.testData.id !== testData.item.id;
             });
             vm.cert.testDataUsed = remaining;
         }
 
-        function testFunctionalityAddItem (testFunctionality) {
+        function _testFunctionalityAddItem (testFunctionality) {
             var crtf = {
                 'description': testFunctionality.item.description,
                 'name': testFunctionality.item.name,
@@ -202,14 +220,14 @@
             vm.cert.testFunctionality.push(crtf);
         }
 
-        function testFunctionalityRemoveItem (testFunctionality) {
+        function _testFunctionalityRemoveItem (testFunctionality) {
             var remaining = vm.cert.testFunctionality.filter( function (crtf) {
                 return crtf.testFunctionalityId !== testFunctionality.id;
             });
             vm.cert.testFunctionality = remaining;
         }
 
-        function testProceduresAddItem (testProcedure) {
+        function _testProceduresAddItem (testProcedure) {
             var crtp = {
                 'testProcedure': testProcedure.item,
                 'testProcedureVersion': testProcedure.additionalInputValue,
@@ -217,7 +235,7 @@
             vm.cert.testProcedures.push(crtp);
         }
 
-        function testProceduresEditItem (testProcedure) {
+        function _testProceduresEditItem (testProcedure) {
             var crtps = vm.cert.testProcedures.filter(function (crtp) {
                 return crtp.testProcedure.id === testProcedure.item.id;
             });
@@ -226,14 +244,14 @@
             }
         }
 
-        function testProceduresRemoveItem (testProcedure) {
+        function _testProceduresRemoveItem (testProcedure) {
             var remaining = vm.cert.testProcedures.filter( function (crtp) {
                 return crtp.testProcedure.id !== testProcedure.item.id;
             });
             vm.cert.testProcedures = remaining;
         }
 
-        function testStandardAddItem (testStandard) {
+        function _testStandardAddItem (testStandard) {
             var crts = {
                 'description': testStandard.item.description,
                 'testStandardName': testStandard.item.name,
@@ -242,14 +260,14 @@
             vm.cert.testStandards.push(crts);
         }
 
-        function testStandardRemoveItem (testStandard) {
+        function _testStandardRemoveItem (testStandard) {
             var remaining = vm.cert.testStandards.filter( function (crts) {
                 return crts.testStandardId !== testStandard.item.id;
             });
             vm.cert.testStandards = remaining;
         }
 
-        function testToolsAddItem (testTool) {
+        function _testToolsAddItem (testTool) {
             var crtt = {
                 'retired': testTool.item.retired,
                 'testToolId': testTool.item.id,
@@ -259,7 +277,7 @@
             vm.cert.testToolsUsed.push(crtt);
         }
 
-        function testToolsEditItem (testTool) {
+        function _testToolsEditItem (testTool) {
             var crtts = vm.cert.testToolsUsed.filter(function (crtt) {
                 return crtt.testToolId === testTool.item.id;
             });
@@ -268,7 +286,7 @@
             }
         }
 
-        function testToolsRemoveItem (testTool) {
+        function _testToolsRemoveItem (testTool) {
             var remaining = vm.cert.testToolsUsed.filter( function (crtt) {
                 return crtt.testToolId !== testTool.item.id;
             });

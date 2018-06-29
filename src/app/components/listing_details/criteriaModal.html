@@ -64,20 +64,20 @@
           <td>
             <div class="form-horizontal">
               <div class="form-group form-group-sm">
-                <label class="col-sm-6 control-label" for="testTool{{ item.id }}">Test Standard</label>
+                <label class="col-sm-6 control-label" for="testStandard">Test Standard</label>
                 <div class="col-sm-6">
-                  <ai-multiselect 
+                  <ai-expandable-list 
                     identifier="testStandard"  
                     item-key="id" 
                     item-text="name" 
                     items="vm.resources.testStandards.data"
                     selected-item-keys="vm.selectedTestStandardKeys"
                     placeholder="Select a Test Standard"
-                    on-change="vm.testStandardOnChange"
+                    on-change="vm.testStandardOnChange(action)"
                     add-items="true"
                     add-items-option-text="Add a new Test Standard"
                     add-items-placeholder="Enter new Test Standard">
-                  </ai-multiselect>
+                  </ai-expandable-list>
                 </div>
               </div>
             </div>
@@ -105,17 +105,17 @@
           <td>
             <div class="form-horizontal">
               <div class="form-group form-group-sm">
-                <label class="col-sm-6 control-label" for="functionalityTested{{ item.id }}">Functionality Tested</label>
+                <label class="col-sm-6 control-label" for="testFunctionality">Functionality Tested</label>
                 <div class="col-sm-6">
-                  <ai-multiselect 
+                  <ai-expandable-list
                     identifier="testFunctionality"  
                     item-key="id" 
                     item-text="name" 
                     items="vm.cert.allowedTestFunctionalities"
                     selected-item-keys="vm.selectedTestFunctionalityKeys"
                     placeholder="Select a Test Functionality"
-                    on-change="vm.testFunctionalityOnChnage">
-                  </ai-multiselect>
+                    on-change="vm.testFunctionalityOnChange(action)">
+                  </ai-expandable-list>
                 </div>
               </div>
             </div>
@@ -128,19 +128,19 @@
               <div class="form-group form-group-sm">
                 <label class="col-sm-6 control-label" for="testProcedures">Test Procedure</label>
                 <div class="col-sm-6">
-                  <ai-multiselect 
+                  <ai-expandable-list 
                     identifier="testProcedures"  
                     item-key="id" 
                     item-text="name" 
                     items="vm.availableTestProcedures"
                     selected-item-keys="vm.selectedTestProcedureKeys"
                     placeholder="Select a Test Procedure"
-                    on-change="vm.testProceduresOnChange"
+                    on-change="vm.testProceduresOnChange(action)"
                     additional-input="true"
                     additional-input-label="Version"
                     additional-input-max-length="50"
                     additional-input-required="false">
-                  </ai-multiselect>
+                  </ai-expandable-list>
                 </div>
               </div>
             </div>
@@ -151,22 +151,22 @@
           <td>
             <div class="form-horizontal">
               <div class="form-group form-group-sm">
-                <label class="col-sm-6 control-label" for="testTool{{ item.id }}">Test Tool</label>
+                <label class="col-sm-6 control-label" for="testTools">Test Tool</label>
                 <div class="col-sm-6">
-                  <ai-multiselect   
+                  <ai-expandable-list 
                     identifier="testTools"  
                     item-key="id" 
                     item-text="name" 
                     items="vm.resources.testTools.data"
-                    item-disabled="vm.isTestToolDisabled"
+                    item-disabled="vm.isTestToolDisabled(item)"
                     selected-item-keys="vm.selectedTestToolKeys"
                     placeholder="Select a Test Tool"
-                    on-change="vm.testToolsOnChange"
+                    on-change="vm.testToolsOnChange(action)"
                     additional-input="true"
                     additional-input-label="Version"
                     additional-input-max-length="50"
                     additional-input-required="true">
-                  </ai-multiselect>
+                  </ai-expandable-list>
                 </div>
               </div>
             </div>
@@ -179,14 +179,14 @@
               <div class="form-group form-group-sm">
                 <label class="col-sm-6 control-label" for="testData">Test Data</label>
                 <div class="col-sm-6">
-                  <ai-multiselect   
+                  <ai-expandable-list
                     identifier="testData"  
                     item-key="id" 
                     item-text="name" 
                     items="vm.availableTestData"
                     selected-item-keys="vm.selectedTestDataKeys"
                     placeholder="Select Test Data"
-                    on-change="vm.testDataOnChange"
+                    on-change="vm.testDataOnChange(action)"
                     additional-input="true"
                     additional-input-label="Version"
                     additional-input-max-length="50"
@@ -195,7 +195,7 @@
                     additional-input2-label="Alteration"
                     additional-input2-max-length="50"
                     additional-input2-required="false">
-                  </ai-multiselect>
+                  </ai-expandable-list>
                 </div>
               </div>
             </div>

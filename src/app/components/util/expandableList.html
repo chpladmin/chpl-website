@@ -1,9 +1,12 @@
-<div>
-    <div ng-repeat="option in $ctrl._selectedItems track by $index">
-        <div class="selected-item fade-in">
-            <span class="closebtn" ng-click="$ctrl.removeItem(option)">&times;</span> 
+<div ng-form="{{ $ctrl.identifier }}_form">
+    <div ng-repeat="option in $ctrl.selectedItems track by $index">
+        <div class="selected-item alert-success fade-in">
+            <button class="closebtn" ng-click="$ctrl.removeItem(option)">
+                <span class="sr-only">Remove item {{ option.item.name }}</span>
+                <i class="fa fa-times"></i>
+            </button> 
             <strong>{{ option.item.name }}</strong>
-            <div ng-if="$ctrl.additionalInput" style="padding-top: 3px;" ng-form="{{ $ctrl.identifier }}_form">
+            <div ng-if="$ctrl.additionalInput" class="additional-input">
                 <div class="row">
                     <div class="col-sm-5">
                         <label for="{{ $ctrl.identifier }}_additionalInput">{{ $ctrl.additionalInputLabel }}</label>
@@ -25,7 +28,7 @@
                     {{ $ctrl.additionalInputLabel }} is required.
                 </p>
             </div>
-            <div ng-if="$ctrl.additionalInput2" style="padding-top: 3px;" ng-form="{{ $ctrl.identifier }}_form">
+            <div ng-if="$ctrl.additionalInput2" class="additional-input" >
                 <div class="row">
                     <div class="col-sm-5">
                         <label for="{{ $ctrl.identifier }}_additionalInput2">{{ $ctrl.additionalInput2Label }}</label>
@@ -53,17 +56,17 @@
 
     <div ng-if="! $ctrl.inAddMode">
         <select class="form-control" 
-            id="{{ $ctrl.identifier }}_select " 
+            id="{{ $ctrl.identifier }} " 
             name="{{ $ctrl.identifier }}"
             ng-model="$ctrl.selectedItem"
-            ng-options="option.value as option.text disable when $ctrl.isItemDisabled(option.value) for option in $ctrl._options"
-            ng-change="$ctrl.addItem()">
+            ng-options="option.value as option.text disable when $ctrl.isItemDisabled(option.value) for option in $ctrl.options"
+            ng-change="$ctrl.selectOnChange()">
             <option value="" disabled selected>{{ $ctrl.placeholder }}</option>
         </select> 
     </div>
     
     <div ng-show="$ctrl.inAddMode" class="input-group">
-        <input type="text" ng-model='$ctrl._addItem' ng-focus="$ctrl.inAddMode" placeholder='{{ $ctrl.addItemsPlaceholder }}' class='form-control'>
+        <input type="text" ng-model='$ctrl.addOption' ng-focus="$ctrl.inAddMode" placeholder='{{ $ctrl.addItemsPlaceholder }}' class='form-control'>
         <span class="input-group-btn">
             <button class="btn btn-ai-success btn-sm" ng-click="$ctrl.addItemToListClick()"><i class="fa fa-check"></i></button>
             <button class="btn btn-danger btn-sm" ng-click="$ctrl.cancelAddItemToListClick()"><i class="fa fa-close"></i></button>

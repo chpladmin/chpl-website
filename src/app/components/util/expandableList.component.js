@@ -1,0 +1,184 @@
+(function () {
+    'use strict';
+
+    angular.module('chpl').component('aiExpandableList', {
+        templateUrl: './app/components/util/expandableList.html',
+        controller: ExapandableListController,
+        bindings: {
+            addItems: '@',                      //Boolean value indicating if the control has the functionality to add new items to the drop down.  When this is true, an extra item will appear in the list and when the user selects that item, they will be presented with a text box to type in the new value.
+            addItemsOptionText: '@',            //Text for the additional option
+            addItemsPlaceholder: '@',           //Direction that appear in the text box
+            additionalInput: '@',               //Boolean value indicating whether the control renders an additioanl text box for data associated with the selected item.
+            additionalInputLabel: '@',          //String that is the label for the additional input text box.
+            additionalInputRequired: '@',       //Boolean indicating if the addiational input is required.
+            additionalInputMaxLength: '@',      //Number indicating how many characters can be entered in the additional input text box
+            additionalInput2: '@',
+            additionalInput2Label: '@',
+            additionalInput2Required: '@',
+            additionalInput2MaxLength: '@',
+            identifier: '@',                    //Used to name the controls in the component
+            itemDisabled: '&',                  //Callback function that will be called for each item in the drop down to determine if that item should should be disabled.  Returns a boolean value.
+            itemKey: '@',                       //String that identifies the key property in the 'items' array.  For eaxmple: "id" for an object that looks like [{id: 2, name: 'AI'}]
+            items: '<',                         //An array of objects to dispaly in the drop down
+            itemText: '@',                      //String that identifies the text property in the 'items' array.  This is used to create the display value in the dropdown.  For example: "name" for an object that looks like [{id: 2, name: 'AI'}]
+            onChange: '&',                      //Callback that is used when the user makes a change to the control
+            placeholder: '@',                   //The text that appears in the drop down providing instruction to the user.  For example: "Select a Test Standard"
+            selectedItemKeys: '<',              //An array of the items that are pre-selected.  Should be in the form {key: value, additionalInputValue: value, additionalInput2Value: value}. The key value should match an item in the 'items' array.
+        },
+    });
+
+    function ExapandableListController () {
+        var ctrl = this;
+        ctrl.selectOnChange = selectOnChange;
+        ctrl.addItemToListClick = addItemToListClick;
+        ctrl.additionalInputChange = additionalInputChange;
+        ctrl.additionalInput2Change = additionalInput2Change;
+        ctrl.cancelAddItemToListClick = cancelAddItemToListClick;
+        ctrl.isItemDisabled = isItemDisabled;
+        ctrl.removeItem = removeItem;
+
+        /////////////////////////////////////////////////////////////////
+
+        this.$onInit = function () {
+            ctrl.addItem = ''
+            ctrl.inAddMode = false;
+            ctrl.options = [];
+            ctrl.selectedItem = '';
+            ctrl.selectedItems = [];
+
+            _populateOptions();
+            _populateSelectedItems();
+        }
+
+        function addItemToListClick () {
+            ctrl.inAddMode = false;
+
+            var addItem = {};
+            addItem[ctrl.itemText] = ctrl._addItem;
+            addItem[ctrl.itemKey] = '';
+
+            var item = _createSelectedItem(addItem);
+            ctrl.selectedItems.push(item);
+            var action = _getOnChangeObject('Add', item);
+            ctrl.onChange({'action': action});
+
+            ctrl.options.push(
+                {text: addItem[ctrl.itemText], value: addItem}
+            );
+            ctrl.selectedItem = '';
+            ctrl.addOption = '';
+        }
+
+        function additionalInputChange (item) {
+            var action = _getOnChangeObject('Edit', item)
+            ctrl.onChange({'action': action});  //This is what makes the method binding work
+        }
+
+        function additionalInput2Change (item) {
+            var action = _getOnChangeObject('Edit', item)
+            ctrl.onChange({'action': action});  //This is what makes the method binding work
+        }
+
+        function cancelAddItemToListClick () {
+            ctrl.inAddMode = false;
+            ctrl.selectedItem = '';
+            ctrl.addOption = '';
+        }
+
+        function isItemDisabled (item) {
+            if (typeof ctrl.itemDisabled === 'function') {
+                return ctrl.itemDisabled({'item': item});
+            } else {
+                return false;
+            }
+        }
+
+        function removeItem (item) {
+            var index = ctrl.selectedItems.indexOf(item);
+            if (index > -1) {
+                ctrl.selectedItems.splice(index, 1);
+            }
+            var onChangeObject = _getOnChangeObject('Remove', item)
+            ctrl.onChange({'action': onChangeObject});  //This is what makes the method binding work
+        }
+
+        function selectOnChange () {
+            if (ctrl.selectedItem[ctrl.itemKey] === -99) {
+                ctrl.inAddMode = true;
+            } else {
+                if (!_doesItemExistInSelectedItems(ctrl.selectedItem)) {
+                    var item = _createSelectedItem(ctrl.selectedItem);
+                    ctrl.selectedItems.push(item);
+                    var onChangeObject = _getOnChangeObject('Add', item);
+                    ctrl.onChange({'action': onChangeObject});  //This is what makes the method binding work
+                }
+                ctrl.selectedItem = '';
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////
+
+        function _createSelectedItem (item) {
+            if (ctrl.additionalInput) {
+                return {'item': item, 'additionalInputValue': ''};
+            } else {
+                return {'item': item};
+            }
+        }
+
+        function _doesItemExistInSelectedItems (item) {
+            var retValue = false;
+            angular.forEach(ctrl._selectedItems, function (arrayItem) {
+                if (arrayItem.item[ctrl.itemKey] === item[ctrl.itemKey]) {
+                    retValue = true;
+                }
+            });
+            return retValue;
+        }
+
+        function _getItemByKey (key) {
+            //Should be replaced with array.filter...
+            var itemToReturn = null;
+            angular.forEach(ctrl.items, function (item) {
+                if (item[ctrl.itemKey] === key) {
+                    itemToReturn = item;
+                }
+            });
+            return itemToReturn;
+        }
+
+        function _getOnChangeObject (action, selectedItem) {
+            return {'action': action, 'item': selectedItem};
+        }
+
+        function _populateOptions () {
+            ctrl.options = [];
+            if (ctrl.addItems) {
+                var addItem = {};
+                addItem[ctrl.itemText] = ctrl.addItemsOptionText;
+                addItem[ctrl.itemKey] = -99;
+                ctrl.options.push(
+                    {text: addItem[ctrl.itemText], value: addItem}
+                );
+            }
+            angular.forEach(ctrl.items, function (arrayItem) {
+                ctrl.options.push(
+                    {text: arrayItem[ctrl.itemText], value: arrayItem}
+                );
+            });
+        }
+
+        function _populateSelectedItems () {
+            angular.forEach(ctrl.selectedItemKeys, function (item) {
+                var newItem = _createSelectedItem(_getItemByKey(item.key));
+                if (ctrl.additionalInput) {
+                    newItem.additionalInputValue = item.additionalInputValue;
+                }
+                if (ctrl.additionalInput2) {
+                    newItem.additionalInput2Value = item.additionalInput2Value;
+                }
+                ctrl.selectedItems.push(newItem);
+            });
+        }
+    }
+})();
