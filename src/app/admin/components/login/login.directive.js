@@ -23,10 +23,11 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService) {
+    function LoginController ($log, $scope, $rootScope, Idle, Keepalive, authService, networkService) {
         var vm = this;
 
         vm.activate = activate;
+        vm.broadcastLogin = broadcastLogin;
         vm.changePassword = changePassword;
         vm.clear = clear;
         vm.isAuthed = authService.isAuthed;
@@ -121,7 +122,7 @@
                     vm.message = error.data.error;
                 })
                 .then(function () {
-                    broadcastLogin();
+                    vm.broadcastLogin();
                 });
         }
 
