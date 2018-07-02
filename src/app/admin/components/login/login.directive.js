@@ -23,10 +23,11 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $scope, Idle, Keepalive, authService, networkService) {
+    function LoginController ($log, $scope, $rootScope, Idle, Keepalive, authService, networkService) {
         var vm = this;
 
         vm.activate = activate;
+        vm.broadcastLogin = broadcastLogin;
         vm.changePassword = changePassword;
         vm.clear = clear;
         vm.isAuthed = authService.isAuthed;
@@ -105,6 +106,10 @@
             }
         }
 
+        function broadcastLogin () {
+            $rootScope.$broadcast('loggedIn');
+        }
+
         function login () {
             vm.message = '';
             networkService.login({userName: vm.userName, password: vm.password})
@@ -115,6 +120,9 @@
                 }, function (error) {
                     vm.messageClass = vm.pClassFail;
                     vm.message = error.data.error;
+                })
+                .then(function () {
+                    vm.broadcastLogin();
                 });
         }
 
