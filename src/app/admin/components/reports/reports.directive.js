@@ -663,7 +663,7 @@
                     obj.changes = obj.changes.concat(testChanges);
                 }
                 var testFunctionalityKeys = [];
-                var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'number');
+                var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'name');
                 for (j = 0; j < testFunctionality.length; j++) {
                     obj.changes.push('<li>Test Functionality Number "' + testFunctionality[j].name + '" changes<ul>' + testFunctionality[j].changes.join('') + '</ul></li>');
                 }
