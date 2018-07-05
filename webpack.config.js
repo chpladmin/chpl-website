@@ -12,7 +12,7 @@ module.exports = function(env = {}) {
             filename: path.resolve(__dirname, './src/index.html'),//'../../src/index.html',
             hash: true,
             inject: 'body',
-            template: path.resolve(__dirname, '.src/index.hbs'),//'./src/index.hbs',
+            template: path.resolve(__dirname, './src/index.hbs'),//'./src/index.hbs',
         })
     );
 
@@ -78,6 +78,7 @@ module.exports = function(env = {}) {
             filename: '[name].js',
             //path: path.resolve(__dirname, 'dist'),
             path: isProd ? path.resolve(__dirname, 'dist/') : path.resolve(__dirname, '.tmp/serve/'),
+            publicPath: '/',
         },
         plugins: plugins,
     };

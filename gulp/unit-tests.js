@@ -73,7 +73,6 @@ function runTests (singleRun, done) {
                 success : '.',
                 failure : 'x',
                 ignore  : '?'
-
             }
         }
     };
