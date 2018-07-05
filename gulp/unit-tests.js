@@ -16,7 +16,8 @@ var pathSrcJs = [
 
 function runTests (singleRun, done) {
     //var reporters = ['dots', 'junit', 'html', 'coverage'];
-    var reporters = ['mocha', 'junit', 'html', 'coverage'];
+    //var reporters = ['mocha', 'junit', 'html', 'coverage'];
+    var reporters = ['mocha', 'junit', 'html'];
     if (!singleRun) { reporters.push('super-dots'); }
     var preprocessors = {};
 
@@ -25,7 +26,7 @@ function runTests (singleRun, done) {
     });
 
     pathSrcJs.forEach(function(path) {
-        preprocessors[path] = ['coverage'];
+        //preprocessors[path] = ['coverage'];
     });
 
     var localConfig = {

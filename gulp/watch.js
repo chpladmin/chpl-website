@@ -20,26 +20,25 @@ gulp.task('watch', ['inject'], function () {
     ], function(event) {
         if(isOnlyChange(event)) {
             gulp.start('styles-reload');
-        } else {
-            gulp.start('inject-reload');
+        //} else {
+          //  gulp.start('inject-reload');
         }
     });
 
     gulp.watch(path.join(conf.paths.src, '/app/**/*.js'), function(event) {
         if(isOnlyChange(event)) {
-            gulp.start('scripts-reload');
+            //gulp.start('scripts-reload');
+            gulp.start('bundle');
         } else {
             gulp.start('inject-reload');
         }
     });
 
-    var htmlFiles = [
+    gulp.watch([
         path.join(conf.paths.src, '/app/**/*.html'),
         path.join(conf.paths.src, '/index.hbs'),
         '!' + path.join(conf.paths.src, '/index.html'),
-    ];
-
-    gulp.watch(htmlFiles, function(event) {
+    ], function(event) {
         //        gulp.start('lint-html');
         browserSync.reload(event.path);
     });

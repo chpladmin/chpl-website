@@ -2,17 +2,17 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = function(env = {}) {
+module.exports = function (env = {}) {
     const plugins = [];
     const isProd = !!env.prod;
 
     plugins.push(
         new HtmlWebpackPlugin({
-            chunks: ['app'],
-            filename: path.resolve(__dirname, './src/index.html'),//'../../src/index.html',
+            chunks: ['app', 'vendor'],
+            filename: path.resolve(__dirname, './src/index.html'),
             hash: true,
             inject: 'body',
-            template: path.resolve(__dirname, './src/index.hbs'),//'./src/index.hbs',
+            template: path.resolve(__dirname, './src/index.hbs'),
         })
     );
 
@@ -29,8 +29,7 @@ module.exports = function(env = {}) {
         },*/
         devtool: isProd ? 'source-map' : 'eval-source-map',
         entry: {
-            app: path.resolve(__dirname, './src/app/index.js'),//'./src/app/index.js',
-            // other entries
+            app: path.resolve(__dirname, './src/app/index.js'),
         },
         module: {
             rules: [{
@@ -74,11 +73,21 @@ module.exports = function(env = {}) {
                 }],
             }],
         },
+        optimization: {
+            splitChunks: {
+                cacheGroups: {
+		    vendor: {
+			test: /node_modules/,
+			chunks: 'all',
+			name: 'vendor',
+		    },
+                },
+            },
+        },
         output: {
             filename: '[name].js',
-            //path: path.resolve(__dirname, 'dist'),
             path: isProd ? path.resolve(__dirname, 'dist/') : path.resolve(__dirname, '.tmp/serve/'),
-            publicPath: '/',
+            publicPath: './',
         },
         plugins: plugins,
     };

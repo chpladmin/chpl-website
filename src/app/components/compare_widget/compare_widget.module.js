@@ -1,5 +1,8 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.compare-widget', ['ngResource', 'ngStorage']);
+    angular.module('chpl.compare-widget', [
+        'ngResource',
+        'ngStorage',
+    ]);
 })();

@@ -5,15 +5,15 @@
 import angular from 'angular';
 //import angular-confirm from 'angular-confirm';
 import 'angular-loading-bar';
-//import angulartics from 'angulartics';
-//import angulartics.google.tagmanager from 'angulartics.google.tagmanager';
+import angulartics from 'angulartics';
+import angularticsGoogleTagManager from 'angulartics-google-tag-manager';
 //import googlechart from 'googlechart';
 //import ngAnimate from 'ngAnimate';
 //import ngAria from 'ngAria';
 //import ngCsv from 'ngCsv';
 //import ngCytoscape from 'ngCytoscape';
 //import ngMessages from 'ngMessages';
-//import ngResource from 'ngResource';
+import ngResource from 'angular-resource';
 import ngRoute from 'angular-route';
 //import ngSanitize from 'ngSanitize';
 //import ngTouch from 'ngTouch';
@@ -28,10 +28,11 @@ import ngStorage from 'ngstorage';
 //import adminModule from './admin/index';
 //import chartsModule from './charts/index';
 //import chpl_apiModule from './resources/chpl_api/index';
+import './components/cms_widget/index';
 //import cms_lookupModule from './resources/cms_lookup/index';
 //import collectionsModule from './collections/index';
 //import compareModule from './compare/index';
-//import compare-widgetModule from './compare-widget/index';
+import compareWidgetModule from './components/compare_widget/index';
 //import constantsModule from './common/index';
 //import downloadModule from './resources/download/index';
 import navigationModule from './navigation/index';
@@ -40,20 +41,22 @@ import overviewModule from './resources/overview/index';
 //import registrationModule from './registration/index';
 //import searchModule from './search/index';
 import servicesModule from './services/index';
+
 require('./index.constants');
 
 const dependencies = [
     //    'angular-confirm',
     'angular-loading-bar',
-    //    'angulartics',
-    //    'angulartics.google.tagmanager',
+    'angulartics',
+    'angulartics.google.tagmanager',
     //    'chpl.admin',
     //    'chpl.charts',
     //    'chpl.chpl_api',
     //    'chpl.cms_lookup',
+    'chpl.cms-widget',
     //    'chpl.collections',
     //    'chpl.compare',
-    //    'chpl.compare-widget',
+    'chpl.compare-widget',
     'chpl.constants',
     //    'chpl.download',
     'chpl.navigation',
@@ -68,7 +71,7 @@ const dependencies = [
     //    'ngCsv',
     //    'ngCytoscape',
     //    'ngMessages',
-    //    'ngResource',
+    'ngResource',
     'ui.bootstrap',
     'ngRoute',
     'ngFileSaver',
@@ -81,8 +84,7 @@ const dependencies = [
     //    'ui.bootstrap.fontawesome',
 ];
 
-const appModule = angular
-          .module('chpl', dependencies);
+const appModule = angular.module('chpl', dependencies);
 
 require('./index.route');
 require('./index.run');

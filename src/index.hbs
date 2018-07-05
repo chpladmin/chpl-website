@@ -25,17 +25,16 @@
     <!-- endinject -->
     <!-- endbuild -->
   </head>
-  <!--  <body ai-cms-widget="" widget="mainWidget">-->
-  <body>
+  <body ai-cms-widget="" widget="mainWidget">
     <!-- Google Tag Manager (noscript) -->
-<!--    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8FPB3" class="hide-google-iframe"></iframe></noscript>-->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8FPB3" class="hide-google-iframe"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-<!--    <ai-compare-widget compare-widget="compareWidget">-->
+    <ai-compare-widget compare-widget="compareWidget">
       <a href="#{{ currentPage }}#mainContent" class="sr-only sr-only-focusable">Skip to main content</a>
       <ai-navigation-top widget="mainWidget" compare-widget="compareWidget"></ai-navigation-top>
       <toaster-container toaster-options="{'time-out': 0}"></toaster-container>
       <div ng-view=""></div>
       <ai-navigation-bottom></ai-navigation-bottom>
-<!--    </ai-compare-widget>-->
+    </ai-compare-widget>
   </body>
 </html>
