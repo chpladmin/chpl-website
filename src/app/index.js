@@ -27,14 +27,14 @@ import ngStorage from 'ngstorage';
 // import app modules
 //import adminModule from './admin/index';
 //import chartsModule from './charts/index';
-//import chpl_apiModule from './resources/chpl_api/index';
+import chplApiModule from './resources/chpl_api/index';
 import './components/cms_widget/index';
-//import cms_lookupModule from './resources/cms_lookup/index';
+import cmsLookupModule from './resources/cms_lookup/index';
 //import collectionsModule from './collections/index';
 //import compareModule from './compare/index';
 import compareWidgetModule from './components/compare_widget/index';
 //import constantsModule from './common/index';
-//import downloadModule from './resources/download/index';
+import downloadModule from './resources/download/index';
 import navigationModule from './navigation/index';
 import overviewModule from './resources/overview/index';
 //import productModule from './product/index';
@@ -51,14 +51,14 @@ const dependencies = [
     'angulartics.google.tagmanager',
     //    'chpl.admin',
     //    'chpl.charts',
-    //    'chpl.chpl_api',
-    //    'chpl.cms_lookup',
+        'chpl.chpl_api',
+        'chpl.cms_lookup',
     'chpl.cms-widget',
     //    'chpl.collections',
     //    'chpl.compare',
     'chpl.compare-widget',
     'chpl.constants',
-    //    'chpl.download',
+        'chpl.download',
     'chpl.navigation',
     'chpl.overview',
     //    'chpl.product',

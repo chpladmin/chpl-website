@@ -86,19 +86,19 @@
                 title: 'CHPL Registration',
             })
             .when('/resources/chpl_api', {
-                templateUrl: 'src/app/resources/chpl_api/chpl_api.html',
+                templateUrl: 'chpl.chpl_api/chpl_api.html',
                 controller: 'ChplApiController',
                 controllerAs: 'vm',
                 title: 'CHPL API',
             })
             .when('/resources/cms_lookup', {
-                templateUrl: 'src/app/resources/cms_lookup/cms_lookup.html',
+                templateUrl: 'chpl.cms_lookup/cms_lookup.html',
                 controller: 'CmsLookupController',
                 controllerAs: 'vm',
                 title: 'CMS ID Reverse Lookup',
             })
             .when('/resources/download', {
-                templateUrl: 'src/app/resources/download/download.html',
+                templateUrl: 'chpl.download/download.html',
                 controller: 'DownloadController',
                 controllerAs: 'vm',
                 title: 'Download the CHPL',

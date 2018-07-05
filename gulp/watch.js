@@ -12,7 +12,7 @@ function isOnlyChange(event) {
 
 gulp.task('watch', ['inject'], function () {
 
-    gulp.watch([path.join(conf.paths.src, '/*.html'), 'bower.json'], ['inject-reload']);
+    //gulp.watch([path.join(conf.paths.src, '/*.html'), 'bower.json'], ['inject-reload']);
 
     gulp.watch([
         path.join(conf.paths.src, '/app/**/*.css'),
@@ -36,8 +36,8 @@ gulp.task('watch', ['inject'], function () {
 
     gulp.watch([
         path.join(conf.paths.src, '/app/**/*.html'),
-        path.join(conf.paths.src, '/index.hbs'),
-        '!' + path.join(conf.paths.src, '/index.html'),
+        path.join(conf.paths.src, '/*.hbs'),
+        '!' + path.join(conf.paths.src, '/*.html'),
     ], function(event) {
         //        gulp.start('lint-html');
         browserSync.reload(event.path);

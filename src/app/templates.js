@@ -1,6 +1,9 @@
 const ctxs = [];
+ctxs.push({module: 'chpl.chpl_api', ctx: require.context('./resources/chpl_api/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.cms-widget', ctx: require.context('./components/cms_widget/', true, /.*\.html$/)});
+ctxs.push({module: 'chpl.cms_lookup', ctx: require.context('./resources/cms_lookup/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.compare-widget', ctx: require.context('./components/compare_widget/', true, /.*\.html$/)});
+ctxs.push({module: 'chpl.download', ctx: require.context('./resources/download/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.navigation', ctx: require.context('./navigation/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.overview', ctx: require.context('./resources/overview/', true, /.*\.html$/)});
 ctxs.push({module: 'chpl.services', ctx: require.context('./services/', true, /.*\.html$/)});

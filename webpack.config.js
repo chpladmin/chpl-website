@@ -15,6 +15,24 @@ module.exports = function (env = {}) {
             template: path.resolve(__dirname, './src/index.hbs'),
         })
     );
+    plugins.push(
+        new HtmlWebpackPlugin({
+            chunks: ['app', 'vendor'],
+            filename: path.resolve(__dirname, './src/error.html'),
+            hash: true,
+            inject: 'body',
+            template: path.resolve(__dirname, './src/error.hbs'),
+        })
+    );
+    plugins.push(
+        new HtmlWebpackPlugin({
+            chunks: ['app', 'vendor'],
+            filename: path.resolve(__dirname, './src/style.html'),
+            hash: true,
+            inject: 'body',
+            template: path.resolve(__dirname, './src/style.hbs'),
+        })
+    );
 
     return {
         context: path.resolve(__dirname, '.'),
@@ -65,7 +83,7 @@ module.exports = function (env = {}) {
                     loader: 'sass-loader' // compiles Sass to CSS
                 }],
             },{
-                test: /\.(css)$/,
+                test: /\.css$/,
                 use: [{
                     loader: 'style-loader', // inject CSS to page
                 },{

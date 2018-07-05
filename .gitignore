@@ -11,4 +11,4 @@ src/app/index.constants.js
 /features/components/nav/nav.login.steps.js
 *-website.sh
 push-*.sh
-src/index.html
+src/*.html
