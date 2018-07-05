@@ -1,5 +1,18 @@
 # Release Notes
 
+## Version 9.23.0
+_5 July 2018_
+
+### New Features
+* Filter 2014 test functionalities based on practice type and certification criterion
+* Add http existence check to all outgoing urls
+* Show announcements directly after login
+
+### Text Change
+* Change CMS FAQ link in Inactive certificates and decertified products
+
+---
+
 ## Version 9.22.0
 _18 June 2018_
 
