@@ -11,11 +11,11 @@ import googlechart from 'angular-google-chart';
 //import ngAnimate from 'ngAnimate';
 //import ngAria from 'ngAria';
 //import ngCsv from 'ngCsv';
-//import ngCytoscape from 'ngCytoscape';
+//import cytoscape from 'cytoscape';
 //import ngMessages from 'ngMessages';
 import ngResource from 'angular-resource';
 import ngRoute from 'angular-route';
-//import ngSanitize from 'ngSanitize';
+import ngSanitize from 'angular-sanitize';
 //import ngTouch from 'ngTouch';
 import smartTable from 'angular-smart-table';
 import toaster from 'angularjs-toaster';
@@ -35,7 +35,7 @@ import componentsModule from './components/index';
 import downloadModule from './resources/download/index';
 import navigationModule from './navigation/index';
 import overviewModule from './resources/overview/index';
-//import productModule from './product/index';
+import productModule from './product/index';
 import registrationModule from './registration/index';
 import searchModule from './search/index';
 import servicesModule from './services/index';
@@ -58,7 +58,7 @@ const dependencies = [
     'chpl.download',
     'chpl.navigation',
     'chpl.overview',
-    //    'chpl.product',
+    'chpl.product',
     'chpl.registration',
     'chpl.search',
     'chpl.services',
@@ -66,13 +66,13 @@ const dependencies = [
     //    'ngAnimate',
     //    'ngAria',
     //    'ngCsv',
-    //    'ngCytoscape',
+    //'ngCytoscape',
     //    'ngMessages',
     'ngFileSaver',
     'ngResource',
     'ngRoute',
     'ngStorage',
-    //    'ngSanitize',
+    'ngSanitize',
     //    'ngTouch',
     //    'swaggerUi',
     'smart-table',

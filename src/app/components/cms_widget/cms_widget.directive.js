@@ -1,4 +1,7 @@
 /* global jsPDF */
+import * as jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 (function () {
     'use strict';
 

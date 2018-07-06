@@ -68,7 +68,7 @@
                 title: 'CHPL Product Comparison',
             })
             .when('/product/:id/:initialPanel?', {
-                templateUrl: 'src/app/product/product.html',
+                templateUrl: 'chpl.product/product.html',
                 controller: 'ProductController',
                 controllerAs: 'vm',
                 title: 'CHPL Product Details',
