@@ -8,7 +8,7 @@
     function routeConfig ($routeProvider) {
         $routeProvider
             .when('/admin/:section?/:subSection?/:productId?', {
-                templateUrl: 'src/app/admin/admin.html',
+                templateUrl: 'chpl.admin/admin.html',
                 controller: 'AdminController',
                 controllerAs: 'vm',
                 title: 'CHPL Administration',
@@ -64,7 +64,7 @@
             .when('/compare/:compareIds', {
                 controller: 'CompareController',
                 controllerAs: 'vm',
-                templateUrl: 'src/app/compare/compare.html',
+                templateUrl: 'chpl.compare/compare.html',
                 title: 'CHPL Product Comparison',
             })
             .when('/product/:id/:initialPanel?', {

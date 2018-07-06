@@ -3,14 +3,16 @@
 // other global deps
 
 import angular from 'angular';
-//import angular-confirm from 'angular-confirm';
-import 'angular-loading-bar';
+import angularConfirm from 'angular-confirm';
+import angularCronGen from 'angular-cron-gen';
+import angularLoadingBar from 'angular-loading-bar';
 import angulartics from 'angulartics';
 import angularticsGoogleTagManager from 'angulartics-google-tag-manager';
 import googlechart from 'angular-google-chart';
 //import ngAnimate from 'ngAnimate';
 //import ngAria from 'ngAria';
-//import ngCsv from 'ngCsv';
+import ngCsv from 'ng-csv';
+import ngIdle from 'ng-idle';
 //import cytoscape from 'cytoscape';
 //import ngMessages from 'ngMessages';
 import ngResource from 'angular-resource';
@@ -21,16 +23,17 @@ import smartTable from 'angular-smart-table';
 import toaster from 'angularjs-toaster';
 import uiBoostrap from 'angular-ui-bootstrap';
 //import ui.bootstrap.fontawesome from 'ui.bootstrap.fontawesome';
+import ngFileUpload from 'angular-file-upload';
 import ngFileSaver from 'angular-file-saver';
 import ngStorage from 'ngstorage';
 
 // import app modules
-//import adminModule from './admin/index';
+import adminModule from './admin/index';
 import chartsModule from './charts/index';
 import chplApiModule from './resources/chpl_api/index';
 import cmsLookupModule from './resources/cms_lookup/index';
 import collectionsModule from './collections/index';
-//import compareModule from './compare/index';
+import compareModule from './compare/index';
 import componentsModule from './components/index';
 import downloadModule from './resources/download/index';
 import navigationModule from './navigation/index';
@@ -43,16 +46,15 @@ import servicesModule from './services/index';
 require('./index.constants');
 
 const dependencies = [
-    //    'angular-confirm',
     'angular-loading-bar',
     'angulartics',
     'angulartics.google.tagmanager',
-    //    'chpl.admin',
+    'chpl.admin',
     'chpl.charts',
     'chpl.chpl_api',
     'chpl.cms_lookup',
     'chpl.collections',
-    //    'chpl.compare',
+    'chpl.compare',
     'chpl.components',
     'chpl.constants',
     'chpl.download',
@@ -65,7 +67,6 @@ const dependencies = [
     'googlechart',
     //    'ngAnimate',
     //    'ngAria',
-    //    'ngCsv',
     //'ngCytoscape',
     //    'ngMessages',
     'ngFileSaver',
@@ -74,11 +75,9 @@ const dependencies = [
     'ngStorage',
     'ngSanitize',
     //    'ngTouch',
-    //    'swaggerUi',
     'smart-table',
     'toaster',
     'ui.bootstrap',
-    //    'ui.bootstrap',
     //    'ui.bootstrap.fontawesome',
 ];
 
