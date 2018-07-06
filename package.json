@@ -11,9 +11,11 @@
   "dependencies": {
     "angular": "^1.7.2",
     "angular-file-saver": "^1.1.3",
+    "angular-google-chart": "^0.1.0",
     "angular-loading-bar": "^0.9.0",
     "angular-resource": "^1.7.2",
     "angular-route": "^1.7.2",
+    "angular-smart-table": "^2.1.11",
     "angular-swagger-ui": "^0.5.5",
     "angular-ui-bootstrap": "1.3.3",
     "angularjs-toaster": "^2.2.0",

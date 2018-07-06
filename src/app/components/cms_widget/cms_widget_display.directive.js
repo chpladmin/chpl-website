@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.cms-widget')
+    angular.module('chpl.components')
         .directive('aiCmsWidgetDisplay', aiCmsWidgetDisplay);
 
     /** @ngInject */

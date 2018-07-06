@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.cms-widget')
+    angular.module('chpl.components')
         .constant('aiConfig', {
             endpoint: '/rest',
         })
@@ -34,11 +34,9 @@
         vm.search = search;
         vm.toggleProduct = toggleProduct;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             if (hasWidget()) {
                 vm.widget = getWidget();
             } else {

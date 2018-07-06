@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.compare-widget')
+    angular.module('chpl.components')
         .directive('aiCompareWidgetButton', aiCompareWidgetButton);
 
     /** @ngInject */

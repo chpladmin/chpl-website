@@ -28,11 +28,11 @@
         vm.createAtl = createAtl;
         vm.editAtl = editAtl;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isAtlAdmin = authService.isAtlAdmin();
             if (angular.isUndefined(vm.workType)) {

@@ -46,11 +46,9 @@
         //vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.categoryChanged = {};
             vm.clearFilterHs = [];
             //vm.restoreStateHs = [];

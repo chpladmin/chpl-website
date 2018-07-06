@@ -1,4 +1,4 @@
-import './cms_widget.module';
+import './registration.module';
 
 function importAll(r) {
     r.keys().forEach(r);
@@ -9,4 +9,4 @@ importAll(
     require.context('./', true, /^(?!.*\.module\.js$)^(?!.*\.spec\.js$).*\.js$/)
 );
 
-export default angular.module('chpl.cms-widget');
+export default angular.module('chpl.registration');

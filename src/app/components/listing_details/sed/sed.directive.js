@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('chpl')
+        .module('chpl.components')
         .directive('aiSed', aiSed)
         .controller('SedController', SedController);
 
@@ -50,11 +50,11 @@
         vm.viewParticipants = viewParticipants;
         vm.viewTask = viewTask;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             _analyzeSed();
         }
 

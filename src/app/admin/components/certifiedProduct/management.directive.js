@@ -59,11 +59,11 @@
         vm.splitProduct = splitProduct;
         vm.ternaryFilter = utilService.ternaryFilter;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.activeDeveloper = '';
             vm.activeProduct = '';
             vm.activeVersion = '';

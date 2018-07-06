@@ -25,11 +25,11 @@
 
         vm.edit = edit;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             _getFuzzyTypes();
         }
 

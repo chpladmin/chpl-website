@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('chpl')
+        .module('chpl.components')
         .directive('aiG1g2', aiG1g2)
         .controller('G1G2DetailsController', G1G2DetailsController);
 
@@ -26,11 +26,11 @@
     function G1G2DetailsController () {
         var vm = this;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             analyzeMeasures();
         }
 

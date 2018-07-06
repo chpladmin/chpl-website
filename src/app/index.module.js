@@ -13,7 +13,7 @@
             'chpl.cms_lookup',
             'chpl.collections',
             'chpl.compare',
-            'chpl.compare-widget',
+            'chpl.components',
             'chpl.constants',
             'chpl.download',
             'chpl.navigation',

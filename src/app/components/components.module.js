@@ -1,7 +1,8 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.compare-widget', [
+    angular.module('chpl.components', [
+        'angulartics',
         'ngResource',
         'ngStorage',
     ]);

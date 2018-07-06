@@ -26,7 +26,6 @@
     function LoginController ($log, $scope, Idle, Keepalive, authService, networkService) {
         var vm = this;
 
-        vm.activate = activate;
         vm.changePassword = changePassword;
         vm.clear = clear;
         vm.isAuthed = authService.isAuthed;
@@ -43,11 +42,9 @@
             NONE: 4,
         };
 
-        vm.activate();
-
         /////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
             vm.clear();
             if (vm.isAuthed()) {

@@ -657,11 +657,6 @@
                   <ul>
                     <li ng-repeat="user in vm.activeCP.targetedUsers">{{ user.targetedUserName }}</li>
                   </ul>
-                  <strong>Corrective Action Plan:</strong> <ai-corrective-action-plan
-                                                              corrective-action-plan="vm.activeCP.cap"
-                                                              certified-product-id="vm.activeCP.id"
-                                                              certification-results="vm.activeCP.certificationResults"
-                                                              is-admin="vm.isDeveloperMergeable(vm.activeDeveloper)"></ai-corrective-action-plan><br />
                 </span>
                 <br />
                 <ai-certs ng-if="vm.activeCP !== ''"

@@ -28,11 +28,11 @@
         vm.createAcb = createAcb;
         vm.editAcb = editAcb;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
             if (angular.isUndefined(vm.workType)) {

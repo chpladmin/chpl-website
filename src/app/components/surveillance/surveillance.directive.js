@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('SurveillanceController', SurveillanceController)
         .directive('aiSurveillance', aiSurveillance);
 
@@ -32,11 +32,11 @@
         vm.sortResults = sortResults;
         vm.surveillanceResults = surveillanceResults;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.API = API;
             vm.API_KEY = authService.getApiKey();
             vm.surveillanceTypes = networkService.getSurveillanceLookups();

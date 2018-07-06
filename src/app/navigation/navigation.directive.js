@@ -52,11 +52,11 @@
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.loadAnnouncements();
 
             var cmsWidget = $rootScope.$on('ShowWidget', function () {

@@ -1,4 +1,4 @@
-import './compare_widget.module';
+import './search.module';
 
 function importAll(r) {
     r.keys().forEach(r);
@@ -9,4 +9,4 @@ importAll(
     require.context('./', true, /^(?!.*\.module\.js$)^(?!.*\.spec\.js$).*\.js$/)
 );
 
-export default angular.module('chpl.compare-widget');
+export default angular.module('chpl.search');

@@ -24,11 +24,11 @@
         vm.getDownload = getDownload;
         vm.setMeaningfulUseUsersAccurateAsOfDate = setMeaningfulUseUsersAccurateAsOfDate;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isOncStaff = authService.isOncStaff();
             vm.isChplAdmin = authService.isChplAdmin();

@@ -25,11 +25,11 @@
         vm.edit = edit;
         vm.loadAnnouncements = loadAnnouncements;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.loadAnnouncements();
         }
 

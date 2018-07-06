@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('SelectDistinctController', SelectDistinctController)
         .directive('stSelectDistinct', stSelectDistinct);
 

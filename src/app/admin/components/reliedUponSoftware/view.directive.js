@@ -28,11 +28,11 @@
         vm.isAndOrOr = isAndOrOr;
         vm.removeItem = removeItem;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.buildGrouping();
         }
 

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('chpl')
+        .module('chpl.components')
         .directive('aiCerts', aiCerts);
 
     /** @ngInject */
@@ -41,11 +41,11 @@
             vm.updateCs = updateCs;
             vm.viewIcsFamily = viewIcsFamily;
 
-            activate();
+            
 
             ////////////////////////////////////////////////////////////////////
 
-            function activate () {
+            this.$onInit = function () {
                 vm.handlers = [];
                 if (angular.isUndefined(vm.isEditing)) {
                     vm.isEditing = false;

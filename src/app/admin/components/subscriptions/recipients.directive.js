@@ -29,11 +29,11 @@
         vm.loadSubscriptionReportTypes = loadSubscriptionReportTypes;
         vm.loadRecipients = loadRecipients;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.loadSubscriptionReportTypes();
             vm.loadRecipients();
         }

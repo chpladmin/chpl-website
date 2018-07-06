@@ -7,7 +7,7 @@ import angular from 'angular';
 import 'angular-loading-bar';
 import angulartics from 'angulartics';
 import angularticsGoogleTagManager from 'angulartics-google-tag-manager';
-//import googlechart from 'googlechart';
+import googlechart from 'angular-google-chart';
 //import ngAnimate from 'ngAnimate';
 //import ngAria from 'ngAria';
 //import ngCsv from 'ngCsv';
@@ -17,7 +17,7 @@ import ngResource from 'angular-resource';
 import ngRoute from 'angular-route';
 //import ngSanitize from 'ngSanitize';
 //import ngTouch from 'ngTouch';
-//import swaggerUi from 'swaggerUi';
+import smartTable from 'angular-smart-table';
 import toaster from 'angularjs-toaster';
 import uiBoostrap from 'angular-ui-bootstrap';
 //import ui.bootstrap.fontawesome from 'ui.bootstrap.fontawesome';
@@ -26,20 +26,18 @@ import ngStorage from 'ngstorage';
 
 // import app modules
 //import adminModule from './admin/index';
-//import chartsModule from './charts/index';
+import chartsModule from './charts/index';
 import chplApiModule from './resources/chpl_api/index';
-import './components/cms_widget/index';
 import cmsLookupModule from './resources/cms_lookup/index';
-//import collectionsModule from './collections/index';
+import collectionsModule from './collections/index';
 //import compareModule from './compare/index';
-import compareWidgetModule from './components/compare_widget/index';
-//import constantsModule from './common/index';
+import componentsModule from './components/index';
 import downloadModule from './resources/download/index';
 import navigationModule from './navigation/index';
 import overviewModule from './resources/overview/index';
 //import productModule from './product/index';
-//import registrationModule from './registration/index';
-//import searchModule from './search/index';
+import registrationModule from './registration/index';
+import searchModule from './search/index';
 import servicesModule from './services/index';
 
 require('./index.constants');
@@ -50,36 +48,36 @@ const dependencies = [
     'angulartics',
     'angulartics.google.tagmanager',
     //    'chpl.admin',
-    //    'chpl.charts',
-        'chpl.chpl_api',
-        'chpl.cms_lookup',
-    'chpl.cms-widget',
-    //    'chpl.collections',
+    'chpl.charts',
+    'chpl.chpl_api',
+    'chpl.cms_lookup',
+    'chpl.collections',
     //    'chpl.compare',
-    'chpl.compare-widget',
+    'chpl.components',
     'chpl.constants',
-        'chpl.download',
+    'chpl.download',
     'chpl.navigation',
     'chpl.overview',
     //    'chpl.product',
-    //    'chpl.registration',
-    //    'chpl.search',
+    'chpl.registration',
+    'chpl.search',
     'chpl.services',
-    //    'googlechart',
+    'googlechart',
     //    'ngAnimate',
     //    'ngAria',
     //    'ngCsv',
     //    'ngCytoscape',
     //    'ngMessages',
-    'ngResource',
-    'ui.bootstrap',
-    'ngRoute',
     'ngFileSaver',
+    'ngResource',
+    'ngRoute',
     'ngStorage',
     //    'ngSanitize',
     //    'ngTouch',
     //    'swaggerUi',
+    'smart-table',
     'toaster',
+    'ui.bootstrap',
     //    'ui.bootstrap',
     //    'ui.bootstrap.fontawesome',
 ];

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('ContactController', ContactController)
         .directive('aiContact', function () {
             return {
@@ -30,11 +30,11 @@
         vm.updateErrors = updateErrors;
         vm.valuesRequired = valuesRequired;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.errorMessages = [];
             vm.updateErrors();
         }

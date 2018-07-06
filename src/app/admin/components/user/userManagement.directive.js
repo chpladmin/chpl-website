@@ -25,11 +25,11 @@
         vm.updateUser = updateUser;
         vm.inviteUser = inviteUser;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.roles = [];
             if (!vm.acbId && !vm.atlId) { // not managing acb or atl, managing entire CHPL
                 vm.roles.push('ROLE_ADMIN');

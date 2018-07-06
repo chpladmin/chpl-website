@@ -52,12 +52,12 @@
         vm._compareCertificationEvents = _compareCertificationEvents;
         vm._compareSed = _compareSed;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
         // Functions
 
-        function activate () {
+        this.$onInit = function () {
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isOncStaff = authService.isOncStaff();

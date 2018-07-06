@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('CertificationCriteriaController', CertificationCriteriaController)
         .directive('aiCertificationCriteria', aiCertificationCriteria);
 
@@ -36,11 +36,11 @@
         vm.showViewDetailsLink = showViewDetailsLink;
         vm.toggleCriteria = toggleCriteria;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
         }
 
         function editCert () {
