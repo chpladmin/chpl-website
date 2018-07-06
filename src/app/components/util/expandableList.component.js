@@ -39,7 +39,7 @@
 
         /////////////////////////////////////////////////////////////////
 
-        this.$onInit = function () {
+        ctrl.$onInit = function () {
             ctrl.addItem = ''
             ctrl.inAddMode = false;
             ctrl.options = [];
@@ -54,7 +54,7 @@
             ctrl.inAddMode = false;
 
             var addItem = {};
-            addItem[ctrl.itemText] = ctrl._addItem;
+            addItem[ctrl.itemText] = ctrl.addOption;
             addItem[ctrl.itemKey] = '';
 
             var item = _createSelectedItem(addItem);
@@ -103,7 +103,7 @@
         }
 
         function selectOnChange () {
-            if (ctrl.selectedItem[ctrl.itemKey] === -99) {
+            if (ctrl.selectedItem[ctrl.itemKey] === undefined) {
                 ctrl.inAddMode = true;
             } else {
                 if (!_doesItemExistInSelectedItems(ctrl.selectedItem)) {
@@ -119,11 +119,14 @@
         /////////////////////////////////////////////////////////////////
 
         function _createSelectedItem (item) {
+            var selectedItem = {'item': item};
+
             if (ctrl.additionalInput) {
-                return {'item': item, 'additionalInputValue': ''};
-            } else {
-                return {'item': item};
+                selectedItem.additionalInputValue = '';
+            } else if (ctrl.additionalInput2) {
+                selectedItem.additionalInput2Value = '';
             }
+            return selectedItem;
         }
 
         function _doesItemExistInSelectedItems (item) {
@@ -137,14 +140,15 @@
         }
 
         function _getItemByKey (key) {
-            //Should be replaced with array.filter...
-            var itemToReturn = null;
-            angular.forEach(ctrl.items, function (item) {
-                if (item[ctrl.itemKey] === key) {
-                    itemToReturn = item;
-                }
+            var itemToReturn = ctrl.items.filter(function (item) {
+                return item[ctrl.itemKey] === key;
             });
-            return itemToReturn;
+
+            if (itemToReturn && itemToReturn.length > 0) {
+                return itemToReturn[0];
+            } else {
+                return null;
+            }
         }
 
         function _getOnChangeObject (action, selectedItem) {
@@ -156,7 +160,7 @@
             if (ctrl.addItems) {
                 var addItem = {};
                 addItem[ctrl.itemText] = ctrl.addItemsOptionText;
-                addItem[ctrl.itemKey] = -99;
+                addItem[ctrl.itemKey] = undefined;
                 ctrl.options.push(
                     {text: addItem[ctrl.itemText], value: addItem}
                 );

@@ -5,19 +5,24 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, cert, hasIcs, resources, utilService) {
+    function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, CertificationResultTestData,
+                                                CertificationResultTestFunctionality, CertificationResultTestProcedure,
+                                                CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs,
+                                                resources, utilService) {
         var vm = this;
+
         vm.addNewValue = utilService.addNewValue;
         vm.cancel = cancel;
         vm.extendSelect = utilService.extendSelect;
-        vm.isTestToolDisabled = isTestToolDisabled;
+        vm.isTestToolRetired = isTestToolRetired;
         vm.isToolAvailable = isToolAvailable;
         vm.save = save;
+        vm.testDataOnChange = testDataOnChange;
         vm.testFunctionalityOnChange = testFunctionalityOnChange;
         vm.testProceduresOnChange = testProceduresOnChange;
         vm.testToolsOnChange = testToolsOnChange;
-        vm.testDataOnChange = testDataOnChange;
         vm.testStandardOnChange = testStandardOnChange;
+
         activate();
 
         ////////////////////////////////////////////////////////////////////
@@ -37,11 +42,11 @@
             vm.hasIcs = hasIcs;
             vm.resources = resources;
 
-            vm.selectedTestFunctionalityKeys = _getSelectedTestFunctionalityKeys();
-            vm.selectedTestToolKeys = _getSelectedTestToolKeys();
-            vm.selectedTestProcedureKeys = _getSelectedTestProcedureKeys();
             vm.selectedTestDataKeys = _getSelectedTestDataKeys();
+            vm.selectedTestFunctionalityKeys = _getSelectedTestFunctionalityKeys();
+            vm.selectedTestProcedureKeys = _getSelectedTestProcedureKeys();
             vm.selectedTestStandardKeys = _getSelectedTestStandardKeys();
+            vm.selectedTestToolKeys = _getSelectedTestToolKeys();
         }
 
         function cancel () {
@@ -49,7 +54,7 @@
             $uibModalInstance.dismiss('cancelled');
         }
 
-        function isTestToolDisabled (testTool) {
+        function isTestToolRetired (testTool) {
             return testTool.retired;
         }
 
@@ -64,10 +69,10 @@
         function testDataOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                _testDataRemoveItem(action.item);
+                _testDataRemoveItem(action.item.item);
                 break;
             case 'Add':
-                _testDataAddItem(action.item);
+                vm.cert.testDataUsed.push(new CertificationResultTestData(action.item.item, action.item.additionalInputValue, action.item.additionalInput2Value));
                 break;
             case 'Edit':
                 _testDataEditItem(action.item)
@@ -79,37 +84,10 @@
         function testFunctionalityOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                _testFunctionalityRemoveItem(action.item);
+                _testFunctionalityRemoveItem(action.item.item);
                 break;
             case 'Add':
-                _testFunctionalityAddItem(action.item);
-                break;
-            default:
-            }
-        }
-
-        function testStandardOnChange (action) {
-            switch (action.action) {
-            case 'Remove':
-                _testStandardRemoveItem(action.item);
-                break;
-            case 'Add':
-                _testStandardAddItem(action.item);
-                break;
-            default:
-            }
-        }
-
-        function testToolsOnChange (action) {
-            switch (action.action) {
-            case 'Remove':
-                _testToolsRemoveItem(action.item);
-                break;
-            case 'Add':
-                _testToolsAddItem(action.item);
-                break;
-            case 'Edit':
-                _testToolsEditItem(action.item)
+                vm.cert.testFunctionality.push(new CertificationResultTestFunctionality(action.item.item));
                 break;
             default:
             }
@@ -118,10 +96,10 @@
         function testProceduresOnChange (action) {
             switch (action.action) {
             case 'Remove':
-                _testProceduresRemoveItem(action.item);
+                _testProceduresRemoveItem(action.item.item);
                 break;
             case 'Add':
-                _testProceduresAddItem(action.item);
+                vm.cert.testProcedures.push(new CertificationResultTestProcedure(action.item.item, action.item.additionalInputValue));
                 break;
             case 'Edit':
                 _testProceduresEditItem(action.item)
@@ -129,6 +107,34 @@
             default:
             }
         }
+
+        function testStandardOnChange (action) {
+            switch (action.action) {
+            case 'Remove':
+                _testStandardRemoveItem(action.item.item);
+                break;
+            case 'Add':
+                vm.cert.testStandards.push(new CertificationResultTestStandard(action.item.item));
+                break;
+            default:
+            }
+        }
+
+        function testToolsOnChange (action) {
+            switch (action.action) {
+            case 'Remove':
+                _testToolsRemoveItem(action.item.item);
+                break;
+            case 'Add':
+                vm.cert.testToolsUsed.push(new CertificationResultTestTool(action.item.item, action.item.additionalInputValue));
+                break;
+            case 'Edit':
+                _testToolsEditItem(action.item)
+                break;
+            default:
+            }
+        }
+
         ////////////////////////////////////////////////////////////////////
 
         function _getSelectedTestDataKeys () {
@@ -184,15 +190,6 @@
             return ttKeys;
         }
 
-        function _testDataAddItem (testData) {
-            var crtd = {
-                'testData': testData.item,
-                'version': testData.additionalInputValue,
-                'alteration': testData.additionalInput2Value,
-            };
-            vm.cert.testDataUsed.push(crtd);
-        }
-
         function _testDataEditItem (testData) {
             var crtds = vm.cert.testDataUsed.filter(function (crtd) {
                 return crtd.testData.id === testData.item.id;
@@ -205,19 +202,9 @@
 
         function _testDataRemoveItem (testData) {
             var remaining = vm.cert.testDataUsed.filter( function (crtd) {
-                return crtd.testData.id !== testData.item.id;
+                return crtd.testData.id !== testData.id;
             });
             vm.cert.testDataUsed = remaining;
-        }
-
-        function _testFunctionalityAddItem (testFunctionality) {
-            var crtf = {
-                'description': testFunctionality.item.description,
-                'name': testFunctionality.item.name,
-                'testFunctionalityId': testFunctionality.item.id,
-                'year': testFunctionality.item.year,
-            };
-            vm.cert.testFunctionality.push(crtf);
         }
 
         function _testFunctionalityRemoveItem (testFunctionality) {
@@ -225,14 +212,6 @@
                 return crtf.testFunctionalityId !== testFunctionality.id;
             });
             vm.cert.testFunctionality = remaining;
-        }
-
-        function _testProceduresAddItem (testProcedure) {
-            var crtp = {
-                'testProcedure': testProcedure.item,
-                'testProcedureVersion': testProcedure.additionalInputValue,
-            };
-            vm.cert.testProcedures.push(crtp);
         }
 
         function _testProceduresEditItem (testProcedure) {
@@ -246,35 +225,16 @@
 
         function _testProceduresRemoveItem (testProcedure) {
             var remaining = vm.cert.testProcedures.filter( function (crtp) {
-                return crtp.testProcedure.id !== testProcedure.item.id;
+                return crtp.testProcedure.id !== testProcedure.id;
             });
             vm.cert.testProcedures = remaining;
         }
 
-        function _testStandardAddItem (testStandard) {
-            var crts = {
-                'description': testStandard.item.description,
-                'testStandardName': testStandard.item.name,
-                'testStandardId': testStandard.item.id,
-            };
-            vm.cert.testStandards.push(crts);
-        }
-
         function _testStandardRemoveItem (testStandard) {
             var remaining = vm.cert.testStandards.filter( function (crts) {
-                return crts.testStandardId !== testStandard.item.id;
+                return crts.testStandardId !== testStandard.id;
             });
             vm.cert.testStandards = remaining;
-        }
-
-        function _testToolsAddItem (testTool) {
-            var crtt = {
-                'retired': testTool.item.retired,
-                'testToolId': testTool.item.id,
-                'testToolName': testTool.item.name,
-                'testToolVersion': testTool.additionalInputValue,
-            };
-            vm.cert.testToolsUsed.push(crtt);
         }
 
         function _testToolsEditItem (testTool) {
@@ -288,7 +248,7 @@
 
         function _testToolsRemoveItem (testTool) {
             var remaining = vm.cert.testToolsUsed.filter( function (crtt) {
-                return crtt.testToolId !== testTool.item.id;
+                return crtt.testToolId !== testTool.id;
             });
             vm.cert.testToolsUsed = remaining;
         }

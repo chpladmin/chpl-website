@@ -645,7 +645,6 @@ option[disabled] {
 }
 
 
-/* The alert message box */
 .selected-item {
     padding: 5px;
     margin-bottom: 5px;
@@ -672,33 +671,9 @@ option[disabled] {
     color: #777777;
 }
 
-/* The close button */
-.closebtn {
-    margin-left: 15px;
-    color: #3c763d;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-    border: none;
-    background-color: transparent;
-    outline: none;
-}
-
-/* When moving the mouse over the close button */
-.closebtn:hover {
-    color: black;
-}
-
 .fade-in {
     animation:opac 0.3s;
     @keyframes opac{from{opacity:0} to{opacity:1}}
-}
-
-.additional-input {
-    padding-top: 3px;
 }
 
 /**
