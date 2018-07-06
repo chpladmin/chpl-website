@@ -207,7 +207,7 @@
           </tfoot>
           <tbody>
             <tr ng-repeat="surv in vm.uploadingSurveillances | orderBy: 'certifiedProduct.chplProductNumber' track by surv.id">
-              <td><a href="#/product/{{ surv.certifiedProduct.id}}">{{ surv.certifiedProduct.chplProductNumber }}</a></td>
+              <td><a href="#!/product/{{ surv.certifiedProduct.id}}">{{ surv.certifiedProduct.chplProductNumber }}</a></td>
               <td>{{ surv.startDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>{{ surv.endDate | date : 'mediumDate' : 'UTC' }}</td>
               <td>{{ surv.type.name }}</td>
@@ -277,7 +277,7 @@
         </div>
         <div ng-if="vm.surveillanceProduct">
           <span class="pull-right">
-            <a href="#/product/{{ vm.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
+            <a href="#!/product/{{ vm.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
           </span>
           <table class="table">
             <thead class="sr-only">
@@ -609,8 +609,8 @@
               <div class="panel-heading">
                 <span>Active Listing</span>
                 <span class="pull-right" ng-if="vm.activeCP.id">
-                  <a href="#/admin/reports/{{ vm.activeCP.id}}"><i class="fa fa-calendar"></i> View Listing History</a> |
-                  <a href="#/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
+                  <a href="#!/admin/reports/{{ vm.activeCP.id}}"><i class="fa fa-calendar"></i> View Listing History</a> |
+                  <a href="#!/product/{{ vm.activeCP.id}}"><i class="fa fa-search"></i> View Listing Details</a> |
                   <span ng-if="vm.isProductEditable(vm.activeCP)"><a href="" ng-click="vm.editCertifiedProduct()"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a> |</span>
                   <a href="" ng-click="vm.activeCP = ''"><i class="fa fa-refresh"></i> Reset selection</a>
                 </span>
@@ -634,8 +634,8 @@
                   <strong>Transparency URL:</strong> {{ vm.activeCP.transparencyAttestationUrl ? vm.activeCP.transparencyAttestationUrl : 'None' }} <br />
                   <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.activeCP.ics.inherits) }} <br />
                   <ul>
-                    <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#/product/{{ parent.id }}">{{ parent.chplProductNumber }}</a></li>
-                    <li ng-repeat="child in vm.activeCP.ics.children"><strong>ICS Source for:</strong> <a href="#/product/{{ child.id }}">{{ child.chplProductNumber }}</a></li>
+                    <li ng-repeat="parent in vm.activeCP.ics.parents"><strong>Inherits from:</strong> <a href="#!/product/{{ parent.id }}">{{ parent.chplProductNumber }}</a></li>
+                    <li ng-repeat="child in vm.activeCP.ics.children"><strong>ICS Source for:</strong> <a href="#!/product/{{ child.id }}">{{ child.chplProductNumber }}</a></li>
                   </ul>
                   <strong>QMS:</strong> {{ vm.activeCP.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
                   <ul>

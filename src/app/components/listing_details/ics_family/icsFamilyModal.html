@@ -24,7 +24,7 @@
           <tbody>
             <tr ng-repeat="listing in vm.icsFamily | orderBy:'chplProductNumber'">
               <td>
-                <a href="#/product/{{ listing.id }}/additional" ng-if="vm.listing.id !== listing.id">{{ listing.chplProductNumber }}</a>
+                <a href="#!/product/{{ listing.id }}/additional" ng-if="vm.listing.id !== listing.id">{{ listing.chplProductNumber }}</a>
                 <span ng-if="vm.listing.id === listing.id">{{ listing.chplProductNumber }}</span>
               </td>
               <td>{{ listing.certificationStatus.name }}</td>

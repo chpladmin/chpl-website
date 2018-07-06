@@ -156,7 +156,7 @@
           <ul>
             <li ng-repeat="listing in vm.product.ics.parents | orderBy: ['certificationDate','chplProductNumber']">
               <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
-              <span ng-if="listing.id"><a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
+              <span ng-if="listing.id"><a href="#!/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
             </li>
           </ul>
         </span>
@@ -165,7 +165,7 @@
           <ul>
             <li ng-repeat="listing in vm.product.ics.children | orderBy: ['certificationDate','chplProductNumber']">
               <span ng-if="!listing.id">{{ listing.chplProductNumber }}</span>
-              <span ng-if="listing.id"><a href="#/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
+              <span ng-if="listing.id"><a href="#!/product/{{ listing.id}}/additional">{{ listing.chplProductNumber }}</a> ({{ listing.certificationDate | date : 'mediumDate' : 'UTC' }})</span>
             </li>
           </ul>
         </span>

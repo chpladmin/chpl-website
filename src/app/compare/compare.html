@@ -4,7 +4,7 @@
       <h1>Compare products</h1>
     </div>
     <div class="col-sm-4 text-right">
-      <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
+      <p><a href="#!/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
     </div>
   </div>
   <div class="row main-content" id="main-content" tabindex="-1">
@@ -84,7 +84,7 @@
           </tr>
           <tr>
             <th scope="row">View product details</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'"><a href="#/product/{{ product.id }}">details</a></td>
+            <td ng-repeat="product in vm.products | orderBy:'certificationDate'"><a href="#!/product/{{ product.id }}">details</a></td>
           </tr>
         </tbody>
       </table>

@@ -6,7 +6,7 @@
         <span ng-if="grp.length > 1">One of
           <ul>
             <li ng-repeat="sw in grp track by $index">
-              <span ng-if="sw.certifiedProductId"><a href="#/product/{{ sw.certifiedProductId }}">{{ sw.certifiedProductNumber }}</a></span>
+              <span ng-if="sw.certifiedProductId"><a href="#!/product/{{ sw.certifiedProductId }}">{{ sw.certifiedProductNumber }}</a></span>
               <span ng-if="!sw.certifiedProductId">
                 {{ sw.name}}
                 <span ng-if="sw.version && sw.version !== '-1'">(Version {{ sw.version }})</span>
@@ -16,7 +16,7 @@
           </ul>
         </span>
         <span ng-if="grp.length === 1">
-          <span ng-if="grp[0].certifiedProductId"><a href="#/product/{{ grp[0].certifiedProductId }}">{{ grp[0].certifiedProductNumber }}</a></span>
+          <span ng-if="grp[0].certifiedProductId"><a href="#!/product/{{ grp[0].certifiedProductId }}">{{ grp[0].certifiedProductNumber }}</a></span>
           <span ng-if="!grp[0].certifiedProductId">
             {{ grp[0].name}}
             <span ng-if="grp[0].version && grp[0].version !== '-1'">(Version {{ grp[0].version }})</span>

@@ -512,7 +512,7 @@
                 } else if (data[i].description.startsWith('Surveillance')) {
                     cpId = data[i].newData.id;
                     chplNum = data[i].newData.chplProductNumber;
-                    link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                    link = '<a href="#!/product/' + cpId + '">' + chplNum + '</a>';
                     activity.acb = data[i].newData.certifyingBody.name;
                     activity.details = ['N/A'];
                     if (data[i].description.startsWith('Surveillance was delete')) {
@@ -570,7 +570,7 @@
                 } else if (data[i].description.startsWith('Documentation')) {
                     cpId = data[i].newData.id;
                     chplNum = data[i].newData.chplProductNumber;
-                    link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                    link = '<a href="#!/product/' + cpId + '">' + chplNum + '</a>';
                     activity.acb = data[i].newData.certifyingBody.name;
                     activity.details = ['N/A'];
                     activity.action = 'Documentation was added to a nonconformity for ' + link;
@@ -578,7 +578,7 @@
                 } else if (data[i].description.startsWith('A document was removed')) {
                     cpId = data[i].newData.id;
                     chplNum = data[i].newData.chplProductNumber;
-                    link = '<a href="#/product/' + cpId + '">' + chplNum + '</a>';
+                    link = '<a href="#!/product/' + cpId + '">' + chplNum + '</a>';
                     activity.acb = data[i].newData.certifyingBody.name;
                     activity.details = ['N/A'];
                     activity.action = 'Documentation was removed from a nonconformity for ' + link;
@@ -1073,15 +1073,15 @@
                 if (data[i].description.startsWith('A corrective action plan for')) {
                     cpNum = data[i].description.split(' ')[7];
                     if (data[i].description.endsWith('created.')) {
-                        activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.action = 'Created corrective action plan for certified product <a href="#!/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                         activity.id = data[i].newData.id;
                         activity.acb = data[i].newData.acbName;
                     } else if (data[i].description.endsWith('deleted.')) {
-                        activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.action = 'Deleted corrective action plan for certified product <a href="#!/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
                         activity.id = data[i].originalData.id;
                         activity.acb = data[i].originalData.acbName;
                     } else if (data[i].description.endsWith('updated.')) {
-                        activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.action = 'Updated corrective action plan for certified product <a href="#!/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
                         activity.id = data[i].newData.id;
                         activity.acb = data[i].newData.acbName;
                         var capFields = [
@@ -1113,13 +1113,13 @@
                     ret.push(activity);
                 } else if (data[i].description.startsWith('Documentation was added to ')) {
                     cpNum = data[i].description.split(' ');
-                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
+                    cpNum[cpNum.length - 1] = '<a href="#!/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
                     activity.action = cpNum.join(' ');
                     activity.acb = data[i].newData.acbName;
                     ret.push(activity);
                 } else if (data[i].description.startsWith('Documentation was removed from ')) {
                     cpNum = data[i].description.split(' ');
-                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
+                    cpNum[cpNum.length - 1] = '<a href="#!/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
                     activity.action = cpNum.join(' ');
                     activity.acb = data[i].newData.acbName;
                     ret.push(activity);

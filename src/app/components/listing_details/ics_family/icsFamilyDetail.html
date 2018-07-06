@@ -9,7 +9,7 @@
     <strong>Product</strong>: {{ vm.listing.product.name }}<br />
     <strong>Version</strong>: {{ vm.listing.version.version }}<br />
     <strong>Certification Status</strong>: {{ vm.listing.certificationStatus.name }}<br />
-    <a ng-if="!vm.active" href="#/product/{{ vm.listing.id }}/additional" ng-click="vm.navigate(); $event.stopPropagation()">Full details</a>
+    <a ng-if="!vm.active" href="#!/product/{{ vm.listing.id }}/additional" ng-click="vm.navigate(); $event.stopPropagation()">Full details</a>
   </div>
   <div class="modal-footer">
     <button class="btn btn-default pull-left" ng-click="vm.close()">Close</button>

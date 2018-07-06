@@ -624,35 +624,35 @@
 
                     it('deletion should be recognized', function () {
                         rawActivity.description = 'Surveillance was deleted from CHP-1231';
-                        expectedActivity.action = 'Surveillance was deleted from CHPL Product <a href="#/product/1480">CHP-009351</a>';
+                        expectedActivity.action = 'Surveillance was deleted from CHPL Product <a href="#!/product/1480">CHP-009351</a>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
                     it('upload should be recognized', function () {
                         rawActivity.description = 'Surveillance upload';
-                        expectedActivity.action = 'Surveillance was uploaded for CHPL Product <a href="#/product/1480">CHP-009351</a>';
+                        expectedActivity.action = 'Surveillance was uploaded for CHPL Product <a href="#!/product/1480">CHP-009351</a>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
                     it('addition shouls be recognized', function () {
                         rawActivity.description = 'Surveillance was added';
-                        expectedActivity.action = 'Surveillance was added for CHPL Product <a href="#/product/1480">CHP-009351</a>';
+                        expectedActivity.action = 'Surveillance was added for CHPL Product <a href="#!/product/1480">CHP-009351</a>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
                     it('strangeness should be handled', function () {
                         rawActivity.description = 'Surveillance was changed in a weird way';
-                        expectedActivity.action = 'Surveillance was changed in a weird way<br /><a href="#/product/1480">CHP-009351</a>';
+                        expectedActivity.action = 'Surveillance was changed in a weird way<br /><a href="#!/product/1480">CHP-009351</a>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
 
                     it('documentation upload should be reported', function () {
                         rawActivity.description = 'Documentation';
-                        expectedActivity.action = 'Documentation was added to a nonconformity for <a href="#/product/1480">CHP-009351</a>';
+                        expectedActivity.action = 'Documentation was added to a nonconformity for <a href="#!/product/1480">CHP-009351</a>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
 
@@ -660,7 +660,7 @@
 
                     it('documentation removal should be reported', function () {
                         rawActivity.description = 'A document was removed';
-                        expectedActivity.action = 'Documentation was removed from a nonconformity for <a href="#/product/1480">CHP-009351</a>';
+                        expectedActivity.action = 'Documentation was removed from a nonconformity for <a href="#!/product/1480">CHP-009351</a>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsSurveillance[0]).toEqual(expectedActivity);
                     });
@@ -673,7 +673,7 @@
                                 details: [],
                                 friendlyActivityDate: '2017-04-17',
                                 newId: 17497,
-                                action: 'Surveillance was updated for CHPL Product <a href="#/product/1480">CHP-009351</a>',
+                                action: 'Surveillance was updated for CHPL Product <a href="#!/product/1480">CHP-009351</a>',
                             };
                             rawActivity = angular.copy(Mock.listingActivity[0]);
                             rawActivity.description = 'Surveillance was updated';
