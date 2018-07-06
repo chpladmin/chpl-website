@@ -3,36 +3,30 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (env = {}) {
-    const plugins = [];
-    const isProd = !!env.prod;
-
-    plugins.push(
+    const plugins = [
         new HtmlWebpackPlugin({
             chunks: ['app', 'vendor'],
             filename: path.resolve(__dirname, './src/index.html'),
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/index.hbs'),
-        })
-    );
-    plugins.push(
+        }),
         new HtmlWebpackPlugin({
             chunks: ['app', 'vendor'],
             filename: path.resolve(__dirname, './src/error.html'),
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/error.hbs'),
-        })
-    );
-    plugins.push(
+        }),
         new HtmlWebpackPlugin({
             chunks: ['app', 'vendor'],
             filename: path.resolve(__dirname, './src/style.html'),
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/style.hbs'),
-        })
-    );
+        }),
+    ];
+    const isProd = !!env.prod;
 
     return {
         context: path.resolve(__dirname, '.'),
@@ -82,22 +76,15 @@ module.exports = function (env = {}) {
                 },{
                     loader: 'sass-loader' // compiles Sass to CSS
                 }],
-            },{
-                test: /\.css$/,
-                use: [{
-                    loader: 'style-loader', // inject CSS to page
-                },{
-                    loader: 'css-loader', // translates CSS into CommonJS modules
-                }],
             }],
         },
         optimization: {
             splitChunks: {
                 cacheGroups: {
 		    vendor: {
-			test: /node_modules/,
 			chunks: 'all',
 			name: 'vendor',
+			test: /node_modules/,
 		    },
                 },
             },
