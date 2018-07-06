@@ -1,15 +1,17 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('chpl')
-    .factory('CertificationResultTestStandard', function () {
-        var CertificationResultTestStandard = function (testStandard) {
-            return {
-                'description': testStandard.description,
-                'testStandardName': testStandard.name,
-                'testStandardId': testStandard.id,
-            }
-        };
+    angular.module('chpl')
+        .factory('CertificationResultTestStandard', function () {
+            var CertificationResultTestStandard = function (testStandard) {
+                return {
+                    'description': testStandard.description,
+                    'testStandardName': testStandard.name,
+                    'testStandardId': testStandard.id,
+                }
+            };
 
-        // Return a reference to the function
-        return CertificationResultTestStandard;
-    });
+            // Return a reference to the function
+            return CertificationResultTestStandard;
+        });
+})();
