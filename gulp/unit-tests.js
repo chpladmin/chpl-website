@@ -4,11 +4,11 @@ var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
 
-var karma = require('karma');
+var Server = require('karma').Server;
 
-var pathSrcHtml = [
-    path.join(conf.paths.src, '/**/*.html')
-];
+//var pathSrcHtml = [
+//    path.join(conf.paths.src, '/**/*.html')
+//];
 
 var pathSrcJs = [
     path.join(conf.paths.src, '/**/!(*.spec|cap*|certid*|st*|swagger*|ngCytoscape*).js')
@@ -20,17 +20,16 @@ function runTests (singleRun, done) {
     var reporters = ['mocha', 'junit', 'html'];
     if (!singleRun) { reporters.push('super-dots'); }
     var preprocessors = {};
-
-    pathSrcHtml.forEach(function(path) {
-        preprocessors[path] = ['ng-html2js'];
-    });
-
     pathSrcJs.forEach(function(path) {
-        //preprocessors[path] = ['coverage'];
+        preprocessors[path] = ['coverage'];
     });
+
+//    pathSrcHtml.forEach(function(path) {
+//        preprocessors[path] = ['ng-html2js'];
+//    });
 
     var localConfig = {
-        configFile: path.join(__dirname, '/../karma.conf.js'),
+        configFile: path.join(__dirname, './../karma.conf.js'),
         singleRun: singleRun,
         autoWatch: !singleRun,
         autoWatchBatchDelay: 1000,
@@ -85,9 +84,30 @@ function runTests (singleRun, done) {
 }
 
 gulp.task('test', ['scripts'], function(done) {
-    runTests(true, done);
-});
+    var server = new Server({
+        configFile: __dirname + '/../karma.conf.js',
+        singleRun: true
+    }, function(exitCode) {
+        console.log('Karma has exited with ' + exitCode)
+        process.exit(exitCode)
+    });
+    server.start();
+})
 
 gulp.task('test:auto', ['watch'], function(done) {
-    runTests(false, done);
+    var server = new Server({
+        configFile: __dirname + '/../karma.conf.js',
+        singleRun: false
+    }, function(exitCode) {
+        console.log('Karma has exited with ' + exitCode)
+        process.exit(exitCode)
+    });
+    server.start();
+/*
+    karma.server.start({
+        configFile: __dirname + '/../karma.conf.js',
+        singleRun: false
+    }, function(){
+        done();
+    });//    runTests(false, done);*/
 });
