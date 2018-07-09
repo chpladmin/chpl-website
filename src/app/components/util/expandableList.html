@@ -1,6 +1,8 @@
 <div ng-form="{{ $ctrl.identifier }}_form">
-    <div ng-repeat="option in $ctrl.selectedItems track by $index">
-        <div class="selected-item alert-success fade-in">
+    <ul class="list-unstyled">
+    <!--<div ng-repeat="option in $ctrl.selectedItems track by $index">-->
+        <li ng-repeat="option in $ctrl.selectedItems track by $index">
+        <div class="alert alert-success fade-in">
             <button class="close" ng-click="$ctrl.removeItem(option)">
                 <span class="sr-only">Remove item {{ option.item.name }}</span>
                 <i class="fa fa-times"></i>
@@ -9,12 +11,13 @@
             <div ng-if="$ctrl.additionalInput" class="additional-input">
                 <div class="row">
                     <div class="col-sm-5">
-                        <label for="{{ $ctrl.identifier }}-additional-input-{{ $index }}">{{ $ctrl.additionalInputLabel }}</label>
+                        <label for="{{ $ctrl.identifier }}-additional-input-{{ $index }}" class="control-label">{{ $ctrl.additionalInputLabel }}</label>
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-7">
                         <input type="text" 
                             id="{{ $ctrl.identifier }}-additional-input-{{ $index }}"
                             name="{{ $ctrl.identifier }}_additionalInput_{{ $index }}"
+                            class="form-control"
                             ng-model="option.additionalInputValue"
                             ng-change="$ctrl.additionalInputChange(option)" 
                             ng-maxlength="$ctrl.additionalInputMaxLength"
@@ -31,12 +34,13 @@
             <div ng-if="$ctrl.additionalInput2" class="additional-input" >
                 <div class="row">
                     <div class="col-sm-5">
-                        <label for="{{ $ctrl.identifier }}-additional-input-2-{{ $index }}">{{ $ctrl.additionalInput2Label }}</label>
+                        <label for="{{ $ctrl.identifier }}-additional-input-2-{{ $index }}" class="control-label">{{ $ctrl.additionalInput2Label }}</label>
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-7">
                         <input type="text" 
                             id="{{ $ctrl.identifier }}-additional-input-2-{{ $index }}"
                             name="{{ $ctrl.identifier }}_additionalInput2_{{ $index }}"
+                            class="form-control"
                             ng-model="option.additionalInput2Value"
                             ng-change="$ctrl.additionalInput2Change(option)" 
                             ng-maxlength="$ctrl.additionalInput2MaxLength"
@@ -51,7 +55,9 @@
                 </p>
             </div>
         </div>
-    </div>
+        </li>
+    <!--</div>-->
+    </ul>
 
 
     <div ng-if="! $ctrl.inAddMode">
