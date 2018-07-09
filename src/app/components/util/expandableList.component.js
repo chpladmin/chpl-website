@@ -29,14 +29,14 @@
 
     function ExapandableListController () {
         var ctrl = this;
-        ctrl.selectOnChange = selectOnChange;
         ctrl.addItemToListClick = addItemToListClick;
         ctrl.additionalInputChange = additionalInputChange;
         ctrl.additionalInput2Change = additionalInput2Change;
         ctrl.cancelAddItemToListClick = cancelAddItemToListClick;
         ctrl.isItemDisabled = isItemDisabled;
         ctrl.removeItem = removeItem;
-
+        ctrl.selectOnChange = selectOnChange;
+        
         /////////////////////////////////////////////////////////////////
 
         ctrl.$onInit = function () {
