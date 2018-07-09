@@ -2,31 +2,25 @@
 
 var path = require('path');
 var gulp = require('gulp');
+const gutil = require('gulp-util');
 var conf = require('./conf');
 
 var Server = require('karma').Server;
 
-//var pathSrcHtml = [
-//    path.join(conf.paths.src, '/**/*.html')
+//var pathSrcJs = [
+//    path.join(conf.paths.src, '/**/!(*.spec|cap*|certid*|st*|swagger*|ngCytoscape*).js')
 //];
 
-var pathSrcJs = [
-    path.join(conf.paths.src, '/**/!(*.spec|cap*|certid*|st*|swagger*|ngCytoscape*).js')
-];
-
 function runTests (singleRun, done) {
-    //var reporters = ['dots', 'junit', 'html', 'coverage'];
     //var reporters = ['mocha', 'junit', 'html', 'coverage'];
     var reporters = ['mocha', 'junit', 'html'];
     if (!singleRun) { reporters.push('super-dots'); }
+    /*
     var preprocessors = {};
     pathSrcJs.forEach(function(path) {
         preprocessors[path] = ['coverage'];
     });
-
-//    pathSrcHtml.forEach(function(path) {
-//        preprocessors[path] = ['ng-html2js'];
-//    });
+     */
 
     var localConfig = {
         configFile: path.join(__dirname, './../karma.conf.js'),
@@ -35,7 +29,7 @@ function runTests (singleRun, done) {
         autoWatchBatchDelay: 1000,
         reportSlowerThan: 300,
         reporters: reporters,
-        preprocessors: preprocessors,
+        //preprocessors: preprocessors,
         coverageReporter: {
             dir: 'test_reports/coverage',
             reporters: [
@@ -77,37 +71,25 @@ function runTests (singleRun, done) {
         }
     };
 
-    var server = new karma.Server(localConfig, function(failCount) {
-        done(failCount ? new Error("Failed " + failCount + " tests.") : null);
+    var server = new Server(localConfig, function(err) {
+        if (err === 0) {
+            done();
+        } else {
+            done(new gutil.PluginError('karma', {
+                message: 'Karma Tests failed with error: ' + err
+            }));
+       }
+        //done();
+        //process.exit(failCount);
+        //done(failCount ? new Error("Failed " + failCount + " tests.") : failCount);
     })
     server.start();
 }
 
 gulp.task('test', ['scripts'], function(done) {
-    var server = new Server({
-        configFile: __dirname + '/../karma.conf.js',
-        singleRun: true
-    }, function(exitCode) {
-        console.log('Karma has exited with ' + exitCode)
-        process.exit(exitCode)
-    });
-    server.start();
+    runTests(true, done);
 })
 
 gulp.task('test:auto', ['watch'], function(done) {
-    var server = new Server({
-        configFile: __dirname + '/../karma.conf.js',
-        singleRun: false
-    }, function(exitCode) {
-        console.log('Karma has exited with ' + exitCode)
-        process.exit(exitCode)
-    });
-    server.start();
-/*
-    karma.server.start({
-        configFile: __dirname + '/../karma.conf.js',
-        singleRun: false
-    }, function(){
-        done();
-    });//    runTests(false, done);*/
+    runTests(false, done);
 });

@@ -3,6 +3,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (env = {}) {
+    const isProd = !!env.prod;
     const plugins = [
         new HtmlWebpackPlugin({
             chunks: ['app', 'vendor'],
@@ -26,7 +27,6 @@ module.exports = function (env = {}) {
             template: path.resolve(__dirname, './src/style.hbs'),
         }),
     ];
-    const isProd = !!env.prod;
 
     return {
         context: path.resolve(__dirname, '.'),
@@ -43,6 +43,7 @@ module.exports = function (env = {}) {
         entry: {
             app: path.resolve(__dirname, './src/app/index.js'),
         },
+        mode: isProd ? 'production' : 'development',
         module: {
             rules: [{
                 test: /\.js$/, // does the file end with '.js' ?
@@ -95,5 +96,9 @@ module.exports = function (env = {}) {
             publicPath: './',
         },
         plugins: plugins,
+        stats: {
+            exclude: ['node_modules'],
+            maxModules: 45, //Infinity
+        },
     };
 };
