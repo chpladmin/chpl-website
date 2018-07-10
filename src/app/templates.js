@@ -20,7 +20,6 @@ ctxs.forEach(obj => {
         function ($templateCache) {
             obj.ctx.keys().forEach(key => {
                 $templateCache.put(key.replace('./', `${ obj.module }/`), obj.ctx(key));
-                console.log(key.replace('./', `${ obj.module }/`));
             });
         }
     ]);

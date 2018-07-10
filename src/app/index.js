@@ -9,11 +9,12 @@ import angularLoadingBar from 'angular-loading-bar';
 import angulartics from 'angulartics';
 import angularticsGoogleTagManager from 'angulartics-google-tag-manager';
 import googlechart from 'angular-google-chart';
-//import ngAnimate from 'ngAnimate';
-//import ngAria from 'ngAria';
+import ngAnimate from 'angular-animate';
+import ngAria from 'angular-aria';
 import ngCsv from 'ng-csv';
 import ngIdle from 'ng-idle';
-//import cytoscape from 'cytoscape';
+import cytoscape from 'cytoscape';
+import ngCytoscape from './lib/ngCytoscape.min';
 //import ngMessages from 'ngMessages';
 import ngResource from 'angular-resource';
 import ngRoute from 'angular-route';
@@ -65,9 +66,9 @@ const dependencies = [
     'chpl.search',
     'chpl.services',
     'googlechart',
-    //    'ngAnimate',
-    //    'ngAria',
-    //'ngCytoscape',
+    'ngAnimate',
+    'ngAria',
+    'ngCytoscape',
     //    'ngMessages',
     'ngFileSaver',
     'ngResource',
