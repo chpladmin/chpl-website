@@ -13,19 +13,9 @@ process.env.CHROME_BIN = require('puppeteer').executablePath()
 
 module.exports = function(config) {
     var configuration = {
-        files: [
-            //'src/app/index.js',
-            'src/app/specs.js',
-            //'src/app/**/*.spec.js',
-        ],
         browserDisconnectTimeout: 60000,
         browserNoActivityTimeout: 60000,
         browserDisconnectTolerance: 10,
-        preprocessors: {
-            //'src/app/index.js': ['webpack'],
-            'src/app/specs.js': ['webpack'],
-            //'src/app/**/*.spec.js': ['babel'],
-        },
         logLevel: 'WARN',
         frameworks: ['phantomjs-shim', 'jasmine'],
         browsers : ['PhantomJS', 'ChromeHeadless'],
@@ -37,6 +27,20 @@ module.exports = function(config) {
             '/assets/': path.join('/base/', conf.paths.src, '/assets/')
         },
     };
+
+    /*************************
+     * Files and preprocessors configurations
+     * The first section is the way all of the examples online are the way it "should" work, but no tests run
+     * The second is a way to run the tests, but they all fail, I think because they don't have "angular" as an import;
+     * they should, I think, because they're under the specs.js, which imports index.js, which has angular, but it doesn't seem to work.
+     *************************/
+    // Use this section when using specs.js, the way it _should_ work
+    configuration.files = ['src/app/specs.js'];
+    configuration.preprocessors = { 'src/app/specs.js': ['webpack'] }
+    // Use this to show that something does happen, but the spec files don't have access to angular the way they should (I think)
+    //configuration.files = ['src/app/index.js', 'src/app/**/*.spec.js'];
+    //configuration.preprocessors = { 'src/app/index.js': ['webpack'], 'src/app/**/*.spec.js': ['babel'] };
+
     configuration.webpack.plugins = [];
     config.set(configuration);
 };

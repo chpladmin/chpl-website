@@ -50,6 +50,14 @@ module.exports = function (env = {}) {
                 use: 'babel-loader', // then use babel loader
                 exclude: /node_modules/, // unless it's in node_modules
             },{
+                test: /\.js$|\.jsx$/,
+                use: {
+                    loader: 'istanbul-instrumenter-loader',
+                    options: { esModules: true }
+                },
+                enforce: 'post',
+                exclude: /node_modules|\.spec\.js$/,
+            },{
                 test: /\.hbs$/,
                 use: 'handlebars-loader',
             },{

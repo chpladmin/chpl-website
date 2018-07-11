@@ -5,5 +5,5 @@ import './index';
 import 'angular-mocks';
 // ... import any other helpers or test dependencies
 
-const testsContext = require.context('./', true, /spec$/)
-testsContext.keys().forEach(testsContext)
+const tests = require.context('./', true, /spec\.js$/)
+tests.keys().forEach(tests)

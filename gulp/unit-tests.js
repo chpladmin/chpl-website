@@ -12,15 +12,14 @@ var Server = require('karma').Server;
 //];
 
 function runTests (singleRun, done) {
-    //var reporters = ['mocha', 'junit', 'html', 'coverage'];
+    //var reporters = ['mocha', 'junit', 'html', 'coverage-istanbul'];
     var reporters = ['mocha', 'junit', 'html'];
     if (!singleRun) { reporters.push('super-dots'); }
-    /*
-    var preprocessors = {};
-    pathSrcJs.forEach(function(path) {
-        preprocessors[path] = ['coverage'];
-    });
-     */
+
+//    var preprocessors = {};
+//    pathSrcJs.forEach(function(path) {
+//        preprocessors[path] = ['coverage'];
+//    });
 
     var localConfig = {
         configFile: path.join(__dirname, './../karma.conf.js'),
@@ -30,6 +29,13 @@ function runTests (singleRun, done) {
         reportSlowerThan: 300,
         reporters: reporters,
         //preprocessors: preprocessors,
+        /*
+        coverageIstanbulReporter: {
+            reports: [ 'text-summary' ],
+            fixWebpackSourcePaths: true,
+        },
+         */
+        /*
         coverageReporter: {
             dir: 'test_reports/coverage',
             reporters: [
@@ -37,6 +43,7 @@ function runTests (singleRun, done) {
                 { type: 'text-summary' }
             ]
         },
+         */
         htmlReporter: {
             groupSuites: true,
             outputFile: 'test_reports/units.html',
