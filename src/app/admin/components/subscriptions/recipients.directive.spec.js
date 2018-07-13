@@ -8,7 +8,7 @@
             acbs: [{id: 1, name: 'fake'}],
         };
         mock.fakeModalOptions = {
-            templateUrl: 'app/admin/components/subscriptions/recipient.html',
+            templateUrl: 'chpl.admin/components/subscriptions/recipient.html',
             controller: 'RecipientController',
             controllerAs: 'vm',
             animation: false,

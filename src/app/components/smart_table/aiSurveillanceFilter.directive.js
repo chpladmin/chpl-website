@@ -22,7 +22,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/aiSurveillanceFilter.html',
+            templateUrl: 'chpl.components/smart_table/aiSurveillanceFilter.html',
         }
     }
 

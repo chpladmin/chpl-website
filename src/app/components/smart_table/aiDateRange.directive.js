@@ -21,7 +21,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/aiDateRange.html',
+            templateUrl: 'chpl.components/smart_table/aiDateRange.html',
         }
     }
 

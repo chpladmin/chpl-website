@@ -28,7 +28,7 @@
             dismiss: function (type) { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
-            templateUrl: 'app/components/certificationStatus/certificationStatus.html',
+            templateUrl: 'chpl.components/certificationStatus/certificationStatus.html',
             controller: 'CertificationStatusController',
             controllerAs: 'vm',
             animation: false,

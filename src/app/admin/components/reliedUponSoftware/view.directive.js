@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/reliedUponSoftware/view.html',
+                templateUrl: 'chpl.admin/components/reliedUponSoftware/view.html',
                 bindToController: {
                     additionalSoftware: '=?',
                     isEditing: '=?',
@@ -38,7 +38,7 @@
 
         function addItem () {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/reliedUponSoftware/edit.html',
+                templateUrl: 'chpl.admin/components/reliedUponSoftware/edit.html',
                 controller: 'EditAdditionalSoftwareController',
                 controllerAs: 'vm',
                 animation: false,
@@ -81,7 +81,7 @@
 
         function editItem (sw, index) {
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/reliedUponSoftware/edit.html',
+                templateUrl: 'chpl.admin/components/reliedUponSoftware/edit.html',
                 controller: 'EditAdditionalSoftwareController',
                 controllerAs: 'vm',
                 animation: false,

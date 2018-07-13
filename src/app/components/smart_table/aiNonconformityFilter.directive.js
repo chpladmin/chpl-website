@@ -19,7 +19,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&?',
             },
-            templateUrl: 'app/components/smart_table/aiNonconformityFilter.html',
+            templateUrl: 'chpl.components/smart_table/aiNonconformityFilter.html',
         }
     }
 

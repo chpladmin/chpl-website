@@ -106,7 +106,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/surveillance/requirement/edit.html',
+                    templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
                     controller: 'EditRequirementController',
                     controllerAs: 'vm',
                     animation: false,
@@ -232,7 +232,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/surveillance/requirement/edit.html',
+                    templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
                     controller: 'EditRequirementController',
                     controllerAs: 'vm',
                     animation: false,
@@ -305,7 +305,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/surveillance/nonconformity/inspect.html',
+                    templateUrl: 'chpl.admin/components/surveillance/nonconformity/inspect.html',
                     controller: 'NonconformityInspectController',
                     controllerAs: 'vm',
                     animation: false,

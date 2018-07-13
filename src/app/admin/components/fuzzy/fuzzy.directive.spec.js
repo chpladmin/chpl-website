@@ -73,7 +73,7 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'app/admin/components/fuzzy/edit.html',
+                        templateUrl: 'chpl.admin/components/fuzzy/edit.html',
                         controller: 'FuzzyEditController',
                         controllerAs: 'vm',
                         animation: false,

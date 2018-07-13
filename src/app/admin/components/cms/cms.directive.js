@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/cms/cms.html',
+                templateUrl: 'chpl.admin/components/cms/cms.html',
                 scope: {},
                 bindToController: {
                     //admin: '='

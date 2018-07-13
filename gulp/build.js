@@ -8,25 +8,25 @@ var $ = require('gulp-load-plugins')({
     pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
 });
 
-gulp.task('partials', function () {
-    return gulp.src([
-        path.join(conf.paths.src, '/app/**/*.html'),
-        path.join(conf.paths.tmp, '/serve/app/**/*.html')
-    ])
-        .pipe($.htmlmin({
-            removeEmptyAttributes: true,
-            removeAttributeQuotes: true,
-            collapseBooleanAttributes: true,
-            collapseWhitespace: true
-        }))
-        .pipe($.angularTemplatecache('templateCacheHtml.js', {
-            module: 'chpl',
-            root: 'app'
-        }))
-        .pipe(gulp.dest(conf.paths.tmp + '/partials/'));
-});
+//gulp.task('partials', function () {
+//    return gulp.src([
+//        path.join(conf.paths.src, '/app/**/*.html'),
+//        path.join(conf.paths.tmp, '/serve/app/**/*.html')
+//    ])
+//        .pipe($.htmlmin({
+//            removeEmptyAttributes: true,
+//            removeAttributeQuotes: true,
+//            collapseBooleanAttributes: true,
+//            collapseWhitespace: true
+//        }))
+//        .pipe($.angularTemplatecache('templateCacheHtml.js', {
+//            module: 'chpl',
+//            root: 'app'
+//        }))
+//        .pipe(gulp.dest(conf.paths.tmp + '/partials/'));
+//});
 
-gulp.task('html', ['inject', 'partials'], function () {
+gulp.task('html', ['inject'], function () {
     var partialsInjectFile = gulp.src(path.join(conf.paths.tmp, '/partials/templateCacheHtml.js'), { read: false });
     var partialsInjectOptions = {
         starttag: '<!-- inject:partials -->',
@@ -95,4 +95,4 @@ gulp.task('clean', function () {
     return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
 
-gulp.task('build', ['html', 'fonts', 'other']);
+gulp.task('build', ['html', 'fonts', 'other', 'bundle:prod']);

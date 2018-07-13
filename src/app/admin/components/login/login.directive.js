@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/login/login.html',
+            templateUrl: 'chpl.admin/components/login/login.html',
             scope: {
             },
             bindToController: {

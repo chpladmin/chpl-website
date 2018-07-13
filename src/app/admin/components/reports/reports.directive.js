@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/reports/reports.html',
+                templateUrl: 'chpl.admin/components/reports/reports.html',
                 bindToController: {
                     workType: '=',
                     productId: '=',
@@ -287,7 +287,7 @@
 
         function compareSurveillances (oldS, newS) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/reports/compareSurveillanceRequirements.html',
+                templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
                 controller: 'CompareSurveillanceRequirementsController',
                 controllerAs: 'vm',
                 animation: false,

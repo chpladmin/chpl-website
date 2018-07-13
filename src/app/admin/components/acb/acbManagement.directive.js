@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/acb/acbManagement.html',
+            templateUrl: 'chpl.admin/components/acb/acbManagement.html',
             bindToController: {
                 workType: '=?',
                 activeAcb: '=?',
@@ -42,7 +42,7 @@
 
         function createAcb () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/acb/acbEdit.html',
+                templateUrl: 'chpl.admin/components/acb/acbEdit.html',
                 controller: 'EditAcbController',
                 controllerAs: 'vm',
                 animation: false,
@@ -65,7 +65,7 @@
 
         function editAcb (acb) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/acb/acbEdit.html',
+                templateUrl: 'chpl.admin/components/acb/acbEdit.html',
                 controller: 'EditAcbController',
                 controllerAs: 'vm',
                 animation: false,

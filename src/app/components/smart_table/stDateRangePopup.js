@@ -10,7 +10,7 @@
                     before: '=',
                     after: '=',
                 },
-                templateUrl: 'app/components/smart_table/stDateRangePopup.html',
+                templateUrl: 'chpl.components/smart_table/stDateRangePopup.html',
                 link: function (scope, element, attr, table) {
                     var inputs = element.find('input');
                     var inputBefore = angular.element(inputs[0]);

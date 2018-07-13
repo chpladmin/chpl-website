@@ -19,7 +19,7 @@
             dismiss: function (type) { this.result.cancelCallback(type); },
         };
         mock.fakeModalOptions = {
-            templateUrl: 'app/product/history/history.html',
+            templateUrl: 'chpl.product/history/history.html',
             controller: 'ProductHistoryController',
             controllerAs: 'vm',
             animation: false,

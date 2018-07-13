@@ -17,7 +17,7 @@ gulp.task('bundle', function() {
 });
 
 gulp.task('bundle:prod', function() {
-    const config = webpackMerge(webpackConfig(), { prod: true });
+    const config = webpackMerge(webpackConfig({ prod: true }), { watch: true });
     return webpack(config, function(err, stats) {
 	if(err) throw new gutil.PluginError('webpack', err);
 	gutil.log('[webpack]', stats.toString({

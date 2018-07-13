@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/surveillance/surveillance.html',
+            templateUrl: 'chpl.components/surveillance/surveillance.html',
             scope: {},
             bindToController: {
                 allowEditing: '=',
@@ -45,7 +45,7 @@
         function editSurveillance (surveillance) {
             fixRequirementOptions();
             vm.uibModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/edit.html',
+                templateUrl: 'chpl.admin/components/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,
@@ -109,7 +109,7 @@
         function initiateSurveillance () {
             fixRequirementOptions();
             vm.uibModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/edit.html',
+                templateUrl: 'chpl.admin/components/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,

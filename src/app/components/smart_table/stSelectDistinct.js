@@ -23,7 +23,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/stSelectDistinct.html',
+            templateUrl: 'chpl.components/smart_table/stSelectDistinct.html',
         }
     }
 

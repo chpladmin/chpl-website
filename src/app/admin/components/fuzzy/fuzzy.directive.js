@@ -14,7 +14,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/admin/components/fuzzy/fuzzy.html',
+            templateUrl: 'chpl.admin/components/fuzzy/fuzzy.html',
         };
         return directive;
     }
@@ -35,7 +35,7 @@
 
         function edit (type) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/fuzzy/edit.html',
+                templateUrl: 'chpl.admin/components/fuzzy/edit.html',
                 controller: 'FuzzyEditController',
                 controllerAs: 'vm',
                 animation: false,

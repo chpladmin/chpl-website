@@ -33,7 +33,7 @@
                 registerRestoreState: '&',
                 registerShowRetired: '&?',
             },
-            templateUrl: 'app/components/smart_table/stListMultiple.html',
+            templateUrl: 'chpl.components/smart_table/stListMultiple.html',
         }
     }
 

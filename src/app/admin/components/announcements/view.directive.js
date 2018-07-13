@@ -13,7 +13,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/admin/components/announcements/view.html',
+            templateUrl: 'chpl.admin/components/announcements/view.html',
         };
     }
 
@@ -35,7 +35,7 @@
 
         function create () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/announcements/edit.html',
+                templateUrl: 'chpl.admin/components/announcements/edit.html',
                 controller: 'AnnouncementEditController',
                 controllerAs: 'vm',
                 animation: false,
@@ -62,7 +62,7 @@
 
         function edit (a, index) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/announcements/edit.html',
+                templateUrl: 'chpl.admin/components/announcements/edit.html',
                 controller: 'AnnouncementEditController',
                 controllerAs: 'vm',
                 animation: false,

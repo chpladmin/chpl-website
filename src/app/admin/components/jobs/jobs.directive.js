@@ -15,7 +15,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/admin/components/jobs/jobs.html',
+            templateUrl: 'chpl.admin/components/jobs/jobs.html',
         };
         return directive;
     }

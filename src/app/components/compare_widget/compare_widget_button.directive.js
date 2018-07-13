@@ -13,7 +13,7 @@
                 productId: '@',
                 productName: '@',
             },
-            templateUrl: 'app/components/compare_widget/compare_widget_button.html',
+            templateUrl: 'chpl.components/compare_widget/compare_widget_button.html',
             link: function (scope, el, attrs, widgetController) {
                 scope.toggleProduct = function (id, name) {
                     widgetController.toggleProduct(id, name);

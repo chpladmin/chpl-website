@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/util/ellipsis.html',
+            templateUrl: 'chpl.components/util/ellipsis.html',
             bindToController: {
                 text: '@',
                 maxLength: '@?',

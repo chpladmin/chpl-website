@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/user/userManagement.html',
+                templateUrl: 'chpl.admin/components/user/userManagement.html',
                 scope: {},
                 bindToController: {
                     acbId: '@',
@@ -46,7 +46,7 @@
 
         function updateUser (user) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/user/edit.html',
+                templateUrl: 'chpl.admin/components/user/edit.html',
                 controller: 'EditUserController',
                 controllerAs: 'vm',
                 animation: false,
@@ -70,7 +70,7 @@
 
         function inviteUser () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/user/edit.html',
+                templateUrl: 'chpl.admin/components/user/edit.html',
                 controller: 'EditUserController',
                 controllerAs: 'vm',
                 animation: false,

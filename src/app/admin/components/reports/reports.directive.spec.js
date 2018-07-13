@@ -338,7 +338,7 @@
                     var modalOptions, newS, oldS;
                     beforeEach(function () {
                         modalOptions = {
-                            templateUrl: 'app/admin/components/reports/compareSurveillanceRequirements.html',
+                            templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
                             controller: 'CompareSurveillanceRequirementsController',
                             controllerAs: 'vm',
                             animation: false,

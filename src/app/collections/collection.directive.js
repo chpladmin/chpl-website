@@ -21,7 +21,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/collections/collection.html',
+            templateUrl: 'chpl.collections/collection.html',
             transclude: {
                 aiBodyText: 'aiBodyText',
                 aiFooterText: '?aiFooterText',

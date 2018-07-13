@@ -27,6 +27,13 @@ module.exports = function (env = {}) {
             template: path.resolve(__dirname, './src/style.hbs'),
         }),
     ];
+    if (isProd) {
+        plugins.push(
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify('production')
+            })
+        );
+    }
 
     return {
         context: path.resolve(__dirname, '.'),
@@ -42,8 +49,10 @@ module.exports = function (env = {}) {
         devtool: isProd ? 'source-map' : 'eval-source-map',
         entry: {
             app: path.resolve(__dirname, './src/app/index.js'),
+            vendor: ['angular'],
         },
         mode: isProd ? 'production' : 'development',
+        //mode: 'development',
         module: {
             rules: [{
                 test: /\.js$/, // does the file end with '.js' ?
@@ -104,9 +113,9 @@ module.exports = function (env = {}) {
             publicPath: './',
         },
         plugins: plugins,
-        stats: {
-            exclude: ['node_modules'],
-            maxModules: 45, //Infinity
-        },
+//        stats: {
+//            exclude: ['node_modules'],
+//            maxModules: 45, //Infinity
+//        },
     };
 };

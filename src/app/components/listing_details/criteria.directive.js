@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/listing_details/criteria.html',
+            templateUrl: 'chpl.components/listing_details/criteria.html',
             bindToController: {
                 accessibilityStandards: '=?',
                 cert: '=',
@@ -46,7 +46,7 @@
         function editCert () {
             var backupCert = angular.copy(vm.cert);
             vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/criteriaModal.html',
+                templateUrl: 'chpl.components/listing_details/criteriaModal.html',
                 controller: 'EditCertificationCriteriaController',
                 controllerAs: 'vm',
                 animation: false,
