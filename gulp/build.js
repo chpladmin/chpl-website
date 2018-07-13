@@ -27,19 +27,19 @@ var $ = require('gulp-load-plugins')({
 //});
 
 gulp.task('html', ['inject'], function () {
-    var partialsInjectFile = gulp.src(path.join(conf.paths.tmp, '/partials/templateCacheHtml.js'), { read: false });
-    var partialsInjectOptions = {
-        starttag: '<!-- inject:partials -->',
-        ignorePath: path.join(conf.paths.tmp, '/partials'),
-        addRootSlash: false
-    };
+    //var partialsInjectFile = gulp.src(path.join(conf.paths.tmp, '/partials/templateCacheHtml.js'), { read: false });
+    //var partialsInjectOptions = {
+//        starttag: '<!-- inject:partials -->',
+//        ignorePath: path.join(conf.paths.tmp, '/partials'),
+//        addRootSlash: false
+//    };
 
     var htmlFilter = $.filter('*.html', { restore: true });
     var jsFilter = $.filter('**/*.js', { restore: true });
     var cssFilter = $.filter('**/*.css', { restore: true });
 
     return gulp.src(path.join(conf.paths.tmp, '/serve/*.html'))
-        .pipe($.inject(partialsInjectFile, partialsInjectOptions))
+        //.pipe($.inject(partialsInjectFile, partialsInjectOptions))
         .pipe($.useref())
         .pipe(jsFilter)
         .pipe($.sourcemaps.init())

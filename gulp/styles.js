@@ -16,7 +16,7 @@ var reporter = require('postcss-reporter');
 var stylelint = require('stylelint');
 var scss = require('postcss-scss');
 
-gulp.task('styles-reload', ['styles'], function() {
+gulp.task('styles-reload', ['lint-styles'], function() {
     return buildStyles()
         .pipe(browserSync.stream());
 });

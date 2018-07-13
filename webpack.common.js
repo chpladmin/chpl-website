@@ -1,0 +1,103 @@
+const webpack = require('webpack');
+const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate')
+
+const plugins = [
+    new CleanWebpackPlugin(['dist']),
+    new HtmlWebpackPlugin({
+        chunks: ['app', 'vendor'],
+        filename: path.resolve(__dirname, './src/index.html'),
+        hash: true,
+        inject: 'body',
+        template: path.resolve(__dirname, './src/index.hbs'),
+    }),
+    new HtmlWebpackPlugin({
+        chunks: ['app', 'vendor'],
+        filename: path.resolve(__dirname, './src/error.html'),
+        hash: true,
+        inject: 'body',
+        template: path.resolve(__dirname, './src/error.hbs'),
+    }),
+    new HtmlWebpackPlugin({
+        chunks: ['app', 'vendor'],
+        filename: path.resolve(__dirname, './src/style.html'),
+        hash: true,
+        inject: 'body',
+        template: path.resolve(__dirname, './src/style.hbs'),
+    }),
+];
+
+module.exports = {
+    context: path.resolve(__dirname, '.'),
+    entry: {
+        app: path.resolve(__dirname, './src/app/index.js'),
+        vendor: ['angular'],
+    },
+    mode: 'development',
+    module: {
+        rules: [{
+            test: /\.js$/, // does the file end with '.js' ?
+            use: {
+                loader: 'babel-loader', // then use babel loader
+                options: {
+                    plugins: [BabelPluginAngularjsAnnotate],
+                },
+            },
+            exclude: /node_modules/, // unless it's in node_modules
+        },{
+            test: /\.js$|\.jsx$/,
+            use: {
+                loader: 'istanbul-instrumenter-loader',
+                options: { esModules: true }
+            },
+            enforce: 'post',
+            exclude: /node_modules|\.spec\.js$/,
+        },{
+            test: /\.hbs$/,
+            use: 'handlebars-loader',
+        },{
+            test: /\.html$/,
+            use: 'html-loader',
+        },{
+            test: /\.png$/,
+            use: [ 'url-loader?mimetype=image/png' ],
+        },{
+            test: /\.scss$/,
+            use: [{
+                loader: 'style-loader', // inject CSS to page
+            },{
+                loader: 'css-loader', // translates CSS into CommonJS modules
+            },{
+                loader: 'postcss-loader', // Run post css actions
+                options: {
+                    plugins: function () { // post css plugins, can be exported to postcss.config.js
+                        return [
+                            require('precss'),
+                            require('autoprefixer')
+                        ];
+                    }
+                }
+            },{
+                loader: 'sass-loader' // compiles Sass to CSS
+            }],
+        }],
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+		vendor: {
+		    chunks: 'all',
+		    name: 'vendor',
+		    test: /node_modules/,
+		},
+            },
+        },
+    },
+    output: {
+        filename: '[name].js',
+        publicPath: './',
+    },
+    plugins: plugins,
+};

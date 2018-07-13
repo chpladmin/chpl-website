@@ -3,11 +3,7 @@
 var path = require('path');
 var conf = require('./gulp/conf');
 
-var webpackConfig = require('./webpack.config');
-const webpackMerge = require('webpack-merge');
-const webpackTestConfig = webpackMerge(webpackConfig({prod: false}), {
-    entry: './src/app/specs.js',
-});
+const webpackConfig = require('./webpack.dev');
 
 process.env.CHROME_BIN = require('puppeteer').executablePath()
 
@@ -19,7 +15,7 @@ module.exports = function(config) {
         logLevel: 'WARN',
         frameworks: ['phantomjs-shim', 'jasmine'],
         browsers : ['PhantomJS', 'ChromeHeadless'],
-        webpack: webpackTestConfig,
+        webpack: webpackConfig,
         webpackMiddleware: {
             noInfo: true
         },
