@@ -17,4 +17,8 @@ module.exports = merge(common, {
     output: {
         path: path.resolve(__dirname, '.tmp/serve/'),
     },
+    watch: true,
+    watchOptions: {
+        ignored: ['node_modules', 'src/*.html'],
+    },
 });

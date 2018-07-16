@@ -3,12 +3,12 @@
  *  The list of variables are listed here bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
  */
 $navbar-inverse-link-color: #5aadbb;
-$icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
-$fa-font-path: "../../bower_components/font-awesome/fonts";
-//@import "~bootstrap/scss/bootstrap";
-@import "../../bower_components/angular-loading-bar/build/loading-bar.min.css";
-@import "../../bower_components/angular-swagger-ui/dist/css/swagger-ui.min.css";
-@import "../../bower_components/font-awesome/scss/font-awesome.scss";
+$icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+$fa-font-path: "../../node_modules/font-awesome/fonts";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~angular-loading-bar/build/loading-bar.min";
+@import "~angular-swagger-ui/dist/css/swagger-ui.min";
+@import "~font-awesome/scss/font-awesome.scss";
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,300|Lato:400,300,300italic");
 
 /**

@@ -2,10 +2,10 @@ const webpack = require('webpack');
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate')
+const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
 
 const plugins = [
-    new CleanWebpackPlugin(['dist']),
+    //new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
         chunks: ['app', 'vendor'],
         filename: path.resolve(__dirname, './src/index.html'),
@@ -26,7 +26,7 @@ const plugins = [
         hash: true,
         inject: 'body',
         template: path.resolve(__dirname, './src/style.hbs'),
-    }),
+    })
 ];
 
 module.exports = {
@@ -47,14 +47,6 @@ module.exports = {
             },
             exclude: /node_modules/, // unless it's in node_modules
         },{
-            test: /\.js$|\.jsx$/,
-            use: {
-                loader: 'istanbul-instrumenter-loader',
-                options: { esModules: true }
-            },
-            enforce: 'post',
-            exclude: /node_modules|\.spec\.js$/,
-        },{
             test: /\.hbs$/,
             use: 'handlebars-loader',
         },{
@@ -64,23 +56,74 @@ module.exports = {
             test: /\.png$/,
             use: [ 'url-loader?mimetype=image/png' ],
         },{
-            test: /\.scss$/,
+            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            use: {
+                loader: "url-loader?limit=10000&mimetype=application/font-woff",
+                options: {
+                    name: '[path][name].[ext]',
+                },
+            },
+        },{
+            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            use: {
+                loader: "url-loader?limit=10000&mimetype=application/font-woff",
+                options: {
+                    name: '[path][name].[ext]',
+                },
+            },
+        },{
+            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            use: {
+                loader: "url-loader?limit=10000&mimetype=application/octet-stream",
+                options: {
+                    name: '[path][name].[ext]',
+                },
+            },
+        },{
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            use: {
+                loader: "file-loader",
+                options: {
+                    name: '[path][name].[ext]',
+                },
+            },
+        },{
+            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            use: {
+                loader: "url-loader?limit=10000&mimetype=image/svg+xml",
+                options: {
+                    name: '[path][name].[ext]',
+                },
+            },
+        },{
+            test: /\.(s*)css$/, ///\.scss$/,
             use: [{
                 loader: 'style-loader', // inject CSS to page
+                options: {
+                    sourceMap: true,
+                },
             },{
-                loader: 'css-loader', // translates CSS into CommonJS modules
+                loader: 'css-loader',
+                options: {
+                    sourceMap: true,
+                },
             },{
                 loader: 'postcss-loader', // Run post css actions
                 options: {
                     plugins: function () { // post css plugins, can be exported to postcss.config.js
                         return [
+                            require('postcss-import'),
                             require('precss'),
-                            require('autoprefixer')
+                            require('autoprefixer'),
                         ];
-                    }
+                    },
+                    sourceMap: true,
                 }
             },{
-                loader: 'sass-loader' // compiles Sass to CSS
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: true,
+                },
             }],
         }],
     },

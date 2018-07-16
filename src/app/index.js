@@ -1,6 +1,12 @@
-//import $ from 'jquery';
-//import _ from 'lodash';
-// other global deps
+// Import base SCSS file and then all SCSS files in directories
+import './index.scss';
+
+function importAll(r) {
+    r.keys().forEach(r);
+}
+importAll(
+    require.context('./', true, /^.*\/.*\.scss$/)
+);
 
 import angular from 'angular';
 import angularConfirm from 'angular-confirm';
