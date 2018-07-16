@@ -26,6 +26,6 @@
         $logProvider.debugEnabled(ENABLE_LOGGING);
 
         // Set smart-table pagination template
-        stConfig.pagination.template = 'app/components/smart_table/stPagination.html';
+        stConfig.pagination.template = 'chpl.components/smart_table/stPagination.html';
     }
 })();
