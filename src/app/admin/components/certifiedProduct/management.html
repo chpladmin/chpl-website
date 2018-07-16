@@ -621,12 +621,12 @@
               <div class="panel-body" ng-if="vm.activeCP.id">
                 <span>
                   <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em><br />
-                  <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
-                  <strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br />
+                  <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br /></span>                  
+                  <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br /></span>
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
-                  <strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
+                  <span ng-if="vm.activeCP.certificationEdition.name === '2011' || (vm.activeCP.certificationEdition.name === '2014' && vm.activeCP.chplProductNumber.startsWith('CHP-'))"><strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br /></span>
                   <strong>Status:</strong> {{ vm.certificationStatus(vm.activeCP) }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
