@@ -5,7 +5,6 @@ test_reports/
 .sass-cache/
 .idea/
 .tmp/
-src/app/index.constants.js
 .project
 .settings/
 /features/components/nav/nav.login.steps.js

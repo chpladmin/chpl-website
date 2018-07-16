@@ -93,5 +93,6 @@ const appModule = angular.module('chpl', dependencies);
 require('./index.route');
 require('./index.run');
 require('./templates');
+require('./index.config');
 
 export default appModule;
