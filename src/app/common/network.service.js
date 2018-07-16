@@ -62,6 +62,7 @@
             getIcsFamily: getIcsFamily,
             getListingCountStatistics: getListingCountStatistics,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
+            getNonconformityStatisticsCount: getNonconformityStatisticsCount,
             getScheduleTriggers: getScheduleTriggers,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
@@ -403,6 +404,10 @@
 
         function getMeaningfulUseUsersAccurateAsOfDate () {
             return apiGET('/meaningful_use/accurate_as_of');
+        }
+
+        function getNonconformityStatisticsCount () {
+            return apiGET('/statistics/nonconformity_criteria_count');
         }
 
         function getScheduleTriggers () {

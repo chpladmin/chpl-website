@@ -12,6 +12,7 @@
           <li role="presentation" ng-class="{'active': vm.chartState.tab === 'product'}"><a ng-click="vm.chartState.tab = 'product'">Unique Product charts</a></li>
           <li role="presentation" ng-class="{'active': vm.chartState.tab === 'developer'}"><a ng-click="vm.chartState.tab = 'developer'">Developer charts</a></li>
           <li role="presentation" ng-class="{'active': vm.chartState.tab === 'sed'}"><a ng-click="vm.chartState.tab = 'sed'">SED Participant charts</a></li>
+          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'nonconformity'}"><a ng-click="vm.chartState.tab = 'nonconformity'">Nonconformity charts</a></li>
         </ul>
       </div>
     </div>
@@ -91,6 +92,22 @@
       <div class="row">
         <div class="col-sm-12">
           <div google-chart="" chart="vm.participantProductExperienceCounts" class="column-chart"></div>
+        </div>
+      </div>
+    </div>
+    <div ng-if="vm.chartState.tab === 'nonconformity'">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="nav nav-tabs">
+            <li role="presentation" ng-class="{'active': vm.chartState.nonconformityType === 'all'}"><a ng-click="vm.chartState.nonconformityType = 'all'">All Criteria</a></li>
+            <li role="presentation" ng-class="{'active': vm.chartState.nonconformityType === 2014}"><a ng-click="vm.chartState.nonconformityType = 2014">2014 Criteria</a></li>
+            <li role="presentation" ng-class="{'active': vm.chartState.nonconformityType === 2015}"><a ng-click="vm.chartState.nonconformityType = 2015">2015 Criteria</a></li>
+            <li role="presentation" ng-class="{'active': vm.chartState.nonconformityType === 'program'}"><a ng-click="vm.chartState.nonconformityType = 'program'">Program Criteria</a></li>
+          </ul>
+          <div ng-if="vm.chartState.nonconformityType === 'all'" google-chart="" chart="vm.nonconformityCounts['all']" class="column-chart"></div>
+          <div ng-if="vm.chartState.nonconformityType === 2014" google-chart="" chart="vm.nonconformityCounts[2014]" class="column-chart"></div>
+          <div ng-if="vm.chartState.nonconformityType === 2015" google-chart="" chart="vm.nonconformityCounts[2015]" class="column-chart"></div>
+          <div ng-if="vm.chartState.nonconformityType === 'program'" google-chart="" chart="vm.nonconformityCounts['program']" class="column-chart"></div>
         </div>
       </div>
     </div>
