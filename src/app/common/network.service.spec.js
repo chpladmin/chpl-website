@@ -69,6 +69,19 @@
             $httpBackend.flush();
         });
 
+        it('should return a promise with the data if a DELETE responds with a failure', function () {
+            $httpBackend.expectDELETE(/schedules\/triggers\/CACHE_STATUS_AGE_NOTIFICATION\/something/).respond(500, 'response');
+            networkService.deleteScheduleTrigger({
+                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                name: 'something',
+            }).then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            });
+            $httpBackend.flush();
+        });
+
         it('should addRole', function () {
             $httpBackend.expectPOST(/users\/grant_role/, 'payload').respond(200, {data: 'response'});
             networkService.addRole('payload').then(function (response) {
@@ -157,6 +170,14 @@
             $httpBackend.flush();
         });
 
+        it('should createScheduleTrigger', function () {
+            $httpBackend.expectPOST(/schedules\/triggers/).respond(200, {data: 'response'});
+            networkService.createScheduleTrigger({email: 'something'}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should deleteACB', function () {
             $httpBackend.expectPOST(/acbs\/1\/delete/).respond(200, {data: 'response'});
             networkService.deleteACB(1).then(function (response) {
@@ -205,9 +226,20 @@
             $httpBackend.flush();
         });
 
+        it('should deleteScheduleTrigger', function () {
+            $httpBackend.expectDELETE(/schedules\/triggers\/CACHE_STATUS_AGE_NOTIFICATION\/something/).respond(200);
+            networkService.deleteScheduleTrigger({
+                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                name: 'something',
+            }).then(function (response) {
+                expect(response.status).toEqual(200);
+            });
+            $httpBackend.flush();
+        });
+
         it('should deleteSurveillance', function () {
             $httpBackend.expectPOST(/surveillance\/1\/delete/).respond(200, {data: 'response'});
-            networkService.deleteSurveillance(1).then(function (response) {
+            networkService.deleteSurveillance(1,'changeReason').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -475,6 +507,38 @@
             $httpBackend.flush();
         });
 
+        it('should getCorrectiveActionPlanActivity', function () {
+            var aDate = new Date();
+            $httpBackend.expectGET(/activity\/corrective_action_plans/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?start=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({startDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?end=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/activity\/corrective_action_plans\?start=\d+&end=\d+/).respond(200, {data: 'response'});
+            networkService.getCorrectiveActionPlanActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getCriterionProductStatistics', function () {
+            $httpBackend.expectGET(/statistics\/criterion_product/).respond(200, {data: 'response'});
+            networkService.getCriterionProductStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getCmsDownload', function () {
             $httpBackend.expectGET(/certification_ids/).respond(200, {data: 'response'});
             networkService.getCmsDownload().then(function (response) {
@@ -582,6 +646,22 @@
             $httpBackend.flush();
         });
 
+        it('should getFuzzyTypes', function () {
+            $httpBackend.expectGET(/data\/fuzzy_choices/).respond(200, {data: 'response'});
+            networkService.getFuzzyTypes().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getIncumbentDeveloperStatistics', function () {
+            $httpBackend.expectGET(/statistics\/incumbent_developers/).respond(200, {data: 'response'});
+            networkService.getIncumbentDevelopersStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getJobTypes', function () {
             $httpBackend.expectGET(/data\/job_types/).respond(200, {data: 'response'});
             networkService.getJobTypes().then(function (response) {
@@ -606,9 +686,65 @@
             $httpBackend.flush();
         });
 
+        it('should getListingCountStatistics', function () {
+            $httpBackend.expectGET(/statistics\/listing_count/).respond(200, {data: 'response'});
+            networkService.getListingCountStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getMeaningfulUseUsersAccurateAsOfDate', function () {
             $httpBackend.expectGET(/meaningful_use\/accurate_as_of/).respond(200, {data: 'response'});
             networkService.getMeaningfulUseUsersAccurateAsOfDate().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantAgeStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_age_count/).respond(200, {data: 'response'});
+            networkService.getParticipantAgeStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantComputerExperienceStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_computer_experience_count/).respond(200, {data: 'response'});
+            networkService.getParticipantComputerExperienceStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantEducationStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_education_count/).respond(200, {data: 'response'});
+            networkService.getParticipantEducationStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantGenderStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_gender_count/).respond(200, {data: 'response'});
+            networkService.getParticipantGenderStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantProductExperienceStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_product_experience_count/).respond(200, {data: 'response'});
+            networkService.getParticipantProductExperienceStatistics().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getParticipantProfessionalExperienceStatistics', function () {
+            $httpBackend.expectGET(/statistics\/participant_professional_experience_count/).respond(200, {data: 'response'});
+            networkService.getParticipantProfessionalExperienceStatistics().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -699,6 +835,14 @@
             $httpBackend.flush();
         });
 
+        it('should getScheduleTriggers', function () {
+            $httpBackend.expectGET(/schedules\/triggers/).respond(200, {data: 'response'});
+            networkService.getScheduleTriggers().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getSimpleProduct', function () {
             $httpBackend.expectGET(/products\/payload/).respond(200, {data: 'response'});
             networkService.getSimpleProduct('payload').then(function (response) {
@@ -715,17 +859,9 @@
             $httpBackend.flush();
         });
 
-        it('should getStatisticTypes', function () {
-            $httpBackend.expectGET(/data\/statistic_types/).respond(200, {data: 'response'});
-            networkService.getStatisticTypes().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getStatistics', function () {
-            $httpBackend.expectGET(/data\/statistics/).respond(200, {data: 'response'});
-            networkService.getStatistics().then(function (response) {
+        it('should getSedParticipantStatisticsCount', function () {
+            $httpBackend.expectGET(/statistics\/sed_participant_count/).respond(200, {data: 'response'});
+            networkService.getSedParticipantStatisticsCount().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -774,9 +910,25 @@
             $httpBackend.flush();
         });
 
+        it('should getTestData', function () {
+            $httpBackend.expectGET(/data\/test_data/).respond(200, {data: 'response'});
+            networkService.getTestData().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getTestFunctionality', function () {
             $httpBackend.expectGET(/data\/test_functionality/).respond(200, {data: 'response'});
             networkService.getTestFunctionality().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getTestProcedures', function () {
+            $httpBackend.expectGET(/data\/test_procedures/).respond(200, {data: 'response'});
+            networkService.getTestProcedures().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1166,6 +1318,14 @@
             $httpBackend.flush();
         });
 
+        it('should updateFuzzyType', function () {
+            $httpBackend.expectPOST(/data\/fuzzy_choices\/update/).respond(200, {data: 'response'});
+            networkService.updateFuzzyType('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should updateProduct', function () {
             $httpBackend.expectPOST(/products\/update/).respond(200, {data: 'response'});
             networkService.updateProduct('payload').then(function (response) {
@@ -1177,6 +1337,14 @@
         it('should updateRecipient', function () {
             $httpBackend.expectPOST(/notifications\/recipients\/1\/update/).respond(200, {data: 'response'});
             networkService.updateRecipient({id: 1}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateScheduleTrigger', function () {
+            $httpBackend.expectPUT(/schedules\/triggers/).respond(200, {data: 'response'});
+            networkService.updateScheduleTrigger({name: 'something'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

@@ -36,7 +36,6 @@
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
                     $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isAcbStaff = jasmine.createSpy('isAcbStaff');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
 
@@ -57,7 +56,9 @@
                     $delegate.getQmsStandards = jasmine.createSpy('getQmsStandards');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
                     $delegate.getTargetedUsers = jasmine.createSpy('getTargetedUsers');
+                    $delegate.getTestData = jasmine.createSpy('getTestData');
                     $delegate.getTestFunctionality = jasmine.createSpy('getTestFunctionality');
+                    $delegate.getTestProcedures = jasmine.createSpy('getTestProcedures');
                     $delegate.getTestStandards = jasmine.createSpy('getTestStandards');
                     $delegate.getTestTools = jasmine.createSpy('getTestTools');
                     $delegate.getUcdProcesses = jasmine.createSpy('getUcdProcesses');
@@ -86,7 +87,6 @@
                 authService.getApiKey.and.returnValue($q.when('fake api key'));
                 authService.getToken.and.returnValue($q.when('fake token'));
                 authService.isAcbAdmin.and.returnValue($q.when(true));
-                authService.isAcbStaff.and.returnValue($q.when(true));
                 authService.isChplAdmin.and.returnValue($q.when(true));
                 authService.isOncStaff.and.returnValue($q.when(true));
                 networkService = _networkService_;
@@ -103,7 +103,9 @@
                 networkService.getQmsStandards.and.returnValue($q.when([]));
                 networkService.getSearchOptions.and.returnValue($q.when({}));
                 networkService.getTargetedUsers.and.returnValue($q.when([]));
+                networkService.getTestData.and.returnValue($q.when({data: []}));
                 networkService.getTestFunctionality.and.returnValue($q.when({data: []}));
+                networkService.getTestProcedures.and.returnValue($q.when({data: []}));
                 networkService.getTestStandards.and.returnValue($q.when({data: []}));
                 networkService.getTestTools.and.returnValue($q.when([]));
                 networkService.getUcdProcesses.and.returnValue($q.when([]));
@@ -250,7 +252,6 @@
                     resolve: {
                         activeCP: jasmine.any(Function),
                         isAcbAdmin: jasmine.any(Function),
-                        isAcbStaff: jasmine.any(Function),
                         isChplAdmin: jasmine.any(Function),
                         resources: jasmine.any(Function),
                         workType: jasmine.any(Function),
@@ -269,7 +270,6 @@
                 expect($uibModal.open).toHaveBeenCalledWith(listingEditOptions);
                 expect(actualOptions.resolve.activeCP()).toEqual('');
                 actualOptions.resolve.isAcbAdmin().then(function (result) { expect(result).toEqual(true); });
-                actualOptions.resolve.isAcbStaff().then(function (result) { expect(result).toEqual(true); });
                 actualOptions.resolve.isChplAdmin().then(function (result) { expect(result).toEqual(true); });
                 expect(actualOptions.resolve.resources()).toEqual(vm.resources);
                 expect(actualOptions.resolve.workType()).toEqual(vm.workType);
@@ -409,6 +409,7 @@
                 expect(vm.getNumberOfSurveillanceToReject()).toBe(0);
             });
         });
+
         describe('inspecting a pending Surveillance', function () {
             var surveillanceInspectOptions;
             beforeEach(function () {
@@ -471,6 +472,42 @@
                 vm.inspectSurveillance({});
                 vm.modalInstance.dismiss('cancelled');
                 expect($log.info.logs.length).toBe(logCount + 1);
+            });
+        });
+
+        describe('when uploading surveillance activity', function () {
+            it('should tell the user how many activities were uploaded', function () {
+                vm.surveillanceUploadErrors = [2, 1];
+                vm.surveillanceUploadSuccess = false;
+                vm.surveillanceUploader.onSuccessItem({
+                    file: {
+                        name: 'name',
+                    },
+                }, {
+                    pendingSurveillance: [1,2],
+                });
+
+                expect(vm.surveillanceUploadMessage).toBe('File "name" was uploaded successfully. 2 pending surveillance records are ready for confirmation.');
+                expect(vm.surveillanceUploadErrors).toEqual([]);
+                expect(vm.surveillanceUploadSuccess).toBe(true);
+            });
+
+            it('should tell the user that a job was started when a lot of activities were in the file', function () {
+                vm.surveillanceUploadErrors = [2, 1];
+                vm.surveillanceUploadSuccess = false;
+                vm.surveillanceUploader.onSuccessItem({
+                    file: {
+                        name: 'name',
+                    },
+                }, {
+                    user: {
+                        email: 'fake@sample.com',
+                    },
+                });
+
+                expect(vm.surveillanceUploadMessage).toBe('File "name" was uploaded successfully. The file will be processed and an email will be sent to fake@sample.com when processing is complete.');
+                expect(vm.surveillanceUploadErrors).toEqual([]);
+                expect(vm.surveillanceUploadSuccess).toBe(true);
             });
         });
     });

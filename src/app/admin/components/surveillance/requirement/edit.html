@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="editRequirementLabel">
+<div role="modal" aria-labeled-by="edit-requirement-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,13 +6,13 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editRequirementLabel"><span ng-if="vm.workType === 'edit'">Edit</span><span ng-if="vm.workType === 'add'">Create</span> Requirement</h4>
+    <h4 class="modal-title" id="edit-requirement-label"><span ng-if="vm.workType === 'edit'">Edit</span><span ng-if="vm.workType === 'add'">Create</span> Requirement</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
-      <label for="requirementType" class="col-sm-3">Requirement Type <span class="text-danger">*</span></label>
+      <label for="requirement-type" class="col-sm-3">Requirement Type <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="vm.requirement.type" id="requirementType" name="requirementType"
+        <select class="input-sm form-control" ng-model="vm.requirement.type" id="requirement-type" name="requirementType"
                 ng-change="vm.requirement.requirement = ''"
                 ng-options="type as type.name for type in vm.data.surveillanceRequirementTypes.data | orderBy:'name'" required>
         </select>
@@ -20,27 +20,27 @@
       </div>
     </div>
     <div class="form-group" ng-if="vm.requirement.type.name === 'Certified Capability'">
-      <label for="requirement" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
+      <label for="requirement-capability" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="vm.requirement.requirement" id="requirement" name="requirement"
+        <select class="input-sm form-control" ng-model="vm.requirement.requirement" id="requirement-capability" name="requirement"
                 ng-options="type.name as type.name for type in vm.data.surveillanceRequirements.criteriaOptions | orderBy:vm.sortCriteria" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.requirement.$touched) && vm.editForm.requirement.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group" ng-if="vm.requirement.type.name === 'Transparency or Disclosure Requirement'">
-      <label for="requirement" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
+      <label for="requirement-transparency" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="vm.requirement.requirement" id="requirement" name="requirement"
+        <select class="input-sm form-control" ng-model="vm.requirement.requirement" id="requirement-transparency" name="requirement"
                 ng-options="type as type for type in vm.data.surveillanceRequirements.transparencyOptions" required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.requirement.$touched) && vm.editForm.requirement.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group" ng-if="vm.requirement.type.name === 'Other Requirement'">
-      <label for="requirement" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
+      <label for="requirement-other" class="col-sm-3">Requirement <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="text" ng-model="vm.requirement.requirement" id="requirement" name="requirement" required>
+        <input class="input-sm form-control" type="text" ng-model="vm.requirement.requirement" id="requirement-other" name="requirement" required>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.requirement.$touched) && vm.editForm.requirement.$error.required">Field is required</div>
       </div>
     </div>
@@ -55,7 +55,7 @@
     </div>
     <div class="row" ng-if="vm.requirement.result.name === 'Non-Conformity'">
       <div class="col-sm-12">
-        <button class="btn btn-ai-success pull-right" ng-click="vm.addNonconformity()"><i class="fa fa-plus"></i><span class="sr-only">Add a non-conformity</button>
+        <button class="btn btn-ai-success pull-right" ng-click="vm.addNonconformity()"><i class="fa fa-plus"></i><span class="sr-only">Add a non-conformity</span></button>
         <h5>Non-Conformities</h5>
         <p ng-if="vm.requirement.nonconformities.length === 0">No Non-Conformities found</p>
         <table class="table" ng-if="vm.requirement.nonconformities.length > 0">
@@ -74,10 +74,10 @@
               <td>{{ noncon.status.name }}</td>
               <td>{{ noncon.summary }}</td>
               <td>
-                <button class="btn btn-danger" ng-click="vm.deleteNonconformity(noncon)"><i class="fa fa-trash"></i><span class="sr-only">Remove this non-conformity</button>
+                <button class="btn btn-danger" ng-click="vm.deleteNonconformity(noncon)"><i class="fa fa-trash"></i><span class="sr-only">Remove this non-conformity</span></button>
               </td>
               <td>
-                <button class="btn btn-ai-success" ng-click="vm.editNonconformity(noncon)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this non-conformity</button>
+                <button class="btn btn-ai-success" ng-click="vm.editNonconformity(noncon)"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit this non-conformity</span></button>
               </td>
             </tr>
           </tbody>

@@ -16,6 +16,37 @@
       <label class="control-label" for="data_additionalSoftware{{ vm.cert.number }}">Certification met via relied upon software</label>
       <ai-additional-software additional-software="vm.cert.additionalSoftware" is-editing="true" ng-if="vm.cert.metViaAdditionalSoftware"></ai-additional-software>
     </div>
+
+    <!--This table is displayed if the criteria is NOT attested to-->
+    <table class="table table-striped" ng-if="!vm.cert.success && (vm.cert.g1Success !== null || vm.cert.g1MacraMeasures || vm.cert.g2Success !== null || vm.cert.g2MacraMeasures)">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr ng-if="vm.cert.g1Success !== null">
+            <td><label class="control-label" for="data_g1Success{{ vm.cert.number }}">Measure Successfully Tested for G1</label></td>
+            <td><select class="form-control input-sm" id="data_g1Success{{ vm.cert.number }}" name="data_g1Success" ng_model="vm.cert.g1Success" ng-options="b.value as b.name for b in vm.options"></select></td>
+          </tr>
+          <tr ng-if="vm.cert.g1MacraMeasures">
+            <td><label class="control-label" for="data_g1MacraMeasures{{ vm.cert.number }}">Measure<span ng-if="vm.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1</label></td>
+            <td>
+              <select multiple data-ng-attr-size="{{ vm.cert.allowedMacraMeasures.length + 1 }}" class="form-control input-sm" id="data_g1MacraMeasures{{ vm.cert.number }}" name="data_g1MacraMeasures" ng_model="vm.cert.g1MacraMeasures" ng-options="m as m.abbreviation for m in vm.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select></td>
+          </tr>
+          <tr ng-if="vm.cert.g2Success !== null">
+            <td><label class="control-label" for="data_g2Success{{ vm.cert.number }}">Measure Successfully Tested for G2</label></td>
+            <td><select class="form-control input-sm" id="data_g2Success{{ vm.cert.number }}" name="data_g2Success" ng_model="vm.cert.g2Success" ng-options="b.value as b.name for b in vm.options"></select></td>
+          </tr>
+          <tr ng-if="vm.cert.g2MacraMeasures">
+            <td><label class="control-label" for="data_g2MacraMeasures{{ vm.cert.number }}">Measure<span ng-if="vm.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2</label></td>
+            <td><select multiple data-ng-attr-size="{{ vm.cert.allowedMacraMeasures.length + 1 }}" class="form-control input-sm" id="data_g2MacraMeasures{{ vm.cert.number }}" name="data_g2MacraMeasures" ng_model="vm.cert.g2MacraMeasures" ng-options="m as m.abbreviation for m in vm.cert.allowedMacraMeasures | orderBy: 'abbreviation' track by m.id"></select></td>
+          </tr>
+      </tbody>
+    </table>
+
+    <!--This table is displayed if the criteria is attested to-->
     <table class="table table-striped" ng-if="vm.cert.success">
       <thead>
         <tr>
@@ -32,31 +63,21 @@
           <td>Standard</td>
           <td>
             <div class="form-horizontal">
-              <div class="form-group form-group-sm" ng-repeat="item in vm.cert.testStandards track by $index">
-                <label class="col-sm-6 control-label" for="testStandard{{ item.id }}">Test Standard</label>
-                <div class="col-sm-6">
-                  <div class="input-group">
-                    <select class="form-control" ng-model="item.testStandardName" id="testStandard{{ item.id }}"
-                            ng-options="option.name as option.name for option in vm.resources.testStandards.data | orderBy: 'name'"
-                            ng-change="item.testStandardId = option.id">
-                    </select>
-                    <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cert.testStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
-                  </div>
-                </div>
-              </div>
               <div class="form-group form-group-sm">
-                <label class="col-sm-6 control-label" for="newTestStandardItem">New Test Standard</label>
+                <label class="col-sm-6 control-label" for="testStandard">Test Standard</label>
                 <div class="col-sm-6">
-                  <div class="input-group">
-                    <select class="form-control" ng-model="vm.newTestStandard.testStandardName" id="newTestStandardItem"
-                            ng-options="option.name as option.name for option in vm.resources.testStandards.data | orderBy: 'name'">
-                    </select>
-                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cert.testStandards, vm.newTestStandard); vm.newTestStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
-                  </div>
-                </div>
-                <label class="col-sm-6 control-label" for="newTestStandardExpandableName">Add new Test Standard to available options</label>
-                <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="vm.newTestStandard.expandableName" id="newTestStandardExpandableName" ng-change="vm.extendSelect(vm.resources.testStandards.data, vm.newTestStandard.expandableName); vm.newTestStandard.testStandardName = vm.newTestStandard.expandableName"></input>
+                  <ai-expandable-list 
+                    identifier="testStandard"  
+                    item-key="id" 
+                    item-text="name" 
+                    items="vm.resources.testStandards.data"
+                    selected-item-keys="vm.selectedTestStandardKeys"
+                    placeholder="Select a Test Standard"
+                    on-change="vm.testStandardOnChange(action)"
+                    add-items="true"
+                    add-items-option-text="Add a new Test Standard"
+                    add-items-placeholder="Enter new Test Standard">
+                  </ai-expandable-list>
                 </div>
               </div>
             </div>
@@ -83,92 +104,102 @@
           <td>Functionality Tested</td>
           <td>
             <div class="form-horizontal">
-              <div class="form-group form-group-sm" ng-repeat="item in vm.cert.testFunctionality track by $index">
-                <label class="col-sm-6 control-label" for="functionalityTested{{ item.id }}">Functionality Tested</label>
-                <div class="col-sm-6">
-                  <div class="input-group">
-                    <select class="form-control" ng-model="item.name" id="functionalityTested{{ item.id }}"
-                            ng-options="option.name as option.name for option in vm.resources.testFunctionalities.data | orderBy: 'name'"
-                            ng-change="item.testFunctionalityId = option.id">
-                    </select>
-                    <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cert.testFunctionality.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
-                  </div>
-                </div>
-              </div>
               <div class="form-group form-group-sm">
-                <label class="col-sm-6 control-label" for="newFunctionalityTestedItem">New Functionality Tested</label>
+                <label class="col-sm-6 control-label" for="testFunctionality">Functionality Tested</label>
                 <div class="col-sm-6">
-                  <div class="input-group">
-                    <select class="form-control" ng-model="vm.newFunctionalityTested.name" id="newFunctionalityTestedItem"
-                            ng-options="option.name as option.name for option in vm.resources.testFunctionalities.data | orderBy: 'name'">
-                    </select>
-                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cert.testFunctionality, vm.newFunctionalityTested); vm.newFunctionalityTested = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
-                  </div>
+                  <ai-expandable-list
+                    identifier="testFunctionality"  
+                    item-key="id" 
+                    item-text="name" 
+                    items="vm.cert.allowedTestFunctionalities"
+                    selected-item-keys="vm.selectedTestFunctionalityKeys"
+                    placeholder="Select a Test Functionality"
+                    on-change="vm.testFunctionalityOnChange(action)">
+                  </ai-expandable-list>
                 </div>
               </div>
             </div>
           </td>
         </tr>
         <tr ng-if="vm.cert.testProcedures !== null">
-          <td>Test procedure version</td>
-          <td><ai-array item-type="Test Procedure Version" items="vm.cert.testProcedures" key="testProcedureVersion"></ai-array></td>
-        </tr>
-        <tr ng-if="vm.cert.testToolsUsed !== null">
-          <td>Test tool</td>
+          <td>Test procedure</td>
           <td>
             <div class="form-horizontal">
-              <div class="form-group form-group-sm" ng-repeat="item in vm.cert.testToolsUsed track by $index">
-                <div ng-if="!item.retired">
-                  <label class="col-sm-6 control-label" for="testTool{{ item.id }}">Test Tool</label>
-                  <div class="col-sm-6">
-                    <div class="input-group">
-                      <select class="form-control" ng-model="item.testToolName" id="testTool{{ item.id }}"
-                              ng-options="option.name as option.name disable when !vm.isToolAvailable(option) for option in vm.resources.testTools.data | orderBy: 'name'"
-                              ng-change="item.testToolId = option.id">
-                      </select>
-                      <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cert.testToolsUsed.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
-                    </div>
-                  </div>
-                  <label class="col-sm-6 control-label" for="testToolVersion{{ item.id }}">Test Tool Version</label>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control" ng-model="item.testToolVersion" id="testToolVersion{{ item.id }}" name="testToolVersion{{ item.id }}" ng-maxlength="50"></input>
-                    <div class="text-danger" ng-if="vm.editForm['testToolVersion' + item.id].$error.maxlength">Field is too long</div>
-                  </div>
-                </div>
-                <div ng-if="item.retired">
-                  <label class="col-sm-6 control-label" for="testTool{{ item.id }}">Test Tool</label>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control" ng-model="item.testToolName" id="testTool{{ item.id }}" disabled></input>
-                    Tool has been retired
-                  </div>
-                  <label class="col-sm-6 control-label" for="testToolVersion{{ item.id }}">Test Tool Version</label>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control" ng-model="item.testToolVersion" id="testToolVersion{{ item.id }}" disabled></input>
-                  </div>
-                </div>
-              </div>
               <div class="form-group form-group-sm">
-                <label class="col-sm-6 control-label" for="newTestToolItem">New Test Tool</label>
+                <label class="col-sm-6 control-label" for="testProcedures">Test Procedure</label>
                 <div class="col-sm-6">
-                  <div class="input-group">
-                    <select class="form-control" ng-model="vm.newTestTool.testToolName" id="newTestToolItem"
-                            ng-options="option.name as option.name disable when !vm.isToolAvailable(option) for option in vm.resources.testTools.data | orderBy: 'name'">
-                    </select>
-                    <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cert.testToolsUsed, vm.newTestTool); vm.newTestTool = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
-                  </div>
-                </div>
-                <label class="col-sm-6 control-label" for="newTestToolVersion">Test Tool Version</label>
-                <div class="col-sm-6">
-                  <input type="text" class="form-control" ng-model="vm.newTestTool.testToolVersion" id="newTestToolVersion" id="newTestToolVersion" ng-maxlength="50"></input>
-                  <div class="text-danger" ng-if="vm.editForm.newTestToolVersion.$error.maxlength">Field is too long</div>
+                  <ai-expandable-list 
+                    identifier="testProcedures"  
+                    item-key="id" 
+                    item-text="name" 
+                    items="vm.availableTestProcedures"
+                    selected-item-keys="vm.selectedTestProcedureKeys"
+                    placeholder="Select a Test Procedure"
+                    on-change="vm.testProceduresOnChange(action)"
+                    additional-input="true"
+                    additional-input-label="Version"
+                    additional-input-max-length="50"
+                    additional-input-required="false">
+                  </ai-expandable-list>
                 </div>
               </div>
             </div>
           </td>
         </tr>
-        <tr ng-if="vm.cert.testDataUsed !== null">
+        <tr ng-if="vm.cert.testToolsUsed !== null">
+          <td>Test tool</td>
+          <td>
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <label class="col-sm-6 control-label" for="testTools">Test Tool</label>
+                <div class="col-sm-6">
+                  <ai-expandable-list 
+                    identifier="testTools"  
+                    item-key="id" 
+                    item-text="name" 
+                    items="vm.resources.testTools.data"
+                    item-disabled="vm.isTestToolRetired(item)"
+                    selected-item-keys="vm.selectedTestToolKeys"
+                    placeholder="Select a Test Tool"
+                    on-change="vm.testToolsOnChange(action)"
+                    additional-input="true"
+                    additional-input-label="Version"
+                    additional-input-max-length="50"
+                    additional-input-required="true">
+                  </ai-expandable-list>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr ng-if="vm.cert.testDataUsed !== null && vm.availableTestData && vm.availableTestData.length > 0">
           <td>Test data</td>
-          <td><ai-array item-type="Test Data Version & Alteration" items="vm.cert.testDataUsed" key="version" key-second="alteration"></ai-array></td>
+          <td>
+            <div class="form-horizontal">
+              <div class="form-group form-group-sm">
+                <label class="col-sm-6 control-label" for="testData">Test Data</label>
+                <div class="col-sm-6">
+                  <ai-expandable-list
+                    identifier="testData"  
+                    item-key="id" 
+                    item-text="name" 
+                    items="vm.availableTestData"
+                    selected-item-keys="vm.selectedTestDataKeys"
+                    placeholder="Select Test Data"
+                    on-change="vm.testDataOnChange(action)"
+                    additional-input="true"
+                    additional-input-label="Version"
+                    additional-input-max-length="50"
+                    additional-input-required="true"
+                    additional-input2="true"
+                    additional-input2-label="Alteration"
+                    additional-input2-max-length="50"
+                    additional-input2-required="false">
+                  </ai-expandable-list>
+                </div>
+              </div>
+            </div>
+          </td>
         </tr>
         <tr ng-if="vm.cert.apiDocumentation !== null">
           <td><label class="control-label" for="data_api{{ vm.cert.number }}">API Documentation</label></td>

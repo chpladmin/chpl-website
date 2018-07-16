@@ -42,7 +42,6 @@
         vm.clear = clear;
         vm.getUsername = getUsername;
         vm.isAcbAdmin = isAcbAdmin;
-        vm.isAcbStaff = isAcbStaff;
         vm.isActive = isActive;
         vm.isAtlAdmin = isAtlAdmin;
         vm.isAuthed = isAuthed;
@@ -74,6 +73,10 @@
                 vm.showCompareWidget(false);
             });
             $scope.$on('$destroy', hideCompareWidget);
+
+            $scope.$on('loggedIn', function () {
+                vm.loadAnnouncements();
+            })
         }
 
         function clear () {
@@ -88,10 +91,6 @@
 
         function isAcbAdmin () {
             return authService.isAcbAdmin();
-        }
-
-        function isAcbStaff () {
-            return authService.isAcbStaff();
         }
 
         function isActive (route) {

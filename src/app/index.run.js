@@ -16,8 +16,8 @@
             if ($location.hash()) {
                 $anchorScroll();
                 $timeout(function () {
-                    var element = $window.document.getElementById('mainContent');
-                    var elementAng = angular.element($window.document.getElementById('mainContent'));
+                    var element = $window.document.getElementById('main-content');
+                    var elementAng = angular.element($window.document.getElementById('main-content'));
                     if (element && elementAng) {
                         elementAng.attr('tabindex', '-1');
                         element.focus();

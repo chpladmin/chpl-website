@@ -7,13 +7,19 @@
         mock = {};
         mock.activeCP = {
             certificationEdition: {name: '2015'},
-            certificationStatus: [],
+            certificationEvents: [
+                { eventDate: 1498622400000, certificationStatusId: 1, status: { name: 'Active' }},
+            ],
             certifyingBody: [],
             chplProductNumber: 'CHP-123123',
             classificationType: [],
             ics: { inherits: false },
             practiceType: [],
             product: { productId: 1 },
+            qmsStandards: [
+                {id: 1, qmsStandardName: 'name1'},
+                {id: null, qmsStandardName: 'nullname'},
+            ],
             targetedUsers: [],
         };
         mock.resources = {
@@ -21,7 +27,10 @@
             bodies: [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}],
             classifications: [{id: 1, name: 'name1'}],
             practices: [{id: 1, name: 'name1'}],
-            qmsStandards: [{id: 1, name: 'name1'}],
+            qmsStandards: {data: [
+                {id: 1, name: 'name1'},
+                {id: 2, name: 'name2'},
+            ]},
             statuses: [{id: 1, name: 'name1'}],
             testingLabs: [{id: 1, name: 'name1'}],
         }
@@ -55,9 +64,8 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: mock.activeCP,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
-                    resources: mock.resources,
+                    resources: angular.copy(mock.resources),
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -102,9 +110,8 @@
             vm = $controller('EditCertifiedProductController', {
                 activeCP: cp,
                 isAcbAdmin: true,
-                isAcbStaff: true,
                 isChplAdmin: true,
-                resources: mock.resources,
+                resources: angular.copy(mock.resources),
                 workType: 'manage',
                 $uibModalInstance: Mock.modalInstance,
                 $scope: scope,
@@ -119,9 +126,8 @@
             vm = $controller('EditCertifiedProductController', {
                 activeCP: cp,
                 isAcbAdmin: true,
-                isAcbStaff: true,
                 isChplAdmin: true,
-                resources: mock.resources,
+                resources: angular.copy(mock.resources),
                 workType: 'manage',
                 $uibModalInstance: Mock.modalInstance,
                 $scope: scope,
@@ -134,6 +140,14 @@
                 ics: '00',
                 suffix: '1.170331',
             });
+        });
+
+        it('should add QMS standards in the cp to the available standards on load', function () {
+            expect(vm.qmsStandards.data).toEqual([
+                {id: 1, name: 'name1'},
+                {id: 2, name: 'name2'},
+                {id: null, qmsStandardName: 'nullname', name: 'nullname'},
+            ]);
         });
 
         describe('when deailing with ics family', function () {
@@ -156,9 +170,8 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
-                    resources: mock.resources,
+                    resources: angular.copy(mock.resources),
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -174,9 +187,8 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
-                    resources: mock.resources,
+                    resources: angular.copy(mock.resources),
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -192,9 +204,8 @@
                 vm = $controller('EditCertifiedProductController', {
                     activeCP: cp,
                     isAcbAdmin: true,
-                    isAcbStaff: true,
                     isChplAdmin: true,
-                    resources: mock.resources,
+                    resources: angular.copy(mock.resources),
                     workType: 'manage',
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -266,6 +277,34 @@
                     expect(vm.requiredIcsCode()).toBe('18');
                 });
             });
+
+            describe('with respect to missing ICS source', function () {
+                it('should not require ics source for 2014 listings', function () {
+                    vm.cp.certificationEdition.name = '2015';
+                    expect(vm.missingIcsSource()).toBe(false);
+                });
+
+                it('should not require ics source if the listing does not inherit', function () {
+                    expect(vm.missingIcsSource()).toBe(false);
+                });
+
+                it('should require ics source if the listing inherits without parents', function () {
+                    vm.cp.ics.inherits = true;
+                    expect(vm.missingIcsSource()).toBe(true);
+                });
+
+                it('should require ics source if the listing inherits without parents and without space for parents', function () {
+                    vm.cp.ics.inherits = true;
+                    vm.cp.ics.parents = [];
+                    expect(vm.missingIcsSource()).toBe(true);
+                });
+
+                it('should not require ics source if the listing inherits and has parents', function () {
+                    vm.cp.ics.inherits = true;
+                    vm.cp.ics.parents = [1, 2];
+                    expect(vm.missingIcsSource()).toBe(false);
+                });
+            });
         });
 
         it('should know which statuses should be disabled', function () {
@@ -283,14 +322,13 @@
             vm.cp.certifyingBody = {id: 2};
             vm.cp.certificationStatus = {id: 1};
             vm.attachModel();
-            expect(vm.cp.practiceType).toBe(mock.resources.practices[0]);
-            expect(vm.cp.classificationType).toBe(mock.resources.classifications[0]);
-            expect(vm.cp.certifyingBody).toBe(mock.resources.bodies[1]);
-            expect(vm.cp.certificationStatus).toBe(mock.resources.statuses[0]);
-            expect(vm.cp.testingLab).not.toBe(mock.resources.testingLabs[0]);
+            expect(vm.cp.practiceType).toEqual(mock.resources.practices[0]);
+            expect(vm.cp.classificationType).toEqual(mock.resources.classifications[0]);
+            expect(vm.cp.certifyingBody).toEqual(mock.resources.bodies[1]);
+            expect(vm.cp.testingLab).not.toEqual(mock.resources.testingLabs[0]);
             vm.cp.testingLab = {id: 1};
             vm.attachModel();
-            expect(vm.cp.testingLab).toBe(mock.resources.testingLabs[0]);
+            expect(vm.cp.testingLab).toEqual(mock.resources.testingLabs[0]);
         });
 
         describe('when saving a Listing', function () {
@@ -305,6 +343,19 @@
                 };
                 vm.save();
                 expect(vm.cp.chplProductNumber).toBe('14.03.03.2879.prod.vr.02.0.140303');
+            });
+
+            it('should add date longs from the date objects', function () {
+                var aDate = new Date('1/1/2009');
+                var dateValue = aDate.getTime();
+                vm.cp.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: aDate,
+                    },
+                ];
+                vm.save();
+                expect(vm.cp.certificationEvents[0].eventDate).toBe(dateValue);
             });
 
             describe('that is active', function () {
@@ -376,6 +427,76 @@
                     vm.save();
                     expect($log.info.logs.length).toBe(logCount + 1);
                 });
+            });
+        });
+
+        describe('when handling certification status history', function () {
+            it('should add statusEventObjects for each statusDate in history', function () {
+                expect(vm.cp.certificationEvents[0].statusDateObject).toEqual(new Date(vm.cp.certificationEvents[0].eventDate));
+            });
+
+            it('should remove previous statuses', function () {
+                vm.addPreviousStatus();
+                vm.addPreviousStatus();
+                vm.addPreviousStatus();
+                var initLength = vm.cp.certificationEvents.length;
+                vm.removePreviousStatus(vm.cp.certificationEvents[0].statusDateObject);
+                expect(vm.cp.certificationEvents.length).toBe(initLength - 1);
+            });
+
+            it('should add an empty status', function () {
+                var initLength = vm.cp.certificationEvents.length;
+                vm.addPreviousStatus();
+                expect(vm.cp.certificationEvents.length).toBe(initLength + 1);
+                expect(vm.cp.certificationEvents[vm.cp.certificationEvents.length - 1].statusDateObject).toBeDefined();
+            });
+
+            it('should know when the "earliest" status is not "Active"', function () {
+                vm.cp.certificationEvents = [
+                    { statusDateObject: new Date('1/1/2018'), status: { name: 'Withdrawn by Developer' } },
+                    { statusDateObject: new Date('2/2/2018'), status: { name: 'Active' } },
+                ];
+                expect(vm.improperFirstStatus()).toBe(true);
+                vm.cp.certificationEvents[1].statusDateObject = new Date('1/1/2017');
+                expect(vm.improperFirstStatus()).toBe(false);
+            });
+
+            it('should not error on improper first status when confirming', function () {
+                vm.workType = 'confirm';
+                vm.cp.certificationEvents = [];
+                expect(vm.improperFirstStatus()).toBe(false);
+            });
+        });
+
+        describe('when validating the form', function () {
+            it('should know when two status events were on the same day', function () {
+                vm.cp.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },{
+                        status: {name: 'Suspended by ONC'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },
+                ];
+                expect(vm.hasDateMatches()).toBe(true);
+                vm.cp.certificationEvents[0].statusDateObject = new Date('2/2/2002');
+                expect(vm.hasDateMatches()).toBe(false);
+            });
+
+            it('should know when two status events are the same and consecutive', function () {
+                vm.cp.certificationEvents = [
+                    {
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('1/1/2009'),
+                    },{
+                        status: {name: 'Active'},
+                        statusDateObject: new Date('2/2/2009'),
+                    },
+                ];
+                expect(vm.hasStatusMatches()).toBe(true);
+                vm.cp.certificationEvents[0].status.name = 'Suspended by ONC';
+                expect(vm.hasStatusMatches()).toBe(false);
             });
         });
     });

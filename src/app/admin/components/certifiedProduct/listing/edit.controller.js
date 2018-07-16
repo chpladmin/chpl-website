@@ -5,16 +5,24 @@
         .controller('EditCertifiedProductController', EditCertifiedProductController);
 
     /** @ngInject */
-    function EditCertifiedProductController ($log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isAcbStaff, isChplAdmin, networkService, resources, utilService, workType) {
-
+    function EditCertifiedProductController ($filter, $log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
         var vm = this;
 
+        vm.addPreviousStatus = addPreviousStatus;
         vm.addNewValue = utilService.addNewValue;
         vm.attachModel = attachModel;
         vm.cancel = cancel;
+        vm.certificationStatus = utilService.certificationStatus;
         vm.disabledParent = disabledParent;
         vm.disabledStatus = disabledStatus;
         vm.extendSelect = utilService.extendSelect;
+        vm.hasDateMatches = hasDateMatches;
+        vm.hasStatusMatches = hasStatusMatches;
+        vm.improperFirstStatus = improperFirstStatus;
+        vm.matchesPreviousDate = matchesPreviousDate;
+        vm.matchesPreviousStatus = matchesPreviousStatus;
+        vm.missingIcsSource = missingIcsSource;
+        vm.removePreviousStatus = removePreviousStatus;
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
         vm.willCauseSuspension = willCauseSuspension;
@@ -27,12 +35,16 @@
             vm.cp = angular.copy(activeCP);
             vm.cp.certDate = new Date(vm.cp.certificationDate);
             vm.isAcbAdmin = isAcbAdmin;
-            vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
             vm.bodies = resources.bodies;
             vm.accessibilityStandards = resources.accessibilityStandards;
             vm.classifications = resources.classifications;
             vm.practices = resources.practices;
+            resources.qmsStandards.data = resources.qmsStandards.data
+                .concat(vm.cp.qmsStandards.filter(function (standard) { return !standard.id }).map(function (standard) {
+                    standard.name = standard.qmsStandardName;
+                    return standard;
+                }));
             vm.qmsStandards = resources.qmsStandards;
             vm.statuses = resources.statuses;
             vm.targetedUsers = resources.targetedUsers;
@@ -54,10 +66,19 @@
                     suffix: idFields[7] + '.' + idFields[8],
                 };
             }
+            for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
+                vm.cp.certificationEvents[i].statusDateObject = new Date(vm.cp.certificationEvents[i].eventDate);
+            }
 
-            vm.handlers = [];
             vm.attachModel();
             loadFamily();
+        }
+
+        function addPreviousStatus () {
+            vm.cp.certificationEvents.push({
+                statusDateObject: new Date(),
+                status: {},
+            });
         }
 
         function attachModel () {
@@ -67,7 +88,9 @@
             if (vm.cp.testingLab) {
                 vm.cp.testingLab = utilService.findModel(vm.cp.testingLab, vm.testingLabs);
             }
-            vm.cp.certificationStatus = utilService.findModel(vm.cp.certificationStatus, vm.statuses);
+            vm.cp.certificationEvents.forEach(function (ce) {
+                ce.status = utilService.findModel(ce.status, vm.statuses);
+            });
         }
 
         function cancel () {
@@ -87,6 +110,54 @@
             return ((name === 'Pending' && vm.workType === 'manage') || (name !== 'Pending' && vm.workType === 'confirm'));
         }
 
+        function hasDateMatches () {
+            var ret = false;
+            for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
+                ret = ret || vm.matchesPreviousDate(vm.cp.certificationEvents[i]);
+            }
+            return ret;
+        }
+
+        function hasStatusMatches () {
+            var ret = false;
+            for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
+                ret = ret || vm.matchesPreviousStatus(vm.cp.certificationEvents[i]);
+            }
+            return ret;
+        }
+
+        function improperFirstStatus () {
+            return vm.workType === 'confirm' ? false : $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject')[0].status.name !== 'Active';
+        }
+
+        function matchesPreviousDate (event) {
+            var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
+            var statusLoc = orderedStatus.indexOf(event);
+            if (statusLoc > 0) {
+                return ($filter('date')(event.statusDateObject, 'mediumDate', 'UTC') === $filter('date')(orderedStatus[statusLoc - 1].statusDateObject, 'mediumDate', 'UTC'));
+            }
+            return false;
+        }
+
+        function matchesPreviousStatus (event) {
+            var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
+            var statusLoc = orderedStatus.indexOf(event);
+            if (statusLoc > 0) {
+                return (event.status.name === orderedStatus[statusLoc - 1].status.name);
+            }
+            return false;
+        }
+
+        function missingIcsSource () {
+            return vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0;
+        }
+
+        function removePreviousStatus (statusDateObject) {
+            vm.cp.certificationEvents = vm.cp.certificationEvents.filter(function (event) {
+                return event.statusDateObject.getTime() !== statusDateObject.getTime();
+            });
+        }
+
         function requiredIcsCode () {
             var code = vm.cp.ics.parents
                 .map(function (item) { return parseInt(item.chplProductNumber.split('.')[6], 10); })
@@ -96,6 +167,9 @@
         }
 
         function save () {
+            for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
+                vm.cp.certificationEvents[i].eventDate = vm.cp.certificationEvents[i].statusDateObject.getTime();
+            }
             if (vm.cp.chplProductNumber.length > 12) {
                 vm.cp.chplProductNumber =
                     vm.idFields.prefix + '.' +
@@ -110,6 +184,7 @@
                 networkService.updateCP({
                     listing: vm.cp,
                     banDeveloper: vm.banDeveloper,
+                    reason: vm.reason,
                 }).then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);

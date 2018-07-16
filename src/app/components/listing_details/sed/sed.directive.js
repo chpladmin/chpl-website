@@ -56,9 +56,6 @@
 
         function activate () {
             _analyzeSed();
-            $scope.$watch('vm.listing.sed', function () {
-                vm._analyzeSed();
-            });
         }
 
         function addTask () {
@@ -79,10 +76,12 @@
             vm.modalInstance.result.then(function (result) {
                 vm.allParticipants = result.participants;
                 vm.tasks.push(result.task);
+                vm.taskCount = vm.tasks.length;
             });
         }
 
         function editDetails () {
+            _analyzeSed();
             vm.modalInstance = $uibModal.open({
                 templateUrl: 'app/admin/components/sed/editDetails.html',
                 controller: 'EditSedDetailsController',
@@ -98,7 +97,9 @@
                 },
             });
             vm.modalInstance.result.then(function (result) {
-                vm.listing = result.listing;
+                vm.listing.sedReportFileLocation = result.listing.sedReportFileLocation;
+                vm.listing.sedIntendedUserDescription = result.listing.sedIntendedUserDescription;
+                vm.listing.sedTestingEndDate = result.listing.sedTestingEndDate;
                 vm.listing.sed.ucdProcesses = result.ucdProcesses;
                 vm.ucdProcesses = result.ucdProcesses;
             });
@@ -183,7 +184,7 @@
                 !vm.listing.version ||
                 !vm.listing.certificationResults ||
                 !vm.listing.sed) {
-                $timeout(vm._analyzeSed, 500);
+                $timeout(_analyzeSed, 500);
             } else {
                 var csvRow, i, j, object, participant, task;
                 var TASK_START = 5;
@@ -284,10 +285,20 @@
                 }
 
                 vm.ucdProcesses = vm.listing.sed.ucdProcesses.map(function (item) {
-                    item.criteria = $filter('orderBy')(item.criteria.filter(function (cert) { return vm.sedCriteriaNumbers.indexOf(cert.number) > -1; }), vm.sortCert);
+                    item.criteria = $filter('orderBy')(item.criteria.filter(function (cert) {
+                        var loc = vm.sedCriteriaNumbers.indexOf(cert.number);
+                        if (loc > -1) {
+                            vm.sedCriteria[loc].found = true;
+                            return true;
+                        }
+                        return false;
+                    }), vm.sortCert);
                     return item;
-                })
-                    .filter(function (item) { return item.criteria.length > 0; });
+                }).concat([{
+                    name: undefined,
+                    details: undefined,
+                    criteria: $filter('orderBy')(vm.sedCriteria.filter(function (cert) { return !cert.found; }), vm.sortCert),
+                }]).filter(function (item) { return item.criteria.length > 0; });
 
                 vm.csvData.values = csvSort(vm.csvData.values);
             }

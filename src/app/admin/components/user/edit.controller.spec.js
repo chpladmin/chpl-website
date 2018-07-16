@@ -68,14 +68,14 @@
             vm.acbId = null;
             vm.atlId = null;
             vm.loadRoles();
-            expect(vm.roles).toEqual(['ROLE_ADMIN','ROLE_CMS_STAFF','ROLE_ONC_STAFF','ROLE_ACB_ADMIN','ROLE_ACB_STAFF','ROLE_ATL_ADMIN','ROLE_ATL_STAFF']);
+            expect(vm.roles).toEqual(['ROLE_ADMIN','ROLE_CMS_STAFF','ROLE_ONC_STAFF','ROLE_ACB','ROLE_ATL']);
             vm.acbId = 3;
             vm.loadRoles();
-            expect(vm.roles).toEqual(['ROLE_ACB_ADMIN','ROLE_ACB_STAFF']);
+            expect(vm.roles).toEqual(['ROLE_ACB']);
             vm.acbId = null;
             vm.atlId = 3;
             vm.loadRoles();
-            expect(vm.roles).toEqual(['ROLE_ATL_ADMIN','ROLE_ATL_STAFF']);
+            expect(vm.roles).toEqual(['ROLE_ATL']);
         });
 
         describe('inviting users', function () {
@@ -166,7 +166,7 @@
                 it('should call the common service to revoke roles', function () {
                     vm.save();
                     scope.$digest();
-                    expect(networkService.revokeRole).toHaveBeenCalledWith({subjectName: 'username', role: 'ROLE_ACB_ADMIN'});
+                    expect(networkService.revokeRole).toHaveBeenCalledWith({subjectName: 'username', role: 'ROLE_ACB'});
                 });
 
                 it('should not call the common service to revoke roles if acb', function () {

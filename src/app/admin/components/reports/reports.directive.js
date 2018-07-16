@@ -42,12 +42,14 @@
         vm.refreshCp = refreshCp;
         vm.refreshDeveloper = refreshDeveloper;
         vm.refreshProduct = refreshProduct;
+        vm.refreshCap = refreshCap;
         vm.refreshUser = refreshUser;
         vm.singleCp = singleCp;
         vm.validDates = validDates;
 
         // private function exposed for testing
         vm._interpretCps = _interpretCps;
+        vm._compareCertificationEvents = _compareCertificationEvents;
         vm._compareSed = _compareSed;
 
         activate();
@@ -60,8 +62,7 @@
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
-            vm.activityRange = { range: 60 };
-            vm.questionableRange = 0;
+            vm.activityRange = { range: 30 };
             var start = new Date();
             var end = new Date();
             start.setDate(end.getDate() - vm.activityRange.range + 1); // offset to account for inclusion of endDate in range
@@ -77,6 +78,10 @@
                 endDate: angular.copy(end),
             };
             vm.activityRange.product = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            vm.activityRange.cap = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
             };
@@ -107,7 +112,9 @@
                 endDate: angular.copy(vm.activityRange.endDate),
             };
             vm.refreshActivity(true);
-            vm.loadApiKeys();
+            if (vm.isChplAdmin || vm.isOncStaff) {
+                vm.loadApiKeys();
+            }
             vm.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
@@ -118,23 +125,24 @@
                 } else {
                     vm.refreshCp();
                 }
+                vm.refreshCap();
                 vm.refreshDeveloper();
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshAtl();
-                vm.refreshAnnouncement();
-                vm.refreshUser();
-                vm.refreshApi();
-                vm.refreshApiKeyUsage();
+                if (vm.isChplAdmin || vm.isOncStaff) {
+                    vm.refreshAnnouncement();
+                    vm.refreshUser();
+                    vm.refreshApi();
+                    vm.refreshApiKeyUsage();
+                }
             } else {
                 switch (vm.workType) {
                 case '':
                 case 'cp-upload':
                 case 'cp-status':
                 case 'cp-surveillance':
-                case 'cp-cap':
                 case 'cp-other':
-                case 'cp-questionable':
                     if (vm.productId) {
                         vm.singleCp();
                     } else {
@@ -146,6 +154,9 @@
                     break;
                 case 'prod':
                     vm.refreshProduct();
+                    break;
+                case 'cap':
+                    vm.refreshCap();
                     break;
                 case 'acb':
                     vm.refreshAcb();
@@ -174,9 +185,15 @@
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                     vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
-                    vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                     vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
-                    vm.displayedCertifiedProductsQuestionable = [].concat(vm.searchedCertifiedProductsQuestionable);
+                });
+        }
+
+        function refreshCap () {
+            networkService.getCorrectiveActionPlanActivity(dateAdjust(vm.activityRange.cap))
+                .then(function (data) {
+                    vm.searchedCertifiedProductsCAP = interpretCaps(data);
+                    vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                 });
         }
 
@@ -298,9 +315,7 @@
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                     vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
-                    vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                     vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
-                    vm.displayedCertifiedProductsQuestionable = [].concat(vm.searchedCertifiedProductsQuestionable);
                 });
         }
 
@@ -355,7 +370,7 @@
                 {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
                 {key: 'sedReportFileLocation', display: 'SED Report File Location'},
                 {key: 'sedTesting', display: 'SED Tested'},
-                {key: 'sedTestingEnd', display: 'SED Testing End Date', filter: 'date'},
+                {key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date'},
                 {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
             ];
             var nestedKeys = [
@@ -372,18 +387,15 @@
                 surveillance: [],
                 cap: [],
                 other: [],
-                questionable: [],
             };
             var change;
-            var questionable;
 
-            var certChanges, chplNum, cpId, cpNum, i, j, k, link;
+            var certChanges, chplNum, cpId, i, j, k, link;
             for (i = 0; i < data.length; i++) {
                 var activity = {
                     date: data[i].activityDate,
                     newId: data[i].id,
                     acb: '',
-                    questionable: false,
                 };
                 activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
                 if (data[i].description === 'Created a certified product') {
@@ -405,22 +417,26 @@
                     activity.certificationEdition = data[i].newData.certificationEdition.name;
                     activity.certificationDate = data[i].newData.certificationDate;
                     activity.friendlyCertificationDate = new Date(activity.certificationDate).toISOString().substring(0, 10);
-                    questionable = data[i].activityDate > data[i].newData.certificationDate + (vm.questionableRange * 24 * 60 * 60 * 1000);
                     activity.details = [];
-                    var statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
-                    if (statusChange) {
-                        var statusActivity = angular.copy(activity);
-                        statusActivity.details = statusChange;
-                        output.status.push(statusActivity);
+                    var statusActivity, statusChange;
+                    if (data[i].newData.certificationStatus) {
+                        statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
+                        if (statusChange) {
+                            statusActivity = angular.copy(activity);
+                            statusActivity.details = statusChange;
+                            output.status.push(statusActivity);
+                            activity.details.push(statusChange);
+                        }
+                    } else {
+                        statusChange = _compareCertificationEvents(data[i].originalData.certificationEvents, data[i].newData.certificationEvents);
+                        if (statusChange && statusChange.length > 0) {
+                            statusActivity = angular.copy(activity);
+                            statusActivity.details = ('<ul>' + statusChange.map(function (s) { return '<li>' + s + '</li>';}).join('') + '</ul>');
+                            output.status.push(statusActivity);
+                            //activity.details.push(statusChange);
+                        }
+                    }
 
-                        // count status change as questionable
-                        activity.details.push('<span class="bg-danger"><strong>' + statusChange + '</strong></span>');
-                        activity.questionable = true;
-                    }
-                    if (data[i].newData.certificationEdition.name === '2011') {
-                        activity.action = '<span class="bg-danger">' + activity.action + '</span>';
-                        activity.questionable = true;
-                    }
                     for (j = 0; j < simpleCpFields.length; j++) {
                         change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
                         if (change) { activity.details.push(change); }
@@ -428,12 +444,7 @@
                     for (j = 0; j < nestedKeys.length; j++) {
                         change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
                         if (change) {
-                            if (nestedKeys[j].questionable && questionable) {
-                                activity.questionable = true;
-                                activity.details.push('<span class="bg-danger"><strong>' + change + '</strong></span>');
-                            } else {
-                                activity.details.push(change);
-                            }
+                            activity.details.push(change);
                         }
                     }
                     var accessibilityStandardsKeys = [];
@@ -441,14 +452,12 @@
                     for (j = 0; j < accessibilityStandards.length; j++) {
                         activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
                     }
-                    certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults, questionable);
+                    certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
                     for (j = 0; j < certChanges.length; j++) {
-                        if (certChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                     }
-                    var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults, questionable);
+                    var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults);
                     for (j = 0; j < cqmChanges.length; j++) {
-                        if (cqmChanges[j].questionable) { activity.questionable = true; }
                         activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                     }
                     if (typeof(data[i].originalData.ics) === 'object' &&
@@ -470,6 +479,13 @@
                             }
                         }
                     }
+                    if (data[i].originalData.testingLabs) {
+                        var testingLabsKeys = [];
+                        var testingLabs = compareArray(data[i].originalData.testingLabs, data[i].newData.testingLabs, testingLabsKeys, 'testingLabName');
+                        for (j = 0; j < testingLabs.length; j++) {
+                            activity.details.push('Testing Lab "' + testingLabs[j].name + '" changes<ul>' + testingLabs[j].changes.join('') + '</ul>');
+                        }
+                    }
                     var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
                     var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
                     for (j = 0; j < qmsStandards.length; j++) {
@@ -478,7 +494,7 @@
                     if (data[i].originalData.sed &&
                         data[i].newData.sed) {
                         var sedChanges = _compareSed(data[i].originalData.sed, data[i].newData.sed);
-                        if (sedChanges) {
+                        if (sedChanges && sedChanges.length > 0) {
                             activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
                         }
                     }
@@ -493,59 +509,6 @@
                         activity.csvDetails = activity.details.join('\n');
                         output.other.push(activity);
                     }
-                } else if (data[i].description.startsWith('A corrective action plan for')) {
-                    cpNum = data[i].description.split(' ')[7];
-                    if (data[i].description.endsWith('created.')) {
-                        activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].newData.id;
-                        activity.acb = data[i].newData.acbName;
-                    } else if (data[i].description.endsWith('deleted.')) {
-                        activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].originalData.id;
-                        activity.acb = data[i].originalData.acbName;
-                    } else if (data[i].description.endsWith('updated.')) {
-                        activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].newData.id;
-                        activity.acb = data[i].newData.acbName;
-                        var capFields = [
-                            {key: 'acbSummary', display: 'ONC/ACB Summary'},
-                            {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
-                            {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
-                            {key: 'developerSummary', display: 'Developer Explanation'},
-                            {key: 'effectiveDate', display: 'Effective Date', filter: 'date'},
-                            {key: 'estimatedCompleteionDate', display: 'Estimated Complete Date', filter: 'date'},
-                            {key: 'noncomplianceDate', display: 'Date of Determination', filter: 'date'},
-                            {key: 'randomizedSurveillance', display: 'Result of Randomized Surveillance'},
-                            {key: 'resolution', display: 'Description of Resolution'},
-                            {key: 'surveillanceEndDate', display: 'Surveillance Ended', filter: 'date'},
-                            {key: 'surveillanceStartDate', display: 'Surveillance Began', filter: 'date'},
-                        ];
-                        activity.details = [];
-                        for (j = 0; j < capFields.length; j++) {
-                            change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
-                            if (change) { activity.details.push(change); }
-                        }
-                        certChanges = compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
-                        for (j = 0; j < certChanges.length; j++) {
-                            activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
-                        }
-                        activity.csvDetails = activity.details.join('\n');
-                    } else {
-                        activity.action = data[i].description;
-                    }
-                    output.cap.push(activity);
-                } else if (data[i].description.startsWith('Documentation was added to ')) {
-                    cpNum = data[i].description.split(' ');
-                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
-                    activity.action = cpNum.join(' ');
-                    activity.acb = data[i].newData.acbName;
-                    output.cap.push(activity);
-                } else if (data[i].description.startsWith('Documentation was removed from ')) {
-                    cpNum = data[i].description.split(' ');
-                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
-                    activity.action = cpNum.join(' ');
-                    activity.acb = data[i].newData.acbName;
-                    output.cap.push(activity);
                 } else if (data[i].description.startsWith('Surveillance')) {
                     cpId = data[i].newData.id;
                     chplNum = data[i].newData.chplProductNumber;
@@ -624,30 +587,25 @@
                     activity.action = data[i].description;
                     output.other.push(activity);
                 }
-
-                if (activity.questionable) {
-                    output.questionable.push(activity);
-                }
             }
             vm.searchedCertifiedProductsUpload = output.upload;
             vm.searchedCertifiedProductsStatus = output.status;
             vm.searchedCertifiedProductsSurveillance = output.surveillance;
             vm.searchedCertifiedProductsCAP = output.cap;
             vm.searchedCertifiedProducts = output.other;
-            vm.searchedCertifiedProductsQuestionable = output.questionable;
         }
 
-        function compareCerts (prev, curr, questionable) {
+        function compareCerts (prev, curr) {
             var ret = [];
             var change;
             var certKeys = [
                 {key: 'apiDocumentation', display: 'API Documentation'},
-                {key: 'g1Success', display: 'Certified to G1', questionable: true},
-                {key: 'g2Success', display: 'Certified to G2', questionable: true},
-                {key: 'gap', display: 'GAP Tested', questionable: true},
+                {key: 'g1Success', display: 'Certified to G1'},
+                {key: 'g2Success', display: 'Certified to G2'},
+                {key: 'gap', display: 'GAP Tested'},
                 {key: 'privacySecurityFramework', display: 'Privacy &amp; Security Framework'},
                 {key: 'sed', display: 'SED tested'},
-                {key: 'success', display: 'Successful', questionable: true},
+                {key: 'success', display: 'Successful'},
             ];
             var i, j;
             prev.sort(function (a,b) {return (a.number > b.number) ? 1 : ((b.number > a.number) ? -1 : 0);} );
@@ -657,12 +615,7 @@
                 for (j = 0; j < certKeys.length; j++) {
                     change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
                     if (change) {
-                        if (certKeys[j].questionable && questionable) {
-                            obj.questionable = true;
-                            obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
-                        } else {
-                            obj.changes.push('<li>' + change + '</li>');
-                        }
+                        obj.changes.push('<li>' + change + '</li>');
                     }
                 }
                 var measures = utilService.arrayCompare(prev[i].g1MacraMeasures,curr[i].g1MacraMeasures);
@@ -705,18 +658,12 @@
                 for (j = 0; j < addlSw.length; j++) {
                     obj.changes.push('<li>Relied Upon Software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul></li>');
                 }
-                var testProceduresKeys = [];
-                var testProcedures = compareArray(prev[i].testProcedures, curr[i].testProcedures, testProceduresKeys, 'testProcedureVersion');
-                for (j = 0; j < testProcedures.length; j++) {
-                    obj.changes.push('<li>Test Procedure Version "' + testProcedures[j].name + '" changes<ul>' + testProcedures[j].changes.join('') + '</ul></li>');
-                }
-                var testDataUsedKeys = [{key: 'alteration', display: 'Data Alteration'}];
-                var testDataUsed = compareArray(prev[i].testDataUsed, curr[i].testDataUsed, testDataUsedKeys, 'version');
-                for (j = 0; j < testDataUsed.length; j++) {
-                    obj.changes.push('<li>Test Data Version "' + testDataUsed[j].name + '" changes<ul>' + testDataUsed[j].changes.join('') + '</ul></li>');
+                var testChanges = _compareTestStuff(prev[i], curr[i]);
+                if (testChanges) {
+                    obj.changes = obj.changes.concat(testChanges);
                 }
                 var testFunctionalityKeys = [];
-                var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'number');
+                var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'name');
                 for (j = 0; j < testFunctionality.length; j++) {
                     obj.changes.push('<li>Test Functionality Number "' + testFunctionality[j].name + '" changes<ul>' + testFunctionality[j].changes.join('') + '</ul></li>');
                 }
@@ -773,6 +720,77 @@
                 if (obj.changes.length > 0) {
                     ret.push(obj);
                 }
+            }
+            return ret;
+        }
+
+        function _compareCertificationEvents (prev, curr) {
+            var c = 0, item, p = 0, ret = [];
+            prev = $filter('orderBy')(prev.map(function (e) { if (!e.certificationStatusName) { e.certificationStatusName = e.status.name; } return e; }), 'eventDate');
+            curr = $filter('orderBy')(curr.map(function (e) { if (!e.certificationStatusName) { e.certificationStatusName = e.status.name; } return e; }), 'eventDate');
+
+            while (p < prev.length && c < curr.length) {
+                item = '';
+                if (prev[p].eventDate < curr[c].eventDate) {
+                    if (prev[p].certificationStatusName === curr[c].certificationStatusName) {
+                        item = '"' + prev[p].certificationStatusName + '" status changed effective date to ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        if (curr[c].reason) {
+                            item += ' with reason: "' + curr[c].reason + '"';
+                        }
+                        p += 1;
+                        c += 1;
+                    } else {
+                        item = 'Removed "' + prev[p].certificationStatusName + '" status at ' + $filter('date')(prev[p].eventDate,'mediumDate','UTC');
+                        if (prev[p].reason) {
+                            item += ' with reason: "' + prev[p].reason + '"';
+                        }
+                        p += 1;
+                    }
+                } else if (prev[p].eventDate > curr[c].eventDate) {
+                    if (prev[p].certificationStatusName === curr[c].certificationStatusName) {
+                        item = '"' + prev[p].certificationStatusName + '" status changed effective date to ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        if (curr[c].reason) {
+                            item += ' with reason: "' + curr[c].reason + '"';
+                        }
+                        p += 1;
+                        c += 1;
+                    } else {
+                        item = 'Added "' + curr[c].certificationStatusName + '" status at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        if (curr[c].reason) {
+                            item += ' with reason: "' + curr[c].reason + '"';
+                        }
+                        c += 1;
+                    }
+                } else if (prev[p].certificationStatusName !== curr[c].certificationStatusName) {
+                    item = '"' + prev[p].certificationStatusName + '" status became "' + curr[c].certificationStatusName + '" at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                    if (curr[c].reason) {
+                        item += ' with reason: "' + curr[c].reason + '"';
+                    }
+                    p += 1;
+                    c += 1;
+                } else {
+                    p += 1;
+                    c += 1;
+                }
+                if (item) {
+                    ret.push(item);
+                }
+            }
+            while (p < prev.length) {
+                item = 'Removed "' + prev[p].certificationStatusName + '" status at ' + $filter('date')(prev[p].eventDate,'mediumDate','UTC');
+                if (prev[p].reason) {
+                    item += ' with reason: "' + prev[p].reason + '"';
+                }
+                ret.push(item);
+                p += 1;
+            }
+            while (c < curr.length) {
+                item = 'Added "' + curr[c].certificationStatusName + '" status at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                if (curr[c].reason) {
+                    item += ' with reason: "' + curr[c].reason + '"';
+                }
+                ret.push(item);
+                c += 1;
             }
             return ret;
         }
@@ -865,6 +883,88 @@
             return ret;
         }
 
+        function _compareTestStuff (prev, curr) {
+            var ret = [];
+            if (prev.testProcedures && curr.testProcedures) {
+                prev.testProcedures.forEach(function (pre) {
+                    if (pre.testProcedure) {
+                        curr.testProcedures.forEach(function (cur) {
+                            if (!cur.found && !pre.found &&
+                                pre.testProcedure.name === cur.testProcedure.name &&
+                                pre.testProcedureVersion === cur.testProcedureVersion ) {
+                                pre.found = true;
+                                cur.found = true;
+                            }
+                        });
+                    }
+                });
+                prev.testProcedures.forEach(function (pre) {
+                    if (pre.testProcedure) {
+                        curr.testProcedures.forEach(function (cur) {
+                            if (!cur.found && !pre.found && pre.testProcedure.name === cur.testProcedure.name ) {
+                                pre.found = true;
+                                cur.found = true;
+                                ret.push('<li>Test Procedure "' + pre.testProcedure.name + '" version changed from "' + pre.testProcedureVersion + '" to "' + cur.testProcedureVersion + '"</li>');
+                            }
+                        })
+                        if (!pre.found) {
+                            ret.push('<li>Test Procedure "' + pre.testProcedure.name + '" was removed</li>');
+                        }
+                    }
+                });
+                curr.testProcedures.forEach(function (cur) {
+                    if (cur.testProcedure) {
+                        if (!cur.found) {
+                            ret.push('<li>Test Procedure "' + cur.testProcedure.name + '" was added</li>');
+                        }
+                    }
+                });
+            }
+            if (prev.testDataUsed && curr.testDataUsed) {
+                prev.testDataUsed.forEach(function (pre) {
+                    if (pre.testData) {
+                        curr.testDataUsed.forEach(function (cur) {
+                            if (!cur.found && !pre.found &&
+                                pre.testData.name === cur.testData.name &&
+                                pre.version === cur.version &&
+                                pre.alteration === cur.alteration) {
+                                pre.found = true;
+                                cur.found = true;
+                            }
+                        });
+                    }
+                });
+                prev.testDataUsed.forEach(function (pre) {
+                    if (pre.testData) {
+                        curr.testDataUsed.forEach(function (cur) {
+                            if (!cur.found && !pre.found &&
+                                pre.testData.name === cur.testData.name) {
+                                pre.found = true;
+                                cur.found = true;
+                                if (pre.version !== cur.version) {
+                                    ret.push('<li>Test Data "' + pre.testData.name + '" version changed from "' + pre.version + '" to "' + cur.version + '"</li>');
+                                }
+                                if (pre.alteration !== cur.alteration) {
+                                    ret.push('<li>Test Data "' + pre.testData.name + '" alteration changed from "' + pre.alteration + '" to "' + cur.alteration + '"</li>');
+                                }
+                            }
+                        })
+                        if (!pre.found) {
+                            ret.push('<li>Test Data "' + pre.testData.name + '" was removed</li>');
+                        }
+                    }
+                });
+                curr.testDataUsed.forEach(function (cur) {
+                    if (cur.testData) {
+                        if (!cur.found) {
+                            ret.push('<li>Test Data "' + cur.testData.name + '" was added</li>');
+                        }
+                    }
+                });
+            }
+            return ret;
+        }
+
         function compareSedTasks (prev, curr) {
             var ret = [];
             var change;
@@ -925,7 +1025,7 @@
             return ret;
         }
 
-        function compareCqms (prev, curr, questionable) {
+        function compareCqms (prev, curr) {
             var ret = [];
             var change;
             prev.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
@@ -935,12 +1035,7 @@
                 var obj = { cmsId: curr[i].cmsId, changes: [] };
                 change = compareItem(prev[i], curr[i], 'success', 'Success');
                 if (change) {
-                    if (questionable) {
-                        obj.questionable = true;
-                        obj.changes.push('<li class="bg-danger"><strong>' + change + '</strong></li>');
-                    } else {
-                        obj.changes.push('<li>' + change + '</li>');
-                    }
+                    obj.changes.push('<li>' + change + '</li>');
                 }
                 for (j = 0; j < prev[i].allVersions.length; j++) {
                     if (prev[i].successVersions.indexOf(prev[i].allVersions[j]) < 0 && curr[i].successVersions.indexOf(prev[i].allVersions[j]) >= 0) {
@@ -957,6 +1052,77 @@
                 }
                 if (obj.changes.length > 0) {
                     ret.push(obj);
+                }
+            }
+            return ret;
+        }
+
+        function interpretCaps (data) {
+            vm.loadedCapActivity = data;
+            var ret = [];
+            var change;
+
+            var certChanges, cpNum, i, j;
+            for (i = 0; i < data.length; i++) {
+                var activity = {
+                    date: data[i].activityDate,
+                    newId: data[i].id,
+                    acb: '',
+                };
+                activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
+                if (data[i].description.startsWith('A corrective action plan for')) {
+                    cpNum = data[i].description.split(' ')[7];
+                    if (data[i].description.endsWith('created.')) {
+                        activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.id = data[i].newData.id;
+                        activity.acb = data[i].newData.acbName;
+                    } else if (data[i].description.endsWith('deleted.')) {
+                        activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.id = data[i].originalData.id;
+                        activity.acb = data[i].originalData.acbName;
+                    } else if (data[i].description.endsWith('updated.')) {
+                        activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.id = data[i].newData.id;
+                        activity.acb = data[i].newData.acbName;
+                        var capFields = [
+                            {key: 'acbSummary', display: 'ONC/ACB Summary'},
+                            {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
+                            {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
+                            {key: 'developerSummary', display: 'Developer Explanation'},
+                            {key: 'effectiveDate', display: 'Effective Date', filter: 'date'},
+                            {key: 'estimatedCompleteionDate', display: 'Estimated Complete Date', filter: 'date'},
+                            {key: 'noncomplianceDate', display: 'Date of Determination', filter: 'date'},
+                            {key: 'randomizedSurveillance', display: 'Result of Randomized Surveillance'},
+                            {key: 'resolution', display: 'Description of Resolution'},
+                            {key: 'surveillanceEndDate', display: 'Surveillance Ended', filter: 'date'},
+                            {key: 'surveillanceStartDate', display: 'Surveillance Began', filter: 'date'},
+                        ];
+                        activity.details = [];
+                        for (j = 0; j < capFields.length; j++) {
+                            change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
+                            if (change) { activity.details.push(change); }
+                        }
+                        certChanges = compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
+                        for (j = 0; j < certChanges.length; j++) {
+                            activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                        }
+                        activity.csvDetails = activity.details.join('\n');
+                    } else {
+                        activity.action = data[i].description;
+                    }
+                    ret.push(activity);
+                } else if (data[i].description.startsWith('Documentation was added to ')) {
+                    cpNum = data[i].description.split(' ');
+                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
+                    activity.action = cpNum.join(' ');
+                    activity.acb = data[i].newData.acbName;
+                    ret.push(activity);
+                } else if (data[i].description.startsWith('Documentation was removed from ')) {
+                    cpNum = data[i].description.split(' ');
+                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
+                    activity.action = cpNum.join(' ');
+                    activity.acb = data[i].newData.acbName;
+                    ret.push(activity);
                 }
             }
             return ret;

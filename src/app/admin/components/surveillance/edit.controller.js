@@ -15,7 +15,6 @@
         vm.editRequirement = editRequirement;
         vm.inspectNonconformities = inspectNonconformities;
         vm.isAcbAdmin = authService.isAcbAdmin;
-        vm.isAcbStaff = authService.isAcbStaff;
         vm.isChplAdmin = authService.isChplAdmin;
         vm.missingEndDate = missingEndDate;
         vm.save = save;
@@ -28,10 +27,7 @@
         function activate () {
             vm.authorities = [];
             if (vm.isAcbAdmin()){
-                vm.authorities.push('ROLE_ACB_ADMIN');
-            }
-            if (vm.isAcbStaff()){
-                vm.authorities.push('ROLE_ACB_STAFF');
+                vm.authorities.push('ROLE_ACB');
             }
             if (vm.isChplAdmin()){
                 vm.authorities.push('ROLE_ADMIN');
@@ -93,16 +89,18 @@
         }
 
         function deleteSurveillance () {
-            networkService.deleteSurveillance(vm.surveillance.id)
-                .then(function (response) {
-                    if (!response.status || response.status === 200 || angular.isObject(response.status)) {
-                        $uibModalInstance.close(response);
-                    } else {
-                        vm.errorMessages = [response];
-                    }
-                },function (error) {
-                    vm.errorMessages = [error.statusText];
-                });
+            if (vm.reason) {
+                networkService.deleteSurveillance(vm.surveillance.id, vm.reason)
+                    .then(function (response) {
+                        if (!response.status || response.status === 200 || angular.isObject(response.status)) {
+                            $uibModalInstance.close(response);
+                        } else {
+                            vm.errorMessages = [response];
+                        }
+                    },function (error) {
+                        vm.errorMessages = [error.statusText];
+                    });
+            }
         }
 
         function editRequirement (req) {
@@ -189,10 +187,7 @@
                         vm.surveillance.authority = 'ROLE_ADMIN';
                     }
                     else if (vm.isAcbAdmin()){
-                        vm.surveillance.authority = 'ROLE_ACB_ADMIN';
-                    }
-                    else if (vm.isAcbStaff()){
-                        vm.surveillance.authority = 'ROLE_ACB_STAFF';
+                        vm.surveillance.authority = 'ROLE_ACB';
                     }
                 }
                 vm.surveillance.certifiedProduct.edition = vm.surveillance.certifiedProduct.certificationEdition.name;

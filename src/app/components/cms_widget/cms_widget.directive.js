@@ -18,7 +18,6 @@
             },
             controller: CmsWidgetController,
             controllerAs: 'vm',
-            restrict: 'EA',
             scope: {},
         };
     }
@@ -203,10 +202,22 @@
             // Add body text to PDF
             doc.setFontSize(10);
             doc.setFontType('normal');
-            doc.text(40, bodyStartY, doc.splitTextToSize('The CMS EHR Certification ID shown corresponds to the collection of products listed below. Submit this ID as part of the attestation process for the CMS EHR Incentive Programs.',
-                                                         775));
-            doc.text(40, bodyStartY+30, doc.splitTextToSize('* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.',
-                                                            775));
+            doc.text(
+                40,
+                bodyStartY,
+                doc.splitTextToSize(
+                    'The CMS EHR Certification ID shown corresponds to the collection of products listed below. Submit this ID as part of the attestation process for the CMS EHR Incentive Programs.',
+                    775
+                )
+            );
+            doc.text(
+                40,
+                bodyStartY+30,
+                doc.splitTextToSize(
+                    '* Additional certification criteria may need to be added in order to meet submission requirements for Medicaid and Medicare programs.',
+                    775
+                )
+            );
 
             // Add Certification ID to PDF
             doc.setFontSize(20);

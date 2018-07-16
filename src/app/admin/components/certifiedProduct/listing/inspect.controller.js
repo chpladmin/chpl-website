@@ -5,7 +5,7 @@
         .controller('InspectController', InspectController);
 
     /** @ngInject */
-    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isAcbStaff, isChplAdmin, networkService, resources) {
+    function InspectController ($log, $uibModal, $uibModalInstance, developers, inspectingCp, isAcbAdmin, isChplAdmin, networkService, resources, utilService) {
         var vm = this;
 
         vm.loadDev = loadDev;
@@ -29,7 +29,10 @@
         vm.isDisabled = isDisabled;
 
         vm.cancel = cancel;
-        vm.ternaryFilter = ternaryFilter;
+        vm.ternaryFilter = utilService.ternaryFilter;
+        vm.checkQmsBoolean = checkQmsBoolean;
+
+        vm.certificationStatus = utilService.certificationStatus;
 
         activate();
 
@@ -51,7 +54,6 @@
 
             vm.errorMessages = [];
             vm.isAcbAdmin = isAcbAdmin;
-            vm.isAcbStaff = isAcbStaff;
             vm.isChplAdmin = isChplAdmin;
             vm.resources = resources;
             vm.statuses = resources.statuses;
@@ -223,7 +225,6 @@
                 resolve: {
                     activeCP: function () { return vm.cp; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return vm.resources; },
                     workType: function () { return 'confirm'; },
@@ -296,11 +297,11 @@
             $uibModalInstance.dismiss('cancelled');
         }
 
-        function ternaryFilter (field) {
-            if (field === null) {
-                return 'N/A';
+        function checkQmsBoolean (qms) {
+            if (qms === null) {
+                return vm.cp.qmsStandards.length > 0 ? 'True' : 'False';
             } else {
-                return field ? 'True' : 'False';
+                return vm.cp.hasQms ? 'True' : 'False';
             }
         }
 

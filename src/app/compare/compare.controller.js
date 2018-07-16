@@ -8,6 +8,7 @@
     function CompareController ($filter, $log, $routeParams, networkService, utilService) {
         var vm = this;
 
+        vm.certificationStatus = utilService.certificationStatus;
         vm.fillInBlanks = fillInBlanks;
         vm.isShowing = isShowing;
         vm.sortAllCerts = sortAllCerts;

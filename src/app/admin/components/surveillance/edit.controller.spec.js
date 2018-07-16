@@ -8,7 +8,6 @@
             module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isAcbStaff = jasmine.createSpy('isAcbStaff');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     return $delegate;
                 });
@@ -30,7 +29,6 @@
                 $q = _$q_;
                 authService = _authService_;
                 authService.isAcbAdmin.and.returnValue(false);
-                authService.isAcbStaff.and.returnValue(false);
                 authService.isChplAdmin.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.deleteSurveillance.and.returnValue($q.when({}));
@@ -88,7 +86,6 @@
                 newSurv.startDate = undefined;
                 newSurv.type = undefined;
                 authService.isAcbAdmin.and.returnValue(true);
-                authService.isAcbStaff.and.returnValue(true);
                 authService.isChplAdmin.and.returnValue(true);
                 vm = $controller('EditSurveillanceController', {
                     surveillance: newSurv,
@@ -98,7 +95,7 @@
                     $scope: scope,
                 });
                 scope.$digest();
-                expect(vm.authorities).toEqual(['ROLE_ACB_ADMIN', 'ROLE_ACB_STAFF', 'ROLE_ADMIN']);
+                expect(vm.authorities).toEqual(['ROLE_ACB', 'ROLE_ADMIN']);
                 expect(typeof(vm.surveillance.startDateObject)).toBe('undefined');
                 expect(typeof(vm.surveillance.endDateObject)).toBe('object');
                 expect(vm.surveillance.type).toBeUndefined();
@@ -178,6 +175,10 @@
         });
 
         describe('when deleting the surveillance', function () {
+            beforeEach(function () {
+                vm.reason = 'a reason';
+            });
+
             it('should close it\'s own modal on a status:200 response', function () {
                 networkService.deleteSurveillance.and.returnValue($q.when({status: 200}));
                 vm.deleteSurveillance();
@@ -211,6 +212,19 @@
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual(['errors']);
+            });
+
+            it('should not allow deleting a surveillance without a Reason for Change', function () {
+                var callCount = networkService.deleteSurveillance.calls.count();
+                vm.reason = undefined;
+                vm.deleteSurveillance();
+                scope.$digest();
+                expect(networkService.deleteSurveillance.calls.count()).toBe(callCount);
+            });
+
+            it('should pass the Reason for Change to the network service', function () {
+                vm.deleteSurveillance();
+                expect(networkService.deleteSurveillance).toHaveBeenCalledWith(vm.surveillance.id, 'a reason');
             });
         });
 
@@ -416,20 +430,15 @@
                 it('should assign the highest authority to the surveillance', function () {
                     vm.surveillance.authority = undefined;
                     authService.isAcbAdmin.and.returnValue(true);
-                    authService.isAcbStaff.and.returnValue(true);
                     authService.isChplAdmin.and.returnValue(true);
                     vm.save();
                     expect(vm.surveillance.authority).toBe('ROLE_ADMIN');
                     vm.surveillance.authority = undefined;
                     authService.isChplAdmin.and.returnValue(false);
                     vm.save();
-                    expect(vm.surveillance.authority).toBe('ROLE_ACB_ADMIN');
+                    expect(vm.surveillance.authority).toBe('ROLE_ACB');
                     vm.surveillance.authority = undefined;
                     authService.isAcbAdmin.and.returnValue(false);
-                    vm.save();
-                    expect(vm.surveillance.authority).toBe('ROLE_ACB_STAFF');
-                    vm.surveillance.authority = undefined;
-                    authService.isAcbStaff.and.returnValue(false);
                     vm.save();
                     expect(vm.surveillance.authority).toBeUndefined();
                 });

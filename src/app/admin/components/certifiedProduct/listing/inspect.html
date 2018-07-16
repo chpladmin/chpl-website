@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="inspectLabel">
+<div role="modal" aria-labeled-by="inspect-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="inspectLabel">Inspect Certified Product ({{ vm.cp.chplProductNumber }})</h4>
+    <h4 class="modal-title" id="inspect-label">Inspect Certified Product ({{ vm.cp.chplProductNumber }})</h4>
   </div>
   <div class="modal-body">
     <!-- Developer -->
@@ -28,14 +28,14 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li><input type="radio" ng-model="vm.developerChoice" value="choose" id="rdDevChoose"></input><label for="rdDevChoose">Select existing developer</label></li>
-                  <li><input type="radio" ng-model="vm.developerChoice" value="create" id="rdDevCreate"></input><label for="rdDevCreate">Create new developer</label></li>
+                  <li><label><input id="select-developer" type="radio" name="developer-choice" ng-model="vm.developerChoice" value="choose"> Select existing developer</label></li>
+                  <li><label><input id="create-developer" type="radio" name="developer-choice" ng-model="vm.developerChoice" value="create"> Create new developer</label></li>
                 </ul>
               </div>
               <div ng-if="vm.developerChoice === 'choose'">
-                <label for="developerSelect" class="control-label admin-label-spaced">Select a developer</label>
+                <label for="developer-select" class="control-label admin-label-spaced">Select a developer</label>
                 <select ng-model="vm.developerSelect"
-                        id="developerSelect" class="input-sm form-control"
+                        id="developer-select" class="input-sm form-control"
                         ng-options="v.name for v in vm.developers | orderBy: 'name'">
                 </select>
                 <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingDeveloper()">Select Developer</button></p>
@@ -121,14 +121,14 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li ng-if="vm.developer"><input type="radio" ng-model="vm.productChoice" value="choose" id="rdPrdChoose"></input><label for="rdPrdChoose">Select existing product</label></li>
-                  <li><input type="radio" ng-model="vm.productChoice" value="create" id="rdPrdCreate"></input><label for="rdPrdCreate">Create new product</label></li>
+                  <li ng-if="vm.developer"><label><input type="radio" id="select-product" name="product-choice" ng-model="vm.productChoice" value="choose"> Select existing product</label></li>
+                  <li><label><input type="radio" id="create-product" name="product-choice" ng-model="vm.productChoice" value="create"> Create new product</label></li>
                 </ul>
               </div>
               <div ng-if="vm.productChoice === 'choose'">
-                <label for="productSelect" class="control-label admin-label-spaced">Select a product</label>
+                <label for="product-select" class="control-label admin-label-spaced">Select a product</label>
                 <select ng-model="vm.productSelect"
-                        id="productSelect" class="input-sm form-control"
+                        id="product-select" class="input-sm form-control"
                         ng-options="p.name for p in vm.products | orderBy: 'name'">
                 </select>
                 <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
@@ -189,14 +189,14 @@
             <div class="panel-body">
               <div class="row admin-label-spaced">
                 <ul class="list-inline">
-                  <li ng-if="vm.product"><input type="radio" ng-model="vm.versionChoice" value="choose" id="rdVerChoose"></input><label for="rdVerChoose">Select existing version</label></li>
-                  <li><input type="radio" ng-model="vm.versionChoice" value="create" id="rdVerCreate"></input><label for="rdVerCreate">Create new version</label></li>
+                  <li ng-if="vm.product"><label><input type="radio" id="select-version" name="version-choice" ng-model="vm.versionChoice" value="choose"> Select existing version</label></li>
+                  <li><label><input type="radio" id="create-version" name="version-choice" ng-model="vm.versionChoice" value="create"> Create new version</label></li>
                 </ul>
               </div>
               <div ng-if="vm.versionChoice === 'choose'">
-                <label for="versionSelect" class="control-label admin-label-spaced">Select a version</label>
+                <label for="version-select" class="control-label admin-label-spaced">Select a version</label>
                 <select ng-model="vm.versionSelect"
-                        id="versionSelect" class="input-sm form-control"
+                        id="version-select" class="input-sm form-control"
                         ng-options="v.version for v in vm.versions | orderBy: 'version'">
                 </select>
                 <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVersion()">Select Version</button></p>
@@ -257,20 +257,23 @@
                 <strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} <br />
                 <strong>Certification Date:</strong> {{ vm.cp.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
                 <span ng-if="vm.cp.productAdditionalSoftware"><strong>Relied Upon Software:</strong> {{ vm.cp.productAdditionalSoftware }} <br /></span>
-                <strong>Status:</strong> {{ vm.cp.certificationStatus.name }}<br />
+                <strong>Status:</strong> {{ vm.certificationStatus(vm.cp) }}<br />
                 <strong>ACB Certification Id:</strong> {{ vm.cp.acbCertificationId }} <br />
                 <strong>Other ACB:</strong> {{ vm.cp.otherAcb ? vm.cp.otherAcb : 'N/A' }} <br />
                 <strong>Transparency URL:</strong> {{ vm.cp.transparencyAttestationUrl ? vm.cp.transparencyAttestationUrl : 'None' }} <br />
                 <strong>Inherited Certification Status:</strong> {{ vm.ternaryFilter(vm.cp.ics.inherits) }} <br />
-                <strong>QMS:</strong> {{ vm.cp.qmsStandards.length > 0 ? 'True' : 'False' }} <br />
+                <strong>QMS:</strong> {{ vm.checkQmsBoolean(vm.cp.hasQms) }} <br />
                 <ul>
                   <li ng-repeat="qms in vm.cp.qmsStandards">{{ qms.qmsStandardName }}<span ng-if="qms.qmsModification">, {{ qms.qmsModification }}</span><span ng-if="qms.applicableCriteria">, {{ qms.applicableCriteria }}</span></li>
                 </ul>
                 <strong>Report File Location:</strong> {{ vm.cp.reportFileLocation ? vm.cp.reportFileLocation : 'N/A' }} <br />
                 <strong>SED Report File Location:</strong> {{ vm.cp.sedReportFileLocation ? vm.cp.sedReportFileLocation : 'N/A' }} <br />
                 <strong>SED Intended Users:</strong> {{ vm.cp.sedIntendedUserDescription ? vm.cp.sedIntendedUserDescription : 'None' }} <br />
-                <strong>SED End Date of Testing:</strong> {{ vm.cp.sedTestingEnd | date : 'mediumDate' : 'UTC' }} <br />
-                <strong>Testing Lab:</strong> {{ vm.cp.testingLab.name }} <br />
+                <strong>SED End Date of Testing:</strong> {{ vm.cp.sedTestingEndDate | date : 'mediumDate' : 'UTC' }} <br />
+                <strong>Testing Lab<span ng-if="vm.cp.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!vm.cp.testingLabs || vm.cp.testingLabs.length === 0">None<br /></span>
+                <ul ng-if="vm.cp.testingLabs && vm.cp.testingLabs.length !== 0">
+                  <li ng-repeat="atl in vm.cp.testingLabs">{{ atl.testingLabName }}</li>
+                </ul>
                 <strong>Accessibility Standards:</strong> {{ vm.cp.accessibilityStandards.length > 0 ? 'True' : 'None' }} <br />
                 <ul>
                   <li ng-repeat="std in vm.cp.accessibilityStandards">{{ std.accessibilityStandardName }}</li>
@@ -283,7 +286,7 @@
                         is-confirming="true"
                         product="vm.cp">
               </ai-certs>
-              <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()">Edit Certified Product</button></p>
+              <p><button class="btn btn-default btn-block" ng-click="vm.editCertifiedProduct()" id="inspect-edit">Edit Certified Product</button></p>
             </div>
           </div>
         </div>
@@ -295,40 +298,40 @@
   <div class="modal-footer">
     <div class="row" ng-if="(vm.errorMessages && vm.errorMessages.length !== 0) || (vm.cp.errorMessages && vm.cp.errorMessages.length !== 0) || (vm.cp.warningMessages && vm.cp.warningMessages.length !== 0)">
       <div class="col-sm-12 text-left bg-danger">
-        <div ng-if="vm.cp.errorMessages.length > 0">
-          Error<span ng-if="vm.cp.errorMessages.length > 1">s</span> in product upload
+        <div ng-if="vm.cp.errorMessages && vm.cp.errorMessages.length !== 0">
+          Error<span ng-if="vm.cp.errorMessages.length !== 1">s</span> in product upload
           <ul>
             <li ng-repeat="error in vm.cp.errorMessages | orderBy:'toString()'">{{ error }}</li>
           </ul>
         </div>
-        <div ng-if="vm.cp.warningMessages.length > 0">
-          Warning<span ng-if="vm.cp.warningMessages.length > 1">s</span> in product upload
+        <div ng-if="vm.cp.warningMessages && vm.cp.warningMessages.length !== 0">
+          Warning<span ng-if="vm.cp.warningMessages.length !== 1">s</span> in product upload
           <ul>
             <li ng-repeat="error in vm.cp.warningMessages | orderBy:'toString()'">{{ error }}</li>
           </ul>
         </div>
-        <div ng-if="vm.errorMessages.length > 0">
-          Error<span ng-if="vm.errorMessages.length > 1">s</span> in product confirmation
+        <div ng-if="vm.errorMessages && vm.errorMessages.length !== 0">
+          Error<span ng-if="vm.errorMessages.length !== 1">s</span> in product confirmation
           <ul>
             <li ng-repeat="error in vm.errorMessages | orderBy:'toString()'">{{ error }}</li>
           </ul>
         </div>
       </div>
     </div>
-    <button class="btn btn-warning btn-large pull-left"
+    <button class="btn btn-warning btn-large pull-left" id="inspect-previous"
             ng-disabled="vm.stage === 'dev'"
             ng-click="vm.previous()">Previous</button>
-    <button class="btn btn-danger pull-left"
+    <button class="btn btn-danger pull-left" id="inspect-reject"
             confirm="Are you sure you wish to reject this Certified Product?"
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.reject()"><i class="fa fa-trash-o"></i> Reject</button>
-    <button class="btn btn-ai-success btn-large pull-right"
+    <button class="btn btn-ai-success btn-large pull-right" id="inspect-next"
             ng-disabled="vm.isDisabled()"
             ng-if="vm.stage !== 'cp'"
             ng-click="vm.next()">Next</button>
-    <button class="btn btn-ai-success btn-large pull-right"
+    <button class="btn btn-ai-success btn-large pull-right" id="inspect-confirm"
             ng-if="vm.stage === 'cp'"
             confirm="Are you sure you wish to confirm this Certified Product?"
             confirm-ok="Yes"

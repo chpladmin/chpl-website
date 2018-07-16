@@ -18,47 +18,48 @@
       <div class="col-sm-3 admin-nav">
         <div class="panel panel-ai">
           <ul class="nav nav-pills nav-stacked">
-            <li ng-class="{'active': vm.navState.screen === 'dpManagement'}" ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isAcbStaff()"><a href="" class="" ng-click="vm.changeScreen('dpManagement')">Developer &amp; Product Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'upload'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin() || vm.isAcbStaff())"><a href="" class="" ng-click="vm.changeSubNav('upload')">Upload Products &amp; Surveillance</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirm'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin() || vm.isAcbStaff())"><a href="" class="" ng-click="vm.changeSubNav('confirm')">Confirm Pending Product<span ng-if="vm.pendingProducts > 1">s</span> <span class="badge">{{ vm.pendingProducts }}</span> </a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirmSurveillance'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin() || vm.isAcbStaff())"><a href="" class="" ng-click="vm.changeSubNav('confirmSurveillance')">Confirm Pending Surveillance Activit<span ng-if="vm.pendingSurveillances !== 1">ies</span><span ng-if="vm.pendingSurveillances === 1">y</span> <span class="badge">{{ vm.pendingSurveillances }}</span> </a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'manage'}" ng-if="vm.navState.screen === 'dpManagement'"><a href="" class="" ng-click="vm.changeSubNav('manage')">Manage Developers &amp; Products</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'manageSurveillance'}" ng-if="vm.navState.screen === 'dpManagement'"><a href="" class="" ng-click="vm.changeSubNav('manageSurveillance')">Manage Surveillance Activity</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'merge'}" ng-if="vm.navState.screen === 'dpManagement' && vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeSubNav('merge')">Merge Developers &amp; Products</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'dpManagement'}" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('dpManagement')">Developer &amp; Product Management</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'upload'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin())"><a href="" ng-click="vm.changeSubNav('upload')">Upload Products &amp; Surveillance</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirm'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin())"><a href="" ng-click="vm.changeSubNav('confirm')">Confirm Pending Product<span ng-if="vm.pendingProducts > 1">s</span> <span class="badge">{{ vm.pendingProducts }}</span> </a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirmSurveillance'}" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin())"><a href="" ng-click="vm.changeSubNav('confirmSurveillance')">Confirm Pending Surveillance Activit<span ng-if="vm.pendingSurveillances !== 1">ies</span><span ng-if="vm.pendingSurveillances === 1">y</span> <span class="badge">{{ vm.pendingSurveillances }}</span> </a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'manage'}" ng-if="vm.navState.screen === 'dpManagement'"><a href="" ng-click="vm.changeSubNav('manage')">Manage Developers &amp; Products</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'manageSurveillance'}" ng-if="vm.navState.screen === 'dpManagement'"><a href="" ng-click="vm.changeSubNav('manageSurveillance')">Manage Surveillance Activity</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'merge'}" ng-if="vm.navState.screen === 'dpManagement' && vm.isChplAdmin()"><a href="" ng-click="vm.changeSubNav('merge')">Merge Developers &amp; Products</a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'userManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('userManagement')">User Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'userManagement'}" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('userManagement')">User Management</a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'acbManagement'}" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" class="" ng-click="vm.changeScreen('acbManagement')">ONC-ACB Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.acbManagement === acb}" ng-if="vm.navState.screen === 'acbManagement'" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" class="" ng-click="vm.changeAcb(acb)">{{ acb.name }}<span ng-if="acb.isDeleted" class="pull-right">&lt;deleted&gt;</span></a></li>
+            <li ng-class="{'active': vm.navState.screen === 'acbManagement'}" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('acbManagement')">ONC-ACB Management</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.acbManagement === acb}" ng-if="vm.navState.screen === 'acbManagement'" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" ng-click="vm.changeAcb(acb)">{{ acb.name }}<span ng-if="acb.isDeleted" class="pull-right">&lt;deleted&gt;</span></a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'atlManagement'}" ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="" class="" ng-click="vm.changeScreen('atlManagement')">ONC-ATL Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.atlManagement === atl}" ng-if="vm.navState.screen === 'atlManagement'" ng-repeat="atl in vm.atls | orderBy:'name' track by atl.id"><a href="" class="" ng-click="vm.changeAtl(atl)">{{ atl.name }}<span ng-if="atl.isDeleted" class="pull-right">&lt;deleted&gt;</span></a></li>
+            <li ng-class="{'active': vm.navState.screen === 'atlManagement'}" ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="" ng-click="vm.changeScreen('atlManagement')">ONC-ATL Management</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.atlManagement === atl}" ng-if="vm.navState.screen === 'atlManagement'" ng-repeat="atl in vm.atls | orderBy:'name' track by atl.id"><a href="" ng-click="vm.changeAtl(atl)">{{ atl.name }}<span ng-if="atl.isDeleted" class="pull-right">&lt;deleted&gt;</span></a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'reports'}"><a href="" class="" ng-click="vm.changeScreen('reports')">Reports</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-upload'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('cp-upload')">Certified Product - Uploads</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-status'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('cp-status')">Certification Status Changes</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-surveillance'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('cp-surveillance')">Surveillance Activity</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-cap'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('cp-cap')">Corrective Action Plans</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-other'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('cp-other')">Other Certified Product Activities</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-questionable'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('cp-questionable')">Questionable Certified Product Activity</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'dev'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('dev')">Developers</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'prod'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('prod')">Products</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'acb'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('acb')">ONC-ACBs</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'atl'}" ng-if="vm.navState.screen === 'reports'"><a href="" class="" ng-click="vm.changeSubNav('atl')">ONC-ATLs</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'announcement'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" class="" ng-click="vm.changeSubNav('announcement')">Announcements</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'users'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" class="" ng-click="vm.changeSubNav('users')">Users</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" class="" ng-click="vm.changeSubNav('api_key_management')">API Key Management Activity</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key_usage'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" class="" ng-click="vm.changeSubNav('api_key_usage')">API Key Usage Activity</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'reports'}" ng-if="(vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeScreen('reports')">Reports</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-upload'}" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-upload')">Certified Product - Uploads</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-status'}" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-status')">Certification Status Changes</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-surveillance'}" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-surveillance')">Surveillance Activity</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cap'}" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cap')">Corrective Action Plans</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-other'}" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-other')">Other Certified Product Activities</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'dev'}" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('dev')">Developers</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'prod'}" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('prod')">Products</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'acb'}" ng-if="vm.navState.screen === 'reports' &&(vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('acb')">ONC-ACBs</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'atl'}" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('atl')">ONC-ATLs</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'announcement'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('announcement')">Announcements</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'users'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('users')">Users</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('api_key_management')">API Key Management Activity</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key_usage'}" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('api_key_usage')">API Key Usage Activity</a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'subscriptions'}" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href ng-click="vm.changeScreen('subscriptions')">Subscription Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" ng-if="vm.isChplAdmin()"><a href="" class="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" class="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" ng-if="vm.isChplAdmin() || vm.isOncStaff()"><a href="" class="" ng-click="vm.changeScreen('jobsManagement')">Jobs Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'subscriptions'}" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('subscriptions')">Subscription Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'scheduledJobs'}" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('scheduledJobs')">Scheduled Jobs</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" ng-if="vm.isChplAdmin() || vm.isOncStaff() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('jobsManagement')">Jobs Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'fuzzyManagement'}" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('fuzzyManagement')">Fuzzy Matching Management</a></li>
           </ul>
         </div>
       </div>
-      <div class="col-sm-9 admin-inner-tab" id="mainContent" tabindex="-1">
+      <div class="col-sm-9 admin-inner-tab" id="main-content" tabindex="-1">
         <ai-vp-management ng-if="vm.navState.screen === 'dpManagement'"
                           pending-products="vm.pendingProducts"
                           pending-surveillances="vm.pendingSurveillances"
@@ -77,10 +78,13 @@
                     product-id="vm.productId"></ai-reports>
         <ai-subscription-recipients ng-if="vm.navState.screen === 'subscriptions'"
                                     acbs="vm.acbs"></ai-subscription-recipients>
+        <ai-scheduled-jobs ng-if="vm.navState.screen === 'scheduledJobs'"
+                                    acbs="vm.acbs"></ai-scheduled-jobs>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>
         <ai-announcements-management ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
         <ai-cms-management admin="true" ng-if="vm.navState.screen === 'cmsManagement'"></ai-cms-management>
         <ai-jobs-management ng-if="vm.navState.screen === 'jobsManagement'"></ai-jobs-management>
+        <ai-fuzzy-management ng-if="vm.navState.screen === 'fuzzyManagement'"></ai-fuzzy-management>
       </div>
     </div>
   </section> <!-- end authenticated user section -->

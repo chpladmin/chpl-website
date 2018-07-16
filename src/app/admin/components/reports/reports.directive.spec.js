@@ -9,7 +9,6 @@
             module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isAcbStaff = jasmine.createSpy('isAcbStaff');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
                     return $delegate;
@@ -17,6 +16,7 @@
 
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCertifiedProductActivity = jasmine.createSpy('getCertifiedProductActivity');
+                    $delegate.getCorrectiveActionPlanActivity = jasmine.createSpy('getCorrectiveActionPlanActivity');
                     $delegate.getDeveloperActivity = jasmine.createSpy('getDeveloperActivity');
                     $delegate.getProductActivity = jasmine.createSpy('getProductActivity');
                     $delegate.getVersionActivity = jasmine.createSpy('getVersionActivity');
@@ -46,11 +46,11 @@
                 });
                 authService = _authService_;
                 authService.isAcbAdmin.and.returnValue($q.when(true));
-                authService.isAcbStaff.and.returnValue($q.when(true));
                 authService.isChplAdmin.and.returnValue($q.when(true));
                 authService.isOncStaff.and.returnValue($q.when(true));
                 networkService = _networkService_;
                 networkService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
+                networkService.getCorrectiveActionPlanActivity.and.returnValue($q.when([]));
                 networkService.getDeveloperActivity.and.returnValue($q.when([]));
                 networkService.getProductActivity.and.returnValue($q.when([]));
                 networkService.getVersionActivity.and.returnValue($q.when([]));
@@ -111,6 +111,7 @@
                     beforeEach(function () {
                         spyOn(vm, 'singleCp');
                         spyOn(vm, 'refreshCp');
+                        spyOn(vm, 'refreshCap');
                         spyOn(vm, 'refreshDeveloper');
                         spyOn(vm, 'refreshProduct');
                         spyOn(vm, 'refreshAcb');
@@ -125,6 +126,7 @@
                         vm.refreshActivity(true);
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).toHaveBeenCalled();
+                        expect(vm.refreshCap).toHaveBeenCalled();
                         expect(vm.refreshDeveloper).toHaveBeenCalled();
                         expect(vm.refreshProduct).toHaveBeenCalled();
                         expect(vm.refreshAcb).toHaveBeenCalled();
@@ -140,6 +142,7 @@
                         vm.refreshActivity(true);
                         expect(vm.singleCp).toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).toHaveBeenCalled();
                         expect(vm.refreshDeveloper).toHaveBeenCalled();
                         expect(vm.refreshProduct).toHaveBeenCalled();
                         expect(vm.refreshAcb).toHaveBeenCalled();
@@ -155,6 +158,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -171,6 +175,23 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
+                        expect(vm.refreshDeveloper).not.toHaveBeenCalled();
+                        expect(vm.refreshProduct).not.toHaveBeenCalled();
+                        expect(vm.refreshAcb).not.toHaveBeenCalled();
+                        expect(vm.refreshAtl).not.toHaveBeenCalled();
+                        expect(vm.refreshAnnouncement).not.toHaveBeenCalled();
+                        expect(vm.refreshUser).not.toHaveBeenCalled();
+                        expect(vm.refreshApi).not.toHaveBeenCalled();
+                        expect(vm.refreshApiKeyUsage).not.toHaveBeenCalled();
+                    });
+
+                    it('should refresh the cap data specifically', function () {
+                        vm.workType = 'cap';
+                        vm.refreshActivity();
+                        expect(vm.singleCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -186,6 +207,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -201,6 +223,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -216,6 +239,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).toHaveBeenCalled();
@@ -231,6 +255,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -246,6 +271,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -261,6 +287,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -276,6 +303,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -415,7 +443,6 @@
                         date: 1492429771059,
                         friendlyActivityDate: '2017-04-17',
                         newId: 17497,
-                        questionable: false,
                     };
                     rawActivity = angular.copy(Mock.listingActivity[1]);
                     rawActivity.description = 'Something odd with a Listing';
@@ -441,7 +468,6 @@
                             id: 1480,
                             newId: 17497,
                             product: 'EpicCare Ambulatory - Core EMR 2',
-                            questionable: false,
                         };
                         rawActivity = angular.copy(Mock.listingActivity[1]);
                     });
@@ -468,7 +494,6 @@
                             id: 1480,
                             newId: 17497,
                             product: 'EpicCare Ambulatory - Core EMR 2',
-                            questionable: false,
                         };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
@@ -481,10 +506,6 @@
                         expectedActivity.details = 'Certification Status changed from Retired to Active';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProductsStatus[0]).toEqual(expectedActivity);
-
-                        expectedActivity.details = ['<span class="bg-danger"><strong>Certification Status changed from Retired to Active</strong></span>'];
-                        expectedActivity.questionable = true;
-                        expect(vm.searchedCertifiedProductsQuestionable[0]).toEqual(expectedActivity);
                     });
 
                     it('should interpret basic field changes', function () {
@@ -493,27 +514,6 @@
                         expectedActivity.csvDetails = 'Product-wide Relied Upon Software added: Some new software';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
-                    });
-
-                    it('should mark 2011 changes as questionable', function () {
-                        // set raw data
-                        rawActivity.newData.certificationEdition.name = '2011';
-                        rawActivity.newData.productAdditionalSoftware = 'Some new software';
-                        rawActivity.originalData.certificationEdition.name = '2011';
-
-                        // set expected result
-                        expectedActivity.action = '<span class="bg-danger">undefined</span>';
-                        expectedActivity.csvDetails = 'Product-wide Relied Upon Software added: Some new software';
-                        expectedActivity.details = ['Product-wide Relied Upon Software added: Some new software'];
-                        expectedActivity.certificationEdition = '2011';
-                        expectedActivity.questionable = true;
-
-                        // act
-                        vm._interpretCps([rawActivity]);
-
-                        // assert
-                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
-                        expect(vm.searchedCertifiedProductsQuestionable[0]).toEqual(expectedActivity);
                     });
 
                     it('should interpret nested field changes', function () {
@@ -534,18 +534,16 @@
 
                     it('should handle criteria addition', function () {
                         rawActivity.originalData.certificationResults[0].success = false;
-                        expectedActivity.questionable = true;
-                        expectedActivity.details = ['Certification "170.302 (a)" changes<ul><li class="bg-danger"><strong>Successful added: true</strong></li></ul>'];
-                        expectedActivity.csvDetails = 'Certification "170.302 (a)" changes<ul><li class="bg-danger"><strong>Successful added: true</strong></li></ul>';
+                        expectedActivity.details = ['Certification "170.302 (a)" changes<ul><li>Successful added: true</li></ul>'];
+                        expectedActivity.csvDetails = 'Certification "170.302 (a)" changes<ul><li>Successful added: true</li></ul>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
 
                     it('should handle cqm addition', function () {
                         rawActivity.originalData.cqmResults[0].success = false;
-                        expectedActivity.questionable = true;
-                        expectedActivity.details = ['CQM "null" changes<ul><li class="bg-danger"><strong>Success added: true</strong></li></ul>'];
-                        expectedActivity.csvDetails = 'CQM "null" changes<ul><li class="bg-danger"><strong>Success added: true</strong></li></ul>';
+                        expectedActivity.details = ['CQM "null" changes<ul><li>Success added: true</li></ul>'];
+                        expectedActivity.csvDetails = 'CQM "null" changes<ul><li>Success added: true</li></ul>';
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
@@ -585,7 +583,6 @@
                             id: 1480,
                             newId: 17497,
                             product: 'EpicCare Ambulatory - Core EMR 2',
-                            questionable: false,
                         };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
@@ -621,7 +618,6 @@
                             details: ['N/A'],
                             friendlyActivityDate: '2017-04-17',
                             newId: 17497,
-                            questionable: false,
                         };
                         rawActivity = angular.copy(Mock.listingActivity[0]);
                     });
@@ -677,7 +673,6 @@
                                 details: [],
                                 friendlyActivityDate: '2017-04-17',
                                 newId: 17497,
-                                questionable: false,
                                 action: 'Surveillance was updated for CHPL Product <a href="#/product/1480">CHP-009351</a>',
                             };
                             rawActivity = angular.copy(Mock.listingActivity[0]);
@@ -805,6 +800,84 @@
                         it('should recognize changed gender', function () {
                             activity = vm._compareSed(prev, curr);
                             expect(activity[3]).toEqual('<li>Participant changes<ul><li>Gender changed from Male to Female</li></ul></li>');
+                        });
+                    });
+                });
+
+                describe('certification event history', function () {
+                    describe('in the old style', function () {
+                        it('should recognize when nothing changed', function () {
+                            var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
+                            var curr = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity).toEqual([]);
+                        });
+
+                        it('should recognize an added event', function () {
+                            var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
+                            var curr = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}, {id: 14429, eventDate: 1515764832087, certificationStatusId: 3, certificationStatusName: 'Withdrawn by Developer', lastModifiedUser: 5, lastModifiedDate: 1515764824875}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity[0]).toEqual('Added "Withdrawn by Developer" status at Jan 12, 2018');
+                        });
+
+                        it('should recognize when a date changed', function () {
+                            var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
+                            var curr = [{id: 8251, eventDate: 1515764832087, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity[0]).toEqual('"Active" status changed effective date to Jan 12, 2018');
+                        });
+
+                        it('should recognize a changed status event', function () {
+                            var prev = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}, {id: 14429, eventDate: 1515764832087, certificationStatusId: 3, certificationStatusName: 'Withdrawn by Developer', lastModifiedUser: 5, lastModifiedDate: 1515764824875}];
+                            var curr = [{id: 8251, eventDate: 1482364800000, certificationStatusId: 1, certificationStatusName: 'Active', lastModifiedUser: 9, lastModifiedDate: 1483038556838}, {id: 14430, eventDate: 1515764832087, certificationStatusId: 3, certificationStatusName: 'Withdrawn by ONC-ACB', lastModifiedUser: 5, lastModifiedDate: 1515764824875}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity[0]).toEqual('"Withdrawn by Developer" status became "Withdrawn by ONC-ACB" at Jan 12, 2018');
+                        });
+                    });
+
+                    describe('in the new style', function () {
+                        it('should recognize when nothing changed', function () {
+                            var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+                            var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity).toEqual([]);
+                        });
+
+                        it('should recognize an added event', function () {
+                            var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+                            var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity[0]).toEqual('Added "Active" status at Feb 8, 2018 with reason: "They wanted it back"');
+                        });
+
+                        it('should recognize when a date changed', function () {
+                            var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+                            var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1516555888888, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity[0]).toEqual('"Withdrawn by Developer" status changed effective date to Jan 21, 2018');
+                        });
+
+                        it('should recognize a changed status event', function () {
+                            var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+                            var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by ONC-ACB'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity[0]).toEqual('"Withdrawn by Developer" status became "Withdrawn by ONC-ACB" at Jan 12, 2018');
+                        });
+
+                        it('should recognize a removed event', function () {
+                            var prev = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14470, eventDate: 1518100595716, status: {id: 1, name: 'Active'}, reason: 'They wanted it back', lastModifiedUser: 32, lastModifiedDate: 1518100640339}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+                            var curr = [{id: 8251, eventDate: 1482382800000, status: {id: 1, name: 'Active'}, reason: null, lastModifiedUser: 9, lastModifiedDate: 1483056556838}, {id: 14429, eventDate: 1515782832087, status: {id: 3, name: 'Withdrawn by Developer'}, reason: null, lastModifiedUser: 5, lastModifiedDate: 1515782824875}];
+
+                            var activity = vm._compareCertificationEvents(prev, curr);
+                            expect(activity[0]).toEqual('Removed "Active" status at Feb 8, 2018 with reason: "They wanted it back"');
                         });
                     });
                 });

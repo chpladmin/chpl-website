@@ -7,7 +7,7 @@
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
     </div>
   </div>
-  <div class="row main-content" id="mainContent" tabindex="-1">
+  <div class="row main-content" id="main-content" tabindex="-1">
     <div class="col-sm-12">
       <div class="pull-right">
         <input type="checkbox" name="showAllPossible" id="showAllPossible" ng-model="vm.showAllPossibles"></input> <label for="showAllPossible" class="control-label">See all Certification Criteria / Clinical Quality Measures</label>
@@ -18,7 +18,7 @@
             <th scope="col"><span class="sr-only">Category</span></th>
             <th scope="col" ng-repeat="product in vm.products | orderBy:'certificationDate'">
               {{ product.product.name }}<br />
-              <ai-cms-widget-button product-id="{{ product.id }}" product-name="{{ product.product.name }}" ng-if="product.certificationStatus.name !== 'Retired'"></ai-cms-widget-button>
+              <ai-cms-widget-button product-id="{{ product.id }}" product-name="{{ product.product.name }}" ng-if="vm.certificationStatus(product) !== 'Retired'"></ai-cms-widget-button>
             </th>
           </tr>
         </thead>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <th scope="row">Certification Status</th>
-            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ product.certificationStatus.name }}</td>
+            <td ng-repeat="product in vm.products | orderBy:'certificationDate'">{{ vm.certificationStatus(product) }}</td>
           </tr>
           <tr ng-if="vm.hasNon2015">
             <th scope="row">Practice Type</th>

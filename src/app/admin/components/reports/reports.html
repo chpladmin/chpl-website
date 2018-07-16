@@ -3,14 +3,14 @@
     <div class="row" ng-if="vm.workType === 'cp-upload' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
         <h3>Certified Product - Uploads</h3>
-        <div class="formGroup">
-          <label for="activityStartUpload" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-upload" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartUpload" id="activityStartUpload" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartUpload" id="activity-start-upload" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndUpload" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-upload" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndUpload" id="activityEndUpload" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndUpload" id="activity-end-upload" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('listing')">Search <i class="fa fa-search"></i></button>
@@ -54,7 +54,7 @@
             <tr ng-if="vm.displayedCertifiedProductsUpload.length === 0">
               <td colspan="7">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsUpload" ng-if="vm.displayedCertifiedProductsUpload.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProductsUpload" ng-if="vm.displayedCertifiedProductsUpload.length > 0">
               <td>{{ activity.acb }}</td>
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
@@ -64,7 +64,7 @@
                 <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
               </td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -74,14 +74,14 @@
     <div class="row" ng-if="vm.workType === 'cp-status' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
         <h3>Certification Status Changes</h3>
-        <div class="formGroup">
-          <label for="activityStartStatus" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-status" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartStatus" id="activityStartStatus" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartStatus" id="activity-start-status" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndStatus" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-status" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndStatus" id="activityEndStatus" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndStatus" id="activity-end-status" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('listing')">Search <i class="fa fa-search"></i></button>
@@ -127,7 +127,7 @@
             <tr ng-if="vm.displayedCertifiedProductsStatus.length === 0">
               <td colspan="8">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsStatus" ng-if="vm.displayedCertifiedProductsStatus.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProductsStatus" ng-if="vm.displayedCertifiedProductsStatus.length > 0">
               <td>{{ activity.acb }}</td>
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
@@ -137,8 +137,8 @@
                 <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
               </td>
               <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td>{{ activity.details }}</td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td ng-bind-html="activity.details"></td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -148,14 +148,14 @@
     <div class="row" ng-if="vm.workType === 'cp-surveillance' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
         <h3>Surveillance Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartSurveillance" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-surveillance" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartSurveillance" id="activityStartSurveillance" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartSurveillance" id="activity-start-surveillance" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndSurveillance" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-surveillance" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndSurveillance" id="activityEndSurveillance" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndSurveillance" id="activity-end-surveillance" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('listing')">Search <i class="fa fa-search"></i></button>
@@ -193,7 +193,7 @@
             <tr ng-if="vm.displayedCertifiedProductsSurveillance.length === 0">
               <td colspan="8">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsSurveillance" ng-if="vm.displayedCertifiedProductsSurveillance.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProductsSurveillance" ng-if="vm.displayedCertifiedProductsSurveillance.length > 0">
               <td>{{ activity.acb }}</td>
               <td ng-bind-html="activity.action"></td>
               <td>
@@ -202,29 +202,29 @@
                 </ul>
                 <button class="btn btn-sm btn-ai-success" ng-click="vm.compareSurveillances(activity.source.oldS,activity.source.newS)" ng-if="activity.source"><i class="fa fa-search"></i>View Details</button>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <div class="row" ng-if="vm.workType === 'cp-cap' || (vm.workType === '' && vm.productId)">
+    <div class="row" ng-if="vm.workType === 'cap' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
         <h3>Corrective Action Plans</h3>
-        <div class="formGroup">
-          <label for="activityStartCap" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-cap" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartCap" id="activityStartCap" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.cap.startDate" name="activityStartCap" id="activity-start-cap" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndCap" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-cap" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndCap" id="activityEndCap" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.cap.endDate" name="activityEndCap" id="activity-end-cap" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('listing')">Search <i class="fa fa-search"></i></button>
+            <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('cap')">Search <i class="fa fa-search"></i></button>
           </div>
-          <div class="col-sm-12 text-danger" ng-if="!vm.validDates('listing')">Start date must be before end date, and no more than {{ vm.activityRange.range }} days apart</div>
+          <div class="col-sm-12 text-danger" ng-if="!vm.validDates('cap')">Start date must be before end date, and no more than {{ vm.activityRange.range }} days apart</div>
         </div>
         <table st-table="vm.displayedCertifiedProductsCAP" st-safe-src="vm.searchedCertifiedProductsCAP" class="table table-striped">
           <thead>
@@ -257,7 +257,7 @@
             <tr ng-if="vm.displayedCertifiedProductsCAP.length === 0">
               <td colspan="8">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsCAP" ng-if="vm.displayedCertifiedProductsCAP.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProductsCAP" ng-if="vm.displayedCertifiedProductsCAP.length > 0">
               <td>{{ activity.acb }}</td>
               <td ng-bind-html="activity.action"></td>
               <td>
@@ -265,7 +265,7 @@
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -275,14 +275,14 @@
     <div class="row" ng-if="vm.workType === 'cp-other' || (vm.workType === '' && vm.productId)">
       <div class="col-sm-12">
         <h3>Other Certified Product Activities</h3>
-        <div class="formGroup">
-          <label for="activityStartOther" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-other" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartOther" id="activityStartOther" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartOther" id="activity-start-other" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndOther" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-other" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndOther" id="activityEndOther" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndOther" id="activity-end-other" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('listing')">Search <i class="fa fa-search"></i></button>
@@ -328,7 +328,7 @@
             <tr ng-if="vm.displayedCertifiedProducts.length === 0">
               <td colspan="8">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProducts" ng-if="vm.displayedCertifiedProducts.length > 0">
+            <tr ng-repeat="activity in vm.displayedCertifiedProducts" ng-if="vm.displayedCertifiedProducts.length > 0">
               <td>{{ activity.acb }}</td>
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
@@ -343,85 +343,7 @@
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="row" ng-if="vm.workType === 'cp-questionable' || (vm.workType === '' && vm.productId)">
-      <div class="col-sm-12">
-        <h3>Certified Product - Questionable Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartUpload" class="col-sm-2 control-label">Start Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.startDate" name="activityStartUpload" id="activityStartUpload" placeholder="yyyy-MM-dd">
-          </div>
-          <label for="activityEndUpload" class="col-sm-2 control-label">End Date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.listing.endDate" name="activityEndUpload" id="activityEndUpload" placeholder="yyyy-MM-dd">
-          </div>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('listing')">Search <i class="fa fa-search"></i></button>
-          </div>
-          <div class="col-sm-12 text-danger" ng-if="!vm.validDates('listing')">Start date must be before end date, and no more than {{ vm.activityRange.range }} days apart</div>
-        </div>
-        <table st-table="vm.displayedCertifiedProductsQuestionable" st-safe-src="vm.searchedCertifiedProductsQuestionable" class="table table-striped">
-          <thead>
-            <tr>
-              <th class="search-header" st-sort="acb" st-skip-natural="true">ONC-ACB</th>
-              <th class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
-              <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
-              <th class="search-header" st-sort="certificationEdition" st-skip-natural="true">Certification Edition</th>
-              <th class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL Product Number</th>
-              <th class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
-              <th>Activity</th>
-              <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Activity Date</th>
-            </tr>
-            <tr>
-              <th><input st-search="acb" placeholder="Filter ONC-ACB" class="input-sm form-control" type="search"></th>
-              <th><input st-search="developer" placeholder="Filter Developer" class="input-sm form-control" type="search"></th>
-              <th><input st-search="product" placeholder="Filter Product" class="input-sm form-control" type="search"></th>
-              <th><input st-search="certificationEdition" placeholder="Filter Certification Edition" class="input-sm form-control" type="search"></th>
-              <th><input st-search="chplProductNumber" placeholder="Filter CHPL Product Number" class="input-sm form-control" type="search"></th>
-              <th>&nbsp;</th>
-              <th>&nbsp;</th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <td colspan="7">
-                <a type="button" class="btn btn-lg btn-ai-success"
-                   ng-csv="vm.displayedCertifiedProductsQuestionable" filename="CP_Questionable_{{ vm.filename }}"
-                   csv-header="['ACB', 'Developer', 'Product', 'Certification Edition', 'CHPL Product Number', 'Certification Date', 'Activity', 'Activity Date']"
-                   csv-column-order="['acb', 'developer', 'product', 'certificationEdition', 'chplProductNumber', 'friendlyCertificationDate', 'csvDetails', 'friendlyActivityDate']">
-                  <i class="fa fa-cloud-download"></i> Download
-                </a>
-              </td>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr ng-if="vm.displayedCertifiedProductsQuestionable.length === 0">
-              <td colspan="8">No activity found</td>
-            </tr>
-	        <tr ng-repeat="activity in vm.displayedCertifiedProductsQuestionable" ng-if="vm.displayedCertifiedProductsQuestionable.length > 0">
-              <td>{{ activity.acb }}</td>
-              <td>{{ activity.developer }}</td>
-              <td>{{ activity.product }}</td>
-              <td><span ng-class="{ 'bg-danger' : activity.certificationEdition === '2011' }">{{ activity.certificationEdition }}</span></td>
-              <td>
-                <a href="#/product/{{ activity.id }}">{{ activity.chplProductNumber }}</a>
-                <a href="#/admin/dpManagement/manage/{{ activity.id }}" class="pull-right"><i class="fa fa-pencil-square-o"></i></a>
-              </td>
-              <td>{{ activity.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-              <td>
-                <ul class="list-unstyled" ng-if="activity.details">
-                  <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
-                </ul>
-              </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -431,14 +353,14 @@
     <div class="row" ng-if="vm.workType === 'dev'">
       <div class="col-sm-12">
         <h3>Developer Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartDeveloper" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-developer" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.developer.startDate" name="activityStartDeveloper" id="activityStartDeveloper" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.developer.startDate" name="activityStartDeveloper" id="activity-start-developer" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndDeveloper" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-developer" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.developer.endDate" name="activityEndDeveloper" id="activityEndDeveloper" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.developer.endDate" name="activityEndDeveloper" id="activity-end-developer" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('developer')">Search <i class="fa fa-search"></i></button>
@@ -478,7 +400,7 @@
             <tr ng-if="vm.displayedDevelopers.length === 0">
               <td colspan="5">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedDevelopers" ng-if="vm.displayedDevelopers.length > 0">
+            <tr ng-repeat="activity in vm.displayedDevelopers" ng-if="vm.displayedDevelopers.length > 0">
               <td>{{ activity.developer }}</td>
               <td>{{ activity.developerCode }}</td>
               <td>{{ activity.responsibleUser }}</td>
@@ -488,7 +410,7 @@
                   <li ng-repeat="str in activity.details | orderBy : 'toString()' track by $index" ng-bind-html="str"></li>
                 </ul>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -498,14 +420,14 @@
     <div class="row" ng-if="vm.workType === 'prod'">
       <div class="col-sm-12">
         <h3>Product Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartProduct" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-product" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.product.startDate" name="activityStartProduct" id="activityStartProduct" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.product.startDate" name="activityStartProduct" id="activity-start-product" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndProduct" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-product" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.product.endDate" name="activityEndProduct" id="activityEndProduct" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.product.endDate" name="activityEndProduct" id="activity-end-product" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('product')">Search <i class="fa fa-search"></i></button>
@@ -545,14 +467,14 @@
             <tr ng-if="vm.displayedProducts.length === 0">
               <td colspan="5">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedProducts" ng-if="vm.displayedProducts.length > 0">
+            <tr ng-repeat="activity in vm.displayedProducts" ng-if="vm.displayedProducts.length > 0">
               <td>{{ activity.developer }}</td>
               <td>{{ activity.product }}</td>
               <td>{{ activity.responsibleUser }}</td>
               <td>
                 <span ng-bind-html="activity.action"></span>
               </td>
-		      <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -562,7 +484,7 @@
             <tr>
               <th class="search-header" st-sort="product" st-skip-natural="true">Product</th>
               <th class="search-header" st-sort="name" st-skip-natural="true">Version</th>
-              <th class="">Activity</th>
+              <th>Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
@@ -570,11 +492,11 @@
             <tr ng-if="vm.displayedVersions.length === 0">
               <td colspan="4">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedVersions" ng-if="vm.displayedVersions.length > 0">
-		      <td class="">{{ activity.product }}</td>
-		      <td class="">{{ activity.name }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedVersions" ng-if="vm.displayedVersions.length > 0">
+              <td>{{ activity.product }}</td>
+              <td>{{ activity.name }}</td>
+              <td><span ng-bind-html="activity.action"></span></td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -584,14 +506,14 @@
     <div class="row" ng-if="vm.workType === 'acb'">
       <div class="col-sm-12">
         <h3>ONC-ACB Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartACB" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-acb" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.acb.startDate" name="activityStartACB" id="activityStartACB" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.acb.startDate" name="activityStartACB" id="activity-start-acb" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndACB" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-acb" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.acb.endDate" name="activityEndACB" id="activityEndACB" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.acb.endDate" name="activityEndACB" id="activity-end-acb" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('acb')">Search <i class="fa fa-search"></i></button>
@@ -602,7 +524,7 @@
           <thead>
             <tr>
               <th class="search-header" st-sort="name" st-skip-natural="true">ONC-ACB</th>
-              <th class="">Activity</th>
+              <th>Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
@@ -610,10 +532,10 @@
             <tr ng-if="vm.displayedACBs.length === 0">
               <td colspan="3">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedACBs" ng-if="vm.displayedACBs.length > 0">
-		      <td class="">{{ activity.name }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedACBs" ng-if="vm.displayedACBs.length > 0">
+              <td>{{ activity.name }}</td>
+              <td><span ng-bind-html="activity.action"></span></td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -623,14 +545,14 @@
     <div class="row" ng-if="vm.workType === 'atl'">
       <div class="col-sm-12">
         <h3>ONC-ATL Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartATL" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-atl" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.atl.startDate" name="activityStartATL" id="activityStartATL" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.atl.startDate" name="activityStartATL" id="activity-start-atl" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndATL" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-atl" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.atl.endDate" name="activityEndATL" id="activityEndATL" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.atl.endDate" name="activityEndATL" id="activity-end-atl" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('atl')">Search <i class="fa fa-search"></i></button>
@@ -641,7 +563,7 @@
           <thead>
             <tr>
               <th class="search-header" st-sort="name" st-skip-natural="true">ONC-ATL</th>
-              <th class="">Activity</th>
+              <th>Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
@@ -649,10 +571,10 @@
             <tr ng-if="vm.displayedATLs.length === 0">
               <td colspan="3">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedATLs" ng-if="vm.displayedATLs.length > 0">
-		      <td class="">{{ activity.name }}</td>
-		      <td class=""><span ng-bind-html="activity.action"></span></td>
-		      <td class="">{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedATLs" ng-if="vm.displayedATLs.length > 0">
+              <td>{{ activity.name }}</td>
+              <td><span ng-bind-html="activity.action"></span></td>
+              <td>{{ activity.date | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -662,14 +584,14 @@
     <div class="row" ng-if="vm.workType === 'announcement'">
       <div class="col-sm-12">
         <h3>Announcement Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartAnnouncement" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-announcement" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.announcement.startDate" name="activityStartAnnouncement" id="activityStartAnnouncement" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.announcement.startDate" name="activityStartAnnouncement" id="activity-start-announcement" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndAnnouncement" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-announcement" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.announcement.endDate" name="activityEndAnnouncement" id="activityEndAnnouncement" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.announcement.endDate" name="activityEndAnnouncement" id="activity-end-announcement" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('announcement')">Search <i class="fa fa-search"></i></button>
@@ -687,9 +609,9 @@
             <tr ng-if="vm.displayedAnnouncements.length === 0">
               <td colspan="2">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedAnnouncements" ng-if="vm.displayedAnnouncements.length > 0">
-		      <td class="">{{ activity.description }}</td>
-		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedAnnouncements" ng-if="vm.displayedAnnouncements.length > 0">
+              <td>{{ activity.description }}</td>
+              <td>{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -699,14 +621,14 @@
     <div class="row" ng-if="vm.workType === 'users' && (vm.isChplAdmin || vm.isOncStaff)">
       <div class="col-sm-12">
         <h3>User Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartUserActivity" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-user-activity" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.userActivity.startDate" name="activityStartUserActivity" id="activityStartUserActivity" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.userActivity.startDate" name="activityStartUserActivity" id="activity-start-user-activity" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndUserActivity" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-user-activity" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.userActivity.endDate" name="activityEndUserActivity" id="activityEndUserActivity" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.userActivity.endDate" name="activityEndUserActivity" id="activity-end-user-activity" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('userActivity')">Search <i class="fa fa-search"></i></button>
@@ -716,7 +638,7 @@
         <table st-table="vm.displayedUsers" st-safe-src="vm.searchedUsers" class="table table-striped">
           <thead>
             <tr>
-              <th class="">Activity</th>
+              <th>Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
@@ -724,9 +646,9 @@
             <tr ng-if="vm.displayedUsers.length === 0">
               <td colspan="2">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedUsers" ng-if="vm.displayedUsers.length > 0">
-		      <td class=""><span ng-bind-html="activity.description"></span></td>
-		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedUsers" ng-if="vm.displayedUsers.length > 0">
+              <td><span ng-bind-html="activity.description"></span></td>
+              <td>{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -743,8 +665,8 @@
             <tr ng-if="vm.displayedUserActivities.length === 0">
               <td colspan="3">No activity found</td>
             </tr>
-	        <tr ng-repeat-start="activity in vm.displayedUserActivities" ng-if="vm.displayedUserActivities.length > 0">
-		      <td class="" rowspan="{{ activity.events.length }}">{{ activity.user.firstName }}&nbsp;{{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
+            <tr ng-repeat-start="activity in vm.displayedUserActivities" ng-if="vm.displayedUserActivities.length > 0">
+              <td rowspan="{{ activity.events.length }}">{{ activity.user.firstName }}&nbsp;{{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
               <td>{{ activity.events[0].description }}</td>
               <td>{{ activity.events[0].activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
@@ -760,14 +682,14 @@
     <div class="row" ng-if="vm.workType === 'api_key_management'">
       <div class="col-sm-12">
         <h3>API Key Management Activity</h3>
-        <div class="formGroup">
-          <label for="activityStartAPIKey" class="col-sm-2 control-label">Start Date</label>
+        <div>
+          <label for="activity-start-api-key" class="col-sm-2 control-label">Start Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.api_key.startDate" name="activityStartAPIKey" id="activityStartAPIKey" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.api_key.startDate" name="activityStartAPIKey" id="activity-start-api-key" placeholder="yyyy-MM-dd">
           </div>
-          <label for="activityEndAPIKey" class="col-sm-2 control-label">End Date</label>
+          <label for="activity-end-api-key" class="col-sm-2 control-label">End Date</label>
           <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="vm.activityRange.api_key.endDate" name="activityEndAPIKey" id="activityEndAPIKey" placeholder="yyyy-MM-dd">
+            <input type="date" class="form-control" ng-model="vm.activityRange.api_key.endDate" name="activityEndAPIKey" id="activity-end-api-key" placeholder="yyyy-MM-dd">
           </div>
           <div class="col-sm-2">
             <button class="btn btn-primary" ng-click="vm.refreshActivity()" ng-disabled="!vm.validDates('api_key')">Search <i class="fa fa-search"></i></button>
@@ -777,7 +699,7 @@
         <table st-table="vm.displayedApiActivity" st-safe-src="vm.searchedApiActivity" class="table table-striped">
           <thead>
             <tr>
-              <th class="">Activity</th>
+              <th>Activity</th>
               <th class="search-header" st-sort="date" st-skip-natural="true" st-sort-default="reverse">Date</th>
             </tr>
           </thead>
@@ -785,9 +707,9 @@
             <tr ng-if="vm.displayedApiActivity.length === 0">
               <td colspan="2">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.displayedApiActivity" ng-if="vm.displayedApiActivity.length > 0">
-		      <td class=""><span ng-bind-html="activity.description"></span></td>
-		      <td class="">{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.displayedApiActivity" ng-if="vm.displayedApiActivity.length > 0">
+              <td><span ng-bind-html="activity.description"></span></td>
+              <td>{{ activity.activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>
@@ -797,28 +719,28 @@
     <div class="row" ng-if="vm.workType === 'api_key_usage'">
       <div class="col-sm-12">
         <h3>API Key Usage</h3>
-        <div ng-form class="form-horizontal">
-          <div class="formGroup">
-            <label for="apiKeyStartDate" class="col-sm-2 control-label">Start Date</label>
+        <div class="form-horizontal">
+          <div>
+            <label for="api-key-start-date" class="col-sm-2 control-label">Start Date</label>
             <div class="col-sm-3">
-              <input type="date" class="form-control" ng-model="vm.apiKey.startDate" name="apiKeyStartDate" id="apiKeyStartDate">
+              <input type="date" class="form-control" ng-model="vm.apiKey.startDate" name="apiKeyStartDate" id="api-key-start-date">
             </div>
-            <label for="apiKeyEndDate" class="col-sm-2 control-label">End Date</label>
+            <label for="api-key-end-date" class="col-sm-2 control-label">End Date</label>
             <div class="col-sm-3">
-              <input type="date" class="form-control" ng-model="vm.apiKey.endDate" name="apiKeyEndDate" id="apiKeyEndDate">
+              <input type="date" class="form-control" ng-model="vm.apiKey.endDate" name="apiKeyEndDate" id="api-key-end-date">
             </div>
-          <div class="col-sm-2">
-            <button class="btn btn-primary" ng-click="vm.refreshApiKeyUsage()">Search <i class="fa fa-search"></i></button>
-          </div>
-          </div>
-          <div class="formGroup">
-            <label for="apiKeyDateAscending" class="col-sm-2 control-label">Oldest first</label>
             <div class="col-sm-2">
-              <input type="checkbox" class="" ng-model="vm.apiKey.dateAscending" name="apiKeyDateAscending" id="apiKeyDateAscending" ng-change="vm.refreshApiKeyUsage()">
+              <button class="btn btn-primary" ng-click="vm.refreshApiKeyUsage()">Search <i class="fa fa-search"></i></button>
             </div>
-            <label for="apiKeyFilter" class="col-sm-3 control-label">Show <a ng-click="vm.apiKey.showOnly = !vm.apiKey.showOnly; vm.refreshApiKeyUsage()">{{ vm.apiKey.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
+          </div>
+          <div>
+            <label for="api-key-date-ascending" class="col-sm-2 control-label">Oldest first</label>
+            <div class="col-sm-2">
+              <input type="checkbox" ng-model="vm.apiKey.dateAscending" name="apiKeyDateAscending" id="api-key-date-ascending" ng-change="vm.refreshApiKeyUsage()">
+            </div>
+            <label for="api-key-filter" class="col-sm-3 control-label">Show <a ng-click="vm.apiKey.showOnly = !vm.apiKey.showOnly; vm.refreshApiKeyUsage()">{{ vm.apiKey.showOnly ? 'only' : 'all but'}}</a> usage by API-Key</label>
             <div class="col-sm-5">
-              <select class="form-control" ng-model="vm.apiKey.filter" name="apiKeyFilter" id="apiKeyFilter" ng-change="vm.refreshApiKeyUsage()"
+              <select class="form-control" ng-model="vm.apiKey.filter" name="apiKeyFilter" id="api-key-filter" ng-change="vm.refreshApiKeyUsage()"
                       ng-options="key.key as (key.name + ' (' + key.email + ')') for key in vm.apiKeys | orderBy:'name' track by key.key">
                 <option value=""></option>
               </select>
@@ -829,7 +751,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th class="">API Key</th>
+              <th>API Key</th>
               <th scope="col">Email</th>
               <th scope="col">Name</th>
               <th scope="col">API Call Path</th>
@@ -845,12 +767,12 @@
             <tr ng-if="vm.searchedApi.length === 0">
               <td colspan="5">No activity found</td>
             </tr>
-	        <tr ng-repeat="activity in vm.searchedApi" ng-if="vm.searchedApi.length > 0">
-		      <td class="">{{ activity.apiKey }}</td>
-		      <td class="">{{ activity.email }}</td>
-		      <td class="">{{ activity.name }}</td>
-		      <td class="">{{ activity.apiCallPath }}</td>
-		      <td class="">{{ activity.creationDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <tr ng-repeat="activity in vm.searchedApi" ng-if="vm.searchedApi.length > 0">
+              <td>{{ activity.apiKey }}</td>
+              <td>{{ activity.email }}</td>
+              <td>{{ activity.name }}</td>
+              <td>{{ activity.apiCallPath }}</td>
+              <td>{{ activity.creationDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>
           </tbody>
         </table>

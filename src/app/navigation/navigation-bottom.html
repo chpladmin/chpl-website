@@ -19,16 +19,18 @@
         <li class="dropdown" uib-dropdown auto-close="outsideClick" is-open="vm.adminLoginIsOpen">
           <button href class="btn btn-default navbar-btn dropdown-toggle" id="login-toggle" uib-dropdown-toggle aria-haspopup="true" aria-expanded="vm.adminLoginIsOpen"><span ng-if="!vm.getUsername()">Administrator Login</span>{{ vm.getUsername() }} <span class="fa" ng-class="vm.adminLoginIsOpen ? 'fa-caret-up' : 'fa-caret-right'"></span></button>
           <ul class="dropdown-menu" id="admin" uib-dropdown-menu aria-labelledby="login-toggle">
-            <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isAcbStaff()"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
+            <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
             <li ng-if="vm.isChplAdmin()"><a href="#/admin/userManagement">User Management</a></li>
             <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/acbManagement">ONC-ACB Management</a></li>
             <li ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="#/admin/atlManagement">ONC-ATL Management</a></li>
-            <li ng-if="vm.isAuthed()"><a href="#/admin/reports">Reports</a></li>
+            <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="#/admin/reports">Reports</a></li>
             <li ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="#/admin/subscriptions">Subscriptions</a></li>
+            <li ng-if="vm.isChplAdmin()"><a href="#/admin/scheduledJobs">Scheduled Jobs</a></li>
             <li ng-if="vm.isChplAdmin()"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
             <li ng-if="vm.isChplAdmin()"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
             <li ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="#/admin/cmsManagement">CMS Management</a></li>
             <li ng-if="vm.isChplAdmin() || vm.isOncStaff()"><a href="#/admin/jobsManagement">Jobs Management</a></li>
+            <li ng-if="vm.isChplAdmin()"><a href="#/admin/fuzzyManagement">Fuzzy Matching Management</a></li>
             <li>
               <ai-login form-class="navbar-form"
                         p-class="navbar-text"

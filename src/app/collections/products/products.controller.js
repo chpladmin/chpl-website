@@ -20,7 +20,7 @@
                 { predicate: 'developer', display: 'Developer', sortType: 'single' },
                 { predicate: 'product', display: 'Product', sortType: 'single' },
                 { predicate: 'version', display: 'Version', sortType: 'single' },
-                { predicate: 'decertificationDate', display: 'Decertification Date', sortType: 'single', isDate: true },
+                { predicate: 'decertificationDate', display: 'Date', sortType: 'single', isDate: true },
                 { predicate: 'numMeaningfulUse', display: '# of Known Users', sortType: 'single', nullDisplay: 'Unknown' },
                 { predicate: 'acb', display: 'ONC-ACB', sortType: 'single' },
                 { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },
@@ -32,6 +32,7 @@
                     { value: 'Drummond Group', selected: true },
                     { value: 'ICSA Labs', selected: true },
                     { value: 'InfoGard', selected: true },
+                    { value: 'SLI Compliance', selected: true },
                 ],
                 edition: [
                     { value: '2014', selected: true },

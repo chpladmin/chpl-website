@@ -17,7 +17,7 @@
         function activate () {
             vm.columnSet = [
                 { predicate: 'developer', display: 'Developer', sortType: 'single' },
-                { predicate: 'decertificationDate', display: 'Decertification Date', sortType: 'single', isDate: true, sortDefault: true },
+                { predicate: 'decertificationDate', display: 'Date', sortType: 'single', isDate: true, sortDefault: true },
                 { predicate: 'acb', display: 'ONC-ACB', transformFn: acbTransform, sortType: 'none' },
             ];
             vm.filters = ['acb', 'decertificationDate'];
@@ -26,6 +26,7 @@
                     { value: 'Drummond Group', selected: true },
                     { value: 'ICSA Labs', selected: true },
                     { value: 'InfoGard', selected: true },
+                    { value: 'SLI Compliance', selected: true },
                 ],
             };
         }

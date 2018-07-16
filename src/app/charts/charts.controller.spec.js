@@ -5,107 +5,101 @@
 
         var $controller, $log, $q, mock, networkService, scope, vm;
         mock = {
-            types: [
-                {id: 0, dataType: 'Total Number of Unique Products over time'},
-                {id: 1, dataType: 'Total Number of Unique Products w/ Active Listings Over Time'},
-                {id: 2, dataType: 'Total Number of Unique Products w/ Active 2014 Listings'},
-                {id: 3, dataType: 'Total Number of Unique Products w/ Active 2015 Listings'},
+            criterionProductStatisticsResult: [
+                {id: 144, productCount: 928, certificationCriterionId: 63, criterion: {id: 63, number: '170.314 (a)(3)', title: 'Demographics', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448277, deleted: false, lastModifiedDate: 1525902448277, lastModifiedUser: -3},
+                {id: 208, productCount: 138, certificationCriterionId: 1, criterion: {id: 1, number: '170.315 (a)(1)', title: 'Computerized Provider Order Entry (CPOE) - Medications', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448482, deleted: false, lastModifiedDate: 1525902448482, lastModifiedUser: -3},
+                {id: 176, productCount: 138, certificationCriterionId: 3, criterion: {id: 3, number: '170.315 (a)(3)', title: 'CPOE - Diagnostic Imaging', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448382, deleted: false, lastModifiedDate: 1525902448382, lastModifiedUser: -3},
+                {id: 160, productCount: 847, certificationCriterionId: 62, criterion: {id: 62, number: '170.314 (a)(2)', title: 'Drug-drug, drug-allergy interactions checks', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448328, deleted: false, lastModifiedDate: 1525902448328, lastModifiedUser: -3},
+                {id: 161, productCount: 138, certificationCriterionId: 2, criterion: {id: 2, number: '170.315 (a)(2)', title: 'CPOE - Laboratory', certificationEditionId: 3, certificationEdition: '2015', description: null}, creationDate: 1525902448330, deleted: false, lastModifiedDate: 1525902448330, lastModifiedUser: -3},
+                {id: 131, productCount: 906, certificationCriterionId: 64, criterion: {id: 64, number: '170.314 (a)(4)', title: 'Vital signs, body mass index, and growth Charts', certificationEditionId: 2, certificationEdition: '2014', description: null}, creationDate: 1525902448257, deleted: false, lastModifiedDate: 1525902448257, lastModifiedUser: -3},
             ],
-            stats: [
-                {date: 'Fri Apr 08 2016', value: 2302},
-                {date: 'Fri Apr 15 2016', value: 2303},
-                {date: 'Fri Apr 22 2016', value: 2303},
-                {date: 'Fri Apr 29 2016', value: 2307},
-                {date: 'Fri May 06 2016', value: 2312},
-                {date: 'Fri May 13 2016', value: 2312},
-                {date: 'Fri May 20 2016', value: 2313},
-                {date: 'Fri May 27 2016', value: 2315},
-                {date: 'Fri Jun 03 2016', value: 2315},
-                {date: 'Fri Jun 10 2016', value: 2315},
-                {date: 'Fri Jun 17 2016', value: 2317},
-                {date: 'Fri Jun 24 2016', value: 2321},
-                {date: 'Fri Jul 01 2016', value: 2322},
-                {date: 'Fri Jul 08 2016', value: 2325},
-                {date: 'Fri Jul 15 2016', value: 2325},
-                {date: 'Fri Jul 22 2016', value: 2326},
-                {date: 'Fri Jul 29 2016', value: 2329},
-                {date: 'Fri Aug 05 2016', value: 2332},
-                {date: 'Fri Aug 12 2016', value: 2334},
-                {date: 'Fri Aug 19 2016', value: 2337},
-                {date: 'Fri Aug 26 2016', value: 2338},
-                {date: 'Fri Sep 02 2016', value: 2339},
-                {date: 'Fri Sep 09 2016', value: 2339},
-                {date: 'Fri Sep 16 2016', value: 2340},
-                {date: 'Fri Sep 23 2016', value: 2343},
-                {date: 'Fri Sep 30 2016', value: 2343},
-                {date: 'Fri Oct 07 2016', value: 2359},
-                {date: 'Fri Oct 14 2016', value: 2360},
-                {date: 'Fri Oct 21 2016', value: 2360},
-                {date: 'Fri Oct 28 2016', value: 2362},
-                {date: 'Fri Nov 04 2016', value: 2362},
-                {date: 'Fri Nov 11 2016', value: 2365},
-                {date: 'Fri Nov 18 2016', value: 2367},
-                {date: 'Fri Nov 25 2016', value: 2373},
-                {date: 'Fri Dec 02 2016', value: 2374},
-                {date: 'Fri Dec 09 2016', value: 2376},
-                {date: 'Fri Dec 16 2016', value: 2378},
-                {date: 'Fri Dec 23 2016', value: 2384},
-                {date: 'Fri Dec 30 2016', value: 2391},
-                {date: 'Fri Jan 06 2017', value: 2393},
-                {date: 'Fri Jan 13 2017', value: 2397},
-                {date: 'Fri Jan 20 2017', value: 2398},
-                {date: 'Fri Jan 27 2017', value: 2400},
-                {date: 'Fri Feb 03 2017', value: 2404},
-                {date: 'Fri Feb 10 2017', value: 2406},
-                {date: 'Fri Feb 17 2017', value: 2408},
-                {date: 'Fri Feb 24 2017', value: 2409},
-                {date: 'Fri Mar 03 2017', value: 2410},
-                {date: 'Fri Mar 10 2017', value: 2412},
-                {date: 'Fri Mar 17 2017', value: 2415},
-                {date: 'Fri Mar 24 2017', value: 2415},
-                {date: 'Fri Mar 31 2017', value: 2415},
-                {date: 'Fri Apr 07 2017', value: 2416},
-                {date: 'Fri Apr 14 2017', value: 2417},
-                {date: 'Fri Apr 21 2017', value: 2420},
-                {date: 'Fri Apr 28 2017', value: 2420},
-                {date: 'Fri May 05 2017', value: 2420},
-                {date: 'Fri May 12 2017', value: 2420},
-                {date: 'Fri May 19 2017', value: 2422},
-                {date: 'Fri May 26 2017', value: 2423},
-                {date: 'Fri Jun 02 2017', value: 2426},
-                {date: 'Fri Jun 09 2017', value: 2428},
-                {date: 'Fri Jun 16 2017', value: 2429},
-                {date: 'Fri Jun 23 2017', value: 2431},
-                {date: 'Fri Jun 30 2017', value: 2433},
-                {date: 'Fri Jul 07 2017', value: 2434},
-                {date: 'Fri Jul 14 2017', value: 2439},
-                {date: 'Fri Jul 21 2017', value: 2439},
-                {date: 'Fri Jul 28 2017', value: 2443},
-                {date: 'Fri Aug 11 2017', value: 2443},
-                {date: 'Fri Aug 04 2017', value: 2443},
+            incumbentDevelopersStatisticsResult: [
+                {id: 2, newCount: 82, incumbentCount: 108, oldCertificationEdition: {certificationEditionId: 1, year: '2011', retired: true}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
+                {id: 3, newCount: 43, incumbentCount: 147, oldCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, newCertificationEdition: {certificationEditionId: 3, year: '2015', retired: false}},
+                {id: 4, newCount: 340, incumbentCount: 537, oldCertificationEdition: {certificationEditionId: 1, year: '2011', retired: true}, newCertificationEdition: {certificationEditionId: 2, year: '2014', retired: false}},
+            ],
+            statisticsResult: [
+                {id: 12, developerCount: 724, productCount: 725, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 1, name: 'Active'}},
+                {id: 13, developerCount: 45, productCount: 46, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 4, name: 'Withdrawn by ONC-ACB'}},
+                {id: 14, developerCount: 195, productCount: 196, certificationEdition: {certificationEditionId: 3, year: '2015', retired: false}, certificationStatus: {id: 1, name: 'Active'}},
+                {id: 15, developerCount: 274, productCount: 275, certificationEdition: {certificationEditionId: 2, year: '2014', retired: false}, certificationStatus: {id: 3, name: 'Withdrawn by Developer'}},
+                {id: 16, developerCount: 10, productCount: 11, certificationEdition: {certificationEditionId: 3, year: '2015', retired: false}, certificationStatus: {id: 3, name: 'Withdrawn by Developer'}},
+            ],
+            sedParticipantStatisticsCounts: [
+                {id: 187, sedCount: 7, participantCount: 130, creationDate: 1520357057186, deleted: false, lastModifiedDate: 1520357057186, lastModifiedUser: -3},
+                {id: 188, sedCount: 2, participantCount: 67, creationDate: 1520357057200, deleted: false, lastModifiedDate: 1520357057200, lastModifiedUser: -3},
+                {id: 189, sedCount: 2, participantCount: 72, creationDate: 1520357057202, deleted: false, lastModifiedDate: 1520357057202, lastModifiedUser: -3},
+            ],
+            participantAgeStatistics: [
+                {id: 190, ageCount: 3, testParticipantAgeId: 2, ageRange: '10-19', creationDate: 1521480652992, deleted: false, lastModifiedDate: 1521480652992, lastModifiedUser: -3},
+                {id: 191, ageCount: 740, testParticipantAgeId: 3, ageRange: '20-29', creationDate: 1521480652996, deleted: false, lastModifiedDate: 1521480652996, lastModifiedUser: -3},
+                {id: 192, ageCount: 1801, testParticipantAgeId: 4, ageRange: '30-39', creationDate: 1521480652997, deleted: false, lastModifiedDate: 1521480652997, lastModifiedUser: -3},
+                {id: 193, ageCount: 1406, testParticipantAgeId: 5, ageRange: '40-49', creationDate: 1521480652999, deleted: false, lastModifiedDate: 1521480652999, lastModifiedUser: -3},
+                {id: 194, ageCount: 1065, testParticipantAgeId: 6, ageRange: '50-59', creationDate: 1521480653000, deleted: false, lastModifiedDate: 1521480653000, lastModifiedUser: -3},
+                {id: 195, ageCount: 416, testParticipantAgeId: 7, ageRange: '60-69', creationDate: 1521480653002, deleted: false, lastModifiedDate: 1521480653002, lastModifiedUser: -3},
+                {id: 196, ageCount: 10, testParticipantAgeId: 8, ageRange: '70-79', creationDate: 1521480653003, deleted: false, lastModifiedDate: 1521480653003, lastModifiedUser: -3},
+            ],
+            genderMockData: {
+                id: 31,
+                maleCount: 1748,
+                femaleCount: 3693,
+                creationDate: 1521480652800,
+                deleted: false,
+                lastModifiedDate: 1521480652800,
+                lastModifiedUser: -3,
+            },
+            participantEducationStatistics: [
+                {id: 185, educationCount: 7, educationTypeId: 1, education: 'No high school degree', creationDate: 1521480653169, deleted: false, lastModifiedDate: 1521480653169, lastModifiedUser: -3},
+                {id: 186, educationCount: 225, educationTypeId: 2, education: 'High school graduate, diploma or the equivalent (for example: GED)', creationDate: 1521480653174, deleted: false, lastModifiedDate: 1521480653174, lastModifiedUser: -3},
+                {id: 187, educationCount: 257, educationTypeId: 3, education: 'Some college credit, no degree', creationDate: 1521480653175, deleted: false, lastModifiedDate: 1521480653175, lastModifiedUser: -3},
+                {id: 188, educationCount: 277, educationTypeId: 4, education: 'Trade/technical/vocational training', creationDate: 1521480653178, deleted: false, lastModifiedDate: 1521480653178, lastModifiedUser: -3},
+                {id: 189, educationCount: 556, educationTypeId: 5, education: 'Associate degree', creationDate: 1521480653179, deleted: false, lastModifiedDate: 1521480653179, lastModifiedUser: -3},
+                {id: 190, educationCount: 1600, educationTypeId: 6, education: 'Bachelor\'s degree', creationDate: 1521480653181, deleted: false, lastModifiedDate: 1521480653181, lastModifiedUser: -3},
+                {id: 191, educationCount: 556, educationTypeId: 7, education: 'Master\'s degree', creationDate: 1521480653183, deleted: false, lastModifiedDate: 1521480653183, lastModifiedUser: -3},
+                {id: 192, educationCount: 1963, educationTypeId: 9, education: 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', creationDate: 1521480653185, deleted: false, lastModifiedDate: 1521480653185, lastModifiedUser: -3},
+            ],
+            participantExperienceStatistics: [
+                {id: 1286, participantCount: 120, experienceMonths: -1, creationDate: 1521480655200, deleted: false, lastModifiedDate: 1521480655200, lastModifiedUser: -3},
+                {id: 1287, participantCount: 16, experienceMonths: 0, creationDate: 1521480655204, deleted: false, lastModifiedDate: 1521480655204, lastModifiedUser: -3},
+                {id: 1288, participantCount: 4, experienceMonths: 1, creationDate: 1521480655210, deleted: false, lastModifiedDate: 1521480655210, lastModifiedUser: -3},
+                {id: 1289, participantCount: 18, experienceMonths: 2, creationDate: 1521480655214, deleted: false, lastModifiedDate: 1521480655214, lastModifiedUser: -3},
+                {id: 1290, participantCount: 17, experienceMonths: 3, creationDate: 1521480655215, deleted: false, lastModifiedDate: 1521480655215, lastModifiedUser: -3},
+                {id: 1291, participantCount: 2, experienceMonths: 516, creationDate: 1521480655217, deleted: false, lastModifiedDate: 1521480655217, lastModifiedUser: -3},
             ],
         };
 
         beforeEach(function () {
             module('chpl.charts', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getStatisticTypes = jasmine.createSpy('getStatisticTypes');
-                    $delegate.getStatistics = jasmine.createSpy('getStatistics');
+                    $delegate.getCriterionProductStatistics = jasmine.createSpy('getCriterionProductStatistics');
+                    $delegate.getIncumbentDevelopersStatistics = jasmine.createSpy('getIncumbentDevelopersStatistics');
+                    $delegate.getListingCountStatistics = jasmine.createSpy('getListingCountStatistics');
+                    $delegate.getSedParticipantStatisticsCount = jasmine.createSpy('getSedParticipantStatisticsCount');
+                    $delegate.getParticipantGenderStatistics = jasmine.createSpy('getParticipantGenderStatistics');
+                    $delegate.getParticipantAgeStatistics = jasmine.createSpy('getParticipantAgeStatistics');
+                    $delegate.getParticipantEducationStatistics = jasmine.createSpy('getParticipantEducationStatistics');
+                    $delegate.getParticipantProfessionalExperienceStatistics = jasmine.createSpy('getParticipantProfessionalExperienceStatistics');
+                    $delegate.getParticipantComputerExperienceStatistics = jasmine.createSpy('getParticipantComputerExperienceStatistics');
+                    $delegate.getParticipantProductExperienceStatistics = jasmine.createSpy('getParticipantProductExperienceStatistics');
                     return $delegate;
                 });
             });
 
-            mock.statistics = [];
-            for (var i = 0; i < mock.types.length; i++) {
-                mock.statistics.push({type: angular.copy(mock.types[i]), statistics: angular.copy(mock.stats)});
-            }
             inject(function (_$controller_, _$log_, _$q_, $rootScope, _networkService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
                 networkService = _networkService_;
-                networkService.getStatisticTypes.and.returnValue($q.when(mock.types));
-                networkService.getStatistics.and.returnValue($q.when(mock.statistics));
+                networkService.getCriterionProductStatistics.and.returnValue($q.when(mock));
+                networkService.getIncumbentDevelopersStatistics.and.returnValue($q.when(mock));
+                networkService.getListingCountStatistics.and.returnValue($q.when(mock));
+                networkService.getSedParticipantStatisticsCount.and.returnValue($q.when(mock));
+                networkService.getParticipantGenderStatistics.and.returnValue($q.when(mock));
+                networkService.getParticipantAgeStatistics.and.returnValue($q.when(mock));
+                networkService.getParticipantEducationStatistics.and.returnValue($q.when(mock));
+                networkService.getParticipantProfessionalExperienceStatistics.and.returnValue($q.when(mock));
+                networkService.getParticipantComputerExperienceStatistics.and.returnValue($q.when(mock));
+                networkService.getParticipantProductExperienceStatistics.and.returnValue($q.when(mock));
 
                 scope = $rootScope.$new();
                 vm = $controller('ChartsController', {
@@ -127,89 +121,91 @@
             expect(vm).toBeDefined();
         });
 
+        it('should default to product charts, and 2014 edition', function () {
+            expect(vm.chartState).toEqual({
+                isStacked: 'false',
+                listingCountType: '1',
+                productEdition: 2014,
+                tab: 'product',
+            });
+        });
+
+        describe('chart state', function () {
+            it('should update stacking type', function () {
+                expect(vm.listingCount.class['1'].chart.options.isStacked).toBeUndefined();
+                vm.chartState.isStacked = 'fake';
+                vm.updateChartStack();
+                expect(vm.listingCount.class['1'].chart.options.isStacked).toBe('fake');
+            });
+        });
+
         describe('during load', function () {
-            it('should get all of the statistics', function () {
-                expect(networkService.getStatistics).toHaveBeenCalled();
-                expect(vm.statistics.length).toBe(mock.types.length);
+            it('should load the sed participant count statistics', function () {
+                expect(networkService.getSedParticipantStatisticsCount).toHaveBeenCalled();
+                expect(vm.sedParticipantCounts.data.rows.length).toBe(mock.sedParticipantStatisticsCounts.length);
             });
 
-            it('should get all of the statistic types', function () {
-                expect(networkService.getStatisticTypes).toHaveBeenCalled();
-                expect(vm.statisticTypes.length).toBe(mock.types.length);
-            });
-
-            it('should build the columns', function () {
-                expect(vm.charts.uniqueProducts.data.cols.length).toBe(5);
-                expect(vm.charts.uniqueProducts.data.cols[0]).toEqual({label: 'Date', type: 'date' });
-                expect(vm.charts.uniqueProducts.data.cols[1]).toEqual({label: mock.types[0].dataType, type: 'number'});
-            });
-
-            it('should build the rows', function () {
-                expect(vm.charts.uniqueProducts.data.rows.length).toBe(71);
-                expect(vm.charts.uniqueProducts.data.rows[0]).toEqual({c: [{v: new Date('Fri Apr 08 2016')},{v: 2302},{v: 2302},{v: 2302},{v: 2302}]});
-            });
-        });
-
-        describe('when filtering on dates', function () {
-            it('should know what the min & max dates are', function () {
-                expect(vm.minDate).toEqual(new Date('Fri Apr 08 2016'));
-                expect(vm.maxDate).toEqual(new Date('Fri Aug 11 2017'));
-            });
-
-            it('should reduce the data set when a start date is chosen', function () {
-                var initLength = vm.charts.uniqueProducts.data.rows.length;
-                vm.startDate = new Date('Sat Aug 13 2016');
-                vm.applyFilter();
-                expect(vm.charts.uniqueProducts.data.rows.length).toBeLessThan(initLength);
-            });
-
-            it('should reduce the data set when an end date is chosen', function () {
-                var initLength = vm.charts.uniqueProducts.data.rows.length;
-                vm.endDate = new Date('Sat Aug 13 2016');
-                vm.applyFilter();
-                expect(vm.charts.uniqueProducts.data.rows.length).toBeLessThan(initLength);
-            });
-        });
-
-        describe('when toggling serieses', function () {
-            it('should do nothing if data points are clicked on', function () {
-                var orig = angular.copy(vm.charts.uniqueProducts);
-                vm.toggleSeries({row: 3, column: 1});
-                expect(vm.charts.uniqueProducts).toEqual(orig);
-            });
-
-            describe('from active', function () {
-                it('should modify the column to use a calculation function', function () {
-                    vm.toggleSeries({row: null, column: 1});
-                    expect(vm.charts.uniqueProducts.view.columns[1]).toEqual({
-                        label: jasmine.any(String),
-                        type: 'number',
-                        calc: jasmine.any(Function),
-                    });
+            describe('of the criterion/product statistics', function () {
+                it('should call the network service', function () {
+                    expect(networkService.getCriterionProductStatistics).toHaveBeenCalled();
                 });
 
-                it('should use the calc function to return null for all values', function () {
-                    vm.toggleSeries({row: null, column: 1});
-                    expect(vm.charts.uniqueProducts.view.columns[1].calc()).toEqual(null);
+                it('should filter the results by edition', function () {
+                    expect(vm.criterionProductCounts[2014].data.rows.length).toBe(3);
+                    expect(vm.criterionProductCounts[2015].data.rows.length).toBe(3);
                 });
 
-                it('should make the newly inactive legend "grey"', function () {
-                    vm.toggleSeries({row: null, column: 1});
-                    expect(vm.charts.uniqueProducts.options.colors[0]).toBe('#ccc');
+                it('should sort the results by criterion', function () {
+                    expect(vm.criterionProductCounts[2015].data.rows[0].c[0].v).toBe('170.315 (a)(1)');
                 });
             });
 
-            describe('to active', function () {
-                it('should set the column back to normal', function () {
-                    vm.toggleSeries({row: null, column: 1});
-                    vm.toggleSeries({row: null, column: 1});
-                    expect(vm.charts.uniqueProducts.view.columns[1]).toBe(1);
+            describe('of the incumbent developers statistics', function () {
+                it('should call the network service', function () {
+                    expect(networkService.getIncumbentDevelopersStatistics).toHaveBeenCalled();
                 });
 
-                it('should restore the legend color to it\'s original state', function () {
-                    vm.toggleSeries({row: null, column: 1});
-                    vm.toggleSeries({row: null, column: 1});
-                    expect(vm.charts.uniqueProducts.options.colors[0]).toBe(vm.charts.uniqueProducts.options.defaultColors[0]);
+                it('should generate three charts', function () {
+                    expect(vm.incumbentDevelopersCounts.length).toBe(3);
+                });
+
+                it('should sort the charts and generate titles', function () {
+                    expect(vm.incumbentDevelopersCounts[0].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2014');
+                    expect(vm.incumbentDevelopersCounts[1].options.title).toBe('New vs. Incumbent Developers by Edition, 2011 to 2015');
+                    expect(vm.incumbentDevelopersCounts[2].options.title).toBe('New vs. Incumbent Developers by Edition, 2014 to 2015');
+                });
+
+                it('should generate the 2011 to 2014 data', function () {
+                    expect(vm.incumbentDevelopersCounts[0].data.rows[0].c[1].v).toBe(340);
+                    expect(vm.incumbentDevelopersCounts[0].data.rows[1].c[1].v).toBe(537);
+                });
+
+                it('should generate the 2011 to 2015 data', function () {
+                    expect(vm.incumbentDevelopersCounts[1].data.rows[0].c[1].v).toBe(82);
+                    expect(vm.incumbentDevelopersCounts[1].data.rows[1].c[1].v).toBe(108);
+                });
+
+                it('should generate the 2014 to 2015 data', function () {
+                    expect(vm.incumbentDevelopersCounts[2].data.rows[0].c[1].v).toBe(43);
+                    expect(vm.incumbentDevelopersCounts[2].data.rows[1].c[1].v).toBe(147);
+                });
+            });
+
+            describe('of the listing count statistics', function () {
+                it('should call the network service', function () {
+                    expect(networkService.getListingCountStatistics).toHaveBeenCalled();
+                });
+
+                it('should generate a chart object', function () {
+                    expect(vm.listingCount).toBeDefined();
+                });
+
+                it('should have three options', function () {
+                    expect(vm.listingCountTypes.length).toBe(3);
+                });
+
+                it('should have data for active 2014 products', function () {
+                    expect(vm.listingCount.edition['1'].chart.data.rows[0].c[2].v).toBe(725);
                 });
             });
         });

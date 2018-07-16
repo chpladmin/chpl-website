@@ -6,7 +6,7 @@
 
         mock = {
             listing: {
-                sedTestingEnd: (new Date()).getTime(),
+                sedTestingEndDate: (new Date()).getTime(),
             },
         };
 
@@ -22,7 +22,11 @@
                 vm = $controller('EditSedDetailsController', {
                     criteria: [],
                     listing: mock.listing,
-                    resources: {},
+                    resources: {
+                        ucdProcesses: {
+                            data: [],
+                        },
+                    },
                     ucdProcesses: [],
                     $uibModalInstance: Mock.modalInstance,
                     $scope: scope,
@@ -50,14 +54,18 @@
         });
 
         it('should turn the date value into an object', function () {
-            expect(vm.listing.sedTestingEndDate).toEqual(jasmine.any(Object));
+            expect(vm.sedDate).toEqual(jasmine.any(Object));
         });
 
         it('should not create a date object if the value isn\'t there', function () {
             vm = $controller('EditSedDetailsController', {
                 criteria: [],
                 listing: {},
-                resources: {},
+                resources: {
+                    ucdProcesses: {
+                        data: [],
+                    },
+                },
                 ucdProcesses: [],
                 $uibModalInstance: Mock.modalInstance,
                 $scope: scope,
@@ -68,25 +76,25 @@
 
         describe('when saving a Listing', function () {
             it('should convert the date object back to a time', function () {
-                vm.listing.sedTestingEndDate = new Date();
-                vm.listing.sedTestingEnd = undefined;
+                vm.sedDate = new Date();
+                vm.listing.sedTestingEndDate = undefined;
                 vm.save();
-                expect(vm.listing.sedTestingEnd).toEqual(jasmine.any(Number));
+                expect(vm.listing.sedTestingEndDate).toEqual(jasmine.any(Number));
             });
 
             it('should not convert an undefined end date', function () {
-                vm.listing.sedTestingEndDate = undefined
-                vm.listing.sedTestingEnd = 23;
+                vm.sedDate = undefined;
+                vm.listing.sedTestingEndDate = 23;
                 vm.save();
-                expect(vm.listing.sedTestingEnd).toBeUndefined();
+                expect(vm.listing.sedTestingEndDate).toBeUndefined();
             });
 
-            it('should not convert a string end date', function () {
-                vm.listing.sedTestingEndDate = '02/18/1989';
-                vm.listing.sedTestingEnd = 23;
+            /*it('should convert a string end date', function () {
+                vm.sedDate = '02/18/1989';
+                vm.listing.sedTestingEndDate = 23;
                 vm.save();
-                expect(vm.listing.sedTestingEnd).toBe('02/18/1989');
-            });
+                expect(vm.listing.sedTestingEndDate).toBe(603781200000);
+            });*/
 
             it('should close the modal with the listing and the ucd processes', function () {
                 var anObj = {id: 3, sedTestingEndDate: new Date()};

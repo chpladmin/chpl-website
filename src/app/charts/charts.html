@@ -4,52 +4,94 @@
       <h1>Charts</h1>
     </div>
   </div>
-  <div class="main-content" id="mainContent" tabindex="-1" ng-form="optionForm">
+  <div class="main-content" id="main-content" tabindex="-1">
     <div class="row">
       <div class="col-sm-12">
-        <div google-chart chart="vm.charts.uniqueProducts" agc-on-select="vm.toggleSeries(selectedItem)" style="height:450px; width:100%;"></div>
-        <div class="form-horizontal">
-          <div class="form-group">
-            <label class="col-sm-1 col-sm-offset-2 control-label" for="start">From</label>
-            <div class="col-sm-2">
-              <input type="date" class="form-control input-sm"
-                     id="start" name="start" placeholder="yyyy-MM-dd"
-                     ng-model="vm.startDate" ng-model-options="{timezone:'UTC'}" ng-change="vm.applyFilter()">
-            </div>
-            <label class="col-sm-1 control-label" for="end">To</label>
-            <div class="col-sm-2">
-              <input type="date" class="form-control input-sm"
-                     id="end" name="end" placeholder="yyyy-MM-dd"
-                     ng-model="vm.endDate" ng-model-options="{timezone:'UTC'}" ng-change="vm.applyFilter()">
-            </div>
-          </div>
+        <p>This is a beta release for charts in the CHPL. We will be working on iterating these charts over the coming months. Please send any questions or comments to <a href="mailto:ONC_CHPL@hhs.gov">ONC_CHPL@hhs.gov</a></p>
+        <ul class="nav nav-tabs">
+          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'product'}"><a ng-click="vm.chartState.tab = 'product'">Unique Product charts</a></li>
+          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'developer'}"><a ng-click="vm.chartState.tab = 'developer'">Developer charts</a></li>
+          <li role="presentation" ng-class="{'active': vm.chartState.tab === 'sed'}"><a ng-click="vm.chartState.tab = 'sed'">SED Participant charts</a></li>
+        </ul>
+      </div>
+    </div>
+    <div ng-if="vm.chartState.tab === 'product'">
+      <div class="row">
+        <div class="col-sm-12">
+          <ul class="nav nav-tabs">
+            <li role="presentation" ng-class="{'active': vm.chartState.productEdition === 2014}"><a ng-click="vm.chartState.productEdition = 2014">2014 Edition</a></li>
+            <li role="presentation" ng-class="{'active': vm.chartState.productEdition === 2015}"><a ng-click="vm.chartState.productEdition = 2015">2015 Edition</a></li>
+          </ul>
+          <div ng-if="vm.chartState.productEdition === 2014" google-chart="" chart="vm.criterionProductCounts[2014]" class="bar-chart"></div>
+          <div ng-if="vm.chartState.productEdition === 2015" google-chart="" chart="vm.criterionProductCounts[2015]" class="bar-chart"></div>
         </div>
-        <div google-chart chart="vm.charts.criteria2011" style="height:450px; width:100%;"></div>
-        <div google-chart chart="vm.charts.criteria2014" style="height:450px; width:100%;"></div>
-        <div google-chart chart="vm.charts.criteria2015" style="height:450px; width:100%;"></div>
-        <div google-chart chart="vm.charts.qmsStandards" style="height:450px; width:100%;"></div>
-        <div class="form-horizontal">
-          <div class="form-group">
-            <label class="col-sm-1 col-sm-offset-2 control-label" for="qmsStandardSlice">QMS Standard Slice</label>
-            <div class="col-sm-2">
-              <input type="number" class="form-control input-sm"
-                     id="qmsStandardSlice" name="qmsStandardSlice"
-                     ng-model="vm.charts.qmsStandards.options.sliceVisibilityThreshold"></input>
-            </div>
-          </div>
+      </div>
+    </div>
+    <div ng-if="vm.chartState.tab === 'developer'">
+      <div class="row">
+        <div class="col-sm-4" ng-repeat="chart in vm.incumbentDevelopersCounts">
+          <div google-chart="" chart="chart" class="pie-chart"></div>
         </div>
-        <div google-chart chart="vm.charts.accessibilityStandards" style="height:450px; width:100%;"></div>
-        <div class="form-horizontal">
-          <div class="form-group">
-            <label class="col-sm-1 col-sm-offset-2 control-label" for="accessibilityStandardSlice">Accessibility Standard Slice</label>
-            <div class="col-sm-2">
-              <input type="number" class="form-control input-sm"
-                     id="accessibilityStandardSlice" name="accessibilityStandardSlice"
-                     ng-model="vm.charts.accessibilityStandards.options.sliceVisibilityThreshold"></input>
-            </div>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div google-chart="" chart="vm.listingCount.edition['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
         </div>
-        <div google-chart chart="vm.charts.cqms" style="height:450px; width:100%;"></div>
+        <div class="col-sm-6">
+          <div google-chart="" chart="vm.listingCount.class['' + vm.chartState.listingCountType].chart" class="column-chart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <label>
+            View the number of Developers and Products with Certification Status:
+            <select ng-model="vm.chartState.listingCountType"
+                    ng-options="option.id as option.name for option in vm.listingCountTypes | orderBy: 'name'">
+            </select>
+          </label>
+          <br />
+          <label>
+            Stacking type:
+            <select ng-model="vm.chartState.isStacked" ng-change="vm.updateChartStack()">
+              <option value="percent">Percent</option>
+              <option value="absolute">Absolute</option>
+              <option value="false">None</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div ng-if="vm.chartState.tab === 'sed'">
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.sedParticipantCounts" class="column-chart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div google-chart="" chart="vm.participantGenderCounts" class="pie-chart"></div>
+        </div>
+        <div class="col-sm-4">
+          <div google-chart="" chart="vm.participantAgeCounts" class="pie-chart"></div>
+        </div>
+        <div class="col-sm-4">
+          <div google-chart="" chart="vm.participantEducationCounts" class="pie-chart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.participantProfessionalExperienceCounts" class="column-chart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.participantComputerExperienceCounts" class="column-chart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div google-chart="" chart="vm.participantProductExperienceCounts" class="column-chart"></div>
+        </div>
       </div>
     </div>
   </div>

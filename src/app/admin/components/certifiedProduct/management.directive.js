@@ -21,9 +21,10 @@
         });
 
     /** @ngInject */
-    function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService) {
+    function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService, utilService) {
         var vm = this;
 
+        vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
         vm.editDeveloper = editDeveloper;
@@ -50,12 +51,13 @@
         vm.rejectCp = rejectCp;
         vm.rejectSurveillance = rejectSurveillance;
         vm.searchForSurveillance = searchForSurveillance;
+        vm.selectAllPendingSurveillance = selectAllPendingSurveillance;
         vm.selectCp = selectCp;
         vm.selectDeveloper = selectDeveloper;
         vm.selectProduct = selectProduct;
         vm.selectVersion = selectVersion;
         vm.splitProduct = splitProduct;
-        vm.ternaryFilter = ternaryFilter;
+        vm.ternaryFilter = utilService.ternaryFilter;
 
         activate();
 
@@ -68,7 +70,6 @@
             vm.activeCP = '';
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.isAcbStaff = authService.isAcbStaff();
             vm.uploadingCps = [];
             vm.uploadingSurveillances = [];
             if (angular.isUndefined(vm.workType)) {
@@ -84,7 +85,7 @@
             vm.resources = {};
             vm.refreshDevelopers();
 
-            if (vm.isAcbAdmin || vm.isAcbStaff) {
+            if (vm.isAcbAdmin) {
                 vm.refreshPending();
                 vm.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
@@ -159,9 +160,15 @@
                     },
                 });
                 vm.surveillanceUploader.onSuccessItem = function (fileItem, response) {
-                    vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
-                    vm.surveillanceUploadErrors = [];
-                    vm.surveillanceUploadSuccess = true;
+                    if (response.pendingSurveillance) {
+                        vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. ' + response.pendingSurveillance.length + ' pending surveillance records are ready for confirmation.';
+                        vm.surveillanceUploadErrors = [];
+                        vm.surveillanceUploadSuccess = true;
+                    } else {
+                        vm.surveillanceUploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully. The file will be processed and an email will be sent to ' + response.user.email + ' when processing is complete.';
+                        vm.surveillanceUploadErrors = [];
+                        vm.surveillanceUploadSuccess = true;
+                    }
                 };
                 vm.surveillanceUploader.onCompleteItem = function () {
                     vm.refreshPending();
@@ -345,6 +352,7 @@
                     activeProduct: function () { return vm.activeProduct; },
                 },
             });
+            vm.productMessage = null;
             vm.modalInstance.result.then(function (result) {
                 vm.activeProduct = result;
             }, function (result) {
@@ -462,6 +470,13 @@
             return ret;
         }
 
+        function selectAllPendingSurveillance () {
+            vm.massRejectSurveillance = {};
+            vm.uploadingSurveillances.forEach(function (surv) {
+                vm.massRejectSurveillance[surv.id] = true;
+            });
+        }
+
         function selectCp () {
             if (vm.cpSelect) {
                 vm.activeCP = {};
@@ -501,7 +516,6 @@
                 resolve: {
                     activeCP: function () { return vm.activeCP; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return resources; },
                     workType: function () { return vm.workType; },
@@ -541,7 +555,6 @@
                     developers: function () { return vm.developers; },
                     inspectingCp: function () { return cp; },
                     isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isAcbStaff: function () { return vm.isAcbStaff; },
                     isChplAdmin: function () { return vm.isChplAdmin; },
                     resources: function () { return vm.resources; },
                     workType: function () { return vm.workType; },
@@ -607,8 +620,8 @@
         }
 
         function isProductEditable (cp) {
-            if (cp.certificationStatus) {
-                return (vm.isChplAdmin || (cp.certificationStatus.name !== 'Suspended by ONC' && cp.certificationStatus.name !== 'Terminated by ONC')) &&
+            if (cp.certificationEvents) {
+                return (vm.isChplAdmin || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
                     vm.isDeveloperMergeable(vm.activeDeveloper);
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);
@@ -779,14 +792,6 @@
             });
         }
 
-        function ternaryFilter (field) {
-            if (field === null) {
-                return 'N/A';
-            } else {
-                return field ? 'True' : 'False';
-            }
-        }
-
         ////////////////////////////////////////////////////////////////////
 
         function clearPendingListing (cpId) {
@@ -832,14 +837,24 @@
                     vm.resources.accessibilityStandards = response;
                 });
 
-            networkService.getTestStandards()
-                .then(function (response) {
-                    vm.resources.testStandards = response;
-                });
-
             networkService.getUcdProcesses()
                 .then(function (response) {
                     vm.resources.ucdProcesses = response;
+                });
+
+            networkService.getTestProcedures()
+                .then(function (response) {
+                    vm.resources.testProcedures = response;
+                });
+
+            networkService.getTestData()
+                .then(function (response) {
+                    vm.resources.testData = response;
+                });
+
+            networkService.getTestStandards()
+                .then(function (response) {
+                    vm.resources.testStandards = response;
                 });
 
             networkService.getTestFunctionality()

@@ -5,12 +5,13 @@
         .factory('utilService', utilService);
 
     /** @ngInject */
-    function utilService ($log, Blob, FileSaver) {
+    function utilService ($filter, $log, Blob, FileSaver) {
         var service = {
             addNewValue: addNewValue,
             addressRequired: addressRequired,
             arrayCompare: arrayCompare,
             arrayToCsv: arrayToCsv,
+            certificationStatus: certificationStatus,
             extendSelect: extendSelect,
             findModel: findModel,
             makeCsv: makeCsv,
@@ -20,6 +21,7 @@
             sortNonconformityTypes: sortNonconformityTypes,
             sortRequirements: sortRequirements,
             statusFont: statusFont,
+            ternaryFilter: ternaryFilter,
         }
         return service;
 
@@ -118,6 +120,18 @@
             })
                 .join('\n');
 
+        }
+
+        function certificationStatus (listing, options) {
+            if (listing.certificationEvents && listing.certificationEvents.length > 0) {
+                if (options) {
+                    if (options.editing) {
+                        return $filter('orderBy')(listing.certificationEvents.map(function (event) { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
+                    }
+                }
+                return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
+            }
+            return '';
         }
 
         function extendSelect (options, value) {
@@ -236,6 +250,14 @@
                 // no default
             }
             return ret;
+        }
+
+        function ternaryFilter (field) {
+            if (field === null) {
+                return 'N/A';
+            } else {
+                return field ? 'True' : 'False';
+            }
         }
     }
 })();
