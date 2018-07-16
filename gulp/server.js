@@ -16,9 +16,7 @@ function browserSyncInit(baseDir, browser) {
 
     var routes = null;
     if(baseDir === conf.paths.src || (util.isArray(baseDir) && baseDir.indexOf(conf.paths.src) !== -1)) {
-        routes = {
-            '/bower_components': 'bower_components'
-        };
+        routes = { };
     }
 
     var server = {
@@ -32,7 +30,6 @@ function browserSyncInit(baseDir, browser) {
     server.middleware = [
         proxyMiddleware('/rest', {
             target: 'http://localhost:8181/chpl-service',
-            //target: 'https://chpl.ahrqdev.org/rest',
             pathRewrite: { '^/rest' : '' },
             changeOrigin: true
         })
