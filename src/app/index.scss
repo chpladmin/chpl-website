@@ -1,6 +1,5 @@
 /**
- *  If you want to override some bootstrap variables, you have to change values here.
- *  The list of variables are listed here bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
+ *  The list of variables are listed here node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
  */
 $navbar-inverse-link-color: #5aadbb;
 $icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
@@ -10,13 +9,6 @@ $fa-font-path: "../../node_modules/font-awesome/fonts";
 @import "~angular-swagger-ui/dist/css/swagger-ui.min";
 @import "~font-awesome/scss/font-awesome.scss";
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,300|Lato:400,300,300italic");
-
-/**
- *  Do not remove the comments below. It's the markers used by wiredep to inject
- *  sass dependencies when defined in the bower.json of your dependencies
- */
-// bower:scss
-// endbower
 
 .browsehappy {
     margin: .2em 0;
@@ -646,9 +638,3 @@ option[disabled] {
     width: 100%;
     background: #ccc;
 }
-/**
- *  Do not remove the comments below. It's the markers used by gulp-inject to inject
- *  all your sass files automatically
- */
-// injector
-// endinjector
