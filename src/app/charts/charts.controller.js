@@ -387,11 +387,13 @@
                 case 2015:
                     return obj.nonconformityType.indexOf('170.315') >= 0;
                 case 'Program':
-                    return obj.nonconformityType.indexOf('170.523') >= 0;
-                default: return obj.nonconformityType.indexOf('170.') >= 0;
+                    return obj.nonconformityType.indexOf('170.523') >= 0 || obj.nonconformityType.indexOf('Other') >= 0;
+                case 'All':
+                    return true;
+                default: false;
                 }
             }).sort(function (a, b) {
-                return utilService.sortCert(a.nonconformityType) - utilService.sortCert(b.nonconformityType);
+                return utilService.sortOtherNonconformityTypes(a.nonconformityType) - utilService.sortOtherNonconformityTypes(b.nonconformityType);
             }).map(function (obj) {
                 return {c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]};
             });
