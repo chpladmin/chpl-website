@@ -7,7 +7,7 @@
         .config(config);
 
     /** @ngInject */
-    function config ($analyticsProvider, $logProvider, stConfig) {
+    function config ($analyticsProvider, $locationProvider, $logProvider, stConfig) {
         // Enable/disable analytics tracking
         $analyticsProvider.developerMode(DEVELOPER_MODE);
         /*
@@ -21,6 +21,7 @@
             });
         }
         */
+        $locationProvider.hashPrefix('');
 
         // Enable log
         $logProvider.debugEnabled(ENABLE_LOGGING);

@@ -1,5 +1,5 @@
 <div class="container" ng-if="!vm.loading && !vm.product" id="main-content" tabindex="-1">
-  <p class="lead">This listing does not exist. Search the CHPL on <a href="#!/search">the search page</a></p>
+  <p class="lead">This listing does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
 </div>
 <div class="container" ng-if="!vm.loading && vm.product">
   <div class="row text-bottom">
@@ -7,7 +7,7 @@
       <h1 id="listing-name">{{ vm.product.product.name }}</h1>
     </div>
     <div class="col-sm-4 text-right">
-      <p><a href="#!/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
+      <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
     </div>
   </div>
   <div class="main-content" id="main-content" tabindex="-1">
@@ -18,8 +18,8 @@
       </div>
       <div class="col-sm-8 text-right">
         <p>Certification Date: {{ vm.product.certificationDate | date : 'mediumDate' : 'UTC' }} | Last modified Date: {{ vm.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }} <button ng-if="vm.activity && vm.activity.length > 0" class="btn btn-default btn-sm" ng-click="vm.viewProductHistory(vm.product.id)" id="view-product-history"><i class="fa fa-eye"></i><span class="sr-only">View Details</span></button></p>
-        <p ng-if="vm.isAuthed"><a ng-href="#!/admin/dpManagement/manage/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
-        <p ng-if="vm.isAuthed"><a ng-href="#!/admin/dpManagement/manageSurveillance/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
+        <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/manage/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Edit Certified Product</a></p>
+        <p ng-if="vm.isAuthed"><a ng-href="#/admin/dpManagement/manageSurveillance/{{ vm.product.id}}"><i class="fa fa-pencil-square-o"></i> Manage Surveillance Activity</a></p>
         <div class="btn-group">
           <div class="btn-group" ng-if="vm.certificationStatus(vm.product) !== 'Retired'">
             <ai-cms-widget-button product-id="{{ vm.product.id }}" product-name="{{ vm.product.product.name }}"></ai-cms-widget-button>

@@ -3,7 +3,7 @@
 var path = require('path');
 var conf = require('./gulp/conf');
 
-const webpackConfig = require('./webpack.dev');
+const webpackConfig = require('./webpack.test');
 
 process.env.CHROME_BIN = require('puppeteer').executablePath()
 
@@ -17,11 +17,12 @@ module.exports = function(config) {
         browsers : ['PhantomJS', 'ChromeHeadless'],
         webpack: webpackConfig,
         webpackMiddleware: {
-            noInfo: true
+//            noInfo: true,
+            stats: 'minimal',
         },
-        proxies: {
-            '/assets/': path.join('/base/', conf.paths.src, '/assets/')
-        },
+//        proxies: {
+//            '/assets/': path.join('/base/', conf.paths.src, '/assets/')
+//        },
     };
 
     /*************************
@@ -32,10 +33,10 @@ module.exports = function(config) {
      *************************/
     // Use this section when using specs.js, the way it _should_ work
     configuration.files = ['src/app/specs.js'];
-    configuration.preprocessors = { 'src/app/specs.js': ['webpack'] }
+    configuration.preprocessors = { 'src/app/specs.js': ['webpack', 'sourcemap'] }
     // Use this to show that something does happen, but the spec files don't have access to angular the way they should (I think)
-    //configuration.files = ['src/app/index.js', 'src/app/**/*.spec.js'];
-    //configuration.preprocessors = { 'src/app/index.js': ['webpack'], 'src/app/**/*.spec.js': ['babel'] };
+    //configuration.files = ['src/app/specs.js', 'src/app/**/*.spec.js'];
+    //configuration.preprocessors = { 'src/app/specs.js': ['webpack'], 'src/app/**/*.spec.js': ['babel'] };
 
     configuration.webpack.plugins = [];
     config.set(configuration);
