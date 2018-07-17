@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 9.24.0
+_16 July 2018_
+
+### New Features
+* In the Edit Criteria modal, modified how the user selects multiple values to associate to a criteria
+* Removed 'Product wide Relied Upon Software' for new 2014 and 2015 listings
+
+---
+
 ## Version 9.23.0
 _5 July 2018_
 
