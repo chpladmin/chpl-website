@@ -98,16 +98,17 @@
     <div ng-if="vm.chartState.tab === 'nonconformity'">
       <div class="row">
         <div class="col-sm-12">
-          <ul class="nav nav-tabs">
-            <li role="presentation" ng-class="{'active': vm.chartState.nonconformityType === 'all'}"><a ng-click="vm.chartState.nonconformityType = 'all'">All Criteria</a></li>
-            <li role="presentation" ng-class="{'active': vm.chartState.nonconformityType === 2014}"><a ng-click="vm.chartState.nonconformityType = 2014">2014 Criteria</a></li>
-            <li role="presentation" ng-class="{'active': vm.chartState.nonconformityType === 2015}"><a ng-click="vm.chartState.nonconformityType = 2015">2015 Criteria</a></li>
-            <li role="presentation" ng-class="{'active': vm.chartState.nonconformityType === 'program'}"><a ng-click="vm.chartState.nonconformityType = 'program'">Program Criteria</a></li>
-          </ul>
-          <div ng-if="vm.chartState.nonconformityType === 'all'" google-chart="" chart="vm.nonconformityCounts['all']" class="column-chart"></div>
-          <div ng-if="vm.chartState.nonconformityType === 2014" google-chart="" chart="vm.nonconformityCounts[2014]" class="column-chart"></div>
-          <div ng-if="vm.chartState.nonconformityType === 2015" google-chart="" chart="vm.nonconformityCounts[2015]" class="column-chart"></div>
-          <div ng-if="vm.chartState.nonconformityType === 'program'" google-chart="" chart="vm.nonconformityCounts['program']" class="column-chart"></div>
+          <div google-chart="" chart="vm.nonconformityCounts['' + vm.chartState.nonconformityCountType]" class="column-chart"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <label>
+            View the number of Non-Conformities with type of Program Requirements Surveilled:
+            <select ng-model="vm.chartState.nonconformityCountType"
+                    ng-options="option for option in vm.nonconformityTypes">
+            </select>
+          </label>
         </div>
       </div>
     </div>
