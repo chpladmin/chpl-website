@@ -90,6 +90,7 @@
                 {id: null, nonconformityCount: 2, nonconformityType: '170.314 (a)(13)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
                 {id: null, nonconformityCount: 9, nonconformityType: '170.314 (c)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
                 {id: null, nonconformityCount: 1, nonconformityType: '170.315 (c)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 63, nonconformityType: 'Other Non-Conformity', deleted: false, lastModifiedUser: -2,creationDate: 1531422312250, lastModifiedDate: 1531422312250},
             ],
         };
 
@@ -152,7 +153,7 @@
             expect(vm.chartState).toEqual({
                 isStacked: 'false',
                 listingCountType: '1',
-                nonconformityType: 2014,
+                nonconformityType: 'All',
                 productEdition: 2014,
                 tab: 'product',
             });
@@ -172,8 +173,27 @@
                 expect(networkService.getSedParticipantStatisticsCount).toHaveBeenCalled();
                 expect(vm.sedParticipantCounts.data.rows.length).toBe(mock.sedParticipantStatisticsCounts.length);
             });
+            
+            describe('of the nonconformity statistics', function () {
+            	it('should load the nonconformity count statistics', function () {
+            	    expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
+                });
 
-            it('should load the nonconformity count statistics', function () {
+            	it('should filter data by nonconformity type', function () {
+                    expect(vm.nonconformityCounts[2014].data.rows.length).toBe(16);
+                    expect(vm.nonconformityCounts[2015].data.rows.length).toBe(5);
+                    expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
+                    expect(vm.nonconformityCounts['Program'].data.rows.length).toBe(3);
+                    expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
+                });
+            	it('should format the data correctly', function () {
+                    expect(vm.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.315 (a)(1)');
+                });
+            });
+
+            
+
+            it('should load only 2014 data when filtered to', function () {
                 expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
             });
 

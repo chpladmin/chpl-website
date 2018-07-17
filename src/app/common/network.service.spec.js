@@ -702,6 +702,14 @@
             $httpBackend.flush();
         });
 
+        it('should getNonconformityStatisticsCount', function () {
+            $httpBackend.expectGET('/statistics\/nonconformity_criteria_count/').respond(200, {data: 'response'});
+            networkService.getNonconformityStatisticsCount().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getParticipantAgeStatistics', function () {
             $httpBackend.expectGET(/statistics\/participant_age_count/).respond(200, {data: 'response'});
             networkService.getParticipantAgeStatistics().then(function (response) {
