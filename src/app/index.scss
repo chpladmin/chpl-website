@@ -636,3 +636,28 @@ option[disabled] {
     width: 100%;
     background: #ccc;
 }
+
+.additional-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #777777;
+}
+.additional-input::-moz-placeholder { /* Firefox 19+ */
+    color: #777777;
+}
+.additional-input:-ms-input-placeholder { /* IE 10+ */
+    color: #777777;
+}
+.additional-input:-moz-placeholder { /* Firefox 18- */
+    color: #777777;
+}
+
+.fade-in {
+    animation:opac 0.3s;
+    @keyframes opac{from{opacity:0} to{opacity:1}}
+}
+
+/**
+ *  Do not remove the comments below. It's the markers used by gulp-inject to inject
+ *  all your sass files automatically
+ */
+// injector
+// endinjector

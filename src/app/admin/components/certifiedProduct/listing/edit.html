@@ -75,7 +75,7 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-if="vm.cp.certificationEdition.name === '2011' || (vm.cp.certificationEdition.name === '2014' && vm.cp.chplProductNumber.startsWith('CHP-'))">
       <label for="cp-additional-software">Product wide Relied Upon Software</label>
       <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cp-additional-software">
     </div>
@@ -408,10 +408,12 @@
       </ul>
     </div>
     <button ng-disabled="((vm.editForm.$invalid || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches() || vm.improperFirstStatus()) && vm.showFormErrors) || vm.isSaving"
+            id="edit-save"
             class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()">Save Certified Product</button>
     <button class="btn btn-warning btn-block"
+            id="edit-cancel"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"

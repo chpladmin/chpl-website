@@ -241,6 +241,13 @@
                     expect(networkService.login).toHaveBeenCalledWith({userName: 'test', password: 'password'});
                 });
 
+                it('should broadcast that someone has logged in', function () {
+                	spyOn(vm, 'broadcastLogin');
+                    vm.login();
+                    scope.$digest();
+                    expect(vm.broadcastLogin).toHaveBeenCalled();
+                });
+
                 it('should start Idle, Keepalive, and clear the form on success', function () {
                     spyOn(Idle, 'watch');
                     spyOn(Keepalive, 'ping');

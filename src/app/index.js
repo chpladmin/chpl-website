@@ -1,7 +1,7 @@
 // Import base SCSS file and then all SCSS files in directories
-import './index.scss';
 import 'angular-loading-bar/build/loading-bar.min.css';
 import 'angular-swagger-ui/dist/css/swagger-ui.min.css';
+import './index.scss';
 
 function importAll(r) {
     r.keys().forEach(r);
@@ -51,6 +51,7 @@ import productModule from './product/index';
 import registrationModule from './registration/index';
 import searchModule from './search/index';
 import servicesModule from './services/index';
+import sharedModule from './shared/index';
 
 require('./index.constants');
 
@@ -73,6 +74,7 @@ const dependencies = [
     'chpl.registration',
     'chpl.search',
     'chpl.services',
+    'chpl.shared',
     'googlechart',
     'ngAnimate',
     'ngAria',

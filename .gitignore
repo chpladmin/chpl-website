@@ -11,3 +11,4 @@ test_reports/
 *-website.sh
 push-*.sh
 src/*.html
+.vscode/
