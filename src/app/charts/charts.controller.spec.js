@@ -153,7 +153,7 @@
             expect(vm.chartState).toEqual({
                 isStacked: 'false',
                 listingCountType: '1',
-                nonconformityType: 'All',
+                nonconformityCountType: 'All',
                 productEdition: 2014,
                 tab: 'product',
             });
@@ -187,7 +187,7 @@
                     expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
                 });
             	it('should format the data correctly', function () {
-                    expect(vm.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.315 (a)(1)');
+                    expect(vm.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.314 (a)(8)');
                 });
             });
 
