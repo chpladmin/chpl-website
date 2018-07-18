@@ -15,7 +15,7 @@
         <select class="form-control" 
           id="jobs" 
           name="jobs"
-          ng-model="vm.selectedJob"
+          ng-model="vm.trigger.job"
           ng-options="job as job.name for job in vm.scheduleJobs"
           required>
         </select>
