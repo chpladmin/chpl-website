@@ -63,6 +63,7 @@
             getListingCountStatistics: getListingCountStatistics,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getScheduleTriggers: getScheduleTriggers,
+            getScheduleJobs: getScheduleJobs,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
             getParticipantAgeStatistics: getParticipantAgeStatistics,
@@ -407,6 +408,10 @@
 
         function getScheduleTriggers () {
             return apiGET('/schedules/triggers');
+        }
+
+        function getScheduleJobs () {
+            return apiGET('/schedules/jobs');
         }
 
         function getSubscriptionRecipients () {

@@ -5,7 +5,7 @@
         .controller('ScheduleController', ScheduleController);
 
     /** @ngInject */
-    function ScheduleController ($log, $uibModalInstance, networkService, trigger) {
+    function ScheduleController ($log, $uibModalInstance, networkService, trigger, scheduleJobs) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -17,7 +17,9 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            console.log(scheduleJobs);
             vm.trigger = angular.copy(trigger);
+            vm.scheduleJobs = scheduleJobs;
             vm.cronConfig = {
                 allowMultiple: false,
                 quartz: true,

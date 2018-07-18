@@ -27,6 +27,7 @@
         vm.createTrigger = createTrigger;
         vm.editTrigger = editTrigger;
         vm.loadScheduledTriggers = loadScheduledTriggers;
+        vm.loadScheduleJobs = loadScheduleJobs;
 
         activate();
 
@@ -34,6 +35,7 @@
 
         function activate () {
             vm.loadScheduledTriggers();
+            vm.loadScheduleJobs();
         }
 
         function createTrigger () {
@@ -49,6 +51,7 @@
                     trigger: function () { return {
                         scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
                     }; },
+                    scheduleJobs: function () { return vm.scheduleJobs; },
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
@@ -92,6 +95,15 @@
                         result.details = ['Schedule: ' + result.cronSchedule, 'Type: Cache Status Age Notification'];
                         return result;
                     });
+                });
+        }
+
+        function loadScheduleJobs () {
+            networkService.getScheduleJobs()
+                .then(function (result) {
+                    vm.scheduleJobs = result.results;
+                }, function (error) {
+                    $log.warn('error in schedule.controller loadSubscriptionReportTypes', error);
                 });
         }
     }
