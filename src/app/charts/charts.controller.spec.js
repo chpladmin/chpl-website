@@ -173,25 +173,23 @@
                 expect(networkService.getSedParticipantStatisticsCount).toHaveBeenCalled();
                 expect(vm.sedParticipantCounts.data.rows.length).toBe(mock.sedParticipantStatisticsCounts.length);
             });
-            
+
             describe('of the nonconformity statistics', function () {
-            	it('should load the nonconformity count statistics', function () {
-            	    expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
+                it('should load the nonconformity count statistics', function () {
+                    expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
                 });
 
-            	it('should filter data by nonconformity type', function () {
+                it('should filter data by nonconformity type', function () {
                     expect(vm.nonconformityCounts[2014].data.rows.length).toBe(16);
                     expect(vm.nonconformityCounts[2015].data.rows.length).toBe(5);
                     expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
                     expect(vm.nonconformityCounts['Program'].data.rows.length).toBe(3);
                     expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
                 });
-            	it('should format the data correctly', function () {
+                it('should format the data correctly', function () {
                     expect(vm.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.314 (a)(8)');
                 });
             });
-
-            
 
             it('should load only 2014 data when filtered to', function () {
                 expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
