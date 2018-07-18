@@ -93,7 +93,7 @@ function runTests (singleRun, done) {
     server.start();
 }
 
-gulp.task('test', [], function(done) {
+gulp.task('test', function(done) {
     var server = new Server({
         configFile: path.join(__dirname, './../karma.conf.js'),
         singleRun: true,

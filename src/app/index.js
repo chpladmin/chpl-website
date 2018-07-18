@@ -1,5 +1,7 @@
 // Import base SCSS file and then all SCSS files in directories
 import './index.scss';
+import 'angular-loading-bar/build/loading-bar.min.css';
+import 'angular-swagger-ui/dist/css/swagger-ui.min.css';
 
 function importAll(r) {
     r.keys().forEach(r);

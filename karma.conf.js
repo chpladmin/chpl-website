@@ -9,16 +9,19 @@ const webpackConfig = require('./webpack.test');
 
 module.exports = function(config) {
     var configuration = {
+        basePath: '',
         files: [
             'src/app/specs.js',
         ],
         frameworks: ['mocha'],
+        failOnEmptyTestSuite: false,
+        //logLevel: config.LOG_DEBUG,
         preprocessors: {
-            'src/app/specs.js': ['webpack'],
+            'src/app/specs.js': ['webpack', 'sourcemap'],
         },
-        reporters: ['spec'/*, 'coverage'*/],
+        reporters: ['spec', 'coverage'],
         coverageReporter: {
-            dir: 'build/coverage/',
+            dir: 'test_reports/coverage/',
             reporters: [
                 { type: 'html' },
                 { type: 'text' },
@@ -31,12 +34,13 @@ module.exports = function(config) {
             stats: 'minimal',
         },
         plugins: [
-            require("karma-webpack"),
-            require("istanbul-instrumenter-loader"),
-            require("karma-mocha"),
-            require("karma-coverage"),
-            require("karma-phantomjs-launcher"),
-            require("karma-spec-reporter")
+            require('istanbul-instrumenter-loader'),
+            require('karma-coverage'),
+            require('karma-mocha'),
+            require('karma-phantomjs-launcher'),
+            require('karma-sourcemap-loader'),
+            require('karma-spec-reporter'),
+            require('karma-webpack'),
         ],
         browsers: ['PhantomJS']
     };
