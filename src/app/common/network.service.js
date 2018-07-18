@@ -215,7 +215,7 @@
         }
 
         function deleteScheduleTrigger (trigger) {
-            return apiDELETE('/schedules/triggers/' + trigger.scheduleType + '/' + trigger.name);
+            return apiDELETE('/schedules/triggers/' + trigger.job.name + '/' + trigger.name);
         }
 
         function deleteSurveillance (surveillanceId, reason) {

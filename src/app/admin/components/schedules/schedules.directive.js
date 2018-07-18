@@ -48,9 +48,7 @@
                 keyboard: false,
                 size: 'md',
                 resolve: {
-                    trigger: function () { return {
-                        scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-                    }; },
+                    trigger: function () { return {}; },
                     scheduleJobs: function () { return vm.scheduleJobs; },
                 },
             });
