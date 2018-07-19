@@ -23,7 +23,7 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $scope, $rootScope, Idle, Keepalive, authService, networkService) {
+    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService) {
         var vm = this;
 
         vm.broadcastLogin = broadcastLogin;

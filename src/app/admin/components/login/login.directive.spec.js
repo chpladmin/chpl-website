@@ -242,7 +242,7 @@
                 });
 
                 it('should broadcast that someone has logged in', function () {
-                	spyOn(vm, 'broadcastLogin');
+                    spyOn(vm, 'broadcastLogin');
                     vm.login();
                     scope.$digest();
                     expect(vm.broadcastLogin).toHaveBeenCalled();
