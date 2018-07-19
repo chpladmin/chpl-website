@@ -7,13 +7,26 @@
         mock = {
             acbs: [{id: 1, name: 'fake'}],
             results: [{
-                name: 'cacheStatusAgeTrigger-alarned@ainq.com',
-                group: 'group1',
-                jobName: 'cacheStatusAgeJob',
-                jobGroup: 'cacheStatusAgeJob',
-                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-                cronSchedule: '0 13 * * * ?',
-                email: 'alarned@ainq.com',
+                name: 'tmy1313@gmail_com',
+                group: 'SummaryStatisticsEmailTrigger',
+                job: {
+                    description: 'Sends the Summary Statistics Report',
+                    group: 'chplJobs',
+                    name: 'Summary Statistics Email',
+                    frequency: 'HOURLY',
+                },
+                cronSchedule: '0 0 13 * * ?',
+                email: 'tmy1313@gmail.com',
+            }],
+            scheduleJobs: [{
+                description: 'Allow subscribers to get notifications if the cache has become \'too old\'.',
+                group: 'chplJobs',
+                name: 'Cache Status Age',
+                frequency: 'HOURLY'},
+            {description: 'Sends the Summary Statistics Report',
+                group: 'chplJobs',
+                name: 'Summary Statistics Email',
+                frequency: 'HOURLY',
             }],
         };
         mock.fakeModalOptions = {
@@ -26,6 +39,7 @@
             size: 'md',
             resolve: {
                 trigger: jasmine.any(Function),
+                scheduleJobs: jasmine.any(Function),
             },
         };
 
@@ -33,7 +47,7 @@
             module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getScheduleTriggers = jasmine.createSpy('getScheduleTriggers');
-
+                    $delegate.getScheduleJobs = jasmine.createSpy('getScheduleJobs');
                     return $delegate;
                 });
             });
@@ -49,6 +63,7 @@
                 });
                 networkService = _networkService_;
                 networkService.getScheduleTriggers.and.returnValue($q.when({results: mock.results}));
+                networkService.getScheduleJobs.and.returnValue($q.when({results: mock.scheduleJobs}));
 
                 el = angular.element('<ai-scheduled-jobs acbs="acbs"></ai-scheduled-jobs>');
 
@@ -88,8 +103,8 @@
         describe('wrt the Cache Status Age application', function () {
             it('should generate details', function () {
                 expect(vm.scheduledTriggers[0].details).toEqual([
-                    'Schedule: 0 13 * * * ?',
-                    'Type: Cache Status Age Notification',
+                    'Schedule: 0 0 13 * * ?',
+                    'Type: Summary Statistics Email',
                 ]);
             });
         });
@@ -132,9 +147,7 @@
             it('should resolve the trigger on create', function () {
                 vm.createTrigger();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.trigger()).toEqual({
-                    scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-                });
+                expect(actualOptions.resolve.trigger()).toEqual({});
             });
 
             it('should refresh the triggers if it was updated', function () {

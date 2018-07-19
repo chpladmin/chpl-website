@@ -5,7 +5,7 @@
         .controller('ScheduleController', ScheduleController);
 
     /** @ngInject */
-    function ScheduleController ($log, $uibModalInstance, networkService, trigger, scheduleJobs) {
+    function ScheduleController ($log, $uibModalInstance, networkService, scheduleJobs, trigger) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -26,9 +26,6 @@
                     allowMinute: false,
                 },
             };
-            console.log(scheduleJobs);
-            console.log(vm);
-            
         }
 
         function cancel () {
