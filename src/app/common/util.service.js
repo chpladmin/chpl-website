@@ -19,6 +19,7 @@
             sortCertArray: sortCertArray,
             sortCqm: sortCqm,
             sortNonconformityTypes: sortNonconformityTypes,
+            sortOtherNonconformityTypes: sortOtherNonconformityTypes,
             sortRequirements: sortRequirements,
             statusFont: statusFont,
             ternaryFilter: ternaryFilter,
@@ -199,6 +200,13 @@
 
         function sortNonconformityTypes (type) {
             if (type.name === 'Other Non-Conformity') {
+                return Number.MAX_VALUE;
+            }
+            return sortCert(type);
+        }
+
+        function sortOtherNonconformityTypes (type) {
+            if (type === 'Other Non-Conformity') {
                 return Number.MAX_VALUE;
             }
             return sortCert(type);
