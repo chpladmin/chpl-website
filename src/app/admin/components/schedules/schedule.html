@@ -19,7 +19,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <cron-selection ng-model="vm.trigger.cronSchedule" config="vm.cronConfig"></cron-selection>
+        <cron-gen ng-model="vm.trigger.cronSchedule" options="vm.schConfig"></cron-gen>
         <p><strong>Schedule, in cron format: {{ vm.trigger.cronSchedule }}</strong></p>
       </div>
     </div>

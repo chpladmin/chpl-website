@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.shared')
         .factory('CertificationResultTestProcedure', function () {
             var CertificationResultTestProcedure = function (testProcedure, version) {
                 return {

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.compare-widget')
+    angular.module('chpl.components')
         .directive('aiCompareWidget', aiCompareWidget)
         .controller('CompareWidgetController', CompareWidgetController);
 
@@ -26,11 +26,9 @@
         vm.saveProducts = saveProducts;
         vm.toggleProduct = toggleProduct;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             getWidget();
         }
 

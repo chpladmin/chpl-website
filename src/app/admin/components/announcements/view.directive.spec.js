@@ -68,7 +68,7 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'app/admin/components/announcements/edit.html',
+                        templateUrl: 'chpl.admin/components/announcements/edit.html',
                         controller: 'AnnouncementEditController',
                         controllerAs: 'vm',
                         animation: false,
@@ -127,7 +127,7 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'app/admin/components/announcements/edit.html',
+                        templateUrl: 'chpl.admin/components/announcements/edit.html',
                         controller: 'AnnouncementEditController',
                         controllerAs: 'vm',
                         animation: false,

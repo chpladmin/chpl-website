@@ -51,7 +51,7 @@
 
         function viewDetails (id) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/collections/sed/sedModal.html',
+                templateUrl: 'chpl.collections/sed/sedModal.html',
                 controller: 'ViewSedModalController',
                 controllerAs: 'vm',
                 animation: false,

@@ -2,7 +2,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.mock')
+    angular.module('chpl.product')
         .value('product_activity', activity);
 
     function activity () {

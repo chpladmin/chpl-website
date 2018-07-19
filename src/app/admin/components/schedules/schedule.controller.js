@@ -18,12 +18,14 @@
 
         function activate () {
             vm.trigger = angular.copy(trigger);
-            vm.cronConfig = {
-                allowMultiple: false,
-                quartz: true,
-                options: {
-                    allowMinute: false,
-                },
+            vm.schConfig = {
+                hideSeconds: true,
+                hideMinutesTab: true,
+                formInputClass: '',
+                formSelectClass: '',
+                formRadioClass: '',
+                formCheckboxClass: '',
+                use24HourTime: true,
             };
         }
 

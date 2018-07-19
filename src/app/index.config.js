@@ -7,7 +7,7 @@
         .config(config);
 
     /** @ngInject */
-    function config ($analyticsProvider, $logProvider, DEVELOPER_MODE, ENABLE_LOGGING, stConfig) {
+    function config ($analyticsProvider, $locationProvider, $logProvider, stConfig) {
         // Enable/disable analytics tracking
         $analyticsProvider.developerMode(DEVELOPER_MODE);
         /*
@@ -21,11 +21,12 @@
             });
         }
         */
+        $locationProvider.hashPrefix('');
 
         // Enable log
         $logProvider.debugEnabled(ENABLE_LOGGING);
 
         // Set smart-table pagination template
-        stConfig.pagination.template = 'app/components/smart_table/stPagination.html';
+        stConfig.pagination.template = 'chpl.components/smart_table/stPagination.html';
     }
 })();

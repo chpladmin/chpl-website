@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('EllipsisController', EllipsisController)
         .directive('aiEllipsis', aiEllipsis);
 
@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/util/ellipsis.html',
+            templateUrl: 'chpl.components/util/ellipsis.html',
             bindToController: {
                 text: '@',
                 maxLength: '@?',
@@ -25,11 +25,11 @@
     function EllipsisController () {
         var vm = this;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.displayText = vm.text;
             vm.isShortened = false;
             if (vm.displayText.length > vm.maxLength) {

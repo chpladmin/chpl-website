@@ -54,7 +54,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/collections/sed/sedModal.html',
+                    templateUrl: 'chpl.collections/sed/sedModal.html',
                     controller: 'ViewSedModalController',
                     controllerAs: 'vm',
                     animation: false,

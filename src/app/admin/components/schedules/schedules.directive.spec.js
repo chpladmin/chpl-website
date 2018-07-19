@@ -17,7 +17,7 @@
             }],
         };
         mock.fakeModalOptions = {
-            templateUrl: 'app/admin/components/schedules/schedule.html',
+            templateUrl: 'chpl.admin/components/schedules/schedule.html',
             controller: 'ScheduleController',
             controllerAs: 'vm',
             animation: false,

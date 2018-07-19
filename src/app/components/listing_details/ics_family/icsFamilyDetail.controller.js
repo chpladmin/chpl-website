@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('IcsFamilyDetailController', IcsFamilyDetailController);
 
     /** @ngInject */

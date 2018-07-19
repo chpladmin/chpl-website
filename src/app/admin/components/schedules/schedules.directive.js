@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/schedules/schedules.html',
+            templateUrl: 'chpl.admin/components/schedules/schedules.html',
             scope: {},
             bindToController: {
                 acbs: '=',
@@ -28,17 +28,17 @@
         vm.editTrigger = editTrigger;
         vm.loadScheduledTriggers = loadScheduledTriggers;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.loadScheduledTriggers();
         }
 
         function createTrigger () {
             vm.editTriggerInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/schedules/schedule.html',
+                templateUrl: 'chpl.admin/components/schedules/schedule.html',
                 controller: 'ScheduleController',
                 controllerAs: 'vm',
                 animation: false,
@@ -60,7 +60,7 @@
 
         function editTrigger (trigger) {
             vm.editTriggerInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/schedules/schedule.html',
+                templateUrl: 'chpl.admin/components/schedules/schedule.html',
                 controller: 'ScheduleController',
                 controllerAs: 'vm',
                 animation: false,

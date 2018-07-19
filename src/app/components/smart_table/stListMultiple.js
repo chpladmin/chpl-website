@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('ListMultipleController', ListMultipleController)
         .directive('stListMultiple', stListMultiple);
 
@@ -33,7 +33,7 @@
                 registerRestoreState: '&',
                 registerShowRetired: '&?',
             },
-            templateUrl: 'app/components/smart_table/stListMultiple.html',
+            templateUrl: 'chpl.components/smart_table/stListMultiple.html',
         }
     }
 

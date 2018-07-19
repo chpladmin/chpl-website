@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('IcsFamilyController', IcsFamilyController);
 
     /** @ngInject */
@@ -99,7 +99,7 @@
                 var node = cy.cyTarget;
                 $log.info('click', cy, node.data());
                 vm.uibModalInstance = $uibModal.open({
-                    templateUrl: 'app/components/listing_details/ics_family/icsFamilyDetail.html',
+                    templateUrl: 'chpl.components/listing_details/ics_family/icsFamilyDetail.html',
                     controller: 'IcsFamilyDetailController',
                     controllerAs: 'vm',
                     animation: false,
