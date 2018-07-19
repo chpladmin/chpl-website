@@ -70,6 +70,7 @@
                 size: 'md',
                 resolve: {
                     trigger: function () { return trigger; },
+                    scheduleJobs: function () { return vm.scheduleJobs; },
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {

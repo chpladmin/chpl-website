@@ -16,7 +16,8 @@
           id="jobs" 
           name="jobs"
           ng-model="vm.trigger.job"
-          ng-options="job as job.name for job in vm.scheduleJobs"
+          ng-options="job as job.name for job in vm.scheduleJobs track by job.name"
+          ng-disabled="vm.trigger.name"
           required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.triggerForm.jobs.$touched) && vm.triggerForm.jobs.$error.required">Job is required</div>

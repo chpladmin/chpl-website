@@ -17,7 +17,6 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            console.log(scheduleJobs);
             vm.trigger = angular.copy(trigger);
             vm.scheduleJobs = scheduleJobs;
             vm.cronConfig = {
@@ -27,6 +26,9 @@
                     allowMinute: false,
                 },
             };
+            console.log(scheduleJobs);
+            console.log(vm);
+            
         }
 
         function cancel () {
