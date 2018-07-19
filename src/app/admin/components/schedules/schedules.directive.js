@@ -90,7 +90,7 @@
             networkService.getScheduleTriggers()
                 .then(function (result) {
                     vm.scheduledTriggers = result.results.map(function (result) {
-                        result.details = ['Schedule: ' + result.cronSchedule, 'Type: Cache Status Age Notification'];
+                        result.details = ['Schedule: ' + result.cronSchedule, 'Type: ' + result.job.name];
                         return result;
                     });
                 });
