@@ -6,7 +6,7 @@
         mock = {};
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.cms-widget');
+            module('chpl.templates', 'chpl.components');
             inject(function (_$compile_, _$log_, _$rootScope_, aiCmsWidgetDirective) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;

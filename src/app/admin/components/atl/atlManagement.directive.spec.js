@@ -72,7 +72,7 @@
                 beforeEach(function () {
                     atl = {};
                     modalOptions = {
-                        templateUrl: 'app/admin/components/atl/atlEdit.html',
+                        templateUrl: 'chpl.admin/components/atl/atlEdit.html',
                         controller: 'EditAtlController',
                         controllerAs: 'vm',
                         animation: false,
@@ -131,7 +131,7 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'app/admin/components/atl/atlEdit.html',
+                        templateUrl: 'chpl.admin/components/atl/atlEdit.html',
                         controller: 'EditAtlController',
                         controllerAs: 'vm',
                         animation: false,

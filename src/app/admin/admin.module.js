@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('chpl.admin', [
-        'angular-cron-jobs',
+        'angular-cron-gen',
         'angular-confirm',
         'angularFileUpload',
         'chpl.constants',
@@ -14,7 +14,7 @@
         'smart-table',
         'ui.bootstrap',
     ])
-        .config(function (IdleProvider, KeepaliveProvider, MINUTES_BETWEEN_KEEPALIVE, MINUTES_UNTIL_IDLE) {
+        .config(function (IdleProvider, KeepaliveProvider, MINUTES_BETWEEN_KEEPALIVE) {
             // configure Idle settings
             IdleProvider.idle(60 * MINUTES_UNTIL_IDLE); // in seconds
             IdleProvider.timeout(false); // in seconds

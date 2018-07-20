@@ -17,7 +17,7 @@
         mock.uploadingCps = {pendingCertifiedProducts: []};
         mock.uploadingSurveillances = {surveillances: []};
         mock.fakeModalOptions = {
-            templateUrl: 'app/admin/components/certifiedProduct/product/split.html',
+            templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
             controller: 'SplitProductController',
             controllerAs: 'vm',
             animation: false,
@@ -242,7 +242,7 @@
             var listingEditOptions;
             beforeEach(function () {
                 listingEditOptions = {
-                    templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
+                    templateUrl: 'chpl.admin/components/certifiedProduct/listing/edit.html',
                     controller: 'EditCertifiedProductController',
                     controllerAs: 'vm',
                     animation: false,
@@ -418,7 +418,7 @@
                     {id: 2},
                 ];
                 surveillanceInspectOptions = {
-                    templateUrl: 'app/admin/components/surveillance/inspect.html',
+                    templateUrl: 'chpl.admin/components/surveillance/inspect.html',
                     controller: 'SurveillanceInspectController',
                     controllerAs: 'vm',
                     animation: false,

@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('SelectDistinctController', SelectDistinctController)
         .directive('stSelectDistinct', stSelectDistinct);
 
@@ -23,7 +23,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/stSelectDistinct.html',
+            templateUrl: 'chpl.components/smart_table/stSelectDistinct.html',
         }
     }
 

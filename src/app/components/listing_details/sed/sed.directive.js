@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('chpl')
+        .module('chpl.components')
         .directive('aiSed', aiSed)
         .controller('SedController', SedController);
 
@@ -32,7 +32,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/components/listing_details/sed/sed.html',
+            templateUrl: 'chpl.components/listing_details/sed/sed.html',
         };
         return directive;
     }
@@ -50,17 +50,17 @@
         vm.viewParticipants = viewParticipants;
         vm.viewTask = viewTask;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             _analyzeSed();
         }
 
         function addTask () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/sed/editTask.html',
+                templateUrl: 'chpl.admin/components/sed/editTask.html',
                 controller: 'EditSedTaskController',
                 controllerAs: 'vm',
                 animation: false,
@@ -83,7 +83,7 @@
         function editDetails () {
             _analyzeSed();
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/sed/editDetails.html',
+                templateUrl: 'chpl.admin/components/sed/editDetails.html',
                 controller: 'EditSedDetailsController',
                 controllerAs: 'vm',
                 animation: false,
@@ -119,7 +119,7 @@
 
         function viewParticipants (task) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/participantsModal.html',
+                templateUrl: 'chpl.components/listing_details/sed/participantsModal.html',
                 controller: 'ViewSedParticipantsController',
                 controllerAs: 'vm',
                 animation: false,
@@ -144,7 +144,7 @@
 
         function viewTask (task) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/sed/taskModal.html',
+                templateUrl: 'chpl.components/listing_details/sed/taskModal.html',
                 controller: 'ViewSedTaskController',
                 controllerAs: 'vm',
                 animation: false,

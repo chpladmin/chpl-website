@@ -15,7 +15,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/admin/components/jobs/jobs.html',
+            templateUrl: 'chpl.admin/components/jobs/jobs.html',
         };
         return directive;
     }
@@ -27,11 +27,11 @@
         vm.JOB_REFRESH_TIMEOUT_INACTIVE = 30; // seconds
         vm.JOB_REFRESH_TIMEOUT_ACTIVE = 5; // seconds
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             networkService.getJobTypes().then(function (response) {
                 vm.jobTypes = response;
             });

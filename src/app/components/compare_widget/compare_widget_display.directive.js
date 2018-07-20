@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.compare-widget')
+    angular.module('chpl.components')
         .directive('aiCompareWidgetDisplay', aiCompareWidgetDisplay);
 
     /** @ngInject */
@@ -12,7 +12,7 @@
             scope: {
                 widget: '=',
             },
-            templateUrl: 'app/components/compare_widget/compare_widget_display.html',
+            templateUrl: 'chpl.components/compare_widget/compare_widget_display.html',
             link: function (scope, el, attrs, widgetController) {
                 scope.clearProducts = function () {
                     widgetController.clearProducts();

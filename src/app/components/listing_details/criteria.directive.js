@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('CertificationCriteriaController', CertificationCriteriaController)
         .directive('aiCertificationCriteria', aiCertificationCriteria);
 
@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/listing_details/criteria.html',
+            templateUrl: 'chpl.components/listing_details/criteria.html',
             bindToController: {
                 accessibilityStandards: '=?',
                 cert: '=',
@@ -36,17 +36,17 @@
         vm.showViewDetailsLink = showViewDetailsLink;
         vm.toggleCriteria = toggleCriteria;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
         }
 
         function editCert () {
             var backupCert = angular.copy(vm.cert);
             vm.editUibModalInstance = $uibModal.open({
-                templateUrl: 'app/components/listing_details/criteriaModal.html',
+                templateUrl: 'chpl.components/listing_details/criteriaModal.html',
                 controller: 'EditCertificationCriteriaController',
                 controllerAs: 'vm',
                 animation: false,

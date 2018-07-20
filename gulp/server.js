@@ -16,9 +16,7 @@ function browserSyncInit(baseDir, browser) {
 
     var routes = null;
     if(baseDir === conf.paths.src || (util.isArray(baseDir) && baseDir.indexOf(conf.paths.src) !== -1)) {
-        routes = {
-            '/bower_components': 'bower_components'
-        };
+        routes = { };
     }
 
     var server = {
@@ -32,7 +30,6 @@ function browserSyncInit(baseDir, browser) {
     server.middleware = [
         proxyMiddleware('/rest', {
             target: 'http://localhost:8181/chpl-service',
-            //target: 'https://chpl.ahrqdev.org/rest',
             pathRewrite: { '^/rest' : '' },
             changeOrigin: true
         })
@@ -53,7 +50,7 @@ browserSync.use(browserSyncSpa({
     selector: '[ng-app]'// Only needed for angular apps
 }));
 
-gulp.task('serve', ['watch'], function () {
+gulp.task('serve', ['watch', 'bundle'], function () {
     browserSyncInit([path.join(conf.paths.tmp, '/serve'), conf.paths.src]);
 });
 
@@ -61,7 +58,7 @@ gulp.task('serve:dist', ['build', 'watch'], function () {
     browserSyncInit(conf.paths.dist);
 });
 
-gulp.task('serve:e2e', ['inject'], function () {
+gulp.task('serve:e2e', ['inject', 'bundle'], function () {
     browserSyncInit([conf.paths.tmp + '/serve', conf.paths.src], []);
 });
 

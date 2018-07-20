@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('chpl')
+        .module('chpl.components')
         .controller('CertificationStatusController', CertificationStatusController);
 
     /** @ngInject */

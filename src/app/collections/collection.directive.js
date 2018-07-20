@@ -21,7 +21,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/collections/collection.html',
+            templateUrl: 'chpl.collections/collection.html',
             transclude: {
                 aiBodyText: 'aiBodyText',
                 aiFooterText: '?aiFooterText',
@@ -46,11 +46,9 @@
         //vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.categoryChanged = {};
             vm.clearFilterHs = [];
             //vm.restoreStateHs = [];
