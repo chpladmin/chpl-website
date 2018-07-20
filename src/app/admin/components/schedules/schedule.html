@@ -18,6 +18,7 @@
           ng-model="vm.trigger.job"
           ng-options="job as job.name for job in vm.scheduleJobs track by job.name"
           ng-disabled="vm.trigger.name"
+          ng-change="vm.onScheduleChange()"
           required>
         </select>
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.triggerForm.jobs.$touched) && vm.triggerForm.jobs.$error.required">Job is required</div>
@@ -31,7 +32,7 @@
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.triggerForm.email.$touched) && vm.triggerForm.email.$error.email">Email format is invalid</div>
       </div>
     </div>
-    <div class="form-group row">
+    <div class="form-group row" ng-if="vm.trigger.job">
       <div class="col-md-12">
         <cron-gen ng-model="vm.trigger.cronSchedule" options="vm.schConfig"></cron-gen>
         <p><strong>Schedule, in cron format: {{ vm.trigger.cronSchedule }}</strong></p>

@@ -29,8 +29,6 @@
         vm.loadScheduledTriggers = loadScheduledTriggers;
         vm.loadScheduleJobs = loadScheduleJobs;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
@@ -52,6 +50,7 @@
                     scheduleJobs: function () { return vm.scheduleJobs; },
                 },
             });
+            
             vm.editTriggerInstance.result.then(function (result) {
                 if (result.status === 'created') {
                     vm.loadScheduledTriggers();
@@ -73,6 +72,7 @@
                     scheduleJobs: function () { return vm.scheduleJobs; },
                 },
             });
+            
             vm.editTriggerInstance.result.then(function (result) {
                 if (result.status === 'updated') {
                     vm.loadScheduledTriggers();

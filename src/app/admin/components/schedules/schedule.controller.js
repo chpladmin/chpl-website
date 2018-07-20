@@ -10,6 +10,7 @@
 
         vm.cancel = cancel;
         vm.deleteTrigger = deleteTrigger;
+        vm.onScheduleChange = onScheduleChange;
         vm.save = save;
 
         activate();
@@ -22,6 +23,7 @@
             vm.schConfig = {
                 hideSeconds: true,
                 hideMinutesTab: true,
+                hideHourlyTab: _hideHourlyTab(),
                 formInputClass: '',
                 formSelectClass: '',
                 formRadioClass: '',
@@ -47,6 +49,18 @@
                 },function (error) {
                     vm.errorMessage = error.data.error;
                 });
+        }
+        function onScheduleChange() {
+            vm.schConfig = {
+                hideSeconds: true,
+                hideMinutesTab: true,
+                hideHourlyTab: _hideHourlyTab(),
+                formInputClass: '',
+                formSelectClass: '',
+                formRadioClass: '',
+                formCheckboxClass: '',
+                use24HourTime: true,
+            };
         }
 
         function save () {
@@ -78,6 +92,14 @@
                     },function (error) {
                         vm.errorMessage = error.data.error;
                     });
+            }
+        }
+
+        function _hideHourlyTab() {
+            if (vm.trigger.job && vm.trigger.job.frequency !== 'HOURLY') {
+                return true;
+            } else {
+                return false;
             }
         }
     }
