@@ -20,16 +20,7 @@
         function activate () {
             vm.trigger = angular.copy(trigger);
             vm.scheduleJobs = scheduleJobs;
-            vm.schConfig = {
-                hideSeconds: true,
-                hideMinutesTab: true,
-                hideHourlyTab: _hideHourlyTab(),
-                formInputClass: '',
-                formSelectClass: '',
-                formRadioClass: '',
-                formCheckboxClass: '',
-                use24HourTime: true,
-            };
+            vm.schConfig = _getScheduleConfig();
         }
 
         function cancel () {
@@ -51,16 +42,7 @@
                 });
         }
         function onScheduleChange() {
-            vm.schConfig = {
-                hideSeconds: true,
-                hideMinutesTab: true,
-                hideHourlyTab: _hideHourlyTab(),
-                formInputClass: '',
-                formSelectClass: '',
-                formRadioClass: '',
-                formCheckboxClass: '',
-                use24HourTime: true,
-            };
+            vm.schConfig = _getScheduleConfig();
         }
 
         function save () {
@@ -93,6 +75,19 @@
                         vm.errorMessage = error.data.error;
                     });
             }
+        }
+
+        function _getScheduleConfig() {
+            return {
+                hideSeconds: true,
+                hideMinutesTab: true,
+                hideHourlyTab: _hideHourlyTab(),
+                formInputClass: '',
+                formSelectClass: '',
+                formRadioClass: '',
+                formCheckboxClass: '',
+                use24HourTime: true,
+            };
         }
 
         function _hideHourlyTab() {
