@@ -9,5 +9,7 @@ _Date TBD_
 
 ### New Features
 * Add nonconformity chart to charts page
+* Add functionality for managing "Ban Developer" notification
+  * Updated edit of Listing screen to reflect changes in Developer Ban workflow
 
 ---

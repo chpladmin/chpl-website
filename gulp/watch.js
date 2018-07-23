@@ -15,6 +15,7 @@ gulp.task('watch', ['inject', 'lint-styles'/*, 'lint-html'*/], function () {
         path.join(conf.paths.src, '/app/**/*.css'),
         path.join(conf.paths.src, '/app/**/*.scss')
     ], function(event) {
+        browserSync.reload();
         gulp.start('lint-styles');
     });
 
@@ -23,6 +24,7 @@ gulp.task('watch', ['inject', 'lint-styles'/*, 'lint-html'*/], function () {
         path.join(conf.paths.src, '/*.hbs'),
         '!' + path.join(conf.paths.src, '/*.html'),
     ], function(event) {
+        browserSync.reload();
         //gulp.start('lint-html');
     });
 });

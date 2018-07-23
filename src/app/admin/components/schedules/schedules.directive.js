@@ -25,17 +25,16 @@
         var vm = this;
 
         vm.createTrigger = createTrigger;
+        vm.editJob = editJob;
         vm.editTrigger = editTrigger;
         vm.loadScheduledTriggers = loadScheduledTriggers;
-        vm.loadScheduleJobs = loadScheduleJobs;
-
-        
+        vm.loadScheduledJobs = loadScheduledJobs;
 
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
             vm.loadScheduledTriggers();
-            vm.loadScheduleJobs();
+            vm.loadScheduledJobs();
         }
 
         function createTrigger () {
@@ -49,12 +48,32 @@
                 size: 'md',
                 resolve: {
                     trigger: function () { return {}; },
-                    scheduleJobs: function () { return vm.scheduleJobs; },
+                    scheduleJobs: function () { return vm.scheduleJobs.filter(function (item) { return item.frequency; }) },
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
                 if (result.status === 'created') {
                     vm.loadScheduledTriggers();
+                }
+            });
+        }
+
+        function editJob (job) {
+            vm.editJobInstance = $uibModal.open({
+                templateUrl: 'chpl.admin/components/schedules/job.html',
+                controller: 'JobController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'md',
+                resolve: {
+                    job: function () { return job; },
+                },
+            });
+            vm.editJobInstance.result.then(function (result) {
+                if (result.status === 'updated') {
+                    vm.loadScheduledJobs();
                 }
             });
         }
@@ -70,7 +89,7 @@
                 size: 'md',
                 resolve: {
                     trigger: function () { return trigger; },
-                    scheduleJobs: function () { return vm.scheduleJobs; },
+                    scheduleJobs: function () { return vm.scheduleJobs.filter(function (item) { return item.frequency; }) },
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
@@ -97,7 +116,7 @@
                 });
         }
 
-        function loadScheduleJobs () {
+        function loadScheduledJobs () {
             networkService.getScheduleJobs()
                 .then(function (result) {
                     vm.scheduleJobs = result.results;
