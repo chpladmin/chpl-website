@@ -7,6 +7,9 @@ _Date TBD_
 * Removed dependency on bower; replaced with yarn & webpack
 * Removed most gulp scripts
 
+### Minor changes
+* Update access to certain reports
+
 ### New Features
 * Add nonconformity chart to charts page
 
