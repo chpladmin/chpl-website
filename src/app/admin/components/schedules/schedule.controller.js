@@ -10,6 +10,7 @@
 
         vm.cancel = cancel;
         vm.deleteTrigger = deleteTrigger;
+        vm.onScheduleChange = onScheduleChange;
         vm.save = save;
 
         activate();
@@ -19,15 +20,7 @@
         function activate () {
             vm.trigger = angular.copy(trigger);
             vm.scheduleJobs = scheduleJobs;
-            vm.schConfig = {
-                hideSeconds: true,
-                hideMinutesTab: true,
-                formInputClass: '',
-                formSelectClass: '',
-                formRadioClass: '',
-                formCheckboxClass: '',
-                use24HourTime: true,
-            };
+            vm.schConfig = _getScheduleConfig();
         }
 
         function cancel () {
@@ -47,6 +40,9 @@
                 },function (error) {
                     vm.errorMessage = error.data.error;
                 });
+        }
+        function onScheduleChange() {
+            vm.schConfig = _getScheduleConfig();
         }
 
         function save () {
@@ -78,6 +74,27 @@
                     },function (error) {
                         vm.errorMessage = error.data.error;
                     });
+            }
+        }
+
+        function _getScheduleConfig() {
+            return {
+                hideSeconds: true,
+                hideMinutesTab: true,
+                hideHourlyTab: _hideHourlyTab(),
+                formInputClass: '',
+                formSelectClass: '',
+                formRadioClass: '',
+                formCheckboxClass: '',
+                use24HourTime: true,
+            };
+        }
+
+        function _hideHourlyTab() {
+            if (vm.trigger.job && vm.trigger.job.frequency !== 'HOURLY') {
+                return true;
+            } else {
+                return false;
             }
         }
     }

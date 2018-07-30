@@ -9,6 +9,9 @@ _Date TBD_
 
 ### New Features
 * Add nonconformity chart to charts page
+* Add job selection when adding a new trigger
+* Display existing job when editing existing trigger
+* Integrated CRON control with the job's frequency
 * Add functionality for managing "Ban Developer" notification
   * Updated edit of Listing screen to reflect changes in Developer Ban workflow
 
