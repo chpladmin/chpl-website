@@ -27,13 +27,13 @@
         vm.createTrigger = createTrigger;
         vm.editTrigger = editTrigger;
         vm.loadScheduledTriggers = loadScheduledTriggers;
-
-        
+        vm.loadScheduleJobs = loadScheduleJobs;
 
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
             vm.loadScheduledTriggers();
+            vm.loadScheduleJobs();
         }
 
         function createTrigger () {
@@ -46,11 +46,11 @@
                 keyboard: false,
                 size: 'md',
                 resolve: {
-                    trigger: function () { return {
-                        scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-                    }; },
+                    trigger: function () { return {}; },
+                    scheduleJobs: function () { return vm.scheduleJobs; },
                 },
             });
+            
             vm.editTriggerInstance.result.then(function (result) {
                 if (result.status === 'created') {
                     vm.loadScheduledTriggers();
@@ -69,8 +69,10 @@
                 size: 'md',
                 resolve: {
                     trigger: function () { return trigger; },
+                    scheduleJobs: function () { return vm.scheduleJobs; },
                 },
             });
+            
             vm.editTriggerInstance.result.then(function (result) {
                 if (result.status === 'updated') {
                     vm.loadScheduledTriggers();
@@ -89,9 +91,18 @@
             networkService.getScheduleTriggers()
                 .then(function (result) {
                     vm.scheduledTriggers = result.results.map(function (result) {
-                        result.details = ['Schedule: ' + result.cronSchedule, 'Type: Cache Status Age Notification'];
+                        result.details = ['Schedule: ' + result.cronSchedule, 'Type: ' + result.job.name];
                         return result;
                     });
+                });
+        }
+
+        function loadScheduleJobs () {
+            networkService.getScheduleJobs()
+                .then(function (result) {
+                    vm.scheduleJobs = result.results;
+                }, function (error) {
+                    $log.warn('error in schedule.controller loadSubscriptionReportTypes', error);
                 });
         }
     }

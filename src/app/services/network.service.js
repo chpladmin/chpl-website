@@ -64,6 +64,7 @@
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getNonconformityStatisticsCount: getNonconformityStatisticsCount,
             getScheduleTriggers: getScheduleTriggers,
+            getScheduleJobs: getScheduleJobs,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
             getParticipantAgeStatistics: getParticipantAgeStatistics,
@@ -215,7 +216,7 @@
         }
 
         function deleteScheduleTrigger (trigger) {
-            return apiDELETE('/schedules/triggers/' + trigger.scheduleType + '/' + trigger.name);
+            return apiDELETE('/schedules/triggers/' + trigger.group + '/' + trigger.name);
         }
 
         function deleteSurveillance (surveillanceId, reason) {
@@ -412,6 +413,10 @@
 
         function getScheduleTriggers () {
             return apiGET('/schedules/triggers');
+        }
+
+        function getScheduleJobs () {
+            return apiGET('/schedules/jobs');
         }
 
         function getSubscriptionRecipients () {
