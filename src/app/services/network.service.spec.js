@@ -1334,6 +1334,14 @@
             $httpBackend.flush();
         });
 
+        it('should updateJob', function () {
+            $httpBackend.expectPUT(/schedules\/jobs/).respond(200, {data: 'response'});
+            networkService.updateJob('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should updateProduct', function () {
             $httpBackend.expectPOST(/products\/update/).respond(200, {data: 'response'});
             networkService.updateProduct('payload').then(function (response) {

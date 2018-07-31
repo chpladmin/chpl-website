@@ -1,83 +1,76 @@
 <div ng-form="{{ $ctrl.identifier }}_form">
-    <ul class="list-unstyled">
-    <!--<div ng-repeat="option in $ctrl.selectedItems track by $index">-->
-        <li ng-repeat="option in $ctrl.selectedItems track by $index">
-        <div class="alert alert-success fade-in">
-            <button class="close" ng-click="$ctrl.removeItem(option)">
-                <span class="sr-only">Remove item {{ option.item.name }}</span>
-                <i class="fa fa-times"></i>
-            </button> 
-            <strong>{{ option.item.name }}</strong>
-            <div ng-if="$ctrl.additionalInput" class="additional-input">
-                <div class="row">
-                    <div class="col-sm-5">
-                        <label for="{{ $ctrl.identifier }}-additional-input-{{ $index }}" class="control-label">{{ $ctrl.additionalInputLabel }}</label>
-                    </div>
-                    <div class="col-sm-7">
-                        <input type="text" 
-                            id="{{ $ctrl.identifier }}-additional-input-{{ $index }}"
-                            name="{{ $ctrl.identifier }}_additionalInput_{{ $index }}"
-                            class="form-control"
-                            ng-model="option.additionalInputValue"
-                            ng-change="$ctrl.additionalInputChange(option)" 
-                            ng-maxlength="$ctrl.additionalInputMaxLength"
-                            ng-required="{{ $ctrl.additionalInputRequired }}">
-                    </div>
-                </div>
-                <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput_{{ $index }}.$error.maxlength">
-                    {{ $ctrl.additionalInputLabel }} is too long.
-                </p>
-                <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput_{{ $index }}.$error.required">
-                    {{ $ctrl.additionalInputLabel }} is required.
-                </p>
+  <ul class="list-unstyled">
+    <li ng-repeat="option in $ctrl.selectedItems track by $index">
+      <div class="alert alert-success fade-in">
+        <button class="close" ng-click="$ctrl.removeItem(option)">
+          <span class="sr-only">Remove item {{ option.item.name }}</span>
+          <i class="fa fa-times"></i>
+        </button>
+        <strong>{{ option.item.name }}</strong>
+        <div ng-if="$ctrl.additionalInput" class="additional-input">
+          <div class="row">
+            <div class="col-sm-5">
+              <label for="{{ $ctrl.identifier }}-additional-input-{{ $index }}" class="control-label">{{ $ctrl.additionalInputLabel }}</label>
             </div>
-            <div ng-if="$ctrl.additionalInput2" class="additional-input" >
-                <div class="row">
-                    <div class="col-sm-5">
-                        <label for="{{ $ctrl.identifier }}-additional-input-2-{{ $index }}" class="control-label">{{ $ctrl.additionalInput2Label }}</label>
-                    </div>
-                    <div class="col-sm-7">
-                        <input type="text" 
-                            id="{{ $ctrl.identifier }}-additional-input-2-{{ $index }}"
-                            name="{{ $ctrl.identifier }}_additionalInput2_{{ $index }}"
-                            class="form-control"
-                            ng-model="option.additionalInput2Value"
-                            ng-change="$ctrl.additionalInput2Change(option)" 
-                            ng-maxlength="$ctrl.additionalInput2MaxLength"
-                            ng-required="{{ $ctrl.additionalInput2Required }}">
-                    </div>
-                </div>
-                <p class="text-danger" ng-show="{{ $ctrl.identifier }}form.{{ $ctrl.identifier }}_additionalInput2_{{ $index }}.$error.maxlength">
-                    {{ $ctrl.additionalInputLabel2 }} is too long.
-                </p>
-                <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput2_{{ $index }}.$error.required">
-                    {{ $ctrl.additionalInputLabel2 }} is required.
-                </p>
+            <div class="col-sm-7">
+              <input type="text"
+                     id="{{ $ctrl.identifier }}-additional-input-{{ $index }}"
+                     name="{{ $ctrl.identifier }}_additionalInput_{{ $index }}"
+                     class="form-control"
+                     ng-model="option.additionalInputValue"
+                     ng-change="$ctrl.additionalInputChange(option)"
+                     ng-maxlength="$ctrl.additionalInputMaxLength"
+                     ng-required="{{ $ctrl.additionalInputRequired }}">
             </div>
+          </div>
+          <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput_{{ $index }}.$error.maxlength">
+            {{ $ctrl.additionalInputLabel }} is too long.
+          </p>
+          <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput_{{ $index }}.$error.required">
+            {{ $ctrl.additionalInputLabel }} is required.
+          </p>
         </div>
-        </li>
-    <!--</div>-->
-    </ul>
-
-
-    <div ng-if="! $ctrl.inAddMode">
-        <select class="form-control" 
-            id="{{ $ctrl.identifier }} " 
+        <div ng-if="$ctrl.additionalInput2" class="additional-input">
+          <div class="row">
+            <div class="col-sm-5">
+              <label for="{{ $ctrl.identifier }}-additional-input-2-{{ $index }}" class="control-label">{{ $ctrl.additionalInput2Label }}</label>
+            </div>
+            <div class="col-sm-7">
+              <input type="text"
+                     id="{{ $ctrl.identifier }}-additional-input-2-{{ $index }}"
+                     name="{{ $ctrl.identifier }}_additionalInput2_{{ $index }}"
+                     class="form-control"
+                     ng-model="option.additionalInput2Value"
+                     ng-change="$ctrl.additionalInput2Change(option)"
+                     ng-maxlength="$ctrl.additionalInput2MaxLength"
+                     ng-required="{{ $ctrl.additionalInput2Required }}">
+            </div>
+          </div>
+          <p class="text-danger" ng-show="{{ $ctrl.identifier }}form.{{ $ctrl.identifier }}_additionalInput2_{{ $index }}.$error.maxlength">
+            {{ $ctrl.additionalInputLabel2 }} is too long.
+          </p>
+          <p class="text-danger" ng-show="{{ $ctrl.identifier }}_form.{{ $ctrl.identifier }}_additionalInput2_{{ $index }}.$error.required">
+            {{ $ctrl.additionalInputLabel2 }} is required.
+          </p>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div ng-if="! $ctrl.inAddMode">
+    <select class="form-control"
+            id="{{ $ctrl.identifier }} "
             name="{{ $ctrl.identifier }}"
             ng-model="$ctrl.selectedItem"
             ng-options="option.value as option.text disable when $ctrl.isItemDisabled(option.value) for option in $ctrl.options"
             ng-change="$ctrl.selectOnChange()">
-            <option value="" disabled selected>{{ $ctrl.placeholder }}</option>
-        </select> 
-    </div>
-    
-    <div ng-show="$ctrl.inAddMode" class="input-group">
-        <input type="text" ng-model='$ctrl.addOption' ng-focus="$ctrl.inAddMode" placeholder='{{ $ctrl.addItemsPlaceholder }}' class='form-control' id="{{ $ctrl.identifier }}-add-option" >
-        <span class="input-group-btn">
-            <button class="btn btn-ai-success btn-sm" ng-click="$ctrl.addItemToListClick()" id="{{ $ctrl.identifier }}-add-option-ok"><i class="fa fa-check"></i></button>
-            <button class="btn btn-danger btn-sm" ng-click="$ctrl.cancelAddItemToListClick()"><i class="fa fa-close"></i></button>
-        </span>
-    </div>
-
+      <option value="" disabled selected>{{ $ctrl.placeholder }}</option>
+    </select>
+  </div>
+  <div ng-show="$ctrl.inAddMode" class="input-group">
+    <input type="text" ng-model="$ctrl.addOption" ng-focus="$ctrl.inAddMode" placeholder="{{ $ctrl.addItemsPlaceholder }}" class="form-control" id="{{ $ctrl.identifier }}-add-option" >
+    <span class="input-group-btn">
+      <button class="btn btn-ai-success btn-sm" ng-click="$ctrl.addItemToListClick()" id="{{ $ctrl.identifier }}-add-option-ok"><i class="fa fa-check"></i></button>
+      <button class="btn btn-danger btn-sm" ng-click="$ctrl.cancelAddItemToListClick()"><i class="fa fa-close"></i></button>
+    </span>
+  </div>
 </div>
-

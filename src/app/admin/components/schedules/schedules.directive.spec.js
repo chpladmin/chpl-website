@@ -22,11 +22,22 @@
                 description: 'Allow subscribers to get notifications if the cache has become \'too old\'.',
                 group: 'chplJobs',
                 name: 'Cache Status Age',
-                frequency: 'HOURLY'},
-            {description: 'Sends the Summary Statistics Report',
+                frequency: 'HOURLY',
+            },{
+                description: 'Sends the Summary Statistics Report',
                 group: 'chplJobs',
                 name: 'Summary Statistics Email',
                 frequency: 'HOURLY',
+            },{
+                description: 'Send warnings to subscribers when an ONC-ACB has changed status of a listing to a state that might warrant a Developer Ban.',
+                group: 'chplJobs',
+                name: 'Trigger Developer Ban Notification',
+                frequency: null,
+                jobDataMap: {
+                    editableJobFields: 'email-Subscribers',
+                    authorities: 'ROLE_ADMIN',
+                    email: 'alarned@ainq.com',
+                }
             }],
         };
         mock.fakeModalOptions = {
@@ -157,5 +168,26 @@
                 expect(networkService.getScheduleTriggers.calls.count()).toBe(serviceCallCount + 1);
             });
         })
+
+        describe('when editing a job', function () {
+            it('should create a modal instance', function () {
+                expect(vm.editJobInstance).toBeUndefined();
+                vm.editJob(vm.scheduledJobs[2]);
+                expect(vm.editJobInstance).toBeDefined();
+            });
+
+            it('should resolve the job on edit', function () {
+                vm.editJob(vm.scheduledJobs[2]);
+                expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
+                expect(actualOptions.resolve.job()).toEqual(vm.scheduledJobs[2]);
+            });
+
+            it('should refresh the jobs if it was updated', function () {
+                var serviceCallCount = networkService.getScheduleJobs.calls.count();
+                vm.editJob(vm.scheduledJobs[2]);
+                vm.editJobInstance.close({status: 'updated'});
+                expect(networkService.getScheduleJobs.calls.count()).toBe(serviceCallCount + 1);
+            });
+        });
     });
 })();

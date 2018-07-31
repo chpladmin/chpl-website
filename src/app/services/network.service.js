@@ -132,6 +132,7 @@
             updateCap: updateCap,
             updateDeveloper: updateDeveloper,
             updateFuzzyType: updateFuzzyType,
+            updateJob: updateJob,
             updateProduct: updateProduct,
             updateRecipient: updateRecipient,
             updateScheduleTrigger: updateScheduleTrigger,
@@ -718,6 +719,10 @@
 
         function updateFuzzyType (fuzzyType) {
             return apiPOST('/data\/fuzzy_choices\/update', fuzzyType);
+        }
+
+        function updateJob (job) {
+            return apiPUT('/schedules/jobs', job);
         }
 
         function updateProduct (productObject) {
