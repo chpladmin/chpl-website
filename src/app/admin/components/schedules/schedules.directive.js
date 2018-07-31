@@ -28,8 +28,6 @@
         vm.editTrigger = editTrigger;
         vm.loadScheduledTriggers = loadScheduledTriggers;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
