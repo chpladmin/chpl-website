@@ -25,15 +25,16 @@
         var vm = this;
 
         vm.createTrigger = createTrigger;
+        vm.editJob = editJob;
         vm.editTrigger = editTrigger;
         vm.loadScheduledTriggers = loadScheduledTriggers;
-
-        
+        vm.loadScheduledJobs = loadScheduledJobs;
 
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
             vm.loadScheduledTriggers();
+            vm.loadScheduledJobs();
         }
 
         function createTrigger () {
@@ -46,14 +47,33 @@
                 keyboard: false,
                 size: 'md',
                 resolve: {
-                    trigger: function () { return {
-                        scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-                    }; },
+                    trigger: function () { return {}; },
+                    scheduleJobs: function () { return vm.scheduleJobs.filter(function (item) { return item.frequency; }) },
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
                 if (result.status === 'created') {
                     vm.loadScheduledTriggers();
+                }
+            });
+        }
+
+        function editJob (job) {
+            vm.editJobInstance = $uibModal.open({
+                templateUrl: 'chpl.admin/components/schedules/job.html',
+                controller: 'JobController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'md',
+                resolve: {
+                    job: function () { return job; },
+                },
+            });
+            vm.editJobInstance.result.then(function (result) {
+                if (result.status === 'updated') {
+                    vm.loadScheduledJobs();
                 }
             });
         }
@@ -69,6 +89,7 @@
                 size: 'md',
                 resolve: {
                     trigger: function () { return trigger; },
+                    scheduleJobs: function () { return vm.scheduleJobs.filter(function (item) { return item.frequency; }) },
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
@@ -89,9 +110,18 @@
             networkService.getScheduleTriggers()
                 .then(function (result) {
                     vm.scheduledTriggers = result.results.map(function (result) {
-                        result.details = ['Schedule: ' + result.cronSchedule, 'Type: Cache Status Age Notification'];
+                        result.details = ['Schedule: ' + result.cronSchedule, 'Type: ' + result.job.name];
                         return result;
                     });
+                });
+        }
+
+        function loadScheduledJobs () {
+            networkService.getScheduleJobs()
+                .then(function (result) {
+                    vm.scheduleJobs = result.results;
+                }, function (error) {
+                    $log.warn('error in schedule.controller loadSubscriptionReportTypes', error);
                 });
         }
     }

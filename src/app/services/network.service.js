@@ -64,6 +64,7 @@
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getNonconformityStatisticsCount: getNonconformityStatisticsCount,
             getScheduleTriggers: getScheduleTriggers,
+            getScheduleJobs: getScheduleJobs,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
             getParticipantAgeStatistics: getParticipantAgeStatistics,
@@ -131,6 +132,7 @@
             updateCap: updateCap,
             updateDeveloper: updateDeveloper,
             updateFuzzyType: updateFuzzyType,
+            updateJob: updateJob,
             updateProduct: updateProduct,
             updateRecipient: updateRecipient,
             updateScheduleTrigger: updateScheduleTrigger,
@@ -215,7 +217,7 @@
         }
 
         function deleteScheduleTrigger (trigger) {
-            return apiDELETE('/schedules/triggers/' + trigger.scheduleType + '/' + trigger.name);
+            return apiDELETE('/schedules/triggers/' + trigger.group + '/' + trigger.name);
         }
 
         function deleteSurveillance (surveillanceId, reason) {
@@ -412,6 +414,10 @@
 
         function getScheduleTriggers () {
             return apiGET('/schedules/triggers');
+        }
+
+        function getScheduleJobs () {
+            return apiGET('/schedules/jobs');
         }
 
         function getSubscriptionRecipients () {
@@ -713,6 +719,10 @@
 
         function updateFuzzyType (fuzzyType) {
             return apiPOST('/data\/fuzzy_choices\/update', fuzzyType);
+        }
+
+        function updateJob (job) {
+            return apiPUT('/schedules/jobs', job);
         }
 
         function updateProduct (productObject) {

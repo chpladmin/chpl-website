@@ -70,9 +70,9 @@
         });
 
         it('should return a promise with the data if a DELETE responds with a failure', function () {
-            $httpBackend.expectDELETE(/schedules\/triggers\/CACHE_STATUS_AGE_NOTIFICATION\/something/).respond(500, 'response');
+            $httpBackend.expectDELETE(/schedules\/triggers\/CacheStatusAgeTrigger\/something/).respond(500, 'response');
             networkService.deleteScheduleTrigger({
-                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                group: 'CacheStatusAgeTrigger',
                 name: 'something',
             }).then(function (response) {
                 response.then(function (reject) {
@@ -227,9 +227,9 @@
         });
 
         it('should deleteScheduleTrigger', function () {
-            $httpBackend.expectDELETE(/schedules\/triggers\/CACHE_STATUS_AGE_NOTIFICATION\/something/).respond(200);
+            $httpBackend.expectDELETE(/schedules\/triggers\/CacheStatusAgeTrigger\/something/).respond(200);
             networkService.deleteScheduleTrigger({
-                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
+                group: 'CacheStatusAgeTrigger',
                 name: 'something',
             }).then(function (response) {
                 expect(response.status).toEqual(200);
@@ -1329,6 +1329,14 @@
         it('should updateFuzzyType', function () {
             $httpBackend.expectPOST(/data\/fuzzy_choices\/update/).respond(200, {data: 'response'});
             networkService.updateFuzzyType('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should updateJob', function () {
+            $httpBackend.expectPUT(/schedules\/jobs/).respond(200, {data: 'response'});
+            networkService.updateJob('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
