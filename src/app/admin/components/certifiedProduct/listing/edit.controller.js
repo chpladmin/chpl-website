@@ -21,11 +21,11 @@
         vm.improperFirstStatus = improperFirstStatus;
         vm.matchesPreviousDate = matchesPreviousDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
+        vm.mayCauseSuspension = mayCauseSuspension;
         vm.missingIcsSource = missingIcsSource;
         vm.removePreviousStatus = removePreviousStatus;
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
-        vm.willCauseSuspension = willCauseSuspension;
 
         activate();
 
@@ -148,6 +148,22 @@
             return false;
         }
 
+        function mayCauseSuspension (name) {
+            switch (name) {
+            case ('Active'):
+            case ('Retired'):
+            case ('Suspended by ONC-ACB'):
+            case ('Suspended by ONC'):
+            case ('Withdrawn by Developer'):
+            case ('Terminated by ONC'):
+                return false;
+            case ('Withdrawn by ONC-ACB'):
+            case ('Withdrawn by Developer Under Surveillance/Review'):
+                return true;
+            default: return false;
+            }
+        }
+
         function missingIcsSource () {
             return vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits && vm.cp.ics.parents.length === 0;
         }
@@ -183,7 +199,6 @@
                 vm.isSaving = true;
                 networkService.updateCP({
                     listing: vm.cp,
-                    banDeveloper: vm.banDeveloper,
                     reason: vm.reason,
                 }).then(function (response) {
                     if (!response.status || response.status === 200) {
@@ -212,22 +227,6 @@
                 $uibModalInstance.close(vm.cp);
             } else {
                 $log.info('Cannot save; no work type found');
-            }
-        }
-
-        function willCauseSuspension (name) {
-            switch (name) {
-            case ('Active'):
-            case ('Retired'):
-            case ('Suspended by ONC-ACB'):
-            case ('Suspended by ONC'):
-            case ('Withdrawn by Developer'):
-            case ('Withdrawn by ONC-ACB'):
-                return false;
-            case ('Terminated by ONC'):
-            case ('Withdrawn by Developer Under Surveillance/Review'):
-                return true;
-            default: return false;
             }
         }
 

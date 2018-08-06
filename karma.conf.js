@@ -13,7 +13,7 @@ module.exports = function(config) {
         files: [
             'src/app/specs.js',
         ],
-        frameworks: ['mocha'],
+        frameworks: ['jasmine'],
         failOnEmptyTestSuite: false,
         //logLevel: config.LOG_DEBUG,
         preprocessors: {
@@ -31,11 +31,19 @@ module.exports = function(config) {
         webpack: webpackConfig,
         webpackMiddleware: {
             noInfo: true,
-            stats: 'minimal',
+            stats: {
+                children: false,
+                colors: true,
+                env: true,
+                exclude: /node_modules/,
+                //maxModules: Infinity,
+                //modules: false,
+            },
         },
         plugins: [
             require('istanbul-instrumenter-loader'),
             require('karma-coverage'),
+            require('karma-jasmine'),
             require('karma-mocha'),
             require('karma-phantomjs-launcher'),
             require('karma-sourcemap-loader'),
