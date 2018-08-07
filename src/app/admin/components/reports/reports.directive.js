@@ -59,6 +59,8 @@
 
         function activate () {
             vm.isAcbAdmin = authService.isAcbAdmin();
+            vm.isAtlAdmin = authService.isAtlAdmin();
+            vm.isCmsStaff = authService.isCmsStaff();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
@@ -112,9 +114,7 @@
                 endDate: angular.copy(vm.activityRange.endDate),
             };
             vm.refreshActivity(true);
-            if (vm.isChplAdmin || vm.isOncStaff) {
-                vm.loadApiKeys();
-            }
+            vm.loadApiKeys();
             vm.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
@@ -130,12 +130,10 @@
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshAtl();
-                if (vm.isChplAdmin || vm.isOncStaff) {
-                    vm.refreshAnnouncement();
-                    vm.refreshUser();
-                    vm.refreshApi();
-                    vm.refreshApiKeyUsage();
-                }
+                vm.refreshAnnouncement();
+                vm.refreshUser();
+                vm.refreshApi();
+                vm.refreshApiKeyUsage();
             } else {
                 switch (vm.workType) {
                 case '':
@@ -243,37 +241,32 @@
         }
 
         function refreshUser () {
-            if (vm.isChplAdmin || vm.isOncStaff) {
-                networkService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
-                    .then(function (data) {
-                        vm.searchedUsers = vm.interpretUsers(data);
-                        vm.displayedUsers = [].concat(vm.searchedUsers);
-                    });
-                networkService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
-                    .then(function (data) {
-                        vm.searchedUserActivities = vm.interpretUserActivities(data);
-                        vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
-                    });
-            }
+            networkService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
+                .then(function (data) {
+                    vm.searchedUsers = vm.interpretUsers(data);
+                    vm.displayedUsers = [].concat(vm.searchedUsers);
+                });
+            networkService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
+                .then(function (data) {
+                    vm.searchedUserActivities = vm.interpretUserActivities(data);
+                    vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
+                });
         }
 
         function refreshApi () {
-            if (vm.isChplAdmin || vm.isOncStaff) {
-                networkService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
-                    .then(function (data) {
-                        vm.searchedApiActivity = data;
-                        vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
-                    });
-            }
+            networkService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
+                .then(function (data) {
+                    vm.searchedApiActivity = data;
+                    vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
+                });
         }
+
         function refreshApiKeyUsage () {
-            if (vm.isChplAdmin || vm.isOncStaff) {
-                vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
-                networkService.getApiActivity(dateAdjust(vm.apiKey))
-                    .then(function (data) {
-                        vm.searchedApi = data;
-                    });
-            }
+            vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
+            networkService.getApiActivity(dateAdjust(vm.apiKey))
+                .then(function (data) {
+                    vm.searchedApi = data;
+                });
         }
 
         function clearApiKeyFilter () {
