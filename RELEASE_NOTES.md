@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 9.25.0
+_7 August 2018_
+
+### Minor Changes
+* Update access to certain reports
+
+---
+
 ## Version 9.24.0
 _16 July 2018_
 
