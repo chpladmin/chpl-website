@@ -29,7 +29,8 @@
         vm.isDisabled = isDisabled;
 
         vm.cancel = cancel;
-        vm.ternaryFilter = ternaryFilter;
+        vm.ternaryFilter = utilService.ternaryFilter;
+        vm.checkQmsBoolean = checkQmsBoolean;
 
         vm.certificationStatus = utilService.certificationStatus;
 
@@ -296,11 +297,11 @@
             $uibModalInstance.dismiss('cancelled');
         }
 
-        function ternaryFilter (field) {
-            if (field === null) {
-                return 'N/A';
+        function checkQmsBoolean (qms) {
+            if (qms === null) {
+                return vm.cp.qmsStandards.length > 0 ? 'True' : 'False';
             } else {
-                return field ? 'True' : 'False';
+                return vm.cp.hasQms ? 'True' : 'False';
             }
         }
 

@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="modalLabel">
+<div role="modal" aria-labeled-by="modal-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel"
             confirm="Are you sure you wish to cancel? Your changes will not be saved."
@@ -6,58 +6,58 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="modalLabel">SED Participant</h4>
+    <h4 class="modal-title" id="modal-label">SED Participant</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.editForm">
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data_participant_occupation">Occupation <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-occupation">Occupation <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <input type="text" class="form-control input-sm" id="data_participant_occupation" name="data_participant_occupation" ng-model="vm.participant.occupation" required ng-maxlength="250"></input>
+        <input type="text" class="form-control input-sm" id="data-participant-occupation" name="data_participant_occupation" ng-model="vm.participant.occupation" required ng-maxlength="250"></input>
         <div class="text-danger" ng-if="vm.editForm.data_participant_occupation.$touched && vm.editForm.data_participant_occupation.$error.required">Field is required</div>
         <div class="text-danger" ng-if="vm.editForm.data_participant_occupation.$touched && vm.editForm.data_participant_occupation.$error.maxlength">Field is too long</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data_participant_educationTypeName">Education Type <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-education-type-name">Education Type <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <select class="form-control input-sm" id="data_participant_educationTypeName" name="data_participant_educationTypeName" ng-model="vm.participant.education" required
+        <select class="form-control input-sm" id="data-participant-education-type-name" name="data_participant_educationTypeName" ng-model="vm.participant.education" required
                 ng-options="item as item.name for item in vm.education.data track by item.id"></select>
         <div class="text-danger" ng-if="vm.editForm.data_participant_educationTypeName.$touched && vm.editForm.data_participant_educationTypeName.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data_participant_productExperienceMonths">Product Experience (Months) <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-product-experience-months">Product Experience (Months) <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <input type="number" class="form-control input-sm" id="data_participant_productExperienceMonths" name="data_participant_productExperienceMonths" ng-model="vm.participant.productExperienceMonths" required></input>
+        <input type="number" class="form-control input-sm" id="data-participant-product-experience-months" name="data_participant_productExperienceMonths" ng-model="vm.participant.productExperienceMonths" required></input>
         <div class="text-danger" ng-if="vm.editForm.data_participant_productExperienceMonths.$touched && vm.editForm.data_participant_productExperienceMonths.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data_participant_professionalExperienceMonths">Professional Experience (Months) <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-professional-experience-months">Professional Experience (Months) <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <input type="number" class="form-control input-sm" id="data_participant_professionalExperienceMonths" name="data_participant_professionalExperienceMonths" ng-model="vm.participant.professionalExperienceMonths" required></input>
+        <input type="number" class="form-control input-sm" id="data-participant-professional-experience-months" name="data_participant_professionalExperienceMonths" ng-model="vm.participant.professionalExperienceMonths" required></input>
         <div class="text-danger" ng-if="vm.editForm.data_participant_professionalExperienceMonths.$touched && vm.editForm.data_participant_professionalExperienceMonths.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data_participant_computerExperienceMonths">Computer Experience (Months) <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-computer-experience-months">Computer Experience (Months) <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <input type="number" class="form-control input-sm" id="data_participant_computerExperienceMonths" name="data_participant_computerExperienceMonths" ng-model="vm.participant.computerExperienceMonths" required></input>
+        <input type="number" class="form-control input-sm" id="data-participant-computer-experience-months" name="data_participant_computerExperienceMonths" ng-model="vm.participant.computerExperienceMonths" required></input>
         <div class="text-danger" ng-if="vm.editForm.data_participant_computerExperienceMonths.$touched && vm.editForm.data_participant_computerExperienceMonths.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data_participant_age">Age (Years) <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-age">Age (Years) <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <select class="form-control input-sm" id="data_participant_ageRange" name="data_participant_ageRange" ng-model="vm.participant.ageRangeObj" required
+        <select class="form-control input-sm" id="data-participant-age" name="data_participant_ageRange" ng-model="vm.participant.ageRangeObj" required
                 ng-options="item as item.name for item in vm.ageRanges.data | orderBy : vm.orderAges track by item.id"></select>
         <div class="text-danger" ng-if="vm.editForm.data_participant_ageRange.$touched && vm.editForm.data_participant_ageRange.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data_participant_gender">Gender <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-gender">Gender <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <select class="form-control input-sm" id="data_participant_gender" name="data_participant_gender" ng-model="vm.participant.gender" required>
+        <select class="form-control input-sm" id="data-participant-gender" name="data_participant_gender" ng-model="vm.participant.gender" required>
           <option value="Female">Female</option>
           <option value="Male">Male</option>
           <option value="Unknown">Unknown</option>
@@ -67,9 +67,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-6" for="data_participant_assistiveTechnologyNeeds">Assistive Technology Needs <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-6" for="data-participant-assistive-technology-needs">Assistive Technology Needs <span class="text-danger">*</span></label>
       <div class="col-sm-6">
-        <input type="text" class="form-control input-sm" id="data_participant_assistiveTechnologyNeeds" name="data_participant_assistiveTechnologyNeeds" ng-model="vm.participant.assistiveTechnologyNeeds" required ng-maxlength="250"></input>
+        <input type="text" class="form-control input-sm" id="data-participant-assistive-technology-needs" name="data_participant_assistiveTechnologyNeeds" ng-model="vm.participant.assistiveTechnologyNeeds" required ng-maxlength="250"></input>
         <div class="text-danger" ng-if="vm.editForm.data_participant_assistiveTechnologyNeeds.$touched && vm.editForm.data_participant_assistiveTechnologyNeeds.$error.required">Field is required</div>
         <div class="text-danger" ng-if="vm.editForm.data_participant_assistiveTechnologyNeeds.$touched && vm.editForm.data_participant_assistiveTechnologyNeeds.$error.maxlength">Field is too long</div>
       </div>

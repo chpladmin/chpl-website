@@ -13,7 +13,7 @@
         beforeEach(inject(function ($compile, _$log_, $rootScope) {
             $log = _$log_;
 
-            el = angular.element('<a ai-a>text</a>');
+            el = angular.element('<a ai-a href="link">text</a>');
             $compile(el)($rootScope.$new());
         }));
 

@@ -1,25 +1,25 @@
 <div>
   <form name="vm.loginForm" class="form-horizontal" ng-class="vm.formClass" role="log in / log out">
     <div class="form-group" ng-if="vm.activity !== vm.activityEnum.NONE && vm.activity !== vm.activityEnum.CHANGE">
-      <label class="control-label col-sm-4" for="username_{{$id}}">Username <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-4" for="username-{{ $id }}">Username <span class="text-danger">*</span></label>
       <div class="col-sm-8">
-        <input type="text" class="form-control" id="username_{{$id}}" name="username" ng-model="vm.userName" placeholder="username" required />
+        <input type="text" class="form-control" id="username-{{ $id }}" name="username" ng-model="vm.userName" placeholder="username" required />
         <div class="text-danger" ng-if="vm.loginForm.username.$touched && vm.loginForm.username.$error.required">Username is required</div>
       </div>
     </div>
 
     <div class="form-group" ng-if="vm.activity === vm.activityEnum.LOGIN || vm.activity === vm.activityEnum.CHANGE">
-      <label class="control-label col-sm-4" for="password_{{$id}}"><span ng-if="vm.activity === vm.activityEnum.CHANGE">Old </span>Password <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-4" for="password-{{ $id }}"><span ng-if="vm.activity === vm.activityEnum.CHANGE">Old </span>Password <span class="text-danger">*</span></label>
       <div class="col-sm-8">
-        <input type="password" class="form-control" id="password_{{$id}}" name="password" ng-model="vm.password" placeholder="password" required />
+        <input type="password" class="form-control" id="password-{{ $id }}" name="password" ng-model="vm.password" placeholder="password" required />
         <div class="text-danger" ng-if="vm.loginForm.password.$touched && vm.loginForm.password.$error.required">Password is required</div>
       </div>
     </div>
 
     <div class="form-group" ng-if="vm.activity === vm.activityEnum.LOGIN || vm.activity === vm.activityEnum.CHANGE">
-      <label class="control-label col-sm-4" for="newPassword_{{$id}}" ng-if="vm.activity === vm.activityEnum.CHANGE">New Password <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-4" for="new-password-{{ $id }}" ng-if="vm.activity === vm.activityEnum.CHANGE">New Password <span class="text-danger">*</span></label>
       <div class="col-sm-8">
-        <input type="password" class="form-control" id="newPassword_{{$id}}" name="newPassword" ng-model="vm.newPassword" placeholder="new password" ng-pattern="vm.pwPattern" required ng-if="vm.activity === vm.activityEnum.CHANGE"/>
+        <input type="password" class="form-control" id="new-password-{{ $id }}" name="newPassword" ng-model="vm.newPassword" placeholder="new password" ng-pattern="vm.pwPattern" required ng-if="vm.activity === vm.activityEnum.CHANGE"/>
         <div class="text-danger" ng-if="vm.loginForm.newPassword.$touched && vm.loginForm.newPassword.$error.pattern">Password must
           <ul>
             <li>Contain at least one upper case letter</li>
@@ -33,30 +33,30 @@
     </div>
 
     <div class="form-group" ng-if="vm.activity === vm.activityEnum.CHANGE">
-      <label class="control-label col-sm-4" for="confirmPassword_{{$id}}">Confirm Password <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-4" for="confirm-password-{{ $id }}">Confirm Password <span class="text-danger">*</span></label>
       <div class="col-sm-8">
-        <input type="password" class="form-control" id="confirmPassword_{{$id}}" name="confirmPassword" ng-model="vm.confirmPassword" placeholder="confirm password" required />
+        <input type="password" class="form-control" id="confirm-password-{{ $id }}" name="confirmPassword" ng-model="vm.confirmPassword" placeholder="confirm password" required />
         <div class="text-danger" ng-if="vm.loginForm.confirmPassword.$touched && vm.loginForm.confirmPassword.$error.required">Confirm password is required</div>
         <div class="text-danger" ng-if="vm.loginForm.confirmPassword.$touched && vm.misMatchPasswords()">Passwords must match</div>
       </div>
     </div>
 
     <div class="form-group" ng-if="vm.activity === vm.activityEnum.RESET">
-      <label class="control-label col-sm-4" for="email_{{$id}}">Email <span class="text-danger">*</span></label>
+      <label class="control-label col-sm-4" for="email-{{ $id }}">Email <span class="text-danger">*</span></label>
       <div class="col-sm-8">
-        <input type="email" class="form-control" id="email_{{$id}}" name="email" ng-model="vm.email" placeholder="sample@example.com" required />
+        <input type="email" class="form-control" id="email-{{ $id }}" name="email" ng-model="vm.email" placeholder="sample@example.com" required />
         <div class="text-danger" ng-if="vm.loginForm.email.$touched && vm.loginForm.email.$error.required">Email is required</div>
         <div class="text-danger" ng-if="vm.loginForm.email.$touched && vm.loginForm.email.$error.email">Invalid email</div>
       </div>
     </div>
 
-    <button class="btn btn-default btn-block" ng-click="vm.login(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN" ng-disabled="vm.loginForm.$invalid">Log In</button>
-    <button class="btn btn-default btn-block" ng-click="vm.sendReset(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.RESET" ng-disabled="vm.loginForm.$invalid">Send reset email</button>
-    <button class="btn btn-default btn-block" ng-click="vm.setActivity(vm.activityEnum.RESET); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN">Forgot Password</button>
-    <button class="btn btn-default btn-block" ng-click="vm.logout()" ng-if="vm.activity == vm.activityEnum.NONE">Log Out</button>
-    <button class="btn btn-default btn-block" ng-click="vm.changePassword()" ng-if="vm.activity === vm.activityEnum.CHANGE" ng-disabled="vm.loginForm.$invalid || vm.misMatchPasswords()">Confirm new Password</button>
-    <button class="btn btn-default btn-block" ng-click="vm.setActivity(vm.activityEnum.CHANGE); $event.stopPropagation()" ng-if="vm.activity !== vm.activityEnum.CHANGE && vm.isAuthed()">Change Password</button>
-    <button class="btn btn-default btn-block" ng-click="vm.activate(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.RESET">Cancel</button>
+    <button class="btn btn-default btn-block" id="login_{{$id}}" ng-click="vm.login(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN" ng-disabled="vm.loginForm.$invalid">Log In</button>
+    <button class="btn btn-default btn-block" id="reset_{{$id}}" ng-click="vm.sendReset(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.RESET" ng-disabled="vm.loginForm.$invalid">Send reset email</button>
+    <button class="btn btn-default btn-block" id="forgot_{{$id}}" ng-click="vm.setActivity(vm.activityEnum.RESET); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN">Forgot Password</button>
+    <button class="btn btn-default btn-block" id="logout_{{$id}}" ng-click="vm.logout()" ng-if="vm.activity == vm.activityEnum.NONE">Log Out</button>
+    <button class="btn btn-default btn-block" id="confirm_{{$id}}" ng-click="vm.changePassword()" ng-if="vm.activity === vm.activityEnum.CHANGE" ng-disabled="vm.loginForm.$invalid || vm.misMatchPasswords()">Confirm new Password</button>
+    <button class="btn btn-default btn-block" id="change_{{$id}}" ng-click="vm.setActivity(vm.activityEnum.CHANGE); $event.stopPropagation()" ng-if="vm.activity !== vm.activityEnum.CHANGE && vm.isAuthed()">Change Password</button>
+    <button class="btn btn-default btn-block" id="cancel_{{$id}}" ng-click="vm.activate(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.RESET">Cancel</button>
   </form>
   <p ng-if="vm.activity === vm.activityEnum.LOGIN" class="text-center"><small>This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.</small></p>
   <p ng-class="vm.messageClass" ng-if="vm.message.length > 0">{{ vm.message }}</p>

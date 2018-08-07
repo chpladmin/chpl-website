@@ -18,12 +18,14 @@
             createAnnouncement: createAnnouncement,
             createInvitedUser: createInvitedUser,
             createRecipient: createRecipient,
+            createScheduleTrigger: createScheduleTrigger,
             deleteACB: deleteACB,
             deleteATL: deleteATL,
             deleteAnnouncement: deleteAnnouncement,
             deleteCap: deleteCap,
             deleteDoc: deleteDoc,
             deleteRecipient: deleteRecipient,
+            deleteScheduleTrigger: deleteScheduleTrigger,
             deleteSurveillance: deleteSurveillance,
             deleteSurveillanceDocument: deleteSurveillanceDocument,
             deleteUser: deleteUser,
@@ -44,6 +46,8 @@
             getCertBodies: getCertBodies,
             getCertificationStatuses: getCertificationStatuses,
             getCertifiedProductActivity: getCertifiedProductActivity,
+            getCorrectiveActionPlanActivity: getCorrectiveActionPlanActivity,
+            getCriterionProductStatistics: getCriterionProductStatistics,
             getCmsDownload: getCmsDownload,
             getCollection: getCollection,
             getDeveloper: getDeveloper,
@@ -52,12 +56,21 @@
             getEditions: getEditions,
             getEducation: getEducation,
             getFuzzyTypes: getFuzzyTypes,
+            getIncumbentDevelopersStatistics: getIncumbentDevelopersStatistics,
             getJobTypes: getJobTypes,
             getJobs: getJobs,
             getIcsFamily: getIcsFamily,
+            getListingCountStatistics: getListingCountStatistics,
             getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
+            getScheduleTriggers: getScheduleTriggers,
             getSubscriptionRecipients: getSubscriptionRecipients,
             getSubscriptionReportTypes: getSubscriptionReportTypes,
+            getParticipantAgeStatistics: getParticipantAgeStatistics,
+            getParticipantComputerExperienceStatistics: getParticipantComputerExperienceStatistics,
+            getParticipantEducationStatistics: getParticipantEducationStatistics,
+            getParticipantGenderStatistics: getParticipantGenderStatistics,
+            getParticipantProductExperienceStatistics: getParticipantProductExperienceStatistics,
+            getParticipantProfessionalExperienceStatistics: getParticipantProfessionalExperienceStatistics,
             getPractices: getPractices,
             getProduct: getProduct,
             getProductActivity: getProductActivity,
@@ -66,10 +79,9 @@
             getQmsStandards: getQmsStandards,
             getRelatedListings: getRelatedListings,
             getSearchOptions: getSearchOptions,
+            getSedParticipantStatisticsCount: getSedParticipantStatisticsCount,
             getSimpleProduct: getSimpleProduct,
             getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
-            getStatisticTypes: getStatisticTypes,
-            getStatistics: getStatistics,
             getSurveillanceLookups: getSurveillanceLookups,
             getTargetedUsers: getTargetedUsers,
             getTestData: getTestData,
@@ -120,6 +132,7 @@
             updateFuzzyType: updateFuzzyType,
             updateProduct: updateProduct,
             updateRecipient: updateRecipient,
+            updateScheduleTrigger: updateScheduleTrigger,
             updateSurveillance: updateSurveillance,
             updateUser: updateUser,
             updateVersion: updateVersion,
@@ -172,6 +185,10 @@
             return apiPOST('/notifications/recipients/create', recipient);
         }
 
+        function createScheduleTrigger (trigger) {
+            return apiPOST('/schedules/triggers', trigger);
+        }
+
         function deleteACB (acbId) {
             return apiPOST('/acbs/' + acbId + '/delete', {});
         }
@@ -194,6 +211,10 @@
 
         function deleteRecipient (recipient) {
             return apiPOST('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
+        }
+
+        function deleteScheduleTrigger (trigger) {
+            return apiDELETE('/schedules/triggers/' + trigger.scheduleType + '/' + trigger.name);
         }
 
         function deleteSurveillance (surveillanceId, reason) {
@@ -299,6 +320,10 @@
             return getActivity(call, activityRange);
         }
 
+        function getCriterionProductStatistics () {
+            return apiGET('/statistics/criterion_product');
+        }
+
         function getCmsDownload () {
             return apiGET('/certification_ids');
         }
@@ -320,6 +345,11 @@
                 return apiGET('/collections/developers');
                 //no default
             }
+        }
+
+        function getCorrectiveActionPlanActivity (activityRange) {
+            var call = '/activity/corrective_action_plans';
+            return getActivity(call, activityRange);
         }
 
         function getDeveloper (developerId) {
@@ -351,6 +381,10 @@
             return apiGET('/data/fuzzy_choices');
         }
 
+        function getIncumbentDevelopersStatistics () {
+            return apiGET('/statistics/incumbent_developers');
+        }
+
         function getJobTypes () {
             return apiGET('/data/job_types');
         }
@@ -363,8 +397,16 @@
             return apiGET('/certified_products/' + id + '/ics_relationships');
         }
 
+        function getListingCountStatistics () {
+            return apiGET('/statistics/listing_count');
+        }
+
         function getMeaningfulUseUsersAccurateAsOfDate () {
             return apiGET('/meaningful_use/accurate_as_of');
+        }
+
+        function getScheduleTriggers () {
+            return apiGET('/schedules/triggers');
         }
 
         function getSubscriptionRecipients () {
@@ -373,6 +415,30 @@
 
         function getSubscriptionReportTypes () {
             return apiGET('/data/notification_types');
+        }
+
+        function getParticipantAgeStatistics () {
+            return apiGET('/statistics/participant_age_count');
+        }
+
+        function getParticipantComputerExperienceStatistics () {
+            return apiGET('/statistics/participant_computer_experience_count');
+        }
+
+        function getParticipantEducationStatistics () {
+            return apiGET('/statistics/participant_education_count');
+        }
+
+        function getParticipantGenderStatistics () {
+            return apiGET('/statistics/participant_gender_count');
+        }
+
+        function getParticipantProductExperienceStatistics () {
+            return apiGET('/statistics/participant_product_experience_count');
+        }
+
+        function getParticipantProfessionalExperienceStatistics () {
+            return apiGET('/statistics/participant_professional_experience_count');
         }
 
         function getPractices () {
@@ -412,20 +478,16 @@
             }
         }
 
+        function getSedParticipantStatisticsCount () {
+            return apiGET('/statistics/sed_participant_count');
+        }
+
         function getSimpleProduct (productId) {
             return apiGET('/products/' + productId);
         }
 
         function getSingleCertifiedProductActivity (productId) {
             return apiGET('/activity/certified_products/' + productId);
-        }
-
-        function getStatisticTypes () {
-            return apiGET('/data/statistic_types');
-        }
-
-        function getStatistics () {
-            return apiGET('/data/statistics');
         }
 
         function getSurveillanceLookups () {
@@ -656,6 +718,10 @@
             return apiPOST('/notifications/recipients/' + recipient.id + '/update', recipient);
         }
 
+        function updateScheduleTrigger (trigger) {
+            return apiPUT('/schedules/triggers', trigger);
+        }
+
         function updateSurveillance (surveillance) {
             return apiPOST('/surveillance/update', surveillance);
         }
@@ -669,6 +735,15 @@
         }
 
         ////////////////////////////////////////////////////////////////////
+
+        function apiDELETE (endpoint) {
+            return $http.delete(API + endpoint)
+                .then(function (response) {
+                    return response;
+                }, function (response) {
+                    return $q.reject(response);
+                });
+        }
 
         function apiGET (endpoint) {
             return $http.get(API + endpoint)
@@ -685,6 +760,23 @@
 
         function apiPOST (endpoint, postObject, allowEmptyResponse) {
             return $http.post(API + endpoint, postObject)
+                .then(function (response) {
+                    if (angular.isObject(response.data)) {
+                        return response.data;
+                    } else {
+                        if (allowEmptyResponse) {
+                            return response;
+                        } else {
+                            return $q.reject(response);
+                        }
+                    }
+                }, function (response) {
+                    return $q.reject(response);
+                });
+        }
+
+        function apiPUT (endpoint, postObject, allowEmptyResponse) {
+            return $http.put(API + endpoint, postObject)
                 .then(function (response) {
                     if (angular.isObject(response.data)) {
                         return response.data;

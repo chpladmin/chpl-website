@@ -16,6 +16,7 @@
 
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCertifiedProductActivity = jasmine.createSpy('getCertifiedProductActivity');
+                    $delegate.getCorrectiveActionPlanActivity = jasmine.createSpy('getCorrectiveActionPlanActivity');
                     $delegate.getDeveloperActivity = jasmine.createSpy('getDeveloperActivity');
                     $delegate.getProductActivity = jasmine.createSpy('getProductActivity');
                     $delegate.getVersionActivity = jasmine.createSpy('getVersionActivity');
@@ -49,6 +50,7 @@
                 authService.isOncStaff.and.returnValue($q.when(true));
                 networkService = _networkService_;
                 networkService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
+                networkService.getCorrectiveActionPlanActivity.and.returnValue($q.when([]));
                 networkService.getDeveloperActivity.and.returnValue($q.when([]));
                 networkService.getProductActivity.and.returnValue($q.when([]));
                 networkService.getVersionActivity.and.returnValue($q.when([]));
@@ -109,6 +111,7 @@
                     beforeEach(function () {
                         spyOn(vm, 'singleCp');
                         spyOn(vm, 'refreshCp');
+                        spyOn(vm, 'refreshCap');
                         spyOn(vm, 'refreshDeveloper');
                         spyOn(vm, 'refreshProduct');
                         spyOn(vm, 'refreshAcb');
@@ -123,6 +126,7 @@
                         vm.refreshActivity(true);
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).toHaveBeenCalled();
+                        expect(vm.refreshCap).toHaveBeenCalled();
                         expect(vm.refreshDeveloper).toHaveBeenCalled();
                         expect(vm.refreshProduct).toHaveBeenCalled();
                         expect(vm.refreshAcb).toHaveBeenCalled();
@@ -138,6 +142,7 @@
                         vm.refreshActivity(true);
                         expect(vm.singleCp).toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).toHaveBeenCalled();
                         expect(vm.refreshDeveloper).toHaveBeenCalled();
                         expect(vm.refreshProduct).toHaveBeenCalled();
                         expect(vm.refreshAcb).toHaveBeenCalled();
@@ -153,6 +158,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -169,6 +175,23 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
+                        expect(vm.refreshDeveloper).not.toHaveBeenCalled();
+                        expect(vm.refreshProduct).not.toHaveBeenCalled();
+                        expect(vm.refreshAcb).not.toHaveBeenCalled();
+                        expect(vm.refreshAtl).not.toHaveBeenCalled();
+                        expect(vm.refreshAnnouncement).not.toHaveBeenCalled();
+                        expect(vm.refreshUser).not.toHaveBeenCalled();
+                        expect(vm.refreshApi).not.toHaveBeenCalled();
+                        expect(vm.refreshApiKeyUsage).not.toHaveBeenCalled();
+                    });
+
+                    it('should refresh the cap data specifically', function () {
+                        vm.workType = 'cap';
+                        vm.refreshActivity();
+                        expect(vm.singleCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -184,6 +207,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -199,6 +223,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -214,6 +239,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).toHaveBeenCalled();
@@ -229,6 +255,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -244,6 +271,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -259,6 +287,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();
@@ -274,6 +303,7 @@
                         vm.refreshActivity();
                         expect(vm.singleCp).not.toHaveBeenCalled();
                         expect(vm.refreshCp).not.toHaveBeenCalled();
+                        expect(vm.refreshCap).not.toHaveBeenCalled();
                         expect(vm.refreshDeveloper).not.toHaveBeenCalled();
                         expect(vm.refreshProduct).not.toHaveBeenCalled();
                         expect(vm.refreshAcb).not.toHaveBeenCalled();

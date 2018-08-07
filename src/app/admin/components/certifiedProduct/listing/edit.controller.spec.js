@@ -460,6 +460,12 @@
                 vm.cp.certificationEvents[1].statusDateObject = new Date('1/1/2017');
                 expect(vm.improperFirstStatus()).toBe(false);
             });
+
+            it('should not error on improper first status when confirming', function () {
+                vm.workType = 'confirm';
+                vm.cp.certificationEvents = [];
+                expect(vm.improperFirstStatus()).toBe(false);
+            });
         });
 
         describe('when validating the form', function () {

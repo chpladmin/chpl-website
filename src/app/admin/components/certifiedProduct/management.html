@@ -3,9 +3,9 @@
     <div class="row admin-label-spaced lead text-center" ng-if="vm.workType==='merge'">
       <ul class="list-inline">
         <li><strong>What would you like to merge?</strong></li>
-        <li><input type="radio" ng-model="vm.mergeType" value="developer" id="rdDev"></input><label for="rdDev">Developers</label></li>
-        <li><input type="radio" ng-model="vm.mergeType" value="product" id="rdPrd"></input><label for="rdPrd">Products</label></li>
-        <li><input type="radio" ng-model="vm.mergeType" value="version" id="rdVer"></input><label for="rdVer">Versions</label></li>
+        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="developer"> Developers</label></li>
+        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="product"> Products</label></li>
+        <li><label><input type="radio" name="merge-type" ng-model="vm.mergeType" value="version"> Versions</label></li>
       </ul>
     </div>
     <div class="row" ng-if="vm.workType==='manage'">
@@ -15,7 +15,7 @@
       <div class="col-sm-12" ng-if="vm.isAcbAdmin">
         <h3>Upload Certified Products</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
-        <input type="file" nv-file-select="" uploader="vm.uploader" />
+        <input type="file" nv-file-select="" uploader="vm.uploader" id="listing-file-upload"/>
         <div ng-if="vm.uploadMessage.length > 0" ng-class="vm.uploadSuccess ? 'bg-success' : 'bg-danger'">
           {{ vm.uploadMessage }}
           <ul ng-if="vm.uploadErrors.length > 0">
@@ -28,29 +28,29 @@
         <table class="table" ng-if="vm.uploader.queue.length > 0">
           <thead>
             <tr>
-              <th scope="col" width="50%">Name</th>
+              <th scope="col">Name</th>
               <th scope="col" ng-show="vm.uploader.isHTML5">Size</th>
               <th scope="col" ng-show="vm.uploader.isHTML5">Progress</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in vm.uploader.queue">
+            <tr ng-repeat="item in vm.uploader.queue track by $index">
               <td><strong>{{ item.file.name }}</strong></td>
               <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
               <td ng-show="vm.uploader.isHTML5">
-                <div class="progress" style="margin-bottom: 0;">
+                <div class="progress">
                   <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
                 </div>
               </td>
               <td nowrap>
-                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess" id="listing-file-confirm-{{ $index }}">
                   <i class="fa fa-cloud-upload"></i> Upload
                 </button>
-                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading" id="listing-file-cancel-{{ $index }}">
                   <i class="fa fa-ban"></i> Cancel
                 </button>
-                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()" id="listing-file-remove-{{ $index }}">
                   <i class="fa fa-trash-o"></i> Remove
                 </button>
               </td>
@@ -61,7 +61,7 @@
       <div class="col-sm-12" ng-if="vm.isAcbAdmin">
         <h3>Upload Surveillance Activities</h3>
         <p ng-if="vm.surveillanceUploader.queue.length === 0">CSV files only</p>
-        <input type="file" nv-file-select="" uploader="vm.surveillanceUploader" />
+        <input type="file" nv-file-select="" uploader="vm.surveillanceUploader" id="surveillance-file-upload" />
         <div ng-if="vm.surveillanceUploadMessage.length > 0" ng-class="vm.surveillanceUploadSuccess ? 'bg-success' : 'bg-danger'">
           {{ vm.surveillanceUploadMessage }}
           <ul ng-if="vm.surveillanceUploadErrors.length > 0">
@@ -71,29 +71,29 @@
         <table class="table" ng-if="vm.surveillanceUploader.queue.length > 0">
           <thead>
             <tr>
-              <th scope="col" width="50%">Name</th>
+              <th scope="col">Name</th>
               <th scope="col" ng-show="vm.surveillanceUploader.isHTML5">Size</th>
               <th scope="col" ng-show="vm.surveillanceUploader.isHTML5">Progress</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in vm.surveillanceUploader.queue">
+            <tr ng-repeat="item in vm.surveillanceUploader.queue track by $index">
               <td><strong>{{ item.file.name }}</strong></td>
               <td ng-show="vm.surveillanceUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
               <td ng-show="vm.surveillanceUploader.isHTML5">
-                <div class="progress" style="margin-bottom: 0;">
+                <div class="progress">
                   <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
                 </div>
               </td>
               <td nowrap>
-                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess" id="surveillance-file-confirm-{{ $index }}">
                   <i class="fa fa-cloud-upload"></i> Upload
                 </button>
-                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading" id="surveillance-file-cancel-{{ $index }}">
                   <i class="fa fa-ban"></i> Cancel
                 </button>
-                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()" id="surveillance-file-remove-{{ $index }}">
                   <i class="fa fa-trash-o"></i> Remove
                 </button>
               </td>
@@ -112,7 +112,7 @@
             <li ng-repeat="message in vm.uploadingListingsMessages">{{ message }}</li>
           </ul>
         </div>
-        <table class="table table-striped" ng-if="vm.uploadingCps.length > 0">
+        <table class="table table-striped" ng-if="vm.uploadingCps.length > 0" id="pending-listings-table">
           <thead>
             <tr>
               <th scope="col">CHPL ID</th>
@@ -148,10 +148,10 @@
               <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"><i class="fa fa-eye"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)" id="pending-listing-inspect-{{ cp.id }}"><i class="fa fa-eye"></i> Inspect</button>
               </td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
-                <button class="btn btn-warning btn-block"
+                <button class="btn btn-warning btn-block" id="pending-listing-reject-{{ cp.id }}"
                         confirm="Are you sure you wish to remove this product from the queue?"
                         confirm-ok="Yes"
                         confirm-cancel="No"
@@ -159,7 +159,7 @@
                         ng-click="vm.rejectCp(cp.id)"><i class="fa fa-trash-o"></i> Clear</button>
               </td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <input type="checkbox" class="form-control" ng-model="vm.massReject[cp.id]">
+                <input type="checkbox" class="form-control" ng-model="vm.massReject[cp.id]" id="pending-listing-reject-checkbox-{{ cp.id }}">
               </td>
             </tr>
           </tbody>
@@ -176,7 +176,7 @@
             <li ng-repeat="message in vm.uploadingSurveillanceMessages">{{ message }}</li>
           </ul>
         </div>
-        <table class="table table-striped" ng-if="vm.uploadingSurveillances.length > 0">
+        <table class="table table-striped" ng-if="vm.uploadingSurveillances.length > 0" id="pending-surveillance-table">
           <thead>
             <tr>
               <th scope="col">CHPL ID</th>
@@ -193,9 +193,9 @@
             <tr>
               <th colspan="8">&nbsp;</th>
               <th>
-                <button class="btn btn-warning btn-block"
+                <button class="btn btn-warning btn-block" id="pending-surveillance-select-all"
                         ng-click="vm.selectAllPendingSurveillance()"><i class="fa fa-check"></i> Select all</button>
-                <button class="btn btn-danger btn-block"
+                <button class="btn btn-danger btn-block" id="pending-listing-reject-all"
                         ng-disabled="vm.getNumberOfSurveillanceToReject() < 1"
                         confirm="Are you sure you wish to remove {{ vm.getNumberOfSurveillanceToReject() }} surveillance{{ vm.getNumberOfSurveillanceToReject() > 1 ? 's' : '' }} from the queue?"
                         confirm-ok="Yes"
@@ -218,10 +218,10 @@
               </td>
               <td><span ng-bind-html="vm.parseSurveillanceUploadError(surv)"></span></td>
               <td class="text-center">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)"><i class="fa fa-eye"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectSurveillance(surv)" id="pending-surveillance-inspect-{{ surv.id}}"><i class="fa fa-eye"></i> Inspect</button>
               </td>
               <td class="text-center">
-                <input type="checkbox" class="form-control" ng-model="vm.massRejectSurveillance[surv.id]">
+                <input type="checkbox" class="form-control" ng-model="vm.massRejectSurveillance[surv.id]" id="pending-surveillance-reject-{{ surv.id }}">
               </td>
             </tr>
           </tbody>
@@ -232,12 +232,12 @@
     <div class="row" ng-if="vm.workType === 'manageSurveillance'">
       <div class="col-sm-12">
         <h3>Manage Surveillance Activity</h3>
-        <label for="surveillanceSearch" class="control-label sr-only">Search by ACB or CHPL ID</label>
+        <label for="surveillance-search" class="control-label sr-only">Search by ACB or CHPL ID</label>
         <div class="input-group">
-          <input type="text" class="form-control" id="surveillanceSearch" placeholder="Search by ACB or CHPL ID" ng-model="vm.surveillanceSearch.query"
+          <input type="text" class="form-control" id="surveillance-search" placeholder="Search by ACB or CHPL ID" ng-model="vm.surveillanceSearch.query"
                  ng-keyup="$event.keyCode === 13 && vm.searchForSurveillance()">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai" ng-click="vm.searchForSurveillance()"><i class="fa fa-search"></i><span class="sr-only">Search</span></button>
+            <button type="button" class="btn btn-ai" id="surveillance-search-button" ng-click="vm.searchForSurveillance()"><i class="fa fa-search"></i><span class="sr-only">Search</span></button>
           </span>
         </div>
         <div ng-if="vm.surveillanceSearch.results">
@@ -247,7 +247,7 @@
           <div ng-if="vm.surveillanceSearch.results.length > 1">
             <a href ng-click="vm.surveillanceSearch.results = null" class="pull-right">Clear results</a>
             {{ vm.surveillanceSearch.results.length }} results found. Select the product you want:
-            <table class="table table-condensed">
+            <table class="table table-condensed" id="surveillance-search-results">
               <thead>
                 <tr>
                   <th scope="col">CHPL Product Number</th>
@@ -262,14 +262,14 @@
               </thead>
               <tbody>
                 <tr ng-repeat="res in vm.surveillanceSearch.results">
-                  <td><a href ng-click="vm.productId = res.id; vm.surveillanceSearch.results = null; vm.loadSurveillance()">{{ res.chplProductNumber }}</a></td>
-                  <td>{{ res.developer.name }}</td>
-                  <td>{{ res.product.name }}</td>
-                  <td>{{ res.product.version }}</td>
-                  <td>{{ res.certifyingBody.name }}</td>
-                  <td>{{ res.certificationEdition.name }}</td>
+                  <td><button class="btn btn-default" ng-click="vm.productId = res.id; vm.surveillanceSearch.results = null; vm.loadSurveillance()">{{ res.chplProductNumber }}</button></td>
+                  <td>{{ res.developer }}</td>
+                  <td>{{ res.product }}</td>
+                  <td>{{ res.product }}</td>
+                  <td>{{ res.acb }}</td>
+                  <td>{{ res.edition }}</td>
                   <td>{{ res.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
-                  <td>{{ vm.certificationStatus(res) }}</td>
+                  <td>{{ res.certificationStatus }}</td>
                 </tr>
               </tbody>
             </table>
@@ -280,6 +280,12 @@
             <a href="#/product/{{ vm.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
           </span>
           <table class="table">
+            <thead class="sr-only">
+              <tr>
+                <th scope="col">Surveillance Listing Data Type</th>
+                <th scope="col">Surveillance Listing Data Value</th>
+              </tr>
+            </thead>
             <tbody>
               <tr>
                 <th scope="row">CHPL Product Number</th>
@@ -345,11 +351,11 @@
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="developerSelect" class="control-label">Developer</label>
+                <label for="developer-select" class="control-label">Developer</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.developerSelect"
-                        id="developerSelect" class="form-control col-sm-8"
+                        id="developer-select" class="form-control col-sm-8"
                         ng-options="v.name for v in vm.developers | orderBy: 'name'">
                   <option value="" selected disabled>Select a developer</option>
                 </select>
@@ -361,9 +367,9 @@
           </div>
         </div>
         <div class="col-sm-12" ng-if="vm.workType === 'merge' && vm.mergeType === 'developer'">
-          <label for="developerMergeSelect" class="control-label admin-label-spaced">Select developers to merge</label>
+          <label for="developer-merge-select" class="control-label admin-label-spaced">Select developers to merge</label>
           <select ng-model="vm.mergingDevelopers" multiple="true"
-                  id="developerMergeSelect" class="input-sm form-control"
+                  id="developer-merge-select" class="input-sm form-control"
                   size="12" ng-options="v.name disable when !vm.isDeveloperMergeable(v) for v in vm.developers | orderBy: 'name'">
           </select>
           <p><button ng-disabled="vm.mergingDevelopers.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeDevelopers()">Choose Developers</button></p>
@@ -460,11 +466,11 @@
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="productSelect" class="control-label admin-label-spaced">Product</label>
+                <label for="product-select" class="control-label admin-label-spaced">Product</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.productSelect"
-                        id="productSelect" class="form-control"
+                        id="product-select" class="form-control"
                         ng-options="p.name for p in vm.products | orderBy: 'name'">
                   <option value="" selected disabled>Select a product</option>
                 </select>
@@ -476,9 +482,9 @@
           </div>
         </div>
         <div class="col-sm-12" ng-if="vm.mergeType === 'product' && vm.products.length > 1">
-          <label for="productMergeSelect" class="control-label admin-label-spaced">Select products to merge</label>
+          <label for="product-merge-select" class="control-label admin-label-spaced">Select products to merge</label>
           <select ng-model="vm.mergingProducts" multiple="true"
-                  id="productMergeSelect" class="input-sm form-control"
+                  id="product-merge-select" class="input-sm form-control"
                   size="12" ng-options="p.name for p in vm.products | orderBy: 'name'">
           </select>
           <p><button ng-disabled="vm.mergingProducts.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeProducts()">Choose Products</button></p>
@@ -509,7 +515,7 @@
                 <strong>Contact information</strong><br />
                 <ai-contact contact="vm.activeProduct.contact"></ai-contact>
               </span>
-              <p ng-if="vm.productMessage !== undefined" class="bg-danger">{{ vm.productMessage }}</p>
+              <p ng-if="vm.productMessage !== undefined" ng-repeat="msg in vm.productMessage | orderBy:'toString()'" class="bg-danger">{{ msg }}</p>
             </div>
           </div>
         </div> <!-- end system product -->
@@ -530,11 +536,11 @@
           <div class="form-horizontal">
             <div class="form-group admin-label-spaced">
               <div class="col-sm-3">
-                <label for="versionSelect" class="control-label admin-label-spaced">Version</label>
+                <label for="version-select" class="control-label admin-label-spaced">Version</label>
               </div>
               <div class="col-sm-7">
                 <select ng-model="vm.versionSelect"
-                        id="versionSelect" class="form-control"
+                        id="version-select" class="form-control"
                         ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
                   <option value="" selected disabled>Select a version</option>
                 </select>
@@ -546,9 +552,9 @@
           </div>
         </div>
         <div class="col-sm-12" ng-if="vm.mergeType === 'version' && vm.versions.length > 1">
-          <label for="versionMergeSelect" class="control-label admin-label-spaced">Select versions to merge</label>
+          <label for="version-merge-select" class="control-label admin-label-spaced">Select versions to merge</label>
           <select ng-model="vm.mergingVersions" multiple="true"
-                  id="versionMergeSelect" class="input-sm form-control"
+                  id="version-merge-select" class="input-sm form-control"
                   size="12" ng-options="v as v.version for v in vm.versions | orderBy: 'version'">
           </select>
           <p><button ng-disabled="vm.mergingVersions.length < 2" class="btn btn-default btn-block" ng-click="vm.mergeVersions()">Choose Versions</button></p>
@@ -581,10 +587,10 @@
             <div class="form-group admin-label-spaced">
               <span ng-if="vm.cps.length > 0">
                 <div class="col-sm-3">
-                  <label for="cpSelect" class="control-label admin-label-spaced">Certified Product</label>
+                  <label for="cp-select" class="control-label admin-label-spaced">Certified Product</label>
                 </div>
                 <div class="col-sm-7">
-                  <select ng-model="vm.cpSelect" id="cpSelect" class="input-sm form-control">
+                  <select ng-model="vm.cpSelect" id="cp-select" class="input-sm form-control">
                     <option value="" selected disabled>Select a Certified Product</option>
                     <option ng-repeat="cp in vm.cps | orderBy: 'certificationDate'" value="{{ cp.id }}">{{ cp.chplProductNumber }} ({{ cp.lastModifiedDate | date : 'mediumDate' : 'UTC' }})</option>
                   </select>
@@ -615,12 +621,12 @@
               <div class="panel-body" ng-if="vm.activeCP.id">
                 <span>
                   <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em><br />
-                  <strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br />
-                  <strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br />
+                  <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br /></span>                  
+                  <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br /></span>
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />
                   <strong>Certification Date:</strong> {{ vm.activeCP.certificationDate | date : 'mediumDate' : 'UTC' }} <br />
-                  <strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br />
+                  <span ng-if="vm.activeCP.certificationEdition.name === '2011' || (vm.activeCP.certificationEdition.name === '2014' && vm.activeCP.chplProductNumber.startsWith('CHP-'))"><strong>Product wide Relied Upon Software:</strong> {{ vm.activeCP.productAdditionalSoftware ? vm.activeCP.productAdditionalSoftware : 'None' }} <br /></span>
                   <strong>Status:</strong> {{ vm.certificationStatus(vm.activeCP) }}<br />
                   <strong>ACB Certification Id:</strong> {{ vm.activeCP.acbCertificationId }} <br />
                   <strong>Other ACB:</strong> {{ vm.activeCP.otherAcb ? vm.activeCP.otherAcb : 'None' }} <br />
@@ -638,8 +644,11 @@
                   <strong>Report File Location:</strong> {{ vm.activeCP.reportFileLocation ? vm.activeCP.reportFileLocation : 'None' }} <br />
                   <strong>SED Report File Location:</strong> {{ vm.activeCP.sedReportFileLocation ? vm.activeCP.sedReportFileLocation : 'None' }} <br />
                   <strong>SED Intended Users:</strong> {{ vm.activeCP.sedIntendedUserDescription ? vm.activeCP.sedIntendedUserDescription : 'None' }} <br />
-                  <strong>SED End Date of Testing:</strong> {{ vm.activeCP.sedTestingEnd | date : 'mediumDate' : 'UTC' }} <br />
-                  <strong>Testing Lab:</strong> {{ vm.activeCP.testingLab.name }} <br />
+                  <strong>SED End Date of Testing:</strong> {{ vm.activeCP.sedTestingEndDate | date : 'mediumDate' : 'UTC' }} <br />
+                  <strong>Testing Lab<span ng-if="vm.activeCP.testingLabs.length !== 1">s</span>:</strong> <span ng-if="!vm.activeCP.testingLabs || vm.activeCP.testingLabs.length === 0">None<br /></span>
+                  <ul ng-if="vm.activeCP.testingLabs && vm.activeCP.testingLabs.length !== 0">
+                    <li ng-repeat="atl in vm.activeCP.testingLabs">{{ atl.testingLabName }}</li>
+                  </ul>
                   <strong>Accessibility Standards:</strong> {{ vm.activeCP.accessibilityStandards.length > 0 ? '' : 'None' }} <br />
                   <ul>
                     <li ng-repeat="std in vm.activeCP.accessibilityStandards">{{ std.accessibilityStandardName }}</li>

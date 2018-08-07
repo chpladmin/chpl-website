@@ -1,16 +1,16 @@
-<div class="container" ng-if="!vm.loading && !vm.product" id="mainContent" tabindex="-1">
+<div class="container" ng-if="!vm.loading && !vm.product" id="main-content" tabindex="-1">
   <p class="lead">This listing does not exist. Search the CHPL on <a href="#/search">the search page</a></p>
 </div>
 <div class="container" ng-if="!vm.loading && vm.product">
   <div class="row text-bottom">
     <div class="col-sm-8">
-      <h1 id="listingName">{{ vm.product.product.name }}</h1>
+      <h1 id="listing-name">{{ vm.product.product.name }}</h1>
     </div>
     <div class="col-sm-4 text-right">
       <p><a href="#/search"><i class="fa fa-arrow-left fa-lg"></i> Return to search results</a></p>
     </div>
   </div>
-  <div class="main-content" id="mainContent" tabindex="-1">
+  <div class="main-content" id="main-content" tabindex="-1">
     <div class="row">
       <div class="col-sm-4">
         <p>CHPL Product Number: {{ vm.product.chplProductNumber }}</p>
@@ -89,6 +89,10 @@
         <div class="product-element">
           <h2 class="product-heading">ONC-Authorized Certification Body</h2>
           <p>{{ vm.product.certifyingBody.name }}</p>
+        </div>
+        <div class="product-element" ng-if="vm.product.testingLabs && vm.product.testingLabs.length !== 0">
+          <h2 class="product-heading">ONC-Accredited Testing Laborator{{ vm.product.testingLabs.length === 1 ? 'y' : 'ies' }}</h2>
+          <p ng-repeat="atl in vm.product.testingLabs | orderBy:'toString'">{{ atl.testingLabName }}</p>
         </div>
         <div class="product-element" ng-if="vm.product.productAdditionalSoftware">
           <h2 class="product-heading">Relied Upon Software</h2>

@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="editDeveloperLabel">
+<div role="modal" aria-labeled-by="edit-developer-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,12 +6,12 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editDeveloperLabel">Edit Developer</h4>
+    <h4 class="modal-title" id="edit-developer-label">Edit Developer</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
     <div class="form-group">
-      <label for="developerName">Developer Name <span class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developerName" name="developerName" ng-maxlength="300"></input>
+      <label for="developer-name">Developer Name <span class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" required ng-model="vm.developer.name" id="developer-name" name="developerName" ng-maxlength="300"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerName.$touched) && vm.editForm.developerName.$error.required">Developer name is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerName.$touched) && vm.editForm.developerName.$error.maxlength">Developer name is too long</div>
     </div>
@@ -56,9 +56,9 @@
           <tr ng-repeat="status in vm.developer.statusEvents | orderBy:'-statusDateObject' track by $index">
             <td>
               <div class="form-group">
-                <label for="developerStatus{{ $index }}" class="sr-only"><span ng-if="$first">Current </span>Developer Status <span class="text-danger">*</span></label>
+                <label for="developer-status-{{ $index }}" class="sr-only"><span ng-if="$first">Current </span>Developer Status <span class="text-danger">*</span></label>
                 <select ng-model="status.status.status" required
-                        id="developerStatus{{ $index }}" name="developerStatus{{ $index }}" class="input-sm form-control">
+                        id="developer-status-{{ $index }}" name="developerStatus{{ $index }}" class="input-sm form-control">
                   <option value="Active">Active</option>
                   <option value="Suspended by ONC">Suspended by ONC</option>
                   <option value="Under certification ban by ONC">Under certification ban by ONC</option>
@@ -69,9 +69,9 @@
             </td>
             <td>
               <div class="form-group">
-                <label for="statusDate{{ $index }}" class="sr-only">Change Date <span class="text-danger">*</span></label>
+                <label for="status-date-{{ $index }}" class="sr-only">Change Date <span class="text-danger">*</span></label>
                 <div class="input-group">
-                  <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.statusDateObject" is-open="status.statusDatePicker" close-text="Close" id="statusDate{{ $index }}" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+                  <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="status.statusDateObject" is-open="status.statusDatePicker" close-text="Close" id="status-date-{{ $index }}" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
                   <span class="input-group-btn">
                     <button type="button" class="btn btn-ai btn-sm" ng-click="status.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
                   </span>
@@ -89,48 +89,48 @@
       <div class="bg-info" ng-if="vm.isBeingActivatedFromOncInactiveStatus()">To comply with the EOA rule, please remember to change the certification status of any listings that have had their suspension or termination rescinded.</div>
     </div>
     <div class="form-group">
-      <label for="addressLine1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="addressLine1" name="addressLine1" ng-maxlength="250"></input>
+      <label for="address-line-1">Address Line 1 <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.line1" id="address-line-1" name="addressLine1" ng-maxlength="250"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressLine1.$touched) && vm.editForm.addressLine1.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressLine1.$touched) && vm.editForm.addressLine1.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="addressLine2">Address Line 2</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="addressLine2" name="addressLine2" ng-maxlength="250"></input>
+      <label for="address-line-2">Address Line 2</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.developer.address.line2" id="address-line-2" name="addressLine2" ng-maxlength="250"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressLine2.$touched) && vm.editForm.addressLine2.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="addressCity">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="addressCity" name="addressCity" ng-maxlength="250"></input>
+      <label for="address-city">City <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.city" id="address-city" name="addressCity" ng-maxlength="250"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressCity.$touched) && vm.editForm.addressCity.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressCity.$touched) && vm.editForm.addressCity.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="addressState">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="addressState" name="addressState" ng-maxlength="250"></input>
+      <label for="address-state">State <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.state" id="address-state" name="addressState" ng-maxlength="250"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressState.$touched) && vm.editForm.addressState.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressState.$touched) && vm.editForm.addressState.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="addressZipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="addressZipcode" name="addressZipcode" ng-maxlength="25"></input>
+      <label for="address-zipcode">Zip Code <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.zipcode" id="address-zipcode" name="addressZipcode" ng-maxlength="25"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressZipcode.$touched) && vm.editForm.addressZipcode.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressZipcode.$touched) && vm.editForm.addressZipcode.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="addressCountry">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
-      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.country" id="addressCountry" name="addressCountry"></input>
+      <label for="address-country">Country <span ng-if="vm.addressRequired()" class="text-danger">*</span></label>
+      <input class="input-sm form-control" type="text" ng-required="vm.addressRequired()" ng-model="vm.developer.address.country" id="address-country" name="addressCountry"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.addressCountry.$touched) && vm.editForm.addressCountry.$error.required">Field is required</div>
     </div>
     <div class="form-group">
-      <label for="developerWebsite">Website</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developerWebsite" name="developerWebsite" placeholder="http://www.example.com" ng-maxlength="300"></input>
+      <label for="developer-website">Website</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.developer.website" id="developer-website" name="developerWebsite" placeholder="http://www.example.com" ng-maxlength="300"></input>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerWebsite.$touched) && vm.editForm.developerWebsite.$error.url">Website is invalid</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerWebsite.$touched) && vm.editForm.developerWebsite.$error.maxlength">Website is too long</div>
     </div>
     <div class="form-group" ng-if="vm.isAcbAdmin" ng-repeat="acb in vm.activeAcbs | orderBy:'toString()'">
-      <label for="developerTransparency{{acb}}">{{ acb }} Transparency Attestation</label>
-      <select class="input-sm form-control" ng-model="vm.developer.transMap[acb]" id="developerTransparency{{acb}}" name="developerTransparency{{acb}}">
+      <label for="developer-transparency-{{acb}}">{{ acb }} Transparency Attestation</label>
+      <select class="input-sm form-control" ng-model="vm.developer.transMap[acb]" id="developer-transparency-{{acb}}" name="developerTransparency{{acb}}">
         <option value="Negative">Negative</option>
         <option value="Affirmative">Affirmative</option>
         <option value="N/A">N/A</option>

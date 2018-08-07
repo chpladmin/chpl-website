@@ -1,13 +1,19 @@
-<div role="modal" aria-labeled-by="inspectLabel">
+<div role="modal" aria-labeled-by="inspect-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="inspectLabel">Inspect Nonconformities</h4>
+    <h4 class="modal-title" id="inspect-label">Inspect Nonconformities</h4>
   </div>
   <div class="modal-body">
     <div class="row" ng-repeat="noncon in vm.nonconformities">
       <div class="col-sm-12">
         <table class="table">
+          <thead class="sr-only">
+            <tr>
+              <th scope="col">Nonconformity data type</th>
+              <th scope="col">Nonconformity data value</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
               <th scope="row">Type</th>

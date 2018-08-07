@@ -26,6 +26,7 @@
                     { value: 'Drummond Group', selected: true },
                     { value: 'ICSA Labs', selected: true },
                     { value: 'InfoGard', selected: true },
+                    { value: 'SLI Compliance', selected: true },
                 ],
                 acbAttestations: [
                     { value: 'Supports', selected: true },

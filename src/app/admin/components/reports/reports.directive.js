@@ -42,6 +42,7 @@
         vm.refreshCp = refreshCp;
         vm.refreshDeveloper = refreshDeveloper;
         vm.refreshProduct = refreshProduct;
+        vm.refreshCap = refreshCap;
         vm.refreshUser = refreshUser;
         vm.singleCp = singleCp;
         vm.validDates = validDates;
@@ -58,6 +59,8 @@
 
         function activate () {
             vm.isAcbAdmin = authService.isAcbAdmin();
+            vm.isAtlAdmin = authService.isAtlAdmin();
+            vm.isCmsStaff = authService.isCmsStaff();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
@@ -77,6 +80,10 @@
                 endDate: angular.copy(end),
             };
             vm.activityRange.product = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            vm.activityRange.cap = {
                 startDate: angular.copy(start),
                 endDate: angular.copy(end),
             };
@@ -107,9 +114,7 @@
                 endDate: angular.copy(vm.activityRange.endDate),
             };
             vm.refreshActivity(true);
-            if (vm.isChplAdmin || vm.isOncStaff) {
-                vm.loadApiKeys();
-            }
+            vm.loadApiKeys();
             vm.filename = 'Reports_' + new Date().getTime() + '.csv';
         }
 
@@ -120,23 +125,21 @@
                 } else {
                     vm.refreshCp();
                 }
+                vm.refreshCap();
                 vm.refreshDeveloper();
                 vm.refreshProduct();
                 vm.refreshAcb();
                 vm.refreshAtl();
-                if (vm.isChplAdmin || vm.isOncStaff) {
-                    vm.refreshAnnouncement();
-                    vm.refreshUser();
-                    vm.refreshApi();
-                    vm.refreshApiKeyUsage();
-                }
+                vm.refreshAnnouncement();
+                vm.refreshUser();
+                vm.refreshApi();
+                vm.refreshApiKeyUsage();
             } else {
                 switch (vm.workType) {
                 case '':
                 case 'cp-upload':
                 case 'cp-status':
                 case 'cp-surveillance':
-                case 'cp-cap':
                 case 'cp-other':
                     if (vm.productId) {
                         vm.singleCp();
@@ -149,6 +152,9 @@
                     break;
                 case 'prod':
                     vm.refreshProduct();
+                    break;
+                case 'cap':
+                    vm.refreshCap();
                     break;
                 case 'acb':
                     vm.refreshAcb();
@@ -177,8 +183,15 @@
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                     vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
-                    vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                     vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
+                });
+        }
+
+        function refreshCap () {
+            networkService.getCorrectiveActionPlanActivity(dateAdjust(vm.activityRange.cap))
+                .then(function (data) {
+                    vm.searchedCertifiedProductsCAP = interpretCaps(data);
+                    vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                 });
         }
 
@@ -228,37 +241,32 @@
         }
 
         function refreshUser () {
-            if (vm.isChplAdmin || vm.isOncStaff) {
-                networkService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
-                    .then(function (data) {
-                        vm.searchedUsers = vm.interpretUsers(data);
-                        vm.displayedUsers = [].concat(vm.searchedUsers);
-                    });
-                networkService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
-                    .then(function (data) {
-                        vm.searchedUserActivities = vm.interpretUserActivities(data);
-                        vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
-                    });
-            }
+            networkService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
+                .then(function (data) {
+                    vm.searchedUsers = vm.interpretUsers(data);
+                    vm.displayedUsers = [].concat(vm.searchedUsers);
+                });
+            networkService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
+                .then(function (data) {
+                    vm.searchedUserActivities = vm.interpretUserActivities(data);
+                    vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
+                });
         }
 
         function refreshApi () {
-            if (vm.isChplAdmin || vm.isOncStaff) {
-                networkService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
-                    .then(function (data) {
-                        vm.searchedApiActivity = data;
-                        vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
-                    });
-            }
+            networkService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
+                .then(function (data) {
+                    vm.searchedApiActivity = data;
+                    vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
+                });
         }
+
         function refreshApiKeyUsage () {
-            if (vm.isChplAdmin || vm.isOncStaff) {
-                vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
-                networkService.getApiActivity(dateAdjust(vm.apiKey))
-                    .then(function (data) {
-                        vm.searchedApi = data;
-                    });
-            }
+            vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
+            networkService.getApiActivity(dateAdjust(vm.apiKey))
+                .then(function (data) {
+                    vm.searchedApi = data;
+                });
         }
 
         function clearApiKeyFilter () {
@@ -300,7 +308,6 @@
                     vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
                     vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
                     vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
-                    vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
                     vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
                 });
         }
@@ -356,7 +363,7 @@
                 {key: 'sedIntendedUserDescription', display: 'SED Intended User Description'},
                 {key: 'sedReportFileLocation', display: 'SED Report File Location'},
                 {key: 'sedTesting', display: 'SED Tested'},
-                {key: 'sedTestingEnd', display: 'SED Testing End Date', filter: 'date'},
+                {key: 'sedTestingEndDate', display: 'SED Testing End Date', filter: 'date'},
                 {key: 'transparencyAttestationUrl', display: 'Mandatory Disclosures URL'},
             ];
             var nestedKeys = [
@@ -376,7 +383,7 @@
             };
             var change;
 
-            var certChanges, chplNum, cpId, cpNum, i, j, k, link;
+            var certChanges, chplNum, cpId, i, j, k, link;
             for (i = 0; i < data.length; i++) {
                 var activity = {
                     date: data[i].activityDate,
@@ -465,6 +472,13 @@
                             }
                         }
                     }
+                    if (data[i].originalData.testingLabs) {
+                        var testingLabsKeys = [];
+                        var testingLabs = compareArray(data[i].originalData.testingLabs, data[i].newData.testingLabs, testingLabsKeys, 'testingLabName');
+                        for (j = 0; j < testingLabs.length; j++) {
+                            activity.details.push('Testing Lab "' + testingLabs[j].name + '" changes<ul>' + testingLabs[j].changes.join('') + '</ul>');
+                        }
+                    }
                     var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
                     var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
                     for (j = 0; j < qmsStandards.length; j++) {
@@ -488,59 +502,6 @@
                         activity.csvDetails = activity.details.join('\n');
                         output.other.push(activity);
                     }
-                } else if (data[i].description.startsWith('A corrective action plan for')) {
-                    cpNum = data[i].description.split(' ')[7];
-                    if (data[i].description.endsWith('created.')) {
-                        activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].newData.id;
-                        activity.acb = data[i].newData.acbName;
-                    } else if (data[i].description.endsWith('deleted.')) {
-                        activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].originalData.id;
-                        activity.acb = data[i].originalData.acbName;
-                    } else if (data[i].description.endsWith('updated.')) {
-                        activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
-                        activity.id = data[i].newData.id;
-                        activity.acb = data[i].newData.acbName;
-                        var capFields = [
-                            {key: 'acbSummary', display: 'ONC/ACB Summary'},
-                            {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
-                            {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
-                            {key: 'developerSummary', display: 'Developer Explanation'},
-                            {key: 'effectiveDate', display: 'Effective Date', filter: 'date'},
-                            {key: 'estimatedCompleteionDate', display: 'Estimated Complete Date', filter: 'date'},
-                            {key: 'noncomplianceDate', display: 'Date of Determination', filter: 'date'},
-                            {key: 'randomizedSurveillance', display: 'Result of Randomized Surveillance'},
-                            {key: 'resolution', display: 'Description of Resolution'},
-                            {key: 'surveillanceEndDate', display: 'Surveillance Ended', filter: 'date'},
-                            {key: 'surveillanceStartDate', display: 'Surveillance Began', filter: 'date'},
-                        ];
-                        activity.details = [];
-                        for (j = 0; j < capFields.length; j++) {
-                            change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
-                            if (change) { activity.details.push(change); }
-                        }
-                        certChanges = compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
-                        for (j = 0; j < certChanges.length; j++) {
-                            activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
-                        }
-                        activity.csvDetails = activity.details.join('\n');
-                    } else {
-                        activity.action = data[i].description;
-                    }
-                    output.cap.push(activity);
-                } else if (data[i].description.startsWith('Documentation was added to ')) {
-                    cpNum = data[i].description.split(' ');
-                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
-                    activity.action = cpNum.join(' ');
-                    activity.acb = data[i].newData.acbName;
-                    output.cap.push(activity);
-                } else if (data[i].description.startsWith('Documentation was removed from ')) {
-                    cpNum = data[i].description.split(' ');
-                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
-                    activity.action = cpNum.join(' ');
-                    activity.acb = data[i].newData.acbName;
-                    output.cap.push(activity);
                 } else if (data[i].description.startsWith('Surveillance')) {
                     cpId = data[i].newData.id;
                     chplNum = data[i].newData.chplProductNumber;
@@ -695,7 +656,7 @@
                     obj.changes = obj.changes.concat(testChanges);
                 }
                 var testFunctionalityKeys = [];
-                var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'number');
+                var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'name');
                 for (j = 0; j < testFunctionality.length; j++) {
                     obj.changes.push('<li>Test Functionality Number "' + testFunctionality[j].name + '" changes<ul>' + testFunctionality[j].changes.join('') + '</ul></li>');
                 }
@@ -1084,6 +1045,77 @@
                 }
                 if (obj.changes.length > 0) {
                     ret.push(obj);
+                }
+            }
+            return ret;
+        }
+
+        function interpretCaps (data) {
+            vm.loadedCapActivity = data;
+            var ret = [];
+            var change;
+
+            var certChanges, cpNum, i, j;
+            for (i = 0; i < data.length; i++) {
+                var activity = {
+                    date: data[i].activityDate,
+                    newId: data[i].id,
+                    acb: '',
+                };
+                activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10);
+                if (data[i].description.startsWith('A corrective action plan for')) {
+                    cpNum = data[i].description.split(' ')[7];
+                    if (data[i].description.endsWith('created.')) {
+                        activity.action = 'Created corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.id = data[i].newData.id;
+                        activity.acb = data[i].newData.acbName;
+                    } else if (data[i].description.endsWith('deleted.')) {
+                        activity.action = 'Deleted corrective action plan for certified product <a href="#/product/' + data[i].originalData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.id = data[i].originalData.id;
+                        activity.acb = data[i].originalData.acbName;
+                    } else if (data[i].description.endsWith('updated.')) {
+                        activity.action = 'Updated corrective action plan for certified product <a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum + '</a>';
+                        activity.id = data[i].newData.id;
+                        activity.acb = data[i].newData.acbName;
+                        var capFields = [
+                            {key: 'acbSummary', display: 'ONC/ACB Summary'},
+                            {key: 'actualCompletionDate', display: 'Was Completed', filter: 'date'},
+                            {key: 'approvalDate', display: 'Plan Approved', filter: 'date'},
+                            {key: 'developerSummary', display: 'Developer Explanation'},
+                            {key: 'effectiveDate', display: 'Effective Date', filter: 'date'},
+                            {key: 'estimatedCompleteionDate', display: 'Estimated Complete Date', filter: 'date'},
+                            {key: 'noncomplianceDate', display: 'Date of Determination', filter: 'date'},
+                            {key: 'randomizedSurveillance', display: 'Result of Randomized Surveillance'},
+                            {key: 'resolution', display: 'Description of Resolution'},
+                            {key: 'surveillanceEndDate', display: 'Surveillance Ended', filter: 'date'},
+                            {key: 'surveillanceStartDate', display: 'Surveillance Began', filter: 'date'},
+                        ];
+                        activity.details = [];
+                        for (j = 0; j < capFields.length; j++) {
+                            change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
+                            if (change) { activity.details.push(change); }
+                        }
+                        certChanges = compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
+                        for (j = 0; j < certChanges.length; j++) {
+                            activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
+                        }
+                        activity.csvDetails = activity.details.join('\n');
+                    } else {
+                        activity.action = data[i].description;
+                    }
+                    ret.push(activity);
+                } else if (data[i].description.startsWith('Documentation was added to ')) {
+                    cpNum = data[i].description.split(' ');
+                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
+                    activity.action = cpNum.join(' ');
+                    activity.acb = data[i].newData.acbName;
+                    ret.push(activity);
+                } else if (data[i].description.startsWith('Documentation was removed from ')) {
+                    cpNum = data[i].description.split(' ');
+                    cpNum[cpNum.length - 1] = '<a href="#/product/' + data[i].newData.certifiedProductId + '">' + cpNum[cpNum.length - 1] + '</a>';
+                    activity.action = cpNum.join(' ');
+                    activity.acb = data[i].newData.acbName;
+                    ret.push(activity);
                 }
             }
             return ret;

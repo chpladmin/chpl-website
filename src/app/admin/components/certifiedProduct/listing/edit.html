@@ -1,4 +1,4 @@
-<div role="modal" aria-labeled-by="editCertifiedProductLabel">
+<div role="modal" aria-labeled-by="edit-listing-label">
   <div class="modal-header">
     <button type="button" class="close pull-right" aria-label="Cancel edits"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
@@ -6,7 +6,7 @@
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
             ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="editCertifiedProductLabel">Edit Certified Product</h4>
+    <h4 class="modal-title" id="edit-listing-label">Edit Certified Product</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
     <div ng-if="vm.idFields">
@@ -15,16 +15,16 @@
           <strong>CHPL Product Number:</strong>{{ vm.idFields.prefix }}
         </span>
         <div class="form-group">
-          <label for="idProd" class="sr-only">Product Code:</label>
-          <input type="text" id="idProd" name="idProd" ng-model="vm.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" required></input>
+          <label for="id-prod" class="sr-only">Product Code:</label>
+          <input type="text" id="id-prod" name="idProd" ng-model="vm.idFields.prod" size="4" ng-pattern="/^[A-Za-z0-9_]{4}$/" required>
         </div>
         <div class="form-group">
-          <label for="idVer" class="sr-only">Version Code:</label>
-          <input type="text" id="idVer" name="idVer" ng-model="vm.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" required></input>
+          <label for="id-ver" class="sr-only">Version Code:</label>
+          <input type="text" id="id-ver" name="idVer" ng-model="vm.idFields.ver" size="2" ng-pattern="/^[A-Za-z0-9_]{2}$/" required>
         </div>
         <div class="form-group">
-          <label for="idIcs" class="sr-only">ICS Code:</label>
-          <input type="text" id="idIcs" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required></input>
+          <label for="id-ics" class="sr-only">ICS Code:</label>
+          <input type="text" id="id-ics" name="idIcs" ng-model="vm.idFields.ics" size="2" ng-pattern="/^[0-9]{2}$/" required>
         </div>
         <span class="form-control-static">
           {{ vm.idFields.suffix }}
@@ -42,15 +42,15 @@
       <strong>CHPL Product Number:</strong> {{ vm.cp.chplProductNumber }}
     </div>
     <div class="form-group" ng-if="vm.cp.certificationEdition.name === '2014'">
-      <label for="cpPractice">Practice Type</label>
-      <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cpPractice" name="cpPractice"
+      <label for="cp-practice">Practice Type</label>
+      <select class="input-sm form-control" ng-model="vm.cp.practiceType" id="cp-practice" name="cpPractice"
               ng-options="practice as practice.name for practice in vm.practices" required>
       </select>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpPractice.$touched) && vm.editForm.cpPractice.$error.required">Field is required</div>
     </div>
     <div class="form-group" ng-if="vm.cp.certificationEdition.name === '2014'">
-      <label for="cpClassification">Classification Type</label>
-      <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cpClassification" name="cpClassification"
+      <label for="cp-classification">Classification Type</label>
+      <select class="input-sm form-control" ng-model="vm.cp.classificationType" id="cp-classification" name="cpClassification"
               ng-options="classification as classification.name for classification in vm.classifications" required>
       </select>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpClassification.$touched) && vm.editForm.cpClassification.$error.required">Field is required</div>
@@ -58,16 +58,16 @@
     <strong>Certification Edition:</strong> {{ vm.cp.certificationEdition.name }} <br />
     <div ng-if="(vm.isAcbAdmin) && !vm.isChplAdmin"><strong>Certification Body:</strong> {{ vm.cp.certifyingBody.name }} </div>
     <div ng-if="vm.isChplAdmin" class="form-group">
-      <label for="cpBody">Certification Body</label>
-      <select class="input-sm form-control" ng-model="vm.cp.certifyingBody" id="cpBody" name="cpBody"
+      <label for="cp-body">Certification Body</label>
+      <select class="input-sm form-control" ng-model="vm.cp.certifyingBody" id="cp-body" name="cpBody"
               ng-options="body as body.name for body in vm.bodies" required>
       </select>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpBody.$touched) && vm.editForm.cpBody.$error.required">Field is required</div>
     </div>
     <div class="form-group">
-      <label for="cpCertDate">Certification Date</label>
+      <label for="cp-cert-date">Certification Date</label>
       <div class="input-group">
-        <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.certDate" is-open="vm.cp.certDatePicker" close-text="Close" id="cpCertDate" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required>
+        <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.cp.certDate" is-open="vm.cp.certDatePicker" close-text="Close" id="cp-cert-date" name="cpCertDate" ng-model-options="{ timezone: 'UTC' }" required>
         <span class="input-group-btn">
           <button type="button" class="btn btn-ai btn-sm" ng-click="vm.cp.certDatePicker = true"><i class="fa fa-calendar"></i></button>
         </span>
@@ -75,9 +75,9 @@
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpCertDate.$touched) && vm.editForm.cpCertDate.$error.date">Improper format (mm/dd/yyyy)</div>
     </div>
-    <div class="form-group">
-      <label for="cpAdditionalSoftware">Product wide Relied Upon Software</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cpAdditionalSoftware"></input>
+    <div class="form-group" ng-if="vm.cp.certificationEdition.name === '2011' || (vm.cp.certificationEdition.name === '2014' && vm.cp.chplProductNumber.startsWith('CHP-'))">
+      <label for="cp-additional-software">Product wide Relied Upon Software</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.productAdditionalSoftware" id="cp-additional-software">
     </div>
     <table class="table table-condensed">
       <thead>
@@ -98,11 +98,12 @@
         <tr ng-repeat="statusEvent in vm.cp.certificationEvents | orderBy:'-statusDateObject.getTime()' track by $index">
           <td>
             <div class="form-group">
-              <label for="certificationStatus{{ $index }}" class="sr-only"><span ng-if="$first">Current </span>Certification Status <span class="text-danger">*</span></label>
-              <select ng-model="statusEvent.status" required
-                      ng-options="status as status.name disable when vm.disabledStatus(status.name) for status in vm.statuses | orderBy:'name'"
-                      id="certificationStatus{{ $index }}" name="certificationStatus{{ $index }}" class="input-sm form-control">
-              </select>
+              <label><span class="sr-only"><span ng-if="$first">Current </span>Certification Status <span class="text-danger">*</span></span>
+                <select ng-model="statusEvent.status" required
+                        ng-options="status as status.name disable when vm.disabledStatus(status.name) for status in vm.statuses | orderBy:'name'"
+                        name="certificationStatus{{ $index }}" class="input-sm form-control">
+                </select>
+              </label>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.editForm['certificationStatus' + $index].$error.required">Certification Status is required</div>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.matchesPreviousStatus(statusEvent)">Certification Status must differ from previous Status</div>
               <div class="text-danger" ng-if="$first && vm.willCauseSuspension(vm.certificationStatus(vm.cp, {editing: true})) && (vm.cp.banDeveloper || vm.certificationStatus(vm.cp, {editing: true}) === 'Terminated by ONC')">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
@@ -111,29 +112,31 @@
               <div class="text-danger" ng-if="$last && vm.improperFirstStatus()">The earliest status of this product must be "Active"</div>
             </div>
             <div class="form-group" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Withdrawn by Developer Under Surveillance/Review'">
-              <label for="banDeveloper">I want to trigger a certification ban for this status change</label>
-              <input class="" type="checkbox" ng-model="vm.banDeveloper" id="banDeveloper"></input>
+              <label for="ban-developer">I want to trigger a certification ban for this status change
+                <input type="checkbox" ng-model="vm.banDeveloper" id="ban-developer">
+              </label>
             </div>
           </td>
           <td>
             <div class="form-group">
-              <label for="statusDate{{ $index }}" class="sr-only">Change Date <span class="text-danger">*</span></label>
-              <div class="input-group">
-                <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="statusEvent.statusDateObject" is-open="statusEvent.statusDatePicker" close-text="Close" id="statusDate{{ $index }}" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-ai btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
-                </span>
-              </div>
+              <label><span class="sr-only">Change Date <span class="text-danger">*</span></span>
+                <div class="input-group">
+                  <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="statusEvent.statusDateObject" is-open="statusEvent.statusDatePicker" close-text="Close" name="statusDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }" required>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-ai btn-sm" ng-click="statusEvent.statusDatePicker = true"><i class="fa fa-calendar"></i></button>
+                  </span>
+                </div>
+              </label>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.editForm['statusDate' + $index].$error.required">Change date is required</div>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.matchesPreviousDate(statusEvent)">Only one change of status allowed per day</div>
             </div>
           </td>
           <td>
             <div class="form-group">
-              <label for="reasonForChange{{ $index }}" class="sr-only">Reason for Change</label>
-              <input class="input-sm form-control" type="text"  ng-model="statusEvent.reason"
-                     ng-maxlength="500" id="reasonForChange{{ $index }}" name="reasonForChange{{ $index }}">
-              </select>
+              <label><span class="sr-only">Reason for Change</span>
+                <input class="input-sm form-control" type="text" ng-model="statusEvent.reason"
+                       ng-maxlength="500" name="reasonForChange{{ $index }}">
+              </label>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['reasonForChange' + $index].$touched) && vm.editForm['reasonForChange' + $index].$error.maxlength">Field is too long</div>
             </div>
           </td>
@@ -144,23 +147,23 @@
       </tbody>
     </table>
     <div class="form-group">
-      <label for="cpAcbCertId">ACB Certification Id</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.acbCertificationId" id="cpAcbCertId" name="cpAcbCertId" ng-maxlength="250"></input>
+      <label for="cp-acb-cert-id">ACB Certification Id</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.acbCertificationId" id="cp-acb-cert-id" name="cpAcbCertId" ng-maxlength="250">
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpAcbCertId.$touched) && vm.editForm.cpAcbCertId.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="cpOtherAcb">Other ACB</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cpOtherAcb"></input>
+      <label for="cp-other-acb">Other ACB</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.cp.otherAcb" id="cp-other-acb">
     </div>
     <div class="form-group">
-      <label for="cpTransparencyUrl">Mandatory Disclosures URL</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cpTransparencyAttUrl" name="cpTransparencyAttUrl" ng-maxlength="1024"></input>
+      <label for="cp-transparency-att-url">Mandatory Disclosures URL</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.transparencyAttestationUrl" id="cp-transparency-att-url" name="cpTransparencyAttUrl" ng-maxlength="1024">
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.url">Improper format (http://www.example.com)</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTransparencyAttUrl.$touched) && vm.editForm.cpTransparencyAttUrl.$error.url">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="cpIcs">Inherited Certification Status</label>
-      <input class="" type="checkbox" ng-model="vm.cp.ics.inherits" id="cpIcs"></input>
+      <label for="cp-ics">Inherited Certification Status</label>
+      <input type="checkbox" ng-model="vm.cp.ics.inherits" id="cp-ics">
     </div>
     <div ng-if="vm.cp.certificationEdition.name === '2015' && vm.cp.ics.inherits">
       Inherited Certification Management
@@ -173,19 +176,19 @@
       </ul>
       <div class="form-horizontal">
         <div class="form-group form-group-sm">
-          <label class="col-sm-6 control-label" for="newIcsParent">ICS Source Listings (Same Product)</label>
+          <label class="col-sm-6 control-label" for="new-ics-parent">ICS Source Listings (Same Product)</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <select class="form-control" ng-model="vm.newIcsParent.chplProductNumber" id="newIcsParent"
+              <select class="form-control" ng-model="vm.newIcsParent.chplProductNumber" id="new-ics-parent"
                       ng-options="listing.chplProductNumber as (listing.chplProductNumber + ' (' + (listing.certificationDate | date : 'mediumDate' : 'UTC') + ')') disable when vm.disabledParent(listing) for listing in vm.relatedListings | orderBy:'certificationDate'">
               </select>
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.ics.parents, vm.newIcsParent); vm.newIcsParent = ''" ng-disabled="!vm.newIcsParent"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
           </div>
-          <label class="col-sm-6 control-label" for="newIcsParentOther">ICS Source Listings (Other - Enter CHPL ID)</label>
+          <label class="col-sm-6 control-label" for="new-ics-parent-other">ICS Source Listings (Other - Enter CHPL ID)</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <input type="text" class="form-control" ng-model="vm.newIcsParentOther.chplProductNumber" id="newIcsParentOther" name="newIcsParentOther"
+              <input type="text" class="form-control" ng-model="vm.newIcsParentOther.chplProductNumber" id="new-ics-parent-other" name="newIcsParentOther"
                      ng-pattern="/^\d{2}\.\d{2}\.\d{2}\.\d{4}\.\w{4}\.\w{2}\.\d{2}\.[01]\.\d{6}$/">
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.ics.parents, vm.newIcsParentOther); vm.newIcsParentOther = ''" ng-disabled="!vm.newIcsParentOther || vm.editForm.newIcsParentOther.$error.pattern"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
@@ -199,73 +202,93 @@
       QMS Testing
       <div class="form-horizontal">
         <div class="form-group form-group-sm" ng-repeat="qms in vm.cp.qmsStandards track by $index">
-          <label class="col-sm-6 control-label" for="qmsStandard{{ qms.id }}">QMS Standard</label>
+          <label class="col-sm-6 control-label" for="qms-standard-{{ qms.id }}">QMS Standard</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <select class="form-control" ng-model="qms.qmsStandardName" id="qmsStandard{{ qms.id }}"
+              <select class="form-control" ng-model="qms.qmsStandardName" id="qms-standard-{{ qms.id }}"
                       ng-options="option.name as option.name for option in vm.qmsStandards.data | orderBy:'name'"
                       ng-change="qms.qmsStandardId = option.id">
               </select>
               <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cp.qmsStandards.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
             </div>
           </div>
-          <label class="col-sm-6 control-label" for="qmsModification{{ qms.id }}">QMS Modification</label>
+          <label class="col-sm-6 control-label" for="qms-modification-{{ qms.id }}">QMS Modification</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="qms.qmsModification" id="qmsModification{{ qms.id }}"></input>
+            <input type="text" class="form-control" ng-model="qms.qmsModification" id="qms-modification-{{ qms.id }}">
           </div>
-          <label class="col-sm-6 control-label" for="qmsApplicableCriteria{{ qms.id }}">QMS Applicable Criteria</label>
+          <label class="col-sm-6 control-label" for="qms-applicable-criteria-{{ qms.id }}">QMS Applicable Criteria</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="qms.applicableCriteria" id="qmsApplicableCriteria{{ qms.id }}"></input>
+            <input type="text" class="form-control" ng-model="qms.applicableCriteria" id="qms-applicable-criteria-{{ qms.id }}">
           </div>
         </div>
         <div class="form-group form-group-sm">
-          <label class="col-sm-6 control-label" for="newQmsStandardItem">New QMS Standard</label>
+          <label class="col-sm-6 control-label" for="new-qms-standard-item">New QMS Standard</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <select class="form-control" ng-model="vm.newQmsStandard.qmsStandardName" id="newQmsStandardItem"
+              <select class="form-control" ng-model="vm.newQmsStandard.qmsStandardName" id="new-qms-standard-item"
                       ng-options="option.name as option.name for option in vm.qmsStandards.data">
               </select>
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.qmsStandards, vm.newQmsStandard); vm.newQmsStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
           </div>
-          <label class="col-sm-6 control-label" for="newQmsStandardExpandableName">Add new QMS Standard to available options</label>
+          <label class="col-sm-6 control-label" for="new-qms-standard-expandable-name">Add new QMS Standard to available options</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newQmsStandard.expandableName" id="newQmsStandardExpandableName" name="newQmsStandardExpandableName" ng-change="vm.extendSelect(vm.qmsStandards.data, vm.newQmsStandard.expandableName); vm.newQmsStandard.qmsStandardName = vm.newQmsStandard.expandableName" ng-maxlength="255"></input>
+            <input type="text" class="form-control" ng-model="vm.newQmsStandard.expandableName" id="new-qms-standard-expandable-name" name="newQmsStandardExpandableName" ng-change="vm.extendSelect(vm.qmsStandards.data, vm.newQmsStandard.expandableName); vm.newQmsStandard.qmsStandardName = vm.newQmsStandard.expandableName" ng-maxlength="255">
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.newQmsStandardExpandableName.$touched) && vm.editForm.newQmsStandardExpandableName.$error.maxlength">Field is too long</div>
           </div>
-          <label class="col-sm-6 control-label" for="newQmsStandardModification">QMS Modification</label>
+          <label class="col-sm-6 control-label" for="new-qms-standard-modification">QMS Modification</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newQmsStandard.qmsModification" id="newQmsStandardModification"></input>
+            <input type="text" class="form-control" ng-model="vm.newQmsStandard.qmsModification" id="new-qms-standard-modification">
           </div>
-          <label class="col-sm-6 control-label" for="newQmsStandardApplicableCriteria">QMS Applicable Criteria</label>
+          <label class="col-sm-6 control-label" for="new-qms-standard-applicable-criteria">QMS Applicable Criteria</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newQmsStandard.applicableCriteria" id="newQmsStandardApplicableCriteria"></input>
+            <input type="text" class="form-control" ng-model="vm.newQmsStandard.applicableCriteria" id="new-qms-standard-applicable-criteria">
           </div>
         </div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cpReportFileLoc">Report File Location</label>
-      <input class="input-sm form-control" type="url" ng-model="vm.cp.reportFileLocation" id="cpReportFileLoc" name="cpReportFileLoc" ng-maxlength="250" ng-required="vm.cp.certificationEdition.name === '2014'"></input>
+      <label for="cp-report-file-loc">Report File Location</label>
+      <input class="input-sm form-control" type="url" ng-model="vm.cp.reportFileLocation" id="cp-report-file-loc" name="cpReportFileLoc" ng-maxlength="250" ng-required="vm.cp.certificationEdition.name === '2014'">
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.required">Field is required</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.url">Improper format (http://www.example.com)</div>
       <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpReportFileLoc.$touched) && vm.editForm.cpReportFileLoc.$error.maxlength">Field is too long</div>
     </div>
     <div class="form-group">
-      <label for="cpTestingLab">Testing Lab</label>
-      <select class="input-sm form-control" ng-model="vm.cp.testingLab" id="cpTestingLab" name="cpTestingLab"
-              ng-options="body as body.name for body in vm.testingLabs" required>
-      </select>
-      <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.cpTestingLab.$touched) && vm.editForm.cpTestingLab.$error.required">Field is required</div>
+      Testing Lab
+      <div class="form-horizontal">
+        <div class="form-group form-group-sm" ng-repeat="item in vm.cp.testingLabs track by $index">
+          <label class="col-sm-6 control-label" for="testing-lab-{{ item.id }}">Testing lab</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="item.testingLabName" id="testing-lab-{{ item.id }}"
+                      ng-options="option.name as option.name for option in vm.testingLabs | orderBy:'name'">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-danger form-control" ng-click="vm.cp.testingLabs.splice($index,1)"><i class="fa fa-trash"></i> <span class="sr-only">Remove item</span></button></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-group-sm">
+          <label class="col-sm-6 control-label" for="new-testing-lab-item">New Testing Lab</label>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <select class="form-control" ng-model="vm.newTestingLab.testingLabName" id="new-testing-lab-item"
+                      ng-options="option.name as option.name for option in vm.testingLabs">
+              </select>
+              <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.testingLabs, vm.newTestingLab); vm.newTestingLab = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       Accessibility Standards
       <div class="form-horizontal">
         <div class="form-group form-group-sm" ng-repeat="item in vm.cp.accessibilityStandards track by $index">
-          <label class="col-sm-6 control-label" for="accessibilityStandard{{ item.id }}">Accessibility Standard</label>
+          <label class="col-sm-6 control-label" for="accessibility-standard-{{ item.id }}">Accessibility Standard</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <select class="form-control" ng-model="item.accessibilityStandardName" id="accessibilityStandard{{ item.id }}"
+              <select class="form-control" ng-model="item.accessibilityStandardName" id="accessibility-standard-{{ item.id }}"
                       ng-options="option.name as option.name for option in vm.accessibilityStandards.data | orderBy:'name'"
                       ng-change="item.accessibilityStandardId = option.id">
               </select>
@@ -274,18 +297,18 @@
           </div>
         </div>
         <div class="form-group form-group-sm">
-          <label class="col-sm-6 control-label" for="newAccessibilityStandardItem">New Accessibility Standard</label>
+          <label class="col-sm-6 control-label" for="new-accessibility-standard-item">New Accessibility Standard</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <select class="form-control" ng-model="vm.newAccessibilityStandard.accessibilityStandardName" id="newAccessibilityStandardItem"
+              <select class="form-control" ng-model="vm.newAccessibilityStandard.accessibilityStandardName" id="new-accessibility-standard-item"
                       ng-options="option.name as option.name for option in vm.accessibilityStandards.data">
               </select>
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.accessibilityStandards, vm.newAccessibilityStandard); vm.newAccessibilityStandard = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
           </div>
-          <label class="col-sm-6 control-label" for="newAccessibilityStandardExpandableName">Add new Accessibility Standard to available options</label>
+          <label class="col-sm-6 control-label" for="new-accessibility-standard-expandable-name">Add new Accessibility Standard to available options</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newAccessibilityStandard.expandableName" id="newAccessibilityStandardExpandableName" ng-change="vm.extendSelect(vm.accessibilityStandards.data, vm.newAccessibilityStandard.expandableName); vm.newAccessibilityStandard.accessibilityStandardName = vm.newAccessibilityStandard.expandableName" ng-maxlength="500"></input>
+            <input type="text" class="form-control" ng-model="vm.newAccessibilityStandard.expandableName" id="new-accessibility-standard-expandable-name" ng-change="vm.extendSelect(vm.accessibilityStandards.data, vm.newAccessibilityStandard.expandableName); vm.newAccessibilityStandard.accessibilityStandardName = vm.newAccessibilityStandard.expandableName" ng-maxlength="500">
             <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.newAccessibilityStandardExpandableName.$touched) && vm.editForm.newAccessibilityStandardExpandableName.$error.maxlength">Field is too long</div>
           </div>
         </div>
@@ -295,10 +318,10 @@
       Targeted Users
       <div class="form-horizontal">
         <div class="form-group form-group-sm" ng-repeat="item in vm.cp.targetedUsers track by $index">
-          <label class="col-sm-6 control-label" for="targetedUser{{ item.id }}">Targeted User</label>
+          <label class="col-sm-6 control-label" for="targeted-user-{{ item.id }}">Targeted User</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <select class="form-control" ng-model="item.targetedUserName" id="targetedUser{{ item.id }}"
+              <select class="form-control" ng-model="item.targetedUserName" id="targeted-user-{{ item.id }}"
                       ng-options="option.name as option.name for option in vm.targetedUsers.data | orderBy:'name'"
                       ng-change="item.targetedUserId = option.id">
               </select>
@@ -307,18 +330,18 @@
           </div>
         </div>
         <div class="form-group form-group-sm">
-          <label class="col-sm-6 control-label" for="newTargetedUserItem">New Targeted User</label>
+          <label class="col-sm-6 control-label" for="new-targeted-user-item">New Targeted User</label>
           <div class="col-sm-6">
             <div class="input-group">
-              <select class="form-control" ng-model="vm.newTargetedUser.targetedUserName" id="newTargetedUserItem"
+              <select class="form-control" ng-model="vm.newTargetedUser.targetedUserName" id="new-targeted-user-item"
                       ng-options="option.name as option.name for option in vm.targetedUsers.data">
               </select>
               <div class="input-group-btn"><button class="btn btn-ai-success form-control" ng-click="vm.addNewValue(vm.cp.targetedUsers, vm.newTargetedUser); vm.newTargetedUser = {}"><i class="fa fa-plus"></i> <span class="sr-only">Add item</span></button></div>
             </div>
           </div>
-          <label class="col-sm-6 control-label" for="newTargetedUserExpandableName">Add new Targeted User to available options</label>
+          <label class="col-sm-6 control-label" for="new-targeted-user-expandable-name">Add new Targeted User to available options</label>
           <div class="col-sm-6">
-            <input type="text" class="form-control" ng-model="vm.newTargetedUser.expandableName" id="newTargetedUserExpandableName" ng-change="vm.extendSelect(vm.targetedUsers.data, vm.newTargetedUser.expandableName); vm.newTargetedUser.targetedUserName = vm.newTargetedUser.expandableName"></input>
+            <input type="text" class="form-control" ng-model="vm.newTargetedUser.expandableName" id="new-targeted-user-expandable-name" ng-change="vm.extendSelect(vm.targetedUsers.data, vm.newTargetedUser.expandableName); vm.newTargetedUser.targetedUserName = vm.newTargetedUser.expandableName">
           </div>
         </div>
       </div>
@@ -330,11 +353,10 @@
               is-editing="true"
               product="vm.cp"
               resources="vm.resources">
-<!--              save="vm.registerCerts(handler)">-->
     </ai-certs>
     <div class="form-group">
-      <label for="reasonForChange">Reason for Change</label>
-      <input class="input-sm form-control" type="text" ng-model="vm.reason" id="reasonForChange" name="reasonForChange"></input>
+      <label for="reason-for-change">Reason for Change</label>
+      <input class="input-sm form-control" type="text" ng-model="vm.reason" id="reason-for-change" name="reasonForChange">
       If changes are made in any of the following ways, a Reason for Change is required:
       <ul>
         <li>Clinical Quality Measure Removed</li>
@@ -386,10 +408,12 @@
       </ul>
     </div>
     <button ng-disabled="((vm.editForm.$invalid || vm.missingIcsSource() || vm.hasStatusMatches() || vm.hasDateMatches() || vm.improperFirstStatus()) && vm.showFormErrors) || vm.isSaving"
+            id="edit-save"
             class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()">Save Certified Product</button>
     <button class="btn btn-warning btn-block"
+            id="edit-cancel"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"

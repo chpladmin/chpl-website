@@ -1,5 +1,152 @@
 # Release Notes
 
+## Version 9.25.0
+_7 August 2018_
+
+### Minor Changes
+* Update access to certain reports
+
+---
+
+## Version 9.24.0
+_16 July 2018_
+
+### New Features
+* In the Edit Criteria modal, modified how the user selects multiple values to associate to a criteria
+* Removed 'Product wide Relied Upon Software' for new 2014 and 2015 listings
+
+---
+
+## Version 9.23.0
+_5 July 2018_
+
+### New Features
+* Filter 2014 test functionalities based on practice type and certification criterion
+* Add http existence check to all outgoing urls
+* Show announcements directly after login
+
+### Text Change
+* Change CMS FAQ link in Inactive certificates and decertified products
+
+---
+
+## Version 9.22.0
+_18 June 2018_
+
+### New Features
+* Updated display of error messages when editing a product to support multiple error messages
+* Updated display of error messages when merging a developer to support multiple error messages
+* Show QMS standards under (g)(4) criteria details
+* Add "Scheduled Jobs" section for Quartz jobs
+
+---
+
+## Version 9.21.0
+_4 June 2018_
+
+### New Features
+* Changed corrective action plan report to pull from new API endpoint
+* Added "New vs. Incumbent Developer" charts to Charts! page
+* Added "Count of Developers & Products" charts to Charts! page
+
+### Bug Fixes
+* Remove "N/A" from editing possibilities where N/A
+* Change error message for system down for maintenance page
+* Widen datepicker dropdown for collections pages
+
+---
+
+## Version 9.20.0
+_21 May 2018_
+
+### New Features
+* Added "Criterion / Product" chart to Charts! page
+
+### Bug Fixes
+* Fixed bug that did not show SED End Testing Date on inspect or management
+* Fixed bug that showed two web site disclaimers on api documentation collection
+
+---
+
+## Version 9.19.0
+_7 May 2018_
+
+### Minor Features
+* Add more information to "eye" display
+  * CQM changes
+  * g1/g2 success & macra measure changes
+
+### Bug Fixes
+* Show Listing information in "manage surveillance" search results
+* Fix bug that incorrectly showed qms boolean
+* Fixed bug where some Listings didn't show history when eye was clicked
+
+---
+
+## Version 9.18.0
+_23 April 2018_
+
+### Major Feature
+* Support for multiple ATLs per Listing
+  * Display of ATLs on Listing Details page
+  * Upload/confirm of multiple ATLs
+  * Edit of Listings to support multiple ATLs
+  * Reports updated to display changes in ATLs
+
+### Minor Feature
+* Added "error" page to use during deployments
+
+### Bug Fix
+* Fix display of SED editing during confirm workflow
+
+---
+
+## Version 9.17.0
+_9 April 2018_
+
+### Minor Features
+* Add SLI to the default options in main & collections pages
+* Add ability to add G1/G2 measures for non-attested criteria
+
+---
+
+## Version 9.16.1
+_27 March 2018_
+
+### Text tweaks
+Added "disclaimer" regarding beta status of Charts page
+
+---
+
+## Vertion 9.16.0
+_26 March 2018_
+
+### Minor features
+* Added Participant/Age chart to /charts page
+* Added Participant/Education chart to /charts page
+* Added Participant/Gender chart to /charts page
+* Added Participant/Professional Experience chart to /charts page
+* Added Participant/Product Experience chart to /charts page
+* Added Participant/Computer Experience chart to /charts page
+
+---
+
+## Version 9.15.0
+_12 March 2018_
+
+### Minor features
+* Added /charts page that displays the SED/Participant count chart
+
+---
+
+## Version 9.14.1
+_22 February 2018_
+
+### Bug fixed
+* Enable editing of CQM-Criteria relationships for 2015 Edition Listings
+
+---
+
 ## Version 9.14.0
 _12 February 2018_
 

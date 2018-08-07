@@ -1,13 +1,13 @@
 <section class="row">
   <div class="col-sm-12 admin-inner-tab main-content">
-    <div class="row admin-label-spaced lead text-center" ng-if="vm.workType !== 'newAtl'">
+    <div class="row admin-label-spaced lead text-center" ng-if="vm.worktype !== 'newatl'">
       <div class="col-sm-12">
         <ul class="list-inline">
-          <li><strong>What would you like to manage?</strong></li>
-          <li><input type="radio" ng-model="vm.workType" value="atl" id="rdAtl"></input><label for="rdAtl">ONC-ATL</label></li>
-          <li><input type="radio" ng-model="vm.workType" value="user" id="rdUsr"></input><label for="rdUsr">Users</label></li>
+          <li><strong>what would you like to manage?</strong></li>
+          <li><input type="radio" name="manage-type" ng-model="vm.worktype" value="atl" id="rd-atl"></input><label for="rd-atl">ONC-ATL</label></li>
+          <li><input type="radio" name="manage-type" ng-model="vm.workType" value="user" id="rd-usr"></input><label for="rd-usr">Users</label></li>
         </ul>
-        <span ng-if="vm.isChplAdmin">Or <a href="" class="" ng-click="vm.createAtl()">Create a new ONC-ATL</a></span>
+        <span ng-if="vm.isChplAdmin">Or <button class="btn btn-default" ng-click="vm.createAtl()">Create a new ONC-ATL</button></span>
       </div>
     </div>
     <div class="row">
