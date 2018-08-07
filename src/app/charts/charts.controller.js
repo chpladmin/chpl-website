@@ -61,10 +61,12 @@
                             cols: [
                                 { label: 'Certification Criteria', type: 'string'},
                                 { label: 'Number of Unique Products', type: 'number'},
+                                { type: 'string', role: 'tooltip'},
                             ],
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
+                        	tooltip: {isHtml: true},
                             animation: {
                                 duration: 1000,
                                 easing: 'inAndOut',
@@ -80,10 +82,12 @@
                             cols: [
                                 { label: 'Certification Criteria', type: 'string'},
                                 { label: 'Number of Unique Products', type: 'number'},
+                                { type: 'string', role: 'tooltip'},
                             ],
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
+                        	tooltip: {isHtml: true},
                             animation: {
                                 duration: 1000,
                                 easing: 'inAndOut',
@@ -103,7 +107,7 @@
             }).sort(function (a, b) {
                 return utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number);
             }).map(function (obj) {
-                return {c: [{v: obj.criterion.title + " " + obj.criterion.number},{v: obj.productCount}]};
+                return {c: [{v: obj.criterion.number},{v: obj.productCount}, {v: obj.criterion.title}]};
             });
         }
 
