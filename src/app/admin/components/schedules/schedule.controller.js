@@ -114,19 +114,16 @@
 
         function _getTimingRestrictions (job) {
             let ret = {
-                    hideSeconds: false,
-                    hideMinutesTab: false,
-                    hideHourlyTab: false,
-                }
+                hideSeconds: true,
+                hideMinutesTab: false,
+                hideHourlyTab: false,
+            };
             if (job && job.frequency) {
                 switch (job.frequency) {
-                case 'MINUTES':
-                    ret.hideSeconds = true;
-                    break;
                 case 'DAILY':
-                    ret.hideSeconds = true;
-                    ret.hideMinutesTab =  true;
-                    break;
+                    ret.hideHourlyTab = true;
+                case 'HOURLY':
+                    ret.hideMinutesTab = true;
                     //no default
                 }
             }
