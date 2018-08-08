@@ -14,5 +14,9 @@ _Date TBD_
 * Integrated CRON control with the job's frequency
 * Add functionality for managing "Ban Developer" notification
   * Updated edit of Listing screen to reflect changes in Developer Ban workflow
+* Add certification title to uniqe products chart on hover-over
+
+### Text changes
+* Add introductory text to several charts
 
 ---
