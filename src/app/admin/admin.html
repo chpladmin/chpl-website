@@ -50,7 +50,7 @@
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key_usage'}" id="admin-nav.reports.api_key_usage" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('api_key_usage')">API Key Usage Activity</a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'subscriptions'}" id="admin-nav.subscriptions" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('subscriptions')">Subscription Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'scheduledJobs'}" id="admin-nav.scheduledJobs" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('scheduledJobs')">Scheduled Jobs</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'scheduledJobs'}" id="admin-nav.scheduledJobs" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('scheduledJobs')">Scheduled Jobs</a></li>
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" id="admin-nav.apiKeyManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" id="admin-nav.announcementsManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" id="admin-nav.cmsManagement" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
