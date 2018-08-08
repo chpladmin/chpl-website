@@ -1,6 +1,6 @@
 import './compare.module';
 
-function importAll(r) {
+function importAll (r) {
     r.keys().forEach(r);
 }
 

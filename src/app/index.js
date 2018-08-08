@@ -3,7 +3,7 @@ import 'angular-loading-bar/build/loading-bar.min.css';
 import 'angular-swagger-ui/dist/css/swagger-ui.min.css';
 import './index.scss';
 
-function importAll(r) {
+function importAll (r) {
     r.keys().forEach(r);
 }
 importAll(

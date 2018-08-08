@@ -39,12 +39,14 @@ module.exports = {
     module: {
         rules: [{
             test: /\.js$/, // does the file end with '.js' ?
-            use: {
+            use: [{
                 loader: 'babel-loader', // then use babel loader
                 options: {
                     plugins: [BabelPluginAngularjsAnnotate],
                 },
-            },
+            },{
+                loader: 'eslint-loader',
+            }],
             exclude: /node_modules/, // unless it's in node_modules
         },{
             test: /\.hbs$/,

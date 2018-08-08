@@ -25,7 +25,7 @@ module.exports = function(config) {
             reporters: [
                 { type: 'html' },
                 { type: 'text' },
-                { type: 'text-summary' },
+//                { type: 'text-summary' },
             ],
         },
         webpack: webpackConfig,
