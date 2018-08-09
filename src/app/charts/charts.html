@@ -31,7 +31,7 @@
       </div>
     </div>
     <div ng-if="vm.chartState.tab === 'developer'">
-      Since the start of the ONC Health IT Certification Program, there have been three certification editions: 2011, 2014, and 2015. The charts below describe the transition between each edition by certified health IT developers. The regulations for each edition can be found here:https://www.healthit.gov/topic/certification-ehrs/certification-standards-and-regulations. 
+      Since the start of the ONC Health IT Certification Program, there have been three certification editions: 2011, 2014, and 2015. The charts below describe the transition between each edition by certified health IT developers. The regulations for each edition can be found here: <a href ="https://www.healthit.gov/topic/certification-ehrs/certification-standards-and-regulations">https://www.healthit.gov/topic/certification-ehrs/certification-standards-and-regulations</a>. 
       <div class="row">
         <div class="col-sm-4" ng-repeat="chart in vm.incumbentDevelopersCounts">
           <div google-chart="" chart="chart" class="pie-chart"></div>
@@ -66,7 +66,7 @@
       </div>
     </div>
     <div ng-if="vm.chartState.tab === 'sed'">
-      The safety-enhanced design (SED) criteria requires health IT developers to apply and test user centered design standards to their certified health IT. Developers follow NISTIR 7742(https://www.nist.gov/publications/nistir-7742-customized-common-industry-format-template-electronic-health-record) and submit results to ONC. SED testing requires participants who work in the health care field for which the product is intended to be used. The charts below describe the characteristics of the SED test participants for ONC certified health IT products.
+      The safety-enhanced design (SED) criteria requires health IT developers to apply and test user centered design standards to their certified health IT. Developers follow NISTIR 7742(<a ai-a href="https://www.nist.gov/publications/nistir-7742-customized-common-industry-format-template-electronic-health-record">https://www.nist.gov/publications/nistir-7742-customized-common-industry-format-template-electronic-health-record</a>) and submit results to ONC. SED testing requires participants who work in the health care field for which the product is intended to be used. The charts below describe the characteristics of the SED test participants for ONC certified health IT products.
       <div class="row">
         <div class="col-sm-12">
           <div google-chart="" chart="vm.sedParticipantCounts" class="column-chart"></div>
