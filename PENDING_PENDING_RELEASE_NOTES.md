@@ -14,5 +14,6 @@ _Date TBD_
 * Integrated CRON control with the job's frequency
 * Add functionality for managing "Ban Developer" notification
   * Updated edit of Listing screen to reflect changes in Developer Ban workflow
+* Allow selection of ACB for ACB specific triggers
 
 ---
