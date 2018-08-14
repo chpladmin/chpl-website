@@ -112,7 +112,8 @@
                     vm.scheduledTriggers = result.results.map(function (result) {
                         result.details = ['Schedule: ' + result.cronSchedule, 'Type: ' + result.job.name];
                         if (result.acb) {
-                            result.details.push('ONC-ACB(s): ' + result.acb.split(SPLIT_PRIMARY).join(', '));
+                            var acbs = result.acb.split(SPLIT_PRIMARY);
+                            result.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + acbs.join(', '));
                         }
                         return result;
                     });

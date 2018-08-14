@@ -108,7 +108,7 @@
                     formSelectClass: '',
                     formRadioClass: '',
                     formCheckboxClass: '',
-                    use24HourTime: true,
+                    //use24HourTime: true,
                 });
         }
 

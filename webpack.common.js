@@ -44,8 +44,8 @@ module.exports = {
                 options: {
                     plugins: [BabelPluginAngularjsAnnotate],
                 },
-            },{
-                loader: 'eslint-loader',
+//            },{
+//                loader: 'eslint-loader',
             }],
             exclude: /node_modules/, // unless it's in node_modules
         },{
