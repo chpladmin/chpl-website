@@ -5,7 +5,7 @@
         .controller('ScheduleController', ScheduleController);
 
     /** @ngInject */
-    function ScheduleController ($log, $uibModalInstance, networkService, scheduleJobs, trigger, SPLIT_PRIMARY) {
+    function ScheduleController ($interval, $log, $uibModalInstance, networkService, scheduleJobs, trigger, SPLIT_PRIMARY) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -28,6 +28,11 @@
             vm.scheduleJobs = scheduleJobs;
             vm.schConfig = _getScheduleConfig();
             _getAcbs();
+            var tick = function () {
+                vm.now = Date.now();
+            }
+            tick();
+            $interval(tick, 1000);
         }
 
         function cancel () {

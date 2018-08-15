@@ -44,6 +44,7 @@
     </div>
     <div class="form-group row" ng-if="vm.trigger.job">
       <div class="col-md-12">
+        Set the time at which you would like to receive the report. Please note this is in UTC time, which is currently {{ vm.now | date : 'mediumTime' : 'UTC' }}
         <cron-gen ng-model="vm.trigger.cronSchedule" options="vm.schConfig"></cron-gen>
         <p><strong>Schedule, in cron format: {{ vm.trigger.cronSchedule }}</strong></p>
       </div>
