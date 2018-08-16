@@ -41,8 +41,6 @@
             vm.updateCs = updateCs;
             vm.viewIcsFamily = viewIcsFamily;
 
-            
-
             ////////////////////////////////////////////////////////////////////
 
             this.$onInit = function () {

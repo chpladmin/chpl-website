@@ -4,11 +4,11 @@
     ],
     "extends": [
         "eslint:recommended",
-        "plugin:angular/johnpapa",
     ],
     "env": {
         "browser": true,
         "jasmine": true,
+        "amd": true,
     },
     "globals": {
         "angular": true,

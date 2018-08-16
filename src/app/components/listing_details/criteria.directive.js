@@ -36,8 +36,6 @@
         vm.showViewDetailsLink = showViewDetailsLink;
         vm.toggleCriteria = toggleCriteria;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

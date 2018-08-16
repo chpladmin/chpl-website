@@ -50,8 +50,6 @@
         vm.viewParticipants = viewParticipants;
         vm.viewTask = viewTask;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

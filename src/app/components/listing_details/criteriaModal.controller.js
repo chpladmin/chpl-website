@@ -5,10 +5,12 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, CertificationResultTestData,
-                                                CertificationResultTestFunctionality, CertificationResultTestProcedure,
-                                                CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs,
-                                                resources, utilService) {
+    function EditCertificationCriteriaController (
+        $log, $uibModal, $uibModalInstance, CertificationResultTestData,
+        CertificationResultTestFunctionality, CertificationResultTestProcedure,
+        CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs,
+        resources, utilService) {
+
         var vm = this;
 
         vm.addNewValue = utilService.addNewValue;

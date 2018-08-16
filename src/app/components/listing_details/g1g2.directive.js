@@ -26,8 +26,6 @@
     function G1G2DetailsController () {
         var vm = this;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
