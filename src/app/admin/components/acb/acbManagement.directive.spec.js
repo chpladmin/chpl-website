@@ -72,7 +72,7 @@
                 beforeEach(function () {
                     acb = {};
                     modalOptions = {
-                        templateUrl: 'app/admin/components/acb/acbEdit.html',
+                        templateUrl: 'chpl.admin/components/acb/acbEdit.html',
                         controller: 'EditAcbController',
                         controllerAs: 'vm',
                         animation: false,
@@ -131,7 +131,7 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'app/admin/components/acb/acbEdit.html',
+                        templateUrl: 'chpl.admin/components/acb/acbEdit.html',
                         controller: 'EditAcbController',
                         controllerAs: 'vm',
                         animation: false,

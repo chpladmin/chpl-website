@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/registration/components/apiKey.html',
+            templateUrl: 'chpl.registration/components/apiKey.html',
             scope: {},
             bindToController: {
                 admin: '=',
@@ -28,11 +28,9 @@
         vm.register = register;
         vm.revoke = revoke;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.hasKey = false;
             vm.key = '';
             if (vm.admin) {

@@ -188,19 +188,5 @@
         </span>
       </div>
     </div>
-
-    <!-- Corrective Action Plan (OBE) -->
-    <div class="panel panel-ai" ng-if="vm.cap && vm.ACTIVE_CAP">
-      <div class="panel-heading">
-        <a href="" ng-click="vm.showPanel('cap')" aria-expanded="{{ vm.panelShown === 'cap' }}"><i class="fa fa-lg" ng-class="vm.panelShown === 'cap' ? 'fa-caret-down' : 'fa-caret-right'"></i> Non-conformities<span class="pull-right">({{ vm.cap.length && vm.cap.length > 0 ? vm.cap.length : 0 }} found)</span></a>
-      </div>
-      <div class="panel-body animate-if" ng-if="vm.panelShown === 'cap'">
-        <ai-corrective-action-plan
-           corrective-action-plan="vm.cap"
-           certified-product-id="vm.product.id"
-           certification-results="vm.product.certificationResults"
-           is-admin="false"></ai-corrective-action-plan>
-      </div>
-    </div>
   </div>
 </div>

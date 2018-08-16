@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
 
         .directive('stDateRange', function () {
             return {
@@ -10,7 +10,7 @@
                     before: '=',
                     after: '=',
                 },
-                templateUrl: 'app/components/smart_table/stDateRange.html',
+                templateUrl: 'chpl.components/smart_table/stDateRange.html',
                 link: function (scope, element, attr, table) {
                     var inputs = element.find('input');
                     var inputBefore = angular.element(inputs[1]);

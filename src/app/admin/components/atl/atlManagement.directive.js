@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/atl/atlManagement.html',
+            templateUrl: 'chpl.admin/components/atl/atlManagement.html',
             bindToController: {
                 workType: '=?',
                 activeAtl: '=?',
@@ -28,11 +28,9 @@
         vm.createAtl = createAtl;
         vm.editAtl = editAtl;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.isChplAdmin = authService.isChplAdmin();
             vm.isAtlAdmin = authService.isAtlAdmin();
             if (angular.isUndefined(vm.workType)) {
@@ -42,7 +40,7 @@
 
         function createAtl () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/atl/atlEdit.html',
+                templateUrl: 'chpl.admin/components/atl/atlEdit.html',
                 controller: 'EditAtlController',
                 controllerAs: 'vm',
                 animation: false,
@@ -65,7 +63,7 @@
 
         function editAtl (atl) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/atl/atlEdit.html',
+                templateUrl: 'chpl.admin/components/atl/atlEdit.html',
                 controller: 'EditAtlController',
                 controllerAs: 'vm',
                 animation: false,

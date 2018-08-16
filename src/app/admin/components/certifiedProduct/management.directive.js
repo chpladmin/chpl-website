@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/certifiedProduct/management.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/management.html',
                 bindToController: {
                     workType: '=?',
                     pendingProducts: '=?',
@@ -59,11 +59,11 @@
         vm.splitProduct = splitProduct;
         vm.ternaryFilter = utilService.ternaryFilter;
 
-        activate();
+        
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.activeDeveloper = '';
             vm.activeProduct = '';
             vm.activeVersion = '';
@@ -227,7 +227,7 @@
 
         function editDeveloper () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/developer/edit.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/developer/edit.html',
                 controller: 'EditDeveloperController',
                 controllerAs: 'vm',
                 animation: false,
@@ -301,7 +301,7 @@
 
         function mergeDevelopers () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/developer/merge.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/developer/merge.html',
                 controller: 'MergeDeveloperController',
                 controllerAs: 'vm',
                 animation: false,
@@ -342,7 +342,7 @@
 
         function editProduct () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/product/edit.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/product/edit.html',
                 controller: 'EditProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -364,7 +364,7 @@
 
         function mergeProducts () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/product/merge.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/product/merge.html',
                 controller: 'MergeProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -391,7 +391,7 @@
 
         function mergeVersions () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/version/merge.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/version/merge.html',
                 controller: 'MergeVersionController',
                 controllerAs: 'vm',
                 animation: false,
@@ -431,7 +431,7 @@
 
         function editVersion () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/version/edit.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/version/edit.html',
                 controller: 'EditVersionController',
                 controllerAs: 'vm',
                 animation: false,
@@ -506,7 +506,7 @@
             });
             resources.testStandards.data = filteredTestStandards;
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/listing/edit.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/listing/edit.html',
                 controller: 'EditCertifiedProductController',
                 controllerAs: 'vm',
                 animation: false,
@@ -545,7 +545,7 @@
             }
 
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/listing/inspect.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/listing/inspect.html',
                 controller: 'InspectController',
                 controllerAs: 'vm',
                 animation: false,
@@ -583,7 +583,7 @@
 
         function inspectSurveillance (surv) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/inspect.html',
+                templateUrl: 'chpl.admin/components/surveillance/inspect.html',
                 controller: 'SurveillanceInspectController',
                 controllerAs: 'vm',
                 animation: false,
@@ -766,7 +766,7 @@
 
         function splitProduct () {
             vm.splitProductInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/certifiedProduct/product/split.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
                 controller: 'SplitProductController',
                 controllerAs: 'vm',
                 animation: false,

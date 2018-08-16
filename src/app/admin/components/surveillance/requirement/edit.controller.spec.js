@@ -53,7 +53,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/surveillance/nonconformity/edit.html',
+                    templateUrl: 'chpl.admin/components/surveillance/nonconformity/edit.html',
                     controller: 'EditNonconformityController',
                     controllerAs: 'vm',
                     animation: false,
@@ -116,7 +116,7 @@
             beforeEach(function () {
                 noncon = {id: 1, name: '1'};
                 modalOptions = {
-                    templateUrl: 'app/admin/components/surveillance/nonconformity/edit.html',
+                    templateUrl: 'chpl.admin/components/surveillance/nonconformity/edit.html',
                     controller: 'EditNonconformityController',
                     controllerAs: 'vm',
                     animation: false,

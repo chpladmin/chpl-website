@@ -106,7 +106,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/participantsModal.html',
+                    templateUrl: 'chpl.components/listing_details/sed/participantsModal.html',
                     controller: 'ViewSedParticipantsController',
                     controllerAs: 'vm',
                     animation: false,

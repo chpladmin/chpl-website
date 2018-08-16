@@ -66,7 +66,7 @@
             var surveillanceEditOptions;
             beforeEach(function () {
                 surveillanceEditOptions = {
-                    templateUrl: 'app/admin/components/surveillance/edit.html',
+                    templateUrl: 'chpl.admin/components/surveillance/edit.html',
                     controller: 'EditSurveillanceController',
                     controllerAs: 'vm',
                     animation: false,
@@ -223,7 +223,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/surveillance/nonconformity/inspect.html',
+                    templateUrl: 'chpl.admin/components/surveillance/nonconformity/inspect.html',
                     controller: 'NonconformityInspectController',
                     controllerAs: 'vm',
                     animation: false,

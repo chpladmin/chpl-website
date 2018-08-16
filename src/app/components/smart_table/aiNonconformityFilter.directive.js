@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('NonconformityFilterController', NonconformityFilterController)
         .directive('aiNonconformityFilter', aiNonconformityFilter);
 
@@ -19,7 +19,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&?',
             },
-            templateUrl: 'app/components/smart_table/aiNonconformityFilter.html',
+            templateUrl: 'chpl.components/smart_table/aiNonconformityFilter.html',
         }
     }
 

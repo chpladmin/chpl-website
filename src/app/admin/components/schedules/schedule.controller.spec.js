@@ -6,9 +6,16 @@
 
         mock = {};
         mock.newScheduleTrigger = {
-            scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-            cronSchedule: '0 13 * * * ?',
-            email: 'alarned@ainq.com',
+            name: '',
+            group: 'SummaryStatisticsEmailTrigger',
+            job: {
+                description: 'Sends the Summary Statistics Report',
+                group: 'chplJobs',
+                name: 'Summary Statistics Email',
+                frequency: 'HOURLY',
+            },
+            cronSchedule: '0 0 13 * * ?',
+            email: 'tmy1313@gmail.com',
         };
 
         beforeEach(function () {
@@ -34,6 +41,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('ScheduleController', {
                     trigger: {},
+                    scheduleJobs: [],
                     $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();

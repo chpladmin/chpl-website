@@ -11,7 +11,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.product','chpl.mock');
+            module('chpl.product');
             inject(function ($controller, _$location_, _$log_, $rootScope, product_activity) {
                 $location = _$location_;
                 $log = _$log_;

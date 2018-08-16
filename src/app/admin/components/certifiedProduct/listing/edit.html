@@ -106,15 +106,11 @@
               </label>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.editForm['certificationStatus' + $index].$error.required">Certification Status is required</div>
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['certificationStatus' + $index].$touched) && vm.matchesPreviousStatus(statusEvent)">Certification Status must differ from previous Status</div>
-              <div class="text-danger" ng-if="$first && vm.willCauseSuspension(vm.certificationStatus(vm.cp, {editing: true})) && (vm.cp.banDeveloper || vm.certificationStatus(vm.cp, {editing: true}) === 'Terminated by ONC')">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
+              <div class="text-danger" ng-if="$first && vm.mayCauseSuspension(vm.certificationStatus(vm.cp, {editing: true}))">Setting this product to this status may trigger a ban by ONC</div>
+              <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Terminated by ONC'">Setting this product to this status will cause the developer to be marked as "Under Certification Ban"</div>
               <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Suspended by ONC'">Setting this product to this status will cause the developer to be marked as "Suspended by ONC"</div>
               <div class="text-danger" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Withdrawn by Developer'">Be sure this product is not under surveillance or soon to be under surveillance, otherwise use the status "Withdrawn by Developer Under Surveillance/Review"</div>
               <div class="text-danger" ng-if="$last && vm.improperFirstStatus()">The earliest status of this product must be "Active"</div>
-            </div>
-            <div class="form-group" ng-if="$first && vm.certificationStatus(vm.cp, {editing: true}) === 'Withdrawn by Developer Under Surveillance/Review'">
-              <label for="ban-developer">I want to trigger a certification ban for this status change
-                <input type="checkbox" ng-model="vm.banDeveloper" id="ban-developer">
-              </label>
             </div>
           </td>
           <td>

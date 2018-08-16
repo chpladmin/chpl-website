@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    angular.module('chpl').component('aiExpandableList', {
-        templateUrl: 'app/components/util/expandableList.html',
+    angular.module('chpl.components').component('aiExpandableList', {
+        templateUrl: 'chpl.components/util/expandableList.html',
         controller: ExapandableListController,
         bindings: {
             addItems: '@',                      //Boolean value indicating if the control has the functionality to add new items to the drop down.  When this is true, an extra item will appear in the list and when the user selects that item, they will be presented with a text box to type in the new value.

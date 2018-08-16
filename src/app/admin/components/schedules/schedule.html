@@ -9,7 +9,22 @@
     <h4 class="modal-title" id="modal-label">Schedule</h4>
   </div>
   <div class="modal-body form-horizontal" ng-form="vm.triggerForm">
-    <div class="form-group">
+    <div class="form-group row">
+      <label class="col-md-4" for="jobs">Job</label>
+      <div class="col-md-8">
+        <select class="form-control"
+          id="jobs"
+          name="jobs"
+          ng-model="vm.trigger.job"
+          ng-options="job as job.name for job in vm.scheduleJobs track by job.name"
+          ng-disabled="vm.trigger.name"
+          ng-change="vm.onScheduleChange()"
+          required>
+        </select>
+        <div class="text-danger" ng-if="(vm.showFormErrors || vm.triggerForm.jobs.$touched) && vm.triggerForm.jobs.$error.required">Job is required</div>
+      </div>
+    </div>
+    <div class="form-group row">
       <label class="col-md-4" for="email">Recipient email</label>
       <div class="col-md-8">
         <input class="input-sm form-control" type="email" ng-model="vm.trigger.email" id="email" name="email" ng-disabled="vm.trigger.name" required></input>
@@ -17,9 +32,9 @@
         <div class="text-danger" ng-if="(vm.showFormErrors || vm.triggerForm.email.$touched) && vm.triggerForm.email.$error.email">Email format is invalid</div>
       </div>
     </div>
-    <div class="row">
+    <div class="form-group row" ng-if="vm.trigger.job">
       <div class="col-md-12">
-        <cron-selection ng-model="vm.trigger.cronSchedule" config="vm.cronConfig"></cron-selection>
+        <cron-gen ng-model="vm.trigger.cronSchedule" options="vm.schConfig"></cron-gen>
         <p><strong>Schedule, in cron format: {{ vm.trigger.cronSchedule }}</strong></p>
       </div>
     </div>
