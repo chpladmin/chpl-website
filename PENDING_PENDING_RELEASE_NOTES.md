@@ -1,19 +1,10 @@
 
-## Version 10.0.0
+## Version 10.1.0
 _Date TBD_
 
-### Major changes
-* Upgraded to AngularJS 1.7.x
-* Removed dependency on bower; replaced with yarn & webpack
-* Removed most gulp scripts
-
 ### New Features
-* Add nonconformity chart to charts page
-* Add job selection when adding a new trigger
-* Display existing job when editing existing trigger
-* Integrated CRON control with the job's frequency
-* Add functionality for managing "Ban Developer" notification
-  * Updated edit of Listing screen to reflect changes in Developer Ban workflow
 * Allow selection of ACB for ACB specific triggers
+* Support multiple ACBs in required job schedulers
+* Display current time in UTC on job scheduler
 
 ---
