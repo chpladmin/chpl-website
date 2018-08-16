@@ -52,8 +52,6 @@
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

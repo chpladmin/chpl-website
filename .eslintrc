@@ -4,7 +4,6 @@
     ],
     "extends": [
         "eslint:recommended",
-        "plugin:angular/johnpapa",
     ],
     "env": {
         "browser": true,

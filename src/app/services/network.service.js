@@ -718,7 +718,7 @@
         }
 
         function updateFuzzyType (fuzzyType) {
-            return apiPOST('/data\/fuzzy_choices\/update', fuzzyType);
+            return apiPOST('/data/fuzzy_choices/update', fuzzyType);
         }
 
         function updateJob (job) {

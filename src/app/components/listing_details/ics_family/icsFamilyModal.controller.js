@@ -26,9 +26,7 @@
         }
 
         function compare () {
-            $location.path('/compare/' + vm.icsFamily
-                           .map(function (item) { return item.id; })
-                           .join('&'));
+            $location.path('/compare/' + vm.icsFamily.map(function (item) { return item.id; }).join('&'));
             $uibModalInstance.close('compared');
         }
 

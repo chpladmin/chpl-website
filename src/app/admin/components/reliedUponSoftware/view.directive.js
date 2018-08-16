@@ -28,8 +28,6 @@
         vm.isAndOrOr = isAndOrOr;
         vm.removeItem = removeItem;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

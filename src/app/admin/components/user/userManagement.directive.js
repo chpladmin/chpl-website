@@ -25,8 +25,6 @@
         vm.updateUser = updateUser;
         vm.inviteUser = inviteUser;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

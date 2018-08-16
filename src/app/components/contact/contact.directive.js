@@ -30,8 +30,6 @@
         vm.updateErrors = updateErrors;
         vm.valuesRequired = valuesRequired;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

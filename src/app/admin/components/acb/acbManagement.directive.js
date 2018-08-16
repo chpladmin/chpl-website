@@ -28,8 +28,6 @@
         vm.createAcb = createAcb;
         vm.editAcb = editAcb;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

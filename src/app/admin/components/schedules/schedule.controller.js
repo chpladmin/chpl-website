@@ -95,7 +95,7 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        function _getAcbs() {
+        function _getAcbs () {
             networkService.getAcbs(true)
                 .then(function (data) {
                     vm.acbs = data.acbs;

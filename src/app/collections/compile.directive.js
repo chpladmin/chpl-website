@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('chpl.collections')
-            .directive('aiCompile', aiCompile);
+        .directive('aiCompile', aiCompile);
 
     /** @ngInject */
     function aiCompile ($compile) {

@@ -27,8 +27,6 @@
         vm.JOB_REFRESH_TIMEOUT_INACTIVE = 30; // seconds
         vm.JOB_REFRESH_TIMEOUT_ACTIVE = 5; // seconds
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

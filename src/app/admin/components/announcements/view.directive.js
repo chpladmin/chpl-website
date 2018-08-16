@@ -25,8 +25,6 @@
         vm.edit = edit;
         vm.loadAnnouncements = loadAnnouncements;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
