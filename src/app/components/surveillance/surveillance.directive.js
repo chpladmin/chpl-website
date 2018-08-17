@@ -32,8 +32,6 @@
         vm.sortResults = sortResults;
         vm.surveillanceResults = surveillanceResults;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

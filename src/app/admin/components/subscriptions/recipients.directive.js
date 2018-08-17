@@ -29,8 +29,6 @@
         vm.loadSubscriptionReportTypes = loadSubscriptionReportTypes;
         vm.loadRecipients = loadRecipients;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

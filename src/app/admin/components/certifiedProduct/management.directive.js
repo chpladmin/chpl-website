@@ -59,8 +59,6 @@
         vm.splitProduct = splitProduct;
         vm.ternaryFilter = utilService.ternaryFilter;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

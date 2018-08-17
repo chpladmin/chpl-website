@@ -24,8 +24,6 @@
         vm.getDownload = getDownload;
         vm.setMeaningfulUseUsersAccurateAsOfDate = setMeaningfulUseUsersAccurateAsOfDate;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

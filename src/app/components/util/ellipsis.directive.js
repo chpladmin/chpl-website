@@ -25,8 +25,6 @@
     function EllipsisController () {
         var vm = this;
 
-        
-
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {

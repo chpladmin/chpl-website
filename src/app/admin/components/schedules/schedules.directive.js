@@ -21,7 +21,7 @@
     }
 
     /** @ngInject */
-    function ScheduledJobsController ($log, $uibModal, networkService) {
+    function ScheduledJobsController ($log, $uibModal, networkService, SPLIT_PRIMARY) {
         var vm = this;
 
         vm.createTrigger = createTrigger;
@@ -111,6 +111,10 @@
                 .then(function (result) {
                     vm.scheduledTriggers = result.results.map(function (result) {
                         result.details = ['Schedule: ' + result.cronSchedule, 'Type: ' + result.job.name];
+                        if (result.acb) {
+                            var acbs = result.acb.split(SPLIT_PRIMARY);
+                            result.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + acbs.join(', '));
+                        }
                         return result;
                     });
                 });

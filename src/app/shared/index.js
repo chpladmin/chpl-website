@@ -1,6 +1,6 @@
 import './shared.module';
 
-function importAll(r) {
+function importAll (r) {
     r.keys().forEach(r);
 }
 

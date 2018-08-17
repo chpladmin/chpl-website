@@ -52,8 +52,6 @@
         vm._compareCertificationEvents = _compareCertificationEvents;
         vm._compareSed = _compareSed;
 
-        
-
         ////////////////////////////////////////////////////////////////////
         // Functions
 
