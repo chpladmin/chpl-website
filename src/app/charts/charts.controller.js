@@ -8,6 +8,7 @@
     function ChartsController ($log, networkService, utilService) {
         var vm = this;
 
+        vm.updateYAxis = updateYAxis;
         vm.updateChartStack = updateChartStack;
 
         activate();
@@ -23,6 +24,7 @@
             ];
             vm.chartState = {
                 isStacked: 'false',
+                yAxis: '',
                 listingCountType: '1',
                 productEdition: 2014,
                 nonconformityCountType: 'All',
@@ -47,6 +49,12 @@
             });
             Object.keys(vm.listingCount.class).forEach(function (key) {
                 vm.listingCount.class[key].chart.options.isStacked = vm.chartState.isStacked;
+            });
+        }
+
+        function updateYAxis () {
+            Object.values(vm.nonconformityCounts).forEach(function (value) {
+                value.options.vAxis.scaleType = vm.chartState.yAxis;
             });
         }
 
@@ -294,7 +302,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
-                                scaleType: 'mirrorLog',
+                                scaleType: vm.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -321,7 +329,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
-                                scaleType: 'mirrorLog',
+                                scaleType: vm.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -348,6 +356,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
+                                scaleType: vm.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -374,6 +383,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
+                                scaleType: vm.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },

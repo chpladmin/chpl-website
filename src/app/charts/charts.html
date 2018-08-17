@@ -113,6 +113,14 @@
                     ng-options="option for option in vm.nonconformityTypes">
             </select>
           </label>
+          <br />
+          <label>
+            Y-Axis Type:
+            <select ng-model="vm.chartState.yAxis" ng-change="vm.updateYAxis()">
+              <option value="">Linear</option>
+              <option value="mirrorLog">Log</option>
+            </select>
+          </label>
         </div>
       </div>
     </div>
