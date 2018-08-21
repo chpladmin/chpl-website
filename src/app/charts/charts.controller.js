@@ -8,6 +8,7 @@
     function ChartsController ($log, networkService, utilService) {
         var vm = this;
 
+        vm.updateYAxis = updateYAxis;
         vm.updateChartStack = updateChartStack;
 
         activate();
@@ -23,6 +24,7 @@
             ];
             vm.chartState = {
                 isStacked: 'false',
+                yAxis: '',
                 listingCountType: '1',
                 productEdition: 2014,
                 nonconformityCountType: 'All',
@@ -50,6 +52,12 @@
             });
         }
 
+        function updateYAxis () {
+            Object.values(vm.nonconformityCounts).forEach(function (value) {
+                value.options.vAxis.scaleType = vm.chartState.yAxis;
+            });
+        }
+
         ////////////////////////////////////////////////////////////////////
 
         function _createCriterionProductCountChart () {
@@ -61,10 +69,12 @@
                             cols: [
                                 { label: 'Certification Criteria', type: 'string'},
                                 { label: 'Number of Unique Products', type: 'number'},
+                                { type: 'string', role: 'tooltip'},
                             ],
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
+                        	tooltip: {isHtml: true},
                             animation: {
                                 duration: 1000,
                                 easing: 'inAndOut',
@@ -80,10 +90,12 @@
                             cols: [
                                 { label: 'Certification Criteria', type: 'string'},
                                 { label: 'Number of Unique Products', type: 'number'},
+                                { type: 'string', role: 'tooltip'},
                             ],
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
+                        	tooltip: {isHtml: true},
                             animation: {
                                 duration: 1000,
                                 easing: 'inAndOut',
@@ -103,7 +115,7 @@
             }).sort(function (a, b) {
                 return utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number);
             }).map(function (obj) {
-                return {c: [{ v: obj.criterion.number},{v: obj.productCount}]};
+                return {c: [{v: obj.criterion.number},{v: obj.productCount}, {v: obj.criterion.title}]};
             });
         }
 
@@ -290,7 +302,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
-                                scaleType: 'mirrorLog',
+                                scaleType: vm.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -317,7 +329,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
-                                scaleType: 'mirrorLog',
+                                scaleType: vm.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -344,6 +356,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
+                                scaleType: vm.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
@@ -370,6 +383,7 @@
                                 minValue: 0,
                             },
                             vAxis: {
+                                scaleType: vm.chartState.yAxis,
                                 title: 'Number of Non-Conformities',
                                 minValue: 0,
                             },
