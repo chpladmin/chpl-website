@@ -19,7 +19,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.createScheduleTrigger = jasmine.createSpy('createScheduleTrigger');
                     $delegate.deleteScheduleTrigger = jasmine.createSpy('deleteScheduleTrigger');

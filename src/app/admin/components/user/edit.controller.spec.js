@@ -8,7 +8,7 @@
         mock.user = {roles: ['ROLE_ADMIN'], user: {subjectName: 'username', userId: 'userId'}};
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.addRole = jasmine.createSpy('addRole');
                     $delegate.deleteUser = jasmine.createSpy('deleteUser');

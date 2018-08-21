@@ -1,36 +1,20 @@
+'use strict';
+
 const webpack = require('webpack');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
 
-const plugins = [
-    //new CleanWebpackPlugin(['dist']),
-    new HtmlWebpackPlugin({
-        chunks: ['app', 'vendor'],
-        filename: path.resolve(__dirname, './src/index.html'),
-        hash: true,
-        inject: 'body',
-        template: path.resolve(__dirname, './src/index.hbs'),
-    }),
-    new HtmlWebpackPlugin({
-        chunks: ['app', 'vendor'],
-        filename: path.resolve(__dirname, './src/error.html'),
-        hash: true,
-        inject: 'body',
-        template: path.resolve(__dirname, './src/error.hbs'),
-    }),
-    new HtmlWebpackPlugin({
-        chunks: ['app', 'vendor'],
-        filename: path.resolve(__dirname, './src/style.html'),
-        hash: true,
-        inject: 'body',
-        template: path.resolve(__dirname, './src/style.hbs'),
-    })
-];
-
 module.exports = {
-    context: path.resolve(__dirname, '.'),
+    devServer: {
+        port: 3000,
+        proxy: {
+            '/rest': {
+                target: 'http://localhost:8181/chpl-service',
+                pathRewrite: {'^/rest' : ''},
+            },
+        },
+    },
     entry: {
         app: path.resolve(__dirname, './src/app/index.js'),
         vendor: ['angular'],
@@ -38,21 +22,19 @@ module.exports = {
     mode: 'development',
     module: {
         rules: [{
-            test: /\.js$/, // does the file end with '.js' ?
-            use: [{
-                loader: 'babel-loader', // then use babel loader
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader',
                 options: {
                     plugins: [BabelPluginAngularjsAnnotate],
-                    presets: ['@babel/preset-env'],
-                },
-//            },{
-//                loader: 'eslint-loader',
-            }],
-            exclude: /node_modules/, // unless it's in node_modules
+                    presets: ['@babel/preset-env']
+                }
+            }
         },{
-            test: /\.hbs$/,
-            use: 'handlebars-loader',
-        },{
+            //            test: /\.hbs$/,
+            //            use: 'handlebars-loader',
+            //        },{
             test: /\.html$/,
             use: 'html-loader',
         },{
@@ -132,18 +114,20 @@ module.exports = {
     },
     optimization: {
         splitChunks: {
-            cacheGroups: {
-		vendor: {
-		    chunks: 'all',
-		    name: 'vendor',
-		    test: /node_modules/,
-		},
-            },
+            name: true,
         },
     },
-    output: {
-        filename: '[name].js',
-        publicPath: './',
-    },
-    plugins: plugins,
+    plugins: [
+        new HtmlWebpackPlugin({
+            chunks: ['app', 'vendor'],
+            hash: true,
+            inject: 'body',
+            template: path.resolve(__dirname, './src/index.html'),
+        }),
+        new webpack.DefinePlugin({
+            DEVELOPER_MODE: true,
+            ENABLE_LOGGING: true,
+            MINUTES_UNTIL_IDLE: '120',
+        }),
+    ]
 };

@@ -8,7 +8,7 @@
         mock.acbs = ['Drummond','ICSA','Infogard'];
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.updateDeveloper = jasmine.createSpy('updateDeveloper');
                     return $delegate;

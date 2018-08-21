@@ -8,7 +8,7 @@
         mock.cert = {id: 1, name: 'initial cert'};
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.mock', 'chpl');
+            angular.mock.module(/*'chpl.templates',*/ 'chpl.mock', 'chpl');
 
             inject(function (_$analytics_, _$compile_, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $analytics = _$analytics_;

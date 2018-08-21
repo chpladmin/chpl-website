@@ -5,7 +5,7 @@
         var $log, $q, Mock, ctrl, networkService, scope, vm;
 
         beforeEach(function () {
-            module('chpl', 'chpl.mock', 'chpl.templates', function ($provide) {
+            angular.mock.module('chpl', 'chpl.mock', /*'chpl.templates',*/ function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.createACB = jasmine.createSpy('createACB');
                     $delegate.deleteACB = jasmine.createSpy('deleteACB');

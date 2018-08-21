@@ -21,7 +21,7 @@
         }
 
         beforeEach(function () {
-            module('chpl', 'chpl.mock', 'chpl.templates');
+            angular.mock.module('chpl', 'chpl.mock'/*, 'chpl.templates'*/);
 
             inject(function ($controller, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $log = _$log_;

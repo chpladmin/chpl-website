@@ -26,7 +26,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.registration', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.registration', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.authorizeUser = jasmine.createSpy('authorizeUser');
                     $delegate.createInvitedUser = jasmine.createSpy('createInvitedUser');

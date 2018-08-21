@@ -4,7 +4,7 @@
     describe('chpl.registration', function () {
 
         beforeEach(function () {
-            module('chpl.registration');
+            angular.mock.module('chpl.registration');
         });
 
         describe('controller', function () {

@@ -12,7 +12,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.admin', 'chpl.mock', function ($provide) {
+            angular.mock.module(/*'chpl.templates',*/ 'chpl.admin', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getFuzzyTypes = jasmine.createSpy('getFuzzyTypes');
                     return $delegate;

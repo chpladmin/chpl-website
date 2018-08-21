@@ -114,5 +114,22 @@ gulp.task('test', function(done) {
 })
 
 gulp.task('test:auto', ['watch'], function(done) {
-    runTests(false, done);
+    var server = new Server({
+        configFile: path.join(__dirname, './../karma.conf.js'),
+        singleRun: false,
+        autoWatch: true,
+    }, function(err) {
+        if (err === 0) {
+            done();
+        } else {
+            done(new gutil.PluginError('karma', {
+                message: 'Karma Tests failed with error: ' + err
+            }));
+       }
+        //done();
+        //process.exit(failCount);
+        //done(failCount ? new Error("Failed " + failCount + " tests.") : failCount);
+    })
+    server.start();
+//    runTests(false, done);
 });

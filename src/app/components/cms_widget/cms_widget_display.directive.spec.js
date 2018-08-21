@@ -6,7 +6,7 @@
         mock = {};
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.components');
+            angular.mock.module(/*'chpl.templates',*/ 'chpl.components');
             inject(function (_$compile_, _$log_, $rootScope, aiCmsWidgetDirective) {
                 $compile = _$compile_;
                 $log = _$log_;

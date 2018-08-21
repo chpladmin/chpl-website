@@ -10,7 +10,7 @@
         var ctrl;
 
         beforeEach(function () {
-            module('chpl.templates','chpl');
+            angular.mock.module(/*'chpl.templates',*/'chpl');
         });
 
         beforeEach(inject(function (_$compile_, _$log_, $rootScope) {

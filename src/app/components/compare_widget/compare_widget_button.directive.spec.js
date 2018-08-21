@@ -5,8 +5,7 @@
         var $compile, $log, $rootScope, el, vm;
 
         beforeEach(function () {
-            module('chpl.templates');
-            module('chpl.components');
+            angular.mock.module('chpl.components');
             inject(function (_$compile_, _$log_, _$rootScope_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;

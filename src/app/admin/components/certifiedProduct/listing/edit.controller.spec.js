@@ -37,7 +37,7 @@
         mock.relatedListings = [{id: 1, edition: '2015'}, {id: 2, edition: '2014'}];
 
         beforeEach(function () {
-            module('chpl.admin', 'chpl.mock', function ($provide) {
+            angular.mock.module('chpl.admin', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getRelatedListings = jasmine.createSpy('getRelatedListings');
                     $delegate.updateCP = jasmine.createSpy('updateCP');

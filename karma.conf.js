@@ -1,56 +1,39 @@
 'use strict';
-var webpack = require('webpack');
-var path = require('path');
-var conf = require('./gulp/conf');
 
-const webpackConfig = require('./webpack.test');
-
-//process.env.CHROME_BIN = require('puppeteer').executablePath()
-
-module.exports = function(config) {
-    var configuration = {
-        basePath: '',
+module.exports = (config) => {
+    config.set({
+        browsers: [/*'PhantomJS',*/ 'ChromeHeadless'],
+        failOnEmptyTestSuite: false,
         files: [
-            'src/app/specs.js',
+            { pattern: 'src/app/specs.js' }
         ],
         frameworks: ['jasmine'],
-        failOnEmptyTestSuite: false,
-        //logLevel: config.LOG_DEBUG,
         preprocessors: {
-            'src/app/specs.js': ['webpack', 'sourcemap'],
+            'src/app/specs.js': ['webpack']
         },
-        reporters: ['spec', 'coverage'],
-        coverageReporter: {
-            dir: 'test_reports/coverage/',
-            reporters: [
-                { type: 'html' },
-                { type: 'text' },
-//                { type: 'text-summary' },
-            ],
+        reporters: [/*'spec', */'html', 'junit', 'super-dots'],
+        junitReporter: {
+            outputDir: 'test_reports',
+            suite: 'unit'
         },
-        webpack: webpackConfig,
-        webpackMiddleware: {
-            noInfo: true,
-            stats: {
-                children: false,
-                colors: true,
-                env: true,
-                exclude: /node_modules/,
-                //maxModules: Infinity,
-                //modules: false,
-            },
+        htmlReporter: {
+            groupSuites: true,
+            outputFile: 'test_reports/units.html',
+            useCompactStyle: true
         },
-        plugins: [
-            require('istanbul-instrumenter-loader'),
-            require('karma-coverage'),
-            require('karma-jasmine'),
-            require('karma-mocha'),
-            require('karma-phantomjs-launcher'),
-            require('karma-sourcemap-loader'),
-            require('karma-spec-reporter'),
-            require('karma-webpack'),
-        ],
-        browsers: ['PhantomJS']
-    };
-    config.set(configuration);
+        superDotsReporter: {
+            nbDotsPerLine: 100,
+            color: {
+                success: 'green',
+                failure: 'red',
+                ignore: 'yellow'
+            },/*
+            icon: {
+                success : '.',
+                failure : 'x',
+                ignore  : '?'
+            }*/
+        },
+        webpack: require('./webpack.config'),
+    });
 };

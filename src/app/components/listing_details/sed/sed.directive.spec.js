@@ -9,7 +9,7 @@
         /* eslint-enable quotes, key-spacing */
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.mock', 'chpl', function ($provide) {
+            angular.mock.module(/*'chpl.templates',*/ 'chpl.mock', 'chpl', function ($provide) {
                 $provide.decorator('utilService', function ($delegate) {
                     $delegate.makeCsv = jasmine.createSpy('makeCsv');
                     $delegate.sortCertArray = jasmine.createSpy('sortCertArray');

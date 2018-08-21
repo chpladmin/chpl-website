@@ -11,7 +11,7 @@
         }
 
         beforeEach(function () {
-            module('chpl.services');
+            angular.mock.module('chpl.services');
 
             inject(function (_$localStorage_, _$log_, _$window_, _authService_) {
                 $localStorage = _$localStorage_;

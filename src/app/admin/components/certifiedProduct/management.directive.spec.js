@@ -31,7 +31,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', /*'chpl.templates',*/ 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
