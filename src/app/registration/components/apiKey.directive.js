@@ -32,7 +32,6 @@
 
         this.$onInit = function () {
             vm.hasKey = false;
-            vm.key = '';
             if (vm.admin) {
                 vm.loadUsers();
             }

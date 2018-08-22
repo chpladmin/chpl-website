@@ -37,6 +37,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('JobController', {
                     job: mock.job,
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

@@ -22,19 +22,43 @@ module.exports = {
     mode: 'development',
     module: {
         rules: [{
+            enforce: 'post',
+            test: /\.js/,
+            exclude: [
+                    /specs\.js/,
+                    /\.spec\.js/,
+                    /node_modules/,
+                    /lib/,
+                    /\.mock\.js/,
+            ],
+            use: {
+                loader: 'istanbul-instrumenter-loader',
+                options: { esModules: true },
+            },
+        },{
             test: /\.js$/,
             exclude: /node_modules/,
-            use: {
+            use: [{
                 loader: 'babel-loader',
                 options: {
                     plugins: [BabelPluginAngularjsAnnotate],
                     presets: ['@babel/preset-env']
                 }
-            }
+            },{
+                loader: 'eslint-loader',
+                options: {
+                    formatter: require('eslint-formatter-friendly'),
+                    outputReport: {
+                        filePath: '../test_reports/checkstyle-[hash].xml',
+                        formatter: require('eslint/lib/formatters/checkstyle')
+                    },
+                    outputReport: {
+                        filePath: '../test_reports/checkstyle-[hash].html',
+                        formatter: require('eslint/lib/formatters/html'),
+                    },
+                }
+            }],
         },{
-            //            test: /\.hbs$/,
-            //            use: 'handlebars-loader',
-            //        },{
             test: /\.html$/,
             use: 'html-loader',
         },{

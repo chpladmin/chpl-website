@@ -40,14 +40,14 @@
         var vm = this;
 
         vm.clear = clear;
-        vm.getUsername = getUsername;
-        vm.isAcbAdmin = isAcbAdmin;
+        vm.getUsername = authService.getUsername;
+        vm.isAcbAdmin = authService.isAcbAdmin;
         vm.isActive = isActive;
-        vm.isAtlAdmin = isAtlAdmin;
-        vm.isAuthed = isAuthed;
-        vm.isChplAdmin = isChplAdmin;
-        vm.isCmsStaff = isCmsStaff;
-        vm.isOncStaff = isOncStaff;
+        vm.isAtlAdmin = authService.isAtlAdmin;
+        vm.isAuthed = authService.isAuthed;
+        vm.isChplAdmin = authService.isChplAdmin;
+        vm.isCmsStaff = authService.isCmsStaff;
+        vm.isOncStaff = authService.isOncStaff;
         vm.loadAnnouncements = loadAnnouncements;
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
@@ -57,24 +57,25 @@
         this.$onInit = function () {
             vm.loadAnnouncements();
 
-            var cmsWidget = $rootScope.$on('ShowWidget', function () {
+            var cmsWidget = $scope.$on('ShowWidget', function () {
                 vm.showCmsWidget();
             });
             $scope.$on('$destroy', cmsWidget);
 
-            var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
+            var showCompareWidget = $scope.$on('ShowCompareWidget', function () {
                 vm.showCompareWidget(true);
             });
             $scope.$on('$destroy', showCompareWidget);
 
-            var hideCompareWidget = $rootScope.$on('HideCompareWidget', function () {
+            var hideCompareWidget = $scope.$on('HideCompareWidget', function () {
                 vm.showCompareWidget(false);
             });
             $scope.$on('$destroy', hideCompareWidget);
 
-            $scope.$on('loggedIn', function () {
+            var loggedIn = $scope.$on('loggedIn', function () {
                 vm.loadAnnouncements();
             })
+            $scope.$on('$destroy', loggedIn);
         }
 
         function clear () {
@@ -83,38 +84,10 @@
             $location.url('/search');
         }
 
-        function getUsername () {
-            return authService.getUsername();
-        }
-
-        function isAcbAdmin () {
-            return authService.isAcbAdmin();
-        }
-
         function isActive (route) {
             var paths = $location.path().split('/')
             var routes = route.split('/');
             return (route === $location.path() || (paths[1] === routes[1] && routes.length === 2));
-        }
-
-        function isAtlAdmin () {
-            return authService.isAtlAdmin();
-        }
-
-        function isAuthed () {
-            return authService.isAuthed()
-        }
-
-        function isChplAdmin () {
-            return authService.isChplAdmin();
-        }
-
-        function isCmsStaff () {
-            return authService.isCmsStaff();
-        }
-
-        function isOncStaff () {
-            return authService.isOncStaff();
         }
 
         function loadAnnouncements () {

@@ -38,17 +38,32 @@ module.exports = {
     mode: 'development',
     module: {
         rules: [{
+                 /*enforce: 'post',
+                 test: /\.js/,
+                 exclude: [
+                 /specs\.js/,
+                 /\.spec\.js/,
+                 /node_modules/,
+                 ],
+                 use: {
+                 loader: 'istanbul-instrumenter-loader',
+                 options: { esModules: true },
+                 },
+                 },*/
             test: /\.js$/, // does the file end with '.js' ?
+            exclude: /node_modules/, // unless it's in node_modules
             use: [{
                 loader: 'babel-loader', // then use babel loader
                 options: {
                     plugins: [BabelPluginAngularjsAnnotate],
                     presets: ['@babel/preset-env'],
-                },
-//            },{
-//                loader: 'eslint-loader',
+                }
+            },{
+                loader: 'istanbul-instrumenter-loader',
+                options: { esModules: true },
+            },{
+                loader: 'eslint-loader',
             }],
-            exclude: /node_modules/, // unless it's in node_modules
         },{
             test: /\.hbs$/,
             use: 'handlebars-loader',

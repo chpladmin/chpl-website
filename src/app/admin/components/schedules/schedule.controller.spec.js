@@ -4,25 +4,29 @@
     describe('the Schedule Add/Edit', function () {
         var $log, $q, Mock, mock, networkService, scope, vm;
 
-        mock = {};
-        mock.newScheduleTrigger = {
-            name: '',
-            group: 'SummaryStatisticsEmailTrigger',
-            job: {
-                description: 'Sends the Summary Statistics Report',
-                group: 'chplJobs',
-                name: 'Summary Statistics Email',
-                frequency: 'HOURLY',
+        mock = {
+            newScheduleTrigger: {
+                name: '',
+                group: 'SummaryStatisticsEmailTrigger',
+                job: {
+                    description: 'Sends the Summary Statistics Report',
+                    group: 'chplJobs',
+                    jobDataMap: {},
+                    name: 'Summary Statistics Email',
+                    frequency: 'HOURLY',
+                },
+                cronSchedule: '0 0 13 * * ?',
+                email: 'fake@sample.com',
             },
-            cronSchedule: '0 0 13 * * ?',
-            email: 'tmy1313@gmail.com',
-        };
+            acbs: [],
+        }
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.createScheduleTrigger = jasmine.createSpy('createScheduleTrigger');
                     $delegate.deleteScheduleTrigger = jasmine.createSpy('deleteScheduleTrigger');
+                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
                     $delegate.updateScheduleTrigger = jasmine.createSpy('updateScheduleTrigger');
 
                     return $delegate;
@@ -36,6 +40,7 @@
                 networkService = _networkService_;
                 networkService.createScheduleTrigger.and.returnValue($q.when(mock.newScheduleTrigger));
                 networkService.deleteScheduleTrigger.and.returnValue($q.when({status: 200}));
+                networkService.getAcbs.and.returnValue($q.when(mock.acbs));
                 networkService.updateScheduleTrigger.and.returnValue($q.when(mock.newScheduleTrigger));
 
                 scope = $rootScope.$new();

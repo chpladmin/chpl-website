@@ -5,7 +5,7 @@
         .controller('ScheduleController', ScheduleController);
 
     /** @ngInject */
-    function ScheduleController ($interval, $log, $uibModalInstance, networkService, scheduleJobs, trigger, SPLIT_PRIMARY) {
+    function ScheduleController ($interval, $log, $uibModalInstance, SPLIT_PRIMARY, networkService, scheduleJobs, trigger) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -127,6 +127,7 @@
                 switch (job.frequency) {
                 case 'DAILY':
                     ret.hideHourlyTab = true;
+                    //falls through
                 case 'HOURLY':
                     ret.hideMinutesTab = true;
                     //no default

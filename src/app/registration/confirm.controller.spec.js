@@ -13,7 +13,7 @@
 
             beforeEach(function () {
                 mockCommonService = {};
-                module('chpl.registration', function ($provide) {
+                angular.mock.module('chpl.registration', function ($provide) {
                     $provide.value('networkService', mockCommonService);
                 });
 

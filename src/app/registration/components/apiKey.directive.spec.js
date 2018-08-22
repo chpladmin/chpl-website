@@ -59,7 +59,7 @@
 
             it('should have no key on load', function () {
                 expect(ctrl.hasKey).toBeFalsy();
-                expect(ctrl.key).toBe('');
+                expect(ctrl.key).toBeUndefined();
             });
 
             it('should call the common service to load users', function () {

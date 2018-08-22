@@ -9,6 +9,7 @@
         "browser": true,
         "jasmine": true,
         "amd": true,
+        "es6": true,
     },
     "globals": {
         "angular": true,

@@ -2,16 +2,16 @@
 
 module.exports = (config) => {
     config.set({
-        browsers: [/*'PhantomJS',*/ 'ChromeHeadless'],
+        browsers: ['ChromeHeadless'],
         failOnEmptyTestSuite: false,
         files: [
             { pattern: 'src/app/specs.js' }
         ],
         frameworks: ['jasmine'],
         preprocessors: {
-            'src/app/specs.js': ['webpack']
+            'src/app/specs.js': ['webpack', 'sourcemap']
         },
-        reporters: [/*'spec', */'html', 'junit', 'super-dots'],
+        reporters: ['html', 'junit', 'super-dots', 'coverage-istanbul'], // use "spec" to print out tests to command line; turn off super-dots
         junitReporter: {
             outputDir: 'test_reports',
             suite: 'unit'
@@ -19,20 +19,19 @@ module.exports = (config) => {
         htmlReporter: {
             groupSuites: true,
             outputFile: 'test_reports/units.html',
-            useCompactStyle: true
+            useCompactStyle: true,
         },
         superDotsReporter: {
             nbDotsPerLine: 100,
             color: {
                 success: 'green',
                 failure: 'red',
-                ignore: 'yellow'
-            },/*
-            icon: {
-                success : '.',
-                failure : 'x',
-                ignore  : '?'
-            }*/
+                ignore: 'grey'
+            },
+        },
+        coverageIstanbulReporter: {
+            dir: 'test_reports/coverage/',
+            reports: ['html', 'lcov', 'text-summary'],
         },
         webpack: require('./webpack.config'),
     });

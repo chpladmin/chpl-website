@@ -92,18 +92,6 @@
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
-        it('should warn the user if the status will cause developer suspension', function () {
-            expect(vm.willCauseSuspension('Active')).toBe(false);
-            expect(vm.willCauseSuspension('Retired')).toBe(false);
-            expect(vm.willCauseSuspension('Suspended by ONC')).toBe(false);
-            expect(vm.willCauseSuspension('Suspended by ONC-ACB')).toBe(false);
-            expect(vm.willCauseSuspension('Terminated by ONC')).toBe(true);
-            expect(vm.willCauseSuspension('Withdrawn by Developer')).toBe(false);
-            expect(vm.willCauseSuspension('Withdrawn by Developer Under Surveillance/Review')).toBe(true);
-            expect(vm.willCauseSuspension('Withdrawn by ONC-ACB')).toBe(false);
-            expect(vm.willCauseSuspension('not a status')).toBe(false);
-        });
-
         it('should not create parents if they exist', function () {
             var cp = angular.copy(mock.activeCP);
             cp.ics.parents = [{name: 'a parent'}];

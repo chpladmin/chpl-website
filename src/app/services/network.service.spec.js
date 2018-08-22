@@ -35,6 +35,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, function () {
+                //no op
             });
             $httpBackend.flush();
         });
@@ -45,6 +47,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, error) {
+                //no op
             });
             $httpBackend.flush();
         });
@@ -55,6 +59,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, function () {
+                //no op
             });
             $httpBackend.flush();
         });
@@ -65,6 +71,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, error) {
+                //no op
             });
             $httpBackend.flush();
         });
@@ -78,6 +86,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, function () {
+                //no op
             });
             $httpBackend.flush();
         });

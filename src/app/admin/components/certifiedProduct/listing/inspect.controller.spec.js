@@ -20,7 +20,7 @@
         }
 
         beforeEach(function () {
-            angular.mock.angular.mock.module('chpl.admin', 'chpl.mock', function ($provide) {
+            angular.mock.module('chpl.admin', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');
@@ -30,7 +30,7 @@
                 });
             });
 
-            angular.mock.inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
                 $log = _$log_;
                 $q = _$q_;
                 Mock = _Mock_;

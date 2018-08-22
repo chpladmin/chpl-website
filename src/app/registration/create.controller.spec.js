@@ -88,13 +88,13 @@
         });
 
         it('should call createUser if the details are complete', function () {
-            vm.userDetails = mock.validUser;
+            vm.userDetails = angular.copy(mock.validUser);
             vm.createUser();
             expect(networkService.createInvitedUser).toHaveBeenCalled();
         });
 
         it('should require password and verify password to be equal', function () {
-            vm.userDetails = mock.validUser;
+            vm.userDetails = angular.copy(mock.validUser);
             expect(vm.validateUser()).toBe(true);
             vm.userDetails.user.password = 'test';
             vm.userDetails.user.passwordverify = 'test2';
