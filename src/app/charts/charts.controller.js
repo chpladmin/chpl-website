@@ -115,7 +115,7 @@
             }).sort(function (a, b) {
                 return utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number);
             }).map(function (obj) {
-                return {c: [{v: obj.criterion.number},{v: obj.productCount}, {v: obj.criterion.title}]};
+                return {c: [{v: obj.criterion.number},{v: obj.productCount}, {v: "Name: " + obj.criterion.title + "\n Count: " + obj.productCount}]};
             });
         }
 
