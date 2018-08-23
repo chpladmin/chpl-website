@@ -6,5 +6,4 @@ import './chpl.mock';
 import 'angular-mocks';
 
 const tests = require.context('./', true, /\.spec\.js/)
-//const tests = require.context('./admin/components/schedules/', true, /\.spec\.js/)
 tests.keys().forEach(tests)
