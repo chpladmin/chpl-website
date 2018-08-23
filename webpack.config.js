@@ -2,6 +2,7 @@
 
 const webpack = require('webpack');
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
@@ -154,6 +155,18 @@ module.exports = {
             inject: 'body',
             template: path.resolve(__dirname, './src/index.html'),
         }),
+        new HtmlWebpackPlugin({
+            chunks: ['app', 'vendor'],
+            hash: true,
+            inject: 'body',
+            template: path.resolve(__dirname, './src/error.html'),
+        }),
+        new HtmlWebpackPlugin({
+            chunks: ['app', 'vendor'],
+            hash: true,
+            inject: 'body',
+            template: path.resolve(__dirname, './src/style.html'),
+        }),
         new webpack.DefinePlugin({
             DEVELOPER_MODE: true,
             ENABLE_LOGGING: true,
@@ -161,5 +174,6 @@ module.exports = {
             MINUTES_BETWEEN_KEEPALIVE: 1,
         }),
         new StyleLintPlugin(),
+        new CleanWebpackPlugin(['dist']),
     ]
 };

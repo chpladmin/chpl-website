@@ -9,7 +9,7 @@
     "start": "webpack-dev-server --mode development",
     "test": "concurrently \"karma start --single-run\" \"yarn html-lint\"",
     "test:auto": "karma start",
-    "test:ci": "karma start --single-run"
+    "test:ci": "karma start --single-run --no-colors"
   },
   "dependencies": {
     "angular": "^1.7.2",
