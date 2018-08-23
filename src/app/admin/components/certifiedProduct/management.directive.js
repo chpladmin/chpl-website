@@ -265,15 +265,14 @@
                 }
             });
             networkService.massRejectPendingListings(idsToReject)
-                .then(function () {},
-                      function (error) {
-                          if (error.data.errors && error.data.errors.length > 0) {
-                              vm.uploadingListingsMessages = error.data.errors.map(function (error) {
-                                  var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
-                                  return ret;
-                              });
-                          }
-                      });
+                .then(function () {}, function (error) {
+                    if (error.data.errors && error.data.errors.length > 0) {
+                        vm.uploadingListingsMessages = error.data.errors.map(function (error) {
+                            var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                            return ret;
+                        });
+                    }
+                });
         }
 
         function massRejectPendingSurveillance () {
@@ -286,15 +285,14 @@
                 }
             });
             networkService.massRejectPendingSurveillance(idsToReject)
-                .then(function () {},
-                      function (error) {
-                          if (error.data.errors && error.data.errors.length > 0) {
-                              vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
-                                  var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
-                                  return ret;
-                              });
-                          }
-                      });
+                .then(function () {}, function (error) {
+                    if (error.data.errors && error.data.errors.length > 0) {
+                        vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
+                            var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                            return ret;
+                        });
+                    }
+                });
         }
 
         function mergeDevelopers () {

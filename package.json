@@ -8,7 +8,8 @@
     "html-lint": "htmllint src/app/**/*.html",
     "start": "webpack-dev-server --mode development",
     "test": "concurrently \"karma start --single-run\" \"yarn html-lint\"",
-    "test:auto": "karma start"
+    "test:auto": "karma start",
+    "test:ci": "karma start --single-run"
   },
   "dependencies": {
     "angular": "^1.7.2",
