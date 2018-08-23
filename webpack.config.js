@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
     devServer: {
@@ -37,7 +38,10 @@ module.exports = {
             },
         },{
             test: /\.js$/,
-            exclude: /node_modules/,
+            exclude: [
+                    /node_modules/,
+                    /\.mock\.js/,
+            ],
             use: [{
                 loader: 'babel-loader',
                 options: {
@@ -60,7 +64,9 @@ module.exports = {
             }],
         },{
             test: /\.html$/,
-            use: 'html-loader',
+            use: [
+                'html-loader',
+            ],
         },{
             test: /\.png$/,
             use: [ 'url-loader?mimetype=image/png' ],
@@ -151,7 +157,9 @@ module.exports = {
         new webpack.DefinePlugin({
             DEVELOPER_MODE: true,
             ENABLE_LOGGING: true,
-            MINUTES_UNTIL_IDLE: '120',
+            MINUTES_UNTIL_IDLE: 120,
+            MINUTES_BETWEEN_KEEPALIVE: 1,
         }),
+        new StyleLintPlugin(),
     ]
 };

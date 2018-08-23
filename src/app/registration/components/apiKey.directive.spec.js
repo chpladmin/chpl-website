@@ -8,7 +8,6 @@
         beforeEach(function () {
             mockCommonService = {};
 
-            ///angular.mock.module('chpl.templates');
             angular.mock.module('chpl.registration', function ($provide) {
                 $provide.value('networkService', mockCommonService);
             });
@@ -34,7 +33,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-//                console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 

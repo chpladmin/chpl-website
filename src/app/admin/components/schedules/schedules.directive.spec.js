@@ -37,7 +37,7 @@
                     editableJobFields: 'email-Subscribers',
                     authorities: 'ROLE_ADMIN',
                     email: 'alarned@ainq.com',
-                }
+                },
             }],
         };
         mock.fakeModalOptions = {
