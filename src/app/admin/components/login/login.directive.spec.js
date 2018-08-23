@@ -5,7 +5,7 @@
         var $compile, $log, $q, Idle, Keepalive, authService, el, networkService, scope, vm;
 
         beforeEach(function () {
-            angular.mock.module(/*'chpl.templates',*/ 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.isAuthed = jasmine.createSpy('isAuthed');
                     $delegate.logout = jasmine.createSpy('logout');

@@ -23,7 +23,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.mock', /*'chpl.templates',*/ 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getSubscriptionReportTypes = jasmine.createSpy('getSubscriptionReportTypes');
                     $delegate.getSubscriptionRecipients = jasmine.createSpy('getSubscriptionRecipients');
