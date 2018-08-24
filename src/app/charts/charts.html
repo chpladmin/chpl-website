@@ -23,19 +23,28 @@
             <li role="presentation" ng-class="{'active': vm.chartState.productEdition === 2014}"><a ng-click="vm.chartState.productEdition = 2014">2014 Edition</a></li>
             <li role="presentation" ng-class="{'active': vm.chartState.productEdition === 2015}"><a ng-click="vm.chartState.productEdition = 2015">2015 Edition</a></li>
           </ul>
-          The charts below describe the number of unique products that have been certified to each of the ONC certification criteria. A unique product represents a group of CHPL listings that 
-          refer to a single product from the same developer, each listing in a group often differing by version number.
+          <p>The charts below describe the number of unique products that have been certified to each of the ONC certification criteria. A unique product represents a group of CHPL listings that 
+          refer to a single product from the same developer, each listing in a group often differing by version number.</p>
           <div ng-if="vm.chartState.productEdition === 2014" google-chart="" chart="vm.criterionProductCounts[2014]" class="bar-chart"></div>
           <div ng-if="vm.chartState.productEdition === 2015" google-chart="" chart="vm.criterionProductCounts[2015]" class="bar-chart"></div>
         </div>
       </div>
     </div>
     <div ng-if="vm.chartState.tab === 'developer'">
-      Since the start of the ONC Health IT Certification Program, there have been three certification editions: 2011, 2014, and 2015. The charts below describe the transition between each edition by certified health IT developers. The regulations for each edition can be found <a href ="https://www.healthit.gov/topic/certification-ehrs/certification-standards-and-regulations">here</a>. 
+      <div class="row">
+  	    <div class="col-sm-12">
+      		<p>Since the start of the ONC Health IT Certification Program, there have been three certification editions: 2011, 2014, and 2015. The charts below describe the transition between each edition by certified health IT developers. The regulations for each edition can be found <a href ="https://www.healthit.gov/topic/certification-ehrs/certification-standards-and-regulations">here</a>.</p>
+        </div>
+      </div>
       <div class="row">
         <div class="col-sm-4" ng-repeat="chart in vm.incumbentDevelopersCounts">
           <div google-chart="" chart="chart" class="pie-chart"></div>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <p>The 2011 edition has been retired and has no "Active" listings.</p>
+      	</div>
       </div>
       <div class="row">
         <div class="col-sm-6">
@@ -66,9 +75,9 @@
       </div>
     </div>
     <div ng-if="vm.chartState.tab === 'sed'">
-      The safety-enhanced design (SED) criteria requires health IT developers to apply and test user centered design standards to their certified health IT. Developers follow <a href="https://www.nist.gov/publications/nistir-7742-customized-common-industry-format-template-electronic-health-record">NISTIR 7742</a> and submit results to ONC. SED testing requires participants who work in the health care field for which the product is intended to be used. The charts below describe the characteristics of the SED test participants for ONC certified health IT products.
       <div class="row">
         <div class="col-sm-12">
+          <p>The safety-enhanced design (SED) criteria requires health IT developers to apply and test user centered design standards to their certified health IT. Developers follow <a href="https://www.nist.gov/publications/nistir-7742-customized-common-industry-format-template-electronic-health-record">NISTIR 7742</a> and submit results to ONC. SED testing requires participants who work in the health care field for which the product is intended to be used. The charts below describe the characteristics of the SED test participants for ONC certified health IT products.</p>
           <div google-chart="" chart="vm.sedParticipantCounts" class="column-chart"></div>
         </div>
       </div>
