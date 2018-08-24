@@ -6,7 +6,7 @@
         mock = {
             user: {
                 Authorities: [],
-                Identity: [31, 'test', 'Test', 'Lastname'],
+                Identity: [31, 'first', 'middle', 'last'],
             },
         }
 
@@ -37,7 +37,7 @@
 
         it('should get a username when logged in', function () {
             auth.saveToken(buildToken(mock.user));
-            expect(auth.getUsername()).toBe('Test Lastname');
+            expect(auth.getUsername()).toBe('middle');
         });
 
         it('should not get a username when not logged in', function () {

@@ -13,7 +13,7 @@
             });
 
             inject(function ($q) {
-                mockCommonService.users = {'data': {'users': [{'subjectName': 'admin','firstName': 'Administrator','lastName': 'Administrator','email': 'info@ainq.com','phoneNumber': '(301) 560-6999','title': null,'accountLocked': false,'accountEnabled': true}]}};
+                mockCommonService.users = {'data': {'users': [{'subjectName': 'admin','fullName': 'Administrator','friendlyName': 'Administrator','email': 'info@ainq.com','phoneNumber': '(301) 560-6999','title': null,'accountLocked': false,'accountEnabled': true}]}};
 
                 mockCommonService.getUsers = function () {
                     return $q.when(this.users);
@@ -42,7 +42,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
