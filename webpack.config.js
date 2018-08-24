@@ -151,18 +151,21 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             chunks: ['app', 'vendor'],
+            filename: 'index.html',
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/index.html'),
         }),
         new HtmlWebpackPlugin({
             chunks: ['app', 'vendor'],
+            filename: 'error.html',
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/error.html'),
         }),
         new HtmlWebpackPlugin({
             chunks: ['app', 'vendor'],
+            filename: 'style.html',
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/style.html'),
