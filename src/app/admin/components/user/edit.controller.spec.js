@@ -48,7 +48,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
