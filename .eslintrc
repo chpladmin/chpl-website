@@ -9,6 +9,7 @@
         "browser": true,
         "jasmine": true,
         "amd": true,
+        "es6": true,
     },
     "globals": {
         "angular": true,
@@ -26,7 +27,7 @@
         "indent": ["error"],
         "key-spacing": ["error"],
         "keyword-spacing": ["error"],
-        "no-multi-spaces": ["error"],
+        "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
         "no-multiple-empty-lines": ["error", { "max": 1 }],
         "no-self-compare": ["error"],
         "no-tabs": ["error"],

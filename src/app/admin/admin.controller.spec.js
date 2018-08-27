@@ -9,7 +9,7 @@
             mockAuthService = {};
             mockCommonService = {};
 
-            module('chpl.admin', function ($provide) {
+            angular.mock.module('chpl.admin', function ($provide) {
                 $provide.value('authService', mockAuthService);
                 $provide.value('networkService', mockCommonService);
             });

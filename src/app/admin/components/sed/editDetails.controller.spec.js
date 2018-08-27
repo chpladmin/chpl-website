@@ -11,7 +11,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.admin', 'chpl.mock');
+            angular.mock.module('chpl.admin', 'chpl.mock');
 
             inject(function (_$controller_, _$log_, $rootScope, _Mock_) {
                 $controller = _$controller_;

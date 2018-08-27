@@ -8,8 +8,7 @@
         beforeEach(function () {
             mockCommonService = { };
 
-            module('chpl.templates');
-            module('chpl.admin', function ($provide) {
+            angular.mock.module('chpl.admin', function ($provide) {
                 $provide.value('networkService', mockCommonService);
             });
 

@@ -3,7 +3,7 @@
 
     describe('the Collections Service', function () {
 
-        beforeEach(module('chpl.collections', 'chpl.mock'));
+        beforeEach(angular.mock.module('chpl.collections', 'chpl.mock'));
 
         var $log, Mock, service;
 

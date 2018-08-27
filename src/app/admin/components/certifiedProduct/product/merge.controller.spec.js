@@ -7,7 +7,7 @@
         mock = {};
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     $delegate.updateProduct = jasmine.createSpy('updateProduct');

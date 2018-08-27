@@ -32,7 +32,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.product', function ($provide) {
+            angular.mock.module('chpl.product', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCap = jasmine.createSpy('getCap');
                     $delegate.getProduct = jasmine.createSpy('getProduct');

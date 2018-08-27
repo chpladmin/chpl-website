@@ -6,7 +6,7 @@
         var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, authService, el, networkService, scope, vm;
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
