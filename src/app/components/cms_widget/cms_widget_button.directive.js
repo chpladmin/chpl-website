@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.cms-widget')
+    angular.module('chpl.components')
         .directive('aiCmsWidgetButton', aiCmsWidgetButton);
 
     /** @ngInject */
@@ -13,7 +13,7 @@
                 productId: '@',
                 productName: '@',
             },
-            templateUrl: 'app/components/cms_widget/cms_widget_button.html',
+            templateUrl: 'chpl.components/cms_widget/cms_widget_button.html',
             link: function (scope, el, attrs, widgetController) {
                 scope.toggleProduct = function (id) {
                     scope.$emit('ShowWidget');

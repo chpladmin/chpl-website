@@ -8,6 +8,7 @@
     function ChartsController ($log, networkService, utilService) {
         var vm = this;
 
+        vm.updateYAxis = updateYAxis;
         vm.updateChartStack = updateChartStack;
 
         activate();
@@ -15,15 +16,24 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
+            vm.nonconformityTypes = [
+                'All',
+                2014,
+                2015,
+                'Program',
+            ];
             vm.chartState = {
                 isStacked: 'false',
+                yAxis: '',
                 listingCountType: '1',
                 productEdition: 2014,
+                nonconformityCountType: 'All',
                 tab: 'product',
             };
             _createCriterionProductCountChart();
             _createIncumbentDevelopersCountChart();
             _createListingCountCharts();
+            _createNonconformityCountChart();
             _createSedParticipantCountChart();
             _createParticipantGenderCountChart();
             _createParticipantAgeCountChart();
@@ -42,6 +52,12 @@
             });
         }
 
+        function updateYAxis () {
+            Object.values(vm.nonconformityCounts).forEach(function (value) {
+                value.options.vAxis.scaleType = vm.chartState.yAxis;
+            });
+        }
+
         ////////////////////////////////////////////////////////////////////
 
         function _createCriterionProductCountChart () {
@@ -53,10 +69,12 @@
                             cols: [
                                 { label: 'Certification Criteria', type: 'string'},
                                 { label: 'Number of Unique Products', type: 'number'},
+                                { type: 'string', role: 'tooltip'},
                             ],
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
+                        	tooltip: {isHtml: true},
                             animation: {
                                 duration: 1000,
                                 easing: 'inAndOut',
@@ -72,10 +90,12 @@
                             cols: [
                                 { label: 'Certification Criteria', type: 'string'},
                                 { label: 'Number of Unique Products', type: 'number'},
+                                { type: 'string', role: 'tooltip'},
                             ],
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
+                        	tooltip: {isHtml: true},
                             animation: {
                                 duration: 1000,
                                 easing: 'inAndOut',
@@ -95,7 +115,7 @@
             }).sort(function (a, b) {
                 return utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number);
             }).map(function (obj) {
-                return {c: [{ v: obj.criterion.number},{v: obj.productCount}]};
+                return {c: [{v: obj.criterion.number},{v: obj.productCount}, {v: "Name: " + obj.criterion.title + "\n Count: " + obj.productCount}]};
             });
         }
 
@@ -256,6 +276,141 @@
                             })
                     ),
             }];
+        }
+
+        function _createNonconformityCountChart () {
+            networkService.getNonconformityStatisticsCount().then(function (data) {
+                vm.nonconformityCounts = {
+                    'All': {
+                        type: 'ColumnChart',
+                        data: {
+                            cols: [
+                                { label: 'All Certification Criteria and Program Requirements Surveilled', type: 'string'},
+                                { label: 'Number of Non-Conformities', type: 'number'},
+                            ],
+                            rows: _getNonconformityCountDataInChartFormat(data, 'All'),
+                        },
+                        options: {
+                            animation: {
+                                duration: 1000,
+                                easing: 'inAndOut',
+                                startup: true,
+                            },
+                            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
+                            hAxis: {
+                                title: 'All Certification Criteria and Program Requirements Surveilled',
+                                minValue: 0,
+                            },
+                            vAxis: {
+                                scaleType: vm.chartState.yAxis,
+                                title: 'Number of Non-Conformities',
+                                minValue: 0,
+                            },
+                        },
+                    },
+                    2014: {
+                        type: 'ColumnChart',
+                        data: {
+                            cols: [
+                                { label: '2014 Certification Criteria and Program Requirements Surveilled', type: 'string'},
+                                { label: 'Number of Non-Conformities', type: 'number'},
+                            ],
+                            rows: _getNonconformityCountDataInChartFormat(data, 2014),
+                        },
+                        options: {
+                            animation: {
+                                duration: 1000,
+                                easing: 'inAndOut',
+                                startup: true,
+                            },
+                            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
+                            hAxis: {
+                                title: '2014 Certification Criteria and Program Requirements Surveilled',
+                                minValue: 0,
+                            },
+                            vAxis: {
+                                scaleType: vm.chartState.yAxis,
+                                title: 'Number of Non-Conformities',
+                                minValue: 0,
+                            },
+                        },
+                    },
+                    2015: {
+                        type: 'ColumnChart',
+                        data: {
+                            cols: [
+                                { label: '2015 Certification Criteria and Program Requirements Surveilled', type: 'string'},
+                                { label: 'Number of Non-Conformities', type: 'number'},
+                            ],
+                            rows: _getNonconformityCountDataInChartFormat(data, 2015),
+                        },
+                        options: {
+                            animation: {
+                                duration: 1000,
+                                easing: 'inAndOut',
+                                startup: true,
+                            },
+                            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
+                            hAxis: {
+                                title: '2015 Certification Criteria and Program Requirements Surveilled',
+                                minValue: 0,
+                            },
+                            vAxis: {
+                                scaleType: vm.chartState.yAxis,
+                                title: 'Number of Non-Conformities',
+                                minValue: 0,
+                            },
+                        },
+                    },
+                    'Program': {
+                        type: 'ColumnChart',
+                        data: {
+                            cols: [
+                                { label: 'Program Certification Criteria and Program Requirements Surveilled', type: 'string'},
+                                { label: 'Number of Non-Conformities', type: 'number'},
+                            ],
+                            rows: _getNonconformityCountDataInChartFormat(data, 'Program'),
+                        },
+                        options: {
+                            animation: {
+                                duration: 1000,
+                                easing: 'inAndOut',
+                                startup: true,
+                            },
+                            title: 'Number of Non-Conformities by Certification Criteria and Program Requirements Surveilled',
+                            hAxis: {
+                                title: 'Program Certification Criteria and Program Requirements Surveilled',
+                                minValue: 0,
+                            },
+                            vAxis: {
+                                scaleType: vm.chartState.yAxis,
+                                title: 'Number of Non-Conformities',
+                                minValue: 0,
+                            },
+                        },
+                    },
+                }
+            });
+        }
+
+        function _getNonconformityCountDataInChartFormat (data, type) {
+            return data.nonconformityStatisticsResult.filter(function (obj) {
+                switch (type) {
+                case 2014:
+                    return obj.nonconformityType.indexOf('170.314') >= 0;
+                case 2015:
+                    return obj.nonconformityType.indexOf('170.315') >= 0;
+                case 'Program':
+                    return obj.nonconformityType.indexOf('170.523') >= 0 || obj.nonconformityType.indexOf('Other') >= 0;
+                case 'All':
+                    return true;
+                default: false;
+                }
+            }).sort(function (a, b) {
+                return utilService.sortOtherNonconformityTypes(a.nonconformityType) - utilService.sortOtherNonconformityTypes(b.nonconformityType);
+            }).map(function (obj) {
+                return {c: [{ v: obj.nonconformityType},{v: obj.nonconformityCount}]};
+            });
         }
 
         function _createSedParticipantCountChart () {

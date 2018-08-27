@@ -7,17 +7,41 @@
         mock = {
             acbs: [{id: 1, name: 'fake'}],
             results: [{
-                name: 'cacheStatusAgeTrigger-alarned@ainq.com',
-                group: 'group1',
-                jobName: 'cacheStatusAgeJob',
-                jobGroup: 'cacheStatusAgeJob',
-                scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-                cronSchedule: '0 13 * * * ?',
-                email: 'alarned@ainq.com',
+                name: 'tmy1313@gmail_com',
+                group: 'SummaryStatisticsEmailTrigger',
+                job: {
+                    description: 'Sends the Summary Statistics Report',
+                    group: 'chplJobs',
+                    name: 'Summary Statistics Email',
+                    frequency: 'HOURLY',
+                },
+                cronSchedule: '0 0 13 * * ?',
+                email: 'tmy1313@gmail.com',
+            }],
+            scheduleJobs: [{
+                description: 'Allow subscribers to get notifications if the cache has become \'too old\'.',
+                group: 'chplJobs',
+                name: 'Cache Status Age',
+                frequency: 'HOURLY',
+            },{
+                description: 'Sends the Summary Statistics Report',
+                group: 'chplJobs',
+                name: 'Summary Statistics Email',
+                frequency: 'HOURLY',
+            },{
+                description: 'Send warnings to subscribers when an ONC-ACB has changed status of a listing to a state that might warrant a Developer Ban.',
+                group: 'chplJobs',
+                name: 'Trigger Developer Ban Notification',
+                frequency: null,
+                jobDataMap: {
+                    editableJobFields: 'email-Subscribers',
+                    authorities: 'ROLE_ADMIN',
+                    email: 'alarned@ainq.com',
+                }
             }],
         };
         mock.fakeModalOptions = {
-            templateUrl: 'app/admin/components/schedules/schedule.html',
+            templateUrl: 'chpl.admin/components/schedules/schedule.html',
             controller: 'ScheduleController',
             controllerAs: 'vm',
             animation: false,
@@ -26,6 +50,7 @@
             size: 'md',
             resolve: {
                 trigger: jasmine.any(Function),
+                scheduleJobs: jasmine.any(Function),
             },
         };
 
@@ -33,7 +58,7 @@
             module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getScheduleTriggers = jasmine.createSpy('getScheduleTriggers');
-
+                    $delegate.getScheduleJobs = jasmine.createSpy('getScheduleJobs');
                     return $delegate;
                 });
             });
@@ -49,6 +74,7 @@
                 });
                 networkService = _networkService_;
                 networkService.getScheduleTriggers.and.returnValue($q.when({results: mock.results}));
+                networkService.getScheduleJobs.and.returnValue($q.when({results: mock.scheduleJobs}));
 
                 el = angular.element('<ai-scheduled-jobs acbs="acbs"></ai-scheduled-jobs>');
 
@@ -88,8 +114,8 @@
         describe('wrt the Cache Status Age application', function () {
             it('should generate details', function () {
                 expect(vm.scheduledTriggers[0].details).toEqual([
-                    'Schedule: 0 13 * * * ?',
-                    'Type: Cache Status Age Notification',
+                    'Schedule: 0 0 13 * * ?',
+                    'Type: Summary Statistics Email',
                 ]);
             });
         });
@@ -132,9 +158,7 @@
             it('should resolve the trigger on create', function () {
                 vm.createTrigger();
                 expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.trigger()).toEqual({
-                    scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-                });
+                expect(actualOptions.resolve.trigger()).toEqual({});
             });
 
             it('should refresh the triggers if it was updated', function () {
@@ -144,5 +168,26 @@
                 expect(networkService.getScheduleTriggers.calls.count()).toBe(serviceCallCount + 1);
             });
         })
+
+        describe('when editing a job', function () {
+            it('should create a modal instance', function () {
+                expect(vm.editJobInstance).toBeUndefined();
+                vm.editJob(vm.scheduledJobs[2]);
+                expect(vm.editJobInstance).toBeDefined();
+            });
+
+            it('should resolve the job on edit', function () {
+                vm.editJob(vm.scheduledJobs[2]);
+                expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
+                expect(actualOptions.resolve.job()).toEqual(vm.scheduledJobs[2]);
+            });
+
+            it('should refresh the jobs if it was updated', function () {
+                var serviceCallCount = networkService.getScheduleJobs.calls.count();
+                vm.editJob(vm.scheduledJobs[2]);
+                vm.editJobInstance.close({status: 'updated'});
+                expect(networkService.getScheduleJobs.calls.count()).toBe(serviceCallCount + 1);
+            });
+        });
     });
 })();

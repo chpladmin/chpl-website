@@ -274,7 +274,7 @@
             var modalOptions, participants, task;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/taskModal.html',
+                    templateUrl: 'chpl.components/listing_details/sed/taskModal.html',
                     controller: 'ViewSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -341,7 +341,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/sed/editTask.html',
+                    templateUrl: 'chpl.admin/components/sed/editTask.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,
@@ -390,7 +390,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/participantsModal.html',
+                    templateUrl: 'chpl.components/listing_details/sed/participantsModal.html',
                     controller: 'ViewSedParticipantsController',
                     controllerAs: 'vm',
                     animation: false,
@@ -455,7 +455,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/sed/editDetails.html',
+                    templateUrl: 'chpl.admin/components/sed/editDetails.html',
                     controller: 'EditSedDetailsController',
                     controllerAs: 'vm',
                     animation: false,

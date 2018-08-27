@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
 
         .directive('stNumberRange', function () {
             return {
@@ -10,7 +10,7 @@
                     lower: '=',
                     higher: '=',
                 },
-                templateUrl: 'app/components/smart_table/stNumberRange.html',
+                templateUrl: 'chpl.components/smart_table/stNumberRange.html',
                 link: function (scope, element, attr, table) {
                     var inputs = element.find('input');
                     var inputLower = angular.element(inputs[0]);

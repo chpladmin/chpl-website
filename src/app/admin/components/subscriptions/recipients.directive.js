@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/subscriptions/recipients.html',
+            templateUrl: 'chpl.admin/components/subscriptions/recipients.html',
             scope: {},
             bindToController: {
                 acbs: '=',
@@ -29,18 +29,16 @@
         vm.loadSubscriptionReportTypes = loadSubscriptionReportTypes;
         vm.loadRecipients = loadRecipients;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.loadSubscriptionReportTypes();
             vm.loadRecipients();
         }
 
         function createRecipient () {
             vm.createRecipientInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/subscriptions/recipient.html',
+                templateUrl: 'chpl.admin/components/subscriptions/recipient.html',
                 controller: 'RecipientController',
                 controllerAs: 'vm',
                 animation: false,
@@ -66,7 +64,7 @@
 
         function editRecipient (recipient) {
             vm.editRecipientInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/subscriptions/recipient.html',
+                templateUrl: 'chpl.admin/components/subscriptions/recipient.html',
                 controller: 'RecipientController',
                 controllerAs: 'vm',
                 animation: false,

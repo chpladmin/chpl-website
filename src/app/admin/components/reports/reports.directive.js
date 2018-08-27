@@ -7,7 +7,7 @@
             return {
                 restrict: 'E',
                 replace: true,
-                templateUrl: 'app/admin/components/reports/reports.html',
+                templateUrl: 'chpl.admin/components/reports/reports.html',
                 bindToController: {
                     workType: '=',
                     productId: '=',
@@ -52,12 +52,10 @@
         vm._compareCertificationEvents = _compareCertificationEvents;
         vm._compareSed = _compareSed;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
         // Functions
 
-        function activate () {
+        this.$onInit = function () {
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isAtlAdmin = authService.isAtlAdmin();
             vm.isCmsStaff = authService.isCmsStaff();
@@ -280,7 +278,7 @@
 
         function compareSurveillances (oldS, newS) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/reports/compareSurveillanceRequirements.html',
+                templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
                 controller: 'CompareSurveillanceRequirementsController',
                 controllerAs: 'vm',
                 animation: false,

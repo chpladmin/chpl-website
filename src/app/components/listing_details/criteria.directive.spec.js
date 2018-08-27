@@ -180,7 +180,7 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'app/components/listing_details/criteriaModal.html',
+                        templateUrl: 'chpl.components/listing_details/criteriaModal.html',
                         controller: 'EditCertificationCriteriaController',
                         controllerAs: 'vm',
                         animation: false,

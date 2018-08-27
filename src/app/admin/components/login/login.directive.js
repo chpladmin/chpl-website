@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/login/login.html',
+            templateUrl: 'chpl.admin/components/login/login.html',
             scope: {
             },
             bindToController: {
@@ -23,10 +23,9 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $scope, $rootScope, Idle, Keepalive, authService, networkService) {
+    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService) {
         var vm = this;
 
-        vm.activate = activate;
         vm.broadcastLogin = broadcastLogin;
         vm.changePassword = changePassword;
         vm.clear = clear;
@@ -44,11 +43,9 @@
             NONE: 4,
         };
 
-        vm.activate();
-
         /////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
             vm.clear();
             if (vm.isAuthed()) {

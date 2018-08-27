@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/schedules/schedules.html',
+            templateUrl: 'chpl.admin/components/schedules/schedules.html',
             scope: {},
             bindToController: {
                 acbs: '=',
@@ -21,24 +21,25 @@
     }
 
     /** @ngInject */
-    function ScheduledJobsController ($log, $uibModal, networkService) {
+    function ScheduledJobsController ($log, $uibModal, networkService, SPLIT_PRIMARY) {
         var vm = this;
 
         vm.createTrigger = createTrigger;
+        vm.editJob = editJob;
         vm.editTrigger = editTrigger;
         vm.loadScheduledTriggers = loadScheduledTriggers;
-
-        activate();
+        vm.loadScheduledJobs = loadScheduledJobs;
 
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.loadScheduledTriggers();
+            vm.loadScheduledJobs();
         }
 
         function createTrigger () {
             vm.editTriggerInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/schedules/schedule.html',
+                templateUrl: 'chpl.admin/components/schedules/schedule.html',
                 controller: 'ScheduleController',
                 controllerAs: 'vm',
                 animation: false,
@@ -46,9 +47,8 @@
                 keyboard: false,
                 size: 'md',
                 resolve: {
-                    trigger: function () { return {
-                        scheduleType: 'CACHE_STATUS_AGE_NOTIFICATION',
-                    }; },
+                    trigger: function () { return {}; },
+                    scheduleJobs: function () { return vm.scheduleJobs.filter(function (item) { return item.frequency; }) },
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
@@ -58,9 +58,29 @@
             });
         }
 
+        function editJob (job) {
+            vm.editJobInstance = $uibModal.open({
+                templateUrl: 'chpl.admin/components/schedules/job.html',
+                controller: 'JobController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'md',
+                resolve: {
+                    job: function () { return job; },
+                },
+            });
+            vm.editJobInstance.result.then(function (result) {
+                if (result.status === 'updated') {
+                    vm.loadScheduledJobs();
+                }
+            });
+        }
+
         function editTrigger (trigger) {
             vm.editTriggerInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/schedules/schedule.html',
+                templateUrl: 'chpl.admin/components/schedules/schedule.html',
                 controller: 'ScheduleController',
                 controllerAs: 'vm',
                 animation: false,
@@ -69,6 +89,7 @@
                 size: 'md',
                 resolve: {
                     trigger: function () { return trigger; },
+                    scheduleJobs: function () { return vm.scheduleJobs.filter(function (item) { return item.frequency; }) },
                 },
             });
             vm.editTriggerInstance.result.then(function (result) {
@@ -89,9 +110,22 @@
             networkService.getScheduleTriggers()
                 .then(function (result) {
                     vm.scheduledTriggers = result.results.map(function (result) {
-                        result.details = ['Schedule: ' + result.cronSchedule, 'Type: Cache Status Age Notification'];
+                        result.details = ['Schedule: ' + result.cronSchedule, 'Type: ' + result.job.name];
+                        if (result.acb) {
+                            var acbs = result.acb.split(SPLIT_PRIMARY);
+                            result.details.push('ONC-ACB' + (acbs.length !== 1 ? 's: ' : ': ') + acbs.join(', '));
+                        }
                         return result;
                     });
+                });
+        }
+
+        function loadScheduledJobs () {
+            networkService.getScheduleJobs()
+                .then(function (result) {
+                    vm.scheduleJobs = result.results;
+                }, function (error) {
+                    $log.warn('error in schedule.controller loadSubscriptionReportTypes', error);
                 });
         }
     }

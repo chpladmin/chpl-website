@@ -10,7 +10,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/admin/components/acb/acbManagement.html',
+            templateUrl: 'chpl.admin/components/acb/acbManagement.html',
             bindToController: {
                 workType: '=?',
                 activeAcb: '=?',
@@ -28,11 +28,9 @@
         vm.createAcb = createAcb;
         vm.editAcb = editAcb;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.isAcbAdmin = authService.isAcbAdmin();
             vm.isChplAdmin = authService.isChplAdmin();
             if (angular.isUndefined(vm.workType)) {
@@ -42,7 +40,7 @@
 
         function createAcb () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/acb/acbEdit.html',
+                templateUrl: 'chpl.admin/components/acb/acbEdit.html',
                 controller: 'EditAcbController',
                 controllerAs: 'vm',
                 animation: false,
@@ -65,7 +63,7 @@
 
         function editAcb (acb) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/acb/acbEdit.html',
+                templateUrl: 'chpl.admin/components/acb/acbEdit.html',
                 controller: 'EditAcbController',
                 controllerAs: 'vm',
                 animation: false,

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('SurveillanceController', SurveillanceController)
         .directive('aiSurveillance', aiSurveillance);
 
@@ -9,7 +9,7 @@
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/surveillance/surveillance.html',
+            templateUrl: 'chpl.components/surveillance/surveillance.html',
             scope: {},
             bindToController: {
                 allowEditing: '=',
@@ -32,11 +32,9 @@
         vm.sortResults = sortResults;
         vm.surveillanceResults = surveillanceResults;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             vm.API = API;
             vm.API_KEY = authService.getApiKey();
             vm.surveillanceTypes = networkService.getSurveillanceLookups();
@@ -45,7 +43,7 @@
         function editSurveillance (surveillance) {
             fixRequirementOptions();
             vm.uibModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/edit.html',
+                templateUrl: 'chpl.admin/components/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,
@@ -109,7 +107,7 @@
         function initiateSurveillance () {
             fixRequirementOptions();
             vm.uibModalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/edit.html',
+                templateUrl: 'chpl.admin/components/surveillance/edit.html',
                 controller: 'EditSurveillanceController',
                 controllerAs: 'vm',
                 animation: false,

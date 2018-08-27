@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('chpl')
+        .module('chpl.components')
         .directive('aiG1g2', aiG1g2)
         .controller('G1G2DetailsController', G1G2DetailsController);
 
@@ -17,7 +17,7 @@
             replace: true,
             restrict: 'E',
             scope: {},
-            templateUrl: 'app/components/listing_details/g1g2.html',
+            templateUrl: 'chpl.components/listing_details/g1g2.html',
         };
         return directive;
     }
@@ -26,11 +26,9 @@
     function G1G2DetailsController () {
         var vm = this;
 
-        activate();
-
         ////////////////////////////////////////////////////////////////////
 
-        function activate () {
+        this.$onInit = function () {
             analyzeMeasures();
         }
 

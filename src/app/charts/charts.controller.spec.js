@@ -66,6 +66,32 @@
                 {id: 1290, participantCount: 17, experienceMonths: 3, creationDate: 1521480655215, deleted: false, lastModifiedDate: 1521480655215, lastModifiedUser: -3},
                 {id: 1291, participantCount: 2, experienceMonths: 516, creationDate: 1521480655217, deleted: false, lastModifiedDate: 1521480655217, lastModifiedUser: -3},
             ],
+            nonconformityStatisticsResult: [
+                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (a)(11)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (b)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 20, nonconformityType: '170.314 (b)(7)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 3, nonconformityType: '170.315 (f)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 19, nonconformityType: '170.523 (k)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 1, nonconformityType: '170.314 (d)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 1, nonconformityType: '170.315 (a)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (a)(8)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 257, nonconformityType: '170.314 (f)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 2, nonconformityType: '170.315 (e)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 8, nonconformityType: '170.314 (b)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 14, nonconformityType: '170.314 (c)(3)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (b)(3)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 15, nonconformityType: '170.314 (e)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (b)(4)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (e)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 104, nonconformityType: '170.523 (k)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 1, nonconformityType: '170.315 (d)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 1, nonconformityType: '170.314 (g)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 13, nonconformityType: '170.314 (c)(1)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 2, nonconformityType: '170.314 (a)(13)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 9, nonconformityType: '170.314 (c)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 1, nonconformityType: '170.315 (c)(2)', deleted: false, lastModifiedUser: -2, creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+                {id: null, nonconformityCount: 63, nonconformityType: 'Other Non-Conformity', deleted: false, lastModifiedUser: -2,creationDate: 1531422312250, lastModifiedDate: 1531422312250},
+            ],
         };
 
         beforeEach(function () {
@@ -74,6 +100,7 @@
                     $delegate.getCriterionProductStatistics = jasmine.createSpy('getCriterionProductStatistics');
                     $delegate.getIncumbentDevelopersStatistics = jasmine.createSpy('getIncumbentDevelopersStatistics');
                     $delegate.getListingCountStatistics = jasmine.createSpy('getListingCountStatistics');
+                    $delegate.getNonconformityStatisticsCount = jasmine.createSpy('getNonconformityStatisticsCount');
                     $delegate.getSedParticipantStatisticsCount = jasmine.createSpy('getSedParticipantStatisticsCount');
                     $delegate.getParticipantGenderStatistics = jasmine.createSpy('getParticipantGenderStatistics');
                     $delegate.getParticipantAgeStatistics = jasmine.createSpy('getParticipantAgeStatistics');
@@ -93,6 +120,7 @@
                 networkService.getCriterionProductStatistics.and.returnValue($q.when(mock));
                 networkService.getIncumbentDevelopersStatistics.and.returnValue($q.when(mock));
                 networkService.getListingCountStatistics.and.returnValue($q.when(mock));
+                networkService.getNonconformityStatisticsCount.and.returnValue($q.when(mock));
                 networkService.getSedParticipantStatisticsCount.and.returnValue($q.when(mock));
                 networkService.getParticipantGenderStatistics.and.returnValue($q.when(mock));
                 networkService.getParticipantAgeStatistics.and.returnValue($q.when(mock));
@@ -125,6 +153,7 @@
             expect(vm.chartState).toEqual({
                 isStacked: 'false',
                 listingCountType: '1',
+                nonconformityCountType: 'All',
                 productEdition: 2014,
                 tab: 'product',
             });
@@ -143,6 +172,27 @@
             it('should load the sed participant count statistics', function () {
                 expect(networkService.getSedParticipantStatisticsCount).toHaveBeenCalled();
                 expect(vm.sedParticipantCounts.data.rows.length).toBe(mock.sedParticipantStatisticsCounts.length);
+            });
+
+            describe('of the nonconformity statistics', function () {
+                it('should load the nonconformity count statistics', function () {
+                    expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
+                });
+
+                it('should filter data by nonconformity type', function () {
+                    expect(vm.nonconformityCounts[2014].data.rows.length).toBe(16);
+                    expect(vm.nonconformityCounts[2015].data.rows.length).toBe(5);
+                    expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
+                    expect(vm.nonconformityCounts['Program'].data.rows.length).toBe(3);
+                    expect(vm.nonconformityCounts['All'].data.rows.length).toBe(24);
+                });
+                it('should format the data correctly', function () {
+                    expect(vm.nonconformityCounts['All'].data.rows[0].c[0].v).toBe('170.314 (a)(8)');
+                });
+            });
+
+            it('should load only 2014 data when filtered to', function () {
+                expect(networkService.getNonconformityStatisticsCount).toHaveBeenCalled();
             });
 
             describe('of the criterion/product statistics', function () {

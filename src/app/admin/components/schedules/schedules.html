@@ -27,5 +27,25 @@
         </tr>
       </tbody>
     </table>
+    <hr />
+    <h3>Types of Jobs</h3>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Job Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">ONC-ACB specific</th>
+          <th scope="col"><span class="sr-only">Action</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="job in vm.scheduleJobs | orderBy: 'name'">
+          <td>{{ job.name }}</td>
+          <td>{{ job.description }}</td>
+          <td>{{ job.jobDataMap.acbSpecific ? 'Yes' : 'No' }}</td>
+          <td><button class="btn btn-ai-success" ng-click="vm.editJob(job)" ng-if="job.jobDataMap.editableJobFields"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit job for {{ job.name }}</span></button></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>

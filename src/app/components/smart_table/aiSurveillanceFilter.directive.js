@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('SurveillanceFilterController', SurveillanceFilterController)
         .directive('aiSurveillanceFilter', aiSurveillanceFilter);
 
@@ -22,7 +22,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/aiSurveillanceFilter.html',
+            templateUrl: 'chpl.components/smart_table/aiSurveillanceFilter.html',
         }
     }
 

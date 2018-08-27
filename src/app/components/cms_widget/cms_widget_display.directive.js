@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.cms-widget')
+    angular.module('chpl.components')
         .directive('aiCmsWidgetDisplay', aiCmsWidgetDisplay);
 
     /** @ngInject */
@@ -12,7 +12,7 @@
             scope: {
                 widget: '=',
             },
-            templateUrl: 'app/components/cms_widget/cms_widget_display.html',
+            templateUrl: 'chpl.components/cms_widget/cms_widget_display.html',
             link: function (scope, el, attrs, widgetController) {
                 scope.clearProducts = function () {
                     widgetController.clearProducts();

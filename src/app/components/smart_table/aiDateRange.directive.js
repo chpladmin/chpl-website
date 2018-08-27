@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
         .controller('AiDateRangeController', AiDateRangeController)
         .directive('aiDateRange', aiDateRange);
 
@@ -21,7 +21,7 @@
                 registerClearFilter: '&',
                 registerRestoreState: '&',
             },
-            templateUrl: 'app/components/smart_table/aiDateRange.html',
+            templateUrl: 'chpl.components/smart_table/aiDateRange.html',
         }
     }
 

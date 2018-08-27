@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('chpl')
+        .module('chpl.components')
         .directive('aiCerts', aiCerts);
 
     /** @ngInject */
@@ -10,7 +10,7 @@
         var directive = {
             restrict: 'E',
             replace: true,
-            templateUrl: 'app/components/listing_details/details.html',
+            templateUrl: 'chpl.components/listing_details/details.html',
             bindToController: {
                 cap: '=',
                 editMode: '=?',
@@ -41,11 +41,9 @@
             vm.updateCs = updateCs;
             vm.viewIcsFamily = viewIcsFamily;
 
-            activate();
-
             ////////////////////////////////////////////////////////////////////
 
-            function activate () {
+            this.$onInit = function () {
                 vm.handlers = [];
                 if (angular.isUndefined(vm.isEditing)) {
                     vm.isEditing = false;
@@ -171,7 +169,7 @@
             function viewIcsFamily () {
                 networkService.getIcsFamily(vm.product.id).then(function (family) {
                     vm.uibModalInstance = $uibModal.open({
-                        templateUrl: 'app/components/listing_details/ics_family/icsFamilyModal.html',
+                        templateUrl: 'chpl.components/listing_details/ics_family/icsFamilyModal.html',
                         controller: 'IcsFamilyController',
                         controllerAs: 'vm',
                         animation: false,

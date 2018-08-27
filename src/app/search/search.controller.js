@@ -284,7 +284,7 @@
 
         function viewCertificationStatusLegend () {
             vm.viewCertificationStatusLegendInstance = $uibModal.open({
-                templateUrl: 'app/components/certificationStatus/certificationStatus.html',
+                templateUrl: 'chpl.components/certificationStatus/certificationStatus.html',
                 controller: 'CertificationStatusController',
                 controllerAs: 'vm',
                 animation: false,
@@ -332,18 +332,6 @@
                 vm.triggerSearch();
             }
         }
-
-/*        function viewProduct (cp) {
-            setTimestamp();
-            if (vm.previouslyViewed.indexOf((cp.id + '')) === -1) {
-                vm.previouslyViewed.push((cp.id + ''));
-                if (vm.previouslyViewed.length > 20) {
-                    vm.previouslyViewed.shift();
-                }
-                $localStorage.previouslyViewed = vm.previouslyViewed;
-            }
-            $location.url('/product/' + cp.id);
-        }*/
 
         ////////////////////////////////////////////////////////////////////
 

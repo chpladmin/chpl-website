@@ -50,7 +50,7 @@
 
         function addRequirement () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/requirement/edit.html',
+                templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
                 controller: 'EditRequirementController',
                 controllerAs: 'vm',
                 animation: false,
@@ -106,7 +106,7 @@
         function editRequirement (req) {
             req.guiId = req.id ? req.id : (new Date()).getTime();
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/requirement/edit.html',
+                templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
                 controller: 'EditRequirementController',
                 controllerAs: 'vm',
                 animation: false,
@@ -140,7 +140,7 @@
 
         function inspectNonconformities (noncons) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'app/admin/components/surveillance/nonconformity/inspect.html',
+                templateUrl: 'chpl.admin/components/surveillance/nonconformity/inspect.html',
                 controller: 'NonconformityInspectController',
                 controllerAs: 'vm',
                 animation: false,

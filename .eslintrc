@@ -4,17 +4,18 @@
     ],
     "extends": [
         "eslint:recommended",
-        "plugin:angular/johnpapa",
     ],
     "env": {
         "browser": true,
         "jasmine": true,
+        "amd": true,
     },
     "globals": {
         "angular": true,
         "module": true,
         "inject": true,
     },
+    "parser": "babel-eslint",
     "rules": {
         "comma-dangle": ["error", "always-multiline"],
         "curly": ["error"],

@@ -1,19 +1,13 @@
 /**
- *  If you want to override some bootstrap variables, you have to change values here.
- *  The list of variables are listed here bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
+ *  The list of variables are listed here node_modules/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
  */
 $navbar-inverse-link-color: #5aadbb;
-$icon-font-path: "../../bootstrap-sass/assets/fonts/bootstrap/";
-$fa-font-path: "../../bower_components/font-awesome/fonts";
-@import "../../bower_components/font-awesome/scss/font-awesome.scss";
+$icon-font-path: "../../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+$fa-font-path: "../../node_modules/font-awesome/fonts";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~font-awesome/scss/font-awesome.scss";
+@import "~angularjs-toaster/toaster.scss";
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,300|Lato:400,300,300italic");
-
-/**
- *  Do not remove the comments below. It's the markers used by wiredep to inject
- *  sass dependencies when defined in the bower.json of your dependencies
- */
-// bower:scss
-// endbower
 
 .browsehappy {
     margin: .2em 0;
@@ -647,24 +641,29 @@ option[disabled] {
 .additional-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: #777777;
 }
+
 .additional-input::-moz-placeholder { /* Firefox 19+ */
     color: #777777;
 }
+
 .additional-input:-ms-input-placeholder { /* IE 10+ */
     color: #777777;
 }
+
 .additional-input:-moz-placeholder { /* Firefox 18- */
     color: #777777;
 }
 
 .fade-in {
-    animation:opac 0.3s;
-    @keyframes opac{from{opacity:0} to{opacity:1}}
-}
+    animation: opac .3s;
+    @keyframes opac {
 
-/**
- *  Do not remove the comments below. It's the markers used by gulp-inject to inject
- *  all your sass files automatically
- */
-// injector
-// endinjector
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}

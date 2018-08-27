@@ -109,7 +109,7 @@
                     $rootScope.$broadcast('HideCompareWidget');
                     expect(vm.showCompareWidget).toHaveBeenCalledWith(false);
                 });
-                
+
                 it('should show announcemnets', function () {
                     spyOn(vm, 'loadAnnouncements');
                     $rootScope.$broadcast('loggedIn');

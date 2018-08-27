@@ -79,7 +79,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/components/listing_details/sed/participantsModal.html',
+                    templateUrl: 'chpl.components/listing_details/sed/participantsModal.html',
                     controller: 'ViewSedParticipantsController',
                     controllerAs: 'vm',
                     animation: false,
@@ -134,7 +134,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'app/admin/components/sed/editTask.html',
+                    templateUrl: 'chpl.admin/components/sed/editTask.html',
                     controller: 'EditSedTaskController',
                     controllerAs: 'vm',
                     animation: false,

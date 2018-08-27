@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    angular.module('chpl')
+    angular.module('chpl.components')
 
         .directive('stSelectMultiple', function () {
             return {
@@ -11,7 +11,7 @@
                     predicate: '@',
                     predicateExpression: '=',
                 },
-                templateUrl: 'app/components/smart_table/stSelectMultiple.html',
+                templateUrl: 'chpl.components/smart_table/stSelectMultiple.html',
                 link: function (scope, element, attr, table) {
                     scope.dropdownLabel = '';
                     scope.filterChanged = filterChanged;
