@@ -8,20 +8,9 @@ const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
-    devServer: {
-        port: 3000,
-        proxy: {
-            '/rest': {
-                target: 'http://localhost:8181/chpl-service',
-                pathRewrite: {'^/rest' : ''},
-            },
-        },
-    },
     entry: {
         app: path.resolve(__dirname, './src/app/index.js'),
-        vendor: ['angular'],
     },
-    mode: 'development',
     module: {
         rules: [{
             enforce: 'post',
@@ -146,35 +135,29 @@ module.exports = {
     optimization: {
         splitChunks: {
             name: true,
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
         },
     },
     plugins: [
         new HtmlWebpackPlugin({
-            chunks: ['app', 'vendor'],
+            chunks: ['app', 'vendors'],
             filename: 'index.html',
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/index.html'),
         }),
         new HtmlWebpackPlugin({
-            chunks: ['app', 'vendor'],
+            chunks: ['app', 'vendors'],
             filename: 'error.html',
             hash: true,
             inject: 'body',
             template: path.resolve(__dirname, './src/error.html'),
-        }),
-        new HtmlWebpackPlugin({
-            chunks: ['app', 'vendor'],
-            filename: 'style.html',
-            hash: true,
-            inject: 'body',
-            template: path.resolve(__dirname, './src/style.html'),
-        }),
-        new webpack.DefinePlugin({
-            DEVELOPER_MODE: true,
-            ENABLE_LOGGING: true,
-            MINUTES_UNTIL_IDLE: 120,
-            MINUTES_BETWEEN_KEEPALIVE: 1,
         }),
         new StyleLintPlugin(),
         new CleanWebpackPlugin(['dist']),
