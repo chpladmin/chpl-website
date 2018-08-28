@@ -14,6 +14,7 @@
         vm.hasStatusMatches = hasStatusMatches;
         vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
         vm.isMissingRequiredFields = isMissingRequiredFields;
+        vm.isMissingReasonForBan = isMissingReasonForBan;
         vm.matchesPreviousDate = matchesPreviousDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.removePreviousStatus = removePreviousStatus;
@@ -81,6 +82,16 @@
         function isMissingRequiredFields () {
             for (var i = 0; i < vm.developer.statusEvents.length; i++) {
                 if (angular.isUndefined(vm.developer.statusEvents[i].status)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function isMissingReasonForBan () {
+            for (var i = 0; i < vm.developer.statusEvents.length; i++) {
+                if(vm.developer.statusEvents[i].status.status === 'Under certification ban by ONC' &&
+                     angular.isUndefined(vm.developer.statusEvents[i].reason)) {
                     return true;
                 }
             }
