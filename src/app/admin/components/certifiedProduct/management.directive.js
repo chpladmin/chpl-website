@@ -268,7 +268,7 @@
                 .then(function () {}, function (error) {
                     if (error.data.errors && error.data.errors.length > 0) {
                         vm.uploadingListingsMessages = error.data.errors.map(function (error) {
-                            var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                            var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"';
                             return ret;
                         });
                     }
@@ -288,7 +288,7 @@
                 .then(function () {}, function (error) {
                     if (error.data.errors && error.data.errors.length > 0) {
                         vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
-                            var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
+                            var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"';
                             return ret;
                         });
                     }
@@ -569,7 +569,7 @@
                         }
                     }
                     if (result.status === 'resolved') {
-                        vm.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.firstName + ' ' + result.contact.lastName + '"'];
+                        vm.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
                     }
                 }
             }, function (result) {
@@ -599,7 +599,7 @@
                         }
                     }
                     if (result.status === 'resolved') {
-                        vm.uploadingSurveillanceMessages = ['Surveillance with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.firstName + ' ' + result.contact.lastName + '"'];
+                        vm.uploadingSurveillanceMessages = ['Surveillance with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
                     }
                 }
             }, function (result) {

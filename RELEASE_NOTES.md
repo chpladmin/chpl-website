@@ -5,8 +5,8 @@ _27 August 2018_
 
 ### New Features
 * Add certification title to uniqe products chart on hover-over
-* Allow selection of ACB for ACB specific triggers 
-* Support multiple ACBs in required job schedulers 
+* Allow selection of ACB for ACB specific triggers
+* Support multiple ACBs in required job schedulers
 * Display current time in UTC on job scheduler
 
 ### Text changes

@@ -348,7 +348,7 @@
             });
 
             it('should have error messages if rejection fails', function () {
-                networkService.massRejectPendingListings.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
+                networkService.massRejectPendingListings.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
                 vm.massRejectPendingListings();
                 el.isolateScope().$digest();
                 expect(vm.uploadingListingsMessages.length).toEqual(3);
@@ -392,7 +392,7 @@
             });
 
             it('should have error messages if rejection fails', function () {
-                networkService.massRejectPendingSurveillance.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'firstName': 'Mandy','lastName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
+                networkService.massRejectPendingSurveillance.and.returnValue($q.reject({data: {'errors': [{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.55.1.1.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}},{'errorMessages': ['This pending certified product has already been confirmed or rejected by another user.'],'warningMessages': [],'objectId': '15.07.07.2642.EIC61.56.1.0.160402','contact': {'contactId': 32,'fullName': 'Mandy','friendlyName': 'Hancock','email': 'Mandy.hancock@greenwayhealth.com','phoneNumber': '205-443-4115','title': null}}]}}));
                 vm.massRejectPendingSurveillance();
                 el.isolateScope().$digest();
                 expect(vm.uploadingSurveillanceMessages.length).toEqual(3);
@@ -458,13 +458,13 @@
                     status: 'resolved',
                     objectId: 'id',
                     contact: {
-                        firstName: 'fname',
-                        lastName: 'lname',
+                        fullName: 'fname',
+                        friendlyName: 'lname',
                     },
                 };
                 vm.inspectSurveillance(vm.uploadingSurveillances[0]);
                 vm.modalInstance.close(result);
-                expect(vm.uploadingSurveillanceMessages[0]).toEqual('Surveillance with ID: "id" has already been resolved by "fname lname"');
+                expect(vm.uploadingSurveillanceMessages[0]).toEqual('Surveillance with ID: "id" has already been resolved by "fname"');
             });
 
             it('should log a cancelled modal', function () {

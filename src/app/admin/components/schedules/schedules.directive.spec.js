@@ -7,7 +7,7 @@
         mock = {
             acbs: [{id: 1, name: 'fake'}],
             results: [{
-                name: 'tmy1313@gmail_com',
+                name: 'fake@example_com',
                 group: 'SummaryStatisticsEmailTrigger',
                 job: {
                     description: 'Sends the Summary Statistics Report',
@@ -16,7 +16,7 @@
                     frequency: 'HOURLY',
                 },
                 cronSchedule: '0 0 13 * * ?',
-                email: 'tmy1313@gmail.com',
+                email: 'fake@example.com',
             }],
             scheduleJobs: [{
                 description: 'Allow subscribers to get notifications if the cache has become \'too old\'.',
