@@ -50,13 +50,6 @@
                     atlId: function () { return ctrl.atlId; },
                 },
             });
-            ctrl.modalInstance.result.then(function (result) {
-                $log.info(result);
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.debug(result);
-                }
-            });
         }
 
         function updateUser (user) {
@@ -75,11 +68,7 @@
                 },
             });
             ctrl.modalInstance.result.then(function () {
-                ctrl.freshenUsers();
-            }, function (result) {
-                if (result !== 'cancelled') {
-                    $log.debug(result);
-                }
+                _loadUsers();
             });
         }
 
@@ -90,22 +79,16 @@
                 networkService.getUsersAtAcb(ctrl.acbId)
                     .then(function (response) {
                         ctrl.users = response.users;
-                    }, function (error) {
-                        $log.debug(error);
                     });
             } else if (ctrl.atlId) {
                 networkService.getUsersAtAtl(ctrl.atlId)
                     .then(function (response) {
                         ctrl.users = response.users;
-                    }, function (error) {
-                        $log.debug(error);
                     });
             } else {
                 networkService.getUsers()
                     .then(function (response) {
                         ctrl.users = response.users;
-                    }, function (error) {
-                        $log.debug(error);
                     });
             }
         }
