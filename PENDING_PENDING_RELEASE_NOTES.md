@@ -4,5 +4,6 @@ _Date TBD_
 
 ### New Features
 * Support "full name" and "friendly name" for Users/Contact
+* Add reason for developer ban
 
 ---
