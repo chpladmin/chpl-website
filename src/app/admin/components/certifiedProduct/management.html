@@ -148,7 +148,9 @@
               <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)" id="pending-listing-inspect-{{ cp.id }}"><i class="fa fa-eye"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"
+                        ng-disabled="!vm.areResourcesReady()"
+                        id="pending-listing-inspect-{{ cp.chplProductNumber }}"><i class="fa fa-eye"></i> Inspect</button>
               </td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
                 <button class="btn btn-warning btn-block" id="pending-listing-reject-{{ cp.id }}"
