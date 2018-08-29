@@ -33,6 +33,6 @@ module.exports = (config) => {
             dir: 'test_reports/coverage/',
             reports: ['html', 'lcov', 'text-summary'],
         },
-        webpack: require('./webpack.config'),
+        webpack: require('./webpack.ci'),
     });
 };

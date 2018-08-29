@@ -2,7 +2,6 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
@@ -132,18 +131,6 @@ module.exports = {
             }],
         }],
     },
-    optimization: {
-        splitChunks: {
-            name: true,
-            cacheGroups: {
-                commons: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all',
-                },
-            },
-        },
-    },
     plugins: [
         new HtmlWebpackPlugin({
             chunks: ['app', 'vendors'],
@@ -160,6 +147,5 @@ module.exports = {
             template: path.resolve(__dirname, './src/error.html'),
         }),
         new StyleLintPlugin(),
-        new CleanWebpackPlugin(['dist']),
     ]
 };

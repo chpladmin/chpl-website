@@ -4,13 +4,13 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": "chpladmin/chpl-website",
   "scripts": {
-    "build": "webpack --mode production --config webpack.prod.js",
+    "build": "webpack --config webpack.prod.js",
     "html-lint": "htmllint src/app/**/*.html",
-    "start": "webpack-dev-server --mode development --config webpack.dev.js",
+    "start": "webpack-dev-server --config webpack.dev.js",
     "profile": "webpack --profile --json > test_reports/stats.json",
-    "test": "concurrently \"karma start --single-run\" \"yarn html-lint\" --config webpack.dev.js",
-    "test:auto": "karma start --config webpack.dev.js",
-    "test:ci": "karma start --single-run --no-colors --config webpack.dev.js"
+    "test": "concurrently \"karma start --single-run\" \"yarn html-lint\"",
+    "test:auto": "karma start",
+    "test:ci": "karma start --single-run --no-colors"
   },
   "dependencies": {
     "angular": "^1.7.2",

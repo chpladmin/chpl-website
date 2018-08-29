@@ -17,6 +17,7 @@ module.exports = merge(base, {
             },
         },
     },
+    devtool: 'inline-source-map',
     mode: 'development',
     plugins: [
         new HtmlWebpackPlugin({
