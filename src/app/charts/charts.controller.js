@@ -74,7 +74,7 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2014),
                         },
                         options: {
-                        	tooltip: {isHtml: true},
+                            tooltip: {isHtml: true},
                             animation: {
                                 duration: 1000,
                                 easing: 'inAndOut',
@@ -95,7 +95,7 @@
                             rows: _getCriterionProductCountDataInChartFormat(data, 2015),
                         },
                         options: {
-                        	tooltip: {isHtml: true},
+                            tooltip: {isHtml: true},
                             animation: {
                                 duration: 1000,
                                 easing: 'inAndOut',
@@ -115,7 +115,7 @@
             }).sort(function (a, b) {
                 return utilService.sortCert(a.criterion.number) - utilService.sortCert(b.criterion.number);
             }).map(function (obj) {
-                return {c: [{v: obj.criterion.number},{v: obj.productCount}, {v: "Name: " + obj.criterion.title + "\n Count: " + obj.productCount}]};
+                return {c: [{v: obj.criterion.number},{v: obj.productCount}, {v: 'Name: ' + obj.criterion.title + '\n Count: ' + obj.productCount}]};
             });
         }
 
