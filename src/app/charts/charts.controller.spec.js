@@ -156,6 +156,7 @@
                 nonconformityCountType: 'All',
                 productEdition: 2014,
                 tab: 'product',
+                yAxis: '',
             });
         });
 
