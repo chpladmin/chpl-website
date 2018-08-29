@@ -2,7 +2,7 @@
     'use strict';
 
     describe('admin.EditUserController.controller', function () {
-        var $log, $q, Mock, mock, networkService, scope, vm;
+        var $controller, $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
         mock.user = {roles: ['ROLE_ADMIN'], user: {subjectName: 'username', userId: 'userId'}};
@@ -21,7 +21,8 @@
                 });
             });
 
-            inject(function ($controller, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+                $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
                 networkService = _networkService_;
@@ -80,7 +81,7 @@
             expect(vm.roles).toEqual(['ROLE_ATL']);
         });
 
-        describe('inviting users', function () {
+        describe('when inviting users', function () {
             beforeEach(function () {
                 vm.userInvitation = {
                     permissions: ['a role'],
@@ -154,6 +155,40 @@
                 vm.invite();
                 scope.$digest();
                 expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "bad thing"');
+            });
+
+            describe('with multiple available roles', function () {
+                beforeEach(function () {
+                    vm = $controller('EditUserController', {
+                        action: 'invite',
+                        acbId: null,
+                        atlId: null,
+                        user: {},
+                        $uibModalInstance: Mock.modalInstance,
+                    });
+                    scope.$digest();
+                });
+
+                it('should not default to having roles', function () {
+                    expect(vm.userInvitation.permissions).toEqual([]);
+                });
+            });
+
+            describe('with a single available role', function () {
+                beforeEach(function () {
+                    vm = $controller('EditUserController', {
+                        action: 'invite',
+                        acbId: 1,
+                        atlId: null,
+                        user: {},
+                        $uibModalInstance: Mock.modalInstance,
+                    });
+                    scope.$digest();
+                });
+
+                it('should default to the single role', function () {
+                    expect(vm.userInvitation.permissions).toEqual(['ROLE_ACB']);
+                });
             });
         });
 
