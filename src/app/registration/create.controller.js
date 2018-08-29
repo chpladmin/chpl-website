@@ -81,7 +81,6 @@
             valid = valid && vm.userDetails.user.subjectName && vm.userDetails.user.subjectName.length > 0;
             valid = valid && vm.userDetails.user.password && vm.userDetails.user.password.length > 0;
             valid = valid && vm.userDetails.user.fullName && vm.userDetails.user.fullName.length > 0;
-            valid = valid && vm.userDetails.user.friendlyName && vm.userDetails.user.friendlyName.length > 0;
             valid = valid && vm.userDetails.user.email && vm.userDetails.user.email.length > 0;
             valid = valid && vm.userDetails.user.phoneNumber && vm.userDetails.user.phoneNumber.length > 0;
             valid = valid && vm.userDetails.user.password === vm.userDetails.user.passwordverify;

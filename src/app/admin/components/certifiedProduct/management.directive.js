@@ -24,6 +24,7 @@
     function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService, utilService) {
         var vm = this;
 
+        vm.areResourcesReady = areResourcesReady;
         vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
@@ -181,6 +182,20 @@
             }
 
             getResources();
+        }
+
+        function areResourcesReady () {
+            return vm.resourcesReady.searchOptions &&
+                vm.resourcesReady.atls &&
+                vm.resourcesReady.qmsStandards &&
+                vm.resourcesReady.accessibilityStandards &&
+                vm.resourcesReady.ucdProcesses &&
+                vm.resourcesReady.testProcedures &&
+                vm.resourcesReady.testData &&
+                vm.resourcesReady.testStandards &&
+                vm.resourcesReady.testFunctionality &&
+                vm.resourcesReady.testTools &&
+                vm.resourcesReady.targetedUsers;
         }
 
         function refreshDevelopers () {
@@ -809,6 +824,20 @@
         }
 
         function getResources () {
+            vm.resourcesReady = {
+                searchOptions: false,
+                atls: false,
+                qmsStandards: false,
+                accessibilityStandards: false,
+                ucdProcesses: false,
+                testProcedures: false,
+                testData: false,
+                testStandards: false,
+                testFunctionality: false,
+                testTools: false,
+                targetedUsers: false,
+            };
+
             networkService.getSearchOptions()
                 .then(function (options) {
                     vm.resources.bodies = options.certBodyNames;
@@ -816,56 +845,67 @@
                     vm.resources.editions = options.editions;
                     vm.resources.practices = options.practiceTypeNames;
                     vm.resources.statuses = options.certificationStatuses;
+                    vm.resourcesReady.searchOptions = true;
                 });
 
             networkService.getAtls(false)
                 .then(function (data) {
                     vm.resources.testingLabs = data.atls;
+                    vm.resourcesReady.atls = true;
                 });
 
             networkService.getQmsStandards()
                 .then(function (response) {
                     vm.resources.qmsStandards = response;
+                    vm.resourcesReady.qmsStandards = true;
                 });
 
             networkService.getAccessibilityStandards()
                 .then(function (response) {
                     vm.resources.accessibilityStandards = response;
+                    vm.resourcesReady.accessibilityStandards = true;
                 });
 
             networkService.getUcdProcesses()
                 .then(function (response) {
                     vm.resources.ucdProcesses = response;
+                    vm.resourcesReady.ucdProcesses = true;
                 });
 
             networkService.getTestProcedures()
                 .then(function (response) {
                     vm.resources.testProcedures = response;
+                    vm.resourcesReady.testProcedures = true;
                 });
 
             networkService.getTestData()
                 .then(function (response) {
                     vm.resources.testData = response;
+                    vm.resourcesReady.testData = true;
                 });
 
             networkService.getTestStandards()
                 .then(function (response) {
                     vm.resources.testStandards = response;
+                    vm.resourcesReady.testStandards = true;
                 });
 
             networkService.getTestFunctionality()
                 .then(function (response) {
                     vm.resources.testFunctionalities = response;
+                    vm.resourcesReady.testFunctionality = true;
                 });
 
             networkService.getTestTools()
                 .then(function (response) {
                     vm.resources.testTools = response;
+                    vm.resourcesReady.testTools = true;
                 });
 
             networkService.getTargetedUsers()
                 .then(function (response) {
                     vm.resources.targetedUsers = response;
+                    vm.resourcesReady.targetedUsers = true;
                 });
         }
 
