@@ -17,6 +17,24 @@
       <tr ng-if="widget.searchResult.year === '2014'"><th scope="row">Ambulatory CQMs</th><td class="text-right">{{ widget.searchResult.metPercentages.cqmsAmbulatory }}%</td></tr>
     </table>
   </div>
+  <div ng-if="widget.searchResult.missingAnd.length">
+    You need all of the following criteria:
+    <div>
+      <li ng-repeat="and in widget.searchResult.missingAnd | orderBy: vm.sortCert">
+        {{ and }}
+      </li>
+    </div>
+  </div>
+  <div ng-if="widget.searchResult.missingOr.length">
+    You need at least 1 criteria from the following categor<span ng-if="widget.searchResult.missingOr.length === 1">y</span><span ng-if="widget.searchResult.missingOr.length > 1">ies</span>:
+    <div>
+      <li ng-repeat="or in widget.searchResult.missingOr">
+        Category {{ $index + 1 }}:
+        <span ng-repeat="criteria in or">{{ criteria }}, </span>
+        </li>
+      </li>
+    </div>
+  </div>
   <p class="text-center" ng-if="widget.createResponse && widget.createResponse.ehrCertificationId">
     Your CMS EHR Certification ID<br />
     <strong>{{ widget.createResponse.ehrCertificationId }}</strong>
