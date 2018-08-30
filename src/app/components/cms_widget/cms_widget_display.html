@@ -18,7 +18,7 @@
     </table>
   </div>
   <div ng-if="widget.searchResult.missingAnd.length">
-    You need all of the following criteria:
+    Please select a product or products that contain the following criteria:
     <div>
       <li ng-repeat="and in widget.searchResult.missingAnd | orderBy: vm.sortCert">
         {{ and }}
@@ -26,11 +26,10 @@
     </div>
   </div>
   <div ng-if="widget.searchResult.missingOr.length">
-    You need at least 1 criteria from the following categor<span ng-if="widget.searchResult.missingOr.length === 1">y</span><span ng-if="widget.searchResult.missingOr.length > 1">ies</span>:
+    In addition, a product with at least 1 criteria from the following categor<span ng-if="widget.searchResult.missingOr.length === 1">y</span><span ng-if="widget.searchResult.missingOr.length > 1">ies</span>:
     <div>
       <li ng-repeat="or in widget.searchResult.missingOr">
-        Category {{ $index + 1 }}:
-        <span ng-repeat="criteria in or">{{ criteria }}, </span>
+        [<span ng-repeat="criteria in or">{{ criteria }}{{$last ? '' : ', '}}</span>]
         </li>
       </li>
     </div>
