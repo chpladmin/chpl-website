@@ -2,6 +2,7 @@
     'use strict';
 
     angular.module('chpl.search', [
+        'angulartics',
         'chpl.constants',
         'chpl.services',
         'ngRoute',

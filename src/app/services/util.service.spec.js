@@ -18,7 +18,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.services', function ($provide) {
+            angular.mock.module('chpl.services', function ($provide) {
                 $provide.decorator('FileSaver', function ($delegate) {
                     $delegate.saveAs = jasmine.createSpy('saveAs');
                     return $delegate;

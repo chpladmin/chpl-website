@@ -1,14 +1,10 @@
 
-## Version 10.1.0
+## Version 10.2.0
 _Date TBD_
 
 ### New Features
-* Add certification title to uniqe products chart on hover-over
-* Allow selection of ACB for ACB specific triggers 
-* Support multiple ACBs in required job schedulers 
-* Display current time in UTC on job scheduler
-
-### Text changes
-* Add introductory text to several charts
+* Support "full name" and "friendly name" for Users/Contact
+* Add reason for developer ban
+* Automatically select the ROLE if there's only one available in user invitation workflow
 
 ---

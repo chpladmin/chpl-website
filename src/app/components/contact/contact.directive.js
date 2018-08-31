@@ -40,8 +40,7 @@
         function updateErrors () {
             vm.errorMessages = [];
             if (vm.valuesRequired()) {
-                if (!vm.contact || !vm.contact.firstName) { vm.errorMessages.push('First name is required'); }
-                if (!vm.contact || !vm.contact.lastName) { vm.errorMessages.push('Last name is required'); }
+                if (!vm.contact || !vm.contact.fullName) { vm.errorMessages.push('Full name is required'); }
                 if (!vm.contact || !vm.contact.email) { vm.errorMessages.push('Email is required'); }
                 if (!vm.contact || !vm.contact.phoneNumber) { vm.errorMessages.push('Phone number is required'); }
             }
@@ -52,8 +51,8 @@
                 return true;
             }
             if (vm.contact) {
-                if (vm.contact.firstName ||
-                    vm.contact.lastName ||
+                if (vm.contact.fullName ||
+                    vm.contact.friendlyName ||
                     vm.contact.title ||
                     vm.contact.email ||
                     vm.contact.phoneNumber) {

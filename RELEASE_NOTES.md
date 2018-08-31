@@ -1,5 +1,19 @@
 # Release Notes
 
+## Version 10.1.0
+_27 August 2018_
+
+### New Features
+* Add certification title to uniqe products chart on hover-over
+* Allow selection of ACB for ACB specific triggers
+* Support multiple ACBs in required job schedulers
+* Display current time in UTC on job scheduler
+
+### Text changes
+* Add introductory text to several charts
+
+---
+
 ## Version 10.0.0
 _16 August 2018_
 

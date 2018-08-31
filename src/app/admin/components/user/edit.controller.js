@@ -26,6 +26,9 @@
             vm.userInvitation = {permissions: []};
             vm.message = '';
             vm.loadRoles();
+            if (vm.roles.length === 1) {
+                vm.userInvitation.permissions.push(vm.roles[0]);
+            }
         }
 
         function cancel () {

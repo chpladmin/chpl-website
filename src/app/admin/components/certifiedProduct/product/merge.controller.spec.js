@@ -7,7 +7,7 @@
         mock = {};
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getDevelopers = jasmine.createSpy('getDevelopers');
                     $delegate.updateProduct = jasmine.createSpy('updateProduct');
@@ -36,7 +36,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -110,12 +112,12 @@
                 vm.product.contact = {};
                 expect(vm.isContactRequired()).toBe(false);
 
-                vm.product.contact.firstName = 'John';
+                vm.product.contact.fullName = 'John';
                 expect(vm.isContactRequired()).toBe(true);
                 vm.product.contact = {};
                 expect(vm.isContactRequired()).toBe(false);
 
-                vm.product.contact.lastName = 'Smith';
+                vm.product.contact.friendlyName = 'Smith';
                 expect(vm.isContactRequired()).toBe(true);
                 vm.product.contact = {};
                 expect(vm.isContactRequired()).toBe(false);

@@ -5,7 +5,7 @@
         .controller('JobController', JobController);
 
     /** @ngInject */
-    function JobController ($log, $uibModalInstance, job, networkService, SPLIT_PRIMARY) {
+    function JobController ($log, $uibModalInstance, SPLIT_PRIMARY, job, networkService) {
         var vm = this;
 
         vm.addNewItem = addNewItem;
@@ -19,6 +19,7 @@
 
         function activate () {
             vm.job = angular.copy(job);
+            vm.newItem = {};
             vm.SPLIT_PRIMARY = SPLIT_PRIMARY;
         }
 

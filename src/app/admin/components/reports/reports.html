@@ -656,7 +656,7 @@
         <table st-table="vm.displayedUserActivities" st-safe-src="vm.searchedUserActivities" class="table">
           <thead>
             <tr>
-              <th class="search-header" st-sort="user.lastName" st-skip-natural="true" st-sort-default>User</th>
+              <th class="search-header" st-sort="user.fullName" st-skip-natural="true" st-sort-default>User</th>
               <th scope="col">Action</th>
               <th scope="col">Date</th>
             </tr>
@@ -666,7 +666,7 @@
               <td colspan="3">No activity found</td>
             </tr>
             <tr ng-repeat-start="activity in vm.displayedUserActivities" ng-if="vm.displayedUserActivities.length > 0">
-              <td rowspan="{{ activity.events.length }}">{{ activity.user.firstName }}&nbsp;{{ activity.user.lastName }}<br />{{ activity.user.email }}</td>
+              <td rowspan="{{ activity.events.length }}">{{ activity.user.fullName }}<br />{{ activity.user.email }}</td>
               <td>{{ activity.events[0].description }}</td>
               <td>{{ activity.events[0].activityDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             </tr>

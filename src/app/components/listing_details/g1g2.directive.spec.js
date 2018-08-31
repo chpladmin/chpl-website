@@ -6,7 +6,7 @@
         var $log, Mock, el, scope, vm;
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.mock', 'chpl');
+            angular.mock.module('chpl.mock', 'chpl');
             inject(function ($compile, _$log_, $rootScope, _Mock_) {
                 $log = _$log_;
                 Mock = _Mock_;

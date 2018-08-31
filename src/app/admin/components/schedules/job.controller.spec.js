@@ -19,7 +19,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.updateJob = jasmine.createSpy('updateJob');
 
@@ -37,6 +37,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('JobController', {
                     job: mock.job,
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });

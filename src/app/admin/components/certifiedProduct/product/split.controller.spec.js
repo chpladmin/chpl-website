@@ -5,7 +5,7 @@
         var $log, $q, Mock, networkService, scope, vm;
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.splitProduct = jasmine.createSpy('splitProduct');
                     return $delegate;
