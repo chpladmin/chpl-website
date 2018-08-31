@@ -26,11 +26,10 @@
     </div>
   </div>
   <div ng-if="widget.searchResult.missingOr.length">
-    In addition, a product with at least 1 criteria from the following categor<span ng-if="widget.searchResult.missingOr.length === 1">y</span><span ng-if="widget.searchResult.missingOr.length > 1">ies</span>:
+    <span ng-if="widget.searchResult.missingAnd.length > 0">In addition, a</span><span ng-if="widget.searchResult.missingAnd.length === 0">Please select a</span> product with at least 1 criteria from the following categor<span ng-if="widget.searchResult.missingOr.length === 1">y</span><span ng-if="widget.searchResult.missingOr.length > 1">ies</span>:
     <div>
       <li ng-repeat="or in widget.searchResult.missingOr">
         [<span ng-repeat="criteria in or">{{ criteria }}{{$last ? '' : ', '}}</span>]
-        </li>
       </li>
     </div>
   </div>
