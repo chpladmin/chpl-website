@@ -1,5 +1,5 @@
 <span>
-  <span ng-if="!vm.isEditing"><strong>Relied Upon Software: </strong>
+  <span ng-if="!vm.isEditing"><strong>Relied Upon Software: </strong> <a href uib-tooltip="Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria." tooltip-trigger="mouseenter focus click"><span class="sr-only">Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria.</span><i class="fa fa-info-circle fa-lg"></i></a>
     <span ng-if="!vm.additionalSoftware || vm.additionalSoftware.length === 0">None</span>
     <ul ng-if="vm.additionalSoftware && vm.additionalSoftware.length > 0">
       <li ng-repeat="grp in vm.displaySw track by $index">
