@@ -24,7 +24,7 @@ import 'jspdf-autotable';
         };
     }
     /** @ngInject */
-    function CmsWidgetController ($analytics, $localStorage, $log, WidgetService) {
+    function CmsWidgetController ($analytics, $localStorage, $log, utilService, WidgetService) {
         var vm = this;
 
         vm.addProduct = addProduct;
@@ -34,6 +34,7 @@ import 'jspdf-autotable';
         vm.generatePdf = generatePdf;
         vm.removeProduct = removeProduct;
         vm.search = search;
+        vm.sortCert = utilService.sortCert;
         vm.toggleProduct = toggleProduct;
 
         ////////////////////////////////////////////////////////////////////
