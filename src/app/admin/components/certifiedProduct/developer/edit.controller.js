@@ -90,7 +90,7 @@
 
         function isMissingReasonForBan () {
             for (var i = 0; i < vm.developer.statusEvents.length; i++) {
-                if(vm.developer.statusEvents[i].status.status === 'Under certification ban by ONC' &&
+                if (vm.developer.statusEvents[i].status.status === 'Under certification ban by ONC' &&
                      angular.isUndefined(vm.developer.statusEvents[i].reason)) {
                     return true;
                 }
