@@ -25,7 +25,7 @@
 
         function addNewItem (item) {
             const key = item.split('-')[0];
-            const vals = vm.job.jobDataMap[key].split(vm.SPLIT_PRIMARY);
+            const vals = vm.job.jobDataMap[key] ? vm.job.jobDataMap[key].split(vm.SPLIT_PRIMARY) : [];
             vals.push(vm.newItem[item]);
             vm.newItem[item] = '';
             vm.job.jobDataMap[key] = vals.join(vm.SPLIT_PRIMARY);
