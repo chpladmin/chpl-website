@@ -11,7 +11,7 @@
         };
 
         beforeEach(function () {
-            angular.mock.module('chpl.components');
+            angular.mock.module('chpl.components', 'chpl.services');
             inject(function (_$compile_, _$httpBackend_, $localStorage, _$log_, _$rootScope_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
