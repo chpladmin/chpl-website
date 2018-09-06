@@ -252,6 +252,7 @@
                 },
             });
             vm.modalInstance.result.then(function (result) {
+                vm.developerMessage = null;
                 vm.activeDeveloper = result;
                 networkService.getDevelopers()
                     .then(function (developers) {
