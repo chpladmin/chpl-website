@@ -69,7 +69,7 @@
         });
 
         describe('adding 2015 products to the list', function () {
-            fit('should show missing criteria', function () {
+            it('should show missing criteria', function () {
                 vm.addProduct(3);
                 expect(vm.widget.productIds).toEqual([3]);
                 expect(vm.widget.searchResult.missingAnd).not.toEqual(null);
