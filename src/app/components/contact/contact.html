@@ -40,9 +40,9 @@
     </div>
   </span>
   <span ng-if="!vm.isEditing">
-    Full name: {{ vm.contact.fullName }}<br />
-    Friendly name: {{ vm.contact.friendlyName }}<br />
-    Title: {{ vm.contact.title }}<br />
+    Name: {{ vm.contact.fullName }}<br />
+    <span ng-if="vm.contact.friendlyName">Friendly name: {{ vm.contact.friendlyName }}<br /></span>
+    <span ng-if="vm.contact.title">Title: {{ vm.contact.title }}<br /></span>
     Email: {{ vm.contact.email }}<br />
     Phone: {{ vm.contact.phoneNumber }}
   </span>
