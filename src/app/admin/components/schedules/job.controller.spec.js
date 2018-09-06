@@ -102,6 +102,13 @@
                 expect(vm.job.jobDataMap.email).toBe('alarned@ainq.com☺newEmail');
             });
 
+            it('should add elements even if null', function () {
+                vm.newItem['email-Subscribers'] = 'newEmail'
+                vm.job.jobDataMap.email = null;
+                vm.addNewItem('email-Subscribers');
+                expect(vm.job.jobDataMap.email).toBe('newEmail');
+            });
+
             it('should remove from elements', function () {
                 vm.removeItem('email-Subscribers', 'alarned@ainq.com');
                 expect(vm.job.jobDataMap.email).toBe('');
