@@ -34,7 +34,7 @@
     </ul>
   </div>
   <div ng-if="widget.searchResult.missingCombo.length">
-    <span ng-if="widget.searchResult.missingCombo.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingCombo.length === 0">Please select a product</span> that fulfills all criteria from at least on of the following group<span ng-if="widget.searchResult.missingCombo.length > 1">s</span>:
+    <span ng-if="widget.searchResult.missingCombo.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingCombo.length === 0">Please select a product</span> that fulfills all criteria from at least one of the following group<span ng-if="widget.searchResult.missingCombo.length > 1">s</span>:
     <ul>
       <li class="list-unstyled" ng-repeat="criterias in widget.searchResult.missingCombo | orderBy: vm.sortCert">
         [<span ng-repeat="criteria in criterias">{{ criteria }}{{$last ? '' : ', '}}</span>]
@@ -42,11 +42,14 @@
     </ul>
   </div>
   <div ng-if="widget.searchResult.missingX.length">
-    <ul>
-      <li class="list-unstyled" ng-repeat="criterias in widget.searchResult.missingCombo | orderBy: vm.sortCert">
-        [<span ng-repeat="criteria in criterias">{{ criteria }}{{$last ? '' : ', '}}</span>]
-      </li>
-    </ul>
+    <div ng-repeat="maps in widget.searchResult.missingX">
+      <ul>
+        <li class="list-unstyled" ng-repeat="(number, criterias) in maps">
+          <span>In addition, please select {{ number }} from the following:</span>
+          [<span ng-repeat="criteria in criterias">{{ criteria }}{{$last ? '' : ', '}}</span>]
+        </li>
+      </ul>
+    </div>
   </div>
   <p class="text-center" ng-if="widget.createResponse && widget.createResponse.ehrCertificationId">
     Your CMS EHR Certification ID<br />
