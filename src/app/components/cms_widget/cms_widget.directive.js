@@ -1,5 +1,5 @@
 import * as jsPDF from 'jspdf';
-import 'jspdf-autotable';
+//import 'jspdf-autotable';
 
 (function () {
     'use strict';
