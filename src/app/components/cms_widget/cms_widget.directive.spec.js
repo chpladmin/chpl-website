@@ -8,10 +8,11 @@
             endpoint: '/rest/certification_ids',
             searchResponse: {"products": [{"name": "ABELMed EHR - EMR / PM","productId": 6836,"version": "12"},{"name": "4medica iEHR® Cloud Ambulatory Solution mark 2","productId": 6493,"version": "15.10.1"},{"name": "4medica iEHR Cloud Ambulatory Suite","productId": 6993,"version": "15.10"}],"metCounts": {"cqmsAmbulatoryCoreRequiredMet": 7,"criteriaRequired": 21,"cqmsAmbulatoryRequiredMet": 3,"cqmsInpatientRequired": 16,"cqmsAmbulatoryRequired": 3,"domainsRequiredMet": 3,"criteriaCpoeRequiredMet": 1,"criteriaTocRequired": 2,"domainsRequired": 3,"criteriaRequiredMet": 21,"cqmsInpatientRequiredMet": 0,"criteriaCpoeRequired": 1,"cqmsAmbulatoryCoreRequired": 6,"criteriaTocRequiredMet": 2},"metPercentages": {"cqmsInpatient": 0,"cqmsAmbulatory": 100,"cqmDomains": 100,"criteriaMet": 100},"year": "2014","isValid": true},
             createResponse: {"products": [{"name": "ABELMed EHR - EMR / PM","productId": 6836,"version": "12"},{"name": "4medica iEHR® Cloud Ambulatory Solution mark 2","productId": 6493,"version": "15.10.1"},{"name": "4medica iEHR Cloud Ambulatory Suite","productId": 6993,"version": "15.10"}],"ehrCertificationId": "0014EPZ0UHS6DFR","metCounts": {"cqmsAmbulatoryCoreRequiredMet": 7,"criteriaRequired": 21,"cqmsAmbulatoryRequiredMet": 3,"cqmsInpatientRequired": 16,"cqmsAmbulatoryRequired": 3,"domainsRequiredMet": 3,"criteriaCpoeRequiredMet": 1,"criteriaTocRequired": 2,"domainsRequired": 3,"criteriaRequiredMet": 21,"cqmsInpatientRequiredMet": 0,"criteriaCpoeRequired": 1,"cqmsAmbulatoryCoreRequired": 6,"criteriaTocRequiredMet": 2},"metPercentages": {"cqmsInpatient": 0,"cqmsAmbulatory": 100,"cqmDomains": 100,"criteriaMet": 100},"year": "2014","isValid": true},
+            response2015: {"products": [{"name": "(SQI) Solution For Quality Improvement","productId": 9261,"version": "v4.6.9.25"}],"ehrCertificationId": null,"metCounts": {"criteriaDpRequired": 1,"cqmsAmbulatoryCoreRequiredMet": 0,"criteriaRequired": 15,"cqmsAmbulatoryRequiredMet": 0,"cqmsInpatientRequired": 0,"cqmsAmbulatoryRequired": 0,"domainsRequiredMet": 0,"criteriaCpoeRequiredMet": 0,"domainsRequired": 0,"criteriaRequiredMet": 0,"cqmsInpatientRequiredMet": 0,"criteriaCpoeRequired": 1,"criteriaDpRequiredMet": 0,"cqmsAmbulatoryCoreRequired": 0},"metPercentages": {"cqmsInpatient": 0,"cqmsAmbulatory": 0,"cqmDomains": 0,"criteriaMet": 0},"missingAnd": ["170.315 (a)(5)","170.315 (a)(6)","170.315 (a)(7)","170.315 (a)(8)","170.315 (a)(9)","170.315 (a)(11)","170.315 (a)(14)","170.315 (c)(1)","170.315 (b)(1)","170.315 (b)(6)","170.315 (g)(7)","170.315 (g)(8)","170.315 (g)(9)"],"missingOr": [["170.315 (a)(1)","170.315 (a)(2)","170.315 (a)(3)"],["170.315 (h)(1)","170.315 (h)(2)"]],"year": "2015","isValid": false},
         };
 
         beforeEach(function () {
-            module('chpl.components');
+            angular.mock.module('chpl.components', 'chpl.services');
             inject(function (_$compile_, _$httpBackend_, $localStorage, _$log_, _$rootScope_) {
                 $compile = _$compile_;
                 $rootScope = _$rootScope_;
@@ -64,6 +65,15 @@
                 spyOn(vm,'search');
                 vm.addProduct(1);
                 expect(vm.search).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('adding 2015 products to the list', function () {
+            it('should show missing criteria', function () {
+                vm.addProduct(3);
+                expect(vm.widget.productIds).toEqual([3]);
+                expect(vm.widget.searchResult.missingAnd).not.toEqual(null);
+                expect(vm.widget.searchResult.missingOr).not.toEqual(null);
             });
         });
 

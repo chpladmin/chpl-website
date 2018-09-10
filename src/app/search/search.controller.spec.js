@@ -66,7 +66,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.search', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.search', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAll = jasmine.createSpy('getAll');
                     $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');

@@ -1,3 +1,5 @@
+import './history.mock';
+
 (function () {
     'use strict';
 
@@ -11,7 +13,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.product');
+            angular.mock.module('chpl.product');
             inject(function ($controller, _$location_, _$log_, $rootScope, product_activity) {
                 $location = _$location_;
                 $log = _$log_;

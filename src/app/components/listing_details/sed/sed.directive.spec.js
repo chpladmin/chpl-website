@@ -9,7 +9,7 @@
         /* eslint-enable quotes, key-spacing */
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.mock', 'chpl', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl', function ($provide) {
                 $provide.decorator('utilService', function ($delegate) {
                     $delegate.makeCsv = jasmine.createSpy('makeCsv');
                     $delegate.sortCertArray = jasmine.createSpy('sortCertArray');
@@ -147,7 +147,7 @@
                         expect(vm.csvData.values[1]).toEqual([
                             '15.04.04.2891.Alls.17.1.1.170512', 'Allscripts', 'Allscripts TouchWorks EHR', '17.1 GA', '170.315 (a)(1)',
                             'Order specific medication and then change the order based on the information provided.', 'System Usability Scale', 80, 1, 120, 10, 17, 8, 88.56, 8, 19, 2, 10, 8,
-                            'MD', 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 15, 200, 250, '50-59', 'Female', 'No',
+                            'Physician\'s Assistant', 'Master\'s degree', 16, 60, 220, '40-49', 'Female', 'Yes, used VoiceOver',
                         ]);
                     });
 
@@ -159,7 +159,7 @@
                         expect(vm.csvData.values[126]).toEqual([
                             '15.04.04.2891.Alls.17.1.1.170512', 'Allscripts', 'Allscripts TouchWorks EHR', '17.1 GA', '170.315 (a)(5);170.315 (a)(6);170.315 (a)(7);170.315 (a)(8);170.315 (a)(9);170.315 (a)(14)',
                             'Task for (a)(5)', 'System Usability Scale', 86, 3, 133, 12, 13, 9, 66.12, 8, 12, 3, 7, 4,
-                            'RN', 'Associate degree', 14, 140, 210, '30-39', 'Male', 'Yes, used VoiceOver',
+                            'MD', 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 15, 200, 250, '50-59', 'Female', 'No',
                         ]);
                     });
                 });
@@ -250,7 +250,7 @@
                             expect(vm.csvData.values[1]).toEqual([
                                 '15.07.07.1447.EI97.62.01.1.160402', 'Epic Systems Corporation', 'EpicCare Inpatient - Core EMR', 'testV2', '170.315 (a)(1)',
                                 'Order specific medication and then change the order based on the information provided.', 'System Usability Scale', 80, 1, 120, 10, 17, 8, 88.56, 8, 19, 2, 10, 8,
-                                'MD', 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 15, 200, 250, '50-59', 'Female', 'No',
+                                'Physician\'s Assistant', 'Master\'s degree', 16, 60, 220, '40-49', 'Female', 'Yes, used VoiceOver',
                             ]);
                         });
 
@@ -262,7 +262,7 @@
                             expect(vm.csvData.values[126]).toEqual([
                                 '15.07.07.1447.EI97.62.01.1.160402', 'Epic Systems Corporation', 'EpicCare Inpatient - Core EMR', 'testV2', '170.315 (a)(5);170.315 (a)(6);170.315 (a)(7);170.315 (a)(8);170.315 (a)(9);170.315 (a)(14)',
                                 'Task for (a)(5)', 'System Usability Scale', 86, 3, 133, 12, 13, 9, 66.12, 8, 12, 3, 7, 4,
-                                'RN', 'Associate degree', 14, 140, 210, '30-39', 'Male', 'Yes, used VoiceOver',
+                                'MD', 'Doctorate degree (e.g., MD, DNP, DMD, PhD)', 15, 200, 250, '50-59', 'Female', 'No',
                             ]);
                         });
                     });

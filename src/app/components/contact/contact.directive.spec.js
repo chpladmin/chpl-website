@@ -5,7 +5,7 @@
         var $log, el, vm;
 
         beforeEach(function () {
-            module('chpl.templates','chpl');
+            angular.mock.module('chpl');
 
             inject(function ($compile, _$log_, $rootScope) {
                 $log = _$log_;
@@ -20,7 +20,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug("\n Debug: " + $log.debug.logs.join("\n Debug: "));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -41,12 +43,12 @@
                 vm.contact = {};
                 expect(vm.valuesRequired()).toBe(false);
 
-                vm.contact.firstName = 'John';
+                vm.contact.fullName = 'John';
                 expect(vm.valuesRequired()).toBe(true);
                 vm.contact = {};
                 expect(vm.valuesRequired()).toBe(false);
 
-                vm.contact.lastName = 'Smith';
+                vm.contact.friendlyName = 'Smith';
                 expect(vm.valuesRequired()).toBe(true);
                 vm.contact = {};
                 expect(vm.valuesRequired()).toBe(false);
@@ -83,21 +85,12 @@
                 vm.isRequired = true;
                 vm.updateErrors();
                 expect(vm.errorMessages).toEqual([
-                    'First name is required',
-                    'Last name is required',
+                    'Full name is required',
                     'Email is required',
                     'Phone number is required',
                 ]);
 
-                vm.contact.firstName = 'John';
-                vm.updateErrors();
-                expect(vm.errorMessages).toEqual([
-                    'Last name is required',
-                    'Email is required',
-                    'Phone number is required',
-                ]);
-
-                vm.contact.lastName = 'Smith';
+                vm.contact.fullName = 'John';
                 vm.updateErrors();
                 expect(vm.errorMessages).toEqual([
                     'Email is required',

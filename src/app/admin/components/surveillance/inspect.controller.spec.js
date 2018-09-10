@@ -5,7 +5,7 @@
         var $log, $q, $uibModal, Mock, actualOptions, networkService, scope, utilService, vm;
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.confirmPendingSurveillance = jasmine.createSpy('confirmPendingSurveillance');
                     $delegate.rejectPendingSurveillance = jasmine.createSpy('rejectPendingSurveillance');

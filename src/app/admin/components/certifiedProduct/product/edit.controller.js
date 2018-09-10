@@ -48,8 +48,8 @@
 
         function isContactRequired () {
             if (vm.product.contact) {
-                if (vm.product.contact.firstName ||
-                    vm.product.contact.lastName ||
+                if (vm.product.contact.fullName ||
+                    vm.product.contact.friendlyName ||
                     vm.product.contact.title ||
                     vm.product.contact.email ||
                     vm.product.contact.phoneNumber) {

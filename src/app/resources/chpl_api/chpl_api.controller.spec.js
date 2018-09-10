@@ -6,7 +6,7 @@
         var $log, scope, vm;
 
         beforeEach(function () {
-            module('chpl.chpl_api', 'chpl.constants');
+            angular.mock.module('chpl.chpl_api', 'chpl.constants');
 
             inject(function ($controller, _$log_, $rootScope) {
                 $log = _$log_;

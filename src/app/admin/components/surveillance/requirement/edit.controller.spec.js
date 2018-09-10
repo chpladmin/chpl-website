@@ -5,7 +5,7 @@
         var $log, $uibModal, Mock, actualOptions, scope, vm;
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin');
+            angular.mock.module('chpl.mock', 'chpl.admin');
 
             inject(function ($controller, _$log_, $rootScope, _$uibModal_, _Mock_) {
                 $log = _$log_;
