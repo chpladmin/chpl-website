@@ -57,17 +57,17 @@
         this.$onInit = function () {
             vm.loadAnnouncements();
 
-            var cmsWidget = $scope.$on('ShowWidget', function () {
+            var cmsWidget = $rootScope.$on('ShowWidget', function () {
                 vm.showCmsWidget();
             });
             $scope.$on('$destroy', cmsWidget);
 
-            var showCompareWidget = $scope.$on('ShowCompareWidget', function () {
+            var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
                 vm.showCompareWidget(true);
             });
             $scope.$on('$destroy', showCompareWidget);
 
-            var hideCompareWidget = $scope.$on('HideCompareWidget', function () {
+            var hideCompareWidget = $rootScope.$on('HideCompareWidget', function () {
                 vm.showCompareWidget(false);
             });
             $scope.$on('$destroy', hideCompareWidget);
