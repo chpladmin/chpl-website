@@ -45,8 +45,10 @@
     <div ng-repeat="maps in widget.searchResult.missingX">
       <ul>
         <li class="list-unstyled" ng-repeat="(number, criterias) in maps">
-          <span>In addition, please select {{ number }} from the following:</span>
-          [<span ng-repeat="criteria in criterias">{{ criteria }}{{$last ? '' : ', '}}</span>]
+          <div ng-if="number > 0">
+            <span>In addition, please select {{ number }} from the following:</span>
+            [<span ng-repeat="criteria in criterias">{{ criteria }}{{$last ? '' : ', '}}</span>]
+          </div>
         </li>
       </ul>
     </div>
