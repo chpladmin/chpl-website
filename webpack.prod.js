@@ -9,13 +9,22 @@ const base = require('./webpack.config.js');
 module.exports = merge(base, {
     mode: 'production',
     optimization: {
+        runtimeChunk: 'single',
         splitChunks: {
-            name: true,
+            chunks: 'all',
+            maxInitialRequests: Infinity,
+            minSize: 0,
             cacheGroups: {
-                commons: {
+                vendor: {
                     test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    chunks: 'all',
+                    name(module) {
+                        // get the name. E.g. node_modules/packageName/not/this/part.js
+                        // or node_modules/packageName
+                        const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+                        // npm package names are URL-safe, but some servers don't like @ symbols
+                        return `npm.${packageName.replace('@', '')}`;
+                    },
                 },
             },
         },
@@ -28,5 +37,6 @@ module.exports = merge(base, {
             MINUTES_UNTIL_IDLE: 20,
             MINUTES_BETWEEN_KEEPALIVE: 1,
         }),
+        new webpack.HashedModuleIdsPlugin(),
     ],
 });
