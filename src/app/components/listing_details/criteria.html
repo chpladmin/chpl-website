@@ -22,13 +22,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-if="vm.cert.success && vm.cert.gap !== null">
+          <tr ng-if="vm.cert.success && vm.cert.gap !== null" id="criteria_{{ vm.cert.number }}_details_row_GAP">
             <td>
               GAP <button class="btn btn-link btn-xs pull-right" uib-tooltip="The corresponding certification criteria are gap certified (True or False)." tooltip-trigger="mouseenter focus click"><span class="sr-only">The corresponding certification criteria are gap certified (True or False).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ vm.cert.gap ? 'True' : 'False' }}</td>
           </tr>
-          <tr ng-if="vm.cert.success && vm.cert.testStandards !== null">
+          <tr ng-if="vm.cert.success && vm.cert.testStandards !== null" id="criteria_{{ vm.cert.number }}_details_row_Standard">
             <td>
               Standard <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet a certification criterion where additional, optional standards are permitted." tooltip-trigger="mouseenter focus click"><span class="sr-only">The standard(s) used to meet a certification criterion where additional, optional standards are permitted.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -42,13 +42,13 @@
             </td>
             <td ng-if="!vm.cert.testStandards || vm.cert.testStandards.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.g1Success != null">
+          <tr ng-if="vm.cert.g1Success != null" id="criteria_{{ vm.cert.number }}_details_row_Measure_G1">
             <td>
               Measure Successfully Tested for G1 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.314(g)(1))." tooltip-trigger="mouseenter focus click"><span class="sr-only">The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.314(g)(1)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ vm.cert.g1Success ? 'True' : 'False' }}</td>
           </tr>
-          <tr ng-if="vm.cert.g1MacraMeasures">
+          <tr ng-if="vm.cert.g1MacraMeasures" id="criteria_{{ vm.cert.number }}_details_row_Measures_G1">
             <td>
               Measure<span ng-if="vm.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated numerator recording certification criterion (170.315(g)(1))." tooltip-trigger="mouseenter focus click"><span class="sr-only">The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.315(g)(1)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -59,13 +59,13 @@
             </td>
             <td ng-if="vm.cert.g1MacraMeasures.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.g2Success != null">
+          <tr ng-if="vm.cert.g2Success != null" id="criteria_{{ vm.cert.number }}_details_row_Measure_G2">
             <td>
               Measure Successfully Tested for G2 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.314(g)(2))." tooltip-trigger="mouseenter focus click"><span class="sr-only">The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.314(g)(2)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ vm.cert.g2Success ? 'True' : 'False' }}</td>
           </tr>
-          <tr ng-if="vm.cert.g2MacraMeasures">
+          <tr ng-if="vm.cert.g2MacraMeasures" id="criteria_{{ vm.cert.number }}_details_row_Measures_G2">
             <td>
               Measure<span ng-if="vm.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2))." tooltip-trigger="mouseenter focus click"><span class="sr-only">The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -76,7 +76,7 @@
             </td>
             <td ng-if="vm.cert.g2MacraMeasures.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.success && vm.cert.testFunctionality !== null">
+          <tr ng-if="vm.cert.success && vm.cert.testFunctionality !== null" id="criteria_{{ vm.cert.number }}_details_row_Functionality_Tested">
             <td>
               Functionality Tested <button class="btn btn-link btn-xs pull-right" uib-tooltip="Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only." tooltip-trigger="mouseenter focus click"><span class="sr-only">Any optional, alternative, ambulatory, or inpatient capabilities within a certification criterion to which the product was tested and certified. Applies to 2015 Edition certification only.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -91,7 +91,7 @@
             </td>
             <td ng-if="!vm.cert.testFunctionality || vm.cert.testFunctionality.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.success && vm.cert.testProcedures !== null">
+          <tr ng-if="vm.cert.success && vm.cert.testProcedures !== null" id="criteria_{{ vm.cert.number }}_details_row_Test_procedure">
             <td>
               Test procedure <button class="btn btn-link btn-xs pull-right" uib-tooltip="The type of test procedure and the version used during testing of the certification criterion functionality." tooltip-trigger="mouseenter focus click"><span class="sr-only">The type of test procedure and the version used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -100,7 +100,7 @@
             </td>
             <td ng-if="!vm.cert.testProcedures || vm.cert.testProcedures.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.number === '170.315 (g)(4)' || vm.cert.number === '170.314 (g)(4)'">
+          <tr ng-if="vm.cert.number === '170.315 (g)(4)' || vm.cert.number === '170.314 (g)(4)'" id="criteria_{{ vm.cert.number }}_details_row_Quality_Management_System">
             <td>
               Quality Management System <button class="btn btn-link btn-xs pull-right" uib-tooltip="The type of test procedure and the version used during testing of the certification criterion functionality." tooltip-trigger="mouseenter focus click"><span class="sr-only">The type of test procedure and the version used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -115,7 +115,7 @@
               <span ng-if="!vm.qmsStandards || vm.qmsStandards.length === 0">N/A</span>
             </td>
           </tr>
-          <tr ng-if="vm.cert.number === '170.315 (g)(5)'">
+          <tr ng-if="vm.cert.number === '170.315 (g)(5)'" id="criteria_{{ vm.cert.number }}_details_row_Accessibility_Standard">
             <td>
               Accessibility Standard<span ng-if="vm.accessibilityStandards.length > 1">s</span> <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only." tooltip-trigger="mouseenter focus click"><span class="sr-only">The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
@@ -126,34 +126,34 @@
               <span ng-if="!vm.accessibilityStandards || vm.accessibilityStandards.length === 0">N/A</span>
             </td>
           </tr>
-          <tr ng-if="vm.cert.success && vm.cert.testToolsUsed !== null">
+          <tr ng-if="vm.cert.success && vm.cert.testToolsUsed !== null" id="criteria_{{ vm.cert.number }}_details_row_Test_tool">
             <td>
               Test tool <button class="btn btn-link btn-xs pull-right" uib-tooltip="The name and version of the test tool used during testing of the certification criterion functionality." tooltip-trigger="mouseenter focus click"><span class="sr-only">The name and version of the test tool used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="vm.cert.testToolsUsed && vm.cert.testToolsUsed.length > 0"><div ng-repeat="m in vm.cert.testToolsUsed"><span ng-class="{'bg-danger': m.testToolId === null}">Tool: {{ m.testToolName }}; Version: {{ m.testToolVersion ? m.testToolVersion : 'N/A' }}<span ng-if="m.testToolId === null"> Warning: Tool not found in system, it will not be saved</span></span></div></td>
             <td ng-if="!vm.cert.testToolsUsed || vm.cert.testToolsUsed.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.success && vm.cert.testDataUsed !== null">
+          <tr ng-if="vm.cert.success && vm.cert.testDataUsed !== null" id="criteria_{{ vm.cert.number }}_details_row_Test_data">
             <td>
               Test data used <button class="btn btn-link btn-xs pull-right" uib-tooltip="The test data version and any alterations or modifications to the ONC-approved test data. It is an optional field except for the products testing for automated numerator recording (&sect;170.314(g)(1) or &sect;170.315(g)(1)) and automated measure calculation (&sect; 170.314(g)(2) or &sect;170.315(g)(2)). For those products, the field is required." tooltip-trigger="mouseenter focus click"><span class="sr-only">The test data version and any alterations or modifications to the ONC-approved test data. It is an optional field except for the products testing for automated numerator recording (&sect;170.314(g)(1) or &sect;170.315(g)(1)) and automated measure calculation (&sect; 170.314(g)(2) or &sect;170.315(g)(2)). For those products, the field is required.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="vm.cert.testDataUsed && vm.cert.testDataUsed.length > 0"><div ng-repeat="m in vm.cert.testDataUsed">Name: {{ m.testData.name ? m.testData.name : 'N/A' }}; Version: {{ m.version }}; Alteration: {{ m.alteration ? m.alteration : 'N/A' }}</div></td>
             <td ng-if="!vm.cert.testDataUsed || vm.cert.testDataUsed.length === 0">None</td>
           </tr>
-          <tr ng-if="vm.cert.apiDocumentation !== null">
+          <tr ng-if="vm.cert.apiDocumentation !== null" id="criteria_{{ vm.cert.number }}_details_row_Api_Documentation">
             <td>
               API Documentation <button class="btn btn-link btn-xs pull-right" uib-tooltip="The publicly accessible hyperlink that has the documentation used to meet the applicable API certification criteria (&sect; 170.315(g)(7) or &sect; 170.315(g)(8) or &sect; 170.315(g)(9))." tooltip-trigger="mouseenter focus click"><span class="sr-only">The publicly accessible hyperlink that has the documentation used to meet the applicable API certification criteria (&sect; 170.315(g)(7) or &sect; 170.315(g)(8) or &sect; 170.315(g)(9)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="vm.cert.apiDocumentation"><a ai-a href="{{ vm.cert.apiDocumentation }}" analytics-on="click" analytics-event="API Documentation" analytics-properties="{ category: 'Download Details', label: vm.cert.apiDocumentation }">{{ vm.cert.apiDocumentation }}</a></td>
             <td ng-if="!vm.cert.apiDocumentation">None</td>
           </tr>
-          <tr ng-if="vm.cert.success && vm.cert.privacySecurityFramework !== null">
+          <tr ng-if="vm.cert.success && vm.cert.privacySecurityFramework !== null" id="criteria_{{ vm.cert.number }}_details_row_Privacy_Security_Framework">
             <td>
               Privacy &amp; Security Framework <button class="btn btn-link btn-xs pull-right" uib-tooltip="The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). " tooltip-trigger="mouseenter focus click"><span class="sr-only">The approach by which the criteria addressed the Privacy and Security requirements (Approach 1 – functional demonstration or Approach 2 – documentation of integration). </span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>{{ vm.cert.privacySecurityFramework }}</td>
           </tr>
-          <tr ng-if="vm.cert.success &&  vm.cert.sed !== null">
+          <tr ng-if="vm.cert.success &&  vm.cert.sed !== null" id="criteria_{{ vm.cert.number }}_details_row_SED">
             <td>SED</td>
             <td>{{ vm.cert.sed ? 'True' : 'False' }}</td>
           </tr>
