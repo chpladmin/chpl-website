@@ -51,9 +51,9 @@
           <td>{{ item.version }}</td>
           <td>{{ item.certifiedProductNumber }}</td>
           <td>{{ item.grouping }}</td>
-          <td width="0">
-            <button class="btn btn-ai-success btn-block" ng-click="vm.editItem(item, $index)"><i class="fa fa-pencil-square-o"></i> Edit</button>
-            <button class="btn btn-danger btn-block" ng-click="vm.removeItem($index)"><i class="fa fa-trash-o"></i> Remove</button>
+          <td>
+            <button class="btn btn-ai-success btn-sm" ng-click="vm.editItem(item, $index)"><i class="fa fa-pencil-square-o"></i> <span class="sr-only">Edit</span></button>
+            <button class="btn btn-danger btn-sm" ng-click="vm.removeItem($index)"><i class="fa fa-trash-o"></i> <span class="sr-only">Remove</span></button>
           </td>
         </tr>
       </tbody>

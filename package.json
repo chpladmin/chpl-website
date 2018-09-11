@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "html-lint": "htmllint src/app/**/*.html",
+    "html-lint:dirty": "htmllint --rc .htmllintrc.dirty src/app/**/*.html",
     "start": "webpack-dev-server --config webpack.dev.js",
     "profile": "webpack --profile --json > test_reports/stats.json",
     "test": "concurrently \"karma start --single-run\" \"yarn html-lint\"",
