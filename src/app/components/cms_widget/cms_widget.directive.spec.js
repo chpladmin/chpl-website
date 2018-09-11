@@ -38,7 +38,7 @@
         });
 
         it('should be compiled', function () {
-            expect(el.html()).not.toEqual(null);
+            expect(el.html()).not.toBeNull();
         });
 
         it('should have isolate scope object with instanciate members', function () {
@@ -74,8 +74,8 @@
             it('should show missing criteria', function () {
                 vm.addProduct(3);
                 expect(vm.widget.productIds).toEqual([3]);
-                expect(vm.widget.searchResult.missingAnd).not.toEqual(null);
-                expect(vm.widget.searchResult.missingOr).not.toEqual(null);
+                expect(vm.widget.searchResult.missingAnd).not.toBeNull();
+                expect(vm.widget.searchResult.missingOr).not.toBeNull();
             });
         });
 
@@ -83,19 +83,19 @@
             it('should show missing criteria', function () {
                 vm.addProduct(4);
                 expect(vm.widget.productIds).toEqual([4]);
-                expect(vm.widget.searchResult.missingAnd).not.toEqual(null);
-                expect(vm.widget.searchResult.missingOr).not.toEqual(null);
-                expect(vm.widget.searchResult.missingCombo).not.toEqual(null);
-                expect(vm.widget.searchResult.missingX).not.toEqual(null);
+                expect(vm.widget.searchResult.missingAnd).not.toBeNull();
+                expect(vm.widget.searchResult.missingOr).not.toBeNull();
+                expect(vm.widget.searchResult.missingCombo).not.toBeNull();
+                expect(vm.widget.searchResult.missingX).not.toBeNull();
             });
 
             it('should show missing criteria', function () {
                 vm.addProduct(5);
                 expect(vm.widget.productIds).toEqual([5]);
-                expect(vm.widget.searchResult.missingAnd).toEqual(undefined);
-                expect(vm.widget.searchResult.missingOr).toEqual(undefined);
-                expect(vm.widget.searchResult.missingCombo).toEqual(undefined);
-                expect(vm.widget.searchResult.missingX).not.toEqual(null);
+                expect(vm.widget.searchResult.missingAnd).toBeUndefined();
+                expect(vm.widget.searchResult.missingOr).toBeUndefined();
+                expect(vm.widget.searchResult.missingCombo).toBeUndefined();
+                expect(vm.widget.searchResult.missingX).not.toBeNull();
             });
         });
 
