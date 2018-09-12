@@ -102,7 +102,7 @@
           </tr>
           <tr ng-if="vm.cert.number === '170.315 (g)(4)' || vm.cert.number === '170.314 (g)(4)'" id="criteria_{{ vm.cert.number }}_details_row_Quality_Management_System">
             <td>
-              Quality Management System <button class="btn btn-link btn-xs pull-right" uib-tooltip="The type of test procedure and the version used during testing of the certification criterion functionality." tooltip-trigger="mouseenter focus click"><span class="sr-only">The type of test procedure and the version used during testing of the certification criterion functionality.</span><i class="fa fa-info-circle fa-lg"></i></button>
+              Quality Management System <button class="btn btn-link btn-xs pull-right" uib-tooltip="If the corresponding certified product has a Quality Management System (QMS): 1) the standard or mapping used to meet the quality management system certification criterion, and 2) if a QMS standard or mapping was modified, documentation on the changes made. Specific requirements for 2015 Edition are different than for 2014 Edition." tooltip-trigger="mouseenter focus click"><span class="sr-only">If the corresponding certified product has a Quality Management System (QMS): 1) the standard or mapping used to meet the quality management system certification criterion, and 2) if a QMS standard or mapping was modified, documentation on the changes made. Specific requirements for 2015 Edition are different than for 2014 Edition.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>
               <ul class="list-unstyled">
@@ -154,7 +154,9 @@
             <td>{{ vm.cert.privacySecurityFramework }}</td>
           </tr>
           <tr ng-if="vm.cert.success &&  vm.cert.sed !== null" id="criteria_{{ vm.cert.number }}_details_row_SED">
-            <td>SED</td>
+            <td>
+              SED <button class="btn btn-link btn-xs pull-right" uib-tooltip="The corresponding certification criteria met safety-enhanced design attestation during certification testing (True or False). Specific requirements for 2015 Edition are different than for 2014 Edition." tooltip-trigger="mouseenter focus click"><span class="sr-only">The corresponding certification criteria met safety-enhanced design attestation during certification testing (True or False). Specific requirements for 2015 Edition are different than for 2014 Edition.</span><i class="fa fa-info-circle fa-lg"></i></button>
+            </td>
             <td>{{ vm.cert.sed ? 'True' : 'False' }}</td>
           </tr>
         </tbody>
