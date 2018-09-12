@@ -36,13 +36,17 @@ yarn install
 ### Yarn scripts
 
 * `yarn build`: Build deployable artifacts
-* `yarn html-lint`: Run HTML Linter; all linting rules should pass
-* `yarn html-lint:dirty`: Run HTML Linter; this includes rules that don't play well with AngularJS, so some errors are expected, but some should be examined
+* `yarn html-lint:verbose`: Run HTML Linter with rules that don't play well with AngularJS, so some errors are expected, but this can find some errors that need to be fixed
 * `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
 * `yarn profile`: Generate a webpack statistics output file
-* `yarn test`: Run the unit tests once, and concurrently the HTML Linter
-* `yarn test:auto`: Run the unit tests continuously, rerunning the tests on any file change
-* `yarn test:ci`: Run the tests once, in a fashion suitable for a Continuous Integration environment
+* `yarn test`: Run the unit tests once
+* `yarn test:auto`: Run the unit tests continuously, re-running the tests on any file change
+* `yarn test:ahrq`: Run tests once in a fashion suitable for the deployment environment
+* `yarn test:ci`: Run the tests once in a fashion suitable for a Continuous Integration environment
+
+#### Linting
+
+On all Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpack may fail to compile if any of the linters report issues, depending on the severity of the issue
 
 [git]: http://git-scm.com/
 [nodejs]: https://nodejs.org/en/download/

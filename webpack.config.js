@@ -61,8 +61,16 @@ module.exports = {
             }],
         },{
             test: /\.html$/,
+            exclude: /node_modules/,
             use: [
-                'html-loader',
+                { loader: 'html-loader' },
+                {
+                    loader: 'htmllint-loader',
+                    query: {
+                        failOnError: false,
+                        failOnWarning: false,
+                    },
+                },
             ],
         },{
             test: /\.png$/,
