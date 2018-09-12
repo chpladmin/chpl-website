@@ -6,11 +6,12 @@
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "html-lint": "htmllint src/app/**/*.html",
-    "html-lint:dirty": "htmllint --rc .htmllintrc.dirty src/app/**/*.html",
+    "html-lint:verbose": "htmllint --rc .htmllintrc.verbose src/app/**/*.html",
     "start": "webpack-dev-server --config webpack.dev.js",
     "profile": "webpack --profile --json > test_reports/stats.json",
-    "test": "concurrently \"karma start --single-run\" \"yarn html-lint\"",
+    "test": "karma start --single-run",
     "test:auto": "karma start",
+    "test:ahrq": "karma start --single-run --ahrq",
     "test:ci": "karma start --single-run --no-colors"
   },
   "dependencies": {
@@ -64,6 +65,7 @@
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "htmllint-cli": "^0.0.7",
+    "htmllint-loader": "https://github.com/andlar/htmllint-loader.git",
     "http-proxy-middleware": "~0.9.0",
     "istanbul": "^0.4.5",
     "istanbul-instrumenter-loader": "^3.0.1",
@@ -74,7 +76,6 @@
     "karma-htmlfile-reporter": "^0.3.6",
     "karma-jasmine": "^1.1.2",
     "karma-junit-reporter": "^1.2.0",
-    "karma-phantomjs-launcher": "^1.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.32",
     "karma-super-dots-reporter": "^0.2.0",

@@ -1,6 +1,7 @@
 {
     "attr-name-style": false,
     "attr-no-dup": true,
+    "attr-no-unsafe-char": false,
     "attr-req-value": false,
     "class-no-dup": true,
     "id-class-style": false,

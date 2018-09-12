@@ -3,19 +3,25 @@ process.env.CHROME_BIN = require('puppeteer').executablePath()
 
 module.exports = (config) => {
     config.set({
-        browsers: ['ChromeHeadless'],
+        browsers: config.ahrq ? ['ChromeHeadlessNoSandbox'] : ['ChromeHeadless'],
+        customLaunchers: {
+            ChromeHeadlessNoSandbox: {
+                base: 'ChromeHeadless',
+                flags: ['--no-sandbox'],
+            },
+        },
         failOnEmptyTestSuite: false,
         files: [
             { pattern: 'src/app/specs.js' }
         ],
         frameworks: ['jasmine'],
         preprocessors: {
-            'src/app/specs.js': ['webpack', 'sourcemap']
+            'src/app/specs.js': ['webpack', 'sourcemap'],
         },
-        reporters: ['html', 'junit', 'super-dots', 'coverage-istanbul'], // use "spec" to print out tests to command line; turn off super-dots
+        reporters: config.useSpecReporter ? ['html', 'junit', 'spec', 'coverage-istanbul'] : ['html', 'junit', 'super-dots', 'coverage-istanbul'],
         junitReporter: {
             outputDir: 'test_reports',
-            suite: 'unit'
+            suite: 'unit',
         },
         htmlReporter: {
             groupSuites: true,
@@ -27,7 +33,7 @@ module.exports = (config) => {
             color: {
                 success: 'green',
                 failure: 'red',
-                ignore: 'grey'
+                ignore: 'grey',
             },
         },
         coverageIstanbulReporter: {
