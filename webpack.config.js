@@ -9,6 +9,14 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 module.exports = {
     entry: {
         app: path.resolve(__dirname, './src/app/index.js'),
+        admin: path.resolve(__dirname, './src/app/admin/index.js'),
+        charts: path.resolve(__dirname, './src/app/charts/index.js'),
+        collections: path.resolve(__dirname, './src/app/collections/index.js'),
+        compare: path.resolve(__dirname, './src/app/compare/index.js'),
+        navigation: path.resolve(__dirname, './src/app/navigation/index.js'),
+        product: path.resolve(__dirname, './src/app/product/index.js'),
+        registration: path.resolve(__dirname, './src/app/registration/index.js'),
+        search: path.resolve(__dirname, './src/app/search/index.js'),
     },
     module: {
         rules: [{

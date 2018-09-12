@@ -67,6 +67,7 @@
     </select>
   </div>
   <div ng-show="$ctrl.inAddMode" class="input-group">
+    <label for="{{ $ctrl.identifier }}-add-option" class="sr-only">Add an item</label>
     <input type="text" ng-model="$ctrl.addOption" ng-focus="$ctrl.inAddMode" placeholder="{{ $ctrl.addItemsPlaceholder }}" class="form-control" id="{{ $ctrl.identifier }}-add-option" >
     <span class="input-group-btn">
       <button class="btn btn-ai-success btn-sm" ng-click="$ctrl.addItemToListClick()" id="{{ $ctrl.identifier }}-add-option-ok"><i class="fa fa-check"></i></button>

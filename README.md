@@ -25,9 +25,7 @@ See installation instructions here: [nodejs][nodejs]
 
 ### Install yarn and webpack
 
-```
-TBD
-```
+Yarn: [yarn][yarn]
 
 ### Install dependencies
 
@@ -35,27 +33,16 @@ TBD
 yarn install
 ```
 
-### Run the Application
+### Yarn scripts
 
-```
-yarn start
-OR
-yarn build (to build deployable files
-```
-
-The website will be running at: [http://localhost:3000/](http://localhost:3000/)
-
-**OBE?** Alternatively, update npm to at least version 4.0.5 and try running `npm install` again. See https://stackoverflow.com/questions/6237295/how-can-i-update-node-js-and-npm-to-the-next-versions for instructions on updating npm
-
-## Testing
-
-### Unit testing
-
-This will start a service that watches the files under test, and when any of them are changed, immediately re-run the tests, quickly showing all results.
-
-```
-yarn test:auto
-```
+* `yarn build`: Build deployable artifacts
+* `yarn html-lint`: Run HTML Linter; all linting rules should pass
+* `yarn html-lint:dirty`: Run HTML Linter; this includes rules that don't play well with AngularJS, so some errors are expected, but some should be examined
+* `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
+* `yarn profile`: Generate a webpack statistics output file
+* `yarn test`: Run the unit tests once, and concurrently the HTML Linter
+* `yarn test:auto`: Run the unit tests continuously, rerunning the tests on any file change
+* `yarn test:ci`: Run the tests once, in a fashion suitable for a Continuous Integration environment
 
 [git]: http://git-scm.com/
 [nodejs]: https://nodejs.org/en/download/
