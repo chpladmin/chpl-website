@@ -38,6 +38,7 @@ yarn install
 * `yarn build`: Build deployable artifacts
 * `yarn html-lint:verbose`: Run HTML Linter with rules that don't play well with AngularJS, so some errors are expected, but this can find some errors that need to be fixed
 * `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
+* `yarn start:dist`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading. This version builds the production files, so should have minified/bundled/etc. sources
 * `yarn profile`: Generate a webpack statistics output file
 * `yarn test`: Run the unit tests once
 * `yarn test:auto`: Run the unit tests continuously, re-running the tests on any file change
