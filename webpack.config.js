@@ -17,6 +17,7 @@ module.exports = {
         product: path.resolve(__dirname, './src/app/product/index.js'),
         registration: path.resolve(__dirname, './src/app/registration/index.js'),
         search: path.resolve(__dirname, './src/app/search/index.js'),
+        templates: path.resolve(__dirname, './src/app/templates.js'),
     },
     module: {
         rules: [{

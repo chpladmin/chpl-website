@@ -21,7 +21,6 @@ module.exports = merge(base, {
     mode: 'development',
     plugins: [
         new HtmlWebpackPlugin({
-            chunks: ['app', 'vendors'],
             filename: 'style.html',
             hash: true,
             inject: 'body',
