@@ -5,7 +5,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 
-const base = require('./webpack.config.js');
+const base = require('./webpack.ci.js');
 
 module.exports = merge(base, {
     devServer: {
@@ -17,8 +17,6 @@ module.exports = merge(base, {
             },
         },
     },
-    devtool: 'inline-source-map',
-    mode: 'development',
     plugins: [
         new HtmlWebpackPlugin({
             filename: 'style.html',
