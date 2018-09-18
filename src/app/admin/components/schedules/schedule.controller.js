@@ -20,7 +20,7 @@
         function activate () {
             vm.trigger = angular.copy(trigger);
             if (!vm.trigger.cronSchedule) {
-                vm.trigger.cronSchedule = '0 0 1 1/1 * ? *';
+                vm.trigger.cronSchedule = _getDefaultCron();
             }
             if (vm.trigger.acb) {
                 vm.selectedAcb = vm.trigger.acb.split(SPLIT_PRIMARY).map(function (acb) { return {name: acb}; });
@@ -56,6 +56,7 @@
 
         function onScheduleChange () {
             vm.schConfig = _getScheduleConfig();
+            vm.trigger.cronSchedule = _getDefaultCron();
         }
 
         function save () {
@@ -105,6 +106,31 @@
                 });
         }
 
+        function _getDefaultCron () {
+            let ret = '';
+            if (vm.trigger.job && vm.trigger.job.frequency) {
+                switch (vm.trigger.job.frequency) {
+                case 'MONTHLY':
+                    //first day of every month 4am UTC
+                    ret = '0 0 4 1 1/1 ? *';
+                    break;
+                case 'WEEKLY':
+                    //every monday at 3am UTC
+                    ret = '0 0 3 ? * MON *';
+                    break;
+                case 'HOURLY':
+                    //every hour at 30 minutes past the hour
+                    ret = '0 30 0/1 1/1 * ? *';
+                    break;
+                default:
+                    //daily at 4am UTC
+                    ret = '0 0 4 1/1 * ? *';
+                    break;
+                }
+            }
+            return ret;
+        }
+
         function _getScheduleConfig () {
             return Object.assign(
                 _getTimingRestrictions(vm.trigger.job),
@@ -122,9 +148,13 @@
                 hideSeconds: true,
                 hideMinutesTab: false,
                 hideHourlyTab: false,
+                hideDailyTab: false,
             };
             if (job && job.frequency) {
                 switch (job.frequency) {
+                case 'WEEKLY':
+                    ret.hideDailyTab = true;
+                    //falls through
                 case 'DAILY':
                     ret.hideHourlyTab = true;
                     //falls through
