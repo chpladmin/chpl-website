@@ -53,6 +53,19 @@
       </ul>
     </div>
   </div>
+  <div ng-if="widget.searchResult.missingXOr.length">
+    <div ng-repeat="maps in widget.searchResult.missingXOr">
+      <ul class="list-unstyled">
+        <li ng-repeat="(number, criterias) in maps">
+          <div ng-if="number > 0">
+            <span>Please select {{ number }} from the following:</span>
+            [<span ng-repeat="criteria in criterias">{{ criteria }}{{$last ? '' : ', '}}</span>]
+            <span><b>{{$parent.$parent.$last ? '' : 'OR'}}</b></span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
   <p class="text-center" ng-if="widget.createResponse && widget.createResponse.ehrCertificationId">
     Your CMS EHR Certification ID<br />
     <strong>{{ widget.createResponse.ehrCertificationId }}</strong>
