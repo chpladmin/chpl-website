@@ -3,7 +3,7 @@ import './history.mock';
 (function () {
     'use strict';
 
-    describe('the Listing History popup controller', function () {
+    fdescribe('the Listing History popup controller', function () {
 
         var $location, $log, mock, scope, vm;
         mock = {};
@@ -100,7 +100,8 @@ import './history.mock';
                 expect(vm.activity[5].change[7]).toEqual('CMS82 changes:<ul><li>CQM became "True"</li><li>v3 added</li><li>Certification Criteria "random criteria" changes<ul><li>random criteria added</li></ul></li></ul>');
             });
 
-            it('should handle when the last activity isn\'t "regular"', function () {
+            it('should know when the CHPL Product Number changed', function () {
+                expect(vm.activity[7].change[8]).toEqual('CHPL Product Number changed from something to something');
             });
 
             describe('when dealing with certification events', function () {
