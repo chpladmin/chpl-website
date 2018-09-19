@@ -3,7 +3,7 @@ import './history.mock';
 (function () {
     'use strict';
 
-    fdescribe('the Listing History popup controller', function () {
+    describe('the Listing History popup controller', function () {
 
         var $location, $log, mock, scope, vm;
         mock = {};
@@ -101,7 +101,7 @@ import './history.mock';
             });
 
             it('should know when the CHPL Product Number changed', function () {
-                expect(vm.activity[7].change[8]).toEqual('CHPL Product Number changed from something to something');
+                expect(vm.activity[6].change[0]).toEqual('CHPL Product Number changed from 15.07.07.1447.BE02.01.00.1.160815 to 15.07.07.1447.BE02.01.01.1.160815');
             });
 
             describe('when dealing with certification events', function () {
