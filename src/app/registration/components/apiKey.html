@@ -42,7 +42,7 @@
             <td>{{ user.email }}</td>
             <td>{{ user.key }}</td>
             <td>{{ user.lastUsedDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-            <td>{{ user.deleteWarningSentDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <td>{{ (user.deleteWarningSentDate | date : 'MMM d, y H:mm:ss Z' : 'UTC') || 'N/A' }}</td>
             <td><button class="btn btn-danger btn-block"
                         confirm="Are you sure you wish to revoke {{ user.name }}'s API Key?"
                         confirm-ok="Yes"
