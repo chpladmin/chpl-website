@@ -31,6 +31,8 @@
             <th scope="col">User</th>
             <th scope="col">Email</th>
             <th scope="col">API Key</th>
+            <th scope="col">Last Used Date</th>
+            <th scope="col">Delete Warning Sent Date</th>
             <th scope="col" class="text-center">Action</th>
           </tr>
         </thead>
@@ -39,6 +41,8 @@
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.key }}</td>
+            <td>{{ user.lastUsedDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
+            <td>{{ user.deleteWarningSentDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
             <td><button class="btn btn-danger btn-block"
                         confirm="Are you sure you wish to revoke {{ user.name }}'s API Key?"
                         confirm-ok="Yes"
