@@ -19,7 +19,7 @@
     <div class="form-group" ng-if="vm.activity === vm.activityEnum.LOGIN || vm.activity === vm.activityEnum.CHANGE">
       <label class="control-label col-sm-4" for="new-password-{{ $id }}" ng-if="vm.activity === vm.activityEnum.CHANGE">New Password <span class="text-danger">*</span></label>
       <div class="col-sm-8">
-        <input type="password" class="form-control" id="new-password-{{ $id }}" name="newPassword" ng-model="vm.newPassword" placeholder="new password" ng-pattern="vm.pwPattern" required ng-if="vm.activity === vm.activityEnum.CHANGE" />
+        <input type="password" class="form-control" id="new-password-{{ $id }}" name="newPassword" ng-model="vm.newPassword" placeholder="new password" required ng-if="vm.activity === vm.activityEnum.CHANGE" />
         <div class="text-danger" ng-if="vm.loginForm.newPassword.$touched && vm.loginForm.newPassword.$error.pattern">Password must
           <ul>
             <li>Contain at least one upper case letter</li>

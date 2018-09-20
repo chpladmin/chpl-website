@@ -46,7 +46,6 @@
         /////////////////////////////////////////////////////////
 
         this.$onInit = function () {
-            vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
             vm.clear();
             if (vm.isAuthed()) {
                 Idle.watch();
@@ -74,10 +73,24 @@
                 vm.message = 'Passwords do not match. Please try again';
             } else {
                 networkService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
-                    .then(function () {
-                        vm.clear();
-                        vm.messageClass = vm.pClass;
-                        vm.message = 'Password successfully changed';
+                    .then(function (response) {
+                        if (response.passwordUpdated) {
+                            vm.clear();
+                            vm.messageClass = vm.pClass;
+                            vm.message = 'Password successfully changed';
+                        } else {
+                            vm.messageClass = vm.pClassFail;
+                            vm.message = 'Your password was not changed. ';
+                            if (response.warning) {
+                                vm.message += response.warning;
+                            }
+                            if (response.suggestions && response.suggestions.length > 0) {
+                                vm.message += 'Suggestion' + (response.suggestions.length > 1 ? 's' : '') + ': ' + response.suggestions.join(' ');
+                            }
+                            if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
+                                vm.message += 'Please try again with a stronger password.';
+                            }
+                        }
                     }, function () {
                         vm.messageClass = vm.pClassFail;
                         vm.message = 'Error. Please check your credentials or contact the administrator';
