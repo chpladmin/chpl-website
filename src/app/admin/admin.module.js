@@ -14,6 +14,7 @@
         'ngSanitize',
         'smart-table',
         'ui.bootstrap',
+        'zxcvbn',
     ])
         .config(function (IdleProvider, KeepaliveProvider) {
             // configure Idle settings

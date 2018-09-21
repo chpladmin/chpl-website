@@ -2,11 +2,25 @@
     'use strict';
 
     describe('the Login', function () {
-        var $compile, $log, $q, Idle, Keepalive, authService, el, networkService, scope, vm;
+        var $compile, $log, $q, Idle, Keepalive, authService, el, mock, networkService, scope, vm;
+
+        mock = {
+            response: {
+                roles: [],
+                user: {
+                    subjectName: 'subjectName',
+                    fullName: 'fullName',
+                    friendlyName: 'friendly',
+                    email: 'email@email.email',
+                    phoneNumber: 'phone',
+                },
+            },
+        };
 
         beforeEach(function () {
             angular.mock.module('chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
+                    $delegate.getUsername = jasmine.createSpy('getUsername');
                     $delegate.isAuthed = jasmine.createSpy('isAuthed');
                     $delegate.logout = jasmine.createSpy('logout');
                     $delegate.saveToken = jasmine.createSpy('saveToken');
@@ -14,6 +28,7 @@
                 });
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.changePassword = jasmine.createSpy('changePassword');
+                    $delegate.getUserByUsername = jasmine.createSpy('getUserByUsername');
                     $delegate.keepalive = jasmine.createSpy('keepalive');
                     $delegate.login = jasmine.createSpy('login');
                     $delegate.resetPassword = jasmine.createSpy('resetPassword');
@@ -28,10 +43,12 @@
                 Idle = _Idle_;
                 Keepalive = _Keepalive_;
                 authService = _authService_;
+                authService.getUsername.and.returnValue('admin');
                 authService.isAuthed.and.returnValue(true);
                 authService.saveToken.and.returnValue({});
                 networkService = _networkService_;
                 networkService.changePassword.and.returnValue($q.when({passwordUpdated: true}));
+                networkService.getUserByUsername.and.returnValue($q.when(mock.response));
                 networkService.keepalive.and.returnValue($q.when({}));
                 networkService.login.and.returnValue($q.when({}));
                 networkService.resetPassword.and.returnValue($q.when({}));
@@ -195,7 +212,7 @@
                         expect(vm.message).toBe('Your password was not changed. a warning');
                     });
 
-                    it('wshould report a suggestion', function () {
+                    it('should report a suggestion', function () {
                         networkService.changePassword.and.returnValue($q.when({
                             passwordUpdated: false,
                             suggestions: ['a suggestion'],
@@ -205,7 +222,7 @@
                         expect(vm.message).toBe('Your password was not changed. Suggestion: a suggestion');
                     });
 
-                    it('wshould report suggestions', function () {
+                    it('should report suggestions', function () {
                         networkService.changePassword.and.returnValue($q.when({
                             passwordUpdated: false,
                             suggestions: ['a suggestion', 'another suggestion'],
@@ -215,7 +232,7 @@
                         expect(vm.message).toBe('Your password was not changed. Suggestions: a suggestion another suggestion');
                     });
 
-                    it('wshould handle the absence of warning and suggestions', function () {
+                    it('should handle the absence of warning and suggestions', function () {
                         networkService.changePassword.and.returnValue($q.when({
                             passwordUpdated: false,
                         }));

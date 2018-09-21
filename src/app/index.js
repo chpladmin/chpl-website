@@ -35,6 +35,8 @@ import /* uiBoostrap from*/ 'angular-ui-bootstrap';
 import /* ngFileUpload from*/ 'angular-file-upload';
 import /* ngFileSaver from*/ 'angular-file-saver';
 import /* ngStorage from*/ 'ngstorage';
+import 'angular-zxcvbn';
+import 'zxcvbn';
 
 // import app modules
 import /* adminModule from*/ './admin/index';
@@ -90,6 +92,7 @@ const dependencies = [
     'toaster',
     'ui.bootstrap',
     //    'ui.bootstrap.fontawesome',
+    'zxcvbn',
 ];
 
 const appModule = angular.module('chpl', dependencies);

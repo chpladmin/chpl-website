@@ -421,5 +421,25 @@
                 expect(util.ternaryFilter(false)).toBe('False');
             });
         });
+
+        describe('when dealing with password strength', function () {
+            it('should know what the class should be', function () {
+                expect(util.passwordClass(-1)).toBe('');
+                expect(util.passwordClass(0)).toBe('danger');
+                expect(util.passwordClass(1)).toBe('danger');
+                expect(util.passwordClass(2)).toBe('warning');
+                expect(util.passwordClass(3)).toBe('warning');
+                expect(util.passwordClass(4)).toBe('success');
+            });
+
+            it('should know what the title should be', function () {
+                expect(util.passwordTitle(-1)).toBe('');
+                expect(util.passwordTitle(0)).toBe('Awful');
+                expect(util.passwordTitle(1)).toBe('Weak');
+                expect(util.passwordTitle(2)).toBe('Moderate');
+                expect(util.passwordTitle(3)).toBe('Strong');
+                expect(util.passwordTitle(4)).toBe('Excellent');
+            });
+        });
     });
 })();

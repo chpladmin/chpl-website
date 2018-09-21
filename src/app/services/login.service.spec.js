@@ -37,11 +37,20 @@
 
         it('should get a username when logged in', function () {
             auth.saveToken(buildToken(mock.user));
-            expect(auth.getUsername()).toBe('middle');
+            expect(auth.getUsername()).toBe('first');
+        });
+
+        it('should get a fullname when logged in', function () {
+            auth.saveToken(buildToken(mock.user));
+            expect(auth.getFullname()).toBe('middle');
         });
 
         it('should not get a username when not logged in', function () {
             expect(auth.getUsername()).toBe('');
+        });
+
+        it('should not get a username when not logged in', function () {
+            expect(auth.getFullname()).toBe('');
         });
 
         it('should know when a user is authenticated', function () {

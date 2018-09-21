@@ -97,6 +97,7 @@
             getUploadTemplateVersions: getUploadTemplateVersions,
             getUserActivities: getUserActivities,
             getUserActivity: getUserActivity,
+            getUserByUsername: getUserByUsername,
             getUsers: getUsers,
             getUsersAtAcb: getUsersAtAcb,
             getUsersAtAtl: getUsersAtAtl,
@@ -578,6 +579,10 @@
         function getUserActivity (activityRange) {
             var call = '/activity/users';
             return getActivity(call, activityRange);
+        }
+
+        function getUserByUsername (uname) {
+            return apiGET('/users/' + uname + '/details');
         }
 
         function getUsers () {
