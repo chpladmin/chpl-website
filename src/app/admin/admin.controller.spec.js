@@ -15,7 +15,7 @@
             });
 
             inject(function ($q) {
-                mockAuthService.getUsername = function () { return 'fake'; };
+                mockAuthService.getFullname = function () { return 'fake'; };
                 mockAuthService.isAuthed = function () { return true; };
                 mockAuthService.isChplAdmin = function () { return true; };
                 mockAuthService.isAcbAdmin = function () { return true; };
@@ -48,7 +48,7 @@
             });
 
             it('should know the logged in user\' name', function () {
-                expect(ctrl.getUsername()).toBe('fake');
+                expect(ctrl.getFullname()).toBe('fake');
             });
 
             it('should have a default screen set up', function () {

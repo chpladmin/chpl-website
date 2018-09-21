@@ -1,3 +1,5 @@
+//import zxcvbn from 'zxcvbn';
+
 (function () {
     'use strict';
 
@@ -23,7 +25,7 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService) {
+    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService, utilService) {
         var vm = this;
 
         vm.broadcastLogin = broadcastLogin;
@@ -33,6 +35,8 @@
         vm.login = login;
         vm.logout = logout;
         vm.misMatchPasswords = misMatchPasswords;
+        vm.passwordClass = utilService.passwordClass;
+        vm.passwordTitle = utilService.passwordTitle;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
 
@@ -49,6 +53,7 @@
             vm.clear();
             if (vm.isAuthed()) {
                 Idle.watch();
+                _updateExtras();
             }
             $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
@@ -127,6 +132,7 @@
                     Idle.watch();
                     Keepalive.ping();
                     vm.clear();
+                    _updateExtras();
                 }, function (error) {
                     vm.messageClass = vm.pClassFail;
                     vm.message = error.data.error;
@@ -159,6 +165,21 @@
                 }, function () {
                     vm.messageClass = vm.pClassFail;
                     vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
+                });
+        }
+
+        /////////////////////////////////////////////////////////
+
+        function _updateExtras () {
+            let vals = ['chpl'];
+            networkService.getUserByUsername(authService.getUsername())
+                .then(function (response) {
+                    if (response.user.subjectName) { vals.push(response.user.subjectName); }
+                    if (response.user.fullName) { vals.push(response.user.fullName); }
+                    if (response.user.friendlyName) { vals.push(response.user.friendlyName); }
+                    if (response.user.email) { vals.push(response.user.email); }
+                    if (response.user.phoneNumber) { vals.push(response.user.phoneNumber); }
+                    vm.extras = vals;
                 });
         }
     }
