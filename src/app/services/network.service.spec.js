@@ -1048,6 +1048,14 @@
             $httpBackend.flush();
         });
 
+        it('should getUserByUsername', function () {
+            $httpBackend.expectGET(/users\/admin\/details/).respond(200, {data: 'response'});
+            networkService.getUserByUsername('admin').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getUsers', function () {
             $httpBackend.expectGET(/users/).respond(200, {data: 'response'});
             networkService.getUsers().then(function (response) {
