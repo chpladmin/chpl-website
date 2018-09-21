@@ -15,6 +15,8 @@
             extendSelect: extendSelect,
             findModel: findModel,
             makeCsv: makeCsv,
+            passwordClass: passwordClass,
+            passwordTitle: passwordTitle,
             sortCert: sortCert,
             sortCertArray: sortCertArray,
             sortCqm: sortCqm,
@@ -162,6 +164,40 @@
                 type: 'application/csv',
             });
             FileSaver.saveAs(blob, data.name);
+        }
+
+        function passwordClass (strength) {
+            switch (strength) {
+            case 0:
+                return 'danger';
+            case 1:
+                return 'danger';
+            case 2:
+                return 'warning';
+            case 3:
+                return 'warning';
+            case 4:
+                return 'success';
+            default:
+                return '';
+            }
+        }
+
+        function passwordTitle (strength) {
+            switch (strength) {
+            case 0:
+                return 'Awful';
+            case 1:
+                return 'Weak';
+            case 2:
+                return 'Moderate';
+            case 3:
+                return 'Strong';
+            case 4:
+                return 'Excellent';
+            default:
+                return '';
+            }
         }
 
         function sortCert (cert) {

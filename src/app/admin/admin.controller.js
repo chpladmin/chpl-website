@@ -13,7 +13,7 @@
         vm.changeScreen = changeScreen;
         vm.changeSubNav = changeSubNav;
         vm.clearProductId = clearProductId;
-        vm.getUsername = getUsername;
+        vm.getFullname = getFullname;
         vm.isAcbAdmin = isAcbAdmin;
         vm.isAtlAdmin = isAtlAdmin;
         vm.isAuthed = isAuthed;
@@ -135,8 +135,8 @@
             }
         }
 
-        function getUsername () {
-            return authService.getUsername();
+        function getFullname () {
+            return authService.getFullname();
         }
 
         function isAcbAdmin () {

@@ -113,5 +113,13 @@
             scope.$digest();
             expect($location.path).toHaveBeenCalledWith('/admin');
         });
+
+        it('should know what values are disallowed in passwords', function () {
+            expect(vm.extras).toEqual(['chpl']);
+            vm.userDetails = angular.copy(mock.validUser);
+            vm.userDetails.user.friendlyName = 'friendly';
+            vm.setExtras();
+            expect(vm.extras).toEqual(['chpl', 'subjectName', 'fullName', 'friendly', 'email@email.email', 'phone']);
+        });
     });
 })();
