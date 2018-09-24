@@ -42,15 +42,7 @@
             <td>{{ user.email }}</td>
             <td>{{ user.key }}</td>
             <td>{{ user.lastUsedDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
-<<<<<<< HEAD
-<<<<<<< HEAD
             <td>{{ (user.deleteWarningSentDate | date : 'MMM d, y H:mm:ss Z' : 'UTC') || 'N/A' }}</td>
-=======
-            <td>{{ user.deleteWarningSentDate | date : 'MMM d, y H:mm:ss Z' : 'UTC' }}</td>
->>>>>>> Add last used date and delete warning sent date to api mgmt page
-=======
-            <td>{{ (user.deleteWarningSentDate | date : 'MMM d, y H:mm:ss Z' : 'UTC') || 'N/A' }}</td>
->>>>>>> Dispaly N/A when Delete Warning Sent Date is null
             <td><button class="btn btn-danger btn-block"
                         confirm="Are you sure you wish to revoke {{ user.name }}'s API Key?"
                         confirm-ok="Yes"
