@@ -40,7 +40,7 @@
         var vm = this;
 
         vm.clear = clear;
-        vm.getUsername = authService.getUsername;
+        vm.getFullname = authService.getFullname;
         vm.isAcbAdmin = authService.isAcbAdmin;
         vm.isActive = isActive;
         vm.isAtlAdmin = authService.isAtlAdmin;
