@@ -11,7 +11,7 @@
         <ng-transclude ng-transclude-slot="aiBodyText"></ng-transclude>
       </div>
     </div>
-    <st-manage register-search="vm.registerSearch(search)" />
+    <st-manage register-search="vm.registerSearch(search)"></st-manage>
     <div class="form-horizontal" ng-form="vm.searchForm" aria-live="polite">
 
       <div class="form-group" id="filters">
@@ -26,11 +26,11 @@
 
         <div class="col-sm-8" ng-if="vm.filters.length > 0">
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('acb')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-acb" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['acb']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               ONC-ACB <i class="fa fa-filter"></i>
             </button>
-            <ul class="dropdown-menu" aria-labeledby="filter-button" uib-dropdown-menu>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-acb" uib-dropdown-menu>
                 <st-list-multiple
                    collection="vm.allCps"
                    predicate="acb"
@@ -42,11 +42,11 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('edition')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-edition" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Certification Edition <i class="fa fa-filter"></i>
             </button>
-            <ul class="dropdown-menu" aria-labeledby="filter-button" uib-dropdown-menu>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-edition" uib-dropdown-menu>
                 <st-list-multiple
                    collection="vm.allCps"
                    predicate="edition"
@@ -57,11 +57,11 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationDate')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationDate" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['certificationDate']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Certification Date <i class="fa fa-filter"></i>
             </button>
-            <ul class="dropdown-menu-large" aria-labeledby="filter-button" uib-dropdown-menu>
+            <ul class="dropdown-menu-large" aria-labeledby="filter-button-certificationDate" uib-dropdown-menu>
                 <ai-date-range
                    predicate="certificationDate"
                    has-changes="vm.categoryChanged['certificationDate']"
@@ -69,11 +69,11 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('decertificationDate')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-decertificationDate" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['decertificationDate']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Date <i class="fa fa-filter"></i>
             </button>
-            <ul class="dropdown-menu-large" aria-labeledby="filter-button" uib-dropdown-menu>
+            <ul class="dropdown-menu-large" aria-labeledby="filter-button-decertificationDate" uib-dropdown-menu>
                 <ai-date-range
                    predicate="decertificationDate"
                    has-changes="vm.categoryChanged['decertificationDate']"
@@ -81,11 +81,11 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('acbAttestations')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-acbAttestations" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['acbAttestations']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Attestation <i class="fa fa-filter"></i>
             </button>
-            <ul class="dropdown-menu" aria-labeledby="filter-button" uib-dropdown-menu>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-acbAttestations" uib-dropdown-menu>
                 <st-list-multiple
                    collection="vm.allCps"
                    predicate="acbAttestations"
@@ -96,11 +96,11 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('certificationStatus')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-certificationStatus" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Certification Status <i class="fa fa-filter"></i>
             </button>
-            <ul class="dropdown-menu" aria-labeledby="filter-button" uib-dropdown-menu>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-certificationStatus" uib-dropdown-menu>
                 <st-list-multiple
                    collection="vm.allCps"
                    predicate="certificationStatus"
@@ -112,11 +112,11 @@
             </ul>
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group dropdown-filter" ng-if="vm.isFilterActive('nonconformities')">
-            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-nonconformities-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-sm btn-ai dropdown-toggle" type="button" id="filter-button-nonconformities" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <a ng-if="vm.categoryChanged['nonconformities']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a>
               Nonconformities <i class="fa fa-filter"></i>
             </button>
-            <ul class="dropdown-menu" aria-labeledby="filter-nonconformities-button" uib-dropdown-menu>
+            <ul class="dropdown-menu" aria-labeledby="filter-button-nonconformities" uib-dropdown-menu>
                 <ai-nonconformity-filter
                    has-changes="vm.categoryChanged['nonconformities']"
                    register-clear-filter="vm.registerClearFilter(clearFilter)"></ai-nonconformity-filter>

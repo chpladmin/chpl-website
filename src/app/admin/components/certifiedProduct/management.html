@@ -15,15 +15,16 @@
       <div class="col-sm-12" ng-if="vm.isAcbAdmin">
         <h3>Upload Certified Products</h3>
         <p ng-if="vm.uploader.queue.length === 0">CSV files only</p>
-        <input type="file" nv-file-select="" uploader="vm.uploader" id="listing-file-upload"/>
+        <input type="file" nv-file-select="" uploader="vm.uploader" id="listing-file-upload" />
         <div ng-if="vm.uploadMessage.length > 0" ng-class="vm.uploadSuccess ? 'bg-success' : 'bg-danger'">
-          {{ vm.uploadMessage }}
+          <p>{{ vm.uploadMessage }}</p>
           <ul ng-if="vm.uploadErrors.length > 0">
             <li ng-repeat="error in vm.uploadErrors">{{ error }}</li>
           </ul>
           <ul ng-if="vm.uploadWarnings.length > 0" class="bg-warning list-unstyled">
             <li ng-repeat="warning in vm.uploadWarnings">{{ warning }}</li>
           </ul>
+          <p ng-if="!vm.uploadSuccess">If you correct an issue within a file that displayed an error on initial upload, selecting the same file name again will NOT upload the file.  Recommendation is to fix the file AND rename the file so that the file name is different than the original file.</p>
         </div>
         <table class="table" ng-if="vm.uploader.queue.length > 0">
           <thead>
@@ -63,10 +64,11 @@
         <p ng-if="vm.surveillanceUploader.queue.length === 0">CSV files only</p>
         <input type="file" nv-file-select="" uploader="vm.surveillanceUploader" id="surveillance-file-upload" />
         <div ng-if="vm.surveillanceUploadMessage.length > 0" ng-class="vm.surveillanceUploadSuccess ? 'bg-success' : 'bg-danger'">
-          {{ vm.surveillanceUploadMessage }}
+          <p>{{ vm.surveillanceUploadMessage }}</p>
           <ul ng-if="vm.surveillanceUploadErrors.length > 0">
             <li ng-repeat="error in vm.surveillanceUploadErrors">{{ error }}</li>
           </ul>
+          <p ng-if="!vm.surveillanceUploadSuccess">If you correct an issue within a file that displayed an error on initial upload, selecting the same file name again will NOT upload the file.  Recommendation is to fix the file AND rename the file so that the file name is different than the original file.</p>
         </div>
         <table class="table" ng-if="vm.surveillanceUploader.queue.length > 0">
           <thead>
@@ -148,7 +150,9 @@
               <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC' }}</td>
               <td><span ng-bind-html="vm.parseUploadError(cp)"></span></td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() === 'new'">
-                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)" id="pending-listing-inspect-{{ cp.id }}"><i class="fa fa-eye"></i> Inspect</button>
+                <button class="btn btn-ai-success btn-block" ng-click="vm.inspectCp(cp.id)"
+                        ng-disabled="!vm.areResourcesReady()"
+                        id="pending-listing-inspect-{{ cp.chplProductNumber }}"><i class="fa fa-eye"></i> Inspect</button>
               </td>
               <td class="text-center" ng-if="cp.recordStatus.toLowerCase() !== 'new'">
                 <button class="btn btn-warning btn-block" id="pending-listing-reject-{{ cp.id }}"
@@ -279,7 +283,7 @@
           <span class="pull-right">
             <a href="#/product/{{ vm.surveillanceProduct.id }}"><i class="fa fa-eye"></i> View Product Listing</a>
           </span>
-          <table class="table">
+          <table class="table" id="surveillance-search-single-result">
             <thead class="sr-only">
               <tr>
                 <th scope="col">Surveillance Listing Data Type</th>
@@ -621,7 +625,7 @@
               <div class="panel-body" ng-if="vm.activeCP.id">
                 <span>
                   <strong>CHPL Product Number:</strong>{{ vm.activeCP.chplProductNumber }} <em class="pull-right">Last modified date: {{ vm.activeCP.lastModifiedDate | date : 'mediumDate' : 'UTC' }}</em><br />
-                  <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br /></span>                  
+                  <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Practice Type:</strong> {{ vm.activeCP.practiceType.name }} <br /></span>
                   <span ng-if="vm.activeCP.certificationEdition.name == '2014'"><strong>Classification Type:</strong> {{ vm.activeCP.classificationType.name }} <br /></span>
                   <strong>Certification Edition:</strong> {{ vm.activeCP.certificationEdition.name }} <br />
                   <strong>Certification Body:</strong> {{ vm.activeCP.certifyingBody.name }} <br />

@@ -95,7 +95,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.charts', function ($provide) {
+            angular.mock.module('chpl.charts', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCriterionProductStatistics = jasmine.createSpy('getCriterionProductStatistics');
                     $delegate.getIncumbentDevelopersStatistics = jasmine.createSpy('getIncumbentDevelopersStatistics');
@@ -156,6 +156,7 @@
                 nonconformityCountType: 'All',
                 productEdition: 2014,
                 tab: 'product',
+                yAxis: '',
             });
         });
 

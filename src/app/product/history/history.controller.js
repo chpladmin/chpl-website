@@ -53,6 +53,7 @@
                     statusIndex = i;
                     _interpretCertificationCriteria(prev, curr, activity);
                     _interpretCqms(prev, curr, activity);
+                    _interpretListingChange(prev, curr, activity);
                 } else if (activity.description === 'Created a certified product') {
                     statusIndex = i;
                     activity.change.push('Certified product was uploaded to the CHPL');
@@ -183,6 +184,12 @@
                 if (obj.changes.length > 0) {
                     activity.change.push(obj.cmsId + ' changes:<ul>' + obj.changes.join('') + '</ul>');
                 }
+            }
+        }
+
+        function _interpretListingChange (prev, curr, activity) {
+            if (prev.chplProductNumber !== curr.chplProductNumber) {
+                activity.change.push('CHPL Product Number changed from ' + prev.chplProductNumber + ' to ' + curr.chplProductNumber);
             }
         }
 

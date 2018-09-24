@@ -1,3 +1,4 @@
+/* global MINUTES_BETWEEN_KEEPALIVE MINUTES_UNTIL_IDLE */
 (function () {
     'use strict';
 
@@ -14,7 +15,7 @@
         'smart-table',
         'ui.bootstrap',
     ])
-        .config(function (IdleProvider, KeepaliveProvider, MINUTES_BETWEEN_KEEPALIVE) {
+        .config(function (IdleProvider, KeepaliveProvider) {
             // configure Idle settings
             IdleProvider.idle(60 * MINUTES_UNTIL_IDLE); // in seconds
             IdleProvider.timeout(false); // in seconds

@@ -1,3 +1,4 @@
+/* global DEVELOPER_MODE ENABLE_LOGGING */
 /* eslint-disable no-console,angular/log */
 (function () {
     'use strict';

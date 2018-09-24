@@ -1,59 +1,78 @@
+'use strict';
+
 const webpack = require('webpack');
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BabelPluginAngularjsAnnotate = require('babel-plugin-angularjs-annotate');
-
-const plugins = [
-    //new CleanWebpackPlugin(['dist']),
-    new HtmlWebpackPlugin({
-        chunks: ['app', 'vendor'],
-        filename: path.resolve(__dirname, './src/index.html'),
-        hash: true,
-        inject: 'body',
-        template: path.resolve(__dirname, './src/index.hbs'),
-    }),
-    new HtmlWebpackPlugin({
-        chunks: ['app', 'vendor'],
-        filename: path.resolve(__dirname, './src/error.html'),
-        hash: true,
-        inject: 'body',
-        template: path.resolve(__dirname, './src/error.hbs'),
-    }),
-    new HtmlWebpackPlugin({
-        chunks: ['app', 'vendor'],
-        filename: path.resolve(__dirname, './src/style.html'),
-        hash: true,
-        inject: 'body',
-        template: path.resolve(__dirname, './src/style.hbs'),
-    })
-];
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
-    context: path.resolve(__dirname, '.'),
     entry: {
         app: path.resolve(__dirname, './src/app/index.js'),
-        vendor: ['angular'],
+        admin: path.resolve(__dirname, './src/app/admin/index.js'),
+        charts: path.resolve(__dirname, './src/app/charts/index.js'),
+        collections: path.resolve(__dirname, './src/app/collections/index.js'),
+        compare: path.resolve(__dirname, './src/app/compare/index.js'),
+        navigation: path.resolve(__dirname, './src/app/navigation/index.js'),
+        product: path.resolve(__dirname, './src/app/product/index.js'),
+        registration: path.resolve(__dirname, './src/app/registration/index.js'),
+        search: path.resolve(__dirname, './src/app/search/index.js'),
+        templates: path.resolve(__dirname, './src/app/templates.js'),
     },
-    mode: 'development',
     module: {
         rules: [{
-            test: /\.js$/, // does the file end with '.js' ?
+            enforce: 'post',
+            test: /\.js/,
+            exclude: [
+                    /specs\.js/,
+                    /\.spec\.js/,
+                    /node_modules/,
+                    /lib/,
+                    /\.mock\.js/,
+            ],
+            use: {
+                loader: 'istanbul-instrumenter-loader',
+                options: { esModules: true },
+            },
+        },{
+            test: /\.js$/,
+            exclude: [
+                    /node_modules/,
+                    /\.mock\.js/,
+            ],
             use: [{
-                loader: 'babel-loader', // then use babel loader
+                loader: 'babel-loader',
                 options: {
                     plugins: [BabelPluginAngularjsAnnotate],
-                },
-//            },{
-//                loader: 'eslint-loader',
+                    presets: ['@babel/preset-env']
+                }
+            },{
+                loader: 'eslint-loader',
+                options: {
+                    formatter: require('eslint-formatter-friendly'),
+                    outputReport: {
+                        filePath: '../test_reports/checkstyle-[hash].xml',
+                        formatter: require('eslint/lib/formatters/checkstyle')
+                    },
+                    outputReport: {
+                        filePath: '../test_reports/checkstyle-[hash].html',
+                        formatter: require('eslint/lib/formatters/html'),
+                    },
+                }
             }],
-            exclude: /node_modules/, // unless it's in node_modules
-        },{
-            test: /\.hbs$/,
-            use: 'handlebars-loader',
         },{
             test: /\.html$/,
-            use: 'html-loader',
+            exclude: /node_modules/,
+            use: [
+                { loader: 'html-loader' },
+                {
+                    loader: 'htmllint-loader',
+                    query: {
+                        failOnError: false,
+                        failOnWarning: false,
+                    },
+                },
+            ],
         },{
             test: /\.png$/,
             use: [ 'url-loader?mimetype=image/png' ],
@@ -129,20 +148,19 @@ module.exports = {
             }],
         }],
     },
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-		vendor: {
-		    chunks: 'all',
-		    name: 'vendor',
-		    test: /node_modules/,
-		},
-            },
-        },
-    },
-    output: {
-        filename: '[name].js',
-        publicPath: './',
-    },
-    plugins: plugins,
+    plugins: [
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            hash: true,
+            inject: 'body',
+            template: path.resolve(__dirname, './src/index.html'),
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'error.html',
+            hash: true,
+            inject: 'body',
+            template: path.resolve(__dirname, './src/error.html'),
+        }),
+        new StyleLintPlugin(),
+    ]
 };

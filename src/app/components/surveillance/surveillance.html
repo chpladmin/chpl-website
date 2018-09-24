@@ -1,4 +1,4 @@
-<div style="background: white">
+<div class="inset-content">
   <div ng-if="!vm.certifiedProduct.surveillance || vm.certifiedProduct.surveillance.length === 0">
     No surveillance activity has been conducted for this listing
   </div>
@@ -11,6 +11,12 @@
     <div ng-if="surv.showDetails">
       Surveillance Description
       <table class="table">
+        <thead class="sr-only">
+          <tr>
+            <th scope="col">Data type</th>
+            <th scope="col">Data value</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
             <th scope="row"><a href uib-tooltip="The date surveillance was initiated" tooltip-trigger="mouseenter focus click">Date Surveillance Began</a></th>
@@ -36,7 +42,7 @@
           </tr>
           <tr>
             <th scope="row">
-           	  <a href uib-tooltip="Indicates whether surveillance was initiated by ONC-ACB or through ONC direct review." tooltip-trigger="mouseenter focus click">Surveillance initiated by</a></th>
+              <a href uib-tooltip="Indicates whether surveillance was initiated by ONC-ACB or through ONC direct review." tooltip-trigger="mouseenter focus click">Surveillance initiated by</a></th>
             <td>{{ surv.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}</td>
           </tr>
         </tbody>
@@ -48,6 +54,12 @@
           <div ng-if="noncon.showDetails">
             <p>Non-Conformity related to {{ req.requirement }} Dates</p>
             <table class="table table-condensed">
+              <thead class="sr-only">
+                <tr>
+                  <th scope="col">Data type</th>
+                  <th scope="col">Data value</th>
+                </tr>
+              </thead>
               <thead>
                 <tr>
                   <th scope="col"><a href uib-tooltip="The date that the ONC-ACB determined that a non-conformity was present." tooltip-trigger="mouseenter focus click">Date of Determination of Non-Conformity</a></th>
@@ -74,6 +86,12 @@
             </table>
             <p>Non-Conformity related to {{ req.requirement }} Description</p>
             <table class="table table-condensed">
+              <thead class="sr-only">
+                <tr>
+                  <th scope="col">Data type</th>
+                  <th scope="col">Data value</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr>
                   <th scope="row"><a href uib-tooltip="For non-conformities related to specific regulatory references (e.g. certified capabilities, transparency or disclosure requirements, or use of the Certification Mark), the regulation reference is used (e.g. 170.315(a)(2) or 170.523(l). If the non-conformity type is designated as ‘Other Non-Conformity’, then the associated non-conformity does not have a relevant regulatory reference." tooltip-trigger="mouseenter focus click">Non-Conformity Type</a></th>

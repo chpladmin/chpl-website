@@ -6,7 +6,7 @@
         var $log, networkService, scope, vm;
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.collections', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.collections', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     return $delegate;
                 });

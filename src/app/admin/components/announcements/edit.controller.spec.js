@@ -11,7 +11,7 @@
         }
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     return $delegate;
