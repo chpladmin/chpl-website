@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 10.3.0
+_24 September 2018_
+
+### New Features
+* Add informative popups to Certification Criteria attributes
+* Add info for 2014 cms id widget
+* Display change of CHPL Product Number in Details History popup
+* Tweak scheduled job modal to work with triggers that default to weekly.
+* Display change of CHPL Product Number in Details History popup
+
+---
+
 ## Version 10.2.0
 _10 September 2018_
 
