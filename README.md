@@ -12,8 +12,8 @@ Git, Node.js, npm, and gulp are required to install and test this project.
 
  * Git: [git][git]
  * Node.js: [nodejs][nodejs]
- * NPM: [npm][npm]
- * Gulp: [gulp][gulp]
+ * Yarn: [yarn][yarn]
+ * Webpack: [webpack][webpack]
 
 ## Getting Started
 
@@ -23,55 +23,33 @@ Clone the repository using [git][git]:
 
 See installation instructions here: [nodejs][nodejs]
 
-### Install npm & gulp
+### Install yarn and webpack
+
+Yarn: [yarn][yarn]
+
+### Install dependencies
 
 ```
-npm install -g npm
-npm install gulp
-npm install bower
-npm install
-bower install
+yarn install
 ```
 
-### Run the Application
+### Yarn scripts
 
-```
-gulp serve
-OR
-gulp seve:dist //to serve distribution ready files (minified, uglified, etc.)
-```
+* `yarn build`: Build deployable artifacts
+* `yarn html-lint:verbose`: Run HTML Linter with rules that don't play well with AngularJS, so some errors are expected, but this can find some errors that need to be fixed
+* `yarn start`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading
+* `yarn start:dist`: Run a local dev server at: [http://localhost:3000/](http://localhost:3000/) with automatic reloading. This version builds the production files, so should have minified/bundled/etc. sources
+* `yarn profile`: Generate a webpack statistics output file
+* `yarn test`: Run the unit tests once
+* `yarn test:auto`: Run the unit tests continuously, re-running the tests on any file change
+* `yarn test:ahrq`: Run tests once in a fashion suitable for the deployment environment
+* `yarn test:ci`: Run the tests once in a fashion suitable for a Continuous Integration environment
 
-The website will be running at: [http://localhost:3000/](http://localhost:3000/)
+#### Linting
 
-If you run into errors that say something like `gulp-concat` was not found, it's likely you're hitting an issue where npm didn't install all of the dependencies of the projects in `packages.json`. That can be checked by looking in `node_modules/`. There should be ~900 directories there; if there are closer to 50, then that's the issue. Try running `npm install gulp-concat`, and `gulp serve` again. It should give you the next package that's missing. Repeat.
-
-Alternatively, update npm to at least version 4.0.5 and try running `npm install` again. See https://stackoverflow.com/questions/6237295/how-can-i-update-node-js-and-npm-to-the-next-versions for instructions on updating npm
-
-## Testing
-
-### Unit testing
-
-This will start a service that watches the files under test, and when any of them are changed, immediately re-run the tests, quickly showing all results.
-
-```
-gulp test:auto
-```
-
-### End to end testing
-
-```
-gulp e2e
-```
-
-## Simplify development
-
-Run the server and the tests at the same time, where the system watches changes to files and automatically updates the browser and re-runs all of the tests on any change
-
-```
-gulp live
-```
+On all Yarn commands the CSS Linter, JS Linter and HTML Linters will run. Webpack may fail to compile if any of the linters report issues, depending on the severity of the issue
 
 [git]: http://git-scm.com/
 [nodejs]: https://nodejs.org/en/download/
-[npm]: https://www.npmjs.com/
-[gulp]: http://gulpjs.com/
+[yarn]: https://yarnpkg.com/en/
+[webpack]: https://webpack.js.org/

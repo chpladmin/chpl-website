@@ -9,7 +9,7 @@
         }
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.updateVersion = jasmine.createSpy('updateVersion');
                     return $delegate;

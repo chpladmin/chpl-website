@@ -19,7 +19,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.updateJob = jasmine.createSpy('updateJob');
 
@@ -37,6 +37,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('JobController', {
                     job: mock.job,
+                    $uibModalInstance: Mock.modalInstance,
                 });
                 scope.$digest();
             });
@@ -99,6 +100,13 @@
                 vm.newItem['email-Subscribers'] = 'newEmail'
                 vm.addNewItem('email-Subscribers');
                 expect(vm.job.jobDataMap.email).toBe('alarned@ainq.com☺newEmail');
+            });
+
+            it('should add elements even if null', function () {
+                vm.newItem['email-Subscribers'] = 'newEmail'
+                vm.job.jobDataMap.email = null;
+                vm.addNewItem('email-Subscribers');
+                expect(vm.job.jobDataMap.email).toBe('newEmail');
             });
 
             it('should remove from elements', function () {

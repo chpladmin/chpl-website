@@ -12,7 +12,7 @@
         }
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getJobTypes = jasmine.createSpy('getJobTypes');
                     $delegate.getJobs = jasmine.createSpy('getJobs');

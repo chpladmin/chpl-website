@@ -21,7 +21,7 @@
     }
 
     /** @ngInject */
-    function ScheduledJobsController ($log, $uibModal, networkService, SPLIT_PRIMARY) {
+    function ScheduledJobsController ($log, $uibModal, SPLIT_PRIMARY, networkService) {
         var vm = this;
 
         vm.createTrigger = createTrigger;

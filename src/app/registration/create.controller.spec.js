@@ -17,16 +17,14 @@
                 subjectName: 'subjectName',
                 password: 'password',
                 passwordverify: 'password',
-                title: 'title',
-                firstName: 'firstName',
-                lastName: 'lastName',
+                fullName: 'fullName',
                 email: 'email@email.email',
                 phoneNumber: 'phone',
             },
         };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.registration', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.registration', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.authorizeUser = jasmine.createSpy('authorizeUser');
                     $delegate.createInvitedUser = jasmine.createSpy('createInvitedUser');
@@ -62,7 +60,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -88,13 +88,13 @@
         });
 
         it('should call createUser if the details are complete', function () {
-            vm.userDetails = mock.validUser;
+            vm.userDetails = angular.copy(mock.validUser);
             vm.createUser();
             expect(networkService.createInvitedUser).toHaveBeenCalled();
         });
 
         it('should require password and verify password to be equal', function () {
-            vm.userDetails = mock.validUser;
+            vm.userDetails = angular.copy(mock.validUser);
             expect(vm.validateUser()).toBe(true);
             vm.userDetails.user.password = 'test';
             vm.userDetails.user.passwordverify = 'test2';

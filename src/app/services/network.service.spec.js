@@ -8,7 +8,7 @@
         mock.editions = ['Edition 1', 'Edition 2'];
 
         beforeEach(function () {
-            module('chpl.services');
+            angular.mock.module('chpl.services');
 
             inject(function (_$httpBackend_, _$log_, _networkService_) {
                 $log = _$log_;
@@ -35,6 +35,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, function () {
+                //noop
             });
             $httpBackend.flush();
         });
@@ -45,6 +47,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, function () {
+                //noop
             });
             $httpBackend.flush();
         });
@@ -55,6 +59,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, function () {
+                //noop
             });
             $httpBackend.flush();
         });
@@ -65,6 +71,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, function () {
+                //noop
             });
             $httpBackend.flush();
         });
@@ -78,6 +86,8 @@
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
+            }, function () {
+                //noop
             });
             $httpBackend.flush();
         });

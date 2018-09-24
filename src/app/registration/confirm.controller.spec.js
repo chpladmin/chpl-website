@@ -4,7 +4,7 @@
     describe('chpl.registration', function () {
 
         beforeEach(function () {
-            module('chpl.registration');
+            angular.mock.module('chpl.registration');
         });
 
         describe('controller', function () {
@@ -13,7 +13,7 @@
 
             beforeEach(function () {
                 mockCommonService = {};
-                module('chpl.registration', function ($provide) {
+                angular.mock.module('chpl.registration', function ($provide) {
                     $provide.value('networkService', mockCommonService);
                 });
 

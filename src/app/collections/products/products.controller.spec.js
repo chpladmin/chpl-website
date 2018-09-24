@@ -9,7 +9,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.collections', function ($provide) {
+            angular.mock.module('chpl.collections', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('getMeaningfulUseUsersAccurateAsOfDate');
                     return $delegate;

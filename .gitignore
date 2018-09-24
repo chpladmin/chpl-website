@@ -1,6 +1,5 @@
 dist/
 node_modules/
-bower_components/
 test_reports/
 .sass-cache/
 .idea/
@@ -10,5 +9,4 @@ test_reports/
 /features/components/nav/nav.login.steps.js
 *-website.sh
 push-*.sh
-src/*.html
 .vscode/
