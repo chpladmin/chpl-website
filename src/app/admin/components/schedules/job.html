@@ -27,7 +27,8 @@
             <div class="clearfix"></div>
           </li>
         </ul>
-        <input type="text" ng-model="vm.newItem[item]">
+        <label for="new-item"><span class="sr-only">Add new item</span></label>
+        <input type="text" id="new-item" ng-model="vm.newItem[item]">
         <button class="btn btn-default pull-right" ng-click="vm.addNewItem(item)"><i class="fa fa-plus"></i><span class="sr-only">Add</span></button>
       </div>
     </div>

@@ -78,7 +78,7 @@
             <th scope="row" class="compare-rowCert">{{vm.allCqms[cqm].displayId + ": " + vm.allCqms[cqm].title}}</th>
             <td ng-repeat="item in vm.allCqms[cqm].values | orderBy:'certificationDate'">
               <i class="fa fa-lg" ng-class="{'fa-check-square-o': item.success && item.successVersions.length === 0, 'fa-square-o': !item.success && item.allowed, 'fa-times': !item.allowed}"></i>
-              <b ng-if="item.successVersions.length > 0">{{ item.successVersions.join(', ') }}</b>
+              <strong ng-if="item.successVersions.length > 0">{{ item.successVersions.join(', ') }}</strong>
               <span ng-if="item.allowed" class="sr-only">{{ item.success ? 'meets' : 'does not meet'}}</span><span ng-if="!item.allowed" class="sr-only">not allowed</span>
             </td>
           </tr>

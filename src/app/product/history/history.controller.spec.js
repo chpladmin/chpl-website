@@ -1,3 +1,5 @@
+import './history.mock';
+
 (function () {
     'use strict';
 
@@ -11,7 +13,7 @@
         };
 
         beforeEach(function () {
-            module('chpl.product');
+            angular.mock.module('chpl.product');
             inject(function ($controller, _$location_, _$log_, $rootScope, product_activity) {
                 $location = _$location_;
                 $log = _$log_;
@@ -98,7 +100,8 @@
                 expect(vm.activity[5].change[7]).toEqual('CMS82 changes:<ul><li>CQM became "True"</li><li>v3 added</li><li>Certification Criteria "random criteria" changes<ul><li>random criteria added</li></ul></li></ul>');
             });
 
-            it('should handle when the last activity isn\'t "regular"', function () {
+            it('should know when the CHPL Product Number changed', function () {
+                expect(vm.activity[6].change[0]).toEqual('CHPL Product Number changed from 15.07.07.1447.BE02.01.00.1.160815 to 15.07.07.1447.BE02.01.01.1.160815');
             });
 
             describe('when dealing with certification events', function () {

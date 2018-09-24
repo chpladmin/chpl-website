@@ -55,7 +55,7 @@
         ];
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.mock', 'chpl');
+            angular.mock.module('chpl.mock', 'chpl');
             inject(function ($controller, _$location_, _$log_, $rootScope, _Mock_) {
                 $location = _$location_;
                 $log = _$log_;

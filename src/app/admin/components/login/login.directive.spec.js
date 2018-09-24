@@ -5,7 +5,7 @@
         var $compile, $log, $q, Idle, Keepalive, authService, el, networkService, scope, vm;
 
         beforeEach(function () {
-            module('chpl.templates', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.isAuthed = jasmine.createSpy('isAuthed');
                     $delegate.logout = jasmine.createSpy('logout');
@@ -91,20 +91,20 @@
             xdescribe('when loading', function () {
                 it('should clear system on load', function () {
                     spyOn(vm, 'clear');
-                    vm.
+                    //vm.
                     expect(vm.clear).toHaveBeenCalled();
                 });
 
                 it('should start Idle if logged in', function () {
                     spyOn(Idle, 'watch');
-                    vm.
+                    //vm.
                     expect(Idle.watch).toHaveBeenCalled();
                 });
 
                 it('should not start Idle if not logged in', function () {
                     authService.isAuthed.and.returnValue(false);
                     spyOn(Idle, 'watch');
-                    vm.
+                    //vm.
                     expect(Idle.watch).not.toHaveBeenCalled();
                 });
             });

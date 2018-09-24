@@ -7,7 +7,7 @@
         mock = {
             acbs: [{id: 1, name: 'fake'}],
             results: [{
-                name: 'tmy1313@gmail_com',
+                name: 'fake@example_com',
                 group: 'SummaryStatisticsEmailTrigger',
                 job: {
                     description: 'Sends the Summary Statistics Report',
@@ -16,7 +16,7 @@
                     frequency: 'HOURLY',
                 },
                 cronSchedule: '0 0 13 * * ?',
-                email: 'tmy1313@gmail.com',
+                email: 'fake@example.com',
             }],
             scheduleJobs: [{
                 description: 'Allow subscribers to get notifications if the cache has become \'too old\'.',
@@ -37,7 +37,7 @@
                     editableJobFields: 'email-Subscribers',
                     authorities: 'ROLE_ADMIN',
                     email: 'alarned@ainq.com',
-                }
+                },
             }],
         };
         mock.fakeModalOptions = {
@@ -53,9 +53,21 @@
                 scheduleJobs: jasmine.any(Function),
             },
         };
+        mock.fakeModalOptionsForJob = {
+            templateUrl: 'chpl.admin/components/schedules/job.html',
+            controller: 'JobController',
+            controllerAs: 'vm',
+            animation: false,
+            backdrop: 'static',
+            keyboard: false,
+            size: 'md',
+            resolve: {
+                job: jasmine.any(Function),
+            },
+        };
 
         beforeEach(function () {
-            module('chpl.mock', 'chpl.templates', 'chpl.admin', function ($provide) {
+            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getScheduleTriggers = jasmine.createSpy('getScheduleTriggers');
                     $delegate.getScheduleJobs = jasmine.createSpy('getScheduleJobs');
@@ -172,19 +184,19 @@
         describe('when editing a job', function () {
             it('should create a modal instance', function () {
                 expect(vm.editJobInstance).toBeUndefined();
-                vm.editJob(vm.scheduledJobs[2]);
+                vm.editJob(vm.scheduleJobs[2]);
                 expect(vm.editJobInstance).toBeDefined();
             });
 
             it('should resolve the job on edit', function () {
-                vm.editJob(vm.scheduledJobs[2]);
-                expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptions);
-                expect(actualOptions.resolve.job()).toEqual(vm.scheduledJobs[2]);
+                vm.editJob(vm.scheduleJobs[2]);
+                expect($uibModal.open).toHaveBeenCalledWith(mock.fakeModalOptionsForJob);
+                expect(actualOptions.resolve.job()).toEqual(vm.scheduleJobs[2]);
             });
 
             it('should refresh the jobs if it was updated', function () {
                 var serviceCallCount = networkService.getScheduleJobs.calls.count();
-                vm.editJob(vm.scheduledJobs[2]);
+                vm.editJob(vm.scheduleJobs[2]);
                 vm.editJobInstance.close({status: 'updated'});
                 expect(networkService.getScheduleJobs.calls.count()).toBe(serviceCallCount + 1);
             });

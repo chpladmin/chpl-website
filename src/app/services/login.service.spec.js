@@ -6,12 +6,12 @@
         mock = {
             user: {
                 Authorities: [],
-                Identity: [31, 'test', 'Test', 'Lastname'],
+                Identity: [31, 'first', 'middle', 'last'],
             },
         }
 
         beforeEach(function () {
-            module('chpl.services');
+            angular.mock.module('chpl.services');
 
             inject(function (_$localStorage_, _$log_, _$window_, _authService_) {
                 $localStorage = _$localStorage_;
@@ -37,7 +37,7 @@
 
         it('should get a username when logged in', function () {
             auth.saveToken(buildToken(mock.user));
-            expect(auth.getUsername()).toBe('Test Lastname');
+            expect(auth.getUsername()).toBe('middle');
         });
 
         it('should not get a username when not logged in', function () {

@@ -1446,8 +1446,8 @@
 
         function compareContact (prev, curr) {
             var simpleFields = [
-                {key: 'firstName', display: 'First Name'},
-                {key: 'lastName', display: 'Last Name'},
+                {key: 'fullName', display: 'Full Name'},
+                {key: 'friendlyName', display: 'Friendly Name'},
                 {key: 'phoneNumber', display: 'Phone Number'},
                 {key: 'title', display: 'Title'},
                 {key: 'email', display: 'Email'},
@@ -1581,7 +1581,7 @@
         }
 
         function getResponsibleUser (user) {
-            return user.firstName + ' ' + user.lastName;
+            return user.fullName;
         }
     }
 })();

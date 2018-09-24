@@ -11,7 +11,7 @@
             /* eslint-enable quotes, key-spacing */
         };
         beforeEach(function () {
-            module('chpl.services', 'chpl.mock');
+            angular.mock.module('chpl.services', 'chpl.components', 'chpl.mock');
 
             inject(function (_$log_, _Mock_, _customFilterFilter_) {
                 aiCustomFilter = _customFilterFilter_;

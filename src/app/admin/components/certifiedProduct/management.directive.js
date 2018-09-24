@@ -24,6 +24,7 @@
     function VpManagementController ($filter, $log, $uibModal, API, FileUploader, authService, networkService, utilService) {
         var vm = this;
 
+        vm.areResourcesReady = areResourcesReady;
         vm.certificationStatus = utilService.certificationStatus;
         vm.doWork = doWork;
         vm.editCertifiedProduct = editCertifiedProduct;
@@ -183,6 +184,20 @@
             getResources();
         }
 
+        function areResourcesReady () {
+            return vm.resourcesReady.searchOptions &&
+                vm.resourcesReady.atls &&
+                vm.resourcesReady.qmsStandards &&
+                vm.resourcesReady.accessibilityStandards &&
+                vm.resourcesReady.ucdProcesses &&
+                vm.resourcesReady.testProcedures &&
+                vm.resourcesReady.testData &&
+                vm.resourcesReady.testStandards &&
+                vm.resourcesReady.testFunctionality &&
+                vm.resourcesReady.testTools &&
+                vm.resourcesReady.targetedUsers;
+        }
+
         function refreshDevelopers () {
             networkService.getDevelopers()
                 .then(function (developers) {
@@ -237,6 +252,7 @@
                 },
             });
             vm.modalInstance.result.then(function (result) {
+                vm.developerMessage = null;
                 vm.activeDeveloper = result;
                 networkService.getDevelopers()
                     .then(function (developers) {
@@ -265,15 +281,14 @@
                 }
             });
             networkService.massRejectPendingListings(idsToReject)
-                .then(function () {},
-                      function (error) {
-                          if (error.data.errors && error.data.errors.length > 0) {
-                              vm.uploadingListingsMessages = error.data.errors.map(function (error) {
-                                  var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
-                                  return ret;
-                              });
-                          }
-                      });
+                .then(function () {}, function (error) {
+                    if (error.data.errors && error.data.errors.length > 0) {
+                        vm.uploadingListingsMessages = error.data.errors.map(function (error) {
+                            var ret = 'Product with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"';
+                            return ret;
+                        });
+                    }
+                });
         }
 
         function massRejectPendingSurveillance () {
@@ -286,15 +301,14 @@
                 }
             });
             networkService.massRejectPendingSurveillance(idsToReject)
-                .then(function () {},
-                      function (error) {
-                          if (error.data.errors && error.data.errors.length > 0) {
-                              vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
-                                  var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.firstName + ' ' + error.contact.lastName + '"';
-                                  return ret;
-                              });
-                          }
-                      });
+                .then(function () {}, function (error) {
+                    if (error.data.errors && error.data.errors.length > 0) {
+                        vm.uploadingSurveillanceMessages = error.data.errors.map(function (error) {
+                            var ret = 'Surveillance with ID: "' + error.objectId + '" has already been resolved by "' + error.contact.fullName + '"';
+                            return ret;
+                        });
+                    }
+                });
         }
 
         function mergeDevelopers () {
@@ -571,7 +585,7 @@
                         }
                     }
                     if (result.status === 'resolved') {
-                        vm.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.firstName + ' ' + result.contact.lastName + '"'];
+                        vm.uploadingListingsMessages = ['Product with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
                     }
                 }
             }, function (result) {
@@ -601,7 +615,7 @@
                         }
                     }
                     if (result.status === 'resolved') {
-                        vm.uploadingSurveillanceMessages = ['Surveillance with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.firstName + ' ' + result.contact.lastName + '"'];
+                        vm.uploadingSurveillanceMessages = ['Surveillance with ID: "' + result.objectId + '" has already been resolved by "' + result.contact.fullName + '"'];
                     }
                 }
             }, function (result) {
@@ -811,6 +825,20 @@
         }
 
         function getResources () {
+            vm.resourcesReady = {
+                searchOptions: false,
+                atls: false,
+                qmsStandards: false,
+                accessibilityStandards: false,
+                ucdProcesses: false,
+                testProcedures: false,
+                testData: false,
+                testStandards: false,
+                testFunctionality: false,
+                testTools: false,
+                targetedUsers: false,
+            };
+
             networkService.getSearchOptions()
                 .then(function (options) {
                     vm.resources.bodies = options.certBodyNames;
@@ -818,56 +846,67 @@
                     vm.resources.editions = options.editions;
                     vm.resources.practices = options.practiceTypeNames;
                     vm.resources.statuses = options.certificationStatuses;
+                    vm.resourcesReady.searchOptions = true;
                 });
 
             networkService.getAtls(false)
                 .then(function (data) {
                     vm.resources.testingLabs = data.atls;
+                    vm.resourcesReady.atls = true;
                 });
 
             networkService.getQmsStandards()
                 .then(function (response) {
                     vm.resources.qmsStandards = response;
+                    vm.resourcesReady.qmsStandards = true;
                 });
 
             networkService.getAccessibilityStandards()
                 .then(function (response) {
                     vm.resources.accessibilityStandards = response;
+                    vm.resourcesReady.accessibilityStandards = true;
                 });
 
             networkService.getUcdProcesses()
                 .then(function (response) {
                     vm.resources.ucdProcesses = response;
+                    vm.resourcesReady.ucdProcesses = true;
                 });
 
             networkService.getTestProcedures()
                 .then(function (response) {
                     vm.resources.testProcedures = response;
+                    vm.resourcesReady.testProcedures = true;
                 });
 
             networkService.getTestData()
                 .then(function (response) {
                     vm.resources.testData = response;
+                    vm.resourcesReady.testData = true;
                 });
 
             networkService.getTestStandards()
                 .then(function (response) {
                     vm.resources.testStandards = response;
+                    vm.resourcesReady.testStandards = true;
                 });
 
             networkService.getTestFunctionality()
                 .then(function (response) {
                     vm.resources.testFunctionalities = response;
+                    vm.resourcesReady.testFunctionality = true;
                 });
 
             networkService.getTestTools()
                 .then(function (response) {
                     vm.resources.testTools = response;
+                    vm.resourcesReady.testTools = true;
                 });
 
             networkService.getTargetedUsers()
                 .then(function (response) {
                     vm.resources.targetedUsers = response;
+                    vm.resourcesReady.targetedUsers = true;
                 });
         }
 
