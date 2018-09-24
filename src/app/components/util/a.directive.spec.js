@@ -7,7 +7,7 @@
         var $log;
 
         beforeEach(function () {
-            module('chpl')
+            angular.mock.module('chpl')
         });
 
         beforeEach(inject(function ($compile, _$log_, $rootScope) {

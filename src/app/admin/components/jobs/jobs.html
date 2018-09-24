@@ -33,7 +33,7 @@
         <tbody>
           <tr ng-repeat="job in vm.jobs | orderBy: '-startTime' track by job.id">
             <td>{{ job.type.name }}</td>
-            <td>{{ job.user.firstName }} {{ job.user.lastName }} ({{ job.user.email }})</td>
+            <td>{{ job.user.fullName }} ({{ job.user.email }})</td>
             <td>{{ job.startTime | date : 'medium' : 'UTC' }} <span ng-if="job.startTime">UTC</span></td>
             <td>{{ job.endTime | date : 'medium' : 'UTC' }} <span ng-if="job.endTime">UTC</span></td>
             <td>

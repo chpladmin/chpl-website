@@ -11,7 +11,7 @@
         mock.token = 'a token here';
 
         beforeEach(function () {
-            module('chpl.services', 'chpl.download', function ($provide) {
+            angular.mock.module('chpl.services', 'chpl.download', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');

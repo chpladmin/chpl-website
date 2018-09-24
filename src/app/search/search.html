@@ -2,7 +2,7 @@
   <div class="pending" id="pendingMask" ng-show="vm.isPreLoading"></div>
   <div class="search-unsearched" ng-if="!vm.activeSearch && vm.searchForm.$pristine"></div>
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
-    <st-manage register-search="vm.registerSearch(search)" name-space="searchTableState" />
+    <st-manage register-search="vm.registerSearch(search)" name-space="searchTableState"></st-manage>
     <div class="row" ng-show="vm.activeSearch || vm.searchForm.$dirty">
       <div class="col-sm-12">
         <h1>Search</h1>
@@ -331,18 +331,18 @@
                 <col class="col-md-3 col-xs-5">
               </colgroup>
               <thead>
-			    <tr>
+                <tr>
                   <td colspan="8" class="text-center">
-				    <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
+                    <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
                   </td>
-			    </tr>
+                </tr>
                 <tr ng-if="vm.displayedCps && vm.displayedCps.length > 0">
                   <th scope="col" class="search-header" st-sort="edition" st-skip-natural="true">Edition</th>
                   <th scope="col" class="search-header" st-sort="developer" st-skip-natural="true">Developer</th>
-		          <th scope="col" class="search-header" st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
+                  <th scope="col" class="search-header" st-sort="product" st-skip-natural="true" st-sort-default="true">Product</th>
                   <th scope="col" class="search-header" st-sort="version" st-skip-natural="true">Version</th>
                   <th scope="col" class="search-header" st-sort="certificationDate" st-skip-natural="true">Certification Date</th>
-		          <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL ID</th>
+                  <th scope="col" class="search-header" st-sort="chplProductNumber" st-skip-natural="true">CHPL ID</th>
                   <th scope="col" class="search-header text-center" st-sort="certificationStatus" st-skip-natural="true">Status <a href ng-click="vm.viewCertificationStatusLegend();$event.stopPropagation()"><i class="fa fa-question-circle"></i></a></th>
                   <th scope="col"><span class="sr-only">Actions</span></th>
                 </tr>
@@ -358,7 +358,7 @@
                       </select>
                       &nbsp;results per page
                     </div>
-				    <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
+                    <div st-pagination="" st-items-by-page="vm.filterItems.pageSize" st-displayed-pages="10"></div>
                   </td>
                 </tr>
               </tfoot>

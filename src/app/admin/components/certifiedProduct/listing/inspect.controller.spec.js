@@ -20,7 +20,7 @@
         }
 
         beforeEach(function () {
-            module('chpl.admin', 'chpl.mock', function ($provide) {
+            angular.mock.module('chpl.admin', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.confirmPendingCp = jasmine.createSpy('confirmPendingCp');
                     $delegate.getDeveloper = jasmine.createSpy('getDeveloper');

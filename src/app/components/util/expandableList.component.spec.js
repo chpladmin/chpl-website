@@ -4,7 +4,7 @@
     describe('the ai exapandable list', function () {
         var $compile, ctrl, element, scope;
 
-        beforeEach(module('chpl.templates', 'chpl'));
+        beforeEach(angular.mock.module('chpl'));
 
         beforeEach(function () {
             inject(function (_$compile_, $rootScope) {

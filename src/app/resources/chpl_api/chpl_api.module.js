@@ -1,4 +1,4 @@
-import swaggerUi from 'angular-swagger-ui';
+import 'angular-swagger-ui';
 
 (function () {
     'use strict';

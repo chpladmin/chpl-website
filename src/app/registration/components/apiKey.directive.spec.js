@@ -8,8 +8,7 @@
         beforeEach(function () {
             mockCommonService = {};
 
-            module('chpl.templates');
-            module('chpl.registration', function ($provide) {
+            angular.mock.module('chpl.registration', function ($provide) {
                 $provide.value('networkService', mockCommonService);
             });
 
@@ -34,7 +33,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-//                console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                //console.log('Debug:\n' + angular.toJson($log.debug.logs));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -59,7 +60,7 @@
 
             it('should have no key on load', function () {
                 expect(ctrl.hasKey).toBeFalsy();
-                expect(ctrl.key).toBe('');
+                expect(ctrl.key).toBeUndefined();
             });
 
             it('should call the common service to load users', function () {

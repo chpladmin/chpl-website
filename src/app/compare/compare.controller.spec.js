@@ -8,7 +8,7 @@
         beforeEach(function () {
             var mockCommonService = {};
             var mockUtilService = {};
-            module('chpl.compare', function ($provide) {
+            angular.mock.module('chpl.compare', function ($provide) {
                 $provide.value('networkService', mockCommonService);
                 $provide.value('utilService', mockUtilService);
             });

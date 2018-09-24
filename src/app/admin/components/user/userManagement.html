@@ -6,8 +6,8 @@
         <tr>
           <th scope="col">Username</th>
           <th scope="col">Title</th>
-          <th scope="col">First Name</th>
-          <th scope="col">Last Name</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Friendly Name</th>
           <th scope="col">Email</th>
           <th scope="col">Phone Number</th>
           <th scope="col">User&nbsp;Status</th>
@@ -17,16 +17,16 @@
       <tfoot>
         <tr>
           <td colspan="8">
-            <button class="btn btn-default btn-block" ng-click="vm.inviteUser()">Invite new user</button>
+            <button class="btn btn-default btn-block" ng-click="$ctrl.inviteUser()">Invite new user</button>
           </td>
         </tr>
       </tfoot>
       <tbody>
-        <tr ng-repeat="user in vm.users track by user.user.userId">
+        <tr ng-repeat="user in $ctrl.users track by user.user.userId">
           <td>{{ user.user.subjectName }}</td>
           <td>{{ user.user.title }}</td>
-          <td>{{ user.user.firstName }}</td>
-          <td>{{ user.user.lastName }}</td>
+          <td>{{ user.user.fullName }}</td>
+          <td>{{ user.user.friendlyName }}</td>
           <td>{{ user.user.email }}</td>
           <td>{{ user.user.phoneNumber }}</td>
           <td>
@@ -38,7 +38,7 @@
             </ul>
           </td>
           <td>
-            <button class="btn btn-default btn-block" ng-click="vm.updateUser(user)">Update</button>
+            <button class="btn btn-default btn-block" ng-click="$ctrl.updateUser(user)">Update</button>
           </td>
         </tr>
       </tbody>

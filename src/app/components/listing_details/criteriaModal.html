@@ -66,10 +66,10 @@
               <div class="form-group form-group-sm">
                 <label class="col-sm-6 control-label" for="testStandard">Test Standard</label>
                 <div class="col-sm-6">
-                  <ai-expandable-list 
-                    identifier="testStandard"  
-                    item-key="id" 
-                    item-text="name" 
+                  <ai-expandable-list
+                    identifier="testStandard"
+                    item-key="id"
+                    item-text="name"
                     items="vm.resources.testStandards.data"
                     selected-item-keys="vm.selectedTestStandardKeys"
                     placeholder="Select a Test Standard"
@@ -108,9 +108,9 @@
                 <label class="col-sm-6 control-label" for="testFunctionality">Functionality Tested</label>
                 <div class="col-sm-6">
                   <ai-expandable-list
-                    identifier="testFunctionality"  
-                    item-key="id" 
-                    item-text="name" 
+                    identifier="testFunctionality"
+                    item-key="id"
+                    item-text="name"
                     items="vm.cert.allowedTestFunctionalities"
                     selected-item-keys="vm.selectedTestFunctionalityKeys"
                     placeholder="Select a Test Functionality"
@@ -128,10 +128,10 @@
               <div class="form-group form-group-sm">
                 <label class="col-sm-6 control-label" for="testProcedures">Test Procedure</label>
                 <div class="col-sm-6">
-                  <ai-expandable-list 
-                    identifier="testProcedures"  
-                    item-key="id" 
-                    item-text="name" 
+                  <ai-expandable-list
+                    identifier="testProcedures"
+                    item-key="id"
+                    item-text="name"
                     items="vm.availableTestProcedures"
                     selected-item-keys="vm.selectedTestProcedureKeys"
                     placeholder="Select a Test Procedure"
@@ -153,10 +153,10 @@
               <div class="form-group form-group-sm">
                 <label class="col-sm-6 control-label" for="testTools">Test Tool</label>
                 <div class="col-sm-6">
-                  <ai-expandable-list 
-                    identifier="testTools"  
-                    item-key="id" 
-                    item-text="name" 
+                  <ai-expandable-list
+                    identifier="testTools"
+                    item-key="id"
+                    item-text="name"
                     items="vm.resources.testTools.data"
                     item-disabled="vm.isTestToolRetired(item)"
                     selected-item-keys="vm.selectedTestToolKeys"
@@ -180,9 +180,9 @@
                 <label class="col-sm-6 control-label" for="testData">Test Data</label>
                 <div class="col-sm-6">
                   <ai-expandable-list
-                    identifier="testData"  
-                    item-key="id" 
-                    item-text="name" 
+                    identifier="testData"
+                    item-key="id"
+                    item-text="name"
                     items="vm.availableTestData"
                     selected-item-keys="vm.selectedTestDataKeys"
                     placeholder="Select Test Data"

@@ -6,7 +6,7 @@
         var $log, networkService, scope, vm;
 
         beforeEach(function () {
-            module('chpl.collections', function ($provide) {
+            angular.mock.module('chpl.collections', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     return $delegate;
                 });
@@ -38,16 +38,15 @@
         });
 
         describe('transformation function', function () {
-            var data;
-
             it('should return "not available" if no data is provided', function () {
+                var data;
                 expect(vm._urlTransform(data)).toBe('Not available');
                 data = [];
                 expect(vm._urlTransform(data)).toBe('Not available');
             });
 
             it('should wrap the data in link text', function () {
-                data = ['link'];
+                var data = ['link'];
                 expect(vm._urlTransform(data)).toBe(
                     '<ul class="list-unstyled"><li><a ai-a href="link">link</a></li></ul>'
                 );

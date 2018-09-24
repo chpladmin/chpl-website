@@ -27,23 +27,26 @@
           <tr>
             <th scope="col">Status History</th>
             <th scope="col">Effective date</th>
+            <th scope="col">Reason for status change</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="status in vm.developer.statusEvents | orderBy:'-statusDateObject'">
             <td>{{ status.status.status }}<span ng-if="$first"> (current)</span></td>
             <td>{{ status.statusDateObject | date : 'mediumDate' : 'UTC' }}</td>
+            <td>{{ status.reason }}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div ng-if="vm.isChplAdmin">
       <strong>Developer Status</strong>
-      <table ng-if="vm.developer.statusEvents && vm.developer.statusEvents.length > 0" class="table table-condensed" ng-if="vm.isChplAdmin">
+      <table ng-if="vm.developer.statusEvents && vm.developer.statusEvents.length > 0" class="table table-condensed">
         <thead>
           <tr>
             <th scope="col">Status History</th>
             <th scope="col">Effective date</th>
+            <th scope="col">Reason for status change</th>
             <th scope="col"><span class="sr-only">Event Actions</span></th>
           </tr>
         </thead>
@@ -79,6 +82,12 @@
                 <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.editForm['statusDate' + $index].$error.required">Change date is required</div>
                 <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.matchesPreviousDate(status)">Only one change of status allowed per day</div>
               </div>
+            </td>
+            <td>
+                <label for="status-reason-{{ $index }}" class="sr-only">Reason</label>
+                <input class="input-sm form-control" type="text" ng-model="status.reason"
+                    ng-maxlength="500" name="status-reason-{{ $index }}">
+                <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['status-reason-' + $index].$touched) && vm.editForm['status-reason-' + $index].$error.maxlength">Field is too long</div>
             </td>
             <td>
               <button class="btn btn-sm btn-block btn-danger" ng-click="vm.removePreviousStatus(vm.developer.statusEvents.indexOf(status))"><i class="fa fa-trash"></i><span class="sr-only"> Remove status</span></button>
@@ -147,6 +156,7 @@
         <li ng-if="vm.editForm.developerName.$error.maxlength">Developer name is too long</li>
         <li ng-if="!vm.developer.statusEvents || vm.developer.statusEvents.length === 0">Developer must have a status</li>
         <li ng-if="vm.isMissingRequiredFields()">Developer status is required</li>
+        <li ng-if="vm.isMissingReasonForBan()">A reason for the developer ban is required</li>
         <li ng-if="vm.hasStatusMatches()">Developer status must not repeat</li>
         <li ng-if="vm.hasDateMatches()">Only one change of status allowed per day</li>
         <li ng-if="vm.editForm.addressLine1.$error.required">Address Line 1 is required</li>

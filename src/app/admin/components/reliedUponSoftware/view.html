@@ -1,5 +1,5 @@
 <span>
-  <span ng-if="!vm.isEditing"><strong>Relied Upon Software: </strong>
+  <span ng-if="!vm.isEditing"><strong>Relied Upon Software: </strong> <a href uib-tooltip="Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria." tooltip-trigger="mouseenter focus click"><span class="sr-only">Software relied upon by the product to demonstrate its compliance with a certification criterion or criteria.</span><i class="fa fa-info-circle fa-lg"></i></a>
     <span ng-if="!vm.additionalSoftware || vm.additionalSoftware.length === 0">None</span>
     <ul ng-if="vm.additionalSoftware && vm.additionalSoftware.length > 0">
       <li ng-repeat="grp in vm.displaySw track by $index">
@@ -51,9 +51,9 @@
           <td>{{ item.version }}</td>
           <td>{{ item.certifiedProductNumber }}</td>
           <td>{{ item.grouping }}</td>
-          <td width="0">
-            <button class="btn btn-ai-success btn-block" ng-click="vm.editItem(item, $index)"><i class="fa fa-pencil-square-o"></i> Edit</button>
-            <button class="btn btn-danger btn-block" ng-click="vm.removeItem($index)"><i class="fa fa-trash-o"></i> Remove</button>
+          <td>
+            <button class="btn btn-ai-success btn-sm" ng-click="vm.editItem(item, $index)"><i class="fa fa-pencil-square-o"></i> <span class="sr-only">Edit</span></button>
+            <button class="btn btn-danger btn-sm" ng-click="vm.removeItem($index)"><i class="fa fa-trash-o"></i> <span class="sr-only">Remove</span></button>
           </td>
         </tr>
       </tbody>
