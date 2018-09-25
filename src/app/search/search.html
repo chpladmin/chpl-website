@@ -365,7 +365,10 @@
               <tbody>
                 <tr ng-repeat="cp in vm.displayedCps">
                   <td>{{ cp.edition }}</td>
-                  <td>{{ cp.developer }}</td>
+                  <td>
+                    <span ng-if="cp.developerStatus !== 'Active'"><button class="btn btn-link" uib-tooltip="{{ cp.developerStatus }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ cp.developerStatus }}</span><i class="fa status-bad" ng-class="cp.developerStatus === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ vm.product.developer.status.status }}</button></span>
+                    {{ cp.developer }}
+                  </td>
                   <td>{{ cp.product }}</td>
                   <td>{{ cp.version }}</td>
                   <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC'}}</td>
