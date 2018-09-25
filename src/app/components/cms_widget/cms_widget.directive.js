@@ -23,8 +23,9 @@ require('jspdf-autotable');
             scope: {},
         };
     }
+
     /** @ngInject */
-    function CmsWidgetController ($analytics, $localStorage, $log, WidgetService, utilService) {
+    function CmsWidgetController ($analytics, $filter, $localStorage, $log, WidgetService, utilService) {
         var vm = this;
 
         vm.addProduct = addProduct;
@@ -34,7 +35,6 @@ require('jspdf-autotable');
         vm.generatePdf = generatePdf;
         vm.removeProduct = removeProduct;
         vm.search = search;
-        vm.sortCert = utilService.sortCert;
         vm.toggleProduct = toggleProduct;
 
         ////////////////////////////////////////////////////////////////////
@@ -117,6 +117,15 @@ require('jspdf-autotable');
                     {action: 'search', ids: vm.widget.productIds.join(',')},
                     function () {
                         vm.widget.inProgress = false;
+                        vm.widget.searchResult.missingAnd = $filter('orderBy')(vm.widget.searchResult.missingAnd, utilService.sortCert);
+                        vm.widget.searchResult.missingOr = vm.widget.searchResult.missingOr.map(list => $filter('orderBy')(list, utilService.sortCert));
+                        vm.widget.searchResult.missingCombo = vm.widget.searchResult.missingCombo.map(list => $filter('orderBy')(list, utilService.sortCert));
+                        vm.widget.searchResult.missingXOr = vm.widget.searchResult.missingXOr.map((item) => {
+                            let key = Object.keys(item)[0];
+                            let ret = {};
+                            ret[key + ''] = $filter('orderBy')(item[key + ''], utilService.sortCqm);
+                            return ret;
+                        });
                         setWidget(vm.widget);
                     });
             } else {
