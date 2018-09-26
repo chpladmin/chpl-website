@@ -5,12 +5,7 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController (
-        $log, $uibModal, $uibModalInstance, CertificationResultTestData,
-        CertificationResultTestFunctionality, CertificationResultTestProcedure,
-        CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs,
-        resources, utilService) {
-
+    function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, resources, utilService) {
         var vm = this;
 
         vm.addNewValue = utilService.addNewValue;
@@ -31,7 +26,7 @@
 
         function activate () {
             vm.certSave = angular.copy(cert);
-            vm.cert = cert;
+            vm.cert = angular.copy(cert);
             vm.options = [
                 {name: 'True', value: true},
                 {name: 'False', value: false},
