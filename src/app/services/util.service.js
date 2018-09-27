@@ -208,8 +208,8 @@
             var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
             var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
             var ret = edition * 10000 +
-                letter * 100 +
-                number;
+                    letter * 100 +
+                    number;
             return ret;
         }
 
