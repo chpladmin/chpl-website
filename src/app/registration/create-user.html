@@ -30,7 +30,7 @@
             <label for="password" class="control-label col-md-4">Password <span class="text-danger">*</span></label>
             <div class="col-md-8">
               <input type="password" id="password" name="password" ng-model="vm.userDetails.user.password" class="form-control" required ng-change="vm.setExtras()"
-                     zxcvbn="vm.passwordStrength" zx-extras="vm.extras" zx-min-score="0" />
+                     zxcvbn="vm.passwordStrength" zx-extras="vm.extras" zx-min-score="3" />
               <uib-progressbar max="4" value="vm.passwordStrength.score" type="{{ vm.passwordClass(vm.passwordStrength.score) }}" title="Password strength rating">
                 <span class="sr-only">Password strength: </span>{{ vm.passwordTitle(vm.passwordStrength.score) }}
               </uib-progressbar>
