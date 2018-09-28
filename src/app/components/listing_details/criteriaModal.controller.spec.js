@@ -22,7 +22,7 @@
 
                 scope = $rootScope.$new();
                 vm = $controller('EditCertificationCriteriaController', {
-                    cert: mock.cert,
+                    cert: angular.copy(mock.cert),
                     resources: mock.resources,
                     hasIcs: false,
                     $uibModalInstance: Mock.modalInstance,
@@ -79,7 +79,7 @@
         describe('when cancelling edits', function () {
             it('should restore the cert', function () {
                 var editedCert = {id: 2, name: 'an edited cert'};
-                vm.cert = editedCert;
+                vm.cert = angular.copy(editedCert);
                 vm.cancel();
                 expect(vm.cert).not.toEqual(editedCert);
                 expect(vm.cert).toEqual(mock.cert);
