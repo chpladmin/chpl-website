@@ -55,9 +55,9 @@
                 Idle.watch();
                 _updateExtras();
             }
+
             $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
-
                 if (vm.isAuthed()) {
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                         vm.activity = vm.activityEnum.NONE;
@@ -70,6 +70,15 @@
                     vm.activity = vm.activityEnum.LOGIN;
                     Idle.unwatch();
                 }
+            });
+
+            $scope.$on('IdleTimeout', function () {
+                $log.info('IdleTimeout - being logged out.');
+                logout();
+                setTimeout(function () {
+                    clear();
+                    $scope.$apply();
+                });
             });
         }
 
