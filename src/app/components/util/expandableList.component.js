@@ -19,7 +19,7 @@
             identifier: '@',                    //Used to name the controls in the component
             itemDisabled: '&',                  //Callback function that will be called for each item in the drop down to determine if that item should should be disabled.  Returns a boolean value.
             itemKey: '@',                       //String that identifies the key property in the 'items' array.  For eaxmple: "id" for an object that looks like [{id: 2, name: 'AI'}]
-            items: '<',                         //An array of objects to dispaly in the drop down
+            items: '<',                         //An array of objects to display in the drop down
             itemText: '@',                      //String that identifies the text property in the 'items' array.  This is used to create the display value in the dropdown.  For example: "name" for an object that looks like [{id: 2, name: 'AI'}]
             onChange: '&',                      //Callback that is used when the user makes a change to the control
             placeholder: '@',                   //The text that appears in the drop down providing instruction to the user.  For example: "Select a Test Standard"
