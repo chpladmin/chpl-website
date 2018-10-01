@@ -59,36 +59,26 @@
             $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
                 if (vm.isAuthed()) {
-                    $log.info('isAuthed = true');
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                         vm.activity = vm.activityEnum.NONE;
                     }
-                    $log.info('Calling KeepAlive');
                     networkService.keepalive()
                         .then(function (response) {
                             authService.saveToken(response.token);
-                            //
-                            var params = authService.parseJwt(response.token);
-                            var d = new Date(params.exp * 1000);
-                            $log.info('New Token expiration date: ' + d.toLocaleDateString() + ' ' + d.toLocaleTimeString());
-                            //
                         });
                 } else {
-                    $log.info('isAuthed = false');
                     vm.activity = vm.activityEnum.LOGIN;
                     Idle.unwatch();
-                    $log.info('Login Page?');
                 }
             });
 
             $scope.$on('IdleTimeout', function () {
-                $log.info('IdleTimeout event caught in login.directive!');
+                $log.info('IdleTimeout - being logged out.');
                 logout();
                 setTimeout(function () {
                     clear();
                     $scope.$apply();
                 });
-                $log.info('Is user logged in? ' + authService.isAuthed());
             });
         }
 
