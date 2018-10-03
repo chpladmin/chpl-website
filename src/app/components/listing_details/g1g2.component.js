@@ -10,12 +10,14 @@ export const G1G2DetailsComponent = {
             this.$log = $log;
             this.utilService = utilService;
         }
+
         $onChanges (changes) {
             if (changes.listing) {
                 this.listing = angular.copy(changes.listing.currentValue);
             }
             this._analyzeMeasures();
         }
+
         _analyzeMeasures () {
             var appending, cert, i, j, k;
             this.measures = [];

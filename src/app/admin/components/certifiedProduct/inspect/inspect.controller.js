@@ -16,9 +16,7 @@
         vm.selectInspectingProduct = selectInspectingProduct;
         vm.saveInspectingProduct = saveInspectingProduct;
 
-        vm.loadVer = loadVer;
         vm.selectInspectingVersion = selectInspectingVersion;
-        vm.saveInspectingVersion = saveInspectingVersion;
 
         vm.confirm = confirm;
         vm.reject = reject;
@@ -143,40 +141,8 @@
                 });
         }
 
-        function loadVer () {
-            if (vm.product && vm.product.productId) {
-                networkService.getVersionsByProduct(vm.product.productId)
-                    .then(function (result) {
-                        vm.versions = result;
-                    });
-            } else {
-                vm.versionChoice = 'create';
-            }
-            if (vm.cp.version.versionId) {
-                networkService.getVersion(vm.cp.version.versionId)
-                    .then(function (result) {
-                        vm.version = result;
-                    });
-            }
-        }
-
-        function selectInspectingVersion () {
-            vm.cp.version.versionId = vm.versionSelect.versionId;
-            vm.loadVer();
-        }
-
-        function saveInspectingVersion () {
-            var ver = {
-                version: {
-                    version: vm.cp.version.version,
-                    productId: vm.cp.version.versionId,
-                },
-                versionIds: [vm.cp.version.versionId],
-            };
-            networkService.updateVersion(ver)
-                .then(function () {
-                    vm.loadVer();
-                });
+        function selectInspectingVersion (versionId) {
+            vm.cp.version.versionId = versionId;
         }
 
         function confirm () {
@@ -247,7 +213,7 @@
                 break;
             case 'prd':
                 vm.stage = 'ver';
-                vm.loadVer();
+                //vm.loadVer();
                 loadFamily();
                 break;
             case 'ver':

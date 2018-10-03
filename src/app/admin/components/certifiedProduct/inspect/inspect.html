@@ -169,6 +169,10 @@
 
     <!-- Version -->
     <div ng-if="vm.stage === 'ver'">
+      <pre>{{ vm.cp.version | json }}</pre>
+      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="selectInspectiveVersion(versionId)"></ai-inspect-version>
+    </div>
+    <!--
       <div class="row">
         <div class="col-sm-12">
           <h1>Version</h1>
