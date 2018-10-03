@@ -8,7 +8,7 @@
         .config(config);
 
     /** @ngInject */
-    function config ($analyticsProvider, $locationProvider, $logProvider, TitleProvider, stConfig ) {
+    function config ($analyticsProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
         // Enable/disable analytics tracking
         $analyticsProvider.developerMode(DEVELOPER_MODE);
         /*
