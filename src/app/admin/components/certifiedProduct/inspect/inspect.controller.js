@@ -17,6 +17,7 @@
         vm.saveInspectingProduct = saveInspectingProduct;
 
         vm.selectInspectingVersion = selectInspectingVersion;
+        vm.setVersionChoice = setVersionChoice;
 
         vm.confirm = confirm;
         vm.reject = reject;
@@ -145,6 +146,10 @@
             vm.cp.version.versionId = versionId;
         }
 
+        function setVersionChoice (choice) {
+            vm.versionChoice = choice;
+        }
+
         function confirm () {
             networkService.confirmPendingCp(vm.cp)
                 .then(function (result) {
@@ -213,7 +218,6 @@
                 break;
             case 'prd':
                 vm.stage = 'ver';
-                //vm.loadVer();
                 loadFamily();
                 break;
             case 'ver':
@@ -240,20 +244,11 @@
         function isDisabled () {
             switch (vm.stage) {
             case 'dev':
-                if (vm.developerChoice === 'choose' && !vm.cp.developer.developerId) {
-                    return true;
-                }
-                return false;
+                return (vm.developerChoice === 'choose' && !vm.cp.developer.developerId);
             case 'prd':
-                if (vm.productChoice === 'choose' && !vm.cp.product.productId) {
-                    return true;
-                }
-                return false;
+                return (vm.productChoice === 'choose' && !vm.cp.product.productId);
             case 'ver':
-                if (vm.versionChoice === 'choose' && !vm.cp.version.versionId) {
-                    return true;
-                }
-                return false;
+                return (vm.versionChoice === 'choose' && !vm.cp.version.versionId);
             default:
                 return true;
             }

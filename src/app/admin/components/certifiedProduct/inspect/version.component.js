@@ -1,9 +1,10 @@
 export const InspectVersionComponent = {
     templateUrl: 'chpl.admin/components/certifiedProduct/inspect/version.html',
     bindings: {
+        onSelect: '&',
         pendingVersion: '<',
         product: '<',
-        onSelect: '&',
+        setVersionChoice: '&',
     },
     controller: class InspectVersionController {
         constructor ($log, networkService) {
@@ -29,6 +30,7 @@ export const InspectVersionComponent = {
             } else {
                 this.choice = 'create';
             }
+            this.setVersionChoice({choice: this.choice});
         }
 
         select () {

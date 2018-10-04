@@ -46,10 +46,10 @@
 
                 scope = $rootScope.$new();
 
-                //el = angular.element('<ai-inspect-version></ai-inspect-version>');
-                //$compile(el)(scope);
-                //scope.$digest();
-                //ctrl = el.isolateScope().$ctrl;
+                el = angular.element('<ai-inspect-version></ai-inspect-version>');
+                $compile(el)(scope);
+                scope.$digest();
+                ctrl = el.isolateScope().$ctrl;
             });
         });
 

@@ -19,8 +19,8 @@
         <div class="panel-body">
           <div class="row admin-label-spaced">
             <ul class="list-inline">
-              <li ng-if="$ctrl.product"><label><input type="radio" id="select-version" name="version-choice" ng-model="$ctrl.choice" value="choose"> Select existing version</label></li>
-              <li><label><input type="radio" id="create-version" name="version-choice" ng-model="$ctrl.choice" value="create"> Create new version</label></li>
+              <li ng-if="$ctrl.product"><label><input type="radio" id="select-version" name="version-choice" ng-model="$ctrl.choice" value="choose" ng-change="$ctrl.setVersionChoice({choice: $ctrl.choice})"> Select existing version</label></li>
+              <li><label><input type="radio" id="create-version" name="version-choice" ng-model="$ctrl.choice" value="create" ng-change="$ctrl.setVersionChoice({choice: $ctrl.choice})"> Create new version</label></li>
             </ul>
           </div>
           <div ng-if="$ctrl.choice === 'choose'">
