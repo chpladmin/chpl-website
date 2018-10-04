@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the version inspection component', () => {
+    describe('the version inspection component', () => {
         let $compile, $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
@@ -125,7 +125,7 @@
                 });
             });
 
-            fdescribe('when selecting a version', () => {
+            describe('when selecting a version', () => {
                 let selectSpy;
 
                 beforeEach(() => {
@@ -153,13 +153,21 @@
                 it('should set the pendingVersion id', () => {
                     ctrl.versionSelect = { versionId: 323 };
                     ctrl.select();
-                    expect(ctrl.pendingVersion.versionId).toBe(35);
+                    expect(ctrl.pendingVersion.versionId).toBe(323);
                 });
 
                 it('should call the callback function', () => {
                     ctrl.versionSelect = { versionId: 33 };
                     ctrl.select();
-                    expect(selectSpy).toHaveBeenCalledWith({versionId: 34});
+                    expect(selectSpy).toHaveBeenCalledWith(33);
+                });
+
+                it('should update the systemVersion', () => {
+                    const callCount = networkService.getVersion.calls.count();
+                    ctrl.versionSelect = { versionId: 33 };
+                    ctrl.select();
+                    scope.$digest();
+                    expect(networkService.getVersion.calls.count()).toBe(callCount + 1);
                 });
             });
         });

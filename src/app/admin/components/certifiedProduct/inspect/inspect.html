@@ -169,73 +169,7 @@
 
     <!-- Version -->
     <div ng-if="vm.stage === 'ver'">
-      <pre>{{ vm.cp.version | json }}</pre>
-      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="selectInspectiveVersion(versionId)"></ai-inspect-version>
-    </div>
-    <!--
-      <div class="row">
-        <div class="col-sm-12">
-          <h1>Version</h1>
-          <p>Step 3 of 4</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6" ng-if="!vm.cp.version.versionId" id="version-new">
-          <h3>System version information</h3>
-          <p>This is the version information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
-          <div class="panel panel-ai">
-            <div class="panel-heading" ng-if="vm.product">
-              This version <strong>"{{ vm.cp.version.version }}"</strong> does not currently exist in the Open Data CHPL.
-            </div>
-            <div class="panel-heading" ng-if="!vm.product">
-              {{ vm.cp.version.version }}
-            </div>
-            <div class="panel-body">
-              <div class="row admin-label-spaced">
-                <ul class="list-inline">
-                  <li ng-if="vm.product"><label><input type="radio" id="select-version" name="version-choice" ng-model="vm.versionChoice" value="choose"> Select existing version</label></li>
-                  <li><label><input type="radio" id="create-version" name="version-choice" ng-model="vm.versionChoice" value="create"> Create new version</label></li>
-                </ul>
-              </div>
-              <div ng-if="vm.versionChoice === 'choose'">
-                <label for="version-select" class="control-label admin-label-spaced">Select a version</label>
-                <select ng-model="vm.versionSelect"
-                        id="version-select" class="input-sm form-control"
-                        ng-options="v.version for v in vm.versions | orderBy: 'version'">
-                </select>
-                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingVersion()">Select Version</button></p>
-              </div>
-              <div ng-if="vm.versionChoice === 'create'">
-                Uploaded version information will be used to create a new version
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6" ng-if="vm.cp.version.versionId" id="version-system">
-          <h3>System version information</h3>
-          <p>This is the version information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
-          <div class="panel panel-ai">
-            <div class="panel-heading">
-              {{ vm.version.version }}
-            </div>
-            <div class="panel-body">
-              <br />
-              Last Modified Date: {{ vm.version.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6" id="version-uploaded">
-          <h3>Uploaded version information</h3>
-          <p>This is the version information from your Upload File.</p>
-          <div class="panel panel-ai">
-            <div class="panel-heading">
-              {{ vm.cp.version.version }}
-            </div>
-            <div class="panel-body">
-            </div>
-          </div>
-        </div>
-      </div>
+      <ai-inspect-version pending-version="vm.cp.version" product="vm.cp.product" on-select="vm.selectInspectingVersion(versionId)"></ai-inspect-version>
     </div>
     <!-- /Version -->
 
