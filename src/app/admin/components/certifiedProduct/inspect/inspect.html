@@ -101,69 +101,7 @@
 
     <!-- Product -->
     <div ng-if="vm.stage === 'prd'">
-      <div class="row">
-        <div class="col-sm-12">
-          <h1>Product</h1>
-          <p>Step 2 of 4</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6" ng-if="!vm.cp.product.productId" id="product-new">
-          <h3>System product information</h3>
-          <p>This is the product information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
-          <div class="panel panel-ai">
-            <div class="panel-heading" ng-if="vm.developer">
-              This product <strong>"{{ vm.cp.product.name }}"</strong> does not currently exist in the Open Data CHPL.
-            </div>
-            <div class="panel-heading" ng-if="!vm.developer">
-              {{ vm.cp.product.name }}
-            </div>
-            <div class="panel-body">
-              <div class="row admin-label-spaced">
-                <ul class="list-inline">
-                  <li ng-if="vm.developer"><label><input type="radio" id="select-product" name="product-choice" ng-model="vm.productChoice" value="choose"> Select existing product</label></li>
-                  <li><label><input type="radio" id="create-product" name="product-choice" ng-model="vm.productChoice" value="create"> Create new product</label></li>
-                </ul>
-              </div>
-              <div ng-if="vm.productChoice === 'choose'">
-                <label for="product-select" class="control-label admin-label-spaced">Select a product</label>
-                <select ng-model="vm.productSelect"
-                        id="product-select" class="input-sm form-control"
-                        ng-options="p.name for p in vm.products | orderBy: 'name'">
-                </select>
-                <p><button class="btn btn-default btn-block" ng-click="vm.selectInspectingProduct()">Select Product</button></p>
-              </div>
-              <div ng-if="vm.productChoice === 'create'">
-                Uploaded product information will be used to create a new product
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6" ng-if="vm.cp.product.productId" id="product-system">
-          <h3>System product information</h3>
-          <p>This is the product information that will be saved in the Open Data CHPL database and associated with this Certified Product.</p>
-          <div class="panel panel-ai">
-            <div class="panel-heading">
-              {{ vm.product.name }}
-            </div>
-            <div class="panel-body">
-              <br />
-              Last Modified Date: {{ vm.product.lastModifiedDate | date : 'mediumDate' : 'UTC' }}
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6" id="product-uploaded">
-          <h3>Uploaded product information</h3>
-          <p>This is the product information from your Upload File.</p>
-          <div class="panel panel-ai">
-            <div class="panel-heading">
-              {{ vm.cp.product.name }}
-            </div>
-            <div class="panel-body">
-            </div>
-          </div>
-        </div>
-      </div>
+      <ai-inspect-product pending-product="vm.cp.product" developer="vm.cp.developer" on-select="vm.selectInspectingProduct(productId)" set-product-choice="vm.setProductChoice(choice)"></ai-inspect-product>
     </div>
     <!-- /Product -->
 

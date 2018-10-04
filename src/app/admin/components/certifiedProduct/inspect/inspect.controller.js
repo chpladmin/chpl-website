@@ -12,9 +12,8 @@
         vm.selectInspectingDeveloper = selectInspectingDeveloper;
         vm.saveInspectingDeveloper = saveInspectingDeveloper;
 
-        vm.loadPrd = loadPrd;
         vm.selectInspectingProduct = selectInspectingProduct;
-        vm.saveInspectingProduct = saveInspectingProduct;
+        vm.setProductChoice = setProductChoice;
 
         vm.selectInspectingVersion = selectInspectingVersion;
         vm.setVersionChoice = setVersionChoice;
@@ -105,41 +104,12 @@
                 });
         }
 
-        function loadPrd () {
-            if (vm.developer && vm.developer.developerId) {
-                networkService.getProductsByDeveloper(vm.developer.developerId)
-                    .then(function (result) {
-                        vm.products = result.products;
-                    });
-            } else {
-                vm.productChoice = 'create';
-            }
-            if (vm.cp.product.productId) {
-                networkService.getSimpleProduct(vm.cp.product.productId)
-                    .then(function (result) {
-                        vm.product = result;
-                    });
-            }
+        function selectInspectingProduct (productId) {
+            vm.cp.product.productId = productId;
         }
 
-        function selectInspectingProduct () {
-            vm.cp.product.productId = vm.productSelect.productId;
-            vm.loadPrd();
-        }
-
-        function saveInspectingProduct () {
-            var prd = {
-                product: {
-                    name: vm.cp.product.name,
-                    productId: vm.cp.product.productId,
-                },
-                productIds: [vm.cp.product.productId],
-                newDeveloperId: vm.cp.developer.developerId,
-            };
-            networkService.updateProduct(prd)
-                .then(function () {
-                    vm.loadPrd();
-                });
+        function setProductChoice (choice) {
+            vm.productChoice = choice;
         }
 
         function selectInspectingVersion (versionId) {
@@ -214,7 +184,6 @@
             switch (vm.stage) {
             case 'dev':
                 vm.stage = 'prd';
-                vm.loadPrd();
                 break;
             case 'prd':
                 vm.stage = 'ver';
