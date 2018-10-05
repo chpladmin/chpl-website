@@ -557,7 +557,7 @@
             }
 
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/listing/inspect.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/inspect/inspect.html',
                 controller: 'InspectController',
                 controllerAs: 'vm',
                 animation: false,

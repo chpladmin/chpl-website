@@ -410,6 +410,75 @@
             });
         });
 
+        describe('inspecting a pending Listing', function () {
+            var listingInspectOptions;
+            beforeEach(function () {
+                vm.uploadingCps = [
+                    {id: 1},
+                    {id: 2},
+                ];
+                listingInspectOptions = {
+                    templateUrl: 'chpl.admin/components/certifiedProduct/inspect/inspect.html',
+                    controller: 'InspectController',
+                    controllerAs: 'vm',
+                    animation: false,
+                    backdrop: 'static',
+                    keyboard: false,
+                    resolve: {
+                        developers: jasmine.any(Function),
+                        inspectingCp: jasmine.any(Function),
+                        isAcbAdmin: jasmine.any(Function),
+                        isChplAdmin: jasmine.any(Function),
+                        resources: jasmine.any(Function),
+                        workType: jasmine.any(Function),
+                    },
+                    size: 'lg',
+                };
+            });
+
+            it('should create a modal instance when a Listing is to be edited', function () {
+                expect(vm.modalInstance).toBeUndefined();
+                vm.inspectCp({})
+                expect(vm.modalInstance).toBeDefined();
+            });
+
+            it('should resolve elements on inspect', function () {
+                vm.inspectCp(2)
+                expect($uibModal.open).toHaveBeenCalledWith(listingInspectOptions);
+                expect(actualOptions.resolve.inspectingCp()).toEqual({id: 2});
+                el.isolateScope().$digest();
+            });
+
+            it('should remove the inspected listing on close', function () {
+                var result = {
+                    status: 'confirmed',
+                };
+                vm.inspectCp(1);
+                vm.modalInstance.close(result);
+                expect(vm.uploadingCps).toEqual([{id: 2}]);
+            });
+
+            it('should report the user who did something on resolved', function () {
+                var result = {
+                    status: 'resolved',
+                    objectId: 'id',
+                    contact: {
+                        fullName: 'fname',
+                    },
+                };
+                vm.inspectCp(1);
+                vm.modalInstance.close(result);
+                expect(vm.uploadingListingsMessages[0]).toEqual('Product with ID: "id" has already been resolved by "fname"');
+            });
+
+            it('should log a cancelled modal', function () {
+                var logCount = $log.info.logs.length;
+                vm.inspectCp({});
+                vm.modalInstance.dismiss('cancelled');
+                expect($log.info.logs.length).toBe(logCount + 1);
+            });
+        });
+
         describe('inspecting a pending Surveillance', function () {
             var surveillanceInspectOptions;
             beforeEach(function () {
