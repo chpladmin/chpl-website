@@ -1,5 +1,5 @@
 <div class="inset-content">
-  <table class="table table-condensed nowrap" ng-if="vm.measures && vm.measures.length > 0">
+  <table class="table table-condensed nowrap" ng-if="$ctrl.measures && $ctrl.measures.length > 0">
     <thead>
       <tr>
         <th scope="col">Measure Name</th>
@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="measure in vm.measures | orderBy: ['g', 'name']">
+      <tr ng-repeat="measure in $ctrl.measures | orderBy: ['g', 'name']">
         <td>{{ measure.name }}</td>
         <td>{{ measure.description }}</td>
         <td>{{ measure.g }}</td>
@@ -17,5 +17,5 @@
       </tr>
     </tbody>
   </table>
-  <p ng-if="!vm.measures || vm.measures.length === 0">No measures tested for G1/G2.</p>
+  <p ng-if="!$ctrl.measures || $ctrl.measures.length === 0">No measures tested for G1/G2.</p>
 </div>

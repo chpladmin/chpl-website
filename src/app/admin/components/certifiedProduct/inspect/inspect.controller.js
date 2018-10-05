@@ -12,13 +12,11 @@
         vm.selectInspectingDeveloper = selectInspectingDeveloper;
         vm.saveInspectingDeveloper = saveInspectingDeveloper;
 
-        vm.loadPrd = loadPrd;
         vm.selectInspectingProduct = selectInspectingProduct;
-        vm.saveInspectingProduct = saveInspectingProduct;
+        vm.setProductChoice = setProductChoice;
 
-        vm.loadVer = loadVer;
         vm.selectInspectingVersion = selectInspectingVersion;
-        vm.saveInspectingVersion = saveInspectingVersion;
+        vm.setVersionChoice = setVersionChoice;
 
         vm.confirm = confirm;
         vm.reject = reject;
@@ -106,77 +104,20 @@
                 });
         }
 
-        function loadPrd () {
-            if (vm.developer && vm.developer.developerId) {
-                networkService.getProductsByDeveloper(vm.developer.developerId)
-                    .then(function (result) {
-                        vm.products = result.products;
-                    });
-            } else {
-                vm.productChoice = 'create';
-            }
-            if (vm.cp.product.productId) {
-                networkService.getSimpleProduct(vm.cp.product.productId)
-                    .then(function (result) {
-                        vm.product = result;
-                    });
-            }
+        function selectInspectingProduct (productId) {
+            vm.cp.product.productId = productId;
         }
 
-        function selectInspectingProduct () {
-            vm.cp.product.productId = vm.productSelect.productId;
-            vm.loadPrd();
+        function setProductChoice (choice) {
+            vm.productChoice = choice;
         }
 
-        function saveInspectingProduct () {
-            var prd = {
-                product: {
-                    name: vm.cp.product.name,
-                    productId: vm.cp.product.productId,
-                },
-                productIds: [vm.cp.product.productId],
-                newDeveloperId: vm.cp.developer.developerId,
-            };
-            networkService.updateProduct(prd)
-                .then(function () {
-                    vm.loadPrd();
-                });
+        function selectInspectingVersion (versionId) {
+            vm.cp.version.versionId = versionId;
         }
 
-        function loadVer () {
-            if (vm.product && vm.product.productId) {
-                networkService.getVersionsByProduct(vm.product.productId)
-                    .then(function (result) {
-                        vm.versions = result;
-                    });
-            } else {
-                vm.versionChoice = 'create';
-            }
-            if (vm.cp.version.versionId) {
-                networkService.getVersion(vm.cp.version.versionId)
-                    .then(function (result) {
-                        vm.version = result;
-                    });
-            }
-        }
-
-        function selectInspectingVersion () {
-            vm.cp.version.versionId = vm.versionSelect.versionId;
-            vm.loadVer();
-        }
-
-        function saveInspectingVersion () {
-            var ver = {
-                version: {
-                    version: vm.cp.version.version,
-                    productId: vm.cp.version.versionId,
-                },
-                versionIds: [vm.cp.version.versionId],
-            };
-            networkService.updateVersion(ver)
-                .then(function () {
-                    vm.loadVer();
-                });
+        function setVersionChoice (choice) {
+            vm.versionChoice = choice;
         }
 
         function confirm () {
@@ -243,11 +184,9 @@
             switch (vm.stage) {
             case 'dev':
                 vm.stage = 'prd';
-                vm.loadPrd();
                 break;
             case 'prd':
                 vm.stage = 'ver';
-                vm.loadVer();
                 loadFamily();
                 break;
             case 'ver':
@@ -274,20 +213,11 @@
         function isDisabled () {
             switch (vm.stage) {
             case 'dev':
-                if (vm.developerChoice === 'choose' && !vm.cp.developer.developerId) {
-                    return true;
-                }
-                return false;
+                return (vm.developerChoice === 'choose' && !vm.cp.developer.developerId);
             case 'prd':
-                if (vm.productChoice === 'choose' && !vm.cp.product.productId) {
-                    return true;
-                }
-                return false;
+                return (vm.productChoice === 'choose' && !vm.cp.product.productId);
             case 'ver':
-                if (vm.versionChoice === 'choose' && !vm.cp.version.versionId) {
-                    return true;
-                }
-                return false;
+                return (vm.versionChoice === 'choose' && !vm.cp.version.versionId);
             default:
                 return true;
             }
