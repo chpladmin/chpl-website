@@ -17,7 +17,7 @@
         };
     }
     /** @ngInject */
-    function CompareWidgetController ($localStorage) {
+    function CompareWidgetController ($localStorage, $log, $scope) {
         var vm = this;
 
         vm.clearProducts = clearProducts;
@@ -30,6 +30,12 @@
 
         this.$onInit = function () {
             getWidget();
+            var compareAll = $scope.$on('compareAll', (msg, payload) => {
+                vm.clearProducts();
+                vm.compareWidget.products = payload;
+                vm.compareWidget.productIds = payload.map(item => item.productId + '');
+            });
+            $scope.$on('$destroy', compareAll);
         }
 
         function clearProducts () {

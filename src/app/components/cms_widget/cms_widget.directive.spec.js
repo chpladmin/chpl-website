@@ -1,9 +1,9 @@
-/* eslint-disable quotes */
 (function () {
     'use strict';
 
-    describe('chpl.aiCmsWidget', function () {
+    fdescribe('chpl.aiCmsWidget', function () {
         var $compile, $httpBackend, $log, $rootScope, el, mock, vm;
+        /* eslint-disable quotes */
         mock = {
             endpoint: '/rest/certification_ids',
             searchResponse: {"products": [{"name": "ABELMed EHR - EMR / PM","productId": 6836,"version": "12"},{"name": "4medica iEHR® Cloud Ambulatory Solution mark 2","productId": 6493,"version": "15.10.1"},{"name": "4medica iEHR Cloud Ambulatory Suite","productId": 6993,"version": "15.10"}],"metCounts": {"cqmsAmbulatoryCoreRequiredMet": 7,"criteriaRequired": 21,"cqmsAmbulatoryRequiredMet": 3,"cqmsInpatientRequired": 16,"cqmsAmbulatoryRequired": 3,"domainsRequiredMet": 3,"criteriaCpoeRequiredMet": 1,"criteriaTocRequired": 2,"domainsRequired": 3,"criteriaRequiredMet": 21,"cqmsInpatientRequiredMet": 0,"criteriaCpoeRequired": 1,"cqmsAmbulatoryCoreRequired": 6,"criteriaTocRequiredMet": 2},"metPercentages": {"cqmsInpatient": 0,"cqmsAmbulatory": 100,"cqmDomains": 100,"criteriaMet": 100},"year": "2014","isValid": true,"missingAnd": [],"missingOr": [],"missingCombo": [],"missingXOr": []},
@@ -12,6 +12,7 @@
             response2014: {"products": [{"name": "Centricity Perinatal (CPN) 6.94.2","productId": 385,"version": "R694200004"}],"ehrCertificationId": null,"metCounts": {"cqmsAmbulatoryCoreRequiredMet": 0,"criteriaRequired": 21,"cqmsAmbulatoryRequiredMet": 0,"cqmsInpatientRequired": 16,"cqmsAmbulatoryRequired": 3,"domainsRequiredMet": 0,"criteriaCpoeRequiredMet": 0,"criteriaTocRequired": 2,"domainsRequired": 3,"criteriaRequiredMet": 2,"cqmsInpatientRequiredMet": 0,"criteriaCpoeRequired": 1,"cqmsAmbulatoryCoreRequired": 6,"criteriaTocRequiredMet": 0},"metPercentages": {"cqmsInpatient": 0,"cqmsAmbulatory": 0,"cqmDomains": 0,"criteriaMet": 9},"missingAnd": ["170.314 (a)(5)","170.314 (a)(6)","170.314 (a)(7)","170.314 (a)(8)","170.314 (b)(7)","170.314 (c)(1)","170.314 (c)(2)","170.314 (c)(3)","170.314 (d)(1)","170.314 (d)(2)","170.314 (d)(3)","170.314 (d)(4)","170.314 (d)(5)","170.314 (d)(6)","170.314 (d)(7)","170.314 (d)(8)"],"missingOr": [["170.314 (a)(1)","170.314 (a)(18)","170.314 (a)(19)","170.314 (a)(20)"]],"missingCombo": [["170.314(b)(1)","170.314(b)(2)","170.314(b)(8)","170.314(h)(1)"],["170.314(b)(1)","170.314(b)(2)","170.314(h)(1)"],["170.314(b)(1)","170.314(b)(2)","170.314(b)(8)"],["170.314(b)(8)","170.314(h)(1)"],["170.314(b)(1)","170.314(b)(2)"]],"missingXOr": [{"6": ["CMS2","CMS50","CMS68","CMS69","CMS75","CMS90","CMS117","CMS126","CMS136","CMS138","CMS146","CMS153","CMS154","CMS155","CMS156","CMS165","CMS166"]},{"16": ["CMS9","CMS26","CMS30","CMS31","CMS32","CMS53","CMS55","CMS60","CMS71","CMS72","CMS73","CMS91","CMS100","CMS102","CMS104","CMS105","CMS107","CMS108","CMS109","CMS110","CMS111","CMS113","CMS114","CMS171","CMS172","CMS178","CMS185","CMS188","CMS190"]}],"year": "2014","isValid": false},
             response2014Added: {"products": [{"name": "Centricity Perinatal (CPN) 6.94.2","productId": 385,"version": "R694200004"},{"name": "Agility EHR","productId": 8137,"version": "10.12"}],"ehrCertificationId": null,"metCounts": {"cqmsAmbulatoryCoreRequiredMet": 8,"criteriaRequired": 21,"cqmsAmbulatoryRequiredMet": 1,"cqmsInpatientRequired": 16,"cqmsAmbulatoryRequired": 3,"domainsRequiredMet": 3,"criteriaCpoeRequiredMet": 1,"criteriaTocRequired": 2,"domainsRequired": 3,"criteriaRequiredMet": 21,"cqmsInpatientRequiredMet": 0,"criteriaCpoeRequired": 1,"cqmsAmbulatoryCoreRequired": 6,"criteriaTocRequiredMet": 2},"metPercentages": {"cqmsInpatient": 0,"cqmsAmbulatory": 100,"cqmDomains": 100,"criteriaMet": 100},"missingAnd": [],"missingOr": [],"missingCombo": [],"missingXOr": [{"0": ["CMS2","CMS50","CMS68","CMS69","CMS75","CMS90","CMS117","CMS126","CMS136","CMS138","CMS146","CMS153","CMS154","CMS155","CMS156","CMS165","CMS166","CMS22","CMS52","CMS56","CMS61","CMS62","CMS64","CMS65","CMS66","CMS74","CMS77","CMS82","CMS122","CMS123","CMS124","CMS125","CMS127","CMS128","CMS129","CMS130","CMS131","CMS132","CMS133","CMS134","CMS135","CMS137","CMS139","CMS140","CMS141","CMS142","CMS143","CMS144","CMS145","CMS147","CMS148","CMS149","CMS157","CMS158","CMS159","CMS160","CMS161","CMS163","CMS164","CMS167","CMS169","CMS177","CMS179","CMS182"]},{"16": ["CMS9","CMS26","CMS30","CMS31","CMS32","CMS53","CMS55","CMS60","CMS71","CMS72","CMS73","CMS91","CMS100","CMS102","CMS104","CMS105","CMS107","CMS108","CMS109","CMS110","CMS111","CMS113","CMS114","CMS171","CMS172","CMS178","CMS185","CMS188","CMS190"]}],"year": "2014","isValid": true},
         };
+        /* eslint-enable quotes */
 
         beforeEach(function () {
             angular.mock.module('chpl.components', 'chpl.services');
@@ -33,7 +34,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug("\n Debug: " + $log.debug.logs.join("\n Debug: "));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -57,14 +60,14 @@
             });
 
             it('should call the /search endpoint when a product is added', function () {
-                spyOn(vm,'search');
+                spyOn(vm, 'search');
                 vm.addProduct(1);
                 expect(vm.search).toHaveBeenCalled();
             });
 
             it('should not call the /search endpoint when a duplicate product is added', function () {
                 vm.widget.productIds = [1];
-                spyOn(vm,'search');
+                spyOn(vm, 'search');
                 vm.addProduct(1);
                 expect(vm.search).not.toHaveBeenCalled();
             });
@@ -118,13 +121,13 @@
             });
 
             it('should call the /search endpoint when a product is removed', function () {
-                spyOn(vm,'search');
+                spyOn(vm, 'search');
                 vm.removeProduct(1);
                 expect(vm.search).toHaveBeenCalled();
             });
 
             it('should not call the /search endpoint when a product is removed that doesn\'t exist', function () {
-                spyOn(vm,'search');
+                spyOn(vm, 'search');
                 vm.removeProduct(4);
                 expect(vm.search).not.toHaveBeenCalled();
             });
@@ -177,6 +180,47 @@
                 vm.create();
                 $httpBackend.flush();
                 expect(vm.widget.createResponse.products).toEqual(mock.createResponse.products);
+            });
+        });
+
+        describe('when comparing objects', () => {
+            it('should broadcast comparing products', () => {
+                const products = [
+                    { name: 'a name', id: 1 },
+                    { name: '2nd name', id: 1 },
+                ];
+                spyOn($rootScope, '$broadcast');
+                vm.widget.searchResult = {
+                    products: products,
+                }
+                vm.compare();
+                expect($rootScope.$broadcast).toHaveBeenCalledWith('compareAll', products);
+            });
+
+            it('should broadcast "close widget"', () => {
+                const products = [
+                    { name: 'a name', id: 1 },
+                    { name: '2nd name', id: 1 },
+                ];
+                spyOn($rootScope, '$broadcast');
+                vm.widget.searchResult = {
+                    products: products,
+                }
+                vm.compare();
+                expect($rootScope.$broadcast).toHaveBeenCalledWith('HideWidget');
+            });
+
+            it('should broadcast "show compare widget"', () => {
+                const products = [
+                    { name: 'a name', id: 1 },
+                    { name: '2nd name', id: 1 },
+                ];
+                spyOn($rootScope, '$broadcast');
+                vm.widget.searchResult = {
+                    products: products,
+                }
+                vm.compare();
+                expect($rootScope.$broadcast).toHaveBeenCalledWith('ShowCompareWidget');
             });
         });
     });

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.aiCompareWidget', function () {
+    fdescribe('chpl.aiCompareWidget', function () {
         var $compile, $localStorage, $log, $rootScope, el, mock, vm;
         mock = {
             products: [
@@ -30,7 +30,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug("\n Debug: " + $log.debug.logs.join("\n Debug: "));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -87,6 +89,36 @@
                     vm.saveProducts();
                     expect($localStorage.previouslyCompared).toEqual([1,2,3]);
                 });
+            });
+        });
+
+        describe('when listening for the "compare all" event', () => {
+            it('should put the items in the widget', () => {
+                let products = [
+                    { name: 'a name', productId: 1 },
+                    { name: '2nd name', productId: 2 },
+                ];
+                $rootScope.$broadcast('compareAll', products);
+                expect(vm.compareWidget.products).toEqual(products);
+            });
+
+            it('should remove any previous items in the widget', () => {
+                let products = [
+                    { name: 'a name', productId: 1 },
+                    { name: '2nd name', productId: 2 },
+                ];
+                vm.compareWidget.products = [1, 2];
+                $rootScope.$broadcast('compareAll', products);
+                expect(vm.compareWidget.products).toEqual(products);
+            });
+
+            it('should get the correct list of productIds', () => {
+                let products = [
+                    { name: 'a name', productId: 1 },
+                    { name: '2nd name', productId: 2 },
+                ];
+                $rootScope.$broadcast('compareAll', products);
+                expect(vm.compareWidget.productIds).toEqual(['1', '2']);
             });
         });
     });

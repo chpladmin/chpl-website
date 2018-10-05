@@ -25,11 +25,12 @@ require('jspdf-autotable');
     }
 
     /** @ngInject */
-    function CmsWidgetController ($analytics, $filter, $localStorage, $log, WidgetService, utilService) {
+    function CmsWidgetController ($analytics, $filter, $localStorage, $log, $rootScope, WidgetService, utilService) {
         var vm = this;
 
         vm.addProduct = addProduct;
         vm.clearProducts = clearProducts;
+        vm.compare = compare;
         vm.create = create;
         vm.isInList = isInList;
         vm.generatePdf = generatePdf;
@@ -59,6 +60,12 @@ require('jspdf-autotable');
                 productIds: [],
             };
             setWidget(vm.widget);
+        }
+
+        function compare () {
+            $rootScope.$broadcast('compareAll', angular.copy(vm.widget.searchResult.products));
+            $rootScope.$broadcast('HideWidget');
+            $rootScope.$broadcast('ShowCompareWidget');
         }
 
         function create () {
@@ -117,15 +124,23 @@ require('jspdf-autotable');
                     {action: 'search', ids: vm.widget.productIds.join(',')},
                     function () {
                         vm.widget.inProgress = false;
-                        vm.widget.searchResult.missingAnd = $filter('orderBy')(vm.widget.searchResult.missingAnd, utilService.sortCert);
-                        vm.widget.searchResult.missingOr = vm.widget.searchResult.missingOr.map(list => $filter('orderBy')(list, utilService.sortCert));
-                        vm.widget.searchResult.missingCombo = vm.widget.searchResult.missingCombo.map(list => $filter('orderBy')(list, utilService.sortCert));
-                        vm.widget.searchResult.missingXOr = vm.widget.searchResult.missingXOr.map((item) => {
-                            let key = Object.keys(item)[0];
-                            let ret = {};
-                            ret[key + ''] = $filter('orderBy')(item[key + ''], utilService.sortCqm);
-                            return ret;
-                        });
+                        if (vm.widget.searchResult.missingAnd) {
+                            vm.widget.searchResult.missingAnd = $filter('orderBy')(vm.widget.searchResult.missingAnd, utilService.sortCert);
+                        }
+                        if (vm.widget.searchResult.missingOr) {
+                            vm.widget.searchResult.missingOr = vm.widget.searchResult.missingOr.map(list => $filter('orderBy')(list, utilService.sortCert));
+                        }
+                        if (vm.widget.searchResult.missingCombo) {
+                            vm.widget.searchResult.missingCombo = vm.widget.searchResult.missingCombo.map(list => $filter('orderBy')(list, utilService.sortCert));
+                        }
+                        if (vm.widget.searchResult.missingXOr) {
+                            vm.widget.searchResult.missingXOr = vm.widget.searchResult.missingXOr.map((item) => {
+                                let key = Object.keys(item)[0];
+                                let ret = {};
+                                ret[key + ''] = $filter('orderBy')(item[key + ''], utilService.sortCqm);
+                                return ret;
+                            });
+                        }
                         setWidget(vm.widget);
                     });
             } else {

@@ -2,14 +2,15 @@
     'use strict';
 
     describe('the CMS Widget Display directive', function () {
-        var $compile, $log, el, mock, scope;
+        var $compile, $log, $rootScope, el, mock, scope;
         mock = {};
 
         beforeEach(function () {
             angular.mock.module('chpl.components');
-            inject(function (_$compile_, _$log_, $rootScope, aiCmsWidgetDirective) {
+            inject(function (_$compile_, _$log_, _$rootScope_, aiCmsWidgetDirective) {
                 $compile = _$compile_;
                 $log = _$log_;
+                $rootScope = _$rootScope_;
 
                 // replace ai-cms-widget controller with mock version
                 var aiCmsWidgetDefinition = aiCmsWidgetDirective[0];
