@@ -26,7 +26,7 @@
 
         function activate () {
             vm.certSave = angular.copy(cert);
-            vm.cert = angular.copy(cert);
+            vm.cert = cert;
             vm.options = [
                 {name: 'True', value: true},
                 {name: 'False', value: false},
