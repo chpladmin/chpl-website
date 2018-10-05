@@ -34,7 +34,7 @@
     </ul>
   </div>
   <div ng-if="widget.searchResult.missingCombo.length">
-    <span ng-if="widget.searchResult.missingCombo.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingCombo.length === 0">Please select a product</span> that fulfills all criteria from at least one of the following group<span ng-if="widget.searchResult.missingCombo.length > 1">s</span>:
+    <span ng-if="widget.searchResult.missingAnd.length > 0 || widget.searchResult.missingOr.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingAnd.length === 0 && widget.searchResult.missingOr.length === 0">Please select a product</span> that fulfills all criteria from at least one of the following group<span ng-if="widget.searchResult.missingCombo.length > 1">s</span>:
     <ul class="list-unstyled">
       <li ng-repeat="criterias in widget.searchResult.missingCombo">
         [<span>{{ criterias.join(', ') }}</span>]
