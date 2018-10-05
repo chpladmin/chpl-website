@@ -1,37 +1,33 @@
 (function () {
     'use strict';
 
-    describe('chpl.ellipsis.directive', function () {
-
-        var element;
-        var scope;
-        var $log;
-        var $compile;
-        var ctrl;
+    describe('the ellipsis component', function () {
+        var $compile, $log, ctrl, element, scope;
 
         beforeEach(function () {
             angular.mock.module('chpl');
+
+            inject(function (_$compile_, _$log_, $rootScope) {
+                $compile = _$compile_;
+                $log = _$log_;
+                scope = $rootScope.$new();
+
+                element = angular.element('<ai-ellipsis text="Some amount of long text here" max-length="10"></ai-ellipsis>');
+                $compile(element)(scope);
+                scope.$digest();
+                ctrl = element.controller('aiEllipsis');
+            });
         });
-
-        beforeEach(inject(function (_$compile_, _$log_, $rootScope) {
-            $compile = _$compile_;
-            $log = _$log_;
-            scope = $rootScope.$new();
-
-            element = angular.element('<ai-ellipsis text="Some amount of long text here" max-length="10"></ai-ellipsis>');
-            $compile(element)(scope);
-            scope.$digest();
-            ctrl = element.controller('aiEllipsis');
-        }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
         describe('controller', function () {
-
             it('should exist', function () {
                 expect(ctrl).toBeDefined();
             });
