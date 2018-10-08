@@ -1,3 +1,5 @@
+//import zxcvbn from 'zxcvbn';
+
 (function () {
     'use strict';
 
@@ -23,7 +25,7 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService) {
+    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService, utilService) {
         var vm = this;
 
         vm.broadcastLogin = broadcastLogin;
@@ -33,6 +35,8 @@
         vm.login = login;
         vm.logout = logout;
         vm.misMatchPasswords = misMatchPasswords;
+        vm.passwordClass = utilService.passwordClass;
+        vm.passwordTitle = utilService.passwordTitle;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
 
@@ -46,14 +50,14 @@
         /////////////////////////////////////////////////////////
 
         this.$onInit = function () {
-            vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
             vm.clear();
             if (vm.isAuthed()) {
                 Idle.watch();
+                _updateExtras();
             }
+
             $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
-
                 if (vm.isAuthed()) {
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                         vm.activity = vm.activityEnum.NONE;
@@ -67,6 +71,15 @@
                     Idle.unwatch();
                 }
             });
+
+            $scope.$on('IdleTimeout', function () {
+                $log.info('IdleTimeout - being logged out.');
+                logout();
+                setTimeout(function () {
+                    clear();
+                    $scope.$apply();
+                });
+            });
         }
 
         function changePassword () {
@@ -74,10 +87,24 @@
                 vm.message = 'Passwords do not match. Please try again';
             } else {
                 networkService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
-                    .then(function () {
-                        vm.clear();
-                        vm.messageClass = vm.pClass;
-                        vm.message = 'Password successfully changed';
+                    .then(function (response) {
+                        if (response.passwordUpdated) {
+                            vm.clear();
+                            vm.messageClass = vm.pClass;
+                            vm.message = 'Password successfully changed';
+                        } else {
+                            vm.messageClass = vm.pClassFail;
+                            vm.message = 'Your password was not changed. ';
+                            if (response.warning) {
+                                vm.message += response.warning;
+                            }
+                            if (response.suggestions && response.suggestions.length > 0) {
+                                vm.message += 'Suggestion' + (response.suggestions.length > 1 ? 's' : '') + ': ' + response.suggestions.join(' ');
+                            }
+                            if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
+                                vm.message += 'Please try again with a stronger password.';
+                            }
+                        }
                     }, function () {
                         vm.messageClass = vm.pClassFail;
                         vm.message = 'Error. Please check your credentials or contact the administrator';
@@ -114,6 +141,7 @@
                     Idle.watch();
                     Keepalive.ping();
                     vm.clear();
+                    _updateExtras();
                 }, function (error) {
                     vm.messageClass = vm.pClassFail;
                     vm.message = error.data.error;
@@ -146,6 +174,21 @@
                 }, function () {
                     vm.messageClass = vm.pClassFail;
                     vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
+                });
+        }
+
+        /////////////////////////////////////////////////////////
+
+        function _updateExtras () {
+            let vals = ['chpl'];
+            networkService.getUserByUsername(authService.getUsername())
+                .then(function (response) {
+                    if (response.user.subjectName) { vals.push(response.user.subjectName); }
+                    if (response.user.fullName) { vals.push(response.user.fullName); }
+                    if (response.user.friendlyName) { vals.push(response.user.friendlyName); }
+                    if (response.user.email) { vals.push(response.user.email); }
+                    if (response.user.phoneNumber) { vals.push(response.user.phoneNumber); }
+                    vm.extras = vals;
                 });
         }
     }

@@ -20,7 +20,7 @@
   <div ng-if="widget.searchResult.missingAnd.length">
     Please select a product or products that contain the following criteria:
     <ul class="list-unstyled">
-      <li ng-repeat="criteria in widget.searchResult.missingAnd | orderBy: vm.sortCert">
+      <li ng-repeat="criteria in widget.searchResult.missingAnd">
         {{ criteria }}
       </li>
     </ul>
@@ -28,7 +28,7 @@
   <div ng-if="widget.searchResult.missingOr.length">
     <span ng-if="widget.searchResult.missingAnd.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingAnd.length === 0">Please select a product</span> with at least 1 criteria from the following group<span ng-if="widget.searchResult.missingOr.length > 1">s</span>:
     <ul class="list-unstyled">
-      <li ng-repeat="criterias in widget.searchResult.missingOr | orderBy: vm.sortCert">
+      <li ng-repeat="criterias in widget.searchResult.missingOr">
         [<span>{{ criterias.join(', ') }}</span>]
       </li>
     </ul>
@@ -36,18 +36,8 @@
   <div ng-if="widget.searchResult.missingCombo.length">
     <span ng-if="widget.searchResult.missingCombo.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingCombo.length === 0">Please select a product</span> that fulfills all criteria from at least one of the following group<span ng-if="widget.searchResult.missingCombo.length > 1">s</span>:
     <ul class="list-unstyled">
-      <li ng-repeat="criterias in widget.searchResult.missingCombo | orderBy: vm.sortCert">
+      <li ng-repeat="criterias in widget.searchResult.missingCombo">
         [<span>{{ criterias.join(', ') }}</span>]
-      </li>
-    </ul>
-  </div>
-  <div ng-repeat="maps in widget.searchResult.missingX">
-    <ul class="list-unstyled">
-      <li ng-repeat="(number, criterias) in maps">
-        <div ng-if="number > 0">
-          <span>In addition, please select {{ number }} from the following:</span>
-          [<span>{{ criterias.join(', ') }}</span>]
-        </div>
       </li>
     </ul>
   </div>

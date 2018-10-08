@@ -35,6 +35,15 @@ module.exports = (config) => {
                 failure: 'red',
                 ignore: 'grey',
             },
+            icon: config.ahrq ? {
+                success : '.',
+                failure : 'X',
+                ignore  : 'i',
+            } : {
+                success : '✔',
+                failure : '✖',
+                ignore  : 'i',
+            },
         },
         coverageIstanbulReporter: {
             dir: 'test_reports/coverage/',

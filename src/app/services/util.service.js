@@ -15,6 +15,8 @@
             extendSelect: extendSelect,
             findModel: findModel,
             makeCsv: makeCsv,
+            passwordClass: passwordClass,
+            passwordTitle: passwordTitle,
             sortCert: sortCert,
             sortCertArray: sortCertArray,
             sortCqm: sortCqm,
@@ -164,6 +166,40 @@
             FileSaver.saveAs(blob, data.name);
         }
 
+        function passwordClass (strength) {
+            switch (strength) {
+            case 0:
+                return 'danger';
+            case 1:
+                return 'danger';
+            case 2:
+                return 'warning';
+            case 3:
+                return 'warning';
+            case 4:
+                return 'success';
+            default:
+                return '';
+            }
+        }
+
+        function passwordTitle (strength) {
+            switch (strength) {
+            case 0:
+                return 'Awful';
+            case 1:
+                return 'Weak';
+            case 2:
+                return 'Moderate';
+            case 3:
+                return 'Strong';
+            case 4:
+                return 'Excellent';
+            default:
+                return '';
+            }
+        }
+
         function sortCert (cert) {
             if (angular.isObject(cert)) {
                 cert = cert.name || cert.number;
@@ -172,8 +208,8 @@
             var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
             var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
             var ret = edition * 10000 +
-                letter * 100 +
-                number;
+                    letter * 100 +
+                    number;
             return ret;
         }
 

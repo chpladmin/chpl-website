@@ -1,3 +1,6 @@
+var zxcvbn = require('zxcvbn');
+window.zxcvbn = zxcvbn;
+
 (function () {
     'use strict';
 
@@ -5,13 +8,16 @@
         .controller('CreateController', CreateController);
 
     /** @ngInject */
-    function CreateController ($location, $log, $routeParams, authService, networkService) {
+    function CreateController ($location, $log, $routeParams, authService, networkService, utilService) {
         var vm = this;
 
         vm.authorizeUser = authorizeUser;
         vm.createUser = createUser;
         vm.isAuthed = isAuthed;
         vm.misMatchPasswords = misMatchPasswords;
+        vm.passwordClass = utilService.passwordClass;
+        vm.passwordTitle = utilService.passwordTitle;
+        vm.setExtras = setExtras;
 
         activate();
 
@@ -25,10 +31,10 @@
             vm.userDetails.hash = $routeParams.hash;
             vm.authorizeDetails.hash = $routeParams.hash;
             vm.message = {value: '', success: null};
-            vm.pwPattern = '(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).{8,}';
             if (vm.isAuthed) {
                 vm.authorizeUser();
             }
+            vm.extras = ['chpl'];
         }
 
         function authorizeUser () {
@@ -86,5 +92,15 @@
             valid = valid && vm.userDetails.user.password === vm.userDetails.user.passwordverify;
             return valid;
         };
+
+        function setExtras () {
+            let vals = ['chpl'];
+            if (vm.userDetails.user.subjectName) { vals.push(vm.userDetails.user.subjectName); }
+            if (vm.userDetails.user.fullName) { vals.push(vm.userDetails.user.fullName); }
+            if (vm.userDetails.user.friendlyName) { vals.push(vm.userDetails.user.friendlyName); }
+            if (vm.userDetails.user.email) { vals.push(vm.userDetails.user.email); }
+            if (vm.userDetails.user.phoneNumber) { vals.push(vm.userDetails.user.phoneNumber); }
+            vm.extras = vals;
+        }
     }
 })();

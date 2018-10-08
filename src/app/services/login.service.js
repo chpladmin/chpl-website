@@ -8,6 +8,7 @@
     function authService ($localStorage, $log, $window, API_KEY) {
         var service = {
             getApiKey: getApiKey,
+            getFullname: getFullname,
             getToken: getToken,
             getUsername: getUsername,
             isAcbAdmin: isAcbAdmin,
@@ -28,6 +29,17 @@
             return API_KEY;
         }
 
+        function getFullname () {
+            if (isAuthed()) {
+                var token = getToken();
+                var identity = parseJwt(token).Identity;
+                return identity[2];
+            } else {
+                logout();
+                return '';
+            }
+        }
+
         function getToken () {
             return $localStorage.jwtToken;
         }
@@ -36,7 +48,7 @@
             if (isAuthed()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
-                return identity[2];
+                return identity[1];
             } else {
                 logout();
                 return '';
