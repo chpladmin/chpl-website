@@ -63,7 +63,8 @@ require('jspdf-autotable');
         }
 
         function compare () {
-            $rootScope.$broadcast('compareAll', angular.copy(vm.widget.searchResult.products));
+            const payload = vm.widget.searchResult.products.map((item) => { return { productId: item.productId + '', name: item.name }});
+            $rootScope.$broadcast('compareAll', payload);
             $rootScope.$broadcast('HideWidget');
             $rootScope.$broadcast('ShowCompareWidget');
         }

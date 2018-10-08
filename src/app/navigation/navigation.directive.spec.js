@@ -129,10 +129,12 @@
                 expect($location.url).toHaveBeenCalledWith('/search');
             });
 
-            it('should show the CMS Widget', function () {
+            it('should be able to toggle the CMS Widget', function () {
                 expect(vm.widgetExpanded).toBeUndefined();
-                vm.showCmsWidget();
+                vm.showCmsWidget(true);
                 expect(vm.widgetExpanded).toBe(true);
+                vm.showCmsWidget(false);
+                expect(vm.widgetExpanded).toBe(false);
             });
 
             it('should be able to toggle the Compare Widget', function () {

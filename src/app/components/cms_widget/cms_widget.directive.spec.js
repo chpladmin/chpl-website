@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('chpl.aiCmsWidget', function () {
+    describe('chpl.aiCmsWidget', function () {
         var $compile, $httpBackend, $log, $rootScope, el, mock, vm;
         /* eslint-disable quotes */
         mock = {
@@ -184,24 +184,22 @@
         });
 
         describe('when comparing objects', () => {
+            const products = [
+                { name: 'a name', productId: 1 },
+                { name: '2nd name', productId: 2 },
+            ];
+            const payload = products.map((item) => { return { name: item.name, productId: item.productId + ''}; });
+
             it('should broadcast comparing products', () => {
-                const products = [
-                    { name: 'a name', id: 1 },
-                    { name: '2nd name', id: 1 },
-                ];
                 spyOn($rootScope, '$broadcast');
                 vm.widget.searchResult = {
                     products: products,
                 }
                 vm.compare();
-                expect($rootScope.$broadcast).toHaveBeenCalledWith('compareAll', products);
+                expect($rootScope.$broadcast).toHaveBeenCalledWith('compareAll', payload);
             });
 
             it('should broadcast "close widget"', () => {
-                const products = [
-                    { name: 'a name', id: 1 },
-                    { name: '2nd name', id: 1 },
-                ];
                 spyOn($rootScope, '$broadcast');
                 vm.widget.searchResult = {
                     products: products,
@@ -211,10 +209,6 @@
             });
 
             it('should broadcast "show compare widget"', () => {
-                const products = [
-                    { name: 'a name', id: 1 },
-                    { name: '2nd name', id: 1 },
-                ];
                 spyOn($rootScope, '$broadcast');
                 vm.widget.searchResult = {
                     products: products,

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('chpl.aiCompareWidget', function () {
+    describe('chpl.aiCompareWidget', function () {
         var $compile, $localStorage, $log, $rootScope, el, mock, vm;
         mock = {
             products: [
@@ -93,31 +93,25 @@
         });
 
         describe('when listening for the "compare all" event', () => {
+            const payload = [
+                { name: 'a name', productId: '1' },
+                { name: '2nd name', productId: '2' },
+            ];
+            const products = payload.map((item) => { return {id: item.productId, name: item.name } });
+
             it('should put the items in the widget', () => {
-                let products = [
-                    { name: 'a name', productId: 1 },
-                    { name: '2nd name', productId: 2 },
-                ];
-                $rootScope.$broadcast('compareAll', products);
+                $rootScope.$broadcast('compareAll', payload);
                 expect(vm.compareWidget.products).toEqual(products);
             });
 
             it('should remove any previous items in the widget', () => {
-                let products = [
-                    { name: 'a name', productId: 1 },
-                    { name: '2nd name', productId: 2 },
-                ];
                 vm.compareWidget.products = [1, 2];
-                $rootScope.$broadcast('compareAll', products);
+                $rootScope.$broadcast('compareAll', payload);
                 expect(vm.compareWidget.products).toEqual(products);
             });
 
             it('should get the correct list of productIds', () => {
-                let products = [
-                    { name: 'a name', productId: 1 },
-                    { name: '2nd name', productId: 2 },
-                ];
-                $rootScope.$broadcast('compareAll', products);
+                $rootScope.$broadcast('compareAll', payload);
                 expect(vm.compareWidget.productIds).toEqual(['1', '2']);
             });
         });

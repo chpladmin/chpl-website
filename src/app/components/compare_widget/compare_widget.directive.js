@@ -32,8 +32,7 @@
             getWidget();
             var compareAll = $scope.$on('compareAll', (msg, payload) => {
                 vm.clearProducts();
-                vm.compareWidget.products = payload;
-                vm.compareWidget.productIds = payload.map(item => item.productId + '');
+                payload.forEach((item) => { vm.toggleProduct(item.productId, item.name); });
             });
             $scope.$on('$destroy', compareAll);
         }
