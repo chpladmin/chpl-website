@@ -116,6 +116,7 @@
                     resolve: {
                         disableValidation: jasmine.any(Function),
                         randomized: jasmine.any(Function),
+                        randomizedSitesUsed: jasmine.any(Function),
                         requirement: jasmine.any(Function),
                         surveillanceId: jasmine.any(Function),
                         surveillanceTypes: jasmine.any(Function),
@@ -135,6 +136,7 @@
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.disableValidation()).toBe(false);
                 expect(actualOptions.resolve.randomized()).toBe(false);
+                expect(actualOptions.resolve.randomizedSitesUsed()).toBeNull();
                 expect(actualOptions.resolve.requirement()).toEqual({nonconformities: []});
                 expect(actualOptions.resolve.surveillanceId()).toEqual(Mock.surveillances[0].id);
                 expect(actualOptions.resolve.surveillanceTypes()).toEqual(Mock.surveillanceData);
@@ -242,6 +244,7 @@
                     resolve: {
                         disableValidation: jasmine.any(Function),
                         randomized: jasmine.any(Function),
+                        randomizedSitesUsed: jasmine.any(Function),
                         requirement: jasmine.any(Function),
                         surveillanceId: jasmine.any(Function),
                         surveillanceTypes: jasmine.any(Function),
@@ -265,6 +268,7 @@
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.disableValidation()).toBe(false);
                 expect(actualOptions.resolve.randomized()).toBe(false);
+                expect(actualOptions.resolve.randomizedSitesUsed()).toBeNull();
                 expect(actualOptions.resolve.requirement()).toEqual(vm.surveillance.requirements[1]);
                 expect(actualOptions.resolve.surveillanceId()).toEqual(Mock.surveillances[0].id);
                 expect(actualOptions.resolve.surveillanceTypes()).toEqual(Mock.surveillanceData);

@@ -59,6 +59,7 @@
                 resolve: {
                     disableValidation: function () { return false; },
                     randomized: function () { return vm.surveillance.type.name === 'Randomized'; },
+                    randomizedSitesUsed: function () { return vm.surveillance.randomizedSitesUsed; },
                     requirement: function () { return { nonconformities: [] }; },
                     surveillanceId: function () { return vm.surveillance.id; },
                     surveillanceTypes: function () { return vm.data; },
@@ -115,6 +116,7 @@
                 resolve: {
                     disableValidation: function () { return vm.disableValidation; },
                     randomized: function () { return vm.surveillance.type.name === 'Randomized'; },
+                    randomizedSitesUsed: function () { return vm.surveillance.randomizedSitesUsed; },
                     requirement: function () { return req; },
                     surveillanceId: function () { return vm.surveillance.id; },
                     surveillanceTypes: function () { return vm.data; },
