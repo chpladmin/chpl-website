@@ -5,4 +5,7 @@ _Date TBD_
 ### New Features
 * Enable comparison of all products in CMS widget
 
+### Bugs Fixed
+* Display 'Other Certified Product Activity' when only one thing has been changed.
+
 ---
