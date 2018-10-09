@@ -30,7 +30,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug("\n Debug: " + $log.debug.logs.join("\n Debug: "));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -87,6 +89,30 @@
                     vm.saveProducts();
                     expect($localStorage.previouslyCompared).toEqual([1,2,3]);
                 });
+            });
+        });
+
+        describe('when listening for the "compare all" event', () => {
+            const payload = [
+                { name: 'a name', productId: '1' },
+                { name: '2nd name', productId: '2' },
+            ];
+            const products = payload.map((item) => { return {id: item.productId, name: item.name } });
+
+            it('should put the items in the widget', () => {
+                $rootScope.$broadcast('compareAll', payload);
+                expect(vm.compareWidget.products).toEqual(products);
+            });
+
+            it('should remove any previous items in the widget', () => {
+                vm.compareWidget.products = [1, 2];
+                $rootScope.$broadcast('compareAll', payload);
+                expect(vm.compareWidget.products).toEqual(products);
+            });
+
+            it('should get the correct list of productIds', () => {
+                $rootScope.$broadcast('compareAll', payload);
+                expect(vm.compareWidget.productIds).toEqual(['1', '2']);
             });
         });
     });
