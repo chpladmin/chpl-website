@@ -182,9 +182,9 @@
             <li ng-repeat="user in vm.product.targetedUsers">{{ user.targetedUserName }}</li>
           </ul>
         </span>
-        <span ng-if="vm.product.numMeaningfulUse">
+        <span ng-if="vm.product.meaningfulUseUserHistory && vm.product.meaningfulUseUserHistory.length > 0">
           <h4>Estimated Number of Meaningful Use Users</h4>
-          <p>{{ vm.product.numMeaningfulUse }}</p>
+          <p>{{ vm.muuCount(vm.product.meaningfulUseUserHistory).muuCount }}, last updated at {{ vm.muuCount(vm.product.meaningfulUseUserHistory).muuDate | date : 'mediumDate' : 'UTC' }} </p>
         </span>
       </div>
     </div>

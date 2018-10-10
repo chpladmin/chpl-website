@@ -28,11 +28,12 @@
         return directive;
 
         /** @ngInject */
-        function CertsController ($analytics, $log, $scope, $uibModal, ACTIVE_CAP, networkService) {
+        function CertsController ($analytics, $log, $scope, $uibModal, ACTIVE_CAP, networkService, utilService) {
             var vm = this;
 
             vm.ACTIVE_CAP = ACTIVE_CAP;
             vm.hasEdited = hasEdited;
+            vm.muuCount = utilService.muuCount;
             vm.prepCqms = prepCqms
             vm.registerSed = registerSed;
             vm.sortCerts = sortCerts;

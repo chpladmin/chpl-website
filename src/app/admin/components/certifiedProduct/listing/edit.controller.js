@@ -8,6 +8,7 @@
     function EditCertifiedProductController ($filter, $log, $timeout, $uibModalInstance, activeCP, isAcbAdmin, isChplAdmin, networkService, resources, utilService, workType) {
         var vm = this;
 
+        vm.addPreviousMuu = addPreviousMuu;
         vm.addPreviousStatus = addPreviousStatus;
         vm.addNewValue = utilService.addNewValue;
         vm.attachModel = attachModel;
@@ -20,9 +21,11 @@
         vm.hasStatusMatches = hasStatusMatches;
         vm.improperFirstStatus = improperFirstStatus;
         vm.matchesPreviousDate = matchesPreviousDate;
+        vm.matchesPreviousMuuDate = matchesPreviousMuuDate;
         vm.matchesPreviousStatus = matchesPreviousStatus;
         vm.mayCauseSuspension = mayCauseSuspension;
         vm.missingIcsSource = missingIcsSource;
+        vm.removePreviousMuu = removePreviousMuu;
         vm.removePreviousStatus = removePreviousStatus;
         vm.requiredIcsCode = requiredIcsCode;
         vm.save = save;
@@ -69,9 +72,24 @@
             for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
                 vm.cp.certificationEvents[i].statusDateObject = new Date(vm.cp.certificationEvents[i].eventDate);
             }
+            if (vm.cp.meaningfulUseUserHistory && vm.cp.meaningfulUseUserHistory.length > 0) {
+                vm.cp.meaningfulUseUserHistory = vm.cp.meaningfulUseUserHistory.map(muu => {
+                    muu.muuDateObject = new Date(muu.muuDate);
+                    return muu;
+                });
+            } else {
+                vm.cp.meaningfulUseUserHistory = [];
+            }
 
             vm.attachModel();
             loadFamily();
+        }
+
+        function addPreviousMuu () {
+            vm.cp.meaningfulUseUserHistory.push({
+                muuDateObject: new Date(),
+                muuCount: 0,
+            });
         }
 
         function addPreviousStatus () {
@@ -139,6 +157,15 @@
             return false;
         }
 
+        function matchesPreviousMuuDate (muu) {
+            var orderedMuu = $filter('orderBy')(vm.cp.meaningfulUseUserHistory, 'muuDateObject');
+            var muuLoc = orderedMuu.indexOf(muu);
+            if (muuLoc > 0) {
+                return ($filter('date')(muu.muuDateObject, 'mediumDate', 'UTC') === $filter('date')(orderedMuu[muuLoc - 1].muuDateObject, 'mediumDate', 'UTC'));
+            }
+            return false;
+        }
+
         function matchesPreviousStatus (event) {
             var orderedStatus = $filter('orderBy')(vm.cp.certificationEvents,'statusDateObject');
             var statusLoc = orderedStatus.indexOf(event);
@@ -174,6 +201,12 @@
             });
         }
 
+        function removePreviousMuu (muuDateObject) {
+            vm.cp.meaningfulUseUserHistory = vm.cp.meaningfulUseUserHistory.filter(muu => {
+                return muu.muuDateObject.getTime() !== muuDateObject.getTime();
+            });
+        }
+
         function requiredIcsCode () {
             var code = vm.cp.ics.parents
                 .map(function (item) { return parseInt(item.chplProductNumber.split('.')[6], 10); })
@@ -185,6 +218,12 @@
         function save () {
             for (var i = 0; i < vm.cp.certificationEvents.length; i++) {
                 vm.cp.certificationEvents[i].eventDate = vm.cp.certificationEvents[i].statusDateObject.getTime();
+            }
+            if (vm.cp.meaningfulUseUserHistory && vm.cp.meaningfulUseUserHistory.length > 0) {
+                vm.cp.meaningfulUseUserHistory = vm.cp.meaningfulUseUserHistory.map(item => {
+                    item.muuDate = item.muuDateObject.getTime();
+                    return item;
+                });
             }
             if (vm.cp.chplProductNumber.length > 12) {
                 vm.cp.chplProductNumber =

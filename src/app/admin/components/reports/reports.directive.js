@@ -470,6 +470,13 @@
                             }
                         }
                     }
+                    if (data[i].originalData.meaningfulUseUserHistory) {
+                        var meaningfulUseUserHistoryKeys = [{key: 'muuCount', display: 'Count of users'}, {key: 'muuDate', display: 'Effective Date'}];
+                        var meaningfulUseUserHistory = compareArray(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory, meaningfulUseUserHistoryKeys, 'id');
+                        for (j = 0; j < meaningfulUseUserHistory.length; j++) {
+                            activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory[j].changes.join('') + '</ul>');
+                        }
+                    }
                     if (data[i].originalData.testingLabs) {
                         var testingLabsKeys = [];
                         var testingLabs = compareArray(data[i].originalData.testingLabs, data[i].newData.testingLabs, testingLabsKeys, 'testingLabName');

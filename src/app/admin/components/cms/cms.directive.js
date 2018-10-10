@@ -22,7 +22,7 @@
         var vm = this;
 
         vm.getDownload = getDownload;
-        vm.setMeaningfulUseUsersAccurateAsOfDate = setMeaningfulUseUsersAccurateAsOfDate;
+        vm.setAccurateDate = setAccurateDate;
 
         ////////////////////////////////////////////////////////////////////
 
@@ -31,11 +31,6 @@
             vm.isOncStaff = authService.isOncStaff();
             vm.isChplAdmin = authService.isChplAdmin();
             vm.muuAccurateAsOfDateObject = new Date();
-            networkService.getMeaningfulUseUsersAccurateAsOfDate()
-                .then(function (data) {
-                    vm.muuAccurateAsOf = data.accurateAsOfDate;
-                    vm.muuAccurateAsOfDateObject = new Date(vm.muuAccurateAsOf);
-                });
 
             vm.uploader = new FileUploader({
                 url: API + '/certified_products/meaningful_use_users/upload',
@@ -101,12 +96,10 @@
                 });
         }
 
-        function setMeaningfulUseUsersAccurateAsOfDate () {
-            networkService.setMeaningfulUseUsersAccurateAsOfDate({accurateAsOfDate: vm.muuAccurateAsOfDateObject.getTime()})
-                .then(function (data) {
-                    vm.muuAccurateAsOf = data.accurateAsOfDate;
-                    vm.muuAccurateAsOfDateObject = new Date(vm.muuAccurateAsOf);
-                });
+        function setAccurateDate (item) {
+            vm.uploader.url += '?accurate_as_of=' + vm.muuAccurateAsOfDateObject.getTime();
+            item.url += '?accurate_as_of=' + vm.muuAccurateAsOfDateObject.getTime();
+            item.upload();
         }
     }
 })();

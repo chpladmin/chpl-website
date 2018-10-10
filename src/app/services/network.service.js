@@ -61,7 +61,6 @@
             getJobs: getJobs,
             getIcsFamily: getIcsFamily,
             getListingCountStatistics: getListingCountStatistics,
-            getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
             getNonconformityStatisticsCount: getNonconformityStatisticsCount,
             getScheduleTriggers: getScheduleTriggers,
             getScheduleJobs: getScheduleJobs,
@@ -124,7 +123,6 @@
             revokeApi: revokeApi,
             revokeRole: revokeRole,
             search: search,
-            setMeaningfulUseUsersAccurateAsOfDate: setMeaningfulUseUsersAccurateAsOfDate,
             splitProduct: splitProduct,
             undeleteACB: undeleteACB,
             undeleteATL: undeleteATL,
@@ -342,7 +340,7 @@
                 return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
             case 'decertifiedProducts':
             case 'inactiveCertificates':
-                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
+                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
             case 'sed':
                 return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
             case 'transparencyAttestations':
@@ -403,10 +401,6 @@
 
         function getListingCountStatistics () {
             return apiGET('/statistics/listing_count');
-        }
-
-        function getMeaningfulUseUsersAccurateAsOfDate () {
-            return apiGET('/meaningful_use/accurate_as_of');
         }
 
         function getNonconformityStatisticsCount () {
@@ -688,10 +682,6 @@
 
         function search (queryObj) {
             return apiPOST('/search', queryObj);
-        }
-
-        function setMeaningfulUseUsersAccurateAsOfDate (date) {
-            return apiPOST('/meaningful_use/accurate_as_of', date);
         }
 
         function splitProduct (productObject) {
