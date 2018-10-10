@@ -33,7 +33,7 @@
             vm.muuAccurateAsOfDateObject = new Date();
 
             vm.uploader = new FileUploader({
-                url: API + '/certified_products/meaningful_use_users/upload',
+                url: API + '/meaningful_use/upload',
                 removeAfterUpload: true,
                 headers: {
                     Authorization: 'Bearer ' + authService.getToken(),
