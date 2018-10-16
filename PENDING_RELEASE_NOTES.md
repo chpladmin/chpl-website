@@ -7,5 +7,6 @@ _Date TBD_
 * Add Developer Status to search results page, when Developer is not "Active"
 * Add Last Used Date and Delete Warning Sent Date to the API Key Management page
 * Modified how the session timeout works to always log the user out and display the login component when appropriate
+* Updated the collection pages to refresh data automatically on a timer 
 
 ---
