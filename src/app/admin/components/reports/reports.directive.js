@@ -496,7 +496,7 @@
                     }
                     if (activity.details.length === 0) {
                         delete activity.details;
-                    } else if (!statusChange || (statusChange && activity.details.length > 1)) {
+                    } else if (!statusChange || statusChange.length === 0 || (statusChange && activity.details.length > 1)) {
                         activity.csvDetails = activity.details.join('\n');
                         output.other.push(activity);
                     }

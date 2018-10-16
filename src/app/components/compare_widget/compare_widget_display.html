@@ -9,7 +9,7 @@
     </li>
   </ul>
   <div ng-if="widget.products && widget.products.length > 0">
-    <a href ng-click="compare()" type="button" class="btn btn-ai btn-sm btn-block" ng-disabled="widget.products.length === 1">Compare products</a>{{ queryUrl() }}
-    <a href ng-click="clearProducts()" type="button" class="btn btn-ai btn-sm btn-block">Remove all products</a>
+    <button ng-click="compare()" class="btn btn-ai btn-sm btn-block" ng-disabled="widget.products.length === 1">Compare products</button>
+    <button ng-click="clearProducts()" class="btn btn-ai btn-sm btn-block">Remove all products</button>
   </div>
 </div>

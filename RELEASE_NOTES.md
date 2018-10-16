@@ -1,5 +1,16 @@
 # Release Notes
 
+## Version 10.4.0
+_8 October 2018_
+
+### New Features
+* Add [AngularJS directive](https://github.com/ghostbar/angular-zxcvbn) to display a password strength meter based on a port of [zxcvbn](https://github.com/dropbox/zxcvbn)
+* Add Developer Status to search results page, when Developer is not "Active"
+* Add Last Used Date and Delete Warning Sent Date to the API Key Management page
+* Modified how the session timeout works to always log the user out and display the login component when appropriate
+
+---
+
 ## Version 10.3.0
 _24 September 2018_
 
