@@ -798,7 +798,7 @@
             const curr = angular.copy(c).sort((a, b) => a.muuDate - b.muuDate);
             let i = 0,
                 j = 0;
-            while (i <= prev.length && j <= curr.length) {
+            while (i <= prev.length && j <= curr.length && (i !== prev.length && j !== curr.length)) {
                 if (i === prev.length) {
                     while (j < curr.length) {
                         ret.push('<li>Added MUU Count of ' + curr[j].muuCount + ' on ' + $filter('date')(curr[j].muuDate, 'mediumDate', 'UTC') + '</li>');
