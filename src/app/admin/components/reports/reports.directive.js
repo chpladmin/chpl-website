@@ -799,15 +799,17 @@
             let i = 0,
                 j = 0;
             while (i <= prev.length && j <= curr.length && (i !== prev.length && j !== curr.length)) {
-                if (i === prev.length) {
-                    while (j < curr.length) {
-                        ret.push('<li>Added MUU Count of ' + curr[j].muuCount + ' on ' + $filter('date')(curr[j].muuDate, 'mediumDate', 'UTC') + '</li>');
-                        j++;
-                    }
-                } else if (j === curr.length) {
-                    while (i < prev.length) {
-                        ret.push('<li>Removed MUU Count of ' + prev[i].muuCount + ' from ' + $filter('date')(prev[i].muuDate, 'mediumDate', 'UTC') + '</li>');
-                        i++;
+                if (i === prev.length || j === curr.length) {
+                    if (i === prev.length) {
+                        while (j < curr.length) {
+                            ret.push('<li>Added MUU Count of ' + curr[j].muuCount + ' on ' + $filter('date')(curr[j].muuDate, 'mediumDate', 'UTC') + '</li>');
+                            j++;
+                        }
+                    } else if (j === curr.length) {
+                        while (i < prev.length) {
+                            ret.push('<li>Removed MUU Count of ' + prev[i].muuCount + ' from ' + $filter('date')(prev[i].muuDate, 'mediumDate', 'UTC') + '</li>');
+                            i++;
+                        }
                     }
                 } else if (prev[i].muuDate === curr[j].muuDate) {
                     if (prev[i].muuCount !== curr[j].muuCount) {
