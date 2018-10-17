@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Collections', function () {
-        var $interval, $log, $q, el, CACHE_REFRESH_TIMEOUT, Mock, networkService, scope, vm;
+        var $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, el, networkService, scope, vm;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.collections', function ($provide) {
