@@ -792,37 +792,38 @@
             return ret;
         }
 
-        function _compareMuuHistory (p, c) {
+        function _compareMuuHistory (previous, current) {
             const ret = [];
-            const prev = angular.copy(p).sort((a, b) => a.muuDate - b.muuDate);
-            const curr = angular.copy(c).sort((a, b) => a.muuDate - b.muuDate);
-            let i = 0,
-                j = 0;
-            while (i <= prev.length && j <= curr.length && (i !== prev.length && j !== curr.length)) {
-                if (i === prev.length || j === curr.length) {
-                    if (i === prev.length) {
-                        while (j < curr.length) {
-                            ret.push('<li>Added MUU Count of ' + curr[j].muuCount + ' on ' + $filter('date')(curr[j].muuDate, 'mediumDate', 'UTC') + '</li>');
-                            j++;
+            const prev = angular.copy(previous).sort((a, b) => a.muuDate - b.muuDate);
+            const curr = angular.copy(current).sort((a, b) => a.muuDate - b.muuDate);
+            let p = 0;
+            let c = 0;
+
+            while (p <= prev.length && c <= curr.length && (p !== prev.length || c !== curr.length)) {
+                if (p === prev.length || c === curr.length) {
+                    if (p === prev.length) {
+                        while (c < curr.length) {
+                            ret.push('<li>Added MUU Count of ' + curr[c].muuCount + ' on ' + $filter('date')(curr[c].muuDate, 'mediumDate', 'UTC') + '</li>');
+                            c++;
                         }
-                    } else if (j === curr.length) {
-                        while (i < prev.length) {
-                            ret.push('<li>Removed MUU Count of ' + prev[i].muuCount + ' from ' + $filter('date')(prev[i].muuDate, 'mediumDate', 'UTC') + '</li>');
-                            i++;
+                    } else if (c === curr.length) {
+                        while (p < prev.length) {
+                            ret.push('<li>Removed MUU Count of ' + prev[p].muuCount + ' from ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
+                            p++;
                         }
                     }
-                } else if (prev[i].muuDate === curr[j].muuDate) {
-                    if (prev[i].muuCount !== curr[j].muuCount) {
-                        ret.push('<li>MUU Count changed from ' + prev[i].muuCount + ' to ' + curr[j].muuCount + ' on ' + $filter('date')(prev[i].muuDate, 'mediumDate', 'UTC') + '</li>');
+                } else if (prev[p].muuDate === curr[c].muuDate) {
+                    if (prev[p].muuCount !== curr[c].muuCount) {
+                        ret.push('<li>MUU Count changed from ' + prev[p].muuCount + ' to ' + curr[c].muuCount + ' on ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
                     }
-                    i++;
-                    j++;
-                } else if (prev[i].muuDate < curr[j].muuDate) {
-                    ret.push('<li>Removed MUU Count of ' + prev[i].muuCount + ' from ' + $filter('date')(prev[i].muuDate, 'mediumDate', 'UTC') + '</li>');
-                    i++;
-                } else if (prev[i].muuDate > curr[j].muuDate) {
-                    ret.push('<li>Added MUU Count of ' + curr[j].muuCount + ' on ' + $filter('date')(curr[j].muuDate, 'mediumDate', 'UTC') + '</li>');
-                    j++;
+                    p++;
+                    c++;
+                } else if (prev[p].muuDate < curr[c].muuDate) {
+                    ret.push('<li>Removed MUU Count of ' + prev[p].muuCount + ' from ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
+                    p++;
+                } else if (prev[p].muuDate > curr[c].muuDate) {
+                    ret.push('<li>Added MUU Count of ' + curr[c].muuCount + ' on ' + $filter('date')(curr[c].muuDate, 'mediumDate', 'UTC') + '</li>');
+                    c++;
                 }
             }
             return ret;
