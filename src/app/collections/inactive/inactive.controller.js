@@ -5,10 +5,8 @@
         .controller('InactiveCertificatesController', InactiveCertificatesController);
 
     /** @ngInject */
-    function InactiveCertificatesController (networkService) {
+    function InactiveCertificatesController () {
         var vm = this;
-
-        vm.getMeaningfulUseUsersAccurateAsOfDate = getMeaningfulUseUsersAccurateAsOfDate;
 
         activate();
 
@@ -22,6 +20,7 @@
                 { predicate: 'version', display: 'Version', sortType: 'single' },
                 { predicate: 'decertificationDate', display: 'Inactive As Of', sortType: 'single', isDate: true },
                 { predicate: 'numMeaningfulUse', display: '# of Known Users', sortType: 'single', nullDisplay: 'Unknown' },
+                { predicate: 'numMeaningfulUseDate', display: 'Last updated date', sortType: 'single', isDate: true, nullDisplay: 'Unknown' },
                 { predicate: 'acb', display: 'ONC-ACB', sortType: 'single' },
                 { predicate: 'chplProductNumber', display: 'CHPL ID', sortType: 'single', sortDefault: true, isLink: true },
             ];
@@ -41,15 +40,6 @@
                     { value: 'Withdrawn by Developer', selected: true },
                 ],
             };
-
-            vm.getMeaningfulUseUsersAccurateAsOfDate();
-        }
-
-        function getMeaningfulUseUsersAccurateAsOfDate () {
-            networkService.getMeaningfulUseUsersAccurateAsOfDate()
-                .then(function (response) {
-                    vm.muuAccurateAsOf = response.accurateAsOfDate;
-                });
         }
     }
 })();

@@ -441,5 +441,16 @@
                 expect(util.passwordTitle(4)).toBe('Excellent');
             });
         });
+
+        describe('when dealing with muu', () => {
+            it('should know what the most current value is', () => {
+                const meaningfulUseUserHistory = [
+                    { id: 1, muuCount: 4, muuDate: 100},
+                    { id: 3, muuCount: 23, muuDate: 300},
+                    { id: 2, muuCount: 2, muuDate: 200},
+                ];
+                expect(util.muuCount(angular.copy(meaningfulUseUserHistory))).toEqual(meaningfulUseUserHistory[1]);
+            });
+        });
     });
 })();

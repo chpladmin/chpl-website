@@ -15,6 +15,7 @@
             extendSelect: extendSelect,
             findModel: findModel,
             makeCsv: makeCsv,
+            muuCount: muuCount,
             passwordClass: passwordClass,
             passwordTitle: passwordTitle,
             sortCert: sortCert,
@@ -127,10 +128,8 @@
 
         function certificationStatus (listing, options) {
             if (listing.certificationEvents && listing.certificationEvents.length > 0) {
-                if (options) {
-                    if (options.editing) {
-                        return $filter('orderBy')(listing.certificationEvents.map(function (event) { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
-                    }
+                if (options && options.editing) {
+                    return $filter('orderBy')(listing.certificationEvents.map(function (event) { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
                 }
                 return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
             }
@@ -164,6 +163,10 @@
                 type: 'application/csv',
             });
             FileSaver.saveAs(blob, data.name);
+        }
+
+        function muuCount (muuHistory) {
+            return muuHistory.sort((a, b) => b.muuDate - a.muuDate)[0];
         }
 
         function passwordClass (strength) {
