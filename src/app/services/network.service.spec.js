@@ -573,12 +573,12 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate/).respond(200, {data: 'response'});
             networkService.getCollection('decertifiedProducts').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/certified_products\?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate/).respond(200, {data: 'response'});
             networkService.getCollection('inactiveCertificates').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -699,14 +699,6 @@
         it('should getListingCountStatistics', function () {
             $httpBackend.expectGET(/statistics\/listing_count/).respond(200, {data: 'response'});
             networkService.getListingCountStatistics().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getMeaningfulUseUsersAccurateAsOfDate', function () {
-            $httpBackend.expectGET(/meaningful_use\/accurate_as_of/).respond(200, {data: 'response'});
-            networkService.getMeaningfulUseUsersAccurateAsOfDate().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1275,14 +1267,6 @@
         it('should search', function () {
             $httpBackend.expectPOST(/search/).respond(200, {data: 'response'});
             networkService.search('payload').then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should setMeaningfulUseUsersAccurateAsOfDate', function () {
-            $httpBackend.expectPOST(/meaningful_use\/accurate_as_of/).respond(200, {data: 'response'});
-            networkService.setMeaningfulUseUsersAccurateAsOfDate('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

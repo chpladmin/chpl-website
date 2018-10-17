@@ -70,6 +70,7 @@
             }
             if (statusIndex !== -1) {
                 _interpretCertificationStatusChanges(vm.activity[statusIndex]);
+                _interpretMuuHistory(vm.activity[statusIndex]);
             }
         }
 
@@ -152,6 +153,22 @@
                     }
                     return e;
                 }));
+        }
+
+        function _interpretMuuHistory (activity) {
+            vm.activity = vm.activity.concat(
+                activity.newData.meaningfulUseUserHistory
+                    .sort((a, b) => a.muuDate - b.muuDate)
+                    .map((item, idx, arr) => {
+                        if (idx > 0) {
+                            item.activityDate = parseInt(item.muuDate, 10);
+                            item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
+                                           + ' to ' + item.muuCount + ' on ' + $filter('date')(item.muuDate, 'mediumDate')];
+                        }
+                        return item;
+                    })
+                    .filter((item, idx) => idx > 0)
+            );
         }
 
         function _interpretCqms (prev, curr, activity) {
