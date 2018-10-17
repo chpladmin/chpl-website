@@ -31,7 +31,7 @@
     }
 
     /** @ngInject */
-    function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, RELOAD_TIMEOUT, collectionsService, networkService, CACHE_REFRESH_TIMEOUT) {
+    function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
         var vm = this;
 
         vm.hasResults = hasResults;
