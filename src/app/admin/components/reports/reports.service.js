@@ -5,47 +5,85 @@ export class ReportService {
         this.$log = $log;
     }
 
-    compareMuuHistory (previous, current) {
+    /**
+     * Compare two arrays.
+     * previous & current are arrays of objects
+     * options is an object containing functions
+     *   required functions:
+     *      sort - function (a, b) : return -1, 0, or 1 for whether a is <, =, or > b
+     *      write - function (o) : return string of user friendly name of object o
+     *   optional functions:
+     *      compare - f (a, b) : return true iff a !== b and should be considered as a change
+     *      change - f (p, c) : return string of user friendly description of change from p to c
+     * Returns array of changes between the arrays
+     */
+    compareArrays (previous, current, options) {
         if (!Array.isArray(previous) || !Array.isArray(current)) {
             return [];
         }
         const ret = [];
-        const prev = angular.copy(previous).sort((a, b) => a.muuDate - b.muuDate);
-        const curr = angular.copy(current).sort((a, b) => a.muuDate - b.muuDate);
+        const prev = angular.copy(previous).sort(options.sort);
+        const curr = angular.copy(current).sort(options.sort);
         let p = 0;
         let c = 0;
 
-        while (p <= prev.length && c <= curr.length && (p !== prev.length || c !== curr.length)) {
-            this.$log.info(p, c);
-            if (p === prev.length || c === curr.length) {
-                if (p === prev.length) {
-                    while (c < curr.length) {
-                        this.$log.info('c', c);
-                        ret.push('<li>Added MUU Count of ' + curr[c].muuCount + ' on ' + this.$filter('date')(curr[c].muuDate, 'mediumDate', 'UTC') + '</li>');
-                        c++;
-                    }
-                } else if (c === curr.length) {
-                    while (p < prev.length) {
-                        this.$log.info('p', p);
-                        ret.push('<li>Removed MUU Count of ' + prev[p].muuCount + ' from ' + this.$filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
-                        p++;
-                    }
-                }
-            } else if (prev[p].muuDate === curr[c].muuDate) {
-                if (prev[p].muuCount !== curr[c].muuCount) {
-                    ret.push('<li>MUU Count changed from ' + prev[p].muuCount + ' to ' + curr[c].muuCount + ' on ' + this.$filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
+        this.$log.debug(Object.keys(options));
+        while (p < prev.length && c < curr.length) {
+            switch (options.sort(prev[p], curr[c])) {
+            case -1:
+                ret.push('<li>Removed ' + options.write(prev[p]) + '</li>');
+                p++;
+                break;
+            case 1:
+                ret.push('<li>Added ' + options.write(curr[c]) + '</li>');
+                c++;
+                break;
+            case 0:
+                this.$log.debug(options.compare, options.compare(p, c));
+                if (options.compare && options.compare(p, c)) {
+                    ret.push('<li>' + options.change(p, c) + '</li>');
                 }
                 p++;
                 c++;
-            } else if (prev[p].muuDate < curr[c].muuDate) {
-                ret.push('<li>Removed MUU Count of ' + prev[p].muuCount + ' from ' + this.$filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
+                break;
+            default:
                 p++;
-            } else if (prev[p].muuDate > curr[c].muuDate) {
-                ret.push('<li>Added MUU Count of ' + curr[c].muuCount + ' on ' + this.$filter('date')(curr[c].muuDate, 'mediumDate', 'UTC') + '</li>');
                 c++;
             }
         }
+        while (c < curr.length) {
+            ret.push('<li>Added ' + options.write(curr[c]) + '</li>');
+            c++;
+        }
+        while (p < prev.length) {
+            ret.push('<li>Removed ' + options.write(prev[p]) + '</li>');
+            p++;
+        }
+
         return ret;
+    }
+
+    compareMuuHistory (previous, current) {
+        return this.compareArrays(previous, current, {
+            sort: (p, c) => p.muuDate - c.muuDate,
+            write: m => 'MUU Count of ' + m.muuCount + ' on ' + this.$filter('date')(m.muuDate, 'mediumDate', 'UTC'),
+            compare: (p, c) => p.muuCount !== c.muuCount,
+            change: (p, c) => 'MUU Count changed from ' + p.muuCount + ' to ' + c.muuCount + ' on ' + this.$filter('date')(p.muuDate, 'mediumDate', 'UTC'),
+        });
+    }
+
+    compareQmsStandards (previous, current) {
+        return this.compareArrays(previous, current, {
+            sort: (p, c) => {
+                return p.qmsStandardName < c.qmsStandardName ? -1 :
+                    p.qmsStandardName > c.qmsStandardName ? 1 :
+                    p.qmsModification < c.qmsModification ? -1 :
+                    p.qmsModification > c.qmsModification ? 1 :
+                    p.applicableCriteria < c.applicableCriteria ? -1 :
+                    p.applicableCriteria > c.applicableCriteria ? 1 : 0;
+            },
+            write: q => 'QMS Standard "' + q.qmsStandardName + '" with modification "' + q.qmsModification + '" applicable to criteria: "' + q.applicableCriteria + '"',
+        });
     }
 }
 
