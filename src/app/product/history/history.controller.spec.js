@@ -104,10 +104,6 @@ import './history.mock';
                 expect(vm.activity[6].change[0]).toEqual('CHPL Product Number changed from 15.07.07.1447.BE02.01.00.1.160815 to 15.07.07.1447.BE02.01.01.1.160815');
             });
 
-            xit('should know when the MUU number changed', () => {
-                expect(vm.activity[8].change[0]).toEqual('Estimated number of Meaningful Use Users changed from 4 to 6 on Dec 31, 1969');
-            });
-
             describe('when dealing with certification events', function () {
                 beforeEach(function () {
                     vm.activity = [];
@@ -130,6 +126,26 @@ import './history.mock';
                     vm._interpretCertificationStatusChanges(mock.activity[6]);
                     expect(vm.activity.length).toBe(1);
                     expect(vm.activity[0].change).toEqual(['Certification Status became "Active"']);
+                });
+            });
+
+            describe('when dealing with MUU data', () => {
+                beforeEach(function () {
+                    vm.activity = [];
+                });
+
+                it('should know when the MUU number changed', () => {
+                    vm._interpretMuuHistory(mock.activity[7]);
+                    expect(vm.activity[0].change[0].substring(0, 64)).toEqual('Estimated number of Meaningful Use Users changed from 4 to 6 on ');
+                    expect(vm.activity[0].change[0].length).toBe(76);
+                });
+
+                it('should handle listings with no MUU history', () => {
+                    const activity = {
+                        newData: {},
+                    };
+                    vm._interpretMuuHistory(activity);
+                    expect(vm.activity).toEqual([]);
                 });
             });
         });
