@@ -35,6 +35,7 @@
 
         // Exposing helper functions for testing purposes
         vm._interpretCertificationStatusChanges = _interpretCertificationStatusChanges;
+        vm._interpretMuuHistory = _interpretMuuHistory;
 
         function _interpretActivity () {
             var activity, curr, prev, statusIndex;
@@ -156,19 +157,21 @@
         }
 
         function _interpretMuuHistory (activity) {
-            vm.activity = vm.activity.concat(
-                activity.newData.meaningfulUseUserHistory
-                    .sort((a, b) => a.muuDate - b.muuDate)
-                    .map((item, idx, arr) => {
-                        if (idx > 0) {
-                            item.activityDate = parseInt(item.muuDate, 10);
-                            item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
-                                           + ' to ' + item.muuCount + ' on ' + $filter('date')(item.muuDate, 'mediumDate')];
-                        }
-                        return item;
-                    })
-                    .filter((item, idx) => idx > 0)
-            );
+            if (activity.newData.meaningfulUseUserHistory && activity.newData.meaningfulUseUserHistory.length > 0) {
+                vm.activity = vm.activity.concat(
+                    activity.newData.meaningfulUseUserHistory
+                        .sort((a, b) => a.muuDate - b.muuDate)
+                        .map((item, idx, arr) => {
+                            if (idx > 0) {
+                                item.activityDate = parseInt(item.muuDate, 10);
+                                item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
+                                               + ' to ' + item.muuCount + ' on ' + $filter('date')(item.muuDate, 'mediumDate')];
+                            }
+                            return item;
+                        })
+                        .filter((item, idx) => idx > 0)
+                );
+            }
         }
 
         function _interpretCqms (prev, curr, activity) {
