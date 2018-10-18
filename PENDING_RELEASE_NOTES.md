@@ -4,7 +4,8 @@ _Date TBD_
 
 ### New Features
 * Enable comparison of all products in CMS widget
-* Allow edit / display of Listing specific MUU numbers
+* Allow edit / display of Listing specific MUU numbers and history
+* Updated the collection pages to refresh data automatically on a timer 
 
 ### Bugs Fixed
 * Display 'Other Certified Product Activity' when only one thing has been changed.
