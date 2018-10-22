@@ -470,6 +470,12 @@
                             }
                         }
                     }
+                    if (data[i].originalData.meaningfulUseUserHistory) {
+                        var meaningfulUseUserHistory = _compareMuuHistory(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory);
+                        if (meaningfulUseUserHistory.length > 0) {
+                            activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
+                        }
+                    }
                     if (data[i].originalData.testingLabs) {
                         var testingLabsKeys = [];
                         var testingLabs = compareArray(data[i].originalData.testingLabs, data[i].newData.testingLabs, testingLabsKeys, 'testingLabName');
@@ -496,7 +502,7 @@
                     }
                     if (activity.details.length === 0) {
                         delete activity.details;
-                    } else if (!statusChange || (statusChange && activity.details.length > 1)) {
+                    } else if (!statusChange || statusChange.length === 0 || (statusChange && activity.details.length > 1)) {
                         activity.csvDetails = activity.details.join('\n');
                         output.other.push(activity);
                     }
@@ -782,6 +788,43 @@
                 }
                 ret.push(item);
                 c += 1;
+            }
+            return ret;
+        }
+
+        function _compareMuuHistory (previous, current) {
+            const ret = [];
+            const prev = angular.copy(previous).sort((a, b) => a.muuDate - b.muuDate);
+            const curr = angular.copy(current).sort((a, b) => a.muuDate - b.muuDate);
+            let p = 0;
+            let c = 0;
+
+            while (p <= prev.length && c <= curr.length && (p !== prev.length || c !== curr.length)) {
+                if (p === prev.length || c === curr.length) {
+                    if (p === prev.length) {
+                        while (c < curr.length) {
+                            ret.push('<li>Added MUU Count of ' + curr[c].muuCount + ' on ' + $filter('date')(curr[c].muuDate, 'mediumDate', 'UTC') + '</li>');
+                            c++;
+                        }
+                    } else if (c === curr.length) {
+                        while (p < prev.length) {
+                            ret.push('<li>Removed MUU Count of ' + prev[p].muuCount + ' from ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
+                            p++;
+                        }
+                    }
+                } else if (prev[p].muuDate === curr[c].muuDate) {
+                    if (prev[p].muuCount !== curr[c].muuCount) {
+                        ret.push('<li>MUU Count changed from ' + prev[p].muuCount + ' to ' + curr[c].muuCount + ' on ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
+                    }
+                    p++;
+                    c++;
+                } else if (prev[p].muuDate < curr[c].muuDate) {
+                    ret.push('<li>Removed MUU Count of ' + prev[p].muuCount + ' from ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
+                    p++;
+                } else if (prev[p].muuDate > curr[c].muuDate) {
+                    ret.push('<li>Added MUU Count of ' + curr[c].muuCount + ' on ' + $filter('date')(curr[c].muuDate, 'mediumDate', 'UTC') + '</li>');
+                    c++;
+                }
             }
             return ret;
         }

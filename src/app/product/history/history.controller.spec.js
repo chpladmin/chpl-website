@@ -128,6 +128,26 @@ import './history.mock';
                     expect(vm.activity[0].change).toEqual(['Certification Status became "Active"']);
                 });
             });
+
+            describe('when dealing with MUU data', () => {
+                beforeEach(function () {
+                    vm.activity = [];
+                });
+
+                xit('should know when the MUU number changed', () => {
+                    vm._interpretMuuHistory(mock.activity[7]);
+                    expect(vm.activity[0].change[0].substring(0, 64)).toEqual('Estimated number of Meaningful Use Users changed from 4 to 6 on ');
+                    expect(vm.activity[0].change[0].length).toBe(76);
+                });
+
+                it('should handle listings with no MUU history', () => {
+                    const activity = {
+                        newData: {},
+                    };
+                    vm._interpretMuuHistory(activity);
+                    expect(vm.activity).toEqual([]);
+                });
+            });
         });
     });
 })();

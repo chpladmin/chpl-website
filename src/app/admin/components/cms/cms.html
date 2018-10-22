@@ -39,7 +39,7 @@
               </div>
             </td>
             <td nowrap>
-              <button type="button" class="btn btn-ai-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+              <button type="button" class="btn btn-ai-success btn-xs" ng-click="vm.setAccurateDate(item)" ng-disabled="item.isReady || item.isUploading || item.isSuccess || !vm.muuAccurateAsOfDateObject">
                 <i class="fa fa-cloud-upload"></i> Upload
               </button>
               <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
@@ -52,10 +52,9 @@
           </tr>
         </tbody>
       </table>
-      <p>Meaningful Use Users information is accurate as of: {{ vm.muuAccurateAsOf | date : 'mediumDate' : 'UTC' }}</p>
       <form class="form form-horizontal" name="vm.muuForm">
         <div class="form-group">
-          <label for="new-muu-date" class="col-sm-4">Set new Meaningful Use Users Accurate As Of Date</label>
+          <label for="new-muu-date" class="col-sm-4">Enter the Accurate As of date for Meaningful Use Users associated with this upload</label>
           <div class="col-sm-4">
             <div class="input-group">
               <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.muuAccurateAsOfDateObject" is-open="vm.muuAccurateAsOfPicker" close-text="Close" id="new-muu-date" name="newMuuDate" ng-model-options="{ timezone: 'UTC' }" required>
@@ -64,9 +63,6 @@
               </span>
             </div>
             <div class="text-danger" ng-if="vm.muuForm.newMuuDate.$touched && vm.muuForm.newMuuDate.$error.date">Improper format (mm/dd/yyyy)</div>
-          </div>
-          <div class="col-sm-4">
-            <button class="btn btn-ai-success" ng-click="vm.setMeaningfulUseUsersAccurateAsOfDate()"><i class="fa fa-save"></i> Set Date</button>
           </div>
         </div>
       </form>

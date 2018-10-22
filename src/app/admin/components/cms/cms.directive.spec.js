@@ -12,8 +12,6 @@
             angular.mock.module('chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCmsDownload = jasmine.createSpy('getCmsDownload');
-                    $delegate.getMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('getMeaningfulUseUsersAccurateAsOfDate');
-                    $delegate.setMeaningfulUseUsersAccurateAsOfDate = jasmine.createSpy('setMeaningfulUseUsersAccurateAsOfDate');
                     return $delegate;
                 });
                 $provide.decorator('authService', function ($delegate) {
@@ -31,8 +29,6 @@
                 $log = _$log_;
                 networkService = _networkService_;
                 networkService.getCmsDownload.and.returnValue($q.when({}));
-                networkService.getMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.muuAccurateAsOfDate}));
-                networkService.setMeaningfulUseUsersAccurateAsOfDate.and.returnValue($q.when({accurateAsOfDate: mock.newMuuAccurateDate}));
                 authService = _authService_;
                 authService.isAcbAdmin.and.returnValue(true);
                 authService.isOncStaff.and.returnValue(true);
@@ -50,7 +46,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -60,18 +58,6 @@
 
         it('should have isolate scope object with instanciate members', function () {
             expect(vm).toEqual(jasmine.any(Object));
-        });
-
-        it('should know what the muu_accurate_as_of_date is', function () {
-            expect(vm.muuAccurateAsOf).toEqual(mock.muuAccurateAsOfDate);
-        });
-
-        it('should be able to set muu_accurate_as_of', function () {
-            vm.muuAccurateAsOfDateObject = mock.newMuuAccurateDate;
-            vm.setMeaningfulUseUsersAccurateAsOfDate();
-            el.isolateScope().$digest();
-            expect(networkService.setMeaningfulUseUsersAccurateAsOfDate).toHaveBeenCalledWith({accurateAsOfDate: mock.newMuuAccurateDate.getTime()});
-            expect(vm.muuAccurateAsOf).toEqual(mock.newMuuAccurateDate);
         });
     });
 })();

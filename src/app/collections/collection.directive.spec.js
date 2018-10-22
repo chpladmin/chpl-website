@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Collections', function () {
-        var $log, $q, el, networkService, scope, vm;
+        var $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, el, networkService, scope, vm;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.collections', function ($provide) {
@@ -13,13 +13,16 @@
                 });
             });
 
-            inject(function ($compile, $controller, _$log_, _$q_, $rootScope, _networkService_) {
+            inject(function ($compile, $controller, _$interval_, _$log_, _$q_, $rootScope, _CACHE_REFRESH_TIMEOUT_, _Mock_, _networkService_) {
+                CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_
+                Mock = _Mock_;
+                $interval = _$interval_;
                 $log = _$log_;
                 $q = _$q_;
                 networkService = _networkService_;
-                networkService.getCollection.and.returnValue($q.when({results: []}));
+                networkService.getCollection.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
 
-                el = angular.element('<ai-collection collection-key="key" columns="columns" filters="filters" refine-model="refineModel"><ai-body-text>This is body text</ai-body-text><ai-title>Title</ai-title></ai-collection>');
+                el = angular.element('<ai-collection collection-key="apiDocumentation" columns="columns" filters="filters" refine-model="refineModel"><ai-body-text>This is body text</ai-body-text><ai-title>Title</ai-title></ai-collection>');
 
                 scope = $rootScope.$new();
                 scope.columns = [];
@@ -59,6 +62,35 @@
                     };
                     expect(vm.isCategoryChanged()).toBe(true);
                 });
+            });
+        });
+
+        describe('updating results data in the background', function () {
+            it('should refresh the list on a timer', function () {
+                expect(networkService.getCollection.calls.count()).toBe(1);
+                $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
+                expect(networkService.getCollection.calls.count()).toBe(2);
+                $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
+                expect(networkService.getCollection.calls.count()).toBe(3);
+            });
+
+            it('should be able to stop the refresh interval', function () {
+                expect(vm.stopCacheRefreshPromise).toBeDefined();
+                expect(vm.stopCacheRefresh).toBeDefined();
+                vm.stopCacheRefresh();
+                expect(vm.stopCacheRefreshPromise).not.toBeDefined();
+            });
+
+            it('should integrate results on the timer', function () {
+                vm.collectionKey = 'apiDocumentation';
+                vm.loadResults();
+                var initialCount = vm.allCps.length;
+                var newResults = angular.copy(vm.allCps);
+                newResults.push(angular.copy(newResults[0]));
+                expect(vm.allCps.length).toBe(initialCount);
+                networkService.getCollection.and.returnValue($q.when({'results': newResults}));
+                $interval.flush(CACHE_REFRESH_TIMEOUT * 1000);
+                expect(vm.allCps.length).toBe(initialCount + 1);
             });
         });
     });
