@@ -10,7 +10,7 @@ export class ReportService {
      * previous & current are arrays of objects
      * options is an object containing functions
      *   required functions:
-     *      sort - function (a, b) : return -1, 0, or 1 for whether a is <, =, or > b
+     *      sort - function (a, b) : return negative number, 0, or positive number for whether a is <, =, or > b, respectively
      *      write - function (o) : return string of user friendly name of object o
      *   optional functions:
      *      compare - f (a, b) : return true iff a !== b and should be considered as a change
@@ -27,26 +27,22 @@ export class ReportService {
         let p = 0;
         let c = 0;
 
-        this.$log.debug(Object.keys(options));
         while (p < prev.length && c < curr.length) {
-            switch (options.sort(prev[p], curr[c])) {
-            case -1:
+            const sort = options.sort(prev[p], curr[c]);
+            if (sort < 0) {
                 ret.push('<li>Removed ' + options.write(prev[p]) + '</li>');
                 p++;
-                break;
-            case 1:
+            } else if (sort > 0) {
                 ret.push('<li>Added ' + options.write(curr[c]) + '</li>');
                 c++;
-                break;
-            case 0:
-                this.$log.debug(options.compare, options.compare(p, c));
-                if (options.compare && options.compare(p, c)) {
-                    ret.push('<li>' + options.change(p, c) + '</li>');
+            } else if (sort === 0) {
+                if (typeof options.compare === 'function' && options.compare(prev[p], curr[c])) {
+                    ret.push('<li>' + options.change(prev[p], curr[c]) + '</li>');
                 }
                 p++;
                 c++;
-                break;
-            default:
+            } else {
+                this.$log.debug('what?', prev[p], curr[c], sort);
                 p++;
                 c++;
             }
@@ -63,27 +59,64 @@ export class ReportService {
         return ret;
     }
 
+    compareAdditionalSoftware (previous, current) {
+        const options = {
+            sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+            write: s => 'Relied Upon Software "' + s.name + '"',
+            compare: (p, c) => p.version !== c.version || p.grouping !== c.grouping || p.certifiedProductNumber !== c.certifiedProductNumber || p.justification !== c.justification,
+            change: (p, c) => {
+                let ret = 'Updated Relied Upon Software "' + p.name + '":<ul>';
+                if (p.version !== c.version) {
+                    ret += '<li>Version changed from "' + p.version + '" to "' + c.version + '"</li>';
+                }
+                if (p.grouping !== c.grouping) {
+                    ret += '<li>Grouping changed from "' + p.grouping + '" to "' + c.grouping + '"</li>';
+                }
+                if (p.certifiedProductNumber !== c.certifiedProductNumber) {
+                    ret += '<li>CHPL Product Number changed from "' + p.certifiedProductNumber + '" to "' + c.certifiedProductNumber + '"</li>';
+                }
+                if (p.justification !== c.justification) {
+                    ret += '<li>Justification changed from "' + p.justification + '" to "' + c.justification + '"</li>';
+                }
+                ret += '</ul>';
+                return ret;
+            },
+        };
+        return this.compareArrays(previous, current, options);
+    }
+
     compareMuuHistory (previous, current) {
-        return this.compareArrays(previous, current, {
+        const options = {
             sort: (p, c) => p.muuDate - c.muuDate,
             write: m => 'MUU Count of ' + m.muuCount + ' on ' + this.$filter('date')(m.muuDate, 'mediumDate', 'UTC'),
             compare: (p, c) => p.muuCount !== c.muuCount,
             change: (p, c) => 'MUU Count changed from ' + p.muuCount + ' to ' + c.muuCount + ' on ' + this.$filter('date')(p.muuDate, 'mediumDate', 'UTC'),
-        });
+        };
+        return this.compareArrays(previous, current, options);
+    }
+
+    compareTargetedUsers (previous, current) {
+        const options = {
+            sort: (p, c) => p.targetedUserName < c.targetedUserName ? -1 : p.targetedUserName > c.targetedUserName ? 1 : 0,
+            write: t => 'Targeted User "' + t.targetedUserName + '"',
+        };
+        return this.compareArrays(previous, current, options);
     }
 
     compareQmsStandards (previous, current) {
-        return this.compareArrays(previous, current, {
-            sort: (p, c) => {
-                return p.qmsStandardName < c.qmsStandardName ? -1 :
-                    p.qmsStandardName > c.qmsStandardName ? 1 :
-                    p.qmsModification < c.qmsModification ? -1 :
-                    p.qmsModification > c.qmsModification ? 1 :
-                    p.applicableCriteria < c.applicableCriteria ? -1 :
-                    p.applicableCriteria > c.applicableCriteria ? 1 : 0;
-            },
+        const options = {
+            sort: (p, c) => p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : p.qmsModification < c.qmsModification ? -1 : p.qmsModification > c.qmsModification ? 1 : p.applicableCriteria < c.applicableCriteria ? -1 : p.applicableCriteria > c.applicableCriteria ? 1 : 0,
             write: q => 'QMS Standard "' + q.qmsStandardName + '" with modification "' + q.qmsModification + '" applicable to criteria: "' + q.applicableCriteria + '"',
-        });
+        };
+        return this.compareArrays(previous, current, options);
+    }
+
+    compareTestFunctionality (previous, current) {
+        const options = {
+            sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+            write: f => 'Test Functionality "' + f.name + '"',
+        };
+        return this.compareArrays(previous, current, options);
     }
 }
 
