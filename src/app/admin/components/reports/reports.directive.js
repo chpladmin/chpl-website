@@ -27,7 +27,7 @@
         });
 
     /** @ngInject */
-    function ReportController ($filter, $log, $uibModal, authService, networkService, utilService) {
+    function ReportController ($filter, $log, $uibModal, ReportService, authService, networkService, utilService) {
         var vm = this;
 
         vm.clearApiKeyFilter = clearApiKeyFilter;
@@ -471,7 +471,7 @@
                         }
                     }
                     if (data[i].originalData.meaningfulUseUserHistory) {
-                        var meaningfulUseUserHistory = _compareMuuHistory(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory);
+                        var meaningfulUseUserHistory = ReportService.compare(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory, 'meaningfulUseUserHistory');
                         if (meaningfulUseUserHistory.length > 0) {
                             activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
                         }
@@ -483,10 +483,9 @@
                             activity.details.push('Testing Lab "' + testingLabs[j].name + '" changes<ul>' + testingLabs[j].changes.join('') + '</ul>');
                         }
                     }
-                    var qmsStandardsKeys = [{key: 'qmsModification', display: 'QMS Modification'}, {key: 'applicableCriteria', display: 'Applicable Criteria'}];
-                    var qmsStandards = compareArray(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, qmsStandardsKeys, 'qmsStandardName');
-                    for (j = 0; j < qmsStandards.length; j++) {
-                        activity.details.push('QMS Standard "' + qmsStandards[j].name + '" changes<ul>' + qmsStandards[j].changes.join('') + '</ul>');
+                    var qmsStandards = ReportService.compare(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, 'qmsStandards');
+                    if (qmsStandards.length > 0) {
+                        activity.details.push('QMS Standards changes<ul>' + qmsStandards.join('') + '</ul>');
                     }
                     if (data[i].originalData.sed &&
                         data[i].newData.sed) {
@@ -495,10 +494,9 @@
                             activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
                         }
                     }
-                    var targetedUsersKeys = [];
-                    var targetedUsers = compareArray(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, targetedUsersKeys, 'targetedUserName');
-                    for (j = 0; j < targetedUsers.length; j++) {
-                        activity.details.push('Targeted User "' + targetedUsers[j].name + '" changes<ul>' + targetedUsers[j].changes.join('') + '</ul>');
+                    var targetedUsers = ReportService.compare(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, 'targetedUsers');
+                    if (targetedUsers.length > 0) {
+                        activity.details.push('Targeted Users changes:<ul>' + targetedUsers.join('') + '</ul>');
                     }
                     if (activity.details.length === 0) {
                         delete activity.details;
@@ -645,24 +643,17 @@
                     }
                     obj.changes.push('</ul></li>');
                 }
-                var addlSwKeys = [
-                    {key: 'version', display: 'Version'},
-                    {key: 'grouping', display: 'Grouping'},
-                    {key: 'certifiedProductNumber', display: 'CHPL Product Number'},
-                    {key: 'justification', display: 'Justification'},
-                ];
-                var addlSw = compareArray(prev[i].additionalSoftware, curr[i].additionalSoftware, addlSwKeys, 'name');
-                for (j = 0; j < addlSw.length; j++) {
-                    obj.changes.push('<li>Relied Upon Software "' + addlSw[j].name + '" changes<ul>' + addlSw[j].changes.join('') + '</ul></li>');
+                var addlSw = ReportService.compare(prev[i].additionalSoftware, curr[i].additionalSoftware, 'additionalSoftware');
+                if (addlSw.length > 0) {
+                    obj.changes.push('<li>Relied Upon Software changes<ul>' + addlSw.join('') + '</li>');
                 }
                 var testChanges = _compareTestStuff(prev[i], curr[i]);
                 if (testChanges) {
                     obj.changes = obj.changes.concat(testChanges);
                 }
-                var testFunctionalityKeys = [];
-                var testFunctionality = compareArray(prev[i].testFunctionality, curr[i].testFunctionality, testFunctionalityKeys, 'name');
-                for (j = 0; j < testFunctionality.length; j++) {
-                    obj.changes.push('<li>Test Functionality Number "' + testFunctionality[j].name + '" changes<ul>' + testFunctionality[j].changes.join('') + '</ul></li>');
+                var testFunctionality = ReportService.compare(prev[i].testFunctionality, curr[i].testFunctionality, 'testFunctionality');
+                if (testFunctionality.length > 0) {
+                    obj.changes.push('<li>Test Functionality changes<ul>' + testFunctionality.join('') + '</li>');
                 }
                 var testToolsUsedKeys = [{key: 'testToolVersion', display: 'Test Tool Version'}];
                 var testToolsUsed = compareArray(prev[i].testToolsUsed, curr[i].testToolsUsed, testToolsUsedKeys, 'testToolName');
@@ -788,43 +779,6 @@
                 }
                 ret.push(item);
                 c += 1;
-            }
-            return ret;
-        }
-
-        function _compareMuuHistory (previous, current) {
-            const ret = [];
-            const prev = angular.copy(previous).sort((a, b) => a.muuDate - b.muuDate);
-            const curr = angular.copy(current).sort((a, b) => a.muuDate - b.muuDate);
-            let p = 0;
-            let c = 0;
-
-            while (p <= prev.length && c <= curr.length && (p !== prev.length || c !== curr.length)) {
-                if (p === prev.length || c === curr.length) {
-                    if (p === prev.length) {
-                        while (c < curr.length) {
-                            ret.push('<li>Added MUU Count of ' + curr[c].muuCount + ' on ' + $filter('date')(curr[c].muuDate, 'mediumDate', 'UTC') + '</li>');
-                            c++;
-                        }
-                    } else if (c === curr.length) {
-                        while (p < prev.length) {
-                            ret.push('<li>Removed MUU Count of ' + prev[p].muuCount + ' from ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
-                            p++;
-                        }
-                    }
-                } else if (prev[p].muuDate === curr[c].muuDate) {
-                    if (prev[p].muuCount !== curr[c].muuCount) {
-                        ret.push('<li>MUU Count changed from ' + prev[p].muuCount + ' to ' + curr[c].muuCount + ' on ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
-                    }
-                    p++;
-                    c++;
-                } else if (prev[p].muuDate < curr[c].muuDate) {
-                    ret.push('<li>Removed MUU Count of ' + prev[p].muuCount + ' from ' + $filter('date')(prev[p].muuDate, 'mediumDate', 'UTC') + '</li>');
-                    p++;
-                } else if (prev[p].muuDate > curr[c].muuDate) {
-                    ret.push('<li>Added MUU Count of ' + curr[c].muuCount + ' on ' + $filter('date')(curr[c].muuDate, 'mediumDate', 'UTC') + '</li>');
-                    c++;
-                }
             }
             return ret;
         }
