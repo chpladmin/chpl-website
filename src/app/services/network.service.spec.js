@@ -213,22 +213,6 @@
             $httpBackend.flush();
         });
 
-        it('should deleteCap', function () {
-            $httpBackend.expectPOST(/corrective_action_plan\/1\/delete/).respond(200, {data: 'response'});
-            networkService.deleteCap(1).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should deleteDoc', function () {
-            $httpBackend.expectPOST(/corrective_action_plan\/documentation\/1\/delete/).respond(200, {data: 'response'});
-            networkService.deleteDoc(1).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should deleteRecipient', function () { // TODO; change API, this is the only endpoint that responds this way
             $httpBackend.expectPOST(/notifications\/recipients\/1\/delete/).respond(200, 'response');
             networkService.deleteRecipient({id: 1}).then(function (response) {
@@ -465,14 +449,6 @@
             $httpBackend.flush();
             $httpBackend.expectGET(/atls\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
             networkService.getAtls(false, true).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getCap', function () {
-            $httpBackend.expectGET(/corrective_action_plan\?certifiedProductId=payload/).respond(200, {data: 'response'});
-            networkService.getCap('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1113,14 +1089,6 @@
             $httpBackend.flush();
         });
 
-        it('should initiateCap', function () {
-            $httpBackend.expectPOST(/corrective_action_plan\/create/).respond(200, {data: 'response'});
-            networkService.initiateCap('payload').then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should initiateSurveillance', function () {
             $httpBackend.expectPOST(/surveillance\/create/).respond(200, {data: 'response'});
             networkService.initiateSurveillance('payload').then(function (response) {
@@ -1308,14 +1276,6 @@
         it('should updateCP', function () {
             $httpBackend.expectPOST(/certified_products\/update/).respond(200, {data: 'response'});
             networkService.updateCP('payload').then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should updateCap', function () {
-            $httpBackend.expectPOST(/corrective_action_plan\/update/).respond(200, {data: 'response'});
-            networkService.updateCap('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

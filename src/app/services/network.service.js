@@ -66,14 +66,6 @@ export class NetworkService {
         return this.apiPOST('/announcements/' + announcementId + '/delete', {});
     }
 
-    deleteCap (capId) {
-        return this.apiPOST('/corrective_action_plan/' + capId + '/delete', {});
-    }
-
-    deleteDoc (docId) {
-        return this.apiPOST('/corrective_action_plan/documentation/' + docId + '/delete', {});
-    }
-
     deleteRecipient (recipient) {
         return this.apiPOST('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
     }
@@ -166,10 +158,6 @@ export class NetworkService {
     getAtls (editable, deleted) {
         if (angular.isUndefined(deleted)) { deleted = false; }
         return this.apiGET('/atls?editable=' + editable + '&showDeleted=' + deleted);
-    }
-
-    getCap (certifiedProductId) {
-        return this.apiGET('/corrective_action_plan?certifiedProductId=' + certifiedProductId);
     }
 
     getCertBodies () {
@@ -467,10 +455,6 @@ export class NetworkService {
         return this.apiGET('/versions?productId=' + productId);
     }
 
-    initiateCap (cap) {
-        return this.apiPOST('/corrective_action_plan/create', cap);
-    }
-
     initiateSurveillance (surveillance) {
         return this.apiPOST('/surveillance/create', surveillance);
     }
@@ -565,10 +549,6 @@ export class NetworkService {
 
     updateCP (cpObject) {
         return this.apiPOST('/certified_products/update', cpObject);
-    }
-
-    updateCap (cap) {
-        return this.apiPOST('/corrective_action_plan/update', cap);
     }
 
     updateDeveloper (developerObject) {
