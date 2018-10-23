@@ -471,7 +471,7 @@
                         }
                     }
                     if (data[i].originalData.meaningfulUseUserHistory) {
-                        var meaningfulUseUserHistory = ReportService.compareMuuHistory(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory);
+                        var meaningfulUseUserHistory = ReportService.compare(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory, 'meaningfulUseUserHistory');
                         if (meaningfulUseUserHistory.length > 0) {
                             activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
                         }
@@ -483,7 +483,7 @@
                             activity.details.push('Testing Lab "' + testingLabs[j].name + '" changes<ul>' + testingLabs[j].changes.join('') + '</ul>');
                         }
                     }
-                    var qmsStandards = ReportService.compareQmsStandards(data[i].originalData.qmsStandards, data[i].newData.qmsStandards);
+                    var qmsStandards = ReportService.compare(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, 'qmsStandards');
                     if (qmsStandards.length > 0) {
                         activity.details.push('QMS Standards changes<ul>' + qmsStandards.join('') + '</ul>');
                     }
@@ -494,7 +494,7 @@
                             activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
                         }
                     }
-                    var targetedUsers = ReportService.compareTargetedUsers(data[i].originalData.targetedUsers, data[i].newData.targetedUsers);
+                    var targetedUsers = ReportService.compare(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, 'targetedUsers');
                     if (targetedUsers.length > 0) {
                         activity.details.push('Targeted Users changes:<ul>' + targetedUsers.join('') + '</ul>');
                     }
@@ -643,7 +643,7 @@
                     }
                     obj.changes.push('</ul></li>');
                 }
-                var addlSw = ReportService.compareAdditionalSoftware(prev[i].additionalSoftware, curr[i].additionalSoftware);
+                var addlSw = ReportService.compare(prev[i].additionalSoftware, curr[i].additionalSoftware, 'additionalSoftware');
                 if (addlSw.length > 0) {
                     obj.changes.push('<li>Relied Upon Software changes<ul>' + addlSw.join('') + '</li>');
                 }
@@ -651,7 +651,7 @@
                 if (testChanges) {
                     obj.changes = obj.changes.concat(testChanges);
                 }
-                var testFunctionality = ReportService.compareTestFunctionality(prev[i].testFunctionality, curr[i].testFunctionality);
+                var testFunctionality = ReportService.compare(prev[i].testFunctionality, curr[i].testFunctionality, 'testFunctionality');
                 if (testFunctionality.length > 0) {
                     obj.changes.push('<li>Test Functionality changes<ul>' + testFunctionality.join('') + '</li>');
                 }
