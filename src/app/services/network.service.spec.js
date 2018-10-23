@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Network service', function () {
+    fdescribe('the Network service', function () {
         var $httpBackend, $log, mock, networkService;
 
         mock = {};
