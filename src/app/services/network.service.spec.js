@@ -65,7 +65,7 @@
             $httpBackend.flush();
         });
 
-        it('should return a promise with the data if a POST responds with a failre', function () {
+        it('should return a promise with the data if a POST responds with a failure', function () {
             $httpBackend.expectPOST(/certified_products\/pending\/confirm/).respond(500, 'response');
             networkService.confirmPendingCp('payload').then(function (response) {
                 response.then(function (reject) {
@@ -93,13 +93,14 @@
         });
 
         it('should addRole', function () {
-            $httpBackend.expectPOST(/users\/grant_role/, 'payload').respond(200, {data: 'response'});
-            networkService.addRole('payload').then(function (response) {
+            $httpBackend.expectPOST(/users\/name\/roles\/role/).respond(200, {data: 'response'});
+            networkService.addRole({subjectName: 'name', role: 'role'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
 
+        // TODO: Deprecated
         it('should authorizeUser', function () {
             $httpBackend.expectPOST(/users\/authorize/, 'payload').respond(200, {data: 'response'});
             networkService.authorizeUser('payload').then(function (response) {
@@ -264,9 +265,9 @@
         });
 
         it('should deleteUser', function () {
-            $httpBackend.expectPOST(/users\/1\/delete/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/users\/1/).respond(200);
             networkService.deleteUser(1).then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1257,9 +1258,9 @@
         });
 
         it('should revokeRole', function () {
-            $httpBackend.expectPOST(/users\/revoke_role/).respond(200, {data: 'response'});
-            networkService.revokeRole('payload').then(function (response) {
-                expect(response.data).toEqual('response');
+            $httpBackend.expectDELETE(/users\/name\/roles\/role/).respond(200);
+            networkService.revokeRole({subjectName: 'name', role: 'role'}).then(function (response) {
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1344,6 +1345,7 @@
             $httpBackend.flush();
         });
 
+        // TODO: what productID to use on merge?
         it('should updateProduct', function () {
             $httpBackend.expectPOST(/products\/update/).respond(200, {data: 'response'});
             networkService.updateProduct('payload').then(function (response) {
@@ -1377,8 +1379,8 @@
         });
 
         it('should updateUser', function () {
-            $httpBackend.expectPOST(/users\/update/).respond(200, {data: 'response'});
-            networkService.updateUser('payload').then(function (response) {
+            $httpBackend.expectPUT(/users\/2/).respond(200, {data: 'response'});
+            networkService.updateUser({userId: 2}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

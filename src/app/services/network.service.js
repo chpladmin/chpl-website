@@ -7,7 +7,7 @@ export class NetworkService {
     }
 
     addRole (payload) {
-        return this.apiPOST('/users/grant_role', payload);
+        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
     authorizeUser (userAuthorization) {
@@ -93,7 +93,7 @@ export class NetworkService {
     }
 
     deleteUser (userId) {
-        return this.apiPOST('/users/' + userId + '/delete', {});
+        return this.apiDELETE('/users/' + userId);
     }
 
     getAcbActivity (activityRange) {
@@ -540,7 +540,7 @@ export class NetworkService {
     }
 
     revokeRole (payload) {
-        return this.apiPOST('/users/revoke_role', payload);
+        return this.apiDELETE('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
     search (queryObj) {
@@ -600,7 +600,7 @@ export class NetworkService {
     }
 
     updateUser (user) {
-        return this.apiPOST('/users/update', user);
+        return this.apiPUT('/users/' + user.userId, user);
     }
 
     updateVersion (versionObject) {
@@ -611,29 +611,23 @@ export class NetworkService {
 
     apiDELETE (endpoint) {
         return this.$http.delete(this.API + endpoint)
-            .then(function (response) {
-                return response;
-            }, function (response) {
-                return this.$q.reject(response);
-            });
+            .then(response => response, response => this.$q.reject(response));
     }
 
     apiGET (endpoint) {
         return this.$http.get(this.API + endpoint)
-            .then(function (response) {
+            .then(response => {
                 if (angular.isObject(response.data)) {
                     return response.data;
                 } else {
                     return this.$q.reject(response.data);
                 }
-            }, function (response) {
-                return this.$q.reject(response.data);
-            });
+            }, response => this.$q.reject(response.data));
     }
 
     apiPOST (endpoint, postObject, allowEmptyResponse) {
         return this.$http.post(this.API + endpoint, postObject)
-            .then(function (response) {
+            .then(response => {
                 if (angular.isObject(response.data)) {
                     return response.data;
                 } else {
@@ -643,14 +637,12 @@ export class NetworkService {
                         return this.$q.reject(response);
                     }
                 }
-            }, function (response) {
-                return this.$q.reject(response);
-            });
+            }, response => this.$q.reject(response));
     }
 
     apiPUT (endpoint, postObject, allowEmptyResponse) {
         return this.$http.put(this.API + endpoint, postObject)
-            .then(function (response) {
+            .then(response => {
                 if (angular.isObject(response.data)) {
                     return response.data;
                 } else {
@@ -660,9 +652,7 @@ export class NetworkService {
                         return this.$q.reject(response);
                     }
                 }
-            }, function (response) {
-                return this.$q.reject(response);
-            });
+            }, response => this.$q.reject(response));
     }
 
     getActivity (call, activityRange) {
