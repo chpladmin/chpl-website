@@ -576,7 +576,7 @@ export class NetworkService {
     }
 
     updateFuzzyType (fuzzyType) {
-        return this.apiPOST('/data/fuzzy_choices/update', fuzzyType);
+        return this.apiPUT('/data/fuzzy_choices/' + fuzzyType.id, fuzzyType);
     }
 
     updateJob (job) {

@@ -1330,8 +1330,8 @@
         });
 
         it('should updateFuzzyType', function () {
-            $httpBackend.expectPOST(/data\/fuzzy_choices\/update/).respond(200, {data: 'response'});
-            networkService.updateFuzzyType('payload').then(function (response) {
+            $httpBackend.expectPUT(/data\/fuzzy_choices\/3/).respond(200, {data: 'response'});
+            networkService.updateFuzzyType({id: 3}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
