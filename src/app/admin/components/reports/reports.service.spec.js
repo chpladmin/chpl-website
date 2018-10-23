@@ -45,194 +45,146 @@
             }
         });
 
+        describe('when comparing objects', () => {
+            it('should handle nulls', () => {
+                expect(service.compare(null, null, 'meaningfulUseUserHistory')).toEqual([]);
+            });
+
+            it('should handle empty arrays', () => {
+                expect(service.compare([], [], 'meaningfulUseUserHistory')).toEqual([]);
+            });
+
+            it('should handle undefined', () => {
+                expect(service.compare([], undefined, 'meaningfulUseUserHistory')).toEqual([]);
+            });
+
+            it('should handle non-arrays', () => {
+                expect(service.compare(8, {id: 'wrong'}, 'meaningfulUseUserHistory')).toEqual([]);
+            });
+
+            it('should handle unknown objects with a default display', () => {
+                const before = [];
+                const after = [{name: 'a name', value: 3}];
+                expect(service.compare(before, after, 'unknown')).toEqual(['<li>Added <pre>{"name":"a name","value":3}</pre></li>']);
+            });
+        });
+
         describe('when comparing MUU objects', () => {
             it('should report when an item was added to an empty array', () => {
                 const before = [];
                 const after = angular.copy(before).concat({ muuCount: 10, muuDate: 1439799743364 });
-                expect(service.compareMuuHistory(before, after)).toEqual(['<li>Added MUU Count of 10 on Aug 17, 2015</li>']);
+                expect(service.compare(before, after, 'meaningfulUseUserHistory')).toEqual(['<li>Added MUU Count of 10 on Aug 17, 2015</li>']);
             });
 
             it('should report when an item was added to a populated array', () => {
                 const before = [{ muuCount: 0, muuDate: 1539799743364 }];
                 const after = angular.copy(before).concat({ muuCount: 10, muuDate: 1439799743364 });
-                expect(service.compareMuuHistory(before, after)).toEqual(['<li>Added MUU Count of 10 on Aug 17, 2015</li>']);
+                expect(service.compare(before, after, 'meaningfulUseUserHistory')).toEqual(['<li>Added MUU Count of 10 on Aug 17, 2015</li>']);
             });
 
             it('should report when an item was removed making an empty array', () => {
                 const before = [{ muuCount: 10, muuDate: 1439799743364 }];
                 const after = [];
-                expect(service.compareMuuHistory(before, after)).toEqual(['<li>Removed MUU Count of 10 on Aug 17, 2015</li>']);
+                expect(service.compare(before, after, 'meaningfulUseUserHistory')).toEqual(['<li>Removed MUU Count of 10 on Aug 17, 2015</li>']);
             });
 
             it('should report when an item was removed, leaving a populated array', () => {
                 const before = [{ muuCount: 0, muuDate: 1539799743364 }, { muuCount: 10, muuDate: 1439799743364 }];
                 const after = angular.copy(before).slice(1);
-                expect(service.compareMuuHistory(before, after)).toEqual(['<li>Removed MUU Count of 0 on Oct 17, 2018</li>']);
+                expect(service.compare(before, after, 'meaningfulUseUserHistory')).toEqual(['<li>Removed MUU Count of 0 on Oct 17, 2018</li>']);
             });
 
             it('should report when a value was changed', () => {
                 const before = [{ muuCount: 10, muuDate: 1439799743364 }];
                 const after = angular.copy(before);
                 after[0].muuCount = 30;
-                expect(service.compareMuuHistory(before, after)).toEqual(['<li>MUU Count changed from 10 to 30 on Aug 17, 2015</li>']);
-            });
-
-            it('should handle nulls', () => {
-                expect(service.compareMuuHistory(null, null)).toEqual([]);
-            });
-
-            it('should handle empty arrays', () => {
-                expect(service.compareMuuHistory([], [])).toEqual([]);
-            });
-
-            it('should handle undefined', () => {
-                expect(service.compareMuuHistory([], undefined)).toEqual([]);
-            });
-
-            it('should handle non-arrays', () => {
-                expect(service.compareMuuHistory(8, {id: 'wrong'})).toEqual([]);
+                expect(service.compare(before, after, 'meaningfulUseUserHistory')).toEqual(['<li>MUU Count changed from 10 to 30 on Aug 17, 2015</li>']);
             });
         });
 
         describe('when comparing QMS standards', () => {
-            it('should handle nulls', () => {
-                expect(service.compareQmsStandards(null, null)).toEqual([]);
-            });
-
-            it('should handle empty arrays', () => {
-                expect(service.compareQmsStandards([], [])).toEqual([]);
-            });
-
-            it('should handle undefined', () => {
-                expect(service.compareQmsStandards([], undefined)).toEqual([]);
-            });
-
-            it('should handle non-arrays', () => {
-                expect(service.compareQmsStandards(8, {id: 'wrong'})).toEqual([]);
-            });
-
-            it('should report no changes if there aren\'t any', () => {
-                expect(service.compareQmsStandards(mock.qmsStandards, mock.qmsStandards)).toEqual([]);
-            });
-
             it('should report adds', () => {
                 const before = angular.copy(mock.qmsStandards);
                 const after = angular.copy(mock.qmsStandards).concat(angular.copy(mock.qmsStandards[0]));
                 after[after.length - 1].qmsModification = 'ISO 9001:8.745';
-                expect(service.compareQmsStandards(before, after)).toEqual(['<li>Added QMS Standard "Modified QMS/Mapped" with modification "ISO 9001:8.745" applicable to criteria: "All"</li>']);
+                expect(service.compare(before, after, 'qmsStandards')).toEqual(['<li>Added QMS Standard "Modified QMS/Mapped" with modification "ISO 9001:8.745" applicable to criteria: "All"</li>']);
             });
 
             it('should report adds to an empty array', () => {
                 const after = [].concat(angular.copy(mock.qmsStandards[0]));
-                expect(service.compareQmsStandards([], after)).toEqual(['<li>Added QMS Standard "Modified QMS/Mapped" with modification "ISO 9001:8.2.1 Communications with customers;Release notes are provided with each version release to all clients for all enhancements and bug fixes." applicable to criteria: "All"</li>']);
+                expect(service.compare([], after, 'qmsStandards')).toEqual(['<li>Added QMS Standard "Modified QMS/Mapped" with modification "ISO 9001:8.2.1 Communications with customers;Release notes are provided with each version release to all clients for all enhancements and bug fixes." applicable to criteria: "All"</li>']);
             });
 
             it('should report removals', () => {
                 const before = angular.copy(mock.qmsStandards);
                 const after = angular.copy(mock.qmsStandards).slice(1);
-                expect(service.compareQmsStandards(before, after)).toEqual(['<li>Removed QMS Standard "Modified QMS/Mapped" with modification "ISO 9001:8.2.1 Communications with customers;Release notes are provided with each version release to all clients for all enhancements and bug fixes." applicable to criteria: "All"</li>']);
+                expect(service.compare(before, after, 'qmsStandards')).toEqual(['<li>Removed QMS Standard "Modified QMS/Mapped" with modification "ISO 9001:8.2.1 Communications with customers;Release notes are provided with each version release to all clients for all enhancements and bug fixes." applicable to criteria: "All"</li>']);
             });
 
             it('should report removals to an empty array', () => {
                 const before = [].concat(angular.copy(mock.qmsStandards[0]));
-                expect(service.compareQmsStandards(before, [])).toEqual(['<li>Removed QMS Standard "Modified QMS/Mapped" with modification "ISO 9001:8.2.1 Communications with customers;Release notes are provided with each version release to all clients for all enhancements and bug fixes." applicable to criteria: "All"</li>']);
+                expect(service.compare(before, [], 'qmsStandards')).toEqual(['<li>Removed QMS Standard "Modified QMS/Mapped" with modification "ISO 9001:8.2.1 Communications with customers;Release notes are provided with each version release to all clients for all enhancements and bug fixes." applicable to criteria: "All"</li>']);
             });
         });
 
         describe('when comparing targeted users', () => {
-            it('should handle nulls', () => {
-                expect(service.compareTargetedUsers(null, null)).toEqual([]);
-            });
-
-            it('should handle empty arrays', () => {
-                expect(service.compareTargetedUsers([], [])).toEqual([]);
-            });
-
-            it('should handle undefined', () => {
-                expect(service.compareTargetedUsers([], undefined)).toEqual([]);
-            });
-
-            it('should handle non-arrays', () => {
-                expect(service.compareTargetedUsers(8, {id: 'wrong'})).toEqual([]);
-            });
-
             it('should report no changes if there aren\'t any', () => {
-                expect(service.compareTargetedUsers(mock.targetedUsers, mock.targetedUsers)).toEqual([]);
+                expect(service.compare(mock.targetedUsers, mock.targetedUsers, 'targetedUsers')).toEqual([]);
             });
 
             it('should report adds', () => {
                 const before = angular.copy(mock.targetedUsers);
                 const after = angular.copy(mock.targetedUsers).concat(angular.copy(mock.targetedUsers[0]));
                 after[after.length - 1].targetedUserName = 'Amphibians';
-                expect(service.compareTargetedUsers(before, after)).toEqual(['<li>Added Targeted User "Amphibians"</li>']);
+                expect(service.compare(before, after, 'targetedUsers')).toEqual(['<li>Added Targeted User "Amphibians"</li>']);
             });
 
             it('should report adds to an empty array', () => {
                 const after = [].concat(angular.copy(mock.targetedUsers[0]));
-                expect(service.compareTargetedUsers([], after)).toEqual(['<li>Added Targeted User "Ambulatory and InPatient"</li>']);
+                expect(service.compare([], after, 'targetedUsers')).toEqual(['<li>Added Targeted User "Ambulatory and InPatient"</li>']);
             });
 
             it('should report removals', () => {
                 const before = angular.copy(mock.targetedUsers);
                 const after = angular.copy(mock.targetedUsers).slice(1);
-                expect(service.compareTargetedUsers(before, after)).toEqual(['<li>Removed Targeted User "Ambulatory and InPatient"</li>']);
+                expect(service.compare(before, after, 'targetedUsers')).toEqual(['<li>Removed Targeted User "Ambulatory and InPatient"</li>']);
             });
 
             it('should report removals to an empty array', () => {
                 const before = [].concat(angular.copy(mock.targetedUsers[0]));
-                expect(service.compareTargetedUsers(before, [])).toEqual(['<li>Removed Targeted User "Ambulatory and InPatient"</li>']);
+                expect(service.compare(before, [], 'targetedUsers')).toEqual(['<li>Removed Targeted User "Ambulatory and InPatient"</li>']);
             });
         });
 
         describe('when comparing additional software', () => {
-            it('should handle nulls', () => {
-                expect(service.compareAdditionalSoftware(null, null)).toEqual([]);
-            });
-
-            it('should handle empty arrays', () => {
-                expect(service.compareAdditionalSoftware([], [])).toEqual([]);
-            });
-
-            it('should handle undefined', () => {
-                expect(service.compareAdditionalSoftware([], undefined)).toEqual([]);
-            });
-
-            it('should handle non-arrays', () => {
-                expect(service.compareAdditionalSoftware(8, {id: 'wrong'})).toEqual([]);
-            });
-
-            it('should report no changes if there aren\'t any', () => {
-                expect(service.compareAdditionalSoftware(mock.additionalSoftware, mock.additionalSoftware)).toEqual([]);
-            });
-
             it('should report adds', () => {
                 const before = angular.copy(mock.additionalSoftware);
                 const after = angular.copy(mock.additionalSoftware).concat(angular.copy(mock.additionalSoftware[0]));
                 after[after.length - 1].name = 'Microsoft Excel';
-                expect(service.compareAdditionalSoftware(before, after)).toEqual(['<li>Added Relied Upon Software "Microsoft Excel"</li>']);
+                expect(service.compare(before, after, 'additionalSoftware')).toEqual(['<li>Added Relied Upon Software "Microsoft Excel"</li>']);
             });
 
             it('should report adds to an empty array', () => {
                 const after = [].concat(angular.copy(mock.additionalSoftware[0]));
-                expect(service.compareAdditionalSoftware([], after)).toEqual(['<li>Added Relied Upon Software "Microsoft Word"</li>']);
+                expect(service.compare([], after, 'additionalSoftware')).toEqual(['<li>Added Relied Upon Software "Microsoft Word"</li>']);
             });
 
             it('should report removals', () => {
                 const before = angular.copy(mock.additionalSoftware);
                 const after = angular.copy(mock.additionalSoftware).slice(1);
-                expect(service.compareAdditionalSoftware(before, after)).toEqual(['<li>Removed Relied Upon Software "Microsoft Word"</li>']);
+                expect(service.compare(before, after, 'additionalSoftware')).toEqual(['<li>Removed Relied Upon Software "Microsoft Word"</li>']);
             });
 
             it('should report removals to an empty array', () => {
                 const before = [].concat(angular.copy(mock.additionalSoftware[0]));
-                expect(service.compareAdditionalSoftware(before, [])).toEqual(['<li>Removed Relied Upon Software "Microsoft Word"</li>']);
+                expect(service.compare(before, [], 'additionalSoftware')).toEqual(['<li>Removed Relied Upon Software "Microsoft Word"</li>']);
             });
 
             it('should report when a value was changed', () => {
                 const before = [].concat(angular.copy(mock.additionalSoftware[0]));
                 const after = angular.copy(before);
                 after[0].version = 'B';
-                expect(service.compareAdditionalSoftware(before, after)).toEqual(['<li>Updated Relied Upon Software "Microsoft Word":<ul><li>Version changed from "1" to "B"</li></ul></li>']);
+                expect(service.compare(before, after, 'additionalSoftware')).toEqual(['<li>Updated Relied Upon Software "Microsoft Word":<ul><li>Version changed from "1" to "B"</li></ul></li>']);
             });
 
             it('should report when a value was changed', () => {
@@ -241,52 +193,32 @@
                 after[0].grouping = 'G';
                 after[0].certifiedProductNumber = 'CHP-d9d9';
                 after[0].justification = 'A different Justification';
-                expect(service.compareAdditionalSoftware(before, after)).toEqual(['<li>Updated Relied Upon Software "Microsoft Word":<ul><li>Grouping changed from "A" to "G"</li><li>CHPL Product Number changed from "CHP-20202" to "CHP-d9d9"</li><li>Justification changed from "A reason" to "A different Justification"</li></ul></li>']);
+                expect(service.compare(before, after, 'additionalSoftware')).toEqual(['<li>Updated Relied Upon Software "Microsoft Word":<ul><li>Grouping changed from "A" to "G"</li><li>CHPL Product Number changed from "CHP-20202" to "CHP-d9d9"</li><li>Justification changed from "A reason" to "A different Justification"</li></ul></li>']);
             });
         });
 
         describe('when comparing test functionality', () => {
-            it('should handle nulls', () => {
-                expect(service.compareTestFunctionality(null, null)).toEqual([]);
-            });
-
-            it('should handle empty arrays', () => {
-                expect(service.compareTestFunctionality([], [])).toEqual([]);
-            });
-
-            it('should handle undefined', () => {
-                expect(service.compareTestFunctionality([], undefined)).toEqual([]);
-            });
-
-            it('should handle non-arrays', () => {
-                expect(service.compareTestFunctionality(8, {id: 'wrong'})).toEqual([]);
-            });
-
-            it('should report no changes if there aren\'t any', () => {
-                expect(service.compareTestFunctionality(mock.testFunctionality, mock.testFunctionality)).toEqual([]);
-            });
-
             it('should report adds', () => {
                 const before = angular.copy(mock.testFunctionality);
                 const after = angular.copy(mock.testFunctionality).concat(angular.copy(mock.testFunctionality[0]));
                 after[after.length - 1].name = 'Vets';
-                expect(service.compareTestFunctionality(before, after)).toEqual(['<li>Added Test Functionality "Vets"</li>']);
+                expect(service.compare(before, after, 'testFunctionality')).toEqual(['<li>Added Test Functionality "Vets"</li>']);
             });
 
             it('should report adds to an empty array', () => {
                 const after = [].concat(angular.copy(mock.testFunctionality[0]));
-                expect(service.compareTestFunctionality([], after)).toEqual(['<li>Added Test Functionality "Test 2"</li>']);
+                expect(service.compare([], after, 'testFunctionality')).toEqual(['<li>Added Test Functionality "Test 2"</li>']);
             });
 
             it('should report removals', () => {
                 const before = angular.copy(mock.testFunctionality);
                 const after = angular.copy(mock.testFunctionality).slice(1);
-                expect(service.compareTestFunctionality(before, after)).toEqual(['<li>Removed Test Functionality "Test 2"</li>']);
+                expect(service.compare(before, after, 'testFunctionality')).toEqual(['<li>Removed Test Functionality "Test 2"</li>']);
             });
 
             it('should report removals to an empty array', () => {
                 const before = [].concat(angular.copy(mock.testFunctionality[0]));
-                expect(service.compareTestFunctionality(before, [])).toEqual(['<li>Removed Test Functionality "Test 2"</li>']);
+                expect(service.compare(before, [], 'testFunctionality')).toEqual(['<li>Removed Test Functionality "Test 2"</li>']);
             });
         });
     });

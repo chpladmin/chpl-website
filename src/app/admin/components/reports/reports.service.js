@@ -42,7 +42,7 @@ export class ReportService {
                 p++;
                 c++;
             } else {
-                this.$log.debug('what?', prev[p], curr[c], sort);
+                this.$log.debug('Invalid sort', prev[p], curr[c], sort);
                 p++;
                 c++;
             }
@@ -59,64 +59,66 @@ export class ReportService {
         return ret;
     }
 
-    compareAdditionalSoftware (previous, current) {
-        const options = {
-            sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
-            write: s => 'Relied Upon Software "' + s.name + '"',
-            compare: (p, c) => p.version !== c.version || p.grouping !== c.grouping || p.certifiedProductNumber !== c.certifiedProductNumber || p.justification !== c.justification,
-            change: (p, c) => {
-                let ret = 'Updated Relied Upon Software "' + p.name + '":<ul>';
-                if (p.version !== c.version) {
-                    ret += '<li>Version changed from "' + p.version + '" to "' + c.version + '"</li>';
-                }
-                if (p.grouping !== c.grouping) {
-                    ret += '<li>Grouping changed from "' + p.grouping + '" to "' + c.grouping + '"</li>';
-                }
-                if (p.certifiedProductNumber !== c.certifiedProductNumber) {
-                    ret += '<li>CHPL Product Number changed from "' + p.certifiedProductNumber + '" to "' + c.certifiedProductNumber + '"</li>';
-                }
-                if (p.justification !== c.justification) {
-                    ret += '<li>Justification changed from "' + p.justification + '" to "' + c.justification + '"</li>';
-                }
-                ret += '</ul>';
-                return ret;
-            },
-        };
-        return this.compareArrays(previous, current, options);
+    compare (previous, current, key) {
+        return this.compareArrays(previous, current, this.getOptions(key));
     }
 
-    compareMuuHistory (previous, current) {
-        const options = {
-            sort: (p, c) => p.muuDate - c.muuDate,
-            write: m => 'MUU Count of ' + m.muuCount + ' on ' + this.$filter('date')(m.muuDate, 'mediumDate', 'UTC'),
-            compare: (p, c) => p.muuCount !== c.muuCount,
-            change: (p, c) => 'MUU Count changed from ' + p.muuCount + ' to ' + c.muuCount + ' on ' + this.$filter('date')(p.muuDate, 'mediumDate', 'UTC'),
-        };
-        return this.compareArrays(previous, current, options);
-    }
-
-    compareTargetedUsers (previous, current) {
-        const options = {
-            sort: (p, c) => p.targetedUserName < c.targetedUserName ? -1 : p.targetedUserName > c.targetedUserName ? 1 : 0,
-            write: t => 'Targeted User "' + t.targetedUserName + '"',
-        };
-        return this.compareArrays(previous, current, options);
-    }
-
-    compareQmsStandards (previous, current) {
-        const options = {
-            sort: (p, c) => p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : p.qmsModification < c.qmsModification ? -1 : p.qmsModification > c.qmsModification ? 1 : p.applicableCriteria < c.applicableCriteria ? -1 : p.applicableCriteria > c.applicableCriteria ? 1 : 0,
-            write: q => 'QMS Standard "' + q.qmsStandardName + '" with modification "' + q.qmsModification + '" applicable to criteria: "' + q.applicableCriteria + '"',
-        };
-        return this.compareArrays(previous, current, options);
-    }
-
-    compareTestFunctionality (previous, current) {
-        const options = {
-            sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
-            write: f => 'Test Functionality "' + f.name + '"',
-        };
-        return this.compareArrays(previous, current, options);
+    getOptions (key) {
+        switch (key) {
+        case 'additionalSoftware':
+            return {
+                sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+                write: s => 'Relied Upon Software "' + s.name + '"',
+                compare: (p, c) => p.version !== c.version || p.grouping !== c.grouping || p.certifiedProductNumber !== c.certifiedProductNumber || p.justification !== c.justification,
+                change: (p, c) => {
+                    let ret = 'Updated Relied Upon Software "' + p.name + '":<ul>';
+                    if (p.version !== c.version) {
+                        ret += '<li>Version changed from "' + p.version + '" to "' + c.version + '"</li>';
+                    }
+                    if (p.grouping !== c.grouping) {
+                        ret += '<li>Grouping changed from "' + p.grouping + '" to "' + c.grouping + '"</li>';
+                    }
+                    if (p.certifiedProductNumber !== c.certifiedProductNumber) {
+                        ret += '<li>CHPL Product Number changed from "' + p.certifiedProductNumber + '" to "' + c.certifiedProductNumber + '"</li>';
+                    }
+                    if (p.justification !== c.justification) {
+                        ret += '<li>Justification changed from "' + p.justification + '" to "' + c.justification + '"</li>';
+                    }
+                    ret += '</ul>';
+                    return ret;
+                },
+            };
+        case 'meaningfulUseUserHistory':
+            return {
+                sort: (p, c) => p.muuDate - c.muuDate,
+                write: m => 'MUU Count of ' + m.muuCount + ' on ' + this.$filter('date')(m.muuDate, 'mediumDate', 'UTC'),
+                compare: (p, c) => p.muuCount !== c.muuCount,
+                change: (p, c) => 'MUU Count changed from ' + p.muuCount + ' to ' + c.muuCount + ' on ' + this.$filter('date')(p.muuDate, 'mediumDate', 'UTC'),
+            };
+        case 'qmsStandards':
+            return {
+                sort: (p, c) => p.qmsStandardName < c.qmsStandardName ? -1 : p.qmsStandardName > c.qmsStandardName ? 1 : p.qmsModification < c.qmsModification ? -1 : p.qmsModification > c.qmsModification ? 1 : p.applicableCriteria < c.applicableCriteria ? -1 : p.applicableCriteria > c.applicableCriteria ? 1 : 0,
+                write: q => 'QMS Standard "' + q.qmsStandardName + '" with modification "' + q.qmsModification + '" applicable to criteria: "' + q.applicableCriteria + '"',
+            };
+        case 'targetedUsers':
+            return {
+                sort: (p, c) => p.targetedUserName < c.targetedUserName ? -1 : p.targetedUserName > c.targetedUserName ? 1 : 0,
+                write: t => 'Targeted User "' + t.targetedUserName + '"',
+            };
+        case 'testFunctionality':
+            return {
+                sort: (p, c) => p.name < c.name ? -1 : p.name > c.name ? 1 : 0,
+                write: f => 'Test Functionality "' + f.name + '"',
+            };
+        default:
+            return {
+                sort: (p, c) => {
+                    const key = Object.keys(p).filter((k, idx, arr) => typeof arr[k] === 'string').sort((a, b) => a < b ? -1 : a > b ? 1 : 0)[0];
+                    return p[key] < c[key] ? -1 : p[key] > c[key] ? 1 : 0;
+                },
+                write: o => '<pre>' + angular.toJson(o) + '</pre>',
+            };
+        }
     }
 }
 
