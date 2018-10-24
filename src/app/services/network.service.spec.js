@@ -1330,7 +1330,7 @@
         });
 
         it('should updateVersion', function () {
-            $httpBackend.expectPOST(/versions\/update/).respond(200, {data: 'response'});
+            $httpBackend.expectPUT(/versions/).respond(200, {data: 'response'});
             networkService.updateVersion('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });

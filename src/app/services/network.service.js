@@ -560,7 +560,7 @@ export class NetworkService {
     }
 
     updateVersion (versionObject) {
-        return this.apiPOST('/versions/update', versionObject);
+        return this.apiPUT('/versions', versionObject);
     }
 
     ////////////////////////////////////////////////////////////////////
