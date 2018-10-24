@@ -174,7 +174,7 @@
         });
 
         it('should createATL', function () {
-            $httpBackend.expectPOST(/atls\/create/).respond(200, {data: 'response'});
+            $httpBackend.expectPOST(/atls/).respond(200, {data: 'response'});
             networkService.createATL('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -214,9 +214,9 @@
         });
 
         it('should deleteATL', function () {
-            $httpBackend.expectPOST(/atls\/1\/delete/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/atls\/1/).respond(200);
             networkService.deleteATL(1).then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1154,8 +1154,8 @@
         });
 
         it('should modifyATL', function () {
-            $httpBackend.expectPOST(/atls\/update/).respond(200, {data: 'response'});
-            networkService.modifyATL('payload').then(function (response) {
+            $httpBackend.expectPUT(/atls\/id/).respond(200, {data: 'response'});
+            networkService.modifyATL({id: 'id'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1202,9 +1202,9 @@
         });
 
         it('should removeUserFromAtl', function () {
-            $httpBackend.expectPOST(/atls\/2\/remove_user\/1/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/atls\/2\/remove_user\/1/).respond(200);
             networkService.removeUserFromAtl(1, 2).then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1258,7 +1258,7 @@
         });
 
         it('should undeleteATL', function () {
-            $httpBackend.expectPOST(/atls\/1\/undelete/).respond(200, {data: 'response'});
+            $httpBackend.expectPUT(/atls\/1\/undelete/).respond(200, {data: 'response'});
             networkService.undeleteATL(1).then(function (response) {
                 expect(response.data).toEqual('response');
             });

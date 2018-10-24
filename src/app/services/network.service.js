@@ -35,7 +35,7 @@ export class NetworkService {
     }
 
     createATL (atl) {
-        return this.apiPOST('/atls/create', atl);
+        return this.apiPOST('/atls', atl);
     }
 
     createAnnouncement (announcement) {
@@ -55,7 +55,7 @@ export class NetworkService {
     }
 
     deleteATL (atlId) {
-        return this.apiPOST('/atls/' + atlId + '/delete', {});
+        return this.apiDELETE('/atls/' + atlId);
     }
 
     deleteAnnouncement (announcementId) {
@@ -472,7 +472,7 @@ export class NetworkService {
     }
 
     modifyATL (atl) {
-        return this.apiPOST('/atls/update', atl);
+        return this.apiPUT('/atls/' + atl.id, atl);
     }
 
     modifyAnnouncement (announcement) {
@@ -496,7 +496,7 @@ export class NetworkService {
     }
 
     removeUserFromAtl (userId, atlId) {
-        return this.apiPOST('/atls/' + atlId + '/remove_user/' + userId, {});
+        return this.apiDELETE('/atls/' + atlId + '/remove_user/' + userId);
     }
 
     resetPassword (userObj) {
@@ -524,7 +524,7 @@ export class NetworkService {
     }
 
     undeleteATL (atlId) {
-        return this.apiPOST('/atls/' + atlId + '/undelete', {});
+        return this.apiPUT('/atls/' + atlId + '/undelete');
     }
 
     updateCP (cpObject) {
