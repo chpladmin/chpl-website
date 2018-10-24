@@ -241,17 +241,17 @@
         });
 
         it('should deleteSurveillance', function () {
-            $httpBackend.expectPOST(/surveillance\/1\/delete/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/surveillance\/1/).respond(200);
             networkService.deleteSurveillance(1,'changeReason').then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
 
         it('should deleteSurveillanceDocument', function () {
-            $httpBackend.expectPOST(/surveillance\/1\/document\/3\/delete/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/surveillance\/1\/document\/3\/delete/).respond(200);
             networkService.deleteSurveillanceDocument(1, 3).then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1090,7 +1090,7 @@
         });
 
         it('should initiateSurveillance', function () {
-            $httpBackend.expectPOST(/surveillance\/create/).respond(200, {data: 'response'});
+            $httpBackend.expectPOST(/surveillance/).respond(200, {data: 'response'});
             networkService.initiateSurveillance('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -1138,9 +1138,9 @@
         });
 
         it('should massRejectPendingSurveillance', function () {
-            $httpBackend.expectPOST(/surveillance\/pending\/reject/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/surveillance\/pending\/reject/).respond(200);
             networkService.massRejectPendingSurveillance('payload').then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1186,9 +1186,9 @@
         });
 
         it('should rejectPendingSurveillance', function () {
-            $httpBackend.expectPOST(/surveillance\/pending\/1\/reject/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/surveillance\/pending\/1\/reject/).respond(200);
             networkService.rejectPendingSurveillance(1).then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1314,8 +1314,8 @@
         });
 
         it('should updateSurveillance', function () {
-            $httpBackend.expectPOST(/surveillance\/update/).respond(200, {data: 'response'});
-            networkService.updateSurveillance('payload').then(function (response) {
+            $httpBackend.expectPUT(/surveillance\/id/).respond(200, {data: 'response'});
+            networkService.updateSurveillance({id: 'id'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

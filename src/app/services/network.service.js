@@ -67,13 +67,13 @@ export class NetworkService {
     }
 
     deleteSurveillance (surveillanceId, reason) {
-        return this.apiPOST('/surveillance/' + surveillanceId + '/delete', {
+        return this.apiDELETE('/surveillance/' + surveillanceId, {
             reason: reason,
         });
     }
 
     deleteSurveillanceDocument (survId, docId) {
-        return this.apiPOST('/surveillance/' + survId + '/document/' + docId + '/delete', {});
+        return this.apiDELETE('/surveillance/' + survId + '/document/' + docId + '/delete');
     }
 
     deleteUser (userId) {
@@ -440,7 +440,7 @@ export class NetworkService {
     }
 
     initiateSurveillance (surveillance) {
-        return this.apiPOST('/surveillance/create', surveillance);
+        return this.apiPOST('/surveillance', surveillance);
     }
 
     inviteUser (invitationObject) {
@@ -464,7 +464,7 @@ export class NetworkService {
     }
 
     massRejectPendingSurveillance (ids) {
-        return this.apiPOST('/surveillance/pending/reject', {ids: ids});
+        return this.apiDELETE('/surveillance/pending/reject', {ids: ids});
     }
 
     modifyACB (acb) {
@@ -488,7 +488,7 @@ export class NetworkService {
     }
 
     rejectPendingSurveillance (survId) {
-        return this.apiPOST('/surveillance/pending/' + survId + '/reject', {});
+        return this.apiDELETE('/surveillance/pending/' + survId + '/reject');
     }
 
     removeUserFromAcb (userId, acbId) {
@@ -552,7 +552,7 @@ export class NetworkService {
     }
 
     updateSurveillance (surveillance) {
-        return this.apiPOST('/surveillance/update', surveillance);
+        return this.apiPUT('/surveillance/' + surveillance.id, surveillance);
     }
 
     updateUser (user) {
