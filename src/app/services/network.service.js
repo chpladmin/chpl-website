@@ -63,7 +63,7 @@ export class NetworkService {
     }
 
     deleteAnnouncement (announcementId) {
-        return this.apiPOST('/announcements/' + announcementId + '/delete', {});
+        return this.apiDELETE('/announcements/' + announcementId);
     }
 
     deleteRecipient (recipient) {
@@ -492,7 +492,7 @@ export class NetworkService {
     }
 
     modifyAnnouncement (announcement) {
-        return this.apiPOST('/announcements/update', announcement);
+        return this.apiPUT('/announcements/' + announcement.id, announcement);
     }
 
     registerApi (user) {
@@ -541,10 +541,6 @@ export class NetworkService {
 
     undeleteATL (atlId) {
         return this.apiPOST('/atls/' + atlId + '/undelete', {});
-    }
-
-    undeleteAnnouncement (announcementId) {
-        return this.apiPOST('/announcements/' + announcementId + '/undelete', {});
     }
 
     updateCP (cpObject) {
