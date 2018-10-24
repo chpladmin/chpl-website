@@ -544,7 +544,7 @@ export class NetworkService {
     }
 
     updateProduct (productObject) {
-        return this.apiPOST('/products/update', productObject);
+        return this.apiPUT('/products', productObject);
     }
 
     updateScheduleTrigger (trigger) {

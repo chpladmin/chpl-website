@@ -1297,9 +1297,8 @@
             $httpBackend.flush();
         });
 
-        // TODO: what productID to use on merge?
         it('should updateProduct', function () {
-            $httpBackend.expectPOST(/products\/update/).respond(200, {data: 'response'});
+            $httpBackend.expectPUT(/products/).respond(200, {data: 'response'});
             networkService.updateProduct('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
