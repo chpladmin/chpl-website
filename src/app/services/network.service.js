@@ -19,7 +19,7 @@ export class NetworkService {
     }
 
     confirmPendingCp (pendingCp) {
-        return this.apiPOST('/certified_products/pending/confirm', pendingCp);
+        return this.apiPOST('/certified_products/pending/' + pendingCp.id + '/confirm', pendingCp);
     }
 
     confirmPendingSurveillance (surveillance) {
@@ -476,7 +476,7 @@ export class NetworkService {
     }
 
     massRejectPendingListings (ids) {
-        return this.apiPOST('/certified_products/pending/reject', {ids: ids});
+        return this.apiDELETE('/certified_products/pending/reject', {ids: ids});
     }
 
     massRejectPendingSurveillance (ids) {
@@ -500,7 +500,7 @@ export class NetworkService {
     }
 
     rejectPendingCp (cpId) {
-        return this.apiPOST('/certified_products/pending/' + cpId + '/reject', {});
+        return this.apiDELETE('/certified_products/pending/' + cpId);
     }
 
     rejectPendingSurveillance (survId) {
@@ -544,7 +544,7 @@ export class NetworkService {
     }
 
     updateCP (cpObject) {
-        return this.apiPOST('/certified_products/update', cpObject);
+        return this.apiPOST('/certified_products/' + cpObject.id, cpObject);
     }
 
     updateDeveloper (developerObject) {

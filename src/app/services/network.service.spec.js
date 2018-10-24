@@ -54,8 +54,8 @@
         });
 
         it('should return a promise with the data if a POST doesn\'t return an object', function () {
-            $httpBackend.expectPOST(/certified_products\/pending\/confirm/).respond(200, 'response');
-            networkService.confirmPendingCp('payload').then(function (response) {
+            $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(200, 'response');
+            networkService.confirmPendingCp({id: 'id'}).then(function (response) {
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
@@ -66,8 +66,8 @@
         });
 
         it('should return a promise with the data if a POST responds with a failure', function () {
-            $httpBackend.expectPOST(/certified_products\/pending\/confirm/).respond(500, 'response');
-            networkService.confirmPendingCp('payload').then(function (response) {
+            $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(500, 'response');
+            networkService.confirmPendingCp({id: 'id'}).then(function (response) {
                 response.then(function (reject) {
                     expect(reject).toEqual('response');
                 });
@@ -118,8 +118,8 @@
         });
 
         it('should confirmPendingCp', function () {
-            $httpBackend.expectPOST(/certified_products\/pending\/confirm/).respond(200, {data: 'response'});
-            networkService.confirmPendingCp('payload').then(function (response) {
+            $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(200, {data: 'response'});
+            networkService.confirmPendingCp({id: 'id'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1130,9 +1130,9 @@
         });
 
         it('should massRejectPendingListings', function () {
-            $httpBackend.expectPOST(/certified_products\/pending\/reject/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/certified_products\/pending/).respond(200);
             networkService.massRejectPendingListings('payload').then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1178,9 +1178,9 @@
         });
 
         it('should rejectPendingCp', function () {
-            $httpBackend.expectPOST(/certified_products\/pending\/1\/reject/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/certified_products\/pending\/1/).respond(200);
             networkService.rejectPendingCp(1).then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1266,8 +1266,8 @@
         });
 
         it('should updateCP', function () {
-            $httpBackend.expectPOST(/certified_products\/update/).respond(200, {data: 'response'});
-            networkService.updateCP('payload').then(function (response) {
+            $httpBackend.expectPOST(/certified_products\/id/).respond(200, {data: 'response'});
+            networkService.updateCP({id: 'id'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
