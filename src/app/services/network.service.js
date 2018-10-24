@@ -31,7 +31,7 @@ export class NetworkService {
     }
 
     createACB (acb) {
-        return this.apiPOST('/acbs/create', acb);
+        return this.apiPOST('/acbs', acb);
     }
 
     createATL (atl) {
@@ -51,7 +51,7 @@ export class NetworkService {
     }
 
     deleteACB (acbId) {
-        return this.apiPOST('/acbs/' + acbId + '/delete', {});
+        return this.apiDELETE('/acbs/' + acbId);
     }
 
     deleteATL (atlId) {
@@ -468,7 +468,7 @@ export class NetworkService {
     }
 
     modifyACB (acb) {
-        return this.apiPOST('/acbs/update', acb);
+        return this.apiPUT('/acbs/' + acb.id, acb);
     }
 
     modifyATL (atl) {
@@ -492,7 +492,7 @@ export class NetworkService {
     }
 
     removeUserFromAcb (userId, acbId) {
-        return this.apiPOST('/acbs/' + acbId + '/remove_user/' + userId, {});
+        return this.apiDELETE('/acbs/' + acbId + '/remove_user/' + userId);
     }
 
     removeUserFromAtl (userId, atlId) {
@@ -520,7 +520,7 @@ export class NetworkService {
     }
 
     undeleteACB (acbId) {
-        return this.apiPOST('/acbs/' + acbId + '/undelete', {});
+        return this.apiPUT('/acbs/' + acbId + '/undelete');
     }
 
     undeleteATL (atlId) {

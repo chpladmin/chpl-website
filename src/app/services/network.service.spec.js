@@ -166,7 +166,7 @@
         });
 
         it('should createACB', function () {
-            $httpBackend.expectPOST(/acbs\/create/).respond(200, {data: 'response'});
+            $httpBackend.expectPOST(/acbs/).respond(200, {data: 'response'});
             networkService.createACB('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -206,9 +206,9 @@
         });
 
         it('should deleteACB', function () {
-            $httpBackend.expectPOST(/acbs\/1\/delete/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/acbs\/1/).respond(200);
             networkService.deleteACB(1).then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1146,8 +1146,8 @@
         });
 
         it('should modifyACB', function () {
-            $httpBackend.expectPOST(/acbs\/update/).respond(200, {data: 'response'});
-            networkService.modifyACB('payload').then(function (response) {
+            $httpBackend.expectPUT(/acbs\/id/).respond(200, {data: 'response'});
+            networkService.modifyACB({id: 'id'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1194,9 +1194,9 @@
         });
 
         it('should removeUserFromAcb', function () {
-            $httpBackend.expectPOST(/acbs\/2\/remove_user\/1/).respond(200, {data: 'response'});
+            $httpBackend.expectDELETE(/acbs\/2\/remove_user\/1/).respond(200);
             networkService.removeUserFromAcb(1, 2).then(function (response) {
-                expect(response.data).toEqual('response');
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });
@@ -1250,7 +1250,7 @@
         });
 
         it('should undeleteACB', function () {
-            $httpBackend.expectPOST(/acbs\/1\/undelete/).respond(200, {data: 'response'});
+            $httpBackend.expectPUT(/acbs\/1\/undelete/).respond(200, {data: 'response'});
             networkService.undeleteACB(1).then(function (response) {
                 expect(response.data).toEqual('response');
             });
