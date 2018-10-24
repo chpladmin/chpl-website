@@ -532,7 +532,7 @@ export class NetworkService {
     }
 
     updateDeveloper (developerObject) {
-        return this.apiPOST('/developers/update', developerObject);
+        return this.apiPUT('/developers', developerObject);
     }
 
     updateFuzzyType (fuzzyType) {

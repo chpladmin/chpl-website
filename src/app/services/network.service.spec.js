@@ -1274,7 +1274,7 @@
         });
 
         it('should updateDeveloper', function () {
-            $httpBackend.expectPOST(/developers\/update/).respond(200, {data: 'response'});
+            $httpBackend.expectPUT(/developers/).respond(200, {data: 'response'});
             networkService.updateDeveloper('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
