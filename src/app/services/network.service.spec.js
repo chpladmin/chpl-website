@@ -77,6 +77,30 @@
             $httpBackend.flush();
         });
 
+        it('should return a promise with the data if a PUT doesn\'t return an object', function () {
+            $httpBackend.expectPUT(/announcements\/id/).respond(200, 'response');
+            networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            }, function () {
+                //noop
+            });
+            $httpBackend.flush();
+        });
+
+        it('should return a promise with the data if a PUT responds with a failure', function () {
+            $httpBackend.expectPUT(/announcements\/id/).respond(500, 'response');
+            networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
+                response.then(function (reject) {
+                    expect(reject).toEqual('response');
+                });
+            }, function () {
+                //noop
+            });
+            $httpBackend.flush();
+        });
+
         it('should return a promise with the data if a DELETE responds with a failure', function () {
             $httpBackend.expectDELETE(/schedules\/triggers\/CacheStatusAgeTrigger\/something/).respond(500, 'response');
             networkService.deleteScheduleTrigger({
@@ -173,14 +197,6 @@
             $httpBackend.flush();
         });
 
-        it('should createRecipient', function () {
-            $httpBackend.expectPOST(/notifications\/recipients\/create/).respond(200, {data: 'response'});
-            networkService.createRecipient('payload').then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
         it('should createScheduleTrigger', function () {
             $httpBackend.expectPOST(/schedules\/triggers/).respond(200, {data: 'response'});
             networkService.createScheduleTrigger({email: 'something'}).then(function (response) {
@@ -209,14 +225,6 @@
             $httpBackend.expectDELETE(/announcements\/1/).respond(200);
             networkService.deleteAnnouncement(1).then(function (response) {
                 expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
-        it('should deleteRecipient', function () { // TODO; change API, this is the only endpoint that responds this way
-            $httpBackend.expectPOST(/notifications\/recipients\/1\/delete/).respond(200, 'response');
-            networkService.deleteRecipient({id: 1}).then(function (response) {
-                expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
         });
@@ -830,6 +838,14 @@
             $httpBackend.flush();
         });
 
+        it('should getScheduleJobs', function () {
+            $httpBackend.expectGET(/schedules\/jobs/).respond(200, {data: 'response'});
+            networkService.getScheduleJobs().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getSimpleProduct', function () {
             $httpBackend.expectGET(/products\/payload/).respond(200, {data: 'response'});
             networkService.getSimpleProduct('payload').then(function (response) {
@@ -849,22 +865,6 @@
         it('should getSedParticipantStatisticsCount', function () {
             $httpBackend.expectGET(/statistics\/sed_participant_count/).respond(200, {data: 'response'});
             networkService.getSedParticipantStatisticsCount().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getSubscriptionRecipients', function () {
-            $httpBackend.expectGET(/notifications\/recipients/).respond(200, {data: 'response'});
-            networkService.getSubscriptionRecipients().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should getSubscriptionReportTypes', function () {
-            $httpBackend.expectGET(/data\/notification_types/).respond(200, {data: 'response'});
-            networkService.getSubscriptionReportTypes().then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1301,14 +1301,6 @@
         it('should updateProduct', function () {
             $httpBackend.expectPOST(/products\/update/).respond(200, {data: 'response'});
             networkService.updateProduct('payload').then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should updateRecipient', function () {
-            $httpBackend.expectPOST(/notifications\/recipients\/1\/update/).respond(200, {data: 'response'});
-            networkService.updateRecipient({id: 1}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

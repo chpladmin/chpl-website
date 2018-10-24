@@ -46,10 +46,6 @@ export class NetworkService {
         return this.apiPOST('/users/create', contactDetails);
     }
 
-    createRecipient (recipient) {
-        return this.apiPOST('/notifications/recipients/create', recipient);
-    }
-
     createScheduleTrigger (trigger) {
         return this.apiPOST('/schedules/triggers', trigger);
     }
@@ -64,10 +60,6 @@ export class NetworkService {
 
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
-    }
-
-    deleteRecipient (recipient) {
-        return this.apiPOST('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
     }
 
     deleteScheduleTrigger (trigger) {
@@ -264,14 +256,6 @@ export class NetworkService {
 
     getScheduleJobs () {
         return this.apiGET('/schedules/jobs');
-    }
-
-    getSubscriptionRecipients () {
-        return this.apiGET('/notifications/recipients');
-    }
-
-    getSubscriptionReportTypes () {
-        return this.apiGET('/data/notification_types');
     }
 
     getParticipantAgeStatistics () {
@@ -563,10 +547,6 @@ export class NetworkService {
         return this.apiPOST('/products/update', productObject);
     }
 
-    updateRecipient (recipient) {
-        return this.apiPOST('/notifications/recipients/' + recipient.id + '/update', recipient);
-    }
-
     updateScheduleTrigger (trigger) {
         return this.apiPUT('/schedules/triggers', trigger);
     }
@@ -601,32 +581,24 @@ export class NetworkService {
             }, response => this.$q.reject(response.data));
     }
 
-    apiPOST (endpoint, postObject, allowEmptyResponse) {
+    apiPOST (endpoint, postObject) {
         return this.$http.post(this.API + endpoint, postObject)
             .then(response => {
                 if (angular.isObject(response.data)) {
                     return response.data;
                 } else {
-                    if (allowEmptyResponse) {
-                        return response;
-                    } else {
-                        return this.$q.reject(response);
-                    }
+                    return this.$q.reject(response);
                 }
             }, response => this.$q.reject(response));
     }
 
-    apiPUT (endpoint, postObject, allowEmptyResponse) {
+    apiPUT (endpoint, postObject) {
         return this.$http.put(this.API + endpoint, postObject)
             .then(response => {
                 if (angular.isObject(response.data)) {
                     return response.data;
                 } else {
-                    if (allowEmptyResponse) {
-                        return response;
-                    } else {
-                        return this.$q.reject(response);
-                    }
+                    return this.$q.reject(response);
                 }
             }, response => this.$q.reject(response));
     }
