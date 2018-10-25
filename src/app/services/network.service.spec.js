@@ -366,12 +366,12 @@
         });
 
         it('should getApiActivity', function () {
-            $httpBackend.expectPOST(/key\/activity\//).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/key\/activity/).respond(200, {data: 'response'});
             networkService.getApiActivity({}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectPOST(/key\/activity\/\?pageNumber=1&pageSize=2&start=\d+&end=\d+&dateAscending=true&filter=!apiKeyFilter/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/key\/activity\?pageNumber=1&pageSize=2&start=\d+&end=\d+&dateAscending=true&filter=!apiKeyFilter/).respond(200, {data: 'response'});
             networkService.getApiActivity({
                 pageNumber: 1,
                 pageSize: 2,
@@ -383,7 +383,7 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectPOST(/key\/activity\/\?filter=apiKeyFilter/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/key\/activity\?filter=apiKeyFilter/).respond(200, {data: 'response'});
             networkService.getApiActivity({
                 filter: 'apiKeyFilter',
                 showOnly: true,
@@ -1170,7 +1170,7 @@
         });
 
         it('should registerApi', function () {
-            $httpBackend.expectPOST(/key\/register/).respond(200, {data: 'response'});
+            $httpBackend.expectPOST(/key/).respond(200, {data: 'response'});
             networkService.registerApi('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -1218,9 +1218,9 @@
         });
 
         it('should revokeApi', function () {
-            $httpBackend.expectPOST(/key\/revoke/).respond(200, {data: 'response'});
-            networkService.revokeApi('payload').then(function (response) {
-                expect(response.data).toEqual('response');
+            $httpBackend.expectDELETE(/key\/userKey/).respond(200);
+            networkService.revokeApi({key: 'userKey'}).then(function (response) {
+                expect(response.status).toEqual(200);
             });
             $httpBackend.flush();
         });

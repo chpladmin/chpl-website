@@ -130,7 +130,7 @@ export class NetworkService {
             params.push(tmp);
         }
         if (params.length > 0) { queryParams = '?' + params.join('&'); }
-        return this.apiPOST('/key/activity/' + queryParams, {});
+        return this.apiGET('/key/activity' + queryParams);
     }
 
     getApiUserActivity (activityRange) {
@@ -504,7 +504,7 @@ export class NetworkService {
     }
 
     revokeApi (user) {
-        return this.apiPOST('/key/revoke', user);
+        return this.apiDELETE('/key/' + user.key, user);
     }
 
     revokeRole (payload) {
