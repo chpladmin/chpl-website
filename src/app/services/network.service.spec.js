@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Network service', function () {
+    describe('the Network service', function () {
         var $httpBackend, $log, mock, networkService;
 
         mock = {};
@@ -184,6 +184,14 @@
         it('should createAnnouncement', function () {
             $httpBackend.expectPOST(/announcements/).respond(200, {data: 'response'});
             networkService.createAnnouncement('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should createCmsId', () => {
+            $httpBackend.expectPOST(/certification_ids\?ids=1,2,3/).respond(200, {data: 'response'});
+            networkService.createCmsId([1, 2, 3]).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -497,6 +505,27 @@
             $httpBackend.flush();
             $httpBackend.expectGET(/activity\/certified_products\?start=\d+&end=\d+/).respond(200, {data: 'response'});
             networkService.getCertifiedProductActivity({startDate: aDate, endDate: aDate}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getCmsId', () => {
+            $httpBackend.expectGET(/certification_ids\/key\?includeCriteria=false/).respond(200, {data: 'response'});
+            networkService.getCmsId('key').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectGET(/certification_ids\/key\?includeCriteria=true/).respond(200, {data: 'response'});
+            networkService.getCmsId('key', true).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should getCmsIds', () => {
+            $httpBackend.expectGET(/certification_ids\/search\?ids=ids/).respond(200, {data: 'response'});
+            networkService.getCmsIds('ids').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

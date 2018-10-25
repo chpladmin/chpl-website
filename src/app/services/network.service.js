@@ -42,6 +42,10 @@ export class NetworkService {
         return this.apiPOST('/announcements/create', announcement);
     }
 
+    createCmsId (ids) {
+        return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
+    }
+
     createInvitedUser (contactDetails) {
         return this.apiPOST('/users/create', contactDetails);
     }
@@ -171,6 +175,14 @@ export class NetworkService {
 
     getCmsDownload () {
         return this.apiGET('/certification_ids');
+    }
+
+    getCmsId (key, includeCriteria) {
+        return this.apiGET('/certification_ids/' + key + '?includeCriteria=' + (includeCriteria ? 'true' : 'false'));
+    }
+
+    getCmsIds (ids) {
+        return this.apiGET('/certification_ids/search?ids=' + ids);
     }
 
     getCollection (type) {
