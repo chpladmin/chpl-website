@@ -60,14 +60,16 @@ window.zxcvbn = zxcvbn;
                     .then(function () {
                         vm.message.value = 'Your account has been created. Please check your email to confirm your account';
                         vm.userDetails = {user: {}};
-                        vm.createUserForm.$setPristine();
-                        vm.createUserForm.$setUntouched();
+                        vm.isCreateUser = false;
                         vm.message.success = true;
                     },function (error) {
-                        vm.message.value = error.data.error;
-                        vm.userDetails = {user: {}};
-                        vm.createUserForm.$setPristine();
-                        vm.createUserForm.$setUntouched();
+                        var msgs = [];
+                        if (_isJSON(error.data.error)) {
+                            msgs = JSON.parse(error.data.error).validationErrors;
+                        } else {
+                            msgs = [error.data.error];
+                        }
+                        vm.message.value = msgs;
                         vm.message.success = false;
                     });
             }
@@ -101,6 +103,17 @@ window.zxcvbn = zxcvbn;
             if (vm.userDetails.user.email) { vals.push(vm.userDetails.user.email); }
             if (vm.userDetails.user.phoneNumber) { vals.push(vm.userDetails.user.phoneNumber); }
             vm.extras = vals;
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        function _isJSON (str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
         }
     }
 })();

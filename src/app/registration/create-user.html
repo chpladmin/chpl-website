@@ -12,8 +12,9 @@
         </div>
       </div>
       <div ng-if="vm.message.value.length > 0" class="row">
-        <div class="col-md-6 col-md-offset-3">
-          <p class="lead" ng-class="vm.message.success ? 'bg-success' : 'bg-danger'">{{ vm.message.value }}</p>
+        <div class="col-md-8 col-md-offset-2">
+          <p class="alert alert-danger" ng-if="!vm.message.success" ng-repeat="err in vm.message.value">{{ err }}</p>
+          <p class="alert alert-success" ng-if="vm.message.success">{{ vm.message.value }}</p>
         </div>
       </div>
       <div class="row">
