@@ -13,7 +13,7 @@
             });
 
             mockCommonService.apiUsers = [{name: 'test', email: 'test', key: 'test'}];
-            mockCommonService.fakeUser = {name: 'fake', email: 'fake@fake.com'};
+            mockCommonService.fakeUser = {name: 'fake', email: 'fake@fake.com', key: 'userKey'};
             mockCommonService.registered = {keyRegistered: 'fake key'};
 
             inject(function ($q) {
@@ -136,14 +136,10 @@
                 expect($log.debug.logs.length).toBeGreaterThan(0);
             });
 
-            it('should not call revokeApi if name or email is blank', function () {
+            it('should not call revokeApi if key is blank', function () {
                 var user = mockCommonService.fakeUser;
-                delete (user.name);
+                delete (user.key);
                 spyOn(networkService, 'revokeApi').and.callThrough();
-                ctrl.revoke(user);
-                scope.$digest();
-                user.name = 'temp';
-                delete (user.email);
                 ctrl.revoke(user);
                 scope.$digest();
                 expect(networkService.revokeApi.calls.any()).toBeFalsy();

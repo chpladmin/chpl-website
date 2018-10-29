@@ -499,10 +499,6 @@
                     .then(function (cp) {
                         vm.activeCP = cp;
                         vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
-                        networkService.getCap(vm.cpSelect)
-                            .then(function (cap) {
-                                vm.activeCP.cap = cap.plans;
-                            });
                     })
             }
         }
