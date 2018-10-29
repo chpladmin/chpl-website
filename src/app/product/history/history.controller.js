@@ -166,10 +166,12 @@
                                 item.activityDate = parseInt(item.muuDate, 10);
                                 item.change = ['Estimated number of Meaningful Use Users changed from ' + arr[idx - 1].muuCount
                                                + ' to ' + item.muuCount + ' on ' + $filter('date')(item.muuDate, 'mediumDate')];
+                            } else {
+                                item.activityDate = parseInt(item.muuDate, 10);
+                                item.change = ['Estimated number of Meaningful Use Users became ' + item.muuCount + ' on ' + $filter('date')(item.muuDate, 'mediumDate')];
                             }
                             return item;
                         })
-                        .filter((item, idx) => idx > 0)
                 );
             }
         }
