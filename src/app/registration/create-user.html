@@ -11,14 +11,16 @@
           <p>Welcome to the Open Data CHPL. You've been invited to be an Administrator on the ONC's Open Data CHPL, which will allow you to manage certified product listings on the CHPL. Please use the form below to create an account, or log in to your existing account.</p>
         </div>
       </div>
-      <div ng-if="vm.message.value.length > 0" class="row">
+      <div ng-show="vm.isCreateAccountSuccessMode()" class="row">
         <div class="col-md-8 col-md-offset-2">
-          <p class="alert alert-danger" ng-if="!vm.message.success" ng-repeat="err in vm.message.value">{{ err }}</p>
           <p class="alert alert-success" ng-if="vm.message.success">{{ vm.message.value }}</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12 form-horizontal" ng-form="vm.createUserForm" ng-show="vm.isCreateUser">
+      <div class="row" ng-show="vm.isCreateAccountMode()">
+        <div class="col-md-8 col-md-offset-2">
+            <p class="alert alert-danger" ng-if="!vm.message.success" ng-repeat="err in vm.message.value">{{ err }}</p>
+        </div>
+        <div class="col-md-12 form-horizontal" ng-form="vm.createUserForm">
           <p>Create a new account</p>
           <div class="form-group">
             <label for="username" class="control-label col-md-4">Username <span class="text-danger">*</span></label>
@@ -65,17 +67,19 @@
           <button class="btn btn-default btn-block"
                   ng-mouseover="vm.showFormErrors = true; vm.setExtras()"
                   ng-click="vm.createUser()" ng-disabled="vm.createUserForm.$invalid && vm.showFormErrors">Create account</button>
-          <p>Or <a href="" ng-click="vm.isCreateUser = ! vm.isCreateUser">sign into your existing account</a></p>
+          <p>Or <a href="" ng-click="vm.changeDisplayMode('SIGN-IN')">sign into your existing account</a></p>
           <p>If you require accessibility assistance, please contact Dustin Charles at <a href="mailto:onc_chpl@hhs.gov">onc_chpl@hhs.gov</a></p>
         </div>
-        <div class="col-md-12" ng-form="vm.authorizeUserForm" ng-show="!vm.isCreateUser">
+      </div>
+      <div class="row" ng-show="vm.isSignInMode()">
+        <div class="col-md-12" ng-form="vm.authorizeUserForm">
           <p>Sign into your existing account</p>
           <label for="authorize-username" class="control-label">Username <span class="text-danger">*</span></label>
           <input type="text" id="authorize-username" ng-model="vm.authorizeDetails.userName" class="form-control" required />
           <label for="authorize-password" class="control-label">Password <span class="text-danger">*</span></label>
           <input type="password" id="authorize-password" ng-model="vm.authorizeDetails.password" class="form-control" required />
           <button class="btn btn-default btn-block" ng-click="vm.authorizeUser()" ng-disabled="vm.authorizeUserForm.$invalid">Sign into your account</button>
-          <p>Or <a href="" ng-click="vm.isCreateUser = ! vm.isCreateUser">create a new account</a></p>
+          <p>Or <a href="" ng-click="vm.changeDisplayMode('CREATE-ACCOUNT')">create a new account</a></p>
         </div>
       </div>
     </div>

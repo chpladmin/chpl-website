@@ -12,8 +12,12 @@ window.zxcvbn = zxcvbn;
         var vm = this;
 
         vm.authorizeUser = authorizeUser;
+        vm.changeDisplayMode = changeDisplayMode;
         vm.createUser = createUser;
         vm.isAuthed = isAuthed;
+        vm.isCreateAccountMode = isCreateAccountMode;
+        vm.isCreateAccountSuccessMode = isCreateAccountSuccessMode;
+        vm.isSignInMode = isSignInMode;
         vm.misMatchPasswords = misMatchPasswords;
         vm.passwordClass = utilService.passwordClass;
         vm.passwordTitle = utilService.passwordTitle;
@@ -35,6 +39,7 @@ window.zxcvbn = zxcvbn;
                 vm.authorizeUser();
             }
             vm.extras = ['chpl'];
+            changeDisplayMode('SIGN-IN');
         }
 
         function authorizeUser () {
@@ -53,6 +58,10 @@ window.zxcvbn = zxcvbn;
             }
         }
 
+        function changeDisplayMode (mode) {
+            vm.displayMode = mode;
+        }
+
         function createUser () {
             if (vm.validateUser()) {
                 vm.userDetails.user.complianceTermsAccepted = true;
@@ -60,16 +69,10 @@ window.zxcvbn = zxcvbn;
                     .then(function () {
                         vm.message.value = 'Your account has been created. Please check your email to confirm your account';
                         vm.userDetails = {user: {}};
-                        vm.isCreateUser = false;
+                        changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
                         vm.message.success = true;
                     },function (error) {
-                        var msgs = [];
-                        if (_isJSON(error.data.error)) {
-                            msgs = JSON.parse(error.data.error).validationErrors;
-                        } else {
-                            msgs = [error.data.error];
-                        }
-                        vm.message.value = msgs;
+                        vm.message.value = error.data.errorMessages;
                         vm.message.success = false;
                     });
             }
@@ -77,6 +80,18 @@ window.zxcvbn = zxcvbn;
 
         function isAuthed () {
             return authService.isAuthed();
+        }
+
+        function isCreateAccountMode () {
+            return vm.displayMode === 'CREATE-ACCOUNT';
+        }
+
+        function isCreateAccountSuccessMode () {
+            return vm.displayMode === 'CREATE-ACCOUNT-SUCCESS';
+        }
+
+        function isSignInMode () {
+            return vm.displayMode === 'SIGN-IN';
         }
 
         function misMatchPasswords () {
@@ -103,17 +118,6 @@ window.zxcvbn = zxcvbn;
             if (vm.userDetails.user.email) { vals.push(vm.userDetails.user.email); }
             if (vm.userDetails.user.phoneNumber) { vals.push(vm.userDetails.user.phoneNumber); }
             vm.extras = vals;
-        }
-
-        ////////////////////////////////////////////////////////////////////
-
-        function _isJSON (str) {
-            try {
-                JSON.parse(str);
-            } catch (e) {
-                return false;
-            }
-            return true;
         }
     }
 })();
