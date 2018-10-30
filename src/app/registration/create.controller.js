@@ -70,10 +70,8 @@ window.zxcvbn = zxcvbn;
                         vm.message.value = 'Your account has been created. Please check your email to confirm your account';
                         vm.userDetails = {user: {}};
                         changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
-                        vm.message.success = true;
                     },function (error) {
                         vm.message.value = error.data.errorMessages;
-                        vm.message.success = false;
                     });
             }
         }
