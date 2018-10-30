@@ -1295,8 +1295,8 @@
         });
 
         it('should updateCP', function () {
-            $httpBackend.expectPOST(/certified_products\/id/).respond(200, {data: 'response'});
-            networkService.updateCP({id: 'id'}).then(function (response) {
+            $httpBackend.expectPUT(/certified_products\/id/).respond(200, {data: 'response'});
+            networkService.updateCP({listing: {id: 'id'}, reason: 'none'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

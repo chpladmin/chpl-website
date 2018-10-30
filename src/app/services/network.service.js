@@ -1,7 +1,8 @@
 export class NetworkService {
-    constructor ($http, $q, API) {
+    constructor ($http, $log, $q, API) {
         'ngInject';
         this.$http = $http;
+        this.$log = $log;
         this.$q = $q;
         this.API = API;
     }
@@ -540,7 +541,7 @@ export class NetworkService {
     }
 
     updateCP (cpObject) {
-        return this.apiPOST('/certified_products/' + cpObject.id, cpObject);
+        return this.apiPUT('/certified_products/' + cpObject.listing.id, cpObject);
     }
 
     updateDeveloper (developerObject) {
