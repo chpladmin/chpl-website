@@ -25,8 +25,9 @@
           <div class="form-group">
             <label for="username" class="control-label col-md-4">Username <span class="text-danger">*</span></label>
             <div class="col-md-8">
-              <input type="text" id="username" name="username" ng-model="vm.userDetails.user.subjectName" class="form-control" required ng-change="vm.setExtras()" />
+              <input type="text" id="username" name="username" ng-model="vm.userDetails.user.subjectName" class="form-control" required ng-maxlength="25" ng-change="vm.setExtras()" />
               <div class="text-danger" ng-if="(vm.showFormErrors || vm.createUserForm.username.$touched) && vm.createUserForm.username.$error.required">Field is required</div>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.createUserForm.username.$touched) && vm.createUserForm.username.$error.maxlength">Field is too long</div>
             </div>
           </div>
           <div class="form-group">
