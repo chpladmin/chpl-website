@@ -45,6 +45,7 @@
             CHANGE: 2,
             RESET: 3,
             NONE: 4,
+            EXPIRED: 5,
         };
 
         /////////////////////////////////////////////////////////
@@ -86,7 +87,7 @@
             if (vm.misMatchPasswords()) {
                 vm.message = 'Passwords do not match. Please try again';
             } else {
-                networkService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
+                networkService.changePassword({userName: vm.userName, oldPassword: vm.password, newPassword: vm.newPassword})
                     .then(function (response) {
                         if (response.passwordUpdated) {
                             vm.clear();
@@ -142,12 +143,15 @@
                     Keepalive.ping();
                     vm.clear();
                     _updateExtras();
-                }, function (error) {
-                    vm.messageClass = vm.pClassFail;
-                    vm.message = error.data.error;
-                })
-                .then(function () {
                     vm.broadcastLogin();
+                }, function (error) {
+                    const expired = new RegExp('Account for user .* has expired, and user must change their password\\.');
+                    if (expired.test(error.data.error)) {
+                        vm.activity = vm.activityEnum.EXPIRED;
+                    } else {
+                        vm.messageClass = vm.pClassFail;
+                        vm.message = error.data.error;
+                    }
                 });
         }
 
@@ -180,7 +184,7 @@
         /////////////////////////////////////////////////////////
 
         function _updateExtras () {
-            let vals = ['chpl'];
+            const vals = ['chpl'];
             networkService.getUserByUsername(authService.getUsername())
                 .then(function (response) {
                     if (response.user.subjectName) { vals.push(response.user.subjectName); }

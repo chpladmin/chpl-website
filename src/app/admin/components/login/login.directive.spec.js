@@ -181,7 +181,7 @@
                     vm.newPassword = 'new';
                     vm.confirmPassword = 'new';
                     vm.changePassword();
-                    expect(networkService.changePassword).toHaveBeenCalledWith({oldPassword: 'old', newPassword: 'new'});
+                    expect(networkService.changePassword).toHaveBeenCalledWith({userName: '', oldPassword: 'old', newPassword: 'new'});
                 });
 
                 it('should report a message and clear the form on success', function () {
@@ -324,11 +324,20 @@
                     expect(vm.clear).toHaveBeenCalled();
                 });
 
-                it('should have an error message if login credentials are bad', function () {
-                    networkService.login.and.returnValue($q.reject({data: {error: 'Invalid username / password'}}));
-                    vm.login();
-                    scope.$digest();
-                    expect(vm.message).toBe('Invalid username / password');
+                describe('with bad data', () => {
+                    it('should have an error message if login credentials are bad', function () {
+                        networkService.login.and.returnValue($q.reject({data: {error: 'Invalid username / password'}}));
+                        vm.login();
+                        scope.$digest();
+                        expect(vm.message).toBe('Invalid username / password');
+                    });
+
+                    it('should direct the user to change their password if credentials are expired', () => {
+                        networkService.login.and.returnValue($q.reject({data: {error: 'Account for user subjectname has expired, and user must change their password.'}}));
+                        vm.login();
+                        scope.$digest();
+                        expect(vm.activity).toBe(vm.activityEnum.EXPIRED);
+                    });
                 });
             });
 
@@ -343,7 +352,7 @@
                 });
             });
 
-            describe('when resetting a password in', function () {
+            describe('when resetting a password', function () {
                 it('should call networkService.resetPassword with correct parameters', function () {
                     vm.userName = 'test';
                     vm.email = 'email';
