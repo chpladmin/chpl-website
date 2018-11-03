@@ -8,7 +8,7 @@ export class NetworkService {
     }
 
     addRole (payload) {
-        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role, {});
+        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
     authorizeUser (userAuthorization) {
@@ -517,7 +517,7 @@ export class NetworkService {
     }
 
     revokeApi (user) {
-        return this.apiDELETE('/key/' + user.key, user);
+        return this.apiDELETE('/key/' + user.key);
     }
 
     revokeRole (payload) {
