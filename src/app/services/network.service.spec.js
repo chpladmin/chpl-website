@@ -257,7 +257,7 @@
         });
 
         it('should deleteSurveillanceDocument', function () {
-            $httpBackend.expectDELETE(/surveillance\/1\/document\/3\/delete/).respond(200);
+            $httpBackend.expectDELETE(/surveillance\/1\/document\/3/).respond(200);
             networkService.deleteSurveillanceDocument(1, 3).then(function (response) {
                 expect(response.status).toEqual(200);
             });
@@ -1223,7 +1223,7 @@
         });
 
         it('should removeUserFromAcb', function () {
-            $httpBackend.expectDELETE(/acbs\/2\/remove_user\/1/).respond(200);
+            $httpBackend.expectDELETE(/acbs\/2\/users\/1/).respond(200);
             networkService.removeUserFromAcb(1, 2).then(function (response) {
                 expect(response.status).toEqual(200);
             });
@@ -1231,7 +1231,7 @@
         });
 
         it('should removeUserFromAtl', function () {
-            $httpBackend.expectDELETE(/atls\/2\/remove_user\/1/).respond(200);
+            $httpBackend.expectDELETE(/atls\/2\/users\/1/).respond(200);
             networkService.removeUserFromAtl(1, 2).then(function (response) {
                 expect(response.status).toEqual(200);
             });

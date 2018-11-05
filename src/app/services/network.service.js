@@ -78,7 +78,7 @@ export class NetworkService {
     }
 
     deleteSurveillanceDocument (survId, docId) {
-        return this.apiDELETE('/surveillance/' + survId + '/document/' + docId + '/delete');
+        return this.apiDELETE('/surveillance/' + survId + '/document/' + docId);
     }
 
     deleteUser (userId) {
@@ -505,11 +505,11 @@ export class NetworkService {
     }
 
     removeUserFromAcb (userId, acbId) {
-        return this.apiDELETE('/acbs/' + acbId + '/remove_user/' + userId);
+        return this.apiDELETE('/acbs/' + acbId + '/users/' + userId);
     }
 
     removeUserFromAtl (userId, atlId) {
-        return this.apiDELETE('/atls/' + atlId + '/remove_user/' + userId);
+        return this.apiDELETE('/atls/' + atlId + '/users/' + userId);
     }
 
     resetPassword (userObj) {
@@ -517,7 +517,7 @@ export class NetworkService {
     }
 
     revokeApi (user) {
-        return this.apiDELETE('/key/' + user.key, user);
+        return this.apiDELETE('/key/' + user.key);
     }
 
     revokeRole (payload) {
