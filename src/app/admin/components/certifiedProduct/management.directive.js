@@ -499,10 +499,6 @@
                     .then(function (cp) {
                         vm.activeCP = cp;
                         vm.activeCP.certDate = new Date(vm.activeCP.certificationDate);
-                        networkService.getCap(vm.cpSelect)
-                            .then(function (cap) {
-                                vm.activeCP.cap = cap.plans;
-                            });
                     })
             }
         }
@@ -557,7 +553,7 @@
             }
 
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/certifiedProduct/listing/inspect.html',
+                templateUrl: 'chpl.admin/components/certifiedProduct/inspect/inspect.html',
                 controller: 'InspectController',
                 controllerAs: 'vm',
                 animation: false,

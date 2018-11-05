@@ -11,7 +11,7 @@
   <section ng-if="vm.isAuthed()">
     <div class="row">
       <div class="col-md-12">
-        <h1>Welcome, {{ vm.getUsername() }}</h1>
+        <h1>Welcome, {{ vm.getFullname() }}</h1>
       </div>
     </div>
     <div class="row">
@@ -49,7 +49,6 @@
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" id="admin-nav.reports.api_key" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('api_key_management')">API Key Management Activity</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key_usage'}" id="admin-nav.reports.api_key_usage" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('api_key_usage')">API Key Usage Activity</a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'subscriptions'}" id="admin-nav.subscriptions" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('subscriptions')">Subscription Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'scheduledJobs'}" id="admin-nav.scheduledJobs" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('scheduledJobs')">Scheduled Jobs</a></li>
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" id="admin-nav.apiKeyManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" id="admin-nav.announcementsManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
@@ -76,8 +75,6 @@
                     ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"
                     product-id="vm.productId"></ai-reports>
-        <ai-subscription-recipients ng-if="vm.navState.screen === 'subscriptions'"
-                                    acbs="vm.acbs"></ai-subscription-recipients>
         <ai-scheduled-jobs ng-if="vm.navState.screen === 'scheduledJobs'"
                                     acbs="vm.acbs"></ai-scheduled-jobs>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>

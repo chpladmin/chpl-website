@@ -59,7 +59,7 @@
         }
 
         function revoke (user) {
-            if (user.name && user.email) {
+            if (user.key) {
                 networkService.revokeApi(user)
                     .then(function () {
                         vm.loadUsers();

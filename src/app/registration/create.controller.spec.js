@@ -113,5 +113,28 @@
             scope.$digest();
             expect($location.path).toHaveBeenCalledWith('/admin');
         });
+
+        it('should know what values are disallowed in passwords', function () {
+            expect(vm.extras).toEqual(['chpl']);
+            vm.userDetails = angular.copy(mock.validUser);
+            vm.userDetails.user.friendlyName = 'friendly';
+            vm.setExtras();
+            expect(vm.extras).toEqual(['chpl', 'subjectName', 'fullName', 'friendly', 'email@email.email', 'phone']);
+        });
+
+        it('should be in CREATE-ACCOUNT mode', function () {
+            vm.changeDisplayMode('CREATE-ACCOUNT');
+            expect(vm.isCreateAccountMode()).toBe(true);
+        });
+
+        it('should be in CREATE-ACCOUNT-SUCCESS mode', function () {
+            vm.changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
+            expect(vm.isCreateAccountSuccessMode()).toBe(true);
+        });
+
+        it('should be in SIGN-IN mode', function () {
+            vm.changeDisplayMode('SIGN-IN');
+            expect(vm.isSignInMode()).toBe(true);
+        });
     });
 })();

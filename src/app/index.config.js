@@ -8,7 +8,7 @@
         .config(config);
 
     /** @ngInject */
-    function config ($analyticsProvider, $locationProvider, $logProvider, stConfig) {
+    function config ($analyticsProvider, $locationProvider, $logProvider, TitleProvider, stConfig) {
         // Enable/disable analytics tracking
         $analyticsProvider.developerMode(DEVELOPER_MODE);
         /*
@@ -29,5 +29,7 @@
 
         // Set smart-table pagination template
         stConfig.pagination.template = 'chpl.components/smart_table/stPagination.html';
+
+        TitleProvider.enabled(false);
     }
 })();

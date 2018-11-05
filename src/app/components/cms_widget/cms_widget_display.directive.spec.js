@@ -2,14 +2,15 @@
     'use strict';
 
     describe('the CMS Widget Display directive', function () {
-        var $compile, $log, el, mock, scope;
+        var $compile, $log, $rootScope, el, mock, scope;
         mock = {};
 
         beforeEach(function () {
             angular.mock.module('chpl.components');
-            inject(function (_$compile_, _$log_, $rootScope, aiCmsWidgetDirective) {
+            inject(function (_$compile_, _$log_, _$rootScope_, aiCmsWidgetDirective) {
                 $compile = _$compile_;
                 $log = _$log_;
+                $rootScope = _$rootScope_;
 
                 // replace ai-cms-widget controller with mock version
                 var aiCmsWidgetDefinition = aiCmsWidgetDirective[0];
@@ -42,61 +43,6 @@
 
         it('should be compiled', function () {
             expect(el.html()).not.toEqual(null);
-        });
-
-        it('should call the parent controllers on button clicks', function () {
-            scope.widget = {
-                searchResult: {
-                    products: [
-                        { productId: 1, name: 'fake' },
-                    ],
-                },
-                productIds: [1],
-            };
-            $compile(el)(scope);
-            scope.$digest();
-            el.find('button').triggerHandler('click');
-            expect(mock.clearProducts).not.toHaveBeenCalled();
-            expect(mock.create).toHaveBeenCalled();
-            expect(mock.generatePdf).not.toHaveBeenCalled();
-            expect(mock.removeProduct).toHaveBeenCalled();
-        });
-
-        it('should call functions on the parent controller', function () {
-            scope.widget = {
-                createResponse: true,
-                searchResult: {
-                    products: [
-                        { productId: 1, name: 'fake' },
-                    ],
-                },
-                productIds: [1],
-            };
-            $compile(el)(scope);
-            scope.$digest();
-            el.find('button').triggerHandler('click');
-            expect(mock.clearProducts).not.toHaveBeenCalled();
-            expect(mock.create).not.toHaveBeenCalled();
-            expect(mock.generatePdf).toHaveBeenCalled();
-            expect(mock.removeProduct).toHaveBeenCalled();
-        });
-
-        it('should call the controller clearProducts on link click', function () {
-            scope.widget = {
-                searchResult: {
-                    products: [
-                        { productId: 1, name: 'fake' },
-                    ],
-                },
-                productIds: [1],
-            };
-            $compile(el)(scope);
-            scope.$digest();
-            el.find('a').triggerHandler('click');
-            expect(mock.clearProducts).toHaveBeenCalled();
-            expect(mock.create).not.toHaveBeenCalled();
-            expect(mock.generatePdf).not.toHaveBeenCalled();
-            expect(mock.removeProduct).not.toHaveBeenCalled();
         });
     });
 })();

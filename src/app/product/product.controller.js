@@ -57,12 +57,6 @@
                 }, function (error) {
                     $log.error(error);
                 });
-            networkService.getCap(vm.productId)
-                .then(function (data) {
-                    vm.correctiveActionPlan = data.plans;
-                }, function (error) {
-                    $log.error(error);
-                });
         }
 
         function viewProductHistory () {

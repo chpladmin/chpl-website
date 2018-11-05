@@ -17,6 +17,7 @@
                 scope.clearProducts = function () {
                     widgetController.clearProducts();
                 };
+                scope.compare = widgetController.compare;
                 scope.create = function () {
                     widgetController.create();
                 };

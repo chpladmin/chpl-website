@@ -15,6 +15,9 @@
             extendSelect: extendSelect,
             findModel: findModel,
             makeCsv: makeCsv,
+            muuCount: muuCount,
+            passwordClass: passwordClass,
+            passwordTitle: passwordTitle,
             sortCert: sortCert,
             sortCertArray: sortCertArray,
             sortCqm: sortCqm,
@@ -125,10 +128,8 @@
 
         function certificationStatus (listing, options) {
             if (listing.certificationEvents && listing.certificationEvents.length > 0) {
-                if (options) {
-                    if (options.editing) {
-                        return $filter('orderBy')(listing.certificationEvents.map(function (event) { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
-                    }
+                if (options && options.editing) {
+                    return $filter('orderBy')(listing.certificationEvents.map(function (event) { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
                 }
                 return $filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
             }
@@ -164,6 +165,44 @@
             FileSaver.saveAs(blob, data.name);
         }
 
+        function muuCount (muuHistory) {
+            return muuHistory.sort((a, b) => b.muuDate - a.muuDate)[0];
+        }
+
+        function passwordClass (strength) {
+            switch (strength) {
+            case 0:
+                return 'danger';
+            case 1:
+                return 'danger';
+            case 2:
+                return 'warning';
+            case 3:
+                return 'warning';
+            case 4:
+                return 'success';
+            default:
+                return '';
+            }
+        }
+
+        function passwordTitle (strength) {
+            switch (strength) {
+            case 0:
+                return 'Awful';
+            case 1:
+                return 'Weak';
+            case 2:
+                return 'Moderate';
+            case 3:
+                return 'Strong';
+            case 4:
+                return 'Excellent';
+            default:
+                return '';
+            }
+        }
+
         function sortCert (cert) {
             if (angular.isObject(cert)) {
                 cert = cert.name || cert.number;
@@ -172,8 +211,8 @@
             var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
             var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
             var ret = edition * 10000 +
-                letter * 100 +
-                number;
+                    letter * 100 +
+                    number;
             return ret;
         }
 

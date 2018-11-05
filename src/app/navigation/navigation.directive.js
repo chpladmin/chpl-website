@@ -40,7 +40,7 @@
         var vm = this;
 
         vm.clear = clear;
-        vm.getUsername = authService.getUsername;
+        vm.getFullname = authService.getFullname;
         vm.isAcbAdmin = authService.isAcbAdmin;
         vm.isActive = isActive;
         vm.isAtlAdmin = authService.isAtlAdmin;
@@ -57,10 +57,15 @@
         this.$onInit = function () {
             vm.loadAnnouncements();
 
-            var cmsWidget = $rootScope.$on('ShowWidget', function () {
-                vm.showCmsWidget();
+            var showCmsWidget = $rootScope.$on('ShowWidget', function () {
+                vm.showCmsWidget(true);
             });
-            $scope.$on('$destroy', cmsWidget);
+            $scope.$on('$destroy', showCmsWidget);
+
+            var hideCmsWidget = $rootScope.$on('HideWidget', function () {
+                vm.showCmsWidget(false);
+            });
+            $scope.$on('$destroy', hideCmsWidget);
 
             var showCompareWidget = $rootScope.$on('ShowCompareWidget', function () {
                 vm.showCompareWidget(true);
@@ -97,8 +102,8 @@
                 });
         }
 
-        function showCmsWidget () {
-            vm.widgetExpanded = true;
+        function showCmsWidget (show) {
+            vm.widgetExpanded = show;
         }
 
         function showCompareWidget (show) {

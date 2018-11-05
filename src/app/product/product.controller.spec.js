@@ -8,7 +8,6 @@
         mock.activity = {};
         mock.productId = 123123;
         mock.products = [{ developer: 'Developer', product: 'Product' }];
-        mock.caps = [];
         mock.fakeModal = {
             result: {
                 then: function (confirmCallback, cancelCallback) {
@@ -34,7 +33,6 @@
         beforeEach(function () {
             angular.mock.module('chpl.product', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
-                    $delegate.getCap = jasmine.createSpy('getCap');
                     $delegate.getProduct = jasmine.createSpy('getProduct');
                     $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
                     return $delegate;
@@ -54,7 +52,6 @@
                 });
                 $q = _$q_;
                 networkService = _networkService_;
-                networkService.getCap.and.returnValue($q.when(mock.caps));
                 networkService.getProduct.and.returnValue($q.when(mock.products));
                 networkService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
                 authService = _authService_;

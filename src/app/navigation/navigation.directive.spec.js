@@ -11,12 +11,13 @@
         beforeEach(function () {
             angular.mock.module('chpl.navigation', 'chpl', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
-                    $delegate.getUsername = jasmine.createSpy('getUsername');
+                    $delegate.getFullname = jasmine.createSpy('getFullname');
                     $delegate.isAuthed = jasmine.createSpy('isAuthed');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getAnnouncements = jasmine.createSpy('getAnnouncements');
+                    $delegate.getUserByUsername = jasmine.createSpy('getUserByUsername');
                     return $delegate;
                 });
             });
@@ -31,10 +32,11 @@
             $q = _$q_;
             $rootScope = _$rootScope_;
             authService = _authService_;
-            authService.getUsername.and.returnValue(mock.username);
+            authService.getFullname.and.returnValue(mock.username);
             authService.isAuthed.and.returnValue(true);
             networkService = _networkService_;
             networkService.getAnnouncements.and.returnValue($q.when(mock.announcements));
+            networkService.getUserByUsername.and.returnValue($q.when({user: {}}));
 
             scope = $rootScope.$new();
             vm = $controller('NavigationController', {
@@ -75,9 +77,9 @@
             });
 
             it('should return the user name of the logged in user', function () {
-                expect(authService.getUsername).not.toHaveBeenCalled();
-                expect(vm.getUsername()).toEqual(mock.username);
-                expect(authService.getUsername).toHaveBeenCalled();
+                expect(authService.getFullname).not.toHaveBeenCalled();
+                expect(vm.getFullname()).toEqual(mock.username);
+                expect(authService.getFullname).toHaveBeenCalled();
             });
 
             it('should call the authService to check if the user is authenticated', function () {
@@ -127,10 +129,12 @@
                 expect($location.url).toHaveBeenCalledWith('/search');
             });
 
-            it('should show the CMS Widget', function () {
+            it('should be able to toggle the CMS Widget', function () {
                 expect(vm.widgetExpanded).toBeUndefined();
-                vm.showCmsWidget();
+                vm.showCmsWidget(true);
                 expect(vm.widgetExpanded).toBe(true);
+                vm.showCmsWidget(false);
+                expect(vm.widgetExpanded).toBe(false);
             });
 
             it('should be able to toggle the Compare Widget', function () {

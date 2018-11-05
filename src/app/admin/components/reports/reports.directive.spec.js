@@ -547,24 +547,6 @@
                         vm._interpretCps([rawActivity]);
                         expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
                     });
-
-                    it('should handle qms standards', function () {
-                        rawActivity.originalData.qmsStandards = [{qmsStandardName: 'a standard', qmsModification: 'a mod', applicableCriteria: 'none'}];
-                        rawActivity.newData.qmsStandards = [{qmsStandardName: 'a standard', qmsModification: 'no mods', applicableCriteria: 'all'}];
-                        expectedActivity.details = ['QMS Standard "a standard" changes<ul><li>QMS Modification changed from a mod to no mods</li><li>Applicable Criteria changed from none to all</li></ul>'];
-                        expectedActivity.csvDetails = 'QMS Standard "a standard" changes<ul><li>QMS Modification changed from a mod to no mods</li><li>Applicable Criteria changed from none to all</li></ul>';
-                        vm._interpretCps([rawActivity]);
-                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
-                    });
-
-                    it('should handle targeted users', function () {
-                        rawActivity.originalData.targetedUsers = [{targetedUserName: 'name 1'}];
-                        rawActivity.newData.targetedUsers = [{targetedUserName: 'name 2'}];
-                        expectedActivity.details = ['Targeted User "name 1" changes<ul><li>name 1 removed</li></ul>','Targeted User "name 2" changes<ul><li>name 2 added</li></ul>'];
-                        expectedActivity.csvDetails = 'Targeted User "name 1" changes<ul><li>name 1 removed</li></ul>\nTargeted User "name 2" changes<ul><li>name 2 added</li></ul>';
-                        vm._interpretCps([rawActivity]);
-                        expect(vm.searchedCertifiedProducts[0]).toEqual(expectedActivity);
-                    });
                 });
 
                 describe('ICS family activity', function () {

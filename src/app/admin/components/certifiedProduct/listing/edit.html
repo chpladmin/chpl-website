@@ -342,6 +342,48 @@
         </div>
       </div>
     </div>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th scope="col">Estimated Number of Meaningful Use Users History</th>
+          <th scope="col">Effective date</th>
+          <th scope="col"><span class="sr-only">Event Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td><button class="btn btn-sm btn-block btn-ai-success" ng-click="vm.addPreviousMuu()"><i class="fa fa-plus"></i><span class="sr-only"> Add value</span></button></td>
+        </tr>
+        <tr ng-repeat="muu in vm.cp.meaningfulUseUserHistory | orderBy:'-muuDateObject.getTime()' track by $index">
+          <td>
+            <div class="form-group">
+              <label><span class="sr-only"><span ng-if="$first">Current </span>Value</span>
+                <input type="number" ng-model="muu.muuCount" name="muuCount{{ $index }}" class="input-sm form-control">
+                </input>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="form-group">
+              <label><span class="sr-only">Effective Date</span>
+                <div class="input-group">
+                  <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="muu.muuDateObject" is-open="muu.muuDatePicker" close-text="Close" name="muuDate{{ $index }}" ng-model-options="{ timezone: 'UTC' }">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-ai btn-sm" ng-click="muu.muuDatePicker = true"><i class="fa fa-calendar"></i></button>
+                  </span>
+                </div>
+              </label>
+              <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm['statusDate' + $index].$touched) && vm.matchesPreviousMuuDate(muu)">Only effective date allowed per day</div>
+            </div>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-block btn-danger" ng-click="vm.removePreviousMuu(muu.muuDateObject)"><i class="fa fa-trash"></i><span class="sr-only"> Remove value</span></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <br />
     <ai-certs default-all="true"
               edit-mode="true"

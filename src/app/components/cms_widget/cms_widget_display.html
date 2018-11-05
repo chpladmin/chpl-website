@@ -20,7 +20,7 @@
   <div ng-if="widget.searchResult.missingAnd.length">
     Please select a product or products that contain the following criteria:
     <ul class="list-unstyled">
-      <li ng-repeat="criteria in widget.searchResult.missingAnd | orderBy: vm.sortCert">
+      <li ng-repeat="criteria in widget.searchResult.missingAnd">
         {{ criteria }}
       </li>
     </ul>
@@ -28,26 +28,16 @@
   <div ng-if="widget.searchResult.missingOr.length">
     <span ng-if="widget.searchResult.missingAnd.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingAnd.length === 0">Please select a product</span> with at least 1 criteria from the following group<span ng-if="widget.searchResult.missingOr.length > 1">s</span>:
     <ul class="list-unstyled">
-      <li ng-repeat="criterias in widget.searchResult.missingOr | orderBy: vm.sortCert">
+      <li ng-repeat="criterias in widget.searchResult.missingOr">
         [<span>{{ criterias.join(', ') }}</span>]
       </li>
     </ul>
   </div>
   <div ng-if="widget.searchResult.missingCombo.length">
-    <span ng-if="widget.searchResult.missingCombo.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingCombo.length === 0">Please select a product</span> that fulfills all criteria from at least one of the following group<span ng-if="widget.searchResult.missingCombo.length > 1">s</span>:
+    <span ng-if="widget.searchResult.missingAnd.length > 0 || widget.searchResult.missingOr.length > 0">In addition, products</span><span ng-if="widget.searchResult.missingAnd.length === 0 && widget.searchResult.missingOr.length === 0">Please select a product</span> that fulfills all criteria from at least one of the following group<span ng-if="widget.searchResult.missingCombo.length > 1">s</span>:
     <ul class="list-unstyled">
-      <li ng-repeat="criterias in widget.searchResult.missingCombo | orderBy: vm.sortCert">
+      <li ng-repeat="criterias in widget.searchResult.missingCombo">
         [<span>{{ criterias.join(', ') }}</span>]
-      </li>
-    </ul>
-  </div>
-  <div ng-repeat="maps in widget.searchResult.missingX">
-    <ul class="list-unstyled">
-      <li ng-repeat="(number, criterias) in maps">
-        <div ng-if="number > 0">
-          <span>In addition, please select {{ number }} from the following:</span>
-          [<span>{{ criterias.join(', ') }}</span>]
-        </div>
       </li>
     </ul>
   </div>
@@ -70,8 +60,7 @@
   <div ng-if="widget.searchResult.products">
     <button ng-click="create()" class="btn btn-ai-certid btn-sm btn-block" ng-if="!widget.createResponse" ng-disabled="!widget.searchResult.isValid" id="get-ehr-cert-id">Get {{ widget.searchResult.year }} EHR Certification ID</button>
     <button ng-click="generatePdf()" class="btn btn-ai-certid btn-sm btn-block" ng-if="widget.createResponse" id="download-ehr-cert">Download PDF</button>
-  </div>
-  <div ng-if="widget.searchResult.products && widget.searchResult.products.length> 0" class="text-center">
-    <a href ng-click="clearProducts();">Remove all products</a>
+    <button ng-click="compare()" class="btn btn-ai btn-sm btn-block" ng-if="widget.searchResult.products.length > 1" id="cms-compare">Compare products</button>
+    <button ng-click="clearProducts()" class="btn btn-ai btn-sm btn-block" ng-if="widget.searchResult.products.length > 0" id="cms-remove-all">Remove all products</button>
   </div>
 </div>

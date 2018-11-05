@@ -128,6 +128,40 @@ import './history.mock';
                     expect(vm.activity[0].change).toEqual(['Certification Status became "Active"']);
                 });
             });
+
+            describe('when dealing with MUU data', () => {
+                beforeEach(function () {
+                    vm.activity = [];
+                });
+
+                it('should know when the MUU number changed', () => {
+                    vm._interpretMuuHistory(mock.activity[7]);
+                    expect(vm.activity[1].change[0].substring(0, 64)).toEqual('Estimated number of Meaningful Use Users changed from 4 to 6 on ');
+                    expect(vm.activity[1].change[0].length).toBeGreaterThan(64); // should have the date of the change at the end of the string, but timezones make dates different on different systems, so testing for equality is hard
+                });
+
+                it('should handle listings with no MUU history', () => {
+                    const activity = {
+                        newData: {},
+                    };
+                    vm._interpretMuuHistory(activity);
+                    expect(vm.activity).toEqual([]);
+                });
+
+                it('should handle listings with only one item', () => {
+                    const activity = {
+                        newData: {
+                            meaningfulUseUserHistory: [{
+                                muuDate: 23,
+                                muuCount: 3,
+                            }],
+                        },
+                    };
+                    vm._interpretMuuHistory(activity);
+                    expect(vm.activity[0].change[0].substring(0, 53)).toEqual('Estimated number of Meaningful Use Users became 3 on ');
+                    expect(vm.activity[0].change[0].length).toBeGreaterThan(53);
+                });
+            });
         });
     });
 })();
