@@ -32,7 +32,7 @@
           <td>
             Locked: <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': user.user.accountLocked, 'fa-square-o': !user.user.accountLocked }"></i><br />
             Enabled: <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': user.user.accountEnabled, 'fa-square-o': !user.user.accountEnabled }"></i><br />
-            Password change on next login: <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': user.user.credentialsExpired, 'fa-square-o': !user.user.credentialsExpired }"></i><br />
+            Password change on next login: <i class="fa fa-lg" ng-class="{ 'fa-check-square-o': user.user.passwordResetRequired, 'fa-square-o': !user.user.passwordResetRequired }"></i><br />
             User Role<span ng-if="user.roles.length > 1">s</span>:
             <ul>
               <li ng-repeat="role in user.roles">{{ role }}</li>

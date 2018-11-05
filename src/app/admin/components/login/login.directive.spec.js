@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Login', function () {
+    fdescribe('the Login', function () {
         var $compile, $log, $q, Idle, Keepalive, authService, el, mock, networkService, scope, vm;
 
         mock = {
@@ -333,7 +333,7 @@
                     });
 
                     it('should direct the user to change their password if credentials are expired', () => {
-                        networkService.login.and.returnValue($q.reject({data: {error: 'Account for user subjectname has expired, and user must change their password.'}}));
+                        networkService.login.and.returnValue($q.reject({data: {error: 'Account for user username has expired, and user must change their password.'}}));
                         vm.login();
                         scope.$digest();
                         expect(vm.activity).toBe(vm.activityEnum.EXPIRED);
