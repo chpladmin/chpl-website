@@ -578,8 +578,8 @@ export class NetworkService {
 
     ////////////////////////////////////////////////////////////////////
 
-    apiDELETE (endpoint) {
-        return this.$http.delete(this.API + endpoint)
+    apiDELETE (endpoint, deleteObject) {
+        return this.$http.delete(this.API + endpoint, {data: deleteObject, headers: {'Content-Type': 'application/json;charset=utf-8'}})
             .then(response => response, response => this.$q.reject(response));
     }
 
