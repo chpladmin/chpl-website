@@ -473,11 +473,11 @@ export class NetworkService {
     }
 
     massRejectPendingListings (ids) {
-        return this.apiDELETE('/certified_products/pending/reject', {ids: ids});
+        return this.apiDELETE('/certified_products/pending', {ids: ids});
     }
 
     massRejectPendingSurveillance (ids) {
-        return this.apiDELETE('/surveillance/pending/reject', {ids: ids});
+        return this.apiDELETE('/surveillance/pending', {ids: ids});
     }
 
     modifyACB (acb) {
@@ -501,7 +501,7 @@ export class NetworkService {
     }
 
     rejectPendingSurveillance (survId) {
-        return this.apiDELETE('/surveillance/pending/' + survId + '/reject');
+        return this.apiDELETE('/surveillance/pending/' + survId);
     }
 
     removeUserFromAcb (userId, acbId) {
