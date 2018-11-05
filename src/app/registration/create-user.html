@@ -59,6 +59,7 @@
             The following error(s) must be fixed:
             <ul>
               <li ng-if="vm.createUserForm.username.$error.required">Username is required</li>
+              <li ng-if="vm.createUserForm.username.$error.maxlength">Username is too long</li>
               <li ng-if="vm.createUserForm.password.$error.required">Password is required</li>
               <li ng-if="vm.createUserForm.passwordverify.$error.required">Verification password is required</li>
               <li ng-if="vm.misMatchPasswords()">Passwords must match</li>
