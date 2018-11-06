@@ -84,7 +84,7 @@ export class NetworkService {
     }
 
     deleteSurveillanceDocument (survId, docId) {
-        return this.apiDELETE('/surveillance/' + survId + '/document/' + docId + '/delete');
+        return this.apiDELETE('/surveillance/' + survId + '/document/' + docId);
     }
 
     deleteUser (userId) {
@@ -479,11 +479,11 @@ export class NetworkService {
     }
 
     massRejectPendingListings (ids) {
-        return this.apiDELETE('/certified_products/pending/reject', {ids: ids});
+        return this.apiDELETE('/certified_products/pending', {ids: ids});
     }
 
     massRejectPendingSurveillance (ids) {
-        return this.apiDELETE('/surveillance/pending/reject', {ids: ids});
+        return this.apiDELETE('/surveillance/pending', {ids: ids});
     }
 
     modifyACB (acb) {
@@ -507,15 +507,15 @@ export class NetworkService {
     }
 
     rejectPendingSurveillance (survId) {
-        return this.apiDELETE('/surveillance/pending/' + survId + '/reject');
+        return this.apiDELETE('/surveillance/pending/' + survId);
     }
 
     removeUserFromAcb (userId, acbId) {
-        return this.apiDELETE('/acbs/' + acbId + '/remove_user/' + userId);
+        return this.apiDELETE('/acbs/' + acbId + '/users/' + userId);
     }
 
     removeUserFromAtl (userId, atlId) {
-        return this.apiDELETE('/atls/' + atlId + '/remove_user/' + userId);
+        return this.apiDELETE('/atls/' + atlId + '/users/' + userId);
     }
 
     resetPassword (userObj) {
@@ -523,7 +523,7 @@ export class NetworkService {
     }
 
     revokeApi (user) {
-        return this.apiDELETE('/key/' + user.key, user);
+        return this.apiDELETE('/key/' + user.key);
     }
 
     revokeRole (payload) {
@@ -584,8 +584,8 @@ export class NetworkService {
 
     ////////////////////////////////////////////////////////////////////
 
-    apiDELETE (endpoint) {
-        return this.$http.delete(this.API + endpoint)
+    apiDELETE (endpoint, deleteObject) {
+        return this.$http.delete(this.API + endpoint, {data: deleteObject, headers: {'Content-Type': 'application/json;charset=utf-8'}})
             .then(response => response, response => this.$q.reject(response));
     }
 
