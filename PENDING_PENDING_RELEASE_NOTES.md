@@ -4,6 +4,6 @@ _Date TBD_
 
 ### New features
 * Updated ONC contact information.
+* Add "user must reset password on next login" workflow
 
 ---
-
