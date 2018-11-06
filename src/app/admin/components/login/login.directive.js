@@ -145,7 +145,7 @@
                     _updateExtras();
                     vm.broadcastLogin();
                 }, function (error) {
-                    const expired = new RegExp('Account for user .* has expired, and user must change their password\\.');
+                    const expired = new RegExp('The user is required to change their password on next log in\\.');
                     if (expired.test(error.data.error)) {
                         vm.activity = vm.activityEnum.EXPIRED;
                     } else {
