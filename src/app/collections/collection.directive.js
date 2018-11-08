@@ -31,7 +31,7 @@
     }
 
     /** @ngInject */
-    function CollectionController ($filter, $localStorage, $log, $timeout, RELOAD_TIMEOUT, collectionsService, networkService) {
+    function CollectionController ($filter, $interval, $localStorage, $log, $scope, $timeout, CACHE_REFRESH_TIMEOUT, RELOAD_TIMEOUT, collectionsService, networkService) {
         var vm = this;
 
         vm.hasResults = hasResults;
@@ -39,11 +39,11 @@
         vm.isFilterActive = isFilterActive;
         vm.loadResults = loadResults;
         vm.parseDataElement = parseDataElement;
+        vm.refreshResults = refreshResults;
         vm.registerClearFilter = registerClearFilter;
-        //vm.registerRestoreState = registerRestoreState;
         vm.registerSearch = registerSearch;
+        vm.stopCacheRefresh = stopCacheRefresh;
         vm.triggerClearFilters = triggerClearFilters;
-        //vm.triggerRestoreState = triggerRestoreState;
         vm.triggerSearch = triggerSearch;
 
         ////////////////////////////////////////////////////////////////////
@@ -51,14 +51,12 @@
         this.$onInit = function () {
             vm.categoryChanged = {};
             vm.clearFilterHs = [];
-            //vm.restoreStateHs = [];
             vm.isPreLoading = true;
 
             if (!vm.searchText) {
                 vm.searchText = 'Search by Developer, Product, Version, or CHPL ID';
             }
             setFilterInfo();
-            //restoreResults();
             vm.loadResults();
         }
 
@@ -79,12 +77,8 @@
         }
 
         function loadResults () {
-            networkService.getCollection(vm.collectionKey).then(function (response) {
-                vm.allCps = collectionsService.translate(vm.collectionKey, response);
-                vm.isPreLoading = false;
-            }, function (error) {
-                $log.debug(error);
-            });
+            refreshResults();
+            vm.stopCacheRefreshPromise = $interval(vm.refreshResults, CACHE_REFRESH_TIMEOUT * 1000);
         }
 
         function parseDataElement (cp, col) {
@@ -108,6 +102,15 @@
             return ret;
         }
 
+        function refreshResults () {
+            networkService.getCollection(vm.collectionKey).then(function (response) {
+                vm.allCps = collectionsService.translate(vm.collectionKey, response);
+                vm.isPreLoading = false;
+            }, function (error) {
+                $log.debug(error);
+            });
+        }
+
         function registerClearFilter (handler) {
             vm.clearFilterHs.push(handler);
             var removeHandler = function () {
@@ -117,18 +120,6 @@
             };
             return removeHandler;
         }
-
-        /*
-        function registerRestoreState (handler) {
-            vm.restoreStateHs.push(handler);
-            var removeHandler = function () {
-                vm.restoreStateHs = vm.restoreStateHs.filter(function (aHandler) {
-                    return aHandler !== handler;
-                });
-            };
-            return removeHandler;
-        }
-        */
 
         function registerSearch (handler) {
             vm.tableSearchHs = [handler];
@@ -140,23 +131,19 @@
             return removeHandler;
         }
 
+        function stopCacheRefresh () {
+            if (angular.isDefined(vm.stopCacheRefreshPromise)) {
+                $interval.cancel(vm.stopCacheRefreshPromise);
+                vm.stopCacheRefreshPromise = undefined;
+            }
+        }
+
         function triggerClearFilters () {
             angular.forEach(vm.clearFilterHs, function (handler) {
                 handler();
             });
             vm.triggerSearch();
         }
-
-        /*
-        function triggerRestoreState () {
-            if ($localStorage[vm.dataStore]) {
-                var state = angular.fromJson($localStorage[vm.dataStore]);
-                angular.forEach(vm.restoreStateHs, function (handler) {
-                    handler(state);
-                });
-            }
-        }
-        */
 
         function triggerSearch () {
             if (vm.tableSearchHs && vm.tableSearchHs[0]) {
@@ -165,19 +152,6 @@
         }
 
         ////////////////////////////////////////////////////////////////////
-
-        /*
-        function restoreResults () {
-            if ($localStorage[vm.dataStore]) {
-                $timeout(
-                    function () {
-                        vm.triggerRestoreState();
-                    },
-                    RELOAD_TIMEOUT
-                );
-            }
-        }
-        */
 
         function setFilterInfo () {
             vm.filterItems = {
@@ -196,5 +170,9 @@
                 vm.filterItems.editionItems = angular.copy(vm.refineModel.edition);
             }
         }
+
+        $scope.$on('$destroy', function () {
+            vm.stopCacheRefresh();
+        });
     }
 })();

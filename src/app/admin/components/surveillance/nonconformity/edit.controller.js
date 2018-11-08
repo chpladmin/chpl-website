@@ -101,7 +101,7 @@
 
         function buildFileUploader () {
             vm.uploader = new FileUploader({
-                url: API + '/surveillance/' + vm.surveillanceId + '/nonconformity/' + vm.nonconformity.id + '/document/create',
+                url: API + '/surveillance/' + vm.surveillanceId + '/nonconformity/' + vm.nonconformity.id + '/document',
                 removeAfterUpload: true,
                 headers: {
                     Authorization: 'Bearer ' + authService.getToken(),

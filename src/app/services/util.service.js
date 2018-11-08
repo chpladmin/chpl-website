@@ -5,17 +5,6 @@ export class UtilService {
         this.$log = $log;
         this.Blob = Blob;
         this.FileSaver = FileSaver;
-        this.certificationStatus = (listing, options) => {
-            if (listing.certificationEvents && listing.certificationEvents.length > 0) {
-                if (options) {
-                    if (options.editing) {
-                        return this.$filter('orderBy')(listing.certificationEvents.map((event) => { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
-                    }
-                }
-                return this.$filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
-            }
-            return '';
-        }
     }
 
     addNewValue (array, object) {
@@ -110,7 +99,16 @@ export class UtilService {
                 .join(',');
         })
             .join('\n');
+    }
 
+    certificationStatus (listing, options) {
+        if (listing.certificationEvents && listing.certificationEvents.length > 0) {
+            if (options && options.editing) {
+                return this.$filter('orderBy')(listing.certificationEvents.map(function (event) { event.eventDate = event.statusDateObject.getTime(); return event; }),'-eventDate')[0].status.name;
+            }
+            return this.$filter('orderBy')(listing.certificationEvents,'-eventDate')[0].status.name;
+        }
+        return '';
     }
 
     extendSelect (options, value) {
@@ -140,6 +138,9 @@ export class UtilService {
             type: 'application/csv',
         });
         this.FileSaver.saveAs(blob, data.name);
+    }
+    muuCount (muuHistory) {
+        return muuHistory.sort((a, b) => b.muuDate - a.muuDate)[0];
     }
 
     passwordClass (strength) {
@@ -184,8 +185,8 @@ export class UtilService {
         var letter = parseInt(cert.substring(9,10).charCodeAt(0)) - 96;
         var number = cert.length > 11 ? parseInt(cert.split(')')[1].substring(1)) : 0;
         var ret = edition * 10000 +
-                letter * 100 +
-                number;
+            letter * 100 +
+            number;
         return ret;
     }
 
@@ -235,8 +236,8 @@ export class UtilService {
         var letter = parseInt(req.split('(')[1].charCodeAt(0)) - 96;
         var number = req.length > 11 ? parseInt(req.split(')')[1].substring(1)) : 0;
         var ret = edition * 10000 +
-                letter * 100 +
-                number;
+            letter * 100 +
+            number;
         return ret;
     }
 
@@ -280,5 +281,6 @@ export class UtilService {
         }
     }
 }
+
 angular.module('chpl.services')
     .service('utilService', UtilService);

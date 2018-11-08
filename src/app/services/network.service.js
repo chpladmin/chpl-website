@@ -1,829 +1,635 @@
-(function () {
-    'use strict';
-
-    angular.module('chpl.services')
-        .factory('networkService', networkService);
-
-    /** @ngInject */
-    function networkService ($http, $q, API) {
-        var service = {
-            addRole: addRole,
-            authorizeUser: authorizeUser,
-            changePassword: changePassword,
-            confirmPendingCp: confirmPendingCp,
-            confirmPendingSurveillance: confirmPendingSurveillance,
-            confirmUser: confirmUser,
-            createACB: createACB,
-            createATL: createATL,
-            createAnnouncement: createAnnouncement,
-            createInvitedUser: createInvitedUser,
-            createRecipient: createRecipient,
-            createScheduleTrigger: createScheduleTrigger,
-            deleteACB: deleteACB,
-            deleteATL: deleteATL,
-            deleteAnnouncement: deleteAnnouncement,
-            deleteCap: deleteCap,
-            deleteDoc: deleteDoc,
-            deleteRecipient: deleteRecipient,
-            deleteScheduleTrigger: deleteScheduleTrigger,
-            deleteSurveillance: deleteSurveillance,
-            deleteSurveillanceDocument: deleteSurveillanceDocument,
-            deleteUser: deleteUser,
-            getAcbActivity: getAcbActivity,
-            getAcbs: getAcbs,
-            getAccessibilityStandards: getAccessibilityStandards,
-            getAgeRanges: getAgeRanges,
-            getAll: getAll,
-            getAnnouncement: getAnnouncement,
-            getAnnouncementActivity: getAnnouncementActivity,
-            getAnnouncements: getAnnouncements,
-            getApiActivity: getApiActivity,
-            getApiUserActivity: getApiUserActivity,
-            getApiUsers: getApiUsers,
-            getAtlActivity: getAtlActivity,
-            getAtls: getAtls,
-            getCap: getCap,
-            getCertBodies: getCertBodies,
-            getCertificationStatuses: getCertificationStatuses,
-            getCertifiedProductActivity: getCertifiedProductActivity,
-            getCorrectiveActionPlanActivity: getCorrectiveActionPlanActivity,
-            getCriterionProductStatistics: getCriterionProductStatistics,
-            getCmsDownload: getCmsDownload,
-            getCollection: getCollection,
-            getDeveloper: getDeveloper,
-            getDeveloperActivity: getDeveloperActivity,
-            getDevelopers: getDevelopers,
-            getEditions: getEditions,
-            getEducation: getEducation,
-            getFuzzyTypes: getFuzzyTypes,
-            getIncumbentDevelopersStatistics: getIncumbentDevelopersStatistics,
-            getJobTypes: getJobTypes,
-            getJobs: getJobs,
-            getIcsFamily: getIcsFamily,
-            getListingCountStatistics: getListingCountStatistics,
-            getMeaningfulUseUsersAccurateAsOfDate: getMeaningfulUseUsersAccurateAsOfDate,
-            getNonconformityStatisticsCount: getNonconformityStatisticsCount,
-            getScheduleTriggers: getScheduleTriggers,
-            getScheduleJobs: getScheduleJobs,
-            getSubscriptionRecipients: getSubscriptionRecipients,
-            getSubscriptionReportTypes: getSubscriptionReportTypes,
-            getParticipantAgeStatistics: getParticipantAgeStatistics,
-            getParticipantComputerExperienceStatistics: getParticipantComputerExperienceStatistics,
-            getParticipantEducationStatistics: getParticipantEducationStatistics,
-            getParticipantGenderStatistics: getParticipantGenderStatistics,
-            getParticipantProductExperienceStatistics: getParticipantProductExperienceStatistics,
-            getParticipantProfessionalExperienceStatistics: getParticipantProfessionalExperienceStatistics,
-            getPractices: getPractices,
-            getProduct: getProduct,
-            getProductActivity: getProductActivity,
-            getProductsByDeveloper: getProductsByDeveloper,
-            getProductsByVersion: getProductsByVersion,
-            getQmsStandards: getQmsStandards,
-            getRelatedListings: getRelatedListings,
-            getSearchOptions: getSearchOptions,
-            getSedParticipantStatisticsCount: getSedParticipantStatisticsCount,
-            getSimpleProduct: getSimpleProduct,
-            getSingleCertifiedProductActivity: getSingleCertifiedProductActivity,
-            getSurveillanceLookups: getSurveillanceLookups,
-            getTargetedUsers: getTargetedUsers,
-            getTestData: getTestData,
-            getTestFunctionality: getTestFunctionality,
-            getTestProcedures: getTestProcedures,
-            getTestStandards: getTestStandards,
-            getTestTools: getTestTools,
-            getUcdProcesses: getUcdProcesses,
-            getUploadingCps: getUploadingCps,
-            getUploadingSurveillances: getUploadingSurveillances,
-            getUploadTemplateVersions: getUploadTemplateVersions,
-            getUserActivities: getUserActivities,
-            getUserActivity: getUserActivity,
-            getUserByUsername: getUserByUsername,
-            getUsers: getUsers,
-            getUsersAtAcb: getUsersAtAcb,
-            getUsersAtAtl: getUsersAtAtl,
-            getVersion: getVersion,
-            getVersionActivity: getVersionActivity,
-            getVersionsByProduct: getVersionsByProduct,
-            initiateCap: initiateCap,
-            initiateSurveillance: initiateSurveillance,
-            inviteUser: inviteUser,
-            keepalive: keepalive,
-            login: login,
-            lookupCertificationId: lookupCertificationId,
-            massRejectPendingListings: massRejectPendingListings,
-            massRejectPendingSurveillance: massRejectPendingSurveillance,
-            modifyACB: modifyACB,
-            modifyATL: modifyATL,
-            modifyAnnouncement: modifyAnnouncement,
-            registerApi: registerApi,
-            rejectPendingCp: rejectPendingCp,
-            rejectPendingSurveillance: rejectPendingSurveillance,
-            removeUserFromAcb: removeUserFromAcb,
-            removeUserFromAtl: removeUserFromAtl,
-            resetPassword: resetPassword,
-            revokeApi: revokeApi,
-            revokeRole: revokeRole,
-            search: search,
-            setMeaningfulUseUsersAccurateAsOfDate: setMeaningfulUseUsersAccurateAsOfDate,
-            splitProduct: splitProduct,
-            undeleteACB: undeleteACB,
-            undeleteATL: undeleteATL,
-            undeleteAnnouncement: undeleteAnnouncement,
-            updateCP: updateCP,
-            updateCap: updateCap,
-            updateDeveloper: updateDeveloper,
-            updateFuzzyType: updateFuzzyType,
-            updateJob: updateJob,
-            updateProduct: updateProduct,
-            updateRecipient: updateRecipient,
-            updateScheduleTrigger: updateScheduleTrigger,
-            updateSurveillance: updateSurveillance,
-            updateUser: updateUser,
-            updateVersion: updateVersion,
-        }
-        return service
-
-        ////////////////////////////////////////////////////////////////////
-
-        function addRole (payload) {
-            return apiPOST('/users/grant_role', payload);
-        }
-
-        function authorizeUser (userAuthorization) {
-            return apiPOST('/users/authorize', userAuthorization);
-        }
-
-        function changePassword (userObj) {
-            return apiPOST('/auth/change_password', userObj);
-        }
-
-        function confirmPendingCp (pendingCp) {
-            return apiPOST('/certified_products/pending/confirm', pendingCp);
-        }
-
-        function confirmPendingSurveillance (surveillance) {
-            return apiPOST('/surveillance/pending/confirm', surveillance);
-        }
-
-        function confirmUser (userObject) {
-            return apiPOST('/users/confirm', userObject);
-        }
-
-        function createACB (acb) {
-            return apiPOST('/acbs/create', acb);
-        }
-
-        function createATL (atl) {
-            return apiPOST('/atls/create', atl);
-        }
-
-        function createAnnouncement (announcement) {
-            return apiPOST('/announcements/create', announcement);
-        }
-
-        function createInvitedUser (contactDetails) {
-            return apiPOST('/users/create', contactDetails);
-        }
-
-        function createRecipient (recipient) {
-            return apiPOST('/notifications/recipients/create', recipient);
-        }
-
-        function createScheduleTrigger (trigger) {
-            return apiPOST('/schedules/triggers', trigger);
-        }
-
-        function deleteACB (acbId) {
-            return apiPOST('/acbs/' + acbId + '/delete', {});
-        }
-
-        function deleteATL (atlId) {
-            return apiPOST('/atls/' + atlId + '/delete', {});
-        }
-
-        function deleteAnnouncement (announcementId) {
-            return apiPOST('/announcements/' + announcementId + '/delete', {});
-        }
-
-        function deleteCap (capId) {
-            return apiPOST('/corrective_action_plan/' + capId + '/delete', {});
-        }
-
-        function deleteDoc (docId) {
-            return apiPOST('/corrective_action_plan/documentation/' + docId + '/delete', {});
-        }
-
-        function deleteRecipient (recipient) {
-            return apiPOST('/notifications/recipients/' + recipient.id + '/delete', recipient, true);
-        }
-
-        function deleteScheduleTrigger (trigger) {
-            return apiDELETE('/schedules/triggers/' + trigger.group + '/' + trigger.name);
-        }
-
-        function deleteSurveillance (surveillanceId, reason) {
-            return apiPOST('/surveillance/' + surveillanceId + '/delete', {
-                reason: reason,
-            });
-        }
-
-        function deleteSurveillanceDocument (survId, docId) {
-            return apiPOST('/surveillance/' + survId + '/document/' + docId + '/delete', {});
-        }
-
-        function deleteUser (userId) {
-            return apiPOST('/users/' + userId + '/delete', {});
-        }
-
-        function getAcbActivity (activityRange) {
-            var call = '/activity/acbs';
-            return getActivity(call, activityRange);
-        }
-
-        function getAcbs (editable, deleted) {
-            if (angular.isUndefined(deleted)) { deleted = false; }
-            return apiGET('/acbs?editable=' + editable + '&showDeleted=' + deleted);
-        }
-
-        function getAccessibilityStandards () {
-            return apiGET('/data/accessibility_standards');
-        }
-
-        function getAgeRanges () {
-            return apiGET('/data/age_ranges');
-        }
-
-        function getAll () {
-            return apiGET('/collections/certified_products');
-        }
-
-        function getAnnouncement (announcementId) {
-            return apiGET('/announcements/' + announcementId);
-        }
-
-        function getAnnouncementActivity (activityRange) {
-            var call = '/activity/announcements';
-            return getActivity(call, activityRange);
-        }
-
-        function getAnnouncements (pending) {
-            return apiGET('/announcements?future=' + pending);
-        }
-
-        function getApiActivity (options) {
-            var params = [];
-            var queryParams = '';
-            if (angular.isDefined(options.pageNumber)) { params.push('pageNumber=' + options.pageNumber); }
-            if (options.pageSize) { params.push('pageSize=' + options.pageSize); }
-            if (options.startDate) { params.push('start=' + options.startDate.getTime()); }
-            if (options.endDate) { params.push('end=' + options.endDate.getTime()); }
-            if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
-            if (options.filter) {
-                var tmp = 'filter=';
-                if (!options.showOnly) { tmp += '!' }
-                tmp += options.filter
-                params.push(tmp);
-            }
-            if (params.length > 0) { queryParams = '?' + params.join('&'); }
-            return apiPOST('/key/activity/' + queryParams, {});
-        }
-
-        function getApiUserActivity (activityRange) {
-            var call = '/activity/api_keys';
-            return getActivity(call, activityRange);
-        }
-
-        function getApiUsers () {
-            return apiGET('/key');
-        }
-
-        function getAtlActivity (activityRange) {
-            var call = '/activity/atls';
-            return getActivity(call, activityRange);
-        }
-
-        function getAtls (editable, deleted) {
-            if (angular.isUndefined(deleted)) { deleted = false; }
-            return apiGET('/atls?editable=' + editable + '&showDeleted=' + deleted);
-        }
-
-        function getCap (certifiedProductId) {
-            return apiGET('/corrective_action_plan?certifiedProductId=' + certifiedProductId);
-        }
-
-        function getCertBodies () {
-            return apiGET('/data/certification_bodies');
-        }
-
-        function getCertificationStatuses () {
-            return apiGET('/data/certification_statuses');
-        }
-
-        function getCertifiedProductActivity (activityRange) {
-            var call = '/activity/certified_products';
-            return getActivity(call, activityRange);
-        }
-
-        function getCriterionProductStatistics () {
-            return apiGET('/statistics/criterion_product');
-        }
-
-        function getCmsDownload () {
-            return apiGET('/certification_ids');
-        }
-
-        function getCollection (type) {
-            switch (type) {
-            case 'apiDocumentation':
-                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
-            case 'bannedDevelopers':
-                return apiGET('/decertifications/developers');
-            case 'correctiveAction':
-                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
-            case 'decertifiedProducts':
-            case 'inactiveCertificates':
-                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse');
-            case 'sed':
-                return apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
-            case 'transparencyAttestations':
-                return apiGET('/collections/developers');
-                //no default
-            }
-        }
-
-        function getCorrectiveActionPlanActivity (activityRange) {
-            var call = '/activity/corrective_action_plans';
-            return getActivity(call, activityRange);
-        }
-
-        function getDeveloper (developerId) {
-            return apiGET('/developers/' + developerId);
-        }
-
-        function getDeveloperActivity (activityRange) {
-            var call = '/activity/developers';
-            return getActivity(call, activityRange);
-        }
-
-        function getDevelopers (showDeleted) {
-            if (showDeleted) {
-                return apiGET('/developers?showDeleted=true');
-            } else {
-                return apiGET('/developers');
-            }
-        }
-
-        function getEditions () {
-            return apiGET('/data/certification_editions');
-        }
-
-        function getEducation () {
-            return apiGET('/data/education_types');
-        }
-
-        function getFuzzyTypes () {
-            return apiGET('/data/fuzzy_choices');
-        }
-
-        function getIncumbentDevelopersStatistics () {
-            return apiGET('/statistics/incumbent_developers');
-        }
-
-        function getJobTypes () {
-            return apiGET('/data/job_types');
-        }
-
-        function getJobs () {
-            return apiGET('/jobs');
-        }
-
-        function getIcsFamily (id) {
-            return apiGET('/certified_products/' + id + '/ics_relationships');
-        }
-
-        function getListingCountStatistics () {
-            return apiGET('/statistics/listing_count');
-        }
-
-        function getMeaningfulUseUsersAccurateAsOfDate () {
-            return apiGET('/meaningful_use/accurate_as_of');
-        }
-
-        function getNonconformityStatisticsCount () {
-            return apiGET('/statistics/nonconformity_criteria_count');
-        }
-
-        function getScheduleTriggers () {
-            return apiGET('/schedules/triggers');
-        }
-
-        function getScheduleJobs () {
-            return apiGET('/schedules/jobs');
-        }
-
-        function getSubscriptionRecipients () {
-            return apiGET('/notifications/recipients');
-        }
-
-        function getSubscriptionReportTypes () {
-            return apiGET('/data/notification_types');
-        }
-
-        function getParticipantAgeStatistics () {
-            return apiGET('/statistics/participant_age_count');
-        }
-
-        function getParticipantComputerExperienceStatistics () {
-            return apiGET('/statistics/participant_computer_experience_count');
-        }
-
-        function getParticipantEducationStatistics () {
-            return apiGET('/statistics/participant_education_count');
-        }
-
-        function getParticipantGenderStatistics () {
-            return apiGET('/statistics/participant_gender_count');
-        }
-
-        function getParticipantProductExperienceStatistics () {
-            return apiGET('/statistics/participant_product_experience_count');
-        }
-
-        function getParticipantProfessionalExperienceStatistics () {
-            return apiGET('/statistics/participant_professional_experience_count');
-        }
-
-        function getPractices () {
-            return apiGET('/data/practice_types');
-        }
-
-        function getProduct (productId) {
-            return apiGET('/certified_products/' + productId + '/details');
-        }
-
-        function getProductActivity (activityRange) {
-            var call = '/activity/products';
-            return getActivity(call, activityRange);
-        }
-
-        function getProductsByDeveloper (developerId) {
-            return apiGET('/products?developerId=' + developerId);
-        }
-
-        function getProductsByVersion (versionId, editable) {
-            return apiGET('/certified_products?versionId=' + versionId + '&editable=' + editable);
-        }
-
-        function getQmsStandards () {
-            return apiGET('/data/qms_standards');
-        }
-
-        function getRelatedListings (productId) {
-            return apiGET('/products/' + productId + '/listings');
-        }
-
-        function getSearchOptions (showDeleted) {
-            if (showDeleted) {
-                return apiGET('/data/search_options?showDeleted=true');
-            } else {
-                return apiGET('/data/search_options');
-            }
-        }
-
-        function getSedParticipantStatisticsCount () {
-            return apiGET('/statistics/sed_participant_count');
-        }
-
-        function getSimpleProduct (productId) {
-            return apiGET('/products/' + productId);
-        }
-
-        function getSingleCertifiedProductActivity (productId) {
-            return apiGET('/activity/certified_products/' + productId);
-        }
-
-        function getSurveillanceLookups () {
-            var data = {};
-            apiGET('/data/surveillance_types')
-                .then(function (response) {
-                    data.surveillanceTypes = response;
-                });
-            apiGET('/data/surveillance_requirement_types')
-                .then(function (response) {
-                    data.surveillanceRequirementTypes = response;
-                });
-            apiGET('/data/surveillance_result_types')
-                .then(function (response) {
-                    data.surveillanceResultTypes = response;
-                });
-            apiGET('/data/nonconformity_status_types')
-                .then(function (response) {
-                    data.nonconformityStatusTypes = response;
-                });
-            apiGET('/data/surveillance_requirements')
-                .then(function (response) {
-                    data.surveillanceRequirements = response;
-                });
-            apiGET('/data/nonconformity_types')
-                .then(function (response) {
-                    data.nonconformityTypes = response;
-                });
-            return data;
-        }
-
-        function getTargetedUsers () {
-            return apiGET('/data/targeted_users');
-        }
-
-        function getTestData () {
-            return apiGET('/data/test_data');
-        }
-
-        function getTestFunctionality () {
-            return apiGET('/data/test_functionality');
-        }
-
-        function getTestProcedures () {
-            return apiGET('/data/test_procedures');
-        }
-
-        function getTestStandards () {
-            return apiGET('/data/test_standards');
-        }
-
-        function getTestTools () {
-            return apiGET('/data/test_tools');
-        }
-
-        function getUcdProcesses () {
-            return apiGET('/data/ucd_processes');
-        }
-
-        function getUploadingCps () {
-            return apiGET('/certified_products/pending');
-        }
-
-        function getUploadingSurveillances () {
-            return apiGET('/surveillance/pending');
-        }
-
-        function getUploadTemplateVersions () {
-            return apiGET('/data/upload_template_versions');
-        }
-
-        function getUserActivities (activityRange) {
-            var call = '/activity/user_activities';
-            return getActivity(call, activityRange);
-        }
-
-        function getUserActivity (activityRange) {
-            var call = '/activity/users';
-            return getActivity(call, activityRange);
-        }
-
-        function getUserByUsername (uname) {
-            return apiGET('/users/' + uname + '/details');
-        }
-
-        function getUsers () {
-            return apiGET('/users');
-        }
-
-        function getUsersAtAcb (acbId) {
-            return apiGET('/acbs/' + acbId + '/users');
-        }
-
-        function getUsersAtAtl (atlId) {
-            return apiGET('/atls/' + atlId + '/users');
-        }
-
-        function getVersion (versionId) {
-            return apiGET('/versions/' + versionId);
-        }
-
-        function getVersionActivity (activityRange) {
-            var call = '/activity/versions';
-            return getActivity(call, activityRange);
-        }
-
-        function getVersionsByProduct (productId) {
-            return apiGET('/versions?productId=' + productId);
-        }
-
-        function initiateCap (cap) {
-            return apiPOST('/corrective_action_plan/create', cap);
-        }
-
-        function initiateSurveillance (surveillance) {
-            return apiPOST('/surveillance/create', surveillance);
-        }
-
-        function inviteUser (invitationObject) {
-            return apiPOST('/users/invite', invitationObject);
-        }
-
-        function keepalive () {
-            return apiGET('/auth/keep_alive');
-        }
-
-        function login (userObj) {
-            return apiPOST('/auth/authenticate', userObj);
-        }
-
-        function lookupCertificationId (certId) {
-            return apiGET('/certification_ids/' + certId);
-        }
-
-        function massRejectPendingListings (ids) {
-            return apiPOST('/certified_products/pending/reject', {ids: ids});
-        }
-
-        function massRejectPendingSurveillance (ids) {
-            return apiPOST('/surveillance/pending/reject', {ids: ids});
-        }
-
-        function modifyACB (acb) {
-            return apiPOST('/acbs/update', acb);
-        }
-
-        function modifyATL (atl) {
-            return apiPOST('/atls/update', atl);
-        }
-
-        function modifyAnnouncement (announcement) {
-            return apiPOST('/announcements/update', announcement);
-        }
-
-        function registerApi (user) {
-            return apiPOST('/key/register', user);
-        }
-
-        function rejectPendingCp (cpId) {
-            return apiPOST('/certified_products/pending/' + cpId + '/reject', {});
-        }
-
-        function rejectPendingSurveillance (survId) {
-            return apiPOST('/surveillance/pending/' + survId + '/reject', {});
-        }
-
-        function removeUserFromAcb (userId, acbId) {
-            return apiPOST('/acbs/' + acbId + '/remove_user/' + userId, {});
-        }
-
-        function removeUserFromAtl (userId, atlId) {
-            return apiPOST('/atls/' + atlId + '/remove_user/' + userId, {});
-        }
-
-        function resetPassword (userObj) {
-            return apiPOST('/auth/reset_password', userObj);
-        }
-
-        function revokeApi (user) {
-            return apiPOST('/key/revoke', user);
-        }
-
-        function revokeRole (payload) {
-            return apiPOST('/users/revoke_role', payload);
-        }
-
-        function search (queryObj) {
-            return apiPOST('/search', queryObj);
-        }
-
-        function setMeaningfulUseUsersAccurateAsOfDate (date) {
-            return apiPOST('/meaningful_use/accurate_as_of', date);
-        }
-
-        function splitProduct (productObject) {
-            return apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
-        }
-
-        function undeleteACB (acbId) {
-            return apiPOST('/acbs/' + acbId + '/undelete', {});
-        }
-
-        function undeleteATL (atlId) {
-            return apiPOST('/atls/' + atlId + '/undelete', {});
-        }
-
-        function undeleteAnnouncement (announcementId) {
-            return apiPOST('/announcements/' + announcementId + '/undelete', {});
-        }
-
-        function updateCP (cpObject) {
-            return apiPOST('/certified_products/update', cpObject);
-        }
-
-        function updateCap (cap) {
-            return apiPOST('/corrective_action_plan/update', cap);
-        }
-
-        function updateDeveloper (developerObject) {
-            return apiPOST('/developers/update', developerObject);
-        }
-
-        function updateFuzzyType (fuzzyType) {
-            return apiPOST('/data/fuzzy_choices/update', fuzzyType);
-        }
-
-        function updateJob (job) {
-            return apiPUT('/schedules/jobs', job);
-        }
-
-        function updateProduct (productObject) {
-            return apiPOST('/products/update', productObject);
-        }
-
-        function updateRecipient (recipient) {
-            return apiPOST('/notifications/recipients/' + recipient.id + '/update', recipient);
-        }
-
-        function updateScheduleTrigger (trigger) {
-            return apiPUT('/schedules/triggers', trigger);
-        }
-
-        function updateSurveillance (surveillance) {
-            return apiPOST('/surveillance/update', surveillance);
-        }
-
-        function updateUser (user) {
-            return apiPOST('/users/update', user);
-        }
-
-        function updateVersion (versionObject) {
-            return apiPOST('/versions/update', versionObject);
-        }
-
-        ////////////////////////////////////////////////////////////////////
-
-        function apiDELETE (endpoint) {
-            return $http.delete(API + endpoint)
-                .then(function (response) {
-                    return response;
-                }, function (response) {
-                    return $q.reject(response);
-                });
-        }
-
-        function apiGET (endpoint) {
-            return $http.get(API + endpoint)
-                .then(function (response) {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        return $q.reject(response.data);
-                    }
-                }, function (response) {
-                    return $q.reject(response.data);
-                });
-        }
-
-        function apiPOST (endpoint, postObject, allowEmptyResponse) {
-            return $http.post(API + endpoint, postObject)
-                .then(function (response) {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        if (allowEmptyResponse) {
-                            return response;
-                        } else {
-                            return $q.reject(response);
-                        }
-                    }
-                }, function (response) {
-                    return $q.reject(response);
-                });
-        }
-
-        function apiPUT (endpoint, postObject, allowEmptyResponse) {
-            return $http.put(API + endpoint, postObject)
-                .then(function (response) {
-                    if (angular.isObject(response.data)) {
-                        return response.data;
-                    } else {
-                        if (allowEmptyResponse) {
-                            return response;
-                        } else {
-                            return $q.reject(response);
-                        }
-                    }
-                }, function (response) {
-                    return $q.reject(response);
-                });
-        }
-
-        function getActivity (call, activityRange) {
-            var params = [];
-            if (activityRange.startDate) {
-                params.push('start=' + activityRange.startDate.getTime());
-            }
-            if (activityRange.endDate) {
-                params.push('end=' + activityRange.endDate.getTime());
-            }
-            if (params.length > 0) {
-                call += '?' + params.join('&');
-            }
-            return apiGET(call);
+export class NetworkService {
+    constructor ($http, $log, $q, API) {
+        'ngInject';
+        this.$http = $http;
+        this.$log = $log;
+        this.$q = $q;
+        this.API = API;
+    }
+
+    addRole (payload) {
+        return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
+    }
+
+    authorizeUser (userAuthorization) {
+        return this.apiPOST('/users/authorize', userAuthorization);
+    }
+
+    changePassword (userObj) {
+        return this.apiPOST('/auth/change_password', userObj);
+    }
+
+    confirmPendingCp (pendingCp) {
+        return this.apiPOST('/certified_products/pending/' + pendingCp.id + '/confirm', pendingCp);
+    }
+
+    confirmPendingSurveillance (surveillance) {
+        return this.apiPOST('/surveillance/pending/confirm', surveillance);
+    }
+
+    confirmUser (userObject) {
+        return this.apiPOST('/users/confirm', userObject);
+    }
+
+    createACB (acb) {
+        return this.apiPOST('/acbs', acb);
+    }
+
+    createATL (atl) {
+        return this.apiPOST('/atls', atl);
+    }
+
+    createAnnouncement (announcement) {
+        return this.apiPOST('/announcements/create', announcement);
+    }
+
+    createCmsId (ids) {
+        return this.apiPOST('/certification_ids?ids=' + ids.join(','), {});
+    }
+
+    createInvitedUser (contactDetails) {
+        return this.apiPOST('/users/create', contactDetails);
+    }
+
+    createScheduleTrigger (trigger) {
+        return this.apiPOST('/schedules/triggers', trigger);
+    }
+
+    deleteACB (acbId) {
+        return this.apiDELETE('/acbs/' + acbId);
+    }
+
+    deleteATL (atlId) {
+        return this.apiDELETE('/atls/' + atlId);
+    }
+
+    deleteAnnouncement (announcementId) {
+        return this.apiDELETE('/announcements/' + announcementId);
+    }
+
+    deleteScheduleTrigger (trigger) {
+        return this.apiDELETE('/schedules/triggers/' + trigger.group + '/' + trigger.name);
+    }
+
+    deleteSurveillance (surveillanceId, reason) {
+        return this.apiDELETE('/surveillance/' + surveillanceId, {
+            reason: reason,
+        });
+    }
+
+    deleteSurveillanceDocument (survId, docId) {
+        return this.apiDELETE('/surveillance/' + survId + '/document/' + docId);
+    }
+
+    deleteUser (userId) {
+        return this.apiDELETE('/users/' + userId);
+    }
+
+    getAcbActivity (activityRange) {
+        var call = '/activity/acbs';
+        return this.getActivity(call, activityRange);
+    }
+
+    getAcbs (editable, deleted) {
+        if (angular.isUndefined(deleted)) { deleted = false; }
+        return this.apiGET('/acbs?editable=' + editable + '&showDeleted=' + deleted);
+    }
+
+    getAccessibilityStandards () {
+        return this.apiGET('/data/accessibility_standards');
+    }
+
+    getAgeRanges () {
+        return this.apiGET('/data/age_ranges');
+    }
+
+    getAll () {
+        return this.apiGET('/collections/certified_products');
+    }
+
+    getAnnouncement (announcementId) {
+        return this.apiGET('/announcements/' + announcementId);
+    }
+
+    getAnnouncementActivity (activityRange) {
+        var call = '/activity/announcements';
+        return this.getActivity(call, activityRange);
+    }
+
+    getAnnouncements (pending) {
+        return this.apiGET('/announcements?future=' + pending);
+    }
+
+    getApiActivity (options) {
+        var params = [];
+        var queryParams = '';
+        if (angular.isDefined(options.pageNumber)) { params.push('pageNumber=' + options.pageNumber); }
+        if (options.pageSize) { params.push('pageSize=' + options.pageSize); }
+        if (options.startDate) { params.push('start=' + options.startDate.getTime()); }
+        if (options.endDate) { params.push('end=' + options.endDate.getTime()); }
+        if (options.dateAscending) { params.push('dateAscending=' + options.dateAscending); }
+        if (options.filter) {
+            var tmp = 'filter=';
+            if (!options.showOnly) { tmp += '!' }
+            tmp += options.filter
+            params.push(tmp);
+        }
+        if (params.length > 0) { queryParams = '?' + params.join('&'); }
+        return this.apiGET('/key/activity' + queryParams);
+    }
+
+    getApiUserActivity (activityRange) {
+        var call = '/activity/api_keys';
+        return this.getActivity(call, activityRange);
+    }
+
+    getApiUsers () {
+        return this.apiGET('/key');
+    }
+
+    getAtlActivity (activityRange) {
+        var call = '/activity/atls';
+        return this.getActivity(call, activityRange);
+    }
+
+    getAtls (editable, deleted) {
+        if (angular.isUndefined(deleted)) { deleted = false; }
+        return this.apiGET('/atls?editable=' + editable + '&showDeleted=' + deleted);
+    }
+
+    getCertBodies () {
+        return this.apiGET('/data/certification_bodies');
+    }
+
+    getCertificationStatuses () {
+        return this.apiGET('/data/certification_statuses');
+    }
+
+    getCertifiedProductActivity (activityRange) {
+        var call = '/activity/certified_products';
+        return this.getActivity(call, activityRange);
+    }
+
+    getCriterionProductStatistics () {
+        return this.apiGET('/statistics/criterion_product');
+    }
+
+    getCmsDownload () {
+        return this.apiGET('/certification_ids');
+    }
+
+    getCmsId (key, includeCriteria) {
+        return this.apiGET('/certification_ids/' + key + '?includeCriteria=' + (includeCriteria ? 'true' : 'false'));
+    }
+
+    getCmsIds (ids) {
+        return this.apiGET('/certification_ids/search?ids=' + ids);
+    }
+
+    getCollection (type) {
+        switch (type) {
+        case 'apiDocumentation':
+            return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,criteriaMet,apiDocumentation,transparencyAttestationUrl');
+        case 'bannedDevelopers':
+            return this.apiGET('/decertifications/developers');
+        case 'correctiveAction':
+            return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,certificationStatus,acb,surveillanceCount,openNonconformityCount,closedNonconformityCount');
+        case 'decertifiedProducts':
+        case 'inactiveCertificates':
+            return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,decertificationDate,certificationStatus,numMeaningfulUse,numMeaningfulUseDate');
+        case 'sed':
+            return this.apiGET('/collections/certified_products?fields=id,edition,developer,product,version,chplProductNumber,acb,certificationStatus,criteriaMet');
+        case 'transparencyAttestations':
+            return this.apiGET('/collections/developers');
+            //no default
         }
     }
-})();
+
+    getCorrectiveActionPlanActivity (activityRange) {
+        var call = '/activity/corrective_action_plans';
+        return this.getActivity(call, activityRange);
+    }
+
+    getDeveloper (developerId) {
+        return this.apiGET('/developers/' + developerId);
+    }
+
+    getDeveloperActivity (activityRange) {
+        var call = '/activity/developers';
+        return this.getActivity(call, activityRange);
+    }
+
+    getDevelopers (showDeleted) {
+        if (showDeleted) {
+            return this.apiGET('/developers?showDeleted=true');
+        } else {
+            return this.apiGET('/developers');
+        }
+    }
+
+    getEditions () {
+        return this.apiGET('/data/certification_editions');
+    }
+
+    getEducation () {
+        return this.apiGET('/data/education_types');
+    }
+
+    getFuzzyTypes () {
+        return this.apiGET('/data/fuzzy_choices');
+    }
+
+    getIncumbentDevelopersStatistics () {
+        return this.apiGET('/statistics/incumbent_developers');
+    }
+
+    getJobTypes () {
+        return this.apiGET('/data/job_types');
+    }
+
+    getJobs () {
+        return this.apiGET('/jobs');
+    }
+
+    getIcsFamily (id) {
+        return this.apiGET('/certified_products/' + id + '/ics_relationships');
+    }
+
+    getListingCountStatistics () {
+        return this.apiGET('/statistics/listing_count');
+    }
+
+    getNonconformityStatisticsCount () {
+        return this.apiGET('/statistics/nonconformity_criteria_count');
+    }
+
+    getScheduleTriggers () {
+        return this.apiGET('/schedules/triggers');
+    }
+
+    getScheduleJobs () {
+        return this.apiGET('/schedules/jobs');
+    }
+
+    getParticipantAgeStatistics () {
+        return this.apiGET('/statistics/participant_age_count');
+    }
+
+    getParticipantComputerExperienceStatistics () {
+        return this.apiGET('/statistics/participant_computer_experience_count');
+    }
+
+    getParticipantEducationStatistics () {
+        return this.apiGET('/statistics/participant_education_count');
+    }
+
+    getParticipantGenderStatistics () {
+        return this.apiGET('/statistics/participant_gender_count');
+    }
+
+    getParticipantProductExperienceStatistics () {
+        return this.apiGET('/statistics/participant_product_experience_count');
+    }
+
+    getParticipantProfessionalExperienceStatistics () {
+        return this.apiGET('/statistics/participant_professional_experience_count');
+    }
+
+    getPractices () {
+        return this.apiGET('/data/practice_types');
+    }
+
+    getProduct (productId) {
+        return this.apiGET('/certified_products/' + productId + '/details');
+    }
+
+    getProductActivity (activityRange) {
+        var call = '/activity/products';
+        return this.getActivity(call, activityRange);
+    }
+
+    getProductsByDeveloper (developerId) {
+        return this.apiGET('/products?developerId=' + developerId);
+    }
+
+    getProductsByVersion (versionId, editable) {
+        return this.apiGET('/certified_products?versionId=' + versionId + '&editable=' + editable);
+    }
+
+    getQmsStandards () {
+        return this.apiGET('/data/qms_standards');
+    }
+
+    getRelatedListings (productId) {
+        return this.apiGET('/products/' + productId + '/listings');
+    }
+
+    getSearchOptions (showDeleted) {
+        if (showDeleted) {
+            return this.apiGET('/data/search_options?showDeleted=true');
+        } else {
+            return this.apiGET('/data/search_options');
+        }
+    }
+
+    getSedParticipantStatisticsCount () {
+        return this.apiGET('/statistics/sed_participant_count');
+    }
+
+    getSimpleProduct (productId) {
+        return this.apiGET('/products/' + productId);
+    }
+
+    getSingleCertifiedProductActivity (productId) {
+        return this.apiGET('/activity/certified_products/' + productId);
+    }
+
+    getSurveillanceLookups () {
+        var data = {};
+        this.apiGET('/data/surveillance_types')
+            .then(function (response) {
+                data.surveillanceTypes = response;
+            });
+        this.apiGET('/data/surveillance_requirement_types')
+            .then(function (response) {
+                data.surveillanceRequirementTypes = response;
+            });
+        this.apiGET('/data/surveillance_result_types')
+            .then(function (response) {
+                data.surveillanceResultTypes = response;
+            });
+        this.apiGET('/data/nonconformity_status_types')
+            .then(function (response) {
+                data.nonconformityStatusTypes = response;
+            });
+        this.apiGET('/data/surveillance_requirements')
+            .then(function (response) {
+                data.surveillanceRequirements = response;
+            });
+        this.apiGET('/data/nonconformity_types')
+            .then(function (response) {
+                data.nonconformityTypes = response;
+            });
+        return data;
+    }
+
+    getTargetedUsers () {
+        return this.apiGET('/data/targeted_users');
+    }
+
+    getTestData () {
+        return this.apiGET('/data/test_data');
+    }
+
+    getTestFunctionality () {
+        return this.apiGET('/data/test_functionality');
+    }
+
+    getTestProcedures () {
+        return this.apiGET('/data/test_procedures');
+    }
+
+    getTestStandards () {
+        return this.apiGET('/data/test_standards');
+    }
+
+    getTestTools () {
+        return this.apiGET('/data/test_tools');
+    }
+
+    getUcdProcesses () {
+        return this.apiGET('/data/ucd_processes');
+    }
+
+    getUploadingCps () {
+        return this.apiGET('/certified_products/pending');
+    }
+
+    getUploadingSurveillances () {
+        return this.apiGET('/surveillance/pending');
+    }
+
+    getUploadTemplateVersions () {
+        return this.apiGET('/data/upload_template_versions');
+    }
+
+    getUserActivities (activityRange) {
+        var call = '/activity/user_activities';
+        return this.getActivity(call, activityRange);
+    }
+
+    getUserActivity (activityRange) {
+        var call = '/activity/users';
+        return this.getActivity(call, activityRange);
+    }
+
+    getUserByUsername (uname) {
+        return this.apiGET('/users/' + uname + '/details');
+    }
+
+    getUsers () {
+        return this.apiGET('/users');
+    }
+
+    getUsersAtAcb (acbId) {
+        return this.apiGET('/acbs/' + acbId + '/users');
+    }
+
+    getUsersAtAtl (atlId) {
+        return this.apiGET('/atls/' + atlId + '/users');
+    }
+
+    getVersion (versionId) {
+        return this.apiGET('/versions/' + versionId);
+    }
+
+    getVersionActivity (activityRange) {
+        var call = '/activity/versions';
+        return this.getActivity(call, activityRange);
+    }
+
+    getVersionsByProduct (productId) {
+        return this.apiGET('/versions?productId=' + productId);
+    }
+
+    initiateSurveillance (surveillance) {
+        return this.apiPOST('/surveillance', surveillance);
+    }
+
+    inviteUser (invitationObject) {
+        return this.apiPOST('/users/invite', invitationObject);
+    }
+
+    keepalive () {
+        return this.apiGET('/auth/keep_alive');
+    }
+
+    login (userObj) {
+        return this.apiPOST('/auth/authenticate', userObj);
+    }
+
+    lookupCertificationId (certId) {
+        return this.apiGET('/certification_ids/' + certId);
+    }
+
+    massRejectPendingListings (ids) {
+        return this.apiDELETE('/certified_products/pending', {ids: ids});
+    }
+
+    massRejectPendingSurveillance (ids) {
+        return this.apiDELETE('/surveillance/pending', {ids: ids});
+    }
+
+    modifyACB (acb) {
+        return this.apiPUT('/acbs/' + acb.id, acb);
+    }
+
+    modifyATL (atl) {
+        return this.apiPUT('/atls/' + atl.id, atl);
+    }
+
+    modifyAnnouncement (announcement) {
+        return this.apiPUT('/announcements/' + announcement.id, announcement);
+    }
+
+    registerApi (user) {
+        return this.apiPOST('/key/register', user);
+    }
+
+    rejectPendingCp (cpId) {
+        return this.apiDELETE('/certified_products/pending/' + cpId);
+    }
+
+    rejectPendingSurveillance (survId) {
+        return this.apiDELETE('/surveillance/pending/' + survId);
+    }
+
+    removeUserFromAcb (userId, acbId) {
+        return this.apiDELETE('/acbs/' + acbId + '/users/' + userId);
+    }
+
+    removeUserFromAtl (userId, atlId) {
+        return this.apiDELETE('/atls/' + atlId + '/users/' + userId);
+    }
+
+    resetPassword (userObj) {
+        return this.apiPOST('/auth/reset_password', userObj);
+    }
+
+    revokeApi (user) {
+        return this.apiDELETE('/key/' + user.key);
+    }
+
+    revokeRole (payload) {
+        return this.apiDELETE('/users/' + payload.subjectName + '/roles/' + payload.role);
+    }
+
+    search (queryObj) {
+        return this.apiPOST('/search', queryObj);
+    }
+
+    splitProduct (productObject) {
+        return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
+    }
+
+    undeleteACB (acbId) {
+        return this.apiPUT('/acbs/' + acbId + '/undelete');
+    }
+
+    undeleteATL (atlId) {
+        return this.apiPUT('/atls/' + atlId + '/undelete');
+    }
+
+    updateCP (cpObject) {
+        return this.apiPUT('/certified_products/' + cpObject.listing.id, cpObject);
+    }
+
+    updateDeveloper (developerObject) {
+        return this.apiPUT('/developers', developerObject);
+    }
+
+    updateFuzzyType (fuzzyType) {
+        return this.apiPUT('/data/fuzzy_choices/' + fuzzyType.id, fuzzyType);
+    }
+
+    updateJob (job) {
+        return this.apiPUT('/schedules/jobs', job);
+    }
+
+    updateProduct (productObject) {
+        return this.apiPUT('/products', productObject);
+    }
+
+    updateScheduleTrigger (trigger) {
+        return this.apiPUT('/schedules/triggers', trigger);
+    }
+
+    updateSurveillance (surveillance) {
+        return this.apiPUT('/surveillance/' + surveillance.id, surveillance);
+    }
+
+    updateUser (user) {
+        return this.apiPUT('/users/' + user.userId, user);
+    }
+
+    updateVersion (versionObject) {
+        return this.apiPUT('/versions', versionObject);
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
+    apiDELETE (endpoint, deleteObject) {
+        return this.$http.delete(this.API + endpoint, {data: deleteObject, headers: {'Content-Type': 'application/json;charset=utf-8'}})
+            .then(response => response, response => this.$q.reject(response));
+    }
+
+    apiGET (endpoint) {
+        return this.$http.get(this.API + endpoint)
+            .then(response => {
+                if (angular.isObject(response.data)) {
+                    return response.data;
+                } else {
+                    return this.$q.reject(response.data);
+                }
+            }, response => this.$q.reject(response.data));
+    }
+
+    apiPOST (endpoint, postObject) {
+        return this.$http.post(this.API + endpoint, postObject)
+            .then(response => {
+                if (angular.isObject(response.data)) {
+                    return response.data;
+                } else {
+                    return this.$q.reject(response);
+                }
+            }, response => this.$q.reject(response));
+    }
+
+    apiPUT (endpoint, postObject) {
+        return this.$http.put(this.API + endpoint, postObject)
+            .then(response => {
+                if (angular.isObject(response.data)) {
+                    return response.data;
+                } else {
+                    return this.$q.reject(response);
+                }
+            }, response => this.$q.reject(response));
+    }
+
+    getActivity (call, activityRange) {
+        var params = [];
+        if (activityRange.startDate) {
+            params.push('start=' + activityRange.startDate.getTime());
+        }
+        if (activityRange.endDate) {
+            params.push('end=' + activityRange.endDate.getTime());
+        }
+        if (params.length > 0) {
+            call += '?' + params.join('&');
+        }
+        return this.apiGET(call);
+    }
+}
+
+angular.module('chpl.services')
+    .service('networkService', NetworkService);
