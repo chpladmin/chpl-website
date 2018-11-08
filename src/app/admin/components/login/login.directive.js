@@ -12,10 +12,10 @@
             restrict: 'E',
             replace: true,
             templateUrl: 'chpl.admin/components/login/login.html',
-            scope: {
-            },
+            scope: {},
             bindToController: {
                 formClass: '@',
+                token: '=',
                 pClass: '@',
                 pClassFail: '@',
             },
@@ -39,6 +39,7 @@
         vm.passwordTitle = utilService.passwordTitle;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
+        vm.resetPassword = resetPassword;
 
         vm.activityEnum = {
             LOGIN: 1,
@@ -87,6 +88,36 @@
                 vm.message = 'Passwords do not match. Please try again';
             } else {
                 networkService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
+                    .then(function (response) {
+                        if (response.passwordUpdated) {
+                            vm.clear();
+                            vm.messageClass = vm.pClass;
+                            vm.message = 'Password successfully changed';
+                        } else {
+                            vm.messageClass = vm.pClassFail;
+                            vm.message = 'Your password was not changed. ';
+                            if (response.warning) {
+                                vm.message += response.warning;
+                            }
+                            if (response.suggestions && response.suggestions.length > 0) {
+                                vm.message += 'Suggestion' + (response.suggestions.length > 1 ? 's' : '') + ': ' + response.suggestions.join(' ');
+                            }
+                            if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
+                                vm.message += 'Please try again with a stronger password.';
+                            }
+                        }
+                    }, function () {
+                        vm.messageClass = vm.pClassFail;
+                        vm.message = 'Error. Please check your credentials or contact the administrator';
+                    });
+            }
+        }
+
+        function resetPassword () {
+            if (vm.misMatchPasswords()) {
+                vm.message = 'Passwords do not match. Please try again';
+            } else {
+                networkService.resetPassword({token: vm.token, userName: vm.userName, newPassword: vm.newPassword})
                     .then(function (response) {
                         if (response.passwordUpdated) {
                             vm.clear();
@@ -166,7 +197,7 @@
         }
 
         function sendReset () {
-            networkService.resetPassword({userName: vm.userName, email: vm.email})
+            networkService.emailResetPassword({userName: vm.userName, email: vm.email})
                 .then(function () {
                     vm.clear();
                     vm.messageClass = vm.pClass;

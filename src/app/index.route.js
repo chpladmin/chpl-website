@@ -13,6 +13,12 @@
                 controllerAs: 'vm',
                 title: 'CHPL Administration',
             })
+            .when('/auth/authorize_password_reset/:token', {
+                templateUrl: 'chpl.admin/components/login/reset.html',
+                controller: 'ResetController',
+                controllerAs: 'vm',
+                title: 'Password Reset',
+            })
             .when('/charts', {
                 controller: 'ChartsController',
                 controllerAs: 'vm',

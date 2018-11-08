@@ -11,6 +11,10 @@ export class NetworkService {
         return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
+    authorizeToken (token) {
+        return this.apiPOST('auth/authorize_password_reset/' + token);
+    }
+
     authorizeUser (userAuthorization) {
         return this.apiPOST('/users/authorize', userAuthorization);
     }
@@ -513,7 +517,11 @@ export class NetworkService {
     }
 
     resetPassword (userObj) {
-        return this.apiPOST('/auth/reset_password', userObj);
+        return this.apiPOST('/auth/reset_password_request', userObj);
+    }
+
+    emailResetPassword (userObj) {
+        return this.apiPOST('/auth/email_reset_password', userObj);
     }
 
     revokeApi (user) {
