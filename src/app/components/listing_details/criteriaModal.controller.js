@@ -44,6 +44,8 @@
             vm.selectedTestProcedureKeys = _getSelectedTestProcedureKeys();
             vm.selectedTestStandardKeys = _getSelectedTestStandardKeys();
             vm.selectedTestToolKeys = _getSelectedTestToolKeys();
+
+            _sortTestFunctionalities();
         }
 
         function cancel () {
@@ -185,6 +187,18 @@
                 ttKeys.push({'key': tt.testToolId, 'additionalInputValue': tt.testToolVersion});
             });
             return ttKeys;
+        }
+
+        function _sortTestFunctionalities () {
+            vm.cert.allowedTestFunctionalities.sort(function (a, b) {
+                if (a.name < b.name) {
+                    return -1; 
+                } else if (a.name > b.name) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+	        });
         }
 
         function _testDataEditItem (testData) {
