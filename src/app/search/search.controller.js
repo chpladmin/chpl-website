@@ -1,3 +1,5 @@
+import * as Actions from '../actions';
+
 (function () {
     'use strict';
 
@@ -5,7 +7,7 @@
         .controller('SearchController', SearchController);
 
     /** @ngInject */
-    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, networkService, utilService) {
+    function SearchController ($analytics, $filter, $interval, $localStorage, $location, $log, $ngRedux, $rootScope, $scope, $timeout, $uibModal, CACHE_REFRESH_TIMEOUT, CACHE_TIMEOUT, RELOAD_TIMEOUT, SPLIT_PRIMARY, networkService, utilService) {
         var vm = this;
 
         vm.browseAll = browseAll;
@@ -62,6 +64,11 @@
             }
             vm.loadResults();
             setTimestamp();
+
+            let unsubscribe = $ngRedux.connect(state => ({ allCps: state.parseCertifiedProducts.certifiedProducts}))(vm);
+            $scope.$on('$destroy', () => { unsubscribe(); });
+            $ngRedux.dispatch(Actions.fetchCertifiedProductsIfNeeded())
+                .then(() => { vm.isPreloading = false; });
         }
 
         vm.defaultRefineModel = {
