@@ -46,12 +46,10 @@ function fetchCertifiedProducts () {
 }
 
 function shouldFetchCertifiedProducts (state) {
-    if (!state.getCertifiedProducts) {
+    if (!state.getCertifiedProducts || !state.getCertifiedProducts.certifiedProducts || state.getCertifiedProducts.certifiedProducts.length === 0) {
         return true;
     } else if (state.getCertifiedProducts.isFetching) {
         return false;
-    } else if ((Date.now() - state.getCertifiedProducts.lastUpdated) > (1000 * 60)) { // one minute refresh
-        return true;
     }
     return true;
 }

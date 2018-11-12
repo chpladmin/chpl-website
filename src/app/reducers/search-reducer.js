@@ -10,18 +10,19 @@ export default function parseCertifiedProducts (
     case PARSE_CERTIFIED_PRODUCTS:
         return Object.assign({}, state, {
             certifiedProducts: action.payload.certifiedProducts.payload.certifiedProducts.map(listing => {
-                listing.mainSearch = [listing.developer, listing.product, listing.acbCertificationId, listing.chplProductNumber].join('|');
-                listing.developerSearch = listing.developer;
-                if (listing.previousDevelopers) {
-                    listing.mainSearch += '|' + listing.previousDevelopers;
-                    listing.developerSearch += '|' + listing.previousDevelopers;
+                const ret = angular.copy(listing);
+                ret.mainSearch = [ret.developer, ret.product, ret.acbCertificationId, ret.chplProductNumber].join('|');
+                ret.developerSearch = ret.developer;
+                if (ret.previousDevelopers) {
+                    ret.mainSearch += '|' + ret.previousDevelopers;
+                    ret.developerSearch += '|' + ret.previousDevelopers;
                 }
-                listing.surveillance = angular.toJson({
-                    surveillanceCount: listing.surveillanceCount,
-                    openNonconformityCount: listing.openNonconformityCount,
-                    closedNonconformityCount: listing.closedNonconformityCount,
+                ret.surveillance = angular.toJson({
+                    surveillanceCount: ret.surveillanceCount,
+                    openNonconformityCount: ret.openNonconformityCount,
+                    closedNonconformityCount: ret.closedNonconformityCount,
                 });
-                return listing;
+                return ret;
             }),
         })
     default:

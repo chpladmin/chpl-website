@@ -37,9 +37,9 @@ import /* ngFileSaver from*/ 'angular-file-saver';
 import /* ngStorage from*/ 'ngstorage';
 import 'angular-zxcvbn';
 import 'zxcvbn';
-import 'ng-redux';
-import 'redux-logger';
-import 'redux-thunk';
+//import 'ng-redux';
+//import 'redux-logger';
+//import 'redux-thunk';
 
 // import app modules
 import /* adminModule from*/ './admin/index';
@@ -86,7 +86,7 @@ const dependencies = [
     'ngCytoscape',
     //    'ngMessages',
     'ngFileSaver',
-    'ngRedux',
+    //'ngRedux',
     'ngResource',
     'ngRoute',
     'ngStorage',

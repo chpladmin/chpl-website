@@ -1,8 +1,7 @@
 /* global DEVELOPER_MODE ENABLE_LOGGING */
-/* eslint-disable no-console,angular/log */
-import thunkMiddleware from 'redux-thunk'
-import { createLogger } from 'redux-logger';
-import reducers from './reducers';
+//import thunkMiddleware from 'redux-thunk'
+//import { createLogger } from 'redux-logger';
+//import reducers from './reducers';
 
 (function () {
     'use strict';
@@ -12,7 +11,7 @@ import reducers from './reducers';
         .config(config);
 
     /** @ngInject */
-    function config ($analyticsProvider, $locationProvider, $logProvider, $ngReduxProvider, TitleProvider, stConfig) {
+    function config ($analyticsProvider, $locationProvider, $logProvider/*, $ngReduxProvider*/, TitleProvider, stConfig) {
         // Enable/disable analytics tracking
         $analyticsProvider.developerMode(DEVELOPER_MODE);
         /*
@@ -37,11 +36,13 @@ import reducers from './reducers';
         TitleProvider.enabled(false);
 
         // Set up Redux store
+        /*
         const logger = createLogger({
             level: 'info',
             collapsed: true,
         });
         $ngReduxProvider
             .createStoreWith(reducers, [logger, thunkMiddleware], [window.__REDUX_DEVTOOLS_EXTENSION__()]);
+            */
     }
 })();
