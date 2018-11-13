@@ -22,6 +22,7 @@
                     $uibModalInstance: Mock.modalInstance,
                     disableValidation: false,
                     randomized: false,
+                    randomizedSitesUsed: 34,
                     requirement: {},
                     surveillanceId: 1,
                     surveillanceTypes: {},
@@ -64,6 +65,7 @@
                         disableValidation: jasmine.any(Function),
                         nonconformity: jasmine.any(Function),
                         randomized: jasmine.any(Function),
+                        randomizedSitesUsed: jasmine.any(Function),
                         requirementId: jasmine.any(Function),
                         surveillanceId: jasmine.any(Function),
                         surveillanceTypes: jasmine.any(Function),
@@ -84,6 +86,7 @@
                 expect(actualOptions.resolve.disableValidation()).toBe(false);
                 expect(actualOptions.resolve.nonconformity()).toEqual({});
                 expect(actualOptions.resolve.randomized()).toEqual(vm.randomized);
+                expect(actualOptions.resolve.randomizedSitesUsed()).toEqual(vm.randomizedSitesUsed);
                 expect(actualOptions.resolve.requirementId()).toEqual(vm.requirement.id);
                 expect(actualOptions.resolve.surveillanceId()).toEqual(vm.surveillanceId);
                 expect(actualOptions.resolve.surveillanceTypes()).toEqual(vm.data);
@@ -127,6 +130,7 @@
                         disableValidation: jasmine.any(Function),
                         nonconformity: jasmine.any(Function),
                         randomized: jasmine.any(Function),
+                        randomizedSitesUsed: jasmine.any(Function),
                         requirementId: jasmine.any(Function),
                         surveillanceId: jasmine.any(Function),
                         surveillanceTypes: jasmine.any(Function),
@@ -147,6 +151,7 @@
                 expect(actualOptions.resolve.disableValidation()).toBe(false);
                 expect(actualOptions.resolve.nonconformity()).toEqual(noncon);
                 expect(actualOptions.resolve.randomized()).toEqual(vm.randomized);
+                expect(actualOptions.resolve.randomizedSitesUsed()).toEqual(vm.randomizedSitesUsed);
                 expect(actualOptions.resolve.requirementId()).toEqual(vm.requirement.id);
                 expect(actualOptions.resolve.surveillanceId()).toEqual(vm.surveillanceId);
                 expect(actualOptions.resolve.surveillanceTypes()).toEqual(vm.data);

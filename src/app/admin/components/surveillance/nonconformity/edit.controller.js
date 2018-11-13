@@ -5,7 +5,7 @@
         .controller('EditNonconformityController', EditNonconformityController);
 
     /** @ngInject */
-    function EditNonconformityController ($log, $uibModalInstance, API, FileUploader, authService, disableValidation, networkService, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, utilService, workType) {
+    function EditNonconformityController ($log, $uibModalInstance, API, FileUploader, authService, disableValidation, networkService, nonconformity, randomized, randomizedSitesUsed, requirementId, surveillanceId, surveillanceTypes, utilService, workType) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -22,6 +22,7 @@
             vm.disableValidation = disableValidation;
             vm.nonconformity = angular.copy(nonconformity);
             vm.randomized = randomized;
+            vm.randomizedSitesUsed = randomizedSitesUsed;
             vm.requirementId = requirementId;
             vm.showFormErrors = false;
             vm.surveillanceId = surveillanceId;
