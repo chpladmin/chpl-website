@@ -22,11 +22,16 @@
         function authorizeToken () {
             networkService.authorizeToken(vm.userToken)
                 .then(function (response) {
-                    vm.isAuthorized = response.data;
-                    $log.info(response.data);
+                    var isTokenAuth = JSON.parse(response.authorized);
+                    if (!isTokenAuth) {
+                        vm.message = 'This token is not valid.';
+                        vm.isAuthorized = false;
+                    } else {
+                        vm.isAuthorized = true;
+                    }
                 }, function (error) {
-                    vm.isAuthorized = error.data;
                     $log.error(error);
+                    return false;
                 });
         }
     }

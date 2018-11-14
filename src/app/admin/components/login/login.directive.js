@@ -121,6 +121,7 @@
                     .then(function (response) {
                         if (response.passwordUpdated) {
                             vm.clear();
+                            vm.isReset = undefined;
                             vm.messageClass = vm.pClass;
                             vm.message = 'Password successfully changed';
                         } else {

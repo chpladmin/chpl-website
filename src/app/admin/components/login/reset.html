@@ -5,6 +5,7 @@
     </div>
   </div>
 
+  <p ng-if="vm.message.length > 0">{{ vm.message }}</p>
   <div ng-if="vm.isAuthorized" class="row">
     <div class="col-md-4 col-md-offset-4">
       <ai-login form-class=""

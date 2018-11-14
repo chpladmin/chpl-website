@@ -76,7 +76,8 @@
     <button class="btn btn-default btn-block" id="reset_{{$id}}" ng-click="vm.sendReset(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.RESET" ng-disabled="vm.loginForm.$invalid">Send reset email</button>
     <button class="btn btn-default btn-block" id="forgot_{{$id}}" ng-click="vm.setActivity(vm.activityEnum.RESET); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN">Forgot Password</button>
     <button class="btn btn-default btn-block" id="logout_{{$id}}" ng-click="vm.logout()" ng-if="vm.activity == vm.activityEnum.NONE">Log Out</button>
-    <button class="btn btn-default btn-block" id="confirm_{{$id}}" ng-click="vm.changePassword()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.isReset" ng-disabled="vm.loginForm.$invalid || vm.misMatchPasswords()">Confirm new Password</button>
+    <button class="btn btn-default btn-block" id="confirm_{{$id}}" ng-click="vm.changePassword()" ng-if="vm.activity === vm.activityEnum.CHANGE" ng-disabled="vm.loginForm.$invalid || vm.misMatchPasswords()">Confirm new Password</button>
+    <button class="btn btn-default btn-block" id="confirm_{{$id}}" ng-click="vm.resetPassword()" ng-if="vm.isReset" ng-disabled="vm.loginForm.$invalid || vm.misMatchPasswords()">Confirm Password Reset</button>
     <button class="btn btn-default btn-block" id="change_{{$id}}" ng-click="vm.setActivity(vm.activityEnum.CHANGE); $event.stopPropagation()" ng-if="vm.activity !== vm.activityEnum.CHANGE && vm.isAuthed()">Change Password</button>
     <button class="btn btn-default btn-block" id="cancel_{{$id}}" ng-click="vm.activate(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.RESET">Cancel</button>
   </form>
