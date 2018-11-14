@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
-    describe('surveillance directive', function () {
-        var $log, $q, $uibModal, Mock, actualOptions, el, networkService, scope, vm;
+    describe('the surveillance component', function () {
+        var $log, $q, $uibModal, Mock, actualOptions, ctrl, el, networkService, scope;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl', function ($provide) {
@@ -26,18 +26,21 @@
                     return Mock.fakeModal;
                 });
 
-                el = angular.element('<ai-surveillance></ai-surveillance>');
+                el = angular.element('<ai-surveillance certified-product="listing"></ai-surveillance>');
 
                 scope = $rootScope.$new();
+                scope.listing = Mock.fullListings[1];
                 $compile(el)(scope);
                 scope.$digest();
-                vm = el.isolateScope().vm;
+                ctrl = el.isolateScope().$ctrl;
             });
         });
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.debug('\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -46,7 +49,7 @@
         });
 
         it('should have isolate scope object with instanciate members', function () {
-            expect(vm).toEqual(jasmine.any(Object));
+            expect(ctrl).toEqual(jasmine.any(Object));
         });
 
         describe('surveillance titles', function () {
@@ -55,7 +58,7 @@
                     endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: []}],
                 };
-                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: No Non-Conformities Were Found');
+                expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: No Non-Conformities Were Found');
             });
 
             it('should come up with correct titles when there was 1 open NC', function () {
@@ -63,7 +66,7 @@
                     endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Open'}}]}],
                 };
-                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open Non-Conformity Was Found');
+                expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open Non-Conformity Was Found');
             });
 
             it('should come up with correct titles when there were multiple open NCs', function () {
@@ -71,7 +74,7 @@
                     endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Open'}}]}, {nonconformities: [{status: {name: 'Open'}}]}],
                 };
-                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Open Non-Conformities Were Found');
+                expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Open Non-Conformities Were Found');
             });
 
             it('should come up with correct titles when there was 1 closed NC', function () {
@@ -79,7 +82,7 @@
                     endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Closed'}}]}],
                 };
-                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Closed Non-Conformity Was Found');
+                expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Closed Non-Conformity Was Found');
             });
 
             it('should come up with correct titles when there were multiple closed NCs', function () {
@@ -87,7 +90,7 @@
                     endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Closed'}}]}, {nonconformities: [{status: {name: 'Closed'}}]}],
                 };
-                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Closed Non-Conformities Were Found');
+                expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 2 Closed Non-Conformities Were Found');
             });
 
             it('should come up with correct titles when there were open and closed NCs', function () {
@@ -95,7 +98,7 @@
                     endDate: new Date('Wed, 30 Mar 2016 12:00:00 GMT'),
                     requirements: [{nonconformities: [{status: {name: 'Open'}}]}, {nonconformities: [{status: {name: 'Closed'}}]}],
                 };
-                expect(vm.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open and 1 Closed Non-Conformities Were Found');
+                expect(ctrl.getTitle(surv)).toEqual('Closed Surveillance, Ended Mar 30, 2016: 1 Open and 1 Closed Non-Conformities Were Found');
             });
         });
 
@@ -116,13 +119,13 @@
                         workType: jasmine.any(Function),
                     },
                 };
-                vm.surveillanceTypes = {
+                ctrl.surveillanceTypes = {
                     surveillanceRequirements: {
                         criteriaOptions2014: {},
                         criteriaOptions2015: {},
                     },
                 };
-                vm.certifiedProduct = {
+                ctrl.certifiedProduct = {
                     id: 1,
                     certificationEdition: {
                         name: '2015',
@@ -131,13 +134,13 @@
             });
 
             it('should create a modal instance when a Surveillance is to be edited', function () {
-                expect(vm.uibModalInstance).toBeUndefined();
-                vm.editSurveillance(Mock.surveillances[0]);
-                expect(vm.uibModalInstance).toBeDefined();
+                expect(ctrl.uibModalInstance).toBeUndefined();
+                ctrl.editSurveillance(Mock.surveillances[0]);
+                expect(ctrl.uibModalInstance).toBeDefined();
             });
 
             it('should resolve elements on edit', function () {
-                vm.editSurveillance(Mock.surveillances[0]);
+                ctrl.editSurveillance(Mock.surveillances[0]);
                 expect($uibModal.open).toHaveBeenCalledWith(surveillanceEditOptions);
                 expect(actualOptions.resolve.surveillance()).toEqual(Mock.surveillances[0]);
                 expect(actualOptions.resolve.surveillanceTypes()).toEqual({surveillanceRequirements: {
@@ -149,15 +152,15 @@
             });
 
             it('should do stuff with the returned data', function () {
-                vm.editSurveillance(Mock.surveillances[0]);
-                vm.uibModalInstance.close({});
+                ctrl.editSurveillance(Mock.surveillances[0]);
+                ctrl.uibModalInstance.close({});
                 expect(networkService.getProduct).toHaveBeenCalled();
             });
 
             it('should log a non-cancelled modal', function () {
                 var logCount = $log.info.logs.length;
-                vm.editSurveillance(Mock.surveillances[0]);
-                vm.uibModalInstance.dismiss('not cancelled');
+                ctrl.editSurveillance(Mock.surveillances[0]);
+                ctrl.uibModalInstance.dismiss('not cancelled');
                 expect($log.info.logs.length).toBe(logCount + 1);
             });
         });
@@ -179,13 +182,13 @@
                         workType: jasmine.any(Function),
                     },
                 };
-                vm.surveillanceTypes = {
+                ctrl.surveillanceTypes = {
                     surveillanceRequirements: {
                         criteriaOptions2014: {},
                         criteriaOptions2015: {},
                     },
                 };
-                vm.certifiedProduct = {
+                ctrl.certifiedProduct = {
                     id: 1,
                     certificationEdition: {
                         name: '2015',
@@ -194,15 +197,15 @@
             });
 
             it('should create a modal instance when a Surveillance is to be initiated', function () {
-                expect(vm.uibModalInstance).toBeUndefined();
-                vm.initiateSurveillance();
-                expect(vm.uibModalInstance).toBeDefined();
+                expect(ctrl.uibModalInstance).toBeUndefined();
+                ctrl.initiateSurveillance();
+                expect(ctrl.uibModalInstance).toBeDefined();
             });
 
             it('should resolve elements on initiate', function () {
-                vm.initiateSurveillance();
+                ctrl.initiateSurveillance();
                 expect($uibModal.open).toHaveBeenCalledWith(surveillanceInitiateOptions);
-                expect(actualOptions.resolve.surveillance()).toEqual({certifiedProduct: vm.certifiedProduct});
+                expect(actualOptions.resolve.surveillance()).toEqual({certifiedProduct: ctrl.certifiedProduct});
                 expect(actualOptions.resolve.surveillanceTypes()).toEqual({surveillanceRequirements: {
                     criteriaOptions2014: {},
                     criteriaOptions2015: {},
@@ -212,15 +215,15 @@
             });
 
             it('should do stuff with the returned data', function () {
-                vm.initiateSurveillance();
-                vm.uibModalInstance.close({});
+                ctrl.initiateSurveillance();
+                ctrl.uibModalInstance.close({});
                 expect(networkService.getProduct).toHaveBeenCalled();
             });
 
             it('should log a non-cancelled modal', function () {
                 var logCount = $log.info.logs.length;
-                vm.initiateSurveillance();
-                vm.uibModalInstance.dismiss('not cancelled');
+                ctrl.initiateSurveillance();
+                ctrl.uibModalInstance.dismiss('not cancelled');
                 expect($log.info.logs.length).toBe(logCount + 1);
             });
         });
