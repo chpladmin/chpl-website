@@ -5,6 +5,23 @@ export class NetworkService {
         this.$log = $log;
         this.$q = $q;
         this.API = API;
+        this.store = {
+            certifiedProducts: {
+                data: undefined,
+                lastUpdated: -1,
+                details: { },
+            },
+            searchOptions: {
+                deleted: {
+                    data: undefined,
+                    lastUpdated: -1,
+                },
+                notDeleted: {
+                    data: undefined,
+                    lastUpdated: -1,
+                },
+            },
+        };
     }
 
     addRole (payload) {
@@ -82,7 +99,7 @@ export class NetworkService {
     }
 
     deleteSurveillanceDocument (survId, docId) {
-        return this.apiDELETE('/surveillance/' + survId + '/document/' + docId + '/delete');
+        return this.apiDELETE('/surveillance/' + survId + '/document/' + docId);
     }
 
     deleteUser (userId) {
@@ -108,7 +125,12 @@ export class NetworkService {
     }
 
     getAll () {
-        return this.apiGET('/collections/certified_products');
+        const EXPIRATION_TIME = 5; // in minutes
+        if (!this.store.certifiedProducts.data || (Date.now() - this.store.certifiedProducts.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.certifiedProducts.data = this.apiGET('/collections/certified_products');
+            this.store.certifiedProducts.lastUpdated = Date.now();
+        }
+        return this.store.certifiedProducts.data;
     }
 
     getAnnouncement (announcementId) {
@@ -304,7 +326,14 @@ export class NetworkService {
     }
 
     getProduct (productId) {
-        return this.apiGET('/certified_products/' + productId + '/details');
+        const EXPIRATION_TIME = 15; // in minutes
+        if (!this.store.certifiedProducts.details[productId] || !this.store.certifiedProducts.details[productId].data || (Date.now() - this.store.certifiedProducts.details[productId].lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.certifiedProducts.details[productId] = {
+                data: this.apiGET('/certified_products/' + productId + '/details'),
+                lastUpdated: Date.now(),
+            };
+        }
+        return this.store.certifiedProducts.details[productId].data;
     }
 
     getProductActivity (activityRange) {
@@ -329,10 +358,19 @@ export class NetworkService {
     }
 
     getSearchOptions (showDeleted) {
+        const EXPIRATION_TIME = 5; // in minutes
         if (showDeleted) {
-            return this.apiGET('/data/search_options?showDeleted=true');
+            if (!this.store.searchOptions.deleted.data || (Date.now() - this.store.searchOptions.deleted.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+                this.store.searchOptions.deleted.data = this.apiGET('/data/search_options?showDeleted=true');
+                this.store.searchOptions.deleted.lastUpdated = Date.now();
+            }
+            return this.store.searchOptions.deleted.data;
         } else {
-            return this.apiGET('/data/search_options');
+            if (!this.store.searchOptions.notDeleted.data || (Date.now() - this.store.searchOptions.notDeleted.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+                this.store.searchOptions.notDeleted.data = this.apiGET('/data/search_options');
+                this.store.searchOptions.notDeleted.lastUpdated = Date.now();
+            }
+            return this.store.searchOptions.notDeleted.data;
         }
     }
 
@@ -477,11 +515,11 @@ export class NetworkService {
     }
 
     massRejectPendingListings (ids) {
-        return this.apiDELETE('/certified_products/pending/reject', {ids: ids});
+        return this.apiDELETE('/certified_products/pending', {ids: ids});
     }
 
     massRejectPendingSurveillance (ids) {
-        return this.apiDELETE('/surveillance/pending/reject', {ids: ids});
+        return this.apiDELETE('/surveillance/pending', {ids: ids});
     }
 
     modifyACB (acb) {
@@ -505,15 +543,15 @@ export class NetworkService {
     }
 
     rejectPendingSurveillance (survId) {
-        return this.apiDELETE('/surveillance/pending/' + survId + '/reject');
+        return this.apiDELETE('/surveillance/pending/' + survId);
     }
 
     removeUserFromAcb (userId, acbId) {
-        return this.apiDELETE('/acbs/' + acbId + '/remove_user/' + userId);
+        return this.apiDELETE('/acbs/' + acbId + '/users/' + userId);
     }
 
     removeUserFromAtl (userId, atlId) {
-        return this.apiDELETE('/atls/' + atlId + '/remove_user/' + userId);
+        return this.apiDELETE('/atls/' + atlId + '/users/' + userId);
     }
 
     resetPassword (userObj) {
@@ -525,7 +563,7 @@ export class NetworkService {
     }
 
     revokeApi (user) {
-        return this.apiDELETE('/key/' + user.key, user);
+        return this.apiDELETE('/key/' + user.key);
     }
 
     revokeRole (payload) {
@@ -549,6 +587,12 @@ export class NetworkService {
     }
 
     updateCP (cpObject) {
+        if (this.store.certifiedProducts.details[cpObject.listing.id]) {
+            this.store.certifiedProducts.details[cpObject.listing.id] = {
+                data: undefined,
+                lastUpdated: -1,
+            };
+        }
         return this.apiPUT('/certified_products/' + cpObject.listing.id, cpObject);
     }
 
@@ -586,8 +630,8 @@ export class NetworkService {
 
     ////////////////////////////////////////////////////////////////////
 
-    apiDELETE (endpoint) {
-        return this.$http.delete(this.API + endpoint)
+    apiDELETE (endpoint, deleteObject) {
+        return this.$http.delete(this.API + endpoint, {data: deleteObject, headers: {'Content-Type': 'application/json;charset=utf-8'}})
             .then(response => response, response => this.$q.reject(response));
     }
 

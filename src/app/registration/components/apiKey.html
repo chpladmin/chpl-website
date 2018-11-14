@@ -31,9 +31,9 @@
             <th scope="col">User</th>
             <th scope="col">Email</th>
             <th scope="col">API Key</th>
-            <th scope="col">Last Used Timestamp</th>
-            <th scope="col">Delete Warning Sent Timestamp</th>
-            <th scope="col" class="text-center">Action</th>
+            <th scope="col">Last&nbsp;Used</th>
+            <th scope="col">Warning&nbsp;Sent</th>
+            <th scope="col"><span class="sr-only">Action</span></th>
           </tr>
         </thead>
         <tbody>
@@ -48,7 +48,7 @@
                         confirm-ok="Yes"
                         confirm-cancel="No"
                         confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                        ng-click="vm.revoke(user)"><i class="fa fa-trash-o"></i> Revoke Key</button></td>
+                        ng-click="vm.revoke(user)"><i class="fa fa-trash-o"></i><span class="sr-only"> Revoke Key</span></button></td>
           </tr>
         </tbody>
       </table>

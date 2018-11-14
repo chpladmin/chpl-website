@@ -5,7 +5,7 @@
         .controller('EditRequirementController', EditRequirementController);
 
     /** @ngInject */
-    function EditRequirementController ($log, $uibModal, $uibModalInstance, disableValidation, randomized, requirement, surveillanceId, surveillanceTypes, utilService, workType) {
+    function EditRequirementController ($log, $uibModal, $uibModalInstance, disableValidation, randomized, randomizedSitesUsed, requirement, surveillanceId, surveillanceTypes, utilService, workType) {
         var vm = this;
 
         vm.addNonconformity = addNonconformity;
@@ -24,6 +24,7 @@
             vm.data = surveillanceTypes;
             vm.disableValidation = disableValidation;
             vm.randomized = randomized;
+            vm.randomizedSitesUsed = randomizedSitesUsed;
             vm.requirement = angular.copy(requirement);
             vm.showFormErrors = false;
             vm.surveillanceId = surveillanceId;
@@ -48,6 +49,7 @@
                     disableValidation: function () { return false; },
                     nonconformity: function () { return {}; },
                     randomized: function () { return vm.randomized; },
+                    randomizedSitesUsed: function () { return vm.randomizedSitesUsed; },
                     requirementId: function () { return vm.requirement.id; },
                     surveillanceId: function () { return vm.surveillanceId; },
                     surveillanceTypes: function () { return vm.data; },
@@ -90,6 +92,7 @@
                     disableValidation: function () { return vm.disableValidation; },
                     nonconformity: function () { return noncon; },
                     randomized: function () { return vm.randomized; },
+                    randomizedSitesUsed: function () { return vm.randomizedSitesUsed; },
                     requirementId: function () { return vm.requirement.id; },
                     surveillanceId: function () { return vm.surveillanceId; },
                     surveillanceTypes: function () { return vm.data; },
