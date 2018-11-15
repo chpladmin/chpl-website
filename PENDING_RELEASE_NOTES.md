@@ -9,6 +9,5 @@ _Date TBD_
   * /certified_products/{productId}/details for fifteen minutes
   * /data/search_options for five minutes
 * Add validation to surveillance "sites passed" and "total sites" for randomized surveillance activities
-* Add sorting to functionality tested
 
 ---
