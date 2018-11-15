@@ -66,8 +66,8 @@
                           product-id="vm.productId"></ai-vp-management>
         <ai-user-management ng-if="vm.navState.screen === 'userManagement'"></ai-user-management>
         <ai-acb-management ng-if="vm.navState.screen === 'acbManagement'"
-                           work-type="vm.navState.workType"
-                           acb="vm.activeAcb"></ai-acb-management>
+                           work-type="{{ vm.navState.workType }}"
+                           acb="vm.acb"></ai-acb-management>
         <ai-atl-management ng-if="vm.navState.screen === 'atlManagement'"
                            work-type="vm.navState.workType"
                            active-atl="vm.activeAtl"></ai-atl-management>
@@ -76,7 +76,7 @@
                     work-type="vm.navState.reports"
                     product-id="vm.productId"></ai-reports>
         <ai-scheduled-jobs ng-if="vm.navState.screen === 'scheduledJobs'"
-                                    acbs="vm.acbs"></ai-scheduled-jobs>
+                           acbs="vm.acbs"></ai-scheduled-jobs>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>
         <ai-announcements-management ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
         <ai-cms-management admin="true" ng-if="vm.navState.screen === 'cmsManagement'"></ai-cms-management>

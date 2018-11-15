@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the ACB Management component', function () {
+    describe('the ACB Management component', function () {
         var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, scope;
 
         beforeEach(() => {
@@ -138,9 +138,8 @@
                     expect(ctrl.modalInstance).toBeDefined();
                 });
 
-                fit('should resolve elements', function () {
+                it('should resolve elements', function () {
                     ctrl.createAcb();
-                    $log.debug(actualOptions);
                     expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                     expect(actualOptions.resolve.acb()).toEqual({});
                     expect(actualOptions.resolve.action()).toBe('create');

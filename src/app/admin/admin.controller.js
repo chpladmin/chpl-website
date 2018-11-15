@@ -69,8 +69,8 @@
             networkService.getAcbs(true, vm.isChplAdmin())
                 .then(function (data) {
                     vm.acbs = $filter('orderBy')(data.acbs,'name');
-                    vm.activeAcb = vm.acbs[0];
-                    vm.navState.acbManagement = vm.activeAcb;
+                    vm.acb = vm.acbs[0];
+                    vm.navState.acbManagement = vm.acb;
                 });
             networkService.getAtls(true, vm.isChplAdmin())
                 .then(function (data) {
@@ -81,7 +81,7 @@
         }
 
         function changeAcb (acb) {
-            vm.activeAcb = acb;
+            vm.acb = acb;
             vm.navState.workType = 'acb';
             vm.changeSubNav(acb);
         }
@@ -98,8 +98,8 @@
                 networkService.getAcbs(true, vm.isChplAdmin())
                     .then(function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
-                        vm.activeAcb = vm.acbs[0];
-                        vm.navState.acbManagement = vm.activeAcb;
+                        vm.acb = vm.acbs[0];
+                        vm.navState.acbManagement = vm.acb;
                     });
             }
             if (screen === 'atlManagement') {

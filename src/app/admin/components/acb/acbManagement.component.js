@@ -15,19 +15,20 @@ export const AcbManagementComponent = {
         $onChanges (changes) {
             if (changes.acb) {
                 this.acb = angular.copy(changes.acb.currentValue);
+                this.workType = 'acb';
             }
         }
 
         $onInit () {
             this.isAcbAdmin = this.authService.isAcbAdmin();
             this.isChplAdmin = this.authService.isChplAdmin();
-            if (angular.isUndefined(this.workType)) {
+            if (!this.workType) {
                 this.workType = 'acb';
             }
         }
 
         createAcb () {
-            this.$log.debug(this.isChplAdmin);
+            const isChplAdmin = this.isChplAdmin;
             this.modalInstance = this.$uibModal.open({
                 templateUrl: 'chpl.admin/components/acb/acbEdit.html',
                 controller: 'EditAcbController',
@@ -36,15 +37,16 @@ export const AcbManagementComponent = {
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    acb: function () { return {}; },
-                    action: function () { return 'create'; },
-                    isChplAdmin: function () { return this.authService.isChplAdmin(); },
+                    acb: () => ({ }),
+                    action: () => 'create',
+                    isChplAdmin: () => isChplAdmin,
                 },
             });
             this.modalInstance.result.then(result => { this.acb = angular.copy(result); });
         }
 
         editAcb (acb) {
+            const isChplAdmin = this.isChplAdmin;
             this.modalInstance = this.$uibModal.open({
                 templateUrl: 'chpl.admin/components/acb/acbEdit.html',
                 controller: 'EditAcbController',
@@ -53,9 +55,9 @@ export const AcbManagementComponent = {
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    acb: function () { return acb; },
-                    action: function () { return 'edit'; },
-                    isChplAdmin: function () { return this.isChplAdmin; },
+                    acb: () => acb,
+                    action: () => 'edit',
+                    isChplAdmin: () => isChplAdmin,
                 },
             });
             this.modalInstance.result.then(result => {
