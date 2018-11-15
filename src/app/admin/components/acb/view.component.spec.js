@@ -73,8 +73,8 @@
                 beforeEach(function () {
                     acb = {};
                     modalOptions = {
-                        templateUrl: 'chpl.admin/components/acb/acbEdit.html',
-                        controller: 'EditAcbController',
+                        templateUrl: 'chpl.admin/components/acb/modal.html',
+                        controller: 'ModalAcbController',
                         controllerAs: 'vm',
                         animation: false,
                         backdrop: 'static',
@@ -118,8 +118,8 @@
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'chpl.admin/components/acb/acbEdit.html',
-                        controller: 'EditAcbController',
+                        templateUrl: 'chpl.admin/components/acb/modal.html',
+                        controller: 'ModalAcbController',
                         controllerAs: 'vm',
                         animation: false,
                         backdrop: 'static',

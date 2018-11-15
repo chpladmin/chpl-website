@@ -11,6 +11,7 @@
         vm.cancel = cancel;
         vm.create = create;
         vm.deleteAcb = deleteAcb;
+        vm.handleChange = handleChange;
         vm.save = save;
         vm.undeleteAcb = undeleteAcb;
 
@@ -55,6 +56,11 @@
                 },function (error) {
                     $uibModalInstance.dismiss(error.data.error);
                 });
+        }
+
+        function handleChange (acb, form) {
+            vm.acb = angular.copy(acb);
+            vm.editForm = angular.copy(form);
         }
 
         function save () {
