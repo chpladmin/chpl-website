@@ -1,10 +1,10 @@
 (function () {
     'use strict';
 
-    describe('the ACB Management', function () {
-        var $compile, $log, $uibModal, Mock, actualOptions, authService, el, scope, vm;
+    fdescribe('the ACB Management component', function () {
+        var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, scope;
 
-        beforeEach(function () {
+        beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
@@ -12,28 +12,29 @@
                     return $delegate;
                 });
             });
+
+            inject((_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _authService_) => {
+                $compile = _$compile_;
+                $log = _$log_;
+                Mock = _Mock_;
+                $uibModal = _$uibModal_;
+                spyOn($uibModal, 'open').and.callFake(function (options) {
+                    actualOptions = options;
+                    return Mock.fakeModal;
+                });
+                authService = _authService_;
+                authService.isAcbAdmin.and.returnValue(true);
+                authService.isChplAdmin.and.returnValue(true);
+
+                scope = $rootScope.$new();
+                scope.acb = {};
+
+                el = angular.element('<ai-acb-management acb="acb" work-type="acb"></ai-acb-management>');
+                $compile(el)(scope);
+                scope.$digest();
+                ctrl = el.isolateScope().$ctrl;
+            })
         });
-
-        beforeEach(inject(function (_$compile_, _$log_, $rootScope, _$uibModal_, _Mock_, _authService_) {
-            $compile = _$compile_;
-            $log = _$log_;
-            Mock = _Mock_;
-            $uibModal = _$uibModal_;
-            spyOn($uibModal, 'open').and.callFake(function (options) {
-                actualOptions = options;
-                return Mock.fakeModal;
-            });
-            authService = _authService_;
-            authService.isAcbAdmin.and.returnValue(true);
-            authService.isChplAdmin.and.returnValue(true);
-
-            el = angular.element('<ai-acb-management active-acb="acb" work-type="acb"></ai-acb-management>');
-            scope = $rootScope.$new();
-            scope.acb = {};
-            $compile(el)(scope);
-            scope.$digest();
-            vm = el.isolateScope().vm;
-        }));
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
@@ -43,7 +44,7 @@
             }
         });
 
-        describe('directive', function () {
+        describe('view', function () {
             it('should be compiled', function () {
                 expect(el.html()).not.toEqual(null);
             });
@@ -51,20 +52,20 @@
 
         describe('controller', function () {
             it('should have isolate scope object with instanciate members', function () {
-                expect(vm).toEqual(jasmine.any(Object));
+                expect(ctrl).toEqual(jasmine.any(Object));
             });
 
             it('should know if the logged in user is ACB and/or CHPL admin', function () {
-                expect(vm.isAcbAdmin).toBeTruthy();
-                expect(vm.isChplAdmin).toBeTruthy();
+                expect(ctrl.isAcbAdmin).toBeTruthy();
+                expect(ctrl.isChplAdmin).toBeTruthy();
             });
 
             it('should set the workType to acb if it\'s undefined', function () {
-                el = angular.element('<ai-acb-management active-acb="acb"></ai-acb-management>');
+                el = angular.element('<ai-acb-management acb="acb"></ai-acb-management>');
                 $compile(el)(scope);
                 scope.$digest();
-                vm = el.isolateScope().vm;
-                expect(vm.workType).toBe('acb');
+                ctrl = el.isolateScope().$ctrl;
+                expect(ctrl.workType).toBe('acb');
             });
 
             describe('when editing an acb', function () {
@@ -87,13 +88,13 @@
                 });
 
                 it('should create a modal instance', function () {
-                    expect(vm.modalInstance).toBeUndefined();
-                    vm.editAcb(acb);
-                    expect(vm.modalInstance).toBeDefined();
+                    expect(ctrl.modalInstance).toBeUndefined();
+                    ctrl.editAcb(acb);
+                    expect(ctrl.modalInstance).toBeDefined();
                 });
 
                 it('should resolve elements', function () {
-                    vm.editAcb(acb);
+                    ctrl.editAcb(acb);
                     expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                     expect(actualOptions.resolve.acb()).toEqual(acb);
                     expect(actualOptions.resolve.action()).toBe('edit');
@@ -101,29 +102,15 @@
                 });
 
                 it('should replace the acb with the response', function () {
-                    vm.editAcb(acb);
-                    vm.modalInstance.close({name: 'new'});
-                    expect(vm.activeAcb).toEqual({name: 'new'});
+                    ctrl.editAcb(acb);
+                    ctrl.modalInstance.close({name: 'new'});
+                    expect(ctrl.acb).toEqual({name: 'new'});
                 });
 
                 it('should set the active ACB to null if it was deleted', function () {
-                    vm.editAcb(acb);
-                    vm.modalInstance.close('deleted');
-                    expect(vm.activeAcb).toBe(null);
-                });
-
-                it('should log a non-cancelled modal', function () {
-                    var logCount = $log.info.logs.length;
-                    vm.editAcb(acb);
-                    vm.modalInstance.dismiss('not cancelled');
-                    expect($log.info.logs.length).toBe(logCount + 1);
-                });
-
-                it('should not log a cancelled modal', function () {
-                    var logCount = $log.info.logs.length;
-                    vm.editAcb(acb);
-                    vm.modalInstance.dismiss('cancelled');
-                    expect($log.info.logs.length).toBe(logCount);
+                    ctrl.editAcb(acb);
+                    ctrl.modalInstance.close('deleted');
+                    expect(ctrl.acb).toBe(null);
                 });
             });
 
@@ -146,13 +133,14 @@
                 });
 
                 it('should create a modal instance', function () {
-                    expect(vm.modalInstance).toBeUndefined();
-                    vm.createAcb();
-                    expect(vm.modalInstance).toBeDefined();
+                    expect(ctrl.modalInstance).toBeUndefined();
+                    ctrl.createAcb();
+                    expect(ctrl.modalInstance).toBeDefined();
                 });
 
-                it('should resolve elements', function () {
-                    vm.createAcb();
+                fit('should resolve elements', function () {
+                    ctrl.createAcb();
+                    $log.debug(actualOptions);
                     expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                     expect(actualOptions.resolve.acb()).toEqual({});
                     expect(actualOptions.resolve.action()).toBe('create');
@@ -160,23 +148,9 @@
                 });
 
                 it('should replace the acb with the response', function () {
-                    vm.createAcb();
-                    vm.modalInstance.close({name: 'new'});
-                    expect(vm.activeAcb).toEqual({name: 'new'});
-                });
-
-                it('should log a non-cancelled modal', function () {
-                    var logCount = $log.info.logs.length;
-                    vm.createAcb();
-                    vm.modalInstance.dismiss('not cancelled');
-                    expect($log.info.logs.length).toBe(logCount + 1);
-                });
-
-                it('should not log a cancelled modal', function () {
-                    var logCount = $log.info.logs.length;
-                    vm.createAcb();
-                    vm.modalInstance.dismiss('cancelled');
-                    expect($log.info.logs.length).toBe(logCount);
+                    ctrl.createAcb();
+                    ctrl.modalInstance.close({name: 'new'});
+                    expect(ctrl.acb).toEqual({name: 'new'});
                 });
             });
         });
