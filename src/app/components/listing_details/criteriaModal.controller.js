@@ -5,7 +5,7 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, resources, utilService) {
+    function EditCertificationCriteriaController ($filter, $log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, resources, utilService) {
         var vm = this;
 
         vm.addNewValue = utilService.addNewValue;
@@ -44,6 +44,7 @@
             vm.selectedTestProcedureKeys = _getSelectedTestProcedureKeys();
             vm.selectedTestStandardKeys = _getSelectedTestStandardKeys();
             vm.selectedTestToolKeys = _getSelectedTestToolKeys();
+            vm.sortedTestFunctionalities = _getSortedTestFunctionalities();
         }
 
         function cancel () {
@@ -134,6 +135,10 @@
 
         ////////////////////////////////////////////////////////////////////
 
+        function _getSortedTestFunctionalities () {
+            return $filter('orderBy')(vm.cert.allowedTestFunctionalities, 'name');
+        }
+        
         function _getSelectedTestDataKeys () {
             var tdKeys = [];
             vm.availableTestData = vm.resources.testData.data
