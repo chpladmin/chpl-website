@@ -236,7 +236,7 @@
         <li ng-if="vm.nonconformity.totalSites > vm.randomizedSitesUsed">Total sites must be less than or equal to the number of randomized sites used: {{ vm.randomizedSitesUsed }}</li>
       </ul>
     </div>
-    <button ng-disabled="(vm.editForm.$invalid || (vm.nonconformity.capEndDateObject && vm.nonconformity.capEndDateObject < vm.nonconformity.capStartDateObject) || (vm.nonconformity.totalSites > vm.randomizedSitesUsed) || (vm.nonconformity.sitesPassed > vm.totalSites)) && vm.showFormErrors && !vm.disableValidation"
+    <button ng-disabled="(vm.editForm.$invalid || (vm.nonconformity.capEndDateObject && vm.nonconformity.capEndDateObject < vm.nonconformity.capStartDateObject) || (vm.nonconformity.totalSites > vm.randomizedSitesUsed) || (vm.nonconformity.sitesPassed > vm.nonconformity.totalSites)) && vm.showFormErrors && !vm.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>
