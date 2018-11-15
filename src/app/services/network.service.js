@@ -28,10 +28,6 @@ export class NetworkService {
         return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
-    authorizeToken (token) {
-        return this.apiPOST('auth/authorize_password_reset/' + token);
-    }
-
     authorizeUser (userAuthorization) {
         return this.apiPOST('/users/authorize', userAuthorization);
     }

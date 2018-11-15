@@ -15,7 +15,6 @@
             scope: {},
             bindToController: {
                 formClass: '@',
-                token: '=',
                 pClass: '@',
                 pClassFail: '@',
             },
@@ -25,7 +24,7 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService, utilService) {
+    function LoginController ($log, $rootScope, $routeParams, $scope, Idle, Keepalive, authService, networkService, utilService) {
         var vm = this;
 
         vm.broadcastLogin = broadcastLogin;
@@ -37,15 +36,16 @@
         vm.misMatchPasswords = misMatchPasswords;
         vm.passwordClass = utilService.passwordClass;
         vm.passwordTitle = utilService.passwordTitle;
+        vm.resetPassword = resetPassword;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
-        vm.resetPassword = resetPassword;
 
         vm.activityEnum = {
             LOGIN: 1,
             CHANGE: 2,
             RESET: 3,
             NONE: 4,
+            PASSWORD_RESET: 6,
         };
 
         /////////////////////////////////////////////////////////
@@ -55,6 +55,10 @@
             if (vm.isAuthed()) {
                 Idle.watch();
                 _updateExtras();
+            }
+
+            if ($routeParams.token) {
+                vm.activity = vm.activityEnum.PASSWORD_RESET;
             }
 
             $scope.$on('Keepalive', function () {
@@ -117,11 +121,10 @@
             if (vm.misMatchPasswords()) {
                 vm.message = 'Passwords do not match. Please try again';
             } else {
-                networkService.resetPassword({token: vm.token, userName: vm.userName, newPassword: vm.newPassword})
+                networkService.resetPassword({token: $routeParams.token, userName: vm.userName, newPassword: vm.newPassword})
                     .then(function (response) {
                         if (response.passwordUpdated) {
                             vm.clear();
-                            vm.isReset = undefined;
                             vm.messageClass = vm.pClass;
                             vm.message = 'Password successfully changed';
                         } else {
@@ -134,7 +137,7 @@
                                 vm.message += 'Suggestion' + (response.suggestions.length > 1 ? 's' : '') + ': ' + response.suggestions.join(' ');
                             }
                             if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
-                                vm.message += 'Please try again with a stronger password.';
+                                vm.message += 'Your token was invalid or you need a stronger password.';
                             }
                         }
                     }, function () {
