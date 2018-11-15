@@ -5,7 +5,7 @@
         .controller('EditCertificationCriteriaController', EditCertificationCriteriaController);
 
     /** @ngInject */
-    function EditCertificationCriteriaController ($log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, resources, utilService) {
+    function EditCertificationCriteriaController ($filter, $log, $uibModal, $uibModalInstance, CertificationResultTestData, CertificationResultTestFunctionality, CertificationResultTestProcedure, CertificationResultTestStandard, CertificationResultTestTool, cert, hasIcs, resources, utilService) {
         var vm = this;
 
         vm.addNewValue = utilService.addNewValue;
@@ -44,8 +44,7 @@
             vm.selectedTestProcedureKeys = _getSelectedTestProcedureKeys();
             vm.selectedTestStandardKeys = _getSelectedTestStandardKeys();
             vm.selectedTestToolKeys = _getSelectedTestToolKeys();
-
-            _sortTestFunctionalities();
+            vm.sortedTestFunctionalities = _getSortedTestFunctionalities();
         }
 
         function cancel () {
@@ -136,6 +135,10 @@
 
         ////////////////////////////////////////////////////////////////////
 
+        function _getSortedTestFunctionalities () {
+            return $filter('orderBy')(vm.cert.allowedTestFunctionalities, 'name');
+        }
+        
         function _getSelectedTestDataKeys () {
             var tdKeys = [];
             vm.availableTestData = vm.resources.testData.data
@@ -187,18 +190,6 @@
                 ttKeys.push({'key': tt.testToolId, 'additionalInputValue': tt.testToolVersion});
             });
             return ttKeys;
-        }
-
-        function _sortTestFunctionalities () {
-            vm.cert.allowedTestFunctionalities.sort(function (a, b) {
-                if (a.name < b.name) {
-                    return -1; 
-                } else if (a.name > b.name) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-	        });
         }
 
         function _testDataEditItem (testData) {
