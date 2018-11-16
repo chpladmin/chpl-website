@@ -56,7 +56,6 @@
                 Idle.watch();
                 _updateExtras();
             }
-
             if ($routeParams.token) {
                 vm.activity = vm.activityEnum.PASSWORD_RESET;
             }
