@@ -27,7 +27,7 @@
                 Mock = _Mock_;
 
                 scope = $rootScope.$new();
-                vm = ctrl('EditAcbController', {
+                vm = ctrl('ModalAcbController', {
                     acb: {},
                     action: 'modify',
                     isChplAdmin: true,
@@ -58,7 +58,7 @@
 
         it('should create an address object if creating an ACB', function () {
             expect(vm.acb.address).toBeUndefined();
-            vm = ctrl('EditAcbController', {
+            vm = ctrl('ModalAcbController', {
                 acb: {},
                 action: 'create',
                 isChplAdmin: true,

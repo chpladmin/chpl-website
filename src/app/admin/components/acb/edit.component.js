@@ -6,9 +6,9 @@ export const EditAcbComponent = {
         onChange: '&',
     },
     controller: class EditAcbController {
-
-        constructor () {
+        constructor ($log) {
             'ngInject'
+            this.$log = $log;
         }
 
         $onChanges (changes) {
@@ -16,8 +16,16 @@ export const EditAcbComponent = {
                 this.acb = angular.copy(changes.acb.currentValue);
             }
         }
+
+        update () {
+            const change = {
+                acb: angular.copy(this.acb),
+                valid: this.editForm.$valid,
+            };
+            this.onChange(change);
+        }
     },
 }
 
 angular.module('chpl.admin')
-    .component('aiAcbEdit', EditAcbComponent);
+    .component('aiEditAcb', EditAcbComponent);

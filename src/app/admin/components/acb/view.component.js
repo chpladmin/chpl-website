@@ -30,8 +30,8 @@ export const AcbManagementComponent = {
         createAcb () {
             const isChplAdmin = this.isChplAdmin;
             this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/acb/acbEdit.html',
-                controller: 'EditAcbController',
+                templateUrl: 'chpl.admin/components/acb/modal.html',
+                controller: 'ModalAcbController',
                 controllerAs: 'vm',
                 animation: false,
                 backdrop: 'static',
@@ -48,8 +48,8 @@ export const AcbManagementComponent = {
         editAcb (acb) {
             const isChplAdmin = this.isChplAdmin;
             this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/acb/acbEdit.html',
-                controller: 'EditAcbController',
+                templateUrl: 'chpl.admin/components/acb/modal.html',
+                controller: 'ModalAcbController',
                 controllerAs: 'vm',
                 animation: false,
                 backdrop: 'static',

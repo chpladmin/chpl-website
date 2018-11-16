@@ -5,15 +5,17 @@
         var $compile, $log, ctrl, el, scope;
 
         beforeEach(function () {
+            angular.mock.module('chpl.admin', 'chpl');
             inject(function (_$compile_, _$log_, $rootScope) {
                 $compile = _$compile_;
                 $log = _$log_;
 
                 scope = $rootScope.$new();
                 scope.acb = {};
-                scope.onChange = jasmine.createSpy('onChange');
+                scope.handleChange = jasmine.createSpy('handleChange');
 
-                el = angular.element('<ai-acb-edit acb="acb" action="edit" on-change="$ctrl.onChange()');
+                el = angular.element('<ai-edit-acb acb="acb" action="edit" on-change="handleChange(acb, valid)"></ai-edit-acb>');
+
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;

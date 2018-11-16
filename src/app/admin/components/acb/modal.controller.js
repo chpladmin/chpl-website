@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('chpl.admin')
-        .controller('EditAcbController', EditAcbController);
+        .controller('ModalAcbController', ModalAcbController);
 
     /** @ngInject */
-    function EditAcbController ($uibModalInstance, acb, action, isChplAdmin, networkService) {
+    function ModalAcbController ($log, $uibModalInstance, acb, action, isChplAdmin, networkService) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -58,9 +58,9 @@
                 });
         }
 
-        function handleChange (acb, form) {
-            vm.acb = angular.copy(acb);
-            vm.editForm = angular.copy(form);
+        function handleChange (acb, valid) {
+            vm.acb = acb;
+            vm.formIsValid = valid;
         }
 
         function save () {
