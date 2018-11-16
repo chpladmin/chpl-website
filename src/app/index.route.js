@@ -13,7 +13,7 @@
                 controllerAs: 'vm',
                 title: 'CHPL Administration',
             })
-            .when('/admin/authorize_password_reset', {
+            .when('/admin/authorizePasswordReset', {
                 templateUrl: 'chpl.admin/admin.html',
                 controller: 'AdminController',
                 controllerAs: 'vm',
