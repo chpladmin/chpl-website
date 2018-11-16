@@ -1,0 +1,30 @@
+<div role="modal" aria-labeled-by="edit-label">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="edit-label">{{ vm.action === 'edit' ? 'Edit' : 'Create' }} ONC-ATL</h4>
+  </div>
+  <div class="modal-body" ng-form="vm.editForm">
+    <ai-edit-atl atl="vm.atl" action="vm.action" on-change="vm.handleChange(atl, valid)"></ai-edit-atl>
+  </div>
+  <div class="modal-footer">
+    <button ng-disabled="!vm.isFormValid && vm.showFormErrors" class="btn btn-ai-success btn-block"
+            ng-mouseover="vm.showFormErrors = true"
+            ng-if="vm.action === 'create'"
+            ng-click="vm.create()"><i class="fa fa-save"></i> Create ONC-ATL</button>
+    <button ng-disabled="!vm.isFormValid && vm.showFormErrors" class="btn btn-ai-success btn-block"
+            ng-mouseover="vm.showFormErrors = true"
+            ng-if="vm.action === 'edit'"
+            ng-click="vm.save()"><i class="fa fa-save"></i> Save ONC-ATL</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><i class="fa fa-ban"></i> Cancel</button>
+  </div>
+</div>

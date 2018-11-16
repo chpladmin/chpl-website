@@ -75,8 +75,8 @@
             networkService.getAtls(true, vm.isChplAdmin())
                 .then(function (data) {
                     vm.atls = $filter('orderBy')(data.atls,'name');
-                    vm.activeAtl = vm.atls[0];
-                    vm.navState.atlManagement = vm.activeAtl;
+                    vm.atl = vm.atls[0];
+                    vm.navState.atlManagement = vm.atl;
                 });
         }
 
@@ -87,7 +87,7 @@
         }
 
         function changeAtl (atl) {
-            vm.activeAtl = atl;
+            vm.atl = atl;
             vm.navState.workType = 'atl';
             vm.changeSubNav(atl);
         }
@@ -106,8 +106,8 @@
                 networkService.getAtls(true, vm.isChplAdmin())
                     .then(function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
-                        vm.activeAtl = vm.atls[0];
-                        vm.navState.atlManagement = vm.activeAtl;
+                        vm.atl = vm.atls[0];
+                        vm.navState.atlManagement = vm.atl;
                     });
             }
             vm.navState.screen = screen;

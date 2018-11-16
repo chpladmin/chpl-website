@@ -213,14 +213,6 @@
             $httpBackend.flush();
         });
 
-        it('should deleteATL', function () {
-            $httpBackend.expectDELETE(/atls\/1/).respond(200);
-            networkService.deleteATL(1).then(function (response) {
-                expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
         it('should deleteAnnouncement', function () {
             $httpBackend.expectDELETE(/announcements\/1/).respond(200);
             networkService.deleteAnnouncement(1).then(function (response) {
@@ -1265,14 +1257,6 @@
         it('should splitProduct', function () {
             $httpBackend.expectPOST(/products\/1\/split/).respond(200, {data: 'response'});
             networkService.splitProduct({oldProduct: {productId: 1}}).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should undeleteATL', function () {
-            $httpBackend.expectPUT(/atls\/1\/undelete/).respond(200, {data: 'response'});
-            networkService.undeleteATL(1).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

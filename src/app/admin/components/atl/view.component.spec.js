@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    describe('the ACB Management component', function () {
+    describe('the ATL Management component', function () {
         var $compile, $log, $uibModal, Mock, actualOptions, authService, ctrl, el, scope;
 
-        beforeEach(() => {
+        beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
+                    $delegate.isAtlAdmin = jasmine.createSpy('isAtlAdmin');
                     $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
                     return $delegate;
                 });
@@ -23,13 +23,13 @@
                     return Mock.fakeModal;
                 });
                 authService = _authService_;
-                authService.isAcbAdmin.and.returnValue(true);
+                authService.isAtlAdmin.and.returnValue(true);
                 authService.isChplAdmin.and.returnValue(true);
 
                 scope = $rootScope.$new();
-                scope.acb = {};
+                scope.atl = {};
 
-                el = angular.element('<ai-acb-management acb="acb" work-type="acb"></ai-acb-management>');
+                el = angular.element('<ai-atl-management atl="atl" work-type="atl"></ai-atl-management>');
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
@@ -55,32 +55,32 @@
                 expect(ctrl).toEqual(jasmine.any(Object));
             });
 
-            it('should know if the logged in user is ACB and/or CHPL admin', function () {
-                expect(ctrl.isAcbAdmin).toBeTruthy();
+            it('should know if the logged in user is ATL and/or CHPL admin', function () {
+                expect(ctrl.isAtlAdmin).toBeTruthy();
                 expect(ctrl.isChplAdmin).toBeTruthy();
             });
 
-            it('should set the workType to acb if it\'s undefined', function () {
-                el = angular.element('<ai-acb-management acb="acb"></ai-acb-management>');
+            it('should set the workType to atl if it\'s undefined', function () {
+                el = angular.element('<ai-atl-management atl="atl"></ai-atl-management>');
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
-                expect(ctrl.workType).toBe('acb');
+                expect(ctrl.workType).toBe('atl');
             });
 
-            describe('when editing an acb', function () {
-                var acb, modalOptions;
+            describe('when editing an atl', function () {
+                var atl, modalOptions;
                 beforeEach(function () {
-                    acb = {};
+                    atl = {};
                     modalOptions = {
-                        templateUrl: 'chpl.admin/components/acb/modal.html',
-                        controller: 'ModalAcbController',
+                        templateUrl: 'chpl.admin/components/atl/modal.html',
+                        controller: 'ModalAtlController',
                         controllerAs: 'vm',
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
                         resolve: {
-                            acb: jasmine.any(Function),
+                            atl: jasmine.any(Function),
                             action: jasmine.any(Function),
                             isChplAdmin: jasmine.any(Function),
                         },
@@ -89,37 +89,37 @@
 
                 it('should create a modal instance', function () {
                     expect(ctrl.modalInstance).toBeUndefined();
-                    ctrl.editAcb(acb);
+                    ctrl.editAtl(atl);
                     expect(ctrl.modalInstance).toBeDefined();
                 });
 
                 it('should resolve elements', function () {
-                    ctrl.editAcb(acb);
+                    ctrl.editAtl(atl);
                     expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                    expect(actualOptions.resolve.acb()).toEqual(acb);
+                    expect(actualOptions.resolve.atl()).toEqual(atl);
                     expect(actualOptions.resolve.action()).toBe('edit');
                     expect(actualOptions.resolve.isChplAdmin()).toBe(true);
                 });
 
-                it('should replace the acb with the response', function () {
-                    ctrl.editAcb(acb);
+                it('should replace the atl with the response', function () {
+                    ctrl.editAtl(atl);
                     ctrl.modalInstance.close({name: 'new'});
-                    expect(ctrl.acb).toEqual({name: 'new'});
+                    expect(ctrl.atl).toEqual({name: 'new'});
                 });
             });
 
-            describe('when creating an acb', function () {
+            describe('when creating an atl', function () {
                 var modalOptions;
                 beforeEach(function () {
                     modalOptions = {
-                        templateUrl: 'chpl.admin/components/acb/modal.html',
-                        controller: 'ModalAcbController',
+                        templateUrl: 'chpl.admin/components/atl/modal.html',
+                        controller: 'ModalAtlController',
                         controllerAs: 'vm',
                         animation: false,
                         backdrop: 'static',
                         keyboard: false,
                         resolve: {
-                            acb: jasmine.any(Function),
+                            atl: jasmine.any(Function),
                             action: jasmine.any(Function),
                             isChplAdmin: jasmine.any(Function),
                         },
@@ -128,22 +128,22 @@
 
                 it('should create a modal instance', function () {
                     expect(ctrl.modalInstance).toBeUndefined();
-                    ctrl.createAcb();
+                    ctrl.createAtl();
                     expect(ctrl.modalInstance).toBeDefined();
                 });
 
                 it('should resolve elements', function () {
-                    ctrl.createAcb();
+                    ctrl.createAtl();
                     expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
-                    expect(actualOptions.resolve.acb()).toEqual({});
+                    expect(actualOptions.resolve.atl()).toEqual({});
                     expect(actualOptions.resolve.action()).toBe('create');
                     expect(actualOptions.resolve.isChplAdmin()).toBe(true);
                 });
 
-                it('should replace the acb with the response', function () {
-                    ctrl.createAcb();
+                it('should replace the atl with the response', function () {
+                    ctrl.createAtl();
                     ctrl.modalInstance.close({name: 'new'});
-                    expect(ctrl.acb).toEqual({name: 'new'});
+                    expect(ctrl.atl).toEqual({name: 'new'});
                 });
             });
         });

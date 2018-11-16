@@ -1,10 +1,10 @@
-export const AcbManagementComponent = {
-    templateUrl: 'chpl.admin/components/acb/view.html',
+export const AtlManagementComponent = {
+    templateUrl: 'chpl.admin/components/atl/view.html',
     bindings: {
         workType: '@',
-        acb: '<',
+        atl: '<',
     },
-    controller: class AcbManagementController {
+    controller: class AtlManagementController {
         constructor ($log, $uibModal, authService) {
             'ngInject'
             this.$log = $log;
@@ -13,57 +13,57 @@ export const AcbManagementComponent = {
         }
 
         $onChanges (changes) {
-            if (changes.acb) {
-                this.acb = angular.copy(changes.acb.currentValue);
-                this.workType = 'acb';
+            if (changes.atl) {
+                this.atl = angular.copy(changes.atl.currentValue);
+                this.workType = 'atl';
             }
         }
 
         $onInit () {
-            this.isAcbAdmin = this.authService.isAcbAdmin();
+            this.isAtlAdmin = this.authService.isAtlAdmin();
             this.isChplAdmin = this.authService.isChplAdmin();
             if (!this.workType) {
-                this.workType = 'acb';
+                this.workType = 'atl';
             }
         }
 
-        createAcb () {
+        createAtl () {
             const isChplAdmin = this.isChplAdmin;
             this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/acb/modal.html',
-                controller: 'ModalAcbController',
+                templateUrl: 'chpl.admin/components/atl/modal.html',
+                controller: 'ModalAtlController',
                 controllerAs: 'vm',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    acb: () => ({ }),
+                    atl: () => ({ }),
                     action: () => 'create',
                     isChplAdmin: () => isChplAdmin,
                 },
             });
-            this.modalInstance.result.then(result => { this.acb = angular.copy(result); });
+            this.modalInstance.result.then(result => { this.atl = angular.copy(result); });
         }
 
-        editAcb (acb) {
+        editAtl (atl) {
             const isChplAdmin = this.isChplAdmin;
             this.modalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/acb/modal.html',
-                controller: 'ModalAcbController',
+                templateUrl: 'chpl.admin/components/atl/modal.html',
+                controller: 'ModalAtlController',
                 controllerAs: 'vm',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    acb: () => acb,
+                    atl: () => atl,
                     action: () => 'edit',
                     isChplAdmin: () => isChplAdmin,
                 },
             });
-            this.modalInstance.result.then(result => { this.acb = angular.copy(result); });
+            this.modalInstance.result.then(result => { this.atl = angular.copy(result); });
         }
     },
 }
 
 angular.module('chpl.admin')
-    .component('aiAcbManagement', AcbManagementComponent);
+    .component('aiAtlManagement', AtlManagementComponent);
