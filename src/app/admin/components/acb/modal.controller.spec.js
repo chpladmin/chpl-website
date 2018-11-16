@@ -8,9 +8,7 @@
             angular.mock.module('chpl', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.createACB = jasmine.createSpy('createACB');
-                    $delegate.deleteACB = jasmine.createSpy('deleteACB');
                     $delegate.modifyACB = jasmine.createSpy('modifyACB');
-                    $delegate.undeleteACB = jasmine.createSpy('undeleteACB');
                     return $delegate;
                 });
             });
@@ -21,9 +19,7 @@
                 $q = _$q_;
                 networkService = _networkService_;
                 networkService.createACB.and.returnValue($q.when({}));
-                networkService.deleteACB.and.returnValue($q.when({}));
                 networkService.modifyACB.and.returnValue($q.when({}));
-                networkService.undeleteACB.and.returnValue($q.when({}));
                 Mock = _Mock_;
 
                 scope = $rootScope.$new();
@@ -129,70 +125,6 @@
                 vm.create();
                 scope.$digest();
                 expect(networkService.createACB).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('the error');
-            });
-        });
-
-        describe('when deleting an ACB', function () {
-            it('should close the modal with the response on a good response', function () {
-                networkService.deleteACB.and.returnValue($q.when({status: 200}));
-                vm.deleteAcb();
-                scope.$digest();
-                expect(networkService.deleteACB).toHaveBeenCalled();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith('deleted');
-
-                networkService.deleteACB.and.returnValue($q.when({status: undefined}));
-                vm.deleteAcb();
-                scope.$digest();
-                expect(networkService.deleteACB).toHaveBeenCalled();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith('deleted');
-            });
-
-            it('should dismiss the modal with an error on a bad response', function () {
-                networkService.deleteACB.and.returnValue($q.when({status: 400}));
-                vm.deleteAcb();
-                scope.$digest();
-                expect(networkService.deleteACB).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
-            });
-
-            it('should dismiss the modal with error messages on a rejected save', function () {
-                networkService.deleteACB.and.returnValue($q.reject({data: { error: 'the error'}}));
-                vm.deleteAcb();
-                scope.$digest();
-                expect(networkService.deleteACB).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('the error');
-            });
-        });
-
-        describe('when undeleting an ACB', function () {
-            it('should close the modal with the response on a good response', function () {
-                networkService.undeleteACB.and.returnValue($q.when({status: 200}));
-                vm.undeleteAcb();
-                scope.$digest();
-                expect(networkService.undeleteACB).toHaveBeenCalled();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 200});
-
-                networkService.undeleteACB.and.returnValue($q.when({status: undefined}));
-                vm.undeleteAcb();
-                scope.$digest();
-                expect(networkService.undeleteACB).toHaveBeenCalled();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: undefined});
-            });
-
-            it('should dismiss the modal with an error on a bad response', function () {
-                networkService.undeleteACB.and.returnValue($q.when({status: 400}));
-                vm.undeleteAcb();
-                scope.$digest();
-                expect(networkService.undeleteACB).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
-            });
-
-            it('should dismiss the modal with error messages on a rejected save', function () {
-                networkService.undeleteACB.and.returnValue($q.reject({data: { error: 'the error'}}));
-                vm.undeleteAcb();
-                scope.$digest();
-                expect(networkService.undeleteACB).toHaveBeenCalled();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('the error');
             });
         });

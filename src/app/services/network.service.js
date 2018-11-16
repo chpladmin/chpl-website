@@ -72,10 +72,6 @@ export class NetworkService {
         return this.apiPOST('/schedules/triggers', trigger);
     }
 
-    deleteACB (acbId) {
-        return this.apiDELETE('/acbs/' + acbId);
-    }
-
     deleteATL (atlId) {
         return this.apiDELETE('/atls/' + atlId);
     }
@@ -568,10 +564,6 @@ export class NetworkService {
 
     splitProduct (productObject) {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
-    }
-
-    undeleteACB (acbId) {
-        return this.apiPUT('/acbs/' + acbId + '/undelete');
     }
 
     undeleteATL (atlId) {
