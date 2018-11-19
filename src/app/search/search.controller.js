@@ -91,7 +91,7 @@
         };
 
         vm.retired = {
-            acb: {'CCHIT': true, 'SLI Global': true, 'Surescripts LLC': true},
+            acb: {'CCHIT': true, 'Surescripts LLC': true},
             edition: { '2011': true },
         };
 
