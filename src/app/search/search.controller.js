@@ -141,7 +141,7 @@
 
         function loadResults () {
             networkService.getAll().then(function (response) {
-                var results = response.results;
+                var results = angular.copy(response.results);
                 vm.allCps = [];
                 incrementTable(parseAllResults(results));
             }, function (error) {

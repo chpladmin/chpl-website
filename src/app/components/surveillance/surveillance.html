@@ -1,13 +1,13 @@
 <div class="inset-content">
-  <div ng-if="!vm.certifiedProduct.surveillance || vm.certifiedProduct.surveillance.length === 0">
+  <div ng-if="!$ctrl.certifiedProduct.surveillance || $ctrl.certifiedProduct.surveillance.length === 0">
     No surveillance activity has been conducted for this listing
   </div>
-  <div ng-repeat="surv in vm.certifiedProduct.surveillance | orderBy: 'friendlyId'">
+  <div ng-repeat="surv in $ctrl.certifiedProduct.surveillance | orderBy: 'friendlyId'">
     <div class="pull-right">
       <a href ng-click="surv.showDetails = !surv.showDetails" aria-expanded="{{ surv.showDetails }}">{{ surv.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ surv.startDate | date : 'mediumDate' : 'UTC' }}</span></a>
-      <button class="btn btn-sm btn-ai-success" ng-click="vm.editSurveillance(surv)" ng-if="vm.allowEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
+      <button class="btn btn-sm btn-ai-success" ng-click="$ctrl.editSurveillance(surv)" ng-if="$ctrl.allowEditing"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit</span></button>
     </div>
-    <p><strong>{{ vm.getTitle(surv) }}</strong></p>
+    <p><strong>{{ $ctrl.getTitle(surv) }}</strong></p>
     <div ng-if="surv.showDetails">
       Surveillance Description
       <table class="table">
@@ -33,12 +33,12 @@
           </tr>
           <tr>
             <th scope="row"><a href uib-tooltip="The ONC Health IT Certification Program requirement that was surveilled. For example, this may be a specific certification criteria (e.g. 170.315(a)(1)), a transparency or disclosure requirement (e.g. 170.523(k)(1)), another requirement with a regulatory reference (e.g. 170.523(l)), or a brief description of the surveilled requirement." tooltip-trigger="mouseenter focus click">Certification Criteria and Program Requirements Surveilled</a></th>
-            <td><span ng-repeat="req in surv.requirements | orderBy:['type.name',vm.sortRequirements]">{{ req.type.name }}: {{ req.requirement }}<br /></span></td>
+            <td><span ng-repeat="req in surv.requirements | orderBy:['type.name',$ctrl.sortRequirements]">{{ req.type.name }}: {{ req.requirement }}<br /></span></td>
           </tr>
           <tr>
             <th scope="row">
               <a href uib-tooltip="Whether or not a non-conformity was found for the conducted surveillance." tooltip-trigger="mouseenter focus click">Surveillance Result</a></th>
-            <td><span ng-repeat="res in vm.surveillanceResults(surv) | orderBy:vm.sortResults track by $index">{{ res }}<br /></span></td>
+            <td><span ng-repeat="res in $ctrl.surveillanceResults(surv) | orderBy:$ctrl.sortResults track by $index">{{ res }}<br /></span></td>
           </tr>
           <tr>
             <th scope="row">
@@ -47,7 +47,7 @@
           </tr>
         </tbody>
       </table>
-      <div ng-repeat="req in surv.requirements | orderBy:vm.sortRequirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
+      <div ng-repeat="req in surv.requirements | orderBy:$ctrl.sortRequirements" ng-if="req.nonconformities && req.nonconformities.length > 0">
         <div ng-repeat="noncon in req.nonconformities">
           <a href ng-click="noncon.showDetails = !noncon.showDetails" class="pull-right" aria-expanded="{{ noncon.showDetails }}">{{ noncon.showDetails ? 'Hide' : 'View' }} details<span class="sr-only"> for {{ req.requirement }}</span></a>
           <p>Non-Conformity related to {{ req.requirement }} Details</p>
@@ -129,7 +129,7 @@
                 <li ng-repeat="doc in noncon.documents">
                   {{ doc.fileName }}
                   <span ng-if="doc.id">
-                    <a type="button" class="btn btn-sm btn-ai-success" href="{{ vm.API }}/surveillance/document/{{ doc.id }}?api_key={{ vm.API_KEY }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download {{ doc.fileName</span></a>
+                    <a type="button" class="btn btn-sm btn-ai-success" href="{{ $ctrl.API }}/surveillance/document/{{ doc.id }}?api_key={{ $ctrl.API_KEY }}"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download {{ doc.fileName</span></a>
                   </span>
                   <span ng-if="!doc.id">File is pending</span>
                 </li>
@@ -141,7 +141,7 @@
     </div>
     <hr ng-if="!$last" />
   </div>
-  <div ng-if="vm.allowEditing">
-    <button class="btn btn-ai-success" ng-click="vm.initiateSurveillance()">Initiate Surveillance Reporting</button>
+  <div ng-if="$ctrl.allowEditing">
+    <button class="btn btn-ai-success" ng-click="$ctrl.initiateSurveillance()">Initiate Surveillance Reporting</button>
   </div>
 </div>
