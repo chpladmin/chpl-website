@@ -12,14 +12,8 @@ export class NetworkService {
                 details: { },
             },
             searchOptions: {
-                deleted: {
-                    data: undefined,
-                    lastUpdated: -1,
-                },
-                notDeleted: {
-                    data: undefined,
-                    lastUpdated: -1,
-                },
+                data: undefined,
+                lastUpdated: -1,
             },
         };
     }
@@ -99,9 +93,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAcbs (editable, deleted) {
-        if (angular.isUndefined(deleted)) { deleted = false; }
-        return this.apiGET('/acbs?editable=' + editable + '&showDeleted=' + deleted);
+    getAcbs (editable) {
+        return this.apiGET('/acbs?editable=' + editable);
     }
 
     getAccessibilityStandards () {
@@ -166,9 +159,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAtls (editable, deleted) {
-        if (angular.isUndefined(deleted)) { deleted = false; }
-        return this.apiGET('/atls?editable=' + editable + '&showDeleted=' + deleted);
+    getAtls (editable) {
+        return this.apiGET('/atls?editable=' + editable);
     }
 
     getCertBodies () {
@@ -345,21 +337,13 @@ export class NetworkService {
         return this.apiGET('/products/' + productId + '/listings');
     }
 
-    getSearchOptions (showDeleted) {
+    getSearchOptions () {
         const EXPIRATION_TIME = 5; // in minutes
-        if (showDeleted) {
-            if (!this.store.searchOptions.deleted.data || (Date.now() - this.store.searchOptions.deleted.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-                this.store.searchOptions.deleted.data = this.apiGET('/data/search_options?showDeleted=true');
-                this.store.searchOptions.deleted.lastUpdated = Date.now();
-            }
-            return this.store.searchOptions.deleted.data;
-        } else {
-            if (!this.store.searchOptions.notDeleted.data || (Date.now() - this.store.searchOptions.notDeleted.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-                this.store.searchOptions.notDeleted.data = this.apiGET('/data/search_options');
-                this.store.searchOptions.notDeleted.lastUpdated = Date.now();
-            }
-            return this.store.searchOptions.notDeleted.data;
+        if (!this.store.searchOptions.data || (Date.now() - this.store.searchOptions.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.searchOptions.data = this.apiGET('/data/search_options');
+            this.store.searchOptions.lastUpdated = Date.now();
         }
+        return this.store.searchOptions.data;
     }
 
     getSedParticipantStatisticsCount () {

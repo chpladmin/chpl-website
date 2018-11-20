@@ -281,13 +281,8 @@
         });
 
         it('should getAcbs', function () {
-            $httpBackend.expectGET(/acbs\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/acbs\?editable=false/).respond(200, {data: 'response'});
             networkService.getAcbs(false).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/acbs\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getAcbs(false, true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -442,13 +437,8 @@
         });
 
         it('should getAtls', function () {
-            $httpBackend.expectGET(/atls\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/atls\?editable=false/).respond(200, {data: 'response'});
             networkService.getAtls(false).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/atls\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getAtls(false, true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -833,11 +823,6 @@
         it('should getSearchOptions', function () {
             $httpBackend.expectGET(/search_options/).respond(200, {data: 'response'});
             networkService.getSearchOptions().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/search_options\?showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getSearchOptions(true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
