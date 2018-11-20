@@ -2,7 +2,12 @@
     'use strict';
 
     describe('chpl.overview', function () {
-        var $log, $q, networkService, scope, vm;
+        var $log, $q, mock, networkService, scope, vm;
+
+        mock = {
+            acbs: [{id: 0, name: 'test-acb'}, {id: 1, name: 'retired-acb', retired: true}],
+            atls: [{id: 0, name: 'test-atl'}, {id: 1, name: 'retired-atl', retired: true}],
+        };
 
         beforeEach(function () {
             angular.mock.module('chpl.overview', function ($provide) {
@@ -19,8 +24,8 @@
                 $log = _$log_;
                 $q = _$q_;
                 networkService = _networkService_;
-                networkService.getAcbs.and.returnValue($q.when({acbs: [{id: 0, name: 'test-acb'}]}));
-                networkService.getAtls.and.returnValue($q.when({atls: [{id: 0, name: 'test-atl'}]}));
+                networkService.getAcbs.and.returnValue($q.when({ acbs: mock.acbs }));
+                networkService.getAtls.and.returnValue($q.when({ atls: mock.atls }));
                 networkService.getAnnouncements.and.returnValue($q.when({announcements: [{title: 0, description: 'test-atl'}]}));
 
                 scope = $rootScope.$new();
@@ -51,6 +56,14 @@
             it('should call the common service to load acbs', function () {
                 vm.loadAcbs();
                 expect(networkService.getAcbs).toHaveBeenCalled();
+            });
+
+            it('should filter out retired acbs', () => {
+                expect(vm.acbs.length).toBe(mock.acbs.length - 1);
+            });
+
+            it('should filter out retired atls', () => {
+                expect(vm.atls.length).toBe(mock.atls.length - 1);
             });
 
             it('should log an error if getAcbs fails', function () {
