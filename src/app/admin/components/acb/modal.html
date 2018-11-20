@@ -9,7 +9,7 @@
     <h4 class="modal-title" id="edit-label">{{ vm.action === 'edit' ? 'Edit' : 'Create' }} ONC-ACB</h4>
   </div>
   <div class="modal-body">
-    <ai-edit-acb acb="vm.acb" action="vm.action" on-change="vm.handleChange(acb, valid)"></ai-edit-acb>
+    <ai-edit-acb acb="vm.acb" action="vm.action" is-chpl-admin="vm.isChplAdmin" on-change="vm.handleChange(acb, valid)"></ai-edit-acb>
   </div>
   <div class="modal-footer">
     <button ng-disabled="!vm.formIsValid && vm.showFormErrors" class="btn btn-ai-success btn-block"

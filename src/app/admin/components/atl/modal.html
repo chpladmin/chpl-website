@@ -9,14 +9,14 @@
     <h4 class="modal-title" id="edit-label">{{ vm.action === 'edit' ? 'Edit' : 'Create' }} ONC-ATL</h4>
   </div>
   <div class="modal-body" ng-form="vm.editForm">
-    <ai-edit-atl atl="vm.atl" action="vm.action" on-change="vm.handleChange(atl, valid)"></ai-edit-atl>
+    <ai-edit-atl atl="vm.atl" action="vm.action" is-chpl-admin="vm.isChplAdmin" on-change="vm.handleChange(atl, valid)"></ai-edit-atl>
   </div>
   <div class="modal-footer">
-    <button ng-disabled="!vm.isFormValid && vm.showFormErrors" class="btn btn-ai-success btn-block"
+    <button ng-disabled="!vm.formIsValid && vm.showFormErrors" class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-if="vm.action === 'create'"
             ng-click="vm.create()"><i class="fa fa-save"></i> Create ONC-ATL</button>
-    <button ng-disabled="!vm.isFormValid && vm.showFormErrors" class="btn btn-ai-success btn-block"
+    <button ng-disabled="!vm.formIsValid && vm.showFormErrors" class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-if="vm.action === 'edit'"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save ONC-ATL</button>

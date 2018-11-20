@@ -23,6 +23,9 @@
             vm.isChplAdmin = isChplAdmin;
             if (vm.action === 'create') {
                 vm.acb.address = {};
+                vm.formIsValid = false;
+            } else {
+                vm.formIsValid = true;
             }
         }
 

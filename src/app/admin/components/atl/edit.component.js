@@ -3,6 +3,7 @@ export const EditAtlComponent = {
     bindings: {
         atl: '<',
         action: '@',
+        isChplAdmin: '<',
         onChange: '&',
     },
     controller: class EditAtlController {
@@ -14,6 +15,9 @@ export const EditAtlComponent = {
         $onChanges (changes) {
             if (changes.atl) {
                 this.atl = angular.copy(changes.atl.currentValue);
+            }
+            if (changes.isChplAdmin) {
+                this.isChplAdmin = angular.copy(changes.isChplAdmin.currentValue);
             }
         }
 

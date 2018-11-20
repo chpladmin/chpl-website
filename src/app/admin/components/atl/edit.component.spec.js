@@ -14,7 +14,7 @@
                 scope.atl = {};
                 scope.handleChange = jasmine.createSpy('handleChange');
 
-                el = angular.element('<ai-edit-atl atl="atl" action="edit" on-change="handleChange(atl, valid)"></ai-edit-atl>');
+                el = angular.element('<ai-edit-atl atl="atl" action="edit" is-chpl-admin="true" on-change="handleChange(atl, valid)"></ai-edit-atl>');
 
                 $compile(el)(scope);
                 scope.$digest();

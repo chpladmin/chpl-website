@@ -3,6 +3,7 @@ export const EditAcbComponent = {
     bindings: {
         acb: '<',
         action: '@',
+        isChplAdmin: '<',
         onChange: '&',
     },
     controller: class EditAcbController {
@@ -14,6 +15,9 @@ export const EditAcbComponent = {
         $onChanges (changes) {
             if (changes.acb) {
                 this.acb = angular.copy(changes.acb.currentValue);
+            }
+            if (changes.isChplAdmin) {
+                this.isChplAdmin = angular.copy(changes.isChplAdmin.currentValue);
             }
         }
 
