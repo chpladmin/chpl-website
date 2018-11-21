@@ -66,13 +66,13 @@
             }
 
             // load editable acbs & atls
-            networkService.getAcbs(true, vm.isChplAdmin())
+            networkService.getAcbs(true)
                 .then(function (data) {
                     vm.acbs = $filter('orderBy')(data.acbs,'name');
                     vm.acb = vm.acbs[0];
                     vm.navState.acbManagement = vm.acb;
                 });
-            networkService.getAtls(true, vm.isChplAdmin())
+            networkService.getAtls(true)
                 .then(function (data) {
                     vm.atls = $filter('orderBy')(data.atls,'name');
                     vm.atl = vm.atls[0];
@@ -95,7 +95,7 @@
         function changeScreen (screen) {
             vm.clearProductId();
             if (screen === 'acbManagement') {
-                networkService.getAcbs(true, vm.isChplAdmin())
+                networkService.getAcbs(true)
                     .then(function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
                         vm.acb = vm.acbs[0];
@@ -103,7 +103,7 @@
                     });
             }
             if (screen === 'atlManagement') {
-                networkService.getAtls(true, vm.isChplAdmin())
+                networkService.getAtls(true)
                     .then(function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
                         vm.atl = vm.atls[0];
