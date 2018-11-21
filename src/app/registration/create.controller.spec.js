@@ -25,13 +25,14 @@
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.registration', function ($provide) {
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.getUsername = jasmine.createSpy('getUsername');
+                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
+                    return $delegate;
+                });
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.authorizeUser = jasmine.createSpy('authorizeUser');
                     $delegate.createInvitedUser = jasmine.createSpy('createInvitedUser');
-                    return $delegate;
-                });
-                $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
                     return $delegate;
                 });
             });
@@ -41,6 +42,7 @@
                 $q = _$q_;
                 $location = _$location_;
                 authService = _authService_;
+                authService.getUsername.and.returnValue('username');
                 authService.isAuthed.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.authorizeUser.and.returnValue($q.when({}));
@@ -103,7 +105,7 @@
 
         it('should call "authorizeUser" if the user tries to log in', function () {
             vm.authorizeUser();
-            expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'});
+            expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'}, 'username');
         });
 
         it('should redirect to /admin after authorizeUser is finished', function () {

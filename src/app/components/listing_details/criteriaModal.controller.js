@@ -138,7 +138,7 @@
         function _getSortedTestFunctionalities () {
             return $filter('orderBy')(vm.cert.allowedTestFunctionalities, 'name');
         }
-        
+
         function _getSelectedTestDataKeys () {
             var tdKeys = [];
             vm.availableTestData = vm.resources.testData.data
