@@ -117,6 +117,7 @@
         }
 
         function resetPassword () {
+        	console.log(vm.$routeParams.token);
             if (vm.misMatchPasswords()) {
                 vm.message = 'Passwords do not match. Please try again';
             } else {

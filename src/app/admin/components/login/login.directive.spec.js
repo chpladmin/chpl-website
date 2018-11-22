@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Login', function () {
-        var $compile, $log, $q, Idle, Keepalive, authService, el, mock, networkService, scope, vm;
+        var $controller, $compile, $log, $q, $routeParams, Idle, Keepalive, authService, el, mock, networkService, scope, vm;
 
         mock = {
             response: {
@@ -31,16 +31,18 @@
                     $delegate.getUserByUsername = jasmine.createSpy('getUserByUsername');
                     $delegate.keepalive = jasmine.createSpy('keepalive');
                     $delegate.login = jasmine.createSpy('login');
+                    $delegate.emailResetPassword = jasmine.createSpy('emailResetPassword');
                     $delegate.resetPassword = jasmine.createSpy('resetPassword');
                     return $delegate;
                 });
             });
 
-            inject(function (_$compile_, _$log_, _$q_, $rootScope, _Idle_, _Keepalive_, _authService_, _networkService_) {
+            inject(function ($controller, $compile_, _$log_, _$q_, $rootScope, _authService_, _Idle_, _Keepalive_, _networkService_) {
                 $compile = _$compile_;
                 $q = _$q_;
                 $log = _$log_;
                 Idle = _Idle_;
+                $routeParams = ;
                 Keepalive = _Keepalive_;
                 authService = _authService_;
                 authService.getUsername.and.returnValue('admin');
@@ -51,11 +53,15 @@
                 networkService.getUserByUsername.and.returnValue($q.when(mock.response));
                 networkService.keepalive.and.returnValue($q.when({}));
                 networkService.login.and.returnValue($q.when({}));
+                networkService.emailResetPassword.and.returnValue($q.when({}));
                 networkService.resetPassword.and.returnValue($q.when({}));
+                
+                ctrl = $controller('ConfirmController', {
+                    $routeParams: {token: 'd24cefad-e2e3-4923-894a-5daab52cf0e4'},
+                });
 
+                scope = $rootScope.$new();
                 el = angular.element('<ai-login></ai-login>');
-
-                scope = $rootScope.$new()
                 $compile(el)(scope);
                 scope.$digest();
                 vm = el.isolateScope().vm;
@@ -343,12 +349,12 @@
                 });
             });
 
-            describe('when resetting a password in', function () {
-                it('should call networkService.resetPassword with correct parameters', function () {
+            describe('when emailing a password reset in', function () {
+                it('should call networkService.emailResetPassword with correct parameters', function () {
                     vm.userName = 'test';
                     vm.email = 'email';
                     vm.sendReset();
-                    expect(networkService.resetPassword).toHaveBeenCalledWith({userName: 'test', email: 'email'});
+                    expect(networkService.emailResetPassword).toHaveBeenCalledWith({userName: 'test', email: 'email'});
                 });
 
                 it('should start clear the form and report a message on success', function () {
@@ -362,10 +368,21 @@
                 });
 
                 it('should have an error message if service reports an error', function () {
-                    networkService.resetPassword.and.returnValue($q.reject({data: {error: 'Invalid username / password'}}));
+                    networkService.emailResetPassword.and.returnValue($q.reject({data: {error: 'Invalid username / password'}}));
                     vm.sendReset();
                     scope.$digest();
                     expect(vm.message).toBe('Invalid username/email combination. Please check your credentials or contact the administrator');
+                });
+            });
+
+            describe('when resetting a password in', function () {
+                it('should call the network service', function () {
+                    vm.userName = 'test';
+                    vm.newPassword = 'new';
+                    vm.confirmPassword = 'new';
+                    token = 'd24cefad-e2e3-4923-894a-5daab52cf0e4'
+                    vm.resetPassword();
+                    expect(networkService.resetPassword).toHaveBeenCalledWith({token: token, userName: vm.userName, newPassword: vm.newPassword});
                 });
             });
         });
