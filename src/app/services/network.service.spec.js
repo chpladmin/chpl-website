@@ -1246,6 +1246,14 @@
             $httpBackend.flush();
         });
 
+        it('should emailResetPassword', function () {
+            $httpBackend.expectPOST(/auth\/email_reset_password/).respond(200, {data: 'response'});
+            networkService.emailResetPassword('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should revokeApi', function () {
             $httpBackend.expectDELETE(/key\/userKey/).respond(200);
             networkService.revokeApi({key: 'userKey'}).then(function (response) {
