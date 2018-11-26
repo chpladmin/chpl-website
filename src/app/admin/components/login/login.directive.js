@@ -58,6 +58,7 @@
             }
             if ($routeParams.token) {
                 vm.activity = vm.activityEnum.PASSWORD_RESET;
+                vm.token = $routeParams.token;
             }
 
             $scope.$on('Keepalive', function () {
@@ -117,11 +118,10 @@
         }
 
         function resetPassword () {
-        	console.log(vm.$routeParams.token);
             if (vm.misMatchPasswords()) {
                 vm.message = 'Passwords do not match. Please try again';
             } else {
-                networkService.resetPassword({token: $routeParams.token, userName: vm.userName, newPassword: vm.newPassword})
+                networkService.resetPassword({token: vm.token, userName: vm.userName, newPassword: vm.newPassword})
                     .then(function (response) {
                         if (response.passwordUpdated) {
                             vm.clear();

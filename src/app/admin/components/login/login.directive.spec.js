@@ -2,7 +2,7 @@
     'use strict';
 
     describe('the Login', function () {
-        var $controller, $compile, $log, $q, $routeParams, Idle, Keepalive, authService, el, mock, networkService, scope, vm;
+        var $compile, $log, $q, Idle, Keepalive, authService, el, mock, networkService, scope, vm;
 
         mock = {
             response: {
@@ -37,28 +37,25 @@
                 });
             });
 
-            inject(function ($controller, $compile_, _$log_, _$q_, $rootScope, _authService_, _Idle_, _Keepalive_, _networkService_) {
+            inject(function (_$compile_, _$log_, _$q_, $rootScope, _Idle_, _Keepalive_, _authService_, _networkService_) {
                 $compile = _$compile_;
                 $q = _$q_;
                 $log = _$log_;
                 Idle = _Idle_;
-                $routeParams = ;
                 Keepalive = _Keepalive_;
+
                 authService = _authService_;
                 authService.getUsername.and.returnValue('admin');
                 authService.isAuthed.and.returnValue(true);
                 authService.saveToken.and.returnValue({});
+
                 networkService = _networkService_;
                 networkService.changePassword.and.returnValue($q.when({passwordUpdated: true}));
+                networkService.emailResetPassword.and.returnValue($q.when({}));
                 networkService.getUserByUsername.and.returnValue($q.when(mock.response));
                 networkService.keepalive.and.returnValue($q.when({}));
                 networkService.login.and.returnValue($q.when({}));
-                networkService.emailResetPassword.and.returnValue($q.when({}));
                 networkService.resetPassword.and.returnValue($q.when({}));
-                
-                ctrl = $controller('ConfirmController', {
-                    $routeParams: {token: 'd24cefad-e2e3-4923-894a-5daab52cf0e4'},
-                });
 
                 scope = $rootScope.$new();
                 el = angular.element('<ai-login></ai-login>');
@@ -377,10 +374,11 @@
 
             describe('when resetting a password in', function () {
                 it('should call the network service', function () {
+                    const token = 'd24cefad-e2e3-4923-894a-5daab52cf0e4'
                     vm.userName = 'test';
                     vm.newPassword = 'new';
                     vm.confirmPassword = 'new';
-                    token = 'd24cefad-e2e3-4923-894a-5daab52cf0e4'
+                    vm.token = token;
                     vm.resetPassword();
                     expect(networkService.resetPassword).toHaveBeenCalledWith({token: token, userName: vm.userName, newPassword: vm.newPassword});
                 });
