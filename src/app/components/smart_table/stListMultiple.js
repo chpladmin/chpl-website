@@ -115,7 +115,7 @@
             }
             var value;
             for (var i = 0; i < values.length; i++) {
-                value = values[i];
+                value = values[i] + '';
                 if (value && value.trim().length > 0 && !findItemWithValue(distinctItems, value)) {
                     distinctItems.push({
                         value: value,

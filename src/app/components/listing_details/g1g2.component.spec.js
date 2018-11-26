@@ -19,7 +19,6 @@
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
-                //scope.ctrl = ctrl;
             });
         });
 

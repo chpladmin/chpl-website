@@ -31,6 +31,7 @@
                     $delegate.getUserByUsername = jasmine.createSpy('getUserByUsername');
                     $delegate.keepalive = jasmine.createSpy('keepalive');
                     $delegate.login = jasmine.createSpy('login');
+                    $delegate.emailResetPassword = jasmine.createSpy('emailResetPassword');
                     $delegate.resetPassword = jasmine.createSpy('resetPassword');
                     return $delegate;
                 });
@@ -42,20 +43,22 @@
                 $log = _$log_;
                 Idle = _Idle_;
                 Keepalive = _Keepalive_;
+
                 authService = _authService_;
                 authService.getUsername.and.returnValue('admin');
                 authService.isAuthed.and.returnValue(true);
                 authService.saveToken.and.returnValue({});
+
                 networkService = _networkService_;
                 networkService.changePassword.and.returnValue($q.when({passwordUpdated: true}));
+                networkService.emailResetPassword.and.returnValue($q.when({}));
                 networkService.getUserByUsername.and.returnValue($q.when(mock.response));
                 networkService.keepalive.and.returnValue($q.when({}));
                 networkService.login.and.returnValue($q.when({}));
                 networkService.resetPassword.and.returnValue($q.when({}));
 
+                scope = $rootScope.$new();
                 el = angular.element('<ai-login></ai-login>');
-
-                scope = $rootScope.$new()
                 $compile(el)(scope);
                 scope.$digest();
                 vm = el.isolateScope().vm;
@@ -352,12 +355,12 @@
                 });
             });
 
-            describe('when resetting a password', function () {
-                it('should call networkService.resetPassword with correct parameters', function () {
+            describe('when emailing a password reset in', function () {
+                it('should call networkService.emailResetPassword with correct parameters', function () {
                     vm.userName = 'test';
                     vm.email = 'email';
                     vm.sendReset();
-                    expect(networkService.resetPassword).toHaveBeenCalledWith({userName: 'test', email: 'email'});
+                    expect(networkService.emailResetPassword).toHaveBeenCalledWith({userName: 'test', email: 'email'});
                 });
 
                 it('should start clear the form and report a message on success', function () {
@@ -371,10 +374,22 @@
                 });
 
                 it('should have an error message if service reports an error', function () {
-                    networkService.resetPassword.and.returnValue($q.reject({data: {error: 'Invalid username / password'}}));
+                    networkService.emailResetPassword.and.returnValue($q.reject({data: {error: 'Invalid username / password'}}));
                     vm.sendReset();
                     scope.$digest();
                     expect(vm.message).toBe('Invalid username/email combination. Please check your credentials or contact the administrator');
+                });
+            });
+
+            describe('when resetting a password in', function () {
+                it('should call the network service', function () {
+                    const token = 'd24cefad-e2e3-4923-894a-5daab52cf0e4'
+                    vm.userName = 'test';
+                    vm.newPassword = 'new';
+                    vm.confirmPassword = 'new';
+                    vm.token = token;
+                    vm.resetPassword();
+                    expect(networkService.resetPassword).toHaveBeenCalledWith({token: token, userName: vm.userName, newPassword: vm.newPassword});
                 });
             });
         });
