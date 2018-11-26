@@ -551,7 +551,11 @@ export class NetworkService {
     }
 
     resetPassword (userObj) {
-        return this.apiPOST('/auth/reset_password', userObj);
+        return this.apiPOST('/auth/reset_password_request', userObj);
+    }
+
+    emailResetPassword (userObj) {
+        return this.apiPOST('/auth/email_reset_password', userObj);
     }
 
     revokeApi (user) {
