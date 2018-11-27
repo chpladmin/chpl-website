@@ -33,7 +33,13 @@ export class NetworkService {
     }
 
     changePassword (userObj) {
-        return this.apiPOST('/auth/change_password', userObj);
+        let url;
+        if (userObj.userName && userObj.userName.length > 0) {
+            url = '/auth/change_expired_password';
+        } else {
+            url = '/auth/change_password';
+        }
+        return this.apiPOST(url, userObj);
     }
 
     confirmPendingCp (pendingCp) {

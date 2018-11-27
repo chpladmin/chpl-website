@@ -6,5 +6,6 @@ _Date TBD_
 * Add updated favicons; support app/mobile pinning
 * Add sorting to functionality tested
 * Add support for resetting password via generated link
+* Add "user must reset password on next login" workflow
 
 ---

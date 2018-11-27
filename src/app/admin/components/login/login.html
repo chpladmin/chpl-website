@@ -8,16 +8,16 @@
       </div>
     </div>
 
-    <div class="form-group" ng-if="vm.activity === vm.activityEnum.LOGIN || vm.activity === vm.activityEnum.CHANGE">
-      <label class="control-label col-sm-4" for="password-{{ $id }}"><span ng-if="vm.activity === vm.activityEnum.CHANGE">Old </span>Password <span class="text-danger">*</span></label>
+    <div class="form-group" ng-if="vm.activity === vm.activityEnum.LOGIN || vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.EXPIRED">
+      <label class="control-label col-sm-4" for="password-{{ $id }}"><span ng-if="vm.activity !== vm.activityEnum.LOGIN">Old </span>Password <span class="text-danger">*</span></label>
       <div class="col-sm-8">
         <input type="password" class="form-control" id="password-{{ $id }}" name="password" ng-model="vm.password" placeholder="password" required />
         <div class="text-danger" ng-if="vm.loginForm.password.$touched && vm.loginForm.password.$error.required">Password is required</div>
       </div>
     </div>
 
-    <div class="form-group" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.PASSWORD_RESET">
-      <label class="control-label col-sm-4" for="new-password-{{ $id }}" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.PASSWORD_RESET">New Password <span class="text-danger">*</span></label>
+    <div class="form-group" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.EXPIRED || vm.activity === vm.activityEnum.PASSWORD_RESET">
+      <label class="control-label col-sm-4" for="new-password-{{ $id }}">New Password <span class="text-danger">*</span></label>
       <div class="col-sm-8">
         <input type="password" class="form-control" id="new-password-{{ $id }}" name="newPassword" ng-model="vm.newPassword" placeholder="new password" required
                zxcvbn="vm.passwordStrength" zx-extras="vm.extras" zx-min-score="3" />
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class="form-group" ng-if="vm.activity === vm.activityEnum.CHANGE ||vm.activity === vm.activityEnum.PASSWORD_RESET">
+    <div class="form-group" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.EXPIRED || vm.activity === vm.activityEnum.PASSWORD_RESET">
       <label class="control-label col-sm-4" for="confirm-password-{{ $id }}">Confirm Password <span class="text-danger">*</span></label>
       <div class="col-sm-8">
         <input type="password" class="form-control" id="confirm-password-{{ $id }}" name="confirmPassword" ng-model="vm.confirmPassword" placeholder="confirm password" required />
@@ -55,13 +55,14 @@
 
     <button class="btn btn-default btn-block" id="login_{{$id}}" ng-click="vm.login(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN" ng-disabled="vm.loginForm.$invalid">Log In</button>
     <button class="btn btn-default btn-block" id="reset_{{$id}}" ng-click="vm.sendReset(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.RESET" ng-disabled="vm.loginForm.$invalid">Send reset email</button>
-    <button class="btn btn-default btn-block" id="forgot_{{$id}}" ng-click="vm.setActivity(vm.activityEnum.RESET); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN">Forgot Password</button>
+    <button class="btn btn-default btn-block" id="forgot_{{$id}}" ng-click="vm.setActivity(vm.activityEnum.RESET); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.LOGIN || vm.activity === vm.activityEnum.EXPIRED">Forgot Password</button>
     <button class="btn btn-default btn-block" id="logout_{{$id}}" ng-click="vm.logout()" ng-if="vm.activity == vm.activityEnum.NONE">Log Out</button>
-    <button class="btn btn-default btn-block" id="confirm_{{$id}}" ng-click="vm.changePassword()" ng-if="vm.activity === vm.activityEnum.CHANGE" ng-disabled="vm.loginForm.$invalid || vm.misMatchPasswords()">Confirm new Password</button>
+    <button class="btn btn-default btn-block" id="confirm_{{$id}}" ng-click="vm.changePassword()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.EXPIRED" ng-disabled="vm.loginForm.$invalid || vm.misMatchPasswords()">Confirm new Password</button>
     <button class="btn btn-default btn-block" id="confirm_{{$id}}" ng-click="vm.resetPassword()" ng-if="vm.activity === vm.activityEnum.PASSWORD_RESET" ng-disabled="vm.loginForm.$invalid || vm.misMatchPasswords()">Confirm Password Reset</button>
     <button class="btn btn-default btn-block" id="change_{{$id}}" ng-click="vm.setActivity(vm.activityEnum.CHANGE); $event.stopPropagation()" ng-if="vm.activity !== vm.activityEnum.CHANGE && vm.isAuthed()">Change Password</button>
-    <button class="btn btn-default btn-block" id="cancel_{{$id}}" ng-click="vm.activate(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.RESET">Cancel</button>
+    <button class="btn btn-default btn-block" id="cancel_{{$id}}" ng-click="vm.$onInit(); $event.stopPropagation()" ng-if="vm.activity === vm.activityEnum.CHANGE || vm.activity === vm.activityEnum.RESET">Cancel</button>
   </form>
-  <p ng-if="vm.activity === vm.activityEnum.LOGIN" class="text-center"><small>This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.</small></p>
+  <p class="vm.pClass" ng-if="vm.activity === vm.activityEnum.EXPIRED">You must change or reset your password before you can log in</p>
   <p ng-class="vm.messageClass" ng-if="vm.message.length > 0">{{ vm.message }}</p>
+  <p ng-if="vm.activity === vm.activityEnum.LOGIN" class="text-center"><small>This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose.</small></p>
 </div>
