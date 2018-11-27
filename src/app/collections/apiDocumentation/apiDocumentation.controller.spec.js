@@ -3,18 +3,27 @@
 
     describe('chpl.collections.apiDocumentation.controller', function () {
 
-        var $log, networkService, scope, vm;
+        var $log, $q, authService, networkService, scope, vm;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.collections', function ($provide) {
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.getApiKey = jasmine.createSpy('getApiKey');
+                    return $delegate;
+                });
                 $provide.decorator('networkService', function ($delegate) {
+                    $delegate.getApiDocumentationDate = jasmine.createSpy('getApiDocumentationDate');
                     return $delegate;
                 });
             });
 
-            inject(function ($controller, _$log_, $rootScope, _networkService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _authService_, _networkService_) {
                 $log = _$log_;
+                $q = _$q_;
+                authService = _authService_;
+                authService.getApiKey.and.returnValue('api-key');
                 networkService = _networkService_;
+                networkService.getApiDocumentationDate.and.returnValue($q.when({date: 39393939}));
 
                 scope = $rootScope.$new();
                 vm = $controller('ApiDocumentationController', {
@@ -33,8 +42,22 @@
             }
         });
 
-        it('should exist', function () {
-            expect(vm).toBeDefined();
+        describe('on load', () => {
+            it('should exist', function () {
+                expect(vm).toBeDefined();
+            });
+
+            it('should call the network service for the last modified date', () => {
+                expect(networkService.getApiDocumentationDate.calls.count()).toBe(1);
+            });
+
+            it('should call the auth service for the api key', () => {
+                expect(authService.getApiKey.calls.count()).toBe(1);
+            });
+
+            it('should have the link to the download file', () => {
+                expect(vm.apiDocumentation).toBe('/rest/download?api_key=api-key');
+            });
         });
 
         describe('transforming API Documentation data', function () {

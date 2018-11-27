@@ -14,6 +14,11 @@
     <p>
       Please note that by default, only listings that are active or suspended are shown in the search results.
     </p>
+    <p>
+      The API Survey information was last updated on {{ vm.apiDate | date : 'mediumDate': 'UTC' }}.
+      <a type="button" class="btn btn-ai-success" href="{{ vm.apiDocument }}" id="downloadApiDocument"
+         analytics-on="click" analytics-event="Download CHPL" analytics-properties="{ category: 'Download CHPL', label: 'API Documentation' }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
+    </p>
   </ai-body-text>
   <ai-title>API Information for 2015 Edition Products</ai-title>
 </ai-collection>
