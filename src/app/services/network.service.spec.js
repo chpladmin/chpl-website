@@ -406,6 +406,14 @@
             $httpBackend.flush();
         });
 
+        it('should getApiDocumentationDate', () => {
+            $httpBackend.expectGET(/files\/api_documentation\/details/).respond(200, {data: 'response'});
+            networkService.getApiDocumentationDate().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getApiUserActivity', function () {
             var aDate = new Date();
             $httpBackend.expectGET(/activity\/api_keys/).respond(200, {data: 'response'});
