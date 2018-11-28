@@ -20,8 +20,8 @@ let getFileUploader = (ctrl) => {
     return uploader;
 }
 
-export const ApiSurveyManagementComponent = {
-    templateUrl: 'chpl.admin/components/apiSurvey/apiSurvey.html',
+export const ApiDocumentationManagementComponent = {
+    templateUrl: 'chpl.admin/components/apiDocumentation/apiDocumentation.html',
     bindings: {},
     controller: class ApiSurveController {
         constructor ($location, $log, $route, API, FileUploader, authService) {
@@ -49,4 +49,4 @@ export const ApiSurveyManagementComponent = {
 }
 angular
     .module('chpl.admin')
-    .component('aiApiSurveyManagement', ApiSurveyManagementComponent);
+    .component('aiApiDocumentationManagement', ApiDocumentationManagementComponent);

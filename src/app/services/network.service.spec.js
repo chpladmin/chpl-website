@@ -401,8 +401,8 @@
             $httpBackend.flush();
         });
 
-        fit('should getApiDocumentationDate', () => {
-            $httpBackend.expectGET(/data\/api_documentation_date/).respond(200, {data: 'response'});
+        it('should getApiDocumentationDate', () => {
+            $httpBackend.expectGET(/files\/api_documentation\/details/).respond(200, {data: 'response'});
             networkService.getApiDocumentationDate().then(function (response) {
                 expect(response.data).toEqual('response');
             });

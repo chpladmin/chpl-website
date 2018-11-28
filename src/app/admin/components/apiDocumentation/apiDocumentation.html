@@ -1,7 +1,7 @@
 <div>
   <section class="row">
     <div class="col-md-12 main-content spaced-out">
-      <h3>Upload API Survey Information</h3>
+      <h3>Upload API Documentation Information</h3>
       <input type="file" nv-file-select="" uploader="$ctrl.uploader" />
       <div ng-if="$ctrl.uploadMessage.length > 0" ng-class="$ctrl.uploadSuccess ? 'bg-success' : 'bg-danger'">
         {{ $ctrl.uploadMessage }}
@@ -9,7 +9,7 @@
           <li ng-repeat="error in $ctrl.uploadErrors">{{ error.error }}</li>
         </ul>
       </div>
-      <table class="table table-responsive" ng-if="$ctrl.uploader.queue.length > 0" id="api-survey-upload-table">
+      <table class="table table-responsive" ng-if="$ctrl.uploader.queue.length > 0" id="api-documentation-upload-table">
         <thead>
           <tr>
             <th scope="col">Name</th>
@@ -43,7 +43,7 @@
       </table>
       <form class="form form-horizontal" name="$ctrl.apiForm">
         <div class="form-group">
-          <label for="new-api-date" class="col-sm-4">Enter the Accurate As of date for API Survey data associated with this upload</label>
+          <label for="new-api-date" class="col-sm-4">Enter the Accurate As of date for API Documentation data associated with this upload</label>
           <div class="col-sm-4">
             <div class="input-group">
               <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.accurateAsOfDateObject" is-open="$ctrl.accurateAsOfPicker" close-text="Close" id="new-api-date" name="newApiDate" ng-model-options="{ timezone: 'UTC' }" required>

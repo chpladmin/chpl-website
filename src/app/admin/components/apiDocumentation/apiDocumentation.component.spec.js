@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the api survey component', () => {
+    describe('the api documentation component', () => {
         var $compile, $log, authService, ctrl, el, scope;
 
         beforeEach(() => {
@@ -21,7 +21,7 @@
                 authService.getApiKey.and.returnValue('api-key');
 
                 scope = $rootScope.$new();
-                el = angular.element('<ai-api-survey-management></ai-api-survey-management');
+                el = angular.element('<ai-api-documentation-management></ai-api-documentation-management');
                 $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;

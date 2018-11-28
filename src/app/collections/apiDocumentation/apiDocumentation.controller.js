@@ -40,7 +40,7 @@
 
             vm.API = API;
             vm.API_KEY = authService.getApiKey();
-            vm.apiDocumentation = vm.API + '/download?api_key=' + vm.API_KEY;
+            vm.apiDocumentation = vm.API + '/files/api_documentation?api_key=' + vm.API_KEY;
             networkService.getApiDocumentationDate().then(response => {
                 vm.apiDate = response.date;
             });

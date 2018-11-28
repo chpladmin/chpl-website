@@ -55,8 +55,8 @@
                 expect(authService.getApiKey.calls.count()).toBe(1);
             });
 
-            fit('should have the link to the download file', () => {
-                expect(vm.apiDocumentation).toBe('/rest/api_documentation_download?api_key=api-key');
+            it('should have the link to the download file', () => {
+                expect(vm.apiDocumentation).toBe('/rest/files/api_documentation?api_key=api-key');
             });
         });
 

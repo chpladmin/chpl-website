@@ -161,7 +161,7 @@ export class NetworkService {
     }
 
     getApiDocumentationDate () {
-        return this.apiGET('/data/api');
+        return this.apiGET('/files/api_documentation/details');
     }
 
     getApiUserActivity (activityRange) {
