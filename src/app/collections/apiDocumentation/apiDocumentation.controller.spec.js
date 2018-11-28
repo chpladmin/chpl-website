@@ -23,7 +23,7 @@
                 authService = _authService_;
                 authService.getApiKey.and.returnValue('api-key');
                 networkService = _networkService_;
-                networkService.getApiDocumentationDate.and.returnValue($q.when({date: 39393939}));
+                networkService.getApiDocumentationDate.and.returnValue($q.when({associatedDate: 39393939}));
 
                 scope = $rootScope.$new();
                 vm = $controller('ApiDocumentationController', {
@@ -56,7 +56,11 @@
             });
 
             it('should have the link to the download file', () => {
-                expect(vm.apiDocumentation).toBe('/rest/files/api_documentation?api_key=api-key');
+                expect(vm.apiDocument).toBe('/rest/files/api_documentation?api_key=api-key');
+            });
+
+            it('should know what the last updated date is', () => {
+                expect(vm.apiDate).toBe(39393939);
             });
         });
 

@@ -52,7 +52,7 @@
             it('should append the date as a request parameter', () => {
                 ctrl.accurateAsOfDateObject = new Date('2018-11-28');
                 ctrl.setAccurateDate(ctrl.uploader);
-                expect(ctrl.uploader.url).toBe('/rest/files/api_documentation?file_upload_date=1543363200000');
+                expect(ctrl.uploader.url).toBe('/rest/files/api_documentation?file_update_date=1543363200000');
             });
 
             it('should call the upload function', () => {
@@ -67,7 +67,7 @@
 
                 it('should append the date as a request parameter', () => {
                     ctrl.setAccurateDate(ctrl.uploader);
-                    expect(ctrl.uploader.url).toBe('/rest/files/api_documentation?file_upload_date=1543363200000');
+                    expect(ctrl.uploader.url).toBe('/rest/files/api_documentation?file_update_date=1543363200000');
                 });
 
                 it('should call the upload function', () => {

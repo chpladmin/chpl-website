@@ -38,10 +38,10 @@ export const ApiDocumentationManagementComponent = {
 
         setAccurateDate (item) {
             if (this.accurateAsOfDateObject && typeof this.accurateAsOfDateObject === 'object') {
-                item.url += '?file_upload_date=' + this.accurateAsOfDateObject.getTime();
+                item.url += '?file_update_date=' + this.accurateAsOfDateObject.getTime();
                 item.upload();
             } else if (this.accurateAsOfDateObject && typeof this.accurateAsOfDateObject === 'string') {
-                item.url += '?file_upload_date=' + new Date(this.accurateAsOfDateObject).getTime();
+                item.url += '?file_update_date=' + new Date(this.accurateAsOfDateObject).getTime();
                 item.upload();
             }
         }
