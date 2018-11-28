@@ -135,7 +135,12 @@
 
         it('should changePassword', function () {
             $httpBackend.expectPOST(/auth\/change_password/).respond(200, {data: 'response'});
-            networkService.changePassword('payload').then(function (response) {
+            networkService.changePassword({userName: '', oldPassword: 'password', newPassword: 'newPassword'}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectPOST(/auth\/change_expired_password/).respond(200, {data: 'response'});
+            networkService.changePassword({userName: 'userName', oldPassword: 'password', newPassword: 'newPassword'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1249,6 +1254,14 @@
         it('should resetPassword', function () {
             $httpBackend.expectPOST(/auth\/reset_password/).respond(200, {data: 'response'});
             networkService.resetPassword('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
+        it('should emailResetPassword', function () {
+            $httpBackend.expectPOST(/auth\/email_reset_password/).respond(200, {data: 'response'});
+            networkService.emailResetPassword('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
