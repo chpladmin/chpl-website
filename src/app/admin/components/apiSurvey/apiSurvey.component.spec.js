@@ -44,7 +44,7 @@
             expect(ctrl).toEqual(jasmine.any(Object));
         });
 
-        describe('when setting the accuracy date', () => {
+        describe('when handling the accuracy date', () => {
             beforeEach(() => {
                 ctrl.uploader.upload = jasmine.createSpy('upload');
             });
@@ -58,6 +58,62 @@
             it('should call the upload function', () => {
                 ctrl.setAccurateDate(ctrl.uploader);
                 expect(ctrl.uploader.upload).toHaveBeenCalled();
+            });
+
+            describe('and the date is not an object', () => {
+                beforeEach(() => {
+                    ctrl.accurateAsOfDateObject = '2018-11-28';
+                });
+
+                it('should append the date as a request parameter', () => {
+                    ctrl.setAccurateDate(ctrl.uploader);
+                    expect(ctrl.uploader.url).toBe('/rest/files/api_documentation?file_upload_date=1543363200000');
+                });
+
+                it('should call the upload function', () => {
+                    ctrl.setAccurateDate(ctrl.uploader);
+                    expect(ctrl.uploader.upload).toHaveBeenCalled();
+                });
+            });
+
+            describe('and the date is missing', () => {
+                beforeEach(() => {
+                    ctrl.accurateAsOfDateObject = undefined;
+                });
+
+                it('should not call the upload function', () => {
+                    ctrl.setAccurateDate(ctrl.uploader);
+                    expect(ctrl.uploader.upload).not.toHaveBeenCalled();
+                });
+            });
+        });
+
+        describe('when handling the upload', () => {
+            it('should report success on success', () => {
+                const fileItem = {
+                    file: {
+                        name: 'name',
+                    },
+                };
+                ctrl.uploader.onSuccessItem(fileItem);
+                expect(ctrl.uploadMessage).toBe('File "name" was uploaded successfully.');
+                expect(ctrl.uploadErrors).toEqual([]);
+                expect(ctrl.uploadSuccess).toBe(true);
+            });
+
+            it('should report errors on error', () => {
+                const fileItem = {
+                    file: {
+                        name: 'name',
+                    },
+                };
+                const response = {
+                    errorMessages: [1],
+                };
+                ctrl.uploader.onErrorItem(fileItem, response);
+                expect(ctrl.uploadMessage).toBe('File "name" was not uploaded successfully.');
+                expect(ctrl.uploadErrors).toEqual([1]);
+                expect(ctrl.uploadSuccess).toBe(false);
             });
         });
     });

@@ -7,25 +7,15 @@ let getFileUploader = (ctrl) => {
             'API-Key': ctrl.authService.getApiKey(),
         },
     });
-    uploader.onSuccessItem = (fileItem, response, status, headers) => {
-        ctrl.$log.info('onSuccessItem', fileItem, response, status, headers);
-        if (ctrl.$location.url() !== '/admin/apiSurveyManagement') {
-            ctrl.$location.url('/admin/apiSurveyManagement');
-        } else {
-            ctrl.$route.reload();
-        }
+    uploader.onSuccessItem = (fileItem) => {
+        ctrl.uploadMessage = 'File "' + fileItem.file.name + '" was uploaded successfully.';
+        ctrl.uploadErrors = [];
+        ctrl.uploadSuccess = true;
     };
-    uploader.onCompleteItem = (fileItem, response, status, headers) => {
-        ctrl.$log.info('onCompleteItem', fileItem, response, status, headers);
-    };
-    uploader.onErrorItem = (fileItem, response, status, headers) => {
-        ctrl.$log.info('onErrorItem', fileItem, response, status, headers);
+    uploader.onErrorItem = (fileItem, response) => {
         ctrl.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
         ctrl.uploadErrors = response.errorMessages;
         ctrl.uploadSuccess = false;
-    };
-    uploader.onCancelItem = (fileItem, response, status, headers) => {
-        ctrl.$log.info('onCancelItem', fileItem, response, status, headers);
     };
     return uploader;
 }
@@ -47,8 +37,13 @@ export const ApiSurveyManagementComponent = {
         }
 
         setAccurateDate (item) {
-            item.url += '?file_upload_date=' + this.accurateAsOfDateObject.getTime();
-            item.upload();
+            if (this.accurateAsOfDateObject && typeof this.accurateAsOfDateObject === 'object') {
+                item.url += '?file_upload_date=' + this.accurateAsOfDateObject.getTime();
+                item.upload();
+            } else if (this.accurateAsOfDateObject && typeof this.accurateAsOfDateObject === 'string') {
+                item.url += '?file_upload_date=' + new Date(this.accurateAsOfDateObject).getTime();
+                item.upload();
+            }
         }
     },
 }
