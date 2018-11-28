@@ -160,6 +160,10 @@ export class NetworkService {
         return this.apiGET('/key/activity' + queryParams);
     }
 
+    getApiDocumentationDate () {
+        return this.apiGET('/data/api');
+    }
+
     getApiUserActivity (activityRange) {
         var call = '/activity/api_keys';
         return this.getActivity(call, activityRange);
