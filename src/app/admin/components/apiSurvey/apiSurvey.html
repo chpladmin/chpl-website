@@ -1,0 +1,60 @@
+<div>
+  <section class="row">
+    <div class="col-md-12 main-content spaced-out">
+      <h3>Upload API Survey Information</h3>
+      <input type="file" nv-file-select="" uploader="$ctrl.uploader" />
+      <div ng-if="$ctrl.uploadMessage.length > 0" ng-class="$ctrl.uploadSuccess ? 'bg-success' : 'bg-danger'">
+        {{ $ctrl.uploadMessage }}
+        <ul ng-if="$ctrl.uploadErrors.length > 0" ng-class="'bg-danger'">
+          <li ng-repeat="error in $ctrl.uploadErrors">{{ error.error }}</li>
+        </ul>
+      </div>
+      <table class="table table-responsive" ng-if="$ctrl.uploader.queue.length > 0" id="api-survey-upload-table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col" ng-show="$ctrl.uploader.isHTML5">Size</th>
+            <th scope="col" ng-show="$ctrl.uploader.isHTML5">Progress</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in $ctrl.uploader.queue">
+            <td><strong>{{ item.file.name }}</strong></td>
+            <td ng-show="$ctrl.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+            <td ng-show="$ctrl.uploader.isHTML5">
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+              </div>
+            </td>
+            <td nowrap>
+              <button type="button" class="btn btn-ai-success btn-xs" ng-click="$ctrl.setAccurateDate(item)" ng-disabled="item.isReady || item.isUploading || item.isSuccess || !$ctrl.accurateAsOfDateObject">
+                <i class="fa fa-cloud-upload"></i> Upload
+              </button>
+              <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                <i class="fa fa-ban"></i> Cancel
+              </button>
+              <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                <i class="fa fa-trash-o"></i> Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <form class="form form-horizontal" name="$ctrl.apiForm">
+        <div class="form-group">
+          <label for="new-api-date" class="col-sm-4">Enter the Accurate As of date for API Survey data associated with this upload</label>
+          <div class="col-sm-4">
+            <div class="input-group">
+              <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.accurateAsOfDateObject" is-open="$ctrl.accurateAsOfPicker" close-text="Close" id="new-api-date" name="newApiDate" ng-model-options="{ timezone: 'UTC' }" required>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.accurateAsOfPicker = true"><i class="fa fa-calendar"></i></button>
+              </span>
+            </div>
+            <div class="text-danger" ng-if="$ctrl.apiForm.newApiDate.$touched && $ctrl.apiForm.newApiDate.$error.date">Improper format (mm/dd/yyyy)</div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

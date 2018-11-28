@@ -401,6 +401,14 @@
             $httpBackend.flush();
         });
 
+        fit('should getApiDocumentationDate', () => {
+            $httpBackend.expectGET(/data\/api_documentation_date/).respond(200, {data: 'response'});
+            networkService.getApiDocumentationDate().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getApiUserActivity', function () {
             var aDate = new Date();
             $httpBackend.expectGET(/activity\/api_keys/).respond(200, {data: 'response'});

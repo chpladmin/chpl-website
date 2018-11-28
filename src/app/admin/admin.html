@@ -52,6 +52,7 @@
             <li ng-class="{'active': vm.navState.screen === 'scheduledJobs'}" id="admin-nav.scheduledJobs" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('scheduledJobs')">Scheduled Jobs</a></li>
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" id="admin-nav.apiKeyManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" id="admin-nav.announcementsManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'apiSurveyManagement'}" id="admin-nav.apiSurveyManagement" ng-if="vm.isChplAdmin() || vm.isOncStaff()"><a href="" ng-click="vm.changeScreen('apiSurveyManagement')">API Survey Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" id="admin-nav.cmsManagement" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" id="admin-nav.jobsManagement" ng-if="vm.isChplAdmin() || vm.isOncStaff() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('jobsManagement')">Jobs Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'fuzzyManagement'}" id="admin-nav.fuzzyManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('fuzzyManagement')">Fuzzy Matching Management</a></li>
@@ -79,6 +80,7 @@
                                     acbs="vm.acbs"></ai-scheduled-jobs>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>
         <ai-announcements-management ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
+        <ai-api-survey-management ng-if="vm.navState.screen === 'apiSurveyManagement'"></ai-api-survey-management>
         <ai-cms-management admin="true" ng-if="vm.navState.screen === 'cmsManagement'"></ai-cms-management>
         <ai-jobs-management ng-if="vm.navState.screen === 'jobsManagement'"></ai-jobs-management>
         <ai-fuzzy-management ng-if="vm.navState.screen === 'fuzzyManagement'"></ai-fuzzy-management>
