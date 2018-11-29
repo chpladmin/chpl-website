@@ -45,7 +45,8 @@ window.zxcvbn = zxcvbn;
         function authorizeUser () {
             if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || vm.isAuthed()
                 && vm.authorizeDetails.hash) {
-                networkService.authorizeUser(vm.authorizeDetails)
+                const username = vm.authorizeDetails.userName || authService.getUsername();
+                networkService.authorizeUser(vm.authorizeDetails, username)
                     .then(function () {
                         $location.path('/admin');
                     },function (error) {

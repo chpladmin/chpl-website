@@ -5,7 +5,7 @@
         .controller('ApiDocumentationController', ApiDocumentationController);
 
     /** @ngInject */
-    function ApiDocumentationController ($compile, $scope, SPLIT_PRIMARY, SPLIT_SECONDARY) {
+    function ApiDocumentationController ($compile, $log, $scope, API, SPLIT_PRIMARY, SPLIT_SECONDARY, authService, networkService) {
         var vm = this;
 
         vm.apiTransform = apiTransform;
@@ -37,6 +37,13 @@
                     { value: 'Terminated by ONC', selected: false },
                 ],
             };
+
+            vm.API = API;
+            vm.API_KEY = authService.getApiKey();
+            vm.apiDocument = vm.API + '/files/api_documentation?api_key=' + vm.API_KEY;
+            networkService.getApiDocumentationDate().then(response => {
+                vm.apiDate = response.associatedDate;
+            });
         }
 
         ////////////////////////////////////////////////////////////////////
