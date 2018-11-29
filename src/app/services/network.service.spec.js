@@ -126,8 +126,8 @@
 
         // TODO: Deprecated
         it('should authorizeUser', function () {
-            $httpBackend.expectPOST(/users\/authorize/, 'payload').respond(200, {data: 'response'});
-            networkService.authorizeUser('payload').then(function (response) {
+            $httpBackend.expectPOST(/users\/username\/authorize/, 'payload').respond(200, {data: 'response'});
+            networkService.authorizeUser('payload', 'username').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

@@ -28,8 +28,8 @@ export class NetworkService {
         return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
-    authorizeUser (userAuthorization) {
-        return this.apiPOST('/users/authorize', userAuthorization);
+    authorizeUser (userAuthorization, username) {
+        return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
     }
 
     changePassword (userObj) {
