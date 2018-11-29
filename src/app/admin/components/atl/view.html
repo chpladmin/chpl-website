@@ -1,0 +1,38 @@
+<section class="row">
+  <div class="col-sm-12 admin-inner-tab main-content">
+    <div class="row admin-label-spaced lead text-center" ng-if="$ctrl.worktype !== 'newAtl'">
+      <div class="col-sm-12">
+        <ul class="list-inline">
+          <li><strong>what would you like to manage?</strong></li>
+          <li><input type="radio" name="manage-type" ng-model="$ctrl.worktype" value="atl" id="rd-atl"></input><label for="rd-atl">ONC-ATL</label></li>
+          <li><input type="radio" name="manage-type" ng-model="$ctrl.workType" value="user" id="rd-usr"></input><label for="rd-usr">Users</label></li>
+        </ul>
+        <span ng-if="$ctrl.isChplAdmin">Or <button class="btn btn-default" ng-click="$ctrl.createAtl()">Create a new ONC-ATL</button></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" ng-if="$ctrl.workType === 'atl'">
+        <h2>ONC-ATL Information</h2>
+        <span>Name: {{ $ctrl.atl.name }}</span><br />
+        <span>Website: <a ai-a href="{{ $ctrl.atl.website }}" ng-if="$ctrl.atl.website">{{ $ctrl.atl.website }}</a><span ng-if="!$ctrl.atl.website">None</span></span><br />
+        <span>ONC-ATL Code: {{ $ctrl.atl.atlCode }}</span><br />
+        <span>Retired: {{ $ctrl.atl.retired ? 'Yes' : 'No ' }}</span><br />
+        <h3>Address</h3>
+        <span>Line 1: {{ $ctrl.atl.address.line1 }}</span><br />
+        <span>Line 2: {{ $ctrl.atl.address.line2 }}</span><br />
+        <span>City: {{ $ctrl.atl.address.city }}</span><br />
+        <span>State: {{ $ctrl.atl.address.state }}</span><br />
+        <span>Zip Code: {{ $ctrl.atl.address.zipcode }}</span><br />
+        <span>Country: {{ $ctrl.atl.address.country }}</span><br />
+        <button class="btn btn-default btn-block" ng-click="$ctrl.editAtl($ctrl.atl)">Edit this ONC-ATL</button>
+      </div>
+    </div>
+    <div class="row" ng-if="$ctrl.workType === 'user'">
+      <div class="col-md-10 col-md-offset-1">
+        <ai-user-management
+           atl-id="{{ $ctrl.atl.id }}">
+        </ai-user-management>
+      </div>
+    </div>
+  </div>
+</section>

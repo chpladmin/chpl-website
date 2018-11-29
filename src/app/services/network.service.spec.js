@@ -218,22 +218,6 @@
             $httpBackend.flush();
         });
 
-        it('should deleteACB', function () {
-            $httpBackend.expectDELETE(/acbs\/1/).respond(200);
-            networkService.deleteACB(1).then(function (response) {
-                expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
-        it('should deleteATL', function () {
-            $httpBackend.expectDELETE(/atls\/1/).respond(200);
-            networkService.deleteATL(1).then(function (response) {
-                expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
         it('should deleteAnnouncement', function () {
             $httpBackend.expectDELETE(/announcements\/1/).respond(200);
             networkService.deleteAnnouncement(1).then(function (response) {
@@ -302,13 +286,8 @@
         });
 
         it('should getAcbs', function () {
-            $httpBackend.expectGET(/acbs\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/acbs\?editable=false/).respond(200, {data: 'response'});
             networkService.getAcbs(false).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/acbs\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getAcbs(false, true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -471,13 +450,8 @@
         });
 
         it('should getAtls', function () {
-            $httpBackend.expectGET(/atls\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/atls\?editable=false/).respond(200, {data: 'response'});
             networkService.getAtls(false).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/atls\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getAtls(false, true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -862,11 +836,6 @@
         it('should getSearchOptions', function () {
             $httpBackend.expectGET(/search_options/).respond(200, {data: 'response'});
             networkService.getSearchOptions().then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/search_options\?showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getSearchOptions(true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -1294,22 +1263,6 @@
         it('should splitProduct', function () {
             $httpBackend.expectPOST(/products\/1\/split/).respond(200, {data: 'response'});
             networkService.splitProduct({oldProduct: {productId: 1}}).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should undeleteACB', function () {
-            $httpBackend.expectPUT(/acbs\/1\/undelete/).respond(200, {data: 'response'});
-            networkService.undeleteACB(1).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should undeleteATL', function () {
-            $httpBackend.expectPUT(/atls\/1\/undelete/).respond(200, {data: 'response'});
-            networkService.undeleteATL(1).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

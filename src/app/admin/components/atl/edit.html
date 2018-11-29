@@ -1,0 +1,50 @@
+<div ng-form="$ctrl.editForm">
+  <div class="form-group">
+    <label for="atl-name">ONC-ATL Name <span class="text-danger">*</span></label>
+    <input class="input-sm form-control" type="text" required ng-model="$ctrl.atl.name" id="atl-name" name="atlName" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
+    <div class="text-danger" ng-if="$ctrl.editForm.atlName.$touched && $ctrl.editForm.atlName.$error.required">ONC-ATL Name is required</div>
+  </div>
+  <div>
+    <strong>ONC-ATL Code: </strong>{{ $ctrl.atl.atlCode }}
+  </div>
+  <div class="form-group" ng-if="$ctrl.isChplAdmin">
+    <strong>Status</strong><br />
+    <label class="control-label"><input class="input-sm form-control" type="radio" ng-model="$ctrl.atl.retired" ng-value="true" id="atl-retired" name="retired" ng-change="$ctrl.update()"></input> Retired</label>
+    <label class="control-label"><input class="input-sm form-control" type="radio" ng-model="$ctrl.atl.retired" ng-value="false" id="atl-not-retired" name="retired" ng-change="$ctrl.update()"></input> Active</label>
+  </div>
+  <div class="form-group">
+    <label for="address-line-1">Address Line 1 <span class="text-danger">*</span></label>
+    <input class="input-sm form-control" type="text" required ng-model="$ctrl.atl.address.line1" id="address-line-1" name="addressLine1" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
+    <div class="text-danger" ng-if="$ctrl.editForm.addressLine1.$touched && $ctrl.editForm.addressLine1.$error.required">Address is required</div>
+  </div>
+  <div class="form-group">
+    <label for="address-line-2">Address Line 2</label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.atl.address.line2" id="address-line-2" name="addressLine2" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
+  </div>
+  <div class="form-group">
+    <label for="address-city">City <span class="text-danger">*</span></label>
+    <input class="input-sm form-control" type="text" required ng-model="$ctrl.atl.address.city" id="address-city" name="addressCity" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
+    <div class="text-danger" ng-if="$ctrl.editForm.addressCity.$touched && $ctrl.editForm.addressCity.$error.required">Address is required</div>
+  </div>
+  <div class="form-group">
+    <label for="address-state">State <span class="text-danger">*</span></label>
+    <input class="input-sm form-control" type="text" required ng-model="$ctrl.atl.address.state" id="address-state" name="addressState" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
+    <div class="text-danger" ng-if="$ctrl.editForm.addressState.$touched && $ctrl.editForm.addressState.$error.required">Address is required</div>
+  </div>
+  <div class="form-group">
+    <label for="address-zipcode">Zip Code <span class="text-danger">*</span></label>
+    <input class="input-sm form-control" type="text" required ng-model="$ctrl.atl.address.zipcode" id="address-zipcode" name="addressZipcode" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
+    <div class="text-danger" ng-if="$ctrl.editForm.addressZipcode.$touched && $ctrl.editForm.addressZipcode.$error.required">Address is required</div>
+  </div>
+  <div class="form-group">
+    <label for="address-country">Country <span class="text-danger">*</span></label>
+    <input class="input-sm form-control" type="text" required ng-model="$ctrl.atl.address.country" id="address-country" name="addressCountry" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
+    <div class="text-danger" ng-if="$ctrl.editForm.addressCountry.$touched && $ctrl.editForm.addressCountry.$error.required">Address is required</div>
+  </div>
+  <div class="form-group">
+    <label for="atl-website">Website <span class="text-danger">*</span></label>
+    <input class="input-sm form-control" type="url" required ng-model="$ctrl.atl.website" id="atl-website" name="atlWebsite" placeholder="http://www.example.com" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
+    <div class="text-danger" ng-if="$ctrl.editForm.atlWebsite.$touched && $ctrl.editForm.atlWebsite.$error.required">Website address is required</div>
+    <div class="text-danger" ng-if="$ctrl.editForm.atlWebsite.$touched && $ctrl.editForm.atlWebsite.$error.url">Website is invalid</div>
+  </div>
+</div>

@@ -66,28 +66,28 @@
             }
 
             // load editable acbs & atls
-            networkService.getAcbs(true, vm.isChplAdmin())
+            networkService.getAcbs(true)
                 .then(function (data) {
                     vm.acbs = $filter('orderBy')(data.acbs,'name');
-                    vm.activeAcb = vm.acbs[0];
-                    vm.navState.acbManagement = vm.activeAcb;
+                    vm.acb = vm.acbs[0];
+                    vm.navState.acbManagement = vm.acb;
                 });
-            networkService.getAtls(true, vm.isChplAdmin())
+            networkService.getAtls(true)
                 .then(function (data) {
                     vm.atls = $filter('orderBy')(data.atls,'name');
-                    vm.activeAtl = vm.atls[0];
-                    vm.navState.atlManagement = vm.activeAtl;
+                    vm.atl = vm.atls[0];
+                    vm.navState.atlManagement = vm.atl;
                 });
         }
 
         function changeAcb (acb) {
-            vm.activeAcb = acb;
+            vm.acb = acb;
             vm.navState.workType = 'acb';
             vm.changeSubNav(acb);
         }
 
         function changeAtl (atl) {
-            vm.activeAtl = atl;
+            vm.atl = atl;
             vm.navState.workType = 'atl';
             vm.changeSubNav(atl);
         }
@@ -95,19 +95,19 @@
         function changeScreen (screen) {
             vm.clearProductId();
             if (screen === 'acbManagement') {
-                networkService.getAcbs(true, vm.isChplAdmin())
+                networkService.getAcbs(true)
                     .then(function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
-                        vm.activeAcb = vm.acbs[0];
-                        vm.navState.acbManagement = vm.activeAcb;
+                        vm.acb = vm.acbs[0];
+                        vm.navState.acbManagement = vm.acb;
                     });
             }
             if (screen === 'atlManagement') {
-                networkService.getAtls(true, vm.isChplAdmin())
+                networkService.getAtls(true)
                     .then(function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
-                        vm.activeAtl = vm.atls[0];
-                        vm.navState.atlManagement = vm.activeAtl;
+                        vm.atl = vm.atls[0];
+                        vm.navState.atlManagement = vm.atl;
                     });
             }
             vm.navState.screen = screen;
