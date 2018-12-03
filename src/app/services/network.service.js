@@ -33,7 +33,13 @@ export class NetworkService {
     }
 
     changePassword (userObj) {
-        return this.apiPOST('/auth/change_password', userObj);
+        let url;
+        if (userObj.userName && userObj.userName.length > 0) {
+            url = '/auth/change_expired_password';
+        } else {
+            url = '/auth/change_password';
+        }
+        return this.apiPOST(url, userObj);
     }
 
     confirmPendingCp (pendingCp) {
@@ -158,6 +164,10 @@ export class NetworkService {
         }
         if (params.length > 0) { queryParams = '?' + params.join('&'); }
         return this.apiGET('/key/activity' + queryParams);
+    }
+
+    getApiDocumentationDate () {
+        return this.apiGET('/files/api_documentation/details');
     }
 
     getApiUserActivity (activityRange) {
@@ -551,7 +561,11 @@ export class NetworkService {
     }
 
     resetPassword (userObj) {
-        return this.apiPOST('/auth/reset_password', userObj);
+        return this.apiPOST('/auth/reset_password_request', userObj);
+    }
+
+    emailResetPassword (userObj) {
+        return this.apiPOST('/auth/email_reset_password', userObj);
     }
 
     revokeApi (user) {

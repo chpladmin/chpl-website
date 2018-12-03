@@ -5,7 +5,7 @@ export const G1G2DetailsComponent = {
     },
     controller: class G1G2DetailsController {
         constructor ($filter, $log, utilService) {
-            'ngInject';
+            'ngInject'
             this.$filter = $filter;
             this.$log = $log;
             this.utilService = utilService;

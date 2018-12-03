@@ -12,8 +12,7 @@
             restrict: 'E',
             replace: true,
             templateUrl: 'chpl.admin/components/login/login.html',
-            scope: {
-            },
+            scope: {},
             bindToController: {
                 formClass: '@',
                 pClass: '@',
@@ -25,7 +24,7 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $rootScope, $scope, Idle, Keepalive, authService, networkService, utilService) {
+    function LoginController ($log, $rootScope, $routeParams, $scope, Idle, Keepalive, authService, networkService, utilService) {
         var vm = this;
 
         vm.broadcastLogin = broadcastLogin;
@@ -37,6 +36,7 @@
         vm.misMatchPasswords = misMatchPasswords;
         vm.passwordClass = utilService.passwordClass;
         vm.passwordTitle = utilService.passwordTitle;
+        vm.resetPassword = resetPassword;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
 
@@ -45,6 +45,8 @@
             CHANGE: 2,
             RESET: 3,
             NONE: 4,
+            EXPIRED: 5,
+            PASSWORD_RESET: 6,
         };
 
         /////////////////////////////////////////////////////////
@@ -54,6 +56,10 @@
             if (vm.isAuthed()) {
                 Idle.watch();
                 _updateExtras();
+            }
+            if ($routeParams.token) {
+                vm.activity = vm.activityEnum.PASSWORD_RESET;
+                vm.token = $routeParams.token;
             }
 
             $scope.$on('Keepalive', function () {
@@ -86,7 +92,7 @@
             if (vm.misMatchPasswords()) {
                 vm.message = 'Passwords do not match. Please try again';
             } else {
-                networkService.changePassword({oldPassword: vm.password, newPassword: vm.newPassword})
+                networkService.changePassword({userName: vm.userName, oldPassword: vm.password, newPassword: vm.newPassword})
                     .then(function (response) {
                         if (response.passwordUpdated) {
                             vm.clear();
@@ -103,6 +109,36 @@
                             }
                             if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
                                 vm.message += 'Please try again with a stronger password.';
+                            }
+                        }
+                    }, function () {
+                        vm.messageClass = vm.pClassFail;
+                        vm.message = 'Error. Please check your credentials or contact the administrator';
+                    });
+            }
+        }
+
+        function resetPassword () {
+            if (vm.misMatchPasswords()) {
+                vm.message = 'Passwords do not match. Please try again';
+            } else {
+                networkService.resetPassword({token: vm.token, userName: vm.userName, newPassword: vm.newPassword})
+                    .then(function (response) {
+                        if (response.passwordUpdated) {
+                            vm.clear();
+                            vm.messageClass = vm.pClass;
+                            vm.message = 'Password successfully changed';
+                        } else {
+                            vm.messageClass = vm.pClassFail;
+                            vm.message = 'Your password was not changed. ';
+                            if (response.warning) {
+                                vm.message += response.warning;
+                            }
+                            if (response.suggestions && response.suggestions.length > 0) {
+                                vm.message += 'Suggestion' + (response.suggestions.length > 1 ? 's' : '') + ': ' + response.suggestions.join(' ');
+                            }
+                            if (!response.warning && (!response.suggestions || response.suggestions.length === 0)) {
+                                vm.message += 'Your token was invalid or you need a stronger password.';
                             }
                         }
                     }, function () {
@@ -142,12 +178,15 @@
                     Keepalive.ping();
                     vm.clear();
                     _updateExtras();
-                }, function (error) {
-                    vm.messageClass = vm.pClassFail;
-                    vm.message = error.data.error;
-                })
-                .then(function () {
                     vm.broadcastLogin();
+                }, function (error) {
+                    const expired = new RegExp('The user is required to change their password on next log in\\.');
+                    if (expired.test(error.data.error)) {
+                        vm.activity = vm.activityEnum.EXPIRED;
+                    } else {
+                        vm.messageClass = vm.pClassFail;
+                        vm.message = error.data.error;
+                    }
                 });
         }
 
@@ -166,7 +205,7 @@
         }
 
         function sendReset () {
-            networkService.resetPassword({userName: vm.userName, email: vm.email})
+            networkService.emailResetPassword({userName: vm.userName, email: vm.email})
                 .then(function () {
                     vm.clear();
                     vm.messageClass = vm.pClass;
@@ -180,7 +219,7 @@
         /////////////////////////////////////////////////////////
 
         function _updateExtras () {
-            let vals = ['chpl'];
+            const vals = ['chpl'];
             networkService.getUserByUsername(authService.getUsername())
                 .then(function (response) {
                     if (response.user.subjectName) { vals.push(response.user.subjectName); }
