@@ -38,6 +38,7 @@ import /* ngFileSaver from*/ 'angular-file-saver';
 import /* ngStorage from*/ 'ngstorage';
 import 'angular-zxcvbn';
 import 'zxcvbn';
+import 'angular-ui-router';
 
 // import app modules
 import /* adminModule from*/ './admin/index';
@@ -92,6 +93,7 @@ const dependencies = [
     'smart-table',
     'toaster',
     'ui.bootstrap',
+    'ui.router',
     //    'ui.bootstrap.fontawesome',
     'zxcvbn',
 ];

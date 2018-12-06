@@ -118,6 +118,11 @@ footer {
     }
 }
 
+#uirTransitionVisualizer,
+#uirStateVisualizer {
+    z-index: 1045 !important;
+}
+
 .announcement.badge {
     white-space: inherit;
 }

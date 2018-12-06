@@ -5,124 +5,141 @@
         .module('chpl')
         .config(routeConfig);
 
-    function routeConfig ($routeProvider) {
-        $routeProvider
-            .when('/admin/:section?/:subSection?/:productId?', {
-                templateUrl: 'chpl.admin/admin.html',
+    function routeConfig ($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state('/admin/:section?/:subSection?/:productId?', {
+                url: '/admin/:section?/:subSection?/:productId?',
+                template: require('./admin/admin.html'),
                 controller: 'AdminController',
                 controllerAs: 'vm',
                 title: 'CHPL Administration',
             })
-            .when('/admin/authorizePasswordReset', {
-                templateUrl: 'chpl.admin/admin.html',
+            .state('/admin/authorizePasswordReset', {
+                url: '/admin/authorizePasswordReset',
+                template: require('./admin/admin.html'),
                 controller: 'AdminController',
                 controllerAs: 'vm',
                 title: 'Password Reset',
             })
-            .when('/charts', {
+            .state('/charts', {
+                url: '/charts',
                 controller: 'ChartsController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.charts/charts.html',
+                template: require('./charts/charts.html'),
                 title: 'CHPL Charts',
             })
-            .when('/collections/apiDocumentation', {
+            .state('/collections/apiDocumentation', {
+                url: '/collections/apiDocumentation',
                 controller: 'ApiDocumentationController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.collections/apiDocumentation/apiDocumentation.html',
+                template: require('./collections/apiDocumentation/apiDocumentation.html'),
                 title: 'API Information for 2015 Edition Products',
             })
-            .when('/collections/correctiveAction', {
+            .state('/collections/correctiveAction', {
+                url: '/collections/correctiveAction',
                 controller: 'CorrectiveActionController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.collections/correctiveAction/correctiveAction.html',
+                template: require('./collections/correctiveAction/correctiveAction.html'),
                 title: 'Products: Corrective Action Status',
             })
-            .when('/collections/developers', {
+            .state('/collections/developers', {
+                url: '/collections/developers',
                 controller: 'BannedDevelopersController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.collections/developers/developers.html',
+                template: require('./collections/developers/developers.html'),
                 title: 'Banned Developers',
             })
-            .when('/collections/inactive', {
+            .state('/collections/inactive', {
+                url: '/collections/inactive',
                 controller: 'InactiveCertificatesController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.collections/inactive/inactive.html',
+                template: require('./collections/inactive/inactive.html'),
                 title: 'Inactive Certificates',
             })
-            .when('/collections/products', {
+            .state('/collections/products', {
+                url: '/collections/products',
                 controller: 'DecertifiedProductsController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.collections/products/products.html',
+                template: require('./collections/products/products.html'),
                 title: 'Decertified Products',
             })
-            .when('/collections/sed', {
+            .state('/collections/sed', {
+                url: '/collections/sed',
                 controller: 'SedCollectionController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.collections/sed/sed.html',
+                template: require('./collections/sed/sed.html'),
                 title: 'SED Information for 2014 &amp; 2015 Edition Products',
             })
-            .when('/collections/transparencyAttestations', {
+            .state('/collections/transparencyAttestations', {
+                url: '/collections/transparencyAttestations',
                 controller: 'TransparencyAttestationsController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.collections/transparencyAttestations/transparencyAttestations.html',
+                template: require('./collections/transparencyAttestations/transparencyAttestations.html'),
                 title: 'Transparency Attestations',
             })
-            .when('/compare/:compareIds', {
+            .state('/compare/:compareIds', {
+                url: '/compare/:compareIds',
                 controller: 'CompareController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.compare/compare.html',
+                template: require('./compare/compare.html'),
                 title: 'CHPL Product Comparison',
             })
-            .when('/product/:id/:initialPanel?', {
-                templateUrl: 'chpl.product/product.html',
+            .state('/product', {
+                url: '/product/:id/:initialPanel?',
+                template: require('./product/product.html'),
                 controller: 'ProductController',
                 controllerAs: 'vm',
                 title: 'CHPL Product Details',
             })
-            .when('/registration/create-user/:hash', {
-                templateUrl: 'chpl.registration/create-user.html',
+            .state('/registration/create-user/:hash', {
+                url: '/registration/create-user/:hash',
+                template: require('./registration/create-user.html'),
                 controller: 'CreateController',
                 controllerAs: 'vm',
                 title: 'CHPL Registration',
             })
-            .when('/registration/confirm-user/:hash', {
-                templateUrl: 'chpl.registration/confirm-user.html',
+            .state('/registration/confirm-user/:hash', {
+                url: '/registration/confirm-user/:hash',
+                template: require('./registration/confirm-user.html'),
                 controller: 'ConfirmController',
                 controllerAs: 'vm',
                 title: 'CHPL Registration',
             })
-            .when('/resources/chpl_api', {
-                templateUrl: 'chpl.chpl_api/chpl_api.html',
+            .state('/resources/chpl_api', {
+                url: '/resources/chpl_api',
+                template: require('./resources/chpl_api/chpl_api.html'),
                 controller: 'ChplApiController',
                 controllerAs: 'vm',
                 title: 'CHPL API',
             })
-            .when('/resources/cms_lookup', {
-                templateUrl: 'chpl.cms_lookup/cms_lookup.html',
+            .state('/resources/cms_lookup', {
+                url: '/resources/cms_lookup',
+                template: require('./resources/cms_lookup/cms_lookup.html'),
                 controller: 'CmsLookupController',
                 controllerAs: 'vm',
                 title: 'CMS ID Reverse Lookup',
             })
-            .when('/resources/download', {
-                templateUrl: 'chpl.download/download.html',
+            .state('/resources/download', {
+                url: '/resources/download',
+                template: require('./resources/download/download.html'),
                 controller: 'DownloadController',
                 controllerAs: 'vm',
                 title: 'Download the CHPL',
             })
-            .when('/resources/overview', {
-                templateUrl: 'chpl.overview/overview.html',
+            .state('/resources/overview', {
+                url: '/resources/overview',
+                template: require('./resources/overview/overview.html'),
                 controller: 'OverviewController',
                 controllerAs: 'vm',
                 title: 'CHPL Overview',
             })
-            .when('/search', {
+            .state('/search', {
+                url: '/search',
                 controller: 'SearchController',
                 controllerAs: 'vm',
-                templateUrl: 'chpl.search/search.html',
+                template: require('./search/search.html'),
                 title: 'CHPL Search',
-            })
-            .otherwise({
-                redirectTo: '/search',
             });
+        $urlRouterProvider.otherwise('/search');
     }
 })();
