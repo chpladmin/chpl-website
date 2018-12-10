@@ -5,7 +5,7 @@
         .controller('ConfirmController', ConfirmController);
 
     /** @ngInject */
-    function ConfirmController ($location, $log, $routeParams, networkService) {
+    function ConfirmController ($location, $log, $stateParams, networkService) {
         var vm = this;
 
         vm.confirmUser = confirmUser;
@@ -15,7 +15,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.userDetails = $routeParams.hash;
+            vm.userDetails = $stateParams.hash;
             vm.message = {value: '', success: null};
             vm.confirmUser();
         }

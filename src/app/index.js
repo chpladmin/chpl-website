@@ -26,7 +26,6 @@ import /* cytoscape from*/ 'cytoscape';
 import /* ngCytoscape from*/ './lib/ngCytoscape.min';
 //import ngMessages from 'ngMessages';
 import /* ngResource from*/ 'angular-resource';
-import /* ngRoute from*/ 'angular-route';
 import /* ngSanitize from*/ 'angular-sanitize';
 //import ngTouch from 'ngTouch';
 import /* smartTable from*/ 'angular-smart-table';
@@ -86,7 +85,6 @@ const dependencies = [
     //    'ngMessages',
     'ngFileSaver',
     'ngResource',
-    'ngRoute',
     'ngStorage',
     'ngSanitize',
     //    'ngTouch',

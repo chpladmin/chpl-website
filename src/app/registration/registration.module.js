@@ -1,5 +1,5 @@
 (function () {
     'use strict';
 
-    angular.module('chpl.registration', ['ngRoute', 'chpl.services']);
+    angular.module('chpl.registration', ['chpl.services']);
 })();

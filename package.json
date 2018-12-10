@@ -27,7 +27,6 @@
     "angular-google-chart": "^0.1.0",
     "angular-loading-bar": "^0.9.0",
     "angular-resource": "^1.7.2",
-    "angular-route": "^1.7.2",
     "angular-sanitize": "^1.7.2",
     "angular-smart-table": "^2.1.11",
     "angular-swagger-ui": "^0.5.5",

@@ -5,7 +5,7 @@
         .controller('AdminController', AdminController);
 
     /** @ngInclude */
-    function AdminController ($filter, $location, $log, $routeParams, authService, networkService) {
+    function AdminController ($filter, $location, $log, $stateParams, authService, networkService) {
         var vm = this;
 
         vm.changeAcb = changeAcb
@@ -47,21 +47,21 @@
             }
 
             // chosen section
-            if ($routeParams.section) {
-                vm.navState.screen = $routeParams.section;
+            if ($stateParams.section) {
+                vm.navState.screen = $stateParams.section;
             }
             if (vm.navState.screen === 'reports') {
-                if ($routeParams.subSection) {
-                    vm.productId = $routeParams.subSection;
+                if ($stateParams.subSection) {
+                    vm.productId = $stateParams.subSection;
                     vm.navState.reports = '';
                 }
             } else {
-                if ($routeParams.subSection) {
-                    vm.navState[vm.navState.screen] = $routeParams.subSection;
+                if ($stateParams.subSection) {
+                    vm.navState[vm.navState.screen] = $stateParams.subSection;
                 }
-                if ($routeParams.productId) {
+                if ($stateParams.productId) {
                     vm.navState.reports = '';
-                    vm.productId = $routeParams.productId;
+                    vm.productId = $stateParams.productId;
                 }
             }
 
@@ -120,7 +120,7 @@
 
         function clearProductId () {
             var path = $location.path();
-            if ($routeParams.productId) {
+            if ($stateParams.productId) {
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
@@ -129,7 +129,7 @@
 
         function clearSubsection () {
             var path = $location.path();
-            if ($routeParams.productId) {
+            if ($stateParams.productId) {
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }

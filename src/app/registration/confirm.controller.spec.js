@@ -1,10 +1,10 @@
 (function () {
     'use strict';
 
-    describe('chpl.registration', function () {
+    fdescribe('chpl.registration', function () {
 
         beforeEach(function () {
-            angular.mock.module('chpl.registration');
+            angular.mock.module('chpl', 'chpl.registration');
         });
 
         describe('controller', function () {
@@ -33,7 +33,7 @@
                 $location = _$location_;
                 ctrl = $controller('ConfirmController', {
                     $scope: scope,
-                    $routeParams: {hash: 'fakehash'},
+                    $stateParams: {hash: 'fakehash'},
                     networkService: networkService,
                     $location: $location,
                 });

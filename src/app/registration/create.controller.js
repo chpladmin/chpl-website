@@ -8,7 +8,7 @@ window.zxcvbn = zxcvbn;
         .controller('CreateController', CreateController);
 
     /** @ngInject */
-    function CreateController ($location, $log, $routeParams, authService, networkService, utilService) {
+    function CreateController ($location, $log, $stateParams, authService, networkService, utilService) {
         var vm = this;
 
         vm.authorizeUser = authorizeUser;
@@ -32,8 +32,8 @@ window.zxcvbn = zxcvbn;
                 complianceTermsAccepted: true,
             }};
             vm.authorizeDetails = {};
-            vm.userDetails.hash = $routeParams.hash;
-            vm.authorizeDetails.hash = $routeParams.hash;
+            vm.userDetails.hash = $stateParams.hash;
+            vm.authorizeDetails.hash = $stateParams.hash;
             vm.message = {value: '', success: null};
             if (vm.isAuthed) {
                 vm.authorizeUser();
