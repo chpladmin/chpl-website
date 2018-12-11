@@ -1,4 +1,4 @@
-/* eslint-disable angular/no-private-call, angular/no-run-logic */
+/* global DEVELOPER_MODE ENABLE_LOGGING */
 import { Visualizer } from '@uirouter/visualizer';
 
 (function () {
@@ -10,7 +10,8 @@ import { Visualizer } from '@uirouter/visualizer';
 
     /** @ngInject */
     function runBlock ($anchorScroll, $location, $log, $rootScope, $timeout, $transitions, $uiRouter, $window) {
-/*
+
+        // Update page title on state change
         $transitions.onSuccess({}, transition => {
             let title = transition.to().data.title;
             if (title) {
@@ -20,8 +21,11 @@ import { Visualizer } from '@uirouter/visualizer';
                 $window.document.title = title;
             }
         });
-        */
-        //$rootScope.currentPage = $location.path();
+
+        // Set currentPage for internal page links
+        $rootScope.currentPage = $location.path();
+
+        // If there's an anchor, scroll to it
         if ($location.hash()) {
             $anchorScroll();
             $timeout(function () {
@@ -33,7 +37,10 @@ import { Visualizer } from '@uirouter/visualizer';
                 }
             });
         }
-        var pluginInstance = $uiRouter.plugin(Visualizer);
-        $rootScope.$on('$destroy', pluginInstance);
+
+        // Display ui-router state changes
+        if (DEVELOPER_MODE && ENABLE_LOGGING) {
+            $uiRouter.plugin(Visualizer);
+        }
     }
 })();

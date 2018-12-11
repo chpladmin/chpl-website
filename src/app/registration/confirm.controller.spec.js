@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('chpl.registration', function () {
+    describe('chpl.registration', function () {
 
         beforeEach(function () {
             angular.mock.module('chpl', 'chpl.registration');

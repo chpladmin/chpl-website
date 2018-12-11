@@ -9,7 +9,7 @@
         mock.newMuuAccurateDate = new Date('2017-02-25');
 
         beforeEach(function () {
-            angular.mock.module('chpl.admin', function ($provide) {
+            angular.mock.module('chpl', 'chpl.admin', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCmsDownload = jasmine.createSpy('getCmsDownload');
                     return $delegate;
