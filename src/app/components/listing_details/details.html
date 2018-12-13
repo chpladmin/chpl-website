@@ -53,7 +53,7 @@
                 <span class="sr-only">{{ n.success ? 'meets' : 'does not meet'}}</span>
                 <strong ng-if="n.cmsId && n.successVersions.length > 0">{{ n.successVersions.sort().join(', ') }}</strong>
               </td>
-              <td><a href uib-tooltip="{{ n.description }}" tooltip-trigger="mouseenter focus click"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</a></td>
+              <td><a href uib-tooltip="{{ n.description }}" tooltip-trigger="'mouseenter focus click'"><span ng-if="!n.cmsId">NQF-{{ n.nqfNumber }}</span><span ng-if="n.cmsId">{{ n.cmsId }}</span>: {{ n.title }}</a></td>
               <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC1 ? 'meets' : 'does not meet'}} 170.317 (c)(1)</span><i class="fa fa-lg" ng-class="n.hasC1 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
               <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC2 ? 'meets' : 'does not meet'}} 170.317 (c)(2)</span><i class="fa fa-lg" ng-class="n.hasC2 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
               <td ng-if="vm.product.certificationEdition.name === '2015'" class="text-center"><span class="sr-only">{{ n.hasC3 ? 'meets' : 'does not meet'}} 170.317 (c)(3)</span><i class="fa fa-lg" ng-class="n.hasC3 ? 'fa-check-square-o' : 'fa-square-o'"></i></td>
