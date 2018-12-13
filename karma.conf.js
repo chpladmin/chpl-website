@@ -3,6 +3,7 @@ process.env.CHROME_BIN = require('puppeteer').executablePath()
 
 module.exports = (config) => {
     config.set({
+        autoWatchBatchDelay: 3000,
         browsers: config.ahrq ? ['ChromeHeadlessNoSandbox'] : ['ChromeHeadless'],
         customLaunchers: {
             ChromeHeadlessNoSandbox: {

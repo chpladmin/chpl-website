@@ -60,7 +60,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('ProductController', {
                     $scope: scope,
-                    $routeParams: {id: mock.productId},
+                    $stateParams: {id: mock.productId},
                 })
                 scope.$digest();
             });
@@ -117,7 +117,7 @@
                 it('should be able to be open to surveillance', function () {
                     vm = $controller('ProductController', {
                         $scope: scope,
-                        $routeParams: {
+                        $stateParams: {
                             id: mock.productId,
                             initialPanel: 'surveillance',
                         },

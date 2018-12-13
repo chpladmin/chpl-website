@@ -5,7 +5,7 @@
         .controller('CompareController', CompareController);
 
     /** @ngInject */
-    function CompareController ($filter, $log, $routeParams, networkService, utilService) {
+    function CompareController ($filter, $log, $stateParams, networkService, utilService) {
         var vm = this;
 
         vm.certificationStatus = utilService.certificationStatus;
@@ -25,7 +25,7 @@
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            var compareString = $routeParams.compareIds;
+            var compareString = $stateParams.compareIds;
             vm.products = [];
             vm.productList = [];
             vm.allCerts = {};

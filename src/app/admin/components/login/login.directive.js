@@ -24,7 +24,7 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $rootScope, $routeParams, $scope, Idle, Keepalive, authService, networkService, utilService) {
+    function LoginController ($log, $rootScope, $scope, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
         var vm = this;
 
         vm.broadcastLogin = broadcastLogin;
@@ -57,9 +57,9 @@
                 Idle.watch();
                 _updateExtras();
             }
-            if ($routeParams.token) {
+            if ($stateParams.token) {
                 vm.activity = vm.activityEnum.PASSWORD_RESET;
-                vm.token = $routeParams.token;
+                vm.token = $stateParams.token;
             }
 
             $scope.$on('Keepalive', function () {

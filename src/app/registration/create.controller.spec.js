@@ -51,7 +51,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('CreateController', {
                     $scope: scope,
-                    $routeParams: {hash: 'fakehash'},
+                    $stateParams: {hash: 'fakehash'},
                     authService: authService,
                     networkService: networkService,
                     $location: $location,

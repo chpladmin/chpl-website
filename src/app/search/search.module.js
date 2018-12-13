@@ -5,7 +5,6 @@
         'angulartics',
         'chpl.constants',
         'chpl.services',
-        'ngRoute',
         'ngStorage',
         'smart-table',
         'ui.bootstrap',

@@ -14,7 +14,7 @@
                 $provide.value('networkService', mockCommonService);
             });
 
-            inject(function ($q) {
+            inject(function ($controller, _$log_, $q, $rootScope, _authService_, _networkService_) {
                 mockAuthService.getFullname = function () { return 'fake'; };
                 mockAuthService.isAuthed = function () { return true; };
                 mockAuthService.isChplAdmin = function () { return true; };
@@ -22,26 +22,26 @@
                 mockAuthService.isAtlAdmin = function () { return true; };
                 mockCommonService.getAcbs = function () { return $q.when({acbs: [{id: 0}]}); };
                 mockCommonService.getAtls = function () { return $q.when({atls: [{id: 0}]}); };
-            });
-        });
-
-        describe('controller', function () {
-
-            beforeEach(inject(function ($controller, _$log_, $rootScope, _authService_, _networkService_) {
                 $log = _$log_;
                 scope = $rootScope.$new();
                 ctrl = $controller('AdminController', {
+                    $stateParams: {},
                     authService: _authService_,
                     networkService: _networkService_,
                 });
                 scope.$digest();
-            }));
-
-            afterEach(function () {
-                if ($log.debug.logs.length > 0) {
-                    //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
-                }
             });
+        });
+
+        afterEach(function () {
+            if ($log.debug.logs.length > 0) {
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+                /* eslint-enable no-console,angular/log */
+            }
+        });
+
+        describe('controller', function () {
 
             it('should exist', function () {
                 expect(ctrl).toBeDefined();
