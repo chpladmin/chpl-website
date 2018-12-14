@@ -83,6 +83,29 @@
             expect($localStorage.jwtToken).toBe(token);
         });
 
+        describe('when concerned with ROLES', () => {
+            let user;
+            beforeEach(() => {
+                user = angular.copy(mock.user);
+                user.Authorities = undefined;
+            });
+
+            it('should handle no roles', () => {
+                expect(auth.hasAnyRole()).toBe(false);
+                auth.saveToken(buildToken(user));
+                expect(auth.hasAnyRole()).toBe(true);
+            });
+
+            it('should handle a role', () => {
+                expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(false);
+                auth.saveToken(buildToken(user));
+                expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(false);
+                user.Authorities = ['ROLE_ACB'];
+                auth.saveToken(buildToken(user));
+                expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(true);
+            });
+        });
+
         describe('when checking Authorities', function () {
             var user;
             beforeEach(function () {

@@ -11,6 +11,7 @@
             getFullname: getFullname,
             getToken: getToken,
             getUsername: getUsername,
+            hasAnyRole: hasAnyRole,
             isAcbAdmin: isAcbAdmin,
             isAtlAdmin: isAtlAdmin,
             isAuthed: isAuthed,
@@ -63,6 +64,21 @@
             } else {
                 return false;
             }
+        }
+
+        function hasAnyRole (roles) {
+            var token = getToken();
+            if (token) {
+                let userRoles = parseJwt(token).Authorities;
+                if (roles) {
+                    if (userRoles) {
+                        return roles.reduce((ret, role) => ret || (userRoles.indexOf(role) > -1), false); // true iff user has at least one role in the required list
+                    }
+                    return false; // logged in, role(s) required, user has no roles
+                }
+                return true; // logged in, no role required
+            }
+            return false; // not logged in
         }
 
         function isAcbAdmin () {
