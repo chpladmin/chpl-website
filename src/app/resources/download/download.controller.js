@@ -58,8 +58,7 @@
         }
 
         function showRestricted () {
-            return authService.isChplAdmin() ||
-                authService.isOncStaff();
+            return authService.hasAnyRole('ROLE_ADMIN', 'ROLE_ONC');
         }
     }
 })();

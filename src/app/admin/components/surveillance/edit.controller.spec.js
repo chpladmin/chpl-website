@@ -1,14 +1,13 @@
 (function () {
     'use strict';
 
-    describe('the Surveillance Edit controller', function () {
+    fdescribe('the Surveillance Edit controller', function () {
         var $controller, $log, $q, $uibModal, Mock, actualOptions, authService, networkService, scope, utilService, vm;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
@@ -28,8 +27,7 @@
                 $log = _$log_;
                 $q = _$q_;
                 authService = _authService_;
-                authService.isAcbAdmin.and.returnValue(false);
-                authService.isChplAdmin.and.returnValue(false);
+                authService.hasAnyRole.and.returnValue(false);
                 networkService = _networkService_;
                 networkService.deleteSurveillance.and.returnValue($q.when({}));
                 networkService.initiateSurveillance.and.returnValue($q.when({}));
@@ -85,8 +83,7 @@
                 newSurv.endDate = angular.copy(newSurv.startDate);
                 newSurv.startDate = undefined;
                 newSurv.type = undefined;
-                authService.isAcbAdmin.and.returnValue(true);
-                authService.isChplAdmin.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
                 vm = $controller('EditSurveillanceController', {
                     surveillance: newSurv,
                     surveillanceTypes: Mock.surveillanceData,
@@ -433,16 +430,15 @@
 
                 it('should assign the highest authority to the surveillance', function () {
                     vm.surveillance.authority = undefined;
-                    authService.isAcbAdmin.and.returnValue(true);
-                    authService.isChplAdmin.and.returnValue(true);
+                    authService.hasAnyRole.and.returnValue(true);
                     vm.save();
                     expect(vm.surveillance.authority).toBe('ROLE_ADMIN');
                     vm.surveillance.authority = undefined;
-                    authService.isChplAdmin.and.returnValue(false);
+                    authService.hasAnyRole.and.returnValue(false);
                     vm.save();
                     expect(vm.surveillance.authority).toBe('ROLE_ACB');
                     vm.surveillance.authority = undefined;
-                    authService.isAcbAdmin.and.returnValue(false);
+                    authService.hasAnyRole.and.returnValue(false);
                     vm.save();
                     expect(vm.surveillance.authority).toBeUndefined();
                 });

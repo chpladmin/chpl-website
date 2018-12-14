@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the CHPL Navigation', function () {
+    fdescribe('the CHPL Navigation', function () {
 
         var $httpProvider, $log, authInterceptor, authService, mock, toaster;
         mock = {
@@ -17,7 +17,6 @@
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
                     $delegate.logout = jasmine.createSpy('logout');
                     $delegate.saveToken = jasmine.createSpy('saveToken');
                     return $delegate;
@@ -32,7 +31,6 @@
             authService = _authService_;
             authService.getApiKey.and.returnValue(mock.apiKey);
             authService.getToken.and.returnValue(mock.token);
-            authService.isAuthed.and.returnValue(true);
             authService.logout.and.returnValue();
             authService.saveToken.and.returnValue();
         }));

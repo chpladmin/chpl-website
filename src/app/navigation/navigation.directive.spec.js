@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the CHPL Navigation', function () {
+    fdescribe('the CHPL Navigation', function () {
         var $compile, $localStorage, $location, $log, $q, $rootScope, authService, el, mock, networkService, scope, vm;
         mock = {
             announcements: [],
@@ -12,7 +12,7 @@
             angular.mock.module('chpl.navigation', 'chpl', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getFullname = jasmine.createSpy('getFullname');
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
@@ -33,7 +33,7 @@
             $rootScope = _$rootScope_;
             authService = _authService_;
             authService.getFullname.and.returnValue(mock.username);
-            authService.isAuthed.and.returnValue(true);
+            authService.hasAnyRole.and.returnValue(true);
             networkService = _networkService_;
             networkService.getAnnouncements.and.returnValue($q.when(mock.announcements));
             networkService.getUserByUsername.and.returnValue($q.when({user: {}}));
@@ -80,11 +80,6 @@
                 expect(authService.getFullname).not.toHaveBeenCalled();
                 expect(vm.getFullname()).toEqual(mock.username);
                 expect(authService.getFullname).toHaveBeenCalled();
-            });
-
-            it('should call the authService to check if the user is authenticated', function () {
-                vm.isAuthed();
-                expect(authService.isAuthed).toHaveBeenCalled();
             });
 
             it('should know what page is active', function () {

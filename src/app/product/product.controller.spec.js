@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    describe('chpl.product.controller', function () {
+    fdescribe('chpl.product.controller', function () {
 
-        var $controller, $log, $q, $uibModal, actualOptions, authService, mock, networkService, scope, vm;
+        var $controller, $log, $q, $uibModal, actualOptions, mock, networkService, scope, vm;
         mock = {};
         mock.activity = {};
         mock.productId = 123123;
@@ -37,12 +37,8 @@
                     $delegate.getSingleCertifiedProductActivity = jasmine.createSpy('getSingleCertifiedProductActivity');
                     return $delegate;
                 });
-                $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
-                    return $delegate;
-                });
             });
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _authService_, _networkService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _networkService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $uibModal = _$uibModal_;
@@ -54,8 +50,6 @@
                 networkService = _networkService_;
                 networkService.getProduct.and.returnValue($q.when(mock.products));
                 networkService.getSingleCertifiedProductActivity.and.returnValue($q.when(mock.activity));
-                authService = _authService_;
-                authService.isAuthed.and.returnValue(true);
 
                 scope = $rootScope.$new();
                 vm = $controller('ProductController', {
@@ -79,10 +73,6 @@
         describe('loading', function () {
             it('should know what the product id is', function () {
                 expect(vm.productId).toEqual(mock.productId);
-            });
-
-            it('should know if the user is authenticated on load', function () {
-                expect(authService.isAuthed).toHaveBeenCalled();
             });
 
             it('should find product details on load', function () {

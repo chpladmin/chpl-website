@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.registration.controller', function () {
+    fdescribe('chpl.registration.controller', function () {
 
         var $location, $log, $q, authService, networkService, scope, vm;
 
@@ -27,7 +27,7 @@
             angular.mock.module('chpl.mock', 'chpl.registration', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getUsername = jasmine.createSpy('getUsername');
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
@@ -43,7 +43,7 @@
                 $location = _$location_;
                 authService = _authService_;
                 authService.getUsername.and.returnValue('username');
-                authService.isAuthed.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.authorizeUser.and.returnValue($q.when({}));
                 networkService.createInvitedUser.and.returnValue($q.when({}));
@@ -83,10 +83,6 @@
         it('should not call createUser if the details aren\'t complete', function () {
             vm.createUser();
             expect(networkService.createInvitedUser).not.toHaveBeenCalled();
-        });
-
-        it('should have an isAuthed function', function () {
-            expect(vm.isAuthed).toBeDefined();
         });
 
         it('should call createUser if the details are complete', function () {

@@ -194,6 +194,7 @@
             authService.logout();
             vm.clear();
             Idle.unwatch();
+            $rootScope.$broadcast('loggedOut');
         }
 
         function setActivity (activity) {

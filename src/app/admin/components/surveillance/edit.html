@@ -138,7 +138,7 @@
                                               !vm.surveillance.requirements ||
                                               vm.surveillance.requirements.length === 0 ||
                                               vm.missingEndDate() ||
-                                              (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()))
+                                              (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.hasAnyRole(['ROLE_ADMIN'])))
                                               && vm.showFormErrors">
       The following error(s) must be fixed:
       <ul>
@@ -150,15 +150,15 @@
         <li ng-if="vm.editForm.sitesSurveilled.$error.number">Sites Surveilled must be a number</li>
         <li ng-if="vm.editForm.authority.$error.required">Initiated by is required</li>
         <li ng-if="!vm.surveillance.requirements || vm.surveillance.requirements.length === 0">At least one Requirement must be surveilled</li>
-        <li ng-if="vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()">User must have authority for ONC-Admin to edit surveillance created by ONC-Admin</li>
+        <li ng-if="vm.surveillance.authority === 'ROLE_ADMIN' && !vm.hasAnyRole(['ROLE_ADMIN'])">User must have authority for ONC-Admin to edit surveillance created by ONC-Admin</li>
         <li ng-if="vm.missingEndDate()">End Date is required when there are no open Nonconformities</li>
       </ul>
     </div>
-    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin())) && vm.showFormErrors && !vm.disableValidation"
+    <button ng-disabled="(vm.editForm.$invalid || !vm.surveillance.requirements || vm.surveillance.requirements.length === 0 || vm.missingEndDate() || (vm.surveillance.authority === 'ROLE_ADMIN' && !vm.hasAnyRole(['ROLE_ADMIN']))) && vm.showFormErrors && !vm.disableValidation"
             class="btn btn-ai-success pull-right"
             ng-mouseover="vm.showFormErrors = true"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>
-    <button ng-disabled="(vm.surveillance.authority === 'ROLE_ADMIN' && !vm.isChplAdmin()) || !vm.reason"
+    <button ng-disabled="(vm.surveillance.authority === 'ROLE_ADMIN' && !vm.hasAnyRole(['ROLE_ADMIN'])) || !vm.reason"
             class="btn btn-danger pull-left" ng-if="vm.workType === 'edit'"
             confirm="Are you sure you wish to delete this surveillance?"
             confirm-ok="Yes"

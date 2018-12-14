@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('chpl.download', function () {
+    fdescribe('chpl.download', function () {
 
         var $log, authService, mock, scope, vm;
 
@@ -15,8 +15,7 @@
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
-                    $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
             });
@@ -26,8 +25,7 @@
                 authService = _authService_;
                 authService.getApiKey.and.returnValue(mock.API_KEY);
                 authService.getToken.and.returnValue(mock.token);
-                authService.isChplAdmin.and.returnValue(false);
-                authService.isOncStaff.and.returnValue(false);
+                authService.hasAnyRole.and.returnValue(false);
 
                 scope = $rootScope.$new();
                 vm = $controller('DownloadController', {
@@ -60,20 +58,7 @@
             });
 
             it('should know if it should show restricted download files', function () {
-                authService.isChplAdmin.and.returnValue(false);
-                authService.isOncStaff.and.returnValue(false);
-                expect(vm.showRestricted()).toBe(false);
-
-                authService.isChplAdmin.and.returnValue(true);
-                authService.isOncStaff.and.returnValue(false);
-                expect(vm.showRestricted()).toBe(true);
-
-                authService.isChplAdmin.and.returnValue(false);
-                authService.isOncStaff.and.returnValue(true);
-                expect(vm.showRestricted()).toBe(true);
-
-                authService.isChplAdmin.and.returnValue(true);
-                authService.isOncStaff.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
                 expect(vm.showRestricted()).toBe(true);
             });
 

@@ -9,6 +9,7 @@
         var vm = this;
 
         vm.certificationStatus = utilService.certificationStatus;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.loadProduct = loadProduct;
         vm.viewProductHistory = viewProductHistory;
 
@@ -38,7 +39,6 @@
                 vm.initialPanel = 'cert';
             }
 
-            vm.isAuthed = authService.isAuthed();
             vm.loadProduct();
         }
 

@@ -14,8 +14,7 @@
         vm.deleteSurveillance = deleteSurveillance;
         vm.editRequirement = editRequirement;
         vm.inspectNonconformities = inspectNonconformities;
-        vm.isAcbAdmin = authService.isAcbAdmin;
-        vm.isChplAdmin = authService.isChplAdmin;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.missingEndDate = missingEndDate;
         vm.save = save;
         vm.sortRequirements = utilService.sortRequirements;
@@ -26,10 +25,10 @@
 
         function activate () {
             vm.authorities = [];
-            if (vm.isAcbAdmin()){
+            if (vm.hasAnyRole(['ROLE_ACB'])) {
                 vm.authorities.push('ROLE_ACB');
             }
-            if (vm.isChplAdmin()){
+            if (vm.hasAnyRole(['ROLE_ADMIN'])) {
                 vm.authorities.push('ROLE_ADMIN');
             }
             vm.surveillance = angular.copy(surveillance);
@@ -185,10 +184,10 @@
                 $uibModalInstance.close(vm.surveillance);
             } else if (vm.workType === 'initiate') {
                 if (!vm.surveillance.authority){
-                    if (vm.isChplAdmin()){
+                    if (vm.hasAnyRole(['ROLE_ADMIN'])){
                         vm.surveillance.authority = 'ROLE_ADMIN';
                     }
-                    else if (vm.isAcbAdmin()){
+                    else if (vm.hasAnyRole(['ROLE_ACB'])){
                         vm.surveillance.authority = 'ROLE_ACB';
                     }
                 }
