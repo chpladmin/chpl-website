@@ -14,7 +14,6 @@
             hasAnyRole: hasAnyRole,
             isAcbAdmin: isAcbAdmin,
             isAtlAdmin: isAtlAdmin,
-            isAuthed: isAuthed,
             isChplAdmin: isChplAdmin,
             isCmsStaff: isCmsStaff,
             isOncStaff: isOncStaff,
@@ -31,7 +30,7 @@
         }
 
         function getFullname () {
-            if (isAuthed()) {
+            if (hasAnyRole()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 return identity[2];
@@ -46,23 +45,13 @@
         }
 
         function getUsername () {
-            if (isAuthed()) {
+            if (hasAnyRole()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 return identity[1];
             } else {
                 logout();
                 return '';
-            }
-        }
-
-        function isAuthed () {
-            var token = getToken();
-            if (token) {
-                var params = parseJwt(token);
-                return Math.round(new Date().getTime() / 1000) <= params.exp;
-            } else {
-                return false;
             }
         }
 

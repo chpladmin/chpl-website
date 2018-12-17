@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Authorization service', function () {
+    fdescribe('the Authorization service', function () {
         var $localStorage, $log, $window, auth, mock;
         mock = {
             user: {
@@ -51,12 +51,6 @@
 
         it('should not get a username when not logged in', function () {
             expect(auth.getFullname()).toBe('');
-        });
-
-        it('should know when a user is authenticated', function () {
-            expect(auth.isAuthed()).toBe(false);
-            auth.saveToken(buildToken(mock.user));
-            expect(auth.isAuthed()).toBe(true);
         });
 
         it('should delete the token on logout', function () {

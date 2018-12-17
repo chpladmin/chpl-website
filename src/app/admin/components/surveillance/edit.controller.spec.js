@@ -422,24 +422,22 @@
                 });
 
                 it('should not assign an authority if one is already there', function () {
-                    var initCount = vm.isChplAdmin.calls.count();
+                    var initCount = authService.hasAnyRole.calls.count();
                     vm.surveillance.authority = 'ROLE_ADMIN';
                     vm.save();
-                    expect(vm.isChplAdmin.calls.count()).toBe(initCount);
+                    expect(authService.hasAnyRole.calls.count()).toBe(initCount);
                 });
 
                 it('should assign the highest authority to the surveillance', function () {
                     vm.surveillance.authority = undefined;
-                    authService.hasAnyRole.and.returnValue(true);
-                    vm.save();
+                    authService.hasAnyRole.and.returnValues(true, false, true);
+                    vm.save();                                            // calls once
                     expect(vm.surveillance.authority).toBe('ROLE_ADMIN');
                     vm.surveillance.authority = undefined;
-                    authService.hasAnyRole.and.returnValue(false);
-                    vm.save();
+                    vm.save();                                            // calls twice
                     expect(vm.surveillance.authority).toBe('ROLE_ACB');
                     vm.surveillance.authority = undefined;
-                    authService.hasAnyRole.and.returnValue(false);
-                    vm.save();
+                    vm.save();                                            // doesn't call
                     expect(vm.surveillance.authority).toBeUndefined();
                 });
 

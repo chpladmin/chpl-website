@@ -30,7 +30,7 @@
         vm.broadcastLogin = broadcastLogin;
         vm.changePassword = changePassword;
         vm.clear = clear;
-        vm.isAuthed = authService.isAuthed;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.login = login;
         vm.logout = logout;
         vm.misMatchPasswords = misMatchPasswords;
@@ -53,7 +53,7 @@
 
         this.$onInit = function () {
             vm.clear();
-            if (vm.isAuthed()) {
+            if (vm.hasAnyRole()) {
                 Idle.watch();
                 _updateExtras();
             }
@@ -64,7 +64,7 @@
 
             $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
-                if (vm.isAuthed()) {
+                if (vm.hasAnyRole()) {
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                         vm.activity = vm.activityEnum.NONE;
                     }
@@ -149,7 +149,7 @@
         }
 
         function clear () {
-            if (vm.isAuthed()) {
+            if (vm.hasAnyRole()) {
                 vm.activity = vm.activityEnum.NONE;
             } else {
                 vm.activity = vm.activityEnum.LOGIN;

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the Login', function () {
+    fdescribe('the Login', function () {
         var $compile, $log, $q, Idle, Keepalive, authService, el, mock, networkService, scope, vm;
 
         mock = {
@@ -21,7 +21,7 @@
             angular.mock.module('chpl', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getUsername = jasmine.createSpy('getUsername');
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     $delegate.logout = jasmine.createSpy('logout');
                     $delegate.saveToken = jasmine.createSpy('saveToken');
                     return $delegate;
@@ -46,7 +46,7 @@
 
                 authService = _authService_;
                 authService.getUsername.and.returnValue('admin');
-                authService.isAuthed.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
                 authService.saveToken.and.returnValue({});
 
                 networkService = _networkService_;
@@ -88,9 +88,9 @@
                 expect(vm.login).toBeDefined();
             });
 
-            it('should farm out isAuthed to the authservice', function () {
-                vm.isAuthed();
-                expect(authService.isAuthed).toHaveBeenCalled();
+            it('should farm out hasAnyRole to the authservice', function () {
+                vm.hasAnyRole();
+                expect(authService.hasAnyRole).toHaveBeenCalled();
             });
 
             it('should be able to set activity', function () {
@@ -107,24 +107,24 @@
                 expect(vm.misMatchPasswords()).toBe(false);
             });
 
-            xdescribe('when loading', function () {
-                it('should clear system on load', function () {
-                    spyOn(vm, 'clear');
-                    //vm.
-                    expect(vm.clear).toHaveBeenCalled();
-                });
-
+            describe('when loading', function () {
                 it('should start Idle if logged in', function () {
                     spyOn(Idle, 'watch');
-                    //vm.
-                    expect(Idle.watch).toHaveBeenCalled();
+                    let initCount = Idle.watch.calls.count();
+                    el = angular.element('<ai-login></ai-login>');
+                    $compile(el)(scope);
+                    scope.$digest();
+                    expect(Idle.watch.calls.count()).toBe(initCount + 1);
                 });
 
                 it('should not start Idle if not logged in', function () {
-                    authService.isAuthed.and.returnValue(false);
+                    authService.hasAnyRole.and.returnValue(false);
                     spyOn(Idle, 'watch');
-                    //vm.
-                    expect(Idle.watch).not.toHaveBeenCalled();
+                    let initCount = Idle.watch.calls.count();
+                    el = angular.element('<ai-login></ai-login>');
+                    $compile(el)(scope);
+                    scope.$digest();
+                    expect(Idle.watch.calls.count()).toBe(initCount);
                 });
             });
 
@@ -155,15 +155,16 @@
                         expect(authService.saveToken).toHaveBeenCalledWith('token');
                     });
                 });
+
                 describe('when un-authenticated', function () {
                     it('should set activity to LOGIN', function () {
-                        authService.isAuthed.and.returnValue(false);
+                        authService.hasAnyRole.and.returnValue(false);
                         scope.$broadcast('Keepalive');
                         expect(vm.activity).toBe(vm.activityEnum.LOGIN);
                     });
 
                     it('should unwatch the Idle', function () {
-                        authService.isAuthed.and.returnValue(false);
+                        authService.hasAnyRole.and.returnValue(false);
                         spyOn(Idle, 'unwatch');
                         scope.$broadcast('Keepalive');
                         expect(Idle.unwatch).toHaveBeenCalled();
@@ -265,7 +266,7 @@
 
                 it('should set activity to LOGIN if not loged in', function () {
                     vm.activity = undefined;
-                    authService.isAuthed.and.returnValue(false);
+                    authService.hasAnyRole.and.returnValue(false);
                     vm.clear();
                     expect(vm.activity).toBe(vm.activityEnum.LOGIN);
                 });

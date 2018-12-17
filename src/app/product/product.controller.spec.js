@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('chpl.product.controller', function () {
+    fdescribe('the CHPL Listing Display Controller', function () {
 
         var $controller, $log, $q, $uibModal, actualOptions, mock, networkService, scope, vm;
         mock = {};
@@ -62,7 +62,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
