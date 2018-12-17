@@ -5,12 +5,8 @@ require('jspdf-autotable');
     'use strict';
 
     angular.module('chpl.components')
-        .constant('aiConfig', {
-            endpoint: '/rest',
-        })
         .directive('aiCmsWidget', aiCmsWidget)
-        .controller('CmsWidgetController', CmsWidgetController)
-        .factory('WidgetService', WidgetService);
+        .controller('CmsWidgetController', CmsWidgetController);
 
     /** @ngInject */
     function aiCmsWidget () {
@@ -25,7 +21,7 @@ require('jspdf-autotable');
     }
 
     /** @ngInject */
-    function CmsWidgetController ($analytics, $filter, $localStorage, $log, $rootScope, WidgetService, utilService) {
+    function CmsWidgetController ($analytics, $filter, $localStorage, $log, $rootScope, networkService, utilService) {
         var vm = this;
 
         vm.addProduct = addProduct;
@@ -74,9 +70,9 @@ require('jspdf-autotable');
             if (vm.widget.searchResult && vm.widget.searchResult.year) {
                 $analytics.eventTrack('Get EHR Certification ID', { category: 'CMS Widget' });
             }
-            vm.widget.createResponse = WidgetService.save(
-                {action: 'create', ids: vm.widget.productIds.join(',')}, {},
-                function () {
+            networkService.createCmsId(vm.widget.productIds)
+                .then((response) => {
+                    vm.widget.createResponse = response;
                     vm.widget.inProgress = false;
                     setWidget(vm.widget);
                 });
@@ -84,11 +80,8 @@ require('jspdf-autotable');
 
         function generatePdf () {
             $analytics.eventTrack('Download EHR Certification ID PDF', { category: 'CMS Widget' });
-            WidgetService.get(
-                {action: vm.widget.createResponse.ehrCertificationId, includeCriteria: true},
-                function (response) {
-                    generatePdf2(response)
-                });
+            networkService.getCmsId(vm.widget.createResponse.ehrCertificationId, true)
+                .then(response => generatePdf2(response));
         }
 
         function isInList (id) {
@@ -121,9 +114,9 @@ require('jspdf-autotable');
             delete vm.widget.createResponse;
             if (vm.widget.productIds.length > 0) {
                 vm.widget.inProgress = true;
-                vm.widget.searchResult = WidgetService.get(
-                    {action: 'search', ids: vm.widget.productIds.join(',')},
-                    function () {
+                networkService.getCmsIds(vm.widget.productIds.join(','))
+                    .then((response) => {
+                        vm.widget.searchResult = response;
                         vm.widget.inProgress = false;
                         if (vm.widget.searchResult.missingAnd) {
                             vm.widget.searchResult.missingAnd = $filter('orderBy')(vm.widget.searchResult.missingAnd, utilService.sortCert);
@@ -511,10 +504,5 @@ require('jspdf-autotable');
             }
             return null;
         }
-    }
-
-    /** @ngInject */
-    function WidgetService ($resource, aiConfig) {
-        return $resource(aiConfig.endpoint + '/certification_ids/:action', { action: '@action' });
     }
 })();

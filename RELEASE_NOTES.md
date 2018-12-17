@@ -1,12 +1,62 @@
 # Release Notes
 
+## Version 10.9.0
+_17 December 2018_
+
+### New features
+* Change /authorize call to not use deprecated endpoint
+* Change API key registration call to not use deprecated endpoint
+* Handle retired ONC-ACBs / ONC-ATLs
+
+---
+
+## Version 10.8.0
+_3 December 2018_
+
+### New features
+* Add updated favicons; support app/mobile pinning
+* Add sorting to functionality tested
+* Add support for resetting password via generated link
+* Add "user must reset password on next login" workflow
+* Allow ROLE_ADMIN to upload API Documentation data file
+* Display API Documentation data file for public
+
+---
+
+## Version 10.7.0
+_19 November 2018_
+
+### New features
+* Updated ONC contact information.
+* Cache three network calls for varying timeouts
+  * /collections/certified_products for five minutes
+  * /certified_products/{productId}/details for fifteen minutes
+  * /data/search_options for five minutes
+* Add validation to surveillance "sites passed" and "total sites" for randomized surveillance activities
+
+---
+
+## Version 10.6.0
+_5 November 2018_
+
+### New features
+* Removed reliance on deprecated API endpoints
+
+### Bugs Fixed
+* Stop displaying QMS changes when there aren't any
+* Show proper error message when username is more than 25 characters and allow the user to proceed
+* Allow user to fix data and continue account creation when there is a validation error
+* Prevent user from submitting form when more than 25 character have been entered for username
+
+---
+
 ## Version 10.5.0
 _22 October 2018_
 
 ### New Features
 * Enable comparison of all products in CMS widget
 * Allow edit / display of Listing specific MUU numbers and history
-* Updated the collection pages to refresh data automatically on a timer 
+* Updated the collection pages to refresh data automatically on a timer
 
 ### Bugs Fixed
 * Display 'Other Certified Product Activity' when only one thing has been changed.

@@ -8,9 +8,7 @@
             angular.mock.module('chpl', 'chpl.mock', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.createATL = jasmine.createSpy('createATL');
-                    $delegate.deleteATL = jasmine.createSpy('deleteATL');
                     $delegate.modifyATL = jasmine.createSpy('modifyATL');
-                    $delegate.undeleteATL = jasmine.createSpy('undeleteATL');
                     return $delegate;
                 });
             });
@@ -21,13 +19,11 @@
                 $q = _$q_;
                 networkService = _networkService_;
                 networkService.createATL.and.returnValue($q.when({}));
-                networkService.deleteATL.and.returnValue($q.when({}));
                 networkService.modifyATL.and.returnValue($q.when({}));
-                networkService.undeleteATL.and.returnValue($q.when({}));
                 Mock = _Mock_;
 
                 scope = $rootScope.$new();
-                vm = ctrl('EditAtlController', {
+                vm = ctrl('ModalAtlController', {
                     atl: {},
                     action: 'modify',
                     isChplAdmin: true,
@@ -58,7 +54,7 @@
 
         it('should create an address object if creating an ATL', function () {
             expect(vm.atl.address).toBeUndefined();
-            vm = ctrl('EditAtlController', {
+            vm = ctrl('ModalAtlController', {
                 atl: {},
                 action: 'create',
                 isChplAdmin: true,
@@ -129,70 +125,6 @@
                 vm.create();
                 scope.$digest();
                 expect(networkService.createATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('the error');
-            });
-        });
-
-        describe('when deleting an ATL', function () {
-            it('should close the modal with the response on a good response', function () {
-                networkService.deleteATL.and.returnValue($q.when({status: 200}));
-                vm.deleteAtl();
-                scope.$digest();
-                expect(networkService.deleteATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith('deleted');
-
-                networkService.deleteATL.and.returnValue($q.when({status: undefined}));
-                vm.deleteAtl();
-                scope.$digest();
-                expect(networkService.deleteATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith('deleted');
-            });
-
-            it('should dismiss the modal with an error on a bad response', function () {
-                networkService.deleteATL.and.returnValue($q.when({status: 400}));
-                vm.deleteAtl();
-                scope.$digest();
-                expect(networkService.deleteATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
-            });
-
-            it('should dismiss the modal with error messages on a rejected save', function () {
-                networkService.deleteATL.and.returnValue($q.reject({data: { error: 'the error'}}));
-                vm.deleteAtl();
-                scope.$digest();
-                expect(networkService.deleteATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('the error');
-            });
-        });
-
-        describe('when undeleting an ATL', function () {
-            it('should close the modal with the response on a good response', function () {
-                networkService.undeleteATL.and.returnValue($q.when({status: 200}));
-                vm.undeleteAtl();
-                scope.$digest();
-                expect(networkService.undeleteATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 200});
-
-                networkService.undeleteATL.and.returnValue($q.when({status: undefined}));
-                vm.undeleteAtl();
-                scope.$digest();
-                expect(networkService.undeleteATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: undefined});
-            });
-
-            it('should dismiss the modal with an error on a bad response', function () {
-                networkService.undeleteATL.and.returnValue($q.when({status: 400}));
-                vm.undeleteAtl();
-                scope.$digest();
-                expect(networkService.undeleteATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
-            });
-
-            it('should dismiss the modal with error messages on a rejected save', function () {
-                networkService.undeleteATL.and.returnValue($q.reject({data: { error: 'the error'}}));
-                vm.undeleteAtl();
-                scope.$digest();
-                expect(networkService.undeleteATL).toHaveBeenCalled();
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('the error');
             });
         });

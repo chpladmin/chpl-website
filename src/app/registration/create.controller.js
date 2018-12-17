@@ -12,8 +12,12 @@ window.zxcvbn = zxcvbn;
         var vm = this;
 
         vm.authorizeUser = authorizeUser;
+        vm.changeDisplayMode = changeDisplayMode;
         vm.createUser = createUser;
         vm.isAuthed = isAuthed;
+        vm.isCreateAccountMode = isCreateAccountMode;
+        vm.isCreateAccountSuccessMode = isCreateAccountSuccessMode;
+        vm.isSignInMode = isSignInMode;
         vm.misMatchPasswords = misMatchPasswords;
         vm.passwordClass = utilService.passwordClass;
         vm.passwordTitle = utilService.passwordTitle;
@@ -35,12 +39,14 @@ window.zxcvbn = zxcvbn;
                 vm.authorizeUser();
             }
             vm.extras = ['chpl'];
+            changeDisplayMode('SIGN-IN');
         }
 
         function authorizeUser () {
             if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || vm.isAuthed()
                 && vm.authorizeDetails.hash) {
-                networkService.authorizeUser(vm.authorizeDetails)
+                const username = vm.authorizeDetails.userName || authService.getUsername();
+                networkService.authorizeUser(vm.authorizeDetails, username)
                     .then(function () {
                         $location.path('/admin');
                     },function (error) {
@@ -53,6 +59,10 @@ window.zxcvbn = zxcvbn;
             }
         }
 
+        function changeDisplayMode (mode) {
+            vm.displayMode = mode;
+        }
+
         function createUser () {
             if (vm.validateUser()) {
                 vm.userDetails.user.complianceTermsAccepted = true;
@@ -60,21 +70,27 @@ window.zxcvbn = zxcvbn;
                     .then(function () {
                         vm.message.value = 'Your account has been created. Please check your email to confirm your account';
                         vm.userDetails = {user: {}};
-                        vm.createUserForm.$setPristine();
-                        vm.createUserForm.$setUntouched();
-                        vm.message.success = true;
+                        changeDisplayMode('CREATE-ACCOUNT-SUCCESS');
                     },function (error) {
-                        vm.message.value = error.data.error;
-                        vm.userDetails = {user: {}};
-                        vm.createUserForm.$setPristine();
-                        vm.createUserForm.$setUntouched();
-                        vm.message.success = false;
+                        vm.message.value = error.data.errorMessages;
                     });
             }
         }
 
         function isAuthed () {
             return authService.isAuthed();
+        }
+
+        function isCreateAccountMode () {
+            return vm.displayMode === 'CREATE-ACCOUNT';
+        }
+
+        function isCreateAccountSuccessMode () {
+            return vm.displayMode === 'CREATE-ACCOUNT-SUCCESS';
+        }
+
+        function isSignInMode () {
+            return vm.displayMode === 'SIGN-IN';
         }
 
         function misMatchPasswords () {

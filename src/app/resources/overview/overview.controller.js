@@ -36,7 +36,7 @@
         function loadAcbs () {
             networkService.getAcbs(false)
                 .then(function (result) {
-                    vm.acbs = result.acbs;
+                    vm.acbs = result.acbs.filter(acb => !acb.retired);
                 }, function (error) {
                     $log.error('error in app.overview.controller.loadAcbs', error);
                 });
@@ -45,7 +45,7 @@
         function loadAtls () {
             networkService.getAtls(false)
                 .then(function (result) {
-                    vm.atls = result.atls;
+                    vm.atls = result.atls.filter(atl => !atl.retired);
                 }, function (error) {
                     $log.error('error in app.overview.controller.loadAtls', error);
                 });

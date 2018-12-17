@@ -5,7 +5,7 @@
         .controller('EditNonconformityController', EditNonconformityController);
 
     /** @ngInject */
-    function EditNonconformityController ($log, $uibModalInstance, API, FileUploader, authService, disableValidation, networkService, nonconformity, randomized, requirementId, surveillanceId, surveillanceTypes, utilService, workType) {
+    function EditNonconformityController ($log, $uibModalInstance, API, FileUploader, authService, disableValidation, networkService, nonconformity, randomized, randomizedSitesUsed, requirementId, surveillanceId, surveillanceTypes, utilService, workType) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -22,6 +22,7 @@
             vm.disableValidation = disableValidation;
             vm.nonconformity = angular.copy(nonconformity);
             vm.randomized = randomized;
+            vm.randomizedSitesUsed = randomizedSitesUsed;
             vm.requirementId = requirementId;
             vm.showFormErrors = false;
             vm.surveillanceId = surveillanceId;
@@ -100,7 +101,7 @@
 
         function buildFileUploader () {
             vm.uploader = new FileUploader({
-                url: API + '/surveillance/' + vm.surveillanceId + '/nonconformity/' + vm.nonconformity.id + '/document/create',
+                url: API + '/surveillance/' + vm.surveillanceId + '/nonconformity/' + vm.nonconformity.id + '/document',
                 removeAfterUpload: true,
                 headers: {
                     Authorization: 'Bearer ' + authService.getToken(),

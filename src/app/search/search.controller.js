@@ -91,7 +91,7 @@
         };
 
         vm.retired = {
-            acb: {'CCHIT': true, 'SLI Global': true, 'Surescripts LLC': true},
+            acb: {'CCHIT': true, 'Surescripts LLC': true},
             edition: { '2011': true },
         };
 
@@ -141,7 +141,7 @@
 
         function loadResults () {
             networkService.getAll().then(function (response) {
-                var results = response.results;
+                var results = angular.copy(response.results);
                 vm.allCps = [];
                 incrementTable(parseAllResults(results));
             }, function (error) {
@@ -393,7 +393,7 @@
 
         function populateSearchOptions () {
             vm.lookaheadSource = {all: [], developers: [], products: []};
-            networkService.getSearchOptions(true)
+            networkService.getSearchOptions()
                 .then(function (options) {
                     vm.searchOptions = options;
                     var i;
