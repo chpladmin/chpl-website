@@ -1180,8 +1180,8 @@
             $httpBackend.flush();
         });
 
-        it('should registerApi', function () {
-            $httpBackend.expectPOST(/key/).respond(200, {data: 'response'});
+        it('should registerApi', () => {
+            $httpBackend.expectPOST(/^\/rest\/key$/).respond(200, {data: 'response'});
             networkService.registerApi('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });

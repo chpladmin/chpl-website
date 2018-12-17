@@ -517,7 +517,7 @@ export class NetworkService {
     }
 
     registerApi (user) {
-        return this.apiPOST('/key/register', user);
+        return this.apiPOST('/key', user);
     }
 
     rejectPendingCp (cpId) {
