@@ -28,7 +28,7 @@
             if (vm.hasAnyRole(['ROLE_ACB'])) {
                 vm.authorities.push('ROLE_ACB');
             }
-            if (vm.hasAnyRole(['ROLE_ADMIN'])) {
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                 vm.authorities.push('ROLE_ADMIN');
             }
             vm.surveillance = angular.copy(surveillance);
@@ -184,7 +184,7 @@
                 $uibModalInstance.close(vm.surveillance);
             } else if (vm.workType === 'initiate') {
                 if (!vm.surveillance.authority){
-                    if (vm.hasAnyRole(['ROLE_ADMIN'])){
+                    if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])){
                         vm.surveillance.authority = 'ROLE_ADMIN';
                     }
                     else if (vm.hasAnyRole(['ROLE_ACB'])){

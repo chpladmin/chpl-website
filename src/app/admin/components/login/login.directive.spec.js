@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Login', function () {
+    describe('the Login', function () {
         var $compile, $log, $q, Idle, Keepalive, authService, el, mock, networkService, scope, vm;
 
         mock = {

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Surveillance Edit controller', function () {
+    describe('the Surveillance Edit controller', function () {
         var $controller, $log, $q, $uibModal, Mock, actualOptions, authService, networkService, scope, utilService, vm;
 
         beforeEach(function () {

@@ -41,7 +41,6 @@
 
         vm.clear = clear;
         vm.getFullname = authService.getFullname;
-        vm.isAcbAdmin = authService.isAcbAdmin;
         vm.isActive = isActive;
         vm.hasAnyRole = authService.hasAnyRole;
         vm.loadAnnouncements = loadAnnouncements;

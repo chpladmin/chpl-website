@@ -3,17 +3,10 @@
 
     describe('the Admin Reports', function () {
 
-        var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, authService, el, networkService, scope, vm;
+        var $compile, $log, $q, $uibModal, ActivityMock, Mock, actualOptions, el, networkService, scope, vm;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
-                    $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
-                    return $delegate;
-                });
-
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCertifiedProductActivity = jasmine.createSpy('getCertifiedProductActivity');
                     $delegate.getCorrectiveActionPlanActivity = jasmine.createSpy('getCorrectiveActionPlanActivity');
@@ -33,7 +26,7 @@
                 });
             });
 
-            inject(function (_$compile_, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _ActivityMock_, _Mock_, _authService_, _networkService_) {
+            inject(function (_$compile_, $controller, _$log_, _$q_, $rootScope, _$uibModal_, _ActivityMock_, _Mock_, _networkService_) {
                 $compile = _$compile_;
                 $log = _$log_;
                 $q = _$q_;
@@ -44,10 +37,6 @@
                     actualOptions = options;
                     return Mock.fakeModal;
                 });
-                authService = _authService_;
-                authService.isAcbAdmin.and.returnValue($q.when(true));
-                authService.isChplAdmin.and.returnValue($q.when(true));
-                authService.isOncStaff.and.returnValue($q.when(true));
                 networkService = _networkService_;
                 networkService.getCertifiedProductActivity.and.returnValue($q.when(Mock.listingActivity));
                 networkService.getCorrectiveActionPlanActivity.and.returnValue($q.when([]));
@@ -99,11 +88,6 @@
                 scope.$digest();
                 vm = el.isolateScope().vm;
                 expect(vm.activityRange.listing.startDate).toEqual(startDate);
-            });
-
-            it('should know if the logged in user is ACB and/or CHPL admin', function () {
-                expect(vm.isAcbAdmin).toBeTruthy();
-                expect(vm.isChplAdmin).toBeTruthy();
             });
 
             describe('helper functions', function () {

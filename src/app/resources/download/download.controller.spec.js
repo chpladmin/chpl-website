@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('chpl.download', function () {
+    describe('chpl.download', function () {
 
         var $log, authService, mock, scope, vm;
 

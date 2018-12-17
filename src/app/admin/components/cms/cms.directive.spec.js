@@ -15,9 +15,7 @@
                     return $delegate;
                 });
                 $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     $delegate.getToken = jasmine.createSpy('getToken');
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     return $delegate;
@@ -30,9 +28,7 @@
                 networkService = _networkService_;
                 networkService.getCmsDownload.and.returnValue($q.when({}));
                 authService = _authService_;
-                authService.isAcbAdmin.and.returnValue(true);
-                authService.isOncStaff.and.returnValue(true);
-                authService.isChplAdmin.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
                 authService.getToken.and.returnValue('token');
                 authService.getApiKey.and.returnValue('api-key');
 

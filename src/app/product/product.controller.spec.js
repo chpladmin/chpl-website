@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the CHPL Listing Display Controller', function () {
+    describe('the CHPL Listing Display Controller', function () {
 
         var $controller, $log, $q, $uibModal, actualOptions, mock, networkService, scope, vm;
         mock = {};

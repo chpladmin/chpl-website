@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the user management compoent', function () {
+    describe('the user management component,', function () {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, ctrl, element, mock, networkService, scope;
 
         mock = {
@@ -74,10 +74,10 @@
             expect(ctrl).toBeDefined();
         });
 
-        describe('when setting up', function () {
+        describe('when setting up for', function () {
             let acbCallCount;
 
-            describe('for acb management', function () {
+            describe('acb management,', function () {
                 it('should know what the acb id is', function () {
                     expect(ctrl.acbId).toBe('1');
                 });
@@ -93,7 +93,7 @@
                 });
             });
 
-            describe('for atl management', function () {
+            describe('atl management,', function () {
                 beforeEach(function () {
                     acbCallCount = networkService.getUsersAtAcb.calls.count();
                     element = angular.element('<ai-user-management atl-id="2"></ai-user-management');
@@ -117,7 +117,7 @@
                 });
             });
 
-            describe('for general management', function () {
+            describe('general management,', function () {
                 beforeEach(function () {
                     acbCallCount = networkService.getUsersAtAcb.calls.count();
                     element = angular.element('<ai-user-management></ai-user-management');
@@ -132,7 +132,7 @@
                 });
 
                 it('should have correct roles', function () {
-                    expect(ctrl.roles).toEqual(['ROLE_ADMIN','ROLE_CMS_STAFF','ROLE_ONC_STAFF','ROLE_ACB','ROLE_ATL']);
+                    expect(ctrl.roles).toEqual(['ROLE_ADMIN','ROLE_ONC', 'ROLE_CMS_STAFF','ROLE_ACB','ROLE_ATL']);
                 });
 
                 it('should have called for the correct users', function () {
@@ -143,7 +143,7 @@
             });
         });
 
-        describe('when inviting a user', function () {
+        describe('when inviting a user,', function () {
             it('should create a modal instance', function () {
                 expect(ctrl.modalInstance).toBeUndefined();
                 ctrl.inviteUser();
@@ -160,7 +160,7 @@
             });
         });
 
-        describe('when editing a user', function () {
+        describe('when editing a user,', function () {
             it('should create a modal instance', function () {
                 expect(ctrl.modalInstance).toBeUndefined();
                 ctrl.updateUser({});

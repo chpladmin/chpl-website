@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the Authorization service', function () {
+    describe('the Authorization service', function () {
         var $localStorage, $log, $window, auth, mock;
         mock = {
             user: {
@@ -97,59 +97,6 @@
                 user.Authorities = ['ROLE_ACB'];
                 auth.saveToken(buildToken(user));
                 expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(true);
-            });
-        });
-
-        describe('when checking Authorities', function () {
-            var user;
-            beforeEach(function () {
-                user = angular.copy(mock.user);
-                user.Authorities = undefined;
-            });
-
-            it('should handle ACB Admin', function () {
-                expect(auth.isAcbAdmin()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isAcbAdmin()).toBe(false);
-                user.Authorities = ['ROLE_ACB'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isAcbAdmin()).toBe(true);
-            });
-
-            it('should handle ATL Admin', function () {
-                expect(auth.isAtlAdmin()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isAtlAdmin()).toBe(false);
-                user.Authorities = ['ROLE_ATL'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isAtlAdmin()).toBe(true);
-            });
-
-            it('should handle CHPL Admin', function () {
-                expect(auth.isChplAdmin()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isChplAdmin()).toBe(false);
-                user.Authorities = ['ROLE_ADMIN'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isChplAdmin()).toBe(true);
-            });
-
-            it('should handle CMS Staff', function () {
-                expect(auth.isCmsStaff()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isCmsStaff()).toBe(false);
-                user.Authorities = ['ROLE_CMS_STAFF'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isCmsStaff()).toBe(true);
-            });
-
-            it('should handle ONC Staff', function () {
-                expect(auth.isOncStaff()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isOncStaff()).toBe(false);
-                user.Authorities = ['ROLE_ONC_STAFF'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isOncStaff()).toBe(true);
             });
         });
 

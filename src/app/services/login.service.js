@@ -12,11 +12,6 @@
             getToken: getToken,
             getUsername: getUsername,
             hasAnyRole: hasAnyRole,
-            isAcbAdmin: isAcbAdmin,
-            isAtlAdmin: isAtlAdmin,
-            isChplAdmin: isChplAdmin,
-            isCmsStaff: isCmsStaff,
-            isOncStaff: isOncStaff,
             logout: logout,
             parseJwt: parseJwt,
             saveToken: saveToken,
@@ -68,61 +63,6 @@
                 return true; // logged in, no role required
             }
             return false; // not logged in
-        }
-
-        function isAcbAdmin () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ACB') > -1
-                }
-            }
-            return false;
-        }
-
-        function isAtlAdmin () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ATL') > -1
-                }
-            }
-            return false;
-        }
-
-        function isChplAdmin () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ADMIN') > -1
-                }
-            }
-            return false;
-        }
-
-        function isCmsStaff () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_CMS_STAFF') > -1
-                }
-            }
-            return false;
-        }
-
-        function isOncStaff () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ONC_STAFF') > -1
-                }
-            }
-            return false;
         }
 
         function logout () {

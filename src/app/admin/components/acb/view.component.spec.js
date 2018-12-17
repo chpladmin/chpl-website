@@ -7,8 +7,7 @@
         beforeEach(() => {
             angular.mock.module('chpl.mock', 'chpl', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
             });
@@ -23,8 +22,7 @@
                     return Mock.fakeModal;
                 });
                 authService = _authService_;
-                authService.isAcbAdmin.and.returnValue(true);
-                authService.isChplAdmin.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
 
                 scope = $rootScope.$new();
                 scope.acb = {};

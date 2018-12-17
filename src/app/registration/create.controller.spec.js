@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('chpl.registration.controller', function () {
+    describe('chpl.registration.controller', function () {
 
         var $location, $log, $q, authService, networkService, scope, vm;
 

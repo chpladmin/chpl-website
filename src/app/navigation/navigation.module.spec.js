@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the CHPL Navigation', function () {
+    describe('the CHPL Navigation', function () {
 
         var $httpProvider, $log, authInterceptor, authService, mock, toaster;
         mock = {

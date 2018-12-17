@@ -53,7 +53,7 @@
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" id="admin-nav.apiKeyManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" id="admin-nav.announcementsManagement" ng-if="vm.isChplAdmin()"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'apiDocumentationManagement'}" id="admin-nav.apiDocumentationManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement">API Documentation Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" id="admin-nav.cmsManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS'])"><a href="#/admin/cmsManagement">CMS Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" id="admin-nav.cmsManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a href="#/admin/cmsManagement">CMS Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" id="admin-nav.jobsManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/jobsManagement">Jobs Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'fuzzyManagement'}" id="admin-nav.fuzzyManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement">Fuzzy Matching Management</a></li>
           </ul>

@@ -67,7 +67,7 @@
             ng-if="vm.action === 'edit'"
             ng-click="vm.save()"><i class="fa fa-save"></i> Save announcement</button>
     <button class="btn btn-danger btn-block"
-            ng-if="vm.action === 'edit' && vm.isChplAdmin && !vm.announcement.isDeleted"
+            ng-if="vm.action === 'edit' && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) && !vm.announcement.isDeleted"
             confirm="Are you sure you wish to delete this announcement?"
             confirm-ok="Yes"
             confirm-cancel="No"

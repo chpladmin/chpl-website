@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the CHPL Navigation', function () {
+    describe('the CHPL Navigation', function () {
         var $compile, $localStorage, $location, $log, $q, $rootScope, authService, el, mock, networkService, scope, vm;
         mock = {
             announcements: [],
@@ -12,6 +12,7 @@
             angular.mock.module('chpl.navigation', 'chpl', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getFullname = jasmine.createSpy('getFullname');
+                    $delegate.getUsername = jasmine.createSpy('getUsername');
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
@@ -33,6 +34,7 @@
             $rootScope = _$rootScope_;
             authService = _authService_;
             authService.getFullname.and.returnValue(mock.username);
+            authService.getUsername.and.returnValue(mock.username);
             authService.hasAnyRole.and.returnValue(true);
             networkService = _networkService_;
             networkService.getAnnouncements.and.returnValue($q.when(mock.announcements));
@@ -53,7 +55,7 @@
             }
         });
 
-        describe('directives', function () {
+        describe('directives,', function () {
             it('should compile the top', function () {
                 el = angular.element('<ai-cms-widget><ai-compare-widget><ai-navigation-top></ai-navigation-top></ai-compare-widget></ai-cms-widget>');
                 $compile(el)(scope);
@@ -71,7 +73,7 @@
             });
         });
 
-        describe('controller', function () {
+        describe('controller,', function () {
             it('should exist', function () {
                 expect(vm).toBeDefined();
             });
@@ -88,28 +90,34 @@
                 expect(vm.isActive('resources')).toBe(false);
             });
 
-            xdescribe('when dealing with $broadcast', function () {
+            xdescribe('when dealing with $broadcast,', function () {
                 it('should show the CMS Widget', function () {
                     spyOn(vm, 'showCmsWidget');
-                    $rootScope.$broadcast('ShowWidget');
+                    scope.$apply(() => {
+                        $rootScope.$broadcast('ShowWidget');
+                    });
                     expect(vm.showCmsWidget).toHaveBeenCalled();
                 });
 
                 it('should show the Compare Widget', function () {
                     spyOn(vm, 'showCompareWidget');
-                    $rootScope.$broadcast('ShowCompareWidget');
-                    expect(vm.showCompareWidget).toHaveBeenCalledWith(true);
+                    $rootScope.$broadcast('ShowCompareWidget').then(() => {
+                        expect(vm.showCompareWidget).toHaveBeenCalledWith(true);
+                    });
+                    scope.$digest();
                 });
 
                 it('should hide the Compare Widget', function () {
                     spyOn(vm, 'showCompareWidget');
                     $rootScope.$broadcast('HideCompareWidget');
+                    scope.$digest();
                     expect(vm.showCompareWidget).toHaveBeenCalledWith(false);
                 });
 
                 it('should show announcements', function () {
                     spyOn(vm, 'loadAnnouncements');
                     $rootScope.$broadcast('loggedIn');
+                    scope.$digest();
                     expect(vm.loadAnnouncements).toHaveBeenCalled();
                 });
             });

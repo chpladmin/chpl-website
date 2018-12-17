@@ -35,9 +35,7 @@
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getApiKey = jasmine.createSpy('getApiKey');
                     $delegate.getToken = jasmine.createSpy('getToken');
-                    $delegate.isAcbAdmin = jasmine.createSpy('isAcbAdmin');
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
-                    $delegate.isOncStaff = jasmine.createSpy('isOncStaff');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
 
                     return $delegate;
                 });
@@ -84,11 +82,9 @@
                     return Mock.fakeModal;
                 });
                 authService = _authService_;
-                authService.getApiKey.and.returnValue($q.when('fake api key'));
-                authService.getToken.and.returnValue($q.when('fake token'));
-                authService.isAcbAdmin.and.returnValue($q.when(true));
-                authService.isChplAdmin.and.returnValue($q.when(true));
-                authService.isOncStaff.and.returnValue($q.when(true));
+                authService.getApiKey.and.returnValue('fake api key');
+                authService.getToken.and.returnValue('fake token');
+                authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.getAccessibilityStandards.and.returnValue($q.when([]));
                 networkService.getAtls.and.returnValue($q.when(mock.testingLabs));
@@ -269,8 +265,8 @@
                 vm.editCertifiedProduct()
                 expect($uibModal.open).toHaveBeenCalledWith(listingEditOptions);
                 expect(actualOptions.resolve.activeCP()).toEqual('');
-                actualOptions.resolve.isAcbAdmin().then(function (result) { expect(result).toEqual(true); });
-                actualOptions.resolve.isChplAdmin().then(function (result) { expect(result).toEqual(true); });
+                expect(actualOptions.resolve.isAcbAdmin()).toEqual(true);
+                expect(actualOptions.resolve.isChplAdmin()).toEqual(true);
                 expect(actualOptions.resolve.resources()).toEqual(vm.resources);
                 expect(actualOptions.resolve.workType()).toEqual(vm.workType);
                 el.isolateScope().$digest();
