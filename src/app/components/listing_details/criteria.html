@@ -50,19 +50,11 @@
           </tr>
           <tr ng-if="$ctrl.cert.g1MacraMeasures" id="criteria_{{ $ctrl.cert.number }}_details_row_Measures_G1">
             <td>
-<<<<<<< HEAD
-              Measure<span ng-if="$ctrl.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated numerator recording certification criterion (170.315(g)(1))." tooltip-trigger="mouseenter focus click"><span class="sr-only">The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.315(g)(1)).</span><i class="fa fa-info-circle fa-lg"></i></button>
-=======
-              Measure<span ng-if="vm.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated numerator recording certification criterion (170.315(g)(1))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.315(g)(1)).</span><i class="fa fa-info-circle fa-lg"></i></button>
->>>>>>> development
+              Measure<span ng-if="$ctrl.cert.g1MacraMeasures.length !== 1">s</span> Successfully Tested for G1 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated numerator recording certification criterion (170.315(g)(1))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The CMS measure and provider type tested for the automated numerator recording certification criterion (&sect; 170.315(g)(1)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.g1MacraMeasures.length > 0">
               <ul>
-<<<<<<< HEAD
-                <li ng-repeat="meas in $ctrl.cert.g1MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="mouseenter focus click">{{ meas.name }}</a></li>
-=======
-                <li ng-repeat="meas in vm.cert.g1MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'">{{ meas.name }}</a></li>
->>>>>>> development
+                <li ng-repeat="meas in $ctrl.cert.g1MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'">{{ meas.name }}</a></li>
               </ul>
             </td>
             <td ng-if="$ctrl.cert.g1MacraMeasures.length === 0">None</td>
@@ -75,19 +67,11 @@
           </tr>
           <tr ng-if="$ctrl.cert.g2MacraMeasures" id="criteria_{{ $ctrl.cert.number }}_details_row_Measures_G2">
             <td>
-<<<<<<< HEAD
-              Measure<span ng-if="$ctrl.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2))." tooltip-trigger="mouseenter focus click"><span class="sr-only">The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2)).</span><i class="fa fa-info-circle fa-lg"></i></button>
-=======
-              Measure<span ng-if="vm.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2)).</span><i class="fa fa-info-circle fa-lg"></i></button>
->>>>>>> development
+              Measure<span ng-if="$ctrl.cert.g2MacraMeasures.length !== 1">s</span> Successfully Tested for G2 <button class="btn btn-link btn-xs pull-right" uib-tooltip="The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2))." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The CMS measure and provider type tested for the automated measure calculation certification criterion (&sect; 170.315(g)(2)).</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td ng-if="$ctrl.cert.g2MacraMeasures.length > 0">
               <ul>
-<<<<<<< HEAD
-                <li ng-repeat="meas in $ctrl.cert.g2MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="mouseenter focus click">{{ meas.name }}</a></li>
-=======
-                <li ng-repeat="meas in vm.cert.g2MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'">{{ meas.name }}</a></li>
->>>>>>> development
+                <li ng-repeat="meas in $ctrl.cert.g2MacraMeasures | orderBy:'abbreviation'"><a href uib-tooltip="{{ meas.description }}" tooltip-trigger="'mouseenter focus click'">{{ meas.name }}</a></li>
               </ul>
             </td>
             <td ng-if="$ctrl.cert.g2MacraMeasures.length === 0">None</td>
@@ -133,11 +117,7 @@
           </tr>
           <tr ng-if="$ctrl.cert.number === '170.315 (g)(5)'" id="criteria_{{ $ctrl.cert.number }}_details_row_Accessibility_Standard">
             <td>
-<<<<<<< HEAD
-              Accessibility Standard<span ng-if="$ctrl.accessibilityStandards.length > 1">s</span> <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only." tooltip-trigger="mouseenter focus click"><span class="sr-only">The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only.</span><i class="fa fa-info-circle fa-lg"></i></button>
-=======
-              Accessibility Standard<span ng-if="vm.accessibilityStandards.length > 1">s</span> <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only.</span><i class="fa fa-info-circle fa-lg"></i></button>
->>>>>>> development
+              Accessibility Standard<span ng-if="$ctrl.accessibilityStandards.length > 1">s</span> <button class="btn btn-link btn-xs pull-right" uib-tooltip="The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only." tooltip-trigger="'mouseenter focus click'"><span class="sr-only">The standard(s) used to meet the accessibility-centered design certification criterion or developer attestation that no accessibility-centered design was employed. Applies to 2015 Edition certification only.</span><i class="fa fa-info-circle fa-lg"></i></button>
             </td>
             <td>
               <ul class="list-unstyled">
