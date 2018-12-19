@@ -57,7 +57,7 @@ export class NetworkService {
     }
 
     createAnnouncement (announcement) {
-        return this.apiPOST('/announcements/create', announcement);
+        return this.apiPOST('/announcements', announcement);
     }
 
     createCmsId (ids) {
