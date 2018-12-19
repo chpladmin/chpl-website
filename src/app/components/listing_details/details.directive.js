@@ -34,6 +34,7 @@
             vm.muuCount = utilService.muuCount;
             vm.prepCqms = prepCqms
             vm.registerSed = registerSed;
+            vm.saveCert = saveCert;
             vm.sortCerts = sortCerts;
             vm.sortCqms = sortCqms;
             vm.showPanel = showPanel;
@@ -92,6 +93,14 @@
                     });
                 };
                 return removeHandler;
+            }
+
+            function saveCert (cert) {
+                for (let i = 0; i < vm.product.certificationResults.length; i++) {
+                    if (vm.product.certificationResults[i].number === cert.number) {
+                        vm.product.certificationResults[i] = cert;
+                    }
+                }
             }
 
             function sortCerts (cert) {
