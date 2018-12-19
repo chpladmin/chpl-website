@@ -2,13 +2,17 @@
     'use strict';
 
     describe('the User Editing Controller', function () {
-        var $controller, $log, $q, Mock, mock, networkService, scope, vm;
+        var $controller, $log, $q, Mock, authService, mock, networkService, scope, vm;
 
         mock = {};
         mock.user = {roles: ['ROLE_ADMIN'], user: {subjectName: 'username', userId: 'userId'}};
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.addRole = jasmine.createSpy('addRole');
                     $delegate.deleteUser = jasmine.createSpy('deleteUser');
@@ -21,10 +25,12 @@
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _networkService_) {
+            inject(function (_$controller_, _$log_, _$q_, $rootScope, _Mock_, _authService_, _networkService_) {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
+                authService = _authService_;
+                authService.hasAnyRole.and.returnValue($q.when({}));
                 networkService = _networkService_;
                 networkService.addRole.and.returnValue($q.when({}));
                 networkService.deleteUser.and.returnValue($q.when({}));

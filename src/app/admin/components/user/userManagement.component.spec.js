@@ -82,10 +82,6 @@
                     expect(ctrl.acbId).toBe('1');
                 });
 
-                it('should have the ACB role', function () {
-                    expect(ctrl.roles).toEqual(['ROLE_ACB']);
-                });
-
                 it('should have called for the correct users', function () {
                     expect(networkService.getUsers).not.toHaveBeenCalled();
                     expect(networkService.getUsersAtAcb).toHaveBeenCalled();
@@ -104,10 +100,6 @@
 
                 it('should know what the atl id is', function () {
                     expect(ctrl.atlId).toBe('2');
-                });
-
-                it('should have the ATL role', function () {
-                    expect(ctrl.roles).toEqual(['ROLE_ATL']);
                 });
 
                 it('should have called for the correct users', function () {
@@ -129,10 +121,6 @@
                 it('should have no acb or atl id', function () {
                     expect(ctrl.atlId).toBeUndefined();
                     expect(ctrl.acbId).toBeUndefined();
-                });
-
-                it('should have correct roles', function () {
-                    expect(ctrl.roles).toEqual(['ROLE_ADMIN','ROLE_ONC', 'ROLE_CMS_STAFF','ROLE_ACB','ROLE_ATL']);
                 });
 
                 it('should have called for the correct users', function () {
