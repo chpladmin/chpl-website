@@ -41,13 +41,8 @@
 
         vm.clear = clear;
         vm.getFullname = authService.getFullname;
-        vm.isAcbAdmin = authService.isAcbAdmin;
         vm.isActive = isActive;
-        vm.isAtlAdmin = authService.isAtlAdmin;
-        vm.isAuthed = authService.isAuthed;
-        vm.isChplAdmin = authService.isChplAdmin;
-        vm.isCmsStaff = authService.isCmsStaff;
-        vm.isOncStaff = authService.isOncStaff;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.loadAnnouncements = loadAnnouncements;
         vm.showCmsWidget = showCmsWidget;
         vm.showCompareWidget = showCompareWidget;
@@ -81,6 +76,11 @@
                 vm.loadAnnouncements();
             })
             $scope.$on('$destroy', loggedIn);
+
+            var loggedOut = $scope.$on('loggedOut', function () {
+                vm.loadAnnouncements();
+            })
+            $scope.$on('$destroy', loggedOut);
         }
 
         function clear () {

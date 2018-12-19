@@ -10,16 +10,10 @@
 
         vm.changeAcb = changeAcb
         vm.changeAtl = changeAtl
-        vm.changeScreen = changeScreen;
         vm.changeSubNav = changeSubNav;
         vm.clearProductId = clearProductId;
-        vm.getFullname = getFullname;
-        vm.isAcbAdmin = isAcbAdmin;
-        vm.isAtlAdmin = isAtlAdmin;
-        vm.isAuthed = isAuthed;
-        vm.isChplAdmin = isChplAdmin;
-        vm.isCmsStaff = isCmsStaff;
-        vm.isOncStaff = isOncStaff;
+        vm.getFullname = authService.getFullname;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.refresh = refresh;
         vm.triggerRefresh = triggerRefresh;
 
@@ -35,12 +29,12 @@
             };
 
             // base case
-            if (vm.isChplAdmin() || vm.isAcbAdmin()) {
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                 vm.navState.screen = 'dpManagement';
-            } else if (vm.isAtlAdmin()) {
+            } else if (vm.hasAnyRole(['ROLE_ATL'])) {
                 vm.navState.screen = 'atlManagement';
             }
-            if (!vm.isChplAdmin()) {
+            if (!vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                 vm.navState.dpManagement = 'upload';
             } else {
                 vm.navState.dpManagement = 'manage';
@@ -92,27 +86,6 @@
             vm.changeSubNav(atl);
         }
 
-        function changeScreen (screen) {
-            vm.clearProductId();
-            if (screen === 'acbManagement') {
-                networkService.getAcbs(true)
-                    .then(function (data) {
-                        vm.acbs = $filter('orderBy')(data.acbs,'name');
-                        vm.acb = vm.acbs[0];
-                        vm.navState.acbManagement = vm.acb;
-                    });
-            }
-            if (screen === 'atlManagement') {
-                networkService.getAtls(true)
-                    .then(function (data) {
-                        vm.atls = $filter('orderBy')(data.atls,'name');
-                        vm.atl = vm.atls[0];
-                        vm.navState.atlManagement = vm.atl;
-                    });
-            }
-            vm.navState.screen = screen;
-        }
-
         function changeSubNav (subScreen) {
             vm.clearProductId();
             vm.navState[vm.navState.screen] = subScreen;
@@ -133,34 +106,6 @@
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
-        }
-
-        function getFullname () {
-            return authService.getFullname();
-        }
-
-        function isAcbAdmin () {
-            return authService.isAcbAdmin();
-        }
-
-        function isAtlAdmin () {
-            return authService.isAtlAdmin();
-        }
-
-        function isAuthed () {
-            return authService.isAuthed();
-        }
-
-        function isChplAdmin () {
-            return authService.isChplAdmin();
-        }
-
-        function isCmsStaff () {
-            return authService.isCmsStaff();
-        }
-
-        function isOncStaff () {
-            return authService.isOncStaff();
         }
 
         function refresh () {

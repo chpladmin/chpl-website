@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('admin.EditUserController.controller', function () {
+    describe('the User Editing Controller', function () {
         var $controller, $log, $q, Mock, mock, networkService, scope, vm;
 
         mock = {};
@@ -55,23 +55,21 @@
             }
         });
 
-        describe('housekeeping', function () {
-            it('should exist', function () {
-                expect(vm).toBeDefined();
-            });
+        it('should exist', function () {
+            expect(vm).toBeDefined();
+        });
 
-            it('should have a way to close the modal', function () {
-                expect(vm.cancel).toBeDefined();
-                vm.cancel();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
-            });
+        it('should have a way to close the modal', function () {
+            expect(vm.cancel).toBeDefined();
+            vm.cancel();
+            expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
         it('should know what roles to display', function () {
             vm.acbId = null;
             vm.atlId = null;
             vm.loadRoles();
-            expect(vm.roles).toEqual(['ROLE_ADMIN','ROLE_CMS_STAFF','ROLE_ONC_STAFF','ROLE_ACB','ROLE_ATL']);
+            expect(vm.roles).toEqual(['ROLE_ADMIN','ROLE_ONC','ROLE_CMS_STAFF','ROLE_ACB','ROLE_ATL']);
             vm.acbId = 3;
             vm.loadRoles();
             expect(vm.roles).toEqual(['ROLE_ACB']);
@@ -81,7 +79,7 @@
             expect(vm.roles).toEqual(['ROLE_ATL']);
         });
 
-        describe('when inviting users', function () {
+        describe('when inviting users,', function () {
             beforeEach(function () {
                 vm.userInvitation = {
                     permissions: ['a role'],
@@ -157,7 +155,7 @@
                 expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "bad thing"');
             });
 
-            describe('with multiple available roles', function () {
+            describe('with multiple available roles,', function () {
                 beforeEach(function () {
                     vm = $controller('EditUserController', {
                         action: 'invite',
@@ -174,7 +172,7 @@
                 });
             });
 
-            describe('with a single available role', function () {
+            describe('with a single available role,', function () {
                 beforeEach(function () {
                     vm = $controller('EditUserController', {
                         action: 'invite',
@@ -192,8 +190,8 @@
             });
         });
 
-        describe('saving users', function () {
-            describe('role activity', function () {
+        describe('when saving users,', function () {
+            describe('with respect to role activity,', function () {
                 it('should call the common service to add roles', function () {
                     vm.save();
                     scope.$digest();
@@ -227,44 +225,42 @@
                 });
             });
 
-            describe('user specific', function () {
-                it('should call the common service', function () {
-                    vm.save();
-                    scope.$digest();
-                    expect(networkService.updateUser).toHaveBeenCalled();
-                });
+            it('should call the common service', function () {
+                vm.save();
+                scope.$digest();
+                expect(networkService.updateUser).toHaveBeenCalled();
+            });
 
-                it('should close the modal', function () {
-                    vm.save();
-                    scope.$digest();
-                    expect(Mock.modalInstance.close).toHaveBeenCalled();
-                });
+            it('should close the modal', function () {
+                vm.save();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalled();
+            });
 
-                it('should close the modal', function () {
-                    networkService.updateUser.and.returnValue($q.when({status: 200}));
-                    vm.save();
-                    scope.$digest();
-                    expect(Mock.modalInstance.close).toHaveBeenCalled();
-                });
+            it('should close the modal', function () {
+                networkService.updateUser.and.returnValue($q.when({status: 200}));
+                vm.save();
+                scope.$digest();
+                expect(Mock.modalInstance.close).toHaveBeenCalled();
+            });
 
-                it('should display an error message on error', function () {
-                    networkService.updateUser.and.returnValue($q.when({status: 500}));
-                    vm.save();
-                    scope.$digest();
-                    expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "[object Object]"');
-                });
+            it('should display an error message on error', function () {
+                networkService.updateUser.and.returnValue($q.when({status: 500}));
+                vm.save();
+                scope.$digest();
+                expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "[object Object]"');
+            });
 
-                it('should display an error message on error', function () {
-                    networkService.updateUser.and.returnValue($q.reject({data: {error: 'bad thing'}}));
-                    vm.save();
-                    scope.$digest();
-                    expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "bad thing"');
-                });
+            it('should display an error message on error', function () {
+                networkService.updateUser.and.returnValue($q.reject({data: {error: 'bad thing'}}));
+                vm.save();
+                scope.$digest();
+                expect(vm.message).toBe('An error occurred. Please try again or contact the administrator. The error was: "bad thing"');
             });
         });
 
-        describe('deleting users', function () {
-            describe('as non-ACB/non-ATL', function () {
+        describe('when deleting users,', function () {
+            describe('as non-ACB/non-ATL,', function () {
                 it('should call the common service', function () {
                     vm.deleteUser();
                     scope.$digest();
@@ -299,7 +295,7 @@
                 });
             });
 
-            describe('as ACB', function () {
+            describe('as ACB,', function () {
                 beforeEach(function () {
                     vm.acbId = 1;
                 });
@@ -338,7 +334,7 @@
                 });
             });
 
-            describe('as ATL', function () {
+            describe('as ATL,', function () {
                 beforeEach(function () {
                     vm.atlId = 1;
                 });

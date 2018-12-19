@@ -23,8 +23,8 @@
             ctrl.roles = [];
             if (!ctrl.acbId && !ctrl.atlId) { // not managing acb or atl, managing entire CHPL
                 ctrl.roles.push('ROLE_ADMIN');
+                ctrl.roles.push('ROLE_ONC');
                 ctrl.roles.push('ROLE_CMS_STAFF');
-                ctrl.roles.push('ROLE_ONC_STAFF');
             }
             if (!ctrl.atlId) { // not managing ATL; either managing entire CHPL or single ACB
                 ctrl.roles.push('ROLE_ACB');

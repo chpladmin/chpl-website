@@ -27,7 +27,7 @@
         });
 
     /** @ngInject */
-    function ReportController ($filter, $log, $uibModal, ReportService, authService, networkService, utilService) {
+    function ReportController ($filter, $log, $uibModal, ReportService, networkService, utilService) {
         var vm = this;
 
         vm.clearApiKeyFilter = clearApiKeyFilter;
@@ -56,11 +56,6 @@
         // Functions
 
         this.$onInit = function () {
-            vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.isAtlAdmin = authService.isAtlAdmin();
-            vm.isCmsStaff = authService.isCmsStaff();
-            vm.isChplAdmin = authService.isChplAdmin();
-            vm.isOncStaff = authService.isOncStaff();
             vm.tab = 'cp';
             vm.activityRange = { range: 30 };
             var start = new Date();

@@ -53,12 +53,6 @@
             expect(auth.getFullname()).toBe('');
         });
 
-        it('should know when a user is authenticated', function () {
-            expect(auth.isAuthed()).toBe(false);
-            auth.saveToken(buildToken(mock.user));
-            expect(auth.isAuthed()).toBe(true);
-        });
-
         it('should delete the token on logout', function () {
             $localStorage.jwtToken = 'fake token';
             auth.logout();
@@ -83,56 +77,26 @@
             expect($localStorage.jwtToken).toBe(token);
         });
 
-        describe('when checking Authorities', function () {
-            var user;
-            beforeEach(function () {
+        describe('when concerned with ROLES', () => {
+            let user;
+            beforeEach(() => {
                 user = angular.copy(mock.user);
                 user.Authorities = undefined;
             });
 
-            it('should handle ACB Admin', function () {
-                expect(auth.isAcbAdmin()).toBe(false);
+            it('should handle no roles', () => {
+                expect(auth.hasAnyRole()).toBe(false);
                 auth.saveToken(buildToken(user));
-                expect(auth.isAcbAdmin()).toBe(false);
+                expect(auth.hasAnyRole()).toBe(true);
+            });
+
+            it('should handle a role', () => {
+                expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(false);
+                auth.saveToken(buildToken(user));
+                expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(false);
                 user.Authorities = ['ROLE_ACB'];
                 auth.saveToken(buildToken(user));
-                expect(auth.isAcbAdmin()).toBe(true);
-            });
-
-            it('should handle ATL Admin', function () {
-                expect(auth.isAtlAdmin()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isAtlAdmin()).toBe(false);
-                user.Authorities = ['ROLE_ATL'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isAtlAdmin()).toBe(true);
-            });
-
-            it('should handle CHPL Admin', function () {
-                expect(auth.isChplAdmin()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isChplAdmin()).toBe(false);
-                user.Authorities = ['ROLE_ADMIN'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isChplAdmin()).toBe(true);
-            });
-
-            it('should handle CMS Staff', function () {
-                expect(auth.isCmsStaff()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isCmsStaff()).toBe(false);
-                user.Authorities = ['ROLE_CMS_STAFF'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isCmsStaff()).toBe(true);
-            });
-
-            it('should handle ONC Staff', function () {
-                expect(auth.isOncStaff()).toBe(false);
-                auth.saveToken(buildToken(user));
-                expect(auth.isOncStaff()).toBe(false);
-                user.Authorities = ['ROLE_ONC_STAFF'];
-                auth.saveToken(buildToken(user));
-                expect(auth.isOncStaff()).toBe(true);
+                expect(auth.hasAnyRole(['ROLE_ACB'])).toBe(true);
             });
         });
 

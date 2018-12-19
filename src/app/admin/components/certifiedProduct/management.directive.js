@@ -33,6 +33,7 @@
         vm.editVersion = editVersion;
         vm.getNumberOfListingsToReject = getNumberOfListingsToReject;
         vm.getNumberOfSurveillanceToReject = getNumberOfSurveillanceToReject;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.inspectCp = inspectCp;
         vm.inspectSurveillance = inspectSurveillance;
         vm.isDeveloperEditable = isDeveloperEditable;
@@ -67,8 +68,6 @@
             vm.activeProduct = '';
             vm.activeVersion = '';
             vm.activeCP = '';
-            vm.isChplAdmin = authService.isChplAdmin();
-            vm.isAcbAdmin = authService.isAcbAdmin();
             vm.uploadingCps = [];
             vm.uploadingSurveillances = [];
             if (angular.isUndefined(vm.workType)) {
@@ -84,7 +83,7 @@
             vm.resources = {};
             vm.refreshDevelopers();
 
-            if (vm.isAcbAdmin) {
+            if (vm.hasAnyRole(['ROLE_ACB'])) {
                 vm.refreshPending();
                 vm.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
@@ -523,8 +522,8 @@
                 size: 'lg',
                 resolve: {
                     activeCP: function () { return vm.activeCP; },
-                    isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isChplAdmin: function () { return vm.isChplAdmin; },
+                    isAcbAdmin: function () { return vm.hasAnyRole(['ROLE_ACB']); },
+                    isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
                     resources: function () { return resources; },
                     workType: function () { return vm.workType; },
                 },
@@ -562,8 +561,8 @@
                 resolve: {
                     developers: function () { return vm.developers; },
                     inspectingCp: function () { return cp; },
-                    isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isChplAdmin: function () { return vm.isChplAdmin; },
+                    isAcbAdmin: function () { return vm.vm.hasAnyRole(['ROLE_ACB']); },
+                    isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
                     resources: function () { return vm.resources; },
                     workType: function () { return vm.workType; },
                 },
@@ -620,7 +619,7 @@
         }
 
         function isDeveloperEditable (dev) {
-            return vm.isChplAdmin || dev.status.status === 'Active';
+            return dev.status.status === 'Active' || vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
         }
 
         function isDeveloperMergeable (dev) {
@@ -629,7 +628,7 @@
 
         function isProductEditable (cp) {
             if (cp.certificationEvents) {
-                return (vm.isChplAdmin || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
+                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
                     vm.isDeveloperMergeable(vm.activeDeveloper);
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);
