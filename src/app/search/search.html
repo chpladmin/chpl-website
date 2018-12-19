@@ -302,8 +302,8 @@
             <button class="btn btn-ai dropdown-toggle" type="button" id="dropdown-download-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
               <span class="sr-only">Download Results</span> <i class="fa fa-download"></i>
             </button>
-            <ul class="dropdown-menu" aria-labeledby="dropdown-download-button" uib-dropdown-menu>
-              <ai-results-download listings="vm.displayedCps"></ai-results-download>
+            <ul class="list-unstyled dropdown-menu dropdown-menu-large" aria-labeledby="dropdown-download-button" uib-dropdown-menu>
+              <ai-results-download listings="vm.displayedCps" categories="vm.downloadResultsCategories" max-size="25"></ai-results-download>
             </ul>
           </div>
         </div>

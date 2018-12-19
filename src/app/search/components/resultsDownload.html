@@ -1,13 +1,12 @@
-<ul class="list-unstyled">
-  <li class="text-center">Columns to include</li>
-  <li ng-repeat="col in $ctrl.columns">
-    <label>
-      <input type="checkbox" ng-model="col.enabled">{{ col.display }}
-    </label>
-  </li>
-  <li class="text-center">
-    <button ng-if="$ctrl.csvData && $ctrl.csvData.values && $ctrl.csvData.values.length > 0"
-            ng-click="$ctrl.getCsv()"
-            class="btn btn-link">Download <i class="fa fa-download"></i></button>
-  </li>
-</ul>
+<li class="text-center">Data categories to include</li>
+<li ng-repeat="cat in $ctrl.categories">
+  <label>
+    <input type="checkbox" ng-model="cat.enabled" ng-change="$ctrl.$onChanges({})">{{ cat.display }}
+  </label>
+</li>
+<li class="text-center">
+  <button ng-if="$ctrl.csvData && $ctrl.csvData.values && $ctrl.csvData.values.length > 0"
+          ng-click="$ctrl.getCsv()"
+          class="btn btn-link">Download <i class="fa fa-download"></i></button>
+  <span ng-if="!$ctrl.csvData || !$ctrl.csvData.values || $ctrl.csvData.values.length === 0">Please reduce results to less than {{ $ctrl.maxSize }} to download them</span>
+</li>
