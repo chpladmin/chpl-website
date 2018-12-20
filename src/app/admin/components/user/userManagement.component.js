@@ -19,19 +19,7 @@
 
         ////////////////////////////////////////////////////////////////////
 
-        ctrl.$onInit = function () {
-            ctrl.roles = [];
-            if (!ctrl.acbId && !ctrl.atlId) { // not managing acb or atl, managing entire CHPL
-                ctrl.roles.push('ROLE_ADMIN');
-                ctrl.roles.push('ROLE_ONC');
-                ctrl.roles.push('ROLE_CMS_STAFF');
-            }
-            if (!ctrl.atlId) { // not managing ATL; either managing entire CHPL or single ACB
-                ctrl.roles.push('ROLE_ACB');
-            }
-            if (!ctrl.acbId) { // not managing ACB; either managing entire CHPL or single ATL
-                ctrl.roles.push('ROLE_ATL');
-            }
+        ctrl.$onInit = () => {
             _loadUsers();
         }
 
