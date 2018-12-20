@@ -68,6 +68,7 @@ describe('the search results download component,', () => {
 
     describe('when generating the csv download,', () => {
         it('should create a data object with a name and a header row', () => {
+            ctrl.makeCsv();
             expect(ctrl.csvData.name).toBe('search-results.csv');
             expect(ctrl.csvData.values[0]).toEqual([
                 'Edition', 'Developer', 'Product', 'Version', 'Certification Date', 'CHPL ID', 'Status', 'Details',
@@ -75,6 +76,7 @@ describe('the search results download component,', () => {
         });
 
         it('should have data rows', () => {
+            ctrl.makeCsv();
             expect(ctrl.csvData.values.length).toBe(9);
             expect(ctrl.csvData.values[1]).toEqual([
                 '2014', 'Systemedx Inc', '2013 Systemedx Clinical Navigator', '2013.12', 'do the filter1396497600000', 'CHP-022218', 'Active', 'http://chpl.healthit.gov/#/product/296',
@@ -83,15 +85,11 @@ describe('the search results download component,', () => {
     });
 
     describe('when updating values,', () => {
-        it('should not generate a csv if there are too many listings', () => {
-            ctrl.$onChanges({ maxSize: { currentValue: 6 }});
-            expect(ctrl.csvData.values).toEqual([]);
-        });
-
         it('should update when categories change', () => {
             let cats = angular.copy(mock.categories);
             cats[1].enabled = false;
             ctrl.$onChanges({ categories: { currentValue: cats }});
+            ctrl.makeCsv();
             expect(ctrl.csvData.values[0]).toEqual([
                 'Edition', 'Certification Date', 'CHPL ID', 'Status', 'Details',
             ]);

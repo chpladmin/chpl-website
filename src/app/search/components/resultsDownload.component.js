@@ -25,14 +25,10 @@ export const ResultsDownloadComponent = {
             if (changes.maxSize) {
                 this.maxSize = changes.maxSize.currentValue || 50;
             }
-            if (this.listings && this.listings.length > 0 && this.listings.length <= this.maxSize) {
-                this.makeCsv();
-            } else {
-                this.csvData.values = [];
-            }
         }
 
         getCsv () {
+            this.makeCsv();
             this.utilService.makeCsv(this.csvData);
         }
 
