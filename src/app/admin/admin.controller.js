@@ -82,13 +82,11 @@
 
         function changeAcb (acb) {
             vm.acb = acb;
-            vm.navState.workType = 'acb';
             vm.changeSubNav(acb);
         }
 
         function changeAtl (atl) {
             vm.atl = atl;
-            vm.navState.workType = 'atl';
             vm.changeSubNav(atl);
         }
 

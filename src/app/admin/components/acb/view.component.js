@@ -1,7 +1,6 @@
 export const AcbManagementComponent = {
     templateUrl: 'chpl.admin/components/acb/view.html',
     bindings: {
-        workType: '@',
         acb: '<',
     },
     controller: class AcbManagementController {
@@ -22,9 +21,7 @@ export const AcbManagementComponent = {
         $onInit () {
             this.isAcbAdmin = this.authService.isAcbAdmin();
             this.isChplAdmin = this.authService.isChplAdmin();
-            if (!this.workType) {
-                this.workType = 'acb';
-            }
+            this.workType = 'acb';
         }
 
         createAcb () {

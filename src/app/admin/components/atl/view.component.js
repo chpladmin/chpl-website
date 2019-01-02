@@ -1,7 +1,6 @@
 export const AtlManagementComponent = {
     templateUrl: 'chpl.admin/components/atl/view.html',
     bindings: {
-        workType: '@',
         atl: '<',
     },
     controller: class AtlManagementController {
@@ -22,9 +21,7 @@ export const AtlManagementComponent = {
         $onInit () {
             this.isAtlAdmin = this.authService.isAtlAdmin();
             this.isChplAdmin = this.authService.isChplAdmin();
-            if (!this.workType) {
-                this.workType = 'atl';
-            }
+            this.workType = 'atl';
         }
 
         createAtl () {

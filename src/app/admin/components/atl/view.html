@@ -1,10 +1,10 @@
 <section class="row">
   <div class="col-sm-12 admin-inner-tab main-content">
-    <div class="row admin-label-spaced lead text-center" ng-if="$ctrl.worktype !== 'newAtl'">
+    <div class="row admin-label-spaced lead text-center" ng-if="$ctrl.workType !== 'newAtl'">
       <div class="col-sm-12">
         <ul class="list-inline">
           <li><strong>what would you like to manage?</strong></li>
-          <li><input type="radio" name="manage-type" ng-model="$ctrl.worktype" value="atl" id="rd-atl"></input><label for="rd-atl">ONC-ATL</label></li>
+          <li><input type="radio" name="manage-type" ng-model="$ctrl.workType" value="atl" id="rd-atl"></input><label for="rd-atl">ONC-ATL</label></li>
           <li><input type="radio" name="manage-type" ng-model="$ctrl.workType" value="user" id="rd-usr"></input><label for="rd-usr">Users</label></li>
         </ul>
         <span ng-if="$ctrl.isChplAdmin">Or <button class="btn btn-default" ng-click="$ctrl.createAtl()">Create a new ONC-ATL</button></span>
