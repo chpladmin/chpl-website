@@ -83,8 +83,7 @@
             vm.resources = {};
             vm.refreshDevelopers();
 
-            if (vm.hasAnyRole(['ROLE_ACB'])) {
-                vm.refreshPending();
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
                 vm.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
                     //method: 'PUT',
@@ -138,7 +137,10 @@
                 /*vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
                     $log.info('onCancelItem', fileItem, response, status, headers);
                 };*/
+            }
 
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
+                vm.refreshPending();
                 vm.surveillanceUploader = new FileUploader({
                     url: API + '/surveillance/upload',
                     removeAfterUpload: true,
