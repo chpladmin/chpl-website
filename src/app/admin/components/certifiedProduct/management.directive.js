@@ -565,7 +565,7 @@
                 resolve: {
                     developers: function () { return vm.developers; },
                     inspectingCp: function () { return cp; },
-                    isAcbAdmin: function () { return vm.vm.hasAnyRole(['ROLE_ACB']); },
+                    isAcbAdmin: function () { return vm.hasAnyRole(['ROLE_ACB']); },
                     isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
                     resources: function () { return vm.resources; },
                     workType: function () { return vm.workType; },
