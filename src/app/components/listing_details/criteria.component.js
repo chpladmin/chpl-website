@@ -5,6 +5,7 @@ export const CertificationCriteriaComponent = {
         cert: '<',
         hasIcs: '<',
         isEditing: '<',
+        onChange: '&',
         qmsStandards: '<',
         refreshSed: '&',
         resources: '<',
@@ -47,6 +48,7 @@ export const CertificationCriteriaComponent = {
                 },
             });
             this.editUibModalInstance.result.then(() => {
+                this.onChange({cert: this.cert});
                 this.refreshSed();
             }, () => {
                 this.cert = angular.copy(backupCert);
