@@ -220,7 +220,7 @@
                         vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
                         vm.pendingProducts = vm.uploadingCps.length;
                     })
-            };
+            }
             networkService.getUploadingSurveillances()
                 .then(function (surveillances) {
                     vm.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
