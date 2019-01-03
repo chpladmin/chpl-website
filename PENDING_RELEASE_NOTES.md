@@ -1,8 +1,12 @@
 
-## Version 10.9.1
+## Version 10.10.0
 _Date TBD_
 
-### Bug fix
+### New features
+* Allow download of Search results
+
+### Bugs fixed
+* Fix navigation related to ATL management
 * Re-enable editing of certified product certification criteria
 
 ---
