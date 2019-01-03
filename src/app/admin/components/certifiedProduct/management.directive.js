@@ -82,6 +82,7 @@
             vm.surveillanceUploadSuccess = true;
             vm.resources = {};
             vm.refreshDevelopers();
+            vm.refreshPending();
 
             if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
                 vm.uploader = new FileUploader({
@@ -140,7 +141,6 @@
             }
 
             if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
-                vm.refreshPending();
                 vm.surveillanceUploader = new FileUploader({
                     url: API + '/surveillance/upload',
                     removeAfterUpload: true,
@@ -214,11 +214,13 @@
         }
 
         function refreshPending () {
-            networkService.getUploadingCps()
-                .then(function (cps) {
-                    vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
-                    vm.pendingProducts = vm.uploadingCps.length;
-                })
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
+                networkService.getUploadingCps()
+                    .then(function (cps) {
+                        vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
+                        vm.pendingProducts = vm.uploadingCps.length;
+                    })
+            };
             networkService.getUploadingSurveillances()
                 .then(function (surveillances) {
                     vm.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
