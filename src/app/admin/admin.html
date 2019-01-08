@@ -72,8 +72,7 @@
         <ai-atl-management ng-if="vm.navState.screen === 'atlManagement'"
                            work-type="{{ vm.navState.workType }}"
                            atl="vm.atl"></ai-atl-management>
-        <ai-reports trigger-refresh="vm.triggerRefresh(handler)"
-                    ng-if="vm.navState.screen === 'reports'"
+        <ai-reports ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"
                     product-id="vm.productId"></ai-reports>
         <ai-scheduled-jobs ng-if="vm.navState.screen === 'scheduledJobs'"

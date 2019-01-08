@@ -14,15 +14,12 @@
         vm.clearProductId = clearProductId;
         vm.getFullname = authService.getFullname;
         vm.hasAnyRole = authService.hasAnyRole;
-        vm.refresh = refresh;
-        vm.triggerRefresh = triggerRefresh;
 
         activate();
 
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.handlers = [];
             vm.navState = {
                 reports: 'cp-upload',
                 notifications: 'surveillance',
@@ -106,22 +103,6 @@
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
-        }
-
-        function refresh () {
-            angular.forEach(vm.handlers, function (handler) {
-                handler();
-            });
-        }
-
-        function triggerRefresh (handler) {
-            vm.handlers.push(handler);
-            var removeHandler = function () {
-                vm.handlers = vm.handlers.filter(function (aHandler) {
-                    return aHandler !== handler;
-                });
-            };
-            return removeHandler;
         }
     }
 })();

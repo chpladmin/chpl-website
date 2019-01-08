@@ -68,28 +68,6 @@
             it('should have a function to change subnavigation screens', function () {
                 expect(vm.changeSubNav).toBeDefined();
             });
-
-            it('should have a function to register handlers', function () {
-                expect(vm.triggerRefresh).toBeDefined();
-            });
-
-            it('should add a handler function is one is passed in', function () {
-                expect(vm.handlers.length).toBe(0);
-                vm.triggerRefresh(function () {});
-                expect(vm.handlers.length).toBe(1);
-            });
-
-            it('should have a function to trigger handlers', function () {
-                expect(vm.refresh).toBeDefined();
-            });
-
-            it('should call handler functions when triggered', function () {
-                this.aFunc = function () {};
-                spyOn(this, 'aFunc');
-                vm.triggerRefresh(this.aFunc);
-                vm.refresh();
-                expect(this.aFunc).toHaveBeenCalled();
-            });
         });
     });
 })();
