@@ -44,6 +44,7 @@ export class NetworkService {
     }
 
     confirmPendingSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance/pending/confirm', surveillance);
     }
 
@@ -84,6 +85,7 @@ export class NetworkService {
     }
 
     deleteSurveillance (surveillanceId, reason) {
+        this.store.certifiedProducts.details = {};
         return this.apiDELETE('/surveillance/' + surveillanceId, {
             reason: reason,
         });
@@ -480,6 +482,7 @@ export class NetworkService {
     }
 
     initiateSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance', surveillance);
     }
 
@@ -594,6 +597,7 @@ export class NetworkService {
     }
 
     updateSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPUT('/surveillance/' + surveillance.id, surveillance);
     }
 
