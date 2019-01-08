@@ -19,8 +19,10 @@
             passwordClass: passwordClass,
             passwordTitle: passwordTitle,
             sortCert: sortCert,
+            sortCertActual: sortCertActual,
             sortCertArray: sortCertArray,
             sortCqm: sortCqm,
+            sortCqmActual: sortCqmActual,
             sortNonconformityTypes: sortNonconformityTypes,
             sortOtherNonconformityTypes: sortOtherNonconformityTypes,
             sortRequirements: sortRequirements,
@@ -216,6 +218,10 @@
             return ret;
         }
 
+        function sortCertActual (a, b) {
+            return sortCert(a) - sortCert(b);
+        }
+
         function sortCertArray (array) {
             var ret = Number.MIN_VALUE;
             if (array.length > 0) {
@@ -235,6 +241,10 @@
             var num = parseInt(edition > 0 ? cqm.substring(4) : cqm.substring(3));
             var ret = edition + num;
             return ret;
+        }
+
+        function sortCqmActual (a, b) {
+            return sortCqm(a) - sortCqm(b);
         }
 
         function sortNonconformityTypes (type) {

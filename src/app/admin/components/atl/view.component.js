@@ -1,7 +1,6 @@
 export const AtlManagementComponent = {
     templateUrl: 'chpl.admin/components/atl/view.html',
     bindings: {
-        workType: '@',
         atl: '<',
     },
     controller: class AtlManagementController {

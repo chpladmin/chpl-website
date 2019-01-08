@@ -53,6 +53,27 @@
             vm.restoreStateHs = [];
             vm.showRetiredHs = [];
             vm.SPLIT_PRIMARY = SPLIT_PRIMARY;
+            vm.downloadResultsCategories = [
+                { display: 'Edition', enabled: true, columns: [{ display: 'Edition', key: 'edition' }] },
+                { display: 'Product data', enabled: true, columns: [
+                    { display: 'Developer', key: 'developer' },
+                    { display: 'Product', key: 'product' },
+                    { display: 'Version', key: 'version' },
+                ]},
+                { display: 'Certification Date', enabled: true, columns: [{ display: 'Certification Date', key: 'certificationDate', transform: date => $filter('date')(date, 'mediumDate', 'UTC') }] },
+                { display: 'CHPL ID', enabled: true, columns: [{ display: 'CHPL ID', key: 'chplProductNumber' }] },
+                { display: 'ONC-ACB', enabled: false, columns: [{ display: 'ONC-ACB', key: 'acb' }] },
+                { display: 'Practice Type', enabled: false, columns: [{ display: 'Practice Type', key: 'practiceType' }] },
+                { display: 'Status', enabled: true, columns: [{ display: 'Status', key: 'certificationStatus' }] },
+                { display: 'Details', enabled: true, columns: [{ display: 'Details', key: 'id', transform: id => 'https://chpl.healthit.gov/#/product/' + id }] },
+                { display: 'Certification Criteria', enabled: false, columns: [{ display: 'Certification Criteria', key: 'criteriaMet', transform: crit => crit ? crit.split(SPLIT_PRIMARY).sort(utilService.sortCertActual).join('\n') : '' }] },
+                { display: 'Clinical Quality Measures', enabled: false, columns: [{ display: 'Clinical Quality Measures', key: 'cqmsMet', transform: cqm => cqm ? cqm.split(SPLIT_PRIMARY).sort(utilService.sortCqmActual).join('\n') : '' }] },
+                { display: 'Surveillance', enabled: false, columns: [
+                    { display: 'Total Surveillance', key: 'surveillanceCount' },
+                    { display: 'Open Nonconformities', key: 'openNonconformityCount' },
+                    { display: 'Closed Nonconformtities', key: 'closedNonconformityCount' },
+                ]},
+            ];
 
             manageStorage();
             populateSearchOptions();
