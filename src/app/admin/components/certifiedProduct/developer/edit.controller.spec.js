@@ -10,7 +10,7 @@
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
                 $provide.decorator('authService', function ($delegate) {
-                    $delegate.isChplAdmin = jasmine.createSpy('isChplAdmin');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
@@ -24,7 +24,7 @@
                 $log = _$log_;
                 $q = _$q_;
                 authService = _authService_;
-                authService.isChplAdmin.and.returnValue(true);
+                authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.updateDeveloper.and.returnValue($q.when({}));
                 utilService = _utilService_;

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div class="row splash-row" ng-if="!vm.isAuthed()">
+  <div class="row splash-row" ng-if="!vm.hasAnyRole()">
     <div class="col-md-6 col-md-offset-3 jumbotron">
       <ai-login form-class=""
                 p-class="bg-success lead"
@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <section ng-if="vm.isAuthed()">
+  <section ng-if="vm.hasAnyRole()">
     <div class="row">
       <div class="col-md-12">
         <h1>Welcome, {{ vm.getFullname() }}</h1>
@@ -18,44 +18,44 @@
       <div class="col-sm-3 admin-nav" id="admin-nav">
         <div class="panel panel-ai">
           <ul class="nav nav-pills nav-stacked">
-            <li ng-class="{'active': vm.navState.screen === 'dpManagement'}" id="admin-nav.dpManagement" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('dpManagement')">Developer &amp; Product Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'upload'}" id="admin-nav.dpManagement.upload" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin())"><a href="" ng-click="vm.changeSubNav('upload')">Upload Products &amp; Surveillance</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirm'}" id="admin-nav.dpManagement.confirm" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin())"><a href="" ng-click="vm.changeSubNav('confirm')">Confirm Pending Product<span ng-if="vm.pendingProducts > 1">s</span> <span class="badge">{{ vm.pendingProducts }}</span> </a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirmSurveillance'}" id="admin-nav.dpManagement.confirmSurveillance" ng-if="vm.navState.screen === 'dpManagement' && (vm.isAcbAdmin())"><a href="" ng-click="vm.changeSubNav('confirmSurveillance')">Confirm Pending Surveillance Activit<span ng-if="vm.pendingSurveillances !== 1">ies</span><span ng-if="vm.pendingSurveillances === 1">y</span> <span class="badge">{{ vm.pendingSurveillances }}</span> </a></li>
+            <li ng-class="{'active': vm.navState.screen === 'dpManagement'}" id="admin-nav.dpManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/dpManagement">Developer &amp; Product Management</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'upload'}" id="admin-nav.dpManagement.upload" ng-if="vm.navState.screen === 'dpManagement' && vm.hasAnyRole(['ROLE_ACB'])"><a href="" ng-click="vm.changeSubNav('upload')">Upload <span ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])">Products &amp; </span>Surveillance</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirm'}" id="admin-nav.dpManagement.confirm" ng-if="vm.navState.screen === 'dpManagement' && vm.hasAnyRole(['ROLE_ACB'])"><a href="" ng-click="vm.changeSubNav('confirm')">Confirm Pending Product<span ng-if="vm.pendingProducts > 1">s</span> <span class="badge">{{ vm.pendingProducts }}</span> </a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'confirmSurveillance'}" id="admin-nav.dpManagement.confirmSurveillance" ng-if="vm.navState.screen === 'dpManagement' && vm.hasAnyRole(['ROLE_ACB'])"><a href="" ng-click="vm.changeSubNav('confirmSurveillance')">Confirm Pending Surveillance Activit<span ng-if="vm.pendingSurveillances !== 1">ies</span><span ng-if="vm.pendingSurveillances === 1">y</span> <span class="badge">{{ vm.pendingSurveillances }}</span> </a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'manage'}" id="admin-nav.dpManagement.manage" ng-if="vm.navState.screen === 'dpManagement'"><a href="" ng-click="vm.changeSubNav('manage')">Manage Developers &amp; Products</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'manageSurveillance'}" id="admin-nav.dpManagement.manageSurveillance" ng-if="vm.navState.screen === 'dpManagement'"><a href="" ng-click="vm.changeSubNav('manageSurveillance')">Manage Surveillance Activity</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'merge'}" id="admin-nav.dpManagement.merge" ng-if="vm.navState.screen === 'dpManagement' && vm.isChplAdmin()"><a href="" ng-click="vm.changeSubNav('merge')">Merge Developers &amp; Products</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.dpManagement === 'merge'}" id="admin-nav.dpManagement.merge" ng-if="vm.navState.screen === 'dpManagement' && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="" ng-click="vm.changeSubNav('merge')">Merge Developers &amp; Products</a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'userManagement'}" id="admin-nav.userManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('userManagement')">User Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'userManagement'}" id="admin-nav.userManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/userManagement">User Management</a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'acbManagement'}" id="admin-nav.acbManagement" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('acbManagement')">ONC-ACB Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'acbManagement'}" id="admin-nav.acbManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/acbManagement">ONC-ACB Management</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.acbManagement === acb}" ng-if="vm.navState.screen === 'acbManagement'" id="admin-nav.acbManagement.{{ acb.id}}" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" ng-click="vm.changeAcb(acb)">{{ acb.name }}<span ng-if="acb.retired" class="pull-right">&lt;retired&gt;</span></a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'atlManagement'}" id="admin-nav.atlManagement" ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="" ng-click="vm.changeScreen('atlManagement')">ONC-ATL Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'atlManagement'}" id="admin-nav.atlManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ATL'])"><a href="#/admin/atlManagement">ONC-ATL Management</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.atlManagement === atl}" ng-if="vm.navState.screen === 'atlManagement'" id="admin-nav.atlManagement.{{ atl.id}}" ng-repeat="atl in vm.atls | orderBy:'name' track by atl.id"><a href="" ng-click="vm.changeAtl(atl)">{{ atl.name }}<span ng-if="atl.retired" class="pull-right">&lt;retired&gt;</span></a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'reports'}" id="admin-nav.reports" ng-if="(vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeScreen('reports')">Reports</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-upload'}" id="admin-nav.reports.cp-upload" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-upload')">Certified Product - Uploads</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-status'}" id="admin-nav.reports.cp-status" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-status')">Certification Status Changes</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-surveillance'}" id="admin-nav.reports.cp-surveillance" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-surveillance')">Surveillance Activity</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cap'}" id="admin-nav.reports.cap" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cap')">Corrective Action Plans</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-other'}" id="admin-nav.reports.cp-other" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-other')">Other Certified Product Activities</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'dev'}" id="admin-nav.reports.dev" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('dev')">Developers</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'prod'}" id="admin-nav.reports.prod" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('prod')">Products</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'acb'}" id="admin-nav.reports.acb" ng-if="vm.navState.screen === 'reports' &&(vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('acb')">ONC-ACBs</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'atl'}" id="admin-nav.reports.atl" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('atl')">ONC-ATLs</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'announcement'}" id="admin-nav.reports.announcement" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('announcement')">Announcements</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'users'}" id="admin-nav.reports.users" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('users')">Users</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" id="admin-nav.reports.api_key" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('api_key_management')">API Key Management Activity</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key_usage'}" id="admin-nav.reports.api_key_usage" ng-if="vm.navState.screen === 'reports' && (vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('api_key_usage')">API Key Usage Activity</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'reports'}" id="admin-nav.reports" ng-if="(vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB']))"><a href="#/admin/reports">Reports</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-upload'}" id="admin-nav.reports.cp-upload" ng-if="vm.navState.screen === 'reports'"><a href="" ng-click="vm.changeSubNav('cp-upload')">Certified Product - Uploads</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-status'}" id="admin-nav.reports.cp-status" ng-if="vm.navState.screen === 'reports'"><a href="" ng-click="vm.changeSubNav('cp-status')">Certification Status Changes</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-surveillance'}" id="admin-nav.reports.cp-surveillance" ng-if="vm.navState.screen === 'reports'"><a href="" ng-click="vm.changeSubNav('cp-surveillance')">Surveillance Activity</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cap'}" id="admin-nav.reports.cap" ng-if="vm.navState.screen === 'reports'"><a href="" ng-click="vm.changeSubNav('cap')">Corrective Action Plans</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-other'}" id="admin-nav.reports.cp-other" ng-if="vm.navState.screen === 'reports'"><a href="" ng-click="vm.changeSubNav('cp-other')">Other Certified Product Activities</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'dev'}" id="admin-nav.reports.dev" ng-if="vm.navState.screen === 'reports'"><a href="" ng-click="vm.changeSubNav('dev')">Developers</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'prod'}" id="admin-nav.reports.prod" ng-if="vm.navState.screen === 'reports'"><a href="" ng-click="vm.changeSubNav('prod')">Products</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'acb'}" id="admin-nav.reports.acb" ng-if="vm.navState.screen === 'reports'"><a href="" ng-click="vm.changeSubNav('acb')">ONC-ACBs</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'atl'}" id="admin-nav.reports.atl" ng-if="vm.navState.screen === 'reports' && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="" ng-click="vm.changeSubNav('atl')">ONC-ATLs</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'announcement'}" id="admin-nav.reports.announcement" ng-if="vm.navState.screen === 'reports' && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="" ng-click="vm.changeSubNav('announcement')">Announcements</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'users'}" id="admin-nav.reports.users" ng-if="vm.navState.screen === 'reports' && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="" ng-click="vm.changeSubNav('users')">Users</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key'}" id="admin-nav.reports.api_key" ng-if="vm.navState.screen === 'reports' && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="" ng-click="vm.changeSubNav('api_key_management')">API Key Management Activity</a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'api_key_usage'}" id="admin-nav.reports.api_key_usage" ng-if="vm.navState.screen === 'reports' && vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="" ng-click="vm.changeSubNav('api_key_usage')">API Key Usage Activity</a></li>
 
-            <li ng-class="{'active': vm.navState.screen === 'scheduledJobs'}" id="admin-nav.scheduledJobs" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('scheduledJobs')">Scheduled Jobs</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" id="admin-nav.apiKeyManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" id="admin-nav.announcementsManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'apiDocumentationManagement'}" id="admin-nav.apiDocumentationManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('apiDocumentationManagement')">API Documentation Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" id="admin-nav.cmsManagement" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" id="admin-nav.jobsManagement" ng-if="vm.isChplAdmin() || vm.isOncStaff() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('jobsManagement')">Jobs Management</a></li>
-            <li ng-class="{'active': vm.navState.screen === 'fuzzyManagement'}" id="admin-nav.fuzzyManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('fuzzyManagement')">Fuzzy Matching Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'scheduledJobs'}" id="admin-nav.scheduledJobs" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/scheduledJobs">Scheduled Jobs</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" id="admin-nav.apiKeyManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiKeyManagement">API Key Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" id="admin-nav.announcementsManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/announcementsManagement">Announcements Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'apiDocumentationManagement'}" id="admin-nav.apiDocumentationManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/apiDocumentationManagement">API Documentation Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" id="admin-nav.cmsManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_CMS_STAFF'])"><a href="#/admin/cmsManagement">CMS Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" id="admin-nav.jobsManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])"><a href="#/admin/jobsManagement">Jobs Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'fuzzyManagement'}" id="admin-nav.fuzzyManagement" ng-if="vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])"><a href="#/admin/fuzzyManagement">Fuzzy Matching Management</a></li>
           </ul>
         </div>
       </div>
@@ -70,8 +70,7 @@
                            acb="vm.acb"></ai-acb-management>
         <ai-atl-management ng-if="vm.navState.screen === 'atlManagement'"
                            atl="vm.atl"></ai-atl-management>
-        <ai-reports trigger-refresh="vm.triggerRefresh(handler)"
-                    ng-if="vm.navState.screen === 'reports'"
+        <ai-reports ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"
                     product-id="vm.productId"></ai-reports>
         <ai-scheduled-jobs ng-if="vm.navState.screen === 'scheduledJobs'"

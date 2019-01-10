@@ -6,6 +6,9 @@ export class NetworkService {
         this.$q = $q;
         this.API = API;
         this.store = {
+            activity: {
+                types: { },
+            },
             certifiedProducts: {
                 data: undefined,
                 lastUpdated: -1,
@@ -41,6 +44,7 @@ export class NetworkService {
     }
 
     confirmPendingSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance/pending/confirm', surveillance);
     }
 
@@ -57,7 +61,7 @@ export class NetworkService {
     }
 
     createAnnouncement (announcement) {
-        return this.apiPOST('/announcements/create', announcement);
+        return this.apiPOST('/announcements', announcement);
     }
 
     createCmsId (ids) {
@@ -81,6 +85,7 @@ export class NetworkService {
     }
 
     deleteSurveillance (surveillanceId, reason) {
+        this.store.certifiedProducts.details = {};
         return this.apiDELETE('/surveillance/' + surveillanceId, {
             reason: reason,
         });
@@ -477,6 +482,7 @@ export class NetworkService {
     }
 
     initiateSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance', surveillance);
     }
 
@@ -591,6 +597,7 @@ export class NetworkService {
     }
 
     updateSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPUT('/surveillance/' + surveillance.id, surveillance);
     }
 
@@ -643,6 +650,7 @@ export class NetworkService {
     }
 
     getActivity (call, activityRange) {
+        const EXPIRATION_TIME = 15; // in minutes
         var params = [];
         if (activityRange.startDate) {
             params.push('start=' + activityRange.startDate.getTime());
@@ -653,7 +661,13 @@ export class NetworkService {
         if (params.length > 0) {
             call += '?' + params.join('&');
         }
-        return this.apiGET(call);
+        if (!this.store.activity.types[call] || !this.store.activity.types[call].data || (Date.now() - this.store.activity.types[call].lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.activity.types[call] = {
+                data: this.apiGET(call),
+                lastUpdated: Date.now(),
+            };
+        }
+        return this.store.activity.types[call].data;
     }
 }
 

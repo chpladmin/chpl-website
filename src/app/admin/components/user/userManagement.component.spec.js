@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('the user management compoent', function () {
+    describe('the user management component,', function () {
         var $compile, $log, $q, $uibModal, Mock, actualOptions, ctrl, element, mock, networkService, scope;
 
         mock = {
@@ -74,16 +74,12 @@
             expect(ctrl).toBeDefined();
         });
 
-        describe('when setting up', function () {
+        describe('when setting up for', function () {
             let acbCallCount;
 
-            describe('for acb management', function () {
+            describe('acb management,', function () {
                 it('should know what the acb id is', function () {
                     expect(ctrl.acbId).toBe('1');
-                });
-
-                it('should have the ACB role', function () {
-                    expect(ctrl.roles).toEqual(['ROLE_ACB']);
                 });
 
                 it('should have called for the correct users', function () {
@@ -93,7 +89,7 @@
                 });
             });
 
-            describe('for atl management', function () {
+            describe('atl management,', function () {
                 beforeEach(function () {
                     acbCallCount = networkService.getUsersAtAcb.calls.count();
                     element = angular.element('<ai-user-management atl-id="2"></ai-user-management');
@@ -106,10 +102,6 @@
                     expect(ctrl.atlId).toBe('2');
                 });
 
-                it('should have the ATL role', function () {
-                    expect(ctrl.roles).toEqual(['ROLE_ATL']);
-                });
-
                 it('should have called for the correct users', function () {
                     expect(networkService.getUsers).not.toHaveBeenCalled();
                     expect(networkService.getUsersAtAcb.calls.count()).toBe(acbCallCount);
@@ -117,7 +109,7 @@
                 });
             });
 
-            describe('for general management', function () {
+            describe('general management,', function () {
                 beforeEach(function () {
                     acbCallCount = networkService.getUsersAtAcb.calls.count();
                     element = angular.element('<ai-user-management></ai-user-management');
@@ -131,10 +123,6 @@
                     expect(ctrl.acbId).toBeUndefined();
                 });
 
-                it('should have correct roles', function () {
-                    expect(ctrl.roles).toEqual(['ROLE_ADMIN','ROLE_CMS_STAFF','ROLE_ONC_STAFF','ROLE_ACB','ROLE_ATL']);
-                });
-
                 it('should have called for the correct users', function () {
                     expect(networkService.getUsers).toHaveBeenCalled();
                     expect(networkService.getUsersAtAcb.calls.count()).toBe(acbCallCount);
@@ -143,7 +131,7 @@
             });
         });
 
-        describe('when inviting a user', function () {
+        describe('when inviting a user,', function () {
             it('should create a modal instance', function () {
                 expect(ctrl.modalInstance).toBeUndefined();
                 ctrl.inviteUser();
@@ -160,7 +148,7 @@
             });
         });
 
-        describe('when editing a user', function () {
+        describe('when editing a user,', function () {
             it('should create a modal instance', function () {
                 expect(ctrl.modalInstance).toBeUndefined();
                 ctrl.updateUser({});

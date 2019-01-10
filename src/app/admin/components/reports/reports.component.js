@@ -1,283 +1,256 @@
-(function () {
-    'use strict';
+export const ReportsComponent = {
+    templateUrl: 'chpl.admin/components/reports/reports.html',
+    bindings: {
+        workType: '<',
+        productId: '<',
+    },
+    controller: class ReportsController {
+        constructor ($filter, $log, $uibModal, ReportService, networkService, utilService) {
+            'ngInject'
+            this.$filter = $filter;
+            this.$log = $log;
+            this.$uibModal = $uibModal;
+            this.ReportService = ReportService;
+            this.networkService = networkService;
+            this.utilService = utilService;
+        }
 
-    angular.module('chpl.admin')
-        .controller('ReportController', ReportController)
-        .directive('aiReports', function () {
-            return {
-                restrict: 'E',
-                replace: true,
-                templateUrl: 'chpl.admin/components/reports/reports.html',
-                bindToController: {
-                    workType: '=',
-                    productId: '=',
-                },
-                scope: {triggerRefresh: '&'},
-                controllerAs: 'vm',
-                controller: 'ReportController',
-                link: function (scope, element, attr, ctrl) {
-                    var handler = scope.triggerRefresh({
-                        handler: function () {
-                            ctrl.refreshActivity();
-                        },
-                    });
-                    scope.$on('$destroy', handler);
-                },
+        $onInit () {
+            this.tab = 'cp';
+            this.activityRange = { range: 30 };
+            var start = new Date();
+            var end = new Date();
+            start.setDate(end.getDate() - this.activityRange.range + 1); // offset to account for inclusion of endDate in range
+            this.activityRange.listing = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
             };
-        });
+            if (this.productId) {
+                this.activityRange.listing.startDate = new Date('4/1/2016');
+            }
+            this.activityRange.developer = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            this.activityRange.product = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            this.activityRange.cap = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            this.activityRange.acb = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            this.activityRange.atl = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            this.activityRange.announcement = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            this.activityRange.userActivity = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            this.activityRange.api_key = {
+                startDate: angular.copy(start),
+                endDate: angular.copy(end),
+            };
+            this.apiKey = {
+                visiblePage: 1,
+                pageSize: 100,
+                startDate: angular.copy(this.activityRange.startDate),
+                endDate: angular.copy(this.activityRange.endDate),
+            };
+            this.refreshActivity();
+            this.filename = 'Reports_' + new Date().getTime() + '.csv';
+        }
 
-    /** @ngInject */
-    function ReportController ($filter, $log, $uibModal, ReportService, authService, networkService, utilService) {
-        var vm = this;
-
-        vm.clearApiKeyFilter = clearApiKeyFilter;
-        vm.compareSurveillances = compareSurveillances;
-        vm.loadApiKeys = loadApiKeys;
-        vm.refreshAcb = refreshAcb;
-        vm.refreshActivity = refreshActivity;
-        vm.refreshAnnouncement = refreshAnnouncement;
-        vm.refreshApi = refreshApi;
-        vm.refreshApiKeyUsage = refreshApiKeyUsage;
-        vm.refreshAtl = refreshAtl;
-        vm.refreshCp = refreshCp;
-        vm.refreshDeveloper = refreshDeveloper;
-        vm.refreshProduct = refreshProduct;
-        vm.refreshCap = refreshCap;
-        vm.refreshUser = refreshUser;
-        vm.singleCp = singleCp;
-        vm.validDates = validDates;
-
-        // private function exposed for testing
-        vm._interpretCps = _interpretCps;
-        vm._compareCertificationEvents = _compareCertificationEvents;
-        vm._compareSed = _compareSed;
+        $onChanges (changes) {
+            if (!changes.workType.isFirstChange()) {
+                let causeRefresh = false;
+                if (changes.workType) {
+                    this.workType = angular.copy(changes.workType.currentValue);
+                    causeRefresh = true;
+                }
+                if (changes.productId) {
+                    this.productId = angular.copy(changes.productId.currentValue);
+                    causeRefresh = true;
+                }
+                if (causeRefresh) {
+                    this.refreshActivity();
+                }
+            }
+        }
 
         ////////////////////////////////////////////////////////////////////
         // Functions
 
-        this.$onInit = function () {
-            vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.isAtlAdmin = authService.isAtlAdmin();
-            vm.isCmsStaff = authService.isCmsStaff();
-            vm.isChplAdmin = authService.isChplAdmin();
-            vm.isOncStaff = authService.isOncStaff();
-            vm.tab = 'cp';
-            vm.activityRange = { range: 30 };
-            var start = new Date();
-            var end = new Date();
-            start.setDate(end.getDate() - vm.activityRange.range + 1); // offset to account for inclusion of endDate in range
-            vm.activityRange.listing = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            if (vm.productId) {
-                vm.activityRange.listing.startDate = new Date('4/1/2016');
-            }
-            vm.activityRange.developer = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            vm.activityRange.product = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            vm.activityRange.cap = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            vm.activityRange.acb = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            vm.activityRange.atl = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            vm.activityRange.announcement = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            vm.activityRange.userActivity = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            vm.activityRange.api_key = {
-                startDate: angular.copy(start),
-                endDate: angular.copy(end),
-            };
-            vm.apiKey = {
-                visiblePage: 1,
-                pageSize: 100,
-                startDate: angular.copy(vm.activityRange.startDate),
-                endDate: angular.copy(vm.activityRange.endDate),
-            };
-            vm.refreshActivity(true);
-            vm.loadApiKeys();
-            vm.filename = 'Reports_' + new Date().getTime() + '.csv';
-        }
-
-        function refreshActivity (refreshAll) {
-            if (refreshAll) {
-                if (vm.productId) {
-                    vm.singleCp();
+        refreshActivity () {
+            switch (this.workType) {
+            case '':
+            case 'cp-upload':
+            case 'cp-status':
+            case 'cp-surveillance':
+            case 'cp-other':
+                if (this.productId) {
+                    this.singleCp();
                 } else {
-                    vm.refreshCp();
+                    this.refreshCp();
                 }
-                vm.refreshCap();
-                vm.refreshDeveloper();
-                vm.refreshProduct();
-                vm.refreshAcb();
-                vm.refreshAtl();
-                vm.refreshAnnouncement();
-                vm.refreshUser();
-                vm.refreshApi();
-                vm.refreshApiKeyUsage();
-            } else {
-                switch (vm.workType) {
-                case '':
-                case 'cp-upload':
-                case 'cp-status':
-                case 'cp-surveillance':
-                case 'cp-other':
-                    if (vm.productId) {
-                        vm.singleCp();
-                    } else {
-                        vm.refreshCp();
-                    }
-                    break;
-                case 'dev':
-                    vm.refreshDeveloper();
-                    break;
-                case 'prod':
-                    vm.refreshProduct();
-                    break;
-                case 'cap':
-                    vm.refreshCap();
-                    break;
-                case 'acb':
-                    vm.refreshAcb();
-                    break;
-                case 'atl':
-                    vm.refreshAtl();
-                    break;
-                case 'announcement':
-                    vm.refreshAnnouncement();
-                    break;
-                case 'users':
-                    vm.refreshUser();
-                    break;
-                case 'api_key_management':
-                    vm.refreshApi();
-                    break;
-                    // no default
-                }
+                break;
+            case 'dev':
+                this.refreshDeveloper();
+                break;
+            case 'prod':
+                this.refreshProduct();
+                break;
+            case 'cap':
+                this.refreshCap();
+                break;
+            case 'acb':
+                this.refreshAcb();
+                break;
+            case 'atl':
+                this.refreshAtl();
+                break;
+            case 'announcement':
+                this.refreshAnnouncement();
+                break;
+            case 'users':
+                this.refreshUser();
+                break;
+            case 'api_key_management':
+                this.refreshApi();
+                break;
+            case 'api_key_usage':
+                this.refreshApiKeyUsage();
+                break;
+                // no default
             }
         }
 
-        function refreshCp () {
-            networkService.getCertifiedProductActivity(dateAdjust(vm.activityRange.listing))
+        refreshCp () {
+            let ctrl = this;
+            this.networkService.getCertifiedProductActivity(this.dateAdjust(this.activityRange.listing))
                 .then(function (data) {
-                    _interpretCps(data);
-                    vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
-                    vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
-                    vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
-                    vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
+                    ctrl._interpretCps(data);
+                    ctrl.displayedCertifiedProductsUpload = [].concat(ctrl.searchedCertifiedProductsUpload);
+                    ctrl.displayedCertifiedProductsStatus = [].concat(ctrl.searchedCertifiedProductsStatus);
+                    ctrl.displayedCertifiedProductsSurveillance = [].concat(ctrl.searchedCertifiedProductsSurveillance);
+                    ctrl.displayedCertifiedProducts = [].concat(ctrl.searchedCertifiedProducts);
                 });
         }
 
-        function refreshCap () {
-            networkService.getCorrectiveActionPlanActivity(dateAdjust(vm.activityRange.cap))
+        refreshCap () {
+            let ctrl = this;
+            this.networkService.getCorrectiveActionPlanActivity(this.dateAdjust(this.activityRange.cap))
                 .then(function (data) {
-                    vm.searchedCertifiedProductsCAP = interpretCaps(data);
-                    vm.displayedCertifiedProductsCAP = [].concat(vm.searchedCertifiedProductsCAP);
+                    ctrl.searchedCertifiedProductsCAP = ctrl.interpretCaps(data);
+                    ctrl.displayedCertifiedProductsCAP = [].concat(ctrl.searchedCertifiedProductsCAP);
                 });
         }
 
-        function refreshDeveloper () {
-            networkService.getDeveloperActivity(dateAdjust(vm.activityRange.developer))
+        refreshDeveloper () {
+            let ctrl = this;
+            this.networkService.getDeveloperActivity(this.dateAdjust(this.activityRange.developer))
                 .then(function (data) {
-                    vm.searchedDevelopers = interpretDevelopers(data);
-                    vm.displayedDevelopers = [].concat(vm.searchedDevelopers);
+                    ctrl.searchedDevelopers = ctrl.interpretDevelopers(data);
+                    ctrl.displayedDevelopers = [].concat(ctrl.searchedDevelopers);
                 });
         }
 
-        function refreshProduct () {
-            networkService.getProductActivity(dateAdjust(vm.activityRange.product))
+        refreshProduct () {
+            let ctrl = this;
+            this.networkService.getProductActivity(this.dateAdjust(this.activityRange.product))
                 .then(function (data) {
-                    vm.searchedProducts = interpretProducts(data);
-                    vm.displayedProducts = [].concat(vm.searchedProducts);
+                    ctrl.searchedProducts = ctrl.interpretProducts(data);
+                    ctrl.displayedProducts = [].concat(ctrl.searchedProducts);
                 });
-            networkService.getVersionActivity(dateAdjust(vm.activityRange.product))
+            this.networkService.getVersionActivity(this.dateAdjust(this.activityRange.product))
                 .then(function (data) {
-                    vm.searchedVersions = vm.interpretVersions(data);
-                    vm.displayedVersions = [].concat(vm.searchedVersions);
-                });
-        }
-
-        function refreshAcb () {
-            networkService.getAcbActivity(dateAdjust(vm.activityRange.acb))
-                .then(function (data) {
-                    vm.searchedACBs = vm.interpretAcbs(data);
-                    vm.displayedACBs = [].concat(vm.searchedACBs);
+                    ctrl.searchedVersions = ctrl.interpretVersions(data);
+                    ctrl.displayedVersions = [].concat(ctrl.searchedVersions);
                 });
         }
 
-        function refreshAtl () {
-            networkService.getAtlActivity(dateAdjust(vm.activityRange.atl))
+        refreshAcb () {
+            let ctrl = this;
+            this.networkService.getAcbActivity(this.dateAdjust(this.activityRange.acb))
                 .then(function (data) {
-                    vm.searchedATLs = vm.interpretAtls(data);
-                    vm.displayedATLs = [].concat(vm.searchedATLs);
+                    ctrl.searchedACBs = ctrl.interpretAcbs(data);
+                    ctrl.displayedACBs = [].concat(ctrl.searchedACBs);
                 });
         }
 
-        function refreshAnnouncement () {
-            networkService.getAnnouncementActivity(dateAdjust(vm.activityRange.announcement))
+        refreshAtl () {
+            let ctrl = this;
+            this.networkService.getAtlActivity(this.dateAdjust(this.activityRange.atl))
                 .then(function (data) {
-                    vm.searchedAnnouncements = vm.interpretAnnouncements(data);
-                    vm.displayedAnnouncements = [].concat(vm.searchedAnnouncements);
+                    ctrl.searchedATLs = ctrl.interpretAtls(data);
+                    ctrl.displayedATLs = [].concat(ctrl.searchedATLs);
                 });
         }
 
-        function refreshUser () {
-            networkService.getUserActivity(dateAdjust(vm.activityRange.userActivity))
+        refreshAnnouncement () {
+            let ctrl = this;
+            this.networkService.getAnnouncementActivity(this.dateAdjust(this.activityRange.announcement))
                 .then(function (data) {
-                    vm.searchedUsers = vm.interpretUsers(data);
-                    vm.displayedUsers = [].concat(vm.searchedUsers);
-                });
-            networkService.getUserActivities(dateAdjust(vm.activityRange.userActivity))
-                .then(function (data) {
-                    vm.searchedUserActivities = vm.interpretUserActivities(data);
-                    vm.displayedUserActivities = [].concat(vm.searchedUserActivities);
+                    ctrl.searchedAnnouncements = ctrl.interpretAnnouncements(data);
+                    ctrl.displayedAnnouncements = [].concat(ctrl.searchedAnnouncements);
                 });
         }
 
-        function refreshApi () {
-            networkService.getApiUserActivity(dateAdjust(vm.activityRange.api_key))
+        refreshUser () {
+            let ctrl = this;
+            this.networkService.getUserActivity(this.dateAdjust(this.activityRange.userActivity))
                 .then(function (data) {
-                    vm.searchedApiActivity = data;
-                    vm.displayedApiActivity = [].concat(vm.searchedApiActivity);
+                    ctrl.searchedUsers = ctrl.interpretUsers(data);
+                    ctrl.displayedUsers = [].concat(ctrl.searchedUsers);
+                });
+            this.networkService.getUserActivities(this.dateAdjust(this.activityRange.userActivity))
+                .then(function (data) {
+                    ctrl.searchedUserActivities = ctrl.interpretUserActivities(data);
+                    ctrl.displayedUserActivities = [].concat(ctrl.searchedUserActivities);
                 });
         }
 
-        function refreshApiKeyUsage () {
-            vm.apiKey.pageNumber = vm.apiKey.visiblePage - 1;
-            networkService.getApiActivity(dateAdjust(vm.apiKey))
+        refreshApi () {
+            let ctrl = this;
+            this.networkService.getApiUserActivity(this.dateAdjust(this.activityRange.api_key))
                 .then(function (data) {
-                    vm.searchedApi = data;
+                    ctrl.searchedApiActivity = data;
+                    ctrl.displayedApiActivity = [].concat(ctrl.searchedApiActivity);
                 });
         }
 
-        function clearApiKeyFilter () {
-            vm.apiKey = {
+        refreshApiKeyUsage () {
+            if (!this.apiKeys) {
+                this.loadApiKeys();
+            }
+            let ctrl = this;
+            this.apiKey.pageNumber = this.apiKey.visiblePage - 1;
+            this.networkService.getApiActivity(this.dateAdjust(this.apiKey))
+                .then(function (data) {
+                    ctrl.searchedApi = data;
+                });
+        }
+
+        clearApiKeyFilter () {
+            this.apiKey = {
                 visiblePage: 1,
                 pageSize: 100,
-                startDate: angular.copy(vm.activityRange.startDate),
-                endDate: angular.copy(vm.activityRange.endDate),
+                startDate: angular.copy(this.activityRange.startDate),
+                endDate: angular.copy(this.activityRange.endDate),
             };
         }
 
-        function compareSurveillances (oldS, newS) {
-            vm.modalInstance = $uibModal.open({
+        compareSurveillances (oldS, newS) {
+            this.modalInstance = this.$uibModal.open({
                 templateUrl: 'chpl.admin/components/reports/compareSurveillanceRequirements.html',
                 controller: 'CompareSurveillanceRequirementsController',
                 controllerAs: 'vm',
@@ -292,50 +265,51 @@
             });
         }
 
-        function loadApiKeys () {
-            networkService.getApiUsers()
-                .then(function (result) {
-                    vm.apiKeys = result;
-                });
+        loadApiKeys () {
+            let ctrl = this;
+            this.networkService.getApiUsers()
+                .then(result => ctrl.apiKeys = result);
         }
 
-        function singleCp () {
-            networkService.getSingleCertifiedProductActivity(vm.productId)
+        singleCp () {
+            let ctrl = this;
+            this.networkService.getSingleCertifiedProductActivity(this.productId)
                 .then(function (data) {
-                    _interpretCps(data);
-                    vm.displayedCertifiedProductsUpload = [].concat(vm.searchedCertifiedProductsUpload);
-                    vm.displayedCertifiedProductsStatus = [].concat(vm.searchedCertifiedProductsStatus);
-                    vm.displayedCertifiedProductsSurveillance = [].concat(vm.searchedCertifiedProductsSurveillance);
-                    vm.displayedCertifiedProducts = [].concat(vm.searchedCertifiedProducts);
+                    ctrl._interpretCps(data);
+                    ctrl.displayedCertifiedProductsUpload = [].concat(ctrl.searchedCertifiedProductsUpload);
+                    ctrl.displayedCertifiedProductsStatus = [].concat(ctrl.searchedCertifiedProductsStatus);
+                    ctrl.displayedCertifiedProductsSurveillance = [].concat(ctrl.searchedCertifiedProductsSurveillance);
+                    ctrl.displayedCertifiedProducts = [].concat(ctrl.searchedCertifiedProducts);
                 });
         }
 
-        function validDates (key) {
+        validDates (key) {
             var utcEnd = Date.UTC(
-                vm.activityRange[key].endDate.getFullYear(),
-                vm.activityRange[key].endDate.getMonth(),
-                vm.activityRange[key].endDate.getDate()
+                this.activityRange[key].endDate.getFullYear(),
+                this.activityRange[key].endDate.getMonth(),
+                this.activityRange[key].endDate.getDate()
             );
             var utcStart = Date.UTC(
-                vm.activityRange[key].startDate.getFullYear(),
-                vm.activityRange[key].startDate.getMonth(),
-                vm.activityRange[key].startDate.getDate()
+                this.activityRange[key].startDate.getFullYear(),
+                this.activityRange[key].startDate.getMonth(),
+                this.activityRange[key].startDate.getDate()
             );
             var diffDays = Math.floor((utcEnd - utcStart) / (1000 * 60 * 60 * 24));
-            if (key === 'listing' && vm.productId) {
+            if (key === 'listing' && this.productId) {
                 return (utcStart < utcEnd);
             }
-            return (0 <= diffDays && diffDays < vm.activityRange.range);
+            return (0 <= diffDays && diffDays < this.activityRange.range);
         }
 
         ////////////////////////////////////////////////////////////////////
         // Helper functions
 
+        /*
         if (!String.prototype.startsWith) {
             String.prototype.startsWith = function (searchString, position){
                 var vm = this;
                 position = position || 0;
-                return vm.substr(position, searchString.length) === searchString;
+                return this.substr(position, searchString.length) === searchString;
             };
         }
 
@@ -343,12 +317,13 @@
             String.prototype.endsWith = function (searchString, position){
                 var vm = this;
                 position = position || 0;
-                return vm.substr(position) === searchString;
+                return this.substr(position) === searchString;
             };
         }
+        */
 
-        function _interpretCps (data) {
-            vm.loadedCpActivity = data;
+        _interpretCps (data) {
+            this.loadedCpActivity = data;
             var simpleCpFields = [
                 {key: 'acbCertificationId', display: 'ACB Certification ID'},
                 {key: 'accessibilityCertified', display: 'Accessibility Certified'},
@@ -411,7 +386,7 @@
                     activity.details = [];
                     var statusActivity, statusChange;
                     if (data[i].newData.certificationStatus) {
-                        statusChange = nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
+                        statusChange = this.nestedCompare(data[i].originalData, data[i].newData, 'certificationStatus', 'name', 'Certification Status');
                         if (statusChange) {
                             statusActivity = angular.copy(activity);
                             statusActivity.details = statusChange;
@@ -419,7 +394,7 @@
                             activity.details.push(statusChange);
                         }
                     } else {
-                        statusChange = _compareCertificationEvents(data[i].originalData.certificationEvents, data[i].newData.certificationEvents);
+                        statusChange = this._compareCertificationEvents(data[i].originalData.certificationEvents, data[i].newData.certificationEvents);
                         if (statusChange && statusChange.length > 0) {
                             statusActivity = angular.copy(activity);
                             statusActivity.details = ('<ul>' + statusChange.map(function (s) { return '<li>' + s + '</li>';}).join('') + '</ul>');
@@ -429,25 +404,25 @@
                     }
 
                     for (j = 0; j < simpleCpFields.length; j++) {
-                        change = compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
+                        change = this.compareItem(data[i].originalData, data[i].newData, simpleCpFields[j].key, simpleCpFields[j].display, simpleCpFields[j].filter);
                         if (change) { activity.details.push(change); }
                     }
                     for (j = 0; j < nestedKeys.length; j++) {
-                        change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
+                        change = this.nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
                         if (change) {
                             activity.details.push(change);
                         }
                     }
                     var accessibilityStandardsKeys = [];
-                    var accessibilityStandards = compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
+                    var accessibilityStandards = this.compareArray(data[i].originalData.accessibilityStandards, data[i].newData.accessibilityStandards, accessibilityStandardsKeys, 'accessibilityStandardName');
                     for (j = 0; j < accessibilityStandards.length; j++) {
                         activity.details.push('Accessibility Standard "' + accessibilityStandards[j].name + '" changes<ul>' + accessibilityStandards[j].changes.join('') + '</ul>');
                     }
-                    certChanges = compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
+                    certChanges = this.compareCerts(data[i].originalData.certificationResults, data[i].newData.certificationResults);
                     for (j = 0; j < certChanges.length; j++) {
                         activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                     }
-                    var cqmChanges = compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults);
+                    var cqmChanges = this.compareCqms(data[i].originalData.cqmResults, data[i].newData.cqmResults);
                     for (j = 0; j < cqmChanges.length; j++) {
                         activity.details.push('CQM "' + cqmChanges[j].cmsId + '" changes<ul>' + cqmChanges[j].changes.join('') + '</ul>');
                     }
@@ -457,44 +432,44 @@
                         data[i].newData.ics) {
                         if (data[i].originalData.ics.parents) {
                             var icsParentsKeys = [];
-                            var icsParents = compareArray(data[i].originalData.ics.parents, data[i].newData.ics.parents, icsParentsKeys, 'chplProductNumber');
+                            var icsParents = this.compareArray(data[i].originalData.ics.parents, data[i].newData.ics.parents, icsParentsKeys, 'chplProductNumber');
                             for (j = 0; j < icsParents.length; j++) {
                                 activity.details.push('ICS Parent "' + icsParents[j].name + '" changes<ul>' + icsParents[j].changes.join('') + '</ul>');
                             }
                         }
                         if (data[i].originalData.ics.children) {
                             var icsChildrenKeys = [];
-                            var icsChildren = compareArray(data[i].originalData.ics.children, data[i].newData.ics.children, icsChildrenKeys, 'chplProductNumber');
+                            var icsChildren = this.compareArray(data[i].originalData.ics.children, data[i].newData.ics.children, icsChildrenKeys, 'chplProductNumber');
                             for (j = 0; j < icsChildren.length; j++) {
                                 activity.details.push('ICS Child "' + icsChildren[j].name + '" changes<ul>' + icsChildren[j].changes.join('') + '</ul>');
                             }
                         }
                     }
                     if (data[i].originalData.meaningfulUseUserHistory) {
-                        var meaningfulUseUserHistory = ReportService.compare(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory, 'meaningfulUseUserHistory');
+                        var meaningfulUseUserHistory = this.ReportService.compare(data[i].originalData.meaningfulUseUserHistory, data[i].newData.meaningfulUseUserHistory, 'meaningfulUseUserHistory');
                         if (meaningfulUseUserHistory.length > 0) {
                             activity.details.push('Meaningful use user history changes<ul>' + meaningfulUseUserHistory.join('') + '</ul>');
                         }
                     }
                     if (data[i].originalData.testingLabs) {
                         var testingLabsKeys = [];
-                        var testingLabs = compareArray(data[i].originalData.testingLabs, data[i].newData.testingLabs, testingLabsKeys, 'testingLabName');
+                        var testingLabs = this.compareArray(data[i].originalData.testingLabs, data[i].newData.testingLabs, testingLabsKeys, 'testingLabName');
                         for (j = 0; j < testingLabs.length; j++) {
                             activity.details.push('Testing Lab "' + testingLabs[j].name + '" changes<ul>' + testingLabs[j].changes.join('') + '</ul>');
                         }
                     }
-                    var qmsStandards = ReportService.compare(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, 'qmsStandards');
+                    var qmsStandards = this.ReportService.compare(data[i].originalData.qmsStandards, data[i].newData.qmsStandards, 'qmsStandards');
                     if (qmsStandards.length > 0) {
                         activity.details.push('QMS Standards changes<ul>' + qmsStandards.join('') + '</ul>');
                     }
                     if (data[i].originalData.sed &&
                         data[i].newData.sed) {
-                        var sedChanges = _compareSed(data[i].originalData.sed, data[i].newData.sed);
+                        var sedChanges = this._compareSed(data[i].originalData.sed, data[i].newData.sed);
                         if (sedChanges && sedChanges.length > 0) {
                             activity.details.push('SED Changes<ul>' + sedChanges.join('') + '</ul>');
                         }
                     }
-                    var targetedUsers = ReportService.compare(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, 'targetedUsers');
+                    var targetedUsers = this.ReportService.compare(data[i].originalData.targetedUsers, data[i].newData.targetedUsers, 'targetedUsers');
                     if (targetedUsers.length > 0) {
                         activity.details.push('Targeted Users changes:<ul>' + targetedUsers.join('') + '</ul>');
                     }
@@ -533,11 +508,11 @@
                                 {key: 'type', subkey: 'name', display: 'Certification Type'},
                             ];
                             for (k = 0; k < simpleFields.length; k++) {
-                                change = compareItem(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
+                                change = this.compareItem(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], simpleFields[k].key, simpleFields[k].display, simpleFields[k].filter);
                                 if (change) { actions.push(change); }
                             }
                             for (k = 0; k < nestedKeys.length; k++) {
-                                change = nestedCompare(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], nestedKeys[k].key, nestedKeys[k].subkey, nestedKeys[k].display, nestedKeys[k].filter);
+                                change = this.nestedCompare(data[i].originalData.surveillance[j], data[i].newData.surveillance[j], nestedKeys[k].key, nestedKeys[k].subkey, nestedKeys[k].display, nestedKeys[k].filter);
                                 if (change) {
                                     actions.push(change);
                                 }
@@ -583,14 +558,14 @@
                     output.other.push(activity);
                 }
             }
-            vm.searchedCertifiedProductsUpload = output.upload;
-            vm.searchedCertifiedProductsStatus = output.status;
-            vm.searchedCertifiedProductsSurveillance = output.surveillance;
-            vm.searchedCertifiedProductsCAP = output.cap;
-            vm.searchedCertifiedProducts = output.other;
+            this.searchedCertifiedProductsUpload = output.upload;
+            this.searchedCertifiedProductsStatus = output.status;
+            this.searchedCertifiedProductsSurveillance = output.surveillance;
+            this.searchedCertifiedProductsCAP = output.cap;
+            this.searchedCertifiedProducts = output.other;
         }
 
-        function compareCerts (prev, curr) {
+        compareCerts (prev, curr) {
             var ret = [];
             var change;
             var certKeys = [
@@ -608,12 +583,12 @@
             for (i = 0; i < prev.length; i++) {
                 var obj = { number: curr[i].number, changes: [] };
                 for (j = 0; j < certKeys.length; j++) {
-                    change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
+                    change = this.compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
                     if (change) {
                         obj.changes.push('<li>' + change + '</li>');
                     }
                 }
-                var measures = utilService.arrayCompare(prev[i].g1MacraMeasures,curr[i].g1MacraMeasures);
+                var measures = this.utilService.arrayCompare(prev[i].g1MacraMeasures,curr[i].g1MacraMeasures);
                 if (measures.added.length > 0) {
                     obj.changes.push('<li>Added G1 MACRA Measure' + (measures.added.length > 1 ? 's' : '') + ':<ul>');
                     for (j = 0; j < measures.added.length; j++) {
@@ -628,7 +603,7 @@
                     }
                     obj.changes.push('</ul></li>');
                 }
-                measures = utilService.arrayCompare(prev[i].g2MacraMeasures,curr[i].g2MacraMeasures);
+                measures = this.utilService.arrayCompare(prev[i].g2MacraMeasures,curr[i].g2MacraMeasures);
                 if (measures.added.length > 0) {
                     obj.changes.push('<li>Added G2 MACRA Measure' + (measures.added.length > 1 ? 's' : '') + ':<ul>');
                     for (j = 0; j < measures.added.length; j++) {
@@ -643,37 +618,37 @@
                     }
                     obj.changes.push('</ul></li>');
                 }
-                var addlSw = ReportService.compare(prev[i].additionalSoftware, curr[i].additionalSoftware, 'additionalSoftware');
+                var addlSw = this.ReportService.compare(prev[i].additionalSoftware, curr[i].additionalSoftware, 'additionalSoftware');
                 if (addlSw.length > 0) {
                     obj.changes.push('<li>Relied Upon Software changes<ul>' + addlSw.join('') + '</li>');
                 }
-                var testChanges = _compareTestStuff(prev[i], curr[i]);
+                var testChanges = this._compareTestStuff(prev[i], curr[i]);
                 if (testChanges) {
                     obj.changes = obj.changes.concat(testChanges);
                 }
-                var testFunctionality = ReportService.compare(prev[i].testFunctionality, curr[i].testFunctionality, 'testFunctionality');
+                var testFunctionality = this.ReportService.compare(prev[i].testFunctionality, curr[i].testFunctionality, 'testFunctionality');
                 if (testFunctionality.length > 0) {
                     obj.changes.push('<li>Test Functionality changes<ul>' + testFunctionality.join('') + '</li>');
                 }
                 var testToolsUsedKeys = [{key: 'testToolVersion', display: 'Test Tool Version'}];
-                var testToolsUsed = compareArray(prev[i].testToolsUsed, curr[i].testToolsUsed, testToolsUsedKeys, 'testToolName');
+                var testToolsUsed = this.compareArray(prev[i].testToolsUsed, curr[i].testToolsUsed, testToolsUsedKeys, 'testToolName');
                 for (j = 0; j < testToolsUsed.length; j++) {
                     obj.changes.push('<li>Test Tool Name "' + testToolsUsed[j].name + '" changes<ul>' + testToolsUsed[j].changes.join('') + '</ul></li>');
                 }
                 var testStandardsKeys = [{key: 'testStandardName', display: 'Test Standard Name'}];
-                var testStandards = compareArray(prev[i].testStandards, curr[i].testStandards, testStandardsKeys, 'testStandardName');
+                var testStandards = this.compareArray(prev[i].testStandards, curr[i].testStandards, testStandardsKeys, 'testStandardName');
                 for (j = 0; j < testStandards.length; j++) {
                     obj.changes.push('<li>Test Standard Description "' + testStandards[j].name + '" changes<ul>' + testStandards[j].changes.join('') + '</ul></li>');
                 }
                 if (prev[i].ucdProcesses) {
                     var ucdProcessesKeys = [{key: 'ucdProcessDetails', display: 'UCD Process Details'}];
-                    var ucdProcesses = compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
+                    var ucdProcesses = this.compareArray(prev[i].ucdProcesses, curr[i].ucdProcesses, ucdProcessesKeys, 'ucdProcessName');
                     for (j = 0; j < ucdProcesses.length; j++) {
                         obj.changes.push('<li>UCD Process Name "' + ucdProcesses[j].name + '" changes<ul>' + ucdProcesses[j].changes.join('') + '</ul></li>');
                     }
                 }
                 if (prev[i].testTasks) {
-                    var testTasks = compareSedTasks(prev[i].testTasks, curr[i].testTasks);
+                    var testTasks = this.compareSedTasks(prev[i].testTasks, curr[i].testTasks);
                     for (j = 0; j < testTasks.length; j++) {
                         obj.changes.push('<li>SED Test Task "' + testTasks[j].name + '" changes<ul>' + testTasks[j].changes.join('') + '</ul></li>');
                     }
@@ -685,7 +660,7 @@
             return ret;
         }
 
-        function compareCapCerts (prev, curr) {
+        compareCapCerts (prev, curr) {
             var ret = [];
             var change;
             var certKeys = [
@@ -700,7 +675,7 @@
             for (var i = 0; i < prev.length; i++) {
                 var obj = { number: curr[i].certificationCriterionNumber, changes: [] };
                 for (var j = 0; j < certKeys.length; j++) {
-                    change = compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
+                    change = this.compareItem(prev[i], curr[i], certKeys[j].key, certKeys[j].display, certKeys[j].filter);
                     if (change) {
                         obj.changes.push('<li>' + change + '</li>');
                     }
@@ -712,23 +687,23 @@
             return ret;
         }
 
-        function _compareCertificationEvents (prev, curr) {
+        _compareCertificationEvents (prev, curr) {
             var c = 0, item, p = 0, ret = [];
-            prev = $filter('orderBy')(prev.map(function (e) { if (!e.certificationStatusName) { e.certificationStatusName = e.status.name; } return e; }), 'eventDate');
-            curr = $filter('orderBy')(curr.map(function (e) { if (!e.certificationStatusName) { e.certificationStatusName = e.status.name; } return e; }), 'eventDate');
+            prev = this.$filter('orderBy')(prev.map(function (e) { if (!e.certificationStatusName) { e.certificationStatusName = e.status.name; } return e; }), 'eventDate');
+            curr = this.$filter('orderBy')(curr.map(function (e) { if (!e.certificationStatusName) { e.certificationStatusName = e.status.name; } return e; }), 'eventDate');
 
             while (p < prev.length && c < curr.length) {
                 item = '';
                 if (prev[p].eventDate < curr[c].eventDate) {
                     if (prev[p].certificationStatusName === curr[c].certificationStatusName) {
-                        item = '"' + prev[p].certificationStatusName + '" status changed effective date to ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        item = '"' + prev[p].certificationStatusName + '" status changed effective date to ' + this.$filter('date')(curr[c].eventDate,'mediumDate','UTC');
                         if (curr[c].reason) {
                             item += ' with reason: "' + curr[c].reason + '"';
                         }
                         p += 1;
                         c += 1;
                     } else {
-                        item = 'Removed "' + prev[p].certificationStatusName + '" status at ' + $filter('date')(prev[p].eventDate,'mediumDate','UTC');
+                        item = 'Removed "' + prev[p].certificationStatusName + '" status at ' + this.$filter('date')(prev[p].eventDate,'mediumDate','UTC');
                         if (prev[p].reason) {
                             item += ' with reason: "' + prev[p].reason + '"';
                         }
@@ -736,21 +711,21 @@
                     }
                 } else if (prev[p].eventDate > curr[c].eventDate) {
                     if (prev[p].certificationStatusName === curr[c].certificationStatusName) {
-                        item = '"' + prev[p].certificationStatusName + '" status changed effective date to ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        item = '"' + prev[p].certificationStatusName + '" status changed effective date to ' + this.$filter('date')(curr[c].eventDate,'mediumDate','UTC');
                         if (curr[c].reason) {
                             item += ' with reason: "' + curr[c].reason + '"';
                         }
                         p += 1;
                         c += 1;
                     } else {
-                        item = 'Added "' + curr[c].certificationStatusName + '" status at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                        item = 'Added "' + curr[c].certificationStatusName + '" status at ' + this.$filter('date')(curr[c].eventDate,'mediumDate','UTC');
                         if (curr[c].reason) {
                             item += ' with reason: "' + curr[c].reason + '"';
                         }
                         c += 1;
                     }
                 } else if (prev[p].certificationStatusName !== curr[c].certificationStatusName) {
-                    item = '"' + prev[p].certificationStatusName + '" status became "' + curr[c].certificationStatusName + '" at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                    item = '"' + prev[p].certificationStatusName + '" status became "' + curr[c].certificationStatusName + '" at ' + this.$filter('date')(curr[c].eventDate,'mediumDate','UTC');
                     if (curr[c].reason) {
                         item += ' with reason: "' + curr[c].reason + '"';
                     }
@@ -765,7 +740,7 @@
                 }
             }
             while (p < prev.length) {
-                item = 'Removed "' + prev[p].certificationStatusName + '" status at ' + $filter('date')(prev[p].eventDate,'mediumDate','UTC');
+                item = 'Removed "' + prev[p].certificationStatusName + '" status at ' + this.$filter('date')(prev[p].eventDate,'mediumDate','UTC');
                 if (prev[p].reason) {
                     item += ' with reason: "' + prev[p].reason + '"';
                 }
@@ -773,7 +748,7 @@
                 p += 1;
             }
             while (c < curr.length) {
-                item = 'Added "' + curr[c].certificationStatusName + '" status at ' + $filter('date')(curr[c].eventDate,'mediumDate','UTC');
+                item = 'Added "' + curr[c].certificationStatusName + '" status at ' + this.$filter('date')(curr[c].eventDate,'mediumDate','UTC');
                 if (curr[c].reason) {
                     item += ' with reason: "' + curr[c].reason + '"';
                 }
@@ -783,14 +758,14 @@
             return ret;
         }
 
-        function _compareSed (prev, curr) {
+        _compareSed (prev, curr) {
             var i, j, k, ret = [];
 
             var ucdProcessesKeys = [{key: 'details', display: 'UCD Process Details'}];
             var ucdProcessesNested = [
                 {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
             ];
-            var ucdProcesses = compareArray(prev.ucdProcesses, curr.ucdProcesses, ucdProcessesKeys, 'name', ucdProcessesNested);
+            var ucdProcesses = this.compareArray(prev.ucdProcesses, curr.ucdProcesses, ucdProcessesKeys, 'name', ucdProcessesNested);
             for (i = 0; i < ucdProcesses.length; i++) {
                 ret.push('<li>UCD Process Name "' + ucdProcesses[i].name + '" changes<ul>' + ucdProcesses[i].changes.join('') + '</ul></li>');
             }
@@ -815,7 +790,7 @@
                 {key: 'criteria', display: 'Certification Criteria', value: 'number', compareId: 'number'},
                 {key: 'testParticipants', display: 'Test Participant', value: 'id', compareId: 'id', countOnly: true},
             ];
-            var tasks = compareArray(prev.testTasks, curr.testTasks, taskKeys, 'id', taskNested, 'description');
+            var tasks = this.compareArray(prev.testTasks, curr.testTasks, taskKeys, 'id', taskNested, 'description');
             for (i = 0; i < tasks.length; i++) {
                 ret.push('<li>Task Description "' + tasks[i].name + '" changes<ul>' + tasks[i].changes.join('') + '</ul></li>');
             }
@@ -864,14 +839,14 @@
                 {key: 'productExperienceMonths', display: 'Product Experience (Months)'},
                 {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'},
             ];
-            var participants = compareArray(prev.allParticipants, curr.allParticipants, testParticipantKeys, 'id');
+            var participants = this.compareArray(prev.allParticipants, curr.allParticipants, testParticipantKeys, 'id');
             for (i = 0; i < participants.length; i++) {
                 ret.push('<li>Participant changes<ul>' + participants[i].changes.join('') + '</ul></li>');
             }
             return ret;
         }
 
-        function _compareTestStuff (prev, curr) {
+        _compareTestStuff (prev, curr) {
             var ret = [];
             if (prev.testProcedures && curr.testProcedures) {
                 prev.testProcedures.forEach(function (pre) {
@@ -953,7 +928,7 @@
             return ret;
         }
 
-        function compareSedTasks (prev, curr) {
+        compareSedTasks (prev, curr) {
             var ret = [];
             var change;
             var keys = [
@@ -976,7 +951,7 @@
                         if (prev[i].description === curr[j].description) {
                             var obj = { name: curr[j].description, changes: [] };
                             for (k = 0; k < keys.length; k++) {
-                                change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display, keys[k].filter);
+                                change = this.compareItem(prev[i], curr[j], keys[k].key, keys[k].display, keys[k].filter);
                                 if (change) { obj.changes.push('<li>' + change + '</li>'); }
                             }
                             var testParticipantKeys = [
@@ -989,7 +964,7 @@
                                 {key: 'productExperienceMonths', display: 'Product Experience (Months)'},
                                 {key: 'professionalExperienceMonths', display: 'Professional Experience (Months)'},
                             ];
-                            var testParticipants = compareArray(prev[i].testParticipants, curr[j].testParticipants, testParticipantKeys, 'testParticipantId');
+                            var testParticipants = this.compareArray(prev[i].testParticipants, curr[j].testParticipants, testParticipantKeys, 'testParticipantId');
                             for (k = 0; k < testParticipants.length; k++) {
                                 obj.changes.push('<li>Test Participant "' + testParticipants[k].name + '" changes<ul>' + testParticipants[k].changes.join('') + '</ul></li>');
                             }
@@ -1013,7 +988,7 @@
             return ret;
         }
 
-        function compareCqms (prev, curr) {
+        compareCqms (prev, curr) {
             var ret = [];
             var change;
             prev.sort(function (a,b) {return (a.cmsId > b.cmsId) ? 1 : ((b.cmsId > a.cmsId) ? -1 : 0);} );
@@ -1021,7 +996,7 @@
             var i, j;
             for (i = 0; i < prev.length; i++) {
                 var obj = { cmsId: curr[i].cmsId, changes: [] };
-                change = compareItem(prev[i], curr[i], 'success', 'Success');
+                change = this.compareItem(prev[i], curr[i], 'success', 'Success');
                 if (change) {
                     obj.changes.push('<li>' + change + '</li>');
                 }
@@ -1034,7 +1009,7 @@
                     }
                 }
                 var criteriaKeys = [];
-                var criteria = compareArray(prev[i].criteria, curr[i].criteria, criteriaKeys, 'certificationNumber');
+                var criteria = this.compareArray(prev[i].criteria, curr[i].criteria, criteriaKeys, 'certificationNumber');
                 for (j = 0; j < criteria.length; j++) {
                     obj.changes.push('<li>Certification Criteria "' + criteria[j].name + '" changes<ul>' + criteria[j].changes.join('') + '</ul></li>');
                 }
@@ -1045,8 +1020,8 @@
             return ret;
         }
 
-        function interpretCaps (data) {
-            vm.loadedCapActivity = data;
+        interpretCaps (data) {
+            this.loadedCapActivity = data;
             var ret = [];
             var change;
 
@@ -1087,10 +1062,10 @@
                         ];
                         activity.details = [];
                         for (j = 0; j < capFields.length; j++) {
-                            change = compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
+                            change = this.compareItem(data[i].originalData, data[i].newData, capFields[j].key, capFields[j].display, capFields[j].filter);
                             if (change) { activity.details.push(change); }
                         }
-                        certChanges = compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
+                        certChanges = this.compareCapCerts(data[i].originalData.certifications, data[i].newData.certifications);
                         for (j = 0; j < certChanges.length; j++) {
                             activity.details.push('Certification "' + certChanges[j].number + '" changes<ul>' + certChanges[j].changes.join('') + '</ul>');
                         }
@@ -1116,7 +1091,7 @@
             return ret;
         }
 
-        function interpretDevelopers (data) {
+        interpretDevelopers (data) {
             var simpleFields = [
                 {key: 'deleted', display: 'Deleted'},
                 {key: 'developerCode', display: 'Developer Code'},
@@ -1136,7 +1111,7 @@
                     id: data[i].id,
                     developer: data[i].newData.name,
                     developerCode: data[i].newData.developerCode,
-                    responsibleUser: getResponsibleUser(data[i].responsibleUser),
+                    responsibleUser: this.getResponsibleUser(data[i].responsibleUser),
                     date: data[i].activityDate,
                 };
                 activity.friendlyActivityDate = new Date(activity.date).toISOString().substring(0, 10)
@@ -1151,33 +1126,33 @@
                     activity.action = 'Updated developer "' + data[i].newData.name + '"';
                     activity.details = [];
                     for (j = 0; j < simpleFields.length; j++) {
-                        change = compareItem(data[i].originalData, data[i].newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
+                        change = this.compareItem(data[i].originalData, data[i].newData, simpleFields[j].key, simpleFields[j].display, simpleFields[j].filter);
                         if (change) {
                             activity.details.push(change);
                         }
                     }
                     for (j = 0; j < nestedKeys.length; j++) {
-                        change = nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
+                        change = this.nestedCompare(data[i].originalData, data[i].newData, nestedKeys[j].key, nestedKeys[j].subkey, nestedKeys[j].display, nestedKeys[j].filter);
                         if (change) {
                             activity.details.push(change);
                         }
                     }
-                    var addressChanges = compareAddress(data[i].originalData.address, data[i].newData.address);
+                    var addressChanges = this.compareAddress(data[i].originalData.address, data[i].newData.address);
                     if (addressChanges && addressChanges.length > 0) {
                         activity.details.push('Address changes<ul>' + addressChanges.join('') + '</ul>');
                     }
-                    var contactChanges = compareContact(data[i].originalData.contact, data[i].newData.contact);
+                    var contactChanges = this.compareContact(data[i].originalData.contact, data[i].newData.contact);
                     if (contactChanges && contactChanges.length > 0) {
                         activity.details.push('Contact changes<ul>' + contactChanges.join('') + '</ul>');
                     }
                     var transKeys = [{key: 'transparencyAttestation', display: 'Transparency Attestation'}];
-                    var trans = compareArray(data[i].originalData.transparencyAttestationMappings, data[i].newData.transparencyAttestationMappings, transKeys, 'acbName');
+                    var trans = this.compareArray(data[i].originalData.transparencyAttestationMappings, data[i].newData.transparencyAttestationMappings, transKeys, 'acbName');
                     for (j = 0; j < trans.length; j++) {
                         activity.details.push('Transparency Attestation "' + trans[j].name + '" changes<ul>' + trans[j].changes.join('') + '</ul>');
                     }
 
                     var foundEvents = false;
-                    var statusEvents = utilService.arrayCompare(data[i].originalData.statusEvents,data[i].newData.statusEvents);
+                    var statusEvents = this.utilService.arrayCompare(data[i].originalData.statusEvents,data[i].newData.statusEvents);
                     var sortedEvents, translatedEvents;
                     translatedEvents = '<table class="table table-condensed"><thead><tr>';
                     if (statusEvents.added.length > 0) {
@@ -1196,27 +1171,27 @@
                     if (statusEvents.added.length > 0) {
                         translatedEvents += '<td><ul>';
 
-                        sortedEvents = $filter('orderBy')(statusEvents.added,'statusDate',true);
+                        sortedEvents = this.$filter('orderBy')(statusEvents.added,'statusDate',true);
                         for (j = 0; j < sortedEvents.length; j++) {
-                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
                         }
                         translatedEvents += '</ul></td>';
                     }
                     if (statusEvents.edited.length > 0) {
                         translatedEvents += '<td><ul>';
 
-                        sortedEvents = $filter('orderBy')(statusEvents.edited,'before.statusDate',true);
+                        sortedEvents = this.$filter('orderBy')(statusEvents.edited,'before.statusDate',true);
                         for (j = 0; j < sortedEvents.length; j++) {
-                            translatedEvents += '<li><strong>' + sortedEvents[j].before.status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + sortedEvents[j].after.status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
+                            translatedEvents += '<li><strong>' + sortedEvents[j].before.status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].before.statusDate,'mediumDate','UTC') + ') became: <strong>' + sortedEvents[j].after.status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].after.statusDate,'mediumDate','UTC') + ')</li>';
                         }
                         translatedEvents += '</ul></td>';
                     }
                     if (statusEvents.removed.length > 0) {
                         translatedEvents += '<td><ul>';
 
-                        sortedEvents = $filter('orderBy')(statusEvents.removed,'statusDate',true);
+                        sortedEvents = this.$filter('orderBy')(statusEvents.removed,'statusDate',true);
                         for (j = 0; j < sortedEvents.length; j++) {
-                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + $filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
+                            translatedEvents += '<li><strong>' + sortedEvents[j].status.statusName + '</strong> (' + this.$filter('date')(sortedEvents[j].statusDate,'mediumDate','UTC') + ')</li>';
                         }
                         translatedEvents += '</ul></td>';
                     }
@@ -1232,7 +1207,7 @@
                     }
                     activity.csvAction = activity.action;
                 } else {
-                    vm.interpretNonUpdate(activity, data[i], 'developer');
+                    this.interpretNonUpdate(activity, data[i], 'developer');
                     activity.csvAction = activity.action[0].replace(',','","');
                 }
                 ret.push(activity);
@@ -1240,7 +1215,7 @@
             return ret;
         }
 
-        function interpretProducts (data) {
+        interpretProducts (data) {
             var ret = [];
             var change;
 
@@ -1249,7 +1224,7 @@
                 var activity = {
                     id: data[i].id,
                     product: data[i].newData.name,
-                    responsibleUser: getResponsibleUser(data[i].responsibleUser),
+                    responsibleUser: this.getResponsibleUser(data[i].responsibleUser),
                     date: data[i].activityDate,
                 };
                 if (data[i].developer) {
@@ -1262,17 +1237,17 @@
                 if (data[i].originalData && !angular.isArray(data[i].originalData) && data[i].newData) { // both exist, originalData not an array: update
                     activity.name = data[i].newData.name;
                     activity.action = 'Update:<ul>';
-                    change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                    change = this.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                     if (change) {
                         activity.action += '<li>' + change + '</li>';
                         wasChanged = true;
                     }
-                    change = compareItem(data[i].originalData, data[i].newData, 'developerName', 'Developer');
+                    change = this.compareItem(data[i].originalData, data[i].newData, 'developerName', 'Developer');
                     if (change) {
                         activity.action += '<li>' + change + '</li>';
                         wasChanged = true;
                     }
-                    var contactChanges = compareContact(data[i].originalData.contact, data[i].newData.contact);
+                    var contactChanges = this.compareContact(data[i].originalData.contact, data[i].newData.contact);
                     if (contactChanges && contactChanges.length > 0) {
                         activity.action += '<li>Contact changes<ul>' + contactChanges.join('') + '</ul></li>';
                         wasChanged = true;
@@ -1283,7 +1258,7 @@
                             action += '<li>No previous history</li>';
                         } else {
                             for (j = 0; j < data[i].originalData.ownerHistory.length; j++) {
-                                action += '<li><strong>' + data[i].originalData.ownerHistory[j].developer.name + '</strong> on ' + $filter('date')(data[i].originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                                action += '<li><strong>' + data[i].originalData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(data[i].originalData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
                             }
                         }
                         action += '</ul>Now:<ul>';
@@ -1291,7 +1266,7 @@
                             action += '<li>No new history</li>';
                         } else {
                             for (j = 0; j < data[i].newData.ownerHistory.length; j++) {
-                                action += '<li><strong>' + data[i].newData.ownerHistory[j].developer.name + '</strong> on ' + $filter('date')(data[i].newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
+                                action += '<li><strong>' + data[i].newData.ownerHistory[j].developer.name + '</strong> on ' + this.$filter('date')(data[i].newData.ownerHistory[j].transferDate,'mediumDate','UTC') + '</li>';
                             }
                         }
                         action += '</ul></li>';
@@ -1300,7 +1275,7 @@
                     }
                     activity.action += '</ul>';
                 } else {
-                    vm.interpretNonUpdate(activity, data[i], 'product');
+                    this.interpretNonUpdate(activity, data[i], 'product');
                     wasChanged = true;
                 }
                 if (wasChanged) {
@@ -1310,7 +1285,7 @@
             return ret;
         }
 
-        vm.interpretVersions = function (data) {
+        interpretVersions (data) {
             var ret = [];
             var change;
 
@@ -1320,9 +1295,9 @@
                     activity.product = data[i].newData.productName;
                     activity.name = data[i].newData.version;
                     activity.action = 'Update:<ul>';
-                    change = compareItem(data[i].originalData, data[i].newData, 'version', 'Version');
+                    change = this.compareItem(data[i].originalData, data[i].newData, 'version', 'Version');
                     if (change) { activity.action += '<li>' + change + '</li>'; }
-                    change = compareItem(data[i].originalData, data[i].newData, 'productName', 'Associated Product');
+                    change = this.compareItem(data[i].originalData, data[i].newData, 'productName', 'Associated Product');
                     if (change) { activity.action += '<li>' + change + '</li>'; }
                     activity.action += '</ul>';
                 } else {
@@ -1331,14 +1306,14 @@
                     } else if (data[i].originalData) {
                         activity.product = data[i].originalData.productName;
                     }
-                    vm.interpretNonUpdate(activity, data[i], 'version', 'version');
+                    this.interpretNonUpdate(activity, data[i], 'version', 'version');
                 }
                 ret.push(activity);
             }
             return ret;
-        };
+        }
 
-        vm.interpretAcbs = function (data) {
+        interpretAcbs (data) {
             var ret = [];
             var change;
 
@@ -1350,25 +1325,25 @@
                         activity.action = data[i].newData.deleted ? 'ACB was deleted' : 'ACB was restored';
                     } else {
                         activity.action = 'Update:<ul>';
-                        change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                        change = this.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                         if (change) { activity.action += '<li>' + change + '</li>'; }
-                        change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                        change = this.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                         if (change) { activity.action += '<li>' + change + '</li>'; }
-                        change = compareAddress(data[i].originalData.address, data[i].newData.address);
+                        change = this.compareAddress(data[i].originalData.address, data[i].newData.address);
                         if (change && change.length > 0) {
                             activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
                         }
                         activity.action += '</ul>';
                     }
                 } else {
-                    vm.interpretNonUpdate(activity, data[i], 'ACB');
+                    this.interpretNonUpdate(activity, data[i], 'ACB');
                 }
                 ret.push(activity);
             }
             return ret;
-        };
+        }
 
-        vm.interpretAtls = function (data) {
+        interpretAtls (data) {
             var ret = [];
             var change;
 
@@ -1380,40 +1355,40 @@
                         activity.action = data[i].newData.deleted ? 'ONC-ATL was deleted' : 'ONC-ATL was restored';
                     } else {
                         activity.action = 'Update:<ul>';
-                        change = compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
+                        change = this.compareItem(data[i].originalData, data[i].newData, 'name', 'Name');
                         if (change) { activity.action += '<li>' + change + '</li>'; }
-                        change = compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
+                        change = this.compareItem(data[i].originalData, data[i].newData, 'website', 'Website');
                         if (change) { activity.action += '<li>' + change + '</li>'; }
-                        change = compareAddress(data[i].originalData.address, data[i].newData.address);
+                        change = this.compareAddress(data[i].originalData.address, data[i].newData.address);
                         if (change && change.length > 0) {
                             activity.action += '<li>Address changes<ul>' + change.join('') + '</ul></li>';
                         }
                         activity.action += '</ul>';
                     }
                 } else {
-                    vm.interpretNonUpdate(activity, data[i], 'ONC-ATL');
+                    this.interpretNonUpdate(activity, data[i], 'ONC-ATL');
                 }
                 ret.push(activity);
             }
             return ret;
-        };
+        }
 
-        vm.interpretAnnouncements = function (data) {
+        interpretAnnouncements (data) {
             var ret = data;
             return ret;
-        };
+        }
 
-        vm.interpretUsers = function (data) {
+        interpretUsers (data) {
             var ret = data;
             return ret;
-        };
+        }
 
-        vm.interpretUserActivities = function (data) {
+        interpretUserActivities (data) {
             var ret = data;
             return ret;
-        };
+        }
 
-        vm.interpretNonUpdate = function (activity, data, text, key) {
+        interpretNonUpdate (activity, data, text, key) {
             if (!key) { key = 'name'; }
             if (data.originalData && !data.newData) { // no new data: deleted
                 activity.name = data.originalData[key];
@@ -1427,9 +1402,9 @@
                 activity.name = data.newData[key];
                 activity.action = ['Merged ' + data.originalData.length + ' ' + text + 's to form ' + text + ': "' + activity.name + '"'];
             }
-        };
+        }
 
-        function compareAddress (prev, curr) {
+        compareAddress (prev, curr) {
             var simpleFields = [
                 {key: 'streetLineOne', display: 'Street Line 1'},
                 {key: 'streetLineTwo', display: 'Street Line 2'},
@@ -1438,10 +1413,10 @@
                 {key: 'zipcode', display: 'Zipcode'},
                 {key: 'country', display: 'Country'},
             ];
-            return compareObject(prev, curr, simpleFields);
+            return this.compareObject(prev, curr, simpleFields);
         }
 
-        function compareContact (prev, curr) {
+        compareContact (prev, curr) {
             var simpleFields = [
                 {key: 'fullName', display: 'Full Name'},
                 {key: 'friendlyName', display: 'Friendly Name'},
@@ -1449,33 +1424,33 @@
                 {key: 'title', display: 'Title'},
                 {key: 'email', display: 'Email'},
             ];
-            return compareObject(prev, curr, simpleFields);
+            return this.compareObject(prev, curr, simpleFields);
         }
 
-        function compareObject (prev, curr, fields) {
+        compareObject (prev, curr, fields) {
             var ret = [];
             var change;
 
             for (var i = 0; i < fields.length; i++) {
-                change = compareItem(prev, curr, fields[i].key, fields[i].display, fields[i].filter);
+                change = this.compareItem(prev, curr, fields[i].key, fields[i].display, fields[i].filter);
                 if (change) { ret.push('<li>' + change + '</li>'); }
             }
             return ret;
         }
 
-        vm.analyzeAddress = function (activity, data) {
+        analyzeAddress (activity, data) {
             if (data.originalData.address !== data.newData.address) {
                 var change;
                 activity.action += '<li>Address changes<ul>';
-                change = compareAddress(data.originalData.address, data.newData.address);
+                change = this.compareAddress(data.originalData.address, data.newData.address);
                 if (change && change.length > 0) {
                     activity.action += change.join('');
                 }
                 activity.action += '</ul></li>';
             }
-        };
+        }
 
-        function compareArray (prev, curr, keys, root, nested, altRoot) {
+        compareArray (prev, curr, keys, root, nested, altRoot) {
             var ret = [];
             var change, i, j, k, l;
             if (prev !== null) {
@@ -1484,12 +1459,12 @@
                         var obj = { name: curr[j][altRoot ? altRoot : root], changes: [] };
                         if (prev[i][root] === curr[j][root]) {
                             for (k = 0; k < keys.length; k++) {
-                                change = compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
+                                change = this.compareItem(prev[i], curr[j], keys[k].key, keys[k].display);
                                 if (change) { obj.changes.push('<li>' + change + '</li>'); }
                             }
                             if (nested) {
                                 for (k = 0; k < nested.length; k++) {
-                                    nested[k].changes = utilService.arrayCompare(prev[i][nested[k].key],curr[j][nested[k].key],nested[k].compareId);
+                                    nested[k].changes = this.utilService.arrayCompare(prev[i][nested[k].key],curr[j][nested[k].key],nested[k].compareId);
                                     if (nested[k].changes.added.length > 0) {
                                         if (nested[k].countOnly) { obj.changes.push('<li>Added ' + nested[k].changes.added.length + ' ' + nested[k].display + (nested[k].changes.added.length !== 1 ? 's' : '') + '</li>') }
                                         else {
@@ -1532,42 +1507,42 @@
             return ret;
         }
 
-        function compareItem (oldData, newData, key, display, filter) {
+        compareItem (oldData, newData, key, display, filter) {
             if (oldData && oldData[key] && newData && newData[key] && oldData[key] !== newData[key]) {
                 if (filter) {
-                    return display + ' changed from ' + $filter(filter)(oldData[key],'mediumDate','UTC') + ' to ' + $filter(filter)(newData[key],'mediumDate','UTC');
+                    return display + ' changed from ' + this.$filter(filter)(oldData[key],'mediumDate','UTC') + ' to ' + this.$filter(filter)(newData[key],'mediumDate','UTC');
                 } else {
                     return display + ' changed from ' + oldData[key] + ' to ' + newData[key];
                 }
             }
             if ((!oldData || !oldData[key]) && newData && newData[key]) {
                 if (filter) {
-                    return display + ' added: ' + $filter(filter)(newData[key],'mediumDate','UTC');
+                    return display + ' added: ' + this.$filter(filter)(newData[key],'mediumDate','UTC');
                 } else {
                     return display + ' added: ' + newData[key];
                 }
             }
             if (oldData && oldData[key] && (!newData || !newData[key])) {
                 if (filter) {
-                    return display + ' removed. Was: ' + $filter(filter)(oldData[key],'mediumDate','UTC');
+                    return display + ' removed. Was: ' + this.$filter(filter)(oldData[key],'mediumDate','UTC');
                 } else {
                     return display + ' removed. Was: ' + oldData[key];
                 }
             }
         }
 
-        function nestedCompare (oldData, newData, key, subkey, display, filter) {
-            return compareItem(oldData[key], newData[key], subkey, display, filter);
+        nestedCompare (oldData, newData, key, subkey, display, filter) {
+            return this.compareItem(oldData[key], newData[key], subkey, display, filter);
         }
 
-        function dateAdjust (obj) {
+        dateAdjust (obj) {
             var ret = angular.copy(obj);
-            ret.startDate = coerceToMidnight(ret.startDate);
-            ret.endDate = coerceToMidnight(ret.endDate, true);
+            ret.startDate = this.coerceToMidnight(ret.startDate);
+            ret.endDate = this.coerceToMidnight(ret.endDate, true);
             return ret;
         }
 
-        function coerceToMidnight (date, roundUp) {
+        coerceToMidnight (date, roundUp) {
             if (date) {
                 date.setHours(0,0,0,0);
                 if (roundUp) {
@@ -1577,8 +1552,11 @@
             }
         }
 
-        function getResponsibleUser (user) {
+        getResponsibleUser (user) {
             return user.fullName;
         }
-    }
-})();
+    },
+}
+
+angular.module('chpl.admin')
+    .component('aiReports', ReportsComponent);

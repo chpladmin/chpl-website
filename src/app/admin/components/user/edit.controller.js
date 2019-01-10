@@ -5,7 +5,7 @@
         .controller('EditUserController', EditUserController);
 
     /** @ngInject */
-    function EditUserController ($uibModalInstance, acbId, action, atlId, networkService, user) {
+    function EditUserController ($uibModalInstance, acbId, action, atlId, authService, networkService, user) {
         var vm = this;
 
         vm.cancel = cancel;
@@ -105,9 +105,11 @@
         function loadRoles () {
             vm.roles = [];
             if (!vm.acbId && !vm.atlId) {
-                vm.roles.push('ROLE_ADMIN');
+                if (authService.hasAnyRole(['ROLE_ADMIN'])) {
+                    vm.roles.push('ROLE_ADMIN');
+                }
+                vm.roles.push('ROLE_ONC');
                 vm.roles.push('ROLE_CMS_STAFF');
-                vm.roles.push('ROLE_ONC_STAFF');
             }
             if (!vm.atlId) {
                 vm.roles.push('ROLE_ACB');

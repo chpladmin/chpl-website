@@ -19,9 +19,11 @@ export const AtlManagementComponent = {
         }
 
         $onInit () {
-            this.isAtlAdmin = this.authService.isAtlAdmin();
-            this.isChplAdmin = this.authService.isChplAdmin();
-            this.workType = 'atl';
+            this.isAtlAdmin = this.authService.hasAnyRole(['ROLE_ATL']);
+            this.isChplAdmin = this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            if (!this.workType) {
+                this.workType = 'atl';
+            }
         }
 
         createAtl () {

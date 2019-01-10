@@ -19,9 +19,11 @@ export const AcbManagementComponent = {
         }
 
         $onInit () {
-            this.isAcbAdmin = this.authService.isAcbAdmin();
-            this.isChplAdmin = this.authService.isChplAdmin();
-            this.workType = 'acb';
+            this.isAcbAdmin = this.authService.hasAnyRole(['ROLE_ACB']);
+            this.isChplAdmin = this.authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
+            if (!this.workType) {
+                this.workType = 'acb';
+            }
         }
 
         createAcb () {

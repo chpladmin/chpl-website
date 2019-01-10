@@ -10,6 +10,7 @@
 
         vm.addPreviousStatus = addPreviousStatus;
         vm.addressRequired = addressRequired;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.hasDateMatches = hasDateMatches;
         vm.hasStatusMatches = hasStatusMatches;
         vm.isBeingActivatedFromOncInactiveStatus = isBeingActivatedFromOncInactiveStatus;
@@ -37,8 +38,6 @@
                 }
             }
 
-            vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.isChplAdmin = authService.isChplAdmin();
             vm.showFormErrors = false;
             vm.loadedAsInactiveByOnc = (vm.developer.status.status === 'Suspended by ONC' || vm.developer.status.status === 'Under certification ban by ONC');
         }
