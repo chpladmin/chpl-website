@@ -1,7 +1,6 @@
 export const AcbManagementComponent = {
     templateUrl: 'chpl.admin/components/acb/view.html',
     bindings: {
-        workType: '@',
         acb: '<',
     },
     controller: class AcbManagementController {
