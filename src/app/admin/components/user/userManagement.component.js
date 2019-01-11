@@ -11,16 +11,22 @@
     });
 
     /** @ngInject */
-    function UserManagementController ($log, $uibModal, networkService) {
+    function UserManagementController ($log, $uibModal, authService, networkService) {
         var ctrl = this;
 
-        ctrl.updateUser = updateUser;
+        ctrl.impersonateUser = impersonateUser;
         ctrl.inviteUser = inviteUser;
+        ctrl.updateUser = updateUser;
 
         ////////////////////////////////////////////////////////////////////
 
         ctrl.$onInit = () => {
             _loadUsers();
+        }
+
+        function impersonateUser (user) {
+            networkService.impersonateUser(user)
+                .then(token => authService.saveToken(token.token));
         }
 
         function inviteUser () {

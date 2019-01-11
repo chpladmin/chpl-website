@@ -481,6 +481,10 @@ export class NetworkService {
         return this.apiGET('/versions?productId=' + productId);
     }
 
+    impersonateUser (user) {
+        return this.apiGET('/auth/impersonate?username=' + user.user.subjectName);
+    }
+
     initiateSurveillance (surveillance) {
         this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance', surveillance);

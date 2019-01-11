@@ -28,7 +28,11 @@
             if (hasAnyRole()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
-                return identity[2];
+                if (identity.length === 2) {
+                    return identity[2];
+                } else {
+                    return 'Impersonating ' + identity[2];
+                }
             } else {
                 logout();
                 return '';
