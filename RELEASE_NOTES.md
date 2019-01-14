@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 10.10.0
+_14 January 2019_
+
+### New features
+* Allow download of Search results
+
+### Bugs fixed
+* Fix navigation related to ATL management
+* Re-enable editing of certified product certification criteria
+
+---
+
 ## Version 10.9.0
 _17 December 2018_
 
