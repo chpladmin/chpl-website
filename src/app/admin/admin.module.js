@@ -10,7 +10,6 @@
         'chpl.services',
         'ngCsv',
         'ngIdle',
-        'ngRoute',
         'ngSanitize',
         'smart-table',
         'ui.bootstrap',

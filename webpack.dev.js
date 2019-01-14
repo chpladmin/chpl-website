@@ -16,6 +16,9 @@ module.exports = merge(base, {
                 pathRewrite: {'^/rest' : ''},
             },
         },
+        watchOptions: {
+            ignored: '**/.*',
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({

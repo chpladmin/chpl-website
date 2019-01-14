@@ -2,6 +2,7 @@
 import 'angular-loading-bar/build/loading-bar.min.css';
 import 'angular-swagger-ui/dist/css/swagger-ui.min.css';
 import './index.scss';
+import '../assets/favicons/favicons';
 
 function importAll (r) {
     r.keys().forEach(r);
@@ -25,7 +26,6 @@ import /* cytoscape from*/ 'cytoscape';
 import /* ngCytoscape from*/ './lib/ngCytoscape.min';
 //import ngMessages from 'ngMessages';
 import /* ngResource from*/ 'angular-resource';
-import /* ngRoute from*/ 'angular-route';
 import /* ngSanitize from*/ 'angular-sanitize';
 //import ngTouch from 'ngTouch';
 import /* smartTable from*/ 'angular-smart-table';
@@ -37,6 +37,7 @@ import /* ngFileSaver from*/ 'angular-file-saver';
 import /* ngStorage from*/ 'ngstorage';
 import 'angular-zxcvbn';
 import 'zxcvbn';
+import 'angular-ui-router';
 
 // import app modules
 import /* adminModule from*/ './admin/index';
@@ -84,13 +85,13 @@ const dependencies = [
     //    'ngMessages',
     'ngFileSaver',
     'ngResource',
-    'ngRoute',
     'ngStorage',
     'ngSanitize',
     //    'ngTouch',
     'smart-table',
     'toaster',
     'ui.bootstrap',
+    'ui.router',
     //    'ui.bootstrap.fontawesome',
     'zxcvbn',
 ];

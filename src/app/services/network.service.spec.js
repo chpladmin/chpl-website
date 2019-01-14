@@ -126,8 +126,8 @@
 
         // TODO: Deprecated
         it('should authorizeUser', function () {
-            $httpBackend.expectPOST(/users\/authorize/, 'payload').respond(200, {data: 'response'});
-            networkService.authorizeUser('payload').then(function (response) {
+            $httpBackend.expectPOST(/users\/username\/authorize/, 'payload').respond(200, {data: 'response'});
+            networkService.authorizeUser('payload', 'username').then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -135,7 +135,12 @@
 
         it('should changePassword', function () {
             $httpBackend.expectPOST(/auth\/change_password/).respond(200, {data: 'response'});
-            networkService.changePassword('payload').then(function (response) {
+            networkService.changePassword({userName: '', oldPassword: 'password', newPassword: 'newPassword'}).then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+            $httpBackend.expectPOST(/auth\/change_expired_password/).respond(200, {data: 'response'});
+            networkService.changePassword({userName: 'userName', oldPassword: 'password', newPassword: 'newPassword'}).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -213,22 +218,6 @@
             $httpBackend.flush();
         });
 
-        it('should deleteACB', function () {
-            $httpBackend.expectDELETE(/acbs\/1/).respond(200);
-            networkService.deleteACB(1).then(function (response) {
-                expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
-        it('should deleteATL', function () {
-            $httpBackend.expectDELETE(/atls\/1/).respond(200);
-            networkService.deleteATL(1).then(function (response) {
-                expect(response.status).toEqual(200);
-            });
-            $httpBackend.flush();
-        });
-
         it('should deleteAnnouncement', function () {
             $httpBackend.expectDELETE(/announcements\/1/).respond(200);
             networkService.deleteAnnouncement(1).then(function (response) {
@@ -297,13 +286,8 @@
         });
 
         it('should getAcbs', function () {
-            $httpBackend.expectGET(/acbs\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/acbs\?editable=false/).respond(200, {data: 'response'});
             networkService.getAcbs(false).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/acbs\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getAcbs(false, true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -401,6 +385,14 @@
             $httpBackend.flush();
         });
 
+        it('should getApiDocumentationDate', () => {
+            $httpBackend.expectGET(/files\/api_documentation\/details/).respond(200, {data: 'response'});
+            networkService.getApiDocumentationDate().then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should getApiUserActivity', function () {
             var aDate = new Date();
             $httpBackend.expectGET(/activity\/api_keys/).respond(200, {data: 'response'});
@@ -458,13 +450,8 @@
         });
 
         it('should getAtls', function () {
-            $httpBackend.expectGET(/atls\?editable=false&showDeleted=false/).respond(200, {data: 'response'});
+            $httpBackend.expectGET(/atls\?editable=false/).respond(200, {data: 'response'});
             networkService.getAtls(false).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-            $httpBackend.expectGET(/atls\?editable=false&showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getAtls(false, true).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
@@ -852,11 +839,6 @@
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();
-            $httpBackend.expectGET(/search_options\?showDeleted=true/).respond(200, {data: 'response'});
-            networkService.getSearchOptions(true).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
         });
 
         it('should getScheduleTriggers', function () {
@@ -1198,8 +1180,8 @@
             $httpBackend.flush();
         });
 
-        it('should registerApi', function () {
-            $httpBackend.expectPOST(/key/).respond(200, {data: 'response'});
+        it('should registerApi', () => {
+            $httpBackend.expectPOST(/^\/rest\/key$/).respond(200, {data: 'response'});
             networkService.registerApi('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
@@ -1246,6 +1228,14 @@
             $httpBackend.flush();
         });
 
+        it('should emailResetPassword', function () {
+            $httpBackend.expectPOST(/auth\/email_reset_password/).respond(200, {data: 'response'});
+            networkService.emailResetPassword('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should revokeApi', function () {
             $httpBackend.expectDELETE(/key\/userKey/).respond(200);
             networkService.revokeApi({key: 'userKey'}).then(function (response) {
@@ -1273,22 +1263,6 @@
         it('should splitProduct', function () {
             $httpBackend.expectPOST(/products\/1\/split/).respond(200, {data: 'response'});
             networkService.splitProduct({oldProduct: {productId: 1}}).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should undeleteACB', function () {
-            $httpBackend.expectPUT(/acbs\/1\/undelete/).respond(200, {data: 'response'});
-            networkService.undeleteACB(1).then(function (response) {
-                expect(response.data).toEqual('response');
-            });
-            $httpBackend.flush();
-        });
-
-        it('should undeleteATL', function () {
-            $httpBackend.expectPUT(/atls\/1\/undelete/).respond(200, {data: 'response'});
-            networkService.undeleteATL(1).then(function (response) {
                 expect(response.data).toEqual('response');
             });
             $httpBackend.flush();

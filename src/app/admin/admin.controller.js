@@ -5,7 +5,7 @@
         .controller('AdminController', AdminController);
 
     /** @ngInclude */
-    function AdminController ($filter, $location, $log, $routeParams, authService, networkService) {
+    function AdminController ($filter, $location, $log, $stateParams, authService, networkService) {
         var vm = this;
 
         vm.changeAcb = changeAcb
@@ -47,67 +47,65 @@
             }
 
             // chosen section
-            if ($routeParams.section) {
-                vm.navState.screen = $routeParams.section;
+            if ($stateParams.section) {
+                vm.navState.screen = $stateParams.section;
             }
             if (vm.navState.screen === 'reports') {
-                if ($routeParams.subSection) {
-                    vm.productId = $routeParams.subSection;
+                if ($stateParams.subSection) {
+                    vm.productId = $stateParams.subSection;
                     vm.navState.reports = '';
                 }
             } else {
-                if ($routeParams.subSection) {
-                    vm.navState[vm.navState.screen] = $routeParams.subSection;
+                if ($stateParams.subSection) {
+                    vm.navState[vm.navState.screen] = $stateParams.subSection;
                 }
-                if ($routeParams.productId) {
+                if ($stateParams.productId) {
                     vm.navState.reports = '';
-                    vm.productId = $routeParams.productId;
+                    vm.productId = $stateParams.productId;
                 }
             }
 
             // load editable acbs & atls
-            networkService.getAcbs(true, vm.isChplAdmin())
+            networkService.getAcbs(true)
                 .then(function (data) {
                     vm.acbs = $filter('orderBy')(data.acbs,'name');
-                    vm.activeAcb = vm.acbs[0];
-                    vm.navState.acbManagement = vm.activeAcb;
+                    vm.acb = vm.acbs[0];
+                    vm.navState.acbManagement = vm.acb;
                 });
-            networkService.getAtls(true, vm.isChplAdmin())
+            networkService.getAtls(true)
                 .then(function (data) {
                     vm.atls = $filter('orderBy')(data.atls,'name');
-                    vm.activeAtl = vm.atls[0];
-                    vm.navState.atlManagement = vm.activeAtl;
+                    vm.atl = vm.atls[0];
+                    vm.navState.atlManagement = vm.atl;
                 });
         }
 
         function changeAcb (acb) {
-            vm.activeAcb = acb;
-            vm.navState.workType = 'acb';
+            vm.acb = acb;
             vm.changeSubNav(acb);
         }
 
         function changeAtl (atl) {
-            vm.activeAtl = atl;
-            vm.navState.workType = 'atl';
+            vm.atl = atl;
             vm.changeSubNav(atl);
         }
 
         function changeScreen (screen) {
             vm.clearProductId();
             if (screen === 'acbManagement') {
-                networkService.getAcbs(true, vm.isChplAdmin())
+                networkService.getAcbs(true)
                     .then(function (data) {
                         vm.acbs = $filter('orderBy')(data.acbs,'name');
-                        vm.activeAcb = vm.acbs[0];
-                        vm.navState.acbManagement = vm.activeAcb;
+                        vm.acb = vm.acbs[0];
+                        vm.navState.acbManagement = vm.acb;
                     });
             }
             if (screen === 'atlManagement') {
-                networkService.getAtls(true, vm.isChplAdmin())
+                networkService.getAtls(true)
                     .then(function (data) {
                         vm.atls = $filter('orderBy')(data.atls,'name');
-                        vm.activeAtl = vm.atls[0];
-                        vm.navState.atlManagement = vm.activeAtl;
+                        vm.atl = vm.atls[0];
+                        vm.navState.atlManagement = vm.atl;
                     });
             }
             vm.navState.screen = screen;
@@ -120,7 +118,7 @@
 
         function clearProductId () {
             var path = $location.path();
-            if ($routeParams.productId) {
+            if ($stateParams.productId) {
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
@@ -129,7 +127,7 @@
 
         function clearSubsection () {
             var path = $location.path();
-            if ($routeParams.productId) {
+            if ($stateParams.productId) {
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }

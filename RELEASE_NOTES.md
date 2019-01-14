@@ -1,5 +1,53 @@
 # Release Notes
 
+## Version 10.10.0
+_14 January 2019_
+
+### New features
+* Allow download of Search results
+
+### Bugs fixed
+* Fix navigation related to ATL management
+* Re-enable editing of certified product certification criteria
+
+---
+
+## Version 10.9.0
+_17 December 2018_
+
+### New features
+* Change /authorize call to not use deprecated endpoint
+* Change API key registration call to not use deprecated endpoint
+* Handle retired ONC-ACBs / ONC-ATLs
+
+---
+
+## Version 10.8.0
+_3 December 2018_
+
+### New features
+* Add updated favicons; support app/mobile pinning
+* Add sorting to functionality tested
+* Add support for resetting password via generated link
+* Add "user must reset password on next login" workflow
+* Allow ROLE_ADMIN to upload API Documentation data file
+* Display API Documentation data file for public
+
+---
+
+## Version 10.7.0
+_19 November 2018_
+
+### New features
+* Updated ONC contact information.
+* Cache three network calls for varying timeouts
+  * /collections/certified_products for five minutes
+  * /certified_products/{productId}/details for fifteen minutes
+  * /data/search_options for five minutes
+* Add validation to surveillance "sites passed" and "total sites" for randomized surveillance activities
+
+---
+
 ## Version 10.6.0
 _5 November 2018_
 

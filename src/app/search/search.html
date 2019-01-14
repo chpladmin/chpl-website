@@ -1,5 +1,5 @@
 <div id="search-page">
-  <div class="pending" id="pendingMask" ng-show="vm.isPreLoading"></div>
+  <div class="pending" id="pendingMask" ng-show="vm.isPreloading"></div>
   <div class="search-unsearched" ng-if="!vm.activeSearch && vm.searchForm.$pristine"></div>
   <div class="container-fluid" st-table="vm.displayedCps" st-safe-src="vm.allCps" st-set-filter="customFilter" vm.totalItemCount="totalItemCount">
     <st-manage register-search="vm.registerSearch(search)" name-space="searchTableState"></st-manage>
@@ -29,7 +29,7 @@
           <st-list-multiple collection="vm.allCps" fixed-items="vm.previouslyIds" predicate="id" register-clear-filter="vm.registerClearFilter(clearFilter)" register-restore-state="vm.registerRestoreState(restoreState)" name-space="searchTableState" match-full="true" hidden="true"></st-list-multiple>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-ai dropdown-toggle" type="button" id="filter-status-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
+              <a ng-if="vm.categoryChanged['certificationStatus']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Status <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-status-button" uib-dropdown-menu>
               <st-list-multiple
@@ -48,7 +48,7 @@
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-ai dropdown-toggle" type="button" id="filter-edition-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Edition <i class="fa fa-filter"></i>
+              <a ng-if="vm.categoryChanged['edition']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Edition <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu" aria-labeledby="filter-edition-button" uib-dropdown-menu>
               <st-list-multiple
@@ -66,7 +66,7 @@
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-ai dropdown-toggle" type="button" id="filter-criteria-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['criteria'][2011] || vm.categoryChanged['criteria'][2014] || vm.categoryChanged['criteria'][2015]" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Criteria <i class="fa fa-filter"></i>
+              <a ng-if="vm.categoryChanged['criteria'][2011] || vm.categoryChanged['criteria'][2014] || vm.categoryChanged['criteria'][2015]" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Certification Criteria <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-criteria-button" uib-dropdown-menu>
               <li>
@@ -125,7 +125,7 @@
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-ai dropdown-toggle" type="button" id="filter-surveillance-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.categoryChanged['surveillance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> Surveillance Activity <i class="fa fa-filter"></i>
+              <a ng-if="vm.categoryChanged['surveillance']" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> Surveillance Activity <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-surveillance-button" uib-dropdown-menu>
               <ai-surveillance-filter
@@ -138,7 +138,7 @@
           </div>
           <div uib-dropdown auto-close="outsideClick" class="btn-group">
             <button class="btn btn-ai dropdown-toggle" type="button" id="filter-more-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
-              <a ng-if="vm.isCategoryChanged(['cqm-2011','cqm-other','acb','practiceType','product','developer','version', 'certificationDate'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="mouseenter focus click"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
+              <a ng-if="vm.isCategoryChanged(['cqm-2011','cqm-other','acb','practiceType','product','developer','version', 'certificationDate'])" href uib-tooltip="Filter has non-default option selected" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">Filter has non-default option selected</span>*</a> More <i class="fa fa-filter"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-large" aria-labeledby="filter-more-button" uib-dropdown-menu>
               <li>
@@ -298,6 +298,14 @@
               </li>
             </ul>
           </div>
+          <div uib-dropdown auto-close="outsideClick" class="btn-group">
+            <button class="btn btn-ai dropdown-toggle" type="button" id="dropdown-download-button" uib-dropdown-toggle aria-haspopup="true" aria-expanded="true">
+              <span class="sr-only">Download Results</span> <i class="fa fa-download"></i>
+            </button>
+            <ul class="list-unstyled dropdown-menu dropdown-menu-large" aria-labeledby="dropdown-download-button" uib-dropdown-menu>
+              <ai-results-download listings="vm.displayedCps" categories="vm.downloadResultsCategories" max-size="50"></ai-results-download>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -366,18 +374,18 @@
                 <tr ng-repeat="cp in vm.displayedCps">
                   <td>{{ cp.edition }}</td>
                   <td>
-                    <span ng-if="cp.developerStatus !== 'Active'"><button class="btn btn-link" uib-tooltip="{{ cp.developerStatus }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ cp.developerStatus }}</span><i class="fa status-bad" ng-class="cp.developerStatus === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ vm.product.developer.status.status }}</button></span>
+                    <span ng-if="cp.developerStatus !== 'Active'"><button class="btn btn-link" uib-tooltip="{{ cp.developerStatus }}" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">{{ cp.developerStatus }}</span><i class="fa status-bad" ng-class="cp.developerStatus === 'Suspended by ONC' ? 'fa-exclamation-circle' : 'fa-ban'"></i> {{ vm.product.developer.status.status }}</button></span>
                     {{ cp.developer }}
                   </td>
                   <td>{{ cp.product }}</td>
                   <td>{{ cp.version }}</td>
                   <td>{{ cp.certificationDate | date : 'mediumDate' : 'UTC'}}</td>
                   <td>{{ cp.chplProductNumber }}</td>
-                  <td class="text-center"><a href uib-tooltip="{{ cp.certificationStatus }}" tooltip-trigger="mouseenter focus click"><span class="sr-only">{{ cp.certificationStatus }}</span><i class="fa" ng-class="vm.statusFont(cp.certificationStatus)"></i></a></td>
+                  <td class="text-center"><a href uib-tooltip="{{ cp.certificationStatus }}" tooltip-trigger="'mouseenter focus click'"><span class="sr-only">{{ cp.certificationStatus }}</span><i class="fa" ng-class="vm.statusFont(cp.certificationStatus)"></i></a></td>
                   <td>
                     <div class="btn-group btn-group-justified">
                       <div class="btn-group">
-                        <a href="#/product/{{ cp.id }}" class="btn btn-primary btn-sm"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></a>
+                        <a ui-sref="product({ id: cp.id })" class="btn btn-primary btn-sm"><i class="fa fa-ellipsis-h"></i> Details<span class="sr-only"> for {{ cp.product }}</span></a>
                       </div>
                       <div class="btn-group">
                         <ai-compare-widget-button product-id="{{ cp.id }}" product-name="{{ cp.product }}"></ai-compare-widget-button>

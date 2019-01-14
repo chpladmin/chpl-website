@@ -29,10 +29,10 @@
             <li ng-class="{'active': vm.navState.screen === 'userManagement'}" id="admin-nav.userManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('userManagement')">User Management</a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'acbManagement'}" id="admin-nav.acbManagement" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('acbManagement')">ONC-ACB Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.acbManagement === acb}" ng-if="vm.navState.screen === 'acbManagement'" id="admin-nav.acbManagement.{{ acb.id}}" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" ng-click="vm.changeAcb(acb)">{{ acb.name }}<span ng-if="acb.isDeleted" class="pull-right">&lt;deleted&gt;</span></a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.acbManagement === acb}" ng-if="vm.navState.screen === 'acbManagement'" id="admin-nav.acbManagement.{{ acb.id}}" ng-repeat="acb in vm.acbs | orderBy:'name' track by acb.id"><a href="" ng-click="vm.changeAcb(acb)">{{ acb.name }}<span ng-if="acb.retired" class="pull-right">&lt;retired&gt;</span></a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'atlManagement'}" id="admin-nav.atlManagement" ng-if="vm.isChplAdmin() || vm.isAtlAdmin()"><a href="" ng-click="vm.changeScreen('atlManagement')">ONC-ATL Management</a></li>
-            <li class="subnav animate-if" ng-class="{'active': vm.navState.atlManagement === atl}" ng-if="vm.navState.screen === 'atlManagement'" id="admin-nav.atlManagement.{{ atl.id}}" ng-repeat="atl in vm.atls | orderBy:'name' track by atl.id"><a href="" ng-click="vm.changeAtl(atl)">{{ atl.name }}<span ng-if="atl.isDeleted" class="pull-right">&lt;deleted&gt;</span></a></li>
+            <li class="subnav animate-if" ng-class="{'active': vm.navState.atlManagement === atl}" ng-if="vm.navState.screen === 'atlManagement'" id="admin-nav.atlManagement.{{ atl.id}}" ng-repeat="atl in vm.atls | orderBy:'name' track by atl.id"><a href="" ng-click="vm.changeAtl(atl)">{{ atl.name }}<span ng-if="atl.retired" class="pull-right">&lt;retired&gt;</span></a></li>
 
             <li ng-class="{'active': vm.navState.screen === 'reports'}" id="admin-nav.reports" ng-if="(vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeScreen('reports')">Reports</a></li>
             <li class="subnav animate-if" ng-class="{'active': vm.navState.reports === 'cp-upload'}" id="admin-nav.reports.cp-upload" ng-if="vm.navState.screen === 'reports' && (vm.isAcbAdmin() || vm.isChplAdmin() || vm.isOncStaff())"><a href="" ng-click="vm.changeSubNav('cp-upload')">Certified Product - Uploads</a></li>
@@ -52,6 +52,7 @@
             <li ng-class="{'active': vm.navState.screen === 'scheduledJobs'}" id="admin-nav.scheduledJobs" ng-if="vm.isChplAdmin() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('scheduledJobs')">Scheduled Jobs</a></li>
             <li ng-class="{'active': vm.navState.screen === 'apiKeyManagement'}" id="admin-nav.apiKeyManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('apiKeyManagement')">API Key Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'announcementsManagement'}" id="admin-nav.announcementsManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('announcementsManagement')">Announcements Management</a></li>
+            <li ng-class="{'active': vm.navState.screen === 'apiDocumentationManagement'}" id="admin-nav.apiDocumentationManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('apiDocumentationManagement')">API Documentation Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'cmsManagement'}" id="admin-nav.cmsManagement" ng-if="vm.isChplAdmin() || vm.isCmsStaff() || vm.isOncStaff()"><a href="" ng-click="vm.changeScreen('cmsManagement')">CMS Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'jobsManagement'}" id="admin-nav.jobsManagement" ng-if="vm.isChplAdmin() || vm.isOncStaff() || vm.isAcbAdmin()"><a href="" ng-click="vm.changeScreen('jobsManagement')">Jobs Management</a></li>
             <li ng-class="{'active': vm.navState.screen === 'fuzzyManagement'}" id="admin-nav.fuzzyManagement" ng-if="vm.isChplAdmin()"><a href="" ng-click="vm.changeScreen('fuzzyManagement')">Fuzzy Matching Management</a></li>
@@ -66,19 +67,18 @@
                           product-id="vm.productId"></ai-vp-management>
         <ai-user-management ng-if="vm.navState.screen === 'userManagement'"></ai-user-management>
         <ai-acb-management ng-if="vm.navState.screen === 'acbManagement'"
-                           work-type="vm.navState.workType"
-                           active-acb="vm.activeAcb"></ai-acb-management>
+                           acb="vm.acb"></ai-acb-management>
         <ai-atl-management ng-if="vm.navState.screen === 'atlManagement'"
-                           work-type="vm.navState.workType"
-                           active-atl="vm.activeAtl"></ai-atl-management>
+                           atl="vm.atl"></ai-atl-management>
         <ai-reports trigger-refresh="vm.triggerRefresh(handler)"
                     ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"
                     product-id="vm.productId"></ai-reports>
         <ai-scheduled-jobs ng-if="vm.navState.screen === 'scheduledJobs'"
-                                    acbs="vm.acbs"></ai-scheduled-jobs>
+                           acbs="vm.acbs"></ai-scheduled-jobs>
         <ai-api-key admin="true" ng-if="vm.navState.screen === 'apiKeyManagement'"></ai-api-key>
         <ai-announcements-management ng-if="vm.navState.screen === 'announcementsManagement'"></ai-announcements-management>
+        <ai-api-documentation-management ng-if="vm.navState.screen === 'apiDocumentationManagement'"></ai-api-documentation-management>
         <ai-cms-management admin="true" ng-if="vm.navState.screen === 'cmsManagement'"></ai-cms-management>
         <ai-jobs-management ng-if="vm.navState.screen === 'jobsManagement'"></ai-jobs-management>
         <ai-fuzzy-management ng-if="vm.navState.screen === 'fuzzyManagement'"></ai-fuzzy-management>

@@ -5,18 +5,35 @@ export class NetworkService {
         this.$log = $log;
         this.$q = $q;
         this.API = API;
+        this.store = {
+            certifiedProducts: {
+                data: undefined,
+                lastUpdated: -1,
+                details: { },
+            },
+            searchOptions: {
+                data: undefined,
+                lastUpdated: -1,
+            },
+        };
     }
 
     addRole (payload) {
         return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
-    authorizeUser (userAuthorization) {
-        return this.apiPOST('/users/authorize', userAuthorization);
+    authorizeUser (userAuthorization, username) {
+        return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
     }
 
     changePassword (userObj) {
-        return this.apiPOST('/auth/change_password', userObj);
+        let url;
+        if (userObj.userName && userObj.userName.length > 0) {
+            url = '/auth/change_expired_password';
+        } else {
+            url = '/auth/change_password';
+        }
+        return this.apiPOST(url, userObj);
     }
 
     confirmPendingCp (pendingCp) {
@@ -55,14 +72,6 @@ export class NetworkService {
         return this.apiPOST('/schedules/triggers', trigger);
     }
 
-    deleteACB (acbId) {
-        return this.apiDELETE('/acbs/' + acbId);
-    }
-
-    deleteATL (atlId) {
-        return this.apiDELETE('/atls/' + atlId);
-    }
-
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
     }
@@ -90,9 +99,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAcbs (editable, deleted) {
-        if (angular.isUndefined(deleted)) { deleted = false; }
-        return this.apiGET('/acbs?editable=' + editable + '&showDeleted=' + deleted);
+    getAcbs (editable) {
+        return this.apiGET('/acbs?editable=' + editable);
     }
 
     getAccessibilityStandards () {
@@ -104,7 +112,12 @@ export class NetworkService {
     }
 
     getAll () {
-        return this.apiGET('/collections/certified_products');
+        const EXPIRATION_TIME = 5; // in minutes
+        if (!this.store.certifiedProducts.data || (Date.now() - this.store.certifiedProducts.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.certifiedProducts.data = this.apiGET('/collections/certified_products');
+            this.store.certifiedProducts.lastUpdated = Date.now();
+        }
+        return this.store.certifiedProducts.data;
     }
 
     getAnnouncement (announcementId) {
@@ -138,6 +151,10 @@ export class NetworkService {
         return this.apiGET('/key/activity' + queryParams);
     }
 
+    getApiDocumentationDate () {
+        return this.apiGET('/files/api_documentation/details');
+    }
+
     getApiUserActivity (activityRange) {
         var call = '/activity/api_keys';
         return this.getActivity(call, activityRange);
@@ -152,9 +169,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAtls (editable, deleted) {
-        if (angular.isUndefined(deleted)) { deleted = false; }
-        return this.apiGET('/atls?editable=' + editable + '&showDeleted=' + deleted);
+    getAtls (editable) {
+        return this.apiGET('/atls?editable=' + editable);
     }
 
     getCertBodies () {
@@ -300,7 +316,14 @@ export class NetworkService {
     }
 
     getProduct (productId) {
-        return this.apiGET('/certified_products/' + productId + '/details');
+        const EXPIRATION_TIME = 15; // in minutes
+        if (!this.store.certifiedProducts.details[productId] || !this.store.certifiedProducts.details[productId].data || (Date.now() - this.store.certifiedProducts.details[productId].lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.certifiedProducts.details[productId] = {
+                data: this.apiGET('/certified_products/' + productId + '/details'),
+                lastUpdated: Date.now(),
+            };
+        }
+        return this.store.certifiedProducts.details[productId].data;
     }
 
     getProductActivity (activityRange) {
@@ -324,12 +347,13 @@ export class NetworkService {
         return this.apiGET('/products/' + productId + '/listings');
     }
 
-    getSearchOptions (showDeleted) {
-        if (showDeleted) {
-            return this.apiGET('/data/search_options?showDeleted=true');
-        } else {
-            return this.apiGET('/data/search_options');
+    getSearchOptions () {
+        const EXPIRATION_TIME = 5; // in minutes
+        if (!this.store.searchOptions.data || (Date.now() - this.store.searchOptions.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.searchOptions.data = this.apiGET('/data/search_options');
+            this.store.searchOptions.lastUpdated = Date.now();
         }
+        return this.store.searchOptions.data;
     }
 
     getSedParticipantStatisticsCount () {
@@ -493,7 +517,7 @@ export class NetworkService {
     }
 
     registerApi (user) {
-        return this.apiPOST('/key/register', user);
+        return this.apiPOST('/key', user);
     }
 
     rejectPendingCp (cpId) {
@@ -513,7 +537,11 @@ export class NetworkService {
     }
 
     resetPassword (userObj) {
-        return this.apiPOST('/auth/reset_password', userObj);
+        return this.apiPOST('/auth/reset_password_request', userObj);
+    }
+
+    emailResetPassword (userObj) {
+        return this.apiPOST('/auth/email_reset_password', userObj);
     }
 
     revokeApi (user) {
@@ -532,15 +560,13 @@ export class NetworkService {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
     }
 
-    undeleteACB (acbId) {
-        return this.apiPUT('/acbs/' + acbId + '/undelete');
-    }
-
-    undeleteATL (atlId) {
-        return this.apiPUT('/atls/' + atlId + '/undelete');
-    }
-
     updateCP (cpObject) {
+        if (this.store.certifiedProducts.details[cpObject.listing.id]) {
+            this.store.certifiedProducts.details[cpObject.listing.id] = {
+                data: undefined,
+                lastUpdated: -1,
+            };
+        }
         return this.apiPUT('/certified_products/' + cpObject.listing.id, cpObject);
     }
 

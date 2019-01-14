@@ -18,7 +18,7 @@
         });
 
     /** @ngInject */
-    function CmsController ($location, $log, $route, API, FileUploader, authService, networkService) {
+    function CmsController ($location, $log, $state, API, FileUploader, authService, networkService) {
         var vm = this;
 
         vm.getDownload = getDownload;
@@ -56,7 +56,7 @@
                 if ($location.url() !== '/admin/jobsManagement') {
                     $location.url('/admin/jobsManagement');
                 } else {
-                    $route.reload();
+                    $state.go($state.$current, null, { reload: true });
                 }
             };
             vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {

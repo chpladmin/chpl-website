@@ -42,7 +42,7 @@
             utilService = _utilService_;
             ctrl = $controller('CompareController', {
                 $scope: scope,
-                $routeParams: {compareIds: '123&234'},
+                $stateParams: {compareIds: '123&234'},
                 networkService: networkService,
                 utilService: utilService,
             });
@@ -51,7 +51,9 @@
 
         afterEach(function () {
             if ($log.debug.logs.length > 0) {
-                //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+                /* eslint-enable no-console,angular/log */
             }
         });
 
@@ -81,6 +83,10 @@
 
         it('should track products to compare', function () {
             expect(ctrl.products.length).toBe(2);
+        });
+
+        it('should know what to compare', () => {
+            expect(ctrl.compareIds).toEqual(['123', '234']);
         });
     });
 })();

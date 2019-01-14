@@ -2,17 +2,16 @@
     'use strict';
 
     angular.module('chpl.admin')
-        .controller('EditAcbController', EditAcbController);
+        .controller('ModalAcbController', ModalAcbController);
 
     /** @ngInject */
-    function EditAcbController ($uibModalInstance, acb, action, isChplAdmin, networkService) {
+    function ModalAcbController ($log, $uibModalInstance, acb, action, isChplAdmin, networkService) {
         var vm = this;
 
         vm.cancel = cancel;
         vm.create = create;
-        vm.deleteAcb = deleteAcb;
+        vm.handleChange = handleChange;
         vm.save = save;
-        vm.undeleteAcb = undeleteAcb;
 
         activate();
 
@@ -24,6 +23,9 @@
             vm.isChplAdmin = isChplAdmin;
             if (vm.action === 'create') {
                 vm.acb.address = {};
+                vm.formIsValid = false;
+            } else {
+                vm.formIsValid = true;
             }
         }
 
@@ -44,34 +46,13 @@
                 });
         }
 
-        function deleteAcb () {
-            networkService.deleteACB(vm.acb.id)
-                .then(function (response) {
-                    if (!response.status || response.status === 200) {
-                        $uibModalInstance.close('deleted');
-                    } else {
-                        $uibModalInstance.dismiss('An error occurred');
-                    }
-                },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
-                });
+        function handleChange (acb, valid) {
+            vm.acb = acb;
+            vm.formIsValid = valid;
         }
 
         function save () {
             networkService.modifyACB(vm.acb)
-                .then(function (response) {
-                    if (!response.status || response.status === 200) {
-                        $uibModalInstance.close(response);
-                    } else {
-                        $uibModalInstance.dismiss('An error occurred');
-                    }
-                },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
-                });
-        }
-
-        function undeleteAcb () {
-            networkService.undeleteACB(vm.acb.id)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         $uibModalInstance.close(response);
