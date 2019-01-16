@@ -22,6 +22,7 @@
                 $provide.decorator('authService', function ($delegate) {
                     $delegate.getUsername = jasmine.createSpy('getUsername');
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    $delegate.isImpersonating = jasmine.createSpy('isImpersonating');
                     $delegate.logout = jasmine.createSpy('logout');
                     $delegate.saveToken = jasmine.createSpy('saveToken');
                     return $delegate;
@@ -47,6 +48,7 @@
                 authService = _authService_;
                 authService.getUsername.and.returnValue('admin');
                 authService.hasAnyRole.and.returnValue(true);
+                authService.isImpersonating.and.returnValue(false);
                 authService.saveToken.and.returnValue({});
 
                 networkService = _networkService_;

@@ -11,7 +11,7 @@
     });
 
     /** @ngInject */
-    function UserManagementController ($log, $uibModal, authService, networkService) {
+    function UserManagementController ($location, $log, $rootScope, $uibModal, authService, networkService) {
         var ctrl = this;
 
         ctrl.impersonateUser = impersonateUser;
@@ -26,7 +26,11 @@
 
         function impersonateUser (user) {
             networkService.impersonateUser(user)
-                .then(token => authService.saveToken(token.token));
+                .then(token => {
+                    authService.saveToken(token.token)
+                    $rootScope.$broadcast('impersonating');
+                    $location.path('/admin');
+                });
         }
 
         function inviteUser () {

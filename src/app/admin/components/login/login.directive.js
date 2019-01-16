@@ -39,6 +39,7 @@
         vm.resetPassword = resetPassword;
         vm.sendReset = sendReset;
         vm.setActivity = setActivity;
+        vm.stopImpersonating = stopImpersonating;
 
         vm.activityEnum = {
             LOGIN: 1,
@@ -47,6 +48,7 @@
             NONE: 4,
             EXPIRED: 5,
             PASSWORD_RESET: 6,
+            IMPERSONATING: 7,
         };
 
         /////////////////////////////////////////////////////////
@@ -56,6 +58,9 @@
             if (vm.hasAnyRole()) {
                 Idle.watch();
                 _updateExtras();
+                if (authService.isImpersonating()) {
+                    vm.activity = vm.activityEnum.IMPERSONATING;
+                }
             }
             if ($stateParams.token) {
                 vm.activity = vm.activityEnum.PASSWORD_RESET;
@@ -86,6 +91,7 @@
                     $scope.$apply();
                 });
             });
+            $scope.$on('impersonating', () => vm.activity = vm.activityEnum.IMPERSONATING);
         }
 
         function changePassword () {
@@ -215,6 +221,11 @@
                     vm.messageClass = vm.pClassFail;
                     vm.message = 'Invalid username/email combination. Please check your credentials or contact the administrator';
                 });
+        }
+
+        function stopImpersonating () {
+            networkService.unimpersonateUser()
+                .then(token => authService.saveToken(token.token));
         }
 
         /////////////////////////////////////////////////////////

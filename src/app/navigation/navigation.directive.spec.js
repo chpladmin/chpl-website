@@ -14,6 +14,7 @@
                     $delegate.getFullname = jasmine.createSpy('getFullname');
                     $delegate.getUsername = jasmine.createSpy('getUsername');
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    $delegate.isImpersonating = jasmine.createSpy('isImpersonating');
                     return $delegate;
                 });
                 $provide.decorator('networkService', function ($delegate) {
@@ -36,6 +37,8 @@
             authService.getFullname.and.returnValue(mock.username);
             authService.getUsername.and.returnValue(mock.username);
             authService.hasAnyRole.and.returnValue(true);
+            authService.isImpersonating.and.returnValue(false);
+
             networkService = _networkService_;
             networkService.getAnnouncements.and.returnValue($q.when(mock.announcements));
             networkService.getUserByUsername.and.returnValue($q.when({user: {}}));

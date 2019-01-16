@@ -570,6 +570,10 @@ export class NetworkService {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
     }
 
+    unimpersonateUser () {
+        return this.apiGET('/auth/unimpersonate');
+    }
+
     updateCP (cpObject) {
         if (this.store.certifiedProducts.details[cpObject.listing.id]) {
             this.store.certifiedProducts.details[cpObject.listing.id] = {

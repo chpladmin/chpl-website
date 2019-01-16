@@ -12,6 +12,7 @@
             getToken: getToken,
             getUsername: getUsername,
             hasAnyRole: hasAnyRole,
+            isImpersonating: isImpersonating,
             logout: logout,
             parseJwt: parseJwt,
             saveToken: saveToken,
@@ -28,7 +29,7 @@
             if (hasAnyRole()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
-                if (identity.length === 2) {
+                if (identity.length === 3) {
                     return identity[2];
                 } else {
                     return 'Impersonating ' + identity[2];
@@ -67,6 +68,12 @@
                 return true; // logged in, no role required
             }
             return false; // not logged in
+        }
+
+        function isImpersonating () {
+            var token = getToken();
+            var identity = parseJwt(token).Identity;
+            return identity.length !== 3;
         }
 
         function logout () {

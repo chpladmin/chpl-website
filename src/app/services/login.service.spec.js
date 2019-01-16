@@ -6,7 +6,11 @@
         mock = {
             user: {
                 Authorities: [],
-                Identity: [31, 'first', 'middle', 'last'],
+                Identity: [31, 'username', 'Full Name'],
+            },
+            impersonating: {
+                Authorities: [],
+                Identity: [31, 'username', 'Full Name', 3, 'admin'],
             },
         }
 
@@ -37,12 +41,17 @@
 
         it('should get a username when logged in', function () {
             auth.saveToken(buildToken(mock.user));
-            expect(auth.getUsername()).toBe('first');
+            expect(auth.getUsername()).toBe('username');
         });
 
         it('should get a fullname when logged in', function () {
             auth.saveToken(buildToken(mock.user));
-            expect(auth.getFullname()).toBe('middle');
+            expect(auth.getFullname()).toBe('Full Name');
+        });
+
+        it('should indicate when impersonating', function () {
+            auth.saveToken(buildToken(mock.impersonating));
+            expect(auth.getFullname()).toBe('Impersonating Full Name');
         });
 
         it('should not get a username when not logged in', function () {
