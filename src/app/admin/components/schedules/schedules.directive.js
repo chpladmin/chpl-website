@@ -40,8 +40,8 @@
 
         function createSimpleTrigger (job) {
             vm.editSimpleTriggerInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/schedules/simpletrigger.html',
-                controller: 'JobController',
+                templateUrl: 'chpl.admin/components/schedules/systemJob.html',
+                controller: 'SystemJobController',
                 controllerAs: 'vm',
                 animation: false,
                 backdrop: 'static',
