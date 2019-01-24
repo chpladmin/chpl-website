@@ -12,6 +12,17 @@
     <label class="control-label"><input class="input-sm form-control" type="radio" ng-model="$ctrl.atl.retired" ng-value="true" id="atl-retired" name="retired" ng-change="$ctrl.update()"></input> Retired</label>
     <label class="control-label"><input class="input-sm form-control" type="radio" ng-model="$ctrl.atl.retired" ng-value="false" id="atl-not-retired" name="retired" ng-change="$ctrl.update()"></input> Active</label>
   </div>
+  <div class="form-group" ng-if="$ctrl.isChplAdmin">
+      <label for="retirement-date">Retirement Date <span class="text-danger" ng-if="$ctrl.atl.retired">*</span></label>
+      <div class="input-group">
+        <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.atl.retirementDateObject" is-open="$ctrl.atl.retirementDatePicker" close-text="Close" id="retirement-date" name="retirementDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.atl.retired" ng-disabled="!$ctrl.atl.retired" ng-change="$ctrl.update()">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.atl.retirementDatePicker = true"><i class="fa fa-calendar"></i></button>
+        </span>
+        </div>
+    <div class="text-danger" ng-if="$ctrl.editForm.retirementDate.$touched && $ctrl.editForm.retirementDate.$error.required">Retirement Date is required</div>
+    <div class="text-danger" ng-if="$ctrl.editForm.retirementDate.$touched && $ctrl.editForm.retirementDate.$error.date">Improper format (mm/dd/yyyy)</div>
+  </div>
   <div class="form-group">
     <label for="address-line-1">Address Line 1 <span class="text-danger">*</span></label>
     <input class="input-sm form-control" type="text" required ng-model="$ctrl.atl.address.line1" id="address-line-1" name="addressLine1" ng-disabled="$ctrl.atl.retired" ng-change="$ctrl.update()"></input>
