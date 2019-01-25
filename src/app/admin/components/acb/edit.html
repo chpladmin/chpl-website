@@ -24,8 +24,8 @@
     <div class="text-danger" ng-if="$ctrl.editForm.retirementDate.$touched && $ctrl.editForm.retirementDate.$error.date">Improper format (mm/dd/yyyy)</div>
   </div>
   <div class="form-group">
-    <label for="address-line-1">Address Line 1 <span class="text-danger">*</span></label>
-    <input class="input-sm form-control" type="text" required ng-model="$ctrl.acb.address.line1" id="address-line-1" name="addressLine1" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()"></input>
+    <label for="address-line-1">Address Line 1 <span class="text-danger" ng-if="!$ctrl.acb.retired">*</span></label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.acb.address.line1" id="address-line-1" name="addressLine1" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()" ng-required="!$ctrl.acb.retired"></input>
     <div class="text-danger" ng-if="$ctrl.editForm.addressLine1.$touched && $ctrl.editForm.addressLine1.$error.required">Address is required</div>
   </div>
   <div class="form-group">
@@ -33,28 +33,28 @@
     <input class="input-sm form-control" type="text" ng-model="$ctrl.acb.address.line2" id="address-line-2" name="addressLine2" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()"></input>
   </div>
   <div class="form-group">
-    <label for="address-city">City <span class="text-danger">*</span></label>
-    <input class="input-sm form-control" type="text" required ng-model="$ctrl.acb.address.city" id="address-city" name="addressCity" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()"></input>
+    <label for="address-city">City <span class="text-danger" ng-if="!$ctrl.acb.retired">*</span></label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.acb.address.city" id="address-city" name="addressCity" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()" ng-required="!$ctrl.acb.retired"></input>
     <div class="text-danger" ng-if="$ctrl.editForm.addressCity.$touched && $ctrl.editForm.addressCity.$error.required">Address is required</div>
   </div>
   <div class="form-group">
-    <label for="address-state">State <span class="text-danger">*</span></label>
-    <input class="input-sm form-control" type="text" required ng-model="$ctrl.acb.address.state" id="address-state" name="addressState" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()"></input>
+    <label for="address-state">State <span class="text-danger" ng-if="!$ctrl.acb.retired">*</span></label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.acb.address.state" id="address-state" name="addressState" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()" ng-required="!$ctrl.acb.retired"></input>
     <div class="text-danger" ng-if="$ctrl.editForm.addressState.$touched && $ctrl.editForm.addressState.$error.required">Address is required</div>
   </div>
   <div class="form-group">
-    <label for="address-zipcode">Zip Code <span class="text-danger">*</span></label>
-    <input class="input-sm form-control" type="text" required ng-model="$ctrl.acb.address.zipcode" id="address-zipcode" name="addressZipcode" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()"></input>
+    <label for="address-zipcode">Zip Code <span class="text-danger" ng-if="!$ctrl.acb.retired">*</span></label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.acb.address.zipcode" id="address-zipcode" name="addressZipcode" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()" ng-required="!$ctrl.acb.retired"></input>
     <div class="text-danger" ng-if="$ctrl.editForm.addressZipcode.$touched && $ctrl.editForm.addressZipcode.$error.required">Address is required</div>
   </div>
   <div class="form-group">
-    <label for="address-country">Country <span class="text-danger">*</span></label>
-    <input class="input-sm form-control" type="text" required ng-model="$ctrl.acb.address.country" id="address-country" name="addressCountry" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()"></input>
+    <label for="address-country">Country <span class="text-danger" ng-if="!$ctrl.acb.retired">*</span></label>
+    <input class="input-sm form-control" type="text" ng-model="$ctrl.acb.address.country" id="address-country" name="addressCountry" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()" ng-required="!$ctrl.acb.retired"></input>
     <div class="text-danger" ng-if="$ctrl.editForm.addressCountry.$touched && $ctrl.editForm.addressCountry.$error.required">Address is required</div>
   </div>
   <div class="form-group">
-    <label for="acb-website">Website <span class="text-danger">*</span></label>
-    <input class="input-sm form-control" type="url" required ng-model="$ctrl.acb.website" id="acb-website" name="acbWebsite" placeholder="http://www.example.com" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()"></input>
+    <label for="acb-website">Website <span class="text-danger" ng-if="!$ctrl.acb.retired">*</span></label>
+    <input class="input-sm form-control" type="url" ng-model="$ctrl.acb.website" id="acb-website" name="acbWebsite" placeholder="http://www.example.com" ng-disabled="$ctrl.acb.retired" ng-change="$ctrl.update()" ng-required="!$ctrl.acb.retired"></input>
     <div class="text-danger" ng-if="$ctrl.editForm.acbWebsite.$touched && $ctrl.editForm.acbWebsite.$error.required">Website address is required</div>
     <div class="text-danger" ng-if="$ctrl.editForm.acbWebsite.$touched && $ctrl.editForm.acbWebsite.$error.url">Website is invalid</div>
   </div>
