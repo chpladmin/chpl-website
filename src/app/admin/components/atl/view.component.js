@@ -2,6 +2,7 @@ export const AtlManagementComponent = {
     templateUrl: 'chpl.admin/components/atl/view.html',
     bindings: {
         atl: '<',
+        onChange: '&',
     },
     controller: class AtlManagementController {
         constructor ($log, $uibModal, authService) {
@@ -59,7 +60,10 @@ export const AtlManagementComponent = {
                     isChplAdmin: () => isChplAdmin,
                 },
             });
-            this.modalInstance.result.then(result => { this.atl = angular.copy(result); });
+            this.modalInstance.result.then(result => {
+                this.atl = angular.copy(result);
+                this.onChange({ atl: this.atl});
+            });
         }
     },
 }

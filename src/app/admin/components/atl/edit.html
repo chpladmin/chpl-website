@@ -8,9 +8,8 @@
     <strong>ONC-ATL Code: </strong>{{ $ctrl.atl.atlCode }}
   </div>
   <div class="form-group" ng-if="$ctrl.isChplAdmin">
-    <strong>Status</strong><br />
-    <label class="control-label"><input class="input-sm form-control" type="radio" ng-model="$ctrl.atl.retired" ng-value="true" id="atl-retired" name="retired" ng-change="$ctrl.update()"></input> Retired</label>
-    <label class="control-label"><input class="input-sm form-control" type="radio" ng-model="$ctrl.atl.retired" ng-value="false" id="atl-not-retired" name="retired" ng-change="$ctrl.update()"></input> Active</label>
+    <strong>Retirement Status</strong><br />
+    <label class="control-label"><input class="input-sm form-control" type="checkbox" ng-model="$ctrl.atl.retired" id="atl-retired" name="retired" ng-change="$ctrl.update()"></input> Retired</label>
   </div>
   <div class="form-group" ng-if="$ctrl.isChplAdmin">
       <label for="retirement-date">Retirement Date <span class="text-danger" ng-if="$ctrl.atl.retired">*</span></label>
