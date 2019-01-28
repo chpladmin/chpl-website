@@ -1,5 +1,13 @@
 # Release Notes
 
+## Version 10.11.0
+_28 January 2019_
+
+### New features
+* Support new ROLE_ONC role
+
+---
+
 ## Version 10.10.0
 _14 January 2019_
 
