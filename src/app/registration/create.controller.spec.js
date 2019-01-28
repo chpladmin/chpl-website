@@ -25,13 +25,14 @@
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.registration', function ($provide) {
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.getUsername = jasmine.createSpy('getUsername');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.authorizeUser = jasmine.createSpy('authorizeUser');
                     $delegate.createInvitedUser = jasmine.createSpy('createInvitedUser');
-                    return $delegate;
-                });
-                $provide.decorator('authService', function ($delegate) {
-                    $delegate.isAuthed = jasmine.createSpy('isAuthed');
                     return $delegate;
                 });
             });
@@ -41,7 +42,8 @@
                 $q = _$q_;
                 $location = _$location_;
                 authService = _authService_;
-                authService.isAuthed.and.returnValue(true);
+                authService.getUsername.and.returnValue('username');
+                authService.hasAnyRole.and.returnValue(true);
                 networkService = _networkService_;
                 networkService.authorizeUser.and.returnValue($q.when({}));
                 networkService.createInvitedUser.and.returnValue($q.when({}));
@@ -49,7 +51,7 @@
                 scope = $rootScope.$new();
                 vm = $controller('CreateController', {
                     $scope: scope,
-                    $routeParams: {hash: 'fakehash'},
+                    $stateParams: {hash: 'fakehash'},
                     authService: authService,
                     networkService: networkService,
                     $location: $location,
@@ -83,10 +85,6 @@
             expect(networkService.createInvitedUser).not.toHaveBeenCalled();
         });
 
-        it('should have an isAuthed function', function () {
-            expect(vm.isAuthed).toBeDefined();
-        });
-
         it('should call createUser if the details are complete', function () {
             vm.userDetails = angular.copy(mock.validUser);
             vm.createUser();
@@ -103,7 +101,7 @@
 
         it('should call "authorizeUser" if the user tries to log in', function () {
             vm.authorizeUser();
-            expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'});
+            expect(networkService.authorizeUser).toHaveBeenCalledWith({hash: 'fakehash'}, 'username');
         });
 
         it('should redirect to /admin after authorizeUser is finished', function () {

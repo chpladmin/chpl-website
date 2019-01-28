@@ -24,13 +24,13 @@
     }
 
     /** @ngInclude */
-    function LoginController ($log, $rootScope, $routeParams, $scope, Idle, Keepalive, authService, networkService, utilService) {
+    function LoginController ($log, $rootScope, $scope, $stateParams, Idle, Keepalive, authService, networkService, utilService) {
         var vm = this;
 
         vm.broadcastLogin = broadcastLogin;
         vm.changePassword = changePassword;
         vm.clear = clear;
-        vm.isAuthed = authService.isAuthed;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.login = login;
         vm.logout = logout;
         vm.misMatchPasswords = misMatchPasswords;
@@ -53,18 +53,18 @@
 
         this.$onInit = function () {
             vm.clear();
-            if (vm.isAuthed()) {
+            if (vm.hasAnyRole()) {
                 Idle.watch();
                 _updateExtras();
             }
-            if ($routeParams.token) {
+            if ($stateParams.token) {
                 vm.activity = vm.activityEnum.PASSWORD_RESET;
-                vm.token = $routeParams.token;
+                vm.token = $stateParams.token;
             }
 
             $scope.$on('Keepalive', function () {
                 $log.info('Keepalive');
-                if (vm.isAuthed()) {
+                if (vm.hasAnyRole()) {
                     if (vm.activity === vm.activityEnum.RESET || vm.activity === vm.activityEnum.LOGIN) {
                         vm.activity = vm.activityEnum.NONE;
                     }
@@ -149,7 +149,7 @@
         }
 
         function clear () {
-            if (vm.isAuthed()) {
+            if (vm.hasAnyRole()) {
                 vm.activity = vm.activityEnum.NONE;
             } else {
                 vm.activity = vm.activityEnum.LOGIN;
@@ -194,6 +194,7 @@
             authService.logout();
             vm.clear();
             Idle.unwatch();
+            $rootScope.$broadcast('loggedOut');
         }
 
         function setActivity (activity) {

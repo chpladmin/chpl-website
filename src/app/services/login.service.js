@@ -11,12 +11,7 @@
             getFullname: getFullname,
             getToken: getToken,
             getUsername: getUsername,
-            isAcbAdmin: isAcbAdmin,
-            isAtlAdmin: isAtlAdmin,
-            isAuthed: isAuthed,
-            isChplAdmin: isChplAdmin,
-            isCmsStaff: isCmsStaff,
-            isOncStaff: isOncStaff,
+            hasAnyRole: hasAnyRole,
             logout: logout,
             parseJwt: parseJwt,
             saveToken: saveToken,
@@ -30,7 +25,7 @@
         }
 
         function getFullname () {
-            if (isAuthed()) {
+            if (hasAnyRole()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 return identity[2];
@@ -45,7 +40,7 @@
         }
 
         function getUsername () {
-            if (isAuthed()) {
+            if (hasAnyRole()) {
                 var token = getToken();
                 var identity = parseJwt(token).Identity;
                 return identity[1];
@@ -55,69 +50,19 @@
             }
         }
 
-        function isAuthed () {
+        function hasAnyRole (roles) {
             var token = getToken();
             if (token) {
-                var params = parseJwt(token);
-                return Math.round(new Date().getTime() / 1000) <= params.exp;
-            } else {
-                return false;
-            }
-        }
-
-        function isAcbAdmin () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ACB') > -1
+                let userRoles = parseJwt(token).Authorities;
+                if (roles) {
+                    if (userRoles) {
+                        return roles.reduce((ret, role) => ret || (userRoles.indexOf(role) > -1), false); // true iff user has at least one role in the required list
+                    }
+                    return false; // logged in, role(s) required, user has no roles
                 }
+                return true; // logged in, no role required
             }
-            return false;
-        }
-
-        function isAtlAdmin () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ATL') > -1
-                }
-            }
-            return false;
-        }
-
-        function isChplAdmin () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ADMIN') > -1
-                }
-            }
-            return false;
-        }
-
-        function isCmsStaff () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_CMS_STAFF') > -1
-                }
-            }
-            return false;
-        }
-
-        function isOncStaff () {
-            var token = getToken();
-            if (token) {
-                var authorities = parseJwt(token).Authorities;
-                if (authorities) {
-                    return authorities.indexOf('ROLE_ONC_STAFF') > -1
-                }
-            }
-            return false;
+            return false; // not logged in
         }
 
         function logout () {

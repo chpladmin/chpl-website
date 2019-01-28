@@ -8,13 +8,12 @@ window.zxcvbn = zxcvbn;
         .controller('CreateController', CreateController);
 
     /** @ngInject */
-    function CreateController ($location, $log, $routeParams, authService, networkService, utilService) {
+    function CreateController ($location, $log, $stateParams, authService, networkService, utilService) {
         var vm = this;
 
         vm.authorizeUser = authorizeUser;
         vm.changeDisplayMode = changeDisplayMode;
         vm.createUser = createUser;
-        vm.isAuthed = isAuthed;
         vm.isCreateAccountMode = isCreateAccountMode;
         vm.isCreateAccountSuccessMode = isCreateAccountSuccessMode;
         vm.isSignInMode = isSignInMode;
@@ -32,10 +31,10 @@ window.zxcvbn = zxcvbn;
                 complianceTermsAccepted: true,
             }};
             vm.authorizeDetails = {};
-            vm.userDetails.hash = $routeParams.hash;
-            vm.authorizeDetails.hash = $routeParams.hash;
+            vm.userDetails.hash = $stateParams.hash;
+            vm.authorizeDetails.hash = $stateParams.hash;
             vm.message = {value: '', success: null};
-            if (vm.isAuthed) {
+            if (authService.hasAnyRole()) {
                 vm.authorizeUser();
             }
             vm.extras = ['chpl'];
@@ -43,9 +42,10 @@ window.zxcvbn = zxcvbn;
         }
 
         function authorizeUser () {
-            if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || vm.isAuthed()
+            if ((vm.authorizeDetails.userName && vm.authorizeDetails.password) || authService.hasAnyRole()
                 && vm.authorizeDetails.hash) {
-                networkService.authorizeUser(vm.authorizeDetails)
+                const username = vm.authorizeDetails.userName || authService.getUsername();
+                networkService.authorizeUser(vm.authorizeDetails, username)
                     .then(function () {
                         $location.path('/admin');
                     },function (error) {
@@ -74,10 +74,6 @@ window.zxcvbn = zxcvbn;
                         vm.message.value = error.data.errorMessages;
                     });
             }
-        }
-
-        function isAuthed () {
-            return authService.isAuthed();
         }
 
         function isCreateAccountMode () {

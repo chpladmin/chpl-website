@@ -33,6 +33,7 @@
         vm.editVersion = editVersion;
         vm.getNumberOfListingsToReject = getNumberOfListingsToReject;
         vm.getNumberOfSurveillanceToReject = getNumberOfSurveillanceToReject;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.inspectCp = inspectCp;
         vm.inspectSurveillance = inspectSurveillance;
         vm.isDeveloperEditable = isDeveloperEditable;
@@ -67,8 +68,6 @@
             vm.activeProduct = '';
             vm.activeVersion = '';
             vm.activeCP = '';
-            vm.isChplAdmin = authService.isChplAdmin();
-            vm.isAcbAdmin = authService.isAcbAdmin();
             vm.uploadingCps = [];
             vm.uploadingSurveillances = [];
             if (angular.isUndefined(vm.workType)) {
@@ -83,9 +82,9 @@
             vm.surveillanceUploadSuccess = true;
             vm.resources = {};
             vm.refreshDevelopers();
+            vm.refreshPending();
 
-            if (vm.isAcbAdmin) {
-                vm.refreshPending();
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
                 vm.uploader = new FileUploader({
                     url: API + '/certified_products/upload',
                     //method: 'PUT',
@@ -139,7 +138,9 @@
                 /*vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
                     $log.info('onCancelItem', fileItem, response, status, headers);
                 };*/
+            }
 
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC', 'ROLE_ACB'])) {
                 vm.surveillanceUploader = new FileUploader({
                     url: API + '/surveillance/upload',
                     removeAfterUpload: true,
@@ -213,11 +214,13 @@
         }
 
         function refreshPending () {
-            networkService.getUploadingCps()
-                .then(function (cps) {
-                    vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
-                    vm.pendingProducts = vm.uploadingCps.length;
-                })
+            if (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ACB'])) {
+                networkService.getUploadingCps()
+                    .then(function (cps) {
+                        vm.uploadingCps = [].concat(cps.pendingCertifiedProducts);
+                        vm.pendingProducts = vm.uploadingCps.length;
+                    })
+            }
             networkService.getUploadingSurveillances()
                 .then(function (surveillances) {
                     vm.uploadingSurveillances = [].concat(surveillances.pendingSurveillance);
@@ -523,8 +526,8 @@
                 size: 'lg',
                 resolve: {
                     activeCP: function () { return vm.activeCP; },
-                    isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isChplAdmin: function () { return vm.isChplAdmin; },
+                    isAcbAdmin: function () { return vm.hasAnyRole(['ROLE_ACB']); },
+                    isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
                     resources: function () { return resources; },
                     workType: function () { return vm.workType; },
                 },
@@ -562,8 +565,8 @@
                 resolve: {
                     developers: function () { return vm.developers; },
                     inspectingCp: function () { return cp; },
-                    isAcbAdmin: function () { return vm.isAcbAdmin; },
-                    isChplAdmin: function () { return vm.isChplAdmin; },
+                    isAcbAdmin: function () { return vm.hasAnyRole(['ROLE_ACB']); },
+                    isChplAdmin: function () { return vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']); },
                     resources: function () { return vm.resources; },
                     workType: function () { return vm.workType; },
                 },
@@ -620,7 +623,7 @@
         }
 
         function isDeveloperEditable (dev) {
-            return vm.isChplAdmin || dev.status.status === 'Active';
+            return dev.status.status === 'Active' || vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
         }
 
         function isDeveloperMergeable (dev) {
@@ -629,7 +632,7 @@
 
         function isProductEditable (cp) {
             if (cp.certificationEvents) {
-                return (vm.isChplAdmin || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
+                return (vm.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']) || (utilService.certificationStatus(cp) !== 'Suspended by ONC' && utilService.certificationStatus(cp) !== 'Terminated by ONC')) &&
                     vm.isDeveloperMergeable(vm.activeDeveloper);
             } else {
                 return vm.isDeveloperMergeable(vm.activeDeveloper);

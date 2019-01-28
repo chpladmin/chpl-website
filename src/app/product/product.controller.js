@@ -5,10 +5,11 @@
         .controller('ProductController', ProductController);
 
     /** @ngInclude */
-    function ProductController ($localStorage, $log, $routeParams, $uibModal, authService, networkService, utilService) {
+    function ProductController ($localStorage, $log, $stateParams, $uibModal, authService, networkService, utilService) {
         var vm = this;
 
         vm.certificationStatus = utilService.certificationStatus;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.loadProduct = loadProduct;
         vm.viewProductHistory = viewProductHistory;
 
@@ -18,7 +19,7 @@
 
         function activate () {
             vm.loading = true;
-            vm.productId = $routeParams.id;
+            vm.productId = $stateParams.id;
             if ($localStorage.previouslyViewed) {
                 vm.previouslyViewed = $localStorage.previouslyViewed;
 
@@ -32,13 +33,12 @@
             } else {
                 $localStorage.previouslyViewed = [vm.productId + ''];
             }
-            if ($routeParams.initialPanel) {
-                vm.initialPanel = $routeParams.initialPanel;
+            if ($stateParams.initialPanel) {
+                vm.initialPanel = $stateParams.initialPanel;
             } else {
                 vm.initialPanel = 'cert';
             }
 
-            vm.isAuthed = authService.isAuthed();
             vm.loadProduct();
         }
 

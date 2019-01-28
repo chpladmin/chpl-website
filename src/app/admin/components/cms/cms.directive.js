@@ -18,18 +18,16 @@
         });
 
     /** @ngInject */
-    function CmsController ($location, $log, $route, API, FileUploader, authService, networkService) {
+    function CmsController ($location, $log, $state, API, FileUploader, authService, networkService) {
         var vm = this;
 
         vm.getDownload = getDownload;
+        vm.hasAnyRole = authService.hasAnyRole;
         vm.setAccurateDate = setAccurateDate;
 
         ////////////////////////////////////////////////////////////////////
 
         this.$onInit = function () {
-            vm.isAcbAdmin = authService.isAcbAdmin();
-            vm.isOncStaff = authService.isOncStaff();
-            vm.isChplAdmin = authService.isChplAdmin();
             vm.muuAccurateAsOfDateObject = new Date();
 
             vm.uploader = new FileUploader({
@@ -56,7 +54,7 @@
                 if ($location.url() !== '/admin/jobsManagement') {
                     $location.url('/admin/jobsManagement');
                 } else {
-                    $route.reload();
+                    $state.go($state.$current, null, { reload: true });
                 }
             };
             vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
@@ -72,7 +70,7 @@
                 $log.info('onCancelItem', fileItem, response, status, headers);
             };
             vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
-            if (authService.isChplAdmin() || authService.isOncStaff()) {
+            if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
                 vm.csvHeader = ['CMS ID', 'Creation Date', 'CHPL Product(s)'];
                 vm.csvColumnOrder = ['certificationId', 'created', 'products'];
             } else {

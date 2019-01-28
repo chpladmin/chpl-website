@@ -24,11 +24,10 @@ export const ApiDocumentationManagementComponent = {
     templateUrl: 'chpl.admin/components/apiDocumentation/apiDocumentation.html',
     bindings: {},
     controller: class ApiSurveController {
-        constructor ($location, $log, $route, API, FileUploader, authService) {
+        constructor ($location, $log, API, FileUploader, authService) {
             'ngInject'
             this.$location = $location;
             this.$log = $log;
-            this.$route = $route;
             this.API = API;
             this.FileUploader = FileUploader;
             this.authService = authService;

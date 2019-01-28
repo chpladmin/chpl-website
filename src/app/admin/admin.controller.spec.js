@@ -1,109 +1,72 @@
 (function () {
     'use strict';
 
-    describe('chpl.admin', function () {
+    describe('the CHPL Admin Management Controller', function () {
 
-        var $log, ctrl, mockAuthService, mockCommonService, scope;
+        var $log, $q, authService, networkService, scope, vm;
 
         beforeEach(function () {
-            mockAuthService = {};
-            mockCommonService = {};
-
             angular.mock.module('chpl.admin', function ($provide) {
-                $provide.value('authService', mockAuthService);
-                $provide.value('networkService', mockCommonService);
+                $provide.decorator('authService', function ($delegate) {
+                    $delegate.getFullname = jasmine.createSpy('getFullname');
+                    $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
+                    return $delegate;
+                });
+                $provide.decorator('networkService', function ($delegate) {
+                    $delegate.getAcbs = jasmine.createSpy('getAcbs');
+                    $delegate.getAtls = jasmine.createSpy('getAtls');
+                    return $delegate;
+                });
             });
 
-            inject(function ($q) {
-                mockAuthService.getFullname = function () { return 'fake'; };
-                mockAuthService.isAuthed = function () { return true; };
-                mockAuthService.isChplAdmin = function () { return true; };
-                mockAuthService.isAcbAdmin = function () { return true; };
-                mockAuthService.isAtlAdmin = function () { return true; };
-                mockCommonService.getAcbs = function () { return $q.when({acbs: [{id: 0}]}); };
-                mockCommonService.getAtls = function () { return $q.when({atls: [{id: 0}]}); };
-            });
-        });
-
-        describe('controller', function () {
-
-            beforeEach(inject(function ($controller, _$log_, $rootScope, _authService_, _networkService_) {
+            inject(function ($controller, _$log_, _$q_, $rootScope, _authService_, _networkService_) {
                 $log = _$log_;
+                $q = _$q_;
+                authService = _authService_;
+                networkService = _networkService_;
+                authService.getFullname.and.returnValue('fake');
+                authService.hasAnyRole.and.returnValue(true);
+                networkService.getAcbs.and.returnValue($q.when({acbs: [{id: 0}]}));
+                networkService.getAtls.and.returnValue($q.when({atls: [{id: 0}]}));
+
                 scope = $rootScope.$new();
-                ctrl = $controller('AdminController', {
+                vm = $controller('AdminController', {
+                    $stateParams: {},
                     authService: _authService_,
                     networkService: _networkService_,
                 });
                 scope.$digest();
-            }));
-
-            afterEach(function () {
-                if ($log.debug.logs.length > 0) {
-                    //console.log('Debug log, ' + $log.debug.logs.length + ' length:\n Debug: ' + $log.debug.logs.join('\n Debug: '));
-                }
             });
+        });
+
+        afterEach(function () {
+            if ($log.debug.logs.length > 0) {
+                /* eslint-disable no-console,angular/log */
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
+                /* eslint-enable no-console,angular/log */
+            }
+        });
+
+        describe('controller', function () {
 
             it('should exist', function () {
-                expect(ctrl).toBeDefined();
+                expect(vm).toBeDefined();
             });
 
             it('should know the logged in user\' name', function () {
-                expect(ctrl.getFullname()).toBe('fake');
+                expect(vm.getFullname()).toBe('fake');
             });
 
             it('should have a default screen set up', function () {
-                expect(ctrl.navState.screen).toBe('dpManagement');
-            });
-
-            it('should know if the user is an ACB admin', function () {
-                expect(ctrl.isAcbAdmin).toBeTruthy();
-            });
-
-            it('should know if the user is a CHPL admin', function () {
-                expect(ctrl.isChplAdmin).toBeTruthy();
-            });
-
-            it('should know if the user is logged in', function () {
-                expect(ctrl.isAuthed).toBeTruthy();
+                expect(vm.navState.screen).toBe('dpManagement');
             });
 
             it('should store state of navigation', function () {
-                expect(ctrl.navState).toBeDefined();
-            });
-
-            it('should have a way to change screens', function () {
-                expect(ctrl.changeScreen).toBeDefined();
-            });
-
-            it('should change to a different screen when called', function () {
-                ctrl.changeScreen('test');
-                expect(ctrl.navState.screen).toBe('test');
+                expect(vm.navState).toBeDefined();
             });
 
             it('should have a function to change subnavigation screens', function () {
-                expect(ctrl.changeSubNav).toBeDefined();
-            });
-
-            it('should have a function to register handlers', function () {
-                expect(ctrl.triggerRefresh).toBeDefined();
-            });
-
-            it('should add a handler function is one is passed in', function () {
-                expect(ctrl.handlers.length).toBe(0);
-                ctrl.triggerRefresh(function () {});
-                expect(ctrl.handlers.length).toBe(1);
-            });
-
-            it('should have a function to trigger handlers', function () {
-                expect(ctrl.refresh).toBeDefined();
-            });
-
-            it('should call handler functions when triggered', function () {
-                this.aFunc = function () {};
-                spyOn(this, 'aFunc');
-                ctrl.triggerRefresh(this.aFunc);
-                ctrl.refresh();
-                expect(this.aFunc).toHaveBeenCalled();
+                expect(vm.changeSubNav).toBeDefined();
             });
         });
     });

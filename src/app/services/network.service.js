@@ -6,20 +6,17 @@ export class NetworkService {
         this.$q = $q;
         this.API = API;
         this.store = {
+            activity: {
+                types: { },
+            },
             certifiedProducts: {
                 data: undefined,
                 lastUpdated: -1,
                 details: { },
             },
             searchOptions: {
-                deleted: {
-                    data: undefined,
-                    lastUpdated: -1,
-                },
-                notDeleted: {
-                    data: undefined,
-                    lastUpdated: -1,
-                },
+                data: undefined,
+                lastUpdated: -1,
             },
         };
     }
@@ -28,8 +25,8 @@ export class NetworkService {
         return this.apiPOST('/users/' + payload.subjectName + '/roles/' + payload.role);
     }
 
-    authorizeUser (userAuthorization) {
-        return this.apiPOST('/users/authorize', userAuthorization);
+    authorizeUser (userAuthorization, username) {
+        return this.apiPOST('/users/' + username + '/authorize', userAuthorization);
     }
 
     changePassword (userObj) {
@@ -47,6 +44,7 @@ export class NetworkService {
     }
 
     confirmPendingSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance/pending/confirm', surveillance);
     }
 
@@ -63,7 +61,7 @@ export class NetworkService {
     }
 
     createAnnouncement (announcement) {
-        return this.apiPOST('/announcements/create', announcement);
+        return this.apiPOST('/announcements', announcement);
     }
 
     createCmsId (ids) {
@@ -78,14 +76,6 @@ export class NetworkService {
         return this.apiPOST('/schedules/triggers', trigger);
     }
 
-    deleteACB (acbId) {
-        return this.apiDELETE('/acbs/' + acbId);
-    }
-
-    deleteATL (atlId) {
-        return this.apiDELETE('/atls/' + atlId);
-    }
-
     deleteAnnouncement (announcementId) {
         return this.apiDELETE('/announcements/' + announcementId);
     }
@@ -95,6 +85,7 @@ export class NetworkService {
     }
 
     deleteSurveillance (surveillanceId, reason) {
+        this.store.certifiedProducts.details = {};
         return this.apiDELETE('/surveillance/' + surveillanceId, {
             reason: reason,
         });
@@ -113,9 +104,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAcbs (editable, deleted) {
-        if (angular.isUndefined(deleted)) { deleted = false; }
-        return this.apiGET('/acbs?editable=' + editable + '&showDeleted=' + deleted);
+    getAcbs (editable) {
+        return this.apiGET('/acbs?editable=' + editable);
     }
 
     getAccessibilityStandards () {
@@ -184,9 +174,8 @@ export class NetworkService {
         return this.getActivity(call, activityRange);
     }
 
-    getAtls (editable, deleted) {
-        if (angular.isUndefined(deleted)) { deleted = false; }
-        return this.apiGET('/atls?editable=' + editable + '&showDeleted=' + deleted);
+    getAtls (editable) {
+        return this.apiGET('/atls?editable=' + editable);
     }
 
     getCertBodies () {
@@ -363,21 +352,13 @@ export class NetworkService {
         return this.apiGET('/products/' + productId + '/listings');
     }
 
-    getSearchOptions (showDeleted) {
+    getSearchOptions () {
         const EXPIRATION_TIME = 5; // in minutes
-        if (showDeleted) {
-            if (!this.store.searchOptions.deleted.data || (Date.now() - this.store.searchOptions.deleted.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-                this.store.searchOptions.deleted.data = this.apiGET('/data/search_options?showDeleted=true');
-                this.store.searchOptions.deleted.lastUpdated = Date.now();
-            }
-            return this.store.searchOptions.deleted.data;
-        } else {
-            if (!this.store.searchOptions.notDeleted.data || (Date.now() - this.store.searchOptions.notDeleted.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-                this.store.searchOptions.notDeleted.data = this.apiGET('/data/search_options');
-                this.store.searchOptions.notDeleted.lastUpdated = Date.now();
-            }
-            return this.store.searchOptions.notDeleted.data;
+        if (!this.store.searchOptions.data || (Date.now() - this.store.searchOptions.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.searchOptions.data = this.apiGET('/data/search_options');
+            this.store.searchOptions.lastUpdated = Date.now();
         }
+        return this.store.searchOptions.data;
     }
 
     getSedParticipantStatisticsCount () {
@@ -501,6 +482,7 @@ export class NetworkService {
     }
 
     initiateSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPOST('/surveillance', surveillance);
     }
 
@@ -541,7 +523,7 @@ export class NetworkService {
     }
 
     registerApi (user) {
-        return this.apiPOST('/key/register', user);
+        return this.apiPOST('/key', user);
     }
 
     rejectPendingCp (cpId) {
@@ -584,14 +566,6 @@ export class NetworkService {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
     }
 
-    undeleteACB (acbId) {
-        return this.apiPUT('/acbs/' + acbId + '/undelete');
-    }
-
-    undeleteATL (atlId) {
-        return this.apiPUT('/atls/' + atlId + '/undelete');
-    }
-
     updateCP (cpObject) {
         if (this.store.certifiedProducts.details[cpObject.listing.id]) {
             this.store.certifiedProducts.details[cpObject.listing.id] = {
@@ -623,6 +597,7 @@ export class NetworkService {
     }
 
     updateSurveillance (surveillance) {
+        this.store.certifiedProducts.details = {};
         return this.apiPUT('/surveillance/' + surveillance.id, surveillance);
     }
 
@@ -675,6 +650,7 @@ export class NetworkService {
     }
 
     getActivity (call, activityRange) {
+        const EXPIRATION_TIME = 15; // in minutes
         var params = [];
         if (activityRange.startDate) {
             params.push('start=' + activityRange.startDate.getTime());
@@ -685,7 +661,13 @@ export class NetworkService {
         if (params.length > 0) {
             call += '?' + params.join('&');
         }
-        return this.apiGET(call);
+        if (!this.store.activity.types[call] || !this.store.activity.types[call].data || (Date.now() - this.store.activity.types[call].lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
+            this.store.activity.types[call] = {
+                data: this.apiGET(call),
+                lastUpdated: Date.now(),
+            };
+        }
+        return this.store.activity.types[call].data;
     }
 }
 

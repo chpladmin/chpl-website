@@ -1,5 +1,35 @@
 # Release Notes
 
+## Version 10.11.0
+_28 January 2019_
+
+### New features
+* Support new ROLE_ONC role
+
+---
+
+## Version 10.10.0
+_14 January 2019_
+
+### New features
+* Allow download of Search results
+
+### Bugs fixed
+* Fix navigation related to ATL management
+* Re-enable editing of certified product certification criteria
+
+---
+
+## Version 10.9.0
+_17 December 2018_
+
+### New features
+* Change /authorize call to not use deprecated endpoint
+* Change API key registration call to not use deprecated endpoint
+* Handle retired ONC-ACBs / ONC-ATLs
+
+---
+
 ## Version 10.8.0
 _3 December 2018_
 
