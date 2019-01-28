@@ -354,15 +354,12 @@ export class NetworkService {
 
     getSearchOptions () {
         const EXPIRATION_TIME = 5; // in minutes
-        this.$log.info(this.store.searchOptions);
         if (!this.store.searchOptions.data || (Date.now() - this.store.searchOptions.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
             return this.apiGET('/data/search_options').then(data => {
                 this.store.searchOptions.data = data;
                 this.store.searchOptions.lastUpdated = Date.now();
                 return data;
             })
-            //this.store.searchOptions.data = this.apiGET('/data/search_options');
-            //this.store.searchOptions.lastUpdated = Date.now();
         }
         return this.$q.when(this.store.searchOptions.data);
     }

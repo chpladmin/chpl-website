@@ -473,7 +473,7 @@
                     let ret = {
                         value: a.name,
                     };
-                    if (a.retirementDate) {
+                    if (a.retired) {
                         ret.display = a.name + ' (Retired)';
                         ret.retired = true;
                         ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
