@@ -10,7 +10,6 @@
 
         vm.cancel = cancel;
         vm.save = save;
-        vm.datePickerOpen = false;
 
         activate();
 
@@ -19,6 +18,8 @@
         function activate () {
             vm.job = angular.copy(job);
             vm.selectedDateTime = new Date();
+            vm.datePickerOpen = false;
+
             var tick = function () {
                 vm.now = Date.now();
             }
