@@ -209,6 +209,14 @@
             $httpBackend.flush();
         });
 
+        ('should createScheduleOneTimeTrigger', function () {
+            $httpBackend.expectPOST(/^\/rest\/users\/create$/).respond(200, {data: 'response'});
+            networkService.createScheduleOneTimeTrigger('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should createScheduleTrigger', function () {
             $httpBackend.expectPOST(/^\/rest\/schedules\/triggers$/).respond(200, {data: 'response'});
             networkService.createScheduleTrigger({email: 'something'}).then(function (response) {
