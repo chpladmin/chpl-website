@@ -210,7 +210,7 @@
         });
 
         ('should createScheduleOneTimeTrigger', function () {
-            $httpBackend.expectPOST(/^\/rest\/users\/create$/).respond(200, {data: 'response'});
+            $httpBackend.expectPOST(/^\/rest\/schedules\/triggers\/one_time$/).respond(200, {data: 'response'});
             networkService.createScheduleOneTimeTrigger('payload').then(function (response) {
                 expect(response.data).toEqual('response');
             });
