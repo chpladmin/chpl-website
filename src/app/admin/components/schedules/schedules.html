@@ -45,7 +45,7 @@
           <td>{{ job.jobDataMap.acbSpecific ? 'Yes' : 'No' }}</td>
           <td>
             <button class="btn btn-ai-success" ng-click="vm.editJob(job)" ng-if="job.jobDataMap.editableJobFields"><i class="fa fa-pencil-square-o"></i><span class="sr-only">Edit job for {{ job.name }}</span></button>
-            <button class="btn btn-ai-success" ng-click="vm.createSimpleTrigger(job)" ng-if="job.group == 'systemJobs'"><i class="fa fa-bolt"></i><span class="sr-only">Create trigger for {{ job.name }}</span></button>
+            <button class="btn btn-ai-success" ng-click="vm.createSimpleTrigger(job)" ng-if="job.group === 'systemJobs'"><i class="fa fa-bolt"></i><span class="sr-only">Create trigger for {{ job.name }}</span></button>
           </td>
         </tr>
       </tbody>
