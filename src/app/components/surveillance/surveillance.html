@@ -43,7 +43,7 @@
           <tr>
             <th scope="row">
               <a href uib-tooltip="Indicates whether surveillance was initiated by ONC-ACB or through ONC direct review." tooltip-trigger="'mouseenter focus click'">Surveillance initiated by</a></th>
-            <td>{{ surv.authority === 'ROLE_ADMIN' || surv.authority === 'ROLE_ONC' ? 'ONC' : 'ONC-ACB' }}</td>
+            <td>{{ surv.authority === 'ROLE_ONC' ? 'ONC' : 'ONC-ACB' }}</td>
           </tr>
         </tbody>
       </table>
