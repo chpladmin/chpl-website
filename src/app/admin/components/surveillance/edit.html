@@ -20,7 +20,7 @@
     <div class="row" ng-if="vm.workType !== 'initiate'">
       <div class="col-sm-3"><strong>Surveillance initiated by:</strong></div>
       <div class="col-sm-9">
-        <span>{{ vm.surveillance.authority === 'ROLE_ADMIN' ? 'ONC' : 'ONC-ACB' }}</span>
+        <span>{{ vm.surveillance.authority === 'ROLE_ADMIN' || vm.surveillance.authority === 'ROLE_ONC' ? 'ONC' : 'ONC-ACB' }}</span>
       </div>
     </div>
     <div class="form-group">
