@@ -1156,6 +1156,7 @@
         });
 
         it('should modifyACB', function () {
+            $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {});
             $httpBackend.expectPUT(/^\/rest\/acbs\/id$/).respond(200, {data: 'response'});
             networkService.modifyACB({id: 'id'}).then(function (response) {
                 expect(response.data).toEqual('response');

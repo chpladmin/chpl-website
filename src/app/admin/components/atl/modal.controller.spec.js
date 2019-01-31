@@ -88,12 +88,12 @@
                 expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('An error occurred');
             });
 
-            it('should dismiss the modal with error messages on a rejected save', function () {
+            it('should have error messages on a rejected save', function () {
                 networkService.modifyATL.and.returnValue($q.reject({data: { error: 'the error'}}));
                 vm.save();
                 scope.$digest();
                 expect(networkService.modifyATL).toHaveBeenCalled();
-                expect(Mock.modalInstance.dismiss).toHaveBeenCalledWith('the error');
+                expect(vm.error).toBe('the error');
             });
         });
 
