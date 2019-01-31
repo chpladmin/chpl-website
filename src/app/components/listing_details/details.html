@@ -142,12 +142,12 @@
         <a href="" ng-click="vm.showPanel('additional')" aria-expanded="{{ vm.panelShown === 'additional' }}" id="details-additional-information"><i class="fa fa-lg" ng-class="vm.panelShown === 'additional' ? 'fa-caret-down' : 'fa-caret-right'"></i> Additional Information</a>
       </div>
       <div class="panel-body animate-if" ng-if="vm.panelShown === 'additional'" id="panel-additional-information">
-        <span ng-if="vm.product.certificationEdition.name === '2014'">
+        <span ng-if="vm.product.certificationEdition.name === '2014'" id="panel-additional-information-test-results-summary">
           <h4>Test Results Summary</h4>
           <a ai-a ng-if="vm.product.reportFileLocation" href="{{ vm.product.reportFileLocation }}" analytics-on="click" analytics-event="Test Results Summary" analytics-properties="{ category: 'Download Details', label: vm.product.reportFileLocation }">{{ vm.product.reportFileLocation }}</a>
           <p ng-if="!vm.product.reportFileLocation">No report on file</p>
         </span>
-        <span ng-if="vm.product.ics !== null">
+        <span ng-if="vm.product.ics !== null" id="panel-additional-information-certification-history">
           <h4>Certification History</h4>
           <p ng-if="vm.product.ics.inherits !== null"><strong>Inherited Certification Status (ICS):</strong> {{ vm.product.ics.inherits ? 'True' : 'False' }}</p>
           <p ng-if="vm.product.ics.inherits === null">N/A</p>
@@ -173,17 +173,17 @@
         <span ng-if="!vm.isConfirming && ((vm.product.ics.parents && vm.product.ics.parents.length > 0) || (vm.product.ics.children && vm.product.ics.children.length > 0))">
           <button class="btn btn-ai-success" ng-click="vm.viewIcsFamily()">View ICS Relationships</button>
         </span>
-        <span ng-if="vm.product.otherAcb">
+        <span ng-if="vm.product.otherAcb" id="panel-additional-information-other-acb">
           <h4>Other ACB</h4>
           <p>{{ vm.product.otherAcb }}</p>
         </span>
-        <span ng-if="vm.product.targetedUsers && vm.product.targetedUsers.length > 0">
+        <span ng-if="vm.product.targetedUsers && vm.product.targetedUsers.length > 0" id="panel-additional-information-developer-identified-targeted-user">
           <h4>Developer Identified Targeted User<span ng-if="vm.product.targetedUsers.length > 1">s</span></h4>
           <ul>
             <li ng-repeat="user in vm.product.targetedUsers">{{ user.targetedUserName }}</li>
           </ul>
         </span>
-        <span ng-if="vm.product.meaningfulUseUserHistory && vm.product.meaningfulUseUserHistory.length > 0">
+        <span ng-if="vm.product.meaningfulUseUserHistory && vm.product.meaningfulUseUserHistory.length > 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
           <h4>Estimated Number of Meaningful Use Users</h4>
           <p>{{ vm.muuCount(vm.product.meaningfulUseUserHistory).muuCount }}, last updated on {{ vm.muuCount(vm.product.meaningfulUseUserHistory).muuDate | date : 'mediumDate' : 'UTC' }}</p>
         </span>
