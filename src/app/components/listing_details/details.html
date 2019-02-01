@@ -187,7 +187,7 @@
           <h4>Estimated Number of Meaningful Use Users</h4>
           <p>{{ vm.muuCount(vm.product.meaningfulUseUserHistory).muuCount }}, last updated on {{ vm.muuCount(vm.product.meaningfulUseUserHistory).muuDate | date : 'mediumDate' : 'UTC' }}</p>
         </span>
-        <span ng-if="!vm.product.meaningfulUseUserHistory || vm.product.meaningfulUseUserHistory.length === 0">
+        <span ng-if="!vm.product.meaningfulUseUserHistory || vm.product.meaningfulUseUserHistory.length === 0" id="panel-additional-information-estimated-number-of-meaningful-use-users">
           <h4>Estimated Number of Meaningful Use Users</h4>
           <p>No Meaningful Use Users data exists</p>
         </span>
