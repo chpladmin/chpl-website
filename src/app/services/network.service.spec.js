@@ -29,91 +29,201 @@
             }
         });
 
-        it('should return a promise with the data if a GET doesn\'t return an object', function () {
-            $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
-            networkService.getProduct('id').then(function (response) {
-                response.then(function (reject) {
-                    expect(reject).toEqual('response');
+        describe('for general REST calls', () => {
+            it('should return a promise with the data if a GET doesn\'t return an object', function () {
+                $httpBackend.expectGET(/certified_products\/id\/details/).respond(200, 'response');
+                networkService.getProduct('id').then(function (response) {
+                    response.then(function (reject) {
+                        expect(reject).toEqual('response');
+                    });
+                }, function () {
+                    //noop
                 });
-            }, function () {
-                //noop
+                $httpBackend.flush();
             });
-            $httpBackend.flush();
+
+            it('should return a promise with the data if a GET responds with a failure', function () {
+                $httpBackend.expectGET(/certified_products\/id\/details/).respond(500, 'response');
+                networkService.getProduct('id').then(function (response) {
+                    response.then(function (reject) {
+                        expect(reject).toEqual('response');
+                    });
+                }, function () {
+                    //noop
+                });
+                $httpBackend.flush();
+            });
+
+            it('should return a promise with the data if a POST doesn\'t return an object', function () {
+                $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(200, 'response');
+                networkService.confirmPendingCp({id: 'id'}).then(function (response) {
+                    response.then(function (reject) {
+                        expect(reject).toEqual('response');
+                    });
+                }, function () {
+                    //noop
+                });
+                $httpBackend.flush();
+            });
+
+            it('should return a promise with the data if a POST responds with a failure', function () {
+                $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(500, 'response');
+                networkService.confirmPendingCp({id: 'id'}).then(function (response) {
+                    response.then(function (reject) {
+                        expect(reject).toEqual('response');
+                    });
+                }, function () {
+                    //noop
+                });
+                $httpBackend.flush();
+            });
+
+            it('should return a promise with the data if a PUT doesn\'t return an object', function () {
+                $httpBackend.expectPUT(/announcements\/id/).respond(200, 'response');
+                networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
+                    response.then(function (reject) {
+                        expect(reject).toEqual('response');
+                    });
+                }, function () {
+                    //noop
+                });
+                $httpBackend.flush();
+            });
+
+            it('should return a promise with the data if a PUT responds with a failure', function () {
+                $httpBackend.expectPUT(/announcements\/id/).respond(500, 'response');
+                networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
+                    response.then(function (reject) {
+                        expect(reject).toEqual('response');
+                    });
+                }, function () {
+                    //noop
+                });
+                $httpBackend.flush();
+            });
+
+            it('should return a promise with the data if a DELETE responds with a failure', function () {
+                $httpBackend.expectDELETE(/schedules\/triggers\/CacheStatusAgeTrigger\/something/).respond(500, 'response');
+                networkService.deleteScheduleTrigger({
+                    group: 'CacheStatusAgeTrigger',
+                    name: 'something',
+                }).then(function (response) {
+                    response.then(function (reject) {
+                        expect(reject).toEqual('response');
+                    });
+                }, function () {
+                    //noop
+                });
+                $httpBackend.flush();
+            });
         });
 
-        it('should return a promise with the data if a GET responds with a failure', function () {
-            $httpBackend.expectGET(/certified_products\/id\/details/).respond(500, 'response');
-            networkService.getProduct('id').then(function (response) {
-                response.then(function (reject) {
-                    expect(reject).toEqual('response');
+        describe('with respect to caching', () => {
+            describe('for getAll', () => {
+                it('should refresh if old', () => {
+                    networkService.store.certifiedProducts.data = [];
+                    networkService.store.certifiedProducts.lastUpdated = new Date('2014-01-01');
+                    $httpBackend.expectGET(/^\/rest\/collections\/certified_products$/).respond(200, {data: 'response'});
+                    networkService.getAll().then(response => {
+                        expect(response.data).toEqual('response');
+                    });
+                    $httpBackend.flush();
                 });
-            }, function () {
-                //noop
-            });
-            $httpBackend.flush();
-        });
 
-        it('should return a promise with the data if a POST doesn\'t return an object', function () {
-            $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(200, 'response');
-            networkService.confirmPendingCp({id: 'id'}).then(function (response) {
-                response.then(function (reject) {
-                    expect(reject).toEqual('response');
+                it('should not refresh if data is recent', () => {
+                    networkService.store.certifiedProducts.data = [];
+                    networkService.store.certifiedProducts.lastUpdated = new Date();
+                    $httpBackend.whenGET(/^\/rest\/collections\/certified_products$/);
+                    networkService.getAll();
+                    expect($httpBackend.flush).toThrow();
                 });
-            }, function () {
-                //noop
             });
-            $httpBackend.flush();
-        });
 
-        it('should return a promise with the data if a POST responds with a failure', function () {
-            $httpBackend.expectPOST(/certified_products\/pending\/id\/confirm/).respond(500, 'response');
-            networkService.confirmPendingCp({id: 'id'}).then(function (response) {
-                response.then(function (reject) {
-                    expect(reject).toEqual('response');
+            describe('for getProduct', () => {
+                it('should refresh if old', () => {
+                    networkService.store.certifiedProducts.details = {3: {
+                        data: {},
+                        lastUpdated: new Date('2014-01-01'),
+                    }};
+                    $httpBackend.expectGET(/^\/rest\/certified_products\/3\/details$/).respond(200, {data: 'response'});
+                    networkService.getProduct(3).then(response => {
+                        expect(response.data).toEqual('response');
+                    });
+                    $httpBackend.flush();
                 });
-            }, function () {
-                //noop
-            });
-            $httpBackend.flush();
-        });
 
-        it('should return a promise with the data if a PUT doesn\'t return an object', function () {
-            $httpBackend.expectPUT(/announcements\/id/).respond(200, 'response');
-            networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
-                response.then(function (reject) {
-                    expect(reject).toEqual('response');
+                it('should not refresh if data is recent', () => {
+                    networkService.store.certifiedProducts.details = {3: {
+                        data: {},
+                        lastUpdated: new Date(),
+                    }};
+                    $httpBackend.whenGET(/^\/rest\/certified_products\/3\/details$/);
+                    networkService.getProduct(3);
+                    expect($httpBackend.flush).toThrow();
                 });
-            }, function () {
-                //noop
             });
-            $httpBackend.flush();
-        });
 
-        it('should return a promise with the data if a PUT responds with a failure', function () {
-            $httpBackend.expectPUT(/announcements\/id/).respond(500, 'response');
-            networkService.modifyAnnouncement({id: 'id'}).then(function (response) {
-                response.then(function (reject) {
-                    expect(reject).toEqual('response');
+            describe('for getSearchOptions', () => {
+                it('should refresh if old', () => {
+                    networkService.store.searchOptions.data = [];
+                    networkService.store.searchOptions.lastUpdated = new Date('2014-01-01');
+                    $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {data: 'response'});
+                    networkService.getSearchOptions().then(response => {
+                        expect(response.data).toEqual('response');
+                    });
+                    $httpBackend.flush();
                 });
-            }, function () {
-                //noop
-            });
-            $httpBackend.flush();
-        });
 
-        it('should return a promise with the data if a DELETE responds with a failure', function () {
-            $httpBackend.expectDELETE(/schedules\/triggers\/CacheStatusAgeTrigger\/something/).respond(500, 'response');
-            networkService.deleteScheduleTrigger({
-                group: 'CacheStatusAgeTrigger',
-                name: 'something',
-            }).then(function (response) {
-                response.then(function (reject) {
-                    expect(reject).toEqual('response');
+                it('should not refresh if data is recent', () => {
+                    networkService.store.searchOptions.data = [];
+                    networkService.store.searchOptions.lastUpdated = new Date();
+                    $httpBackend.whenGET(/^\/rest\/data\/search_options$/);
+                    networkService.getSearchOptions();
+                    expect($httpBackend.flush).toThrow();
                 });
-            }, function () {
-                //noop
             });
-            $httpBackend.flush();
+
+            describe('when updating a certified product', () => {
+                it('should purge the cache', () => {
+                    networkService.store.certifiedProducts.details = {3: {
+                        data: {id: 3},
+                        lastUpdated: new Date('2014-01-01'),
+                    }};
+                    $httpBackend.expectPUT(/^\/rest\/certified_products\/3$/).respond(200, {data: 'response'});
+                    networkService.updateCP({listing: {id: 3}, reason: 'none'});
+                    $httpBackend.flush();
+                    expect(networkService.store.certifiedProducts.details[3].data).toBeUndefined();
+                    expect(networkService.store.certifiedProducts.details[3].lastUpdated).toBe(-1);
+                });
+            });
+
+            describe('when getting activity', () => {
+                it('should refresh if old', () => {
+                    networkService.store.activity.types = {
+                        '/activity/acbs': {
+                            data: {},
+                            lastUpdated: new Date('2014-01-01'),
+                        },
+                    };
+                    $httpBackend.expectGET(/^\/rest\/activity\/acbs$/).respond(200, {data: 'response'});
+                    networkService.getAcbActivity({}).then(function (response) {
+                        expect(response.data).toEqual('response');
+                    });
+                    $httpBackend.flush();
+                });
+
+                it('should not refresh if data is recent', () => {
+                    networkService.store.activity.types = {
+                        '/activity/acbs': {
+                            data: {},
+                            lastUpdated: new Date(),
+                        },
+                    };
+                    $httpBackend.whenGET(/^\/rest\/activity\/acbs$/);
+                    networkService.getAcbActivity({});
+                    expect($httpBackend.flush).toThrow();
+                });
+            });
         });
 
         it('should addRole', function () {
