@@ -15,6 +15,9 @@ export const EditAcbComponent = {
         $onChanges (changes) {
             if (changes.acb) {
                 this.acb = angular.copy(changes.acb.currentValue);
+                if (this.acb.retirementDate) {
+                    this.acb.retirementDateObject = new Date(this.acb.retirementDate);
+                }
             }
             if (changes.isChplAdmin) {
                 this.isChplAdmin = angular.copy(changes.isChplAdmin.currentValue);
@@ -26,6 +29,11 @@ export const EditAcbComponent = {
                 acb: angular.copy(this.acb),
                 valid: this.editForm.$valid,
             };
+            if (this.acb.retirementDateObject) {
+                change.acb.retirementDate = this.acb.retirementDateObject.getTime();
+            } else {
+                change.acb.retirementDate = null;
+            }
             this.onChange(change);
         }
     },

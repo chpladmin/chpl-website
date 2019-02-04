@@ -359,10 +359,13 @@ export class NetworkService {
     getSearchOptions () {
         const EXPIRATION_TIME = 5; // in minutes
         if (!this.store.searchOptions.data || (Date.now() - this.store.searchOptions.lastUpdated > (1000 * 60 * EXPIRATION_TIME))) {
-            this.store.searchOptions.data = this.apiGET('/data/search_options');
-            this.store.searchOptions.lastUpdated = Date.now();
+            return this.apiGET('/data/search_options').then(data => {
+                this.store.searchOptions.data = data;
+                this.store.searchOptions.lastUpdated = Date.now();
+                return data;
+            })
         }
-        return this.store.searchOptions.data;
+        return this.$q.when(this.store.searchOptions.data);
     }
 
     getSedParticipantStatisticsCount () {
@@ -515,7 +518,7 @@ export class NetworkService {
     }
 
     modifyACB (acb) {
-        return this.apiPUT('/acbs/' + acb.id, acb);
+        return this.getSearchOptions().then(() => this.apiPUT('/acbs/' + acb.id, acb));
     }
 
     modifyATL (atl) {

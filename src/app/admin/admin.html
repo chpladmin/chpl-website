@@ -67,8 +67,10 @@
                           product-id="vm.productId"></ai-vp-management>
         <ai-user-management ng-if="vm.navState.screen === 'userManagement'"></ai-user-management>
         <ai-acb-management ng-if="vm.navState.screen === 'acbManagement'"
+                           on-change="vm.handleAcb(acb)"
                            acb="vm.acb"></ai-acb-management>
         <ai-atl-management ng-if="vm.navState.screen === 'atlManagement'"
+                           on-change="vm.handleAtl(atl)"
                            atl="vm.atl"></ai-atl-management>
         <ai-reports ng-if="vm.navState.screen === 'reports'"
                     work-type="vm.navState.reports"
