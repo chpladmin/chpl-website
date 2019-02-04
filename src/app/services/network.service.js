@@ -72,6 +72,10 @@ export class NetworkService {
         return this.apiPOST('/users/create', contactDetails);
     }
 
+    createScheduleOneTimeTrigger (trigger) {
+        return this.apiPOST('/schedules/triggers/one_time', trigger);
+    }
+
     createScheduleTrigger (trigger) {
         return this.apiPOST('/schedules/triggers', trigger);
     }
