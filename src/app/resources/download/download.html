@@ -24,33 +24,33 @@
             <li>Surveillance
               <ul>
                 <li><strong>Surveillance Activity:</strong> Entire collection of surveillance activity reported to the CHPL. Available as a CSV file.</li>
-                <li ng-if="vm.showRestricted()"><strong>Surveillance (Basic):</strong> Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.</li>
+                <li ng-if="$ctrl.showRestricted()"><strong>Surveillance (Basic):</strong> Entire collection of surveillance activity reported to the CHPL, with only basic details about non-conformities. Includes statistics on timeframes related to discovered non-conformities. Available as a CSV file.</li>
                 <li><strong>Non-Conformities:</strong> Collection of surveillance activities that resulted in a non-conformity. This is a subset of the data available in the above "Surveillance Activity" file. Available as a CSV file.</li>
               </ul>
             </li>
           </ul>
         </p>
       </div>
-      <div class="col-sm-4" ng-form="vm.downloadForm">
+      <div class="col-sm-4" ng-form="$ctrl.downloadForm">
         <div class="input-group">
           <label class="sr-only" for="downloadSelect">Select which set of products to download</label>
-          <select id="downloadSelect" name="downloadSelect" ng-model="vm.downloadOption" class="form-control"
-                  ng-change="vm.changeDownload()"
-                  ng-options="o as o.display for o in vm.downloadOptions">
+          <select id="downloadSelect" name="downloadSelect" ng-model="$ctrl.downloadOption" class="form-control"
+                  ng-change="$ctrl.changeDownload()"
+                  ng-options="o as o.display for o in $ctrl.downloadOptions">
           </select>
           <span class="input-group-btn">
-            <a type="button" class="btn btn-ai-success" href="{{ vm.downloadOption.value }}" id="downloadChplLink"
-               analytics-on="click" analytics-event="Download CHPL" analytics-properties="{ category: 'Download CHPL', label: vm.downloadOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
+            <a type="button" class="btn btn-ai-success" href="{{ $ctrl.downloadOption.value }}" id="downloadChplLink"
+               analytics-on="click" analytics-event="Download CHPL" analytics-properties="{ category: 'Download CHPL', label: $ctrl.downloadOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Download</span></a>
           </span>
         </div>
         <div class="input-group">
           <label class="sr-only" for="definitionSelect">Select which download defintion file to download</label>
-          <select id="definitionSelect" ng-model="vm.definitionOption" class="form-control"
-                  ng-options="o as o.display for o in vm.definitionOptions">
+          <select id="definitionSelect" ng-model="$ctrl.definitionOption" class="form-control"
+                  ng-options="o as o.display for o in $ctrl.definitionOptions">
           </select>
           <span class="input-group-btn">
-            <a type="button" class="btn btn-ai-success" href="{{ vm.definitionOption.value }}" id="downloadChplDefinitionLink"
-               analytics-on="click" analytics-event="Download CHPL Defintion" analytics-properties="{ category: 'Download CHPL', label: vm.definitionOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Definition</span></a>
+            <a type="button" class="btn btn-ai-success" href="{{ $ctrl.definitionOption.value }}" id="downloadChplDefinitionLink"
+               analytics-on="click" analytics-event="Download CHPL Defintion" analytics-properties="{ category: 'Download CHPL', label: $ctrl.definitionOption.label }"><i class="fa fa-cloud-download"></i> <span class="sr-only">Definition</span></a>
           </span>
         </div>
         <small>The XML definition files were last modified on October 22, 2018.</small>
