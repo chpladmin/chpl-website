@@ -1,75 +1,73 @@
 <div role="modal" aria-labeled-by="modal-label">
-    <div class="modal-header">
-      <button type="button" class="close pull-right" aria-label="Cancel"
-              confirm="Are you sure you wish to cancel? Your changes will not be saved."
-              confirm-ok="Yes"
-              confirm-cancel="No"
-              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-      <h4 class="modal-title" id="modal-label">Trigger Job</h4>
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="modal-label">Trigger Job</h4>
+  </div>
+  <div class="modal-body form-horizontal" ng-form="vm.jobForm">
+    <div class="row">
+      <div class="col-md-12">
+        <label for="jobName">Job Name</label>
+      </div>
     </div>
-    <div class="modal-body form-horizontal" ng-form="vm.jobForm">
-      <div class="row">
-        <div class="col-md-12">
-          <label for="jobName">Job Name</label>
-        </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p id="jobName">{{ vm.job.name }}</p>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <p id="jobName">{{vm.job.name}}</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <label for="jobDescription">Description</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <p id="jobDescription">{{vm.job.description}}</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="alert alert-info" role="alert">
-            Set the time at which you would like to receive the report. Please note this is in UTC time, which is currently {{ vm.now | date : 'mediumTime' : 'UTC' }}
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">
-          <label for="selectedDate" >Date <span class="text-danger">*</span></label>
-        </div>
-        <div class="col-md-6">
-          <div class="input-group">
-            <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.selectedDateTime" is-open="vm.datePickerOpen" close-text="Close" id="selectedDate" ng-model-options="{ timezone: 'UTC' }" required>
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-ai btn-sm" ng-click="vm.datePickerOpen = true"><i class="fa fa-calendar"></i></button>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-
-        <div class="col-md-3">
-          <label for="selectedTime">Time <span class="text-danger">*</span></label>
-        </div>
-        <div class="col-md-6" >
-          <div uib-timepicker ng-model="vm.selectedDateTime" show-meridian="true" id="selectedTime"></div>
-        </div>
-      </div>
-
     </div>
-    <div class="modal-footer">
-      <div class="text-danger" ng-if="vm.errorMessage">{{ vm.errorMessage }}</div>
-      <button ng-disabled="vm.triggerForm.$invalid && vm.showFormErrors"
-              ng-mouseover="vm.showFormErrors = true"
-              class="btn btn-ai-success pull-right" ng-click="vm.save()"><i class="fa fa-save"></i><span class="sr-only">Save Job</span></button>
-      <button class="btn btn-warning pull-left"
-              confirm="Are you sure you wish to cancel? Your changes will not be saved."
-              confirm-ok="Yes"
-              confirm-cancel="No"
-              confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-              ng-click="vm.cancel()"><i class="fa fa-ban"></i><span class="sr-only">Cancel</span></button>
+    <div class="row">
+      <div class="col-md-12">
+        <label for="jobDescription">Description</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p id="jobDescription">{{ vm.job.description }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-info" role="alert">
+          Set the time at which you would like to receive the report. Please note this is in UTC time, which is currently {{ vm.now | date : 'mediumTime' : 'UTC' }}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <label for="selectedDate" >Date <span class="text-danger">*</span></label>
+      </div>
+      <div class="col-md-6">
+        <div class="input-group">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.selectedDateTime" is-open="vm.datePickerOpen" close-text="Close" id="selectedDate" ng-model-options="{ timezone: 'UTC' }" required>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.datePickerOpen = true"><i class="fa fa-calendar"></i></button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <label for="selectedTime">Time <span class="text-danger">*</span></label>
+      </div>
+      <div class="col-md-6" >
+        <div uib-timepicker ng-model="vm.selectedDateTime" show-meridian="true" id="selectedTime"></div>
+      </div>
     </div>
   </div>
+  <div class="modal-footer">
+    <div class="text-danger" ng-if="vm.errorMessage">{{ vm.errorMessage }}</div>
+    <button ng-disabled="vm.triggerForm.$invalid && vm.showFormErrors"
+            ng-mouseover="vm.showFormErrors = true"
+            class="btn btn-ai-success pull-right" ng-click="vm.save()"><i class="fa fa-save"></i><span class="sr-only">Save Job</span></button>
+    <button class="btn btn-warning pull-left"
+            confirm="Are you sure you wish to cancel? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="vm.cancel()"><i class="fa fa-ban"></i><span class="sr-only">Cancel</span></button>
+  </div>
+</div>

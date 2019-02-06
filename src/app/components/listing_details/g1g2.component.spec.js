@@ -3,12 +3,13 @@
 
     describe('the G1/G2 listing details component', function () {
 
-        var $log, Mock, ctrl, el, scope;
+        var $compile, $log, Mock, ctrl, el, scope;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl');
 
-            inject(function ($compile, _$log_, $rootScope, _Mock_) {
+            inject(function (_$compile_, _$log_, $rootScope, _Mock_) {
+                $compile = _$compile_;
                 $log = _$log_;
                 Mock = _Mock_;
 
@@ -67,8 +68,44 @@
                     });
                 });
 
-                it('should sort citeria in a measure\'s list', () => {
+                it('should sort criteria in a measure\'s list', () => {
                     expect(ctrl.measures[9].criteria).toEqual(['170.315 (e)(1)', '170.315 (g)(8)', '170.315 (g)(9)']);
+                });
+            });
+
+            describe('with g1 measures', () => {
+                beforeEach(() => {
+                    scope.listing = Mock.fullListings[2];
+                    $compile(el)(scope);
+                    scope.$digest();
+                });
+
+                it('should have an array of measures with their criteria', function () {
+                    expect(ctrl.measures.length).toBeGreaterThan(0);
+                });
+
+                it('should change the structure of the measure to match the desired output', function () {
+                    expect(ctrl.measures[0]).toEqual({
+                        name: 'Patient-Generated Health Data: Eligible Hospital/Critical Access Hospital',
+                        description: 'Required Test 6: Stage 3 Objective 6 Measure 3',
+                        g: 'G1',
+                        criteria: ['170.315 (e)(3)'],
+                        $$hashKey: jasmine.any(String),
+                    });
+                });
+
+                it('should combine matching measures on criteria value', function () {
+                    expect(ctrl.measures[4]).toEqual({
+                        name: 'Patient Electronic Access: Eligible Provider',
+                        description: 'Required Test 2: Stage 2 Objective 8 Measure 1',
+                        g: 'G1',
+                        criteria: ['170.315 (e)(1)'],
+                        $$hashKey: jasmine.any(String),
+                    });
+                });
+
+                it('should sort criteria in a measure\'s list', () => {
+                    expect(ctrl.measures[7].criteria).toEqual(['170.315 (e)(1)', '170.315 (e)(1)']);
                 });
             });
         });
