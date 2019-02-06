@@ -11,4 +11,7 @@ _Date TBD_
 * Slightly improve performance on mobile by removing "sticky" header/footer
 * Populate ACB filter automatically on Collections pages
 
+### Bug fixes
+* Allow logged in users to see download files
+
 ---

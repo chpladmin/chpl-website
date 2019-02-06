@@ -138,9 +138,7 @@
             })
             .state('resources.download', {
                 url: '/download',
-                template: require('./resources/download/download.html'),
-                controller: 'DownloadController',
-                controllerAs: 'vm',
+                component: 'aiResourcesDownload',
                 data: { title: 'Download the CHPL' },
             })
             .state('resources.overview', {
