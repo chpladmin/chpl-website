@@ -24,6 +24,7 @@
     function ScheduledJobsController ($log, $uibModal, SPLIT_PRIMARY, networkService) {
         var vm = this;
 
+        vm.createSimpleTrigger = createSimpleTrigger;
         vm.createTrigger = createTrigger;
         vm.editJob = editJob;
         vm.editTrigger = editTrigger;
@@ -35,6 +36,26 @@
         this.$onInit = function () {
             vm.loadScheduledTriggers();
             vm.loadScheduledJobs();
+        }
+
+        function createSimpleTrigger (job) {
+            vm.editSimpleTriggerInstance = $uibModal.open({
+                templateUrl: 'chpl.admin/components/schedules/systemJob.html',
+                controller: 'SystemJobController',
+                controllerAs: 'vm',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'md',
+                resolve: {
+                    job: function () { return job; },
+                },
+            });
+            vm.editSimpleTriggerInstance.result.then(function (result) {
+                if (result.status === 'updated') {
+                    vm.loadScheduledJobs();
+                }
+            });
         }
 
         function createTrigger () {

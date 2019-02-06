@@ -209,6 +209,14 @@
             $httpBackend.flush();
         });
 
+        it('should createScheduleOneTimeTrigger', function () {
+            $httpBackend.expectPOST(/^\/rest\/schedules\/triggers\/one_time$/).respond(200, {data: 'response'});
+            networkService.createScheduleOneTimeTrigger('payload').then(function (response) {
+                expect(response.data).toEqual('response');
+            });
+            $httpBackend.flush();
+        });
+
         it('should createScheduleTrigger', function () {
             $httpBackend.expectPOST(/^\/rest\/schedules\/triggers$/).respond(200, {data: 'response'});
             networkService.createScheduleTrigger({email: 'something'}).then(function (response) {
@@ -1156,6 +1164,7 @@
         });
 
         it('should modifyACB', function () {
+            $httpBackend.expectGET(/^\/rest\/data\/search_options$/).respond(200, {});
             $httpBackend.expectPUT(/^\/rest\/acbs\/id$/).respond(200, {data: 'response'});
             networkService.modifyACB({id: 'id'}).then(function (response) {
                 expect(response.data).toEqual('response');

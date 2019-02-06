@@ -13,6 +13,8 @@
         vm.changeSubNav = changeSubNav;
         vm.clearProductId = clearProductId;
         vm.getFullname = authService.getFullname;
+        vm.handleAcb = handleAcb;
+        vm.handleAtl = handleAtl;
         vm.hasAnyRole = authService.hasAnyRole;
 
         activate();
@@ -101,6 +103,28 @@
                 path = path.substring(0,path.lastIndexOf('/'));
                 $location.path(path);
             }
+        }
+
+        function handleAcb (newAcb) {
+            vm.acb = newAcb;
+            vm.acbs = vm.acbs.map(acb => {
+                if (acb.id === newAcb.id) {
+                    return newAcb;
+                } else {
+                    return acb;
+                }
+            });
+        }
+
+        function handleAtl (newAtl) {
+            vm.atl = newAtl;
+            vm.atls = vm.atls.map(atl => {
+                if (atl.id === newAtl.id) {
+                    return newAtl;
+                } else {
+                    return atl;
+                }
+            });
         }
     }
 })();
