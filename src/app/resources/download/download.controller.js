@@ -58,7 +58,7 @@
         }
 
         function showRestricted () {
-            return authService.hasAnyRole('ROLE_ADMIN', 'ROLE_ONC');
+            return authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC']);
         }
     }
 })();
