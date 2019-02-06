@@ -158,7 +158,25 @@
                 pageSize: '50',
             };
             if (vm.isFilterActive('acb')) {
-                vm.filterItems.acbItems = angular.copy(vm.refineModel.acb);
+                networkService.getSearchOptions()
+                    .then(options => {
+                        vm.filterItems.acbItems = options.certBodyNames
+                            .filter(acb => acb.name !== 'Pending')
+                            .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                            .map(acb => {
+                                let ret = {
+                                    value: acb.name,
+                                    retired: acb.retired,
+                                };
+                                if (acb.retired) {
+                                    ret.display = ret.value + ' (Retired)';
+                                    ret.selected = ((new Date()).getTime() - acb.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
+                                } else {
+                                    ret.selected = true;
+                                }
+                                return ret;
+                            });
+                    });
             }
             if (vm.isFilterActive('certificationStatus')) {
                 vm.filterItems.statusItems = angular.copy(vm.refineModel.certificationStatus);

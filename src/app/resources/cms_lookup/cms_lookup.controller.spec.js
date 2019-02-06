@@ -8,11 +8,11 @@
         mock = {
             localStorage: {
                 lookupCertIds: 'A014E01O3PSTEAV A014E01O3PSTEAV A014E01O3PSTEA7 NOTANID',
-                lookupProducts: [{id: 296, name: '2013 Systemedx Clinical Navigator', version: '2013.12', chplProductNumber: 'CHP-022218', year: '2014', practiceType: 'Ambulatory', acb: 'InfoGard', vendor: 'Systemedx Inc', classification: 'Complete EHR', additionalSoftware: 'Microsoft+SQL+Server+for+all+criteria', certificationId: 'A014E01O3PSTEAV', certificationIdEdition: '2014'}],
+                lookupProducts: [{id: 296, name: '2013 Systemedx Clinical Navigator', version: '2013.12', chplProductNumber: 'CHP-022218', year: '2014', practiceType: 'Ambulatory', acb: 'UL LLC', vendor: 'Systemedx Inc', classification: 'Complete EHR', additionalSoftware: 'Microsoft+SQL+Server+for+all+criteria', certificationId: 'A014E01O3PSTEAV', certificationIdEdition: '2014'}],
                 lookupProductsCertIdNotFound: ['A014E01O3PSTEA7'],
                 lookupProductsFormatInvalidIds: ['NOTANID'],
             },
-            goodResponse: {'products': [{'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'}],'ehrCertificationId': 'A014E01O3PSTEAV','year': '2014','criteria': null,'cqms': null},
+            goodResponse: {'products': [{'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'UL LLC','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'}],'ehrCertificationId': 'A014E01O3PSTEAV','year': '2014','criteria': null,'cqms': null},
             badResponse: {'products': [],'ehrCertificationId': null,'year': null,'criteria': null,'cqms': null},
             csvData: {
                 name: 'CMS_ID.A014E01O3PSTEAV.csv',
@@ -161,8 +161,8 @@
 
             it('should only have the CMS ID once in the filename', function () {
                 var multIdResponse = {'products': [
-                    {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
-                    {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'InfoGard','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
+                    {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'UL LLC','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
+                    {'id': 296,'name': '2013 Systemedx Clinical Navigator','version': '2013.12','chplProductNumber': 'CHP-022218','year': '2014','practiceType': 'Ambulatory','acb': 'UL LLC','vendor': 'Systemedx Inc','classification': 'Complete EHR','additionalSoftware': 'Microsoft+SQL+Server+for+all+criteria'},
                 ],'ehrCertificationId': 'A014E01O3PSTEAV','year': '2014','criteria': null,'cqms': null};
                 networkService.lookupCertificationId.and.returnValue($q.when(multIdResponse));
                 vm.certIds = 'A014E01O3PSTEAV';
