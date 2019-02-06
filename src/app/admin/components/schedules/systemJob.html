@@ -38,10 +38,10 @@
     </div>
     <div class="row" ng-repeat="param in vm.parameters">
       <div class="col-md-3">
-        <label for="need to add this" >{{ param.label }}</label>
+        <label for="{{ param.key }}" >{{ param.label }}</label>
       </div>
       <div class="col-md-6">
-          <input class="input-sm form-control" type="text" id="selectedDate" ng-model="vm.job.jobDataMap[param.key]">
+          <input class="input-sm form-control" type="text" id="{{ param.key }}" ng-model="vm.job.jobDataMap[param.key]">
       </div>
     </div>
     <div class="row">
