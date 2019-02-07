@@ -11,7 +11,7 @@ export const SurveillanceNonconformityInspectComponent = {
         }
 
         $onInit () {
-            this.nonconformities = this.resolve.nonconformities;
+            this.nonconformities = angular.copy(this.resolve.nonconformities);
         }
 
         cancel () {
