@@ -17,9 +17,9 @@
       </ul>
     </div>
     <div class="col-md-8">
-      <span ng-if="vm.announcements.length > 0">
-        <h2>Announcement<span ng-if="vm.announcements.length > 1">s</span></h2>
-        <div ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
+      <span ng-if="$ctrl.announcements.length > 0">
+        <h2>Announcement<span ng-if="$ctrl.announcements.length > 1">s</span></h2>
+        <div ng-repeat="announcement in $ctrl.announcements | orderBy:'startDate'">
           <strong>{{ announcement.title }}</strong><span ng-if="announcement.text">: {{ announcement.text }}</span><br />
           Start date: {{ announcement.startDate | date : 'mediumDate' : 'UTC' }}, End date: {{ announcement.endDate | date : 'mediumDate' : 'UTC' }}
         </div>
@@ -31,7 +31,7 @@
       <p>The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program. All products listed on the CHPL have been tested by an ONC-Authorized Testing Laboratory (ONC-ATL) and certified by an ONC-Authorized Certification Body (ONC-ACB) to meet criteria adopted by the Secretary of the Department of Health and Human Services (HHS).</p>
       <p>For additional information on how to navigate the CHPL, please refer to the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a></p>
       <p>For more information on attesting for Promoting Interoperability under the Centers for Medicare &amp; Medicaid Services (CMS), please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration &amp; Attestation Page</a>.</p>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="usingTheChplWebsite" class="page-anchor"></a>
       </span>
@@ -82,7 +82,7 @@
         <li>Microsoft Edge (two most recent major versions)</li>
         <li>Mozilla Firefox (latest version)</li>
       </ul>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="oncCertificationProgram" class="page-anchor"></a>
       </span>
@@ -97,14 +97,14 @@
       <p>For more information, please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/clinicalqualitymeasures.html">CMS Clinical Quality Measures Basics</a> page.</p>
       <h3>What are electronic clinical quality measures (eCQMs)?</h3>
       <p>eCQMs use data from electronic health records (EHR) and/or health information technology systems to measure health care quality. CMS, along with other HHS agencies, use eCQMs in a variety of quality reporting and incentive programs. For more information on eCQMs, please visit the <a href="https://ecqi.healthit.gov/">eCQI Resource Center</a>.</p>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="forEhrDevelopers" class="page-anchor"></a>
       </span>
       <h2>For EHR Developers</h2>
       <h3>How can a product be added to the CHPL?</h3>
       <p>To be listed on the CHPL, health information technology must first be successfully tested by an ONC-ATL and then certified by an ONC-ACB against at least one <a href="http://www.healthit.gov/policy-researchers-implementers/standards-and-certification-regulations">certification criterion adopted by HHS</a>. For more information on the ONC Certification Program, ONC-ATLs, and ONC-ACBs, please see the <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program page</a>.</p>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="oncacbAndAtlInformation" class="page-anchor"></a>
       </span>
@@ -120,13 +120,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="acb in vm.acbs | orderBy: 'name'">
+          <tr ng-repeat="acb in $ctrl.acbs | orderBy: 'name'">
             <td>ONC-ACB</td>
             <td>{{ acb.name }}</td>
             <td>{{ acb.acbCode }}</td>
             <td><a ai-a ng-if="acb.website" href="{{ acb.website }}">{{ acb.website }}</a></td>
           </tr>
-          <tr ng-repeat="atl in vm.atls | orderBy: 'name'">
+          <tr ng-repeat="atl in $ctrl.atls | orderBy: 'name'">
             <td>ONC-ATL</td>
             <td>{{ atl.name }}</td>
             <td>{{ atl.atlCode }}</td>
@@ -134,7 +134,7 @@
           </tr>
         </tbody>
       </table>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
     </div>
   </div>
 </div> <!-- end controller -->
