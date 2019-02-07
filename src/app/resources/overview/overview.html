@@ -19,7 +19,7 @@
     <div class="col-md-8">
       <span ng-if="$ctrl.announcements.length > 0">
         <h2>Announcement<span ng-if="$ctrl.announcements.length > 1">s</span></h2>
-        <div ng-repeat="announcement in $ctrl.announcements | orderBy:'startDate'">
+        <div ng-repeat="announcement in $ctrl.announcements">
           <strong>{{ announcement.title }}</strong><span ng-if="announcement.text">: {{ announcement.text }}</span><br />
           Start date: {{ announcement.startDate | date : 'mediumDate' : 'UTC' }}, End date: {{ announcement.endDate | date : 'mediumDate' : 'UTC' }}
         </div>
@@ -120,13 +120,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="acb in $ctrl.acbs | orderBy: 'name'">
+          <tr ng-repeat="acb in $ctrl.acbs">
             <td>ONC-ACB</td>
             <td>{{ acb.name }}</td>
             <td>{{ acb.acbCode }}</td>
             <td><a ai-a ng-if="acb.website" href="{{ acb.website }}">{{ acb.website }}</a></td>
           </tr>
-          <tr ng-repeat="atl in $ctrl.atls | orderBy: 'name'">
+          <tr ng-repeat="atl in $ctrl.atls">
             <td>ONC-ATL</td>
             <td>{{ atl.name }}</td>
             <td>{{ atl.atlCode }}</td>

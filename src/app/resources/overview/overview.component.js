@@ -18,29 +18,32 @@ export const OverviewComponent = {
         }
 
         loadAnnouncements () {
+            let ctrl = this;
             this.networkService.getAnnouncements(false)
                 .then(function (result) {
-                    this.announcements = result.announcements;
+                    ctrl.announcements = result.announcements.sort((a, b) => (a.startDate < b.startDate ? -1 : a.startDate > b.startDate ? 1 : 0));
                 }, function (error) {
-                    this.$log.error('error in app.overview.component.loadAnnouncements', error);
+                    ctrl.$log.error('error in app.overview.component.loadAnnouncements', error);
                 });
         }
 
         loadAcbs () {
+            let ctrl = this;
             this.networkService.getAcbs(false)
                 .then(function (result) {
-                    this.acbs = result.acbs.filter(acb => !acb.retired);
+                    ctrl.acbs = result.acbs.filter(acb => !acb.retired).sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
                 }, function (error) {
-                    this.$log.error('error in app.overview.component.loadAcbs', error);
+                    ctrl.$log.error('error in app.overview.component.loadAcbs', error);
                 });
         }
 
         loadAtls () {
+            let ctrl = this;
             this.networkService.getAtls(false)
                 .then(function (result) {
-                    this.atls = result.atls.filter(atl => !atl.retired);
+                    ctrl.atls = result.atls.filter(atl => !atl.retired).sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
                 }, function (error) {
-                    this.$log.error('error in app.overview.component.loadAtls', error);
+                    ctrl.$log.error('error in app.overview.component.loadAtls', error);
                 });
         }
 
