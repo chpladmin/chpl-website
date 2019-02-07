@@ -5,8 +5,9 @@
         var $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
-            acbs: [{id: 0, name: 'test-acb'}, {id: 1, name: 'retired-acb', retired: true}],
-            atls: [{id: 0, name: 'test-atl'}, {id: 1, name: 'retired-atl', retired: true}],
+            acbs: [{id: 0, name: 'test-acb', retired: false}, {id: 1, name: 'retired-acb', retired: true}],
+            atls: [{id: 0, name: 'test-atl', retired: false}, {id: 1, name: 'retired-atl', retired: true}],
+            announcements: [{title: 0, description: 'test-atl'}],
         };
 
         beforeEach(function () {
@@ -26,7 +27,7 @@
                 networkService = _networkService_;
                 networkService.getAcbs.and.returnValue($q.when({ acbs: mock.acbs }));
                 networkService.getAtls.and.returnValue($q.when({ atls: mock.atls }));
-                networkService.getAnnouncements.and.returnValue($q.when({announcements: [{title: 0, description: 'test-atl'}]}));
+                networkService.getAnnouncements.and.returnValue($q.when({announcements: mock.announcements}));
 
                 el = angular.element('<ai-overview></ai-overview>');
                 scope = $rootScope.$new();
