@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    fdescribe('the CHPL Overview component', function () {
+    describe('the CHPL Overview component', function () {
         var $log, $q, ctrl, el, mock, networkService, scope;
 
         mock = {
