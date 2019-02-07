@@ -77,21 +77,14 @@
 
         function inspectNonconformities (noncons) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/surveillance/nonconformity/inspect.html',
-                controller: 'NonconformityInspectController',
-                controllerAs: 'vm',
+                component: 'aiSurveillanceNonconformityInspect',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    nonconformities: function () { return noncons; },
+                    nonconformities: () => noncons,
                 },
                 size: 'lg',
-            });
-            vm.modalInstance.result.then(function (response) {
-                noncons = response;
-            }, function (result) {
-                $log.info(result);
             });
         }
 

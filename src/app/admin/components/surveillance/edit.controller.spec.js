@@ -306,9 +306,7 @@
             var modalOptions;
             beforeEach(function () {
                 modalOptions = {
-                    templateUrl: 'chpl.admin/components/surveillance/nonconformity/inspect.html',
-                    controller: 'NonconformityInspectController',
-                    controllerAs: 'vm',
+                    component: 'aiSurveillanceNonconformityInspect',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
@@ -330,13 +328,6 @@
                 vm.inspectNonconformities(noncons);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.nonconformities()).toEqual(noncons);
-            });
-
-            it('should log a non-closed modal', function () {
-                var logCount = $log.info.logs.length;
-                vm.inspectNonconformities();
-                vm.modalInstance.dismiss('string');
-                expect($log.info.logs.length).toBe(logCount + 1);
             });
         });
 

@@ -2,7 +2,6 @@
     'use strict';
 
     describe('the CHPL Downloadable Resources compoment', function () {
-
         var $log, authService, ctrl, el, mock, scope;
 
         mock = {};
