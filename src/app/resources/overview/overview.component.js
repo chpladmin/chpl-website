@@ -22,7 +22,7 @@ export const OverviewComponent = {
                 .then(function (result) {
                     this.announcements = result.announcements;
                 }, function (error) {
-                    this.$log.error('error in app.overview.controller.loadAnnouncements', error);
+                    this.$log.error('error in app.overview.component.loadAnnouncements', error);
                 });
         }
 
@@ -31,7 +31,7 @@ export const OverviewComponent = {
                 .then(function (result) {
                     this.acbs = result.acbs.filter(acb => !acb.retired);
                 }, function (error) {
-                    this.$log.error('error in app.overview.controller.loadAcbs', error);
+                    this.$log.error('error in app.overview.component.loadAcbs', error);
                 });
         }
 
@@ -40,7 +40,7 @@ export const OverviewComponent = {
                 .then(function (result) {
                     this.atls = result.atls.filter(atl => !atl.retired);
                 }, function (error) {
-                    this.$log.error('error in app.overview.controller.loadAtls', error);
+                    this.$log.error('error in app.overview.component.loadAtls', error);
                 });
         }
 
