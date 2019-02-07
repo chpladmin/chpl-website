@@ -41,7 +41,7 @@
         <label for="{{ param.key }}" >{{ param.label }}</label>
       </div>
       <div class="col-md-6">
-          <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="vm.job.jobDataMap[param.key]">
+          <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="vm.job.jobDataMap[param.key]" required>
       </div>
     </div>
     <div class="row">
