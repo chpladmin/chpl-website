@@ -387,10 +387,22 @@
             });
 
             describe('in a "confirm" workflow', () => {
-                it('should close it\'s modal', () => {
+                beforeEach(() => {
                     vm.workType = 'confirm';
+                    vm.surveillance.requirements = [
+                        {id: 1, type: 'fake'},
+                        {id: 2, type: 'fake2'},
+                    ];
+                });
+
+                it('should close it\'s modal', () => {
                     vm.save();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
+                });
+
+                it('should send "confirm" to the surveillance edit component', () => {
+                    vm.editRequirement(vm.surveillance.requirements[1]);
+                    expect(actualOptions.resolve.workType()).toBe('confirm');
                 });
             });
 
