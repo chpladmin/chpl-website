@@ -92,6 +92,8 @@
                     surveillanceTypes: {},
                     workType: 'create',
                 };
+                el = angular.element('<ai-surveillance-nonconformity-edit close="close()" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
+                $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
                 expect(ctrl.nonconformity.dateOfDeterminationObject).toEqual(aDate);
@@ -101,18 +103,13 @@
                 expect(ctrl.nonconformity.capMustCompleteDateObject).toEqual(aDate);
             });
 
-            fit('should convert ncType and statuses to objects on load', () => {
-                var nc = {
-                    nonconformityType: {id: 1},
-                    status: {id: 2},
-                };
+            it('should convert ncT status to objects on load', () => {
                 var data = {
-                    nonconformityTypes: {data: [{id: 1, name: 'something'}]},
-                    nonconformityStatusTypes: {data: [{id: 1, name: 'name1'},{id: 2, name: 'name2'}]},
+                    nonconformityStatusTypes: {data: [{id: 1, name: 'Open'},{id: 2, name: 'name2'}]},
                 };
                 scope.resolve = {
                     disableValidation: false,
-                    nonconformity: angular.copy(nc),
+                    nonconformity: {status: {name: 'Open'}},
                     randomized: false,
                     randomizedSitesUsed: undefined,
                     requirementId: 1,
@@ -120,12 +117,11 @@
                     surveillanceTypes: data,
                     workType: 'create',
                 };
-                $log.debug('srn', scope.resolve.nonconformity);
+                el = angular.element('<ai-surveillance-nonconformity-edit close="close()" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
+                $compile(el)(scope);
                 scope.$digest();
                 ctrl = el.isolateScope().$ctrl;
-                $log.debug('ctrl', ctrl);
-                expect(ctrl.nonconformity.nonconformityType).toBe(data.nonconformityTypes.data[0]);
-                expect(ctrl.nonconformity.status).toBe(data.nonconformityStatusTypes.data[1]);
+                expect(ctrl.nonconformity.status.id).toBe(data.nonconformityStatusTypes.data[0].id);
             });
 
             describe('when editing the FileUploader', () => {
@@ -140,6 +136,8 @@
                         surveillanceTypes: {},
                         workType: 'edit',
                     };
+                    el = angular.element('<ai-surveillance-nonconformity-edit close="close()" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
+                    $compile(el)(scope);
                     scope.$digest();
                     ctrl = el.isolateScope().$ctrl;
                 });

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    describe('the Utility service', function () {
+    fdescribe('the Utility service', () => {
         var $log, FileSaver, mock, util;
 
         mock = {

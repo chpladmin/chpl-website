@@ -18,9 +18,6 @@ export const SurveillanceNonconformityEditComponent = {
         }
 
         $onInit () {
-            this.$log.debug('keys', Object.keys(this.resolve));
-            this.$log.debug('resolve', this.resolve.nonconformity);
-            this.$log.debug('resolve1', this.nonconformity);
             this.data = angular.copy(this.resolve.surveillanceTypes);
             this.disableValidation = this.resolve.disableValidation;
             this.nonconformity = angular.copy(this.resolve.nonconformity);
@@ -30,23 +27,9 @@ export const SurveillanceNonconformityEditComponent = {
             this.showFormErrors = false;
             this.surveillanceId = this.resolve.surveillanceId;
             this.workType = this.resolve.workType;
-            this.$log.debug('resolve2', this.nonconformity);
-            this.activate();
-        }
 
-        cancel () {
-            this.dismiss();
-        }
-
-        activate () {
-            this.$log.debug('this', this);
-            this.$log.debug('this.noncon', this.nonconformity);
-            if (this.nonconformity.nonconformityType) {
-                this.$log.debug('type', this.nonconformity.nonconformityType);
-                //this.nonconformity.nonconformityType = this.utilService.findModel(this.nonconformity.nonconformityType, this.data.nonconformityTypes.data);
-            }
             if (this.nonconformity.status) {
-                this.nonconformity.status = this.utilService.findModel(this.nonconformity.status, this.data.nonconformityStatusTypes.data);
+                this.nonconformity.status = this.utilService.findModel(this.nonconformity.status, this.data.nonconformityStatusTypes.data, 'name');
             }
             if (this.nonconformity.dateOfDetermination) {
                 this.nonconformity.dateOfDeterminationObject = new Date(this.nonconformity.dateOfDetermination);
@@ -66,6 +49,10 @@ export const SurveillanceNonconformityEditComponent = {
             if (this.workType === 'edit') {
                 this.buildFileUploader();
             }
+        }
+
+        cancel () {
+            this.dismiss();
         }
 
         deleteDoc (docId) {

@@ -54,9 +54,7 @@
             var modalOptions;
             beforeEach(() => {
                 modalOptions = {
-                    templateUrl: 'chpl.admin/components/surveillance/nonconformity/edit.html',
-                    controller: 'EditNonconformityController',
-                    controllerAs: 'vm',
+                    component: 'aiSurveillanceNonconformityEdit',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
@@ -119,9 +117,7 @@
             beforeEach(() => {
                 noncon = {id: 1, name: '1'};
                 modalOptions = {
-                    templateUrl: 'chpl.admin/components/surveillance/nonconformity/edit.html',
-                    controller: 'EditNonconformityController',
-                    controllerAs: 'vm',
+                    component: 'aiSurveillanceNonconformityEdit',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
