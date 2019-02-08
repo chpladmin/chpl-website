@@ -36,6 +36,14 @@
         </div>
       </div>
     </div>
+    <div class="row" ng-repeat="param in vm.parameters">
+      <div class="col-md-3">
+        <label for="{{ param.key }}" >{{ param.label }}</label>
+      </div>
+      <div class="col-md-6">
+          <input class="input-sm form-control" type="text" id="{{ param.key }}" name="{{ param.key }}" ng-model="vm.job.jobDataMap[param.key]" required>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-3">
         <label for="selectedDate" >Date <span class="text-danger">*</span></label>
