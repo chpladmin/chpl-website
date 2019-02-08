@@ -1,28 +1,28 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Surveillance Edit controller', function () {
+    fdescribe('the Surveillance Edit controller', () => {
         var $controller, $log, $q, $uibModal, Mock, actualOptions, authService, networkService, scope, utilService, vm;
 
-        beforeEach(function () {
-            angular.mock.module('chpl.mock', 'chpl.admin', function ($provide) {
-                $provide.decorator('authService', function ($delegate) {
+        beforeEach(() => {
+            angular.mock.module('chpl.mock', 'chpl.admin', $provide => {
+                $provide.decorator('authService', $delegate => {
                     $delegate.hasAnyRole = jasmine.createSpy('hasAnyRole');
                     return $delegate;
                 });
-                $provide.decorator('networkService', function ($delegate) {
+                $provide.decorator('networkService', $delegate => {
                     $delegate.deleteSurveillance = jasmine.createSpy('deleteSurveillance');
                     $delegate.initiateSurveillance = jasmine.createSpy('initiateSurveillance');
                     $delegate.updateSurveillance = jasmine.createSpy('updateSurveillance');
                     return $delegate;
                 });
-                $provide.decorator('utilService', function ($delegate) {
+                $provide.decorator('utilService', $delegate => {
                     $delegate.sortRequirements = jasmine.createSpy('sortRequirements');
                     return $delegate;
                 });
             });
 
-            inject(function (_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_, _utilService_) {
+            inject((_$controller_, _$log_, _$q_, $rootScope, _$uibModal_, _Mock_, _authService_, _networkService_, _utilService_) => {
                 $controller = _$controller_;
                 $log = _$log_;
                 $q = _$q_;
@@ -36,7 +36,7 @@
                 utilService.sortRequirements.and.returnValue(1);
                 Mock = _Mock_;
                 $uibModal = _$uibModal_;
-                spyOn($uibModal, 'open').and.callFake(function (options) {
+                spyOn($uibModal, 'open').and.callFake(options => {
                     actualOptions = options;
                     return Mock.fakeModal;
                 });
@@ -53,26 +53,26 @@
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        it('should exist', function () {
+        it('should exist', () => {
             expect(vm).toBeDefined();
         });
 
-        it('should have a way to close it\'s own modal', function () {
+        it('should have a way to close it\'s own modal', () => {
             expect(vm.cancel).toBeDefined();
             vm.cancel();
             expect(Mock.modalInstance.dismiss).toHaveBeenCalled();
         });
 
-        describe('during activation', function () {
-            it('should provide authorities', function () {
+        describe('during activation', () => {
+            it('should provide authorities', () => {
                 // base line
                 expect(vm.authorities).toEqual([]);
                 expect(typeof(vm.surveillance.startDateObject)).toBe('object');
@@ -99,9 +99,9 @@
             });
         });
 
-        describe('when adding a new requirement', function () {
+        describe('when adding a new requirement', () => {
             var modalOptions;
-            beforeEach(function () {
+            beforeEach(() => {
                 modalOptions = {
                     templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
                     controller: 'EditRequirementController',
@@ -122,13 +122,13 @@
                 };
             });
 
-            it('should create a modal instance', function () {
+            it('should create a modal instance', () => {
                 expect(vm.modalInstance).toBeUndefined();
                 vm.addRequirement();
                 expect(vm.modalInstance).toBeDefined();
             });
 
-            it('should resolve elements on that modal', function () {
+            it('should resolve elements on that modal', () => {
                 vm.addRequirement();
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.disableValidation()).toBe(false);
@@ -140,21 +140,21 @@
                 expect(actualOptions.resolve.workType()).toEqual('add');
             });
 
-            it('should create an array of requirements if one doesn\'t exist', function () {
+            it('should create an array of requirements if one doesn\'t exist', () => {
                 vm.surveillance.requirements = undefined;
                 vm.addRequirement();
                 vm.modalInstance.close({});
                 expect(vm.surveillance.requirements.length).toBe(1);
             });
 
-            it('should append the response to the array of requirements', function () {
+            it('should append the response to the array of requirements', () => {
                 var reqCount = vm.surveillance.requirements.length;
                 vm.addRequirement();
                 vm.modalInstance.close({});
                 expect(vm.surveillance.requirements.length).toBe(reqCount + 1);
             });
 
-            it('should log a non-closed modal', function () {
+            it('should log a non-closed modal', () => {
                 var logCount = $log.info.logs.length;
                 vm.addRequirement();
                 vm.modalInstance.dismiss('string');
@@ -162,8 +162,8 @@
             });
         });
 
-        describe('when deleting requirements', function () {
-            it('should be able to remove requirements', function () {
+        describe('when deleting requirements', () => {
+            it('should be able to remove requirements', () => {
                 vm.surveillance.requirements = [
                     {id: 1, type: 'fake'},
                     {id: 2, type: 'fake2'},
@@ -173,47 +173,47 @@
             });
         });
 
-        describe('when deleting the surveillance', function () {
-            beforeEach(function () {
+        describe('when deleting the surveillance', () => {
+            beforeEach(() => {
                 vm.reason = 'a reason';
             });
 
-            it('should close it\'s own modal on a status:200 response', function () {
+            it('should close it\'s own modal on a status:200 response', () => {
                 networkService.deleteSurveillance.and.returnValue($q.when({status: 200}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 200});
             });
 
-            it('should close it\'s own modal if no status in the response', function () {
+            it('should close it\'s own modal if no status in the response', () => {
                 networkService.deleteSurveillance.and.returnValue($q.when({}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({});
             });
 
-            it('should close it\'s own modal if status is an object in the response', function () {
+            it('should close it\'s own modal if status is an object in the response', () => {
                 networkService.deleteSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: {status: 'OK'}});
             });
 
-            it('should report errors if status has errors', function () {
+            it('should report errors if status has errors', () => {
                 networkService.deleteSurveillance.and.returnValue($q.when({status: 'bad'}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual([{status: 'bad'}]);
             });
 
-            it('should report errors if request fails', function () {
+            it('should report errors if request fails', () => {
                 networkService.deleteSurveillance.and.returnValue($q.reject({statusText: 'errors'}));
                 vm.deleteSurveillance();
                 scope.$digest();
                 expect(vm.errorMessages).toEqual(['errors']);
             });
 
-            it('should not allow deleting a surveillance without a Reason for Change', function () {
+            it('should not allow deleting a surveillance without a Reason for Change', () => {
                 var callCount = networkService.deleteSurveillance.calls.count();
                 vm.reason = undefined;
                 vm.deleteSurveillance();
@@ -221,15 +221,15 @@
                 expect(networkService.deleteSurveillance.calls.count()).toBe(callCount);
             });
 
-            it('should pass the Reason for Change to the network service', function () {
+            it('should pass the Reason for Change to the network service', () => {
                 vm.deleteSurveillance();
                 expect(networkService.deleteSurveillance).toHaveBeenCalledWith(vm.surveillance.id, 'a reason');
             });
         });
 
-        describe('when editing a requirement', function () {
+        describe('when editing a requirement', () => {
             var modalOptions;
-            beforeEach(function () {
+            beforeEach(() => {
                 modalOptions = {
                     templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
                     controller: 'EditRequirementController',
@@ -254,13 +254,13 @@
                 ];
             });
 
-            it('should create a modal instance', function () {
+            it('should create a modal instance', () => {
                 expect(vm.modalInstance).toBeUndefined();
                 vm.editRequirement(vm.surveillance.requirements[1]);
                 expect(vm.modalInstance).toBeDefined();
             });
 
-            it('should resolve elements on that modal', function () {
+            it('should resolve elements on that modal', () => {
                 vm.editRequirement(vm.surveillance.requirements[1]);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
                 expect(actualOptions.resolve.disableValidation()).toBe(false);
@@ -272,13 +272,13 @@
                 expect(actualOptions.resolve.workType()).toEqual('edit');
             });
 
-            it('should create a temporary guid if one doesn\'t exist', function () {
+            it('should create a temporary guid if one doesn\'t exist', () => {
                 var req = {name: 'fake'};
                 vm.editRequirement(req);
                 expect(req.guiId).toEqual(jasmine.any(Number));
             });
 
-            it('should replace the array object with the response if the guid matches', function () {
+            it('should replace the array object with the response if the guid matches', () => {
                 var req = angular.copy(vm.surveillance.requirements[1]);
                 req.guiId = req.id;
                 req.name = 'new name';
@@ -287,14 +287,14 @@
                 expect(vm.surveillance.requirements[1]).toEqual(req);
             });
 
-            it('should append the response if it does not match', function () {
+            it('should append the response if it does not match', () => {
                 vm.editRequirement(vm.surveillance.requirements[1]);
                 vm.modalInstance.close({guiId: 123123})
                 expect(vm.surveillance.requirements[1]).not.toEqual({guiId: 123123});
                 expect(vm.surveillance.requirements[2]).toEqual({guiId: 123123});
             });
 
-            it('should log a non-closed modal', function () {
+            it('should log a non-closed modal', () => {
                 var logCount = $log.info.logs.length;
                 vm.editRequirement(vm.surveillance.requirements[1]);
                 vm.modalInstance.dismiss('string');
@@ -302,9 +302,9 @@
             });
         });
 
-        describe('when inspecting nonconformities', function () {
+        describe('when inspecting nonconformities', () => {
             var modalOptions;
-            beforeEach(function () {
+            beforeEach(() => {
                 modalOptions = {
                     component: 'aiSurveillanceNonconformityInspect',
                     animation: false,
@@ -317,13 +317,13 @@
                 };
             });
 
-            it('should create a modal instance', function () {
+            it('should create a modal instance', () => {
                 expect(vm.modalInstance).toBeUndefined();
                 vm.inspectNonconformities();
                 expect(vm.modalInstance).toBeDefined();
             });
 
-            it('should resolve elements on that modal', function () {
+            it('should resolve elements on that modal', () => {
                 var noncons = [1,2,3];
                 vm.inspectNonconformities(noncons);
                 expect($uibModal.open).toHaveBeenCalledWith(modalOptions);
@@ -331,43 +331,43 @@
             });
         });
 
-        describe('when concerned with end dates', function () {
-            beforeEach(function () {
+        describe('when concerned with end dates', () => {
+            beforeEach(() => {
                 vm.surveillance = angular.copy(Mock.surveillances[0]);
             });
 
-            it('should not require one when there are open NCs', function () {
+            it('should not require one when there are open NCs', () => {
                 expect(vm.missingEndDate()).toBe(false);
             });
 
-            it('should require one when all NCs are closed and there\'s no surveillance end date', function () {
+            it('should require one when all NCs are closed and there\'s no surveillance end date', () => {
                 vm.surveillance.requirements[0].nonconformities[0].status = {id: 2, name: 'Closed'};
                 expect(vm.missingEndDate()).toBe(true);
             });
 
-            it('should require one when there are no NCs and there\'s no surveillance end date', function () {
+            it('should require one when there are no NCs and there\'s no surveillance end date', () => {
                 vm.surveillance.requirements[0].nonconformities = [];
                 expect(vm.missingEndDate()).toBe(true);
             });
 
-            it('should not require one when all NCs are closed and the surveillance has an end date', function () {
+            it('should not require one when all NCs are closed and the surveillance has an end date', () => {
                 vm.surveillance.requirements[0].nonconformities[0].status = {id: 2, name: 'Closed'};
                 vm.surveillance.endDateObject = '1472702800000';
                 expect(vm.missingEndDate()).toBe(false);
             });
 
-            it('should not require one when there are no requirements', function () {
+            it('should not require one when there are no requirements', () => {
                 vm.surveillance.requirements = undefined;
                 expect(vm.missingEndDate()).toBeFalsy();
             });
         });
 
-        describe('when saving the surveillance', function () {
-            beforeEach(function () {
+        describe('when saving the surveillance', () => {
+            beforeEach(() => {
                 vm.workType = '';
             });
 
-            it('should set the start date', function () {
+            it('should set the start date', () => {
                 var aDate = new Date();
                 vm.surveillance.startDate = undefined;
                 vm.surveillance.startDateObject = aDate;
@@ -375,7 +375,7 @@
                 expect(vm.surveillance.startDate).toBe(aDate.getTime());
             });
 
-            it('should set the end date if it exists', function () {
+            it('should set the end date if it exists', () => {
                 var aDate = new Date();
                 vm.surveillance.endDate = undefined;
                 vm.surveillance.endDateObject = aDate;
@@ -383,43 +383,43 @@
                 expect(vm.surveillance.endDate).toBe(aDate.getTime());
             });
 
-            it('should set the end date to null if it doesn\'t exist', function () {
+            it('should set the end date to null if it doesn\'t exist', () => {
                 vm.surveillance.endDate = undefined;
                 vm.surveillance.endDateObject = null
                 vm.save();
                 expect(vm.surveillance.endDate).toBe(null);
             });
 
-            describe('in a "confirm" workflow', function () {
-                it('should close it\'s modal', function () {
+            describe('in a "confirm" workflow', () => {
+                it('should close it\'s modal', () => {
                     vm.workType = 'confirm';
                     vm.save();
                     expect(Mock.modalInstance.close).toHaveBeenCalled();
                 });
             });
 
-            describe('in an "initiate" workflow', function () {
-                beforeEach(function () {
+            describe('in an "initiate" workflow', () => {
+                beforeEach(() => {
                     vm.workType = 'initiate';
                     vm.surveillance.certifiedProduct.edition = undefined;
                     vm.surveillance.certifiedProduct.certificationEdition = {name: 'fake'};
                 });
 
-                it('should set the certification edition correctly', function () {
+                it('should set the certification edition correctly', () => {
                     vm.surveillance.certifiedProduct.edition = undefined;
                     vm.surveillance.certifiedProduct.certificationEdition = {name: 'fake'};
                     vm.save();
                     expect(vm.surveillance.certifiedProduct.edition).toBe('fake');
                 });
 
-                it('should not assign an authority if one is already there', function () {
+                it('should not assign an authority if one is already there', () => {
                     var initCount = authService.hasAnyRole.calls.count();
                     vm.surveillance.authority = 'ROLE_ADMIN';
                     vm.save();
                     expect(authService.hasAnyRole.calls.count()).toBe(initCount);
                 });
 
-                it('should assign the highest authority to the surveillance', function () {
+                it('should assign the highest authority to the surveillance', () => {
                     vm.surveillance.authority = undefined;
                     authService.hasAnyRole.and.returnValues(true, false, true);
                     vm.save();                                            // calls once
@@ -432,63 +432,63 @@
                     expect(vm.surveillance.authority).toBeUndefined();
                 });
 
-                it('should close it\'s own modal on a status:200 response', function () {
+                it('should close it\'s own modal on a status:200 response', () => {
                     networkService.initiateSurveillance.and.returnValue($q.when({status: 200}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 200});
                 });
 
-                it('should close it\'s own modal if no status in the response', function () {
+                it('should close it\'s own modal if no status in the response', () => {
                     networkService.initiateSurveillance.and.returnValue($q.when({}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({});
                 });
 
-                it('should close it\'s own modal if status is an object in the response', function () {
+                it('should close it\'s own modal if status is an object in the response', () => {
                     networkService.initiateSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: {status: 'OK'}});
                 });
 
-                it('should report errors if status has errors', function () {
+                it('should report errors if status has errors', () => {
                     networkService.initiateSurveillance.and.returnValue($q.when({status: 'bad'}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([{status: 'bad'}]);
                 });
 
-                it('should report errors if request fails', function () {
+                it('should report errors if request fails', () => {
                     networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: ['errors']}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual(['errors']);
                 });
 
-                it('should not report errors if request fails but no messages are returned', function () {
+                it('should not report errors if request fails but no messages are returned', () => {
                     networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([undefined]);
                 });
 
-                it('should not report errors if request fails but no messages are returned', function () {
+                it('should not report errors if request fails but no messages are returned', () => {
                     networkService.initiateSurveillance.and.returnValue($q.reject({data: {errorMessages: undefined}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([undefined]);
                 });
 
-                it('should report errors if request fails and "data.error" is returned', function () {
+                it('should report errors if request fails and "data.error" is returned', () => {
                     networkService.initiateSurveillance.and.returnValue($q.reject({data: {error: 'an error'}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual(['an error']);
                 });
 
-                it('should report errors if request fails and "statusText" is returned', function () {
+                it('should report errors if request fails and "statusText" is returned', () => {
                     networkService.initiateSurveillance.and.returnValue($q.reject({statusText: 'errors', data: {errorMessages: undefined}}));
                     vm.save();
                     scope.$digest();
@@ -496,61 +496,61 @@
                 });
             });
 
-            describe('in an "edit" workflow', function () {
-                beforeEach(function () {
+            describe('in an "edit" workflow', () => {
+                beforeEach(() => {
                     vm.workType = 'edit';
                 });
 
-                it('should close it\'s own modal on a status:200 response', function () {
+                it('should close it\'s own modal on a status:200 response', () => {
                     networkService.updateSurveillance.and.returnValue($q.when({status: 200}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: 200});
                 });
 
-                it('should close it\'s own modal if no status in the response', function () {
+                it('should close it\'s own modal if no status in the response', () => {
                     networkService.updateSurveillance.and.returnValue($q.when({}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({});
                 });
 
-                it('should close it\'s own modal if status is an object in the response', function () {
+                it('should close it\'s own modal if status is an object in the response', () => {
                     networkService.updateSurveillance.and.returnValue($q.when({status: {status: 'OK'}}));
                     vm.save();
                     scope.$digest();
                     expect(Mock.modalInstance.close).toHaveBeenCalledWith({status: {status: 'OK'}});
                 });
 
-                it('should report errors if status has errors', function () {
+                it('should report errors if status has errors', () => {
                     networkService.updateSurveillance.and.returnValue($q.when({status: 'bad'}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([{status: 'bad'}]);
                 });
 
-                it('should report errors if request fails', function () {
+                it('should report errors if request fails', () => {
                     networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: ['errors']}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual(['errors']);
                 });
 
-                it('should not report errors if request fails but no messages are returned', function () {
+                it('should not report errors if request fails but no messages are returned', () => {
                     networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: []}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([undefined]);
                 });
 
-                it('should not report errors if request fails but no messages are returned', function () {
+                it('should not report errors if request fails but no messages are returned', () => {
                     networkService.updateSurveillance.and.returnValue($q.reject({data: {errorMessages: undefined}}));
                     vm.save();
                     scope.$digest();
                     expect(vm.errorMessages).toEqual([undefined]);
                 });
 
-                it('should report errors if request fails and "statusText" is returned', function () {
+                it('should report errors if request fails and "statusText" is returned', () => {
                     networkService.updateSurveillance.and.returnValue($q.reject({statusText: 'errors', data: {errorMessages: undefined}}));
                     vm.save();
                     scope.$digest();
