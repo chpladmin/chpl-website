@@ -115,7 +115,7 @@
                     requirement: function () { return req; },
                     surveillanceId: function () { return vm.surveillance.id; },
                     surveillanceTypes: function () { return vm.data; },
-                    workType: function () { return 'edit'; },
+                    workType: function () { return vm.workType; },
                 },
                 size: 'lg',
             });
