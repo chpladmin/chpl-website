@@ -147,17 +147,13 @@
             options.push({name: value});
         }
 
-        function findModel (item, options, key) {
-            if (!key) {
-                key = 'id';
+        function findModel (item, options, key = 'id') {
+            const ret = options.filter(option => item[key] === option[key]);
+            if (ret.length === 1) {
+                return ret[0];
+            } else {
+                return item;
             }
-            for (var i = 0; i < options.length; i++) {
-                if (item[key] === options[i][key]) {
-                    item = options[i];
-                    return item;
-                }
-            }
-            return item;
         }
 
         function makeCsv (data) {
