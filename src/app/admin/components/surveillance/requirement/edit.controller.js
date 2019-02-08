@@ -30,10 +30,10 @@
             vm.surveillanceId = surveillanceId;
             vm.workType = workType;
             if (vm.requirement.type) {
-                vm.requirement.type = utilService.findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data);
+                vm.requirement.type = utilService.findModel(vm.requirement.type, vm.data.surveillanceRequirementTypes.data, 'name');
             }
             if (vm.requirement.result) {
-                vm.requirement.result = utilService.findModel(vm.requirement.result, vm.data.surveillanceResultTypes.data);
+                vm.requirement.result = utilService.findModel(vm.requirement.result, vm.data.surveillanceResultTypes.data, 'name');
             }
         }
 

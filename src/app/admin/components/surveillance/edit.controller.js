@@ -43,7 +43,7 @@
             vm.showFormErrors = false;
             vm.data = surveillanceTypes;
             if (vm.surveillance.type) {
-                vm.surveillance.type = utilService.findModel(vm.surveillance.type, vm.data.surveillanceTypes.data);
+                vm.surveillance.type = utilService.findModel(vm.surveillance.type, vm.data.surveillanceTypes.data, 'name');
             }
         }
 
