@@ -92,7 +92,7 @@ export const SurveillanceNonconformityEditComponent = {
             } else {
                 this.nonconformity.capMustCompleteDate = null;
             }
-            this.close(this.nonconformity);
+            this.close({$value: this.nonconformity});
         }
 
         ////////////////////////////////////////////////////////////////////

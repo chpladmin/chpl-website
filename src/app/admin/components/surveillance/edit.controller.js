@@ -49,9 +49,7 @@
 
         function addRequirement () {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
-                controller: 'EditRequirementController',
-                controllerAs: 'vm',
+                component: 'aiSurveillanceRequirementEdit',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
@@ -106,9 +104,7 @@
         function editRequirement (req) {
             req.guiId = req.id ? req.id : (new Date()).getTime();
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/surveillance/requirement/edit.html',
-                controller: 'EditRequirementController',
-                controllerAs: 'vm',
+                component: 'aiSurveillanceRequirementEdit',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,

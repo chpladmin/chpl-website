@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the surveillance nonconformity edit component', () => {
+    describe('the surveillance nonconformity edit component', () => {
         var $compile, $log, $q, authService, ctrl, el, networkService, scope;
 
         beforeEach(() => {
