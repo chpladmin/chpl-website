@@ -45,7 +45,7 @@
             }
         });
 
-        describe('directive', () => {
+        describe('template', () => {
             it('should be compiled', () => {
                 expect(el.html()).not.toEqual(null);
             });

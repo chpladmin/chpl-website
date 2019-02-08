@@ -27,7 +27,7 @@
                 networkService = _networkService_;
                 networkService.deleteSurveillanceDocument.and.returnValue($q.when({}));
 
-                el = angular.element('<ai-surveillance-nonconformity-edit close="close()" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
+                el = angular.element('<ai-surveillance-nonconformity-edit close="close($value)" dismiss="dismiss()" resolve="resolve"></ai-surveillance-nonconformity-edit>');
 
                 scope = $rootScope.$new();
                 scope.close = jasmine.createSpy('close');
@@ -56,7 +56,7 @@
             }
         });
 
-        describe('directive', () => {
+        describe('template', () => {
             it('should be compiled', () => {
                 expect(el.html()).not.toEqual(null);
             });

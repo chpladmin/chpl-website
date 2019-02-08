@@ -53,9 +53,7 @@
         function editSurveillance () {
             fixRequirementOptions();
             vm.editModalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/surveillance/edit.html',
-                controller: 'EditSurveillanceController',
-                controllerAs: 'vm',
+                component: 'aiSurveillanceEdit',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
