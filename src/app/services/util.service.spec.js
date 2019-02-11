@@ -1,7 +1,7 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Utility service', function () {
+    describe('the Utility service', () => {
         var $log, FileSaver, mock, util;
 
         mock = {
@@ -17,15 +17,15 @@
             ],
         };
 
-        beforeEach(function () {
-            angular.mock.module('chpl.services', function ($provide) {
-                $provide.decorator('FileSaver', function ($delegate) {
+        beforeEach(() => {
+            angular.mock.module('chpl.services', $provide => {
+                $provide.decorator('FileSaver', $delegate => {
                     $delegate.saveAs = jasmine.createSpy('saveAs');
                     return $delegate;
                 });
             });
 
-            inject(function (_$log_, _FileSaver_, _utilService_) {
+            inject((_$log_, _FileSaver_, _utilService_) => {
                 $log = _$log_;
                 FileSaver = _FileSaver_;
                 FileSaver.saveAs.and.returnValue();
@@ -33,15 +33,15 @@
             })
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        it('should get the right icon for various statuses', function () {
+        it('should get the right icon for various statuses', () => {
             expect(util.statusFont('Active')).toBe('fa-check-circle status-good');
             expect(util.statusFont('Retired')).toBe('fa-university status-neutral');
             expect(util.statusFont('Suspended by ONC')).toBe('fa-minus-square status-warning');
@@ -52,18 +52,18 @@
             expect(util.statusFont('Withdrawn by ONC-ACB')).toBe('fa-times-circle status-bad');
         });
 
-        describe('when extending a select element using just a name', function () {
-            it('should be able to add an option to a select', function () {
+        describe('when extending a select element using just a name', () => {
+            it('should be able to add an option to a select', () => {
                 expect(util.extendSelect).toBeDefined();
             });
 
-            it('should update the options when a new item is added', function () {
+            it('should update the options when a new item is added', () => {
                 var options = [];
                 util.extendSelect(options, 'fake');
                 expect(options).toEqual([{name: 'fake'}]);
             });
 
-            it('shouldn\'t add a new object if the name is a duplicate', function () {
+            it('shouldn\'t add a new object if the name is a duplicate', () => {
                 var options = [];
                 util.extendSelect(options, 'name1');
                 util.extendSelect(options, 'name2');
@@ -72,15 +72,15 @@
             });
         });
 
-        describe('when adding a value to an array', function () {
-            it('should create the array if necessary', function () {
+        describe('when adding a value to an array', () => {
+            it('should create the array if necessary', () => {
                 var array, object;
                 object = {id: 1};
                 array = util.addNewValue(array, object);
                 expect(array).toEqual([object]);
             });
 
-            it('should not add an undefined or empty object', function () {
+            it('should not add an undefined or empty object', () => {
                 var array, object;
                 array = [];
                 array = util.addNewValue(array, object);
@@ -91,8 +91,8 @@
             });
         });
 
-        describe('when connecting to a model', function () {
-            it('should match to a model', function () {
+        describe('when connecting to a model', () => {
+            it('should match to a model', () => {
                 var id = {id: 2};
                 var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
                 expect(id).not.toBe(array[1]);
@@ -100,7 +100,7 @@
                 expect(id).toBe(array[1]);
             });
 
-            it('should match with an optional key', function () {
+            it('should match with an optional key', () => {
                 var id = {name: 'name2'};
                 var array = [{id: 1, name: 'name1'}, {id: 2, name: 'name2'}];
                 expect(id).not.toBe(array[1]);
@@ -109,30 +109,30 @@
             });
         });
 
-        describe('when sorting', function () {
+        describe('when sorting', () => {
 
-            it('should be able to sort certs', function () {
+            it('should be able to sort certs', () => {
                 expect(util.sortCert('170.314 (a)(1)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
                 expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
                 expect(util.sortCert('170.314 (a)(2)')).toBeLessThan(util.sortCert('170.315 (a)(10)'));
                 expect(util.sortCert('170.302 (a)')).toBeLessThan(util.sortCert('170.314 (a)(10)'));
             });
 
-            it('should be able to sort cert objects by name', function () {
+            it('should be able to sort cert objects by name', () => {
                 expect(util.sortCert({name: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({name: '170.314 (a)(10)'}));
             });
 
-            it('should be able to sort cert objects by number', function () {
+            it('should be able to sort cert objects by number', () => {
                 expect(util.sortCert({number: '170.314 (a)(2)'})).toBeLessThan(util.sortCert({number: '170.314 (a)(10)'}));
             });
 
-            it('should be able to sort cqms', function () {
+            it('should be able to sort cqms', () => {
                 expect(util.sortCqm('NQF-0031')).toBeLessThan(util.sortCqm('NQF-0100'));
                 expect(util.sortCqm('NQF-0031')).toBeGreaterThan(util.sortCqm('CMS107'));
                 expect(util.sortCqm('CMS26')).toBeLessThan(util.sortCqm('CMS107'));
             });
 
-            it('should be able to sort requirements', function () {
+            it('should be able to sort requirements', () => {
                 var criteria2014 = {
                     requirement: '170.314 (g)(4)',
                     type: { id: 1, name: 'Certified Capability' },
@@ -175,7 +175,7 @@
                 expect(util.sortRequirements('170.302 (a)')).toBeLessThan(util.sortRequirements(criteria2014));
             });
 
-            it('should be able to sort nonconformity types', function () {
+            it('should be able to sort nonconformity types', () => {
                 var criteria2014_g_4 = { name: '170.314 (g)(4)' };
                 var criteria2014_g_10 = { name: '170.314 (g)(10)' };
                 var criteria2015_d_1 = { name: '170.315 (d)(1)' };
@@ -193,7 +193,7 @@
                 expect(util.sortNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortNonconformityTypes(other));
             });
 
-            it('should be able to sort nonconformity types', function () {
+            it('should be able to sort nonconformity types', () => {
                 var criteria2014_g_4 = '170.314 (g)(4)';
                 var criteria2014_g_10 = '170.314 (g)(10)';
                 var criteria2015_d_1 = '170.315 (d)(1)';
@@ -211,7 +211,7 @@
                 expect(util.sortOtherNonconformityTypes(transparency_k_2)).toBeLessThan(util.sortOtherNonconformityTypes(other));
             });
 
-            it('should be able to order arrays of arrays of certs by the first cert', function () {
+            it('should be able to order arrays of arrays of certs by the first cert', () => {
                 expect(util.sortCertArray([])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
                 expect(util.sortCertArray(['170.314 (a)(2)'])).toBeLessThan(util.sortCertArray(['170.314 (a)(10)']));
             });
@@ -233,27 +233,27 @@
             });
         });
 
-        describe('when comparing arrays', function () {
+        describe('when comparing arrays', () => {
             var ret;
-            beforeEach(function () {
+            beforeEach(() => {
                 ret = { added: [], edited: [], removed: [] };
             });
 
-            it('should know if an object was added to an array', function () {
+            it('should know if an object was added to an array', () => {
                 var a = [].concat(mock.objects[1]);
                 var b = [].concat(mock.objects[1],mock.objects[2]);
                 ret.added.push(mock.objects[2])
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
 
-            it('should know if an object was removed from an array', function () {
+            it('should know if an object was removed from an array', () => {
                 var a = [].concat(mock.objects[1],mock.objects[0]);
                 var b = [].concat(mock.objects[1]);
                 ret.removed.push(mock.objects[0])
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
 
-            it('should know if objects were added and removed from an array', function () {
+            it('should know if objects were added and removed from an array', () => {
                 var a = [].concat(mock.objects[0],mock.objects[1]);
                 var b = [].concat(mock.objects[1],mock.objects[2]);
                 ret.added.push(mock.objects[2])
@@ -261,28 +261,28 @@
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
 
-            it('should know if an object was changed, assuming it has an "id" value', function () {
+            it('should know if an object was changed, assuming it has an "id" value', () => {
                 var a = [].concat(mock.objects[0],mock.objects[1],mock.objects[4]);
                 var b = [].concat(mock.objects[0],mock.objects[1],mock.objects[5]);
                 ret.edited.push({before: mock.objects[4], after: mock.objects[5]});
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
 
-            it('should allow different key values', function () {
+            it('should allow different key values', () => {
                 var a = [].concat(mock.objects[0],mock.objects[1],mock.objects[6]);
                 var b = [].concat(mock.objects[0],mock.objects[1],mock.objects[7]);
                 ret.edited.push({before: mock.objects[6], after: mock.objects[7]});
                 expect(util.arrayCompare(a,b,'specialKey')).toEqual(ret);
             });
 
-            it('should handle a null before', function () {
+            it('should handle a null before', () => {
                 var a = null;
                 var b = [].concat(mock.objects[0]);
                 ret.added.push(mock.objects[0]);
                 expect(util.arrayCompare(a,b)).toEqual(ret);
             });
 
-            it('should handle a null after', function () {
+            it('should handle a null after', () => {
                 var a = [].concat(mock.objects[0]);
                 var b = null;
                 ret.removed.push(mock.objects[0]);
@@ -290,10 +290,10 @@
             });
         });
 
-        describe('when converting an array to CSV', function () {
+        describe('when converting an array to CSV', () => {
             var data;
 
-            beforeEach(function () {
+            beforeEach(() => {
                 data = {
                     name: 'filename',
                     values: [
@@ -303,36 +303,36 @@
                 };
             });
 
-            it('should convert arrays', function () {
+            it('should convert arrays', () => {
                 expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n"String with ""quotes""","String with ,commas,","String with ""both,omg""","String with\nnewline"');
             });
 
-            it('should call the FileSaver to output', function () {
+            it('should call the FileSaver to output', () => {
                 util.makeCsv(data);
                 expect(FileSaver.saveAs).toHaveBeenCalledWith(jasmine.any(Object), 'filename');
             });
 
-            it('should handle null and undefined cells to blank strings', function () {
+            it('should handle null and undefined cells to blank strings', () => {
                 data.values[1][0] = null;
                 data.values[1][1] = undefined;
                 expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n,,"String with ""both,omg""","String with\nnewline"');
             });
 
-            it('should handle raw numbers', function () {
+            it('should handle raw numbers', () => {
                 data.values[1] = [1,2,3,4];
                 expect(util.arrayToCsv(data.values)).toEqual('header 1,header 2,header 3,header 4\n1,2,3,4');
             });
         });
 
-        describe('when determining if an address is required', function () {
+        describe('when determining if an address is required', () => {
             var address;
-            it('should not be required if there is no data', function () {
+            it('should not be required if there is no data', () => {
                 address = {};
                 expect(util.addressRequired(address)).toBe(false);
                 expect(util.addressRequired()).toBe(false);
             });
 
-            it('should be required if there are any fields that have data', function () {
+            it('should be required if there are any fields that have data', () => {
                 address = {
                     line1: undefined,
                     line2: undefined,
@@ -380,8 +380,8 @@
             });
         });
 
-        describe('when deriving the current certification status', function () {
-            it('should use the most recent status as "current"', function () {
+        describe('when deriving the current certification status', () => {
+            it('should use the most recent status as "current"', () => {
                 var cp = {
                     certificationEvents: [
                         { status: { name: 'Active' }, eventDate: 4 },
@@ -394,14 +394,14 @@
                 expect(util.certificationStatus(cp)).toBe('Active');
             });
 
-            it('should return "" if no events exist', function () {
+            it('should return "" if no events exist', () => {
                 var cp = {
                     certificationEvents: [],
                 }
                 expect(util.certificationStatus(cp)).toBe('');
             });
 
-            it('should return "" if the field is null/undefined/missing', function () {
+            it('should return "" if the field is null/undefined/missing', () => {
                 var cp = {};
                 expect(util.certificationStatus(cp)).toBe('');
                 cp.certificationEvents = undefined;
@@ -410,7 +410,7 @@
                 expect(util.certificationStatus(cp)).toBe('');
             });
 
-            it('should use the most recent status as "current" when editing', function () {
+            it('should use the most recent status as "current" when editing', () => {
                 var cp = {
                     certificationEvents: [
                         { status: { name: 'Active' }, statusDateObject: new Date('1/1/2018') },
@@ -424,22 +424,22 @@
             });
         });
 
-        describe('when dealing with booleans', function () {
-            it('should return "N/A" if null', function () {
+        describe('when dealing with booleans', () => {
+            it('should return "N/A" if null', () => {
                 expect(util.ternaryFilter(null)).toBe('N/A');
             });
 
-            it('should return "True" if true', function () {
+            it('should return "True" if true', () => {
                 expect(util.ternaryFilter(true)).toBe('True');
             });
 
-            it('should return "False" if false', function () {
+            it('should return "False" if false', () => {
                 expect(util.ternaryFilter(false)).toBe('False');
             });
         });
 
-        describe('when dealing with password strength', function () {
-            it('should know what the class should be', function () {
+        describe('when dealing with password strength', () => {
+            it('should know what the class should be', () => {
                 expect(util.passwordClass(-1)).toBe('');
                 expect(util.passwordClass(0)).toBe('danger');
                 expect(util.passwordClass(1)).toBe('danger');
@@ -448,7 +448,7 @@
                 expect(util.passwordClass(4)).toBe('success');
             });
 
-            it('should know what the title should be', function () {
+            it('should know what the title should be', () => {
                 expect(util.passwordTitle(-1)).toBe('');
                 expect(util.passwordTitle(0)).toBe('Awful');
                 expect(util.passwordTitle(1)).toBe('Weak');
