@@ -1,9 +1,9 @@
 (function () {
     'use strict';
 
-    describe('chpl.download', function () {
+    describe('the CHPL Downloadable Resources compoment', function () {
 
-        var $log, authService, mock, scope, vm;
+        var $log, authService, ctrl, el, mock, scope;
 
         mock = {};
         mock.API = 'api';
@@ -20,18 +20,19 @@
                 });
             });
 
-            inject(function ($controller, _$log_, $rootScope, _authService_) {
+            inject(function ($compile, _$log_, $rootScope, _authService_) {
                 $log = _$log_;
                 authService = _authService_;
                 authService.getApiKey.and.returnValue(mock.API_KEY);
                 authService.getToken.and.returnValue(mock.token);
                 authService.hasAnyRole.and.returnValue(false);
 
+                el = angular.element('<ai-resources-download></ai-resources-download>');
+
                 scope = $rootScope.$new();
-                vm = $controller('DownloadController', {
-                    $scope: scope,
-                });
+                $compile(el)(scope);
                 scope.$digest();
+                ctrl = el.isolateScope().$ctrl;
             });
         });
 
@@ -43,34 +44,40 @@
             }
         });
 
+        describe('directive', function () {
+            it('should be compiled', function () {
+                expect(el.html()).not.toEqual(null);
+            });
+        });
+
         describe('controller', function () {
             it('should exist', function () {
-                expect(vm).toBeDefined();
+                expect(ctrl).toBeDefined();
             });
 
             it('should know what the API Key is', function () {
-                expect(vm.API_KEY).toBe(mock.API_KEY);
+                expect(ctrl.API_KEY).toBe(mock.API_KEY);
             });
 
             it('should know what the token is', function () {
-                expect(vm.getToken).toBeDefined();
-                expect(vm.getToken()).toBe(mock.token);
+                expect(ctrl.getToken).toBeDefined();
+                expect(ctrl.getToken()).toBe(mock.token);
             });
 
             it('should know if it should show restricted download files', function () {
                 authService.hasAnyRole.and.returnValue(true);
-                expect(vm.showRestricted()).toBe(true);
+                expect(ctrl.showRestricted()).toBe(true);
             });
 
             it('should change the definition select when the download is changed', function () {
-                vm.downloadOptions = [1, 2, 3];
-                vm.definitionOptions = ['a', 'b', 'c'];
-                vm.downloadOption = 1;
-                vm.definitionOption = 'a';
+                ctrl.downloadOptions = [1, 2, 3];
+                ctrl.definitionOptions = ['a', 'b', 'c'];
+                ctrl.downloadOption = 1;
+                ctrl.definitionOption = 'a';
 
-                vm.downloadOption = 2
-                vm.changeDownload();
-                expect(vm.definitionOption).toBe('b');
+                ctrl.downloadOption = 2
+                ctrl.changeDownload();
+                expect(ctrl.definitionOption).toBe('b');
             });
         });
     });

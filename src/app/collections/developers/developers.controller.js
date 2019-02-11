@@ -22,12 +22,6 @@
             ];
             vm.filters = ['acb', 'decertificationDate'];
             vm.refineModel = {
-                acb: [
-                    { value: 'Drummond Group', selected: true },
-                    { value: 'ICSA Labs', selected: true },
-                    { value: 'InfoGard', selected: true },
-                    { value: 'SLI Compliance', selected: true },
-                ],
             };
         }
 

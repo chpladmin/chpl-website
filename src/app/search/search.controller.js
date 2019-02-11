@@ -86,14 +86,6 @@
         }
 
         vm.defaultRefineModel = {
-            acb: {
-                'CCHIT': false,
-                'SLI Compliance': true,
-                'Surescripts LLC': false,
-                'Drummond Group': true,
-                'ICSA Labs': true,
-                'InfoGard': true,
-            },
             certificationEdition: {
                 '2011': false,
                 '2014': true,
@@ -112,7 +104,6 @@
         };
 
         vm.retired = {
-            acb: {'CCHIT': true, 'Surescripts LLC': true},
             edition: { '2011': true },
         };
 
@@ -422,12 +413,6 @@
                     for (i = 0; i < options.practiceTypeNames.length; i++) {
                         options.practiceTypes.push(options.practiceTypeNames[i].name);
                     }
-                    for (i = 0; i < options.certBodyNames.length; i++) {
-                        if (options.certBodyNames[i].name === 'Pending') {
-                            options.certBodyNames.splice(i,1);
-                            break;
-                        }
-                    }
                     for (i = 0; i < options.certificationStatuses.length; i++) {
                         if (options.certificationStatuses[i].name === 'Pending') {
                             options.certificationStatuses.splice(i,1);
@@ -481,18 +466,22 @@
                 editionItems: [],
                 statusItems: [],
             };
-            vm.searchOptions.certBodyNames = $filter('orderBy')(vm.searchOptions.certBodyNames, 'name');
-            for (i = 0; i < vm.searchOptions.certBodyNames.length; i++) {
-                obj = {
-                    value: vm.searchOptions.certBodyNames[i].name,
-                    selected: vm.defaultRefineModel.acb[vm.searchOptions.certBodyNames[i].name],
-                };
-                if (vm.retired.acb[vm.searchOptions.certBodyNames[i].name]) {
-                    obj.display = obj.value + ' (Retired)';
-                    obj.retired = true;
-                }
-                vm.filterItems.acbItems.push(obj);
-            }
+            vm.filterItems.acbItems = vm.searchOptions.certBodyNames
+                .filter(a => a.name !== 'Pending')
+                .sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)
+                .map(a => {
+                    let ret = {
+                        value: a.name,
+                    };
+                    if (a.retired) {
+                        ret.display = a.name + ' (Retired)';
+                        ret.retired = true;
+                        ret.selected = ((new Date()).getTime() - a.retirementDate) < (1000 * 60 * 60 * 24 * 30 * 4);
+                    } else {
+                        ret.selected = true;
+                    }
+                    return ret;
+                });
             vm.searchOptions.editions = $filter('orderBy')(vm.searchOptions.editions, 'name');
             for (i = 0; i < vm.searchOptions.editions.length; i++) {
                 obj = {
