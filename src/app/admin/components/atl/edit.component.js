@@ -15,6 +15,9 @@ export const EditAtlComponent = {
         $onChanges (changes) {
             if (changes.atl) {
                 this.atl = angular.copy(changes.atl.currentValue);
+                if (this.atl.retirementDate) {
+                    this.atl.retirementDateObject = new Date(this.atl.retirementDate);
+                }
             }
             if (changes.isChplAdmin) {
                 this.isChplAdmin = angular.copy(changes.isChplAdmin.currentValue);
@@ -26,6 +29,11 @@ export const EditAtlComponent = {
                 atl: angular.copy(this.atl),
                 valid: this.editForm.$valid,
             };
+            if (this.atl.retirementDateObject) {
+                change.atl.retirementDate = this.atl.retirementDateObject.getTime();
+            } else {
+                change.atl.retirementDate = null;
+            }
             this.onChange(change);
         }
     },

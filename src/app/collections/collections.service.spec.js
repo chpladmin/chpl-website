@@ -112,8 +112,8 @@
             it('should join Attestations', function () {
                 expect(results[0].acbAttestations).toEqual('<span class="text-muted">Not Applicable (ICSA Labs)</span>');
                 expect(results[1].acbAttestations).toEqual('<span class="text-success">Supports (Drummond Group)</span>');
-                expect(results[2].acbAttestations).toEqual('<span class="text-success">Supports (ICSA Labs)</span><br /><span class="text-success">Supports (InfoGard)</span>');
-                expect(results[3].acbAttestations).toEqual('<span class="text-success">Supports (InfoGard)</span>');
+                expect(results[2].acbAttestations).toEqual('<span class="text-success">Supports (ICSA Labs)</span><br /><span class="text-success">Supports (UL LLC)</span>');
+                expect(results[3].acbAttestations).toEqual('<span class="text-success">Supports (UL LLC)</span>');
             });
 
             it('should split Urls', function () {
