@@ -25,12 +25,6 @@
             ];
             vm.filters = ['acb', 'certificationStatus', 'edition', 'nonconformities'];
             vm.refineModel = {
-                acb: [
-                    { value: 'Drummond Group', selected: true },
-                    { value: 'ICSA Labs', selected: true },
-                    { value: 'InfoGard', selected: true },
-                    { value: 'SLI Compliance', selected: true },
-                ],
                 certificationStatus: [
                     { value: 'Active', selected: true },
                     { value: 'Suspended by ONC', selected: true },

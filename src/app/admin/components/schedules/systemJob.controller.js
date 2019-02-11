@@ -19,6 +19,10 @@
             vm.job = angular.copy(job);
             vm.selectedDateTime = new Date();
             vm.datePickerOpen = false;
+            vm.parameters = [];
+            if (vm.job.jobDataMap.parameters) {
+                vm.parameters = JSON.parse(vm.job.jobDataMap.parameters);
+            }
 
             var tick = function () {
                 vm.now = Date.now();

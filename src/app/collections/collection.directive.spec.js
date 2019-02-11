@@ -2,25 +2,33 @@
     'use strict';
 
     describe('the Collections', function () {
-        var $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, el, networkService, scope, vm;
+        var $compile, $interval, $log, $q, CACHE_REFRESH_TIMEOUT, Mock, el, mock, networkService, scope, vm;
 
         beforeEach(function () {
             angular.mock.module('chpl.mock', 'chpl.collections', function ($provide) {
                 $provide.decorator('networkService', function ($delegate) {
                     $delegate.getCollection = jasmine.createSpy('getCollection');
+                    $delegate.getSearchOptions = jasmine.createSpy('getSearchOptions');
 
                     return $delegate;
                 });
             });
 
-            inject(function ($compile, $controller, _$interval_, _$log_, _$q_, $rootScope, _CACHE_REFRESH_TIMEOUT_, _Mock_, _networkService_) {
-                CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_
-                Mock = _Mock_;
+            inject(function (_$compile_, $controller, _$interval_, _$log_, _$q_, $rootScope, _CACHE_REFRESH_TIMEOUT_, _Mock_, _networkService_) {
+                $compile = _$compile_;
                 $interval = _$interval_;
                 $log = _$log_;
                 $q = _$q_;
+                CACHE_REFRESH_TIMEOUT = _CACHE_REFRESH_TIMEOUT_
+                Mock = _Mock_;
+                mock = {
+                    searchOptions: angular.copy(Mock.search_options),
+                };
+                mock.searchOptions.certBodyNames[0].retired = true;
+                mock.searchOptions.certBodyNames[0].retirementDate = new Date();
                 networkService = _networkService_;
                 networkService.getCollection.and.returnValue($q.when({'results': angular.copy(Mock.allCps)}));
+                networkService.getSearchOptions.and.returnValue($q.when(mock.searchOptions));
 
                 el = angular.element('<ai-collection collection-key="apiDocumentation" columns="columns" filters="filters" refine-model="refineModel"><ai-body-text>This is body text</ai-body-text><ai-title>Title</ai-title></ai-collection>');
 
@@ -61,6 +69,54 @@
                         atl: true,
                     };
                     expect(vm.isCategoryChanged()).toBe(true);
+                });
+            });
+
+            describe('on load', () => {
+                describe('with no acb filter', () => {
+                    it('should not call for search_options', () => {
+                        expect(networkService.getSearchOptions).not.toHaveBeenCalled();
+                    });
+                });
+
+                describe('with acb filter', () => {
+                    beforeEach(() => {
+                        //scope = $rootScope.$new();
+                        scope.filters = ['acb'];
+                        el = angular.element('<ai-collection collection-key="apiDocumentation" columns="columns" filters="filters" refine-model="refineModel"><ai-body-text>This is body text</ai-body-text><ai-title>Title</ai-title></ai-collection>');
+                        $compile(el)(scope);
+                        scope.$digest();
+                        vm = el.isolateScope().vm;
+                    });
+
+                    it('should call for search_options', () => {
+                        expect(networkService.getSearchOptions).toHaveBeenCalled();
+                    });
+
+                    it('should set acb filters to results from search_options', () => {
+                        expect(vm.filterItems.acbItems).toBeDefined();
+                    });
+
+                    it('should filter out the "pending" acb', () => {
+                        vm.filterItems.acbItems.forEach(acb => { expect(acb.value).not.toBe('Pending'); });
+                    });
+
+                    it('should sort the names', () => {
+                        expect(vm.filterItems.acbItems[1].value).toBe('Drummond Group');
+                    });
+
+                    it('should mark retired ones as retired', () => {
+                        expect(vm.filterItems.acbItems[0].value).toBe('CCHIT');
+                        expect(vm.filterItems.acbItems[0].display).toBe('CCHIT (Retired)');
+                    });
+
+                    it('should unselect old retired ones', () => {
+                        expect(vm.filterItems.acbItems[0].selected).toBe(false);
+                    });
+
+                    it('should not unselect newly retired ones', () => {
+                        expect(vm.filterItems.acbItems[2].selected).toBe(true);
+                    });
                 });
             });
         });

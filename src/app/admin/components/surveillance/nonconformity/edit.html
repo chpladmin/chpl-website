@@ -5,140 +5,140 @@
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="edit-nonconformity-label"><span ng-if="vm.workType === 'edit'">Edit</span><span ng-if="vm.workType === 'add'">Create</span> Non-Conformity</h4>
+            ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="edit-nonconformity-label"><span ng-if="$ctrl.workType === 'edit'">Edit</span><span ng-if="$ctrl.workType === 'add'">Create</span> Non-Conformity</h4>
   </div>
-  <div class="modal-body form-horizontal" ng-form="vm.editForm">
+  <div class="modal-body form-horizontal" ng-form="$ctrl.editForm">
     <div class="form-group">
       <label for="nonconformity-type" class="col-sm-3">Non-Conformity Type <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="vm.nonconformity.nonconformityType" id="nonconformity-type" name="nonconformityType"
-                ng-options="type.name as type.name for type in vm.data.nonconformityTypes.data | orderBy:vm.sortNonconformityTypes" required>
+        <select class="input-sm form-control" ng-model="$ctrl.nonconformity.nonconformityType" id="nonconformity-type" name="nonconformityType"
+                ng-options="type.name as type.name for type in $ctrl.data.nonconformityTypes.data | orderBy:$ctrl.sortNonconformityTypes" required>
         </select>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.nonconformityType.$touched) && vm.editForm.nonconformityType.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityType.$touched) && $ctrl.editForm.nonconformityType.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
       <label for="nonconformity-status" class="col-sm-3">Non-Conformity Status <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <select class="input-sm form-control" ng-model="vm.nonconformity.status" id="nonconformity-status" name="nonconformityStatus"
-                ng-options="type as type.name for type in vm.data.nonconformityStatusTypes.data | orderBy:'name'" required>
+        <select class="input-sm form-control" ng-model="$ctrl.nonconformity.status" id="nonconformity-status" name="nonconformityStatus"
+                ng-options="type as type.name for type in $ctrl.data.nonconformityStatusTypes.data | orderBy:'name'" required>
         </select>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.nonconformityStatus.$touched) && vm.editForm.nonconformityStatus.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.nonconformityStatus.$touched) && $ctrl.editForm.nonconformityStatus.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
       <label for="date-of-determination" class="col-sm-3">Date Of Determination <span class="text-danger">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.dateOfDeterminationObject" is-open="vm.nonconformity.dateOfDeterminationPicker" close-text="Close" id="date-of-determination" name="dateOfDetermination" ng-model-options="{ timezone: 'UTC' }" required>
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.dateOfDeterminationObject" is-open="$ctrl.nonconformity.dateOfDeterminationPicker" close-text="Close" id="date-of-determination" name="dateOfDetermination" ng-model-options="{ timezone: 'UTC' }" required>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.dateOfDeterminationPicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.dateOfDetermination.$touched) && vm.editForm.dateOfDetermination.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.dateOfDetermination.$touched) && vm.editForm.dateOfDetermination.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDetermination.$touched) && $ctrl.editForm.dateOfDetermination.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.dateOfDetermination.$touched) && $ctrl.editForm.dateOfDetermination.$error.date">Improper format (mm/dd/yyyy)</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cap-approval-date" class="col-sm-3">Corrective Action Plan Approval Date <span class="text-danger" ng-if="vm.nonconformity.capEndDateObject">*</span></label>
+      <label for="cap-approval-date" class="col-sm-3">Corrective Action Plan Approval Date <span class="text-danger" ng-if="$ctrl.nonconformity.capEndDateObject">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capApprovalDateObject" is-open="vm.nonconformity.capApprovalDatePicker" close-text="Close" id="cap-approval-date" name="capApprovalDate" ng-model-options="{ timezone: 'UTC' }" ng-required="vm.nonconformity.capEndDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capApprovalDateObject" is-open="$ctrl.nonconformity.capApprovalDatePicker" close-text="Close" id="cap-approval-date" name="capApprovalDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capEndDateObject">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capApprovalDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capApprovalDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capApprovalDate.$touched) && vm.editForm.capApprovalDate.$error.date">Improper format (mm/dd/yyyy)</div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capApprovalDate.$touched) && vm.editForm.capApprovalDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDate.$touched) && $ctrl.editForm.capApprovalDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capApprovalDate.$touched) && $ctrl.editForm.capApprovalDate.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cap-start-date" class="col-sm-3">Corrective Action Plan Start Date <span class="text-danger" ng-if="vm.nonconformity.capEndDateObject">*</span></label>
+      <label for="cap-start-date" class="col-sm-3">Corrective Action Plan Start Date <span class="text-danger" ng-if="$ctrl.nonconformity.capEndDateObject">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capStartDateObject" is-open="vm.nonconformity.capStartDatePicker" close-text="Close" id="cap-start-date" name="capStartDate" ng-model-options="{ timezone: 'UTC' }" ng-required="vm.nonconformity.capEndDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capStartDateObject" is-open="$ctrl.nonconformity.capStartDatePicker" close-text="Close" id="cap-start-date" name="capStartDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capEndDateObject">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capStartDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capStartDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capStartDate.$touched) && vm.editForm.capStartDate.$error.date">Improper format (mm/dd/yyyy)</div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capStartDate.$touched) && vm.editForm.capStartDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDate.$touched) && $ctrl.editForm.capStartDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capStartDate.$touched) && $ctrl.editForm.capStartDate.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
       <label for="cap-end-date" class="col-sm-3">Corrective Action Plan End Date</label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capEndDateObject" is-open="vm.nonconformity.capEndDatePicker" close-text="Close" id="cap-end-date" name="capEndDate" ng-model-options="{ timezone: 'UTC' }" ng-disabled="!vm.nonconformity.capApprovalDateObject || !vm.nonconformity.capStartDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capEndDateObject" is-open="$ctrl.nonconformity.capEndDatePicker" close-text="Close" id="cap-end-date" name="capEndDate" ng-model-options="{ timezone: 'UTC' }" ng-disabled="!$ctrl.nonconformity.capApprovalDateObject || !$ctrl.nonconformity.capStartDateObject">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capEndDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capEndDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capEndDate.$touched) && vm.editForm.capEndDate.$error.date">Improper format (mm/dd/yyyy)</div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capEndDate.$touched) && vm.nonconformity.capEndDateObject && vm.nonconformity.capEndDateObject < vm.nonconformity.capStartDateObject">Corrective Action Plan End Date must be after the Start Date</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDate.$touched) && $ctrl.editForm.capEndDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capEndDate.$touched) && $ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject">Corrective Action Plan End Date must be after the Start Date</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="cap-must-complete-date" class="col-sm-3">Corrective Action Plan Must Complete Date <span class="text-danger" ng-if="vm.nonconformity.capApprovalDateObject">*</span></label>
+      <label for="cap-must-complete-date" class="col-sm-3">Corrective Action Plan Must Complete Date <span class="text-danger" ng-if="$ctrl.nonconformity.capApprovalDateObject">*</span></label>
       <div class="col-sm-9">
         <div class="input-group">
-          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="vm.nonconformity.capMustCompleteDateObject" is-open="vm.nonconformity.capMustCompleteDatePicker" close-text="Close" id="cap-must-complete-date" name="capMustCompleteDate" ng-model-options="{ timezone: 'UTC' }" ng-required="vm.nonconformity.capApprovalDateObject">
+          <input class="input-sm form-control" type="text" uib-datepicker-popup="MM/dd/yyyy" ng-model="$ctrl.nonconformity.capMustCompleteDateObject" is-open="$ctrl.nonconformity.capMustCompleteDatePicker" close-text="Close" id="cap-must-complete-date" name="capMustCompleteDate" ng-model-options="{ timezone: 'UTC' }" ng-required="$ctrl.nonconformity.capApprovalDateObject">
           <span class="input-group-btn">
-            <button type="button" class="btn btn-ai btn-sm" ng-click="vm.nonconformity.capMustCompleteDatePicker = true"><i class="fa fa-calendar"></i></button>
+            <button type="button" class="btn btn-ai btn-sm" ng-click="$ctrl.nonconformity.capMustCompleteDatePicker = true"><i class="fa fa-calendar"></i></button>
           </span>
         </div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.capMustCompleteDate.$touched) && vm.editForm.capMustCompleteDate.$error.date">Improper format (mm/dd/yyyy)</div>
-        <div class="text-danger" ng-if="vm.showFormErrors && vm.editForm.capMustCompleteDate.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.capMustCompleteDate.$touched) && $ctrl.editForm.capMustCompleteDate.$error.date">Improper format (mm/dd/yyyy)</div>
+        <div class="text-danger" ng-if="$ctrl.showFormErrors && $ctrl.editForm.capMustCompleteDate.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="sites-passed" class="col-sm-3">Number of Sites Passed <span class="text-danger" ng-if="vm.randomized">*</span></label>
+      <label for="sites-passed" class="col-sm-3">Number of Sites Passed <span class="text-danger" ng-if="$ctrl.randomized">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="number" ng-model="vm.nonconformity.sitesPassed" id="sites-passed" name="sitesPassed" ng-required="vm.randomized" ng-disabled="!vm.randomized && !vm.disableValidation"></input>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.sitesPassed.$touched) && vm.editForm.sitesPassed.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.sitesPassed.$touched) && vm.editForm.sitesPassed.$error.number">Must be a number</div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.sitesPassed.$touched) && vm.nonconformity.sitesPassed > vm.nonconformity.totalSites">Must be less than or equal to the total number of sites</div>
+        <input class="input-sm form-control" type="number" ng-model="$ctrl.nonconformity.sitesPassed" id="sites-passed" name="sitesPassed" ng-required="$ctrl.randomized" ng-disabled="!$ctrl.randomized && !$ctrl.disableValidation"></input>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.sitesPassed.$touched) && $ctrl.editForm.sitesPassed.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.sitesPassed.$touched) && $ctrl.editForm.sitesPassed.$error.number">Must be a number</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.sitesPassed.$touched) && $ctrl.nonconformity.sitesPassed > $ctrl.nonconformity.totalSites">Must be less than or equal to the total number of sites</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="total-sites" class="col-sm-3">Total Sites <span class="text-danger" ng-if="vm.randomized">*</span></label>
+      <label for="total-sites" class="col-sm-3">Total Sites <span class="text-danger" ng-if="$ctrl.randomized">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="number" ng-model="vm.nonconformity.totalSites" id="total-sites" name="totalSites" ng-required="vm.randomized" ng-disabled="!vm.randomized && !vm.disableValidation">
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.totalSites.$touched) && vm.editForm.totalSites.$error.required">Field is required</div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.totalSites.$touched) && vm.editForm.totalSites.$error.number">Must be a number</div>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.totalSites.$touched) && vm.nonconformity.totalSites > vm.randomizedSitesUsed">Must be less than or equal to the number of randomized sites used: {{ vm.randomizedSitesUsed }}</div>
+        <input class="input-sm form-control" type="number" ng-model="$ctrl.nonconformity.totalSites" id="total-sites" name="totalSites" ng-required="$ctrl.randomized" ng-disabled="!$ctrl.randomized && !$ctrl.disableValidation">
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.totalSites.$touched) && $ctrl.editForm.totalSites.$error.required">Field is required</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.totalSites.$touched) && $ctrl.editForm.totalSites.$error.number">Must be a number</div>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.totalSites.$touched) && $ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed">Must be less than or equal to the number of randomized sites used: {{ $ctrl.randomizedSitesUsed }}</div>
       </div>
     </div>
     <div class="form-group">
       <label for="summary" class="col-sm-3">Summary <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <input class="input-sm form-control" type="text" ng-model="vm.nonconformity.summary" id="summary" name="summary" required>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.summary.$touched) && vm.editForm.summary.$error.required">Field is required</div>
+        <input class="input-sm form-control" type="text" ng-model="$ctrl.nonconformity.summary" id="summary" name="summary" required>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.summary.$touched) && $ctrl.editForm.summary.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
       <label for="findings" class="col-sm-3">Findings <span class="text-danger">*</span></label>
       <div class="col-sm-9">
-        <textarea class="input-sm form-control" ng-model="vm.nonconformity.findings" id="findings" name="findings" required></textarea>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.findings.$touched) && vm.editForm.findings.$error.required">Field is required</div>
+        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.findings" id="findings" name="findings" required></textarea>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.findings.$touched) && $ctrl.editForm.findings.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
       <label for="developer-explanation" class="col-sm-3">Developer Explanation</label>
       <div class="col-sm-9">
-        <textarea class="input-sm form-control" ng-model="vm.nonconformity.developerExplanation" id="developer-explanation" name="developerExplanation"></textarea>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.developerExplanation.$touched) && vm.editForm.developerExplanation.$error.required">Field is required</div>
+        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.developerExplanation" id="developer-explanation" name="developerExplanation"></textarea>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.developerExplanation.$touched) && $ctrl.editForm.developerExplanation.$error.required">Field is required</div>
       </div>
     </div>
     <div class="form-group">
-      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="vm.nonconformity.status.name === 'Closed'">*</span></label>
+      <label for="resolution" class="col-sm-3">Resolution <span class="text-danger" ng-if="$ctrl.nonconformity.status.name === 'Closed'">*</span></label>
       <div class="col-sm-9">
-        <textarea class="input-sm form-control" ng-model="vm.nonconformity.resolution" id="resolution" name="resolution" ng-required="vm.nonconformity.status.name === 'Closed'" ng-disabled="vm.nonconformity.status.name === 'Open'"></textarea>
-        <div class="text-danger" ng-if="(vm.showFormErrors || vm.editForm.resolution.$touched) && vm.editForm.resolution.$error.required">Field is required</div>
+        <textarea class="input-sm form-control" ng-model="$ctrl.nonconformity.resolution" id="resolution" name="resolution" ng-required="$ctrl.nonconformity.status.name === 'Closed'" ng-disabled="$ctrl.nonconformity.status.name === 'Open'"></textarea>
+        <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.editForm.resolution.$touched) && $ctrl.editForm.resolution.$error.required">Field is required</div>
       </div>
     </div>
-    <div class="row" ng-if="vm.workType === 'edit' && vm.nonconformity.documents.length > 0">
+    <div class="row" ng-if="$ctrl.workType === 'edit' && $ctrl.nonconformity.documents.length > 0">
       <div class="col-sm-12">
         <h3>Supporting documentation</h3>
         <table class="table">
@@ -150,7 +150,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="doc in vm.nonconformity.documents">
+            <tr ng-repeat="doc in $ctrl.nonconformity.documents">
               <td>{{ doc.fileName }}</td>
               <td>{{ doc.fileType }}</td>
               <td>
@@ -160,32 +160,32 @@
                         confirm-ok="Yes"
                         confirm-cancel="No"
                         confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-                        ng-click="vm.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
+                        ng-click="$ctrl.deleteDoc(doc.id)"><i class="fa fa-trash-o"></i> Delete</button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div class="row" ng-if="vm.workType === 'edit'">
+    <div class="row" ng-if="$ctrl.workType === 'edit'">
       <div class="col-sm-12">
         <h3>Upload supporting document(s)</h3>
-        <input type="file" nv-file-select="" uploader="vm.uploader" />
-        <p ng-if="vm.uploadMessage.length > 0">{{ vm.uploadMessage }}</p>
-        <table class="table" ng-if="vm.uploader.queue.length > 0">
+        <input type="file" nv-file-select="" uploader="$ctrl.uploader" />
+        <p ng-if="$ctrl.uploadMessage.length > 0">{{ $ctrl.uploadMessage }}</p>
+        <table class="table" ng-if="$ctrl.uploader.queue.length > 0">
           <thead>
             <tr>
               <th scope="col">Name</th>
-              <th scope="col" ng-show="vm.uploader.isHTML5">Size</th>
-              <th scope="col" ng-show="vm.uploader.isHTML5">Progress</th>
+              <th scope="col" ng-show="$ctrl.uploader.isHTML5">Size</th>
+              <th scope="col" ng-show="$ctrl.uploader.isHTML5">Progress</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="item in vm.uploader.queue">
+            <tr ng-repeat="item in $ctrl.uploader.queue">
               <td><strong>{{ item.file.name }}</strong></td>
-              <td ng-show="vm.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-              <td ng-show="vm.uploader.isHTML5">
+              <td ng-show="$ctrl.uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+              <td ng-show="$ctrl.uploader.isHTML5">
                 <div class="progress">
                   <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
                 </div>
@@ -208,43 +208,43 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="text-danger text-left" ng-if="(vm.editForm.$invalid || (vm.nonconformity.capEndDateObject && vm.nonconformity.capEndDateObject < vm.nonconformity.capStartDateObject)) && vm.showFormErrors">
+    <div class="text-danger text-left" ng-if="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject)) && $ctrl.showFormErrors">
       The following error(s) must be fixed:
       <ul>
-        <li ng-if="vm.editForm.nonconformityType.$error.required">Non-Conformity Type is required</li>
-        <li ng-if="vm.editForm.nonconformityStatus.$error.required">Non-Conformity Status is required</li>
-        <li ng-if="vm.editForm.dateOfDetermination.$error.required">Date of Determination is required</li>
-        <li ng-if="vm.editForm.dateOfDetermination.$error.date">Date of Determination is an improper format (mm/dd/yyyy)</li>
-        <li ng-if="vm.editForm.capApprovalDate.$error.required">Corrective Action Plan Approval Date is required</li>
-        <li ng-if="vm.editForm.capApprovalDate.$error.date">Corrective Action Plan Approval Date is an improper format (mm/dd/yyyy)</li>
-        <li ng-if="vm.editForm.capStartDate.$error.required">Corrective Action Plan Start Date is required</li>
-        <li ng-if="vm.editForm.capStartDate.$error.date">Corrective Action Plan Start Date is an improper format (mm/dd/yyyy)</li>
-        <li ng-if="vm.editForm.capEndDate.$error.required">Corrective Action Plan End Date is required</li>
-        <li ng-if="vm.editForm.capEndDate.$error.date">Corrective Action Plan End Date is an improper format (mm/dd/yyyy)</li>
-        <li ng-if="vm.editForm.capMustCompleteDate.$error.required">Corrective Action Plan Must Complete Date is required</li>
-        <li ng-if="vm.editForm.capMustCompleteDate.$error.date">Corrective Action Plan Must Complete Date is an improper format (mm/dd/yyyy)</li>
-        <li ng-if="vm.editForm.sitesPassed.$error.required">Number of sites passed is required</li>
-        <li ng-if="vm.editForm.sitesPassed.$error.number">Number of sites passed must be a number</li>
-        <li ng-if="vm.editForm.totalSites.$error.required">Total sites is required</li>
-        <li ng-if="vm.editForm.totalSites.$error.number">Number of total sites must be a number</li>
-        <li ng-if="vm.editForm.summary.$error.required">Summary is required</li>
-        <li ng-if="vm.editForm.findings.$error.required">Findings is required</li>
-        <li ng-if="vm.editForm.developerExplanation.$error.required">Developer Explanation is required</li>
-        <li ng-if="vm.editForm.resolution.$error.required">Resolution is required</li>
-        <li ng-if="vm.nonconformity.capEndDateObject && vm.nonconformity.capEndDateObject < vm.nonconformity.capStartDateObject">Corrective Action Plan End Date must be after the Start Date</li>
-        <li ng-if="vm.nonconformity.sitesPassed > vm.nonconformity.totalSites">Sites passed must be less than or equal to the total number of sites</li>
-        <li ng-if="vm.nonconformity.totalSites > vm.randomizedSitesUsed">Total sites must be less than or equal to the number of randomized sites used: {{ vm.randomizedSitesUsed }}</li>
+        <li ng-if="$ctrl.editForm.nonconformityType.$error.required">Non-Conformity Type is required</li>
+        <li ng-if="$ctrl.editForm.nonconformityStatus.$error.required">Non-Conformity Status is required</li>
+        <li ng-if="$ctrl.editForm.dateOfDetermination.$error.required">Date of Determination is required</li>
+        <li ng-if="$ctrl.editForm.dateOfDetermination.$error.date">Date of Determination is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capApprovalDate.$error.required">Corrective Action Plan Approval Date is required</li>
+        <li ng-if="$ctrl.editForm.capApprovalDate.$error.date">Corrective Action Plan Approval Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capStartDate.$error.required">Corrective Action Plan Start Date is required</li>
+        <li ng-if="$ctrl.editForm.capStartDate.$error.date">Corrective Action Plan Start Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capEndDate.$error.required">Corrective Action Plan End Date is required</li>
+        <li ng-if="$ctrl.editForm.capEndDate.$error.date">Corrective Action Plan End Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.capMustCompleteDate.$error.required">Corrective Action Plan Must Complete Date is required</li>
+        <li ng-if="$ctrl.editForm.capMustCompleteDate.$error.date">Corrective Action Plan Must Complete Date is an improper format (mm/dd/yyyy)</li>
+        <li ng-if="$ctrl.editForm.sitesPassed.$error.required">Number of sites passed is required</li>
+        <li ng-if="$ctrl.editForm.sitesPassed.$error.number">Number of sites passed must be a number</li>
+        <li ng-if="$ctrl.editForm.totalSites.$error.required">Total sites is required</li>
+        <li ng-if="$ctrl.editForm.totalSites.$error.number">Number of total sites must be a number</li>
+        <li ng-if="$ctrl.editForm.summary.$error.required">Summary is required</li>
+        <li ng-if="$ctrl.editForm.findings.$error.required">Findings is required</li>
+        <li ng-if="$ctrl.editForm.developerExplanation.$error.required">Developer Explanation is required</li>
+        <li ng-if="$ctrl.editForm.resolution.$error.required">Resolution is required</li>
+        <li ng-if="$ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject">Corrective Action Plan End Date must be after the Start Date</li>
+        <li ng-if="$ctrl.nonconformity.sitesPassed > $ctrl.nonconformity.totalSites">Sites passed must be less than or equal to the total number of sites</li>
+        <li ng-if="$ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed">Total sites must be less than or equal to the number of randomized sites used: {{ $ctrl.randomizedSitesUsed }}</li>
       </ul>
     </div>
-    <button ng-disabled="(vm.editForm.$invalid || (vm.nonconformity.capEndDateObject && vm.nonconformity.capEndDateObject < vm.nonconformity.capStartDateObject) || (vm.nonconformity.totalSites > vm.randomizedSitesUsed) || (vm.nonconformity.sitesPassed > vm.nonconformity.totalSites)) && vm.showFormErrors && !vm.disableValidation"
+    <button ng-disabled="($ctrl.editForm.$invalid || ($ctrl.nonconformity.capEndDateObject && $ctrl.nonconformity.capEndDateObject < $ctrl.nonconformity.capStartDateObject) || ($ctrl.nonconformity.totalSites > $ctrl.randomizedSitesUsed) || ($ctrl.nonconformity.sitesPassed > $ctrl.nonconformity.totalSites)) && $ctrl.showFormErrors && !$ctrl.disableValidation"
             class="btn btn-ai-success pull-right"
-            ng-mouseover="vm.showFormErrors = true"
-            ng-click="vm.save()"><i class="fa fa-save"></i> Save</button>
+            ng-mouseover="$ctrl.showFormErrors = true"
+            ng-click="$ctrl.save()"><i class="fa fa-save"></i> Save</button>
     <button class="btn btn-warning pull-left"
             confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
             confirm-ok="Yes"
             confirm-cancel="No"
             confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
-            ng-click="vm.cancel()"><i class="fa fa-trash-o"></i> Cancel</button>
+            ng-click="$ctrl.cancel()"><i class="fa fa-trash-o"></i> Cancel</button>
   </div>
 </div>
