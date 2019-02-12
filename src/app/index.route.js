@@ -149,9 +149,7 @@
             })
             .state('resources.overview', {
                 url: '/overview',
-                template: require('./resources/overview/overview.html'),
-                controller: 'OverviewController',
-                controllerAs: 'vm',
+                component: 'aiOverview',
                 data: { title: 'CHPL Overview' },
             })
             .state('search', {
