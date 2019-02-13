@@ -3,9 +3,11 @@
     <div class="col-md-12 main-content">
       <h2>Download the latest CMS listing</h2>
       <div>
-        <a type="button" class="btn btn-lg btn-ai-success" ng-disabled="!vm.isReady"
+        <button class="btn btn-lg btn-ai-success" ng-if="!vm.isReady && !vm.isProcessing" ng-click="vm.getDownload()"><i class="fa fa-bolt"></i> Prepare download</button>
+        <button class="btn btn-lg btn-ai-success" ng-if="!vm.isReady && vm.isProcessing"><i class="fa fa-spinner fa-spin"></i> Processing...</button>
+        <button class="btn btn-lg btn-ai-success" ng-if="vm.isReady"
            ng-csv="vm.cmsArray" filename="{{ vm.filename }}"
-           csv-header="vm.csvHeader" csv-column-order="vm.csvColumnOrder"><i class="fa fa-cloud-download"></i> Download</a>
+           csv-header="vm.csvHeader" csv-column-order="vm.csvColumnOrder"><i class="fa fa-cloud-download"></i> Download</button>
       </div>
     </div>
   </section> <!-- end download cms listing -->

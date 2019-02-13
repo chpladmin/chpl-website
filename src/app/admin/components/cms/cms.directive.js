@@ -37,60 +37,44 @@
                     Authorization: 'Bearer ' + authService.getToken(),
                     'API-Key': authService.getApiKey(),
                 },
-            });
-
-            if (angular.isUndefined(vm.uploader.filters)) {
-                vm.uploader.filters = [];
-            }
-            vm.uploader.filters.push({
-                name: 'csvFilter',
-                fn: function (item) {
-                    var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
-                    return '|csv|'.indexOf(extension) !== -1;
+                filters: [{
+                    name: 'csvFilter',
+                    fn: function (item) {
+                        var extension = '|' + item.name.slice(item.name.lastIndexOf('.') + 1) + '|';
+                        return '|csv|'.indexOf(extension) !== -1;
+                    },
+                }],
+                onSuccessItem: function () {
+                    $location.url('/admin/jobsManagement');
+                },
+                onErrorItem: function (fileItem, response) {
+                    vm.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
+                    vm.uploadErrors = response.errorMessages;
+                    vm.uploadSuccess = false;
                 },
             });
-            vm.uploader.onSuccessItem = function (fileItem, response, status, headers) {
-                $log.info('onSuccessItem', fileItem, response, status, headers);
-                if ($location.url() !== '/admin/jobsManagement') {
-                    $location.url('/admin/jobsManagement');
-                } else {
-                    $state.go($state.$current, null, { reload: true });
-                }
-            };
-            vm.uploader.onCompleteItem = function (fileItem, response, status, headers) {
-                $log.info('onCompleteItem', fileItem, response, status, headers);
-            };
-            vm.uploader.onErrorItem = function (fileItem, response, status, headers) {
-                $log.info('onErrorItem', fileItem, response, status, headers);
-                vm.uploadMessage = 'File "' + fileItem.file.name + '" was not uploaded successfully.';
-                vm.uploadErrors = response.errorMessages;
-                vm.uploadSuccess = false;
-            };
-            vm.uploader.onCancelItem = function (fileItem, response, status, headers) {
-                $log.info('onCancelItem', fileItem, response, status, headers);
-            };
             vm.filename = 'CMS_IDs_' + new Date().getTime() + '.csv';
+            vm.csvHeader = ['CMS ID', 'Creation Date'];
+            vm.csvColumnOrder = ['certificationId', 'created'];
             if (authService.hasAnyRole(['ROLE_ADMIN', 'ROLE_ONC'])) {
-                vm.csvHeader = ['CMS ID', 'Creation Date', 'CHPL Product(s)'];
-                vm.csvColumnOrder = ['certificationId', 'created', 'products'];
-            } else {
-                vm.csvHeader = ['CMS ID', 'Creation Date'];
-                vm.csvColumnOrder = ['certificationId', 'created'];
+                vm.csvHeader.push('CHPL Product(s)');
+                vm.csvColumnOrder.push('products');
             }
             vm.isReady = false;
-            vm.getDownload();
+            vm.isProcessing = false;
         }
 
         function getDownload () {
+            vm.isProcessing = true;
             networkService.getCmsDownload()
-                .then(function (result) {
-                    for (var i = 0; i < result.length; i++) {
-                        result[i].created = new Date(result[i].created).toISOString().substring(0, 10);
-                    }
+                .then(result => {
+                    vm.cmsArray = result.map(res => {
+                        res.created = new Date(res.created).toISOString().substring(0, 10);
+                        return res;
+                    });
                     vm.cmsArray = result
+                    vm.isProcessing = false;
                     vm.isReady = true;
-                }, function (error) {
-                    $log.debug('error in app.admin.cmsController.getDownload', error);
                 });
         }
 
