@@ -1,0 +1,141 @@
+<div role="modal" aria-labeled-by="split-developer-label">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Cancel edits"
+        confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+        confirm-ok="Yes"
+        confirm-cancel="No"
+        confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+        ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="split-developer-label">Split Developer</h4>
+  </div>
+  <div class="modal-body " ng-form="$ctrl.splitForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Original Developer</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <address>
+              <strong>{{ $ctrl.developer.name }}</strong> (Developer Code: {{ $ctrl.developer.developerCode }})<br />
+              Line 1: {{ $ctrl.developer.address.line1 }}<br />
+              Line 2: {{ $ctrl.developer.address.line2 }}<br />
+              City: {{ $ctrl.developer.address.city }}<br />
+              State: {{ $ctrl.developer.address.state }}<br />
+              Zip: {{ $ctrl.developer.address.zipcode }}<br />
+              Country: {{ $ctrl.developer.address.country }}<br />
+              Website: <span ng-if="$ctrl.developer.website"><a ai-a href="{{$ctrl.developer.website}}">{{ $ctrl.developer.website }}</a></span><span ng-if="!$ctrl.developer.website">None</span><br />
+            </address>
+            <br />
+            <strong>Contact information</strong><br />
+            <ai-contact contact="$ctrl.developer.contact"></ai-contact>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>New Developer</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="developer-name">Developer Name<span class="text-danger">*</span></label>
+              <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.name" id="developer-name" name="developerName" required ng-maxlength="300"></input>
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.splitDeveloper.newDeveloper.name.$touched) && $ctrl.splitDeveloper.newDeveloper.name.$error.required">Developer name is required</div>
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.splitDeveloper.newDeveloper.name.$touched) && $ctrl.splitDeveloper.newDeveloper.name.$error.maxlength">Field is too long</div>         
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">New Developer Address</h3>
+              </div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label for="developer-addr-line1">Address Line 1<span class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.address.line1" id="developer-addr-line1" name="developerAddrLine1" required></input>
+                  <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrLine1.$touched && $ctrl.splitForm.developerAddrLine1.$error.required">Address line 1 is required</div>
+                </div>
+                <div class="form-group">
+                  <label for="developer-addr-line2">Address Line 2</label>
+                  <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.address.line2" id="developer-addr-line2" name="developerAddrLine2"></input>
+                </div>
+                <div class="form-group">
+                  <label for="developer-addr-city">City<span class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.address.city" id="developer-addr-city" name="developerAddrCity" required></input>
+                  <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrCity.$touched && $ctrl.splitForm.developerAddrCity.$error.required">City is required</div>
+                </div>
+                <div class="form-group">
+                  <label for="developer-addr-zip">Zip Code<span class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.address.zipcode" id="developer-addr-zipcode" name="developerAddrZipcode" required></input>
+                  <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrZipcode.$touched && $ctrl.splitForm.developerAddrZipcode.$error.required">Zip code is required</div>
+                </div>
+                <div class="form-group">
+                  <label for="developer-addr-country">Country<span class="text-danger">*</span></label>
+                  <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.address.country" id="developer-addr-country" name="developerAddrCountry" required></input>
+                  <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrCountry.$touched && $ctrl.splitForm.developerAddrCountry.$error.required">Country is required</div>
+                </div>
+                <div class="form-group">
+                  <label for="developer-addr-website">Website</label>
+                  <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.address.website" id="developer-addr-website" name="developerAddrWebsite" ></input>
+                  <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrWebsite.$touched && $ctrl.splitForm.developerAddrWebsite.$error.required">Website is required</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">New Developer Contact Information</h3>
+              </div>
+              <div class="panel-body">
+                <ai-contact contact="$ctrl.splitDeveloper.newDeveloper.contact" error-messages="$ctrl.contactErrorMessages" form="$ctrl.splitForm" is-editing="true" is-required="true" show-form-errors="false"></ai-contact>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <div class="form-group">
+          <label for="old-products">Products staying with original Developer</label>
+          <select ng-model="$ctrl.productsToMoveToNew" multiple data-ng-attr-size="{{ $ctrl.products.length }}"
+                    id="old-products" name="oldProducts" class="input-sm form-control"
+                    ng-dblclick="$ctrl.moveToNew()" ng-keyup="$event.keyCode === 13 && $ctrl.moveToNew()"
+                    ng-options="p as p.name for p in $ctrl.splitDeveloper.oldProducts | orderBy: 'product'">
+          </select>
+          <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.splitForm.oldProducts.$touched) && $ctrl.splitDeveloper.oldProductss.length === 0">At least one Product must remain</div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-sm btn-ai btn-block" ng-click="$ctrl.moveToNew()" ng-disabled="!$ctrl.productsToMoveToNew || $ctrl.productsToMoveToNew.length === 0"><i class="fa fa-arrow-right"></i><span class="sr-only">Move to New Developer</span></button>
+        <button class="btn btn-sm btn-ai btn-block" ng-click="$ctrl.moveToOld()" ng-disabled="!$ctrl.productsToMoveToOld || $ctrl.productsToMoveToOld.length === 0"><i class="fa fa-arrow-left"></i><span class="sr-only">Move to Old Developer</span></button>
+      </div>
+      <div class="col-md-5">
+        <div class="form-group">
+          <label for="new-products">Products going with new Developer</label>
+          <select ng-model="$ctrl.productsToMoveToOld" multiple data-ng-attr-size="{{ $ctrl.products.length }}"
+                    id="new-products" name="newProducts" class="input-sm form-control"
+                    ng-dblclick="$ctrl.moveToOld()" ng-keyup="$event.keyCode === 13 && $ctrl.moveToOld()"
+                    ng-options="p as p.name for p in $ctrl.splitDeveloper.newProducts | orderBy: 'product'">
+          </select>
+          <div class="text-danger" ng-if="($ctrl.splitForm.newProducts.$touched) && $ctrl.splitDeveloper.newProducts.length === 0">At least one Product must transfer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="text-danger" ng-if="$ctrl.errorMessage">{{ $ctrl.errorMessage }}</div>
+    <button ng-disabled="$ctrl.splitForm.$invalid && $ctrl.showFormErrors"
+            ng-mouseover="$ctrl.showFormErrors = true"
+            class="btn btn-ai-success btn-block" ng-click="$ctrl.save()">Save Developers</button>
+    <button class="btn btn-warning btn-block"
+            confirm="Are you sure you wish to cancel editing? Your changes will not be saved."
+            confirm-ok="Yes"
+            confirm-cancel="No"
+            confirm-settings="{animation: false, keyboard: false, backdrop: 'static'}"
+            ng-click="$ctrl.cancel()">Cancel Edits</button>
+  </div>
+</div>
+  

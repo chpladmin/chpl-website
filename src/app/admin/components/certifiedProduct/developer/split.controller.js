@@ -1,0 +1,63 @@
+export const DeveloperSplitComponent = {
+    templateUrl: 'chpl.admin/components/certifiedProduct/developer/split.html',
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&',
+    },
+    controller: class DeveloperSplitController {
+        constructor ($log, $uibModal, networkService) {
+            'ngInject'
+            this.$log = $log;
+            this.$uibModal = $uibModal;
+            this.networkService = networkService;
+        }
+
+        $onInit () {
+            this.developer = angular.copy(this.resolve.developer);
+            this.products = angular.copy(this.resolve.products);
+            this.productsToMoveToNew = [];
+            this.productsToMoveToOld = [];
+            this.splitDeveloper = {
+                newProducts: [],
+                newDeveloper: {},
+                oldDeveloper: this.resolve.developer,
+                oldProducts: this.resolve.products,
+            };
+        }
+
+        cancel () {
+            this.dismiss();
+        }
+
+        moveToNew () {
+            for (var i = 0; i < this.productsToMoveToNew.length; i++) {
+                this.splitDeveloper.newProducts.push(angular.copy(this.productsToMoveToNew[i]));
+                for (var j = 0; j < this.splitDeveloper.oldProducts.length; j++) {
+                    if (this.productsToMoveToNew[i] === this.splitDeveloper.oldProducts[j]) {
+                        this.splitDeveloper.oldProducts.splice(j,1);
+                    }
+                }
+            }
+            this.productsToMoveToNew = [];
+            this.$log.info(this.splitDeveloper);
+        }
+        
+        moveToOld () {
+            for (var i = 0; i < this.productsToMoveToOld.length; i++) {
+                this.splitDeveloper.oldProducts.push(angular.copy(this.productsToMoveToOld[i]));
+                for (var j = 0; j < this.splitDeveloper.newProducts.length; j++) {
+                    if (this.productsToMoveToOld[i] === this.splitDeveloper.newProducts[j]) {
+                        this.splitDeveloper.newProducts.splice(j,1);
+                    }
+                }
+            }
+            this.versionsToMoveToOld = [];
+            this.$log.info(this.splitDeveloper);
+        }
+    },
+}
+
+angular
+    .module('chpl.admin')
+    .component('aiDeveloperSplit', DeveloperSplitComponent);
