@@ -594,9 +594,7 @@
 
         function inspectSurveillance (surv) {
             vm.modalInstance = $uibModal.open({
-                templateUrl: 'chpl.admin/components/surveillance/inspect.html',
-                controller: 'SurveillanceInspectController',
-                controllerAs: 'vm',
+                component: 'aiSurveillanceInspect',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,

@@ -38,9 +38,7 @@ export const SurveillanceComponent = {
         editSurveillance (surveillance) {
             this._fixRequirementOptions();
             this.uibModalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/surveillance/edit.html',
-                controller: 'EditSurveillanceController',
-                controllerAs: 'vm',
+                component: 'aiSurveillanceEdit',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,
@@ -102,9 +100,7 @@ export const SurveillanceComponent = {
         initiateSurveillance () {
             this._fixRequirementOptions();
             this.uibModalInstance = this.$uibModal.open({
-                templateUrl: 'chpl.admin/components/surveillance/edit.html',
-                controller: 'EditSurveillanceController',
-                controllerAs: 'vm',
+                component: 'aiSurveillanceEdit',
                 animation: false,
                 backdrop: 'static',
                 keyboard: false,

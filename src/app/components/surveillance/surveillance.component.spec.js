@@ -106,9 +106,7 @@
             var surveillanceEditOptions;
             beforeEach(function () {
                 surveillanceEditOptions = {
-                    templateUrl: 'chpl.admin/components/surveillance/edit.html',
-                    controller: 'EditSurveillanceController',
-                    controllerAs: 'vm',
+                    component: 'aiSurveillanceEdit',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,
@@ -169,9 +167,7 @@
             var surveillanceInitiateOptions;
             beforeEach(function () {
                 surveillanceInitiateOptions = {
-                    templateUrl: 'chpl.admin/components/surveillance/edit.html',
-                    controller: 'EditSurveillanceController',
-                    controllerAs: 'vm',
+                    component: 'aiSurveillanceEdit',
                     animation: false,
                     backdrop: 'static',
                     keyboard: false,

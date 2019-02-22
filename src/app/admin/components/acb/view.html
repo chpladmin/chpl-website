@@ -17,6 +17,7 @@
         <span>Website: <a ai-a href="{{ $ctrl.acb.website }}" ng-if="$ctrl.acb.website">{{ $ctrl.acb.website }}</a><span ng-if="!$ctrl.acb.website">None</span></span><br />
         <span>ONC-ACB Code: {{ $ctrl.acb.acbCode }}</span><br />
         <span>Retired: {{ $ctrl.acb.retired ? 'Yes' : 'No ' }}</span><br />
+        <span ng-if="$ctrl.acb.retired">Retirement Date: {{ $ctrl.acb.retirementDate | date : 'mediumDate' : 'UTC' }}<br /></span>
         <h3>Address</h3>
         <span>Line 1: {{ $ctrl.acb.address.line1 }}</span><br />
         <span>Line 2: {{ $ctrl.acb.address.line2 }}</span><br />
