@@ -56,13 +56,13 @@
             acb: {
                 'Drummond Group': true,
                 'ICSA Labs': true,
-                'InfoGard': true,
+                'UL LLC': true,
             },
         }
         mock.refine = {
             certificationStatuses: ['Active', 'Suspended by ONC-ACB', 'Suspended by ONC'],
             certificationEditions: ['2014', '2015'],
-            certificationBodies: ['Drummond Group', 'ICSA Labs', 'InfoGard'],
+            certificationBodies: ['Drummond Group', 'ICSA Labs', 'UL LLC'],
         };
 
         beforeEach(function () {

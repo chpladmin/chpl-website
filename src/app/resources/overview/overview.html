@@ -17,9 +17,9 @@
       </ul>
     </div>
     <div class="col-md-8">
-      <span ng-if="vm.announcements.length > 0">
-        <h2>Announcement<span ng-if="vm.announcements.length > 1">s</span></h2>
-        <div ng-repeat="announcement in vm.announcements | orderBy:'startDate'">
+      <span ng-if="$ctrl.announcements.length > 0">
+        <h2>Announcement<span ng-if="$ctrl.announcements.length > 1">s</span></h2>
+        <div ng-repeat="announcement in $ctrl.announcements">
           <strong>{{ announcement.title }}</strong><span ng-if="announcement.text">: {{ announcement.text }}</span><br />
           Start date: {{ announcement.startDate | date : 'mediumDate' : 'UTC' }}, End date: {{ announcement.endDate | date : 'mediumDate' : 'UTC' }}
         </div>
@@ -28,25 +28,25 @@
         <a id="whatIsTheChpl" class="page-anchor"></a>
       </span>
       <h2>What is the CHPL?</h2>
-      <p>The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified Health Information Technology which has been successfully tested and certified by the ONC Health IT Certification program. All products listed on the CHPL have been tested by an ONC-Accredited Testing Laboratory (ONC-ATL) and certified by an ONC-Authorized Certification Body (ONC-ACB) to meet criteria adopted by the Secretary of the Department of Health and Human Services (HHS).</p>
+      <p>The Certified Health IT Product List (CHPL) is a comprehensive and authoritative listing of all certified health information technology that have been successfully tested and certified by the ONC Health IT Certification program. All products listed on the CHPL have been tested by an ONC-Authorized Testing Laboratory (ONC-ATL) and certified by an ONC-Authorized Certification Body (ONC-ACB) to meet criteria adopted by the Secretary of the Department of Health and Human Services (HHS).</p>
       <p>For additional information on how to navigate the CHPL, please refer to the <a href="https://www.healthit.gov/sites/default/files/policy/chpl_public_user_guide.pdf" analytics-on="click" analytics-event="CHPL Public User Guide" analytics-properties="{ category: 'Resources', label: '' }">CHPL Public User Guide</a></p>
-      <p>For more information on attesting for Meaningful Use, please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS EHR Incentive Program Registration &amp; Attestation Page</a>.</p>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <p>For more information on attesting for Promoting Interoperability under the Centers for Medicare &amp; Medicaid Services (CMS), please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration &amp; Attestation Page</a>.</p>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="usingTheChplWebsite" class="page-anchor"></a>
       </span>
       <h2>Using the CHPL Website</h2>
-      <h3>How do I use the CHPL to view Certified Health Information Technology?</h3>
-      <p>To search for Certified Health Information Technology, type a developer name, product name, CHPL Product ID, or ACB Certification ID into the main search area. Alternatively, you may choose to browse all certified products by clicking the 'View All Products' option, or use the 'Refine Search By' option to search for products matching specific criteria (e.g. certification criteria, clinical quality measurements, etc.). The CHPL will display your search results.</p>
+      <h3>How do I use the CHPL to view certified health information technology?</h3>
+      <p>To search for certified health information technology, type a developer name, product name, CHPL Product ID, or ONC-ACB Certification ID into the main search area. Alternatively, you may choose to browse all certified products by clicking the 'Browse all' option. Filters are also available to search for product listings matching specific criteria (e.g., certification criteria, clinical quality measurements, etc.). The CHPL will display your search results based on the information entered.</p>
       <h3>How do I create a CMS EHR Certification ID?</h3>
-      <p>To create a CMS EHR Certification ID, search for the products that you would like to use your CMS Certification ID. Once you have located the products you would like to use, click the yellow "+CertID" button to the right of the product to add to the 'CMS EHR Certification ID' widget on the right hand side of the page. Once you have entered all of the desired products, you will be able to generate a CMS EHR Certification ID by clicking the 'Get EHR Certification ID' button, if the combination of products selected meets the program requirements.</p>
-      <h3>What is the difference between an ACB Certification ID and CHPL Product Number (CHPL ID)?</h3>
-      <p>CHPL IDs are unique to each certified product. There are two types of CHPL IDs depending on the certified product. Certified products from the CHPL 4.0 (those certified before March 28, 2016) have CHPL IDs in the following format: <code>CHP-XXXXXX</code> (e.g. <code>CHP-022989</code>). Products certified for the first time on the new "open data" CHPL (those certified after March 28, 2016) have CHPL IDs in the following format: <code>Edition.ATL.ACB.Developer.Product.Version.ICS.ReliedUponSoftware.Date</code> (e.g. <code>15.04.04.1064.Alls.AM.0.1.160804</code>).</p>
+      <p>To create a CMS EHR Certification ID, search for the products that you would like to use your CMS Certification ID. Once you have located the product listings you would like to use, click the yellow "+CertID" button to the right of the product listing on the search results page to add to the 'CMS ID Creator' widget at the top of the page. Once you have entered all of the desired product listings, you will be able to generate a CMS EHR Certification ID by clicking the 'Get EHR Certification ID' button, if the combination of product listings selected meets the program requirements.</p>
+      <h3>What is the difference between an ONC-ACB Certification ID and CHPL Product Number (CHPL ID)?</h3>
+      <p>CHPL IDs are unique to each certified product. There are two types of CHPL IDs depending on the certified product. Certified products from the CHPL 4.0 (those certified before March 28, 2016) have CHPL IDs in the following format: <code>CHP-XXXXXX</code> (e.g., <code>CHP-022989</code>). Products certified for the first time on the new "open data" CHPL (those certified after March 28, 2016) have CHPL IDs in the following format: <code>Edition.ATL.ACB.Developer.Product.Version.ICS.ReliedUponSoftware.Date</code> (e.g., <code>15.04.04.1064.Alls.AM.0.1.160804</code>).</p>
       <p>ONC-ACB Certification IDs are generated by each ONC-ACB and may not have a consistent format. In addition, a single ONC-ACB Certification ID may reference more than one certified product.</p>
       <h3>How do I compare products?</h3>
-      <p>To compare products, please navigate to the products you would like to compare, and use the 'Compare Products' button to the right of the product to add the products to the 'Compare' module on the right hand side of the page. Once you have identified all the products you would like to compare, click the green 'Compare' button in the module to view the products side-by-side.</p>
-      <h3>How would I report a problem or concern with my certified Health Information Technology?</h3>
-      <p>Errors or questions regarding product listings should be directed based on the table below. A list of ONC-ACB contact information can be found on <a href="http://www.healthit.gov/policy-researchers-implementers/certification-bodies-testing-laboratories">ONC's Certification Bodies and Testing Laboratories Page</a>.</p>
+      <p>To compare product listings, please navigate to the product listings you would like to compare and use the green '+Compare' button to the right of the product listing information on the search results page or in the upper right-hand corner of the product listing detail page to add the product listings to the 'Compare' module. Once you have identified all the product listings you would like to compare, click the blue 'Compare Products' button in the module (pops out once at least one product listing is selected) to view the products side-by-side.</p>
+      <h3>How would I report a problem or concern with my certified health information technology?</h3>
+      <p>Errors or questions regarding product listings should be directed based on the table below. A list of ONC-ACB contact information can be found on ONC's <a href="https://www.healthit.gov/topic/certification-ehrs/certification-process">Certification Bodies</a> and <a href="https://www.healthit.gov/topic/certification-ehrs/testing-process-test-methods">Testing Laboratories</a> pages.</p>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -57,11 +57,11 @@
         <tbody>
           <tr>
             <td>Eligible Professionals &amp; Eligible Hospital complaints regarding an EHR product</td>
-            <td>Please refer to the ONC Health IT Certification Program's <a href="https://www.healthit.gov/policy-researchers-implementers/provider-complaint-process">Provider Complaint Process</a></td>
+            <td>Please refer to the ONC Health IT Certification Program's <a href="https://www.healthit.gov/topic/certified-health-it-complaint-process">Provider Complaint Process</a></td>
           </tr>
           <tr>
             <td>Developer complaint against an ONC-ATL or ONC-ACB</td>
-            <td>Please contact the ONC-ATL or ONC-ACB first, to resolve the issue. Complaints should be escalated to NVLAP or the ONC-AA if the issue persists.</td>
+            <td>Please contact the ONC-ATL or ONC-ACB first to resolve the issue. Complaints should be escalated to NVLAP or the ONC-AA if the issue persists.</td>
           </tr>
           <tr>
             <td>Product Listing on the CHPL</td>
@@ -69,48 +69,47 @@
           </tr>
           <tr>
             <td>Other comments or complaints</td>
-            <td>Please contact <a href="https://www.healthit.gov/policy-researchers-implementers/resources">ONC's Office of Certification</a></td>
+            <td>Please use <a href="https://www.healthit.gov/form/healthit-feedback-form">ONC's Health IT Feedback Form</a></td>
           </tr>
         </tbody>
       </table>
-      <p>If the ONC-ACB cannot or does not address your issue, please contact <a href="https://www.healthit.gov/policy-researchers-implementers/resources">ONC's Office of Certification</a>.</p>
+      <p>If the ONC-ACB cannot or does not address your issue, please use <a href="https://www.healthit.gov/form/healthit-feedback-form">ONC's Health IT Feedback Form</a>.</p>
       <h3>Recommended Web Browsers</h3>
       <p>The CHPL website supports the following web browsers:</p>
       <ul>
-        <li>Google Chrome (version 36+) [preferred]</li>
-        <li>Apple Safari (version 9+)</li>
-        <li>Microsoft Internet Explorer (version 10+)</li>
-        <li>Mozilla Firefox (version 17+)</li>
+        <li>Google Chrome (latest version) [preferred]</li>
+        <li>Apple Safari (two most recent major versions)</li>
+        <li>Microsoft Edge (two most recent major versions)</li>
+        <li>Mozilla Firefox (latest version)</li>
       </ul>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="oncCertificationProgram" class="page-anchor"></a>
       </span>
       <h2>ONC Certification Program</h2>
       <h3>How does the certification process work?</h3>
-      <p>The ONC Certification Program was established to ensure that Certified Health Information Technology adheres to the security, functionality, and technology requirements adopted by HHS. ONC-Authorized Certification Bodies (ONC-ACBs) certify Health IT products that were successfully tested by an ONC-Accredited Testing Laboratory (ONC-ATL) against the certification criteria adopted by HHS. Products listed on the CHPL have been successfully certified through the <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program</a> by an ONC-ACB.</p>
-      <p>Certification criteria establish the required capabilities, standards, and implementation specifications that health information technology needs to meet in order to become certified under the ONC Health IT Certification Program. Certified Health IT Products can be used for participation in CMS quality reporting programs and State EHR Incentive Programs.</p>
-      <h3>Which Certification Edition do I need to use to attest for Meaningful Use?</h3>
-      <p>For more information on attesting to Meaningful Use, please refer to the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Meaningful Use Registration and Attestation Page</a>.</p>
+      <p>The ONC Certification Program was established to ensure that certified health information technology adheres to the security, functionality, and technology requirements adopted by HHS. ONC-Authorized Certification Bodies (ONC-ACBs) certify health IT products that were successfully tested by an ONC-Authorized Testing Laboratory (ONC-ATL) against the certification criteria adopted by HHS. Products listed on the CHPL have been successfully certified through the <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program</a> by an ONC-ACB.</p>
+      <p>Certification criteria establish the required capabilities, standards, and implementation specifications that health information technology needs to meet in order to become certified under the ONC Health IT Certification Program. Certified health IT products can be used for participation in CMS quality reporting programs and State Promoting Interoperability Programs.</p>
+      <h3>Which Certification Edition do I need to use to attest for Promoting Interoperability Programs?</h3>
+      <p>For more information on attesting to Promoting Interoperability, please refer to the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/registrationandattestation.html">CMS Promoting Interoperability Programs Registration and Attestation Page</a>.</p>
       <h3>What are clinical quality measures (CQMs)?</h3>
-      <p>Clinical Quality Measures (CQMs) are used to measure and track the quality of healthcare services delivered by eligible providers, eligible hospitals, and critical access hospitals.</p>
-      <p>For more information, please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/clinicalqualitymeasures.html">Centers for Medicare and Medicaid Services CQM Basics page</a>.</p>
+      <p>Clinical quality measures (CQMs) are used to measure and track the quality of healthcare services delivered by eligible professionals, eligible hospitals, and critical access hospitals.</p>
+      <p>For more information, please see the <a href="https://www.cms.gov/regulations-and-guidance/legislation/ehrincentiveprograms/clinicalqualitymeasures.html">CMS Clinical Quality Measures Basics page</a>.</p>
       <h3>What are electronic clinical quality measures (eCQMs)?</h3>
-      <p>eCQMs use data from electronic health records (EHR) and/or health information technology systems to measure health care quality. The Centers for Medicare & Medicaid Services (CMS) along with other HHS agencies use eCQMs in a variety of quality reporting and incentive programs. For more information on eCQMs, please visit the <a href="https://ecqi.healthit.gov/">eCQI Resource Center</a>.</p>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <p>eCQMs use data from electronic health records (EHR) and/or health information technology systems to measure health care quality. CMS, along with other HHS agencies, use eCQMs in a variety of quality reporting and incentive programs. For more information on eCQMs, please visit the <a href="https://ecqi.healthit.gov/">eCQI Resource Center</a>.</p>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="forEhrDevelopers" class="page-anchor"></a>
       </span>
       <h2>For EHR Developers</h2>
       <h3>How can a product be added to the CHPL?</h3>
-      <p>To be listed on the CHPL, Health Information Technology must first be successfully tested by an ONC-ATL, and then certified by an ONC-ACB against at least one <a href="http://www.healthit.gov/policy-researchers-implementers/standards-and-certification-regulations">certification criterion adopted by HHS</a>. For more information on the ONC Certification Program, ONC-ATLs, and ONC-ACBs, please see the <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program page</a>.</p>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <p>To be listed on the CHPL, health information technology must first be successfully tested by an ONC-ATL and then certified by an ONC-ACB against at least one <a href="http://www.healthit.gov/policy-researchers-implementers/standards-and-certification-regulations">certification criterion adopted by HHS</a>. For more information on the ONC Certification Program, ONC-ATLs, and ONC-ACBs, please see the <a href="http://www.healthit.gov/policy-researchers-implementers/about-onc-health-it-certification-program">ONC Health IT Certification Program page</a>.</p>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
       <span class="anchor-element">
         <a id="oncacbAndAtlInformation" class="page-anchor"></a>
       </span>
       <h2>ONC-ACB and ONC-ATL Information</h2>
-      <p>The following table identifies the ONC-ACBs and ONC-ATLs used to certify and test Health Information</p>
-      <p>Technology presented on the CHPL. For more information, please visit their respective websites.</p>
+      <p>The following table identifies the ONC-ACBs and ONC-ATLs used to certify and test health information technology presented on the CHPL. For more information, please visit their respective websites.</p>
       <table class="table table-striped" id="acbAtlTable">
         <thead>
           <tr>
@@ -121,13 +120,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="acb in vm.acbs | orderBy: 'name'">
+          <tr ng-repeat="acb in $ctrl.acbs">
             <td>ONC-ACB</td>
             <td>{{ acb.name }}</td>
             <td>{{ acb.acbCode }}</td>
             <td><a ai-a ng-if="acb.website" href="{{ acb.website }}">{{ acb.website }}</a></td>
           </tr>
-          <tr ng-repeat="atl in vm.atls | orderBy: 'name'">
+          <tr ng-repeat="atl in $ctrl.atls">
             <td>ONC-ATL</td>
             <td>{{ atl.name }}</td>
             <td>{{ atl.atlCode }}</td>
@@ -135,7 +134,7 @@
           </tr>
         </tbody>
       </table>
-      <a href ng-click="vm.toTop()">Back to the top</a>
+      <a href ng-click="$ctrl.toTop()">Back to the top</a>
     </div>
   </div>
 </div> <!-- end controller -->

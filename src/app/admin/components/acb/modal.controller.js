@@ -60,7 +60,7 @@
                         $uibModalInstance.dismiss('An error occurred');
                     }
                 },function (error) {
-                    $uibModalInstance.dismiss(error.data.error);
+                    vm.error = error.data.error;
                 });
         }
     }

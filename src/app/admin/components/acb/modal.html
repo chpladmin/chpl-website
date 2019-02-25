@@ -12,6 +12,7 @@
     <ai-edit-acb acb="vm.acb" action="vm.action" is-chpl-admin="vm.isChplAdmin" on-change="vm.handleChange(acb, valid)"></ai-edit-acb>
   </div>
   <div class="modal-footer">
+    <p ng-if="vm.error" class="text-danger text-left">{{ vm.error }}</p>
     <button ng-disabled="!vm.formIsValid && vm.showFormErrors" class="btn btn-ai-success btn-block"
             ng-mouseover="vm.showFormErrors = true"
             ng-if="vm.action === 'create'"

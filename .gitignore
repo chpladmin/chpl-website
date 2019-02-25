@@ -8,5 +8,6 @@ test_reports/
 .settings/
 /features/components/nav/nav.login.steps.js
 *-website.sh
-push-*.sh
+push.sh
+promote.sh
 .vscode/

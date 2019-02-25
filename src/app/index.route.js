@@ -26,7 +26,7 @@
                 controllerAs: 'vm',
                 data: { title: 'Password Reset' },
             })
-            .state('/charts', {
+            .state('charts', {
                 url: '/charts',
                 controller: 'ChartsController',
                 controllerAs: 'vm',
@@ -34,7 +34,9 @@
                 data: { title: 'CHPL Charts' },
             })
             .state('collections', {
+                abstract: true,
                 url: '/collections',
+                template: '<ui-view/>',
             })
             .state('collections.apiDocumentation', {
                 url: '/apiDocumentation',
@@ -103,24 +105,28 @@
                 data: { title: 'CHPL Product Details' },
             })
             .state('registration', {
+                abstract: true,
                 url: '/registration',
+                template: '<ui-view/>',
             })
-            .state('registration.create-user/{hash}', {
-                url: '/create-user/:hash',
+            .state('registration.create-user}', {
+                url: '/create-user/{hash}',
                 template: require('./registration/create-user.html'),
                 controller: 'CreateController',
                 controllerAs: 'vm',
                 data: { title: 'CHPL Registration' },
             })
-            .state('registration.confirm-user/{hash}', {
-                url: '/confirm-user/:hash',
+            .state('registration.confirm-user}', {
+                url: '/confirm-user/{hash}',
                 template: require('./registration/confirm-user.html'),
                 controller: 'ConfirmController',
                 controllerAs: 'vm',
                 data: { title: 'CHPL Registration' },
             })
             .state('resources', {
+                abstract: true,
                 url: '/resources',
+                template: '<ui-view/>',
             })
             .state('resources.chpl_api', {
                 url: '/chpl_api',
@@ -138,16 +144,12 @@
             })
             .state('resources.download', {
                 url: '/download',
-                template: require('./resources/download/download.html'),
-                controller: 'DownloadController',
-                controllerAs: 'vm',
+                component: 'aiResourcesDownload',
                 data: { title: 'Download the CHPL' },
             })
             .state('resources.overview', {
                 url: '/overview',
-                template: require('./resources/overview/overview.html'),
-                controller: 'OverviewController',
-                controllerAs: 'vm',
+                component: 'aiOverview',
                 data: { title: 'CHPL Overview' },
             })
             .state('search', {
