@@ -22,7 +22,7 @@ export const UserManagementComponent = {
         impersonateUser (user) {
             this.networkService.impersonateUser(user)
                 .then(token => {
-                    this.authService.saveToken(token.token)
+                    this.authService.saveToken(token.token);
                     this.$rootScope.$broadcast('impersonating');
                     this.$location.path('/admin');
                 });
