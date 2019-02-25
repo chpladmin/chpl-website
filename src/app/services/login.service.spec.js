@@ -1,7 +1,7 @@
-(function () {
+(() => {
     'use strict';
 
-    describe('the Authorization service', function () {
+    fdescribe('the Authorization service', () => {
         var $localStorage, $log, $window, auth, mock;
         mock = {
             user: {
@@ -14,10 +14,10 @@
             },
         }
 
-        beforeEach(function () {
+        beforeEach(() => {
             angular.mock.module('chpl.services');
 
-            inject(function (_$localStorage_, _$log_, _$window_, _authService_) {
+            inject((_$localStorage_, _$log_, _$window_, _authService_) => {
                 $localStorage = _$localStorage_;
                 $log = _$log_;
                 $window = _$window_;
@@ -26,61 +26,61 @@
             });
         });
 
-        afterEach(function () {
+        afterEach(() => {
             if ($log.debug.logs.length > 0) {
                 /* eslint-disable no-console,angular/log */
-                console.log('Debug:\n' + $log.debug.logs.map(function (o) { return angular.toJson(o); }).join('\n'));
+                console.log('Debug:\n' + $log.debug.logs.map(o => angular.toJson(o)).join('\n'));
                 /* eslint-enable no-console,angular/log */
             }
         });
 
-        it('should retrieve the token from storage', function () {
+        it('should retrieve the token from storage', () => {
             $localStorage.jwtToken = 'fake token';
             expect(auth.getToken()).toBe('fake token');
         });
 
-        it('should get a username when logged in', function () {
+        it('should get a username when logged in', () => {
             auth.saveToken(buildToken(mock.user));
             expect(auth.getUsername()).toBe('username');
         });
 
-        it('should get a fullname when logged in', function () {
+        it('should get a fullname when logged in', () => {
             auth.saveToken(buildToken(mock.user));
             expect(auth.getFullname()).toBe('Full Name');
         });
 
-        it('should indicate when impersonating', function () {
+        it('should indicate when impersonating', () => {
             auth.saveToken(buildToken(mock.impersonating));
             expect(auth.getFullname()).toBe('Impersonating Full Name');
         });
 
-        it('should not get a username when not logged in', function () {
+        it('should not get a username when not logged in', () => {
             expect(auth.getUsername()).toBe('');
         });
 
-        it('should not get a username when not logged in', function () {
+        it('should not get a username when not logged in', () => {
             expect(auth.getFullname()).toBe('');
         });
 
-        it('should delete the token on logout', function () {
+        it('should delete the token on logout', () => {
             $localStorage.jwtToken = 'fake token';
             auth.logout();
             expect($localStorage.jwtToken).toBeUndefined();
         });
 
-        it('should parse a JWT Token', function () {
+        it('should parse a JWT Token', () => {
             var token = angular.copy(buildToken(mock.user));
             expect(auth.parseJwt(token).Authorities).toEqual([]);
             expect(auth.parseJwt(token).Identity).toEqual(mock.user.Identity);
         });
 
-        it('should handle bad tokens', function () {
+        it('should handle bad tokens', () => {
             expect(auth.parseJwt('somehingWithoutDots')).toEqual({});
             expect(auth.parseJwt(3)).toBeUndefined();
             expect(auth.parseJwt()).toBeUndefined();
         });
 
-        it('should save the token', function () {
+        it('should save the token', () => {
             var token = angular.copy(buildToken(mock.user));
             auth.saveToken(token);
             expect($localStorage.jwtToken).toBe(token);
