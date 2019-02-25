@@ -6,16 +6,19 @@ export const DeveloperSplitComponent = {
         dismiss: '&',
     },
     controller: class DeveloperSplitController {
-        constructor ($log, $uibModal, networkService) {
+        constructor ($log, $uibModal, authService, networkService) {
             'ngInject'
             this.$log = $log;
             this.$uibModal = $uibModal;
+            this.hasAnyRole = authService.hasAnyRole;
             this.networkService = networkService;
         }
 
         $onInit () {
             this.developer = angular.copy(this.resolve.developer);
             this.products = angular.copy(this.resolve.products);
+            this.networkService.getAcbs(true)
+                .then(response => this.acbs = response.acbs);
             this.productsToMoveToNew = [];
             this.productsToMoveToOld = [];
             this.splitDeveloper = {
@@ -42,7 +45,7 @@ export const DeveloperSplitComponent = {
             this.productsToMoveToNew = [];
             this.$log.info(this.splitDeveloper);
         }
-        
+
         moveToOld () {
             for (var i = 0; i < this.productsToMoveToOld.length; i++) {
                 this.splitDeveloper.oldProducts.push(angular.copy(this.productsToMoveToOld[i]));

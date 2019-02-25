@@ -46,7 +46,7 @@
               <label for="developer-name">Developer Name<span class="text-danger">*</span></label>
               <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.name" id="developer-name" name="developerName" required ng-maxlength="300"></input>
               <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.splitDeveloper.newDeveloper.name.$touched) && $ctrl.splitDeveloper.newDeveloper.name.$error.required">Developer name is required</div>
-              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.splitDeveloper.newDeveloper.name.$touched) && $ctrl.splitDeveloper.newDeveloper.name.$error.maxlength">Field is too long</div>         
+              <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.splitDeveloper.newDeveloper.name.$touched) && $ctrl.splitDeveloper.newDeveloper.name.$error.maxlength">Field is too long</div>
             </div>
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -68,7 +68,7 @@
                   <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrCity.$touched && $ctrl.splitForm.developerAddrCity.$error.required">City is required</div>
                 </div>
                 <div class="form-group">
-                  <label for="developer-addr-zip">Zip Code<span class="text-danger">*</span></label>
+                  <label for="developer-addr-zipcode">Zip Code<span class="text-danger">*</span></label>
                   <input class="input-sm form-control" type="text" ng-model="$ctrl.splitDeveloper.newDeveloper.address.zipcode" id="developer-addr-zipcode" name="developerAddrZipcode" required></input>
                   <div class="text-danger" ng-if="$ctrl.splitForm.developerAddrZipcode.$touched && $ctrl.splitForm.developerAddrZipcode.$error.required">Zip code is required</div>
                 </div>
@@ -90,6 +90,21 @@
               </div>
               <div class="panel-body">
                 <ai-contact contact="$ctrl.splitDeveloper.newDeveloper.contact" error-messages="$ctrl.contactErrorMessages" form="$ctrl.splitForm" is-editing="true" is-required="true" show-form-errors="false"></ai-contact>
+              </div>
+            </div>
+            <div class="panel panel-default" ng-if="$ctrl.hasAnyRole(['ROLE_ACB'])">
+              <div class="panel-heading">
+                <h3 class="panel-title">New Developer Transparency Attestatation</h3>
+              </div>
+              <div class="panel-body">
+                <div class="form-group" ng-repeat="acb in $ctrl.acbs | orderBy:'toString()'">
+                  <label for="developer-transparency-{{acb.acbCode}}">{{ acb.name }} Transparency Attestation</label>
+                  <select class="input-sm form-control" ng-model="$ctrl.splitDeveloper.newDeveloper.transMap[acb.acbCode]" id="developer-transparency-{{acb.acbCode}}" name="developerTransparency{{acb.acbCode}}">
+                    <option value="Negative">Negative</option>
+                    <option value="Affirmative">Affirmative</option>
+                    <option value="N/A">N/A</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -138,4 +153,3 @@
             ng-click="$ctrl.cancel()">Cancel Edits</button>
   </div>
 </div>
-  
