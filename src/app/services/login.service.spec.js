@@ -120,7 +120,7 @@
                 expect(auth.isImpersonating()).toBe(true);
             });
 
-            describe('when knowing who may be be impersonated', () => {
+            xdescribe('when knowing who may be be impersonated', () => {
                 let user;
                 let target;
                 beforeEach(() => {
