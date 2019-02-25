@@ -1,40 +1,37 @@
-(function () {
-    'use strict';
-
-    angular.module('chpl.admin').component('aiUserManagement', {
-        templateUrl: 'chpl.admin/components/user/userManagement.html',
-        controller: UserManagementController,
-        bindings: {
-            acbId: '@',
-            atlId: '@',
-        },
-    });
-
-    /** @ngInject */
-    function UserManagementController ($location, $log, $rootScope, $uibModal, authService, networkService) {
-        var ctrl = this;
-
-        ctrl.impersonateUser = impersonateUser;
-        ctrl.inviteUser = inviteUser;
-        ctrl.updateUser = updateUser;
-
-        ////////////////////////////////////////////////////////////////////
-
-        ctrl.$onInit = () => {
-            _loadUsers();
+export const UserManagementComponent = {
+    templateUrl: 'chpl.admin/components/user/userManagement.html',
+    bindings: {
+        acbId: '@',
+        atlId: '@',
+    },
+    controller: class UserManagementController {
+        constructor ($location, $log, $rootScope, $uibModal, authService, networkService) {
+            'ngInject'
+            this.$location = $location;
+            this.$log = $log;
+            this.$rootScope = $rootScope;
+            this.$uibModal = $uibModal;
+            this.authService = authService;
+            this.networkService = networkService;
         }
 
-        function impersonateUser (user) {
-            networkService.impersonateUser(user)
+        $onInit () {
+            this._loadUsers();
+        }
+
+        impersonateUser (user) {
+            this.networkService.impersonateUser(user)
                 .then(token => {
-                    authService.saveToken(token.token)
-                    $rootScope.$broadcast('impersonating');
-                    $location.path('/admin');
+                    this.authService.saveToken(token.token)
+                    this.$rootScope.$broadcast('impersonating');
+                    this.$location.path('/admin');
                 });
         }
 
-        function inviteUser () {
-            ctrl.modalInstance = $uibModal.open({
+        inviteUser () {
+            const acbId = this.acbId;
+            const atlId = this.atlId;
+            this.modalInstance = this.$uibModal.open({
                 templateUrl: 'chpl.admin/components/user/edit.html',
                 controller: 'EditUserController',
                 controllerAs: 'vm',
@@ -42,16 +39,18 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    user: function () { return {}; },
-                    action: function () { return 'invite'; },
-                    acbId: function () { return ctrl.acbId; },
-                    atlId: function () { return ctrl.atlId; },
+                    user: () => { return {}; },
+                    action: () => 'invite',
+                    acbId: () => acbId,
+                    atlId: () => atlId,
                 },
             });
         }
 
-        function updateUser (user) {
-            ctrl.modalInstance = $uibModal.open({
+        updateUser (user) {
+            const acbId = this.acbId;
+            const atlId = this.atlId;
+            this.modalInstance = this.$uibModal.open({
                 templateUrl: 'chpl.admin/components/user/edit.html',
                 controller: 'EditUserController',
                 controllerAs: 'vm',
@@ -59,36 +58,40 @@
                 backdrop: 'static',
                 keyboard: false,
                 resolve: {
-                    user: function () { return user; },
-                    action: function () { return 'edit'; },
-                    acbId: function () { return ctrl.acbId; },
-                    atlId: function () { return ctrl.atlId; },
+                    user: () => user,
+                    action: () => 'edit',
+                    acbId: () => acbId,
+                    atlId: () => atlId,
                 },
             });
-            ctrl.modalInstance.result.then(function () {
-                _loadUsers();
+            this.modalInstance.result.then(() => {
+                this._loadUsers();
             });
         }
 
         ////////////////////////////////////////////////////////////////////
 
-        function _loadUsers () {
-            if (ctrl.acbId) {
-                networkService.getUsersAtAcb(ctrl.acbId)
-                    .then(function (response) {
-                        ctrl.users = response.users;
+        _loadUsers () {
+            if (this.acbId) {
+                this.networkService.getUsersAtAcb(this.acbId)
+                    .then(response => {
+                        this.users = response.users;
                     });
-            } else if (ctrl.atlId) {
-                networkService.getUsersAtAtl(ctrl.atlId)
-                    .then(function (response) {
-                        ctrl.users = response.users;
+            } else if (this.atlId) {
+                this.networkService.getUsersAtAtl(this.atlId)
+                    .then(response => {
+                        this.users = response.users;
                     });
             } else {
-                networkService.getUsers()
-                    .then(function (response) {
-                        ctrl.users = response.users;
+                this.networkService.getUsers()
+                    .then(response => {
+                        this.users = response.users;
                     });
             }
         }
-    }
-})();
+    },
+}
+
+angular
+    .module('chpl.admin')
+    .component('aiUserManagement', UserManagementComponent);
