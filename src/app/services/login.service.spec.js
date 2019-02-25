@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the Authorization service', () => {
+    describe('the Authorization service', () => {
         var $localStorage, $log, $window, auth, mock;
         mock = {
             user: {

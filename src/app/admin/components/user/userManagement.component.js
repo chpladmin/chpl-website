@@ -12,6 +12,7 @@ export const UserManagementComponent = {
             this.$rootScope = $rootScope;
             this.$uibModal = $uibModal;
             this.authService = authService;
+            this.canImpersonate = authService.canImpersonate;
             this.networkService = networkService;
         }
 

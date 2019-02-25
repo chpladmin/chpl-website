@@ -40,7 +40,7 @@
           </td>
           <td>
             <button class="btn btn-default btn-block" ng-click="$ctrl.updateUser(user)">Update</button>
-            <button class="btn btn-default btn-block" ng-click="$ctrl.impersonateUser(user)">Impersonate</button>
+            <button class="btn btn-default btn-block" ng-click="$ctrl.impersonateUser(user)" ng-if="$ctrl.canImpersonate(user)">Impersonate</button>
           </td>
         </tr>
       </tbody>

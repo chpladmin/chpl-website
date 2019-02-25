@@ -7,6 +7,7 @@
     /** @ngInclude */
     function authService ($localStorage, $log, $window, API_KEY) {
         var service = {
+            canImpersonate: canImpersonate,
             getApiKey: getApiKey,
             getFullname: getFullname,
             getToken: getToken,
@@ -20,6 +21,22 @@
         return service;
 
         ////////////////////////////////////////////////////////////////////////
+
+        function canImpersonate (target) {
+            let userRoles = parseJwt(getToken()).Authorities;
+            let targetRoles = target.roles;
+            return !isImpersonating() && userRoles.reduce((userAcc, user) => {
+                return userAcc && targetRoles.reduce((targetAcc, target) => {
+                    if (user === 'ROLE_ADMIN') {
+                        return targetAcc && target !== 'ROLE_ADMIN';
+                    }
+                    if (user === 'ROLE_ONC') {
+                        return targetAcc && target !== 'ROLE_ADMIN' && target !== 'ROLE_ONC';
+                    }
+                    return false;
+                }, true);
+            }, true);
+        }
 
         function getApiKey () {
             return API_KEY;

@@ -1,7 +1,7 @@
 (() => {
     'use strict';
 
-    fdescribe('the user management component,', () => {
+    describe('the user management component,', () => {
         var $compile, $location, $log, $q, $rootScope, $uibModal, Mock, actualOptions, authService, ctrl, el, mock, networkService, scope;
 
         mock = {
