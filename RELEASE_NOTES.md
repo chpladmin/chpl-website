@@ -1,5 +1,17 @@
 # Release Notes
 
+## Version 10.13.0
+_25 February 2019_
+
+### New features
+* Update the language on the Overview page.
+* Tweak CMS download workflow to reduce unnecessary network calls
+
+### Bug fixes
+* Remove unusable "file documentation upload" section from surveillance inspect workflow
+
+---
+
 ## Version 10.12.0
 _11 February 2019_
 
