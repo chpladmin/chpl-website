@@ -27,9 +27,7 @@ window.zxcvbn = zxcvbn;
         ////////////////////////////////////////////////////////////////////
 
         function activate () {
-            vm.userDetails = {user: {
-                complianceTermsAccepted: true,
-            }};
+            vm.userDetails = {user: {}};
             vm.authorizeDetails = {};
             vm.userDetails.hash = $stateParams.hash;
             vm.authorizeDetails.hash = $stateParams.hash;
@@ -64,7 +62,6 @@ window.zxcvbn = zxcvbn;
 
         function createUser () {
             if (vm.validateUser()) {
-                vm.userDetails.user.complianceTermsAccepted = true;
                 networkService.createInvitedUser(vm.userDetails)
                     .then(function () {
                         vm.message.value = 'Your account has been created. Please check your email to confirm your account';
