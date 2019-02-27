@@ -69,10 +69,10 @@ export const DeveloperSplitComponent = {
                             splitProduct: that.splitDeveloper,
                         });
                     } else {
-                        that.errorMessage = response.data.error;
+                        that.errorMessages = response.data.error;
                     }
                 },function (error) {
-                    that.errorMessage = error.data.errorMessages[0];
+                    that.errorMessages = error.data.errorMessages;
                 });
         }
     },
