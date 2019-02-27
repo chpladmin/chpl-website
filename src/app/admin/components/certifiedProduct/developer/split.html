@@ -146,7 +146,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <div class="text-danger" ng-if="$ctrl.errorMessages" ng-repeat="error in $ctrl.errorMessages">{{ error }}</div>
+    <div class="text-danger text-left" ng-if="$ctrl.errorMessages" ng-repeat="error in $ctrl.errorMessages">{{ error }}</div>
     <button ng-disabled="$ctrl.splitForm.$invalid && $ctrl.showFormErrors"
             ng-mouseover="$ctrl.showFormErrors = true"
             class="btn btn-ai-success btn-block" ng-click="$ctrl.save()">Save Developers</button>
