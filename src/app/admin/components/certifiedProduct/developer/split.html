@@ -123,7 +123,7 @@
           <select ng-model="$ctrl.productsToMoveToNew" multiple data-ng-attr-size="{{ $ctrl.products.length }}"
                     id="old-products" name="oldProducts" class="input-sm form-control"
                     ng-dblclick="$ctrl.moveToNew()" ng-keyup="$event.keyCode === 13 && $ctrl.moveToNew()"
-                    ng-options="p as p.name for p in $ctrl.splitDeveloper.oldProducts | orderBy: 'product'">
+                    ng-options="p as p.name for p in $ctrl.splitDeveloper.oldProducts | orderBy: 'p.name'">
           </select>
           <div class="text-danger" ng-if="($ctrl.showFormErrors || $ctrl.splitForm.oldProducts.$touched) && $ctrl.splitDeveloper.oldProductss.length === 0">At least one Product must remain</div>
         </div>
@@ -138,7 +138,7 @@
           <select ng-model="$ctrl.productsToMoveToOld" multiple data-ng-attr-size="{{ $ctrl.products.length }}"
                     id="new-products" name="newProducts" class="input-sm form-control"
                     ng-dblclick="$ctrl.moveToOld()" ng-keyup="$event.keyCode === 13 && $ctrl.moveToOld()"
-                    ng-options="p as p.name for p in $ctrl.splitDeveloper.newProducts | orderBy: 'product'">
+                    ng-options="p as p.name for p in $ctrl.splitDeveloper.newProducts | orderBy: 'p.name'">
           </select>
           <div class="text-danger" ng-if="($ctrl.splitForm.newProducts.$touched) && $ctrl.splitDeveloper.newProducts.length === 0">At least one Product must transfer</div>
         </div>

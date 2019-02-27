@@ -66,9 +66,7 @@ export const DeveloperSplitComponent = {
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
                         that.close({
-                            //product: response.oldProduct,
-                            //versions: vm.splitProduct.oldVersions,
-                            //newProduct: response.newProduct,
+                            splitProduct: that.splitDeveloper,
                         });
                     } else {
                         that.errorMessage = response.data.error;

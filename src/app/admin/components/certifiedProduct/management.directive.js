@@ -774,6 +774,34 @@
                 });
         }
 
+        function splitDeveloper () {
+            vm.splitDeveloperModalInstance = $uibModal.open({
+                component: 'aiDeveloperSplit',
+                animation: false,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'lg',
+                resolve: {
+                    developer: () => vm.activeDeveloper,
+                    products: () => vm.products,
+                },
+            });
+            vm.splitDeveloperModalInstance.result.then(result => {
+                $log.info('Successfully Saved!');
+                $log.info(result);
+                refreshDevelopers();
+                vm.developerSelect = '';
+                vm.activeDeveloper = '';
+                vm.activeProduct = '';
+                vm.activeVersion = '';
+                vm.activeCP = '';
+            }, result => {
+                if (result !== 'cancelled') {
+                    $log.info('dismissed', result);
+                }
+            });
+        }
+        
         function splitProduct () {
             vm.splitProductInstance = $uibModal.open({
                 templateUrl: 'chpl.admin/components/certifiedProduct/product/split.html',
@@ -798,27 +826,6 @@
                     vm.productMessage = result;
                 } else {
                     $log.info('split cancelled');
-                }
-            });
-        }
-
-        function splitDeveloper () {
-            vm.splitDeveloperModalInstance = $uibModal.open({
-                component: 'aiDeveloperSplit',
-                animation: false,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'lg',
-                resolve: {
-                    developer: () => vm.activeDeveloper,
-                    products: () => vm.products,
-                },
-            });
-            vm.splitDeveloperModalInstance.result.then(result => {
-                $log.info('Save', result);
-            }, result => {
-                if (result !== 'cancelled') {
-                    $log.info('dismissed', result);
                 }
             });
         }
