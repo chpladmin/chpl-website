@@ -230,11 +230,6 @@ export class NetworkService {
         }
     }
 
-    getCorrectiveActionPlanActivity (activityRange) {
-        var call = '/activity/corrective_action_plans';
-        return this.getActivity(call, activityRange);
-    }
-
     getDeveloper (developerId) {
         return this.apiGET('/developers/' + developerId);
     }
