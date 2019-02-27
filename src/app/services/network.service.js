@@ -569,6 +569,10 @@ export class NetworkService {
         return this.apiPOST('/search', queryObj);
     }
 
+    splitDeveloper (developerSplitObject) {
+        return this.apiPOST('/developers/' + developerSplitObject.oldDeveloper.developerId + '/split', developerSplitObject);
+    }
+
     splitProduct (productObject) {
         return this.apiPOST('/products/' + productObject.oldProduct.productId + '/split', productObject);
     }

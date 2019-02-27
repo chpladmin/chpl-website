@@ -58,6 +58,25 @@ export const DeveloperSplitComponent = {
             this.versionsToMoveToOld = [];
             this.$log.info(this.splitDeveloper);
         }
+
+        save () {
+            let that = this;
+
+            this.networkService.splitDeveloper(this.splitDeveloper)
+                .then(function (response) {
+                    if (!response.status || response.status === 200) {
+                        this.close({
+                            //product: response.oldProduct,
+                            //versions: vm.splitProduct.oldVersions,
+                            //newProduct: response.newProduct,
+                        });
+                    } else {
+                        that.errorMessage = response.data.error;
+                    }
+                },function (error) {
+                    that.errorMessage = error.data.errorMessages[0];
+                });
+        }
     },
 }
 
