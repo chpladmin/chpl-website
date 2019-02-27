@@ -59,10 +59,17 @@ export const DeveloperSplitComponent = {
         }
 
         attestationChange() {
+            let that = this;
             var mappedAttestations = [];
             angular.forEach(this.attestations, function (value, key) {
-                mappedAttestations.push({acbName: key, attestation: value});
+                let acb = that.acbs.find(function (acb) {
+                    return acb.id == key;
+                });
+                if (acb) {
+                    mappedAttestations.push({acbId: acb.id, acbName: acb.name, attestation: value});
+                }
             });
+            this.$log.info(mappedAttestations);
             this.splitDeveloper.newDeveloper.transparencyAttestations = mappedAttestations;
         }
 

@@ -104,7 +104,7 @@
               <div class="panel-body">
                 <div class="form-group" ng-repeat="acb in $ctrl.acbs | orderBy:'toString()'">
                   <label for="developer-transparency-{{acb.acbCode}}">{{ acb.name }} Transparency Attestation</label>
-                  <select class="input-sm form-control" ng-model="$ctrl.attestations[acb.name]" id="developer-transparency-{{acb.acbCode}}" name="developerTransparency{{acb.acbCode}}" ng-change="$ctrl.attestationChange()">
+                  <select class="input-sm form-control" ng-model="$ctrl.attestations[acb.id]" id="developer-transparency-{{acb.acbCode}}" name="developerTransparency{{acb.acbCode}}" ng-change="$ctrl.attestationChange()">
                     <option value="Negative">Negative</option>
                     <option value="Affirmative">Affirmative</option>
                     <option value="N/A">N/A</option>
