@@ -83,10 +83,20 @@ export const DeveloperSplitComponent = {
                             splitProduct: that.splitDeveloper,
                         });
                     } else {
-                        that.errorMessages = response.data.errorMessages;
+                        if (response.data.errorMessages) {
+                            that.errorMessages = response.data.errorMessages;
+                        } else if (response.data.error) {
+                            that.errorMessages = [];
+                            that.errorMessages.push(response.data.error);
+                        }
                     }
                 },function (error) {
-                    that.errorMessages = error.data.errorMessages;
+                    if (error.data.errorMessages) {
+                        that.errorMessages = error.data.errorMessages;
+                    } else if (error.data.error) {
+                        that.errorMessages = [];
+                        that.errorMessages.push(error.data,error);
+                    }
                 });
         }
     },
