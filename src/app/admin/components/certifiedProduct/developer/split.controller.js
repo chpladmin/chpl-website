@@ -65,7 +65,7 @@ export const DeveloperSplitComponent = {
             this.networkService.splitDeveloper(this.splitDeveloper)
                 .then(function (response) {
                     if (!response.status || response.status === 200) {
-                        this.close({
+                        that.close({
                             //product: response.oldProduct,
                             //versions: vm.splitProduct.oldVersions,
                             //newProduct: response.newProduct,
